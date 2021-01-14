@@ -1,37 +1,42 @@
 import React, { useState, useEffect } from 'react';
 
-function CourseBar(props:any) {
-  const mainColor = props.mainColor;
-  const subColor = props.subColor;
-  const width = window.innerWidth;
-  const maxPercentage = props.maxCredits / props.majorCredits;
-  const totalWidth =
-    props.maxCredits === props.majorCredits
+type courseBarProps = {
+  mainColor: string;
+  subColor: string;
+  maxCredits: number;
+  majorCredits: number;
+  currentCredits: number;
+  section:string;
+}
+
+function CourseBar({mainColor, subColor, maxCredits, majorCredits, currentCredits, section}:courseBarProps) {
+  const width: number = window.innerWidth;
+  const maxPercentage: number = maxCredits / majorCredits;
+  const totalWidth: number =
+    maxCredits === majorCredits
       ? 0.65 * width * maxPercentage
       : width * maxPercentage;
+  
   // States
-  const [creditPercentage, setCreditPercentage] = useState(
-    props.currentCredits / props.maxCredits
+  const [creditPercentage, setCreditPercentage] = useState<number>(
+    currentCredits / maxCredits
   );
-  const [progressWidth, setProgressWidth] = useState(0);
+  const [progressWidth, setProgressWidth] = useState<number>(0);
 
   // On init
   useEffect(() => {
-    // console.log('progressWidth', progressWidth);
-    // console.log('creditPercentage', creditPercentage);
-    if (props.currentCredits / props.maxCredits !== creditPercentage) {
-      setCreditPercentage(props.currentCredits / props.maxCredits);
+    if (currentCredits / maxCredits !== creditPercentage) {
+      setCreditPercentage(currentCredits / maxCredits);
     }
-    console.log('creditPercentage', props.section, creditPercentage);
+    console.log('creditPercentage', section, creditPercentage);
     const tot = (totalWidth - 0.04 * width) * creditPercentage;
     console.log('tot is ', tot, totalWidth - 0.04 * width);
     setProgressWidth(tot);
-  }, [props, progressWidth, creditPercentage, totalWidth, width]);
+  }, [currentCredits, maxCredits, section, progressWidth, creditPercentage, totalWidth, width]);
 
   // State-dependent Styles
   const courseBar = {
-    backgroundColor: mainColor,
-    transform: 'skewX(-15deg)',
+    //backgroundColor: mainColor,
     width: totalWidth,
     height: '3rem',
     borderRadius: '0.5rem',
@@ -52,28 +57,15 @@ function CourseBar(props:any) {
 
   const totalBar = {
     backgroundColor: subColor,
-    width: totalWidth - width * 0.03,
+    transform: 'skewX(-15deg)',
+    width: totalWidth - width * 0.05,
     height: '3rem',
     borderRadius: '0.5rem',
   } as React.CSSProperties;
 
-  // const titleTab = {
-  //   backgroundColor: mainColor,
-  //   marginTop: '1rem',
-  //   width: '12rem',
-  //   height: '1rem',
-  //   padding: '0.5rem',
-  //   transform: 'perspective(1rem) rotateX(2.5deg)',
-  //   marginLeft: '0.675em',
-  //   borderTopLeftRadius: '0.5rem',
-  //   borderTopRightRadius: '0.5rem',
-  //   FontWeight: 'bold',
-  // };
-
   const title = {
     position: 'relative',
     bottom: '4.7rem',
-    // left: '2rem',
     FontWeight: 'bold',
   } as React.CSSProperties;
 
@@ -82,6 +74,7 @@ function CourseBar(props:any) {
     bottom: '2.25rem',
     fontWeight: 'bold',
     width: '100%',
+    color:'silver',
     textAlign: 'right',
   } as React.CSSProperties;
 
@@ -90,7 +83,7 @@ function CourseBar(props:any) {
     bottom: '3.5rem',
     left:
       progressWidth - width * 0.03 > 0.03 * width
-        ? progressWidth - width * 0.03
+        ? progressWidth - width * 0.05
         : width * 0.01,
     width: '2rem',
     color: 'whitesmoke',
@@ -109,26 +102,22 @@ function CourseBar(props:any) {
         float: 'left',
       }}
     >
-      {/* <div style={titleTab}></div> */}
       <div style={courseBar}>
         <div style={totalBar}>
           <div style={progressBar}></div>
         </div>
-        <div style={totalNum}>{props.maxCredits - props.currentCredits}</div>
+        <div style={totalNum}>{maxCredits - currentCredits} Left</div>
       </div>
       <div style={title}>
-        {props.section}: {props.maxCredits}
+        {section}: {maxCredits}
       </div>
-      {/* <div style={totalNum}></div> */}
       <div style={currNum}>
-        {props.currentCredits !== props.maxCredits
-          ? props.currentCredits
+        {currentCredits !== maxCredits
+          ? currentCredits
           : null}
       </div>
     </div>
   );
 }
-
-// Static Styles
 
 export default CourseBar;

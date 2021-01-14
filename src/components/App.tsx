@@ -3,7 +3,11 @@ import Content from './body/Content';
 
 function App() {
   return (
-    <div>
+    <div 
+      style={{display:'flex',
+      flexFlow: 'column', 
+      height:window.innerHeight
+      }}>
       <Header />
       <Content />
     </div>

@@ -23,12 +23,14 @@ const titleStyle = {
   float: 'left',
   display: 'inline',
   marginLeft: '4.5%',
+  paddingBottom: '0.5rem',
 } as React.CSSProperties;
 
 const bannerStyle = {
-  height: '5rem',
+  width:'100%',
   backgroundColor: '#3399ff',
   textAlign: 'left',
+ // position:'absolute'
 } as React.CSSProperties;
 
 export default Header;

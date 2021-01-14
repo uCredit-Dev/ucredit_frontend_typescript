@@ -1,18 +1,32 @@
 import React, { useState, useEffect } from 'react';
 
 function MajorSelect() {
-  const [selectedMajor, setSelectedMajor] = useState('Add a major! +');
-  const [options, setOptions] = useState(false);
-  const [majors, setMajors] = useState(['']);
+  const [selectedMajor, setSelectedMajor] = useState<string>('Add a major! +');
+  const [options, setOptions] = useState<boolean>(false);
+  const [majors, setMajors] = useState<string[]>(['']);
 
   useEffect(() => {
-    console.log(majors);
     setSelectedMajor('Computer Science - Bachelors of Science');
     setMajors([
       'Computer Science - Bachelors of Science',
       'Cognitive Science - Bachelors of Arts',
     ]);
-  }, [majors]);
+  }, []);
+
+  const handleMajorMapping = (major:string) => major !== selectedMajor ?
+  <div
+      style={{
+        ...currentMajor,
+        borderTop: 'solid',
+        borderTopColor: 'grey',
+      }}
+      onClick={() => {
+        setSelectedMajor(major);
+      }}
+    >
+      {major}
+      <div style={triangle}>+</div>
+    </div>:null;
 
   return (
     <div
@@ -30,23 +44,8 @@ function MajorSelect() {
       </div>
       {options ? (
         <>
-          {majors.map((major) => {
-            if (major !== selectedMajor) {
-              return <div
-                  style={{
-                    ...currentMajor,
-                    borderTop: 'solid',
-                    borderTopColor: 'grey',
-                  }}
-                  onClick={() => {
-                    setSelectedMajor(major);
-                  }}
-                >
-                  {major}
-                  <div style={triangle}>+</div>
-                </div>
-            }
-          })}
+          {majors.map(handleMajorMapping)
+          }
         </>
       ) : null}
     </div>
@@ -55,8 +54,10 @@ function MajorSelect() {
 
 const majorArea = {
   width: '12rem',
-  float: 'right',
-  display: 'inline',
+  position:'absolute',
+  right:"15rem",
+  // float: 'right',
+  // display: 'inline',
   marginTop: '0.6rem',
   marginRight: '4rem',
   backgroundColor: 'whitesmoke',
@@ -66,6 +67,7 @@ const majorArea = {
   border: 'solid',
   borderWidth: '0.2rem',
   borderColor: 'grey',
+  zIndex:10
 } as React.CSSProperties;
 
 const triangle = {
