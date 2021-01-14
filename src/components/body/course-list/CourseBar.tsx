@@ -6,17 +6,24 @@ type courseBarProps = {
   maxCredits: number;
   majorCredits: number;
   currentCredits: number;
-  section:string;
-}
+  section: string;
+};
 
-function CourseBar({mainColor, subColor, maxCredits, majorCredits, currentCredits, section}:courseBarProps) {
+function CourseBar({
+  mainColor,
+  subColor,
+  maxCredits,
+  majorCredits,
+  currentCredits,
+  section,
+}: courseBarProps) {
   const width: number = window.innerWidth;
   const maxPercentage: number = maxCredits / majorCredits;
   const totalWidth: number =
     maxCredits === majorCredits
       ? 0.65 * width * maxPercentage
       : width * maxPercentage;
-  
+
   // States
   const [creditPercentage, setCreditPercentage] = useState<number>(
     currentCredits / maxCredits
@@ -32,7 +39,15 @@ function CourseBar({mainColor, subColor, maxCredits, majorCredits, currentCredit
     const tot = (totalWidth - 0.04 * width) * creditPercentage;
     console.log('tot is ', tot, totalWidth - 0.04 * width);
     setProgressWidth(tot);
-  }, [currentCredits, maxCredits, section, progressWidth, creditPercentage, totalWidth, width]);
+  }, [
+    currentCredits,
+    maxCredits,
+    section,
+    progressWidth,
+    creditPercentage,
+    totalWidth,
+    width,
+  ]);
 
   // State-dependent Styles
   const courseBar = {
@@ -74,7 +89,7 @@ function CourseBar({mainColor, subColor, maxCredits, majorCredits, currentCredit
     bottom: '2.25rem',
     fontWeight: 'bold',
     width: '100%',
-    color:'silver',
+    color: 'silver',
     textAlign: 'right',
   } as React.CSSProperties;
 
@@ -112,9 +127,7 @@ function CourseBar({mainColor, subColor, maxCredits, majorCredits, currentCredit
         {section}: {maxCredits}
       </div>
       <div style={currNum}>
-        {currentCredits !== maxCredits
-          ? currentCredits
-          : null}
+        {currentCredits !== maxCredits ? currentCredits : null}
       </div>
     </div>
   );

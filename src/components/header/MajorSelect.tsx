@@ -13,20 +13,22 @@ function MajorSelect() {
     ]);
   }, []);
 
-  const handleMajorMapping = (major:string) => major !== selectedMajor ?
-  <div
-      style={{
-        ...currentMajor,
-        borderTop: 'solid',
-        borderTopColor: 'grey',
-      }}
-      onClick={() => {
-        setSelectedMajor(major);
-      }}
-    >
-      {major}
-      <div style={triangle}>+</div>
-    </div>:null;
+  const handleMajorMapping = (major: string) =>
+    major !== selectedMajor ? (
+      <div
+        style={{
+          ...currentMajor,
+          borderTop: 'solid',
+          borderTopColor: 'grey',
+        }}
+        onClick={() => {
+          setSelectedMajor(major);
+        }}
+      >
+        {major}
+        <div style={triangle}>+</div>
+      </div>
+    ) : null;
 
   return (
     <div
@@ -42,22 +44,15 @@ function MajorSelect() {
         <div>{selectedMajor}</div>
         <div style={triangle}>▼</div>
       </div>
-      {options ? (
-        <>
-          {majors.map(handleMajorMapping)
-          }
-        </>
-      ) : null}
+      {options ? <>{majors.map(handleMajorMapping)}</> : null}
     </div>
   );
 }
 
 const majorArea = {
   width: '12rem',
-  position:'absolute',
-  right:"15rem",
-  // float: 'right',
-  // display: 'inline',
+  position: 'absolute',
+  right: '15rem',
   marginTop: '0.6rem',
   marginRight: '4rem',
   backgroundColor: 'whitesmoke',
@@ -67,7 +62,7 @@ const majorArea = {
   border: 'solid',
   borderWidth: '0.2rem',
   borderColor: 'grey',
-  zIndex:10
+  zIndex: 10,
 } as React.CSSProperties;
 
 const triangle = {

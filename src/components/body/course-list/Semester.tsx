@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
-import { Course } from '../commonTypes';
+import { Course } from '../../commonTypes';
+import CourseComponent from '../CourseComponent';
 
 type semesterProps = {
   semesterName: string;
@@ -17,25 +18,13 @@ function Semester({ semesterName, courses }: semesterProps) {
         <div style={centerText}>{semesterName}</div>
       </div>
       {display ? (
-        <div style={courseDropStyle}>
-          <div style={courseStyle}>
-            <div style={{ marginRight: '1rem' }}>EN.600.228</div>
-            <div style={{ marginRight: '1rem' }}>Fullstack Javascript</div>
-            <div style={{ marginRight: '1rem' }}>[-]</div>
-          </div>
+        <div>
+          <CourseComponent />
         </div>
       ) : null}
     </>
   );
 }
-
-const courseDropStyle = {} as React.CSSProperties;
-
-const courseStyle = {
-  paddingLeft: '4rem',
-  display: 'flex',
-  flexFlow: 'row',
-} as React.CSSProperties;
 
 const semesterNameStyle = {
   backgroundColor: '#D4D4D4',

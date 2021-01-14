@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import Semester from './Semester';
-import { Course } from '../commonTypes';
+import { Course } from '../../commonTypes';
 
 type semesterProps = {
   yearName: 'Freshman' | 'Sophomore' | 'Junior' | 'Senior';

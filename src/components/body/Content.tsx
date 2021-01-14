@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
-import CourseBar from './CourseBar';
-import CourseList from './CourseList';
+import CourseBar from './course-list/CourseBar';
+import CourseList from './course-list/CourseList';
 
 function Content() {
   const [userName, setUserName] = useState<string>('');
@@ -17,11 +17,17 @@ function Content() {
         display: 'flex',
         flexFlow: 'row',
         height: '100%',
+        width: '100%,',
+        position: 'relative',
       }}
     >
-      <div style={{ marginRight: '7%' }}>
+      <div
+        style={{
+          marginRight: '2rem',
+        }}
+      >
         <div style={userTitle}>{userName}'s 4 Year Plan</div>
-        <div style={{ width: window.innerWidth * 0.7 }}>
+        <div style={{}} /*style={{ width: window.innerWidth * 0.65 }}*/>
           <CourseBar
             majorCredits={majorCredits}
             maxCredits={127}

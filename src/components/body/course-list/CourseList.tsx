@@ -1,6 +1,6 @@
 import React from 'react';
 import Year from './Year';
-import { Course } from '../commonTypes';
+import { Course } from '../../commonTypes';
 
 function CourseList() {
   return (
@@ -16,15 +16,15 @@ function CourseList() {
 
 const courseListTitleStyle = {
   margin: '1rem',
-  fontSize: 'x-large',
+  fontSize: '1.25rem',
   paddingLeft: '1rem',
 };
 
 const courseListBody = {
   backgroundColor: '#ECECEC',
-  position: 'relative',
-  right: '0rem',
-  width: '23%',
+  // position: 'absolute',
+  // right: '0rem',
+  float: 'right',
   fontWeight: 'bold',
   margin: '0rem',
   zIndex: 0,
