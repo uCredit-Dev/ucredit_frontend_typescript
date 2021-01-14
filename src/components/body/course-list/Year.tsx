@@ -1,6 +1,7 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import Semester from './Semester';
 import { Course } from '../../commonTypes';
+import { testUser } from '../../testObjs';
 
 type semesterProps = {
   yearName: 'Freshman' | 'Sophomore' | 'Junior' | 'Senior';
@@ -25,6 +26,8 @@ function Year({ yearName, courses }: semesterProps) {
         <>
           <Semester semesterName={'Fall'} courses={fallCourses} />
           <Semester semesterName={'Spring'} courses={springCourses} />
+          <Semester semesterName={'Winter'} courses={springCourses} />
+          <Semester semesterName={'Summer'} courses={springCourses} />
         </>
       ) : null}
     </div>

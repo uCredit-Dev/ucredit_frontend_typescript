@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { Course } from '../../commonTypes';
 import CourseComponent from '../CourseComponent';
+import { testCourseFall, testCourseSpring } from '../../testObjs';
 
 type semesterProps = {
   semesterName: string;
@@ -19,19 +20,13 @@ function Semester({ semesterName, courses }: semesterProps) {
       </div>
       {display ? (
         <div>
-          <CourseComponent course={testCourse} />
+          <CourseComponent course={testCourseFall} />
+          <CourseComponent course={testCourseSpring} />
         </div>
       ) : null}
     </>
   );
 }
-
-const testCourse: Course = {
-  courseName: 'Fullstack Javascript',
-  courseNumber: 'EN.600.280',
-  designators: ['computer science'],
-  credits: 3,
-};
 
 const semesterNameStyle = {
   backgroundColor: '#D4D4D4',

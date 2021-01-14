@@ -1,8 +1,7 @@
 import React, { useState, useEffect } from 'react';
+import { getColors } from '../../assets';
 
 type courseBarProps = {
-  mainColor: string;
-  subColor: string;
   maxCredits: number;
   majorCredits: number;
   currentCredits: number;
@@ -10,8 +9,6 @@ type courseBarProps = {
 };
 
 function CourseBar({
-  mainColor,
-  subColor,
   maxCredits,
   majorCredits,
   currentCredits,
@@ -29,15 +26,16 @@ function CourseBar({
     currentCredits / maxCredits
   );
   const [progressWidth, setProgressWidth] = useState<number>(0);
+  const [subColor, setSubColor] = useState<string>('lightblue');
+  const [mainColor, setMainColor] = useState<string>('blue');
 
   // On init
+  // Changing bar length
   useEffect(() => {
     if (currentCredits / maxCredits !== creditPercentage) {
       setCreditPercentage(currentCredits / maxCredits);
     }
-    console.log('creditPercentage', section, creditPercentage);
     const tot = (totalWidth - 0.04 * width) * creditPercentage;
-    console.log('tot is ', tot, totalWidth - 0.04 * width);
     setProgressWidth(tot);
   }, [
     currentCredits,
@@ -49,9 +47,18 @@ function CourseBar({
     width,
   ]);
 
+  // Changing color
+  useEffect(() => {
+    const colors: string[] | undefined = getColors(section);
+    if (typeof colors !== 'undefined' && subColor !== colors[1]) {
+      setSubColor(colors[1]);
+    } else if (typeof colors !== 'undefined') {
+      setMainColor(colors[0]);
+    }
+  }, [section, subColor, mainColor]);
+
   // State-dependent Styles
   const courseBar = {
-    //backgroundColor: mainColor,
     width: totalWidth,
     height: '3rem',
     borderRadius: '0.5rem',

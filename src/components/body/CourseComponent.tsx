@@ -1,5 +1,6 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Course } from '../commonTypes';
+import { getColors } from '../assets';
 
 type courseProps = {
   course: Course;
@@ -9,9 +10,20 @@ function CourseComponent({ course }: courseProps) {
   const [subColor, setSubColor] = useState<string>('pink');
   const [mainColor, setMainColor] = useState<string>('red');
   const [display, setDisplay] = useState<boolean>(false);
+
+  useEffect(() => {
+    const colors: string[] | undefined = getColors(course.designators[0]);
+    if (typeof colors !== 'undefined' && subColor !== colors[1]) {
+      setSubColor(colors[1]);
+    } else if (typeof colors !== 'undefined') {
+      setMainColor(colors[0]);
+    }
+  }, [course.designators, subColor, mainColor]);
+
   const displayCourses = () => {
     setDisplay(!display);
   };
+
   return (
     <div
       style={{
@@ -27,7 +39,19 @@ function CourseComponent({ course }: courseProps) {
         </div>
         <div style={{ marginRight: '2rem' }}>[-]</div>
       </div>
-      {display ? <div>hi</div> : null}
+      {display ? (
+        <div
+          style={{
+            paddingLeft: '2rem',
+            paddingRight: '1rem',
+            paddingBottom: '1rem',
+            fontWeight: 'normal',
+            fontSize: 'small',
+          }}
+        >
+          {course.description}
+        </div>
+      ) : null}
     </div>
   );
 }

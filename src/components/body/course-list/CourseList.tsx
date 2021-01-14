@@ -22,8 +22,6 @@ const courseListTitleStyle = {
 
 const courseListBody = {
   backgroundColor: '#ECECEC',
-  // position: 'absolute',
-  // right: '0rem',
   float: 'right',
   fontWeight: 'bold',
   margin: '0rem',
