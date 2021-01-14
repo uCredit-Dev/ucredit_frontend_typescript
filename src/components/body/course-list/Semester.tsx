@@ -19,12 +19,19 @@ function Semester({ semesterName, courses }: semesterProps) {
       </div>
       {display ? (
         <div>
-          <CourseComponent />
+          <CourseComponent course={testCourse} />
         </div>
       ) : null}
     </>
   );
 }
+
+const testCourse: Course = {
+  courseName: 'Fullstack Javascript',
+  courseNumber: 'EN.600.280',
+  designators: ['computer science'],
+  credits: 3,
+};
 
 const semesterNameStyle = {
   backgroundColor: '#D4D4D4',

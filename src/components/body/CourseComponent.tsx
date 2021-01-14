@@ -1,13 +1,33 @@
-import React from 'react';
+import React, { useState } from 'react';
+import { Course } from '../commonTypes';
 
-function CourseComponent() {
+type courseProps = {
+  course: Course;
+};
+
+function CourseComponent({ course }: courseProps) {
+  const [subColor, setSubColor] = useState<string>('pink');
+  const [mainColor, setMainColor] = useState<string>('red');
+  const [display, setDisplay] = useState<boolean>(false);
+  const displayCourses = () => {
+    setDisplay(!display);
+  };
   return (
-    <div style={courseStyle}>
-      <div style={{ marginRight: '1.5rem' }}>EN.600.228</div>
-      <div style={{ marginRight: '1.5rem', width: '7.5rem' }}>
-        Fullstack Javascript
+    <div
+      style={{
+        borderBottom: 'solid',
+        borderBottomColor: mainColor,
+        backgroundColor: subColor,
+      }}
+    >
+      <div style={courseStyle} onClick={displayCourses}>
+        <div style={{ marginRight: '1.5rem' }}>{course.courseNumber}</div>
+        <div style={{ marginRight: '1.5rem', width: '7.5rem' }}>
+          {course.courseName}
+        </div>
+        <div style={{ marginRight: '2rem' }}>[-]</div>
       </div>
-      <div style={{ marginRight: '2rem' }}>[-]</div>
+      {display ? <div>hi</div> : null}
     </div>
   );
 }
