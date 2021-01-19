@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import Semester from './Semester';
 import { Course } from '../../commonTypes';
-import { testUser } from '../../testObjs';
 
 type semesterProps = {
   yearName: 'Freshman' | 'Sophomore' | 'Junior' | 'Senior';
@@ -11,7 +10,20 @@ type semesterProps = {
 function Year({ yearName, courses }: semesterProps) {
   const [fallCourses, setFallCourses] = useState<Course[]>([]);
   const [springCourses, setSpringCourses] = useState<Course[]>([]);
+  const [winterCourses, setWinterCourses] = useState<Course[]>([]);
+  const [summerCourses, setSummerCourses] = useState<Course[]>([]);
   const [display, setDisplay] = useState<boolean>(true);
+
+  useEffect(() => {
+    courses.forEach((course) => {
+      if (course.term === 'Fall') {
+        setFallCourses([...fallCourses, course]);
+      } else if (course.term === 'Spring') {
+        setSpringCourses([...springCourses, course]);
+      }
+    });
+    console.log('called');
+  }, [courses]);
 
   const displaySemesters = () => {
     setDisplay(!display);
@@ -26,8 +38,8 @@ function Year({ yearName, courses }: semesterProps) {
         <>
           <Semester semesterName={'Fall'} courses={fallCourses} />
           <Semester semesterName={'Spring'} courses={springCourses} />
-          <Semester semesterName={'Winter'} courses={springCourses} />
-          <Semester semesterName={'Summer'} courses={springCourses} />
+          <Semester semesterName={'Winter'} courses={winterCourses} />
+          <Semester semesterName={'Summer'} courses={summerCourses} />
         </>
       ) : null}
     </div>

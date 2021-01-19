@@ -12,13 +12,13 @@ function CourseComponent({ course }: courseProps) {
   const [display, setDisplay] = useState<boolean>(false);
 
   useEffect(() => {
-    const colors: string[] | undefined = getColors(course.designators[0]);
+    const colors: string[] | undefined = getColors(course.distributions[0]);
     if (typeof colors !== 'undefined' && subColor !== colors[1]) {
       setSubColor(colors[1]);
     } else if (typeof colors !== 'undefined') {
       setMainColor(colors[0]);
     }
-  }, [course.designators, subColor, mainColor]);
+  }, [course.distributions, subColor, mainColor]);
 
   const displayCourses = () => {
     setDisplay(!display);
@@ -33,9 +33,9 @@ function CourseComponent({ course }: courseProps) {
       }}
     >
       <div style={courseStyle} onClick={displayCourses}>
-        <div style={{ marginRight: '1.5rem' }}>{course.courseNumber}</div>
+        <div style={{ marginRight: '1.5rem' }}>{course.number}</div>
         <div style={{ marginRight: '1.5rem', width: '7.5rem' }}>
-          {course.courseName}
+          {course.title}
         </div>
         <div style={{ marginRight: '2rem' }}>[-]</div>
       </div>

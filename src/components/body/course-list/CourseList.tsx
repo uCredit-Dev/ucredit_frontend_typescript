@@ -1,15 +1,39 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import Year from './Year';
-import { Course } from '../../commonTypes';
+import { Course, User } from '../../commonTypes';
+import { getCourses } from '../../assets';
 
-function CourseList() {
+type courseListProps = {
+  user: User;
+};
+
+function CourseList({ user }: courseListProps) {
+  const [freshmanCourses, setFreshmanCourses] = useState<Course[]>([]);
+  const [sophomoreCourses, setSophomoreCourses] = useState<Course[]>([]);
+  const [juniorCourses, setJuniorCourses] = useState<Course[]>([]);
+  const [seniorCourses, setSeniorCourses] = useState<Course[]>([]);
+
+  useEffect(() => {
+    // get all courses by userId
+    setFreshmanCourses(getCourses(user.freshmanCourses));
+    setSophomoreCourses(getCourses(user.sophomoreCourses));
+    setJuniorCourses(getCourses(user.juniorCourses));
+    setSeniorCourses(getCourses(user.seniorCourses));
+    console.log('called');
+  }, [
+    user.freshmanCourses,
+    user.juniorCourses,
+    user.seniorCourses,
+    user.sophomoreCourses,
+  ]);
+
   return (
     <div style={courseListBody}>
       <div style={courseListTitleStyle}>My Courses</div>
-      <Year yearName={'Freshman'} courses={[]} />
-      <Year yearName={'Sophomore'} courses={[]} />
-      <Year yearName={'Junior'} courses={[]} />
-      <Year yearName={'Senior'} courses={[]} />
+      <Year yearName={'Freshman'} courses={freshmanCourses} />
+      <Year yearName={'Sophomore'} courses={sophomoreCourses} />
+      <Year yearName={'Junior'} courses={juniorCourses} />
+      <Year yearName={'Senior'} courses={seniorCourses} />
     </div>
   );
 }

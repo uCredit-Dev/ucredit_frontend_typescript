@@ -1,3 +1,6 @@
+import { Course } from './commonTypes';
+import { testCourseFall, testCourseSpring } from './testObjs';
+
 interface DistributionColors {
   total: string[];
   naturalSciences: string[];
@@ -8,12 +11,12 @@ interface DistributionColors {
 }
 
 const DistributionColorsArray: DistributionColors = {
-  total: ['blue', 'lightblue'],
-  naturalSciences: ['green', 'lightgreen'],
-  humanities: ['#FBAED2', 'pink'],
-  computerScience: ['red', '#EB6C6B'],
-  mathematics: ['gold', 'yellow'],
-  general: ['lightblue', 'azure'],
+  total: ['#001B87', '#30E7ED', '#0058B3'],
+  naturalSciences: ['#26D701', '#95F985', '#4DED30'],
+  humanities: ['#E56AB3', '#FCBCD7', '#EF87BE'],
+  computerScience: ['#DC1C13', '#F1959B', '#EA4C46'],
+  mathematics: ['orange', 'yellow', 'gold'],
+  general: ['#00A6D7', '#86FAF2', '#30E7ED'],
 };
 
 export const getColors = function (distribution: string): string[] | undefined {
@@ -32,4 +35,18 @@ export const getColors = function (distribution: string): string[] | undefined {
   }
 
   return undefined;
+};
+
+export const getCourses = (courseIds: string[]): Course[] => {
+  const retrieved: Course[] = [];
+  courseIds.forEach((id) => {
+    // retrieve courses
+    if (id === testCourseFall._id) {
+      retrieved.push(testCourseFall);
+    } else if (id === testCourseSpring._id) {
+      retrieved.push(testCourseSpring);
+    }
+  });
+
+  return retrieved;
 };

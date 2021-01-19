@@ -1,15 +1,23 @@
 import React, { useState, useEffect } from 'react';
 import CourseBar from './course-list/CourseBar';
 import CourseList from './course-list/CourseList';
+import { Distribution } from '../commonTypes';
+import { testMajorDistributions, testUser } from '../testObjs';
 
 function Content() {
   const [userName, setUserName] = useState<string>('');
   const [majorCredits, setMajorCredits] = useState<number>(0);
+  const [distributions, setDistributions] = useState<Distribution[]>([]);
 
   useEffect(() => {
-    setUserName('Matthew Liu');
+    setUserName(testUser.firstName + ' ' + testUser.lastName);
     setMajorCredits(127);
+    getDistributions();
   }, []);
+
+  const getDistributions = () => {
+    setDistributions(testMajorDistributions);
+  };
 
   return (
     <div
@@ -27,46 +35,19 @@ function Content() {
         }}
       >
         <div style={userTitle}>{userName}'s 4 Year Plan</div>
-        <div style={{}} /*style={{ width: window.innerWidth * 0.65 }}*/>
-          <CourseBar
-            majorCredits={majorCredits}
-            maxCredits={127}
-            currentCredits={64}
-            section={'Total Credits'}
-          />
-          <CourseBar
-            majorCredits={majorCredits}
-            maxCredits={28}
-            currentCredits={18}
-            section={'General Electives'}
-          />
-          <CourseBar
-            majorCredits={majorCredits}
-            maxCredits={24}
-            currentCredits={18}
-            section={'Computer Science'}
-          />
-          <CourseBar
-            majorCredits={majorCredits}
-            maxCredits={24}
-            currentCredits={12}
-            section={'Mathematics'}
-          />
-          <CourseBar
-            majorCredits={majorCredits}
-            maxCredits={18}
-            currentCredits={12}
-            section={'Natural Sciences'}
-          />
-          <CourseBar
-            majorCredits={majorCredits}
-            maxCredits={16}
-            currentCredits={12}
-            section={'Humanities'}
-          />
+        <div style={{}}>
+          {distributions.map((dis) => (
+            <CourseBar
+              majorCredits={majorCredits}
+              maxCredits={dis.required}
+              plannedCredits={dis.planned}
+              currentCredits={dis.current}
+              section={dis.name}
+            />
+          ))}
         </div>
       </div>
-      <CourseList />
+      <CourseList user={testUser} />
     </div>
   );
 }
