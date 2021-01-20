@@ -24,9 +24,8 @@ function Content() {
       style={{
         display: 'flex',
         flexFlow: 'row',
-        height: '100%',
         width: '100%,',
-        position: 'relative',
+        height: '80%',
       }}
     >
       <div

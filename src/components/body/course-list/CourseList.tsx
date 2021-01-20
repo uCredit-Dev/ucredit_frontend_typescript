@@ -12,6 +12,7 @@ function CourseList({ user }: courseListProps) {
   const [sophomoreCourses, setSophomoreCourses] = useState<Course[]>([]);
   const [juniorCourses, setJuniorCourses] = useState<Course[]>([]);
   const [seniorCourses, setSeniorCourses] = useState<Course[]>([]);
+  const [detailName, setDetailName] = useState<string>('');
 
   useEffect(() => {
     // get all courses by userId
@@ -30,10 +31,30 @@ function CourseList({ user }: courseListProps) {
   return (
     <div style={courseListBody}>
       <div style={courseListTitleStyle}>My Courses</div>
-      <Year yearName={'Freshman'} courses={freshmanCourses} />
-      <Year yearName={'Sophomore'} courses={sophomoreCourses} />
-      <Year yearName={'Junior'} courses={juniorCourses} />
-      <Year yearName={'Senior'} courses={seniorCourses} />
+      <Year
+        yearName={'Freshman'}
+        courses={freshmanCourses}
+        detailName={detailName}
+        setDetailName={setDetailName}
+      />
+      <Year
+        yearName={'Sophomore'}
+        courses={sophomoreCourses}
+        detailName={detailName}
+        setDetailName={setDetailName}
+      />
+      <Year
+        yearName={'Junior'}
+        courses={juniorCourses}
+        detailName={detailName}
+        setDetailName={setDetailName}
+      />
+      <Year
+        yearName={'Senior'}
+        courses={seniorCourses}
+        detailName={detailName}
+        setDetailName={setDetailName}
+      />
     </div>
   );
 }
@@ -50,6 +71,9 @@ const courseListBody = {
   fontWeight: 'bold',
   margin: '0rem',
   zIndex: 0,
+  overflowY: 'scroll',
+  marginLeft: '2rem',
+  minWidth: '20rem',
 } as React.CSSProperties;
 
 export default CourseList;

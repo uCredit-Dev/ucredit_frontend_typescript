@@ -1,26 +1,40 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Course } from '../../commonTypes';
 import CourseComponent from '../CourseComponent';
 
 type semesterProps = {
   semesterName: string;
   courses: Course[];
+  detailName: string;
+  setDetailName: Function;
 };
 
-function Semester({ semesterName, courses }: semesterProps) {
+function Semester({
+  semesterName,
+  courses,
+  detailName,
+  setDetailName,
+}: semesterProps) {
   const [display, setDisplay] = useState<boolean>(true);
+
   const displayCourses = () => {
     setDisplay(!display);
   };
   return (
     <>
       <div style={semesterNameStyle} onClick={displayCourses}>
-        <div style={centerText}>{semesterName}</div>
+        <div style={centerText}>
+          {semesterName} ({courses.length})
+        </div>
       </div>
       {display ? (
         <div>
           {courses.map((course) => (
-            <CourseComponent course={course} />
+            <CourseComponent
+              course={course}
+              detailName={detailName}
+              setDetailName={setDetailName}
+            />
           ))}
         </div>
       ) : null}
@@ -36,6 +50,7 @@ const semesterNameStyle = {
   borderBottomColor: '#BEBEBE',
   verticalAlign: 'middle',
   position: 'relative',
+  fontWeight: 'normal',
 } as React.CSSProperties;
 
 const centerText = {

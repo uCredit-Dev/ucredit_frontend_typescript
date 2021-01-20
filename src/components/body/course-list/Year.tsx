@@ -5,9 +5,11 @@ import { Course } from '../../commonTypes';
 type semesterProps = {
   yearName: 'Freshman' | 'Sophomore' | 'Junior' | 'Senior';
   courses: Course[];
+  detailName: string;
+  setDetailName: Function;
 };
 
-function Year({ yearName, courses }: semesterProps) {
+function Year({ yearName, courses, detailName, setDetailName }: semesterProps) {
   const [fallCourses, setFallCourses] = useState<Course[]>([]);
   const [springCourses, setSpringCourses] = useState<Course[]>([]);
   const [winterCourses, setWinterCourses] = useState<Course[]>([]);
@@ -20,6 +22,10 @@ function Year({ yearName, courses }: semesterProps) {
         setFallCourses([...fallCourses, course]);
       } else if (course.term === 'Spring') {
         setSpringCourses([...springCourses, course]);
+      } else if (course.term === 'Summer') {
+        setSummerCourses([...summerCourses, course]);
+      } else if (course.term === 'Winter') {
+        setWinterCourses([...winterCourses, course]);
       }
     });
     console.log('called');
@@ -30,16 +36,36 @@ function Year({ yearName, courses }: semesterProps) {
   };
 
   return (
-    <div>
+    <div style={{ minWidth: '10rem' }}>
       <div style={yearNameSection} onClick={displaySemesters}>
         <div style={centerText}>{yearName}</div>
       </div>
       {display ? (
         <>
-          <Semester semesterName={'Fall'} courses={fallCourses} />
-          <Semester semesterName={'Spring'} courses={springCourses} />
-          <Semester semesterName={'Winter'} courses={winterCourses} />
-          <Semester semesterName={'Summer'} courses={summerCourses} />
+          <Semester
+            semesterName={'Fall'}
+            courses={fallCourses}
+            detailName={detailName}
+            setDetailName={setDetailName}
+          />
+          <Semester
+            semesterName={'Spring'}
+            courses={springCourses}
+            detailName={detailName}
+            setDetailName={setDetailName}
+          />
+          <Semester
+            semesterName={'Winter'}
+            courses={winterCourses}
+            detailName={detailName}
+            setDetailName={setDetailName}
+          />
+          <Semester
+            semesterName={'Summer'}
+            courses={summerCourses}
+            detailName={detailName}
+            setDetailName={setDetailName}
+          />
         </>
       ) : null}
     </div>

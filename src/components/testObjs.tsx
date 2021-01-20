@@ -119,6 +119,21 @@ export const testUser: User = {
   seniorCourses: [],
 };
 
+export const testUser2: User = {
+  _id: 'testUser2',
+  firstName: 'Richard',
+  lastName: 'Kim',
+  majors: [
+    'Computer Science - Bachelors of Science',
+    'Cognitive Science - Bachelors of Arts',
+  ],
+  year: 2023,
+  freshmanCourses: ['testFall'],
+  sophomoreCourses: ['testSpring'],
+  juniorCourses: [],
+  seniorCourses: [],
+};
+
 export const testMajorDistributions = [
   testDistributionTot,
   testDistributionElec,
