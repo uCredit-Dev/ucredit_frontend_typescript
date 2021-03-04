@@ -1,11 +1,15 @@
 import React from 'react';
+import { selectUser, selectFirstname } from '../slices/userSlice';
+import { useSelector } from 'react-redux';
 
 function UserSection() {
+  const firstName = useSelector(selectFirstname);
+  const user = useSelector(selectUser);
   return (
     <div style={userSection}>
       <div style={pfp}></div>
       <div style={name} className="center">
-        Matthew Liu
+        {firstName} {' ' + user.lastName}
       </div>
     </div>
   );
@@ -17,7 +21,7 @@ const name = {
   fontWeight: 500,
   display: 'inline',
   marginLeft: '0.5rem',
-  marginTop:'0.25rem'
+  marginTop: '0.25rem',
 } as React.CSSProperties;
 
 const pfp = {
