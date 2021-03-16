@@ -2,7 +2,7 @@ export type Course = {
   _id: string;
   title: string;
   number: string;
-  term: 'Fall' | 'Spring' | 'Winter' | 'Summer';
+  term: SemesterType;
   department: string;
   upperLevel: boolean;
   tags: string[];
@@ -38,3 +38,5 @@ export type Distribution = {
   courses: Course[];
   userId: string;
 };
+
+export type SemesterType = 'Fall' | 'Spring' | 'Summer' | 'Winter';

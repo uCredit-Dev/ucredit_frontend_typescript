@@ -1,5 +1,5 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
-import { AppThunk, RootState } from '../../app/store';
+import { AppThunk, RootState } from '../../appStore/store';
 import { User } from '../commonTypes';
 
 const initialState: User = {
@@ -26,11 +26,18 @@ function loginUpdate(state: any, action: PayloadAction<User>) {
   state.seniorCourses = action.payload.seniorCourses;
 }
 
+function loginName(state: any, action: PayloadAction<User>) {
+  state._id = action.payload._id;
+  state.firstName = action.payload.firstName;
+  state.lastName = action.payload.lastName;
+}
+
 export const userSlice = createSlice({
   name: 'user',
   initialState,
   reducers: {
     login: loginUpdate,
+    loginNam: loginName,
   },
 });
 
