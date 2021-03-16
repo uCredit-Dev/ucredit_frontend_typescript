@@ -27,10 +27,17 @@ const titleStyle = {
 } as React.CSSProperties;
 
 const bannerStyle = {
+<<<<<<< Updated upstream
   width:'100%',
   backgroundColor: '#3399ff',
   textAlign: 'left',
  // position:'absolute'
+=======
+  width: '100%',
+  backgroundColor: '#3399ff',
+  textAlign: 'left',
+  // position:'absolute'
+>>>>>>> Stashed changes
 } as React.CSSProperties;
 
 export default Header;

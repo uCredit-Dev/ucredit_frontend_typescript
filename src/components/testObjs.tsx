@@ -23,7 +23,7 @@ export const testCourseSpring: Course = {
   _id: 'testSpring',
   title: 'Phonology I',
   number: 'AS.050.325',
-  term: 'Spring',
+  term: 'Summer',
   department: 'AS Cognitive Science',
   upperLevel: true,
   tags: ['BEHB-SOCSCI', 'COGS-LING'],
