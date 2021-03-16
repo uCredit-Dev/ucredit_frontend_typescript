@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import CourseBar from './course-list/CourseBar';
+import CourseBar from './CourseBar';
 import CourseList from './course-list/CourseList';
 import { Distribution, SemesterType } from '../commonTypes';
 import { testMajorDistributions, testUser } from '../testObjs';

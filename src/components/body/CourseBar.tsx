@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { getColors } from '../../assets';
+import { getColors } from '../assets';
 
 type courseBarProps = {
   maxCredits: number;
@@ -88,7 +88,7 @@ function CourseBar({
   const currentBar = {
     backgroundColor: mainColor,
     width: currentWidth,
-    height: '3.25rem',
+    height: '4rem',
     borderRadius: '0.5rem',
     paddingTop: '0.75rem',
     paddingRight: '5%rem',
