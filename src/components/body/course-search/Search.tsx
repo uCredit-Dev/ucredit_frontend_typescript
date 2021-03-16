@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import {
   selectSearchterm,
@@ -8,6 +8,7 @@ import {
 } from '../../slices/searchSlice';
 
 const Search = () => {
+  const [searchOpacity, setSearchOpacity] = useState<number>(100);
   const dispatch = useDispatch();
   const searchTerm = useSelector(selectSearchterm);
   const searchYear = useSelector(selectYear);
@@ -15,14 +16,16 @@ const Search = () => {
   return (
     <>
       <div
-        className="fixed bg-gray-500 bg-opacity-75"
+        className={`fixed bg-gray-500 bg-opacity-${
+          searchOpacity === 100 ? 75 : 0
+        }`}
         style={popupZoneStyle}
         onClick={() => {
           dispatch(updateSearchStatus(false));
         }}
       ></div>
       <div
-        className="fixed bg-red-200 rounded-xl p-8 md:p-0"
+        className={`fixed bg-red-200 rounded-xl p-8 md:p-0 opacity-${searchOpacity}`}
         style={searchBodyStyle}
       >
         {searchSemester + ', ' + searchYear}
@@ -31,6 +34,16 @@ const Search = () => {
             'Enter in course title or number (ie. Physics, 601.280, etc.)'
           }
         ></input>
+        <button
+          onMouseEnter={() => {
+            setSearchOpacity(0);
+          }}
+          onMouseLeave={() => {
+            setSearchOpacity(100);
+          }}
+        >
+          Hide search
+        </button>
       </div>
     </>
   );
