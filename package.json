@@ -16,6 +16,9 @@
     "@types/react-redux": "^7.1.7",
     "autoprefixer": "^9.8.6",
     "axios": "^0.21.1",
+    "express": "^4.17.1",
+    "express-favicon": "^2.0.1",
+    "path": "^0.12.7",
     "postcss": "^7.0.35",
     "prop-types": "^15.7.2",
     "react": "^17.0.1",
@@ -29,7 +32,7 @@
     "typescript": "~3.8.2"
   },
   "scripts": {
-    "start": "craco start",
+    "start": "node server.js",
     "build": "craco build",
     "test": "craco test",
     "eject": "react-scripts eject"
