@@ -20,12 +20,16 @@ export type User = {
   _id: string;
   firstName: string;
   lastName: string;
+  email: string;
+  affiliation: string;
+  grade: string;
+  school: string;
+  freshman: string[];
+  sophomore: string[];
+  junior: string[];
+  senior: string[];
+  distributions: [];
   majors: string[];
-  year: number;
-  freshmanCourses: string[];
-  sophomoreCourses: string[];
-  juniorCourses: string[];
-  seniorCourses: string[];
 };
 
 export type Distribution = {

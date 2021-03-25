@@ -7,18 +7,32 @@ type timeBundle = {
   searchSemester: SemesterType;
 };
 
+type filterObj = {
+  credits: number | 'None';
+  distribution: 'N' | 'S' | 'H' | 'W' | 'E' | 'Q' | 'None';
+  tags: string | 'None'; // TODO: fill this out with array of all tags
+};
+
 type searchStates = {
   searching: boolean;
+  searchMode: 'title' | 'number';
   searchTerm: string;
   searchTime: timeBundle;
+  filters: filterObj;
 };
 
 const initialState: searchStates = {
   searching: false,
+  searchMode: 'title',
   searchTerm: '',
   searchTime: {
     searchYear: 1,
     searchSemester: 'Fall',
+  },
+  filters: {
+    credits: 'None',
+    distribution: 'None',
+    tags: 'None',
   },
 };
 

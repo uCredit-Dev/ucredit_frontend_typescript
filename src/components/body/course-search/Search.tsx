@@ -28,22 +28,41 @@ const Search = () => {
         className={`fixed bg-red-200 rounded-xl p-8 md:p-0 opacity-${searchOpacity}`}
         style={searchBodyStyle}
       >
-        {searchSemester + ', ' + searchYear}
-        <input
-          placeholder={
-            'Enter in course title or number (ie. Physics, 601.280, etc.)'
-          }
-        ></input>
-        <button
-          onMouseEnter={() => {
-            setSearchOpacity(0);
-          }}
-          onMouseLeave={() => {
-            setSearchOpacity(100);
-          }}
-        >
-          Hide search
-        </button>
+        Currently selecting for {searchSemester + ', ' + searchYear}
+        <div>
+          <form>
+            <p>
+              Course:
+              <input
+                type="text"
+                placeholder={
+                  'Enter in course title or number (ie. Physics, 601.280, etc.)'
+                }
+              ></input>
+            </p>
+            <label>
+              Filters:
+              <p>
+                <select>
+                  <option>None</option>
+                </select>
+              </p>
+              <p>
+                <select placeholder="None"></select>
+              </p>
+            </label>
+          </form>
+          <button
+            onMouseEnter={() => {
+              setSearchOpacity(50);
+            }}
+            onMouseLeave={() => {
+              setSearchOpacity(100);
+            }}
+          >
+            Hide search
+          </button>
+        </div>
       </div>
     </>
   );

@@ -9,10 +9,10 @@ import { testUser } from './testObjs';
 
 function App() {
   const dispatch = useDispatch();
-  useEffect(() => {
-    // Get user
-    dispatch(login(testUser));
-  }, []);
+  // useEffect(() => {
+  //   // Get user
+  //   dispatch(login(testUser));
+  // }, []);
   return (
     <div
       style={{

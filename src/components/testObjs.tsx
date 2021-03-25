@@ -105,33 +105,19 @@ export const testDistributionHumanities: Distribution = {
 };
 
 export const testUser: User = {
-  _id: 'testUser1',
+  majors: [],
+  freshman: [],
+  sophomore: [],
+  junior: [],
+  senior: [],
+  distributions: [],
+  _id: 'mliu78',
   firstName: 'Matthew',
   lastName: 'Liu',
-  majors: [
-    'Computer Science - Bachelors of Science',
-    'Cognitive Science - Bachelors of Arts',
-  ],
-  year: 2023,
-  freshmanCourses: ['testFall'],
-  sophomoreCourses: ['testSpring'],
-  juniorCourses: [],
-  seniorCourses: [],
-};
-
-export const testUser2: User = {
-  _id: 'testUser2',
-  firstName: 'Richard',
-  lastName: 'Kim',
-  majors: [
-    'Computer Science - Bachelors of Science',
-    'Cognitive Science - Bachelors of Arts',
-  ],
-  year: 2023,
-  freshmanCourses: ['testFall'],
-  sophomoreCourses: ['testSpring'],
-  juniorCourses: [],
-  seniorCourses: [],
+  email: 'mliu78@jhu.edu',
+  affiliation: 'STUDENT',
+  grade: 'AE UG Sophomore',
+  school: 'Whiting School of Engineering',
 };
 
 export const testMajorDistributions = [
