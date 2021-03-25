@@ -23,10 +23,7 @@
     "react-scripts": "4.0.3",
     "typescript": "~3.8.2",
     "@tailwindcss/postcss7-compat": "^2.0.3",
-    "autoprefixer": "^9",
-    "postcss": "^7",
-    "react-axios": "^2.0.5",
-    "tailwindcss": "npm:@tailwindcss/postcss7-compat"
+    "react-axios": "^2.0.5"
   },
   "scripts": {
     "start": "craco start",
@@ -50,5 +47,8 @@
     ]
   },
   "devDependencies": {
+    "autoprefixer": "^10.2.5",
+    "postcss": "^8.2.8",
+    "tailwindcss": "^2.0.4"
   }
 }
