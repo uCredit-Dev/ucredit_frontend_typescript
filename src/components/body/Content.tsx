@@ -1,20 +1,26 @@
 import React, { useState, useEffect } from 'react';
-import CourseBar from './course-list/CourseBar';
+import CourseBar from './CourseBar';
 import CourseList from './course-list/CourseList';
 import { Distribution } from '../commonTypes';
 import { testMajorDistributions, testUser } from '../testObjs';
+import Search from './course-search/Search';
+import { selectSearchStatus } from '../slices/searchSlice';
+import { useSelector } from 'react-redux';
 
 function Content() {
   const [userName, setUserName] = useState<string>('');
   const [majorCredits, setMajorCredits] = useState<number>(0);
   const [distributions, setDistributions] = useState<Distribution[]>([]);
+  const searching = useSelector(selectSearchStatus);
 
+  // On first render, gets user name, total credits, and distributions.
   useEffect(() => {
     setUserName(testUser.firstName + ' ' + testUser.lastName);
     setMajorCredits(127);
     getDistributions();
   }, []);
 
+  // Sets all distributions for distribution bars.
   const getDistributions = () => {
     setDistributions(testMajorDistributions);
   };
@@ -25,7 +31,7 @@ function Content() {
         display: 'flex',
         flexFlow: 'row',
         width: '100%,',
-        height: '80%',
+        marginTop: '5.25rem',
       }}
     >
       <div
@@ -46,7 +52,8 @@ function Content() {
           ))}
         </div>
       </div>
-      <CourseList user={testUser} />
+      <CourseList />
+      {searching ? <Search /> : null}
     </div>
   );
 }

@@ -1,42 +1,6 @@
-import { Course, User, Distribution } from './commonTypes';
+import { Course, User, Distribution, Plan, UserCourse } from './commonTypes';
 
-export const testCourseFall: Course = {
-  _id: 'testFall',
-  title: 'Full-stack Javascript',
-  number: 'EN.601.280',
-  term: 'Fall',
-  department: 'EN Computer Science',
-  upperLevel: false,
-  tags: [],
-  area: 'E',
-  taken: true,
-  writingIntensive: false,
-  ratings: [''],
-  userId: 'testUser1',
-  distributions: ['Computer Science'],
-  credits: 3,
-  description:
-    'A full-stack JavaScript developer is a person who can build modern software applications using primarily the JavaScript programming language. Creating a modern software application involves integrating many technologies - from creating the user interface to saving information in a database and everything else in between and beyond. A full-stack developer is not an expert in everything. Rather, they are someone who is familiar with various (software application) frameworks and the ability to take a concept and turn it into a finished product. This course will teach you programming in JavaScript and introduce you to several JavaScript frameworks that would enable you to build modern web, cross-platform desktop, and native/hybrid mobile applications. A student who successfully completes this course will be on the expedited path to becoming a full-stack JavaScript developer.',
-};
-
-export const testCourseSpring: Course = {
-  _id: 'testSpring',
-  title: 'Phonology I',
-  number: 'AS.050.325',
-  term: 'Spring',
-  department: 'AS Cognitive Science',
-  upperLevel: true,
-  tags: ['BEHB-SOCSCI', 'COGS-LING'],
-  area: 'NS',
-  taken: false,
-  writingIntensive: false,
-  ratings: [''],
-  userId: 'testUser1',
-  distributions: ['Natural Sciences'],
-  credits: 3,
-  description:
-    'An introduction to the basic principles underlying the mental representation and manipulation of language sounds and their relation to human perception and vocal articulation: how units of sound are both decomposable into elementary features and combined to form larger structures like syllables and words. The role of rules and constraints in a formal theory of phonological competence and in accounting for the range of variation among the world’s languages. Also offered as AS.050.625.',
-};
+// IMPORTANT: All test objs may be inaccurate with new types
 
 export const testDistributionTot: Distribution = {
   _id: 'testDistribution0',
@@ -45,7 +9,7 @@ export const testDistributionTot: Distribution = {
   planned: 64,
   current: 56,
   satisfied: false,
-  courses: [testCourseFall, testCourseSpring],
+  courses: [],
   userId: 'testUser1',
 };
 
@@ -67,7 +31,7 @@ export const testDistributionCS: Distribution = {
   planned: 18,
   current: 15,
   satisfied: false,
-  courses: [testCourseFall],
+  courses: [],
   userId: 'testUser1',
 };
 
@@ -89,7 +53,7 @@ export const testDistributionNS: Distribution = {
   planned: 12,
   current: 8,
   satisfied: false,
-  courses: [testCourseSpring],
+  courses: [],
   userId: 'testUser1',
 };
 
@@ -104,34 +68,89 @@ export const testDistributionHumanities: Distribution = {
   userId: 'testUser1',
 };
 
-export const testUser: User = {
-  _id: 'testUser1',
-  firstName: 'Matthew',
-  lastName: 'Liu',
-  majors: [
-    'Computer Science - Bachelors of Science',
-    'Cognitive Science - Bachelors of Arts',
-  ],
-  year: 2023,
-  freshmanCourses: ['testFall'],
-  sophomoreCourses: ['testSpring'],
-  juniorCourses: [],
-  seniorCourses: [],
+export const testCourse1: Course = {
+  title: 'Test course 1',
+  number: 'EN.420.4204',
+  areas: 'NS',
+  terms: ['Fall', 'Spring'],
+  school: 'Whiting School of Engineering',
+  department: 'CS',
+  credits: '3',
+  wi: false,
+  bio: 'Lorem ipsum. This is a test course.',
+  tags: ['TEST-COURSE'],
+  preReq: [],
 };
 
-export const testUser2: User = {
-  _id: 'testUser2',
-  firstName: 'Richard',
-  lastName: 'Kim',
-  majors: [
-    'Computer Science - Bachelors of Science',
-    'Cognitive Science - Bachelors of Arts',
+export const testCourse2: Course = {
+  title: 'Test course 2',
+  number: 'EN.420.4205',
+  areas: 'H',
+  terms: ['Spring'],
+  school: 'KSAS',
+  department: 'Biology',
+  credits: '2',
+  wi: true,
+  bio: 'Lorem ipsum. This is another test course.',
+  tags: ['TEST-COURSE'],
+  preReq: [testCourse1],
+};
+
+export const userTestCourse1: UserCourse = {
+  title: testCourse1.title,
+  term: 'Fall',
+  number: testCourse1.number,
+  department: testCourse1.department,
+  tags: testCourse1.tags,
+  area: 'N',
+  credits: parseInt(testCourse1.credits),
+  wi: testCourse1.wi,
+  taken: false,
+  ratings: [],
+  distribution_ids: 'testDistribution4',
+  user_id: 'mliu78',
+};
+
+export const userTestCourse2: UserCourse = {
+  title: testCourse2.title,
+  term: 'Spring',
+  number: testCourse2.number,
+  department: testCourse2.department,
+  tags: testCourse2.tags,
+  area: 'H',
+  credits: parseInt(testCourse2.credits),
+  wi: testCourse2.wi,
+  taken: false,
+  ratings: [],
+  distribution_ids: 'testDistribution5',
+  user_id: 'mliu78',
+};
+
+export const testPlan1: Plan = {
+  majors: ['Computer Science'],
+  freshman: [userTestCourse1],
+  sophomore: [],
+  junior: [userTestCourse2],
+  senior: [],
+  distributions: [
+    testDistributionTot,
+    testDistributionCS,
+    testDistributionElec,
+    testDistributionHumanities,
+    testDistributionMath,
+    testDistributionNS,
   ],
-  year: 2023,
-  freshmanCourses: ['testFall'],
-  sophomoreCourses: ['testSpring'],
-  juniorCourses: [],
-  seniorCourses: [],
+};
+
+export const testUser: User = {
+  _id: 'mliu78',
+  firstName: 'Matthew',
+  lastName: 'Liu',
+  email: 'mliu78@jhu.edu',
+  affiliation: 'STUDENT',
+  grade: 'AE UG Sophomore',
+  school: 'Whiting School of Engineering',
+  plans: [testPlan1],
 };
 
 export const testMajorDistributions = [

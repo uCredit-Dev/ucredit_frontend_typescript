@@ -1,10 +1,10 @@
 import React, { useEffect } from 'react';
-import { Course } from '../commonTypes';
+import { UserCourse } from '../../commonTypes';
 
 type popoutType = {
   mainColor: string;
   subColor: string;
-  course: Course;
+  course: UserCourse;
 };
 
 function CoursePopout({ mainColor, subColor, course }: popoutType) {
@@ -13,10 +13,10 @@ function CoursePopout({ mainColor, subColor, course }: popoutType) {
     // handles changing distribution
   };
 
-  const getOptions = (): { label: string; value: string }[] =>
-    course.distributions.map((distr) => {
-      return { value: distr, label: distr };
-    });
+  // const getOptions = (): { label: string; value: string }[] =>
+  //   course.areas.split('').map((distr) => {
+  //     return { value: distr, label: distr };
+  //   });
   return (
     <div
       style={{
@@ -41,7 +41,7 @@ function CoursePopout({ mainColor, subColor, course }: popoutType) {
           Selected Distribution:
           <form>
             <select
-              value={course.distributions[0]}
+              value={course.area}
               onChange={handleChange}
               style={{
                 backgroundColor: mainColor,
@@ -51,7 +51,7 @@ function CoursePopout({ mainColor, subColor, course }: popoutType) {
                 padding: '0.25rem',
               }}
             >
-              {course.distributions.map((distr) => {
+              {course.area.split('').map((distr) => {
                 return <option value={distr}>{distr}</option>;
               })}
             </select>
@@ -69,7 +69,7 @@ function CoursePopout({ mainColor, subColor, course }: popoutType) {
             top: '1rem',
           }}
         >
-          {course.description}
+          {course.number}
         </div>
       </div>
     </div>

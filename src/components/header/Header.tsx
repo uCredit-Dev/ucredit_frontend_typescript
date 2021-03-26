@@ -8,7 +8,7 @@ function Header() {
       <div style={bannerStyle}>
         <div style={titleStyle}>UCredit</div>
         <UserSection />
-        <MajorSelect />
+        {/* <MajorSelect /> */}
       </div>
     </>
   );
@@ -27,10 +27,10 @@ const titleStyle = {
 } as React.CSSProperties;
 
 const bannerStyle = {
-  width:'100%',
+  width: '100%',
   backgroundColor: '#3399ff',
   textAlign: 'left',
- // position:'absolute'
+  position: 'fixed',
 } as React.CSSProperties;
 
 export default Header;

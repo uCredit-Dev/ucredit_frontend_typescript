@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { getColors } from '../../assets';
+import { getColors } from '../assets';
 
 type courseBarProps = {
   maxCredits: number;
@@ -16,8 +16,11 @@ function CourseBar({
   currentCredits,
   section,
 }: courseBarProps) {
+  // Window width
   const width: number = window.innerWidth;
+  // Percentage based on total credits, so 24 credit distribution would be smaller than a 42 credit distribution bar.
   const maxPercentage: number = maxCredits / majorCredits;
+  // Total width of the bar
   const totalWidth: number =
     maxCredits === majorCredits
       ? 0.6 * width * maxPercentage
@@ -88,7 +91,7 @@ function CourseBar({
   const currentBar = {
     backgroundColor: mainColor,
     width: currentWidth,
-    height: '3.25rem',
+    height: '4rem',
     borderRadius: '0.5rem',
     paddingTop: '0.75rem',
     paddingRight: '5%rem',

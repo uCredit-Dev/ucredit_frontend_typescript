@@ -1,10 +1,28 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { selectUser, selectFirstname } from '../slices/userSlice';
 import { useSelector } from 'react-redux';
+import axios from 'axios';
+import { User } from '../commonTypes';
+import { testUser } from '../testObjs';
+import { useDispatch } from 'react-redux';
+import { updateUser } from '../slices/userSlice';
+const api = 'https://ucredit-api.herokuapp.com/api';
 
 function UserSection() {
   const firstName = useSelector(selectFirstname);
   const user = useSelector(selectUser);
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    //retrieveUser();
+    axios
+      .get(api + '/login')
+      .then((retrievedUser) => console.log('retrieved ', retrievedUser))
+      .catch((err) => console.log(err));
+    // Get test user
+    dispatch(updateUser(testUser));
+  }, []);
+
   return (
     <div style={userSection}>
       <div style={pfp}></div>
