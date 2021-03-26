@@ -21,9 +21,10 @@
     "path": "^0.12.7",
     "postcss": "^7.0.35",
     "prop-types": "^15.7.2",
-    "react": "^17.0.1",
+    "react": "^17.0.2",
     "react-axios": "^2.0.5",
     "react-dom": "^17.0.1",
+    "react-paginate": "^7.1.2",
     "react-redux": "^7.2.0",
     "react-router": "^5.2.0",
     "react-router-dom": "^5.2.0",
@@ -35,7 +36,8 @@
   "scripts": {
     "start": "node server.js",
     "build": "craco build",
-    "test": "craco start",
+    "dev": "craco start",
+    "test": "craco test",
     "eject": "react-scripts eject"
   },
   "eslintConfig": {
