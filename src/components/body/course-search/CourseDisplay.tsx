@@ -6,6 +6,7 @@ import {
   updateInspectedCourse,
 } from '../../slices/searchSlice';
 
+// Displays course information once a user selects a course in the search list
 const CourseDisplay = () => {
   // Redux Setup
   const inspected = useSelector(selectInspectedCourse);
@@ -25,6 +26,9 @@ const CourseDisplay = () => {
   const updateInspected = (prereq: Course) => () => {
     dispatch(updateInspectedCourse(prereq));
   };
+
+  // Adds course
+  const addCourse = () => {};
   return (
     <div>
       {inspected === 'None' ? (
@@ -38,6 +42,9 @@ const CourseDisplay = () => {
           <p>
             <p className="border-b-2">Prerequisites</p> <p>{getPreReqs()}</p>
           </p>
+          <button className="bg-gray-300" onClick={addCourse}>
+            Add Course
+          </button>
         </div>
       )}
     </div>

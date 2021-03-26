@@ -46,6 +46,7 @@ export const searchSlice = createSlice({
   initialState,
   reducers: {
     updateSearchTime: (state: any, action: PayloadAction<timeBundle>) => {
+      // Updates year and semester in search time bundle.
       state.searchTime.searchYear = action.payload.searchYear;
       state.searchTime.searchSemester = action.payload.searchSemester;
     },
@@ -59,6 +60,7 @@ export const searchSlice = createSlice({
       state: any,
       action: PayloadAction<'title' | 'number'>
     ) => {
+      // Searching for title or number in main search.
       state.searchMode = action.payload;
     },
     updateSearchCredit: (
@@ -74,6 +76,7 @@ export const searchSlice = createSlice({
       state.filters.distribution = action.payload;
     },
     updateInspectedCourse: (state: any, action: PayloadAction<Course>) => {
+      // Course we're looking at in search popout
       state.inspectedCourse = action.payload;
     },
   },

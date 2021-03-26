@@ -1,17 +1,18 @@
 import React, { useState } from 'react';
-import { Course, SemesterType, YearType } from '../../commonTypes';
-import CourseComponent from '../CourseComponent';
+import { SemesterType, UserCourse, YearType } from '../../commonTypes';
+import CourseComponent from './CourseComponent';
 import { useDispatch } from 'react-redux';
 import { updateSearchStatus, updateSearchTime } from '../../slices/searchSlice';
 
 type semesterProps = {
   semesterName: SemesterType;
   semesterYear: YearType;
-  courses: Course[];
+  courses: UserCourse[];
   detailName: string;
   setDetailName: Function;
 };
 
+// Dropdown of all courses in a semester.
 function Semester({
   semesterName,
   semesterYear,

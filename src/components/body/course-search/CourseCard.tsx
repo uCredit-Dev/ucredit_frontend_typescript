@@ -7,9 +7,14 @@ type cardProps = {
   course: Course;
 };
 
+// A course slot displayed in the course list once search is performed.
 const CourseCard = (props: cardProps) => {
-  const dispatch = useDispatch();
   const course = props.course;
+
+  // Setup Redux
+  const dispatch = useDispatch();
+
+  // User selects a course to look at.
   const handleCourseClick = () => {
     dispatch(updateInspectedCourse(course));
   };

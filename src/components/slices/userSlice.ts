@@ -1,6 +1,14 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { AppThunk, RootState } from '../../appStore/store';
-import { User } from '../commonTypes';
+import { Course, Plan, SemesterType, User, YearType } from '../commonTypes';
+
+// addNewCourse payload type. Not being used.
+// type NewCourse = {
+//   toAdd: Course;
+//   Semester: SemesterType;
+//   Year: YearType;
+//   Plan: Plan;
+// };
 
 const initialState: User = {
   _id: '',
@@ -10,50 +18,39 @@ const initialState: User = {
   affiliation: '',
   grade: '',
   school: '',
-  freshman: [],
-  sophomore: [],
-  junior: [],
-  senior: [],
-  distributions: [],
-  majors: [],
+  plans: [],
 };
 
-function loginUpdate(state: any, action: PayloadAction<User>) {
+// Updates all user info from database. This function should be called after an axios get on the user routes.
+function userUpdate(state: any, action: PayloadAction<User>) {
   state._id = action.payload._id;
   state.firstName = action.payload.firstName;
   state.lastName = action.payload.lastName;
   state.email = action.payload.email;
   state.grade = action.payload.grade;
-  state.majors = action.payload.majors;
   state.school = action.payload.school;
   state.affiliation = action.payload.affiliation;
-  state.freshmanCourses = action.payload.freshman;
-  state.sophomoreCourses = action.payload.sophomore;
-  state.juniorCourses = action.payload.junior;
-  state.seniorCourses = action.payload.senior;
+  state.plans = action.payload.plans;
 }
 
-function loginName(state: any, action: PayloadAction<User>) {
-  state._id = action.payload._id;
-  state.firstName = action.payload.firstName;
-  state.lastName = action.payload.lastName;
-}
+// Not being used as we can update database when user adds course, and call the reusable update user function for any updates to display
+// function addNewCourse(state: any, action: PayloadAction<NewCourse>) {}
 
 export const userSlice = createSlice({
   name: 'user',
   initialState,
   reducers: {
-    login: loginUpdate,
-    loginNam: loginName,
+    updateUser: userUpdate,
+    // addCourse: addNewCourse,
   },
 });
 
-export const { login } = userSlice.actions;
+export const { updateUser } = userSlice.actions;
 
 // Asynch login with thunk.
 export const loginAsync = (user: Promise<User>): AppThunk => (dispatch) => {
   user.then((retrieved: User) => {
-    dispatch(login(retrieved));
+    dispatch(updateUser(retrieved));
   });
 };
 

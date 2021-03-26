@@ -1,27 +1,21 @@
 import React, { useState, useEffect } from 'react';
 import Year from './Year';
-import { Course, User } from '../../commonTypes';
-import { getCourses } from '../../assets';
+import { useSelector } from 'react-redux';
+import { selectCurrentPlan } from '../../slices/planSlice';
 
-type courseListProps = {
-  user: User;
-};
-
-function CourseList({ user }: courseListProps) {
-  const [freshmanCourses, setFreshmanCourses] = useState<Course[]>([]);
-  const [sophomoreCourses, setSophomoreCourses] = useState<Course[]>([]);
-  const [juniorCourses, setJuniorCourses] = useState<Course[]>([]);
-  const [seniorCourses, setSeniorCourses] = useState<Course[]>([]);
+function CourseList() {
+  // Name of the course that is in the popout. This state is passed to the its children, where it will get updated.
+  // This is done because we only want one popout at a time, and thus, it needs to be at the top level.
   const [detailName, setDetailName] = useState<string>('');
 
-  useEffect(() => {
-    // get all courses by userId
-    setFreshmanCourses(getCourses(user.freshman));
-    setSophomoreCourses(getCourses(user.sophomore));
-    setJuniorCourses(getCourses(user.junior));
-    setSeniorCourses(getCourses(user.senior));
-    console.log('called');
-  }, [user.freshman, user.junior, user.senior, user.sophomore]);
+  // Setting up redux
+  const currentPlan = useSelector(selectCurrentPlan);
+
+  // Updating yearly course plans with currentPlan courses.
+  const freshmanCourses = currentPlan.freshman;
+  const sophomoreCourses = currentPlan.sophomore;
+  const juniorCourses = currentPlan.junior;
+  const seniorCourses = currentPlan.senior;
 
   return (
     <div style={courseListBody}>
