@@ -13,10 +13,10 @@ function CoursePopout({ mainColor, subColor, course }: popoutType) {
     // handles changing distribution
   };
 
-  const getOptions = (): { label: string; value: string }[] =>
-    course.areas.split('').map((distr) => {
-      return { value: distr, label: distr };
-    });
+  // const getOptions = (): { label: string; value: string }[] =>
+  //   course.areas.split('').map((distr) => {
+  //     return { value: distr, label: distr };
+  //   });
   return (
     <div
       style={{

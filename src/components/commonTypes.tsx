@@ -39,4 +39,6 @@ export type Distribution = {
   userId: string;
 };
 
+export type YearType = 'Freshman' | 'Sophomore' | 'Junior' | 'Senior';
+
 export type SemesterType = 'Fall' | 'Spring' | 'Summer' | 'Winter';

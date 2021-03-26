@@ -1,10 +1,10 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { AppThunk, RootState } from '../../appStore/store';
-import { SemesterType, Course } from '../commonTypes';
+import { SemesterType, Course, YearType } from '../commonTypes';
 import { testCourse1, testCourse2 } from '../testObjs';
 
 type timeBundle = {
-  searchYear: number;
+  searchYear: YearType;
   searchSemester: SemesterType;
 };
 
@@ -29,7 +29,7 @@ const initialState: searchStates = {
   searchMode: 'title',
   searchTerm: '',
   searchTime: {
-    searchYear: 1,
+    searchYear: 'Freshman',
     searchSemester: 'Fall',
   },
   retrievedCourses: [testCourse1, testCourse2], // test courses for now
