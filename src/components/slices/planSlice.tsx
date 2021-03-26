@@ -13,10 +13,16 @@ const initialState = {
 export const planSlice = createSlice({
   name: 'plan',
   initialState,
-  reducers: {},
+  reducers: {
+    // updatePlan: (state: any, action: PayloadAction<UpdatePackage>) => {
+    //   state.currentPlan.
+    // },
+  },
 });
 
-export const {} = planSlice.actions;
+export const {
+  /*updatePlan*/
+} = planSlice.actions;
 
 // The function below is called a selector and allows us to select a value from
 // the state. Please make a selector for each state :)

@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import Year from './Year';
 import { useSelector } from 'react-redux';
 import { selectCurrentPlan } from '../../slices/planSlice';
