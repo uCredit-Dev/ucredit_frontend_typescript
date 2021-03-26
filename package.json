@@ -29,12 +29,13 @@
     "react-router-dom": "^5.2.0",
     "react-scripts": "4.0.3",
     "tailwindcss": "npm:@tailwindcss/postcss7-compat@^2.0.4",
+    "ts-debounce": "^3.0.0",
     "typescript": "~3.8.2"
   },
   "scripts": {
     "start": "node server.js",
     "build": "craco build",
-    "test": "craco test",
+    "test": "craco start",
     "eject": "react-scripts eject"
   },
   "eslintConfig": {

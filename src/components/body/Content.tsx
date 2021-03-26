@@ -39,7 +39,7 @@ function Content() {
         display: 'flex',
         flexFlow: 'row',
         width: '100%,',
-        height: '80%',
+        marginTop: '5.25rem',
       }}
     >
       <div

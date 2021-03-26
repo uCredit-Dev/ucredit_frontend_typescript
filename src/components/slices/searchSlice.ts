@@ -1,6 +1,7 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { AppThunk, RootState } from '../../appStore/store';
-import { SemesterType } from '../commonTypes';
+import { SemesterType, Course } from '../commonTypes';
+import { testCourse1, testCourse2 } from '../testObjs';
 
 type timeBundle = {
   searchYear: number;
@@ -19,6 +20,8 @@ type searchStates = {
   searchTerm: string;
   searchTime: timeBundle;
   filters: filterObj;
+  retrievedCourses: Course[];
+  inspectedCourse: Course | 'None';
 };
 
 const initialState: searchStates = {
@@ -29,11 +32,13 @@ const initialState: searchStates = {
     searchYear: 1,
     searchSemester: 'Fall',
   },
+  retrievedCourses: [testCourse1, testCourse2], // test courses for now
   filters: {
     credits: 'None',
     distribution: 'None',
     tags: 'None',
   },
+  inspectedCourse: 'None',
 };
 
 export const searchSlice = createSlice({
@@ -50,6 +55,27 @@ export const searchSlice = createSlice({
     updateSearchStatus: (state: any, action: PayloadAction<boolean>) => {
       state.searching = action.payload;
     },
+    updateSearchMode: (
+      state: any,
+      action: PayloadAction<'title' | 'number'>
+    ) => {
+      state.searchMode = action.payload;
+    },
+    updateSearchCredit: (
+      state: any,
+      action: PayloadAction<'None' | number>
+    ) => {
+      state.filters.credits = action.payload;
+    },
+    updateSearchDistribution: (
+      state: any,
+      action: PayloadAction<'N' | 'S' | 'H' | 'W' | 'E' | 'Q' | 'None'>
+    ) => {
+      state.filters.distribution = action.payload;
+    },
+    updateInspectedCourse: (state: any, action: PayloadAction<Course>) => {
+      state.inspectedCourse = action.payload;
+    },
   },
 });
 
@@ -57,6 +83,10 @@ export const {
   updateSearchTime,
   updateSearchTerm,
   updateSearchStatus,
+  updateSearchMode,
+  updateSearchCredit,
+  updateSearchDistribution,
+  updateInspectedCourse,
 } = searchSlice.actions;
 
 // Asynch search with thunk.
@@ -72,5 +102,11 @@ export const selectSemester = (state: RootState) =>
   state.search.searchTime.searchSemester;
 export const selectSearchterm = (state: RootState) => state.search.searchTerm;
 export const selectSearchStatus = (state: RootState) => state.search.searching;
+export const selectSearchMode = (state: RootState) => state.search.searchMode;
+export const selectSearchFilters = (state: RootState) => state.search.filters;
+export const selectRetrievedCourses = (state: RootState) =>
+  state.search.retrievedCourses;
+export const selectInspectedCourse = (state: RootState) =>
+  state.search.inspectedCourse;
 
 export default searchSlice.reducer;

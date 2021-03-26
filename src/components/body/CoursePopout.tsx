@@ -14,7 +14,7 @@ function CoursePopout({ mainColor, subColor, course }: popoutType) {
   };
 
   const getOptions = (): { label: string; value: string }[] =>
-    course.distributions.map((distr) => {
+    course.areas.split('').map((distr) => {
       return { value: distr, label: distr };
     });
   return (
@@ -32,7 +32,7 @@ function CoursePopout({ mainColor, subColor, course }: popoutType) {
           {course.title}
         </div>
         <div>{course.number}</div>
-        <div>Areas: {course.area}</div>
+        <div>Areas: {course.areas}</div>
         <div style={{ width: '11rem' }}>
           Tags: {course.tags.length === 0 ? 'none' : course.tags.toString()}
         </div>
@@ -41,7 +41,7 @@ function CoursePopout({ mainColor, subColor, course }: popoutType) {
           Selected Distribution:
           <form>
             <select
-              value={course.distributions[0]}
+              value={course.areas[0]}
               onChange={handleChange}
               style={{
                 backgroundColor: mainColor,
@@ -51,7 +51,7 @@ function CoursePopout({ mainColor, subColor, course }: popoutType) {
                 padding: '0.25rem',
               }}
             >
-              {course.distributions.map((distr) => {
+              {course.areas.split('').map((distr) => {
                 return <option value={distr}>{distr}</option>;
               })}
             </select>
@@ -69,7 +69,7 @@ function CoursePopout({ mainColor, subColor, course }: popoutType) {
             top: '1rem',
           }}
         >
-          {course.description}
+          {course.bio}
         </div>
       </div>
     </div>

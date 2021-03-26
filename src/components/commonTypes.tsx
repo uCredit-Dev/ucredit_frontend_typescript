@@ -1,19 +1,15 @@
 export type Course = {
-  _id: string;
   title: string;
   number: string;
-  term: SemesterType;
+  areas: string;
+  terms: SemesterType[];
+  school: string;
   department: string;
-  upperLevel: boolean;
+  credits: string;
+  wi: boolean;
+  bio: string;
   tags: string[];
-  area: string;
-  taken: boolean;
-  writingIntensive: boolean;
-  ratings: string[];
-  userId: string;
-  distributions: string[];
-  credits: number;
-  description: string;
+  preReq: Course[];
 };
 
 export type User = {

@@ -1,5 +1,4 @@
 import { Course } from './commonTypes';
-import { testCourseFall, testCourseSpring } from './testObjs';
 
 interface DistributionColors {
   total: string[];
@@ -41,11 +40,11 @@ export const getCourses = (courseIds: string[]): Course[] => {
   const retrieved: Course[] = [];
   courseIds.forEach((id) => {
     // retrieve courses
-    if (id === testCourseFall._id) {
-      retrieved.push(testCourseFall);
-    } else if (id === testCourseSpring._id) {
-      retrieved.push(testCourseSpring);
-    }
+    // if (id === testCourseFall._id) {
+    //   retrieved.push(testCourseFall);
+    // } else if (id === testCourseSpring._id) {
+    //   retrieved.push(testCourseSpring);
+    // }
   });
 
   return retrieved;
