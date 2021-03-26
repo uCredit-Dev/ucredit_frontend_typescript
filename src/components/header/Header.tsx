@@ -8,7 +8,7 @@ function Header() {
       <div style={bannerStyle}>
         <div style={titleStyle}>UCredit</div>
         <UserSection />
-        <MajorSelect />
+        {/* <MajorSelect /> */}
       </div>
     </>
   );
