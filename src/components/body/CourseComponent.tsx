@@ -12,29 +12,17 @@ type courseProps = {
 function CourseComponent({ course, detailName, setDetailName }: courseProps) {
   const [subColor, setSubColor] = useState<string>('pink');
   const [mainColor, setMainColor] = useState<string>('red');
-  const [display, setDisplay] = useState<boolean>(false);
-  const [popout, setPopout] = useState<boolean>(false);
-  const [exited, setExited] = useState<boolean>(false);
-
-  // useEffect(() => {
-  //   if (detailName !== course.title) {
-  //     setDisplay(true);
-  //   } else {
-  //     setDisplay(false);
-  //   }
-  // }, [detailName]);
 
   useEffect(() => {
-    const colors: string[] | undefined = getColors(course.distributions[0]);
+    const colors: string[] | undefined = getColors(course.areas[0]);
     if (typeof colors !== 'undefined' && subColor !== colors[1]) {
       setSubColor(colors[1]);
     } else if (typeof colors !== 'undefined') {
       setMainColor(colors[0]);
     }
-  }, [course.distributions, subColor, mainColor]);
+  }, [course.areas, subColor, mainColor]);
 
   const displayCourses = () => {
-    // setDisplay(!display);
     if (course.title === detailName) {
       setDetailName('');
     } else {
@@ -60,20 +48,6 @@ function CourseComponent({ course, detailName, setDetailName }: courseProps) {
         <div style={{ marginRight: '2rem' }}>[-]</div>
       </div>
       {course.title === detailName ? (
-        // <div
-        //   style={{
-        //     paddingLeft: '2rem',
-        //     paddingRight: '1rem',
-        //     paddingTop: '1rem',
-        //     marginBottom: '0.5rem',
-        //     fontWeight: 'normal',
-        //     fontSize: 'small',
-        //     overflowY: 'scroll',
-        //     height: '10rem',
-        //   }}
-        // >
-        //   {course.description}
-        // </div>
         <CoursePopout
           mainColor={mainColor}
           subColor={subColor}

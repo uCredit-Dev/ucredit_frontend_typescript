@@ -1,31 +1,31 @@
 export type Course = {
-  _id: string;
   title: string;
   number: string;
-  term: SemesterType;
+  areas: string;
+  terms: SemesterType[];
+  school: string;
   department: string;
-  upperLevel: boolean;
+  credits: string;
+  wi: boolean;
+  bio: string;
   tags: string[];
-  area: string;
-  taken: boolean;
-  writingIntensive: boolean;
-  ratings: string[];
-  userId: string;
-  distributions: string[];
-  credits: number;
-  description: string;
+  preReq: Course[];
 };
 
 export type User = {
   _id: string;
   firstName: string;
   lastName: string;
+  email: string;
+  affiliation: string;
+  grade: string;
+  school: string;
+  freshman: string[];
+  sophomore: string[];
+  junior: string[];
+  senior: string[];
+  distributions: [];
   majors: string[];
-  year: number;
-  freshmanCourses: string[];
-  sophomoreCourses: string[];
-  juniorCourses: string[];
-  seniorCourses: string[];
 };
 
 export type Distribution = {

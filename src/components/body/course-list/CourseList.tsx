@@ -16,17 +16,12 @@ function CourseList({ user }: courseListProps) {
 
   useEffect(() => {
     // get all courses by userId
-    setFreshmanCourses(getCourses(user.freshmanCourses));
-    setSophomoreCourses(getCourses(user.sophomoreCourses));
-    setJuniorCourses(getCourses(user.juniorCourses));
-    setSeniorCourses(getCourses(user.seniorCourses));
+    setFreshmanCourses(getCourses(user.freshman));
+    setSophomoreCourses(getCourses(user.sophomore));
+    setJuniorCourses(getCourses(user.junior));
+    setSeniorCourses(getCourses(user.senior));
     console.log('called');
-  }, [
-    user.freshmanCourses,
-    user.juniorCourses,
-    user.seniorCourses,
-    user.sophomoreCourses,
-  ]);
+  }, [user.freshman, user.junior, user.senior, user.sophomore]);
 
   return (
     <div style={courseListBody}>

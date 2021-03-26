@@ -18,18 +18,18 @@ function Year({ yearName, courses, detailName, setDetailName }: semesterProps) {
 
   useEffect(() => {
     courses.forEach((course) => {
-      if (course.term === 'Fall') {
+      if (course.terms.includes('Fall')) {
         setFallCourses([...fallCourses, course]);
-      } else if (course.term === 'Spring') {
+      } else if (course.terms.includes('Spring')) {
         setSpringCourses([...springCourses, course]);
-      } else if (course.term === 'Summer') {
+      } else if (course.terms.includes('Summer')) {
         setSummerCourses([...summerCourses, course]);
-      } else if (course.term === 'Winter') {
+      } else if (course.terms.includes('Winter')) {
         setWinterCourses([...winterCourses, course]);
       }
     });
     console.log('called');
-  }, [courses]);
+  });
 
   const displaySemesters = () => {
     setDisplay(!display);
