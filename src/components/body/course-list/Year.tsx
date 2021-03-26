@@ -17,6 +17,7 @@ function Year({ yearName, courses, detailName, setDetailName }: semesterProps) {
   const [display, setDisplay] = useState<boolean>(true);
 
   useEffect(() => {
+    // For each of the user's courses for this year, put them in their respective semesters.
     courses.forEach((course) => {
       if (course.terms.includes('Fall')) {
         setFallCourses([...fallCourses, course]);
@@ -31,6 +32,7 @@ function Year({ yearName, courses, detailName, setDetailName }: semesterProps) {
     console.log('called');
   });
 
+  // Displays dropdown showing semester categories
   const displaySemesters = () => {
     setDisplay(!display);
   };
@@ -44,24 +46,28 @@ function Year({ yearName, courses, detailName, setDetailName }: semesterProps) {
         <>
           <Semester
             semesterName={'Fall'}
+            semesterYear={yearName}
             courses={fallCourses}
             detailName={detailName}
             setDetailName={setDetailName}
           />
           <Semester
             semesterName={'Spring'}
+            semesterYear={yearName}
             courses={springCourses}
             detailName={detailName}
             setDetailName={setDetailName}
           />
           <Semester
             semesterName={'Winter'}
+            semesterYear={yearName}
             courses={winterCourses}
             detailName={detailName}
             setDetailName={setDetailName}
           />
           <Semester
             semesterName={'Summer'}
+            semesterYear={yearName}
             courses={summerCourses}
             detailName={detailName}
             setDetailName={setDetailName}

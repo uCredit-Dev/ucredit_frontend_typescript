@@ -38,7 +38,7 @@ const Search = () => {
         className={`flex fixed bg-red-200 rounded-xl p-8 md:p-0`}
         style={{ ...searchBodyStyle, opacity: searchOpacity / 100 }}
       >
-        Currently selecting for {searchSemester + ', ' + searchYear}
+        Currently selecting for {searchYear + ' ' + searchSemester}
         <div className={`flex flex-1 bg-white rounded-xl p-8 md:p-0`}>
           <div
             className={'flex flex-col rounded-xl  bg-gray-200'}

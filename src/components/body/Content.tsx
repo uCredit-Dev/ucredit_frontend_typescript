@@ -1,22 +1,17 @@
 import React, { useState, useEffect } from 'react';
 import CourseBar from './CourseBar';
 import CourseList from './course-list/CourseList';
-import { Distribution, SemesterType } from '../commonTypes';
+import { Distribution } from '../commonTypes';
 import { testMajorDistributions, testUser } from '../testObjs';
 import Search from './course-search/Search';
-import {
-  selectSearchStatus,
-  updateSearchStatus,
-  updateSearchTime,
-} from '../slices/searchSlice';
-import { useSelector, useDispatch } from 'react-redux';
+import { selectSearchStatus } from '../slices/searchSlice';
+import { useSelector } from 'react-redux';
 
 function Content() {
   const [userName, setUserName] = useState<string>('');
   const [majorCredits, setMajorCredits] = useState<number>(0);
   const [distributions, setDistributions] = useState<Distribution[]>([]);
   const searching = useSelector(selectSearchStatus);
-  const dispatch = useDispatch();
 
   useEffect(() => {
     setUserName(testUser.firstName + ' ' + testUser.lastName);
@@ -26,11 +21,6 @@ function Content() {
 
   const getDistributions = () => {
     setDistributions(testMajorDistributions);
-  };
-
-  const openSearch = (year: number, term: SemesterType) => {
-    dispatch(updateSearchStatus(true));
-    dispatch(updateSearchTime({ searchSemester: term, searchYear: year }));
   };
 
   return (
@@ -47,9 +37,6 @@ function Content() {
           marginRight: '2rem',
         }}
       >
-        <button onClick={() => openSearch(2020, 'Fall')}>
-          Test for Fall, 2020
-        </button>
         <div style={userTitle}>{userName}'s 4 Year Plan</div>
         <div style={{}}>
           {distributions.map((dis) => (

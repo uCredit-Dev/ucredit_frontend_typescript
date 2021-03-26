@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import {
   updateSearchMode,
@@ -15,7 +15,7 @@ const api = 'https://ucredit-api.herokuapp.com/api';
 
 const creditFilters = ['None', 1, 2, 3, 4];
 const distributionFilters = ['None', 'N', 'S', 'H', 'W', 'Q', 'E'];
-const tagFilters = ['tag1', 'tag2'];
+//const tagFilters = ['tag1', 'tag2'];
 
 const Form = () => {
   // Set up redux dispatch and variables
