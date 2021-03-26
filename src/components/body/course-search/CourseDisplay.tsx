@@ -4,6 +4,7 @@ import { Course } from '../../commonTypes';
 import {
   selectInspectedCourse,
   updateInspectedCourse,
+  clearSearch,
 } from '../../slices/searchSlice';
 
 // Displays course information once a user selects a course in the search list
@@ -28,7 +29,9 @@ const CourseDisplay = () => {
   };
 
   // Adds course
-  const addCourse = () => {};
+  const addCourse = () => {
+    dispatch(clearSearch());
+  };
   return (
     <div>
       {inspected === 'None' ? (

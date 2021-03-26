@@ -79,6 +79,16 @@ export const searchSlice = createSlice({
       // Course we're looking at in search popout
       state.inspectedCourse = action.payload;
     },
+    clearSearch: (state: any) => {
+      state.filters = { credits: 'None', distribution: 'None', tags: 'None' };
+      state.searchTerm = '';
+      state.searchTime = { searchSemester: '', searchYear: '' };
+      state.searching = false;
+      state.inspectedCourse = 'None';
+      state.retrievedCourses = [];
+      state.searchMode = 'Title';
+      console.log('clearing');
+    },
   },
 });
 
@@ -90,6 +100,7 @@ export const {
   updateSearchCredit,
   updateSearchDistribution,
   updateInspectedCourse,
+  clearSearch,
 } = searchSlice.actions;
 
 // Asynch search with thunk.

@@ -14,8 +14,8 @@ import axios from 'axios';
 
 const api = 'https://ucredit-api.herokuapp.com/api';
 
-const creditFilters = ['None', 1, 2, 3, 4];
-const distributionFilters = ['None', 'N', 'S', 'H', 'W', 'Q', 'E'];
+const creditFilters = ['None', 0, 1, 2, 3, 4];
+const distributionFilters = ['None', 'N', 'S', 'H', 'Q', 'E'];
 //const tagFilters = ['tag1', 'tag2'];
 
 const Form = () => {
@@ -28,7 +28,7 @@ const Form = () => {
   // Debounced search. Still a WIP. Ideally requests from backend after 1 second of no typing.
   // TODO: Figure this out. Current search works, but isn't getting debounced correctly
   const search = debounce(() => {
-    console.log('searching for ', searchTerm);
+    console.log('searching for ', searchTerm, searchFilters);
     axios
       .get(api + '/search', {
         params: {
@@ -100,7 +100,7 @@ const Form = () => {
           </select>
         </p>
         <p>
-          Distribution:
+          Area:
           <select
             onChange={handleDistributionFilterChange}
             defaultValue={searchFilters.distribution}
