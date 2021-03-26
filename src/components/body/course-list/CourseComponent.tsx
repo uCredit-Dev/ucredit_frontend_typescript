@@ -1,10 +1,10 @@
 import React, { useState, useEffect } from 'react';
-import { Course } from '../commonTypes';
-import { getColors } from '../assets';
+import { UserCourse } from '../../commonTypes';
+import { getColors } from '../../assets';
 import CoursePopout from './CoursePopout';
 
 type courseProps = {
-  course: Course;
+  course: UserCourse;
   detailName: string;
   setDetailName: Function;
 };
@@ -13,15 +13,17 @@ function CourseComponent({ course, detailName, setDetailName }: courseProps) {
   const [subColor, setSubColor] = useState<string>('pink');
   const [mainColor, setMainColor] = useState<string>('red');
 
+  // Chooses which colors to display course as.
   useEffect(() => {
-    const colors: string[] | undefined = getColors(course.areas[0]);
+    const colors: string[] | undefined = getColors(course.area);
     if (typeof colors !== 'undefined' && subColor !== colors[1]) {
       setSubColor(colors[1]);
     } else if (typeof colors !== 'undefined') {
       setMainColor(colors[0]);
     }
-  }, [course.areas, subColor, mainColor]);
+  }, [course.area, subColor, mainColor]);
 
+  // Sets or resets the course displayed in popout after user clicks it in course list.
   const displayCourses = () => {
     if (course.title === detailName) {
       setDetailName('');

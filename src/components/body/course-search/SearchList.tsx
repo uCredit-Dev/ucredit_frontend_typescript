@@ -5,6 +5,8 @@ import CourseCard from './CourseCard';
 
 const SearchList = () => {
   const courses = useSelector(selectRetrievedCourses);
+
+  // Generates a list of retrieved course matching the search queries
   const courseList = () =>
     courses.map((course) => <CourseCard course={course} />);
   return (

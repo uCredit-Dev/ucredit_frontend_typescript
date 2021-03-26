@@ -10,6 +10,7 @@ import {
   selectSearchFilters,
 } from '../../slices/searchSlice';
 import { debounce } from 'ts-debounce';
+import axios from 'axios';
 
 const api = 'https://ucredit-api.herokuapp.com/api';
 
@@ -24,41 +25,54 @@ const Form = () => {
   const searchMode = useSelector(selectSearchMode);
   const searchFilters = useSelector(selectSearchFilters);
 
+  // Debounced search. Still a WIP. Ideally requests from backend after 1 second of no typing.
+  // TODO: Figure this out. Current search works, but isn't getting debounced correctly
   const search = debounce(() => {
     console.log('searching for ', searchTerm);
-    fetch(
-      api +
-        '/api/search' /*, {
-      body: JSON.stringify({
-        query: searchTerm,
-        credits:
-          searchFilters.credits === 'None' ? undefined : searchFilters.credits,
-        areas:
-          searchFilters.distribution === 'None'
-            ? ''
-            : searchFilters.distribution,
-      }),
-    }*/
-    ).then((courses) => console.log('retrieved', courses));
+    axios
+      .get(api + '/search', {
+        params: {
+          query: searchTerm,
+          credits:
+            searchFilters.credits === 'None' ? null : searchFilters.credits,
+          areas:
+            searchFilters.distribution === 'None'
+              ? ''
+              : searchFilters.distribution,
+        },
+      })
+      .then((courses) => {
+        let returned = courses.data;
+        console.log('retrieved', returned);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
   }, 1000);
 
-  // Update term
+  // Update search term
   const handleSearchTerm = (event: any): void => {
     dispatch(updateSearchTerm(event.target.value));
     search();
   };
+
+  // Update searching for title vs. number
   const handleSearchModeChange = (event: any): void => {
     dispatch(updateSearchMode(event.target.value));
   };
+
+  // Update searching for certain amounts of credits
   const handleCreditFilterChange = (event: any): void => {
     dispatch(updateSearchCredit(event.target.value));
   };
+
+  // Update searching for a certain distribution.
   const handleDistributionFilterChange = (event: any): void => {
     dispatch(updateSearchDistribution(event.target.value));
   };
 
   return (
-    <form className={'p-5'}>
+    <div className={'p-5'}>
       <p>
         <input
           className="border-b-2"
@@ -97,7 +111,7 @@ const Form = () => {
           </select>
         </p>
       </label>
-    </form>
+    </div>
   );
 };
 

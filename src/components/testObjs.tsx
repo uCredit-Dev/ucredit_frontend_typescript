@@ -1,4 +1,4 @@
-import { Course, User, Distribution } from './commonTypes';
+import { Course, User, Distribution, Plan, UserCourse } from './commonTypes';
 
 // IMPORTANT: All test objs may be inaccurate with new types
 
@@ -68,31 +68,6 @@ export const testDistributionHumanities: Distribution = {
   userId: 'testUser1',
 };
 
-export const testUser: User = {
-  majors: [],
-  freshman: [],
-  sophomore: [],
-  junior: [],
-  senior: [],
-  distributions: [],
-  _id: 'mliu78',
-  firstName: 'Matthew',
-  lastName: 'Liu',
-  email: 'mliu78@jhu.edu',
-  affiliation: 'STUDENT',
-  grade: 'AE UG Sophomore',
-  school: 'Whiting School of Engineering',
-};
-
-export const testMajorDistributions = [
-  testDistributionTot,
-  testDistributionElec,
-  testDistributionCS,
-  testDistributionMath,
-  testDistributionNS,
-  testDistributionHumanities,
-];
-
 export const testCourse1: Course = {
   title: 'Test course 1',
   number: 'EN.420.4204',
@@ -120,3 +95,69 @@ export const testCourse2: Course = {
   tags: ['TEST-COURSE'],
   preReq: [testCourse1],
 };
+
+export const userTestCourse1: UserCourse = {
+  title: testCourse1.title,
+  term: 'Fall',
+  number: testCourse1.number,
+  department: testCourse1.department,
+  tags: testCourse1.tags,
+  area: 'N',
+  credits: parseInt(testCourse1.credits),
+  wi: testCourse1.wi,
+  taken: false,
+  ratings: [],
+  distribution_ids: 'testDistribution4',
+  user_id: 'mliu78',
+};
+
+export const userTestCourse2: UserCourse = {
+  title: testCourse2.title,
+  term: 'Spring',
+  number: testCourse2.number,
+  department: testCourse2.department,
+  tags: testCourse2.tags,
+  area: 'H',
+  credits: parseInt(testCourse2.credits),
+  wi: testCourse2.wi,
+  taken: false,
+  ratings: [],
+  distribution_ids: 'testDistribution5',
+  user_id: 'mliu78',
+};
+
+export const testPlan1: Plan = {
+  majors: ['Computer Science'],
+  freshman: [userTestCourse1],
+  sophomore: [],
+  junior: [userTestCourse2],
+  senior: [],
+  distributions: [
+    testDistributionTot,
+    testDistributionCS,
+    testDistributionElec,
+    testDistributionHumanities,
+    testDistributionMath,
+    testDistributionNS,
+  ],
+};
+
+export const testUser: User = {
+  _id: 'mliu78',
+  firstName: 'Matthew',
+  lastName: 'Liu',
+  email: 'mliu78@jhu.edu',
+  affiliation: 'STUDENT',
+  grade: 'AE UG Sophomore',
+  school: 'Whiting School of Engineering',
+  plans: [testPlan1],
+};
+
+export const testMajorDistributions = [
+  testDistributionTot,
+  testDistributionElec,
+  testDistributionCS,
+  testDistributionMath,
+  testDistributionNS,
+  testDistributionHumanities,
+];

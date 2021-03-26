@@ -13,12 +13,14 @@ function Content() {
   const [distributions, setDistributions] = useState<Distribution[]>([]);
   const searching = useSelector(selectSearchStatus);
 
+  // On first render, gets user name, total credits, and distributions.
   useEffect(() => {
     setUserName(testUser.firstName + ' ' + testUser.lastName);
     setMajorCredits(127);
     getDistributions();
   }, []);
 
+  // Sets all distributions for distribution bars.
   const getDistributions = () => {
     setDistributions(testMajorDistributions);
   };
@@ -50,7 +52,7 @@ function Content() {
           ))}
         </div>
       </div>
-      <CourseList user={testUser} />
+      <CourseList />
       {searching ? <Search /> : null}
     </div>
   );

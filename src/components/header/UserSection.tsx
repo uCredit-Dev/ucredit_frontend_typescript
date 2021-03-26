@@ -5,7 +5,7 @@ import axios from 'axios';
 import { User } from '../commonTypes';
 import { testUser } from '../testObjs';
 import { useDispatch } from 'react-redux';
-import { login } from '../slices/userSlice';
+import { updateUser } from '../slices/userSlice';
 const api = 'https://ucredit-api.herokuapp.com/api';
 
 function UserSection() {
@@ -17,9 +17,10 @@ function UserSection() {
     //retrieveUser();
     axios
       .get(api + '/login')
-      .then((retrievedUser) => console.log('retrieved ', retrievedUser));
+      .then((retrievedUser) => console.log('retrieved ', retrievedUser))
+      .catch((err) => console.log(err));
     // Get test user
-    dispatch(login(testUser));
+    dispatch(updateUser(testUser));
   }, []);
 
   return (
