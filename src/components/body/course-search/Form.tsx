@@ -9,7 +9,12 @@ import {
   selectSemester,
 } from '../../slices/searchSlice';
 import axios from 'axios';
-import { FilterType } from '../../commonTypes';
+import {
+  Course,
+  Distribution,
+  FilterType,
+  SemesterType,
+} from '../../commonTypes';
 
 // TODO: This file could be modularized. Esp with the recurring code for options.
 
@@ -17,7 +22,13 @@ const api = 'https://ucredit-api.herokuapp.com/api';
 
 const creditFilters = ['None', 0, 1, 2, 3, 4];
 const distributionFilters = ['None', 'N', 'S', 'H', 'Q', 'E'];
-const termFilters = ['None', 'Fall', 'Spring', 'Intercession', 'Summer'];
+const termFilters: (SemesterType | 'None')[] = [
+  'None',
+  'Fall',
+  'Spring',
+  'Intersession',
+  'Summer',
+];
 const wiFilters = ['None', 'True', 'False'];
 //const tagFilters = ['tag1', 'tag2'];
 
@@ -67,8 +78,11 @@ const Form = () => {
         params: extras,
       })
       .then((courses) => {
-        let returned = courses.data;
-        dispatch(updateRetrievedCourses(returned.data));
+        let returned = courses.data.data.sort(
+          (course1: Course, course2: Course) =>
+            course1.title.localeCompare(course2.title)
+        );
+        dispatch(updateRetrievedCourses(returned));
       })
       .catch((err) => {
         console.log(err);
