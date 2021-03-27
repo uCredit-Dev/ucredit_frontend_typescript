@@ -19,7 +19,11 @@ const CourseCard = (props: cardProps) => {
     dispatch(updateInspectedCourse(course));
   };
   return (
-    <button className="flex  bg-gray-100" onClick={handleCourseClick}>
+    <button
+      className="flex  bg-gray-100"
+      style={{ height: '3rem' }}
+      onClick={handleCourseClick}
+    >
       {course.title}
     </button>
   );

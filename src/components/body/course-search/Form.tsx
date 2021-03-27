@@ -1,10 +1,11 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import {
   updateSearchMode,
   updateSearchCredit,
   updateSearchDistribution,
   updateSearchTerm,
+  updateRetrievedCourses,
   selectSearchterm,
   selectSearchMode,
   selectSearchFilters,
@@ -19,16 +20,20 @@ const distributionFilters = ['None', 'N', 'S', 'H', 'Q', 'E'];
 //const tagFilters = ['tag1', 'tag2'];
 
 const Form = () => {
-  // Set up redux dispatch and variables
+  // Set up redux dispatch and variables.
   const dispatch = useDispatch();
   const searchTerm = useSelector(selectSearchterm);
   const searchMode = useSelector(selectSearchMode);
   const searchFilters = useSelector(selectSearchFilters);
 
-  // Debounced search. Still a WIP. Ideally requests from backend after 1 second of no typing.
-  // TODO: Figure this out. Current search works, but isn't getting debounced correctly
-  const search = debounce(() => {
-    console.log('searching for ', searchTerm, searchFilters);
+  // Search with debouncing of 3/4s of a second.
+  useEffect(() => {
+    const search = setTimeout(performSearch, 500);
+    return () => clearTimeout(search);
+  }, [searchTerm, searchFilters]);
+
+  // Performs search call with filters to backend and updates redux with retrieved courses.
+  const performSearch = () => {
     axios
       .get(api + '/search', {
         params: {
@@ -43,17 +48,16 @@ const Form = () => {
       })
       .then((courses) => {
         let returned = courses.data;
-        console.log('retrieved', returned);
+        dispatch(updateRetrievedCourses(returned.data));
       })
       .catch((err) => {
         console.log(err);
       });
-  }, 1000);
+  };
 
   // Update search term
   const handleSearchTerm = (event: any): void => {
     dispatch(updateSearchTerm(event.target.value));
-    search();
   };
 
   // Update searching for title vs. number
@@ -95,7 +99,9 @@ const Form = () => {
             defaultValue={searchFilters.credits}
           >
             {creditFilters.map((credits) => (
-              <option value={credits}>{credits}</option>
+              <option key={credits} value={credits}>
+                {credits}
+              </option>
             ))}
           </select>
         </p>
@@ -106,7 +112,9 @@ const Form = () => {
             defaultValue={searchFilters.distribution}
           >
             {distributionFilters.map((distribution) => (
-              <option value={distribution}>{distribution}</option>
+              <option key={distribution} value={distribution}>
+                {distribution}
+              </option>
             ))}
           </select>
         </p>

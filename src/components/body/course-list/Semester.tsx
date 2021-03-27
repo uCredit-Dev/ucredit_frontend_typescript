@@ -54,6 +54,7 @@ function Semester({
         <div>
           {courses.map((course) => (
             <CourseComponent
+              key={course.title}
               course={course}
               detailName={detailName}
               setDetailName={setDetailName}
