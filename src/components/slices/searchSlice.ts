@@ -32,7 +32,7 @@ const initialState: searchStates = {
     searchYear: 'Freshman',
     searchSemester: 'Fall',
   },
-  retrievedCourses: [testCourse1, testCourse2], // test courses for now
+  retrievedCourses: [], // test courses for now
   filters: {
     credits: 'None',
     distribution: 'None',
@@ -89,6 +89,9 @@ export const searchSlice = createSlice({
       state.searchMode = 'Title';
       console.log('clearing');
     },
+    updateRetrievedCourses: (state: any, action: PayloadAction<Course[]>) => {
+      state.retrievedCourses = action.payload;
+    },
   },
 });
 
@@ -100,6 +103,7 @@ export const {
   updateSearchCredit,
   updateSearchDistribution,
   updateInspectedCourse,
+  updateRetrievedCourses,
   clearSearch,
 } = searchSlice.actions;
 

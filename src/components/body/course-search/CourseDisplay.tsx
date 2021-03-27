@@ -17,7 +17,11 @@ const CourseDisplay = () => {
   const getPreReqs = () =>
     inspected !== 'None' && inspected.preReq.length > 0
       ? inspected.preReq.map((prereq: Course) => (
-          <button className="bg-gray-400" onClick={updateInspected(prereq)}>
+          <button
+            key={prereq.number}
+            className="bg-gray-400"
+            onClick={updateInspected(prereq)}
+          >
             {prereq.number}
           </button>
         ))

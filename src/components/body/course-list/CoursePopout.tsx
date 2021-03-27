@@ -52,7 +52,11 @@ function CoursePopout({ mainColor, subColor, course }: popoutType) {
               }}
             >
               {course.area.split('').map((distr) => {
-                return <option value={distr}>{distr}</option>;
+                return (
+                  <option key={distr} value={distr}>
+                    {distr}
+                  </option>
+                );
               })}
             </select>
           </form>

@@ -67,13 +67,17 @@ const Search = () => {
           Currently selecting for{' '}
           <select onChange={handleYearChange} defaultValue={searchYear}>
             {years.map((year) => (
-              <option value={year}>{year}</option>
+              <option key={year} value={year}>
+                {year}
+              </option>
             ))}
           </select>{' '}
           year,
           <select onChange={handleSemesterChange} defaultValue={searchSemester}>
             {semester.map((semester) => (
-              <option value={semester}>{semester}</option>
+              <option key={semester} value={semester}>
+                {semester}
+              </option>
             ))}
           </select>{' '}
           semester
