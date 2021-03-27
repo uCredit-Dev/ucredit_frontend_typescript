@@ -28,12 +28,23 @@ const Form = () => {
 
   // Search with debouncing of 3/4s of a second.
   useEffect(() => {
-    const search = setTimeout(performSearch, 500);
-    return () => clearTimeout(search);
+    if (
+      searchTerm === '' &&
+      searchFilters.credits === 'None' &&
+      searchFilters.distribution === 'None'
+    ) {
+      // If search term is empty with no filters, don't show any results.
+      dispatch(updateRetrievedCourses([]));
+    } else {
+      // Otherwise, user is searching for something.
+      const search = setTimeout(performSearch, 500);
+      return () => clearTimeout(search);
+    }
   }, [searchTerm, searchFilters]);
 
   // Performs search call with filters to backend and updates redux with retrieved courses.
   const performSearch = () => {
+    console.log('searching for ', searchTerm);
     axios
       .get(api + '/search', {
         params: {
