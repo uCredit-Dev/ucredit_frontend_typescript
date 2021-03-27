@@ -12,7 +12,7 @@ import Form from './Form';
 import SearchList from './SearchList';
 
 const years: YearType[] = ['Freshman', 'Sophomore', 'Junior', 'Senior'];
-const semester: SemesterType[] = ['Fall', 'Spring', 'Summer', 'Winter'];
+const semester: SemesterType[] = ['Fall', 'Spring', 'Summer', 'Intersession'];
 
 // Search component when someone clicks a search action.
 const Search = () => {

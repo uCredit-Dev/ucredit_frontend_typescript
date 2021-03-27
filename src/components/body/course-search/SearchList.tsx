@@ -20,7 +20,6 @@ const SearchList = () => {
 
   // Generates a list of 10 retrieved course matching the search queries and page number.
   const courseList = () => {
-    console.log(courses.length % coursesPerPage);
     let toDisplay: any = [];
     let startingIndex = pageNum * coursesPerPage;
     let endingIndex =
