@@ -6,7 +6,7 @@ import ReactPaginate from 'react-paginate';
 
 const SearchList = () => {
   const [pageNum, setPageNum] = useState(0);
-  const [pageCount, setPageCount] = useState(1);
+  const [pageCount, setPageCount] = useState(0);
   const courses = useSelector(selectRetrievedCourses);
   let coursesPerPage = 10;
 
@@ -44,21 +44,23 @@ const SearchList = () => {
 
       {/* A Pagination component we'll use! Prop list and docs here: https://github.com/AdeleD/react-paginate. '
       Use it to add new classnames when styling and add new props for logic */}
-      <ReactPaginate
-        previousLabel={'<'}
-        nextLabel={'>'}
-        previousClassName={'m-2'}
-        nextClassName={'m-2'}
-        breakLabel={'...'}
-        breakClassName={''}
-        pageCount={pageCount}
-        marginPagesDisplayed={2}
-        pageRangeDisplayed={3}
-        onPageChange={handlePageClick}
-        containerClassName={'flex'}
-        activeClassName={'bg-gray-500'}
-        pageClassName={'m-2'}
-      />
+      {pageCount > 1 ? (
+        <ReactPaginate
+          previousLabel={'<'}
+          nextLabel={'>'}
+          previousClassName={'m-2'}
+          nextClassName={'m-2'}
+          breakLabel={'...'}
+          breakClassName={''}
+          pageCount={pageCount}
+          marginPagesDisplayed={2}
+          pageRangeDisplayed={3}
+          onPageChange={handlePageClick}
+          containerClassName={'flex'}
+          activeClassName={'bg-gray-500'}
+          pageClassName={'m-2'}
+        />
+      ) : null}
     </div>
   );
 };
