@@ -45,6 +45,7 @@ const CourseDisplay = () => {
           <p>{inspected.title}</p>
           <p>{inspected.number}</p>
           <p>{inspected.credits} Credits</p>
+          <p>Areas: {inspected.areas}</p>
           <p>
             {inspected.terms.map((term) => (
               <div>{term}</div>
