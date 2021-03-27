@@ -1,30 +1,42 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useSelector } from 'react-redux';
 import { selectRetrievedCourses } from '../../slices/searchSlice';
 import CourseCard from './CourseCard';
 import ReactPaginate from 'react-paginate';
 
 const SearchList = () => {
-  const [pageNum, setPageNum] = useState(1);
+  const [pageNum, setPageNum] = useState(0);
+  const [pageCount, setPageCount] = useState(1);
   const courses = useSelector(selectRetrievedCourses);
+  let coursesPerPage = 10;
+
+  useEffect(() => {
+    // If coursesPerPage doesn't divide perfectly into total courses, we need one more page.
+    const division = Math.floor(courses.length / coursesPerPage);
+    const pages =
+      courses.length % coursesPerPage === 0 ? division : division + 1;
+    setPageCount(pages);
+  }, [courses]);
 
   // Generates a list of 10 retrieved course matching the search queries and page number.
   const courseList = () => {
-    console.log('list is ', courses);
     let toDisplay: any = [];
-    for (
-      let i = pageNum * 10;
-      i < pageNum * 10 + 10 && i < courses.length;
-      i++
-    ) {
-      toDisplay[i] = <CourseCard course={courses[i]} />;
+    let startingIndex = pageNum * coursesPerPage;
+    let endingIndex =
+      startingIndex + coursesPerPage > courses.length
+        ? courses.length - 1
+        : startingIndex + coursesPerPage - 1;
+    for (let i = startingIndex; i <= endingIndex; i++) {
+      toDisplay[i - startingIndex] = <CourseCard course={courses[i]} />;
     }
     return toDisplay;
   };
 
+  // Sets page number when clicking on a page in the pagination component.
   const handlePageClick = (event: any) => {
     setPageNum(event.selected);
   };
+
   return (
     <div className="flex-1 m-3 p-2 bg-gray-300">
       <p>Search Results </p>
@@ -39,7 +51,7 @@ const SearchList = () => {
         nextClassName={'m-2'}
         breakLabel={'...'}
         breakClassName={''}
-        pageCount={courses.length / 10}
+        pageCount={pageCount}
         marginPagesDisplayed={2}
         pageRangeDisplayed={3}
         onPageChange={handlePageClick}

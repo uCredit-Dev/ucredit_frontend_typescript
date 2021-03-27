@@ -45,6 +45,11 @@ const CourseDisplay = () => {
           <p>{inspected.title}</p>
           <p>{inspected.number}</p>
           <p>{inspected.credits} Credits</p>
+          <p>
+            {inspected.terms.map((term) => (
+              <div>{term}</div>
+            ))}
+          </p>
           <p>{inspected.bio}</p>
           <p>
             <p className="border-b-2">Prerequisites</p> <p>{getPreReqs()}</p>
