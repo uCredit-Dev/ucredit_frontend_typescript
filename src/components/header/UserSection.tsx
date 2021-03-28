@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { selectUser, selectFirstname } from "../slices/userSlice";
 import { useSelector } from "react-redux";
 import axios from "axios";
@@ -6,12 +6,16 @@ import { User } from "../commonTypes";
 import { testUser } from "../testObjs";
 import { useDispatch } from "react-redux";
 import { updateUser } from "../slices/userSlice";
+import { ReactComponent as UserSvg } from "../svg/user.svg";
+import clsx from "clsx";
 const api = "https://ucredit-api.herokuapp.com/api";
 
 function UserSection() {
   const firstName = useSelector(selectFirstname);
   const user = useSelector(selectUser);
   const dispatch = useDispatch();
+
+  const [logoutDown, setLogoutDown] = useState<boolean>(false);
 
   useEffect(() => {
     //retrieveUser();
@@ -33,44 +37,21 @@ function UserSection() {
   }, []);
 
   return (
-    <div style={userSection}>
-      <div style={pfp}></div>
-      <div style={name} className="center">
-        {firstName} {" " + user.lastName}
+    <div className='flex flex-row items-center justify-end w-full h-full'>
+      <div className='flex flex-row items-center justify-center mr-3 w-11 h-11 bg-white rounded-full'>
+        <UserSvg className='w-8 h-8' />
+      </div>
+      <div
+        className={clsx(
+          "flex flex-row items-center justify-center w-24 h-9 bg-white rounded-lg cursor-pointer select-none",
+          { "ring-2 ring-green-200": logoutDown }
+        )}
+        onMouseDown={() => setLogoutDown(true)}
+        onMouseUp={() => setLogoutDown(false)}>
+        LOG OUT
       </div>
     </div>
   );
 }
-
-const name = {
-  width: "2rem",
-  float: "left",
-  fontWeight: 500,
-  display: "inline",
-  marginLeft: "0.5rem",
-  marginTop: "0.25rem",
-} as React.CSSProperties;
-
-const pfp = {
-  position: "relative",
-  backgroundColor: "orange",
-  height: "3.5rem",
-  width: "3.5rem",
-  borderRadius: "50%",
-  float: "left",
-  display: "inline",
-} as React.CSSProperties;
-
-const userSection = {
-  backgroundColor: "whitesmoke",
-  marginTop: "0.7rem",
-  width: "10rem",
-  padding: "0rem",
-  height: "3.5rem",
-  float: "right",
-  display: "inline",
-  marginRight: "6rem",
-  borderRadius: "2rem",
-} as React.CSSProperties;
 
 export default UserSection;

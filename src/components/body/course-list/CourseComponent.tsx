@@ -34,20 +34,15 @@ function CourseComponent({ course, detailName, setDetailName }: courseProps) {
   };
 
   return (
-    <div
-      style={{
-        borderBottom: "solid",
-        borderBottomColor: mainColor,
-        backgroundColor: subColor,
-        maxWidth: "50rem",
-      }}
-    >
-      <div style={courseStyle} onClick={displayCourses}>
-        <div style={{ marginRight: "1.5rem" }}>{course.number}</div>
-        <div style={{ marginRight: "1.5rem", width: "7.5rem" }}>
-          {course.title}
+    <>
+      <div
+        className='bg-gray-coursecard w-semesterheading flex flex-col mt-4 p-4 h-auto rounded-2xl'
+        onClick={displayCourses}>
+        <div>{course.title}</div>
+        <div>{course.number}</div>
+        <div>
+          {course.distribution_ids}, {course.credits}
         </div>
-        <div style={{ marginRight: "2rem" }}>[-]</div>
       </div>
       {course.title === detailName ? (
         <CoursePopout
@@ -56,16 +51,8 @@ function CourseComponent({ course, detailName, setDetailName }: courseProps) {
           course={course}
         />
       ) : null}
-    </div>
+    </>
   );
 }
-
-const courseStyle = {
-  display: "flex",
-  flexFlow: "row",
-  padding: "0.5rem",
-  paddingLeft: "2rem",
-  fontSize: "small",
-} as React.CSSProperties;
 
 export default CourseComponent;

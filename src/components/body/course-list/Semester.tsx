@@ -3,6 +3,7 @@ import { SemesterType, UserCourse, YearType } from "../../commonTypes";
 import CourseComponent from "./CourseComponent";
 import { useDispatch } from "react-redux";
 import { updateSearchStatus, updateSearchTime } from "../../slices/searchSlice";
+import { ReactComponent as AddSvg } from "../../svg/add.svg";
 
 type semesterProps = {
   semesterName: SemesterType;
@@ -43,14 +44,19 @@ function Semester({
   };
 
   return (
-    <>
+    <div className='mb-4'>
       <div
-        className="bg-gray-semester border-gray-semester flex flex-row align-middle pl-12 w-full h-8 font-normal border-b-4 border-solid"
-        onClick={displayCourses}
-      >
-        <div className="top-1/2 flex flex-row items-center">
-          {semesterName} ({courses.length}){" "}
-          <button onClick={addCourse}>+</button>
+        className='bg-secondary w-semesterheading flex flex-col h-8 text-white font-medium rounded-xl'
+        onClick={displayCourses}>
+        <div className='flex flex-row items-center justify-between px-2 py-1'>
+          <div className='w-auto h-auto'>
+            {semesterName} ({courses.length}){" "}
+          </div>
+          <div
+            className='flex flex-row items-center justify-center w-6 h-6'
+            onClick={addCourse}>
+            <AddSvg className='w-full h-full' />
+          </div>
         </div>
       </div>
       {display ? (
@@ -65,7 +71,7 @@ function Semester({
           ))}
         </div>
       ) : null}
-    </>
+    </div>
   );
 }
 
