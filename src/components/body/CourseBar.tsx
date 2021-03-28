@@ -140,7 +140,7 @@ function CourseBar({
   // Related Functions
 
   return (
-    <div className="mt-8 w-64 h-auto">
+    <div className='mt-8 w-64 h-auto'>
       <div style={courseBar}>
         <div style={totalBar}>
           <div style={plannedBar}>
