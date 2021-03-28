@@ -16,6 +16,7 @@
     "@types/react-redux": "^7.1.7",
     "autoprefixer": "^9.8.6",
     "axios": "^0.21.1",
+    "clsx": "^1.1.1",
     "express": "^4.17.1",
     "express-favicon": "^2.0.1",
     "path": "^0.12.7",
@@ -53,5 +54,8 @@
       "last 1 safari version"
     ]
   },
-  "devDependencies": {}
+  "devDependencies": {
+    "prettier": "^2.2.1",
+    "prettier-plugin-tailwind": "^2.2.10"
+  }
 }

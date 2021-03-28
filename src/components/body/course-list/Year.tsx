@@ -1,6 +1,6 @@
-import React, { useState, useEffect } from 'react';
-import Semester from './Semester';
-import { UserCourse, YearType } from '../../commonTypes';
+import React, { useState, useEffect } from "react";
+import Semester from "./Semester";
+import { UserCourse, YearType } from "../../commonTypes";
 
 type semesterProps = {
   yearName: YearType;
@@ -24,13 +24,13 @@ function Year({ yearName, courses, detailName, setDetailName }: semesterProps) {
   useEffect(() => {
     // For each of the user's courses for this year, put them in their respective semesters.
     courses.forEach((course) => {
-      if (course.term.includes('Fall')) {
+      if (course.term.includes("Fall")) {
         setFallCourses([...fallCourses, course]);
-      } else if (course.term.includes('Spring')) {
+      } else if (course.term.includes("Spring")) {
         setSpringCourses([...springCourses, course]);
-      } else if (course.term.includes('Summer')) {
+      } else if (course.term.includes("Summer")) {
         setSummerCourses([...summerCourses, course]);
-      } else if (course.term.includes('Winter')) {
+      } else if (course.term.includes("Winter")) {
         setWinterCourses([...winterCourses, course]);
       }
     });
@@ -42,35 +42,37 @@ function Year({ yearName, courses, detailName, setDetailName }: semesterProps) {
   };
 
   return (
-    <div style={{ minWidth: '10rem' }}>
-      <div style={yearNameSection} onClick={displaySemesters}>
-        <div style={centerText}>{yearName}</div>
+    <div className='w-year'>
+      <div
+        className='bg-gray-year border-gray-year flex flex-row pl-8 w-full h-8 border-b-4 border-solid'
+        onClick={displaySemesters}>
+        <div>{yearName}</div>
       </div>
       {display ? (
         <>
           <Semester
-            semesterName={'Fall'}
+            semesterName={"Fall"}
             semesterYear={yearName}
             courses={fallCourses}
             detailName={detailName}
             setDetailName={setDetailName}
           />
           <Semester
-            semesterName={'Spring'}
+            semesterName={"Spring"}
             semesterYear={yearName}
             courses={springCourses}
             detailName={detailName}
             setDetailName={setDetailName}
           />
           <Semester
-            semesterName={'Winter'}
+            semesterName={"Winter"}
             semesterYear={yearName}
             courses={winterCourses}
             detailName={detailName}
             setDetailName={setDetailName}
           />
           <Semester
-            semesterName={'Summer'}
+            semesterName={"Summer"}
             semesterYear={yearName}
             courses={summerCourses}
             detailName={detailName}
@@ -81,21 +83,5 @@ function Year({ yearName, courses, detailName, setDetailName }: semesterProps) {
     </div>
   );
 }
-
-const yearNameSection = {
-  backgroundColor: '#DEDEDE',
-  height: '2rem',
-  paddingLeft: '2rem',
-  verticalAlign: 'middle',
-  position: 'relative',
-  borderBottom: 'solid',
-  borderBottomColor: '#D4D4D4',
-} as React.CSSProperties;
-
-const centerText = {
-  position: 'absolute',
-  top: '50%',
-  transform: 'translate(0, -50%)',
-} as React.CSSProperties;
 
 export default Year;
