@@ -1,6 +1,6 @@
-import { createSlice, PayloadAction } from '@reduxjs/toolkit';
-import { AppThunk, RootState } from '../../appStore/store';
-import { Course, Plan, SemesterType, User, YearType } from '../commonTypes';
+import { createSlice, PayloadAction } from "@reduxjs/toolkit";
+import { AppThunk, RootState } from "../../appStore/store";
+import { Course, Plan, SemesterType, User, YearType } from "../commonTypes";
 
 // addNewCourse payload type. Not being used.
 // type NewCourse = {
@@ -11,13 +11,13 @@ import { Course, Plan, SemesterType, User, YearType } from '../commonTypes';
 // };
 
 const initialState: User = {
-  _id: '',
-  firstName: '',
-  lastName: '',
-  email: '',
-  affiliation: '',
-  grade: '',
-  school: '',
+  _id: "",
+  firstName: "",
+  lastName: "",
+  email: "",
+  affiliation: "",
+  grade: "",
+  school: "",
   plans: [],
 };
 
@@ -37,7 +37,7 @@ function userUpdate(state: any, action: PayloadAction<User>) {
 // function addNewCourse(state: any, action: PayloadAction<NewCourse>) {}
 
 export const userSlice = createSlice({
-  name: 'user',
+  name: "user",
   initialState,
   reducers: {
     updateUser: userUpdate,

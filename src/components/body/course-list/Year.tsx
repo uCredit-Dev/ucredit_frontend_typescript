@@ -30,7 +30,7 @@ function Year({ yearName, courses, detailName, setDetailName }: semesterProps) {
         setSpringCourses([...springCourses, course]);
       } else if (course.term.includes("Summer")) {
         setSummerCourses([...summerCourses, course]);
-      } else if (course.term.includes('Intersession')) {
+      } else if (course.term.includes("Intersession")) {
         setWinterCourses([...winterCourses, course]);
       }
     });
@@ -42,10 +42,11 @@ function Year({ yearName, courses, detailName, setDetailName }: semesterProps) {
   };
 
   return (
-    <div className='w-year'>
+    <div className="w-year">
       <div
-        className='bg-gray-year border-gray-year flex flex-row pl-8 w-full h-8 border-b-4 border-solid'
-        onClick={displaySemesters}>
+        className="bg-gray-year border-gray-year flex flex-row pl-8 w-full h-8 border-b-4 border-solid"
+        onClick={displaySemesters}
+      >
         <div>{yearName}</div>
       </div>
       {display ? (
@@ -65,7 +66,7 @@ function Year({ yearName, courses, detailName, setDetailName }: semesterProps) {
             setDetailName={setDetailName}
           />
           <Semester
-            semesterName={'Intersession'}
+            semesterName={"Intersession"}
             semesterYear={yearName}
             courses={winterCourses}
             detailName={detailName}

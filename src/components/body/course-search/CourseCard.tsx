@@ -1,10 +1,10 @@
-import React from 'react';
-import { Course } from '../../commonTypes';
-import { useDispatch, useSelector } from 'react-redux';
+import React from "react";
+import { Course } from "../../commonTypes";
+import { useDispatch, useSelector } from "react-redux";
 import {
   updateInspectedCourse,
   selectInspectedCourse,
-} from '../../slices/searchSlice';
+} from "../../slices/searchSlice";
 
 type cardProps = {
   course: Course;
@@ -18,9 +18,9 @@ const CourseCard = (props: cardProps) => {
   const selectedCourse = useSelector(selectInspectedCourse);
   const checkSelected = () => {
     if (selectedCourse === course) {
-      return 'flex bg-red-100';
+      return "flex bg-red-100";
     }
-    return 'flex bg-gray-100';
+    return "flex bg-gray-100";
   };
 
   // Setup Redux
@@ -33,10 +33,10 @@ const CourseCard = (props: cardProps) => {
   return (
     <button
       className={checkSelected()}
-      style={{ height: '3rem' }}
+      style={{ height: "3rem" }}
       onClick={handleCourseClick}
     >
-      <div style={{ width: '25rem' }} className="text-left ml-2">
+      <div style={{ width: "25rem" }} className="text-left ml-2">
         {course.title}
       </div>
     </button>

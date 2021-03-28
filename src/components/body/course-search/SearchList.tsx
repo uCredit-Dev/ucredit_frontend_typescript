@@ -1,8 +1,8 @@
-import React, { useState, useEffect } from 'react';
-import { useSelector } from 'react-redux';
-import { selectRetrievedCourses } from '../../slices/searchSlice';
-import CourseCard from './CourseCard';
-import ReactPaginate from 'react-paginate';
+import React, { useState, useEffect } from "react";
+import { useSelector } from "react-redux";
+import { selectRetrievedCourses } from "../../slices/searchSlice";
+import CourseCard from "./CourseCard";
+import ReactPaginate from "react-paginate";
 
 const SearchList = () => {
   const [pageNum, setPageNum] = useState(0);
@@ -40,25 +40,30 @@ const SearchList = () => {
   return (
     <div className="flex-1 m-3 p-2 bg-gray-300">
       <p>Search Results </p>
-      <div className="flex flex-col overflow-vertical">{courseList()}</div>
+
+      {courses.length > 0 ? (
+        <div className="flex flex-col overflow-vertical">{courseList()}</div>
+      ) : (
+        <div>No Results</div>
+      )}
 
       {/* A Pagination component we'll use! Prop list and docs here: https://github.com/AdeleD/react-paginate. '
       Use it to add new classnames when styling and add new props for logic */}
       {pageCount > 1 ? (
         <ReactPaginate
-          previousLabel={'<'}
-          nextLabel={'>'}
-          previousClassName={'m-2'}
-          nextClassName={'m-2'}
-          breakLabel={'...'}
-          breakClassName={''}
+          previousLabel={"<"}
+          nextLabel={">"}
+          previousClassName={"m-2"}
+          nextClassName={"m-2"}
+          breakLabel={"..."}
+          breakClassName={""}
           pageCount={pageCount}
           marginPagesDisplayed={2}
           pageRangeDisplayed={3}
           onPageChange={handlePageClick}
-          containerClassName={'flex'}
-          activeClassName={'bg-gray-500'}
-          pageClassName={'m-2'}
+          containerClassName={"flex"}
+          activeClassName={"bg-gray-500"}
+          pageClassName={"m-2"}
         />
       ) : null}
     </div>

@@ -61,14 +61,14 @@ export type Distribution = {
   userId: string;
 };
 
-export type YearType = 'Freshman' | 'Sophomore' | 'Junior' | 'Senior';
+export type YearType = "Freshman" | "Sophomore" | "Junior" | "Senior";
 
-export type SemesterType = 'Fall' | 'Spring' | 'Summer' | 'Intersession';
+export type SemesterType = "Fall" | "Spring" | "Summer" | "Intersession";
 
 export type FilterType =
-  | 'credits'
-  | 'distribution'
-  | 'tags'
-  | 'term'
-  | 'department'
-  | 'wi';
+  | "credits"
+  | "distribution"
+  | "tags"
+  | "term"
+  | "department"
+  | "wi";

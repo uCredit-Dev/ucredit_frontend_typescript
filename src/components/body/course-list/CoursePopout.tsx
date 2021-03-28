@@ -1,5 +1,5 @@
-import React, { useEffect } from 'react';
-import { UserCourse } from '../../commonTypes';
+import React, { useEffect } from "react";
+import { UserCourse } from "../../commonTypes";
 
 type popoutType = {
   mainColor: string;
@@ -23,21 +23,21 @@ function CoursePopout({ mainColor, subColor, course }: popoutType) {
         ...popoutBodyStyle,
         backgroundColor: subColor,
         borderColor: mainColor,
-        borderRightColor: 'lightgrey',
-        borderLeftColor: 'lightgrey',
+        borderRightColor: "lightgrey",
+        borderLeftColor: "lightgrey",
       }}
     >
-      <div style={{ margin: '1rem', fontWeight: 500, fontSize: 'smaller' }}>
-        <div style={{ fontWeight: 'bold', fontSize: 'large' }}>
+      <div style={{ margin: "1rem", fontWeight: 500, fontSize: "smaller" }}>
+        <div style={{ fontWeight: "bold", fontSize: "large" }}>
           {course.title}
         </div>
         <div>{course.number}</div>
         <div>Areas: {course.area}</div>
-        <div style={{ width: '11rem' }}>
-          Tags: {course.tags.length === 0 ? 'none' : course.tags.toString()}
+        <div style={{ width: "11rem" }}>
+          Tags: {course.tags.length === 0 ? "none" : course.tags.toString()}
         </div>
         <div>Ratings: </div>
-        <div style={{ width: '11rem' }}>
+        <div style={{ width: "11rem" }}>
           Selected Distribution:
           <form>
             <select
@@ -45,13 +45,13 @@ function CoursePopout({ mainColor, subColor, course }: popoutType) {
               onChange={handleChange}
               style={{
                 backgroundColor: mainColor,
-                color: 'white',
-                borderRadius: '5rem',
-                border: 'none',
-                padding: '0.25rem',
+                color: "white",
+                borderRadius: "5rem",
+                border: "none",
+                padding: "0.25rem",
               }}
             >
-              {course.area.split('').map((distr) => {
+              {course.area.split("").map((distr) => {
                 return (
                   <option key={distr} value={distr}>
                     {distr}
@@ -63,14 +63,14 @@ function CoursePopout({ mainColor, subColor, course }: popoutType) {
         </div>
         <div
           style={{
-            overflowY: 'scroll',
-            height: '13rem',
-            fontWeight: 'normal',
-            fontSize: 'small',
-            width: '16.5rem',
-            position: 'absolute',
-            right: '0rem',
-            top: '1rem',
+            overflowY: "scroll",
+            height: "13rem",
+            fontWeight: "normal",
+            fontSize: "small",
+            width: "16.5rem",
+            position: "absolute",
+            right: "0rem",
+            top: "1rem",
           }}
         >
           {course.number}
@@ -81,14 +81,14 @@ function CoursePopout({ mainColor, subColor, course }: popoutType) {
 }
 
 const popoutBodyStyle = {
-  position: 'absolute',
-  top: '33%',
-  right: '21rem',
-  width: '30rem',
-  height: '15rem',
-  border: 'solid',
-  borderWidth: '0.25rem',
-  borderRadius: '1rem',
+  position: "absolute",
+  top: "33%",
+  right: "21rem",
+  width: "30rem",
+  height: "15rem",
+  border: "solid",
+  borderWidth: "0.25rem",
+  borderRadius: "1rem",
 } as React.CSSProperties;
 
 export default CoursePopout;
