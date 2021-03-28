@@ -1,8 +1,8 @@
-import React, { useState } from 'react';
-import { SemesterType, UserCourse, YearType } from '../../commonTypes';
-import CourseComponent from './CourseComponent';
-import { useDispatch } from 'react-redux';
-import { updateSearchStatus, updateSearchTime } from '../../slices/searchSlice';
+import React, { useState } from "react";
+import { SemesterType, UserCourse, YearType } from "../../commonTypes";
+import CourseComponent from "./CourseComponent";
+import { useDispatch } from "react-redux";
+import { updateSearchStatus, updateSearchTime } from "../../slices/searchSlice";
 
 type semesterProps = {
   semesterName: SemesterType;
@@ -44,9 +44,11 @@ function Semester({
 
   return (
     <>
-      <div style={semesterNameStyle} onClick={displayCourses}>
-        <div style={centerText}>
-          {semesterName} ({courses.length}){' '}
+      <div
+        className='bg-gray-semester border-gray-semester flex flex-row align-middle pl-12 w-full h-8 font-normal border-b-4 border-solid'
+        onClick={displayCourses}>
+        <div className='top-1/2 flex flex-row items-center'>
+          {semesterName} ({courses.length}){" "}
           <button onClick={addCourse}>+</button>
         </div>
       </div>
@@ -65,22 +67,5 @@ function Semester({
     </>
   );
 }
-
-const semesterNameStyle = {
-  backgroundColor: '#D4D4D4',
-  height: '2rem',
-  paddingLeft: '3rem',
-  borderBottom: 'solid',
-  borderBottomColor: '#BEBEBE',
-  verticalAlign: 'middle',
-  position: 'relative',
-  fontWeight: 'normal',
-} as React.CSSProperties;
-
-const centerText = {
-  position: 'absolute',
-  top: '50%',
-  transform: 'translate(0, -50%)',
-} as React.CSSProperties;
 
 export default Semester;
