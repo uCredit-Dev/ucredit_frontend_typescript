@@ -47,7 +47,7 @@ const Search = () => {
   return (
     <>
       {/* Background Grey */}
-      <div className={"absolute top-0"}>
+      <div className={"absolute top-0 z-20"}>
         <div
           className={"fixed bg-gray-500"}
           style={{
@@ -56,15 +56,13 @@ const Search = () => {
           }}
           onClick={() => {
             dispatch(updateSearchStatus(false));
-          }}
-        ></div>
+          }}></div>
       </div>
 
       {/* Search area */}
       <div
-        className={"flex fixed bg-red-200 rounded-xl p-8 md:p-0"}
-        style={{ ...searchBodyStyle, opacity: searchOpacity / 100 }}
-      >
+        className={"flex fixed bg-red-200 rounded-xl p-8 md:p-0 z-20"}
+        style={{ ...searchBodyStyle, opacity: searchOpacity / 100 }}>
         <div>
           Currently selecting for{" "}
           <select onChange={handleYearChange} defaultValue={searchYear}>
@@ -87,8 +85,7 @@ const Search = () => {
         <div className={`flex flex-1 bg-white rounded-xl p-8 md:p-0`}>
           <div
             className={"flex flex-col rounded-xl  bg-gray-200"}
-            style={{ width: "40%", height: "100%" }}
-          >
+            style={{ width: "40%", height: "100%" }}>
             <Form />
             <SearchList />
             <button
@@ -97,8 +94,7 @@ const Search = () => {
               }}
               onMouseLeave={() => {
                 setSearchOpacity(100);
-              }}
-            >
+              }}>
               Hide search
             </button>
           </div>

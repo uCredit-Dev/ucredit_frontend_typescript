@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import Semester from "./Semester";
 import { UserCourse, YearType } from "../../commonTypes";
+import { ReactComponent as MoreSvg } from "../../svg/more.svg";
 
 type semesterProps = {
   yearName: YearType;
@@ -42,44 +43,44 @@ function Year({ yearName, courses, detailName, setDetailName }: semesterProps) {
   };
 
   return (
-    <div className="w-year">
+    <div className='w-yearheading'>
       <div
-        className="bg-gray-year border-gray-year flex flex-row pl-8 w-full h-8 border-b-4 border-solid"
-        onClick={displaySemesters}
-      >
+        className='bg-primary h-yearheading flex flex-row justify-between mb-4 p-2 w-full text-white font-medium rounded-xl'
+        onClick={displaySemesters}>
         <div>{yearName}</div>
+        <MoreSvg className='w-6 h-6' />
       </div>
       {display ? (
-        <>
+        <div className='flex flex-col items-center'>
           <Semester
-            semesterName={"Fall"}
+            semesterName='Fall'
             semesterYear={yearName}
             courses={fallCourses}
             detailName={detailName}
             setDetailName={setDetailName}
           />
           <Semester
-            semesterName={"Spring"}
+            semesterName='Spring'
             semesterYear={yearName}
             courses={springCourses}
             detailName={detailName}
             setDetailName={setDetailName}
           />
           <Semester
-            semesterName={"Intersession"}
+            semesterName='Intersession'
             semesterYear={yearName}
             courses={winterCourses}
             detailName={detailName}
             setDetailName={setDetailName}
           />
           <Semester
-            semesterName={"Summer"}
+            semesterName='Summer'
             semesterYear={yearName}
             courses={summerCourses}
             detailName={detailName}
             setDetailName={setDetailName}
           />
-        </>
+        </div>
       ) : null}
     </div>
   );

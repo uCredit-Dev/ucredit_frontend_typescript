@@ -7,12 +7,20 @@ module.exports = {
         year: "320px",
         courselist: "1400px",
         courebars: "301px",
+        yearheading: "228px",
+        semesterheading: "189px",
       },
       height: {
         courebars: "1100px",
+        header: "65px",
+        yearheading: "42px",
       },
       margin: {
-        content: "140px",
+        content: "100px",
+      },
+      colors: {
+        primary: "#489784",
+        secondary: "#63D2B8",
       },
       backgroundColor: {
         gray: {
@@ -20,10 +28,8 @@ module.exports = {
           year: "#DEDEDE",
           courselist: "#ECECEC",
           coursebars: "E9E9E9",
+          coursecard: "#C4C4C4",
         },
-        green: {
-          selectplan: "#63D2B8",
-        }
       },
       borderColor: {
         gray: {
