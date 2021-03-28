@@ -18,8 +18,8 @@ function CourseList() {
   const seniorCourses = currentPlan.senior;
 
   return (
-    <div className='flex flex-col mx-8 w-full font-bold overflow-y-auto'>
-      <div className='flex flex-row justify-between w-full h-auto'>
+    <div className="flex flex-col mx-8 w-full font-bold overflow-y-auto">
+      <div className="flex flex-row justify-between w-full h-auto">
         <Year
           yearName={"Freshman"}
           courses={freshmanCourses}

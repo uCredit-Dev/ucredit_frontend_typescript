@@ -1,6 +1,6 @@
-import { createSlice, PayloadAction } from '@reduxjs/toolkit';
-import { AppThunk, RootState } from '../../appStore/store';
-import { SemesterType, Course, YearType, FilterType } from '../commonTypes';
+import { createSlice, PayloadAction } from "@reduxjs/toolkit";
+import { AppThunk, RootState } from "../../appStore/store";
+import { SemesterType, Course, YearType, FilterType } from "../commonTypes";
 // import { testCourse1, testCourse2 } from '../testObjs'; // For testing
 
 type timeBundle = {
@@ -9,12 +9,12 @@ type timeBundle = {
 };
 
 type filterObj = {
-  credits: number | 'None';
-  distribution: 'N' | 'S' | 'H' | 'W' | 'E' | 'Q' | 'None';
-  tags: string | 'None'; // TODO: fill this out with array of all tags
-  term: SemesterType | 'None';
-  department: string | 'None'; // TODO: fill this out with array of departments
-  wi: 'None' | boolean;
+  credits: number | "None";
+  distribution: "N" | "S" | "H" | "W" | "E" | "Q" | "None";
+  tags: string | "None"; // TODO: fill this out with array of all tags
+  term: SemesterType | "None";
+  department: string | "None"; // TODO: fill this out with array of departments
+  wi: "None" | boolean;
 };
 
 type searchStates = {
@@ -23,30 +23,30 @@ type searchStates = {
   searchTime: timeBundle;
   filters: filterObj;
   retrievedCourses: Course[];
-  inspectedCourse: Course | 'None';
+  inspectedCourse: Course | "None";
 };
 
 const initialState: searchStates = {
   searching: false,
-  searchTerm: '',
+  searchTerm: "",
   searchTime: {
-    searchYear: 'Freshman',
-    searchSemester: 'Fall',
+    searchYear: "Freshman",
+    searchSemester: "Fall",
   },
   retrievedCourses: [], // test courses for now
   filters: {
-    credits: 'None',
-    distribution: 'None',
-    tags: 'None',
-    term: 'None',
-    wi: 'None',
-    department: 'None',
+    credits: "None",
+    distribution: "None",
+    tags: "None",
+    term: "None",
+    wi: "None",
+    department: "None",
   },
-  inspectedCourse: 'None',
+  inspectedCourse: "None",
 };
 
 export const searchSlice = createSlice({
-  name: 'search',
+  name: "search",
   initialState,
   reducers: {
     updateSearchTime: (state: any, action: PayloadAction<timeBundle>) => {
@@ -65,14 +65,14 @@ export const searchSlice = createSlice({
       state.inspectedCourse = action.payload;
     },
     clearSearch: (state: any) => {
-      state.filters = { credits: 'None', distribution: 'None', tags: 'None' };
-      state.searchTerm = '';
-      state.searchTime = { searchSemester: '', searchYear: '' };
+      state.filters = { credits: "None", distribution: "None", tags: "None" };
+      state.searchTerm = "";
+      state.searchTime = { searchSemester: "", searchYear: "" };
       state.searching = false;
-      state.inspectedCourse = 'None';
+      state.inspectedCourse = "None";
       state.retrievedCourses = [];
-      state.searchMode = 'Title';
-      console.log('clearing');
+      state.searchMode = "Title";
+      console.log("clearing");
     },
     updateRetrievedCourses: (state: any, action: PayloadAction<Course[]>) => {
       state.retrievedCourses = action.payload;
@@ -81,17 +81,17 @@ export const searchSlice = createSlice({
       state: any,
       action: PayloadAction<{ filter: FilterType; value: any }>
     ) => {
-      if (action.payload.filter === 'credits') {
+      if (action.payload.filter === "credits") {
         state.filters.credits = action.payload.value;
-      } else if (action.payload.filter === 'distribution') {
+      } else if (action.payload.filter === "distribution") {
         state.filters.distribution = action.payload.value;
-      } else if (action.payload.filter === 'department') {
+      } else if (action.payload.filter === "department") {
         state.filters.department = action.payload.value;
-      } else if (action.payload.filter === 'tags') {
+      } else if (action.payload.filter === "tags") {
         state.filters.tags = action.payload.value;
-      } else if (action.payload.filter === 'term') {
+      } else if (action.payload.filter === "term") {
         state.filters.term = action.payload.value;
-      } else if (action.payload.filter === 'wi') {
+      } else if (action.payload.filter === "wi") {
         state.filters.wi = action.payload.value;
       }
     },

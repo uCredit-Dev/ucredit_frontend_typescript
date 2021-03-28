@@ -1,5 +1,5 @@
-import React, { useEffect } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
+import React, { useEffect } from "react";
+import { useDispatch, useSelector } from "react-redux";
 import {
   updateSearchTerm,
   updateRetrievedCourses,
@@ -7,29 +7,29 @@ import {
   selectSearchterm,
   selectSearchFilters,
   selectSemester,
-} from '../../slices/searchSlice';
-import axios from 'axios';
+} from "../../slices/searchSlice";
+import axios from "axios";
 import {
   Course,
   Distribution,
   FilterType,
   SemesterType,
-} from '../../commonTypes';
+} from "../../commonTypes";
 
 // TODO: This file could be modularized. Esp with the recurring code for options.
 
-const api = 'https://ucredit-api.herokuapp.com/api';
+const api = "https://ucredit-api.herokuapp.com/api";
 
-const creditFilters = ['None', 0, 1, 2, 3, 4];
-const distributionFilters = ['None', 'N', 'S', 'H', 'Q', 'E'];
-const termFilters: (SemesterType | 'None')[] = [
-  'None',
-  'Fall',
-  'Spring',
-  'Intersession',
-  'Summer',
+const creditFilters = ["None", 0, 1, 2, 3, 4];
+const distributionFilters = ["None", "N", "S", "H", "Q", "E"];
+const termFilters: (SemesterType | "None")[] = [
+  "None",
+  "Fall",
+  "Spring",
+  "Intersession",
+  "Summer",
 ];
-const wiFilters = ['None', 'True', 'False'];
+const wiFilters = ["None", "True", "False"];
 //const tagFilters = ['tag1', 'tag2'];
 
 const Form = () => {
@@ -41,18 +41,18 @@ const Form = () => {
 
   // On opening search, set the term filter to match semester you're adding to.
   useEffect(() => {
-    dispatch(updateSearchFilters({ filter: 'term', value: semester }));
+    dispatch(updateSearchFilters({ filter: "term", value: semester }));
   }, []);
 
   // Search with debouncing of 3/4s of a second.
   useEffect(() => {
     console.log(searchTerm, searchFilters);
     if (
-      searchTerm === '' &&
-      searchFilters.credits === 'None' &&
-      searchFilters.distribution === 'None' &&
-      searchFilters.term === 'None' &&
-      searchFilters.wi === 'None'
+      searchTerm === "" &&
+      searchFilters.credits === "None" &&
+      searchFilters.distribution === "None" &&
+      searchFilters.term === "None" &&
+      searchFilters.wi === "None"
     ) {
       // If search term is empty with no filters, don't show any results.
       dispatch(updateRetrievedCourses([]));
@@ -67,14 +67,14 @@ const Form = () => {
   const performSearch = () => {
     const extras = {
       query: searchTerm,
-      credits: searchFilters.credits === 'None' ? null : searchFilters.credits,
+      credits: searchFilters.credits === "None" ? null : searchFilters.credits,
       areas:
-        searchFilters.distribution === 'None' ? '' : searchFilters.distribution,
-      wi: searchFilters.wi === 'None' ? null : searchFilters.wi,
-      term: searchFilters.term === 'None' ? '' : searchFilters.term,
+        searchFilters.distribution === "None" ? "" : searchFilters.distribution,
+      wi: searchFilters.wi === "None" ? null : searchFilters.wi,
+      term: searchFilters.term === "None" ? "" : searchFilters.term,
     };
     axios
-      .get(api + '/search', {
+      .get(api + "/search", {
         params: extras,
       })
       .then((courses) => {
@@ -97,7 +97,7 @@ const Form = () => {
   // Update searching for certain amounts of credits
   const handleCreditFilterChange = (event: any): void => {
     const params: { filter: FilterType; value: any } = {
-      filter: 'credits',
+      filter: "credits",
       value: event.target.value,
     };
     dispatch(updateSearchFilters(params));
@@ -106,7 +106,7 @@ const Form = () => {
   // Update searching for a certain distribution.
   const handleDistributionFilterChange = (event: any): void => {
     const params: { filter: FilterType; value: any } = {
-      filter: 'distribution',
+      filter: "distribution",
       value: event.target.value,
     };
     dispatch(updateSearchFilters(params));
@@ -115,7 +115,7 @@ const Form = () => {
   // Update searching for a certain term.
   const handleTermFilterChange = (event: any): void => {
     const params: { filter: FilterType; value: any } = {
-      filter: 'term',
+      filter: "term",
       value: event.target.value,
     };
     dispatch(updateSearchFilters(params));
@@ -124,13 +124,13 @@ const Form = () => {
   // Update searching for a writing intensives or not..
   const handleWIFilterChange = (event: any): void => {
     const params: { filter: FilterType; value: any } = {
-      filter: 'wi',
+      filter: "wi",
       value:
-        event.target.value === 'True'
+        event.target.value === "True"
           ? true
-          : event.target.value === 'False'
+          : event.target.value === "False"
           ? false
-          : 'None',
+          : "None",
     };
     dispatch(updateSearchFilters(params));
   };
@@ -138,7 +138,7 @@ const Form = () => {
   // Update searching for a writing intensives or not..
   const handleDepartmentFilterChange = (event: any): void => {
     const params: { filter: FilterType; value: any } = {
-      filter: 'department',
+      filter: "department",
       value: event.target.value,
     };
     dispatch(updateSearchFilters(params));
@@ -147,20 +147,20 @@ const Form = () => {
   // Update searching for a writing intensives or not..
   const handleTagsFilterChange = (event: any): void => {
     const params: { filter: FilterType; value: any } = {
-      filter: 'tags',
+      filter: "tags",
       value: event.target.value,
     };
     dispatch(updateSearchFilters(params));
   };
 
   return (
-    <div className={'p-5'}>
+    <div className={"p-5"}>
       <p>
         <input
           className="border-b-2"
           type="text"
-          placeholder={'Course title or number (ie. Physics, 601.280, etc.)'}
-          style={{ width: '100%' }}
+          placeholder={"Course title or number (ie. Physics, 601.280, etc.)"}
+          style={{ width: "100%" }}
           defaultValue={searchTerm}
           onChange={handleSearchTerm}
         ></input>

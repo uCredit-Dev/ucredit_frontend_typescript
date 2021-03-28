@@ -45,9 +45,10 @@ function Semester({
   return (
     <>
       <div
-        className='bg-gray-semester border-gray-semester flex flex-row align-middle pl-12 w-full h-8 font-normal border-b-4 border-solid'
-        onClick={displayCourses}>
-        <div className='top-1/2 flex flex-row items-center'>
+        className="bg-gray-semester border-gray-semester flex flex-row align-middle pl-12 w-full h-8 font-normal border-b-4 border-solid"
+        onClick={displayCourses}
+      >
+        <div className="top-1/2 flex flex-row items-center">
           {semesterName} ({courses.length}){" "}
           <button onClick={addCourse}>+</button>
         </div>

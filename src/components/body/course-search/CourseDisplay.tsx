@@ -1,11 +1,11 @@
-import React from 'react';
-import { useSelector, useDispatch } from 'react-redux';
-import { Course } from '../../commonTypes';
+import React from "react";
+import { useSelector, useDispatch } from "react-redux";
+import { Course } from "../../commonTypes";
 import {
   selectInspectedCourse,
   updateInspectedCourse,
   clearSearch,
-} from '../../slices/searchSlice';
+} from "../../slices/searchSlice";
 
 // Displays course information once a user selects a course in the search list
 const CourseDisplay = () => {
@@ -15,7 +15,7 @@ const CourseDisplay = () => {
 
   // Function to return a list of clickable prereqs
   const getPreReqs = () =>
-    inspected !== 'None' && inspected.preReq.length > 0
+    inspected !== "None" && inspected.preReq.length > 0
       ? inspected.preReq.map((prereq: Course) => (
           <button
             key={prereq.number}
@@ -25,7 +25,7 @@ const CourseDisplay = () => {
             {prereq.number}
           </button>
         ))
-      : 'No Prereqs!';
+      : "No Prereqs!";
 
   // Function currying to produce a function that would update the store when clicking on prereqs
   const updateInspected = (prereq: Course) => () => {
@@ -38,7 +38,7 @@ const CourseDisplay = () => {
   };
   return (
     <div>
-      {inspected === 'None' ? (
+      {inspected === "None" ? (
         <div>No inspected Courses</div>
       ) : (
         <div className="p-5">

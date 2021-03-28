@@ -27,12 +27,12 @@ function Content() {
   };
 
   return (
-    <div className='flex flex-row mt-content w-full h-auto'>
-      <div className='w-courselist flex flex-col mr-4 h-auto'>
+    <div className="flex flex-row mt-content w-full h-auto">
+      <div className="w-courselist flex flex-col mr-4 h-auto">
         <InfoCard />
         <CourseList />
       </div>
-      <div className='bg-gray-coursebars h-coursebars w-courebars flex-grow mx-8 p-8 border-2 rounded-xl'>
+      <div className="bg-gray-coursebars h-coursebars w-courebars flex-grow mx-8 p-8 border-2 rounded-xl">
         {distributions.map((dis, index) =>
           index !== 0 ? (
             <CourseBar

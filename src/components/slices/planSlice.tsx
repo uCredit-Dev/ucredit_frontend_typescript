@@ -1,7 +1,7 @@
-import { createSlice, PayloadAction } from '@reduxjs/toolkit';
-import { RootState } from '../../appStore/store';
-import { Course, Plan, SemesterType, User, YearType } from '../commonTypes';
-import { testPlan1 } from '../testObjs';
+import { createSlice, PayloadAction } from "@reduxjs/toolkit";
+import { RootState } from "../../appStore/store";
+import { Course, Plan, SemesterType, User, YearType } from "../commonTypes";
+import { testPlan1 } from "../testObjs";
 
 const initialState = {
   currentPlan: testPlan1,
@@ -11,7 +11,7 @@ const initialState = {
 // function addNewCourse(state: any, action: PayloadAction<NewCourse>) {}
 
 export const planSlice = createSlice({
-  name: 'plan',
+  name: "plan",
   initialState,
   reducers: {
     // updatePlan: (state: any, action: PayloadAction<UpdatePackage>) => {
