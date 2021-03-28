@@ -17,7 +17,11 @@ const CourseDisplay = () => {
   const getPreReqs = () =>
     inspected !== 'None' && inspected.preReq.length > 0
       ? inspected.preReq.map((prereq: Course) => (
-          <button className="bg-gray-400" onClick={updateInspected(prereq)}>
+          <button
+            key={prereq.number}
+            className="bg-gray-400"
+            onClick={updateInspected(prereq)}
+          >
             {prereq.number}
           </button>
         ))
@@ -41,6 +45,12 @@ const CourseDisplay = () => {
           <p>{inspected.title}</p>
           <p>{inspected.number}</p>
           <p>{inspected.credits} Credits</p>
+          <p>Areas: {inspected.areas}</p>
+          <p>
+            {inspected.terms.map((term) => (
+              <div>{term}</div>
+            ))}
+          </p>
           <p>{inspected.bio}</p>
           <p>
             <p className="border-b-2">Prerequisites</p> <p>{getPreReqs()}</p>

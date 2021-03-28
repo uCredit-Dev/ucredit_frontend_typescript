@@ -12,7 +12,7 @@ import Form from './Form';
 import SearchList from './SearchList';
 
 const years: YearType[] = ['Freshman', 'Sophomore', 'Junior', 'Senior'];
-const semester: SemesterType[] = ['Fall', 'Spring', 'Summer', 'Winter'];
+const semester: SemesterType[] = ['Fall', 'Spring', 'Summer', 'Intersession'];
 
 // Search component when someone clicks a search action.
 const Search = () => {
@@ -67,13 +67,17 @@ const Search = () => {
           Currently selecting for{' '}
           <select onChange={handleYearChange} defaultValue={searchYear}>
             {years.map((year) => (
-              <option value={year}>{year}</option>
+              <option key={year} value={year}>
+                {year}
+              </option>
             ))}
           </select>{' '}
           year,
           <select onChange={handleSemesterChange} defaultValue={searchSemester}>
             {semester.map((semester) => (
-              <option value={semester}>{semester}</option>
+              <option key={semester} value={semester}>
+                {semester}
+              </option>
             ))}
           </select>{' '}
           semester

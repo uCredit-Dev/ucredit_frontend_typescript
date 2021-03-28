@@ -30,7 +30,7 @@ function Year({ yearName, courses, detailName, setDetailName }: semesterProps) {
         setSpringCourses([...springCourses, course]);
       } else if (course.term.includes("Summer")) {
         setSummerCourses([...summerCourses, course]);
-      } else if (course.term.includes("Winter")) {
+      } else if (course.term.includes('Intersession')) {
         setWinterCourses([...winterCourses, course]);
       }
     });
@@ -65,7 +65,7 @@ function Year({ yearName, courses, detailName, setDetailName }: semesterProps) {
             setDetailName={setDetailName}
           />
           <Semester
-            semesterName={"Winter"}
+            semesterName={'Intersession'}
             semesterYear={yearName}
             courses={winterCourses}
             detailName={detailName}

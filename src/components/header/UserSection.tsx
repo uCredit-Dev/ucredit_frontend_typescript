@@ -15,10 +15,19 @@ function UserSection() {
 
   useEffect(() => {
     //retrieveUser();
-    axios
-      .get(api + '/login')
-      .then((retrievedUser) => console.log('retrieved ', retrievedUser))
-      .catch((err) => console.log(err));
+    // fetch(api + '/login')
+    //   .then((retrieved) => {
+    //     // Redirect url?
+    //     const url = retrieved.url;
+    //     window.location.href = url; // redirect to sso login?
+    //   })
+    //   .catch((err) => console.log('ERROR: ', err.message));
+
+    // axios
+    //   .get(api + '/login')
+    //   .then((retrievedUser) => {console.log('retrieved ', retrievedUser)})
+    //   .catch((err) => console.log('ERROR: ', err.message));
+
     // Get test user
     dispatch(updateUser(testUser));
   }, []);
