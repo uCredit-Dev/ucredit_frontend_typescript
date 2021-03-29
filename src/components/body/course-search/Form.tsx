@@ -9,15 +9,9 @@ import {
   selectSemester,
 } from "../../slices/searchSlice";
 import axios from "axios";
-import {
-  Course,
-  Distribution,
-  FilterType,
-  SemesterType,
-} from "../../commonTypes";
+import { Course, FilterType, SemesterType } from "../../commonTypes";
 
 // TODO: This file could be modularized. Esp with the recurring code for options.
-
 const api = "https://ucredit-api.herokuapp.com/api";
 
 const creditFilters = ["None", 0, 1, 2, 3, 4];

@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import Year from "./Year";
 import { useSelector } from "react-redux";
-import { selectCurrentPlan } from "../../slices/planSlice";
+import { selectPlan } from "../../slices/userSlice";
 
 function CourseList() {
   // Name of the course that is in the popout. This state is passed to the its children, where it will get updated.
@@ -9,38 +9,37 @@ function CourseList() {
   const [detailName, setDetailName] = useState<string>("");
 
   // Setting up redux
-  const currentPlan = useSelector(selectCurrentPlan);
+  const currentPlan = useSelector(selectPlan);
 
-  // Updating yearly course plans with currentPlan courses.
-  const freshmanCourses = currentPlan.freshman;
-  const sophomoreCourses = currentPlan.sophomore;
-  const juniorCourses = currentPlan.junior;
-  const seniorCourses = currentPlan.senior;
+  const freshmanCourseIDs = currentPlan.freshman;
+  const sophomoreCourseIDs = currentPlan.sophomore;
+  const juniorCourseIDs = currentPlan.junior;
+  const seniorCourseIDs = currentPlan.senior;
 
   return (
-    <div className='flex flex-col mx-8 w-full overflow-y-auto'>
-      <div className='flex flex-row justify-between w-full h-auto'>
+    <div className="flex flex-col mx-8 w-full overflow-y-auto">
+      <div className="flex flex-row justify-between w-full h-auto">
         <Year
           yearName={"Freshman"}
-          courses={freshmanCourses}
+          courseIDs={freshmanCourseIDs}
           detailName={detailName}
           setDetailName={setDetailName}
         />
         <Year
           yearName={"Sophomore"}
-          courses={sophomoreCourses}
+          courseIDs={sophomoreCourseIDs}
           detailName={detailName}
           setDetailName={setDetailName}
         />
         <Year
           yearName={"Junior"}
-          courses={juniorCourses}
+          courseIDs={juniorCourseIDs}
           detailName={detailName}
           setDetailName={setDetailName}
         />
         <Year
           yearName={"Senior"}
-          courses={seniorCourses}
+          courseIDs={seniorCourseIDs}
           detailName={detailName}
           setDetailName={setDetailName}
         />

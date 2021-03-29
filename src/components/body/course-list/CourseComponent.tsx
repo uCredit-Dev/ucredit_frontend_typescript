@@ -36,21 +36,23 @@ function CourseComponent({ course, detailName, setDetailName }: courseProps) {
   return (
     <>
       <div
-        className='bg-gray-coursecard w-semesterheading flex flex-col mt-4 p-4 h-auto rounded-2xl'
-        onClick={displayCourses}>
+        className="flex flex-col mt-4 p-4 w-semesterheading h-auto bg-gray-coursecard rounded-2xl"
+        onClick={displayCourses}
+      >
         <div>{course.title}</div>
         <div>{course.number}</div>
         <div>
-          {course.distribution_ids}, {course.credits}
+          {/* {course.distribution_ids.map(id =><div>{id.}</div>)}, Can't display distributions as they aren't retrieved yet*/}
+          {/* {course.credits} */}
         </div>
       </div>
-      {course.title === detailName ? (
+      {/* {course.title === detailName ? (
         <CoursePopout
           mainColor={mainColor}
           subColor={subColor}
           course={course}
         />
-      ) : null}
+      ) : null} */}
     </>
   );
 }

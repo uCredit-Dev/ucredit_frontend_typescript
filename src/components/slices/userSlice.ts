@@ -1,6 +1,6 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { AppThunk, RootState } from "../../appStore/store";
-import { Course, Plan, SemesterType, User, YearType } from "../commonTypes";
+import { Plan, User } from "../commonTypes";
 
 // addNewCourse payload type. Not being used.
 // type NewCourse = {
@@ -10,27 +10,44 @@ import { Course, Plan, SemesterType, User, YearType } from "../commonTypes";
 //   Plan: Plan;
 // };
 
-const initialState: User = {
-  _id: "",
-  firstName: "",
-  lastName: "",
-  email: "",
-  affiliation: "",
-  grade: "",
-  school: "",
-  plans: [],
+type UserSlice = {
+  currentUser: User;
+  currentPlan: Plan;
+};
+
+const initialState: UserSlice = {
+  currentUser: {
+    _id: "",
+    firstName: "",
+    lastName: "",
+    email: "",
+    affiliation: "",
+    grade: "",
+    school: "",
+    plan_ids: [],
+  },
+  currentPlan: {
+    name: "",
+    majors: [],
+    freshman: [],
+    sophomore: [],
+    junior: [],
+    senior: [],
+    distribution_ids: [],
+    user_id: "",
+  },
 };
 
 // Updates all user info from database. This function should be called after an axios get on the user routes.
 function userUpdate(state: any, action: PayloadAction<User>) {
-  state._id = action.payload._id;
-  state.firstName = action.payload.firstName;
-  state.lastName = action.payload.lastName;
-  state.email = action.payload.email;
-  state.grade = action.payload.grade;
-  state.school = action.payload.school;
-  state.affiliation = action.payload.affiliation;
-  state.plans = action.payload.plans;
+  state.currentUser._id = action.payload._id;
+  state.currentUser.firstName = action.payload.firstName;
+  state.currentUser.lastName = action.payload.lastName;
+  state.currentUser.email = action.payload.email;
+  state.currentUser.grade = action.payload.grade;
+  state.currentUser.school = action.payload.school;
+  state.currentUser.affiliation = action.payload.affiliation;
+  state.currentUser.plan_ids = action.payload.plan_ids;
 }
 
 // Not being used as we can update database when user adds course, and call the reusable update user function for any updates to display
@@ -41,11 +58,14 @@ export const userSlice = createSlice({
   initialState,
   reducers: {
     updateUser: userUpdate,
+    updateSelectedPlan: (state: any, action: PayloadAction<Plan>) => {
+      state.currentPlan = action.payload;
+    },
     // addCourse: addNewCourse,
   },
 });
 
-export const { updateUser } = userSlice.actions;
+export const { updateUser, updateSelectedPlan } = userSlice.actions;
 
 // Asynch login with thunk.
 export const loginAsync = (user: Promise<User>): AppThunk => (dispatch) => {
@@ -56,7 +76,7 @@ export const loginAsync = (user: Promise<User>): AppThunk => (dispatch) => {
 
 // The function below is called a selector and allows us to select a value from
 // the state. Please make a selector for each state :)
-export const selectUser = (state: RootState) => state.user;
-export const selectFirstname = (state: RootState) => state.user.firstName;
+export const selectUser = (state: RootState) => state.user.currentUser;
+export const selectPlan = (state: RootState) => state.user.currentPlan;
 
 export default userSlice.reducer;
