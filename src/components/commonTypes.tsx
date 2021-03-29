@@ -36,6 +36,7 @@ export type UserCourse = {
 };
 
 export type Plan = {
+  _id: string;
   name: string;
   majors: string[];
   freshman: string[];

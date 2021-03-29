@@ -27,6 +27,7 @@ const initialState: UserSlice = {
     plan_ids: [],
   },
   currentPlan: {
+    _id: "noPlan",
     name: "",
     majors: [],
     freshman: [],
