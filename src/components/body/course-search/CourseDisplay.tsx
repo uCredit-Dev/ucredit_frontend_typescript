@@ -1,11 +1,14 @@
+import axios from "axios";
 import React from "react";
 import { useSelector, useDispatch } from "react-redux";
+import { isPropertyAccessOrQualifiedName } from "typescript";
 import { Course } from "../../commonTypes";
 import {
   selectInspectedCourse,
   updateInspectedCourse,
   clearSearch,
 } from "../../slices/searchSlice";
+const api = "https://ucredit-api.herokuapp.com/api";
 
 // Displays course information once a user selects a course in the search list
 const CourseDisplay = () => {
@@ -16,20 +19,31 @@ const CourseDisplay = () => {
   // Function to return a list of clickable prereqs
   const getPreReqs = () =>
     inspected !== "None" && inspected.preReq.length > 0
-      ? inspected.preReq.map((prereq: Course) => (
-          <button
-            key={prereq.number}
-            className="bg-gray-400"
-            onClick={updateInspected(prereq)}
-          >
-            {prereq.number}
-          </button>
-        ))
+      ? inspected.preReq.map(
+          (prereq: { title: string; number: string; credits: string }) => (
+            <button
+              key={prereq.number}
+              className="bg-gray-400"
+              onClick={updateInspected(prereq)}
+            >
+              {prereq.number}
+            </button>
+          )
+        )
       : "No Prereqs!";
 
   // Function currying to produce a function that would update the store when clicking on prereqs
-  const updateInspected = (prereq: Course) => () => {
-    dispatch(updateInspectedCourse(prereq));
+  const updateInspected = (prereq: {
+    title: string;
+    number: string;
+    credits: string;
+  }) => () => {
+    axios
+      .get(api + "/search", { params: { number: prereq.number } })
+      .then((retrieved) => {
+        const retrievedCourse = retrieved.data.data;
+        dispatch(updateInspectedCourse(retrievedCourse));
+      });
   };
 
   // Adds course

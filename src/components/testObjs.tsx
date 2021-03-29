@@ -10,7 +10,8 @@ export const testDistributionTot: Distribution = {
   current: 56,
   satisfied: false,
   courses: [],
-  userId: "testUser1",
+  user_id: "testUser1",
+  plan_id: "testPlan1",
 };
 
 export const testDistributionElec: Distribution = {
@@ -21,7 +22,8 @@ export const testDistributionElec: Distribution = {
   current: 10,
   satisfied: false,
   courses: [],
-  userId: "testUser1",
+  user_id: "testUser1",
+  plan_id: "testPlan1",
 };
 
 export const testDistributionCS: Distribution = {
@@ -32,7 +34,8 @@ export const testDistributionCS: Distribution = {
   current: 15,
   satisfied: false,
   courses: [],
-  userId: "testUser1",
+  user_id: "testUser1",
+  plan_id: "testPlan1",
 };
 
 export const testDistributionMath: Distribution = {
@@ -43,7 +46,8 @@ export const testDistributionMath: Distribution = {
   current: 8,
   satisfied: false,
   courses: [],
-  userId: "testUser1",
+  user_id: "testUser1",
+  plan_id: "testPlan1",
 };
 
 export const testDistributionNS: Distribution = {
@@ -54,7 +58,8 @@ export const testDistributionNS: Distribution = {
   current: 8,
   satisfied: false,
   courses: [],
-  userId: "testUser1",
+  user_id: "testUser1",
+  plan_id: "testPlan1",
 };
 
 export const testDistributionHumanities: Distribution = {
@@ -65,7 +70,8 @@ export const testDistributionHumanities: Distribution = {
   current: 8,
   satisfied: false,
   courses: [],
-  userId: "testUser1",
+  user_id: "testUser1",
+  plan_id: "testPlan1",
 };
 
 export const testCourse1: Course = {
@@ -97,6 +103,9 @@ export const testCourse2: Course = {
 };
 
 export const userTestCourse1: UserCourse = {
+  _id: "userTestCourse1",
+  user_id: "mliu78",
+  plan_id: "testPlan1",
   title: testCourse1.title,
   term: "Fall",
   number: testCourse1.number,
@@ -107,11 +116,11 @@ export const userTestCourse1: UserCourse = {
   wi: testCourse1.wi,
   taken: false,
   ratings: [],
-  distribution_ids: "testDistribution4",
-  user_id: "mliu78",
+  distribution_ids: [testDistributionNS._id, testDistributionTot._id],
 };
 
 export const userTestCourse2: UserCourse = {
+  _id: "userTestCourse2",
   title: testCourse2.title,
   term: "Spring",
   number: testCourse2.number,
@@ -122,23 +131,44 @@ export const userTestCourse2: UserCourse = {
   wi: testCourse2.wi,
   taken: false,
   ratings: [],
-  distribution_ids: "testDistribution5",
+  plan_id: "testPlan1",
+  distribution_ids: [testDistributionHumanities._id, testDistributionTot._id],
   user_id: "mliu78",
 };
 
 export const testPlan1: Plan = {
+  name: "testPlan1",
+  user_id: "mliu78",
   majors: ["Computer Science"],
-  freshman: [userTestCourse1],
+  freshman: [userTestCourse1._id],
   sophomore: [],
-  junior: [userTestCourse2],
+  junior: [userTestCourse2._id],
   senior: [],
-  distributions: [
-    testDistributionTot,
-    testDistributionCS,
-    testDistributionElec,
-    testDistributionHumanities,
-    testDistributionMath,
-    testDistributionNS,
+  distribution_ids: [
+    testDistributionTot._id,
+    testDistributionCS._id,
+    testDistributionElec._id,
+    testDistributionHumanities._id,
+    testDistributionMath._id,
+    testDistributionNS._id,
+  ],
+};
+
+export const testPlan2: Plan = {
+  name: "testPlan2",
+  user_id: "mliu78",
+  majors: ["Computer Science"],
+  freshman: [],
+  sophomore: [userTestCourse1._id],
+  junior: [],
+  senior: [userTestCourse2._id],
+  distribution_ids: [
+    testDistributionTot._id,
+    testDistributionCS._id,
+    testDistributionElec._id,
+    testDistributionHumanities._id,
+    testDistributionMath._id,
+    testDistributionNS._id,
   ],
 };
 
@@ -150,7 +180,7 @@ export const testUser: User = {
   affiliation: "STUDENT",
   grade: "AE UG Sophomore",
   school: "Whiting School of Engineering",
-  plans: [testPlan1],
+  plan_ids: [],
 };
 
 export const testMajorDistributions = [

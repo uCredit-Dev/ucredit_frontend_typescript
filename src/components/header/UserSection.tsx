@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { selectUser, selectFirstname } from "../slices/userSlice";
+import { selectUser } from "../slices/userSlice";
 import { useSelector } from "react-redux";
 import axios from "axios";
 import { User } from "../commonTypes";
@@ -11,7 +11,6 @@ import clsx from "clsx";
 const api = "https://ucredit-api.herokuapp.com/api";
 
 function UserSection() {
-  const firstName = useSelector(selectFirstname);
   const user = useSelector(selectUser);
   const dispatch = useDispatch();
 
@@ -37,9 +36,9 @@ function UserSection() {
   }, []);
 
   return (
-    <div className='flex flex-row items-center justify-end w-full h-full'>
-      <div className='flex flex-row items-center justify-center mr-3 w-11 h-11 bg-white rounded-full'>
-        <UserSvg className='w-8 h-8' />
+    <div className="flex flex-row items-center justify-end w-full h-full">
+      <div className="flex flex-row items-center justify-center mr-3 w-11 h-11 bg-white rounded-full">
+        <UserSvg className="w-8 h-8" />
       </div>
       <div
         className={clsx(
@@ -47,7 +46,8 @@ function UserSection() {
           { "ring-2 ring-green-200": logoutDown }
         )}
         onMouseDown={() => setLogoutDown(true)}
-        onMouseUp={() => setLogoutDown(false)}>
+        onMouseUp={() => setLogoutDown(false)}
+      >
         LOG OUT
       </div>
     </div>
