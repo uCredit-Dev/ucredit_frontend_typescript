@@ -13,6 +13,7 @@ import { Plan, User } from "../commonTypes";
 type UserSlice = {
   currentUser: User;
   currentPlan: Plan;
+  planList: Plan[];
 };
 
 const initialState: UserSlice = {
@@ -37,6 +38,7 @@ const initialState: UserSlice = {
     distribution_ids: [],
     user_id: "",
   },
+  planList: [],
 };
 
 // Updates all user info from database. This function should be called after an axios get on the user routes.
@@ -62,11 +64,18 @@ export const userSlice = createSlice({
     updateSelectedPlan: (state: any, action: PayloadAction<Plan>) => {
       state.currentPlan = action.payload;
     },
+    updatePlanList: (state: any, action: PayloadAction<Plan[]>) => {
+      state.planList = action.payload;
+    },
     // addCourse: addNewCourse,
   },
 });
 
-export const { updateUser, updateSelectedPlan } = userSlice.actions;
+export const {
+  updateUser,
+  updateSelectedPlan,
+  updatePlanList,
+} = userSlice.actions;
 
 // Asynch login with thunk.
 export const loginAsync = (user: Promise<User>): AppThunk => (dispatch) => {
@@ -79,5 +88,6 @@ export const loginAsync = (user: Promise<User>): AppThunk => (dispatch) => {
 // the state. Please make a selector for each state :)
 export const selectUser = (state: RootState) => state.user.currentUser;
 export const selectPlan = (state: RootState) => state.user.currentPlan;
+export const selectPlanList = (state: RootState) => state.user.planList;
 
 export default userSlice.reducer;
