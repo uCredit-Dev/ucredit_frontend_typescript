@@ -18,10 +18,10 @@ const creditFilters = ["None", 0, 1, 2, 3, 4];
 const distributionFilters = ["None", "N", "S", "H", "Q", "E"];
 const termFilters: (SemesterType | "None")[] = [
   "None",
-  "Fall",
-  "Spring",
-  "Intersession",
-  "Summer",
+  "fall",
+  "spring",
+  "intersession",
+  "summer",
 ];
 const wiFilters = ["None", "True", "False"];
 //const tagFilters = ['tag1', 'tag2'];

@@ -12,7 +12,7 @@ import Form from "./Form";
 import SearchList from "./SearchList";
 
 const years: YearType[] = ["Freshman", "Sophomore", "Junior", "Senior"];
-const semester: SemesterType[] = ["Fall", "Spring", "Summer", "Intersession"];
+const semester: SemesterType[] = ["fall", "spring", "summer", "intersession"];
 
 // Search component when someone clicks a search action.
 const Search = () => {
@@ -56,13 +56,15 @@ const Search = () => {
           }}
           onClick={() => {
             dispatch(updateSearchStatus(false));
-          }}></div>
+          }}
+        ></div>
       </div>
 
       {/* Search area */}
       <div
         className={"flex fixed bg-red-200 rounded-xl p-8 md:p-0 z-20"}
-        style={{ ...searchBodyStyle, opacity: searchOpacity / 100 }}>
+        style={{ ...searchBodyStyle, opacity: searchOpacity / 100 }}
+      >
         <div>
           Currently selecting for{" "}
           <select onChange={handleYearChange} defaultValue={searchYear}>
@@ -85,7 +87,8 @@ const Search = () => {
         <div className={`flex flex-1 bg-white rounded-xl p-8 md:p-0`}>
           <div
             className={"flex flex-col rounded-xl  bg-gray-200"}
-            style={{ width: "40%", height: "100%" }}>
+            style={{ width: "40%", height: "100%" }}
+          >
             <Form />
             <SearchList />
             <button
@@ -94,7 +97,8 @@ const Search = () => {
               }}
               onMouseLeave={() => {
                 setSearchOpacity(100);
-              }}>
+              }}
+            >
               Hide search
             </button>
           </div>
