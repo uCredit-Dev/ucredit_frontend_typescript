@@ -137,6 +137,7 @@ export const userTestCourse2: UserCourse = {
 };
 
 export const testPlan1: Plan = {
+  _id: "testPlan1",
   name: "testPlan1",
   user_id: "mliu78",
   majors: ["Computer Science"],
@@ -155,6 +156,7 @@ export const testPlan1: Plan = {
 };
 
 export const testPlan2: Plan = {
+  _id: "testPlan2",
   name: "testPlan2",
   user_id: "mliu78",
   majors: ["Computer Science"],

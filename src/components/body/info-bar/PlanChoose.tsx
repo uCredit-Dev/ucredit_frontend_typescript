@@ -37,12 +37,14 @@ const PlanChoose = () => {
   }, [user, newPlan]);
 
   // Makes plan dropdown options
-  const getPlanOptions = () =>
-    plans.map((plan) => (
-      <option key={plan.name} value={plan.name}>
+  const getPlanOptions = () => {
+    let id = 0;
+    return plans.map((plan) => (
+      <option key={id++} value={plan.name}>
         {plan.name}
       </option>
     ));
+  };
 
   // Handles onClick for when a dropdown option is selected
   const handlePlanChange = (event: any) => {
