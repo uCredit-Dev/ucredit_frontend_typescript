@@ -73,7 +73,7 @@ export type Distribution = {
 
 export type YearType = "Freshman" | "Sophomore" | "Junior" | "Senior";
 
-export type SemesterType = "Fall" | "Spring" | "Summer" | "Intersession";
+export type SemesterType = "fall" | "spring" | "summer" | "intersession";
 
 export type FilterType =
   | "credits"

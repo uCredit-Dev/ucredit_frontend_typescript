@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import { UserCourse } from "../../commonTypes";
 import { getColors } from "../../assets";
 import CoursePopout from "./CoursePopout";
+const api = "https://ucredit-api.herokuapp.com/api";
 
 type courseProps = {
   course: UserCourse;
@@ -33,6 +34,13 @@ function CourseComponent({ course, detailName, setDetailName }: courseProps) {
     console.log("click!");
   };
 
+  const deleteCourse = () => {
+    fetch(api + "/courses/" + course._id, { method: "DELETE" }).then((resp) => {
+      console.log(resp);
+      // TODO: Update plan
+    });
+  };
+
   return (
     <>
       <div
@@ -44,6 +52,7 @@ function CourseComponent({ course, detailName, setDetailName }: courseProps) {
         <div>
           {/* {course.distribution_ids.map(id =><div>{id.}</div>)}, Can't display distributions as they aren't retrieved yet*/}
           {/* {course.credits} */}
+          <button onClick={deleteCourse}>delete</button>
         </div>
       </div>
       {/* {course.title === detailName ? (

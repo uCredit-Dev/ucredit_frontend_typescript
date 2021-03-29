@@ -1,11 +1,19 @@
 import axios from "axios";
 import React from "react";
 import { useSelector, useDispatch } from "react-redux";
+import { Course, UserCourse } from "../../commonTypes";
 import {
   selectInspectedCourse,
   updateInspectedCourse,
   clearSearch,
+  selectSemester,
+  selectYear,
 } from "../../slices/searchSlice";
+import {
+  selectUser,
+  selectPlan,
+  updateSelectedPlan,
+} from "../../slices/userSlice";
 const api = "https://ucredit-api.herokuapp.com/api";
 
 // Displays course information once a user selects a course in the search list
@@ -13,6 +21,10 @@ const CourseDisplay = () => {
   // Redux Setup
   const inspected = useSelector(selectInspectedCourse);
   const dispatch = useDispatch();
+  const user = useSelector(selectUser);
+  const semester = useSelector(selectSemester);
+  const year = useSelector(selectYear);
+  const currentPlan = useSelector(selectPlan);
 
   // Function to return a list of clickable prereqs
   const getPreReqs = () =>
@@ -46,7 +58,46 @@ const CourseDisplay = () => {
 
   // Adds course
   const addCourse = () => {
-    dispatch(clearSearch());
+    // Take inspected, turn it into a user course, and add it to user courses
+    if (inspected !== "None") {
+      let newUserCourse: UserCourse;
+      const body = {
+        user_id: user._id,
+        title: inspected.title,
+        term: semester.toLowerCase(),
+        year: year.toLowerCase(),
+        credits: inspected.credits,
+        distribution_ids: [],
+        plan_id: currentPlan._id,
+      };
+
+      fetch(api + "/courses", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(body),
+      }).then((retrieved) => {
+        retrieved.json().then((data) => {
+          console.log("retrievedJson is ", data);
+          newUserCourse = { ...data.data };
+          const newPlan = { ...currentPlan };
+          console.log(newPlan);
+          console.log(newUserCourse);
+          if (year === "Freshman") {
+            newPlan.freshman.push(newUserCourse._id);
+          } else if (year === "Sophomore") {
+            newPlan.sophomore.push(newUserCourse._id);
+          } else if (year === "Junior") {
+            newPlan.junior.push(newUserCourse._id);
+          } else {
+            newPlan.senior.push(newUserCourse._id);
+          }
+          dispatch(updateSelectedPlan(newPlan));
+        });
+      });
+      dispatch(clearSearch());
+    }
   };
   return (
     <div>

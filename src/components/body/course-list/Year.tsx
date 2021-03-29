@@ -5,6 +5,8 @@ import { ReactComponent as MoreSvg } from "../../svg/more.svg";
 import { userTestCourse1, userTestCourse2 } from "../../testObjs";
 import { useSelector } from "react-redux";
 import { selectPlan } from "../../slices/userSlice";
+import axios from "axios";
+const api = "https://ucredit-api.herokuapp.com/api";
 
 type semesterProps = {
   yearName: YearType;
@@ -27,21 +29,22 @@ function Year({
   const [display, setDisplay] = useState<boolean>(true);
   const [courses, setCourses] = useState<UserCourse[]>([]);
 
-  useEffect(() => {
+  const getCourses = () => {
     const totalCourses: UserCourse[] = [];
+    console.log("courses are", courseIDs);
     courseIDs.forEach((courseId) => {
       // TODO: fetch each course
-      // axios.get(api + "/courses/" + courseId).then((retrieved) => {
-      //   const data = retrieved.data.data;
-      //   totalCourses.push(data);
-      // });
-      if (courseId.includes("userTestCourse1")) {
-        totalCourses.push(userTestCourse1);
-      } else if (courseId.includes("userTestCourse2")) {
-        totalCourses.push(userTestCourse2);
-      }
+      axios.get(api + "/courses/" + courseId).then((retrieved) => {
+        const data = retrieved.data.data;
+        totalCourses.push(data);
+        console.log("updated?", totalCourses);
+        setCourses([...totalCourses]);
+      });
     });
-    setCourses(totalCourses);
+  };
+
+  useEffect(() => {
+    getCourses();
   }, [courseIDs]);
 
   useEffect(() => {
@@ -51,13 +54,13 @@ function Year({
     const parsedIntersessionCourses: UserCourse[] = [];
     const parsedSummerCourses: UserCourse[] = [];
     courses.forEach((course) => {
-      if (course.term === "Fall") {
+      if (course.term === "fall") {
         parsedFallCourses.push(course);
-      } else if (course.term === "Spring") {
+      } else if (course.term === "spring") {
         parsedSpringCourses.push(course);
-      } else if (course.term === "Summer") {
+      } else if (course.term === "summer") {
         parsedSummerCourses.push(course);
-      } else if (course.term === "Intersession") {
+      } else if (course.term === "intersession") {
         parsedIntersessionCourses.push(course);
       }
     });
@@ -65,7 +68,7 @@ function Year({
     setSpringCourses(parsedSpringCourses);
     setWinterCourses(parsedIntersessionCourses);
     setSummerCourses(parsedSummerCourses);
-  }, [courses]);
+  }, [courses.length]);
 
   // Displays dropdown showing semester categories
   const displaySemesters = () => {
@@ -84,28 +87,28 @@ function Year({
       {display ? (
         <div className="flex flex-col items-center">
           <Semester
-            semesterName="Fall"
+            semesterName="fall"
             semesterYear={yearName}
             courses={fallCourses}
             detailName={detailName}
             setDetailName={setDetailName}
           />
           <Semester
-            semesterName="Spring"
+            semesterName="spring"
             semesterYear={yearName}
             courses={springCourses}
             detailName={detailName}
             setDetailName={setDetailName}
           />
           <Semester
-            semesterName="Intersession"
+            semesterName="intersession"
             semesterYear={yearName}
             courses={winterCourses}
             detailName={detailName}
             setDetailName={setDetailName}
           />
           <Semester
-            semesterName="Summer"
+            semesterName="summer"
             semesterYear={yearName}
             courses={summerCourses}
             detailName={detailName}

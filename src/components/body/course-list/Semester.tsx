@@ -51,7 +51,14 @@ function Semester({
       >
         <div className="flex flex-row items-center justify-between px-2 py-1">
           <div className="w-auto h-auto">
-            {semesterName} ({courses.length}){" "}
+            {semesterName === "fall"
+              ? "Fall"
+              : semesterName === "intersession"
+              ? "Intersession"
+              : semesterName === "spring"
+              ? "Spring"
+              : "Summer"}{" "}
+            ({courses.length}){" "}
           </div>
           {/* <div
             className="flex flex-row items-center justify-center w-6 h-6"
@@ -66,7 +73,6 @@ function Semester({
           <div>
             {courses.map((course) => (
               <CourseComponent
-                key={course.title}
                 course={course}
                 detailName={detailName}
                 setDetailName={setDetailName}
