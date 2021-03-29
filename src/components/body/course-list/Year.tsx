@@ -3,8 +3,8 @@ import Semester from "./Semester";
 import { UserCourse, YearType } from "../../commonTypes";
 import { ReactComponent as MoreSvg } from "../../svg/more.svg";
 import { userTestCourse1, userTestCourse2 } from "../../testObjs";
-import axios from "axios";
-const api = "https://ucredit-api.herokuapp.com/api";
+import { useSelector } from "react-redux";
+import { selectPlan } from "../../slices/userSlice";
 
 type semesterProps = {
   yearName: YearType;
