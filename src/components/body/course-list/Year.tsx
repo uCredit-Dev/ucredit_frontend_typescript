@@ -29,6 +29,9 @@ function Year({
   const [display, setDisplay] = useState<boolean>(true);
   const [courses, setCourses] = useState<UserCourse[]>([]);
 
+  // Setting up redux
+  const currentPlan = useSelector(selectPlan);
+
   const getCourses = () => {
     const totalCourses: UserCourse[] = [];
     console.log("courses are", courseIDs);
@@ -44,8 +47,9 @@ function Year({
   };
 
   useEffect(() => {
+    setCourses([]);
     getCourses();
-  }, [courseIDs]);
+  }, [currentPlan]);
 
   useEffect(() => {
     // For each of the user's courses for this year, put them in their respective semesters.
@@ -68,7 +72,7 @@ function Year({
     setSpringCourses(parsedSpringCourses);
     setWinterCourses(parsedIntersessionCourses);
     setSummerCourses(parsedSummerCourses);
-  }, [courses.length]);
+  }, [courses.length, currentPlan]);
 
   // Displays dropdown showing semester categories
   const displaySemesters = () => {
