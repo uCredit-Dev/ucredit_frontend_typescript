@@ -85,13 +85,13 @@ const CourseDisplay = () => {
           console.log(newPlan);
           console.log(newUserCourse);
           if (year === "Freshman") {
-            newPlan.freshman.push(newUserCourse._id);
+            newPlan.freshman = [...newPlan.freshman, newUserCourse._id];
           } else if (year === "Sophomore") {
-            newPlan.sophomore.push(newUserCourse._id);
+            newPlan.sophomore = [...newPlan.sophomore, newUserCourse._id];
           } else if (year === "Junior") {
-            newPlan.junior.push(newUserCourse._id);
+            newPlan.junior = [...newPlan.junior, newUserCourse._id];
           } else {
-            newPlan.senior.push(newUserCourse._id);
+            newPlan.senior = [...newPlan.senior, newUserCourse._id];
           }
           dispatch(updateSelectedPlan(newPlan));
         });
