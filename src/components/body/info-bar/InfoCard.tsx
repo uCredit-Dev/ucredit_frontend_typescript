@@ -54,8 +54,16 @@ const InfoCard: React.FC<any> = () => {
       console.log("plan updated", resp);
       const newPlan = { ...currentPlan, name: planName };
       dispatch(updateSelectedPlan(newPlan));
-      // dispatch(updatePlanList());
+      // TODO: There are many codes like this to update the planList in other functions. we need to generalize or simplify this sometime. either as a common function or a function on the userSlice
+      let newPlanList = [...planList];
+      for (let i = 0; i < planList.length; i++) {
+        if (newPlanList[i]._id === currentPlan._id) {
+          newPlanList[i] = { ...newPlan };
+        }
+      }
+      console.log("after name change list is ", newPlanList);
       setEditName(false);
+      dispatch(updatePlanList(newPlanList));
     });
   };
 
@@ -74,23 +82,31 @@ const InfoCard: React.FC<any> = () => {
       updatedList = updatedList.filter((plan) => {
         return plan._id === currentPlan._id;
       });
+      // If it is length 1, autogenerate a new plan. Otherwise, update the list.
       if (planList.length === 1) {
-        dispatch(
-          updateSelectedPlan({
-            _id: "noPlan",
-            name: "",
-            majors: [],
-            freshman: [],
-            sophomore: [],
-            junior: [],
-            senior: [],
-            distribution_ids: [],
-            user_id: "",
-          })
-        );
+        console.log("user is ", user);
+        const body = {
+          name: "Unnamed Plan",
+          user_id: user._id,
+          majors: ["Computer Science"],
+        };
+        fetch(api + "/plans", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(body),
+        }).then((retrieved) => {
+          retrieved.json().then((data) => {
+            console.log("retrievedJson is ", data);
+            dispatch(updateSelectedPlan(data.data));
+            updatedList[0] = data.data;
+          });
+        });
       } else {
         dispatch(updateSelectedPlan(updatedList[0]));
       }
+      console.log("updatedList is ", updatedList);
       dispatch(updatePlanList(updatedList));
 
       // TODO: update user

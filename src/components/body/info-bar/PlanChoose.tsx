@@ -30,11 +30,7 @@ const PlanChoose = () => {
     if (user._id !== "") {
       axios.get(api + "/plansByUser/" + user._id).then((retrieved) => {
         const retrievedPlans = retrieved.data.data;
-        console.log("retrieved ", retrieved);
-        // const testList = [testPlan1, testPlan2, ...retrievedPlans];
-        console.log("plans are ", retrievedPlans);
         dispatch(updatePlanList(retrievedPlans));
-        // dispatch(updatePlanList(testList));
         if (retrievedPlans.length > 0) {
           dispatch(updateSelectedPlan(retrievedPlans[0]));
         } else {
@@ -66,14 +62,15 @@ const PlanChoose = () => {
   const [dropdownOptions, setdropdownOptions] = useState<any>([]);
   useEffect(() => {
     let id = 0;
+    console.log("optionList", planList);
     const options = planList.map((plan) => (
-      <option key={id++} value={plan.name}>
+      <option key={id++} value={plan._id}>
         {plan.name}
       </option>
     ));
     console.log("setting");
     setdropdownOptions(options);
-  }, [planList, currentPlan]);
+  }, [planList, currentPlan.name]);
 
   // Handles onClick for when a dropdown option is selected
   const handlePlanChange = (event: any) => {
@@ -101,40 +98,13 @@ const PlanChoose = () => {
       });
       console.log("create new plan");
     } else {
-      let newSelected: Plan = currentPlan;
       planList.forEach((plan) => {
-        if (plan.name === event.target.value) {
-          newSelected = plan;
+        if (0 === plan._id.localeCompare(selectedOption)) {
+          dispatch(updateSelectedPlan(plan));
         }
       });
-      dispatch(updateSelectedPlan(newSelected));
     }
   };
-
-  useEffect(() => {
-    if (user.plan_ids.length === 0 && user._id !== "") {
-      console.log("user is ", user);
-      const body = {
-        name: "Unnamed Plan",
-        user_id: user._id,
-        majors: ["Computer Science"],
-      };
-
-      fetch(api + "/plans", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(body),
-      }).then((retrieved) => {
-        retrieved.json().then((data) => {
-          console.log("retrievedJson is ", data);
-          dispatch(updateSelectedPlan(data.data));
-          setNewPlan(newPlan + 1);
-        });
-      });
-    }
-  });
 
   return (
     <select
@@ -144,9 +114,7 @@ const PlanChoose = () => {
       )}
       onMouseDown={() => setSelectPlanDown(true)}
       onMouseUp={() => setSelectPlanDown(false)}
-      value={currentPlan.name === "" ? "Create a new plan +" : currentPlan.name}
       onChange={handlePlanChange}
-      defaultValue={currentPlan.name}
     >
       {dropdownOptions}
       <option value="new plan">Create a plan +</option>
