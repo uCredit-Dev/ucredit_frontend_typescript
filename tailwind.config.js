@@ -9,6 +9,9 @@ module.exports = {
         courebars: "301px",
         yearheading: "228px",
         semesterheading: "189px",
+        infocard: "350px",
+        plancardinput: "250px",
+        planchoose: "274px",
       },
       height: {
         courebars: "1100px",
@@ -51,6 +54,15 @@ module.exports = {
           },
         ],
       },
+      screens: {
+        medium: "1500px",
+        tight: { max: "1200px" },
+        thin: { max: "820px" },
+        narrow: { max: "710px" },
+      },
+      minWidth: {
+        narrowest: "710px"
+      }
     },
   },
   variants: {
