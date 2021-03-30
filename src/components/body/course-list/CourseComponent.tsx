@@ -1,6 +1,8 @@
 import React, { useState, useEffect } from "react";
-import { UserCourse } from "../../commonTypes";
+import { UserCourse, YearType, Plan } from "../../commonTypes";
 import { getColors } from "../../assets";
+import { useDispatch, useSelector } from "react-redux";
+import { selectPlan, updateSelectedPlan } from "../../slices/userSlice";
 import CoursePopout from "./CoursePopout";
 const api = "https://ucredit-api.herokuapp.com/api";
 
@@ -8,11 +10,21 @@ type courseProps = {
   course: UserCourse;
   detailName: string;
   setDetailName: Function;
+  year: YearType;
 };
 
-function CourseComponent({ course, detailName, setDetailName }: courseProps) {
+function CourseComponent({
+  year,
+  course,
+  detailName,
+  setDetailName,
+}: courseProps) {
   const [subColor, setSubColor] = useState<string>("pink");
   const [mainColor, setMainColor] = useState<string>("red");
+
+  // Redux setup
+  const dispatch = useDispatch();
+  const currentPlan = useSelector(selectPlan);
 
   // Chooses which colors to display course as.
   useEffect(() => {
@@ -34,10 +46,34 @@ function CourseComponent({ course, detailName, setDetailName }: courseProps) {
     console.log("click!");
   };
 
+  // Deletes a course on click of the delete button. Updates currently displayed plan with changes.
   const deleteCourse = () => {
     fetch(api + "/courses/" + course._id, { method: "DELETE" }).then((resp) => {
       console.log(resp);
       // TODO: Update plan
+      let newPlan: Plan;
+      if (year === "Freshman") {
+        const freshmanCourses = currentPlan.freshman.filter(
+          (freshCourse) => freshCourse !== course._id
+        );
+        newPlan = { ...currentPlan, freshman: freshmanCourses };
+      } else if (year === "Sophomore") {
+        const sophomoreCourses = currentPlan.sophomore.filter(
+          (sophCourse) => sophCourse !== course._id
+        );
+        newPlan = { ...currentPlan, sophomore: sophomoreCourses };
+      } else if (year === "Junior") {
+        const juniorCourses = currentPlan.junior.filter(
+          (juniorCourse) => juniorCourse !== course._id
+        );
+        newPlan = { ...currentPlan, junior: juniorCourses };
+      } else {
+        const seniorCourses = currentPlan.senior.filter(
+          (seniorCourse) => seniorCourse !== course._id
+        );
+        newPlan = { ...currentPlan, senior: seniorCourses };
+      }
+      dispatch(updateSelectedPlan(newPlan));
     });
   };
 
