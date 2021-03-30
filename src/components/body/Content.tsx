@@ -6,7 +6,7 @@ import { testMajorDistributions, testUser } from "../testObjs";
 import Search from "./course-search/Search";
 import { selectSearchStatus } from "../slices/searchSlice";
 import { useSelector } from "react-redux";
-import InfoCard from "./info-bar/InfoCard";
+import InfoCards from "./info-bar/InfoCards";
 
 function Content() {
   const [userName, setUserName] = useState<string>("");
@@ -27,12 +27,12 @@ function Content() {
   };
 
   return (
-    <div className="flex flex-row mt-content w-full h-auto">
-      <div className="flex flex-col mr-4 w-courselist h-auto">
-        <InfoCard />
+    <div className='min-w-narrowest flex flex-row mt-content medium:px-48 w-full h-auto'>
+      <div className='flex flex-col mb-8 mx-4 w-courselist h-auto'>
+        <InfoCards />
         <CourseList />
       </div>
-      <div className="h-coursebars flex-grow mx-8 p-8 w-courebars bg-gray-coursebars border-2 rounded-xl">
+      <div className='h-coursebars flex-none mx-4 p-8 w-courebars bg-gray-coursebars border-2 rounded-xl'>
         {distributions.map((dis, index) =>
           index !== 0 ? (
             <CourseBar
