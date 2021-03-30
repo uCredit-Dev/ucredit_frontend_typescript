@@ -80,9 +80,9 @@ function Year({
   };
 
   return (
-    <div className="w-yearheading">
+    <div className="ml-auto mr-auto w-yearheading">
       <div
-        className="flex flex-row justify-between mb-4 p-2 w-full h-yearheading text-white font-medium bg-primary rounded-xl"
+        className="flex flex-row justify-between mb-3 p-2 w-full h-yearheading text-white font-medium bg-primary rounded-xl"
         onClick={displaySemesters}
       >
         <div>{yearName}</div>
