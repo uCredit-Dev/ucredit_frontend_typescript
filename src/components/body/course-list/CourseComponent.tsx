@@ -80,7 +80,7 @@ function CourseComponent({
   return (
     <>
       <div
-        className="flex flex-col mt-4 p-4 w-semesterheading h-auto bg-gray-coursecard rounded-2xl"
+        className="flex flex-col mt-2 p-4 w-semesterheading h-auto bg-gray-coursecard rounded-2xl"
         onClick={displayCourses}
       >
         <div>{course.title}</div>

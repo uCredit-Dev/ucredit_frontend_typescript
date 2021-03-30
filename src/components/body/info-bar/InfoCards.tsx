@@ -118,31 +118,41 @@ const InfoCards: React.FC<any> = () => {
   };
 
   return (
-    <div className='flex tight:flex-col flex-row tight:items-center mb-8 w-full h-auto'>
-      <div className='w-infocard flex flex-col items-center justify-center tight:mb-4 tight:mr-0 mr-4 p-4 h-48 border-2 border-solid rounded-xl shadow-lg'>
-        <div className='flex flex-row items-center justify-center mb-2 w-full h-auto'>
-          <input
-            value={planName}
-            className='w-plancardinput h-auto text-center text-myplan outline-none'
-            onChange={handlePlanNameChange}
-          />
-          <RemoveSvg
-            className='w-6 h-6 stroke-2 cursor-pointer select-none transform hover:translate-x-0.5 hover:translate-y-0.5 transition duration-200 ease-in'
-            onClick={deleteCurrentPlan}
-          />
+    <div className="flex tight:flex-col flex-row tight:items-center mb-8 w-full h-auto">
+      <div className="flex flex-wrap items-center justify-start tight:mb-4 tight:mr-0 mr-4 p-4 w-full h-auto border-2 border-solid rounded-xl shadow-lg">
+        <div className="flex flex-col ml-auto mr-auto">
+          <div className="flex flex-row items-center justify-center mb-2 w-full h-auto">
+            <input
+              value={planName}
+              className="w-plancardinput h-auto text-center text-myplan outline-none"
+              onChange={handlePlanNameChange}
+            />
+            <RemoveSvg
+              className="w-6 h-6 stroke-2 cursor-pointer select-none transform hover:translate-x-0.5 hover:translate-y-0.5 transition duration-200 ease-in"
+              onClick={deleteCurrentPlan}
+            />
+          </div>
+          <PlanChoose className="flex flex-row items-center justify-center px-16 w-planchoose h-auto text-white text-infocard bg-secondary appearance-none cursor-pointer select-none" />
         </div>
-        <PlanChoose className='w-planchoose flex flex-row items-center justify-center px-16 h-auto text-white text-infocard bg-secondary appearance-none cursor-pointer select-none' />
+        <div className="m-auto min-w-max overflow-visible">
+          <div className="flex flex-row w-auto h-auto text-center">
+            {user.firstName} {user.lastName}
+          </div>
+          <div className="flex flex-row w-auto h-auto font-light stroke-2">
+            {currentPlan.majors}
+          </div>
+        </div>
       </div>
 
-      <div className='w-infocard flex flex-col items-center justify-center p-4 h-48 text-infocard border-2 border-solid rounded-xl shadow-lg'>
-        <div className='mb-2 w-14 h-14 bg-secondary rounded-full'></div>
-        <div className='flex flex-row w-auto h-auto text-center'>
+      {/* <div className="flex flex-col items-center justify-center p-4 w-infocard h-28 text-infocard border-2 border-solid rounded-xl shadow-lg">
+        <div className="mb-2 w-14 h-14 bg-secondary rounded-full"></div>
+        <div className="flex flex-row w-auto h-auto text-center">
           {user.firstName} {user.lastName}
         </div>
-        <div className='flex flex-row w-auto h-auto font-light stroke-2'>
+        <div className="flex flex-row w-auto h-auto font-light stroke-2">
           {currentPlan.majors}
         </div>
-      </div>
+      </div>  */}
     </div>
   );
 };

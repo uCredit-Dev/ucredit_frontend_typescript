@@ -7,8 +7,8 @@ module.exports = {
         year: "320px",
         courselist: "1400px",
         courebars: "301px",
-        yearheading: "228px",
-        semesterheading: "189px",
+        yearheading: "200px",
+        semesterheading: "175px",
         infocard: "350px",
         plancardinput: "250px",
         planchoose: "274px",
@@ -61,8 +61,8 @@ module.exports = {
         narrow: { max: "710px" },
       },
       minWidth: {
-        narrowest: "710px"
-      }
+        narrowest: "710px",
+      },
     },
   },
   variants: {

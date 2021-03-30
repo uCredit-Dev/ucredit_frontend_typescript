@@ -44,7 +44,7 @@ function Semester({
   };
 
   return (
-    <div className="mb-4">
+    <div className="mb-3">
       <div
         className="flex flex-col w-semesterheading h-8 text-white font-medium bg-secondary rounded-xl"
         onClick={displayCourses}
