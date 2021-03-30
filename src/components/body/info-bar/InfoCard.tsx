@@ -52,7 +52,9 @@ const InfoCard: React.FC<any> = () => {
       body: JSON.stringify(body),
     }).then((resp) => {
       console.log("plan updated", resp);
-      dispatch(updateSelectedPlan(currentPlan));
+      const newPlan = { ...currentPlan, name: planName };
+      dispatch(updateSelectedPlan(newPlan));
+      // dispatch(updatePlanList());
       setEditName(false);
     });
   };

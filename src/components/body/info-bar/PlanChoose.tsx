@@ -31,7 +31,7 @@ const PlanChoose = () => {
       axios.get(api + "/plansByUser/" + user._id).then((retrieved) => {
         const retrievedPlans = retrieved.data.data;
         console.log("retrieved ", retrieved);
-        const testList = [testPlan1, testPlan2, ...retrievedPlans];
+        // const testList = [testPlan1, testPlan2, ...retrievedPlans];
         console.log("plans are ", retrievedPlans);
         dispatch(updatePlanList(retrievedPlans));
         // dispatch(updatePlanList(testList));
