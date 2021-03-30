@@ -9,9 +9,13 @@ import {
   updateSelectedPlan,
 } from "../../slices/userSlice";
 import PlanChoose from "./PlanChoose";
+import { ReactComponent as RemoveSvg } from "../../svg/remove.svg";
+import { ReactComponent as UserSvg } from "../../svg/user.svg";
+import { ReactComponent as MajorSvg } from "../../svg/major.svg";
+
 const api = "https://ucredit-api.herokuapp.com/api";
 
-const InfoCard: React.FC<any> = () => {
+const InfoCards: React.FC<any> = () => {
   // Redux Setup
   const dispatch = useDispatch();
   const user = useSelector(selectUser);
@@ -21,7 +25,7 @@ const InfoCard: React.FC<any> = () => {
   // Holds temporary plan name.
   const [planName, setPlanName] = useState<string>(currentPlan.name);
 
-  // Determines whether we're editting the name.
+  // Determines whether we're editing the name.
   const [editName, setEditName] = useState<boolean>(false);
 
   // Updates temporary plan name and notifies useffect on state change to update db plan name with debounce.
@@ -98,22 +102,33 @@ const InfoCard: React.FC<any> = () => {
   };
 
   return (
-    <div className="flex flex-row justify-between mb-8 mx-8 p-6 w-full h-24 border-2 border-solid rounded-xl shadow-lg">
-      <input
-        value={planName}
-        className="flex flex-row items-center justify-center w-auto h-full text-myplan"
-        onChange={handlePlanNameChange}
-      ></input>
-      <div className="flex flex-row items-center justify-center w-auto h-full text-infocard">
-        Name: {user.firstName} {user.lastName}
+    <div className='flex tight:flex-col flex-row tight:items-center mb-8 w-full h-auto'>
+      <div className='w-infocard flex flex-col items-center justify-center tight:mb-4 tight:mr-0 mr-4 p-4 h-48 border-2 border-solid rounded-xl shadow-lg'>
+        <div className='flex flex-row items-center justify-center mb-2 w-full h-auto'>
+          <input
+            value={planName}
+            className='w-plancardinput h-auto text-center text-myplan outline-none'
+            onChange={handlePlanNameChange}
+          />
+          <RemoveSvg
+            className='w-6 h-6 stroke-2 cursor-pointer select-none transform hover:translate-x-0.5 hover:translate-y-0.5 transition duration-200 ease-in'
+            onClick={deleteCurrentPlan}
+          />
+        </div>
+        <PlanChoose className='w-planchoose flex flex-row items-center justify-center px-16 h-auto text-white text-infocard bg-secondary appearance-none cursor-pointer select-none' />
       </div>
-      <div className="flex flex-row items-center justify-center w-auto h-full text-infocard">
-        Majors: {currentPlan.majors}
+
+      <div className='w-infocard flex flex-col items-center justify-center p-4 h-48 text-infocard border-2 border-solid rounded-xl shadow-lg'>
+        <div className='mb-2 w-14 h-14 bg-secondary rounded-full'></div>
+        <div className='flex flex-row w-auto h-auto text-center'>
+          {user.firstName} {user.lastName}
+        </div>
+        <div className='flex flex-row w-auto h-auto font-light stroke-2'>
+          {currentPlan.majors}
+        </div>
       </div>
-      <button onClick={deleteCurrentPlan}>Delete Plan</button>
-      <PlanChoose />
     </div>
   );
 };
 
-export default InfoCard;
+export default InfoCards;

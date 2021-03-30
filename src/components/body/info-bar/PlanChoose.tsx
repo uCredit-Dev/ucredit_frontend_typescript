@@ -1,7 +1,5 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
-import clsx from "clsx";
-import { testPlan1, testPlan2 } from "../../testObjs";
 import { Plan } from "../../commonTypes";
 import { useDispatch, useSelector } from "react-redux";
 import {
@@ -13,7 +11,11 @@ import {
 } from "../../slices/userSlice";
 const api = "https://ucredit-api.herokuapp.com/api";
 
-const PlanChoose = () => {
+type PlanChooseProps = {
+  className?: string;
+};
+
+const PlanChoose: React.FC<PlanChooseProps> = (props) => {
   const [newPlan, setNewPlan] = useState(0);
 
   // Redux setup
@@ -21,9 +23,6 @@ const PlanChoose = () => {
   const user = useSelector(selectUser);
   const currentPlan = useSelector(selectPlan);
   const planList = useSelector(selectPlanList);
-
-  // State setup
-  const [selectPlanDown, setSelectPlanDown] = useState<boolean>(false);
 
   // Gets all users's plans and updates state everytime a new user is chosen.
   useEffect(() => {
@@ -138,18 +137,12 @@ const PlanChoose = () => {
 
   return (
     <select
-      className={clsx(
-        "flex flex-row items-center justify-center px-8 w-auto h-full text-white text-infocard bg-secondary rounded-xl cursor-pointer select-none",
-        { "ring-2 ring-green-200": selectPlanDown }
-      )}
-      onMouseDown={() => setSelectPlanDown(true)}
-      onMouseUp={() => setSelectPlanDown(false)}
+      className={props.className}
       value={currentPlan.name === "" ? "Create a new plan +" : currentPlan.name}
       onChange={handlePlanChange}
-      defaultValue={currentPlan.name}
-    >
+      defaultValue={currentPlan.name}>
       {dropdownOptions}
-      <option value="new plan">Create a plan +</option>
+      <option value='new plan'>Create a plan +</option>
     </select>
   );
 };
