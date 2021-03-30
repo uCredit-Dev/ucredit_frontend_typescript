@@ -60,12 +60,12 @@ function Semester({
               : "Summer"}{" "}
             ({courses.length}){" "}
           </div>
-          {/* <div
+          <div
             className="flex flex-row items-center justify-center w-6 h-6"
             onClick={addCourse}
           >
             <AddSvg className="w-full h-full" />
-          </div> */}
+          </div>
         </div>
       </div>
       {display ? (
@@ -79,14 +79,14 @@ function Semester({
               />
             ))}
           </div>
-          <div
+          {/* <div
             className="bg-coursecard flex flex-col mt-4 p-4 w-semesterheading h-auto border-2 border-dashed rounded-2xl"
             onClick={addCourse}
           >
             <div className="items-center justify-center h-6">
               <AddSvg className="w-full h-full" />
             </div>
-          </div>
+          </div> */}
         </>
       ) : null}
     </div>

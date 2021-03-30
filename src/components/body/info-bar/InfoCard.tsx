@@ -30,7 +30,7 @@ const InfoCard: React.FC<any> = () => {
     setEditName(true);
   };
 
-  //
+  // Only edits name if editName is true. If true, calls debounce update function
   useEffect(() => {
     if (editName) {
       const update = setTimeout(updateName, 1000);
@@ -52,6 +52,7 @@ const InfoCard: React.FC<any> = () => {
       body: JSON.stringify(body),
     }).then((resp) => {
       console.log("plan updated", resp);
+      dispatch(updateSelectedPlan(currentPlan));
       setEditName(false);
     });
   };
@@ -67,24 +68,29 @@ const InfoCard: React.FC<any> = () => {
       method: "DELETE",
     }).then((resp) => {
       console.log("plan updated", resp);
-      const updatedList = planList; // TODO: Once user routes are figured out, pull user info from db.
-      updatedList.filter(
-        (plan) => 0 !== plan._id.localeCompare(currentPlan._id)
-      );
+      let updatedList = [...planList]; // TODO: Once user routes are figured out, pull user info from db.
+      updatedList = updatedList.filter((plan) => {
+        return plan._id === currentPlan._id;
+      });
+      if (planList.length === 1) {
+        dispatch(
+          updateSelectedPlan({
+            _id: "noPlan",
+            name: "",
+            majors: [],
+            freshman: [],
+            sophomore: [],
+            junior: [],
+            senior: [],
+            distribution_ids: [],
+            user_id: "",
+          })
+        );
+      } else {
+        dispatch(updateSelectedPlan(updatedList[0]));
+      }
       dispatch(updatePlanList(updatedList));
-      dispatch(
-        updateSelectedPlan({
-          _id: "noPlan",
-          name: "",
-          majors: [],
-          freshman: [],
-          sophomore: [],
-          junior: [],
-          senior: [],
-          distribution_ids: [],
-          user_id: "",
-        })
-      );
+
       // TODO: update user
     });
   };
