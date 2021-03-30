@@ -62,10 +62,10 @@ export const userSlice = createSlice({
   reducers: {
     updateUser: userUpdate,
     updateSelectedPlan: (state: any, action: PayloadAction<Plan>) => {
-      state.currentPlan = action.payload;
+      state.currentPlan = { ...action.payload };
     },
     updatePlanList: (state: any, action: PayloadAction<Plan[]>) => {
-      state.planList = action.payload;
+      state.planList = [...action.payload];
     },
     // addCourse: addNewCourse,
   },

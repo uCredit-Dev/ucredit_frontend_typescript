@@ -12,7 +12,9 @@ import {
 import {
   selectUser,
   selectPlan,
+  selectPlanList,
   updateSelectedPlan,
+  updatePlanList,
 } from "../../slices/userSlice";
 const api = "https://ucredit-api.herokuapp.com/api";
 
@@ -25,6 +27,7 @@ const CourseDisplay = () => {
   const semester = useSelector(selectSemester);
   const year = useSelector(selectYear);
   const currentPlan = useSelector(selectPlan);
+  const planList = useSelector(selectPlanList);
 
   // Function to return a list of clickable prereqs
   const getPreReqs = () =>
@@ -94,6 +97,13 @@ const CourseDisplay = () => {
             newPlan.senior = [...newPlan.senior, newUserCourse._id];
           }
           dispatch(updateSelectedPlan(newPlan));
+          const newPlanList = [...planList];
+          for (let i = 0; i < planList.length; i++) {
+            if (planList[i]._id === newPlan._id) {
+              newPlanList[i] = newPlan;
+            }
+          }
+          dispatch(updatePlanList(newPlanList));
         });
       });
       dispatch(clearSearch());

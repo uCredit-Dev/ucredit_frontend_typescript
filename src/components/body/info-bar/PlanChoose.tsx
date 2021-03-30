@@ -63,14 +63,17 @@ const PlanChoose = () => {
   }, [user, newPlan, planList.length]);
 
   // Makes plan dropdown options
-  const getPlanOptions = () => {
+  const [dropdownOptions, setdropdownOptions] = useState<any>([]);
+  useEffect(() => {
     let id = 0;
-    return planList.map((plan) => (
+    const options = planList.map((plan) => (
       <option key={id++} value={plan.name}>
         {plan.name}
       </option>
     ));
-  };
+    console.log("setting");
+    setdropdownOptions(options);
+  }, [planList, currentPlan]);
 
   // Handles onClick for when a dropdown option is selected
   const handlePlanChange = (event: any) => {
@@ -145,7 +148,7 @@ const PlanChoose = () => {
       onChange={handlePlanChange}
       defaultValue={currentPlan.name}
     >
-      {getPlanOptions()}
+      {dropdownOptions}
       <option value="new plan">Create a plan +</option>
     </select>
   );
