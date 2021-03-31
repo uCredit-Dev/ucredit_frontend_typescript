@@ -29,6 +29,7 @@ const CourseDisplay = () => {
   const currentPlan = useSelector(selectPlan);
   const planList = useSelector(selectPlanList);
 
+  // TODO: MODULARIZE THE BELOW FUNCTIONS SOMETIME.
   // This is that one open expression calculator leetcode problem.
   // We're basically modifying it and adapting it to parse through prereqs
   // Input param is the prereq expression to parse (ie. AS.110.202 AND (EN.550.310 OR EN.553.211 OR EN.553.310 OR EN.553.311 OR ((EN.550.420 OR EN.553.420) AND (EN.550.430 OR EN.553.430 OR EN.553.431)) OR EN.560.348) AND (AS.110.201 OR AS.110.212 OR EN.553.291) AND (EN.500.112 OR EN.500.113 OR EN.500.114 OR (EN.601.220 OR EN.600.120) OR AS.250.205 OR EN.580.200 OR (EN.600.107 OR EN.601.107)))
@@ -80,10 +81,14 @@ const CourseDisplay = () => {
     for (let i = 0; i < input.length; i++) {
       if (input[i] === "OR") {
         let el = orParsed.pop();
-        const toAdd =
-          typeof input[i + 1] === "string"
-            ? input[i + 1]
-            : parsePrereqsOr(input[i + 1], depth + 1);
+        let toAdd;
+        // If the course or array of courses after the OR is a string, it must be a course number. Otherwise, it's a course array.
+        if (typeof input[i + 1] === "string") {
+          toAdd = input[i + 1];
+        } else {
+          toAdd = parsePrereqsOr(input[i + 1], depth);
+          console.log("toAdd is ", toAdd);
+        }
 
         // First element
         if (el === null) {
@@ -97,7 +102,7 @@ const CourseDisplay = () => {
         } else if (typeof el === "object" && typeof el[0] !== "number") {
           // The last element was a parentheses sequence
           // We need to parse the sequence and put that element back into our array
-          el = parsePrereqsOr(input[i], depth + 1);
+          el = parsePrereqsOr(input[i], depth);
           orParsed.push([el, toAdd]);
         } else {
           // Last element wasn't any type of sequence. Thus, a new OR sequence is made and pushed in.
@@ -110,7 +115,7 @@ const CourseDisplay = () => {
         orParsed.push(input[i]);
       } else {
         // If not OR or a course number, must be a parentheses sequence. We will recursively call this function in this case.
-        orParsed.push(...parsePrereqsOr(input[i], depth + 1));
+        orParsed.push(...parsePrereqsOr(input[i], depth));
       }
     }
 
@@ -119,7 +124,6 @@ const CourseDisplay = () => {
 
   // Parses arrays into clickable prereq number links
   const getNonStringPrereq = (input: any): any => {
-    // const out = input.map((element: any) => {
     const element = input;
     if (typeof element === "string") {
       // If the element is a number
@@ -128,20 +132,19 @@ const CourseDisplay = () => {
         <button
           className="bg-gray-100"
           onClick={() => {
-            console.log("updating");
-            updateInspected(noCBrackets)();
+            updateInspected(noCBrackets);
           }}
         >
-          {noCBrackets}
+          {noCBrackets} {noCBrackets}
         </button>
       );
-      return <p>{buttonElement}</p>;
+      return <p>- {buttonElement}</p>;
     } else if (typeof element[0] === "number") {
       // If the element is a OR sequence (denoted by the depth number in the first index)
       return (
         <>
           <p style={{ marginLeft: `${element[0]}rem` }}>
-            1 of any of the options below
+            - 1 of any of the options below
           </p>
           {element.map((el: any) => (
             <p style={{ marginLeft: `${element[0] + 1}rem` }}>
@@ -152,40 +155,29 @@ const CourseDisplay = () => {
       );
     } else if (typeof element === "object") {
       // If the element is a parentheses sequence
-      return (
-        <>
-          <p>
-            <p style={{ marginLeft: `${element[0]}rem` }}>All of the below</p>
-            {element.map((el: any) => getNonStringPrereq(el))}
-          </p>
-        </>
-      );
+      if (element.length === 1) {
+        return <p>{getNonStringPrereq(element[0])}</p>;
+      } else {
+        return (
+          <>
+            <p>All of the below</p>
+            {element.map((el: any) => (
+              <p style={{ marginLeft: "1rem" }}>{getNonStringPrereq(el)}</p>
+            ))}
+          </>
+        );
+      }
     } else {
       return <div></div>;
     }
-    // });
-    // return out;
   };
 
+  // Outputs the prereqs as components
   const preReqsToComponents = (inputs: any) => {
     let out: any[] = [];
     const orParsed = parsePrereqsOr(inputs, 0);
     console.log("or parsed is ", orParsed);
     out.push(getNonStringPrereq(orParsed));
-    // if (orParsed[0] === 0) {
-    //   out.push(
-    //     <p style={{ marginLeft: `${orParsed[0]}rem` }}>
-    //       1 of any of the options below
-    //     </p>
-    //   );
-    // }
-    // orParsed.forEach((element: any) => {
-    //   if (typeof element === "string") {
-    //     out.push(<p>{element}</p>);
-    //   } else if (typeof element === "object") {
-    //     out.push(getNonStringPrereq(element));
-    //   }
-    // });
     return out;
   };
 
@@ -291,7 +283,7 @@ const CourseDisplay = () => {
           <p>{inspected.bio}</p>
           <p>
             <p className="border-b-2">Prerequisites</p>{" "}
-            <p className="h-72 overflow-scroll">{getPreReqs()}</p>
+            <p className="h-80 overflow-scroll">{getPreReqs()}</p>
           </p>
           <button className="bg-gray-300" onClick={addCourse}>
             Add Course
