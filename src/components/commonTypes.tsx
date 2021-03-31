@@ -10,11 +10,12 @@ export type Course = {
   wi: boolean;
   bio: string;
   tags: string[];
-  preReq: {
-    title: string;
-    number: string;
-    credits: string;
-  }[];
+  preReq: any;
+  // {
+  //   title: string;
+  //   number: string;
+  //   credits: string;
+  // }[];
 };
 
 // For User courses, which have extra ids with user-specific info and a single term/area that the user chose.
