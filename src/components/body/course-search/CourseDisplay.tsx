@@ -87,7 +87,6 @@ const CourseDisplay = () => {
           toAdd = input[i + 1];
         } else {
           toAdd = parsePrereqsOr(input[i + 1], depth);
-          console.log("toAdd is ", toAdd);
         }
 
         // First element
@@ -176,7 +175,6 @@ const CourseDisplay = () => {
   const preReqsToComponents = (inputs: any) => {
     let out: any[] = [];
     const orParsed = parsePrereqsOr(inputs, 0);
-    console.log("or parsed is ", orParsed);
     out.push(getNonStringPrereq(orParsed));
     return out;
   };
@@ -184,13 +182,8 @@ const CourseDisplay = () => {
   // Function to return a list of clickable prereqs
   const getPreReqs = () => {
     if (inspected !== "None" && inspected.preReq.length > 0) {
-      console.log(inspected.preReq);
-      const desc = inspected.preReq[0].Description;
       const expr = inspected.preReq[0].Expression.split("^");
-      console.log("expr is ", expr);
-      const descDiv = <div>{desc}</div>;
       const list = createPrereqBulletList(expr);
-      console.log("the prereq array is now ", list);
 
       return preReqsToComponents(list);
     }
@@ -198,12 +191,10 @@ const CourseDisplay = () => {
 
   // Function currying to produce a function that would update the store when clicking on prereqs
   const updateInspected = (courseNumber: string) => () => {
-    console.log("searching for '", courseNumber, "'");
     axios
       .get(api + "/search", { params: { query: courseNumber } })
       .then((retrieved) => {
         const retrievedCourse = retrieved.data.data;
-        console.log("retrieved", retrievedCourse);
         if (retrievedCourse.length === 1) {
           dispatch(updateInspectedCourse(retrievedCourse[0]));
         } else {
@@ -211,7 +202,7 @@ const CourseDisplay = () => {
         }
       })
       .catch((err) => {
-        console.log("couldnt find");
+        console.log("couldnt find", err);
       });
   };
 
@@ -238,11 +229,8 @@ const CourseDisplay = () => {
         body: JSON.stringify(body),
       }).then((retrieved) => {
         retrieved.json().then((data) => {
-          console.log("retrievedJson is ", data);
           newUserCourse = { ...data.data };
           const newPlan = { ...currentPlan };
-          console.log(newPlan);
-          console.log(newUserCourse);
           if (year === "Freshman") {
             newPlan.freshman = [...newPlan.freshman, newUserCourse._id];
           } else if (year === "Sophomore") {
