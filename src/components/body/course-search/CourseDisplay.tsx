@@ -1,5 +1,5 @@
 import axios from "axios";
-import React from "react";
+import React, { useState, useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { Course, UserCourse } from "../../commonTypes";
 import {
@@ -55,7 +55,6 @@ const CourseDisplay = () => {
             // if open, push open parentheses in
             parenthesesStack.push("(");
           }
-
           // If we're still in original parentheses, push it into sthe subArray
           if (parenthesesStack.length > 0) {
             subCourseArr.push(input[i]);
@@ -126,15 +125,17 @@ const CourseDisplay = () => {
     const element = input;
     if (typeof element === "string") {
       // If the element is a number
+
       const noCBrackets: string = element.substr(0, element.length - 3);
+      const noCBracketsNum: string = element.substr(0, 10);
       const buttonElement = (
         <button
           className="bg-gray-100"
           onClick={() => {
-            updateInspected(noCBrackets);
+            updateInspected(noCBracketsNum)();
           }}
         >
-          {noCBrackets} {noCBrackets}
+          {noCBrackets}
         </button>
       );
       return <p>- {buttonElement}</p>;
@@ -172,22 +173,88 @@ const CourseDisplay = () => {
   };
 
   // Outputs the prereqs as components
-  const preReqsToComponents = (inputs: any) => {
+  const preReqsToComponents = (inputs: any): JSX.Element[] => {
     let out: any[] = [];
     const orParsed = parsePrereqsOr(inputs, 0);
     out.push(getNonStringPrereq(orParsed));
     return out;
   };
 
-  // Function to return a list of clickable prereqs
-  const getPreReqs = () => {
+  // Holds preReq Display as a state that updates every time inspected course changes.
+  const [preReqDisplay, setPreReqDisplay] = useState<JSX.Element[]>([]);
+  useEffect(() => {
+    setPreReqDisplay([]);
     if (inspected !== "None" && inspected.preReq.length > 0) {
-      const expr = inspected.preReq[0].Expression.split("^");
-      const list = createPrereqBulletList(expr);
+      // Regex used to get an array of course numbers.
+      const regex: RegExp = /[A-Z]{2}\.[0-9]{3}\.[0-9]{3}/g;
+      let expr = inspected.preReq[0].Expression;
+      let numList = expr.match(regex);
 
-      return preReqsToComponents(list);
+      let numNameList: any[] = [];
+
+      // For the list of numbers, retrieve each course number, search for it and store the combined number + name into numNameList
+      for (let n = 0; n < numList.length; n++) {
+        const num = numList[n];
+        axios
+          .get(api + "/search", { params: { query: num } })
+          // eslint-disable-next-line no-loop-func
+          .then((retrieved) => {
+            const retrievedCourse = retrieved.data.data;
+            if (retrievedCourse.length === 1) {
+              console.log(retrievedCourse[0]);
+              numNameList.push(num + " " + retrievedCourse[0].title);
+            } else {
+              console.log("no such course exists in db");
+              numNameList.push(num + " Older than 2 years old.");
+            }
+
+            if (n + 1 === numList.length) {
+              // Allign num list and name list
+              numList = numList.sort((first: any, second: any) => {
+                const sub1 = first.substr(0, 10);
+                const sub2 = second.substr(0, 10);
+                return sub1.localeCompare(sub2);
+              });
+              numNameList = numNameList.sort((a: any, b: any): any => {
+                const sub1 = a.substr(0, 10);
+                const sub2 = b.substr(0, 10);
+                return sub1.localeCompare(sub2);
+              });
+              console.log(numList, numNameList);
+              for (let i = 0; i < numList.length; i++) {
+                expr = expr.replaceAll(numList[i], numNameList[i]);
+              }
+              expr = expr.split("^");
+              const list = createPrereqBulletList(expr);
+              setPreReqDisplay(preReqsToComponents(list));
+            }
+          })
+          .catch((err) => {
+            console.log("couldnt find", err);
+          });
+      }
     }
-  };
+  }, [inspected]);
+
+  // IMPORTANT: UNUSED IN FAVOR OF ABOVE.
+  // Function to return a list of clickable prereqs
+  // const getPreReqs = () => {
+  //   if (inspected !== "None" && inspected.preReq.length > 0) {
+  //     const expr = inspected.preReq[0].Expression.split("^");
+  //     const list = createPrereqBulletList(expr);
+  //     console.log(expr);
+
+  //     return preReqsToComponents(list);
+  //   }
+  // };
+
+  // const getPreReqsList = () => {
+  //   if (inspected !== "None" && inspected.preReq.length > 0) {
+  //     const expr = inspected.preReq[0].Expression.split("^");
+  //     const list = createPrereqBulletList(expr);
+  //     return list;
+  //   }
+  // };
 
   // Function currying to produce a function that would update the store when clicking on prereqs
   const updateInspected = (courseNumber: string) => () => {
@@ -253,6 +320,7 @@ const CourseDisplay = () => {
       dispatch(clearSearch());
     }
   };
+
   return (
     <div>
       {inspected === "None" ? (
@@ -271,7 +339,8 @@ const CourseDisplay = () => {
           <p>{inspected.bio}</p>
           <p>
             <p className="border-b-2">Prerequisites</p>{" "}
-            <p className="h-80 overflow-scroll">{getPreReqs()}</p>
+            {/* <p className="h-80 overflow-scroll">{getPreReqs()}</p> */}
+            <p className="h-80 overflow-scroll">{preReqDisplay}</p>
           </p>
           <button className="bg-gray-300" onClick={addCourse}>
             Add Course
