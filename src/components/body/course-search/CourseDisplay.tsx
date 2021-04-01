@@ -183,15 +183,31 @@ const CourseDisplay = () => {
   // Holds preReq Display as a state that updates every time inspected course changes.
   const [preReqDisplay, setPreReqDisplay] = useState<JSX.Element[]>([]);
   const [loaded, setLoaded] = useState<boolean>(false);
+  const [hasPreReqs, setHasPreReqs] = useState<boolean>(false);
 
   useEffect(() => {
+    // Reset state whenever new inspected course
     setPreReqDisplay([]);
     setLoaded(false);
-    console.log("setting loaded to false");
-    if (inspected !== "None" && inspected.preReq.length > 0) {
+    setHasPreReqs(false);
+    // Parse preReq array to determine which are prereqs and which are coreq and other info. Actual Prereqs are denoted by isNegative = "N"
+    let preReqs: any[] = [];
+    if (inspected !== "None") {
+      preReqs = inspected.preReq.filter((section: any) => {
+        console.log(section.IsNegative === "N");
+        return section.IsNegative === "N";
+      });
+    }
+    console.log(preReqs);
+
+    if (inspected !== "None" && preReqs.length > 0) {
+      setHasPreReqs(true);
+      console.log("has prereqs true");
+
       // Regex used to get an array of course numbers.
       const regex: RegExp = /[A-Z]{2}\.[0-9]{3}\.[0-9]{3}/g;
-      let expr = inspected.preReq[0].Expression;
+
+      let expr = preReqs[0].Expression;
       let numList = expr.match(regex);
 
       let numNameList: any[] = [];
@@ -353,7 +369,9 @@ const CourseDisplay = () => {
           <p>
             <p className="border-b-2">Prerequisites</p>{" "}
             {/* <p className="h-80 overflow-scroll">{getPreReqs()}</p> */}
-            {!loaded && inspected.preReq.length > 0 ? (
+            {!hasPreReqs ? (
+              <div>No Prereqs!</div>
+            ) : !loaded ? (
               "Loading Prereqs Status: loaded is " + loaded.toString()
             ) : (
               <p className="h-80 overflow-scroll">{preReqDisplay}</p>
