@@ -131,10 +131,10 @@ const CourseDisplay = () => {
         <button
           className="bg-gray-100"
           onClick={() => {
-            updateInspected(noCBrackets);
+            updateInspected(noCBrackets)();
           }}
         >
-          {noCBrackets} {noCBrackets}
+          {noCBrackets}
         </button>
       );
       return <p>- {buttonElement}</p>;
@@ -191,11 +191,13 @@ const CourseDisplay = () => {
 
   // Function currying to produce a function that would update the store when clicking on prereqs
   const updateInspected = (courseNumber: string) => () => {
+    console.log("searching in axios");
     axios
       .get(api + "/search", { params: { query: courseNumber } })
       .then((retrieved) => {
         const retrievedCourse = retrieved.data.data;
         if (retrievedCourse.length === 1) {
+          console.log(retrievedCourse[0]);
           dispatch(updateInspectedCourse(retrievedCourse[0]));
         } else {
           console.log("no such course exists in db");
