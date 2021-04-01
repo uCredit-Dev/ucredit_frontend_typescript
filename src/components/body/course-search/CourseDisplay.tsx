@@ -160,7 +160,7 @@ const CourseDisplay = () => {
       } else {
         return (
           <>
-            <p>All of the below</p>
+            <p>- All of the below</p>
             {element.map((el: any) => (
               <p style={{ marginLeft: "1rem" }}>{getNonStringPrereq(el)}</p>
             ))}
@@ -182,8 +182,12 @@ const CourseDisplay = () => {
 
   // Holds preReq Display as a state that updates every time inspected course changes.
   const [preReqDisplay, setPreReqDisplay] = useState<JSX.Element[]>([]);
+  const [loaded, setLoaded] = useState<boolean>(false);
+
   useEffect(() => {
     setPreReqDisplay([]);
+    setLoaded(false);
+    console.log("setting loaded to false");
     if (inspected !== "None" && inspected.preReq.length > 0) {
       // Regex used to get an array of course numbers.
       const regex: RegExp = /[A-Z]{2}\.[0-9]{3}\.[0-9]{3}/g;
@@ -191,6 +195,7 @@ const CourseDisplay = () => {
       let numList = expr.match(regex);
 
       let numNameList: any[] = [];
+      let counter = 0; // Keeps track of how many courses have been processed. Cannot rely on indices as for loop executes asynchronously compared to axios. We need a variable syncronous to axios to determine when to load prereqs
 
       // For the list of numbers, retrieve each course number, search for it and store the combined number + name into numNameList
       for (let n = 0; n < numList.length; n++) {
@@ -207,8 +212,13 @@ const CourseDisplay = () => {
               console.log("no such course exists in db");
               numNameList.push(num + " Older than 2 years old.");
             }
+            counter++;
 
-            if (n + 1 === numList.length) {
+            // Once counter counts that the amount of courses processed equals to the number list size, we can safely process prereq components and get component list.
+            if (
+              numList.length === numNameList.length &&
+              counter === numList.length
+            ) {
               // Allign num list and name list
               numList = numList.sort((first: any, second: any) => {
                 const sub1 = first.substr(0, 10);
@@ -227,16 +237,19 @@ const CourseDisplay = () => {
               expr = expr.split("^");
               const list = createPrereqBulletList(expr);
               setPreReqDisplay(preReqsToComponents(list));
+              console.log("setting to true");
+              setLoaded(true);
             }
           })
           .catch((err) => {
             console.log("couldnt find", err);
+            counter++;
           });
       }
     }
   }, [inspected]);
 
-  // IMPORTANT: UNUSED IN FAVOR OF ABOVE.
+  // IMPORTANT: UNUSED IN FAVOR OF ABOVE PREREQ METHOD.
   // Function to return a list of clickable prereqs
   // const getPreReqs = () => {
   //   if (inspected !== "None" && inspected.preReq.length > 0) {
@@ -340,7 +353,11 @@ const CourseDisplay = () => {
           <p>
             <p className="border-b-2">Prerequisites</p>{" "}
             {/* <p className="h-80 overflow-scroll">{getPreReqs()}</p> */}
-            <p className="h-80 overflow-scroll">{preReqDisplay}</p>
+            {!loaded && inspected.preReq.length > 0 ? (
+              "Loading Prereqs Status: loaded is " + loaded.toString()
+            ) : (
+              <p className="h-80 overflow-scroll">{preReqDisplay}</p>
+            )}
           </p>
           <button className="bg-gray-300" onClick={addCourse}>
             Add Course

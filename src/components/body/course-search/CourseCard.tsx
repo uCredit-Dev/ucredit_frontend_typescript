@@ -28,6 +28,7 @@ const CourseCard = (props: cardProps) => {
 
   // User selects a course to look at.
   const handleCourseClick = () => {
+    console.log(course);
     dispatch(updateInspectedCourse(course));
   };
   return (
@@ -36,7 +37,7 @@ const CourseCard = (props: cardProps) => {
       style={{ height: "3rem" }}
       onClick={handleCourseClick}
     >
-      <div style={{ width: "25rem" }} className="text-left ml-2">
+      <div style={{ width: "25rem" }} className="ml-2 text-left">
         {course.title}
       </div>
     </button>
