@@ -184,14 +184,15 @@ const CourseDisplay = () => {
   const [preReqDisplay, setPreReqDisplay] = useState<JSX.Element[]>([]);
   const [loaded, setLoaded] = useState<boolean>(false);
   const [hasPreReqs, setHasPreReqs] = useState<boolean>(false);
+  const [NNegativePreReqs, setNNegativePreReqs] = useState<any[]>();
 
   useEffect(() => {
     // Reset state whenever new inspected course
     setPreReqDisplay([]);
+    let preReqs: any[] = [];
     setLoaded(false);
     setHasPreReqs(false);
     // Parse preReq array to determine which are prereqs and which are coreq and other info. Actual Prereqs are denoted by isNegative = "N"
-    let preReqs: any[] = [];
     if (inspected !== "None") {
       preReqs = inspected.preReq.filter((section: any) => {
         console.log(section.IsNegative === "N");
@@ -199,23 +200,44 @@ const CourseDisplay = () => {
       });
     }
     console.log(preReqs);
+    setNNegativePreReqs(preReqs);
 
+    // Continue only if
     if (inspected !== "None" && preReqs.length > 0) {
       setHasPreReqs(true);
-      console.log("has prereqs true");
 
       // Regex used to get an array of course numbers.
       const regex: RegExp = /[A-Z]{2}\.[0-9]{3}\.[0-9]{3}/g;
+      const forwardSlashRegex: RegExp = /[A-Z]{2}\.[0-9]{3}\.[0-9]{3}\/[A-Z]{2}\.[0-9]{3}\.[0-9]{3}/g;
 
+      let description = preReqs[0].Description;
       let expr = preReqs[0].Expression;
+
+      // All courses that match the parttern of 'COURSE/COURSE' in description
+      let forwardSlashCondition = [...description.matchAll(forwardSlashRegex)];
+
+      // Checking for additional conditions only said in the description (check CSF)
+      forwardSlashCondition.forEach((condition: any) => {
+        let newCourse = condition[0].substr(11, condition[0].length);
+        let oldCourse = condition[0].substr(0, 10);
+        if (expr.match(newCourse) === null) {
+          // If our expression doesn't already have the course to the right of the '/', we append this course to the old course in the expression with an OR
+          expr = expr.replaceAll(
+            oldCourse + "[C]",
+            oldCourse + "[C]^OR^" + newCourse + "[C]"
+          );
+        }
+      });
+
+      // Gets an array of all courses in expression.
       let numList = expr.match(regex);
 
-      let numNameList: any[] = [];
+      let numNameList: any[] = []; // Contains the number with name of a course.
       let counter = 0; // Keeps track of how many courses have been processed. Cannot rely on indices as for loop executes asynchronously compared to axios. We need a variable syncronous to axios to determine when to load prereqs
 
       // For the list of numbers, retrieve each course number, search for it and store the combined number + name into numNameList
       for (let n = 0; n < numList.length; n++) {
-        const num = numList[n];
+        let num = numList[n];
         axios
           .get(api + "/search", { params: { query: num } })
           // eslint-disable-next-line no-loop-func
@@ -223,47 +245,112 @@ const CourseDisplay = () => {
             const retrievedCourse = retrieved.data.data;
             if (retrievedCourse.length === 1) {
               console.log(retrievedCourse[0]);
-              numNameList.push(num + " " + retrievedCourse[0].title);
+              numNameList.push(num + num + " " + retrievedCourse[0].title); // num is added twice to distinquish which was the base course (refer to the case of EN.600 below) in the case that departments change numbers (600 to 601)
+              counter++;
             } else {
-              console.log("no such course exists in db");
-              numNameList.push(num + " Older than 2 years old.");
-            }
-            counter++;
+              // TODO: Modularize this
+              // In the case where the department changed some courses from 600 to 601
+              if (num.match("EN.600") !== null) {
+                num = num.replace("EN.600", "EN.601");
+                axios
+                  .get(api + "/search", { params: { query: num } })
+                  // eslint-disable-next-line no-loop-func
+                  .then((retrieved601) => {
+                    console.log("searching for ", num);
+                    const retrievedCourse601 = retrieved601.data.data;
+                    if (retrievedCourse601.length === 1) {
+                      // Append original num to front for later sorting
+                      numNameList.push(
+                        numList[n] + num + " " + retrievedCourse601[0].title
+                      );
+                    } else {
+                      // console.log(numList, numNameList);
+                      numNameList.push(
+                        numList[n] + numList[n] + " Older than 2 years old."
+                      );
+                    }
+                    counter++;
 
-            // Once counter counts that the amount of courses processed equals to the number list size, we can safely process prereq components and get component list.
-            if (
-              numList.length === numNameList.length &&
-              counter === numList.length
-            ) {
-              // Allign num list and name list
-              numList = numList.sort((first: any, second: any) => {
-                const sub1 = first.substr(0, 10);
-                const sub2 = second.substr(0, 10);
-                return sub1.localeCompare(sub2);
-              });
-              numNameList = numNameList.sort((a: any, b: any): any => {
-                const sub1 = a.substr(0, 10);
-                const sub2 = b.substr(0, 10);
-                return sub1.localeCompare(sub2);
-              });
-              console.log(numList, numNameList);
-              for (let i = 0; i < numList.length; i++) {
-                expr = expr.replaceAll(numList[i], numNameList[i]);
+                    afterGathering(counter, numNameList, numList, expr);
+                  })
+                  .catch((err) => {
+                    console.log("couldnt find", err);
+                  });
+              } else {
+                numNameList.push(num + num + " Older than 2 years old.");
+                counter++;
               }
-              expr = expr.split("^");
-              const list = createPrereqBulletList(expr);
-              setPreReqDisplay(preReqsToComponents(list));
-              console.log("setting to true");
-              setLoaded(true);
             }
+            afterGathering(counter, numNameList, numList, expr);
           })
           .catch((err) => {
             console.log("couldnt find", err);
-            counter++;
           });
       }
     }
   }, [inspected]);
+
+  // Check it it's time to update the prereq section with components.
+  const afterGathering = (
+    counter: number,
+    numNameList: string[],
+    numList: string[],
+    expr: any
+  ) => {
+    // console.log("checking", counter, numList, numNameList, expr);
+    // Once counter counts that the amount of courses processed equals to the number list size, we can safely process prereq components and get component list.
+    if (numList.length === numNameList.length && counter === numList.length) {
+      // Allign num list and name list
+      numList = numList.sort((first: any, second: any) => {
+        const sub1 = first.substr(0, 10);
+        const sub2 = second.substr(0, 10);
+        return sub1.localeCompare(sub2);
+      });
+      numNameList = numNameList.sort((a: any, b: any): any => {
+        const sub1 = a.substr(0, 10);
+        const sub2 = b.substr(0, 10);
+        return sub1.localeCompare(sub2);
+      });
+      console.log(numList, numNameList);
+      console.log(expr);
+      for (let i = 0; i < numList.length; i++) {
+        console.log(numNameList[i].substr(10, numNameList[i].length));
+        expr = expr.replaceAll(
+          numList[i],
+          numNameList[i].substr(10, numNameList[i].length)
+        );
+      }
+      expr = expr.split("^");
+      const list = createPrereqBulletList(expr);
+      setPreReqDisplay(preReqsToComponents(list));
+      console.log("setting to true");
+      setLoaded(true);
+    }
+  };
+
+  // if (num.match("EN.600").length > 0) {
+  //   num.replace("EN.600", "EN.601");
+  //   axios
+  //     .get(api + "/search", { params: { query: num } })
+  //     // eslint-disable-next-line no-loop-func
+  //     .then((retrieved) => {
+  //       const retrievedCourse = retrieved.data.data;
+  //       if (retrievedCourse.length === 1) {
+  //         console.log(retrievedCourse[0]);
+  //         numList[n] = num;
+  //         numNameList.push(num + " " + retrievedCourse[0].title);
+  //       } else {
+  //         console.log("no such course exists in db");
+
+  //         numNameList.push(num + " Older than 2 years old.");
+  //       }
+  //     })
+  //     .catch((err) => {
+  //       console.log("couldnt find", err);
+  //     });
+  // } else {
+  //   numNameList.push(num + " Older than 2 years old.");
+  // }
 
   // IMPORTANT: UNUSED IN FAVOR OF ABOVE PREREQ METHOD.
   // Function to return a list of clickable prereqs
@@ -349,6 +436,11 @@ const CourseDisplay = () => {
       dispatch(clearSearch());
     }
   };
+  const [prereqDisplayMode, setPrereqDisplayMode] = useState(1);
+
+  const handlePrereqDisplayModeChange = (mode: number) => () => {
+    setPrereqDisplayMode(mode);
+  };
 
   return (
     <div>
@@ -367,10 +459,35 @@ const CourseDisplay = () => {
           </p>
           <p>{inspected.bio}</p>
           <p>
-            <p className="border-b-2">Prerequisites</p>{" "}
+            <div className="border-b-2">
+              <div>Prerequisites</div>{" "}
+              <div>
+                <button
+                  className="bg-gray-100"
+                  onClick={handlePrereqDisplayModeChange(1)}
+                >
+                  Description
+                </button>
+                <button
+                  className="bg-gray-100"
+                  onClick={handlePrereqDisplayModeChange(2)}
+                >
+                  Bullet List (in development)
+                </button>
+              </div>
+            </div>
             {/* <p className="h-80 overflow-scroll">{getPreReqs()}</p> */}
             {!hasPreReqs ? (
               <div>No Prereqs!</div>
+            ) : prereqDisplayMode === 1 ? (
+              <>
+                {NNegativePreReqs !== undefined &&
+                NNegativePreReqs.length > 0 ? (
+                  <div>{NNegativePreReqs[0].Description}</div>
+                ) : (
+                  <div>Loading description...</div>
+                )}
+              </>
             ) : !loaded ? (
               "Loading Prereqs Status: loaded is " + loaded.toString()
             ) : (
