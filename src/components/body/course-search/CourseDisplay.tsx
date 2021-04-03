@@ -198,7 +198,7 @@ const CourseDisplay = () => {
         return section.IsNegative === "N";
       });
     }
-    console.log("inspecting", inspected);
+    // console.log("inspecting", inspected);
     setNNegativePreReqs(preReqs);
 
     // Continue only if
@@ -308,7 +308,7 @@ const CourseDisplay = () => {
         return sub1.localeCompare(sub2);
       });
       for (let i = 0; i < numList.length; i++) {
-        console.log(numNameList[i].substr(10, numNameList[i].length));
+        // console.log(numNameList[i].substr(10, numNameList[i].length));
         expr = expr.replaceAll(
           numList[i],
           numNameList[i].substr(10, numNameList[i].length)
@@ -423,10 +423,9 @@ const CourseDisplay = () => {
           <p>Areas: {inspected.areas}</p>
           <p>
             Restrictions:{" "}
-            {inspected.restrictions.map((restriction) => {
-              console.log(restriction.RestrictionName);
-              return <div>{restriction.RestrictionName}</div>;
-            })}
+            {inspected.restrictions.map((restriction) => (
+              <div>{restriction.RestrictionName}</div>
+            ))}
           </p>
           <p>
             {inspected.terms.map((term) => (
