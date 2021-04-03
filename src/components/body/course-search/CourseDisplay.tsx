@@ -195,11 +195,10 @@ const CourseDisplay = () => {
     // Parse preReq array to determine which are prereqs and which are coreq and other info. Actual Prereqs are denoted by isNegative = "N"
     if (inspected !== "None") {
       preReqs = inspected.preReq.filter((section: any) => {
-        console.log(section.IsNegative === "N");
         return section.IsNegative === "N";
       });
     }
-    console.log(preReqs);
+    // console.log("inspecting", inspected);
     setNNegativePreReqs(preReqs);
 
     // Continue only if
@@ -244,7 +243,6 @@ const CourseDisplay = () => {
           .then((retrieved) => {
             const retrievedCourse = retrieved.data.data;
             if (retrievedCourse.length === 1) {
-              console.log(retrievedCourse[0]);
               numNameList.push(num + num + " " + retrievedCourse[0].title); // num is added twice to distinquish which was the base course (refer to the case of EN.600 below) in the case that departments change numbers (600 to 601)
               counter++;
             } else {
@@ -256,7 +254,6 @@ const CourseDisplay = () => {
                   .get(api + "/search", { params: { query: num } })
                   // eslint-disable-next-line no-loop-func
                   .then((retrieved601) => {
-                    console.log("searching for ", num);
                     const retrievedCourse601 = retrieved601.data.data;
                     if (retrievedCourse601.length === 1) {
                       // Append original num to front for later sorting
@@ -297,7 +294,6 @@ const CourseDisplay = () => {
     numList: string[],
     expr: any
   ) => {
-    // console.log("checking", counter, numList, numNameList, expr);
     // Once counter counts that the amount of courses processed equals to the number list size, we can safely process prereq components and get component list.
     if (numList.length === numNameList.length && counter === numList.length) {
       // Allign num list and name list
@@ -311,10 +307,8 @@ const CourseDisplay = () => {
         const sub2 = b.substr(0, 10);
         return sub1.localeCompare(sub2);
       });
-      console.log(numList, numNameList);
-      console.log(expr);
       for (let i = 0; i < numList.length; i++) {
-        console.log(numNameList[i].substr(10, numNameList[i].length));
+        // console.log(numNameList[i].substr(10, numNameList[i].length));
         expr = expr.replaceAll(
           numList[i],
           numNameList[i].substr(10, numNameList[i].length)
@@ -323,34 +317,9 @@ const CourseDisplay = () => {
       expr = expr.split("^");
       const list = createPrereqBulletList(expr);
       setPreReqDisplay(preReqsToComponents(list));
-      console.log("setting to true");
       setLoaded(true);
     }
   };
-
-  // if (num.match("EN.600").length > 0) {
-  //   num.replace("EN.600", "EN.601");
-  //   axios
-  //     .get(api + "/search", { params: { query: num } })
-  //     // eslint-disable-next-line no-loop-func
-  //     .then((retrieved) => {
-  //       const retrievedCourse = retrieved.data.data;
-  //       if (retrievedCourse.length === 1) {
-  //         console.log(retrievedCourse[0]);
-  //         numList[n] = num;
-  //         numNameList.push(num + " " + retrievedCourse[0].title);
-  //       } else {
-  //         console.log("no such course exists in db");
-
-  //         numNameList.push(num + " Older than 2 years old.");
-  //       }
-  //     })
-  //     .catch((err) => {
-  //       console.log("couldnt find", err);
-  //     });
-  // } else {
-  //   numNameList.push(num + " Older than 2 years old.");
-  // }
 
   // IMPORTANT: UNUSED IN FAVOR OF ABOVE PREREQ METHOD.
   // Function to return a list of clickable prereqs
@@ -452,6 +421,12 @@ const CourseDisplay = () => {
           <p>{inspected.number}</p>
           <p>{inspected.credits} Credits</p>
           <p>Areas: {inspected.areas}</p>
+          <p>
+            Restrictions:{" "}
+            {inspected.restrictions.map((restriction) => (
+              <div>{restriction.RestrictionName}</div>
+            ))}
+          </p>
           <p>
             {inspected.terms.map((term) => (
               <div>{term}</div>

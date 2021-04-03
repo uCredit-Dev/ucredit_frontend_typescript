@@ -86,6 +86,7 @@ export const testCourse1: Course = {
   bio: "Lorem ipsum. This is a test course.",
   tags: ["TEST-COURSE"],
   preReq: [],
+  restrictions: [],
 };
 
 export const testCourse2: Course = {
@@ -100,6 +101,7 @@ export const testCourse2: Course = {
   bio: "Lorem ipsum. This is another test course.",
   tags: ["TEST-COURSE"],
   preReq: [testCourse1],
+  restrictions: [],
 };
 
 export const userTestCourse1: UserCourse = {

@@ -1,3 +1,8 @@
+export type Restriction = {
+  RestrictionName: string;
+  Description: string;
+};
+
 // For SIS courses
 export type Course = {
   title: string;
@@ -11,11 +16,7 @@ export type Course = {
   bio: string;
   tags: string[];
   preReq: any;
-  // {
-  //   title: string;
-  //   number: string;
-  //   credits: string;
-  // }[];
+  restrictions: Restriction[];
 };
 
 // For User courses, which have extra ids with user-specific info and a single term/area that the user chose.
