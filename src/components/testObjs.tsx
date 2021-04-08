@@ -1,4 +1,11 @@
-import { Course, User, Distribution, Plan, UserCourse } from "./commonTypes";
+import {
+  Course,
+  User,
+  Distribution,
+  Plan,
+  UserCourse,
+  Major,
+} from "./commonTypes";
 
 // IMPORTANT: All test objs may be inaccurate with new types
 
@@ -206,3 +213,15 @@ export const testMajorDistributions = [
   testDistributionNS,
   testDistributionHumanities,
 ];
+
+export const testMajorCS: Major = {
+  name: "B.S. in Computer Science (old)",
+  generalDistributions: [
+    "basic sciences",
+    "general electives",
+    "humanities",
+    "mathematics",
+    "writing intensive",
+  ],
+  fineRequirements: [],
+};

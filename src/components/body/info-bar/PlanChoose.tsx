@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
-import { Plan } from "../../commonTypes";
+import { Distribution, Plan } from "../../commonTypes";
 import { useDispatch, useSelector } from "react-redux";
 import {
   updateSelectedPlan,
@@ -9,6 +9,7 @@ import {
   selectPlan,
   selectPlanList,
 } from "../../slices/userSlice";
+import { testMajorCS } from "../../testObjs";
 const api = "https://ucredit-api.herokuapp.com/api";
 
 type PlanChooseProps = {
@@ -79,25 +80,45 @@ const PlanChoose: React.FC<PlanChooseProps> = (props) => {
     const selectedOption = event.target.value;
     if (selectedOption === "new plan") {
       // Post req body for a new plan
-      const body = {
+      const planBody = {
         name: "Unnamed Plan",
         user_id: user._id,
         majors: ["Computer Science"],
       };
 
-      fetch(api + "/plans", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(body),
-      }).then((retrieved) => {
-        retrieved.json().then((data) => {
-          console.log("retrievedJson is ", data);
-          dispatch(updateSelectedPlan(data.data));
-          setNewPlan(newPlan + 1);
+      axios
+        .post(api + "/plans", planBody)
+        .then((data: { data: { data: Plan } }) => {
+          console.log(data);
+          const testMajor = testMajorCS;
+          const newRetrievedPlan = data.data.data;
+          testMajor.generalDistributions.forEach((distr, index) => {
+            axios
+              .post(api + "/distributions", {
+                name: distr,
+                required: 1,
+                user_id: user._id,
+                plan_id: newRetrievedPlan._id,
+              })
+              .then((newDistr: { data: { data: Distribution } }) => {
+                const newDistributionID = newDistr.data.data._id;
+                newRetrievedPlan.distribution_ids.push(newDistributionID);
+              })
+              .then(() => {
+                if (index === testMajor.generalDistributions.length - 1) {
+                  console.log("retrievedJson is ", newRetrievedPlan);
+                  dispatch(updateSelectedPlan(newRetrievedPlan));
+                  setNewPlan(newPlan + 1);
+                }
+              });
+          });
+          // return data;
         });
-      });
+      // .then((data: { data: { data: Plan } }) => {
+      //   console.log("retrievedJson is ", data.data.data);
+      //   dispatch(updateSelectedPlan(data.data.data));
+      //   setNewPlan(newPlan + 1);
+      // });
       console.log("create new plan");
     } else {
       let newSelected: Plan = currentPlan;
@@ -140,9 +161,10 @@ const PlanChoose: React.FC<PlanChooseProps> = (props) => {
       className={props.className}
       value={currentPlan.name === "" ? "Create a new plan +" : currentPlan.name}
       onChange={handlePlanChange}
-      defaultValue={currentPlan.name}>
+      defaultValue={currentPlan.name}
+    >
       {dropdownOptions}
-      <option value='new plan'>Create a plan +</option>
+      <option value="new plan">Create a plan +</option>
     </select>
   );
 };
