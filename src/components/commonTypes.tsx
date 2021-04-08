@@ -94,6 +94,9 @@ export type generalDistributionType =
 
 export type Major = {
   name: string;
-  generalDistributions: (string | generalDistributionType)[];
+  generalDistributions: {
+    name: string | generalDistributionType;
+    required: number;
+  }[];
   fineRequirements: [];
 };

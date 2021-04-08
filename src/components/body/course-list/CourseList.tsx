@@ -1,13 +1,9 @@
-import React, { useState } from "react";
+import React from "react";
 import Year from "./Year";
 import { useSelector } from "react-redux";
 import { selectPlan } from "../../slices/userSlice";
 
 function CourseList() {
-  // Name of the course that is in the popout. This state is passed to the its children, where it will get updated.
-  // This is done because we only want one popout at a time, and thus, it needs to be at the top level.
-  const [detailName, setDetailName] = useState<string>("");
-
   // Setting up redux
   const currentPlan = useSelector(selectPlan);
 
@@ -19,30 +15,10 @@ function CourseList() {
   return (
     <div className="flex flex-col ml-1.5 mr-5 w-auto h-auto overflow-y-auto">
       <div className="flex flex-row flex-wrap justify-between thin:justify-center w-full h-auto">
-        <Year
-          yearName={"Freshman"}
-          courseIDs={freshmanCourseIDs}
-          detailName={detailName}
-          setDetailName={setDetailName}
-        />
-        <Year
-          yearName={"Sophomore"}
-          courseIDs={sophomoreCourseIDs}
-          detailName={detailName}
-          setDetailName={setDetailName}
-        />
-        <Year
-          yearName={"Junior"}
-          courseIDs={juniorCourseIDs}
-          detailName={detailName}
-          setDetailName={setDetailName}
-        />
-        <Year
-          yearName={"Senior"}
-          courseIDs={seniorCourseIDs}
-          detailName={detailName}
-          setDetailName={setDetailName}
-        />
+        <Year yearName={"Freshman"} courseIDs={freshmanCourseIDs} />
+        <Year yearName={"Sophomore"} courseIDs={sophomoreCourseIDs} />
+        <Year yearName={"Junior"} courseIDs={juniorCourseIDs} />
+        <Year yearName={"Senior"} courseIDs={seniorCourseIDs} />
       </div>
     </div>
   );

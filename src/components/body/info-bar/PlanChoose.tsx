@@ -32,9 +32,10 @@ const PlanChoose: React.FC<PlanChooseProps> = (props) => {
       axios.get(api + "/plansByUser/" + user._id).then((retrieved) => {
         const retrievedPlans = retrieved.data.data;
         dispatch(updatePlanList(retrievedPlans));
-        if (retrievedPlans.length > 0) {
+        if (retrievedPlans.length > 0 && currentPlan._id === "noPlan") {
           dispatch(updateSelectedPlan(retrievedPlans[0]));
-        } else {
+        } else if (retrievedPlans.length === 0) {
+          // TODO: Modularize creating courses into its own common function
           const planBody = {
             name: "Unnamed Plan",
             user_id: user._id,
@@ -47,8 +48,8 @@ const PlanChoose: React.FC<PlanChooseProps> = (props) => {
               testMajor.generalDistributions.forEach((distr, index) => {
                 axios
                   .post(api + "/distributions", {
-                    name: distr,
-                    required: 1,
+                    name: distr.name,
+                    required: distr.required,
                     user_id: user._id,
                     plan_id: newRetrievedPlan._id,
                   })
@@ -81,7 +82,20 @@ const PlanChoose: React.FC<PlanChooseProps> = (props) => {
         {plan.name}
       </option>
     ));
-    setdropdownOptions(options);
+
+    setdropdownOptions(
+      <select
+        className={props.className}
+        value={
+          currentPlan.name === "" ? "Create a new plan +" : currentPlan.name
+        }
+        onChange={handlePlanChange}
+      >
+        {options}
+        <option value="new plan">Create a plan +</option>
+      </select>
+    );
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [planList, currentPlan]);
 
   // Handles onClick for when a dropdown option is selected
@@ -102,8 +116,8 @@ const PlanChoose: React.FC<PlanChooseProps> = (props) => {
           testMajor.generalDistributions.forEach((distr, index) => {
             axios
               .post(api + "/distributions", {
-                name: distr,
-                required: 1,
+                name: distr.name,
+                required: distr.required,
                 user_id: user._id,
                 plan_id: newRetrievedPlan._id,
               })
@@ -148,8 +162,8 @@ const PlanChoose: React.FC<PlanChooseProps> = (props) => {
           testMajor.generalDistributions.forEach((distr, index) => {
             axios
               .post(api + "/distributions", {
-                name: distr,
-                required: 1,
+                name: distr.name,
+                required: distr.required,
                 user_id: user._id,
                 plan_id: newRetrievedPlan._id,
               })
@@ -170,17 +184,7 @@ const PlanChoose: React.FC<PlanChooseProps> = (props) => {
     }
   });
 
-  return (
-    <select
-      className={props.className}
-      value={currentPlan.name === "" ? "Create a new plan +" : currentPlan.name}
-      onChange={handlePlanChange}
-      defaultValue={currentPlan.name}
-    >
-      {dropdownOptions}
-      <option value="new plan">Create a plan +</option>
-    </select>
-  );
+  return <>{dropdownOptions}</>;
 };
 
 export default PlanChoose;

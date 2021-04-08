@@ -1,9 +1,7 @@
-import React, { useState, useEffect } from "react";
-import { getColors } from "../assets";
+import React from "react";
 
 type courseBarProps = {
   maxCredits: number;
-  majorCredits: number;
   plannedCredits: number;
   currentCredits: number;
   section: string;
@@ -11,12 +9,18 @@ type courseBarProps = {
 
 function CourseBar({
   maxCredits,
-  majorCredits,
   plannedCredits,
   currentCredits,
   section,
 }: courseBarProps) {
-  return <div></div>;
+  return (
+    <>
+      <div>{section}</div>
+      <div>
+        Bar here {maxCredits}|{plannedCredits}|{currentCredits}
+      </div>
+    </>
+  );
 }
 
 export default CourseBar;

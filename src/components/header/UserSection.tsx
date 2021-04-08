@@ -1,11 +1,8 @@
-import React, { useEffect, useState } from "react";
-import { selectUser } from "../slices/userSlice";
-import { useSelector } from "react-redux";
+import React, { useEffect } from "react";
 import { testUser } from "../testObjs";
 import { useDispatch } from "react-redux";
 import { updateUser } from "../slices/userSlice";
 import { ReactComponent as UserSvg } from "../svg/user.svg";
-const api = "https://ucredit-api.herokuapp.com/api";
 
 function UserSection() {
   const dispatch = useDispatch();

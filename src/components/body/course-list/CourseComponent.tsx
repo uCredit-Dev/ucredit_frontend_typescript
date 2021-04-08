@@ -1,24 +1,23 @@
 import React, { useState, useEffect } from "react";
-import { UserCourse, YearType, Plan } from "../../commonTypes";
+import { UserCourse, YearType, Plan, SemesterType } from "../../commonTypes";
 import { getColors } from "../../assets";
 import { useDispatch, useSelector } from "react-redux";
 import { selectPlan, updateSelectedPlan } from "../../slices/userSlice";
-import CoursePopout from "./CoursePopout";
+import {
+  updateSearchStatus,
+  updateInspectedCourse,
+  updateSearchTime,
+} from "../../slices/searchSlice";
+import axios from "axios";
 const api = "https://ucredit-api.herokuapp.com/api";
 
 type courseProps = {
   course: UserCourse;
-  detailName: string;
-  setDetailName: Function;
   year: YearType;
+  semester: SemesterType;
 };
 
-function CourseComponent({
-  year,
-  course,
-  detailName,
-  setDetailName,
-}: courseProps) {
+function CourseComponent({ year, course, semester }: courseProps) {
   const [subColor, setSubColor] = useState<string>("pink");
   const [mainColor, setMainColor] = useState<string>("red");
 
@@ -38,19 +37,24 @@ function CourseComponent({
 
   // Sets or resets the course displayed in popout after user clicks it in course list.
   const displayCourses = () => {
-    if (course.title === detailName) {
-      setDetailName("");
-    } else {
-      setDetailName(course.title);
-    }
-    console.log("click!");
+    axios
+      .get(api + "/search", { params: { query: course.number } })
+      .then((retrievedData) => {
+        const retrievedCourse = retrievedData.data.data;
+        dispatch(updateInspectedCourse(retrievedCourse[0]));
+        dispatch(
+          updateSearchTime({ searchYear: year, searchSemester: semester })
+        );
+      })
+      .then(() => {
+        dispatch(updateSearchStatus(true));
+      })
+      .catch((err) => console.log(err));
   };
 
   // Deletes a course on click of the delete button. Updates currently displayed plan with changes.
   const deleteCourse = () => {
     fetch(api + "/courses/" + course._id, { method: "DELETE" }).then((resp) => {
-      console.log(resp);
-      // TODO: Update plan
       let newPlan: Plan;
       if (year === "Freshman") {
         const freshmanCourses = currentPlan.freshman.filter(

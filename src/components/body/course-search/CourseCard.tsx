@@ -28,7 +28,6 @@ const CourseCard = (props: cardProps) => {
 
   // User selects a course to look at.
   const handleCourseClick = () => {
-    console.log(course);
     dispatch(updateInspectedCourse(course));
   };
   return (
