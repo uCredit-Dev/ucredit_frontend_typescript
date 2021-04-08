@@ -73,34 +73,10 @@ const PlanChoose: React.FC<PlanChooseProps> = (props) => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [user, props.newPlan, planList.length]);
 
-  // Makes plan dropdown options
-  const [dropdownOptions, setdropdownOptions] = useState<any>([]);
-  useEffect(() => {
-    let id = 0;
-    const options = planList.map((plan) => (
-      <option key={id++} value={plan.name}>
-        {plan.name}
-      </option>
-    ));
-
-    setdropdownOptions(
-      <select
-        className={props.className}
-        value={
-          currentPlan.name === "" ? "Create a new plan +" : currentPlan.name
-        }
-        onChange={handlePlanChange}
-      >
-        {options}
-        <option value="new plan">Create a plan +</option>
-      </select>
-    );
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [planList, currentPlan]);
-
   // Handles onClick for when a dropdown option is selected
   const handlePlanChange = (event: any) => {
     const selectedOption = event.target.value;
+    const planListClone = [...planList];
     if (selectedOption === "new plan") {
       // Post req body for a new plan
       const planBody = {
@@ -137,12 +113,15 @@ const PlanChoose: React.FC<PlanChooseProps> = (props) => {
         });
     } else {
       let newSelected: Plan = currentPlan;
-      planList.forEach((plan) => {
-        if (plan.name === event.target.value) {
+      planList.forEach((plan, index) => {
+        if (plan._id === event.target.value) {
           newSelected = plan;
+          planListClone.splice(index, 1);
+          planListClone.splice(0, 0, newSelected);
         }
       });
       dispatch(updateSelectedPlan(newSelected));
+      dispatch(updatePlanList(planListClone));
     }
   };
 
@@ -183,6 +162,34 @@ const PlanChoose: React.FC<PlanChooseProps> = (props) => {
         });
     }
   });
+
+  // Makes plan dropdown options
+  const [dropdownOptions, setdropdownOptions] = useState<any>([]);
+  useEffect(() => {
+    let id = 0;
+    // const sortedPlanList: Plan[] = planList
+    //   .slice()
+    //   .sort((plan1, plan2) => plan1._id.localeCompare(plan2._id));
+    const options = planList.map((plan) => (
+      <option key={id++} value={plan._id}>
+        {plan.name}
+      </option>
+    ));
+
+    setdropdownOptions(
+      <select
+        className={props.className}
+        value={
+          currentPlan.name === "" ? "Create a new plan +" : currentPlan.name
+        }
+        onChange={handlePlanChange}
+      >
+        {options}
+        <option value="new plan">Create a plan +</option>
+      </select>
+    );
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [planList, currentPlan]);
 
   return <>{dropdownOptions}</>;
 };
