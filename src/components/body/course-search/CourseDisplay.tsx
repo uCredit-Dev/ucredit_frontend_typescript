@@ -1,7 +1,7 @@
 import axios from "axios";
 import React, { useState, useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
-import { Course, UserCourse } from "../../commonTypes";
+import { UserCourse } from "../../commonTypes";
 import {
   selectInspectedCourse,
   updateInspectedCourse,
@@ -285,6 +285,7 @@ const CourseDisplay = () => {
           });
       }
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [inspected]);
 
   // Check it it's time to update the prereq section with components.

@@ -2,7 +2,6 @@ import React, { useState, useEffect } from "react";
 import Semester from "./Semester";
 import { UserCourse, YearType } from "../../commonTypes";
 import { ReactComponent as MoreSvg } from "../../svg/more.svg";
-import { userTestCourse1, userTestCourse2 } from "../../testObjs";
 import { useSelector } from "react-redux";
 import { selectPlan } from "../../slices/userSlice";
 import axios from "axios";
@@ -34,21 +33,22 @@ function Year({
 
   const getCourses = () => {
     const totalCourses: UserCourse[] = [];
-    console.log("courses are", courseIDs);
-    courseIDs.forEach((courseId) => {
-      // TODO: fetch each course
-      axios.get(api + "/courses/" + courseId).then((retrieved) => {
-        const data = retrieved.data.data;
-        totalCourses.push(data);
-        console.log("updated?", totalCourses);
-        setCourses([...totalCourses]);
+    if (courseIDs !== undefined) {
+      courseIDs.forEach((courseId) => {
+        // TODO: fetch each course
+        axios.get(api + "/courses/" + courseId).then((retrieved) => {
+          const data = retrieved.data.data;
+          totalCourses.push(data);
+          setCourses([...totalCourses]);
+        });
       });
-    });
+    }
   };
 
   useEffect(() => {
     setCourses([]);
     getCourses();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [currentPlan]);
 
   useEffect(() => {
@@ -72,6 +72,7 @@ function Year({
     setSpringCourses(parsedSpringCourses);
     setWinterCourses(parsedIntersessionCourses);
     setSummerCourses(parsedSummerCourses);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [courses.length, currentPlan]);
 
   // Displays dropdown showing semester categories
