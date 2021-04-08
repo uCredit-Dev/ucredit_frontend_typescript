@@ -84,3 +84,16 @@ export type FilterType =
   | "term"
   | "department"
   | "wi";
+
+export type generalDistributionType =
+  | "humanities"
+  | "basic sciences"
+  | "mathematics"
+  | "writing intensive"
+  | "general electives";
+
+export type Major = {
+  name: string;
+  generalDistributions: (string | generalDistributionType)[];
+  fineRequirements: [];
+};
