@@ -12,6 +12,10 @@ import PlanChoose from "./PlanChoose";
 import { ReactComponent as RemoveSvg } from "../../svg/remove.svg";
 import { ReactComponent as UserSvg } from "../../svg/user.svg";
 import { ReactComponent as MajorSvg } from "../../svg/major.svg";
+import { testMajorCS } from "../../testObjs";
+import axios from "axios";
+import { Distribution, Plan } from "../../commonTypes";
+const testMajor = testMajorCS;
 
 const api = "https://ucredit-api.herokuapp.com/api";
 
@@ -33,6 +37,8 @@ const InfoCards: React.FC<any> = () => {
     setPlanName(event.target.value);
     setEditName(true);
   };
+
+  const [newPlan, setNewPlan] = useState(0);
 
   // Only edits name if editName is true. If true, calls debounce update function
   useEffect(() => {
@@ -88,25 +94,39 @@ const InfoCards: React.FC<any> = () => {
       });
       // If it is length 1, autogenerate a new plan. Otherwise, update the list.
       if (planList.length === 1) {
-        console.log("user is ", user);
-        const body = {
+        // Post req body for a new plan
+        const planBody = {
           name: "Unnamed Plan",
           user_id: user._id,
           majors: ["Computer Science"],
         };
-        fetch(api + "/plans", {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify(body),
-        }).then((retrieved) => {
-          retrieved.json().then((data) => {
-            console.log("retrievedJson is ", data);
-            dispatch(updateSelectedPlan(data.data));
-            updatedList[0] = data.data;
+
+        axios
+          .post(api + "/plans", planBody)
+          .then((data: { data: { data: Plan } }) => {
+            const newRetrievedPlan = data.data.data;
+            testMajor.generalDistributions.forEach((distr, index) => {
+              axios
+                .post(api + "/distributions", {
+                  name: distr,
+                  required: 1,
+                  user_id: user._id,
+                  plan_id: newRetrievedPlan._id,
+                })
+                .then((newDistr: { data: { data: Distribution } }) => {
+                  newRetrievedPlan.distribution_ids = [
+                    ...newRetrievedPlan.distribution_ids,
+                    newDistr.data.data._id,
+                  ];
+                })
+                .then(() => {
+                  if (index === testMajor.generalDistributions.length - 1) {
+                    dispatch(updateSelectedPlan(newRetrievedPlan));
+                  }
+                });
+            });
+            setNewPlan(newPlan + 1);
           });
-        });
       } else {
         dispatch(updateSelectedPlan(updatedList[0]));
       }
@@ -132,7 +152,11 @@ const InfoCards: React.FC<any> = () => {
               onClick={deleteCurrentPlan}
             />
           </div>
-          <PlanChoose className="flex flex-row items-center justify-center px-16 w-planchoose h-auto text-white text-infocard bg-secondary appearance-none cursor-pointer select-none" />
+          <PlanChoose
+            className="flex flex-row items-center justify-center px-16 w-planchoose h-auto text-white text-infocard bg-secondary appearance-none cursor-pointer select-none"
+            newPlan={newPlan}
+            setNewPlan={setNewPlan}
+          />
         </div>
         <div className="m-auto min-w-max overflow-visible">
           <div className="flex flex-row w-auto h-auto text-center">

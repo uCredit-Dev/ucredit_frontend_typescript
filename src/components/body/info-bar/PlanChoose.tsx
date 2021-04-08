@@ -11,14 +11,15 @@ import {
 } from "../../slices/userSlice";
 import { testMajorCS } from "../../testObjs";
 const api = "https://ucredit-api.herokuapp.com/api";
+const testMajor = testMajorCS;
 
 type PlanChooseProps = {
   className?: string;
+  newPlan: number;
+  setNewPlan: Function;
 };
 
 const PlanChoose: React.FC<PlanChooseProps> = (props) => {
-  const [newPlan, setNewPlan] = useState(0);
-
   // Redux setup
   const dispatch = useDispatch();
   const user = useSelector(selectUser);
@@ -30,37 +31,46 @@ const PlanChoose: React.FC<PlanChooseProps> = (props) => {
     if (user._id !== "") {
       axios.get(api + "/plansByUser/" + user._id).then((retrieved) => {
         const retrievedPlans = retrieved.data.data;
-        console.log("retrieved ", retrieved);
-        // const testList = [testPlan1, testPlan2, ...retrievedPlans];
-        console.log("plans are ", retrievedPlans);
         dispatch(updatePlanList(retrievedPlans));
-        // dispatch(updatePlanList(testList));
         if (retrievedPlans.length > 0) {
           dispatch(updateSelectedPlan(retrievedPlans[0]));
         } else {
-          const body = {
+          const planBody = {
             name: "Unnamed Plan",
             user_id: user._id,
             majors: ["Computer Science"],
           };
-
-          fetch(api + "/plans", {
-            method: "POST",
-            headers: {
-              "Content-Type": "application/json",
-            },
-            body: JSON.stringify(body),
-          }).then((retrieved) => {
-            retrieved.json().then((data) => {
-              console.log("retrievedJson is ", data);
-              dispatch(updateSelectedPlan(data.data));
-              setNewPlan(newPlan + 1);
+          axios
+            .post(api + "/plans", planBody)
+            .then((data: { data: { data: Plan } }) => {
+              const newRetrievedPlan = data.data.data;
+              testMajor.generalDistributions.forEach((distr, index) => {
+                axios
+                  .post(api + "/distributions", {
+                    name: distr,
+                    required: 1,
+                    user_id: user._id,
+                    plan_id: newRetrievedPlan._id,
+                  })
+                  .then((newDistr: { data: { data: Distribution } }) => {
+                    newRetrievedPlan.distribution_ids = [
+                      ...newRetrievedPlan.distribution_ids,
+                      newDistr.data.data._id,
+                    ];
+                  })
+                  .then(() => {
+                    if (index === testMajor.generalDistributions.length - 1) {
+                      dispatch(updateSelectedPlan(newRetrievedPlan));
+                      props.setNewPlan(props.newPlan + 1);
+                    }
+                  });
+              });
             });
-          });
         }
       });
     }
-  }, [user, newPlan, planList.length]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [user, props.newPlan, planList.length]);
 
   // Makes plan dropdown options
   const [dropdownOptions, setdropdownOptions] = useState<any>([]);
@@ -71,7 +81,6 @@ const PlanChoose: React.FC<PlanChooseProps> = (props) => {
         {plan.name}
       </option>
     ));
-    console.log("setting");
     setdropdownOptions(options);
   }, [planList, currentPlan]);
 
@@ -89,8 +98,6 @@ const PlanChoose: React.FC<PlanChooseProps> = (props) => {
       axios
         .post(api + "/plans", planBody)
         .then((data: { data: { data: Plan } }) => {
-          console.log(data);
-          const testMajor = testMajorCS;
           const newRetrievedPlan = data.data.data;
           testMajor.generalDistributions.forEach((distr, index) => {
             axios
@@ -101,25 +108,19 @@ const PlanChoose: React.FC<PlanChooseProps> = (props) => {
                 plan_id: newRetrievedPlan._id,
               })
               .then((newDistr: { data: { data: Distribution } }) => {
-                const newDistributionID = newDistr.data.data._id;
-                newRetrievedPlan.distribution_ids.push(newDistributionID);
+                newRetrievedPlan.distribution_ids = [
+                  ...newRetrievedPlan.distribution_ids,
+                  newDistr.data.data._id,
+                ];
               })
               .then(() => {
                 if (index === testMajor.generalDistributions.length - 1) {
-                  console.log("retrievedJson is ", newRetrievedPlan);
                   dispatch(updateSelectedPlan(newRetrievedPlan));
-                  setNewPlan(newPlan + 1);
+                  props.setNewPlan(props.newPlan + 1);
                 }
               });
           });
-          // return data;
         });
-      // .then((data: { data: { data: Plan } }) => {
-      //   console.log("retrievedJson is ", data.data.data);
-      //   dispatch(updateSelectedPlan(data.data.data));
-      //   setNewPlan(newPlan + 1);
-      // });
-      console.log("create new plan");
     } else {
       let newSelected: Plan = currentPlan;
       planList.forEach((plan) => {
@@ -133,26 +134,39 @@ const PlanChoose: React.FC<PlanChooseProps> = (props) => {
 
   useEffect(() => {
     if (user.plan_ids.length === 0 && user._id !== "") {
-      console.log("user is ", user);
-      const body = {
+      // Post req body for a new plan
+      const planBody = {
         name: "Unnamed Plan",
         user_id: user._id,
         majors: ["Computer Science"],
       };
 
-      fetch(api + "/plans", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(body),
-      }).then((retrieved) => {
-        retrieved.json().then((data) => {
-          console.log("retrievedJson is ", data);
-          dispatch(updateSelectedPlan(data.data));
-          setNewPlan(newPlan + 1);
+      axios
+        .post(api + "/plans", planBody)
+        .then((data: { data: { data: Plan } }) => {
+          const newRetrievedPlan = data.data.data;
+          testMajor.generalDistributions.forEach((distr, index) => {
+            axios
+              .post(api + "/distributions", {
+                name: distr,
+                required: 1,
+                user_id: user._id,
+                plan_id: newRetrievedPlan._id,
+              })
+              .then((newDistr: { data: { data: Distribution } }) => {
+                newRetrievedPlan.distribution_ids = [
+                  ...newRetrievedPlan.distribution_ids,
+                  newDistr.data.data._id,
+                ];
+              })
+              .then(() => {
+                if (index === testMajor.generalDistributions.length - 1) {
+                  dispatch(updateSelectedPlan(newRetrievedPlan));
+                  props.setNewPlan(props.newPlan + 1);
+                }
+              });
+          });
         });
-      });
     }
   });
 

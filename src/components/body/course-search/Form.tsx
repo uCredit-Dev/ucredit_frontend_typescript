@@ -36,6 +36,7 @@ const Form = () => {
   // On opening search, set the term filter to match semester you're adding to.
   useEffect(() => {
     dispatch(updateSearchFilters({ filter: "term", value: semester }));
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   // Search with debouncing of 3/4s of a second.
@@ -55,6 +56,7 @@ const Form = () => {
       const search = setTimeout(performSearch, 500);
       return () => clearTimeout(search);
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [searchTerm, searchFilters]);
 
   // Performs search call with filters to backend and updates redux with retrieved courses.
@@ -129,23 +131,23 @@ const Form = () => {
     dispatch(updateSearchFilters(params));
   };
 
-  // Update searching for a writing intensives or not..
-  const handleDepartmentFilterChange = (event: any): void => {
-    const params: { filter: FilterType; value: any } = {
-      filter: "department",
-      value: event.target.value,
-    };
-    dispatch(updateSearchFilters(params));
-  };
+  // // Update searching for a writing intensives or not..
+  // const handleDepartmentFilterChange = (event: any): void => {
+  //   const params: { filter: FilterType; value: any } = {
+  //     filter: "department",
+  //     value: event.target.value,
+  //   };
+  //   dispatch(updateSearchFilters(params));
+  // };
 
-  // Update searching for a writing intensives or not..
-  const handleTagsFilterChange = (event: any): void => {
-    const params: { filter: FilterType; value: any } = {
-      filter: "tags",
-      value: event.target.value,
-    };
-    dispatch(updateSearchFilters(params));
-  };
+  // // Update searching for a writing intensives or not..
+  // const handleTagsFilterChange = (event: any): void => {
+  //   const params: { filter: FilterType; value: any } = {
+  //     filter: "tags",
+  //     value: event.target.value,
+  //   };
+  //   dispatch(updateSearchFilters(params));
+  // };
 
   return (
     <div className={"p-5"}>
