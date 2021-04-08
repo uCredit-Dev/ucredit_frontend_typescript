@@ -41,7 +41,6 @@ const Form = () => {
 
   // Search with debouncing of 3/4s of a second.
   useEffect(() => {
-    console.log(searchTerm, searchFilters);
     if (
       searchTerm === "" &&
       searchFilters.credits === "None" &&

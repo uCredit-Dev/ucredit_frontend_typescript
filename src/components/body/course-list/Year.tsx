@@ -10,17 +10,10 @@ const api = "https://ucredit-api.herokuapp.com/api";
 type semesterProps = {
   yearName: YearType;
   courseIDs: string[];
-  detailName: string;
-  setDetailName: Function;
 };
 
 // Dropdown of all semesters and courses for each semester in a year.
-function Year({
-  yearName,
-  courseIDs,
-  detailName,
-  setDetailName,
-}: semesterProps) {
+function Year({ yearName, courseIDs }: semesterProps) {
   const [fallCourses, setFallCourses] = useState<UserCourse[]>([]);
   const [springCourses, setSpringCourses] = useState<UserCourse[]>([]);
   const [winterCourses, setWinterCourses] = useState<UserCourse[]>([]);
@@ -36,11 +29,14 @@ function Year({
     if (courseIDs !== undefined) {
       courseIDs.forEach((courseId) => {
         // TODO: fetch each course
-        axios.get(api + "/courses/" + courseId).then((retrieved) => {
-          const data = retrieved.data.data;
-          totalCourses.push(data);
-          setCourses([...totalCourses]);
-        });
+        axios
+          .get(api + "/courses/" + courseId)
+          .then((retrieved) => {
+            const data = retrieved.data.data;
+            totalCourses.push(data);
+            setCourses([...totalCourses]);
+          })
+          .catch((err) => console.log(err));
       });
     }
   };
@@ -95,29 +91,21 @@ function Year({
             semesterName="fall"
             semesterYear={yearName}
             courses={fallCourses}
-            detailName={detailName}
-            setDetailName={setDetailName}
           />
           <Semester
             semesterName="spring"
             semesterYear={yearName}
             courses={springCourses}
-            detailName={detailName}
-            setDetailName={setDetailName}
           />
           <Semester
             semesterName="intersession"
             semesterYear={yearName}
             courses={winterCourses}
-            detailName={detailName}
-            setDetailName={setDetailName}
           />
           <Semester
             semesterName="summer"
             semesterYear={yearName}
             courses={summerCourses}
-            detailName={detailName}
-            setDetailName={setDetailName}
           />
         </div>
       ) : null}

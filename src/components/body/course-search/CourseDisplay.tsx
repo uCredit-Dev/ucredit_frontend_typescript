@@ -1,7 +1,7 @@
 import axios from "axios";
 import React, { useState, useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
-import { UserCourse } from "../../commonTypes";
+import { Distribution, UserCourse } from "../../commonTypes";
 import {
   selectInspectedCourse,
   updateInspectedCourse,
@@ -13,6 +13,7 @@ import {
   selectUser,
   selectPlan,
   selectPlanList,
+  selectDistributions,
   updateSelectedPlan,
   updatePlanList,
 } from "../../slices/userSlice";
@@ -28,6 +29,7 @@ const CourseDisplay = () => {
   const year = useSelector(selectYear);
   const currentPlan = useSelector(selectPlan);
   const planList = useSelector(selectPlanList);
+  const distributions = useSelector(selectDistributions);
 
   // TODO: MODULARIZE THE BELOW FUNCTIONS SOMETIME.
   // This is that one open expression calculator leetcode problem.
@@ -198,7 +200,6 @@ const CourseDisplay = () => {
         return section.IsNegative === "N";
       });
     }
-    // console.log("inspecting", inspected);
     setNNegativePreReqs(preReqs);
 
     // Continue only if
@@ -261,7 +262,6 @@ const CourseDisplay = () => {
                         numList[n] + num + " " + retrievedCourse601[0].title
                       );
                     } else {
-                      // console.log(numList, numNameList);
                       numNameList.push(
                         numList[n] + numList[n] + " Older than 2 years old."
                       );
@@ -309,7 +309,6 @@ const CourseDisplay = () => {
         return sub1.localeCompare(sub2);
       });
       for (let i = 0; i < numList.length; i++) {
-        // console.log(numNameList[i].substr(10, numNameList[i].length));
         expr = expr.replaceAll(
           numList[i],
           numNameList[i].substr(10, numNameList[i].length)
@@ -321,26 +320,6 @@ const CourseDisplay = () => {
       setLoaded(true);
     }
   };
-
-  // IMPORTANT: UNUSED IN FAVOR OF ABOVE PREREQ METHOD.
-  // Function to return a list of clickable prereqs
-  // const getPreReqs = () => {
-  //   if (inspected !== "None" && inspected.preReq.length > 0) {
-  //     const expr = inspected.preReq[0].Expression.split("^");
-  //     const list = createPrereqBulletList(expr);
-  //     console.log(expr);
-
-  //     return preReqsToComponents(list);
-  //   }
-  // };
-
-  // const getPreReqsList = () => {
-  //   if (inspected !== "None" && inspected.preReq.length > 0) {
-  //     const expr = inspected.preReq[0].Expression.split("^");
-  //     const list = createPrereqBulletList(expr);
-  //     return list;
-  //   }
-  // };
 
   // Function currying to produce a function that would update the store when clicking on prereqs
   const updateInspected = (courseNumber: string) => () => {
@@ -359,19 +338,57 @@ const CourseDisplay = () => {
       });
   };
 
+  const checkDistr = (distr: Distribution): boolean => {
+    if (inspected !== "None") {
+      if (inspected.wi && distr.name === "writing intensive") {
+        //distr.planned = distr.planned + 1;
+        return true;
+      }
+      if (
+        (inspected.number.includes("EN.6") ||
+          inspected.number.includes("EN.5")) &&
+        distr.name === "computer science"
+      ) {
+        return true;
+      }
+      if (
+        !inspected.areas.includes("None") &&
+        inspected.areas.includes("N") &&
+        distr.name === "basic sciences"
+      ) {
+        return true;
+      }
+      if (inspected.areas.includes("S") && distr.name === "social sciences") {
+        return true;
+      }
+      if (inspected.areas.includes("H") && distr.name === "humanities") {
+        return true;
+      }
+      if (inspected.areas.includes("Q") && distr.name === "mathematics") {
+        return true;
+      }
+    }
+    return false;
+  };
+
   // Adds course
   const addCourse = () => {
     // Take inspected, turn it into a user course, and add it to user courses
-    if (inspected !== "None") {
+    if (inspected !== "None" && distributions.length !== 0) {
       let newUserCourse: UserCourse;
+      const filteredDistribution = distributions.filter((distribution) =>
+        checkDistr(distribution)
+      );
+
       const body = {
         user_id: user._id,
         title: inspected.title,
         term: semester.toLowerCase(),
         year: year.toLowerCase(),
         credits: inspected.credits,
-        distribution_ids: [],
+        distribution_ids: filteredDistribution.map((distr) => distr._id),
         plan_id: currentPlan._id,
+        number: inspected.number,
       };
 
       fetch(api + "/courses", {
@@ -384,6 +401,7 @@ const CourseDisplay = () => {
         retrieved.json().then((data) => {
           newUserCourse = { ...data.data };
           const newPlan = { ...currentPlan };
+          // Update distributions
           if (year === "Freshman") {
             newPlan.freshman = [...newPlan.freshman, newUserCourse._id];
           } else if (year === "Sophomore") {

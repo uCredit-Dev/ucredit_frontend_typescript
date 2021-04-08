@@ -2,40 +2,38 @@ import React, { useState, useEffect } from "react";
 import CourseBar from "./CourseBar";
 import CourseList from "./course-list/CourseList";
 import { Distribution } from "../commonTypes";
-import { testMajorDistributions, testUser } from "../testObjs";
 import Search from "./course-search/Search";
 import { selectSearchStatus } from "../slices/searchSlice";
-import { selectPlan } from "../slices/userSlice";
-import { useSelector } from "react-redux";
+import { updateDistributions, selectPlan } from "../slices/userSlice";
+import { useSelector, useDispatch } from "react-redux";
 import InfoCards from "./info-bar/InfoCards";
 import axios from "axios";
 const api = "https://ucredit-api.herokuapp.com/api";
 
 function Content() {
-  const [userName, setUserName] = useState<string>("");
-  const [majorCredits, setMajorCredits] = useState<number>(0);
   const [distributions, setDistributions] = useState<Distribution[]>([]);
   const searching = useSelector(selectSearchStatus);
   const currentPlan = useSelector(selectPlan);
-
-  // On first render, gets user name, total credits, and distributions.
-  useEffect(() => {
-    setUserName(testUser.firstName + " " + testUser.lastName);
-    setMajorCredits(127);
-  }, []);
+  const dispatch = useDispatch();
 
   useEffect(() => {
     getDistributions();
-  }, [currentPlan._id]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [currentPlan]);
 
   // Sets all distributions for distribution bars.
   const getDistributions = () => {
     axios
       .get(api + "/distributionsByPlan/" + currentPlan._id)
-      .then((distributions) => {
-        console.log("distributions", distributions);
-        // distributions.forEach(() =>)
-      });
+      .then((retrievedData) => {
+        const retrievedDistributions = retrievedData.data.data.sort(
+          (distr1: Distribution, distr2: Distribution) =>
+            distr2.required - distr1.required
+        );
+        setDistributions(retrievedDistributions);
+        dispatch(updateDistributions(retrievedDistributions));
+      })
+      .catch((err) => console.log(err));
   };
 
   return (
@@ -45,19 +43,21 @@ function Content() {
         <CourseList />
       </div>
       <div className="h-coursebars flex-none mx-4 p-8 w-courebars bg-gray-coursebars border-2 rounded-xl">
-        {distributions.map((dis, index) =>
-          index !== 0 ? (
+        {distributions.map((dis) => {
+          const name =
+            dis.name.charAt(0).toUpperCase() +
+            dis.name.substr(1, dis.name.length);
+          return (
             <>
               <CourseBar
-                majorCredits={majorCredits}
                 maxCredits={dis.required}
                 plannedCredits={dis.planned}
                 currentCredits={dis.current}
-                section={dis.name}
+                section={name}
               />
             </>
-          ) : null
-        )}
+          );
+        })}
       </div>
       {searching ? <Search /> : null}
     </div>

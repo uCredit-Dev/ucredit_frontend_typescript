@@ -1,6 +1,6 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { AppThunk, RootState } from "../../appStore/store";
-import { Plan, User } from "../commonTypes";
+import { Distribution, Plan, User } from "../commonTypes";
 
 // addNewCourse payload type. Not being used.
 // type NewCourse = {
@@ -14,6 +14,7 @@ type UserSlice = {
   currentUser: User;
   currentPlan: Plan;
   planList: Plan[];
+  distributions: Distribution[];
 };
 
 const initialState: UserSlice = {
@@ -39,6 +40,7 @@ const initialState: UserSlice = {
     user_id: "",
   },
   planList: [],
+  distributions: [],
 };
 
 // Updates all user info from database. This function should be called after an axios get on the user routes.
@@ -67,7 +69,12 @@ export const userSlice = createSlice({
     updatePlanList: (state: any, action: PayloadAction<Plan[]>) => {
       state.planList = [...action.payload];
     },
-    // addCourse: addNewCourse,
+    updateDistributions: (
+      state: any,
+      action: PayloadAction<Distribution[]>
+    ) => {
+      state.distributions = [...action.payload];
+    },
   },
 });
 
@@ -75,6 +82,7 @@ export const {
   updateUser,
   updateSelectedPlan,
   updatePlanList,
+  updateDistributions,
 } = userSlice.actions;
 
 // Asynch login with thunk.
@@ -89,5 +97,7 @@ export const loginAsync = (user: Promise<User>): AppThunk => (dispatch) => {
 export const selectUser = (state: RootState) => state.user.currentUser;
 export const selectPlan = (state: RootState) => state.user.currentPlan;
 export const selectPlanList = (state: RootState) => state.user.planList;
+export const selectDistributions = (state: RootState) =>
+  state.user.distributions;
 
 export default userSlice.reducer;

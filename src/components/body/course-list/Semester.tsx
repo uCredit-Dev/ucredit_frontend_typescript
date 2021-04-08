@@ -9,18 +9,10 @@ type semesterProps = {
   semesterName: SemesterType;
   semesterYear: YearType;
   courses: UserCourse[];
-  detailName: string;
-  setDetailName: Function;
 };
 
 // Dropdown of all courses in a semester.
-function Semester({
-  semesterName,
-  semesterYear,
-  courses,
-  detailName,
-  setDetailName,
-}: semesterProps) {
+function Semester({ semesterName, semesterYear, courses }: semesterProps) {
   // Redux setup
   const dispatch = useDispatch();
 
@@ -45,12 +37,9 @@ function Semester({
 
   return (
     <div className="mb-3">
-      <div
-        className="flex flex-col w-semesterheading h-8 text-white font-medium bg-secondary rounded-xl"
-        onClick={displayCourses}
-      >
+      <div className="flex flex-col w-semesterheading h-8 text-white font-medium bg-secondary rounded-xl">
         <div className="flex flex-row items-center justify-between px-2 py-1">
-          <div className="w-auto h-auto">
+          <div className="w-full h-auto" onClick={displayCourses}>
             {semesterName === "fall"
               ? "Fall"
               : semesterName === "intersession"
@@ -75,8 +64,7 @@ function Semester({
               <CourseComponent
                 year={semesterYear}
                 course={course}
-                detailName={detailName}
-                setDetailName={setDetailName}
+                semester={semesterName}
               />
             ))}
           </div>

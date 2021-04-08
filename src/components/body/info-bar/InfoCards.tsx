@@ -4,14 +4,11 @@ import {
   selectUser,
   selectPlan,
   selectPlanList,
-  updateUser,
   updatePlanList,
   updateSelectedPlan,
 } from "../../slices/userSlice";
 import PlanChoose from "./PlanChoose";
 import { ReactComponent as RemoveSvg } from "../../svg/remove.svg";
-import { ReactComponent as UserSvg } from "../../svg/user.svg";
-import { ReactComponent as MajorSvg } from "../../svg/major.svg";
 import { testMajorCS } from "../../testObjs";
 import axios from "axios";
 import { Distribution, Plan } from "../../commonTypes";
@@ -46,6 +43,7 @@ const InfoCards: React.FC<any> = () => {
       const update = setTimeout(updateName, 1000);
       return () => clearTimeout(update);
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [planName]);
 
   const updateName = () => {
@@ -60,21 +58,21 @@ const InfoCards: React.FC<any> = () => {
         "Content-Type": "application/json",
       },
       body: JSON.stringify(body),
-    }).then((resp) => {
-      console.log("plan updated", resp);
-      const newPlan = { ...currentPlan, name: planName };
-      dispatch(updateSelectedPlan(newPlan));
-      // TODO: There are many codes like this to update the planList in other functions. we need to generalize or simplify this sometime. either as a common function or a function on the userSlice
-      let newPlanList = [...planList];
-      for (let i = 0; i < planList.length; i++) {
-        if (newPlanList[i]._id === currentPlan._id) {
-          newPlanList[i] = { ...newPlan };
+    })
+      .then((resp) => {
+        const newPlan = { ...currentPlan, name: planName };
+        dispatch(updateSelectedPlan(newPlan));
+        // TODO: There are many codes like this to update the planList in other functions. we need to generalize or simplify this sometime. either as a common function or a function on the userSlice
+        let newPlanList = [...planList];
+        for (let i = 0; i < planList.length; i++) {
+          if (newPlanList[i]._id === currentPlan._id) {
+            newPlanList[i] = { ...newPlan };
+          }
         }
-      }
-      console.log("after name change list is ", newPlanList);
-      setEditName(false);
-      dispatch(updatePlanList(newPlanList));
-    });
+        setEditName(false);
+        dispatch(updatePlanList(newPlanList));
+      })
+      .catch((err) => console.log(err));
   };
 
   useEffect(() => {
@@ -86,55 +84,56 @@ const InfoCards: React.FC<any> = () => {
     // update plan array
     fetch(api + "/plans/" + currentPlan._id, {
       method: "DELETE",
-    }).then((resp) => {
-      console.log("plan updated", resp);
-      let updatedList = [...planList]; // TODO: Once user routes are figured out, pull user info from db.
-      updatedList = updatedList.filter((plan) => {
-        return plan._id === currentPlan._id;
-      });
-      // If it is length 1, autogenerate a new plan. Otherwise, update the list.
-      if (planList.length === 1) {
-        // Post req body for a new plan
-        const planBody = {
-          name: "Unnamed Plan",
-          user_id: user._id,
-          majors: ["Computer Science"],
-        };
+    })
+      .then((resp) => {
+        let updatedList = [...planList]; // TODO: Once user routes are figured out, pull user info from db.
+        updatedList = updatedList.filter((plan) => {
+          return plan._id !== currentPlan._id;
+        });
+        // If it is length 1, autogenerate a new plan. Otherwise, update the list.
+        if (updatedList.length === 0) {
+          // Post req body for a new plan
+          const planBody = {
+            name: "Unnamed Plan",
+            user_id: user._id,
+            majors: ["Computer Science"],
+          };
 
-        axios
-          .post(api + "/plans", planBody)
-          .then((data: { data: { data: Plan } }) => {
-            const newRetrievedPlan = data.data.data;
-            testMajor.generalDistributions.forEach((distr, index) => {
-              axios
-                .post(api + "/distributions", {
-                  name: distr,
-                  required: 1,
-                  user_id: user._id,
-                  plan_id: newRetrievedPlan._id,
-                })
-                .then((newDistr: { data: { data: Distribution } }) => {
-                  newRetrievedPlan.distribution_ids = [
-                    ...newRetrievedPlan.distribution_ids,
-                    newDistr.data.data._id,
-                  ];
-                })
-                .then(() => {
-                  if (index === testMajor.generalDistributions.length - 1) {
-                    dispatch(updateSelectedPlan(newRetrievedPlan));
-                  }
-                });
+          axios
+            .post(api + "/plans", planBody)
+            .then((data: { data: { data: Plan } }) => {
+              const newRetrievedPlan = data.data.data;
+              testMajor.generalDistributions.forEach((distr, index) => {
+                axios
+                  .post(api + "/distributions", {
+                    name: distr.name,
+                    required: distr.required,
+                    user_id: user._id,
+                    plan_id: newRetrievedPlan._id,
+                  })
+                  .then((newDistr: { data: { data: Distribution } }) => {
+                    newRetrievedPlan.distribution_ids = [
+                      ...newRetrievedPlan.distribution_ids,
+                      newDistr.data.data._id,
+                    ];
+                  })
+                  .then(() => {
+                    if (index === testMajor.generalDistributions.length - 1) {
+                      dispatch(updateSelectedPlan(newRetrievedPlan));
+                      dispatch(updatePlanList(updatedList));
+                      setNewPlan(newPlan + 1);
+                    }
+                  });
+              });
             });
-            setNewPlan(newPlan + 1);
-          });
-      } else {
-        dispatch(updateSelectedPlan(updatedList[0]));
-      }
-      console.log("updatedList is ", updatedList);
-      dispatch(updatePlanList(updatedList));
-
-      // TODO: update user
-    });
+        } else {
+          dispatch(updateSelectedPlan(updatedList[0]));
+          dispatch(updatePlanList(updatedList));
+          setNewPlan(newPlan + 1);
+        }
+        // dispatch(updateSelectedPlan(updatedList[0]));
+      })
+      .catch((err) => console.log(err));
   };
 
   return (
