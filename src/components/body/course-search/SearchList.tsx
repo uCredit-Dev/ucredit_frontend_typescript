@@ -16,6 +16,7 @@ const SearchList = () => {
     const pages =
       courses.length % coursesPerPage === 0 ? division : division + 1;
     setPageCount(pages);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [courses]);
 
   // Generates a list of 10 retrieved course matching the search queries and page number.
@@ -42,7 +43,7 @@ const SearchList = () => {
       <p>Search Results </p>
 
       {courses.length > 0 ? (
-        <div className="flex flex-col overflow-vertical">{courseList()}</div>
+        <div className="overflow-vertical flex flex-col">{courseList()}</div>
       ) : (
         <div>No Results</div>
       )}
