@@ -9,9 +9,8 @@ import {
   selectPlan,
   selectPlanList,
 } from "../../slices/userSlice";
-import { testMajorCS } from "../../testObjs";
+import { testMajorCSNew } from "../../testObjs";
 const api = "https://ucredit-api.herokuapp.com/api";
-const testMajor = testMajorCS;
 
 type PlanChooseProps = {
   className?: string;
@@ -31,6 +30,13 @@ const PlanChoose: React.FC<PlanChooseProps> = (props) => {
     if (user._id !== "") {
       axios.get(api + "/plansByUser/" + user._id).then((retrieved) => {
         const retrievedPlans: Plan[] = retrieved.data.data;
+        if (retrievedPlans.length > 0) {
+          // sort plans by ids if there is more than one plan
+          retrievedPlans.sort((plan1: Plan, plan2: Plan) =>
+            plan1._id.localeCompare(plan2._id)
+          );
+        }
+
         if (currentPlan._id !== "noPlan") {
           // Swap first plan in the list with the current plan.
           retrievedPlans.forEach((plan: Plan, index) => {
@@ -41,42 +47,54 @@ const PlanChoose: React.FC<PlanChooseProps> = (props) => {
             }
           });
         }
-        dispatch(updatePlanList(retrievedPlans));
+
         if (retrievedPlans.length > 0 && currentPlan._id === "noPlan") {
+          // Initial load, there is no current plan, so we set the current to be the first plan in the array.
+          dispatch(updatePlanList(retrievedPlans));
           dispatch(updateSelectedPlan(retrievedPlans[0]));
         } else if (retrievedPlans.length === 0) {
+          // If no plans, automatically generate a new plan
           // TODO: Modularize creating courses into its own common function
           const planBody = {
             name: "Unnamed Plan",
             user_id: user._id,
-            majors: ["Computer Science"],
+            majors: [testMajorCSNew],
           };
           axios
             .post(api + "/plans", planBody)
             .then((data: { data: { data: Plan } }) => {
               const newRetrievedPlan = data.data.data;
-              testMajor.generalDistributions.forEach((distr, index) => {
-                axios
-                  .post(api + "/distributions", {
-                    name: distr.name,
-                    required: distr.required,
-                    user_id: user._id,
-                    plan_id: newRetrievedPlan._id,
-                  })
-                  .then((newDistr: { data: { data: Distribution } }) => {
-                    newRetrievedPlan.distribution_ids = [
-                      ...newRetrievedPlan.distribution_ids,
-                      newDistr.data.data._id,
-                    ];
-                  })
-                  .then(() => {
-                    if (index === testMajor.generalDistributions.length - 1) {
-                      dispatch(updateSelectedPlan(newRetrievedPlan));
-                      props.setNewPlan(props.newPlan + 1);
-                    }
-                  });
-              });
+              testMajorCSNew.generalDistributions.forEach(
+                (distr: any, index: number) => {
+                  axios
+                    .post(api + "/distributions", {
+                      name: distr.name,
+                      required: distr.required,
+                      user_id: user._id,
+                      plan_id: newRetrievedPlan._id,
+                    })
+                    .then((newDistr: { data: { data: Distribution } }) => {
+                      newRetrievedPlan.distribution_ids = [
+                        ...newRetrievedPlan.distribution_ids,
+                        newDistr.data.data._id,
+                      ];
+                    })
+                    .then(() => {
+                      if (
+                        index ===
+                        testMajorCSNew.generalDistributions.length - 1
+                      ) {
+                        dispatch(updateSelectedPlan(newRetrievedPlan));
+                        dispatch(updatePlanList(retrievedPlans));
+                        props.setNewPlan(props.newPlan + 1);
+                      }
+                    });
+                }
+              );
             });
+        } else {
+          // If there is already a current plan, simply update the plan list.
+          dispatch(updatePlanList(retrievedPlans));
         }
       });
     }
@@ -92,34 +110,39 @@ const PlanChoose: React.FC<PlanChooseProps> = (props) => {
       const planBody = {
         name: "Unnamed Plan",
         user_id: user._id,
-        majors: ["Computer Science"],
+        majors: [testMajorCSNew.name],
       };
 
       axios
         .post(api + "/plans", planBody)
         .then((data: { data: { data: Plan } }) => {
-          const newRetrievedPlan = data.data.data;
-          testMajor.generalDistributions.forEach((distr, index) => {
-            axios
-              .post(api + "/distributions", {
-                name: distr.name,
-                required: distr.required,
-                user_id: user._id,
-                plan_id: newRetrievedPlan._id,
-              })
-              .then((newDistr: { data: { data: Distribution } }) => {
-                newRetrievedPlan.distribution_ids = [
-                  ...newRetrievedPlan.distribution_ids,
-                  newDistr.data.data._id,
-                ];
-              })
-              .then(() => {
-                if (index === testMajor.generalDistributions.length - 1) {
-                  dispatch(updateSelectedPlan(newRetrievedPlan));
-                  props.setNewPlan(props.newPlan + 1);
-                }
-              });
-          });
+          const newRetrievedPlan: Plan = data.data.data;
+          testMajorCSNew.generalDistributions.forEach(
+            (distr: any, index: number) => {
+              axios
+                .post(api + "/distributions", {
+                  name: distr.name,
+                  required: distr.required,
+                  user_id: user._id,
+                  plan_id: newRetrievedPlan._id,
+                })
+                .then((newDistr: { data: { data: Distribution } }) => {
+                  newRetrievedPlan.distribution_ids = [
+                    ...newRetrievedPlan.distribution_ids,
+                    newDistr.data.data._id,
+                  ];
+                })
+                .then(() => {
+                  if (
+                    index ===
+                    testMajorCSNew.generalDistributions.length - 1
+                  ) {
+                    dispatch(updateSelectedPlan(newRetrievedPlan));
+                    props.setNewPlan(props.newPlan + 1);
+                  }
+                });
+            }
+          );
         });
     } else {
       let newSelected: Plan = currentPlan;
@@ -148,27 +171,32 @@ const PlanChoose: React.FC<PlanChooseProps> = (props) => {
         .post(api + "/plans", planBody)
         .then((data: { data: { data: Plan } }) => {
           const newRetrievedPlan = data.data.data;
-          testMajor.generalDistributions.forEach((distr, index) => {
-            axios
-              .post(api + "/distributions", {
-                name: distr.name,
-                required: distr.required,
-                user_id: user._id,
-                plan_id: newRetrievedPlan._id,
-              })
-              .then((newDistr: { data: { data: Distribution } }) => {
-                newRetrievedPlan.distribution_ids = [
-                  ...newRetrievedPlan.distribution_ids,
-                  newDistr.data.data._id,
-                ];
-              })
-              .then(() => {
-                if (index === testMajor.generalDistributions.length - 1) {
-                  dispatch(updateSelectedPlan(newRetrievedPlan));
-                  props.setNewPlan(props.newPlan + 1);
-                }
-              });
-          });
+          testMajorCSNew.generalDistributions.forEach(
+            (distr: any, index: number) => {
+              axios
+                .post(api + "/distributions", {
+                  name: distr.name,
+                  required: distr.required,
+                  user_id: user._id,
+                  plan_id: newRetrievedPlan._id,
+                })
+                .then((newDistr: { data: { data: Distribution } }) => {
+                  newRetrievedPlan.distribution_ids = [
+                    ...newRetrievedPlan.distribution_ids,
+                    newDistr.data.data._id,
+                  ];
+                })
+                .then(() => {
+                  if (
+                    index ===
+                    testMajorCSNew.generalDistributions.length - 1
+                  ) {
+                    dispatch(updateSelectedPlan(newRetrievedPlan));
+                    props.setNewPlan(props.newPlan + 1);
+                  }
+                });
+            }
+          );
         });
     }
   });

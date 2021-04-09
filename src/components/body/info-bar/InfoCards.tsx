@@ -9,10 +9,9 @@ import {
 } from "../../slices/userSlice";
 import PlanChoose from "./PlanChoose";
 import { ReactComponent as RemoveSvg } from "../../svg/remove.svg";
-import { testMajorCS } from "../../testObjs";
+import { testMajorCSNew } from "../../testObjs";
 import axios from "axios";
 import { Distribution, Plan } from "../../commonTypes";
-const testMajor = testMajorCS;
 
 const api = "https://ucredit-api.herokuapp.com/api";
 
@@ -96,14 +95,14 @@ const InfoCards: React.FC<any> = () => {
           const planBody = {
             name: "Unnamed Plan",
             user_id: user._id,
-            majors: ["Computer Science"],
+            majors: [testMajorCSNew.name],
           };
 
           axios
             .post(api + "/plans", planBody)
             .then((data: { data: { data: Plan } }) => {
               const newRetrievedPlan = data.data.data;
-              testMajor.generalDistributions.forEach((distr, index) => {
+              testMajorCSNew.generalDistributions.forEach((distr, index) => {
                 axios
                   .post(api + "/distributions", {
                     name: distr.name,
@@ -118,7 +117,10 @@ const InfoCards: React.FC<any> = () => {
                     ];
                   })
                   .then(() => {
-                    if (index === testMajor.generalDistributions.length - 1) {
+                    if (
+                      index ===
+                      testMajorCSNew.generalDistributions.length - 1
+                    ) {
                       dispatch(updateSelectedPlan(newRetrievedPlan));
                       dispatch(updatePlanList(updatedList));
                       setNewPlan(newPlan + 1);
@@ -137,31 +139,31 @@ const InfoCards: React.FC<any> = () => {
   };
 
   return (
-    <div className='flex tight:flex-col flex-row tight:items-center mb-4 w-full h-auto'>
-      <div className='flex tight:flex-col flex-row items-center justify-center tight:mb-4 tight:mr-0 mr-4 p-4 w-full h-auto bg-white rounded shadow'>
-        <div className='flex flex-col mr-16 w-auto h-auto'>
-          <div className='flex flex-row items-center justify-center mb-2 w-full h-auto'>
+    <div className="flex tight:flex-col flex-row tight:items-center mb-4 w-full h-auto">
+      <div className="flex tight:flex-col flex-row items-center justify-center tight:mb-4 tight:mr-0 mr-4 p-4 w-full h-auto bg-white rounded shadow">
+        <div className="flex flex-col mr-16 w-auto h-auto">
+          <div className="flex flex-row items-center justify-center mb-2 w-full h-auto">
             <input
               value={planName}
-              className='w-plancardinput h-auto text-center text-myplan outline-none'
+              className="w-plancardinput h-auto text-center text-myplan outline-none"
               onChange={handlePlanNameChange}
             />
             <RemoveSvg
-              className='w-6 h-6 stroke-2 cursor-pointer select-none transform hover:translate-x-0.5 hover:translate-y-0.5 transition duration-200 ease-in'
+              className="w-6 h-6 stroke-2 cursor-pointer select-none transform hover:translate-x-0.5 hover:translate-y-0.5 transition duration-200 ease-in"
               onClick={deleteCurrentPlan}
             />
           </div>
           <PlanChoose
-            className='flex flex-row items-center justify-center w-planchoose h-auto text-white text-infocard bg-secondary cursor-pointer select-none'
+            className="flex flex-row items-center justify-center w-planchoose h-auto text-white text-infocard bg-secondary cursor-pointer select-none"
             newPlan={newPlan}
             setNewPlan={setNewPlan}
           />
         </div>
-        <div className='flex flex-col items-center'>
-          <div className='w-auto h-auto text-center'>
+        <div className="flex flex-col items-center">
+          <div className="w-auto h-auto text-center">
             {user.firstName} {user.lastName}
           </div>
-          <div className='w-auto h-auto font-light stroke-2'>
+          <div className="w-auto h-auto font-light stroke-2">
             {currentPlan.majors}
           </div>
         </div>
