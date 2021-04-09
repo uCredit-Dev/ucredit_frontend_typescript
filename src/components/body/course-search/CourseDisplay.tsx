@@ -344,6 +344,8 @@ const CourseDisplay = () => {
     if (inspected !== "None" && distributions.length !== 0) {
       let newUserCourse: UserCourse;
       let general = null;
+      let total = null;
+      let writtenIntensive = null;
       let filteredDistribution: Distribution[] = [];
 
       // determine which area course falls under
@@ -351,20 +353,29 @@ const CourseDisplay = () => {
       const areaToAdd =
         inspected.areas === "None" ? [] : inspected.areas.split("");
       distributions.forEach((distribution) => {
-        if (distribution.planned < distribution.required) {
-          areaToAdd.forEach((area) => {
-            if (distribution.name === "General Electives") {
-              general = distribution;
-            }
+        if (distribution.name === "General Electives") {
+          general = distribution;
+        }
+
+        if (distribution.name === "Total Credits") {
+          total = distribution;
+        }
+
+        if (distribution.name === "Writing Intensive (WI)" && inspected.wi) {
+          writtenIntensive = distribution;
+        }
+      });
+
+      areaToAdd.forEach((area) => {
+        distributions.forEach((distribution) => {
+          if (
+            filteredDistribution.length === 0 &&
+            distribution.planned < distribution.required
+          ) {
             if (
-              distribution.name === "Writing Intensive (WI)" &&
-              inspected.wi
-            ) {
-              filteredDistribution.push(distribution);
-            }
-            if (
-              (inspected.number.includes("EN.6") ||
-                inspected.number.includes("EN.5")) &&
+              (inspected.number.includes("EN.600") ||
+                inspected.number.includes("EN.601") ||
+                inspected.number.includes("EN.500")) &&
               distribution.name.includes("Computer Science")
             ) {
               filteredDistribution.push(distribution);
@@ -376,17 +387,20 @@ const CourseDisplay = () => {
               filteredDistribution.push(distribution);
             } else if (area === "Q" && distribution.name.includes("(Q)")) {
               filteredDistribution.push(distribution);
-            } else if (distribution.name === "Total Credits") {
-              filteredDistribution.push(distribution);
             }
-          });
-        }
+          }
+        });
       });
 
       // If all areas are full and there is still more for general electives
       if (filteredDistribution.length === 1 && general !== null) {
         filteredDistribution.push(general);
       }
+
+      if (total !== null) filteredDistribution.push(total);
+
+      if (writtenIntensive !== null)
+        filteredDistribution.push(writtenIntensive);
 
       const body = {
         user_id: user._id,
