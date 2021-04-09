@@ -37,12 +37,12 @@ function Content() {
   };
 
   return (
-    <div className="flex flex-row mt-content medium:px-48 w-full min-w-narrowest h-auto">
-      <div className="flex flex-col mb-8 mx-4 w-courselist h-auto">
+    <div className='flex flex-row mt-content medium:px-48 w-full min-w-narrowest h-full'>
+      <div className='flex flex-col mb-8 mx-4 w-courselist h-auto'>
         <InfoCards />
         <CourseList />
       </div>
-      <div className="h-coursebars flex-none mx-4 p-8 w-courebars bg-gray-coursebars border-2 rounded-xl">
+      <div className='h-coursebars flex-none mx-4 p-8 w-courebars bg-white rounded shadow'>
         {distributions.map((dis) => {
           const name =
             dis.name.charAt(0).toUpperCase() +
