@@ -86,11 +86,12 @@ export type FilterType =
   | "wi";
 
 export type generalDistributionType =
-  | "humanities"
-  | "basic sciences"
-  | "mathematics"
-  | "writing intensive"
-  | "general electives";
+  | "Total Credits"
+  | "Basic Sciences (N)"
+  | "General Electives"
+  | "Humanities/Social Sciences (H)(S)"
+  | "Mathematics (Q)"
+  | "Writing Intensive (WI)";
 
 export type Major = {
   name: string;

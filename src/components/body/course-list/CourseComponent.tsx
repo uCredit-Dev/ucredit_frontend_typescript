@@ -83,12 +83,11 @@ function CourseComponent({ year, course, semester }: courseProps) {
 
   return (
     <>
-      <div
-        className="flex flex-col mt-2 p-4 w-semesterheading h-auto bg-gray-coursecard rounded-2xl"
-        onClick={displayCourses}
-      >
-        <div>{course.title}</div>
-        <div>{course.number}</div>
+      <div className="flex flex-col mt-2 p-4 w-semesterheading h-auto bg-gray-coursecard rounded-2xl">
+        <div onClick={displayCourses}>
+          <div>{course.title}</div>
+          <div>{course.number}</div>
+        </div>
         <div>
           {/* {course.distribution_ids.map(id =><div>{id.}</div>)}, Can't display distributions as they aren't retrieved yet*/}
           {/* {course.credits} */}
