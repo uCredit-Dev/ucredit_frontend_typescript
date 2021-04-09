@@ -393,7 +393,7 @@ const CourseDisplay = () => {
       });
 
       // If all areas are full and there is still more for general electives
-      if (filteredDistribution.length === 1 && general !== null) {
+      if (filteredDistribution.length === 0 && general !== null) {
         filteredDistribution.push(general);
       }
 
