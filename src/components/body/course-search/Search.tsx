@@ -108,11 +108,4 @@ const Search = () => {
   );
 };
 
-const searchBodyStyle = {
-  top: "18%",
-  left: "12.5%",
-  height: "75%",
-  flexDirection: "column",
-} as React.CSSProperties;
-
 export default Search;

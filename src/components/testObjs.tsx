@@ -214,7 +214,7 @@ export const testMajorDistributions = [
   testDistributionHumanities,
 ];
 
-export const testMajorCS: Major = {
+export const testMajorCSOld: Major = {
   name: "B.S. in Computer Science (old)",
   generalDistributions: [
     { name: "Total Credits", required: 126 },
@@ -224,6 +224,20 @@ export const testMajorCS: Major = {
     { name: "Mathematics (Q)", required: 24 },
     { name: "Writing Intensive (WI)", required: 2 },
     { name: "Computer Science", required: 42 },
+  ],
+  fineRequirements: [],
+};
+
+export const testMajorCSNew: Major = {
+  name: "B.S. in Computer Science (new)",
+  generalDistributions: [
+    { name: "Total Credits", required: 120 },
+    { name: "Basic Sciences (N)", required: 8 },
+    { name: "General Electives", required: 120 - 8 - 18 - 16 - 40 },
+    { name: "Humanities/Social Sciences (H)(S)", required: 18 },
+    { name: "Mathematics (Q)", required: 16 },
+    { name: "Writing Intensive (WI)", required: 2 },
+    { name: "Computer Science", required: 40 },
   ],
   fineRequirements: [],
 };

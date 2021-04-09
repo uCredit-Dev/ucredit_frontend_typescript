@@ -24,8 +24,8 @@ export type UserCourse = {
   _id: string;
   title: string;
   term: SemesterType;
-  number: String;
-  department: String;
+  number: string;
+  department: string;
   tags: string[];
   area: string;
   credits: number;

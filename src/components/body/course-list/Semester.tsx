@@ -13,9 +13,15 @@ type semesterProps = {
 
 // Dropdown of all courses in a semester.
 function Semester({ semesterName, semesterYear, courses }: semesterProps) {
-  // Total Credits
-  const [totalCredits, setTotalCredits] = useState(0);
+  // Total credits and sorted courses.
+  const [totalCredits, setTotalCredits] = useState<number>(0);
+  const [semesterCourses, setSemesterCourses] = useState<UserCourse[]>([]);
   useEffect(() => {
+    setSemesterCourses(
+      courses.sort((course1, course2) =>
+        course2.number.localeCompare(course1.number)
+      )
+    );
     let count = 0;
     courses.forEach((course) => {
       count += course.credits;
@@ -70,7 +76,7 @@ function Semester({ semesterName, semesterYear, courses }: semesterProps) {
       {display ? (
         <>
           <div>
-            {courses.map((course) => (
+            {semesterCourses.map((course) => (
               <CourseComponent
                 year={semesterYear}
                 course={course}
