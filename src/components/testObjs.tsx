@@ -217,12 +217,13 @@ export const testMajorDistributions = [
 export const testMajorCS: Major = {
   name: "B.S. in Computer Science (old)",
   generalDistributions: [
-    { name: "basic sciences", required: 16 },
-    { name: "general electives", required: 18 },
-    { name: "humanities", required: 16 },
-    { name: "mathematics", required: 24 },
-    { name: "writing intensive", required: 2 },
-    { name: "computer science", required: 40 },
+    { name: "Total Credits", required: 126 },
+    { name: "Basic Sciences (N)", required: 16 },
+    { name: "General Electives", required: 26 },
+    { name: "Humanities/Social Sciences (H)(S)", required: 18 },
+    { name: "Mathematics (Q)", required: 24 },
+    { name: "Writing Intensive (WI)", required: 2 },
+    { name: "Computer Science", required: 42 },
   ],
   fineRequirements: [],
 };
