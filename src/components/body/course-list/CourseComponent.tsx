@@ -7,6 +7,7 @@ import {
   updateSearchStatus,
   updateInspectedCourse,
   updateSearchTime,
+  updateSearchTerm,
 } from "../../slices/searchSlice";
 import axios from "axios";
 import { ReactComponent as RemoveSvg } from "../../svg/remove.svg";
@@ -52,6 +53,7 @@ function CourseComponent({ year, course, semester }: courseProps) {
         dispatch(
           updateSearchTime({ searchYear: year, searchSemester: semester })
         );
+        dispatch(updateSearchTerm(course.number));
       })
       .then(() => {
         dispatch(updateSearchStatus(true));
@@ -99,22 +101,24 @@ function CourseComponent({ year, course, semester }: courseProps) {
   return (
     <>
       <div
-        className='relative flex-row items-center mt-2 p-2 w-full h-14 bg-white rounded shadow'
+        className="relative flex-row items-center mt-2 p-2 w-full h-14 bg-white rounded shadow"
         onMouseEnter={activate}
-        onMouseLeave={deactivate}>
-        <div className='flex flex-col w-full h-full select-none'>
-          <div className='text-coursecard truncate'>{course.title}</div>
-          <div className='text-coursecard'>{course.number}</div>
+        onMouseLeave={deactivate}
+      >
+        <div className="flex flex-col w-full h-full select-none">
+          <div className="text-coursecard truncate">{course.title}</div>
+          <div className="text-coursecard">{course.number}</div>
         </div>
-        <div className='absolute inset-0 flex items-center justify-center'>
+        <div className="absolute inset-0 flex items-center justify-center">
           <Transition
             show={activated}
-            enter='transition-opacity duration-100 ease-in-out'
-            enterFrom='opacity-0'
-            enterTo='opacity-100'
-            leave='transition-opacity duration-200 ease-in-out'
-            leaveFrom='opacity-100'
-            leaveTo='opacity-0'>
+            enter="transition-opacity duration-100 ease-in-out"
+            enterFrom="opacity-0"
+            enterTo="opacity-100"
+            leave="transition-opacity duration-200 ease-in-out"
+            leaveFrom="opacity-100"
+            leaveTo="opacity-0"
+          >
             {(ref) => (
               <div
                 ref={ref}
@@ -123,14 +127,15 @@ function CourseComponent({ year, course, semester }: courseProps) {
                   {
                     "pointer-events-none": !activated,
                   }
-                )}>
-                <div className='absolute left-0 top-0 w-full h-full bg-white bg-opacity-80 rounded' />
+                )}
+              >
+                <div className="absolute left-0 top-0 w-full h-full bg-white bg-opacity-80 rounded" />
                 <DetailsSvg
-                  className='relative z-50 flex flex-row items-center justify-center mr-5 p-0.5 w-6 h-6 text-white bg-secondary rounded-md outline-none stroke-2 cursor-pointer transform hover:translate-x-0.5 hover:translate-y-0.5 transition duration-150 ease-in'
+                  className="relative z-50 flex flex-row items-center justify-center mr-5 p-0.5 w-6 h-6 text-white bg-secondary rounded-md outline-none stroke-2 cursor-pointer transform hover:translate-x-0.5 hover:translate-y-0.5 transition duration-150 ease-in"
                   onClick={displayCourses}
                 />
                 <RemoveSvg
-                  className='relative z-50 flex flex-row items-center justify-center p-0.5 w-6 h-6 text-white bg-secondary rounded-md outline-none stroke-2 cursor-pointer transform hover:translate-x-0.5 hover:translate-y-0.5 transition duration-150 ease-in'
+                  className="relative z-50 flex flex-row items-center justify-center p-0.5 w-6 h-6 text-white bg-secondary rounded-md outline-none stroke-2 cursor-pointer transform hover:translate-x-0.5 hover:translate-y-0.5 transition duration-150 ease-in"
                   onClick={deleteCourse}
                 />
               </div>
