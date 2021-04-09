@@ -45,25 +45,25 @@ const Search = () => {
   };
 
   return (
-    <>
+    <div className="absolute top-0">
       {/* Background Grey */}
-      <div className={"absolute top-0 z-20"}>
-        <div
-          className={"fixed bg-gray-500"}
-          style={{
-            ...popupZoneStyle,
-            opacity: searchOpacity === 100 ? 75 / 100 : 0,
-          }}
-          onClick={() => {
-            dispatch(updateSearchStatus(false));
-          }}
-        ></div>
-      </div>
+      <div
+        className="fixed z-20 left-0 top-0 m-0 w-full h-screen bg-gray-500"
+        style={{
+          opacity: searchOpacity === 100 ? 75 / 100 : 0,
+        }}
+        onClick={() => {
+          dispatch(updateSearchStatus(false));
+        }}
+      ></div>
 
       {/* Search area */}
+      {/* {"flex fixed bg-red-200 rounded-xl p-8 md:p-0 z-20"} */}
       <div
-        className={"flex fixed bg-red-200 rounded-xl p-8 md:p-0 z-20"}
-        style={{ ...searchBodyStyle, opacity: searchOpacity / 100 }}
+        className={
+          "fixed flex flex-col bg-red-200 rounded-xl p-0 z-20 w-9/12 ml-20 h-4/5 top-10"
+        }
+        style={{ opacity: searchOpacity / 100 }}
       >
         <div>
           Currently selecting for{" "}
@@ -84,10 +84,9 @@ const Search = () => {
           </select>{" "}
           semester
         </div>
-        <div className={`flex flex-1 bg-white rounded-xl p-8 md:p-0`}>
+        <div className={`flex bg-white rounded-xl p-0 h-full`}>
           <div
-            className={"flex flex-col rounded-xl  bg-gray-200"}
-            style={{ width: "40%", height: "100%" }}
+            className={"flex flex-col rounded-xl  bg-gray-200 w-4/12 h-full"}
           >
             <Form />
             <SearchList />
@@ -105,19 +104,13 @@ const Search = () => {
           <CourseDisplay />
         </div>
       </div>
-    </>
+    </div>
   );
 };
-
-const popupZoneStyle = {
-  width: "100%",
-  height: "100%",
-} as React.CSSProperties;
 
 const searchBodyStyle = {
   top: "18%",
   left: "12.5%",
-  width: "75%",
   height: "75%",
   flexDirection: "column",
 } as React.CSSProperties;

@@ -39,14 +39,16 @@ const SearchList = () => {
   };
 
   return (
-    <div className="flex-1 m-3 p-2 bg-gray-300">
+    <div className="m-3 p-2 h-3/5 bg-gray-300">
       <p>Search Results </p>
 
-      {courses.length > 0 ? (
-        <div className="overflow-vertical flex flex-col">{courseList()}</div>
-      ) : (
-        <div>No Results</div>
-      )}
+      <div className="h-4/5 overflow-scroll">
+        {courses.length > 0 ? (
+          <div className="flex flex-col">{courseList()}</div>
+        ) : (
+          <div>No Results</div>
+        )}
+      </div>
 
       {/* A Pagination component we'll use! Prop list and docs here: https://github.com/AdeleD/react-paginate. '
       Use it to add new classnames when styling and add new props for logic */}
