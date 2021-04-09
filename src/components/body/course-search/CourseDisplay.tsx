@@ -356,6 +356,9 @@ const CourseDisplay = () => {
             if (distribution.name === "General Electives") {
               general = distribution;
             }
+            if (distribution.name === "Writing Intensive" && inspected.wi) {
+              filteredDistribution.push(distribution);
+            }
             if (
               (inspected.number.includes("EN.6") ||
                 inspected.number.includes("EN.5")) &&
