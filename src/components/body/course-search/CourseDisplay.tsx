@@ -446,7 +446,7 @@ const CourseDisplay = () => {
       dispatch(clearSearch());
     }
   };
-  const [prereqDisplayMode, setPrereqDisplayMode] = useState(1);
+  const [prereqDisplayMode, setPrereqDisplayMode] = useState(2);
 
   const handlePrereqDisplayModeChange = (mode: number) => () => {
     setPrereqDisplayMode(mode);
