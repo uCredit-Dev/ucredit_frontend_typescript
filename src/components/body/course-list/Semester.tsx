@@ -36,10 +36,10 @@ function Semester({ semesterName, semesterYear, courses }: semesterProps) {
   };
 
   return (
-    <div className="mb-3">
-      <div className="flex flex-col w-semesterheading h-8 text-white font-medium bg-secondary rounded-xl">
-        <div className="flex flex-row items-center justify-between px-2 py-1">
-          <div className="w-full h-auto" onClick={displayCourses}>
+    <div className='mb-3 w-full h-auto'>
+      <div className='flex flex-col w-full h-8 text-white font-medium bg-secondary rounded shadow'>
+        <div className='flex flex-row items-center justify-between px-2 py-1'>
+          <div className='w-full h-auto select-none' onClick={displayCourses}>
             {semesterName === "fall"
               ? "Fall"
               : semesterName === "intersession"
@@ -50,10 +50,9 @@ function Semester({ semesterName, semesterYear, courses }: semesterProps) {
             ({courses.length}){" "}
           </div>
           <div
-            className="flex flex-row items-center justify-center w-6 h-6"
-            onClick={addCourse}
-          >
-            <AddSvg className="w-full h-full" />
+            className='flex flex-row items-center justify-center w-6 h-6'
+            onClick={addCourse}>
+            <AddSvg className='w-full h-full' />
           </div>
         </div>
       </div>
