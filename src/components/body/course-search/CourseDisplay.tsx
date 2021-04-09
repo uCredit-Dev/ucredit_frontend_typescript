@@ -473,7 +473,7 @@ const CourseDisplay = () => {
               <div>{term}</div>
             ))}
           </p>
-          <p>{inspected.bio}</p>
+          <p className="h-44 overflow-scroll">{inspected.bio}</p>
           <p>
             <div className="border-b-2">
               <div>Prerequisites</div>{" "}
@@ -485,7 +485,7 @@ const CourseDisplay = () => {
                   Description
                 </button>
                 <button
-                  className="bg-gray-100"
+                  className="ml-1 bg-gray-100"
                   onClick={handlePrereqDisplayModeChange(2)}
                 >
                   Bullet List (in development)
