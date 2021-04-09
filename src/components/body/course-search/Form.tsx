@@ -77,6 +77,12 @@ const Form = () => {
           (course1: Course, course2: Course) =>
             course1.title.localeCompare(course2.title)
         );
+        if (searchFilters.distribution === "N") {
+          returned = returned.filter(
+            (course: Course) => course.areas !== "None"
+          );
+        }
+        console.log(returned);
         dispatch(updateRetrievedCourses(returned));
       })
       .catch((err) => {

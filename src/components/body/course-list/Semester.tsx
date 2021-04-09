@@ -16,11 +16,12 @@ function Semester({ semesterName, semesterYear, courses }: semesterProps) {
   // Total Credits
   const [totalCredits, setTotalCredits] = useState(0);
   useEffect(() => {
-    setTotalCredits(0);
+    let count = 0;
     courses.forEach((course) => {
-      setTotalCredits(totalCredits + course.credits);
+      count += course.credits;
     });
-  }, [courses.length]);
+    setTotalCredits(count);
+  }, [courses]);
 
   // Redux setup
   const dispatch = useDispatch();
