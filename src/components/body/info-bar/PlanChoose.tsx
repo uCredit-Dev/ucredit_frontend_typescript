@@ -30,7 +30,17 @@ const PlanChoose: React.FC<PlanChooseProps> = (props) => {
   useEffect(() => {
     if (user._id !== "") {
       axios.get(api + "/plansByUser/" + user._id).then((retrieved) => {
-        const retrievedPlans = retrieved.data.data;
+        const retrievedPlans: Plan[] = retrieved.data.data;
+        if (currentPlan._id !== "noPlan") {
+          // Swap first plan in the list with the current plan.
+          retrievedPlans.forEach((plan: Plan, index) => {
+            if (plan._id === currentPlan._id) {
+              const temp = retrievedPlans[0];
+              retrievedPlans[0] = currentPlan;
+              retrievedPlans[index] = temp;
+            }
+          });
+        }
         dispatch(updatePlanList(retrievedPlans));
         if (retrievedPlans.length > 0 && currentPlan._id === "noPlan") {
           dispatch(updateSelectedPlan(retrievedPlans[0]));
