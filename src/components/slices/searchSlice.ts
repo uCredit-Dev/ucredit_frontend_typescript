@@ -1,7 +1,7 @@
-import { createSlice, PayloadAction } from '@reduxjs/toolkit';
-import { AppThunk, RootState } from '../../appStore/store';
-import { SemesterType, Course, YearType } from '../commonTypes';
-import { testCourse1, testCourse2 } from '../testObjs';
+import { createSlice, PayloadAction } from "@reduxjs/toolkit";
+import { AppThunk, RootState } from "../../appStore/store";
+import { SemesterType, Course, YearType, FilterType } from "../commonTypes";
+// import { testCourse1, testCourse2 } from '../testObjs'; // For testing
 
 type timeBundle = {
   searchYear: YearType;
@@ -9,40 +9,44 @@ type timeBundle = {
 };
 
 type filterObj = {
-  credits: number | 'None';
-  distribution: 'N' | 'S' | 'H' | 'W' | 'E' | 'Q' | 'None';
-  tags: string | 'None'; // TODO: fill this out with array of all tags
+  credits: number | "None";
+  distribution: "N" | "S" | "H" | "W" | "E" | "Q" | "None";
+  tags: string | "None"; // TODO: fill this out with array of all tags
+  term: SemesterType | "None";
+  department: string | "None"; // TODO: fill this out with array of departments
+  wi: "None" | boolean;
 };
 
 type searchStates = {
   searching: boolean;
-  searchMode: 'title' | 'number';
   searchTerm: string;
   searchTime: timeBundle;
   filters: filterObj;
   retrievedCourses: Course[];
-  inspectedCourse: Course | 'None';
+  inspectedCourse: Course | "None";
 };
 
 const initialState: searchStates = {
   searching: false,
-  searchMode: 'title',
-  searchTerm: '',
+  searchTerm: "",
   searchTime: {
-    searchYear: 'Freshman',
-    searchSemester: 'Fall',
+    searchYear: "Freshman",
+    searchSemester: "fall",
   },
-  retrievedCourses: [testCourse1, testCourse2], // test courses for now
+  retrievedCourses: [], // test courses for now
   filters: {
-    credits: 'None',
-    distribution: 'None',
-    tags: 'None',
+    credits: "None",
+    distribution: "None",
+    tags: "None",
+    term: "None",
+    wi: "None",
+    department: "None",
   },
-  inspectedCourse: 'None',
+  inspectedCourse: "None",
 };
 
 export const searchSlice = createSlice({
-  name: 'search',
+  name: "search",
   initialState,
   reducers: {
     updateSearchTime: (state: any, action: PayloadAction<timeBundle>) => {
@@ -56,38 +60,40 @@ export const searchSlice = createSlice({
     updateSearchStatus: (state: any, action: PayloadAction<boolean>) => {
       state.searching = action.payload;
     },
-    updateSearchMode: (
-      state: any,
-      action: PayloadAction<'title' | 'number'>
-    ) => {
-      // Searching for title or number in main search.
-      state.searchMode = action.payload;
-    },
-    updateSearchCredit: (
-      state: any,
-      action: PayloadAction<'None' | number>
-    ) => {
-      state.filters.credits = action.payload;
-    },
-    updateSearchDistribution: (
-      state: any,
-      action: PayloadAction<'N' | 'S' | 'H' | 'W' | 'E' | 'Q' | 'None'>
-    ) => {
-      state.filters.distribution = action.payload;
-    },
     updateInspectedCourse: (state: any, action: PayloadAction<Course>) => {
       // Course we're looking at in search popout
       state.inspectedCourse = action.payload;
     },
     clearSearch: (state: any) => {
-      state.filters = { credits: 'None', distribution: 'None', tags: 'None' };
-      state.searchTerm = '';
-      state.searchTime = { searchSemester: '', searchYear: '' };
+      state.filters = { credits: "None", distribution: "None", tags: "None" };
+      state.searchTerm = "";
+      state.searchTime = { searchSemester: "", searchYear: "" };
       state.searching = false;
-      state.inspectedCourse = 'None';
+      state.inspectedCourse = "None";
       state.retrievedCourses = [];
-      state.searchMode = 'Title';
-      console.log('clearing');
+      state.searchMode = "Title";
+      console.log("clearing");
+    },
+    updateRetrievedCourses: (state: any, action: PayloadAction<Course[]>) => {
+      state.retrievedCourses = action.payload;
+    },
+    updateSearchFilters: (
+      state: any,
+      action: PayloadAction<{ filter: FilterType; value: any }>
+    ) => {
+      if (action.payload.filter === "credits") {
+        state.filters.credits = action.payload.value;
+      } else if (action.payload.filter === "distribution") {
+        state.filters.distribution = action.payload.value;
+      } else if (action.payload.filter === "department") {
+        state.filters.department = action.payload.value;
+      } else if (action.payload.filter === "tags") {
+        state.filters.tags = action.payload.value;
+      } else if (action.payload.filter === "term") {
+        state.filters.term = action.payload.value;
+      } else if (action.payload.filter === "wi") {
+        state.filters.wi = action.payload.value;
+      }
     },
   },
 });
@@ -96,10 +102,9 @@ export const {
   updateSearchTime,
   updateSearchTerm,
   updateSearchStatus,
-  updateSearchMode,
-  updateSearchCredit,
-  updateSearchDistribution,
+  updateSearchFilters,
   updateInspectedCourse,
+  updateRetrievedCourses,
   clearSearch,
 } = searchSlice.actions;
 
@@ -116,7 +121,6 @@ export const selectSemester = (state: RootState) =>
   state.search.searchTime.searchSemester;
 export const selectSearchterm = (state: RootState) => state.search.searchTerm;
 export const selectSearchStatus = (state: RootState) => state.search.searching;
-export const selectSearchMode = (state: RootState) => state.search.searchMode;
 export const selectSearchFilters = (state: RootState) => state.search.filters;
 export const selectRetrievedCourses = (state: RootState) =>
   state.search.retrievedCourses;

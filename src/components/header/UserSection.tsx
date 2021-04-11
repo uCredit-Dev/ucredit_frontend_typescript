@@ -1,67 +1,46 @@
-import React, { useEffect } from 'react';
-import { selectUser, selectFirstname } from '../slices/userSlice';
-import { useSelector } from 'react-redux';
-import axios from 'axios';
-import { User } from '../commonTypes';
-import { testUser } from '../testObjs';
-import { useDispatch } from 'react-redux';
-import { updateUser } from '../slices/userSlice';
-const api = 'https://ucredit-api.herokuapp.com/api';
+import React, { useEffect } from "react";
+import { testUser } from "../testObjs";
+import { useDispatch } from "react-redux";
+import { updateUser } from "../slices/userSlice";
+import { ReactComponent as UserSvg } from "../svg/user.svg";
 
 function UserSection() {
-  const firstName = useSelector(selectFirstname);
-  const user = useSelector(selectUser);
   const dispatch = useDispatch();
 
   useEffect(() => {
     //retrieveUser();
-    axios
-      .get(api + '/login')
-      .then((retrievedUser) => console.log('retrieved ', retrievedUser))
-      .catch((err) => console.log(err));
+    // fetch(api + '/login')
+    //   .then((retrieved) => {
+    //     // Redirect url?
+    //     const url = retrieved.url;
+    //     window.location.href = url; // redirect to sso login?
+    //   })
+    //   .catch((err) => console.log('ERROR: ', err.message));
+
+    // axios
+    //   .get(api + '/login')
+    //   .then((retrievedUser) => {console.log('retrieved ', retrievedUser)})
+    //   .catch((err) => console.log('ERROR: ', err.message));
+
     // Get test user
     dispatch(updateUser(testUser));
-  }, []);
+  });
 
   return (
-    <div style={userSection}>
-      <div style={pfp}></div>
-      <div style={name} className="center">
-        {firstName} {' ' + user.lastName}
+    <div className='flex flex-row items-center justify-end w-full h-full'>
+      <div className='flex flex-row items-center justify-center mr-3 w-11 h-11 bg-white rounded-full'>
+        <UserSvg className='w-6 h-6 stroke-2' />
+      </div>
+      <a
+        href='https://ucredit-api.herokuapp.com/api/login'
+        className='flex flex-row items-center justify-center mr-3 w-24 h-9 bg-white rounded cursor-pointer select-none transform hover:translate-x-0.5 hover:translate-y-0.5 transition duration-200 ease-in'>
+        Log In
+      </a>
+      <div className='flex flex-row items-center justify-center w-24 h-9 bg-white rounded cursor-pointer select-none transform hover:translate-x-0.5 hover:translate-y-0.5 transition duration-200 ease-in'>
+        Log Out
       </div>
     </div>
   );
 }
-
-const name = {
-  width: '2rem',
-  float: 'left',
-  fontWeight: 500,
-  display: 'inline',
-  marginLeft: '0.5rem',
-  marginTop: '0.25rem',
-} as React.CSSProperties;
-
-const pfp = {
-  position: 'relative',
-  backgroundColor: 'orange',
-  height: '3.5rem',
-  width: '3.5rem',
-  borderRadius: '50%',
-  float: 'left',
-  display: 'inline',
-} as React.CSSProperties;
-
-const userSection = {
-  backgroundColor: 'whitesmoke',
-  marginTop: '0.7rem',
-  width: '10rem',
-  padding: '0rem',
-  height: '3.5rem',
-  float: 'right',
-  display: 'inline',
-  marginRight: '6rem',
-  borderRadius: '2rem',
-} as React.CSSProperties;
 
 export default UserSection;

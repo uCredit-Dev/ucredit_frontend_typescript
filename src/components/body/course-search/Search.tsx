@@ -1,18 +1,18 @@
-import React, { useState } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
-import { SemesterType, YearType } from '../../commonTypes';
+import React, { useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { SemesterType, YearType } from "../../commonTypes";
 import {
   selectYear,
   selectSemester,
   updateSearchStatus,
   updateSearchTime,
-} from '../../slices/searchSlice';
-import CourseDisplay from './CourseDisplay';
-import Form from './Form';
-import SearchList from './SearchList';
+} from "../../slices/searchSlice";
+import CourseDisplay from "./CourseDisplay";
+import Form from "./Form";
+import SearchList from "./SearchList";
 
-const years: YearType[] = ['Freshman', 'Sophomore', 'Junior', 'Senior'];
-const semester: SemesterType[] = ['Fall', 'Spring', 'Summer', 'Winter'];
+const years: YearType[] = ["Freshman", "Sophomore", "Junior", "Senior"];
+const semester: SemesterType[] = ["fall", "spring", "summer", "intersession"];
 
 // Search component when someone clicks a search action.
 const Search = () => {
@@ -45,12 +45,11 @@ const Search = () => {
   };
 
   return (
-    <>
-      {/* Search area */}
+    <div className="absolute top-0">
+      {/* Background Grey */}
       <div
-        className={`fixed bg-gray-500`}
+        className="fixed z-20 left-0 top-0 m-0 w-full h-screen bg-gray-500"
         style={{
-          ...popupZoneStyle,
           opacity: searchOpacity === 100 ? 75 / 100 : 0,
         }}
         onClick={() => {
@@ -58,30 +57,36 @@ const Search = () => {
         }}
       ></div>
 
-      {/* Background Grey */}
+      {/* Search area */}
+      {/* {"flex fixed bg-red-200 rounded-xl p-8 md:p-0 z-20"} */}
       <div
-        className={`flex fixed bg-red-200 rounded-xl p-8 md:p-0`}
-        style={{ ...searchBodyStyle, opacity: searchOpacity / 100 }}
+        className={
+          "fixed flex flex-col bg-red-200 rounded-xl p-0 z-20 w-9/12 ml-20 h-4/5 top-10"
+        }
+        style={{ opacity: searchOpacity / 100 }}
       >
         <div>
-          Currently selecting for{' '}
+          Currently selecting for{" "}
           <select onChange={handleYearChange} defaultValue={searchYear}>
             {years.map((year) => (
-              <option value={year}>{year}</option>
+              <option key={year} value={year}>
+                {year}
+              </option>
             ))}
-          </select>{' '}
+          </select>{" "}
           year,
           <select onChange={handleSemesterChange} defaultValue={searchSemester}>
             {semester.map((semester) => (
-              <option value={semester}>{semester}</option>
+              <option key={semester} value={semester}>
+                {semester}
+              </option>
             ))}
-          </select>{' '}
+          </select>{" "}
           semester
         </div>
-        <div className={`flex flex-1 bg-white rounded-xl p-8 md:p-0`}>
+        <div className={`flex bg-white rounded-xl p-0 h-full`}>
           <div
-            className={'flex flex-col rounded-xl  bg-gray-200'}
-            style={{ width: '40%', height: '100%' }}
+            className={"flex flex-col rounded-xl  bg-gray-200 w-4/12 h-full"}
           >
             <Form />
             <SearchList />
@@ -99,22 +104,8 @@ const Search = () => {
           <CourseDisplay />
         </div>
       </div>
-    </>
+    </div>
   );
 };
-
-const popupZoneStyle = {
-  position: 'fixed',
-  width: '100%',
-  height: '100%',
-} as React.CSSProperties;
-
-const searchBodyStyle = {
-  top: '18%',
-  left: '12.5%',
-  width: '75%',
-  height: '75%',
-  flexDirection: 'column',
-} as React.CSSProperties;
 
 export default Search;
