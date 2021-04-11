@@ -1,4 +1,24 @@
 import { Course } from "./commonTypes";
+import {Plan, Distribution, User} from "./commonTypes";
+import { testMajorCSNew } from "./testObjs";
+import axios from "axios";
+import { useDispatch, useSelector } from "react-redux";
+import {
+  updateSelectedPlan,
+  updatePlanList,
+  selectUser,
+  selectPlan,
+  selectPlanList,
+} from "./slices/userSlice";
+
+const api = "https://ucredit-api.herokuapp.com/api";
+
+
+// import { useDispatch, useSelector } from "react-redux";
+// import {
+//   updateSelectedPlan,
+//   updatePlanList
+// } from "./slices/userSlice";
 
 interface DistributionColors {
   total: string[];
@@ -49,3 +69,59 @@ export const getCourses = (courseIds: string[]): Course[] => {
 
   return retrieved;
 };
+
+type generateNewPlanProps = {
+  // className?: string;
+  // newPlan: number;
+  // setNewPlan: Function;
+};
+
+export const GenerateNewPlan: React.FC<generateNewPlanProps> = async (user: User, retrievedPlans: Plan[], props) => {
+// export const GenerateNewPlan: React.FC<generateNewPlanProps> = async (user: User, retrievedPlans: Plan[], props): Promise<any> => {
+    // Redux setup
+    const dispatch = useDispatch();
+
+  const planBody = {
+    name: "Unnamed Plan",
+    user_id: user._id,
+    majors: [testMajorCSNew],
+  };
+  const data = await axios
+    .post(api + "/plans", planBody);
+  const newRetrievedPlan = data.data.data;
+  testMajorCSNew.generalDistributions.forEach(
+    (distr: any, index: number) => {
+      axios
+        .post(api + "/distributions", {
+          name: distr.name,
+          required: distr.required,
+          user_id: user._id,
+          plan_id: newRetrievedPlan._id,
+        })
+        .then((newDistr: { data: { data: Distribution; }; }) => {
+          newRetrievedPlan.distribution_ids = [
+            ...newRetrievedPlan.distribution_ids,
+            newDistr.data.data._id,
+          ];
+        }).then(() => {
+          if (index ===
+            testMajorCSNew.generalDistributions.length - 1) {
+            dispatch(updateSelectedPlan(newRetrievedPlan));
+            dispatch(updatePlanList(retrievedPlans));
+            props.setNewPlan(props.newPlan + 1);
+          }
+        });
+    }
+    // .then(() => {
+    //   if (
+    //     index ===
+    //     testMajorCSNew.generalDistributions.length - 1
+    //   ) {
+    //     dispatch(updateSelectedPlan(newRetrievedPlan));
+    //     dispatch(updatePlanList(retrievedPlans));
+    //     props.setNewPlan(props.newPlan + 1);
+    //   }
+    // });
+    //     }
+  );
+}
