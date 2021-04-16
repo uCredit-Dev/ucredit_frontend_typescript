@@ -577,7 +577,7 @@ const CourseDisplay = () => {
           </button>
         </>
       ) : (
-        <div className="p-5">
+        <div className="p-5 h-full overflow-scroll">
           <h1>{inspected.title}</h1>
           <h2>{inspected.number}</h2>
           <p>{inspected.credits} Credits</p>
