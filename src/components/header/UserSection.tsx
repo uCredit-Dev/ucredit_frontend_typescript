@@ -14,23 +14,22 @@ function UserSection() {
   useEffect(() => {
     console.log("in login useEffect");
     // Get test user
-    if (user._id === "noUser") {
+    if (user._id === "noUser" || user._id === "mliu78") {
       console.log("user is none");
       // Make call for backend
       axios
         .get(api + "/retrieveUser")
         .then((retrievedUser) => {
           console.log("retrieved ", retrievedUser);
-          dispatch(updateUser(retrievedUser.data));
+          // dispatch(updateUser(retrievedUser.data));
           setGuest(false);
         })
         .catch((err) => {
           // Redirect to frontend login
-          setGuest(true);
           console.log("ERROR: ", err.message);
         });
     }
-    // dispatch(updateUser(testUser));
+    dispatch(updateUser(testUser));
   }, []);
 
   return (

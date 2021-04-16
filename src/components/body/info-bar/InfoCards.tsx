@@ -91,6 +91,7 @@ const InfoCards: React.FC<any> = () => {
         });
         // If it is length 1, autogenerate a new plan. Otherwise, update the list.
         if (updatedList.length === 0) {
+          console.log("new plan 4");
           // Post req body for a new plan
           const planBody = {
             name: "Unnamed Plan",
