@@ -17,20 +17,26 @@ function UserSection() {
     if (user._id === "noUser" || user._id === "mliu78") {
       console.log("user is none");
       // Make call for backend
+      // fetch(api + "/retrieveUser", {
+      //   method: "GET",
+      //   credentials: "include",
+      // })
+      //   .then((resp) => resp.json())
+      //   .then((retrievedUser) => {
+      //     console.log("retrieved ", retrievedUser);
+      //     // dispatch(updateUser(retrievedUser.data));
+      //     setGuest(false);
+      //   })
+      //   .catch((err) => {
+      //     // Redirect to frontend login
+      //     console.log("ERROR: ", err.message);
+      //   });
       axios
         .get(api + "/retrieveUser", { withCredentials: true })
-        .then((retrievedUser) => {
-          console.log("retrieved ", retrievedUser);
-          // dispatch(updateUser(retrievedUser.data));
-          setGuest(false);
-        })
-        .catch((err) => {
-          // Redirect to frontend login
-          console.log("ERROR: ", err.message);
-        });
+        .then((resp) => console.log("resp ", resp));
     }
     dispatch(updateUser(testUser));
-  });
+  }, []);
 
   return (
     <div className="flex flex-row items-center justify-end w-full h-full">
