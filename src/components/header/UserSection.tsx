@@ -18,6 +18,7 @@ function UserSection() {
       axios
         .get(api + "/retrieveUser")
         .then((retrievedUser) => {
+          console.log(retrievedUser);
           dispatch(updateUser(retrievedUser.data));
           setGuest(false);
         })
