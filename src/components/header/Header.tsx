@@ -4,7 +4,7 @@ import UserSection from "./UserSection";
 function Header() {
   return (
     <>
-      <div className='fixed z-10 p-3 medium:px-48 w-full h-header bg-secondary shadow'>
+      <div className='fixed z-30 p-3 medium:px-48 w-full h-header bg-secondary shadow'>
         <UserSection />
       </div>
     </>
