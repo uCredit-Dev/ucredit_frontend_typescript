@@ -1,7 +1,8 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { AppThunk, RootState } from "../../appStore/store";
-import { SemesterType, Course, YearType, FilterType } from "../commonTypes";
+import { SemesterType, Course, YearType, FilterType, TagType, DepartmentType } from "../commonTypes";
 // import { testCourse1, testCourse2 } from '../testObjs'; // For testing
+import {all_majors, course_tags} from "../assets"
 
 type timeBundle = {
   searchYear: YearType;
@@ -11,9 +12,9 @@ type timeBundle = {
 type filterObj = {
   credits: number | "None";
   distribution: "N" | "S" | "H" | "W" | "E" | "Q" | "None";
-  tags: string | "None"; // TODO: fill this out with array of all tags
+  tags: TagType | "None"; // TODO: fill this out with array of all tags
   term: SemesterType | "None";
-  department: string | "None"; // TODO: fill this out with array of departments
+  department: DepartmentType | "None"; // TODO: fill this out with array of departments
   wi: "None" | boolean;
 };
 
