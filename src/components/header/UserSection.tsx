@@ -12,20 +12,6 @@ function UserSection() {
   const [guest, setGuest] = useState<boolean>(true);
 
   useEffect(() => {
-    //retrieveUser();
-    // fetch(api + '/login')
-    //   .then((retrieved) => {
-    //     // Redirect url?
-    //     const url = retrieved.url;
-    //     window.location.href = url; // redirect to sso login?
-    //   })
-    //   .catch((err) => console.log('ERROR: ', err.message));
-
-    // axios
-    //   .get(api + '/login')
-    //   .then((retrievedUser) => {console.log('retrieved ', retrievedUser)})
-    //   .catch((err) => console.log('ERROR: ', err.message));
-
     // Get test user
     if (user._id === "noUser") {
       // Make call for backend
@@ -42,7 +28,7 @@ function UserSection() {
         });
     }
     // dispatch(updateUser(testUser));
-  }, [user]);
+  });
 
   return (
     <div className="flex flex-row items-center justify-end w-full h-full">
