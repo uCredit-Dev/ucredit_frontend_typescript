@@ -10,6 +10,7 @@ import {
 } from "../../slices/searchSlice";
 import axios from "axios";
 import { Course, FilterType, SemesterType } from "../../commonTypes";
+import { all_majors, course_tags } from "../../assets";
 
 // TODO: This file could be modularized. Esp with the recurring code for options.
 const api = "https://ucredit-api.herokuapp.com/api";
@@ -24,7 +25,8 @@ const termFilters: (SemesterType | "None")[] = [
   "summer",
 ];
 const wiFilters = ["None", "True", "False"];
-//const tagFilters = ['tag1', 'tag2'];
+const departmentFilters = ["None", ...all_majors]
+const tagFilters = ["None", ...course_tags]
 
 const Form = () => {
   // Set up redux dispatch and variables.
@@ -136,23 +138,23 @@ const Form = () => {
     dispatch(updateSearchFilters(params));
   };
 
-  // // Update searching for a writing intensives or not..
-  // const handleDepartmentFilterChange = (event: any): void => {
-  //   const params: { filter: FilterType; value: any } = {
-  //     filter: "department",
-  //     value: event.target.value,
-  //   };
-  //   dispatch(updateSearchFilters(params));
-  // };
+  // // Update searching for a certain department.
+  const handleDepartmentFilterChange = (event: any): void => {
+    const params: { filter: FilterType; value: any } = {
+      filter: "department",
+      value: event.target.value,
+    };
+    dispatch(updateSearchFilters(params));
+  };
 
-  // // Update searching for a writing intensives or not..
-  // const handleTagsFilterChange = (event: any): void => {
-  //   const params: { filter: FilterType; value: any } = {
-  //     filter: "tags",
-  //     value: event.target.value,
-  //   };
-  //   dispatch(updateSearchFilters(params));
-  // };
+  // // Update searching for a certain tag
+  const handleTagsFilterChange = (event: any): void => {
+    const params: { filter: FilterType; value: any } = {
+      filter: "tags",
+      value: event.target.value,
+    };
+    dispatch(updateSearchFilters(params));
+  };
 
   return (
     <div className={"p-5"}>
@@ -167,6 +169,27 @@ const Form = () => {
         ></input>
       </p>
       <label>
+      <p>
+          Department:
+          {/* <input
+          className="border-b-2"
+          type="text"
+          placeholder={"Put in the department you are looking for"}
+          style={{ width: "100%" }}
+          defaultValue={""}
+          onChange={handleDepartmentFilterChange}
+        ></input> */}
+          <select
+            onChange={handleDepartmentFilterChange}
+            defaultValue={searchFilters.department}
+          >
+            {departmentFilters.map((department) => (
+              <option key={department} value={department}>
+                {department}
+              </option>
+            ))}
+          </select>
+        </p>
         <p>
           Credits:
           <select
@@ -212,6 +235,19 @@ const Form = () => {
             {wiFilters.map((wi) => (
               <option key={wi} value={wi}>
                 {wi}
+              </option>
+            ))}
+          </select>
+        </p>
+        <p>
+          Tag:
+          <select
+            onChange={handleTagsFilterChange}
+            defaultValue={searchFilters.distribution}
+          >
+            {tagFilters.map((tag) => (
+              <option key={tag} value={tag}>
+                {tag}
               </option>
             ))}
           </select>

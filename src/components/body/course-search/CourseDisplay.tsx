@@ -458,10 +458,12 @@ const CourseDisplay = () => {
         <div>No inspected Courses</div>
       ) : (
         <div className="p-5">
-          <p>{inspected.title}</p>
-          <p>{inspected.number}</p>
+          <h1>{inspected.title}</h1>
+          <h2>{inspected.number}</h2>
           <p>{inspected.credits} Credits</p>
-          <p>Areas: {inspected.areas}</p>
+          <h4>Areas: {inspected.areas}</h4>
+          <h4>Department: {inspected.department}</h4>
+
           <p>
             Restrictions:{" "}
             {inspected.restrictions.map((restriction) => (

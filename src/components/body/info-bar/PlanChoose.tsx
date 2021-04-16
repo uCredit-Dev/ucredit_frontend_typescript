@@ -10,7 +10,7 @@ import {
   selectPlanList,
 } from "../../slices/userSlice";
 import { testMajorCSNew } from "../../testObjs";
-import { generateNewPlan } from "../../assets";
+// import { generateNewPlan } from "../../assets";
 const api = "https://ucredit-api.herokuapp.com/api";
 
 type PlanChooseProps = {
@@ -56,7 +56,7 @@ const PlanChoose: React.FC<PlanChooseProps> = (props) => {
         } else if (retrievedPlans.length === 0) {
           // If no plans, automatically generate a new plan
           // TODO: Modularize creating courses into its own common function
-          GenerateNewPlan(user, retrievedPlans);
+          // GenerateNewPlan(user, retrievedPlans);
               // .then(() => {
               //         if (
               //           index ===
@@ -68,43 +68,43 @@ const PlanChoose: React.FC<PlanChooseProps> = (props) => {
               //         }
               //       });
               //   }
-          // const planBody = {
-          //   name: "Unnamed Plan",
-          //   user_id: user._id,
-          //   majors: [testMajorCSNew],
-          // };
-          // axios
-          //   .post(api + "/plans", planBody)
-          //   .then((data: { data: { data: Plan } }) => {
-          //     const newRetrievedPlan = data.data.data;
-          //     testMajorCSNew.generalDistributions.forEach(
-          //       (distr: any, index: number) => {
-          //         axios
-          //           .post(api + "/distributions", {
-          //             name: distr.name,
-          //             required: distr.required,
-          //             user_id: user._id,
-          //             plan_id: newRetrievedPlan._id,
-          //           })
-          //           .then((newDistr: { data: { data: Distribution } }) => {
-          //             newRetrievedPlan.distribution_ids = [
-          //               ...newRetrievedPlan.distribution_ids,
-          //               newDistr.data.data._id,
-          //             ];
-          //           })
-          //           .then(() => {
-          //             if (
-          //               index ===
-          //               testMajorCSNew.generalDistributions.length - 1
-          //             ) {
-          //               dispatch(updateSelectedPlan(newRetrievedPlan));
-          //               dispatch(updatePlanList(retrievedPlans));
-          //               props.setNewPlan(props.newPlan + 1);
-          //             }
-          //           });
-          //       }
-          //     );
-          //   });
+          const planBody = {
+            name: "Unnamed Plan",
+            user_id: user._id,
+            majors: [testMajorCSNew],
+          };
+          axios
+            .post(api + "/plans", planBody)
+            .then((data: { data: { data: Plan } }) => {
+              const newRetrievedPlan = data.data.data;
+              testMajorCSNew.generalDistributions.forEach(
+                (distr: any, index: number) => {
+                  axios
+                    .post(api + "/distributions", {
+                      name: distr.name,
+                      required: distr.required,
+                      user_id: user._id,
+                      plan_id: newRetrievedPlan._id,
+                    })
+                    .then((newDistr: { data: { data: Distribution } }) => {
+                      newRetrievedPlan.distribution_ids = [
+                        ...newRetrievedPlan.distribution_ids,
+                        newDistr.data.data._id,
+                      ];
+                    })
+                    .then(() => {
+                      if (
+                        index ===
+                        testMajorCSNew.generalDistributions.length - 1
+                      ) {
+                        dispatch(updateSelectedPlan(newRetrievedPlan));
+                        dispatch(updatePlanList(retrievedPlans));
+                        props.setNewPlan(props.newPlan + 1);
+                      }
+                    });
+                }
+              );
+            });
         } else {
           // If there is already a current plan, simply update the plan list.
           dispatch(updatePlanList(retrievedPlans));
