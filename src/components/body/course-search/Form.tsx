@@ -25,8 +25,8 @@ const termFilters: (SemesterType | "None")[] = [
   "summer",
 ];
 const wiFilters = ["None", "True", "False"];
-const departmentFilters = ["None", ...all_majors]
-const tagFilters = ["None", ...course_tags]
+const departmentFilters = ["None", ...all_majors];
+const tagFilters = ["None", ...course_tags];
 
 const Form = () => {
   // Set up redux dispatch and variables.
@@ -48,7 +48,9 @@ const Form = () => {
       searchFilters.credits === "None" &&
       searchFilters.distribution === "None" &&
       searchFilters.term === "None" &&
-      searchFilters.wi === "None"
+      searchFilters.wi === "None" &&
+      searchFilters.department === "None" &&
+      searchFilters.tags === "None"
     ) {
       // If search term is empty with no filters, don't show any results.
       dispatch(updateRetrievedCourses([]));
@@ -69,7 +71,9 @@ const Form = () => {
         searchFilters.distribution === "None" ? "" : searchFilters.distribution,
       wi: searchFilters.wi === "None" ? null : searchFilters.wi,
       term: searchFilters.term === "None" ? "" : searchFilters.term,
+      department: searchFilters.department,
     };
+    console.log("extras is ", extras);
     axios
       .get(api + "/search", {
         params: extras,
@@ -138,7 +142,7 @@ const Form = () => {
     dispatch(updateSearchFilters(params));
   };
 
-  // // Update searching for a certain department.
+  // Update searching for a certain department.
   const handleDepartmentFilterChange = (event: any): void => {
     const params: { filter: FilterType; value: any } = {
       filter: "department",
@@ -147,7 +151,7 @@ const Form = () => {
     dispatch(updateSearchFilters(params));
   };
 
-  // // Update searching for a certain tag
+  // Update searching for a certain tag
   const handleTagsFilterChange = (event: any): void => {
     const params: { filter: FilterType; value: any } = {
       filter: "tags",
@@ -169,7 +173,7 @@ const Form = () => {
         ></input>
       </p>
       <label>
-      <p>
+        <p>
           Department:
           {/* <input
           className="border-b-2"
