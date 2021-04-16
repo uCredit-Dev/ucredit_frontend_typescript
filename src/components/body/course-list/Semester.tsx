@@ -4,6 +4,7 @@ import CourseComponent from "./CourseComponent";
 import { useDispatch } from "react-redux";
 import { updateSearchStatus, updateSearchTime } from "../../slices/searchSlice";
 import { ReactComponent as AddSvg } from "../../svg/add.svg";
+import ReactTooltip from "react-tooltip";
 
 type semesterProps = {
   semesterName: SemesterType;
@@ -58,6 +59,7 @@ function Semester({ semesterName, semesterYear, courses }: semesterProps) {
           <div
             className='flex flex-row items-center w-full h-auto select-none'
             onClick={displayCourses}>
+            <ReactTooltip html={true} />
             {semesterName === "fall"
               ? "Fall"
               : semesterName === "intersession"
@@ -66,10 +68,14 @@ function Semester({ semesterName, semesterYear, courses }: semesterProps) {
               ? "Spring"
               : "Summer"}{" "}
             {/* ({courses.length}) - {totalCredits} Credits */}
-            <div className='flex flex-row items-center justify-center ml-1 px-1 w-4 h-4 text-black text-xs bg-white rounded'>
+            <div
+              className='flex flex-row items-center justify-center ml-1 px-1 w-4 h-4 text-black text-xs bg-white rounded'
+              data-tip={`${courses.length} courses`}>
               {courses.length}
             </div>
-            <div className='flex flex-row items-center justify-center ml-1 px-1 w-4 h-4 text-black text-xs bg-white rounded'>
+            <div
+              className='flex flex-row items-center justify-center ml-1 px-1 w-4 h-4 text-black text-xs bg-white rounded'
+              data-tip={`${totalCredits} credits`}>
               {totalCredits}
             </div>
           </div>
