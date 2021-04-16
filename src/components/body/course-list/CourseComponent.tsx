@@ -8,6 +8,7 @@ import {
   updateInspectedCourse,
   updateSearchTime,
   updateSearchTerm,
+  updatePlaceholder,
 } from "../../slices/searchSlice";
 import axios from "axios";
 import { ReactComponent as RemoveSvg } from "../../svg/remove.svg";
@@ -45,45 +46,38 @@ function CourseComponent({ year, course, semester }: courseProps) {
 
   // Sets or resets the course displayed in popout after user clicks it in course list.
   const displayCourses = () => {
-    console.log("course", course);
-    if (course.number !== "placeholder") {
-      axios
-        .get(api + "/search", { params: { query: course.number } })
-        .then((retrievedData) => {
-          const retrievedCourse = retrievedData.data.data;
+    dispatch(updateSearchTime({ searchYear: year, searchSemester: semester }));
+    dispatch(updateSearchTerm(course.number));
+    axios
+      .get(api + "/search", { params: { query: course.number } })
+      .then((retrievedData) => {
+        const retrievedCourse = retrievedData.data.data;
+        console.log(course.credits);
+        if (retrievedCourse.length === 0) {
+          dispatch(updatePlaceholder(true));
+          const placeholderCourse = {
+            title: course.title,
+            number: course.number,
+            areas: course.area,
+            terms: [],
+            school: "none",
+            department: "none",
+            credits: course.credits.toString(),
+            wi: false,
+            bio: "This is a placeholder course",
+            tags: [],
+            preReq: [],
+            restrictions: [],
+          };
+          dispatch(updateInspectedCourse(placeholderCourse));
+        } else {
           dispatch(updateInspectedCourse(retrievedCourse[0]));
-          dispatch(
-            updateSearchTime({ searchYear: year, searchSemester: semester })
-          );
-          dispatch(updateSearchTerm(course.number));
-        })
-        .then(() => {
-          dispatch(updateSearchStatus(true));
-        })
-        .catch((err) => console.log(err));
-    } else {
-      dispatch(
-        updateSearchTime({ searchYear: year, searchSemester: semester })
-      );
-      dispatch(updateSearchTerm(course.number));
-      const placeholderCourse = {
-        title: course.title,
-        number: course.number,
-        areas: course.area,
-        terms: [],
-        school: "none",
-        department: "none",
-        credits: course.credits.toString(),
-        wi: false,
-        bio: "This is a placeholder course",
-        tags: [],
-        preReq: [],
-        restrictions: [],
-      };
-      console.log(placeholderCourse);
-      dispatch(updateInspectedCourse(placeholderCourse));
-      dispatch(updateSearchStatus(true));
-    }
+        }
+      })
+      .then(() => {
+        dispatch(updateSearchStatus(true));
+      })
+      .catch((err) => console.log(err));
   };
 
   // Deletes a course on click of the delete button. Updates currently displayed plan with changes.

@@ -3,6 +3,7 @@ import { useSelector, useDispatch } from "react-redux";
 import {
   selectRetrievedCourses,
   updateInspectedCourse,
+  updatePlaceholder,
 } from "../../slices/searchSlice";
 import CourseCard from "./CourseCard";
 import ReactPaginate from "react-paginate";
@@ -43,7 +44,7 @@ const SearchList = () => {
   };
 
   const onPlaceholderClick = () => {
-    console.log("Click!");
+    dispatch(updatePlaceholder(true));
     const placeholderCourse = {
       title: "placeholder",
       number: "placeholder",

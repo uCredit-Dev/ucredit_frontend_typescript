@@ -8,6 +8,8 @@ import {
   clearSearch,
   selectSemester,
   selectYear,
+  selectPlaceholder,
+  updatePlaceholder,
 } from "../../slices/searchSlice";
 import {
   selectUser,
@@ -348,11 +350,14 @@ const CourseDisplay = () => {
       let total = null;
       let writtenIntensive = null;
       let filteredDistribution: Distribution[] = [];
+      dispatch(updatePlaceholder(false));
 
       // determine which area course falls under
       // TODO: Try to automate this
       const areaToAdd =
-        inspected.areas === "None" ? [] : inspected.areas.split("");
+        inspected.areas === "None" || inspected.areas === undefined
+          ? []
+          : inspected.areas.split("");
       distributions.forEach((distribution) => {
         if (distribution.name === "General Electives") {
           general = distribution;
@@ -453,9 +458,22 @@ const CourseDisplay = () => {
     setPrereqDisplayMode(mode);
   };
 
-  const [placeholderTitle, setPlaceholderTitle] = useState("placeholder");
-  const [placeholderArea, setPlaceholderArea] = useState("");
-  const [placeholderCredits, setPlaceholderCredits] = useState("");
+  const [placeholderTitle, setPlaceholderTitle] = useState<string>(
+    "placeholder"
+  );
+  const [placeholderArea, setPlaceholderArea] = useState<string>("");
+  const [placeholderCredits, setPlaceholderCredits] = useState<string>("");
+  const [placeholderNumber, setPlaceholderNumber] = useState<string>("");
+  const placeholder = useSelector(selectPlaceholder);
+
+  useEffect(() => {
+    if (placeholder && inspected !== "None") {
+      setPlaceholderArea(inspected.areas);
+      setPlaceholderTitle(inspected.title);
+      setPlaceholderCredits(inspected.credits);
+      setPlaceholderNumber(inspected.number);
+    }
+  }, [inspected]);
 
   const onPTChange = (event: any) => {
     const title = event.target.value;
@@ -468,7 +486,7 @@ const CourseDisplay = () => {
   };
 
   const onPAChange = (event: any) => {
-    const area = event.target.value;
+    const area = event.target.value === "None" ? "" : event.target.value;
     setPlaceholderArea(area);
     if (inspected !== "None") {
       const inspCopy: Course = { ...inspected };
@@ -487,22 +505,49 @@ const CourseDisplay = () => {
     }
   };
 
+  const onPNChange = (event: any) => {
+    const num = event.target.value;
+    setPlaceholderNumber(num);
+    if (inspected !== "None") {
+      const inspCopy: Course = { ...inspected };
+      inspCopy.number = num;
+      dispatch(updateInspectedCourse(inspCopy));
+    }
+  };
+
   return (
     <div>
       {inspected === "None" ? (
         <div>No inspected Courses</div>
-      ) : inspected.number === "placeholder" ? (
+      ) : placeholder ? (
         <>
           <div>Add a placeholder</div>
-          <input onChange={onPTChange} defaultValue={placeholderTitle}></input>
-          <select onChange={onPAChange} defaultValue={placeholderArea}>
-            {["N", "S", "H", "E", "Q"].map((area: any) => (
+          <input
+            onChange={onPTChange}
+            defaultValue={placeholderTitle}
+            value={placeholderTitle}
+          ></input>
+          <input
+            onChange={onPNChange}
+            defaultValue={placeholderNumber}
+            value={placeholderNumber}
+          ></input>
+          <select
+            onChange={onPAChange}
+            defaultValue={placeholderArea}
+            value={placeholderArea}
+          >
+            {["None", "N", "S", "H", "E", "Q"].map((area: any) => (
               <option key={area} value={area}>
                 {area}
               </option>
             ))}
           </select>
-          <select onChange={onPCChange} defaultValue={placeholderCredits}>
+          <select
+            onChange={onPCChange}
+            defaultValue={placeholderCredits}
+            value={placeholderCredits}
+          >
             {[
               "0",
               "0.5",

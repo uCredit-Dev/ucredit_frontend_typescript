@@ -4,6 +4,7 @@ import { useDispatch, useSelector } from "react-redux";
 import {
   updateInspectedCourse,
   selectInspectedCourse,
+  updatePlaceholder,
 } from "../../slices/searchSlice";
 
 type cardProps = {
@@ -29,6 +30,7 @@ const CourseCard = (props: cardProps) => {
   // User selects a course to look at.
   const handleCourseClick = () => {
     dispatch(updateInspectedCourse(course));
+    dispatch(updatePlaceholder(false));
   };
   return (
     <button
