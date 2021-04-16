@@ -100,4 +100,5 @@ export type Major = {
     required: number;
   }[];
   fineRequirements: [];
+  restrictions: [];
 };
