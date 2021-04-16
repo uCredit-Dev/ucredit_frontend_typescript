@@ -45,20 +45,45 @@ function CourseComponent({ year, course, semester }: courseProps) {
 
   // Sets or resets the course displayed in popout after user clicks it in course list.
   const displayCourses = () => {
-    axios
-      .get(api + "/search", { params: { query: course.number } })
-      .then((retrievedData) => {
-        const retrievedCourse = retrievedData.data.data;
-        dispatch(updateInspectedCourse(retrievedCourse[0]));
-        dispatch(
-          updateSearchTime({ searchYear: year, searchSemester: semester })
-        );
-        dispatch(updateSearchTerm(course.number));
-      })
-      .then(() => {
-        dispatch(updateSearchStatus(true));
-      })
-      .catch((err) => console.log(err));
+    console.log("course", course);
+    if (course.number !== "placeholder") {
+      axios
+        .get(api + "/search", { params: { query: course.number } })
+        .then((retrievedData) => {
+          const retrievedCourse = retrievedData.data.data;
+          dispatch(updateInspectedCourse(retrievedCourse[0]));
+          dispatch(
+            updateSearchTime({ searchYear: year, searchSemester: semester })
+          );
+          dispatch(updateSearchTerm(course.number));
+        })
+        .then(() => {
+          dispatch(updateSearchStatus(true));
+        })
+        .catch((err) => console.log(err));
+    } else {
+      dispatch(
+        updateSearchTime({ searchYear: year, searchSemester: semester })
+      );
+      dispatch(updateSearchTerm(course.number));
+      const placeholderCourse = {
+        title: course.title,
+        number: course.number,
+        areas: course.area,
+        terms: [],
+        school: "none",
+        department: "none",
+        credits: course.credits.toString(),
+        wi: false,
+        bio: "This is a placeholder course",
+        tags: [],
+        preReq: [],
+        restrictions: [],
+      };
+      console.log(placeholderCourse);
+      dispatch(updateInspectedCourse(placeholderCourse));
+      dispatch(updateSearchStatus(true));
+    }
   };
 
   // Deletes a course on click of the delete button. Updates currently displayed plan with changes.

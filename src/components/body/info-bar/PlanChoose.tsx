@@ -53,7 +53,7 @@ const PlanChoose: React.FC<PlanChooseProps> = (props) => {
           // Initial load, there is no current plan, so we set the current to be the first plan in the array.
           dispatch(updatePlanList(retrievedPlans));
           dispatch(updateSelectedPlan(retrievedPlans[0]));
-        } else if (retrievedPlans.length === 0) {
+        } else if (retrievedPlans.length === 0 && user._id !== "noUser") {
           // If no plans, automatically generate a new plan
           // TODO: Modularize creating courses into its own common function
           // GenerateNewPlan(user, retrievedPlans);
@@ -119,7 +119,7 @@ const PlanChoose: React.FC<PlanChooseProps> = (props) => {
   const handlePlanChange = (event: any) => {
     const selectedOption = event.target.value;
     const planListClone = [...planList];
-    if (selectedOption === "new plan") {
+    if (selectedOption === "new plan" && user._id !== "noUser") {
       console.log("new plan 2");
       // Post req body for a new plan
       const planBody = {

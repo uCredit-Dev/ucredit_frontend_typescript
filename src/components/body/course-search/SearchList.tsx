@@ -1,6 +1,9 @@
 import React, { useState, useEffect } from "react";
-import { useSelector } from "react-redux";
-import { selectRetrievedCourses } from "../../slices/searchSlice";
+import { useSelector, useDispatch } from "react-redux";
+import {
+  selectRetrievedCourses,
+  updateInspectedCourse,
+} from "../../slices/searchSlice";
 import CourseCard from "./CourseCard";
 import ReactPaginate from "react-paginate";
 
@@ -8,6 +11,7 @@ const SearchList = () => {
   const [pageNum, setPageNum] = useState(0);
   const [pageCount, setPageCount] = useState(0);
   const courses = useSelector(selectRetrievedCourses);
+  const dispatch = useDispatch();
   let coursesPerPage = 10;
 
   useEffect(() => {
@@ -38,10 +42,31 @@ const SearchList = () => {
     setPageNum(event.selected);
   };
 
+  const onPlaceholderClick = () => {
+    console.log("Click!");
+    const placeholderCourse = {
+      title: "placeholder",
+      number: "placeholder",
+      areas: "",
+      terms: [],
+      school: "none",
+      department: "none",
+      credits: "",
+      wi: false,
+      bio: "This is a placeholder course",
+      tags: [],
+      preReq: [],
+      restrictions: [],
+    };
+    dispatch(updateInspectedCourse(placeholderCourse));
+  };
+
   return (
     <div className="m-3 p-2 h-3/5 bg-gray-300">
-      <p>Search Results </p>
-
+      <p>Search Results </p>{" "}
+      <button onClick={onPlaceholderClick}>
+        Add a placeholder/custom course
+      </button>
       <div className="h-4/5 overflow-scroll">
         {courses.length > 0 ? (
           <div className="flex flex-col">{courseList()}</div>
@@ -49,7 +74,6 @@ const SearchList = () => {
           <div>No Results</div>
         )}
       </div>
-
       {/* A Pagination component we'll use! Prop list and docs here: https://github.com/AdeleD/react-paginate. '
       Use it to add new classnames when styling and add new props for logic */}
       {pageCount > 1 ? (

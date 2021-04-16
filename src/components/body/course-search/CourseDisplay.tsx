@@ -1,7 +1,7 @@
 import axios from "axios";
 import React, { useState, useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
-import { Distribution, UserCourse } from "../../commonTypes";
+import { Course, Distribution, UserCourse } from "../../commonTypes";
 import {
   selectInspectedCourse,
   updateInspectedCourse,
@@ -19,6 +19,7 @@ import {
 } from "../../slices/userSlice";
 const api = "https://ucredit-api.herokuapp.com/api";
 
+// TODO: MODULARIZE
 // Displays course information once a user selects a course in the search list
 const CourseDisplay = () => {
   // Redux Setup
@@ -452,10 +453,84 @@ const CourseDisplay = () => {
     setPrereqDisplayMode(mode);
   };
 
+  const [placeholderTitle, setPlaceholderTitle] = useState("placeholder");
+  const [placeholderArea, setPlaceholderArea] = useState("");
+  const [placeholderCredits, setPlaceholderCredits] = useState("");
+
+  const onPTChange = (event: any) => {
+    const title = event.target.value;
+    setPlaceholderTitle(title);
+    if (inspected !== "None") {
+      const inspCopy: Course = { ...inspected };
+      inspCopy.title = title;
+      dispatch(updateInspectedCourse(inspCopy));
+    }
+  };
+
+  const onPAChange = (event: any) => {
+    const area = event.target.value;
+    setPlaceholderArea(area);
+    if (inspected !== "None") {
+      const inspCopy: Course = { ...inspected };
+      inspCopy.areas = area;
+      dispatch(updateInspectedCourse(inspCopy));
+    }
+  };
+
+  const onPCChange = (event: any) => {
+    const cred = event.target.value;
+    setPlaceholderCredits(cred);
+    if (inspected !== "None") {
+      const inspCopy: Course = { ...inspected };
+      inspCopy.credits = cred;
+      dispatch(updateInspectedCourse(inspCopy));
+    }
+  };
+
   return (
     <div>
       {inspected === "None" ? (
         <div>No inspected Courses</div>
+      ) : inspected.number === "placeholder" ? (
+        <>
+          <div>Add a placeholder</div>
+          <input onChange={onPTChange} defaultValue={placeholderTitle}></input>
+          <select onChange={onPAChange} defaultValue={placeholderArea}>
+            {["N", "S", "H", "E", "Q"].map((area: any) => (
+              <option key={area} value={area}>
+                {area}
+              </option>
+            ))}
+          </select>
+          <select onChange={onPCChange} defaultValue={placeholderCredits}>
+            {[
+              "0",
+              "0.5",
+              "1",
+              "1.5",
+              "2",
+              "2.5",
+              "3",
+              "3.5",
+              "4",
+              "4.5",
+              "5",
+              "5.5",
+              "6",
+              "6.5",
+              "7",
+              "7.5",
+              "8",
+            ].map((cred: any) => (
+              <option key={cred} value={cred}>
+                {cred}
+              </option>
+            ))}
+          </select>
+          <button className="bg-gray-300" onClick={addCourse}>
+            Add Course
+          </button>
+        </>
       ) : (
         <div className="p-5">
           <h1>{inspected.title}</h1>

@@ -31,9 +31,9 @@ function UserSection() {
       //     // Redirect to frontend login
       //     console.log("ERROR: ", err.message);
       //   });
-      // axios
-      //   .get(api + "/retrieveUser", { withCredentials: true })
-      //   .then((resp) => console.log("resp ", resp));
+      axios
+        .get(api + "/retrieveUser", { withCredentials: true })
+        .then((resp) => console.log("resp ", resp));
     }
     dispatch(updateUser(testUser));
   }, []);
