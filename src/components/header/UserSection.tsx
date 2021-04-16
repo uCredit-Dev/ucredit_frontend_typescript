@@ -12,12 +12,15 @@ function UserSection() {
   const [guest, setGuest] = useState<boolean>(true);
 
   useEffect(() => {
+    console.log("in login useEffect");
     // Get test user
     if (user._id === "noUser") {
+      console.log("user is none");
       // Make call for backend
       axios
         .get(api + "/retrieveUser")
         .then((retrievedUser) => {
+          console.log("retrieved ", retrievedUser);
           dispatch(updateUser(retrievedUser.data));
           setGuest(false);
         })
@@ -28,7 +31,7 @@ function UserSection() {
         });
     }
     // dispatch(updateUser(testUser));
-  });
+  }, []);
 
   return (
     <div className="flex flex-row items-center justify-end w-full h-full">
