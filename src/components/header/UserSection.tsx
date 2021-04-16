@@ -12,13 +12,15 @@ function UserSection() {
   const [guest, setGuest] = useState<boolean>(true);
 
   useEffect(() => {
+    console.log("in login useEffect");
     // Get test user
     if (user._id === "noUser") {
+      console.log("user is none");
       // Make call for backend
       axios
         .get(api + "/retrieveUser")
         .then((retrievedUser) => {
-          console.log(retrievedUser);
+          console.log("retrieved ", retrievedUser);
           dispatch(updateUser(retrievedUser.data));
           setGuest(false);
         })
