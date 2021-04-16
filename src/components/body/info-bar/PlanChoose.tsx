@@ -57,17 +57,18 @@ const PlanChoose: React.FC<PlanChooseProps> = (props) => {
           // If no plans, automatically generate a new plan
           // TODO: Modularize creating courses into its own common function
           // GenerateNewPlan(user, retrievedPlans);
-              // .then(() => {
-              //         if (
-              //           index ===
-              //           testMajorCSNew.generalDistributions.length - 1
-              //         ) {
-              //           dispatch(updateSelectedPlan(newRetrievedPlan));
-              //           dispatch(updatePlanList(retrievedPlans));
-              //           props.setNewPlan(props.newPlan + 1);
-              //         }
-              //       });
-              //   }
+          // .then(() => {
+          //         if (
+          //           index ===
+          //           testMajorCSNew.generalDistributions.length - 1
+          //         ) {
+          //           dispatch(updateSelectedPlan(newRetrievedPlan));
+          //           dispatch(updatePlanList(retrievedPlans));
+          //           props.setNewPlan(props.newPlan + 1);
+          //         }
+          //       });
+          //   }
+          console.log("new plan 1");
           const planBody = {
             name: "Unnamed Plan",
             user_id: user._id,
@@ -119,6 +120,7 @@ const PlanChoose: React.FC<PlanChooseProps> = (props) => {
     const selectedOption = event.target.value;
     const planListClone = [...planList];
     if (selectedOption === "new plan") {
+      console.log("new plan 2");
       // Post req body for a new plan
       const planBody = {
         name: "Unnamed Plan",
@@ -173,6 +175,7 @@ const PlanChoose: React.FC<PlanChooseProps> = (props) => {
 
   useEffect(() => {
     if (user.plan_ids.length === 0 && user._id !== "") {
+      console.log("new plan 3");
       // Post req body for a new plan
       const planBody = {
         name: "Unnamed Plan",

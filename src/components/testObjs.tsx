@@ -191,7 +191,7 @@ export const testUser: User = {
   affiliation: "STUDENT",
   grade: "AE UG Sophomore",
   school: "Whiting School of Engineering",
-  plan_ids: [],
+  plan_ids: ["na"],
 };
 
 export const testMajorDistributions = [
