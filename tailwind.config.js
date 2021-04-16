@@ -6,7 +6,7 @@ module.exports = {
       width: {
         year: "320px",
         courselist: "1400px",
-        courebars: "301px",
+        coursebars: "301px",
         yearheading: "240px",
         semesterheading: "175px",
         infocard: "350px",
@@ -26,8 +26,10 @@ module.exports = {
         blurrsm: "317px",
       },
       colors: {
-        primary: "#489784",
-        secondary: "#63D2B8",
+        // primary: "#489784",
+        primary: "#7933dc",
+        // secondary: "#63D2B8",
+        secondary: "#a65fec",
         background: "#f0f2f5",
       },
       backgroundColor: {
