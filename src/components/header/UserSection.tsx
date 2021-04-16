@@ -17,8 +17,11 @@ function UserSection() {
     if (user._id === "noUser" || user._id === "mliu78") {
       console.log("user is none");
       // Make call for backend
-      axios
-        .get(api + "/retrieveUser", { withCredentials: true })
+      fetch(api + "/retrieveUser", {
+        method: "GET",
+        credentials: "include",
+      })
+        .then((resp) => resp.json())
         .then((retrievedUser) => {
           console.log("retrieved ", retrievedUser);
           // dispatch(updateUser(retrievedUser.data));
