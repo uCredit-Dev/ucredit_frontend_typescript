@@ -8,6 +8,7 @@ import { updateDistributions, selectPlan } from "../slices/userSlice";
 import { useSelector, useDispatch } from "react-redux";
 import InfoCards from "./info-bar/InfoCards";
 import axios from "axios";
+
 const api = "https://ucredit-api.herokuapp.com/api";
 
 function Content() {
