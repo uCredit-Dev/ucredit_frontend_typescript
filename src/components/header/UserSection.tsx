@@ -31,7 +31,7 @@ function UserSection() {
         });
     }
     // dispatch(updateUser(testUser));
-  });
+  }, []);
 
   return (
     <div className="flex flex-row items-center justify-end w-full h-full">
