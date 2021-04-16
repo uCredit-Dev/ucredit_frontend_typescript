@@ -1,3 +1,5 @@
+import { all_majors, course_tags } from "./assets";
+
 export type Restriction = {
   RestrictionName: string;
   Description: string;
@@ -76,6 +78,10 @@ export type Distribution = {
 export type YearType = "Freshman" | "Sophomore" | "Junior" | "Senior";
 
 export type SemesterType = "fall" | "spring" | "summer" | "intersession";
+
+// https://stackoverflow.com/questions/52085454/typescript-define-a-union-type-from-an-array-of-strings
+export type DepartmentType = typeof all_majors[number];
+export type TagType = typeof course_tags[number];
 
 export type FilterType =
   | "credits"

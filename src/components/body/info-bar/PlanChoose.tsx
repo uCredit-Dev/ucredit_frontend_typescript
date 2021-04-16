@@ -10,6 +10,7 @@ import {
   selectPlanList,
 } from "../../slices/userSlice";
 import { testMajorCSNew } from "../../testObjs";
+// import { generateNewPlan } from "../../assets";
 const api = "https://ucredit-api.herokuapp.com/api";
 
 type PlanChooseProps = {
@@ -55,6 +56,18 @@ const PlanChoose: React.FC<PlanChooseProps> = (props) => {
         } else if (retrievedPlans.length === 0) {
           // If no plans, automatically generate a new plan
           // TODO: Modularize creating courses into its own common function
+          // GenerateNewPlan(user, retrievedPlans);
+              // .then(() => {
+              //         if (
+              //           index ===
+              //           testMajorCSNew.generalDistributions.length - 1
+              //         ) {
+              //           dispatch(updateSelectedPlan(newRetrievedPlan));
+              //           dispatch(updatePlanList(retrievedPlans));
+              //           props.setNewPlan(props.newPlan + 1);
+              //         }
+              //       });
+              //   }
           const planBody = {
             name: "Unnamed Plan",
             user_id: user._id,
