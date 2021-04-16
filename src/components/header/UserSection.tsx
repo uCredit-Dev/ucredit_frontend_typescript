@@ -18,7 +18,7 @@ function UserSection() {
       console.log("user is none");
       // Make call for backend
       axios
-        .get(api + "/retrieveUser")
+        .get(api + "/retrieveUser", { withCredentials: true })
         .then((retrievedUser) => {
           console.log("retrieved ", retrievedUser);
           // dispatch(updateUser(retrievedUser.data));
@@ -30,7 +30,7 @@ function UserSection() {
         });
     }
     dispatch(updateUser(testUser));
-  }, []);
+  });
 
   return (
     <div className="flex flex-row items-center justify-end w-full h-full">

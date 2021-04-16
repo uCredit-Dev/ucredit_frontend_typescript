@@ -71,7 +71,8 @@ const Form = () => {
         searchFilters.distribution === "None" ? "" : searchFilters.distribution,
       wi: searchFilters.wi === "None" ? null : searchFilters.wi,
       term: searchFilters.term === "None" ? "" : searchFilters.term,
-      department: searchFilters.department,
+      department:
+        searchFilters.department === "None" ? null : searchFilters.department,
     };
     console.log("extras is ", extras);
     axios
