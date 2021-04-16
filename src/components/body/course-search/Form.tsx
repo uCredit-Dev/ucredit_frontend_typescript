@@ -176,17 +176,10 @@ const Form = () => {
       <label>
         <p>
           Department:
-          {/* <input
-          className="border-b-2"
-          type="text"
-          placeholder={"Put in the department you are looking for"}
-          style={{ width: "100%" }}
-          defaultValue={""}
-          onChange={handleDepartmentFilterChange}
-        ></input> */}
           <select
             onChange={handleDepartmentFilterChange}
             defaultValue={searchFilters.department}
+            className="w-5/6"
           >
             {departmentFilters.map((department) => (
               <option key={department} value={department}>
