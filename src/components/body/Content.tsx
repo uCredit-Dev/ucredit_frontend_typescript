@@ -38,28 +38,31 @@ function Content() {
 
   return (
     <div className='flex flex-row mt-content medium:px-48 w-full min-w-narrowest h-full'>
-      <div className='flex flex-col mb-8 mx-4 w-courselist h-auto'>
-        <InfoCards />
+      <div className='mb-8 ml-4 mr-2 w-courselist h-auto'>
         <CourseList />
       </div>
-      <div className='h-coursebars flex-none mx-4 p-8 w-courebars bg-white rounded shadow'>
-        {distributions.map((dis) => {
-          const name =
-            dis.name.charAt(0).toUpperCase() +
-            dis.name.substr(1, dis.name.length);
-          return (
-            <>
-              <CourseBar
-                maxCredits={dis.required}
-                plannedCredits={dis.planned}
-                currentCredits={dis.current}
-                section={name}
-              />
-            </>
-          );
-        })}
+      <div className='w-coursebars flex flex-col my-4 h-auto'>
+        <InfoCards />
+        <div className='w-coursebars flex-none ml-2 mr-4 p-6 h-auto bg-white rounded shadow'>
+          <div className='mb-3 text-xl font-medium'>Overall Distribution</div>
+          {distributions.map((dis) => {
+            const name =
+              dis.name.charAt(0).toUpperCase() +
+              dis.name.substr(1, dis.name.length);
+            return (
+              <>
+                <CourseBar
+                  maxCredits={dis.required}
+                  plannedCredits={dis.planned}
+                  currentCredits={dis.current}
+                  section={name}
+                />
+              </>
+            );
+          })}
+        </div>
+        {searching ? <Search /> : null}
       </div>
-      {searching ? <Search /> : null}
     </div>
   );
 }
