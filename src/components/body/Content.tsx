@@ -38,12 +38,13 @@ function Content() {
 
   return (
     <div className='flex flex-row mt-content medium:px-48 w-full min-w-narrowest h-full'>
-      <div className='mb-8 mx-4 w-courselist h-auto'>
+      <div className='mb-8 ml-4 mr-2 w-courselist h-auto'>
         <CourseList />
       </div>
       <div className='w-coursebars flex flex-col my-4 h-auto'>
         <InfoCards />
-        <div className='w-coursebars flex-none mx-4 p-8 h-coursebars bg-white rounded shadow'>
+        <div className='w-coursebars flex-none ml-2 mr-4 p-6 h-auto bg-white rounded shadow'>
+          <div className='mb-3 text-xl font-medium'>Overall Distribution</div>
           {distributions.map((dis) => {
             const name =
               dis.name.charAt(0).toUpperCase() +

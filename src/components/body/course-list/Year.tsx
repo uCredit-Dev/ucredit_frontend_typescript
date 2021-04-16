@@ -82,7 +82,7 @@ function Year({ yearName, courseIDs }: semesterProps) {
         className='flex flex-row justify-between mb-3 p-2 w-full h-yearheading text-white font-medium bg-primary rounded shadow'
         onClick={displaySemesters}>
         <div className='select-none'>{yearName}</div>
-        <MoreSvg className='w-6 h-6' />
+        <MoreSvg className='w-6 h-6 stroke-2' />
       </div>
       {display ? (
         <div className='flex flex-col items-center'>
