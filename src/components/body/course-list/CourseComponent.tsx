@@ -8,6 +8,7 @@ import {
   updateInspectedCourse,
   updateSearchTime,
   updateSearchTerm,
+  updatePlaceholder,
 } from "../../slices/searchSlice";
 import axios from "axios";
 import { ReactComponent as RemoveSvg } from "../../svg/remove.svg";
@@ -45,15 +46,33 @@ function CourseComponent({ year, course, semester }: courseProps) {
 
   // Sets or resets the course displayed in popout after user clicks it in course list.
   const displayCourses = () => {
+    dispatch(updateSearchTime({ searchYear: year, searchSemester: semester }));
+    dispatch(updateSearchTerm(course.number));
     axios
       .get(api + "/search", { params: { query: course.number } })
       .then((retrievedData) => {
         const retrievedCourse = retrievedData.data.data;
-        dispatch(updateInspectedCourse(retrievedCourse[0]));
-        dispatch(
-          updateSearchTime({ searchYear: year, searchSemester: semester })
-        );
-        dispatch(updateSearchTerm(course.number));
+        console.log(course.credits);
+        if (retrievedCourse.length === 0) {
+          dispatch(updatePlaceholder(true));
+          const placeholderCourse = {
+            title: course.title,
+            number: course.number,
+            areas: course.area,
+            terms: [],
+            school: "none",
+            department: "none",
+            credits: course.credits.toString(),
+            wi: false,
+            bio: "This is a placeholder course",
+            tags: [],
+            preReq: [],
+            restrictions: [],
+          };
+          dispatch(updateInspectedCourse(placeholderCourse));
+        } else {
+          dispatch(updateInspectedCourse(retrievedCourse[0]));
+        }
       })
       .then(() => {
         dispatch(updateSearchStatus(true));
