@@ -191,18 +191,7 @@ export const testUser: User = {
   affiliation: "STUDENT",
   grade: "AE UG Sophomore",
   school: "Whiting School of Engineering",
-  plan_ids: [
-    "606227a6eaa338000422e874",
-    "60622885eaa338000422e875",
-    "606228ebeaa338000422e876",
-    "6062293beaa338000422e877",
-    "6062299feaa338000422e878",
-    "606229bbeaa338000422e879",
-    "606229c2eaa338000422e87a",
-    "60622adceaa338000422e87b",
-    "60622b95eaa338000422e87c",
-    "60622b9ceaa338000422e87d",
-  ],
+  plan_ids: [],
 };
 
 export const testMajorDistributions = [
@@ -226,6 +215,7 @@ export const testMajorCSOld: Major = {
     { name: "Computer Science", required: 42 },
   ],
   fineRequirements: [],
+  restrictions: [],
 };
 
 export const testMajorCSNew: Major = {
@@ -240,4 +230,5 @@ export const testMajorCSNew: Major = {
     { name: "Computer Science", required: 40 },
   ],
   fineRequirements: [],
+  restrictions: [],
 };

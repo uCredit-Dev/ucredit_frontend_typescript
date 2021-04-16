@@ -19,7 +19,7 @@ type UserSlice = {
 
 const initialState: UserSlice = {
   currentUser: {
-    _id: "",
+    _id: "noUser",
     firstName: "",
     lastName: "",
     email: "",
