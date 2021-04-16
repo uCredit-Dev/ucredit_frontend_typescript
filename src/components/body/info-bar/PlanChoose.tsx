@@ -175,7 +175,7 @@ const PlanChoose: React.FC<PlanChooseProps> = (props) => {
 
   useEffect(() => {
     if (user.plan_ids.length === 0 && user._id !== "") {
-      console.log("new plan 3");
+      console.log("new plan 3", user);
       // Post req body for a new plan
       const planBody = {
         name: "Unnamed Plan",
