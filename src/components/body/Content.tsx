@@ -1,71 +1,71 @@
-import React, { useState, useEffect } from 'react';
-import CourseBar from './CourseBar';
-import CourseList from './course-list/CourseList';
-import { Distribution } from '../commonTypes';
-import { testMajorDistributions, testUser } from '../testObjs';
-import Search from './course-search/Search';
-import { selectSearchStatus } from '../slices/searchSlice';
-import { useSelector } from 'react-redux';
+import React, { useState, useEffect } from "react";
+import CourseBar from "./CourseBar";
+import CourseList from "./course-list/CourseList";
+import { Distribution } from "../commonTypes";
+import Search from "./course-search/Search";
+import { selectSearchStatus } from "../slices/searchSlice";
+import { updateDistributions, selectPlan } from "../slices/userSlice";
+import { useSelector, useDispatch } from "react-redux";
+import InfoCards from "./info-bar/InfoCards";
+import axios from "axios";
+
+const api = "https://ucredit-api.herokuapp.com/api";
 
 function Content() {
-  const [userName, setUserName] = useState<string>('');
-  const [majorCredits, setMajorCredits] = useState<number>(0);
   const [distributions, setDistributions] = useState<Distribution[]>([]);
   const searching = useSelector(selectSearchStatus);
+  const currentPlan = useSelector(selectPlan);
+  const dispatch = useDispatch();
 
-  // On first render, gets user name, total credits, and distributions.
   useEffect(() => {
-    setUserName(testUser.firstName + ' ' + testUser.lastName);
-    setMajorCredits(127);
     getDistributions();
-  }, []);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [currentPlan]);
 
   // Sets all distributions for distribution bars.
   const getDistributions = () => {
-    setDistributions(testMajorDistributions);
+    axios
+      .get(api + "/distributionsByPlan/" + currentPlan._id)
+      .then((retrievedData) => {
+        const retrievedDistributions = retrievedData.data.data.sort(
+          (distr1: Distribution, distr2: Distribution) =>
+            distr2.required - distr1.required
+        );
+        setDistributions(retrievedDistributions);
+        dispatch(updateDistributions(retrievedDistributions));
+      })
+      .catch((err) => console.log(err));
   };
 
   return (
-    <div
-      style={{
-        display: 'flex',
-        flexFlow: 'row',
-        width: '100%,',
-        marginTop: '5.25rem',
-      }}
-    >
-      <div
-        style={{
-          marginRight: '2rem',
-        }}
-      >
-        <div style={userTitle}>{userName}'s 4 Year Plan</div>
-        <div style={{}}>
-          {distributions.map((dis) => (
-            <CourseBar
-              majorCredits={majorCredits}
-              maxCredits={dis.required}
-              plannedCredits={dis.planned}
-              currentCredits={dis.current}
-              section={dis.name}
-            />
-          ))}
-        </div>
+    <div className='flex flex-row mt-content medium:px-48 w-full min-w-narrowest h-full'>
+      <div className='mb-8 ml-4 mr-2 w-courselist h-auto'>
+        <CourseList />
       </div>
-      <CourseList />
-      {searching ? <Search /> : null}
+      <div className='w-coursebars flex flex-col my-4 h-auto'>
+        <InfoCards />
+        <div className='w-coursebars flex-none ml-2 mr-4 p-6 h-auto bg-white rounded shadow'>
+          <div className='mb-3 text-xl font-medium'>Overall Distribution</div>
+          {distributions.map((dis) => {
+            const name =
+              dis.name.charAt(0).toUpperCase() +
+              dis.name.substr(1, dis.name.length);
+            return (
+              <>
+                <CourseBar
+                  maxCredits={dis.required}
+                  plannedCredits={dis.planned}
+                  currentCredits={dis.current}
+                  section={name}
+                />
+              </>
+            );
+          })}
+        </div>
+        {searching ? <Search /> : null}
+      </div>
     </div>
   );
 }
-
-const userTitle = {
-  fontWeight: 'bold',
-  fontSize: 'xx-large',
-  color: 'navy',
-  marginLeft: '4.5%',
-  paddingTop: '2rem',
-  marginBottom: '3rem',
-  zIndex: 0,
-} as React.CSSProperties;
 
 export default Content;

@@ -1,7 +1,11 @@
-import React from 'react';
-import { Course } from '../../commonTypes';
-import { useDispatch } from 'react-redux';
-import { updateInspectedCourse } from '../../slices/searchSlice';
+import React from "react";
+import { Course } from "../../commonTypes";
+import { useDispatch, useSelector } from "react-redux";
+import {
+  updateInspectedCourse,
+  selectInspectedCourse,
+  updatePlaceholder,
+} from "../../slices/searchSlice";
 
 type cardProps = {
   course: Course;
@@ -11,16 +15,32 @@ type cardProps = {
 const CourseCard = (props: cardProps) => {
   const course = props.course;
 
+  // If the course displayed by this card is the selected one, style it special.
+  const selectedCourse = useSelector(selectInspectedCourse);
+  const checkSelected = () => {
+    if (selectedCourse === course) {
+      return "flex bg-red-100";
+    }
+    return "flex bg-gray-100";
+  };
+
   // Setup Redux
   const dispatch = useDispatch();
 
   // User selects a course to look at.
   const handleCourseClick = () => {
     dispatch(updateInspectedCourse(course));
+    dispatch(updatePlaceholder(false));
   };
   return (
-    <button className="flex  bg-gray-100" onClick={handleCourseClick}>
-      {course.title}
+    <button
+      className={checkSelected()}
+      style={{ height: "3rem" }}
+      onClick={handleCourseClick}
+    >
+      <div style={{ width: "25rem" }} className="ml-2 text-left">
+        {course.title}
+      </div>
     </button>
   );
 };
