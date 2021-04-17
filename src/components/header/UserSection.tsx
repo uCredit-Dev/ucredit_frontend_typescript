@@ -14,7 +14,7 @@ function UserSection() {
   useEffect(() => {
     console.log("in login useEffect");
     // Get test user
-    if (user._id === "noUser" || user._id === "mliu78") {
+    if (user._id === "noUser") {
       console.log("user is none");
       // Make call for backend
       // fetch(api + "/retrieveUser", {
@@ -31,6 +31,7 @@ function UserSection() {
       //     // Redirect to frontend login
       //     console.log("ERROR: ", err.message);
       //   });
+      alert("Please log in if you haven't :)");
       axios
         .get(api + "/retrieveUser", { withCredentials: true })
         .then((resp) => console.log("resp ", resp));
