@@ -11,15 +11,23 @@ function UserSection() {
   const user = useSelector(selectUser);
   const [guest, setGuest] = useState<boolean>(true);
 
+  // Useffect runs once on page load, calling to https://ucredit-api.herokuapp.com/api/retrieveUser to retrieve user data.
+  // On successful retrieve, update redux with retrieved user,
+  // NOTE: Currently, the user is set to the testUser object found in @src/testObjs.tsx, with a JHED of mliu78 (Matthew Liu)
+  //            redux isn't being updated with retrieved user data, as login has issues.
   useEffect(() => {
-    console.log("in login useEffect");
-    // Get test user
+    // Retrieves user if user ID is "noUser", the initial user id state for userSlice.tsx.
     if (user._id === "noUser") {
       console.log("user is none");
       // Make call for backend
       fetch(api + "/retrieveUser", {
         method: "GET",
         credentials: "include",
+        headers: {
+          Accept: "application/json",
+          "Content-Type": "application/json",
+          Cache: "no-cache",
+        },
       })
         .then((resp) => resp.json())
         .then((retrievedUser) => {
@@ -28,14 +36,18 @@ function UserSection() {
           // setGuest(false);
         })
         .catch((err) => {
-          // Redirect to frontend login
+          // TODO: If there is no retrievedUser we could
+          //    (A) redirect them to https://ucredit-api.herokuapp.com/api/login
+          //    (B) load in a local guest user and wait for them to access https://ucredit-api.herokuapp.com/api/login
+          //          by clicking the "Log In" button in the header.
           console.log("ERROR: ", err.message);
         });
-      alert("Please log in if you haven't :)");
       // axios
       //   .get(api + "/retrieveUser", { withCredentials: true })
       //   .then((resp) => console.log("resp ", resp));
     }
+
+    // Set user to test user: mliu78
     dispatch(updateUser(testUser));
   }, []);
 
