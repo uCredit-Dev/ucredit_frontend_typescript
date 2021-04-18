@@ -68,11 +68,14 @@ const Form = () => {
       query: searchTerm,
       credits: searchFilters.credits === "None" ? null : searchFilters.credits,
       areas:
-        searchFilters.distribution === "None" ? "" : searchFilters.distribution,
+        searchFilters.distribution === "None"
+          ? null
+          : searchFilters.distribution,
       wi: searchFilters.wi === "None" ? null : searchFilters.wi,
-      term: searchFilters.term === "None" ? "" : searchFilters.term,
+      term: searchFilters.term === "None" ? null : searchFilters.term,
       department:
         searchFilters.department === "None" ? null : searchFilters.department,
+      tag: searchFilters.tags === "None" ? null : searchFilters.tags,
     };
     console.log("extras is ", extras);
     axios
@@ -84,6 +87,7 @@ const Form = () => {
           (course1: Course, course2: Course) =>
             course1.title.localeCompare(course2.title)
         );
+        console.log("before", returned);
         if (searchFilters.distribution === "N") {
           returned = returned.filter(
             (course: Course) => course.areas !== "None"
