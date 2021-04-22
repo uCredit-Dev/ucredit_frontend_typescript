@@ -4,9 +4,11 @@ import {
   updateSearchTerm,
   updateRetrievedCourses,
   updateSearchFilters,
+  updateSearchTime,
   selectSearchterm,
   selectSearchFilters,
   selectSemester,
+  selectYear,
 } from "../../slices/searchSlice";
 import axios from "axios";
 import { Course, FilterType, SemesterType } from "../../commonTypes";
@@ -34,6 +36,7 @@ const Form = () => {
   const searchTerm = useSelector(selectSearchterm);
   const searchFilters = useSelector(selectSearchFilters);
   const semester = useSelector(selectSemester);
+  const year = useSelector(selectYear);
 
   // On opening search, set the term filter to match semester you're adding to.
   useEffect(() => {
@@ -128,6 +131,9 @@ const Form = () => {
       filter: "term",
       value: event.target.value,
     };
+    dispatch(
+      updateSearchTime({ searchSemester: event.target.value, searchYear: year })
+    );
     dispatch(updateSearchFilters(params));
   };
 

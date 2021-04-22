@@ -45,16 +45,17 @@ const Search = () => {
   };
 
   return (
-    <div className='absolute top-0'>
+    <div className="absolute top-0">
       {/* Background Grey */}
       <div
-        className='fixed z-20 left-0 top-0 m-0 w-full h-screen bg-gray-500'
+        className="fixed z-20 left-0 top-0 m-0 w-full h-screen bg-gray-500"
         style={{
           opacity: searchOpacity === 100 ? 75 / 100 : 0,
         }}
         onClick={() => {
           dispatch(updateSearchStatus(false));
-        }}></div>
+        }}
+      ></div>
 
       {/* Search area */}
       {/* {"flex fixed bg-red-200 rounded-xl p-8 md:p-0 z-20"} */}
@@ -62,7 +63,8 @@ const Search = () => {
         className={
           "fixed flex flex-col bg-red-200 rounded-xl p-0 z-20 w-9/12 h-4/5 top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2"
         }
-        style={{ opacity: searchOpacity / 100 }}>
+        style={{ opacity: searchOpacity / 100 }}
+      >
         <div>
           Currently selecting for{" "}
           <select onChange={handleYearChange} defaultValue={searchYear}>
@@ -72,19 +74,20 @@ const Search = () => {
               </option>
             ))}
           </select>{" "}
-          year,
-          <select onChange={handleSemesterChange} defaultValue={searchSemester}>
+          year,{" "}
+          {/* <select onChange={handleSemesterChange} defaultValue={searchSemester}>
             {semester.map((semester) => (
               <option key={semester} value={semester}>
                 {semester}
               </option>
             ))}
-          </select>{" "}
-          semester
+          </select> */}
+          {searchSemester} semester
         </div>
         <div className={`flex bg-white rounded-xl p-0 h-full`}>
           <div
-            className={"flex flex-col rounded-xl  bg-gray-200 w-4/12 h-full"}>
+            className={"flex flex-col rounded-xl  bg-gray-200 w-4/12 h-full"}
+          >
             <Form />
             <SearchList />
             <button
@@ -93,7 +96,8 @@ const Search = () => {
               }}
               onMouseLeave={() => {
                 setSearchOpacity(100);
-              }}>
+              }}
+            >
               Hide search
             </button>
           </div>
