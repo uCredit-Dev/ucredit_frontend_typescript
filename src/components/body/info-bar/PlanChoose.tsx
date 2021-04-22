@@ -5,6 +5,7 @@ import { useDispatch, useSelector } from "react-redux";
 import {
   updateSelectedPlan,
   updatePlanList,
+  updateGuestPlanIds,
   selectUser,
   selectPlan,
   selectPlanList,
@@ -53,7 +54,11 @@ const PlanChoose: React.FC<PlanChooseProps> = (props) => {
           // Initial load, there is no current plan, so we set the current to be the first plan in the array.
           dispatch(updatePlanList(retrievedPlans));
           dispatch(updateSelectedPlan(retrievedPlans[0]));
-        } else if (retrievedPlans.length === 0 && user._id !== "noUser") {
+        } else if (
+          retrievedPlans.length === 0 &&
+          user._id !== "noUser" &&
+          user._id !== "guestUser"
+        ) {
           // If no plans, automatically generate a new plan
           // TODO: Modularize creating courses into its own common function
           // GenerateNewPlan(user, retrievedPlans);
@@ -99,8 +104,14 @@ const PlanChoose: React.FC<PlanChooseProps> = (props) => {
                         testMajorCSNew.generalDistributions.length - 1
                       ) {
                         dispatch(updateSelectedPlan(newRetrievedPlan));
-                        dispatch(updatePlanList(retrievedPlans));
                         props.setNewPlan(props.newPlan + 1);
+                        if (user._id === "guestUser") {
+                          const planIdArray = [newRetrievedPlan._id];
+                          dispatch(updateGuestPlanIds(planIdArray));
+                          dispatch(
+                            updatePlanList([newRetrievedPlan, ...planList])
+                          );
+                        }
                       }
                     });
                 }
@@ -154,6 +165,11 @@ const PlanChoose: React.FC<PlanChooseProps> = (props) => {
                   ) {
                     dispatch(updateSelectedPlan(newRetrievedPlan));
                     props.setNewPlan(props.newPlan + 1);
+                    if (user._id === "guestUser") {
+                      const planIdArray = [newRetrievedPlan._id];
+                      dispatch(updateGuestPlanIds(planIdArray));
+                      dispatch(updatePlanList([newRetrievedPlan, ...planList]));
+                    }
                   }
                 });
             }
@@ -174,7 +190,7 @@ const PlanChoose: React.FC<PlanChooseProps> = (props) => {
   };
 
   useEffect(() => {
-    if (user.plan_ids.length === 0 && user._id !== "") {
+    if (user.plan_ids.length === 0 && user._id !== "noUser") {
       console.log("new plan 3", user);
       // Post req body for a new plan
       const planBody = {
@@ -186,7 +202,7 @@ const PlanChoose: React.FC<PlanChooseProps> = (props) => {
       axios
         .post(api + "/plans", planBody)
         .then((data: { data: { data: Plan } }) => {
-          const newRetrievedPlan = data.data.data;
+          const newRetrievedPlan = { ...data.data.data };
           testMajorCSNew.generalDistributions.forEach(
             (distr: any, index: number) => {
               axios
@@ -209,6 +225,11 @@ const PlanChoose: React.FC<PlanChooseProps> = (props) => {
                   ) {
                     dispatch(updateSelectedPlan(newRetrievedPlan));
                     props.setNewPlan(props.newPlan + 1);
+                    if (user._id === "guestUser") {
+                      const planIdArray = [newRetrievedPlan._id];
+                      dispatch(updateGuestPlanIds(planIdArray));
+                      dispatch(updatePlanList([newRetrievedPlan, ...planList]));
+                    }
                   }
                 });
             }

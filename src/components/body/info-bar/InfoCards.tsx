@@ -6,6 +6,7 @@ import {
   selectPlanList,
   updatePlanList,
   updateSelectedPlan,
+  updateGuestPlanIds,
 } from "../../slices/userSlice";
 import PlanChoose from "./PlanChoose";
 import { ReactComponent as RemoveSvg } from "../../svg/remove.svg";
@@ -123,7 +124,13 @@ const InfoCards: React.FC<any> = () => {
                       testMajorCSNew.generalDistributions.length - 1
                     ) {
                       dispatch(updateSelectedPlan(newRetrievedPlan));
-                      dispatch(updatePlanList(updatedList));
+                      if (user._id === "guestUser") {
+                        const planIdArray = [newRetrievedPlan._id];
+                        dispatch(updateGuestPlanIds(planIdArray));
+                        dispatch(
+                          updatePlanList([newRetrievedPlan, ...planList])
+                        );
+                      }
                       setNewPlan(newPlan + 1);
                     }
                   });

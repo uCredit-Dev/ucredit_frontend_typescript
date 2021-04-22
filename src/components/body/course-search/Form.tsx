@@ -75,9 +75,8 @@ const Form = () => {
       term: searchFilters.term === "None" ? null : searchFilters.term,
       department:
         searchFilters.department === "None" ? null : searchFilters.department,
-      tag: searchFilters.tags === "None" ? null : searchFilters.tags,
+      tags: searchFilters.tags === "None" ? null : searchFilters.tags,
     };
-    console.log("extras is ", extras);
     axios
       .get(api + "/search", {
         params: extras,
@@ -87,7 +86,6 @@ const Form = () => {
           (course1: Course, course2: Course) =>
             course1.title.localeCompare(course2.title)
         );
-        console.log("before", returned);
         if (searchFilters.distribution === "N") {
           returned = returned.filter(
             (course: Course) => course.areas !== "None"
