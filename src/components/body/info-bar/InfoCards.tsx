@@ -100,42 +100,40 @@ const InfoCards: React.FC<any> = () => {
             majors: [testMajorCSNew.name],
           };
 
-          axios
-            .post(api + "/plans", planBody)
-            .then((data: { data: { data: Plan } }) => {
-              const newRetrievedPlan = data.data.data;
-              testMajorCSNew.generalDistributions.forEach((distr, index) => {
-                axios
-                  .post(api + "/distributions", {
-                    name: distr.name,
-                    required: distr.required,
-                    user_id: user._id,
-                    plan_id: newRetrievedPlan._id,
-                  })
-                  .then((newDistr: { data: { data: Distribution } }) => {
-                    newRetrievedPlan.distribution_ids = [
-                      ...newRetrievedPlan.distribution_ids,
-                      newDistr.data.data._id,
-                    ];
-                  })
-                  .then(() => {
-                    if (
-                      index ===
-                      testMajorCSNew.generalDistributions.length - 1
-                    ) {
-                      dispatch(updateSelectedPlan(newRetrievedPlan));
-                      if (user._id === "guestUser") {
-                        const planIdArray = [newRetrievedPlan._id];
-                        dispatch(updateGuestPlanIds(planIdArray));
-                        dispatch(
-                          updatePlanList([newRetrievedPlan, ...planList])
-                        );
-                      }
-                      setNewPlan(newPlan + 1);
+          axios.post(api + "/plans", planBody).then((data: any) => {
+            const newRetrievedPlan: Plan = { ...data.data.data };
+            testMajorCSNew.generalDistributions.forEach((distr, index) => {
+              axios
+                .post(api + "/distributions", {
+                  name: distr.name,
+                  required: distr.required,
+                  user_id: user._id,
+                  plan_id: newRetrievedPlan._id,
+                })
+                .then((newDistr: any) => {
+                  newRetrievedPlan.distribution_ids = [
+                    ...newRetrievedPlan.distribution_ids,
+                    newDistr.data.data._id,
+                  ];
+                })
+                .then(() => {
+                  if (
+                    index ===
+                    testMajorCSNew.generalDistributions.length - 1
+                  ) {
+                    dispatch(updateSelectedPlan(newRetrievedPlan));
+                    if (user._id === "guestUser") {
+                      const planIdArray = [newRetrievedPlan._id];
+                      dispatch(updateGuestPlanIds(planIdArray));
+                      dispatch(
+                        updatePlanList([newRetrievedPlan, ...updatedList])
+                      );
                     }
-                  });
-              });
+                    setNewPlan(newPlan + 1);
+                  }
+                });
             });
+          });
         } else {
           dispatch(updateSelectedPlan(updatedList[0]));
           dispatch(updatePlanList(updatedList));
