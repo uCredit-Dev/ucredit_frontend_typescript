@@ -4,9 +4,11 @@ import {
   updateSearchTerm,
   updateRetrievedCourses,
   updateSearchFilters,
+  updateSearchTime,
   selectSearchterm,
   selectSearchFilters,
   selectSemester,
+  selectYear,
 } from "../../slices/searchSlice";
 import axios from "axios";
 import { Course, FilterType, SemesterType } from "../../commonTypes";
@@ -34,6 +36,7 @@ const Form = () => {
   const searchTerm = useSelector(selectSearchterm);
   const searchFilters = useSelector(selectSearchFilters);
   const semester = useSelector(selectSemester);
+  const year = useSelector(selectYear);
 
   // On opening search, set the term filter to match semester you're adding to.
   useEffect(() => {
@@ -68,13 +71,15 @@ const Form = () => {
       query: searchTerm,
       credits: searchFilters.credits === "None" ? null : searchFilters.credits,
       areas:
-        searchFilters.distribution === "None" ? "" : searchFilters.distribution,
+        searchFilters.distribution === "None"
+          ? null
+          : searchFilters.distribution,
       wi: searchFilters.wi === "None" ? null : searchFilters.wi,
-      term: searchFilters.term === "None" ? "" : searchFilters.term,
+      term: searchFilters.term === "None" ? null : searchFilters.term,
       department:
         searchFilters.department === "None" ? null : searchFilters.department,
+      tags: searchFilters.tags === "None" ? null : searchFilters.tags,
     };
-    console.log("extras is ", extras);
     axios
       .get(api + "/search", {
         params: extras,
@@ -126,6 +131,9 @@ const Form = () => {
       filter: "term",
       value: event.target.value,
     };
+    dispatch(
+      updateSearchTime({ searchSemester: event.target.value, searchYear: year })
+    );
     dispatch(updateSearchFilters(params));
   };
 

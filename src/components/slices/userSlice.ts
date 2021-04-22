@@ -75,6 +75,9 @@ export const userSlice = createSlice({
     ) => {
       state.distributions = [...action.payload];
     },
+    updateGuestPlanIds: (state: any, action: PayloadAction<string[]>) => {
+      state.currentUser.plan_ids = action.payload;
+    },
   },
 });
 
@@ -83,6 +86,7 @@ export const {
   updateSelectedPlan,
   updatePlanList,
   updateDistributions,
+  updateGuestPlanIds,
 } = userSlice.actions;
 
 // Asynch login with thunk.
