@@ -3,7 +3,7 @@ import { testUser } from "../testObjs";
 import { useDispatch, useSelector } from "react-redux";
 import { updateUser, selectUser } from "../slices/userSlice";
 import { ReactComponent as UserSvg } from "../svg/user.svg";
-import { withCookies, useCookies, Cookies } from "react-cookie";
+import cookie, { withCookies, useCookies, Cookies } from "react-cookie";
 import { guestUser } from "../assets";
 import axiosCookieJarSupport from "axios-cookiejar-support";
 import axios from "axios";
@@ -36,6 +36,8 @@ function UserSection(props: any) {
       console.log("token is " + token);
     }
 
+    // cookie.save("connect.sid", true, {path:"/"});
+
     setAuthCookie("connect.sid", token);
     setCookies(props.cookies);
   }, [cookies, props.cookies, window.location.href]);
@@ -49,6 +51,7 @@ function UserSection(props: any) {
     // Make call for backend
     console.log("connect.sid=" + cookies.get("connect.sid"));
     fetch(api + "/retrieveUser", {
+      mode: "cors",
       method: "GET",
       credentials: "include",
       headers: {
@@ -74,6 +77,7 @@ function UserSection(props: any) {
         //    (B) load in a local guest user and wait for them to access https://ucredit-api.herokuapp.com/api/login
         //          by clicking the "Log In" button in the header.
         console.log("ERROR: ", err.message);
+        dispatch(updateUser(guestUser));
       });
     // axios
     //   .get(api + "/retrieveUser", {
@@ -97,6 +101,8 @@ function UserSection(props: any) {
     //     console.log("ERROR: ", err);
     //     dispatch(updateUser(guestUser));
     //   });
+
+    // dispatch(updateUser(testUser));
   }, [authCookies]);
 
   return (
