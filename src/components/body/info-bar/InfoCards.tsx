@@ -101,7 +101,7 @@ const InfoCards: React.FC<any> = () => {
           };
 
           axios.post(api + "/plans", planBody).then((data: any) => {
-            const newRetrievedPlan: Plan = { ...data.data.data };
+            let newRetrievedPlan: Plan = { ...data.data.data };
             testMajorCSNew.generalDistributions.forEach((distr, index) => {
               axios
                 .post(api + "/distributions", {
@@ -111,10 +111,13 @@ const InfoCards: React.FC<any> = () => {
                   plan_id: newRetrievedPlan._id,
                 })
                 .then((newDistr: any) => {
-                  newRetrievedPlan.distribution_ids = [
-                    ...newRetrievedPlan.distribution_ids,
-                    newDistr.data.data._id,
-                  ];
+                  newRetrievedPlan = {
+                    ...newRetrievedPlan,
+                    distribution_ids: [
+                      ...newRetrievedPlan.distribution_ids,
+                      newDistr.data.data._id,
+                    ],
+                  };
                 })
                 .then(() => {
                   if (
