@@ -80,7 +80,7 @@ const PlanChoose: React.FC<PlanChooseProps> = (props) => {
             majors: [testMajorCSNew],
           };
           axios.post(api + "/plans", planBody).then((data: any) => {
-            const newRetrievedPlan = { ...data.data.data };
+            let newRetrievedPlan = { ...data.data.data };
             testMajorCSNew.generalDistributions.forEach(
               (distr: any, index: number) => {
                 axios
@@ -91,10 +91,13 @@ const PlanChoose: React.FC<PlanChooseProps> = (props) => {
                     plan_id: newRetrievedPlan._id,
                   })
                   .then((newDistr: any) => {
-                    newRetrievedPlan.distribution_ids = [
-                      ...newRetrievedPlan.distribution_ids,
-                      newDistr.data.data._id,
-                    ];
+                    newRetrievedPlan = {
+                      ...newRetrievedPlan,
+                      distribution_ids: [
+                        ...newRetrievedPlan.distribution_ids,
+                        newDistr.data.data._id,
+                      ],
+                    };
                   })
                   .then(() => {
                     if (
@@ -139,7 +142,7 @@ const PlanChoose: React.FC<PlanChooseProps> = (props) => {
       };
 
       axios.post(api + "/plans", planBody).then((data: any) => {
-        const newRetrievedPlan: Plan = { ...data.data.data };
+        let newRetrievedPlan: Plan = { ...data.data.data };
         testMajorCSNew.generalDistributions.forEach(
           (distr: any, index: number) => {
             axios
@@ -150,10 +153,13 @@ const PlanChoose: React.FC<PlanChooseProps> = (props) => {
                 plan_id: newRetrievedPlan._id,
               })
               .then((newDistr: any) => {
-                newRetrievedPlan.distribution_ids = [
-                  ...newRetrievedPlan.distribution_ids,
-                  newDistr.data.data._id,
-                ];
+                newRetrievedPlan = {
+                  ...newRetrievedPlan,
+                  distribution_ids: [
+                    ...newRetrievedPlan.distribution_ids,
+                    newDistr.data.data._id,
+                  ],
+                };
               })
               .then(() => {
                 if (index === testMajorCSNew.generalDistributions.length - 1) {
@@ -194,7 +200,7 @@ const PlanChoose: React.FC<PlanChooseProps> = (props) => {
       };
 
       axios.post(api + "/plans", planBody).then((data: any) => {
-        const newRetrievedPlan = { ...data.data.data };
+        let newRetrievedPlan = { ...data.data.data };
         testMajorCSNew.generalDistributions.forEach(
           (distr: any, index: number) => {
             axios
@@ -205,10 +211,13 @@ const PlanChoose: React.FC<PlanChooseProps> = (props) => {
                 plan_id: newRetrievedPlan._id,
               })
               .then((newDistr: any) => {
-                newRetrievedPlan.distribution_ids = [
-                  ...newRetrievedPlan.distribution_ids,
-                  newDistr.data.data._id,
-                ];
+                newRetrievedPlan = {
+                  ...newRetrievedPlan,
+                  distribution_ids: [
+                    ...newRetrievedPlan.distribution_ids,
+                    newDistr.data.data._id,
+                  ],
+                };
               })
               .then(() => {
                 if (index === testMajorCSNew.generalDistributions.length - 1) {
