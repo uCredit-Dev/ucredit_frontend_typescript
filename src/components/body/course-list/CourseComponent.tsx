@@ -11,8 +11,8 @@ import {
   updatePlaceholder,
 } from "../../slices/searchSlice";
 import axios from "axios";
-import { ReactComponent as RemoveSvg } from "../../svg/remove.svg";
-import { ReactComponent as DetailsSvg } from "../../svg/details.svg";
+import { ReactComponent as RemoveSvg } from "../../svg/Remove.svg";
+import { ReactComponent as DetailsSvg } from "../../svg/Details.svg";
 import { Transition } from "@tailwindui/react";
 import clsx from "clsx";
 

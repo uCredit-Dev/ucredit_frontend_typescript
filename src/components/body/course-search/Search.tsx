@@ -10,6 +10,7 @@ import {
 import CourseDisplay from "./CourseDisplay";
 import Form from "./Form";
 import SearchList from "./SearchList";
+import { ReactComponent as HideSvg } from "../../svg/Hide.svg";
 
 const years: YearType[] = ["Freshman", "Sophomore", "Junior", "Senior"];
 const semester: SemesterType[] = ["fall", "spring", "summer", "intersession"];
@@ -45,29 +46,30 @@ const Search = () => {
   };
 
   return (
-    <div className="absolute top-0">
+    <div className='absolute top-0'>
       {/* Background Grey */}
       <div
-        className="fixed z-20 left-0 top-0 m-0 w-full h-screen bg-gray-500"
+        className='fixed z-20 left-0 top-0 m-0 w-full h-screen bg-gray-500'
         style={{
           opacity: searchOpacity === 100 ? 75 / 100 : 0,
         }}
         onClick={() => {
           dispatch(updateSearchStatus(false));
-        }}
-      ></div>
+        }}></div>
 
       {/* Search area */}
       {/* {"flex fixed bg-red-200 rounded-xl p-8 md:p-0 z-20"} */}
       <div
         className={
-          "fixed flex flex-col bg-red-200 rounded-xl p-0 z-20 w-9/12 h-4/5 top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2"
+          "fixed flex flex-col bg-secondary rounded z-20 w-9/12 h-4/5 top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2"
         }
-        style={{ opacity: searchOpacity / 100 }}
-      >
-        <div>
+        style={{ opacity: searchOpacity / 100 }}>
+        <div className='px-4 py-2 text-white text-coursecard font-semibold select-none'>
           Currently selecting for{" "}
-          <select onChange={handleYearChange} defaultValue={searchYear}>
+          <select
+            className='text-black text-coursecard rounded'
+            onChange={handleYearChange}
+            defaultValue={searchYear}>
             {years.map((year) => (
               <option key={year} value={year}>
                 {year}
@@ -84,22 +86,20 @@ const Search = () => {
           </select> */}
           {searchSemester} semester
         </div>
-        <div className={`flex bg-white rounded-xl p-0 h-full`}>
+        <div className='flex w-full h-full text-coursecard bg-white rounded'>
           <div
-            className={"flex flex-col rounded-xl  bg-gray-200 w-4/12 h-full"}
-          >
+            className={
+              "flex flex-col rounded-l  bg-gray-200 w-4/12 h-full flex-none"
+            }>
             <Form />
             <SearchList />
-            <button
-              onMouseEnter={() => {
-                setSearchOpacity(50);
-              }}
-              onMouseLeave={() => {
-                setSearchOpacity(100);
-              }}
-            >
-              Hide search
-            </button>
+            <div
+              className='flex flex-row items-center justify-center p-1 w-full h-8'
+              onMouseEnter={() => setSearchOpacity(50)}
+              onMouseLeave={() => setSearchOpacity(100)}
+              data-tip='Hide search'>
+              <HideSvg className='w-6 h-6 stroke-2' />
+            </div>
           </div>
           <CourseDisplay />
         </div>
