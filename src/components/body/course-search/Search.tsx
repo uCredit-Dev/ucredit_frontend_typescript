@@ -46,16 +46,17 @@ const Search = () => {
   };
 
   return (
-    <div className='absolute top-0'>
+    <div className="absolute top-0">
       {/* Background Grey */}
       <div
-        className='fixed z-20 left-0 top-0 m-0 w-full h-screen bg-gray-500'
+        className="fixed z-20 left-0 top-0 m-0 w-full h-screen bg-gray-500"
         style={{
           opacity: searchOpacity === 100 ? 75 / 100 : 0,
         }}
         onClick={() => {
           dispatch(updateSearchStatus(false));
-        }}></div>
+        }}
+      ></div>
 
       {/* Search area */}
       {/* {"flex fixed bg-red-200 rounded-xl p-8 md:p-0 z-20"} */}
