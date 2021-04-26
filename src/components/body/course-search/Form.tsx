@@ -180,7 +180,7 @@ const Form = () => {
       <ReactTooltip />
       <div className='flex-full flex flex-row h-auto'>
         <input
-          className={clsx("mr-2 w-full h-6 rounded outline-none", {
+          className={clsx(" mr-2 px-1 w-full h-6 rounded outline-none", {
             "mb-2": showCriteria,
           })}
           type='text'

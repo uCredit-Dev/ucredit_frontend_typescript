@@ -46,17 +46,16 @@ const Search = () => {
   };
 
   return (
-    <div className="absolute top-0">
+    <div className='absolute top-0'>
       {/* Background Grey */}
       <div
-        className="fixed z-20 left-0 top-0 m-0 w-full h-screen bg-gray-500"
+        className='fixed z-20 left-0 top-0 m-0 w-full h-screen bg-gray-500'
         style={{
           opacity: searchOpacity === 100 ? 75 / 100 : 0,
         }}
         onClick={() => {
           dispatch(updateSearchStatus(false));
-        }}
-      ></div>
+        }}></div>
 
       {/* Search area */}
       {/* {"flex fixed bg-red-200 rounded-xl p-8 md:p-0 z-20"} */}
@@ -87,8 +86,11 @@ const Search = () => {
           </select> */}
           {searchSemester} semester
         </div>
-        <div className={`flex bg-white rounded w-full h-full`}>
-          <div className={"flex flex-col rounded-l  bg-gray-200 w-4/12 h-full"}>
+        <div className='flex w-full h-full text-coursecard bg-white rounded'>
+          <div
+            className={
+              "flex flex-col rounded-l  bg-gray-200 w-4/12 h-full flex-none"
+            }>
             <Form />
             <SearchList />
             <div

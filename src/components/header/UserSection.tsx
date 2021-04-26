@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import { testUser } from "../testObjs";
 import { useDispatch, useSelector } from "react-redux";
 import { updateUser, selectUser } from "../slices/userSlice";
-import { ReactComponent as UserSvg } from "../svg/user.svg";
+import { ReactComponent as UserSvg } from "../svg/User.svg";
 import cookie, { withCookies, useCookies, Cookies } from "react-cookie";
 import { guestUser } from "../assets";
 import axiosCookieJarSupport from "axios-cookiejar-support";
