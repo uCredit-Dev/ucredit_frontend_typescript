@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import Semester from "./Semester";
 import { UserCourse, YearType } from "../../commonTypes";
-import { ReactComponent as MoreSvg } from "../../svg/more.svg";
+import { ReactComponent as MoreSvg } from "../../svg/More.svg";
 import { useSelector } from "react-redux";
 import { selectPlan } from "../../slices/userSlice";
 import axios from "axios";
@@ -82,7 +82,7 @@ function Year({ yearName, courseIDs }: semesterProps) {
         className='flex flex-row justify-between mb-3 p-2 w-full h-yearheading text-white font-medium bg-primary rounded shadow'
         onClick={displaySemesters}>
         <div className='select-none'>{yearName}</div>
-        <MoreSvg className='w-6 h-6 stroke-2' />
+        <MoreSvg className='w-6 h-6 stroke-2 cursor-pointer' />
       </div>
       {display ? (
         <div className='flex flex-col items-center'>

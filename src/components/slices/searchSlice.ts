@@ -1,8 +1,15 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { AppThunk, RootState } from "../../appStore/store";
-import { SemesterType, Course, YearType, FilterType, TagType, DepartmentType } from "../commonTypes";
+import {
+  SemesterType,
+  Course,
+  YearType,
+  FilterType,
+  TagType,
+  DepartmentType,
+} from "../commonTypes";
 // import { testCourse1, testCourse2 } from '../testObjs'; // For testing
-import {all_majors, course_tags} from "../assets"
+import { all_majors, course_tags } from "../assets";
 
 type timeBundle = {
   searchYear: YearType;
@@ -25,6 +32,7 @@ type searchStates = {
   filters: filterObj;
   retrievedCourses: Course[];
   inspectedCourse: Course | "None";
+  placeholder: boolean;
 };
 
 const initialState: searchStates = {
@@ -44,6 +52,7 @@ const initialState: searchStates = {
     department: "None",
   },
   inspectedCourse: "None",
+  placeholder: false,
 };
 export const searchSlice = createSlice({
   name: "search",
@@ -77,6 +86,9 @@ export const searchSlice = createSlice({
     updateRetrievedCourses: (state: any, action: PayloadAction<Course[]>) => {
       state.retrievedCourses = action.payload;
     },
+    updatePlaceholder: (state: any, action: PayloadAction<boolean>) => {
+      state.placeholder = action.payload;
+    },
     updateSearchFilters: (
       state: any,
       action: PayloadAction<{ filter: FilterType; value: any }>
@@ -105,6 +117,7 @@ export const {
   updateSearchFilters,
   updateInspectedCourse,
   updateRetrievedCourses,
+  updatePlaceholder,
   clearSearch,
 } = searchSlice.actions;
 
@@ -126,5 +139,6 @@ export const selectRetrievedCourses = (state: RootState) =>
   state.search.retrievedCourses;
 export const selectInspectedCourse = (state: RootState) =>
   state.search.inspectedCourse;
+export const selectPlaceholder = (state: RootState) => state.search.placeholder;
 
 export default searchSlice.reducer;

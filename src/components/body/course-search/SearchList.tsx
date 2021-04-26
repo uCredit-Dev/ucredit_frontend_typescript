@@ -1,13 +1,20 @@
 import React, { useState, useEffect } from "react";
-import { useSelector } from "react-redux";
-import { selectRetrievedCourses } from "../../slices/searchSlice";
+import { useSelector, useDispatch } from "react-redux";
+import {
+  selectRetrievedCourses,
+  updateInspectedCourse,
+  updatePlaceholder,
+} from "../../slices/searchSlice";
 import CourseCard from "./CourseCard";
 import ReactPaginate from "react-paginate";
+import { ReactComponent as CustomCourseSvg } from "../../svg/Custom.svg";
+import ReactTooltip from "react-tooltip";
 
 const SearchList = () => {
   const [pageNum, setPageNum] = useState(0);
   const [pageCount, setPageCount] = useState(0);
   const courses = useSelector(selectRetrievedCourses);
+  const dispatch = useDispatch();
   let coursesPerPage = 10;
 
   useEffect(() => {
@@ -38,38 +45,88 @@ const SearchList = () => {
     setPageNum(event.selected);
   };
 
-  return (
-    <div className="m-3 p-2 h-3/5 bg-gray-300">
-      <p>Search Results </p>
+  const onPlaceholderClick = () => {
+    dispatch(updatePlaceholder(true));
+    const placeholderCourse = {
+      title: "placeholder",
+      number: "placeholder",
+      areas: "",
+      terms: [],
+      school: "none",
+      department: "none",
+      credits: "",
+      wi: false,
+      bio: "This is a placeholder course",
+      tags: [],
+      preReq: [],
+      restrictions: [],
+    };
+    dispatch(updateInspectedCourse(placeholderCourse));
+  };
 
-      <div className="h-4/5 overflow-scroll">
+  return (
+    <div className='px-5 py-3 w-full h-full bg-gray-200 border-b border-black select-none overflow-y-auto'>
+      <ReactTooltip />
+      <div className='flex flex-row justify-between mb-2'>
+        <div>Search Results </div>{" "}
+        <div
+          className='flex flex-row items-center justify-center w-6 h-6 bg-white rounded cursor-pointer'
+          onClick={onPlaceholderClick}
+          data-tip='Add a placeholder/custom course'>
+          <CustomCourseSvg className='w-4 h-4 stroke-2' />
+        </div>
+      </div>
+      <div className='w-full h-full'>
         {courses.length > 0 ? (
-          <div className="flex flex-col">{courseList()}</div>
+          <>
+            <div className='y-full flex flex-col w-full'>{courseList()}</div>
+            {pageCount > 1 ? (
+              <div className='flex flex-row justify-center w-full h-auto'>
+                <Pagination
+                  pageCount={pageCount}
+                  handlePageClick={handlePageClick}
+                />
+              </div>
+            ) : null}
+          </>
         ) : (
-          <div>No Results</div>
+          <div className='flex flex-col items-center justify-center w-full h-full'>
+            <div>😢</div>
+            Sorry, no course found...
+          </div>
         )}
       </div>
-
-      {/* A Pagination component we'll use! Prop list and docs here: https://github.com/AdeleD/react-paginate. '
-      Use it to add new classnames when styling and add new props for logic */}
-      {pageCount > 1 ? (
-        <ReactPaginate
-          previousLabel={"<"}
-          nextLabel={">"}
-          previousClassName={"m-2"}
-          nextClassName={"m-2"}
-          breakLabel={"..."}
-          breakClassName={""}
-          pageCount={pageCount}
-          marginPagesDisplayed={2}
-          pageRangeDisplayed={3}
-          onPageChange={handlePageClick}
-          containerClassName={"flex"}
-          activeClassName={"bg-gray-500"}
-          pageClassName={"m-2"}
-        />
-      ) : null}
     </div>
+  );
+};
+
+type PaginationProps = {
+  pageCount: number;
+  handlePageClick: any;
+};
+
+const Pagination: React.FC<PaginationProps> = ({
+  pageCount,
+  handlePageClick,
+}) => {
+  /* A Pagination component we'll use! Prop list and docs here: https://github.com/AdeleD/react-paginate. '
+      Use it to add new classnames when styling and add new props for logic */
+  return (
+    <ReactPaginate
+      previousLabel={"<"}
+      nextLabel={">"}
+      previousClassName={"m-2"}
+      nextClassName={"m-2"}
+      breakLabel={"..."}
+      breakClassName={""}
+      pageCount={pageCount}
+      marginPagesDisplayed={2}
+      pageRangeDisplayed={3}
+      onPageChange={handlePageClick}
+      containerClassName={"flex"}
+      activeClassName={"bg-gray-200"}
+      pageClassName={"m-2"}
+    />
   );
 };
 

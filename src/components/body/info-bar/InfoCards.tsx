@@ -6,9 +6,10 @@ import {
   selectPlanList,
   updatePlanList,
   updateSelectedPlan,
+  updateGuestPlanIds,
 } from "../../slices/userSlice";
 import PlanChoose from "./PlanChoose";
-import { ReactComponent as RemoveSvg } from "../../svg/remove.svg";
+import { ReactComponent as RemoveSvg } from "../../svg/Remove.svg";
 import { testMajorCSNew } from "../../testObjs";
 import axios from "axios";
 import { Distribution, Plan } from "../../commonTypes";
@@ -90,7 +91,7 @@ const InfoCards: React.FC<any> = () => {
           return plan._id !== currentPlan._id;
         });
         // If it is length 1, autogenerate a new plan. Otherwise, update the list.
-        if (updatedList.length === 0) {
+        if (updatedList.length === 0 && user._id !== "noUser") {
           console.log("new plan 4");
           // Post req body for a new plan
           const planBody = {
@@ -99,36 +100,40 @@ const InfoCards: React.FC<any> = () => {
             majors: [testMajorCSNew.name],
           };
 
-          axios
-            .post(api + "/plans", planBody)
-            .then((data: { data: { data: Plan } }) => {
-              const newRetrievedPlan = data.data.data;
-              testMajorCSNew.generalDistributions.forEach((distr, index) => {
-                axios
-                  .post(api + "/distributions", {
-                    name: distr.name,
-                    required: distr.required,
-                    user_id: user._id,
-                    plan_id: newRetrievedPlan._id,
-                  })
-                  .then((newDistr: { data: { data: Distribution } }) => {
-                    newRetrievedPlan.distribution_ids = [
-                      ...newRetrievedPlan.distribution_ids,
-                      newDistr.data.data._id,
-                    ];
-                  })
-                  .then(() => {
-                    if (
-                      index ===
-                      testMajorCSNew.generalDistributions.length - 1
-                    ) {
-                      dispatch(updateSelectedPlan(newRetrievedPlan));
-                      dispatch(updatePlanList(updatedList));
-                      setNewPlan(newPlan + 1);
+          axios.post(api + "/plans", planBody).then((data: any) => {
+            const newRetrievedPlan: Plan = { ...data.data.data };
+            testMajorCSNew.generalDistributions.forEach((distr, index) => {
+              axios
+                .post(api + "/distributions", {
+                  name: distr.name,
+                  required: distr.required,
+                  user_id: user._id,
+                  plan_id: newRetrievedPlan._id,
+                })
+                .then((newDistr: any) => {
+                  newRetrievedPlan.distribution_ids = [
+                    ...newRetrievedPlan.distribution_ids,
+                    newDistr.data.data._id,
+                  ];
+                })
+                .then(() => {
+                  if (
+                    index ===
+                    testMajorCSNew.generalDistributions.length - 1
+                  ) {
+                    dispatch(updateSelectedPlan(newRetrievedPlan));
+                    if (user._id === "guestUser") {
+                      const planIdArray = [newRetrievedPlan._id];
+                      dispatch(updateGuestPlanIds(planIdArray));
+                      dispatch(
+                        updatePlanList([newRetrievedPlan, ...updatedList])
+                      );
                     }
-                  });
-              });
+                    setNewPlan(newPlan + 1);
+                  }
+                });
             });
+          });
         } else {
           dispatch(updateSelectedPlan(updatedList[0]));
           dispatch(updatePlanList(updatedList));
