@@ -3,7 +3,7 @@ import { SemesterType, UserCourse, YearType } from "../../commonTypes";
 import CourseComponent from "./CourseComponent";
 import { useDispatch } from "react-redux";
 import { updateSearchStatus, updateSearchTime } from "../../slices/searchSlice";
-import { ReactComponent as AddSvg } from "../../svg/add.svg";
+import { ReactComponent as AddSvg } from "../../svg/Add.svg";
 import ReactTooltip from "react-tooltip";
 
 type semesterProps = {
@@ -82,7 +82,7 @@ function Semester({ semesterName, semesterYear, courses }: semesterProps) {
           <div
             className='flex flex-row items-center justify-center w-6 h-6'
             onClick={addCourse}>
-            <AddSvg className='w-full h-full stroke-2' />
+            <AddSvg className='w-full h-full stroke-2 cursor-pointer' />
           </div>
         </div>
       </div>

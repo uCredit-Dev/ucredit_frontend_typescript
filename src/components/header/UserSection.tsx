@@ -22,6 +22,10 @@ function UserSection(props: any) {
   const [cookies, setCookies] = useState(props.cookies);
   const [authCookies, setAuthCookie] = useCookies(["connect.sid"]);
 
+  // Useffect runs once on page load, calling to https://ucredit-api.herokuapp.com/api/retrieveUser to retrieve user data.
+  // On successful retrieve, update redux with retrieved user,
+  // NOTE: Currently, the user is set to the testUser object found in @src/testObjs.tsx, with a JHED of mliu78 (Matthew Liu)
+  //            redux isn't being updated with retrieved user data, as login has issues.
   useEffect(() => {
     const currentURL = window.location.href;
     let token;
@@ -106,19 +110,18 @@ function UserSection(props: any) {
   }, [authCookies]);
 
   return (
-    <div className="flex flex-row items-center justify-end w-full h-full">
-      <div className="flex flex-row items-center justify-center mr-3 w-11 h-11 bg-white rounded-full">
-        <UserSvg className="w-6 h-6 stroke-2" />
+    <div className='flex flex-row items-center justify-end w-full h-full'>
+      <div className='flex flex-row items-center justify-center mr-3 w-11 h-11 bg-white rounded-full'>
+        <UserSvg className='w-6 h-6 stroke-2' />
       </div>
       {user._id === "guestUser" ? (
         <a
-          href="https://ucredit-api.herokuapp.com/api/login"
-          className="flex flex-row items-center justify-center mr-3 w-24 h-9 bg-white rounded cursor-pointer select-none transform hover:translate-x-0.5 hover:translate-y-0.5 transition duration-200 ease-in"
-        >
+          href='https://ucredit-api.herokuapp.com/api/login'
+          className='flex flex-row items-center justify-center mr-3 w-24 h-9 bg-white rounded cursor-pointer select-none transform hover:translate-x-0.5 hover:translate-y-0.5 transition duration-200 ease-in'>
           Log In
         </a>
       ) : (
-        <div className="flex flex-row items-center justify-center w-24 h-9 bg-white rounded cursor-pointer select-none transform hover:translate-x-0.5 hover:translate-y-0.5 transition duration-200 ease-in">
+        <div className='flex flex-row items-center justify-center w-24 h-9 bg-white rounded cursor-pointer select-none transform hover:translate-x-0.5 hover:translate-y-0.5 transition duration-200 ease-in'>
           Log Out
         </div>
       )}

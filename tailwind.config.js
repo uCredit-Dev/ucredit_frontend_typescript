@@ -17,6 +17,7 @@ module.exports = {
         coursebars: "600px",
         header: "65px",
         yearheading: "42px",
+        criteria: "300px",
       },
       margin: {
         content: "100px",

@@ -254,17 +254,17 @@ const PlanChoose: React.FC<PlanChooseProps> = (props) => {
 
   return (
     <>
-      <button className="text-white bg-primary" onClick={openSelectDropdown}>
+      <button className='text-white bg-primary' onClick={openSelectDropdown}>
         Select Plan
       </button>
       {dropdown ? (
-        <div className="flex flex-col text-white bg-secondary">
+        <div className='flex flex-col text-white bg-secondary'>
           {planList.map((plan, index) => (
             <button key={index} value={plan._id} onClick={handlePlanChange}>
               {plan.name}
             </button>
           ))}
-          <button value="new plan" onClick={handlePlanChange}>
+          <button value='new plan' onClick={handlePlanChange}>
             Create a plan +
           </button>
         </div>

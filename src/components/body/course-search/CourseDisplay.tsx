@@ -179,7 +179,7 @@ const CourseDisplay = () => {
           <Placeholder addCourse={addCourse} />
         </>
       ) : (
-        <div className="p-5 h-full overflow-scroll">
+        <div className='p-5 h-full overflow-scroll'>
           <h1>{inspected.title}</h1>
           <h2>{inspected.number}</h2>
           <p>{inspected.credits} Credits</p>
@@ -197,9 +197,9 @@ const CourseDisplay = () => {
               <div>{term}</div>
             ))}
           </p>
-          <p className="h-44 overflow-scroll">{inspected.bio}</p>
+          <p className='h-44 overflow-scroll'>{inspected.bio}</p>
           <PrereqDisplay />
-          <button className="bg-gray-300" onClick={addCourse}>
+          <button className='bg-gray-300' onClick={addCourse}>
             Add Course
           </button>
         </div>
