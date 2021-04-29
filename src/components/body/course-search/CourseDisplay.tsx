@@ -165,6 +165,7 @@ const CourseDisplay = () => {
         distribution_ids: filteredDistribution.map((distr) => distr._id),
         plan_id: currentPlan._id,
         number: inspected.number,
+        area: inspectedArea,
       };
 
       fetch(api + "/courses", {
@@ -411,7 +412,7 @@ const CourseDisplay = () => {
               </div>
             </div>
             <button
-              className="h-19 justify-center mr-0 mt-3 p-2 text-white bg-gray-300 bg-secondary rounded"
+              className="h-19 justify-center mr-0 mt-3 p-2 text-white bg-secondary rounded"
               onClick={addCourse}
             >
               Add Course

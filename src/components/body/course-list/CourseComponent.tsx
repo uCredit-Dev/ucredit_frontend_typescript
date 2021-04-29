@@ -36,6 +36,7 @@ function CourseComponent({ year, course, semester }: courseProps) {
 
   // Chooses which colors to display course as.
   useEffect(() => {
+    console.log(course);
     const colors: string[] | undefined = getColors(course.area);
     if (typeof colors !== "undefined" && subColor !== colors[1]) {
       setSubColor(colors[1]);
@@ -127,7 +128,9 @@ function CourseComponent({ year, course, semester }: courseProps) {
       >
         <div className="flex flex-col w-full h-full select-none">
           <div className="text-coursecard truncate">{course.title}</div>
-          <div className="text-coursecard">{course.number}</div>
+          <div>
+            {course.number} | {course.credits} credits | {course.area}
+          </div>
         </div>
         <div className="absolute inset-0 flex items-center justify-center">
           <Transition

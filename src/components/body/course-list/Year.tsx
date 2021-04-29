@@ -33,6 +33,7 @@ function Year({ yearName, courseIDs }: semesterProps) {
           .get(api + "/courses/" + courseId)
           .then((retrieved) => {
             const data = retrieved.data.data;
+            console.log(data);
             totalCourses.push(data);
             setCourses([...totalCourses]);
           })
