@@ -307,7 +307,7 @@ const CourseDisplay = () => {
               height: "90%",
             }}
           >
-            <div className="flex flex-row">
+            <div className="flex flex-row mb-1">
               <h1 className="flex-grow text-2xl font-bold">
                 {inspected.title}
               </h1>
@@ -369,7 +369,7 @@ const CourseDisplay = () => {
             </div>
             <PrereqDisplay />
           </div>
-          <div className="flex flex-row flex-grow mt-2">
+          <div className="flex flex-row flex-grow items-center mt-2">
             <div className="flex flex-col flex-grow justify-center">
               <div className="mb-1 font-medium">Selecting for</div>
               <div className="flex flex-row">
@@ -414,7 +414,7 @@ const CourseDisplay = () => {
               </div>
             </div>
             <button
-              className="h-19 justify-center mr-0 mt-3 p-2 text-white bg-secondary rounded"
+              className="mt-2 p-2 w-1/6 h-10 text-white bg-primary rounded"
               onClick={addCourse}
             >
               Add Course

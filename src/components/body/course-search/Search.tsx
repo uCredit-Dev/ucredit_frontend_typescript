@@ -1,19 +1,14 @@
 import React, { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { SemesterType, YearType } from "../../commonTypes";
 import {
   selectYear,
   selectSemester,
   updateSearchStatus,
-  updateSearchTime,
 } from "../../slices/searchSlice";
 import CourseDisplay from "./CourseDisplay";
 import Form from "./Form";
 import SearchList from "./SearchList";
 import { ReactComponent as HideSvg } from "../../svg/Hide.svg";
-
-const years: YearType[] = ["Freshman", "Sophomore", "Junior", "Senior"];
-const semester: SemesterType[] = ["fall", "spring", "summer", "intersession"];
 
 // Search component when someone clicks a search action.
 const Search = () => {
@@ -24,26 +19,6 @@ const Search = () => {
   const dispatch = useDispatch();
   const searchYear = useSelector(selectYear);
   const searchSemester = useSelector(selectSemester);
-
-  // For changing the year to add course while in the search popout.
-  const handleYearChange = (event: any) => {
-    dispatch(
-      updateSearchTime({
-        searchYear: event.target.value,
-        searchSemester: searchSemester,
-      })
-    );
-  };
-
-  // For changing the semester to add course while in the search popout.
-  const handleSemesterChange = (event: any) => {
-    dispatch(
-      updateSearchTime({
-        searchYear: searchYear,
-        searchSemester: event.target.value,
-      })
-    );
-  };
 
   return (
     <div className="absolute top-0">
@@ -62,7 +37,7 @@ const Search = () => {
       {/* {"flex fixed bg-red-200 rounded-xl p-8 md:p-0 z-20"} */}
       <div
         className={
-          "fixed flex flex-col bg-secondary rounded z-20 w-9/12 h-4/5 top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2"
+          "fixed flex flex-col bg-primary rounded z-20 w-9/12 h-4/5 top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2"
         }
         style={{ opacity: searchOpacity / 100 }}
       >
