@@ -6,7 +6,7 @@ module.exports = {
       width: {
         year: "320px",
         courselist: "1400px",
-        coursebars: "301px",
+        coursebars: "315px",
         yearheading: "240px",
         semesterheading: "175px",
         infocard: "350px",

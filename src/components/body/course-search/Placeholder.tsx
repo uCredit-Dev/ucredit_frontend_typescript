@@ -141,7 +141,7 @@ const Placeholder = (props: { addCourse: any }) => {
         </div>
       </div>
       <button
-        className="mr-0 p-2 w-1/6 text-white bg-secondary rounded"
+        className="mr-0 p-2 w-1/6 text-white bg-primary rounded"
         onClick={props.addCourse}
       >
         Add Course
