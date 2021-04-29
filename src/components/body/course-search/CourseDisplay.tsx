@@ -303,7 +303,9 @@ const CourseDisplay = () => {
         <>
           <div
             className="p-5 pt-4 w-full text-base font-medium bg-white rounded overflow-y-auto"
-            style={{ height: "90%" }}
+            style={{
+              height: "90%",
+            }}
           >
             <div className="flex flex-row">
               <h1 className="flex-grow text-2xl font-bold">
