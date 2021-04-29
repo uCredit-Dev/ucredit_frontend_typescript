@@ -46,16 +46,17 @@ const Search = () => {
   };
 
   return (
-    <div className='absolute top-0'>
+    <div className="absolute top-0">
       {/* Background Grey */}
       <div
-        className='fixed z-20 left-0 top-0 m-0 w-full h-screen bg-gray-500'
+        className="fixed z-20 left-0 top-0 m-0 w-full h-screen bg-gray-500"
         style={{
           opacity: searchOpacity === 100 ? 75 / 100 : 0,
         }}
         onClick={() => {
           dispatch(updateSearchStatus(false));
-        }}></div>
+        }}
+      ></div>
 
       {/* Search area */}
       {/* {"flex fixed bg-red-200 rounded-xl p-8 md:p-0 z-20"} */}
@@ -63,42 +64,26 @@ const Search = () => {
         className={
           "fixed flex flex-col bg-secondary rounded z-20 w-9/12 h-4/5 top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2"
         }
-        style={{ opacity: searchOpacity / 100 }}>
-        <div className='px-4 py-2 text-white text-coursecard font-semibold select-none'>
-          Currently selecting for{" "}
-          <select
-            className='text-black text-coursecard rounded'
-            onChange={handleYearChange}
-            defaultValue={searchYear}>
-            {years.map((year) => (
-              <option key={year} value={year}>
-                {year}
-              </option>
-            ))}
-          </select>{" "}
-          year,{" "}
-          {/* <select onChange={handleSemesterChange} defaultValue={searchSemester}>
-            {semester.map((semester) => (
-              <option key={semester} value={semester}>
-                {semester}
-              </option>
-            ))}
-          </select> */}
-          {searchSemester} semester
+        style={{ opacity: searchOpacity / 100 }}
+      >
+        <div className="px-4 py-2 text-white text-coursecard font-semibold select-none">
+          Currently selecting for {searchYear} year, {searchSemester} semester
         </div>
-        <div className='flex w-full h-full text-coursecard bg-white rounded'>
+        <div className="flex w-full h-full text-coursecard bg-white rounded">
           <div
             className={
               "flex flex-col rounded-l  bg-gray-200 w-4/12 h-full flex-none"
-            }>
+            }
+          >
             <Form />
             <SearchList />
             <div
-              className='flex flex-row items-center justify-center p-1 w-full h-8'
+              className="flex flex-row items-center justify-center p-1 w-full h-8"
               onMouseEnter={() => setSearchOpacity(50)}
               onMouseLeave={() => setSearchOpacity(100)}
-              data-tip='Hide search'>
-              <HideSvg className='w-6 h-6 stroke-2' />
+              data-tip="Hide search"
+            >
+              <HideSvg className="w-6 h-6 stroke-2" />
             </div>
           </div>
           <CourseDisplay />

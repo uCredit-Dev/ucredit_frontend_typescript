@@ -1,4 +1,5 @@
 import axios from "axios";
+import clsx from "clsx";
 import React, { useState, useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import {
@@ -190,7 +191,7 @@ const PrereqDisplay = () => {
       const noCBracketsNum: string = element.substr(0, 10);
       const buttonElement = (
         <button
-          className="bg-gray-100"
+          className="... p-1 max-w-md bg-gray-100 rounded truncate"
           onClick={() => {
             updateInspected(noCBracketsNum)();
           }}
@@ -198,7 +199,7 @@ const PrereqDisplay = () => {
           {noCBrackets}
         </button>
       );
-      return <p>- {buttonElement}</p>;
+      return <p className="w-full">- {buttonElement}</p>;
     } else if (typeof element[0] === "number") {
       // If the element is a OR sequence (denoted by the depth number in the first index)
       return (
@@ -325,26 +326,44 @@ const PrereqDisplay = () => {
         <div>Prerequisites</div>{" "}
         <div>
           <button
-            className="bg-gray-100"
+            className={clsx(
+              "p-1 bg-secondary",
+              {
+                "bg-opacity-25": prereqDisplayMode !== 1,
+              },
+              {
+                "bg-opacity-75": prereqDisplayMode === 1,
+              }
+            )}
             onClick={handlePrereqDisplayModeChange(1)}
           >
             Description
           </button>
           <button
-            className="ml-1 bg-gray-100"
+            className={clsx(
+              "p-1 bg-secondary",
+              {
+                "bg-opacity-25": prereqDisplayMode === 1,
+              },
+              {
+                "bg-opacity-75": prereqDisplayMode !== 1,
+              }
+            )}
             onClick={handlePrereqDisplayModeChange(2)}
           >
             Bullet List (in development)
           </button>
         </div>
       </div>
-      {/* <p className="h-80 overflow-scroll">{getPreReqs()}</p> */}
       {!hasPreReqs ? (
-        <div>No Prereqs!</div>
+        // <div className="font-normal">No Prereqs!</div>
+        <div className="flex flex-col items-center justify-center w-full h-full font-normal">
+          No Prereqs!
+        </div>
       ) : prereqDisplayMode === 1 ? (
         <>
           {NNegativePreReqs !== undefined && NNegativePreReqs.length > 0 ? (
-            <div>{NNegativePreReqs[0].Description}</div>
+            <div className="font-normal">{NNegativePreReqs[0].Description}</div>
           ) : (
             <div>Loading description...</div>
           )}
@@ -352,7 +371,7 @@ const PrereqDisplay = () => {
       ) : !loaded ? (
         "Loading Prereqs Status: loaded is " + loaded.toString()
       ) : (
-        <p className="h-80 overflow-scroll">{preReqDisplay}</p>
+        <p className="p-2 h-80 overflow-y-auto">{preReqDisplay}</p>
       )}
     </p>
   );

@@ -10,8 +10,8 @@ module.exports = {
         yearheading: "240px",
         semesterheading: "175px",
         infocard: "350px",
-        plancardinput: "250px",
-        planchoose: "274px",
+        plancardinput: "230px",
+        planchoose: "250px",
       },
       height: {
         coursebars: "600px",

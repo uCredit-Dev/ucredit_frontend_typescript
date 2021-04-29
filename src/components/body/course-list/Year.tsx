@@ -33,6 +33,7 @@ function Year({ yearName, courseIDs }: semesterProps) {
           .get(api + "/courses/" + courseId)
           .then((retrieved) => {
             const data = retrieved.data.data;
+            console.log(data);
             totalCourses.push(data);
             setCourses([...totalCourses]);
           })
@@ -77,32 +78,33 @@ function Year({ yearName, courseIDs }: semesterProps) {
   };
 
   return (
-    <div className='ml-auto mr-auto w-yearheading'>
+    <div className="ml-auto mr-auto w-yearheading">
       <div
-        className='flex flex-row justify-between mb-3 p-2 w-full h-yearheading text-white font-medium bg-primary rounded shadow'
-        onClick={displaySemesters}>
-        <div className='select-none'>{yearName}</div>
-        <MoreSvg className='w-6 h-6 stroke-2 cursor-pointer' />
+        className="flex flex-row justify-between mb-3 p-2 w-full h-yearheading text-white font-medium bg-primary rounded shadow"
+        onClick={displaySemesters}
+      >
+        <div className="select-none">{yearName}</div>
+        <MoreSvg className="w-6 h-6 stroke-2 cursor-pointer" />
       </div>
       {display ? (
-        <div className='flex flex-col items-center'>
+        <div className="flex flex-col items-center">
           <Semester
-            semesterName='fall'
+            semesterName="fall"
             semesterYear={yearName}
             courses={fallCourses}
           />
           <Semester
-            semesterName='spring'
+            semesterName="spring"
             semesterYear={yearName}
             courses={springCourses}
           />
           <Semester
-            semesterName='intersession'
+            semesterName="intersession"
             semesterYear={yearName}
             courses={winterCourses}
           />
           <Semester
-            semesterName='summer'
+            semesterName="summer"
             semesterYear={yearName}
             courses={summerCourses}
           />
