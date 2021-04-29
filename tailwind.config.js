@@ -28,9 +28,11 @@ module.exports = {
       },
       colors: {
         // primary: "#489784",
-        primary: "#7933dc",
+        // primary: "#7933dc",
+        primary: "#6755E3",
         // secondary: "#63D2B8",
-        secondary: "#a65fec",
+        // secondary: "#a65fec",
+        secondary: "#948ADF",
         background: "#f0f2f5",
       },
       backgroundColor: {
