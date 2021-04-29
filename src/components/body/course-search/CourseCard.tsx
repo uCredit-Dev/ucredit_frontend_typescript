@@ -36,12 +36,13 @@ const CourseCard = (props: cardProps) => {
   return (
     <div
       className={clsx(
-        { "bg-red-100": selectedCourse === course },
+        { "bg-secondary bg-opacity-25": selectedCourse === course },
         "mb-2 p-2 w-full h-14 bg-white rounded hover:shadow cursor-pointer transition duration-200 ease-in-out"
       )}
-      onClick={handleCourseClick}>
-      <div className='flex flex-col justify-center w-full h-full'>
-        <div className='truncate'>{course.title}</div>
+      onClick={handleCourseClick}
+    >
+      <div className="flex flex-col justify-center w-full h-full">
+        <div className="truncate">{course.title}</div>
         <div>{course.number}</div>
       </div>
     </div>

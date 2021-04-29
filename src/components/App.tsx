@@ -5,7 +5,7 @@ import Content from "./body/Content";
 
 function App() {
   return (
-    <div className="flex flex-col w-screen h-screen">
+    <div className="flex flex-col w-full h-full">
       {/* <Counter /> */}
       <Header />
       <Content />

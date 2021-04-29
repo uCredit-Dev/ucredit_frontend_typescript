@@ -16,9 +16,11 @@ type timeBundle = {
   searchSemester: SemesterType;
 };
 
+type areaType = "N" | "S" | "H" | "W" | "E" | "Q" | "None";
+
 type filterObj = {
   credits: number | "None";
-  distribution: "N" | "S" | "H" | "W" | "E" | "Q" | "None";
+  distribution: areaType;
   tags: TagType | "None"; // TODO: fill this out with array of all tags
   term: SemesterType | "None";
   department: DepartmentType | "None"; // TODO: fill this out with array of departments
@@ -69,7 +71,10 @@ export const searchSlice = createSlice({
     updateSearchStatus: (state: any, action: PayloadAction<boolean>) => {
       state.searching = action.payload;
     },
-    updateInspectedCourse: (state: any, action: PayloadAction<Course>) => {
+    updateInspectedCourse: (
+      state: any,
+      action: PayloadAction<Course | "None">
+    ) => {
       // Course we're looking at in search popout
       state.inspectedCourse = action.payload;
     },
