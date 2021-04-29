@@ -312,7 +312,7 @@ const CourseDisplay = () => {
                 {inspected.title}
               </h1>
               <button className="mr-5 text-2xl" onClick={clearInspected}>
-                X
+                ✖
               </button>
             </div>
             <div className="flex flex-row">
