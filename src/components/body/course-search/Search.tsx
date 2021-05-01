@@ -42,11 +42,8 @@ const Search = () => {
         <div className='px-4 py-2 text-white text-coursecard font-semibold select-none'>
           Currently selecting for {searchYear} year, {searchSemester} semester
         </div>
-        <div className='flex w-full h-full text-coursecard'>
-          <div
-            className={
-              "flex flex-col rounded-l bg-gray-200 w-4/12 h-full flex-none"
-            }>
+        <div className='flex flex-row w-full h-full text-coursecard'>
+          <div className='flex flex-none flex-col w-4/12 h-full bg-gray-200 border-r border-black rounded-l'>
             <Form />
             <SearchList />
             <div
