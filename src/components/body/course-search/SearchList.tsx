@@ -65,7 +65,7 @@ const SearchList = () => {
   };
 
   return (
-    <div className='py relative px-5 w-full h-full bg-gray-200 border-b border-black select-none overflow-y-auto'>
+    <div className='py px-5 w-full h-full bg-gray-200 border-b border-black select-none overflow-y-auto'>
       <ReactTooltip />
       <div className='sticky left-0 top-0 flex flex-row items-center justify-between w-full h-12 bg-gray-200'>
         <div>Search Results </div>{" "}

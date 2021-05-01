@@ -28,6 +28,9 @@ import {
 } from "../../slices/userSlice";
 import Placeholder from "./Placeholder";
 import PrereqDisplay from "./PrereqDisplay";
+import { ReactComponent as CloseSvg } from "../../svg/Close.svg";
+import ReactTooltip from "react-tooltip";
+
 const api = "https://ucredit-api.herokuapp.com/api";
 
 const termFilters: (SemesterType | "None")[] = [
@@ -248,13 +251,13 @@ const CourseDisplay = () => {
 
   const getRestrictions = () => {
     if (inspected !== "None") {
-      const restrictions = inspected.restrictions.map((restriction) => (
-        <div className="font-normal">{restriction.RestrictionName}</div>
-      ));
+      const restrictions = inspected.restrictions.map(
+        (restriction) => restriction.RestrictionName
+      );
       if (restrictions.length !== 0) {
         return restrictions;
       } else {
-        return <div className="ml-5 font-normal">No Restrictions!</div>;
+        return "No Restrictions!";
       }
     }
   };
@@ -290,96 +293,91 @@ const CourseDisplay = () => {
   };
 
   return (
-    <div className="flex flex-col p-5 w-full bg-gray-200">
+    <div className='flex flex-col p-5 w-full bg-gray-200 rounded-r'>
       {inspected === "None" ? (
-        <div className="flex flex-col items-center justify-center w-full h-full font-normal">
+        <div className='flex flex-col items-center justify-center w-full h-full font-normal'>
           No selected course!
         </div>
       ) : placeholder ? (
-        <>
-          <Placeholder addCourse={addCourse} />
-        </>
+        <Placeholder addCourse={addCourse} />
       ) : (
         <>
-          <div
-            className="p-5 pt-4 w-full text-base font-medium bg-white rounded overflow-y-auto"
-            style={{
-              height: "90%",
-            }}
-          >
-            <div className="flex flex-row mb-1">
-              <h1 className="flex-grow text-2xl font-bold">
-                {inspected.title}
+          <ReactTooltip />
+          <div className='pb-5 pt-4 px-5 w-full h-full text-base bg-white rounded overflow-y-auto'>
+            <div className='flex flex-row justify-between mb-1 w-full h-auto'>
+              <h1 className='flex flex-row w-auto h-auto'>
+                <div className='w-full h-auto text-2xl font-bold'>
+                  {inspected.title}
+                </div>
+                <div className='flex flex-row items-center ml-2.5 mr-2'>
+                  <div
+                    className='flex items-center px-1 w-auto h-5 text-white font-semibold bg-secondary rounded select-none'
+                    data-tip={inspected.credits + " credits"}>
+                    {inspected.credits}
+                  </div>
+                </div>
               </h1>
-              <button className="mr-5 text-2xl" onClick={clearInspected}>
-                ✖
+              <button className='text-2xl' onClick={clearInspected}>
+                <CloseSvg className='w-7 h-7 stroke-2' />
               </button>
             </div>
-            <div className="flex flex-row">
-              <div className="w-3/6">
-                <h2>{inspected.number}</h2>
-                <p>{inspected.credits} Credits</p>
-                <h4 className="flex flex-row">
-                  Areas: <div className="font-normal">{inspected.areas}</div>
-                </h4>
-                <h4>
-                  Department:{" "}
-                  <div className="font-normal">{inspected.department}</div>
-                </h4>
+            <div className='grid grid-cols-2 w-auto h-auto'>
+              <div className='w-auto h-auto'>
+                <div>{inspected.number}</div>
+                <div className='flex flex-row'>Areas: {inspected.areas}</div>
+                <div>Department: {inspected.department}</div>
               </div>
-              <div className="w-3/6">
-                <p>
-                  Offered in:
-                  {inspected.terms.map((term) => (
-                    <div className="ml-5 font-normal">{term}</div>
-                  ))}
-                </p>
-                <p>Restrictions: {getRestrictions()}</p>
+              <div className='w-auto h-auto'>
+                <div>
+                  Offered in:{" "}
+                  {inspected.terms.map((term, index) => {
+                    return index === inspected.terms.length - 1
+                      ? term
+                      : term + ", ";
+                  })}
+                </div>
+                <div>Restrictions: {getRestrictions()}</div>
               </div>
             </div>
 
-            <div className="mb-3 mt-3">
+            <div className='mb-3 mt-3'>
               <p
-                className="font-normal overflow-y-hidden"
+                className='font-normal overflow-y-hidden'
                 style={{ maxHeight: showMore === 1 ? "100%" : "6rem" }}
-                ref={bioElRef}
-              >
+                ref={bioElRef}>
                 {inspected.bio}
               </p>
 
               {showMore === 0 ? (
                 <button
-                  className="underline"
+                  className='underline'
                   onClick={() => {
                     setShowMore(1);
-                  }}
-                >
+                  }}>
                   Show more...
                 </button>
               ) : showMore === 1 ? (
                 <button
-                  className="underline"
+                  className='underline'
                   onClick={() => {
                     setShowMore(0);
-                  }}
-                >
+                  }}>
                   Show less...
                 </button>
               ) : null}
             </div>
             <PrereqDisplay />
           </div>
-          <div className="flex flex-row flex-grow items-center mt-2">
-            <div className="flex flex-col flex-grow justify-center">
-              <div className="mb-1 font-medium">Selecting for</div>
-              <div className="flex flex-row">
-                <div className="flex flex-row items-center w-auto h-auto">
+          <div className='flex flex-row flex-grow items-center mt-2'>
+            <div className='flex flex-col flex-grow justify-center'>
+              <div className='mb-1 font-medium'>Selecting for</div>
+              <div className='flex flex-row'>
+                <div className='flex flex-row items-center w-auto h-auto'>
                   Year:
                   <select
-                    className="ml-2 text-black text-coursecard rounded"
+                    className='ml-2 text-black text-coursecard rounded'
                     onChange={handleYearChange}
-                    defaultValue={searchYear}
-                  >
+                    defaultValue={searchYear}>
                     {years.map((year) => (
                       <option key={year} value={year}>
                         {year}
@@ -387,13 +385,12 @@ const CourseDisplay = () => {
                     ))}
                   </select>
                 </div>
-                <div className="flex flex-row items-center ml-5 w-auto h-auto">
+                <div className='flex flex-row items-center ml-5 w-auto h-auto'>
                   Term:
                   <select
-                    className="ml-2 h-6 rounded outline-none"
+                    className='ml-2 h-6 rounded outline-none'
                     onChange={handleTermFilterChange}
-                    defaultValue={semester}
-                  >
+                    defaultValue={semester}>
                     {termFilters.map((term) => (
                       <option key={term} value={term}>
                         {term}
@@ -401,22 +398,20 @@ const CourseDisplay = () => {
                     ))}
                   </select>
                 </div>
-                <div className="flex flex-row flex-grow items-center ml-5 w-auto h-auto">
+                <div className='flex flex-row flex-grow items-center ml-5 w-auto h-auto'>
                   Area:
                   <select
-                    className="ml-2 w-14 h-6 rounded outline-none"
+                    className='ml-2 w-14 h-6 rounded outline-none'
                     value={inspectedArea}
-                    onChange={(event) => setInspectedArea(event.target.value)}
-                  >
+                    onChange={(event) => setInspectedArea(event.target.value)}>
                     {getInspectedAreas()}
                   </select>
                 </div>
               </div>
             </div>
             <button
-              className="mt-2 p-2 w-1/6 h-10 text-white bg-primary rounded"
-              onClick={addCourse}
-            >
+              className='mt-2 p-2 w-1/6 h-10 text-white bg-primary rounded'
+              onClick={addCourse}>
               Add Course
             </button>
           </div>
