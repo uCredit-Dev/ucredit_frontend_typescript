@@ -13,6 +13,8 @@ import { ReactComponent as RemoveSvg } from "../../svg/Remove.svg";
 import { testMajorCSNew } from "../../testObjs";
 import axios from "axios";
 import { Distribution, Plan } from "../../commonTypes";
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 const api = "https://ucredit-api.herokuapp.com/api";
 
@@ -69,6 +71,15 @@ const InfoCards: React.FC<any> = () => {
             newPlanList[i] = { ...newPlan };
           }
         }
+        toast.success("Plan name changed to " + newPlan.name + "!", {
+          position: "top-right",
+          autoClose: 5000,
+          hideProgressBar: true,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+        });
         setEditName(false);
         dispatch(updatePlanList(newPlanList));
       })
@@ -90,6 +101,17 @@ const InfoCards: React.FC<any> = () => {
         updatedList = updatedList.filter((plan) => {
           return plan._id !== currentPlan._id;
         });
+
+        toast.error(currentPlan.name + " deleted!", {
+          position: "top-right",
+          autoClose: 5000,
+          hideProgressBar: true,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+        });
+
         // If it is length 1, autogenerate a new plan. Otherwise, update the list.
         if (updatedList.length === 0 && user._id !== "noUser") {
           console.log("new plan 4");
@@ -177,6 +199,19 @@ const InfoCards: React.FC<any> = () => {
           </div>
         </div>
       </div>
+      <ToastContainer
+        position="top-right"
+        autoClose={5000}
+        hideProgressBar={false}
+        newestOnTop={false}
+        closeOnClick
+        rtl={false}
+        pauseOnFocusLoss
+        draggable
+        pauseOnHover
+      />
+      {/* Same as */}
+      <ToastContainer />
     </div>
   );
 };
