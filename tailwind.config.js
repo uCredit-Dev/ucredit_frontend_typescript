@@ -3,11 +3,15 @@ module.exports = {
   darkMode: false, // or 'media' or 'class'
   theme: {
     extend: {
+      minWidth: {
+        yearMin: "200px",
+        narrowest: "710px",
+      },
       width: {
         year: "320px",
         courselist: "1400px",
         coursebars: "315px",
-        yearheading: "240px",
+        yearheading: "22.5%",
         semesterheading: "175px",
         infocard: "350px",
         plancardinput: "230px",
@@ -77,9 +81,6 @@ module.exports = {
         tight: { max: "1200px" },
         thin: { max: "820px" },
         narrow: { max: "710px" },
-      },
-      minWidth: {
-        narrowest: "710px",
       },
       keyframes: {
         fadeOut: {

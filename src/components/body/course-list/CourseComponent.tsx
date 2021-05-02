@@ -1,8 +1,18 @@
 import React, { useState, useEffect } from "react";
-import { UserCourse, YearType, Plan, SemesterType } from "../../commonTypes";
+import {
+  UserCourse,
+  YearType,
+  Plan,
+  SemesterType,
+  Course,
+} from "../../commonTypes";
 import { getColors } from "../../assets";
 import { useDispatch, useSelector } from "react-redux";
-import { selectPlan, updateSelectedPlan } from "../../slices/userSlice";
+import {
+  selectPlan,
+  updateSelectedPlan,
+  selectCurrentPlanCourses,
+} from "../../slices/userSlice";
 import {
   updateSearchStatus,
   updateInspectedCourse,
@@ -25,25 +35,24 @@ type courseProps = {
 };
 
 function CourseComponent({ year, course, semester }: courseProps) {
-  const [subColor, setSubColor] = useState<string>("pink");
-  const [mainColor, setMainColor] = useState<string>("red");
-
+  const [prereqed, setPrereqed] = useState<boolean>(false);
   const [activated, setActivated] = useState<boolean>(false);
 
   // Redux setup
   const dispatch = useDispatch();
   const currentPlan = useSelector(selectPlan);
+  const courses = useSelector(selectCurrentPlanCourses);
 
-  // Chooses which colors to display course as.
   useEffect(() => {
-    console.log(course);
-    const colors: string[] | undefined = getColors(course.area);
-    if (typeof colors !== "undefined" && subColor !== colors[1]) {
-      setSubColor(colors[1]);
-    } else if (typeof colors !== "undefined") {
-      setMainColor(colors[0]);
-    }
-  }, [course.area, subColor, mainColor]);
+    axios
+      .get(api + "/search", { params: { query: course.number } })
+      .then((retrievedData) => {
+        const retrievedCourse: Course = retrievedData.data.data[0];
+        const prereqs = retrievedCourse.preReq;
+        console.log("retrieved", prereqs);
+      })
+      .catch((err) => console.log(err));
+  }, [currentPlan, course]);
 
   // Sets or resets the course displayed in popout after user clicks it in course list.
   const displayCourses = () => {
@@ -53,7 +62,6 @@ function CourseComponent({ year, course, semester }: courseProps) {
       .get(api + "/search", { params: { query: course.number } })
       .then((retrievedData) => {
         const retrievedCourse = retrievedData.data.data;
-        console.log(course.credits);
         if (retrievedCourse.length === 0) {
           dispatch(updatePlaceholder(true));
           const placeholderCourse = {
@@ -122,26 +130,48 @@ function CourseComponent({ year, course, semester }: courseProps) {
   return (
     <>
       <div
-        className='relative flex-row items-center mt-2 p-2 w-full h-14 bg-white rounded shadow'
+        className="relative flex-row items-center mt-2 p-2 w-full h-14 bg-white rounded shadow"
         onMouseEnter={activate}
-        onMouseLeave={deactivate}>
-        <div className='flex flex-col w-full h-full select-none divide-y-2'>
-          <div className='text-coursecard truncate'>{course.title}</div>
-          <div className='grid gap-1 grid-cols-3 text-center text-coursecard divide-x-2'>
+        onMouseLeave={deactivate}
+      >
+        <div className="flex flex-col w-full h-full select-none">
+          <div className="flex flex-row">
+            <div className="mr-1 text-coursecard truncate">{course.title}</div>
+          </div>
+          {/* <div className="grid gap-1 grid-cols-3 text-center text-coursecard divide-x-2">
             <div>{course.number}</div>
-            <div className='truncate'>{course.credits} credits</div>
-            <div className='truncate'>{course.area}</div>
+            <div className="truncate">{course.credits} credits</div>
+            <div className="truncate">{course.area}</div>
+          </div> */}
+          <div className="flex flex-row gap-1 text-center text-coursecard">
+            <div>{course.number}</div>
+            <div className="flex flex-row items-center">
+              <div className="flex items-center px-1 w-auto h-5 text-white font-semibold bg-secondary rounded select-none">
+                {course.credits}
+              </div>
+            </div>
+            {course.area !== "None" ? (
+              <div className="flex flex-row items-center">
+                <div
+                  className="flex items-center px-1 w-auto h-5 text-white font-semibold rounded select-none"
+                  style={{ backgroundColor: getColors(course.area)[0] }}
+                >
+                  {course.area !== "None" ? course.area : "N/A"}
+                </div>
+              </div>
+            ) : null}
           </div>
         </div>
-        <div className='absolute inset-0 flex items-center justify-center'>
+        <div className="absolute inset-0 flex items-center justify-center">
           <Transition
             show={activated}
-            enter='transition-opacity duration-100 ease-in-out'
-            enterFrom='opacity-0'
-            enterTo='opacity-100'
-            leave='transition-opacity duration-200 ease-in-out'
-            leaveFrom='opacity-100'
-            leaveTo='opacity-0'>
+            enter="transition-opacity duration-100 ease-in-out"
+            enterFrom="opacity-0"
+            enterTo="opacity-100"
+            leave="transition-opacity duration-200 ease-in-out"
+            leaveFrom="opacity-100"
+            leaveTo="opacity-0"
+          >
             {(ref) => (
               <div
                 ref={ref}
@@ -150,14 +180,15 @@ function CourseComponent({ year, course, semester }: courseProps) {
                   {
                     "pointer-events-none": !activated,
                   }
-                )}>
-                <div className='absolute left-0 top-0 w-full h-full bg-white bg-opacity-80 rounded' />
+                )}
+              >
+                <div className="absolute left-0 top-0 w-full h-full bg-white bg-opacity-80 rounded" />
                 <DetailsSvg
-                  className='relative z-20 flex flex-row items-center justify-center mr-5 p-0.5 w-6 h-6 text-white bg-secondary rounded-md outline-none stroke-2 cursor-pointer transform hover:translate-x-0.5 hover:translate-y-0.5 transition duration-150 ease-in'
+                  className="relative z-20 flex flex-row items-center justify-center mr-5 p-0.5 w-6 h-6 text-white bg-secondary rounded-md outline-none stroke-2 cursor-pointer transform hover:translate-x-0.5 hover:translate-y-0.5 transition duration-150 ease-in"
                   onClick={displayCourses}
                 />
                 <RemoveSvg
-                  className='relative z-20 flex flex-row items-center justify-center p-0.5 w-6 h-6 text-white bg-secondary rounded-md outline-none stroke-2 cursor-pointer transform hover:translate-x-0.5 hover:translate-y-0.5 transition duration-150 ease-in'
+                  className="relative z-20 flex flex-row items-center justify-center p-0.5 w-6 h-6 text-white bg-secondary rounded-md outline-none stroke-2 cursor-pointer transform hover:translate-x-0.5 hover:translate-y-0.5 transition duration-150 ease-in"
                   onClick={deleteCourse}
                 />
               </div>

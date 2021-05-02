@@ -2,8 +2,8 @@ import React, { useState, useEffect } from "react";
 import Semester from "./Semester";
 import { UserCourse, YearType } from "../../commonTypes";
 import { ReactComponent as MoreSvg } from "../../svg/More.svg";
-import { useSelector } from "react-redux";
-import { selectPlan } from "../../slices/userSlice";
+import { useSelector, useDispatch } from "react-redux";
+import { selectPlan, updateCurrentPlanCourses } from "../../slices/userSlice";
 import axios from "axios";
 const api = "https://ucredit-api.herokuapp.com/api";
 
@@ -23,11 +23,13 @@ function Year({ yearName, courseIDs }: semesterProps) {
 
   // Setting up redux
   const currentPlan = useSelector(selectPlan);
+  const dispatch = useDispatch();
+  // const courses = useSelector(selectPlan);
 
   const getCourses = () => {
     const totalCourses: UserCourse[] = [];
     if (courseIDs !== undefined) {
-      courseIDs.forEach((courseId) => {
+      courseIDs.forEach((courseId, index) => {
         // TODO: fetch each course
         axios
           .get(api + "/courses/" + courseId)
@@ -41,6 +43,10 @@ function Year({ yearName, courseIDs }: semesterProps) {
       });
     }
   };
+
+  useEffect(() => {
+    dispatch(updateCurrentPlanCourses(courses));
+  }, [courses]);
 
   useEffect(() => {
     setCourses([]);
@@ -78,7 +84,7 @@ function Year({ yearName, courseIDs }: semesterProps) {
   };
 
   return (
-    <div className="ml-auto mr-auto w-yearheading">
+    <div className="min-w-yearMin ml-auto mr-auto w-yearheading">
       <div
         className="flex flex-row justify-between mb-3 p-2 w-full h-yearheading text-white font-medium bg-primary rounded shadow"
         onClick={displaySemesters}
