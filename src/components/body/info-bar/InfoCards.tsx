@@ -148,8 +148,8 @@ const InfoCards: React.FC<any> = () => {
   };
 
   return (
-    <div className="flex tight:flex-col flex-row tight:items-center mb-4 ml-2 mr-4 h-auto">
-      <div className="flex flex-col items-center justify-center tight:mb-4 tight:mr-0 mr-4 p-6 w-full h-auto bg-white rounded shadow">
+    <div className="flex tight:flex-col flex-row tight:items-center mb-4 h-auto">
+      <div className="flex flex-col items-center justify-center tight:mb-4 tight:mr-0 p-6 w-full h-auto bg-white rounded shadow">
         <div className="flex flex-col mb-2 w-auto h-auto">
           <div className="flex flex-row items-center justify-center mb-2 w-full h-auto">
             <input
