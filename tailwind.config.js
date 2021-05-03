@@ -8,7 +8,7 @@ module.exports = {
         narrowest: "710px",
       },
       maxWidth: {
-        courseCard: "100%",
+        courseCard: "50%",
       },
       width: {
         year: "320px",

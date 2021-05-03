@@ -58,7 +58,7 @@ function Year({ yearName, courses }: semesterProps) {
   };
 
   return (
-    <div className="min-w-yearMin ml-auto mr-auto w-yearheading">
+    <div className="min-w-yearMin ml-auto mr-auto medium:px-4 w-yearheading">
       <div
         className="flex flex-row justify-between mb-3 p-2 w-full h-yearheading text-white font-medium bg-primary rounded shadow"
         onClick={displaySemesters}
