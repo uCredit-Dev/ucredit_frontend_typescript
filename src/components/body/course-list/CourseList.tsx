@@ -25,19 +25,20 @@ function CourseList() {
     const totalCourses: UserCourse[] = [];
     if (courseIDs.length === 0) {
       updater([]);
+    } else {
+      courseIDs.forEach((courseId, index) => {
+        axios
+          .get(api + "/courses/" + courseId)
+          .then((retrieved) => {
+            const data = retrieved.data.data;
+            totalCourses.push(data);
+            if (index === courseIDs.length - 1) {
+              updater(totalCourses);
+            }
+          })
+          .catch((err) => console.log(err));
+      });
     }
-    courseIDs.forEach((courseId, index) => {
-      axios
-        .get(api + "/courses/" + courseId)
-        .then((retrieved) => {
-          const data = retrieved.data.data;
-          totalCourses.push(data);
-          if (index === courseIDs.length - 1) {
-            updater(totalCourses);
-          }
-        })
-        .catch((err) => console.log(err));
-    });
   };
 
   useEffect(() => {

@@ -17,16 +17,9 @@ function Year({ yearName, courses }: semesterProps) {
   const [winterCourses, setWinterCourses] = useState<UserCourse[]>([]);
   const [summerCourses, setSummerCourses] = useState<UserCourse[]>([]);
   const [display, setDisplay] = useState<boolean>(true);
-  // const [courses, setCourses] = useState<UserCourse[]>([]);
 
   // Setting up redux
   const currentPlan = useSelector(selectPlan);
-
-  useEffect(() => {
-    // setCourses([]);
-    // getCourses();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [currentPlan]);
 
   useEffect(() => {
     // For each of the user's courses for this year, put them in their respective semesters.
@@ -50,7 +43,7 @@ function Year({ yearName, courses }: semesterProps) {
     setWinterCourses(parsedIntersessionCourses);
     setSummerCourses(parsedSummerCourses);
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [courses.length, currentPlan]);
+  }, [courses, currentPlan, currentPlan.name]);
 
   // Displays dropdown showing semester categories
   const displaySemesters = () => {
@@ -58,7 +51,7 @@ function Year({ yearName, courses }: semesterProps) {
   };
 
   return (
-    <div className="min-w-yearMin ml-auto mr-auto medium:px-4 w-yearheading">
+    <div className="ml-auto mr-auto medium:px-4 w-yearheading min-w-yearMin">
       <div
         className="flex flex-row justify-between mb-3 p-2 w-full h-yearheading text-white font-medium bg-primary rounded shadow"
         onClick={displaySemesters}

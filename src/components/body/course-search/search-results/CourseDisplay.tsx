@@ -32,7 +32,7 @@ import Placeholder from "./Placeholder";
 import PrereqDisplay from "../prereqs/PrereqDisplay";
 import { ReactComponent as CloseSvg } from "../../../svg/Close.svg";
 import ReactTooltip from "react-tooltip";
-import { ToastContainer, toast } from "react-toastify";
+import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { getColors } from "../../../assets";
 
@@ -469,17 +469,6 @@ const CourseDisplay = () => {
           </div>
         </>
       )}
-      <ToastContainer
-        position="top-right"
-        autoClose={5000}
-        hideProgressBar={false}
-        newestOnTop={false}
-        closeOnClick
-        rtl={false}
-        pauseOnFocusLoss
-        draggable
-        pauseOnHover
-      />
     </div>
   );
 };

@@ -13,7 +13,7 @@ import { ReactComponent as RemoveSvg } from "../../svg/Remove.svg";
 import { testMajorCSNew } from "../../testObjs";
 import axios from "axios";
 import { Plan } from "../../commonTypes";
-import { ToastContainer, toast } from "react-toastify";
+import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
 const api = "https://ucredit-api.herokuapp.com/api";
@@ -90,26 +90,36 @@ const InfoCards: React.FC<any> = () => {
     setPlanName(currentPlan.name);
   }, [currentPlan]);
 
+  // Makes it so that only one toast is displayed at a time
+  // const [toasted, setToasted] = useState<boolean>(false);
+  // const staggerToast = () => {
+  //   setToasted(true);
+  //   setTimeout(() => {
+  //     setToasted(false);
+  //   }, 150);
+  // };
+
   const deleteCurrentPlan = () => {
     // delete plan from db
     // update plan array
     fetch(api + "/plans/" + currentPlan._id, {
       method: "DELETE",
     })
-      .then((resp) => {
-        let updatedList = [...planList]; // TODO: Once user routes are figured out, pull user info from db.
-        updatedList = updatedList.filter((plan) => {
-          return plan._id !== currentPlan._id;
-        });
-
+      .then(() => {
+        // if (!toasted) {
         toast.error(currentPlan.name + " deleted!", {
           position: "top-right",
           autoClose: 5000,
           hideProgressBar: true,
           closeOnClick: true,
-          pauseOnHover: true,
           draggable: true,
           progress: undefined,
+        });
+        //   staggerToast();
+        // }
+        let updatedList = [...planList]; // TODO: Once user routes are figured out, pull user info from db.
+        updatedList = updatedList.filter((plan) => {
+          return plan._id !== currentPlan._id;
         });
 
         // If it is length 1, autogenerate a new plan. Otherwise, update the list.
@@ -198,19 +208,6 @@ const InfoCards: React.FC<any> = () => {
           </div>
         </div>
       </div>
-      <ToastContainer
-        position="top-right"
-        autoClose={5000}
-        hideProgressBar={false}
-        newestOnTop={false}
-        closeOnClick
-        rtl={false}
-        pauseOnFocusLoss
-        draggable
-        pauseOnHover
-      />
-      {/* Same as */}
-      <ToastContainer />
     </div>
   );
 };

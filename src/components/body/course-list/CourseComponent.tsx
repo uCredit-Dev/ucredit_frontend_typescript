@@ -15,7 +15,7 @@ import { ReactComponent as RemoveSvg } from "../../svg/Remove.svg";
 import { ReactComponent as DetailsSvg } from "../../svg/Details.svg";
 import { Transition } from "@tailwindui/react";
 import clsx from "clsx";
-import { ToastContainer, toast } from "react-toastify";
+import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
 const api = "https://ucredit-api.herokuapp.com/api";
@@ -199,17 +199,6 @@ function CourseComponent({ year, course, semester }: courseProps) {
           </Transition>
         </div>
       </div>
-      <ToastContainer
-        position="top-right"
-        autoClose={5000}
-        hideProgressBar={false}
-        newestOnTop={false}
-        closeOnClick
-        rtl={false}
-        pauseOnFocusLoss
-        draggable
-        pauseOnHover
-      />
     </>
   );
 }
