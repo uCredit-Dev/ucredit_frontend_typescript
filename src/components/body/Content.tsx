@@ -52,10 +52,10 @@ function Content() {
   return (
     // <div className="flex flex-row flex-wrap-reverse mt-content medium:px-48 h-full">
     <div className="flex flex-row flex-wrap-reverse mt-content medium:px-48 h-full">
-      <div className="flex-grow h-auto bg-yellow-100">
+      <div className="flex-grow h-auto">
         <CourseList />
       </div>
-      <div className="flex flex-col ml-auto mr-auto my-4 w-coursebars h-auto bg-red-100">
+      <div className="flex flex-col ml-auto mr-auto my-4 w-coursebars h-auto">
         <div className="">
           <InfoCards />
         </div>
