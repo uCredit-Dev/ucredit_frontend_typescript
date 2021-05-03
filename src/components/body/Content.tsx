@@ -56,10 +56,10 @@ function Content() {
         <CourseList />
       </div>
       <div className="flex flex-col ml-auto mr-auto my-4 w-coursebars h-auto">
-        <div className="">
+        <div className="ml-4 mr-4">
           <InfoCards />
         </div>
-        <div className="flex-none p-6 h-auto bg-white rounded shadow">
+        <div className="flex-none ml-4 mr-4 p-6 h-auto bg-white rounded shadow">
           <div className="flex flex-row mb-3 w-full">
             <div className="self-start text-xl font-medium">
               Overall Distribution
