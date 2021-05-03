@@ -133,16 +133,29 @@ function CourseComponent({ year, course, semester }: courseProps) {
     setActivated(false);
   };
 
+  const getFirst20 = (toParse: string) => {
+    let out = "";
+    const toParseArr = toParse.split("");
+    toParseArr.forEach((char: string, index) => {
+      if (index < 33) {
+        out = out + char;
+      } else if (index === 33) {
+        out = out + "...";
+      }
+    });
+    return out;
+  };
+
   return (
     <>
       <div
-        className="absolute relative items-center mt-2 p-2 h-14 bg-white rounded shadow"
+        className="relative items-center mt-2 p-2 h-14 bg-white rounded shadow"
         onMouseEnter={activate}
         onMouseLeave={deactivate}
       >
-        <div className="flex flex-col gap-1 h-full select-none">
-          <div className="max-w-courseCard text-coursecard truncate">
-            {course.title}
+        <div className="flex flex-col gap-1 h-full">
+          <div className="w-4/6 text-coursecard truncate">
+            {getFirst20(course.title)}
           </div>
           {/* <div className="grid gap-1 grid-cols-3 text-center text-coursecard divide-x-2">
             <div>{course.number}</div>
