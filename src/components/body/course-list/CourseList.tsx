@@ -21,19 +21,24 @@ function CourseList() {
   const [jCourses, setJCourses] = useState<UserCourse[]>([]);
   const [seCourses, setSeCourses] = useState<UserCourse[]>([]);
 
-  const getCourses = (courseIDs: string[], updater: Function) => {
+  const getCourses = (
+    courseIDs: string[],
+    courses: UserCourse[],
+    updater: Function
+  ) => {
     const totalCourses: UserCourse[] = [];
     if (courseIDs.length === 0) {
       updater([]);
     } else {
-      courseIDs.forEach((courseId, index) => {
+      courseIDs.forEach((courseId) => {
         axios
           .get(api + "/courses/" + courseId)
           .then((retrieved) => {
             const data = retrieved.data.data;
             totalCourses.push(data);
-            if (index === courseIDs.length - 1) {
+            if (totalCourses.length === courseIDs.length) {
               updater(totalCourses);
+              // updater([...courses, ...totalCourses]);
             }
           })
           .catch((err) => console.log(err));
@@ -42,18 +47,20 @@ function CourseList() {
   };
 
   useEffect(() => {
-    getCourses(freshmanCourseIDs, setFCourses);
-    getCourses(sophomoreCourseIDs, setSoCourses);
-    getCourses(juniorCourseIDs, setJCourses);
-    getCourses(seniorCourseIDs, setSeCourses);
-  }, [
-    currentPlan,
-    currentPlan._id,
-    freshmanCourseIDs,
-    sophomoreCourseIDs,
-    juniorCourseIDs,
-    seniorCourseIDs,
-  ]);
+    getCourses(freshmanCourseIDs, fCourses, setFCourses);
+  }, [currentPlan, currentPlan._id, freshmanCourseIDs]);
+
+  useEffect(() => {
+    getCourses(sophomoreCourseIDs, soCourses, setSoCourses);
+  }, [currentPlan, currentPlan._id, sophomoreCourseIDs]);
+
+  useEffect(() => {
+    getCourses(juniorCourseIDs, jCourses, setJCourses);
+  }, [currentPlan, currentPlan._id, juniorCourseIDs]);
+
+  useEffect(() => {
+    getCourses(seniorCourseIDs, seCourses, setSeCourses);
+  }, [currentPlan, currentPlan._id, seniorCourseIDs]);
 
   useEffect(() => {
     let totalCourses: UserCourse[] = [];

@@ -90,15 +90,6 @@ const InfoCards: React.FC<any> = () => {
     setPlanName(currentPlan.name);
   }, [currentPlan]);
 
-  // Makes it so that only one toast is displayed at a time
-  // const [toasted, setToasted] = useState<boolean>(false);
-  // const staggerToast = () => {
-  //   setToasted(true);
-  //   setTimeout(() => {
-  //     setToasted(false);
-  //   }, 150);
-  // };
-
   const deleteCurrentPlan = () => {
     // delete plan from db
     // update plan array
