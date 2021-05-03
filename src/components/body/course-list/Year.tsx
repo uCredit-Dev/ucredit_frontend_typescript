@@ -4,47 +4,27 @@ import { UserCourse, YearType } from "../../commonTypes";
 import { ReactComponent as MoreSvg } from "../../svg/More.svg";
 import { useSelector } from "react-redux";
 import { selectPlan } from "../../slices/userSlice";
-import axios from "axios";
-const api = "https://ucredit-api.herokuapp.com/api";
 
 type semesterProps = {
   yearName: YearType;
-  courseIDs: string[];
+  courses: UserCourse[];
 };
 
 // Dropdown of all semesters and courses for each semester in a year.
-function Year({ yearName, courseIDs }: semesterProps) {
+function Year({ yearName, courses }: semesterProps) {
   const [fallCourses, setFallCourses] = useState<UserCourse[]>([]);
   const [springCourses, setSpringCourses] = useState<UserCourse[]>([]);
   const [winterCourses, setWinterCourses] = useState<UserCourse[]>([]);
   const [summerCourses, setSummerCourses] = useState<UserCourse[]>([]);
   const [display, setDisplay] = useState<boolean>(true);
-  const [courses, setCourses] = useState<UserCourse[]>([]);
+  // const [courses, setCourses] = useState<UserCourse[]>([]);
 
   // Setting up redux
   const currentPlan = useSelector(selectPlan);
 
-  const getCourses = () => {
-    const totalCourses: UserCourse[] = [];
-    if (courseIDs !== undefined) {
-      courseIDs.forEach((courseId) => {
-        // TODO: fetch each course
-        axios
-          .get(api + "/courses/" + courseId)
-          .then((retrieved) => {
-            const data = retrieved.data.data;
-            console.log(data);
-            totalCourses.push(data);
-            setCourses([...totalCourses]);
-          })
-          .catch((err) => console.log(err));
-      });
-    }
-  };
-
   useEffect(() => {
-    setCourses([]);
-    getCourses();
+    // setCourses([]);
+    // getCourses();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [currentPlan]);
 
@@ -78,7 +58,7 @@ function Year({ yearName, courseIDs }: semesterProps) {
   };
 
   return (
-    <div className="ml-auto mr-auto w-yearheading">
+    <div className="min-w-yearMin ml-auto mr-auto w-yearheading">
       <div
         className="flex flex-row justify-between mb-3 p-2 w-full h-yearheading text-white font-medium bg-primary rounded shadow"
         onClick={displaySemesters}

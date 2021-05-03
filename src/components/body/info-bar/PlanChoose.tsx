@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
-import { Distribution, Plan } from "../../commonTypes";
+import { Plan } from "../../commonTypes";
 import { useDispatch, useSelector } from "react-redux";
 import {
   updateSelectedPlan,
@@ -11,7 +11,8 @@ import {
   selectPlanList,
 } from "../../slices/userSlice";
 import { testMajorCSNew } from "../../testObjs";
-// import { generateNewPlan } from "../../assets";
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 const api = "https://ucredit-api.herokuapp.com/api";
 
 type PlanChooseProps = {
@@ -40,6 +41,16 @@ const PlanChoose: React.FC<PlanChooseProps> = (props) => {
               plan1._id.localeCompare(plan2._id)
             );
           }
+
+          toast("Retrieved " + retrievedPlans.length + " plans!", {
+            position: "top-right",
+            autoClose: 5000,
+            hideProgressBar: false,
+            closeOnClick: true,
+            pauseOnHover: true,
+            draggable: true,
+            progress: undefined,
+          });
 
           if (currentPlan._id !== "noPlan") {
             // Swap first plan in the list with the current plan.
@@ -154,6 +165,15 @@ const PlanChoose: React.FC<PlanChooseProps> = (props) => {
 
       axios.post(api + "/plans", planBody).then((data: any) => {
         let newRetrievedPlan: Plan = { ...data.data.data };
+        toast.success("New Unnamed Plan created!", {
+          position: "top-right",
+          autoClose: 5000,
+          hideProgressBar: true,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+        });
         testMajorCSNew.generalDistributions.forEach(
           (distr: any, index: number) => {
             axios
@@ -194,6 +214,16 @@ const PlanChoose: React.FC<PlanChooseProps> = (props) => {
           planListClone.splice(index, 1);
           planListClone.splice(0, 0, newSelected);
         }
+      });
+
+      toast(newSelected.name + " selected!", {
+        position: "top-right",
+        autoClose: 5000,
+        hideProgressBar: true,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
       });
       dispatch(updateSelectedPlan(newSelected));
       dispatch(updatePlanList(planListClone));
@@ -272,7 +302,19 @@ const PlanChoose: React.FC<PlanChooseProps> = (props) => {
           </button>
         </div>
       ) : null}
-      {/* {dropdownOptions} */}
+      <ToastContainer
+        position="top-right"
+        autoClose={5000}
+        hideProgressBar={false}
+        newestOnTop={false}
+        closeOnClick
+        rtl={false}
+        pauseOnFocusLoss
+        draggable
+        pauseOnHover
+      />
+      {/* Same as */}
+      <ToastContainer />
     </>
   );
 };

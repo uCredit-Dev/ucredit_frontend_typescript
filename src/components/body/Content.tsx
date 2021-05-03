@@ -47,30 +47,50 @@ function Content() {
     }
   };
 
+  const [distributionOpen, setDistributionOpen] = useState<boolean>(true);
+
   return (
-    <div className="flex flex-row mt-content medium:px-48 min-w-narrowest h-full">
-      <div className="mb-8 ml-3 mr-2 w-courselist h-auto">
+    <div className="flex flex-row flex-wrap-reverse mt-content medium:px-48 h-full">
+      <div className="flex-grow ml-3 mr-2 h-auto">
         <CourseList />
       </div>
-      <div className="flex flex-col my-4 w-coursebars h-auto">
-        <InfoCards />
-        <div className="flex-none ml-2 mr-4 p-6 h-auto bg-white rounded shadow">
-          <div className="mb-3 text-xl font-medium">Overall Distribution</div>
-          {distributions.map((dis) => {
-            const name =
-              dis.name.charAt(0).toUpperCase() +
-              dis.name.substr(1, dis.name.length);
-            return (
-              <>
-                <CourseBar
-                  maxCredits={dis.required}
-                  plannedCredits={dis.planned}
-                  currentCredits={dis.current}
-                  section={name}
-                />
-              </>
-            );
-          })}
+      <div className="flex flex-col justify-center ml-auto mr-auto my-4 w-coursebars h-auto">
+        <div className="mr-4">
+          <InfoCards />
+        </div>
+        <div className="flex-none mr-4 p-6 h-auto bg-white rounded shadow">
+          <div className="flex flex-row mb-3 w-full">
+            <div className="self-start text-xl font-medium">
+              Overall Distribution
+            </div>
+            <div className="relative flex-grow">
+              <button
+                className="absolute bottom-0 right-0 underline"
+                onClick={() => {
+                  setDistributionOpen(!distributionOpen);
+                }}
+              >
+                {distributionOpen ? "Hide" : "Show"}
+              </button>
+            </div>
+          </div>
+          {distributionOpen
+            ? distributions.map((dis) => {
+                const name =
+                  dis.name.charAt(0).toUpperCase() +
+                  dis.name.substr(1, dis.name.length);
+                return (
+                  <>
+                    <CourseBar
+                      maxCredits={dis.required}
+                      plannedCredits={dis.planned}
+                      currentCredits={dis.current}
+                      section={name}
+                    />
+                  </>
+                );
+              })
+            : null}
         </div>
         {searching ? <Search /> : null}
       </div>

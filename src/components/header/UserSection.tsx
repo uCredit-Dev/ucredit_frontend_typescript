@@ -28,21 +28,22 @@ function UserSection(props: any) {
   //            redux isn't being updated with retrieved user data, as login has issues.
   useEffect(() => {
     const currentURL = window.location.href;
-    let token;
-    if (currentURL.includes(deploy)) {
-      token = currentURL.substr(
-        deploy.length,
-        currentURL.length - deploy.length
-      );
-      console.log("token is " + token);
-    } else {
-      token = currentURL.substr(dev.length, currentURL.length - dev.length);
-      console.log("token is " + token);
-    }
+    let token =
+      "s%3AIqAJNZFbivJbfEsoL0fZr-9-qMdKOthI.FpB65v7BX%2F6eJ6RXPYJyCUlna6uWec8fh5L2TUJ%2BbFI";
+    // if (currentURL.includes(deploy)) {
+    //   token = currentURL.substr(
+    //     deploy.length,
+    //     currentURL.length - deploy.length
+    //   );
+    //   console.log("token is " + token);
+    // } else {
+    //   token = currentURL.substr(dev.length, currentURL.length - dev.length);
+    //   console.log("token is " + token);
+    // }
 
     // cookie.save("connect.sid", true, {path:"/"});
 
-    setAuthCookie("connect.sid", token);
+    setAuthCookie("connect.sid", token, { sameSite: "none" });
     setCookies(props.cookies);
   }, [cookies, props.cookies, window.location.href]);
 
@@ -61,8 +62,8 @@ function UserSection(props: any) {
       headers: {
         Accept: "application/json",
         "Content-Type": "application/json",
-        Cache: "no-cache",
-        Cookie: "connect.sid=" + cookies.get("connect.sid"),
+        user:
+          "connect.sid=" + cookies.get("connect.sid") + "; Path=/; HttpOnly",
       },
     })
       .then((resp) => resp.json())
@@ -72,7 +73,7 @@ function UserSection(props: any) {
         // setGuest(false);
         if (retrievedUser.errors.length > 0) {
           // Set user to guest user
-          dispatch(updateUser(guestUser));
+          // dispatch(updateUser(guestUser));
         }
       })
       .catch((err) => {
@@ -81,7 +82,7 @@ function UserSection(props: any) {
         //    (B) load in a local guest user and wait for them to access https://ucredit-api.herokuapp.com/api/login
         //          by clicking the "Log In" button in the header.
         console.log("ERROR: ", err.message);
-        dispatch(updateUser(guestUser));
+        // dispatch(updateUser(guestUser));
       });
     // axios
     //   .get(api + "/retrieveUser", {
@@ -106,22 +107,23 @@ function UserSection(props: any) {
     //     dispatch(updateUser(guestUser));
     //   });
 
-    // dispatch(updateUser(testUser));
+    dispatch(updateUser(testUser));
   }, [authCookies]);
 
   return (
-    <div className='flex flex-row items-center justify-end w-full h-full'>
-      <div className='flex flex-row items-center justify-center mr-3 w-11 h-11 bg-white rounded-full'>
-        <UserSvg className='w-6 h-6 stroke-2' />
+    <div className="flex flex-row items-center justify-end w-full h-full">
+      <div className="flex flex-row items-center justify-center mr-3 w-11 h-11 bg-white rounded-full">
+        <UserSvg className="w-6 h-6 stroke-2" />
       </div>
       {user._id === "guestUser" ? (
         <a
-          href='https://ucredit-api.herokuapp.com/api/login'
-          className='flex flex-row items-center justify-center mr-3 w-24 h-9 bg-white rounded cursor-pointer select-none transform hover:translate-x-0.5 hover:translate-y-0.5 transition duration-200 ease-in'>
+          href="https://ucredit-api.herokuapp.com/api/login"
+          className="flex flex-row items-center justify-center mr-3 w-24 h-9 bg-white rounded cursor-pointer select-none transform hover:translate-x-0.5 hover:translate-y-0.5 transition duration-200 ease-in"
+        >
           Log In
         </a>
       ) : (
-        <div className='flex flex-row items-center justify-center w-24 h-9 bg-white rounded cursor-pointer select-none transform hover:translate-x-0.5 hover:translate-y-0.5 transition duration-200 ease-in'>
+        <div className="flex flex-row items-center justify-center w-24 h-9 bg-white rounded cursor-pointer select-none transform hover:translate-x-0.5 hover:translate-y-0.5 transition duration-200 ease-in">
           Log Out
         </div>
       )}

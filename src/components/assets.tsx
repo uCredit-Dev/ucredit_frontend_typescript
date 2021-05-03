@@ -42,22 +42,22 @@ const DistributionColorsArray: DistributionColors = {
   general: ["#00A6D7", "#86FAF2", "#30E7ED"],
 };
 
-export const getColors = function (distribution: string): string[] | undefined {
+export const getColors = function (distribution: string): string[] {
   if (distribution === "Total Credits") {
     return DistributionColorsArray.total;
-  } else if (distribution === "Natural Sciences") {
+  } else if (distribution === "Natural Sciences" || distribution === "N") {
     return DistributionColorsArray.naturalSciences;
   } else if (distribution === "Computer Science") {
     return DistributionColorsArray.computerScience;
-  } else if (distribution === "Humanities") {
+  } else if (distribution === "Humanities" || distribution === "H") {
     return DistributionColorsArray.humanities;
-  } else if (distribution === "Mathematics") {
+  } else if (distribution === "Mathematics" || distribution === "Q") {
     return DistributionColorsArray.mathematics;
   } else if (distribution === "General Electives") {
-    return DistributionColorsArray.general;
+    return ["#3168AF", "#3168AF", "#3168AF"];
+  } else {
+    return ["#3168AF", "#3168AF", "#3168AF"];
   }
-
-  return undefined;
 };
 
 export const getCourses = (courseIds: string[]): Course[] => {

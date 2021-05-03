@@ -26,6 +26,7 @@ const Placeholder = (props: { addCourse: any }) => {
       setPlaceholderCredits(inspected.credits);
       setPlaceholderNumber(inspected.number);
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [inspected]);
 
   const onPTChange = (event: any) => {
