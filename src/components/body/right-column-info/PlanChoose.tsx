@@ -11,7 +11,7 @@ import {
   selectPlanList,
 } from "../../slices/userSlice";
 import { testMajorCSNew } from "../../testObjs";
-import { ToastContainer, toast } from "react-toastify";
+import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 const api = "https://ucredit-api.herokuapp.com/api";
 
@@ -299,19 +299,6 @@ const PlanChoose: React.FC<PlanChooseProps> = (props) => {
           </button>
         </div>
       ) : null}
-      <ToastContainer
-        position="top-right"
-        autoClose={5000}
-        hideProgressBar={false}
-        newestOnTop={false}
-        closeOnClick
-        rtl={false}
-        pauseOnFocusLoss
-        draggable
-        pauseOnHover
-      />
-      {/* Same as */}
-      <ToastContainer />
     </>
   );
 };

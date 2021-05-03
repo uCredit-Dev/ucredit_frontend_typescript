@@ -18,12 +18,6 @@ const CourseCard = (props: cardProps) => {
 
   // If the course displayed by this card is the selected one, style it special.
   const selectedCourse = useSelector(selectInspectedCourse);
-  const checkSelected = () => {
-    if (selectedCourse === course) {
-      return "bg-red-100";
-    }
-    return "bg-gray-100";
-  };
 
   // Setup Redux
   const dispatch = useDispatch();
