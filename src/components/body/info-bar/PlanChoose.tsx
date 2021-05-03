@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
-import { Distribution, Plan } from "../../commonTypes";
+import { Plan } from "../../commonTypes";
 import { useDispatch, useSelector } from "react-redux";
 import {
   updateSelectedPlan,

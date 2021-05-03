@@ -286,7 +286,7 @@ const PrereqDisplay = () => {
   const isSatisfied = (element: [], or: boolean): boolean => {
     let orAndSatisfied = false;
 
-    element.map((el: any, index) => {
+    element.forEach((el: any, index) => {
       if (typeof el !== "number") {
         const parsed: {
           satisfied: boolean;

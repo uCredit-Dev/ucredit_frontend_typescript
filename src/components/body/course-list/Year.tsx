@@ -2,12 +2,8 @@ import React, { useState, useEffect } from "react";
 import Semester from "./Semester";
 import { UserCourse, YearType } from "../../commonTypes";
 import { ReactComponent as MoreSvg } from "../../svg/More.svg";
-import { useSelector, useDispatch } from "react-redux";
-import {
-  selectCurrentPlanCourses,
-  selectPlan,
-  updateCurrentPlanCourses,
-} from "../../slices/userSlice";
+import { useSelector } from "react-redux";
+import { selectPlan } from "../../slices/userSlice";
 
 type semesterProps = {
   yearName: YearType;
@@ -25,9 +21,6 @@ function Year({ yearName, courses }: semesterProps) {
 
   // Setting up redux
   const currentPlan = useSelector(selectPlan);
-  const currPlanCourses = useSelector(selectCurrentPlanCourses);
-  const dispatch = useDispatch();
-  // const courses = useSelector(selectPlan);
 
   useEffect(() => {
     // setCourses([]);

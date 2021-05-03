@@ -12,7 +12,7 @@ import PlanChoose from "./PlanChoose";
 import { ReactComponent as RemoveSvg } from "../../svg/Remove.svg";
 import { testMajorCSNew } from "../../testObjs";
 import axios from "axios";
-import { Distribution, Plan } from "../../commonTypes";
+import { Plan } from "../../commonTypes";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 

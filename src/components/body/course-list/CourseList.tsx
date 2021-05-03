@@ -61,10 +61,11 @@ function CourseList() {
 
   useEffect(() => {
     let totalCourses: UserCourse[] = [];
-    totalCourses = [...fCourses, ...seCourses, ...jCourses, ...seCourses];
+    totalCourses = [...fCourses, ...seCourses, ...jCourses, ...soCourses];
     console.log("totalcoruses sis", totalCourses);
     dispatch(updateCurrentPlanCourses(totalCourses));
-  }, [fCourses, seCourses, jCourses, seCourses]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [fCourses, seCourses, jCourses, soCourses]);
 
   return (
     <>

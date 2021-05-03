@@ -40,15 +40,6 @@ const PrereqDropdown = (props: {
           orAndSatisfied = false;
         }
 
-        // console.log(
-        //   "el is ",
-        //   el,
-        //   " Or is ",
-        //   props.or,
-        //   " or and satisfied is ",
-        //   orAndSatisfied
-        // );
-
         if (
           index === props.element.length - 1 &&
           orAndSatisfied &&

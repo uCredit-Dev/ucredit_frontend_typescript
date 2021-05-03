@@ -8,11 +8,7 @@ import {
 } from "../../commonTypes";
 import { getColors } from "../../assets";
 import { useDispatch, useSelector } from "react-redux";
-import {
-  selectPlan,
-  updateSelectedPlan,
-  selectCurrentPlanCourses,
-} from "../../slices/userSlice";
+import { selectPlan, updateSelectedPlan } from "../../slices/userSlice";
 import {
   updateSearchStatus,
   updateInspectedCourse,
@@ -37,13 +33,11 @@ type courseProps = {
 };
 
 function CourseComponent({ year, course, semester }: courseProps) {
-  const [prereqed, setPrereqed] = useState<boolean>(false);
   const [activated, setActivated] = useState<boolean>(false);
 
   // Redux setup
   const dispatch = useDispatch();
   const currentPlan = useSelector(selectPlan);
-  const courses = useSelector(selectCurrentPlanCourses);
 
   useEffect(() => {
     axios
@@ -142,12 +136,14 @@ function CourseComponent({ year, course, semester }: courseProps) {
   return (
     <>
       <div
-        className="relative items-center mt-2 p-2 h-14 bg-white rounded shadow"
+        className="absolute relative items-center mt-2 p-2 h-14 bg-white rounded shadow"
         onMouseEnter={activate}
         onMouseLeave={deactivate}
       >
-        <div className="flex flex-col h-full select-none truncate">
-          <div className="text-coursecard">{course.title}</div>
+        <div className="flex flex-col gap-1 h-full select-none">
+          <div className="max-w-courseCard text-coursecard truncate">
+            {course.title}
+          </div>
           {/* <div className="grid gap-1 grid-cols-3 text-center text-coursecard divide-x-2">
             <div>{course.number}</div>
             <div className="truncate">{course.credits} credits</div>
@@ -205,16 +201,7 @@ function CourseComponent({ year, course, semester }: courseProps) {
             )}
           </Transition>
         </div>
-        {/* {course.distribution_ids.map(id =><div>{id.}</div>)}, Can't display distributions as they aren't retrieved yet*/}
-        {/* {course.credits} */}
       </div>
-      {/* {course.title === detailName ? (
-        <CoursePopout
-          mainColor={mainColor}
-          subColor={subColor}
-          course={course}
-        />
-      ) : null} */}
       <ToastContainer
         position="top-right"
         autoClose={5000}
