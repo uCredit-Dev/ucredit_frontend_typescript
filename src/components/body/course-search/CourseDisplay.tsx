@@ -10,9 +10,11 @@ import {
 import {
   selectInspectedCourse,
   clearSearch,
+  popSearchStack,
   selectSemester,
   selectYear,
   selectPlaceholder,
+  selectSearchStack,
   updatePlaceholder,
   updateSearchTime,
   updateSearchFilters,
@@ -61,6 +63,7 @@ const CourseDisplay = () => {
   const [inspectedArea, setInspectedArea] = useState("None");
   const searchYear = useSelector(selectYear);
   const searchSemester = useSelector(selectSemester);
+  const searchStack = useSelector(selectSearchStack);
 
   // Adds course
   const addCourse = () => {
@@ -219,6 +222,7 @@ const CourseDisplay = () => {
   // It automatically updates the current area in the add course area selection to the first area in the course areas string.
   useEffect(() => {
     setShowMore(2);
+    console.log("stack is ", searchStack);
     if (
       inspected !== "None" &&
       inspected.areas !== "None" &&
@@ -282,7 +286,6 @@ const CourseDisplay = () => {
   useEffect(() => {
     let hasOverflowingChildren = false;
     if (bioElRef.current !== null) {
-      console.log("element is ", bioElRef.current);
       const bioEl: HTMLParagraphElement = bioElRef.current;
       hasOverflowingChildren =
         bioEl.offsetHeight < bioEl.scrollHeight ||
@@ -319,6 +322,15 @@ const CourseDisplay = () => {
         <>
           <ReactTooltip />
           <div className="pb-5 pt-4 px-5 w-full h-full text-base bg-white rounded overflow-y-auto">
+            {searchStack.length !== 0 ? (
+              <button
+                onClick={() => {
+                  dispatch(popSearchStack());
+                }}
+              >
+                Back
+              </button>
+            ) : null}
             <div className="flex flex-row justify-between mb-1 w-full h-auto">
               <h1 className="flex flex-row w-auto h-auto">
                 <div className="w-full h-auto text-2xl font-bold">

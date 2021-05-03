@@ -42,16 +42,6 @@ const PlanChoose: React.FC<PlanChooseProps> = (props) => {
             );
           }
 
-          toast("Retrieved " + retrievedPlans.length + " plans!", {
-            position: "top-right",
-            autoClose: 5000,
-            hideProgressBar: false,
-            closeOnClick: true,
-            pauseOnHover: true,
-            draggable: true,
-            progress: undefined,
-          });
-
           if (currentPlan._id !== "noPlan") {
             // Swap first plan in the list with the current plan.
             retrievedPlans.forEach((plan: Plan, index) => {
@@ -67,6 +57,16 @@ const PlanChoose: React.FC<PlanChooseProps> = (props) => {
             // Initial load, there is no current plan, so we set the current to be the first plan in the array.
             dispatch(updatePlanList(retrievedPlans));
             dispatch(updateSelectedPlan(retrievedPlans[0]));
+
+            toast("Retrieved " + retrievedPlans.length + " plans!", {
+              position: "top-right",
+              autoClose: 5000,
+              hideProgressBar: false,
+              closeOnClick: true,
+              pauseOnHover: true,
+              draggable: true,
+              progress: undefined,
+            });
           } else if (
             retrievedPlans.length === 0 &&
             user._id !== "noUser" &&
