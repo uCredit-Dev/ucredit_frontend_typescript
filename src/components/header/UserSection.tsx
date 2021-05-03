@@ -62,7 +62,8 @@ function UserSection(props: any) {
       headers: {
         Accept: "application/json",
         "Content-Type": "application/json",
-        Cookie: "connect.sid=" + cookies.get("connect.sid") + "; Path=/",
+        user:
+          "connect.sid=" + cookies.get("connect.sid") + "; Path=/; HttpOnly",
       },
     })
       .then((resp) => resp.json())
