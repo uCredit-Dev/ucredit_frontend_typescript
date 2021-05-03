@@ -8,8 +8,6 @@ import {
   TagType,
   DepartmentType,
 } from "../commonTypes";
-// import { testCourse1, testCourse2 } from '../testObjs'; // For testing
-import { all_majors, course_tags } from "../assets";
 
 type timeBundle = {
   searchYear: YearType;
@@ -35,6 +33,7 @@ type searchStates = {
   retrievedCourses: Course[];
   inspectedCourse: Course | "None";
   placeholder: boolean;
+  searchStack: Course[];
 };
 
 const initialState: searchStates = {
@@ -55,6 +54,7 @@ const initialState: searchStates = {
   },
   inspectedCourse: "None",
   placeholder: false,
+  searchStack: [],
 };
 export const searchSlice = createSlice({
   name: "search",
@@ -86,7 +86,7 @@ export const searchSlice = createSlice({
       state.inspectedCourse = "None";
       state.retrievedCourses = [];
       state.searchMode = "Title";
-      console.log("clearing");
+      state.searchStack = [];
     },
     updateRetrievedCourses: (state: any, action: PayloadAction<Course[]>) => {
       state.retrievedCourses = action.payload;
@@ -112,6 +112,13 @@ export const searchSlice = createSlice({
         state.filters.wi = action.payload.value;
       }
     },
+    updateSearchStack: (state: any, action: PayloadAction<Course>) => {
+      state.searchStack.push(action.payload);
+    },
+    popSearchStack: (state: any) => {
+      const popped = state.searchStack.pop();
+      state.inspectedCourse = popped;
+    },
   },
 });
 
@@ -123,7 +130,9 @@ export const {
   updateInspectedCourse,
   updateRetrievedCourses,
   updatePlaceholder,
+  updateSearchStack,
   clearSearch,
+  popSearchStack,
 } = searchSlice.actions;
 
 // Asynch search with thunk.
@@ -145,5 +154,6 @@ export const selectRetrievedCourses = (state: RootState) =>
 export const selectInspectedCourse = (state: RootState) =>
   state.search.inspectedCourse;
 export const selectPlaceholder = (state: RootState) => state.search.placeholder;
+export const selectSearchStack = (state: RootState) => state.search.searchStack;
 
 export default searchSlice.reducer;

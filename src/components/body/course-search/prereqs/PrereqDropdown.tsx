@@ -12,7 +12,6 @@ const PrereqDropdown = (props: {
   const [trulySatisfied, setTrulySatisfied] = useState<boolean>(false);
 
   const updateSatisfied = () => {
-    console.log("many");
     setTrulySatisfied(true);
   };
 
@@ -28,13 +27,11 @@ const PrereqDropdown = (props: {
 
         // If it's not an or statement, the first course must be satisfied.
         if (index === 0) {
-          console.log("and for ", el);
           orAndSatisfied = parsed.satisfied;
         }
 
         // If it's an or statement, only one course would need to be satisfied. Otherwise, every course would need to be satisfied.
         if (props.or && parsed.satisfied) {
-          console.log("Truing for ", el);
           orAndSatisfied = true;
         } else if (!props.or && !parsed.satisfied) {
           orAndSatisfied = false;
@@ -45,7 +42,6 @@ const PrereqDropdown = (props: {
           orAndSatisfied &&
           !trulySatisfied
         ) {
-          console.log("Truing for ", el);
           updateSatisfied();
         }
         return (

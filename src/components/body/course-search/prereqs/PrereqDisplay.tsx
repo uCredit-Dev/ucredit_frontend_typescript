@@ -5,6 +5,7 @@ import { useSelector, useDispatch } from "react-redux";
 import {
   updateInspectedCourse,
   selectInspectedCourse,
+  updateSearchStack,
 } from "../../../slices/searchSlice";
 import { selectCurrentPlanCourses } from "../../../slices/userSlice";
 import PrereqDropdown from "./PrereqDropdown";
@@ -171,6 +172,9 @@ const PrereqDisplay = () => {
       .then((retrieved) => {
         const retrievedCourse = retrieved.data.data;
         if (retrievedCourse.length === 1) {
+          if (inspected !== "None") {
+            dispatch(updateSearchStack(inspected));
+          }
           dispatch(updateInspectedCourse(retrievedCourse[0]));
         } else {
           console.log("no such course exists in db");
@@ -258,7 +262,6 @@ const PrereqDisplay = () => {
           jsx: <p>{parsed.jsx}</p>,
         };
       } else {
-        console.log("elly is ", element);
         const parsedSat: boolean = isSatisfied(element, false);
         return {
           satisfied: parsedSat,
@@ -295,13 +298,11 @@ const PrereqDisplay = () => {
 
         // If it's not an or statement, the first course must be satisfied.
         if (index === 0) {
-          console.log("and for ", el);
           orAndSatisfied = parsed.satisfied;
         }
 
         // If it's an or statement, only one course would need to be satisfied. Otherwise, every course would need to be satisfied.
         if (or && parsed.satisfied) {
-          console.log("Truing for ", el);
           orAndSatisfied = true;
         } else if (!or && !parsed.satisfied) {
           orAndSatisfied = false;
