@@ -1,11 +1,11 @@
 import React, { useState, useEffect } from "react";
-import { Course } from "../../commonTypes";
+import { Course } from "../../../commonTypes";
 import { useSelector, useDispatch } from "react-redux";
 import {
   selectInspectedCourse,
   updateInspectedCourse,
   selectPlaceholder,
-} from "../../slices/searchSlice";
+} from "../../../slices/searchSlice";
 
 const Placeholder = (props: { addCourse: any }) => {
   // Redux Setup

@@ -23,26 +23,21 @@ function CourseList() {
 
   const getCourses = (courseIDs: string[], updater: Function) => {
     const totalCourses: UserCourse[] = [];
-    // if (courseIDs !== undefined) {
     if (courseIDs.length === 0) {
       updater([]);
     }
     courseIDs.forEach((courseId, index) => {
-      // TODO: fetch each course
       axios
         .get(api + "/courses/" + courseId)
         .then((retrieved) => {
           const data = retrieved.data.data;
-          console.log(data);
           totalCourses.push(data);
-          // setCourses([...totalCourses]);
           if (index === courseIDs.length - 1) {
             updater(totalCourses);
           }
         })
         .catch((err) => console.log(err));
     });
-    // }
   };
 
   useEffect(() => {
@@ -62,7 +57,6 @@ function CourseList() {
   useEffect(() => {
     let totalCourses: UserCourse[] = [];
     totalCourses = [...fCourses, ...seCourses, ...jCourses, ...soCourses];
-    console.log("totalcoruses sis", totalCourses);
     dispatch(updateCurrentPlanCourses(totalCourses));
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [fCourses, seCourses, jCourses, soCourses]);

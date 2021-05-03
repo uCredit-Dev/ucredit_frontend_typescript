@@ -49,6 +49,7 @@ const PrereqDropdown = (props: {
             style={{
               marginLeft: "1rem",
             }}
+            key={el}
           >
             {parsed.jsx}
           </p>

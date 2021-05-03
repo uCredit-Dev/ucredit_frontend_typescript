@@ -5,9 +5,9 @@ import {
   selectSemester,
   updateSearchStatus,
 } from "../../slices/searchSlice";
-import CourseDisplay from "./CourseDisplay";
-import Form from "./Form";
-import SearchList from "./SearchList";
+import CourseDisplay from "./search-results/CourseDisplay";
+import Form from "./query-components/Form";
+import SearchList from "./query-components/SearchList";
 import { ReactComponent as HideSvg } from "../../svg/Hide.svg";
 
 // Search component when someone clicks a search action.
