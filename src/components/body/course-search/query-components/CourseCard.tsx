@@ -1,11 +1,11 @@
 import React from "react";
-import { Course } from "../../commonTypes";
+import { Course } from "../../../commonTypes";
 import { useDispatch, useSelector } from "react-redux";
 import {
   updateInspectedCourse,
   selectInspectedCourse,
   updatePlaceholder,
-} from "../../slices/searchSlice";
+} from "../../../slices/searchSlice";
 import clsx from "clsx";
 
 type cardProps = {

@@ -216,7 +216,7 @@ const PrereqDisplay = () => {
       return {
         satisfied: satisfied,
         jsx: (
-          <p className="w-full">
+          <p className="w-full" key={noCBracketsNum}>
             <button
               className={clsx(
                 "... ml-4 p-1 max-w-md rounded truncate",

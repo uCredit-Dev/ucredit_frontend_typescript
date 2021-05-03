@@ -1,6 +1,6 @@
 import React from "react";
 import ReactTooltip from "react-tooltip";
-import { ReactComponent as CheckSvg } from "../svg/Check.svg";
+import { ReactComponent as CheckSvg } from "../../svg/Check.svg";
 
 type courseBarProps = {
   maxCredits: number;
@@ -29,15 +29,18 @@ function CourseBar({
   return (
     <>
       <ReactTooltip html={true} />
-      <div className='text mb-1'>{section}</div>
+      <div className="text mb-1" key={section}>
+        {section}
+      </div>
       {/* <div>
         Bar here {maxCredits}|{plannedCredits}|{currentCredits}
       </div> */}
       <div
-        className='relative flex flex-row mb-2 w-full h-6 bg-gray-200 rounded'
-        data-tip={tooltip}>
+        className="relative flex flex-row mb-2 w-full h-6 bg-gray-200 rounded"
+        data-tip={tooltip}
+      >
         <div
-          className='h-full bg-secondary rounded'
+          className="h-full bg-secondary rounded"
           style={{
             width: `${
               plannedCredits <= maxCredits
@@ -47,7 +50,7 @@ function CourseBar({
           }}
         />
         {remainingCredits === 0 ? (
-          <CheckSvg className='absolute left-1/2 top-1/2 w-5 h-5 text-white stroke-2 transform -translate-x-1/2 -translate-y-1/2' />
+          <CheckSvg className="absolute left-1/2 top-1/2 w-5 h-5 text-white stroke-2 transform -translate-x-1/2 -translate-y-1/2" />
         ) : null}
       </div>
     </>

@@ -6,7 +6,7 @@ import {
   SemesterType,
   UserCourse,
   YearType,
-} from "../../commonTypes";
+} from "../../../commonTypes";
 import {
   selectInspectedCourse,
   clearSearch,
@@ -19,7 +19,7 @@ import {
   updateSearchTime,
   updateSearchFilters,
   updateInspectedCourse,
-} from "../../slices/searchSlice";
+} from "../../../slices/searchSlice";
 import {
   selectUser,
   selectPlan,
@@ -27,13 +27,14 @@ import {
   selectDistributions,
   updateSelectedPlan,
   updatePlanList,
-} from "../../slices/userSlice";
+} from "../../../slices/userSlice";
 import Placeholder from "./Placeholder";
-import PrereqDisplay from "./prereqs/PrereqDisplay";
-import { ReactComponent as CloseSvg } from "../../svg/Close.svg";
+import PrereqDisplay from "../prereqs/PrereqDisplay";
+import { ReactComponent as CloseSvg } from "../../../svg/Close.svg";
 import ReactTooltip from "react-tooltip";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import { getColors } from "../../../assets";
 
 const api = "https://ucredit-api.herokuapp.com/api";
 
@@ -222,7 +223,6 @@ const CourseDisplay = () => {
   // It automatically updates the current area in the add course area selection to the first area in the course areas string.
   useEffect(() => {
     setShowMore(2);
-    console.log("stack is ", searchStack);
     if (
       inspected !== "None" &&
       inspected.areas !== "None" &&
@@ -246,9 +246,11 @@ const CourseDisplay = () => {
   // Returns an array of select options for the distribution area users want to add the course to.
   const getInspectedAreas = () => {
     if (inspected !== "None" && inspected.areas !== "None") {
-      const areaOptions = inspected.areas
-        .split("")
-        .map((area) => <option value={area}>{area}</option>);
+      const areaOptions = inspected.areas.split("").map((area) => (
+        <option key={inspected.number + area} value={area}>
+          {area}
+        </option>
+      ));
       areaOptions.push(<option value={"None"}>None</option>);
       return areaOptions;
     } else {
@@ -352,7 +354,22 @@ const CourseDisplay = () => {
             <div className="grid grid-cols-2 w-auto h-auto">
               <div className="w-auto h-auto">
                 <div>{inspected.number}</div>
-                <div className="flex flex-row">Areas: {inspected.areas}</div>
+                <div className="flex flex-row">
+                  Areas:{" "}
+                  {inspected.areas.split("").map((area) => (
+                    <div
+                      className="flex flex-row items-center"
+                      key={area + inspected.number}
+                    >
+                      <div
+                        className="flex items-center px-1 w-auto h-5 text-white font-semibold rounded select-none"
+                        style={{ backgroundColor: getColors(area)[0] }}
+                      >
+                        {area !== "None" ? area : "N/A"}
+                      </div>
+                    </div>
+                  ))}
+                </div>
                 <div>Department: {inspected.department}</div>
               </div>
               <div className="w-auto h-auto">
@@ -411,7 +428,7 @@ const CourseDisplay = () => {
                     defaultValue={searchYear}
                   >
                     {years.map((year) => (
-                      <option key={year} value={year}>
+                      <option key={year + inspected.number} value={year}>
                         {year}
                       </option>
                     ))}
@@ -425,7 +442,7 @@ const CourseDisplay = () => {
                     defaultValue={semester}
                   >
                     {termFilters.map((term) => (
-                      <option key={term} value={term}>
+                      <option key={term + inspected.number} value={term}>
                         {term}
                       </option>
                     ))}

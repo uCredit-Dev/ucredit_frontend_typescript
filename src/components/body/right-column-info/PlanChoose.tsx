@@ -86,7 +86,6 @@ const PlanChoose: React.FC<PlanChooseProps> = (props) => {
             //         }
             //       });
             //   }
-            console.log("new plan 1");
             const planBody = {
               name: "Unnamed Plan",
               user_id: user._id,
@@ -155,7 +154,6 @@ const PlanChoose: React.FC<PlanChooseProps> = (props) => {
     const selectedOption = event.target.value;
     const planListClone = [...planList];
     if (selectedOption === "new plan" && user._id !== "noUser") {
-      console.log("new plan 2");
       // Post req body for a new plan
       const planBody = {
         name: "Unnamed Plan",
@@ -232,7 +230,6 @@ const PlanChoose: React.FC<PlanChooseProps> = (props) => {
 
   useEffect(() => {
     if (user.plan_ids.length === 0 && user._id !== "noUser") {
-      console.log("new plan 3", user);
       // Post req body for a new plan
       const planBody = {
         name: "Unnamed Plan",

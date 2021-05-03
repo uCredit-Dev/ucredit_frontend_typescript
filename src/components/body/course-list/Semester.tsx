@@ -93,11 +93,13 @@ function Semester({ semesterName, semesterYear, courses }: semesterProps) {
         <>
           <div>
             {semesterCourses.map((course) => (
-              <CourseComponent
-                year={semesterYear}
-                course={course}
-                semester={semesterName}
-              />
+              <div key={course._id}>
+                <CourseComponent
+                  year={semesterYear}
+                  course={course}
+                  semester={semesterName}
+                />
+              </div>
             ))}
           </div>
         </>

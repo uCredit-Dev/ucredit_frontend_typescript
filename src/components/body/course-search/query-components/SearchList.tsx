@@ -4,10 +4,10 @@ import {
   selectRetrievedCourses,
   updateInspectedCourse,
   updatePlaceholder,
-} from "../../slices/searchSlice";
+} from "../../../slices/searchSlice";
 import CourseCard from "./CourseCard";
 import ReactPaginate from "react-paginate";
-import { ReactComponent as CustomCourseSvg } from "../../svg/Custom.svg";
+import { ReactComponent as CustomCourseSvg } from "../../../svg/Custom.svg";
 import ReactTooltip from "react-tooltip";
 
 const SearchList = () => {
@@ -35,7 +35,11 @@ const SearchList = () => {
         ? courses.length - 1
         : startingIndex + coursesPerPage - 1;
     for (let i = startingIndex; i <= endingIndex; i++) {
-      toDisplay[i - startingIndex] = <CourseCard course={courses[i]} />;
+      toDisplay[i - startingIndex] = (
+        <div key={courses[i].number}>
+          <CourseCard course={courses[i]} />
+        </div>
+      );
     }
     return toDisplay;
   };
@@ -66,24 +70,25 @@ const SearchList = () => {
 
   return (
     <>
-      <div className='flex flex-row items-center justify-between px-5 py-2 w-full h-12 bg-gray-200'>
+      <div className="flex flex-row items-center justify-between px-5 py-2 w-full h-12 bg-gray-200">
         <div>Search Results </div>
         <div
-          className='flex flex-row items-center justify-center w-6 h-6 bg-white rounded cursor-pointer'
+          className="flex flex-row items-center justify-center w-6 h-6 bg-white rounded cursor-pointer"
           onClick={onPlaceholderClick}
-          data-tip='Add a placeholder/custom course'>
-          <CustomCourseSvg className='w-4 h-4 stroke-2' />
+          data-tip="Add a placeholder/custom course"
+        >
+          <CustomCourseSvg className="w-4 h-4 stroke-2" />
         </div>
       </div>
       {/* <div className='relative z-10 -top-3 left-0  right-blurr block flex-none h-4 bg-gradient-to-b from-white to-gray-200 pointer-events-none'></div> */}
-      <div className='py px-5 w-full h-full bg-gray-200 border-b border-black select-none overflow-y-auto'>
+      <div className="py px-5 w-full h-full bg-gray-200 border-b border-black select-none overflow-y-auto">
         <ReactTooltip />
-        <div className='w-full h-full'>
+        <div className="w-full h-full">
           {courses.length > 0 ? (
             <>
-              <div className='y-full flex flex-col w-full'>{courseList()}</div>
+              <div className="y-full flex flex-col w-full">{courseList()}</div>
               {pageCount > 1 ? (
-                <div className='flex flex-row justify-center w-full h-auto'>
+                <div className="flex flex-row justify-center w-full h-auto">
                   <Pagination
                     pageCount={pageCount}
                     handlePageClick={handlePageClick}
@@ -92,7 +97,7 @@ const SearchList = () => {
               ) : null}
             </>
           ) : (
-            <div className='flex flex-col items-center justify-center w-full h-full'>
+            <div className="flex flex-col items-center justify-center w-full h-full">
               <div>😢</div>
               Sorry, no course found...
             </div>

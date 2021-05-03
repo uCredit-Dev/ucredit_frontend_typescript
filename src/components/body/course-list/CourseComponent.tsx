@@ -1,11 +1,5 @@
-import React, { useState, useEffect } from "react";
-import {
-  UserCourse,
-  YearType,
-  Plan,
-  SemesterType,
-  Course,
-} from "../../commonTypes";
+import React, { useState } from "react";
+import { UserCourse, YearType, Plan, SemesterType } from "../../commonTypes";
 import { getColors } from "../../assets";
 import { useDispatch, useSelector } from "react-redux";
 import { selectPlan, updateSelectedPlan } from "../../slices/userSlice";
@@ -38,17 +32,6 @@ function CourseComponent({ year, course, semester }: courseProps) {
   // Redux setup
   const dispatch = useDispatch();
   const currentPlan = useSelector(selectPlan);
-
-  useEffect(() => {
-    axios
-      .get(api + "/search", { params: { query: course.number } })
-      .then((retrievedData) => {
-        const retrievedCourse: Course = retrievedData.data.data[0];
-        const prereqs = retrievedCourse.preReq;
-        console.log("retrieved", prereqs);
-      })
-      .catch((err) => console.log(err));
-  }, [currentPlan, course]);
 
   // Sets or resets the course displayed in popout after user clicks it in course list.
   const displayCourses = () => {
@@ -152,6 +135,7 @@ function CourseComponent({ year, course, semester }: courseProps) {
         className="relative items-center mt-2 p-2 h-14 bg-white rounded shadow"
         onMouseEnter={activate}
         onMouseLeave={deactivate}
+        key={course.number}
       >
         <div className="flex flex-col gap-1 h-full">
           <div className="w-4/6 text-coursecard truncate">

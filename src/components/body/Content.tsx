@@ -1,12 +1,12 @@
 import React, { useState, useEffect } from "react";
-import CourseBar from "./CourseBar";
+import CourseBar from "./right-column-info/CourseBar";
 import CourseList from "./course-list/CourseList";
 import { Distribution } from "../commonTypes";
 import Search from "./course-search/Search";
 import { selectSearchStatus } from "../slices/searchSlice";
 import { updateDistributions, selectPlan } from "../slices/userSlice";
 import { useSelector, useDispatch } from "react-redux";
-import InfoCards from "./info-bar/InfoCards";
+import InfoCards from "./right-column-info/InfoCards";
 import axios from "axios";
 
 const api = "https://ucredit-api.herokuapp.com/api";
@@ -81,14 +81,14 @@ function Content() {
                   dis.name.charAt(0).toUpperCase() +
                   dis.name.substr(1, dis.name.length);
                 return (
-                  <>
+                  <div key={name}>
                     <CourseBar
                       maxCredits={dis.required}
                       plannedCredits={dis.planned}
                       currentCredits={dis.current}
                       section={name}
                     />
-                  </>
+                  </div>
                 );
               })
             : null}
