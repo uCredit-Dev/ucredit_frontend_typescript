@@ -17,6 +17,7 @@ function Semester({ semesterName, semesterYear, courses }: semesterProps) {
   // Total credits and sorted courses.
   const [totalCredits, setTotalCredits] = useState<number>(0);
   const [semesterCourses, setSemesterCourses] = useState<UserCourse[]>([]);
+
   useEffect(() => {
     setSemesterCourses(
       courses.sort((course1, course2) =>
@@ -28,7 +29,7 @@ function Semester({ semesterName, semesterYear, courses }: semesterProps) {
       count += course.credits;
     });
     setTotalCredits(count);
-  }, [courses]);
+  }, [courses, courses.length]);
 
   // Redux setup
   const dispatch = useDispatch();
