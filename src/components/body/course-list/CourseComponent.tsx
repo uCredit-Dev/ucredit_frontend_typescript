@@ -142,12 +142,12 @@ function CourseComponent({ year, course, semester }: courseProps) {
   return (
     <>
       <div
-        className="relative items-center mt-2 p-2 w-full h-14 bg-white rounded shadow"
+        className="relative items-center mt-2 p-2 h-14 bg-white rounded shadow"
         onMouseEnter={activate}
         onMouseLeave={deactivate}
       >
-        <div className="flex flex-col w-full h-full select-none truncate">
-          <div className="text-coursecard truncate">{course.title}</div>
+        <div className="flex flex-col h-full select-none truncate">
+          <div className="text-coursecard">{course.title}</div>
           {/* <div className="grid gap-1 grid-cols-3 text-center text-coursecard divide-x-2">
             <div>{course.number}</div>
             <div className="truncate">{course.credits} credits</div>

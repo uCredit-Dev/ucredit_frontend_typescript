@@ -3,54 +3,35 @@ import Semester from "./Semester";
 import { UserCourse, YearType } from "../../commonTypes";
 import { ReactComponent as MoreSvg } from "../../svg/More.svg";
 import { useSelector, useDispatch } from "react-redux";
-import { selectPlan, updateCurrentPlanCourses } from "../../slices/userSlice";
-import axios from "axios";
-const api = "https://ucredit-api.herokuapp.com/api";
+import {
+  selectCurrentPlanCourses,
+  selectPlan,
+  updateCurrentPlanCourses,
+} from "../../slices/userSlice";
 
 type semesterProps = {
   yearName: YearType;
-  courseIDs: string[];
+  courses: UserCourse[];
 };
 
 // Dropdown of all semesters and courses for each semester in a year.
-function Year({ yearName, courseIDs }: semesterProps) {
+function Year({ yearName, courses }: semesterProps) {
   const [fallCourses, setFallCourses] = useState<UserCourse[]>([]);
   const [springCourses, setSpringCourses] = useState<UserCourse[]>([]);
   const [winterCourses, setWinterCourses] = useState<UserCourse[]>([]);
   const [summerCourses, setSummerCourses] = useState<UserCourse[]>([]);
   const [display, setDisplay] = useState<boolean>(true);
-  const [courses, setCourses] = useState<UserCourse[]>([]);
+  // const [courses, setCourses] = useState<UserCourse[]>([]);
 
   // Setting up redux
   const currentPlan = useSelector(selectPlan);
+  const currPlanCourses = useSelector(selectCurrentPlanCourses);
   const dispatch = useDispatch();
   // const courses = useSelector(selectPlan);
 
-  const getCourses = () => {
-    const totalCourses: UserCourse[] = [];
-    if (courseIDs !== undefined) {
-      courseIDs.forEach((courseId, index) => {
-        // TODO: fetch each course
-        axios
-          .get(api + "/courses/" + courseId)
-          .then((retrieved) => {
-            const data = retrieved.data.data;
-            console.log(data);
-            totalCourses.push(data);
-            setCourses([...totalCourses]);
-          })
-          .catch((err) => console.log(err));
-      });
-    }
-  };
-
   useEffect(() => {
-    dispatch(updateCurrentPlanCourses(courses));
-  }, [courses]);
-
-  useEffect(() => {
-    setCourses([]);
-    getCourses();
+    // setCourses([]);
+    // getCourses();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [currentPlan]);
 

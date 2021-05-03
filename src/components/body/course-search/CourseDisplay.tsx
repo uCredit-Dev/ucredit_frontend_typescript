@@ -27,7 +27,7 @@ import {
   updatePlanList,
 } from "../../slices/userSlice";
 import Placeholder from "./Placeholder";
-import PrereqDisplay from "./PrereqDisplay";
+import PrereqDisplay from "./prereqs/PrereqDisplay";
 import { ReactComponent as CloseSvg } from "../../svg/Close.svg";
 import ReactTooltip from "react-tooltip";
 import { ToastContainer, toast } from "react-toastify";

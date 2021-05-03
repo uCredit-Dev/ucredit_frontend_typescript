@@ -5,8 +5,15 @@ import { useSelector, useDispatch } from "react-redux";
 import {
   updateInspectedCourse,
   selectInspectedCourse,
-} from "../../slices/searchSlice";
+} from "../../../slices/searchSlice";
+import { selectCurrentPlanCourses } from "../../../slices/userSlice";
+import PrereqDropdown from "./PrereqDropdown";
 const api = "https://ucredit-api.herokuapp.com/api";
+
+type parsedPrereqs = {
+  satisfied: boolean;
+  jsx: JSX.Element;
+};
 
 const PrereqDisplay = () => {
   const [prereqDisplayMode, setPrereqDisplayMode] = useState(2);
@@ -17,6 +24,7 @@ const PrereqDisplay = () => {
   const [NNegativePreReqs, setNNegativePreReqs] = useState<any[]>();
   const dispatch = useDispatch();
   const inspected = useSelector(selectInspectedCourse);
+  const currPlanCourses = useSelector(selectCurrentPlanCourses);
 
   useEffect(() => {
     // Reset state whenever new inspected course
@@ -177,60 +185,130 @@ const PrereqDisplay = () => {
   const preReqsToComponents = (inputs: any): JSX.Element[] => {
     let out: any[] = [];
     const orParsed = parsePrereqsOr(inputs, 0);
-    out.push(getNonStringPrereq(orParsed));
+    const parsed: parsedPrereqs = getNonStringPrereq(orParsed);
+    out.push(parsed.jsx);
     return out;
   };
 
+  // Checks if prereq is satisfied by plan
+  const checkPrereq = (number: string): boolean => {
+    let satisfied: boolean = false;
+    currPlanCourses.forEach((course) => {
+      if (course.number === number) {
+        satisfied = true;
+      }
+    });
+    return satisfied;
+  };
+
   // Parses arrays into clickable prereq number links
-  const getNonStringPrereq = (input: any): any => {
+  const getNonStringPrereq = (input: any): parsedPrereqs => {
     const element = input;
     if (typeof element === "string") {
       // If the element is a number
-
       const noCBrackets: string = element.substr(0, element.length - 3);
       const noCBracketsNum: string = element.substr(0, 10);
-      const buttonElement = (
-        <button
-          className="... p-1 max-w-md bg-gray-100 rounded truncate"
-          onClick={() => {
-            updateInspected(noCBracketsNum)();
-          }}
-        >
-          {noCBrackets}
-        </button>
-      );
-      return <p className="w-full">- {buttonElement}</p>;
+      const satisfied: boolean = checkPrereq(noCBracketsNum);
+      return {
+        satisfied: satisfied,
+        jsx: (
+          <p className="w-full">
+            <button
+              className={clsx(
+                "... ml-4 p-1 max-w-md rounded truncate",
+                {
+                  "bg-green-100": satisfied,
+                },
+                {
+                  "bg-red-100": !satisfied,
+                }
+              )}
+              onClick={() => {
+                updateInspected(noCBracketsNum)();
+              }}
+            >
+              - {noCBrackets}
+            </button>
+          </p>
+        ),
+      };
     } else if (typeof element[0] === "number") {
       // If the element is a OR sequence (denoted by the depth number in the first index)
-      return (
-        <>
-          <p style={{ marginLeft: `${element[0]}rem` }}>
-            - 1 of any of the options below
-          </p>
-          {element.map((el: any) => (
-            <p style={{ marginLeft: `${element[0] + 1}rem` }}>
-              {getNonStringPrereq(el)}
-            </p>
-          ))}
-        </>
-      );
+      const parsedSat: boolean = isSatisfied(element, true);
+      return {
+        satisfied: parsedSat,
+        jsx: (
+          <>
+            <PrereqDropdown
+              satisfied={parsedSat}
+              text={"- Any one course below ▼"}
+              element={element}
+              getNonStringPrereq={getNonStringPrereq}
+              or={true}
+            ></PrereqDropdown>
+          </>
+        ),
+      };
     } else if (typeof element === "object") {
       // If the element is a parentheses sequence
       if (element.length === 1) {
-        return <p>{getNonStringPrereq(element[0])}</p>;
+        const parsed: parsedPrereqs = getNonStringPrereq(element[0]);
+        return {
+          satisfied: parsed.satisfied,
+          jsx: <p>{parsed.jsx}</p>,
+        };
       } else {
-        return (
-          <>
-            <p>- All of the below</p>
-            {element.map((el: any) => (
-              <p style={{ marginLeft: "1rem" }}>{getNonStringPrereq(el)}</p>
-            ))}
-          </>
-        );
+        console.log("elly is ", element);
+        const parsedSat: boolean = isSatisfied(element, false);
+        return {
+          satisfied: parsedSat,
+          jsx: (
+            <>
+              <PrereqDropdown
+                satisfied={false}
+                text={"- All courses below ▼"}
+                element={element}
+                getNonStringPrereq={getNonStringPrereq}
+                or={false}
+              ></PrereqDropdown>
+            </>
+          ),
+        };
       }
     } else {
-      return <div></div>;
+      return {
+        satisfied: true,
+        jsx: <></>,
+      };
     }
+  };
+
+  const isSatisfied = (element: [], or: boolean): boolean => {
+    let orAndSatisfied = false;
+
+    element.map((el: any, index) => {
+      if (typeof el !== "number") {
+        const parsed: {
+          satisfied: boolean;
+          jsx: JSX.Element;
+        } = getNonStringPrereq(el);
+
+        // If it's not an or statement, the first course must be satisfied.
+        if (index === 0) {
+          console.log("and for ", el);
+          orAndSatisfied = parsed.satisfied;
+        }
+
+        // If it's an or statement, only one course would need to be satisfied. Otherwise, every course would need to be satisfied.
+        if (or && parsed.satisfied) {
+          console.log("Truing for ", el);
+          orAndSatisfied = true;
+        } else if (!or && !parsed.satisfied) {
+          orAndSatisfied = false;
+        }
+      }
+    });
+    return orAndSatisfied;
   };
 
   // Takes parsed prereq array and then parses this array again to make OR sequences
@@ -321,13 +399,13 @@ const PrereqDisplay = () => {
   };
 
   return (
-    <p>
+    <p className="flex-grow">
       <div className="border-b-2">
-        <div>Prerequisites</div>{" "}
+        <div className="text-xl font-medium">Prerequisites</div>{" "}
         <div>
           <button
             className={clsx(
-              "p-1 bg-secondary",
+              "p-1 text-sm bg-secondary",
               {
                 "bg-opacity-25": prereqDisplayMode !== 1,
               },
@@ -341,7 +419,7 @@ const PrereqDisplay = () => {
           </button>
           <button
             className={clsx(
-              "p-1 bg-secondary",
+              "p-1 text-sm bg-secondary",
               {
                 "bg-opacity-25": prereqDisplayMode === 1,
               },
@@ -371,7 +449,7 @@ const PrereqDisplay = () => {
       ) : !loaded ? (
         "Loading Prereqs Status: loaded is " + loaded.toString()
       ) : (
-        <p className="p-2 h-80 overflow-y-auto">{preReqDisplay}</p>
+        <p className="p-2 overflow-y-auto">{preReqDisplay}</p>
       )}
     </p>
   );

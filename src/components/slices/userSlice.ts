@@ -84,7 +84,8 @@ export const userSlice = createSlice({
       state: any,
       action: PayloadAction<UserCourse[]>
     ) => {
-      state.currentUser.currentPlanCourses = action.payload;
+      console.log("updating to ", action.payload);
+      state.currentPlanCourses = action.payload;
     },
   },
 });
