@@ -9,31 +9,41 @@ import {
   selectSearchFilters,
   selectSemester,
   selectYear,
+  selectRetrievedCourses,
 } from "../../../slices/searchSlice";
 import axios from "axios";
-import { Course, FilterType, SemesterType } from "../../../commonTypes";
+import {
+  AreaType,
+  Course,
+  DepartmentType,
+  FilterType,
+  SemesterType,
+  TagType,
+} from "../../../commonTypes";
 import { all_majors, course_tags } from "../../../assets";
 import { ReactComponent as ShowSvg } from "../../../svg/Show.svg";
 import { ReactComponent as HideSvg } from "../../../svg/Hide.svg";
 import ReactTooltip from "react-tooltip";
 import clsx from "clsx";
+import { toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 // TODO: This file could be modularized. Esp with the recurring code for options.
 // TODO: Multi select for various filters.
 const api = "https://ucredit-api.herokuapp.com/api";
 
-const creditFilters = ["None", 0, 1, 2, 3, 4];
-const distributionFilters = ["None", "N", "S", "H", "Q", "E"];
-const termFilters: (SemesterType | "None")[] = [
-  "None",
+const creditFilters = ["Any", 0, 1, 2, 3, 4];
+const distributionFilters = ["Any", "N", "S", "H", "Q", "E"];
+const termFilters: SemesterType[] = [
   "fall",
   "spring",
   "intersession",
   "summer",
 ];
-const wiFilters = ["None", "True", "False"];
-const departmentFilters = ["None", ...all_majors];
-const tagFilters = ["None", ...course_tags];
+const wiFilters = ["Any", "True", "False"];
+const departmentFilters = ["Any", ...all_majors];
+const tagFilters = ["Any", ...course_tags];
+// Implement smarter search
 
 const Form = () => {
   const [showCriteria, setShowCriteria] = useState(false);
@@ -44,6 +54,7 @@ const Form = () => {
   const searchFilters = useSelector(selectSearchFilters);
   const semester = useSelector(selectSemester);
   const year = useSelector(selectYear);
+  const searchListCourses = useSelector(selectRetrievedCourses);
 
   // On opening search, set the term filter to match semester you're adding to.
   useEffect(() => {
@@ -51,61 +62,191 @@ const Form = () => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
+  type SearchExtras = {
+    query: string;
+    credits: number | null;
+    areas: AreaType | null;
+    tags: TagType | null; // TODO: fill this out with array of all tags
+    term: SemesterType | null;
+    department: DepartmentType | null; // TODO: fill this out with array of departments
+    wi: boolean | null;
+  };
+
+  type SearchMapEl = {
+    course: Course;
+    priority: number;
+  };
+
+  const minLength = 3;
+  const [searching, setSearching] = useState<boolean>(false);
+
   // Search with debouncing of 3/4s of a second.
   useEffect(() => {
-    if (
-      searchTerm === "" &&
-      searchFilters.credits === "None" &&
-      searchFilters.distribution === "None" &&
-      searchFilters.term === "None" &&
-      searchFilters.wi === "None" &&
-      searchFilters.department === "None" &&
-      searchFilters.tags === "None"
-    ) {
-      // If search term is empty with no filters, don't show any results.
-      dispatch(updateRetrievedCourses([]));
-    } else {
-      // Otherwise, user is searching for something.
-      const search = setTimeout(performSearch, 500);
-      return () => clearTimeout(search);
-    }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [searchTerm, searchFilters]);
-
-  // Performs search call with filters to backend and updates redux with retrieved courses.
-  const performSearch = () => {
-    const extras = {
+    setSearching(true);
+    setSearchedCourses(new Map<string, SearchMapEl>());
+    console.log(searchFilters);
+    // Otherwise, user is searching for something.
+    const extras: SearchExtras = {
       query: searchTerm,
-      credits: searchFilters.credits === "None" ? null : searchFilters.credits,
+      credits: searchFilters.credits === "Any" ? null : searchFilters.credits,
       areas:
-        searchFilters.distribution === "None"
+        searchFilters.distribution === "Any"
           ? null
           : searchFilters.distribution,
-      wi: searchFilters.wi === "None" ? null : searchFilters.wi,
-      term: searchFilters.term === "None" ? null : searchFilters.term,
+      wi: searchFilters.wi === "Any" ? null : searchFilters.wi,
+      term: searchFilters.term === "Any" ? null : searchFilters.term,
       department:
-        searchFilters.department === "None" ? null : searchFilters.department,
-      tags: searchFilters.tags === "None" ? null : searchFilters.tags,
+        searchFilters.department === "Any" ? null : searchFilters.department,
+      tags: searchFilters.tags === "Any" ? null : searchFilters.tags,
     };
-    axios
-      .get(api + "/search", {
-        params: extras,
-      })
-      .then((courses) => {
-        let returned = courses.data.data.sort(
-          (course1: Course, course2: Course) =>
-            course1.title.localeCompare(course2.title)
-        );
-        if (searchFilters.distribution === "N") {
-          returned = returned.filter(
-            (course: Course) => course.areas !== "None"
-          );
-        }
-        dispatch(updateRetrievedCourses(returned));
-      })
-      .catch((err) => {
-        console.log(err);
+    const search = setTimeout(
+      performSmartSearch(extras, searchTerm.length),
+      500
+    );
+
+    return () => clearTimeout(search);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [searchTerm, searchFilters]);
+  const [searchedCourses, setSearchedCourses] = useState<
+    Map<string, SearchMapEl>
+  >(new Map<string, SearchMapEl>());
+
+  useEffect(() => {
+    if (searching) {
+      toast("Searching!", {
+        position: "top-right",
+        autoClose: false,
+        draggable: true,
+        progress: undefined,
       });
+    }
+  }, [searching]);
+
+  // Performs search call with filters to backend and updates redux with retrieved courses.
+  // Smart search: performs search with all possible substring combinations of lengths 3 and above based on search query.
+  // TODO: Optimize this so it doesn't call 10 billioin search get requests.
+  const performSmartSearch = (
+    extras: SearchExtras,
+    queryLength: number
+  ) => () => {
+    const querySubstrs: string[] = [];
+    const retrievedCourses: Map<string, SearchMapEl> = searchedCourses;
+    const doneSearchSubQueries: string[] = [];
+
+    if (queryLength >= minLength) {
+      for (let i = 0; i < searchTerm.length - queryLength + 1; i++) {
+        querySubstrs.push(searchTerm.substring(i, i + queryLength));
+      }
+    } else if (searchTerm.length < minLength) {
+      // Perform old search if search query is less than the minLength fora  smart search.
+      axios
+        .get(api + "/search", {
+          params: extras,
+        })
+        .then((courses) => {
+          let returned = courses.data.data.sort(
+            (course1: Course, course2: Course) =>
+              course1.title.localeCompare(course2.title)
+          );
+          if (searchFilters.distribution === "N") {
+            returned = returned.filter(
+              (course: Course) => course.areas !== "None"
+            );
+          }
+          setSearching(false);
+          dispatch(updateRetrievedCourses(returned));
+
+          toast.dismiss();
+          toast.success("Found " + returned.length + " results!", {
+            position: "top-right",
+            autoClose: 5000,
+            hideProgressBar: true,
+            closeOnClick: true,
+            pauseOnHover: true,
+            draggable: true,
+            progress: undefined,
+          });
+        })
+        .catch((err) => {
+          console.log(err);
+        });
+    }
+
+    querySubstrs.forEach((subQuery) => {
+      extras.query = subQuery;
+      axios
+        .get(api + "/search", {
+          params: extras,
+        })
+        .then((courses) => {
+          doneSearchSubQueries.push(subQuery);
+
+          let returned: Course[] = courses.data.data.sort(
+            (course1: Course, course2: Course) =>
+              course1.number.localeCompare(course2.number)
+          );
+          if (searchFilters.distribution === "N") {
+            returned = returned.filter(
+              (course: Course) => course.areas !== "None"
+            );
+          }
+
+          returned.forEach((course: Course) => {
+            if (!retrievedCourses.has(course.number)) {
+              retrievedCourses.set(course.number, {
+                course: course,
+                priority: queryLength,
+              });
+            }
+          });
+
+          // All subqueries are done searching
+          if (doneSearchSubQueries.length === querySubstrs.length) {
+            console.log("length is  ", queryLength);
+            if (queryLength > minLength) {
+              setSearchedCourses(
+                new Map<string, SearchMapEl>(retrievedCourses)
+              );
+              performSmartSearch(extras, queryLength - 1)();
+            } else {
+              console.log("updating to ", retrievedCourses);
+              const newSearchList: Course[] = getNewSearchList();
+              dispatch(updateRetrievedCourses(newSearchList));
+              setSearching(false);
+
+              toast.dismiss();
+              toast.success("Found " + newSearchList.length + " results!", {
+                position: "top-right",
+                autoClose: 5000,
+                hideProgressBar: true,
+                closeOnClick: true,
+                pauseOnHover: true,
+                draggable: true,
+                progress: undefined,
+              });
+            }
+          }
+        })
+        .catch((err) => {
+          doneSearchSubQueries.push(subQuery);
+          console.log(err);
+        });
+    });
+  };
+
+  const getNewSearchList = (): Course[] => {
+    const searchList: Course[] = [];
+
+    // sorts searchedCourses map by priority.
+    searchedCourses[Symbol.iterator] = function* () {
+      yield* [...this.entries()].sort((a, b) => b[1].priority - a[1].priority);
+    };
+
+    for (let [key, value] of searchedCourses) {
+      console.log(key, value);
+      searchList.push(value.course);
+    }
+    return searchList;
   };
 
   // Update search term
@@ -148,11 +289,11 @@ const Form = () => {
     const params: { filter: FilterType; value: any } = {
       filter: "wi",
       value:
-        event.target.value === "True"
+        event.target.value === "Yes"
           ? true
-          : event.target.value === "False"
+          : event.target.value === "No"
           ? false
-          : "None",
+          : "Any",
     };
     dispatch(updateSearchFilters(params));
   };

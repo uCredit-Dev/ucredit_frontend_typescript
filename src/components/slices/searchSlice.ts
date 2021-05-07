@@ -7,29 +7,28 @@ import {
   FilterType,
   TagType,
   DepartmentType,
+  AreaType,
 } from "../commonTypes";
 
-type timeBundle = {
+type TimeBundle = {
   searchYear: YearType;
   searchSemester: SemesterType;
 };
 
-type areaType = "N" | "S" | "H" | "W" | "E" | "Q" | "None";
-
-type filterObj = {
-  credits: number | "None";
-  distribution: areaType;
-  tags: TagType | "None"; // TODO: fill this out with array of all tags
-  term: SemesterType | "None";
-  department: DepartmentType | "None"; // TODO: fill this out with array of departments
-  wi: "None" | boolean;
+type FilterObj = {
+  credits: number | "Any";
+  distribution: AreaType | "Any";
+  tags: TagType | "Any"; // TODO: fill this out with array of all tags
+  term: SemesterType | "Any";
+  department: DepartmentType | "Any"; // TODO: fill this out with array of departments
+  wi: "Any" | boolean;
 };
 
 type searchStates = {
   searching: boolean;
   searchTerm: string;
-  searchTime: timeBundle;
-  filters: filterObj;
+  searchTime: TimeBundle;
+  filters: FilterObj;
   retrievedCourses: Course[];
   inspectedCourse: Course | "None";
   placeholder: boolean;
@@ -45,12 +44,12 @@ const initialState: searchStates = {
   },
   retrievedCourses: [], // test courses for now
   filters: {
-    credits: "None",
-    distribution: "None",
-    tags: "None",
-    term: "None",
-    wi: "None",
-    department: "None",
+    credits: "Any",
+    distribution: "Any",
+    tags: "Any",
+    term: "Any",
+    wi: "Any",
+    department: "Any",
   },
   inspectedCourse: "None",
   placeholder: false,
@@ -60,7 +59,7 @@ export const searchSlice = createSlice({
   name: "search",
   initialState,
   reducers: {
-    updateSearchTime: (state: any, action: PayloadAction<timeBundle>) => {
+    updateSearchTime: (state: any, action: PayloadAction<TimeBundle>) => {
       // Updates year and semester in search time bundle.
       state.searchTime.searchYear = action.payload.searchYear;
       state.searchTime.searchSemester = action.payload.searchSemester;
@@ -79,13 +78,19 @@ export const searchSlice = createSlice({
       state.inspectedCourse = action.payload;
     },
     clearSearch: (state: any) => {
-      state.filters = { credits: "None", distribution: "None", tags: "None" };
+      state.filters = {
+        credits: "Any",
+        distribution: "Any",
+        tags: "Any",
+        term: "Any",
+        wi: "Any",
+        department: "Any",
+      };
       state.searchTerm = "";
       state.searchTime = { searchSemester: "", searchYear: "" };
       state.searching = false;
       state.inspectedCourse = "None";
       state.retrievedCourses = [];
-      state.searchMode = "Title";
       state.searchStack = [];
     },
     updateRetrievedCourses: (state: any, action: PayloadAction<Course[]>) => {
