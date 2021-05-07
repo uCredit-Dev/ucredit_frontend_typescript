@@ -82,9 +82,7 @@ const Form = () => {
 
   // Search with debouncing of 3/4s of a second.
   useEffect(() => {
-    setSearching(true);
     setSearchedCourses(new Map<string, SearchMapEl>());
-    console.log(searchFilters);
     // Otherwise, user is searching for something.
     const extras: SearchExtras = {
       query: searchTerm,
@@ -132,6 +130,7 @@ const Form = () => {
     const querySubstrs: string[] = [];
     const retrievedCourses: Map<string, SearchMapEl> = searchedCourses;
     const doneSearchSubQueries: string[] = [];
+    setSearching(true);
 
     if (queryLength >= minLength) {
       for (let i = 0; i < searchTerm.length - queryLength + 1; i++) {
@@ -202,14 +201,12 @@ const Form = () => {
 
           // All subqueries are done searching
           if (doneSearchSubQueries.length === querySubstrs.length) {
-            console.log("length is  ", queryLength);
             if (queryLength > minLength) {
               setSearchedCourses(
                 new Map<string, SearchMapEl>(retrievedCourses)
               );
               performSmartSearch(extras, queryLength - 1)();
             } else {
-              console.log("updating to ", retrievedCourses);
               const newSearchList: Course[] = getNewSearchList();
               dispatch(updateRetrievedCourses(newSearchList));
               setSearching(false);
@@ -243,7 +240,6 @@ const Form = () => {
     };
 
     for (let [key, value] of searchedCourses) {
-      console.log(key, value);
       searchList.push(value.course);
     }
     return searchList;
