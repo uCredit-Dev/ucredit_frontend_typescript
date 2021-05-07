@@ -40,12 +40,12 @@ const Placeholder = (props: { addCourse: any }) => {
   };
 
   const onPAChange = (event: any) => {
-    const area = event.target.value === "None" ? "" : event.target.value;
-    setPlaceholderArea(area);
+    const area = event.target.value;
+    setPlaceholderArea(event.target.value);
     if (inspected !== "None") {
-      const inspCopy: Course = { ...inspected };
-      inspCopy.areas = area;
-      dispatch(updateInspectedCourse(inspCopy));
+      const inspectedCourseCopy: Course = { ...inspected };
+      inspectedCourseCopy.areas = area;
+      dispatch(updateInspectedCourse(inspectedCourseCopy));
     }
   };
 

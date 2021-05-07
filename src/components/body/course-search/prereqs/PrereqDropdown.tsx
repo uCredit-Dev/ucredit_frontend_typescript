@@ -19,6 +19,7 @@ const PrereqDropdown = (props: {
     let orAndSatisfied = false;
 
     return props.element.map((el: any, index) => {
+      // TODO: Modularize this
       if (typeof el !== "number") {
         const parsed: {
           satisfied: boolean;

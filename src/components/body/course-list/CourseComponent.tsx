@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { UserCourse, YearType, Plan, SemesterType } from "../../commonTypes";
 import { getColors } from "../../assets";
 import { useDispatch, useSelector } from "react-redux";
@@ -28,6 +28,10 @@ type courseProps = {
 
 function CourseComponent({ year, course, semester }: courseProps) {
   const [activated, setActivated] = useState<boolean>(false);
+
+  useEffect(() => {
+    console.log(course);
+  });
 
   // Redux setup
   const dispatch = useDispatch();
@@ -159,7 +163,7 @@ function CourseComponent({ year, course, semester }: courseProps) {
                   className="flex items-center px-1 w-auto h-5 text-white font-semibold rounded select-none"
                   style={{ backgroundColor: getColors(course.area)[0] }}
                 >
-                  {course.area !== "None" ? course.area : "N/A"}
+                  {course.area}
                 </div>
               </div>
             ) : null}

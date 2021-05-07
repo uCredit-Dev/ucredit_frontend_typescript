@@ -91,18 +91,12 @@ export type FilterType =
   | "department"
   | "wi";
 
-export type generalDistributionType =
-  | "Total Credits"
-  | "Basic Sciences (N)"
-  | "General Electives"
-  | "Humanities/Social Sciences (H)(S)"
-  | "Mathematics (Q)"
-  | "Writing Intensive (WI)";
+export type AreaType = "N" | "S" | "H" | "W" | "E" | "Q";
 
 export type Major = {
   name: string;
   generalDistributions: {
-    name: string | generalDistributionType;
+    name: string;
     required: number;
   }[];
   fineRequirements: [];
