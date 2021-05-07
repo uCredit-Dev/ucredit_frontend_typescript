@@ -354,21 +354,30 @@ const CourseDisplay = () => {
             <div className="grid grid-cols-2 w-auto h-auto">
               <div className="w-auto h-auto">
                 <div>{inspected.number}</div>
-                <div className="flex flex-row">
-                  Areas:{" "}
-                  {inspected.areas.split("").map((area) => (
-                    <div
-                      className="flex flex-row items-center"
-                      key={area + inspected.number}
-                    >
+                <div className="flex flex-row items-end">
+                  <div className="mr-1">Areas:</div>
+                  {inspected.areas !== "None" ? (
+                    inspected.areas.split("").map((area) => (
                       <div
-                        className="flex items-center px-1 w-auto h-5 text-white font-semibold rounded select-none"
-                        style={{ backgroundColor: getColors(area)[0] }}
+                        className="flex flex-row items-center"
+                        key={area + inspected.number}
                       >
-                        {area !== "None" ? area : "N/A"}
+                        <div
+                          className="flex items-center px-1 w-auto h-5 text-white font-semibold rounded select-none"
+                          style={{ backgroundColor: getColors(area)[0] }}
+                        >
+                          {area}
+                        </div>
                       </div>
+                    ))
+                  ) : (
+                    <div
+                      className="flex items-center px-1 w-auto h-5 text-white font-semibold rounded select-none"
+                      style={{ backgroundColor: getColors(inspected.areas)[0] }}
+                    >
+                      None
                     </div>
-                  ))}
+                  )}
                 </div>
                 <div>Department: {inspected.department}</div>
               </div>
