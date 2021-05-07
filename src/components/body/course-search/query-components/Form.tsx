@@ -9,7 +9,6 @@ import {
   selectSearchFilters,
   selectSemester,
   selectYear,
-  selectRetrievedCourses,
 } from "../../../slices/searchSlice";
 import axios from "axios";
 import {
@@ -54,7 +53,6 @@ const Form = () => {
   const searchFilters = useSelector(selectSearchFilters);
   const semester = useSelector(selectSemester);
   const year = useSelector(selectYear);
-  const searchListCourses = useSelector(selectRetrievedCourses);
 
   // On opening search, set the term filter to match semester you're adding to.
   useEffect(() => {
@@ -239,6 +237,7 @@ const Form = () => {
       yield* [...this.entries()].sort((a, b) => b[1].priority - a[1].priority);
     };
 
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     for (let [key, value] of searchedCourses) {
       searchList.push(value.course);
     }
