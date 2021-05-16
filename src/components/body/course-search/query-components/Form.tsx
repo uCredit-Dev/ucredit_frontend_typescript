@@ -44,6 +44,9 @@ const departmentFilters = ["Any", ...all_majors];
 const tagFilters = ["Any", ...course_tags];
 // Implement smarter search
 
+/* 
+  Search form, including the search query input and filters.
+*/
 const Form = () => {
   const [showCriteria, setShowCriteria] = useState(false);
 
@@ -229,6 +232,7 @@ const Form = () => {
     });
   };
 
+  // Gets new list of searched courses.
   const getNewSearchList = (): Course[] => {
     const searchList: Course[] = [];
 

@@ -21,7 +21,14 @@ type PlanChooseProps = {
   setNewPlan: Function;
 };
 
-const PlanChoose: React.FC<PlanChooseProps> = (props) => {
+/* 
+  Adding a placeholder
+  Props:
+    className: className of plans
+    newPlan: the amount of plans currently in the plan list
+    setNewPlan: updates newPlan
+*/
+const PlanChoose = (props: PlanChooseProps) => {
   // Redux setup
   const dispatch = useDispatch();
   const user = useSelector(selectUser);

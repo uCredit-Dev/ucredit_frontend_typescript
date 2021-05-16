@@ -15,6 +15,9 @@ const api = "https://ucredit-api.herokuapp.com/api";
 const deploy = "https://ucredit.herokuapp.com/";
 const dev = "http://localhost:3000/";
 
+/* 
+  User login/logout buttons.
+*/
 function UserSection(props: any) {
   const dispatch = useDispatch();
   const user = useSelector(selectUser);

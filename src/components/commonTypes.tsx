@@ -1,5 +1,10 @@
 import { all_majors, course_tags } from "./assets";
 
+/* 
+  File containing all the common types we use throughout the app.
+*/
+
+// Course restriction type. Has the restriction name as well as the description of the restriction.
 export type Restriction = {
   RestrictionName: string;
   Description: string;

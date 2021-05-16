@@ -6,26 +6,26 @@ import { UserCourse } from "../../commonTypes";
 import axios from "axios";
 const api = "https://ucredit-api.herokuapp.com/api";
 
+/* 
+  Container component that holds all the years, semesters, and courses of the current plan.
+*/
 function CourseList() {
   // Setting up redux
   const dispatch = useDispatch();
   const currentPlan = useSelector(selectPlan);
-
   const freshmanCourseIDs = currentPlan.freshman;
   const sophomoreCourseIDs = currentPlan.sophomore;
   const juniorCourseIDs = currentPlan.junior;
   const seniorCourseIDs = currentPlan.senior;
 
+  // Course state setup.
   const [fCourses, setFCourses] = useState<UserCourse[]>([]);
   const [soCourses, setSoCourses] = useState<UserCourse[]>([]);
   const [jCourses, setJCourses] = useState<UserCourse[]>([]);
   const [seCourses, setSeCourses] = useState<UserCourse[]>([]);
 
-  const getCourses = (
-    courseIDs: string[],
-    courses: UserCourse[],
-    updater: Function
-  ) => {
+  // Gets all courses from a specific semester in the current plan..
+  const getCourses = (courseIDs: string[], updater: Function) => {
     const totalCourses: UserCourse[] = [];
     if (courseIDs.length === 0) {
       updater([]);
@@ -38,7 +38,6 @@ function CourseList() {
             totalCourses.push(data);
             if (totalCourses.length === courseIDs.length) {
               updater(totalCourses);
-              // updater([...courses, ...totalCourses]);
             }
           })
           .catch((err) => console.log(err));
@@ -46,22 +45,27 @@ function CourseList() {
     }
   };
 
+  // Gets and sets all freshman courses whenever it gets updated.
   useEffect(() => {
-    getCourses(freshmanCourseIDs, fCourses, setFCourses);
+    getCourses(freshmanCourseIDs, setFCourses);
   }, [currentPlan, currentPlan._id, freshmanCourseIDs]);
 
+  // Gets and sets all sophomore courses whenever it gets updated.
   useEffect(() => {
-    getCourses(sophomoreCourseIDs, soCourses, setSoCourses);
+    getCourses(sophomoreCourseIDs, setSoCourses);
   }, [currentPlan, currentPlan._id, sophomoreCourseIDs]);
 
+  // Gets and sets all junior courses whenever it gets updated.
   useEffect(() => {
-    getCourses(juniorCourseIDs, jCourses, setJCourses);
+    getCourses(juniorCourseIDs, setJCourses);
   }, [currentPlan, currentPlan._id, juniorCourseIDs]);
 
+  // Gets and sets all senior courses whenever it gets updated.
   useEffect(() => {
-    getCourses(seniorCourseIDs, seCourses, setSeCourses);
+    getCourses(seniorCourseIDs, setSeCourses);
   }, [currentPlan, currentPlan._id, seniorCourseIDs]);
 
+  // When any of the freshman, sophomore, junior, or senior courses change or gets a course deleted, current plan gets updated.
   useEffect(() => {
     let totalCourses: UserCourse[] = [];
     totalCourses = [...fCourses, ...seCourses, ...jCourses, ...soCourses];
@@ -71,15 +75,12 @@ function CourseList() {
 
   return (
     <>
-      {/* <div className="flex flex-col h-auto overflow-y-auto"> */}
-      {/* <div className='fixed z-10 left-0 medium:left-48 medium:right-blurr right-blurrsm block flex-none h-5 bg-gradient-to-b from-background pointer-events-none'></div> */}
       <div className="flex flex-row flex-wrap justify-between thin:justify-center mt-4 h-auto">
         <Year yearName={"Freshman"} courses={fCourses} />
         <Year yearName={"Sophomore"} courses={soCourses} />
         <Year yearName={"Junior"} courses={jCourses} />
         <Year yearName={"Senior"} courses={seCourses} />
       </div>
-      {/* </div> */}
     </>
   );
 }

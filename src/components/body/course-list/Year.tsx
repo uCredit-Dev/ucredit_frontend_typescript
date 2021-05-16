@@ -10,7 +10,12 @@ type semesterProps = {
   courses: UserCourse[];
 };
 
-// Dropdown of all semesters and courses for each semester in a year.
+/* 
+  A component displaying all the courses in a specific semester.
+  Props:
+    courses: courses it's displaying
+    yearName: year this column is displaying
+*/
 function Year({ yearName, courses }: semesterProps) {
   const [fallCourses, setFallCourses] = useState<UserCourse[]>([]);
   const [springCourses, setSpringCourses] = useState<UserCourse[]>([]);
@@ -21,6 +26,7 @@ function Year({ yearName, courses }: semesterProps) {
   // Setting up redux
   const currentPlan = useSelector(selectPlan);
 
+  // Updates and parses all courses into semesters whenever the current plan or courses array changes.
   useEffect(() => {
     // For each of the user's courses for this year, put them in their respective semesters.
     const parsedFallCourses: UserCourse[] = [];
