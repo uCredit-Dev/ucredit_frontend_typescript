@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import { UserCourse, YearType, Plan, SemesterType } from "../../commonTypes";
 import { getColors } from "../../assets";
 import { useDispatch, useSelector } from "react-redux";
@@ -26,12 +26,15 @@ type courseProps = {
   semester: SemesterType;
 };
 
+/*
+  This is a course card displayed in the course list under each semester.
+  Props:
+    Course: course it's displaying
+    Year: year this course is part of
+    Semester: semester this course is part of
+*/
 function CourseComponent({ year, course, semester }: courseProps) {
   const [activated, setActivated] = useState<boolean>(false);
-
-  useEffect(() => {
-    console.log(course);
-  });
 
   // Redux setup
   const dispatch = useDispatch();

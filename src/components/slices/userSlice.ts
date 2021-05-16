@@ -2,20 +2,13 @@ import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { AppThunk, RootState } from "../../appStore/store";
 import { Distribution, Plan, User, UserCourse } from "../commonTypes";
 
-// addNewCourse payload type. Not being used.
-// type NewCourse = {
-//   toAdd: Course;
-//   Semester: SemesterType;
-//   Year: YearType;
-//   Plan: Plan;
-// };
-
 type UserSlice = {
   currentUser: User;
   currentPlan: Plan;
   planList: Plan[];
   distributions: Distribution[];
   currentPlanCourses: UserCourse[];
+  deleting: boolean;
 };
 
 const initialState: UserSlice = {
@@ -43,6 +36,7 @@ const initialState: UserSlice = {
   planList: [],
   distributions: [],
   currentPlanCourses: [],
+  deleting: false,
 };
 
 // Updates all user info from database. This function should be called after an axios get on the user routes.
@@ -64,6 +58,9 @@ export const userSlice = createSlice({
   name: "user",
   initialState,
   reducers: {
+    updateDeleteStatus: (state: any, action: PayloadAction<boolean>) => {
+      state.deleting = action.payload;
+    },
     updateUser: userUpdate,
     updateSelectedPlan: (state: any, action: PayloadAction<Plan>) => {
       state.currentPlan = { ...action.payload };
@@ -90,6 +87,7 @@ export const userSlice = createSlice({
 });
 
 export const {
+  updateDeleteStatus,
   updateUser,
   updateSelectedPlan,
   updatePlanList,
@@ -114,5 +112,6 @@ export const selectDistributions = (state: RootState) =>
   state.user.distributions;
 export const selectCurrentPlanCourses = (state: RootState) =>
   state.user.currentPlanCourses;
+export const selectDeleteStatus = (state: RootState) => state.user.deleting;
 
 export default userSlice.reducer;

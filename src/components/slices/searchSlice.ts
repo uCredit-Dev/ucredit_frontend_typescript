@@ -10,11 +10,13 @@ import {
   AreaType,
 } from "../commonTypes";
 
+// Contains the year and semester that we are currently adding courses to.
 type TimeBundle = {
   searchYear: YearType;
   searchSemester: SemesterType;
 };
 
+// Contains all the filters.
 type FilterObj = {
   credits: number | "Any";
   distribution: AreaType | "Any";
@@ -24,6 +26,7 @@ type FilterObj = {
   wi: "Any" | boolean;
 };
 
+// Contains all the search states.
 type searchStates = {
   searching: boolean;
   searchTerm: string;
@@ -55,6 +58,7 @@ const initialState: searchStates = {
   placeholder: false,
   searchStack: [],
 };
+
 export const searchSlice = createSlice({
   name: "search",
   initialState,

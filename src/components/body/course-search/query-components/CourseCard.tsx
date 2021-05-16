@@ -12,7 +12,11 @@ type cardProps = {
   course: Course;
 };
 
-// A course slot displayed in the course list once search is performed.
+/* 
+  A course card in the search list.
+  Props:
+    course: course being displayed
+*/
 const CourseCard = (props: cardProps) => {
   const course = props.course;
 

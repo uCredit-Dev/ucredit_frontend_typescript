@@ -10,7 +10,9 @@ import Form from "./query-components/Form";
 import SearchList from "./query-components/SearchList";
 import { ReactComponent as HideSvg } from "../../svg/Hide.svg";
 
-// Search component when someone clicks a search action.
+/* 
+  Search component when someone clicks a search action./* 
+*/
 const Search = () => {
   // Controls opacity
   const [searchOpacity, setSearchOpacity] = useState<number>(100);
@@ -26,7 +28,7 @@ const Search = () => {
       <div
         className="fixed z-20 left-0 top-0 m-0 w-full h-screen bg-black"
         style={{
-          opacity: searchOpacity === 100 ? 0.7 : 0,
+          opacity: searchOpacity === 100 ? 0.5 : 0,
         }}
         onClick={() => {
           dispatch(updateSearchStatus(false));
