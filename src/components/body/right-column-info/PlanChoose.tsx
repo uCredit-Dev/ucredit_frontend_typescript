@@ -146,7 +146,7 @@ const PlanChoose: React.FC<PlanChooseProps> = (props) => {
         });
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [user, props.newPlan, planList.length]);
+  }, [user, planList, planList.length]);
 
   // Handles onClick for when a dropdown option is selected
   const handlePlanChange = (event: any) => {

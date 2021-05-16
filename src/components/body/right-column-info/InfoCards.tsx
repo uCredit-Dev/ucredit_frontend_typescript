@@ -6,13 +6,10 @@ import {
   selectPlanList,
   updatePlanList,
   updateSelectedPlan,
-  updateGuestPlanIds,
+  updateDeleteStatus,
 } from "../../slices/userSlice";
 import PlanChoose from "./PlanChoose";
 import { ReactComponent as RemoveSvg } from "../../svg/Remove.svg";
-import { testMajorCSNew } from "../../testObjs";
-import axios from "axios";
-import { Plan } from "../../commonTypes";
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
@@ -62,16 +59,16 @@ const InfoCards: React.FC<any> = () => {
       body: JSON.stringify(body),
     })
       .then((resp) => {
-        const newPlan = { ...currentPlan, name: planName };
-        dispatch(updateSelectedPlan(newPlan));
+        const newUpdatedPlan = { ...currentPlan, name: planName };
+        dispatch(updateSelectedPlan(newUpdatedPlan));
         // TODO: There are many codes like this to update the planList in other functions. we need to generalize or simplify this sometime. either as a common function or a function on the userSlice
         let newPlanList = [...planList];
         for (let i = 0; i < planList.length; i++) {
           if (newPlanList[i]._id === currentPlan._id) {
-            newPlanList[i] = { ...newPlan };
+            newPlanList[i] = { ...newUpdatedPlan };
           }
         }
-        toast.success("Plan name changed to " + newPlan.name + "!", {
+        toast.success("Plan name changed to " + newUpdatedPlan.name + "!", {
           position: "top-right",
           autoClose: 5000,
           hideProgressBar: true,
@@ -90,83 +87,8 @@ const InfoCards: React.FC<any> = () => {
     setPlanName(currentPlan.name);
   }, [currentPlan]);
 
-  const deleteCurrentPlan = () => {
-    // delete plan from db
-    // update plan array
-    fetch(api + "/plans/" + currentPlan._id, {
-      method: "DELETE",
-    })
-      .then(() => {
-        // if (!toasted) {
-        toast.error(currentPlan.name + " deleted!", {
-          position: "top-right",
-          autoClose: 5000,
-          hideProgressBar: true,
-          closeOnClick: true,
-          draggable: true,
-          progress: undefined,
-        });
-        //   staggerToast();
-        // }
-        let updatedList = [...planList]; // TODO: Once user routes are figured out, pull user info from db.
-        updatedList = updatedList.filter((plan) => {
-          return plan._id !== currentPlan._id;
-        });
-
-        // If it is length 1, autogenerate a new plan. Otherwise, update the list.
-        if (updatedList.length === 0 && user._id !== "noUser") {
-          // Post req body for a new plan
-          const planBody = {
-            name: "Unnamed Plan",
-            user_id: user._id,
-            majors: [testMajorCSNew.name],
-          };
-
-          axios.post(api + "/plans", planBody).then((data: any) => {
-            let newRetrievedPlan: Plan = { ...data.data.data };
-            testMajorCSNew.generalDistributions.forEach((distr, index) => {
-              axios
-                .post(api + "/distributions", {
-                  name: distr.name,
-                  required: distr.required,
-                  user_id: user._id,
-                  plan_id: newRetrievedPlan._id,
-                })
-                .then((newDistr: any) => {
-                  newRetrievedPlan = {
-                    ...newRetrievedPlan,
-                    distribution_ids: [
-                      ...newRetrievedPlan.distribution_ids,
-                      newDistr.data.data._id,
-                    ],
-                  };
-                })
-                .then(() => {
-                  if (
-                    index ===
-                    testMajorCSNew.generalDistributions.length - 1
-                  ) {
-                    dispatch(updateSelectedPlan(newRetrievedPlan));
-                    if (user._id === "guestUser") {
-                      const planIdArray = [newRetrievedPlan._id];
-                      dispatch(updateGuestPlanIds(planIdArray));
-                      dispatch(
-                        updatePlanList([newRetrievedPlan, ...updatedList])
-                      );
-                    }
-                    setNewPlan(newPlan + 1);
-                  }
-                });
-            });
-          });
-        } else {
-          dispatch(updateSelectedPlan(updatedList[0]));
-          dispatch(updatePlanList(updatedList));
-          setNewPlan(newPlan + 1);
-        }
-        // dispatch(updateSelectedPlan(updatedList[0]));
-      })
-      .catch((err) => console.log(err));
+  const activateDeletePlan = () => {
+    dispatch(updateDeleteStatus(true));
   };
 
   return (
@@ -181,7 +103,7 @@ const InfoCards: React.FC<any> = () => {
             />
             <RemoveSvg
               className="w-6 h-6 stroke-2 cursor-pointer select-none transform hover:translate-x-0.5 hover:translate-y-0.5 transition duration-200 ease-in"
-              onClick={deleteCurrentPlan}
+              onClick={activateDeletePlan}
             />
           </div>
           <PlanChoose
