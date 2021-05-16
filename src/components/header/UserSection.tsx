@@ -68,12 +68,12 @@ function UserSection(props: any) {
     })
       .then((resp) => resp.json())
       .then((retrievedUser) => {
-        console.log("retrieved ", retrievedUser);
+        // console.log("retrieved ", retrievedUser);
         // dispatch(updateUser(retrievedUser.data));
         // setGuest(false);
         if (retrievedUser.errors.length > 0) {
           // Set user to guest user
-          // dispatch(updateUser(guestUser));
+          dispatch(updateUser(guestUser));
         }
       })
       .catch((err) => {
@@ -82,7 +82,7 @@ function UserSection(props: any) {
         //    (B) load in a local guest user and wait for them to access https://ucredit-api.herokuapp.com/api/login
         //          by clicking the "Log In" button in the header.
         console.log("ERROR: ", err.message);
-        // dispatch(updateUser(guestUser));
+        dispatch(updateUser(guestUser));
       });
     // axios
     //   .get(api + "/retrieveUser", {
@@ -107,7 +107,7 @@ function UserSection(props: any) {
     //     dispatch(updateUser(guestUser));
     //   });
 
-    dispatch(updateUser(testUser));
+    // dispatch(updateUser(testUser));
   }, [authCookies]);
 
   return (
