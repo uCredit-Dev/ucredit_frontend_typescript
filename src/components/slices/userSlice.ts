@@ -1,15 +1,6 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
-import { any } from "prop-types";
 import { AppThunk, RootState } from "../../appStore/store";
 import { Distribution, Plan, User, UserCourse } from "../commonTypes";
-
-// addNewCourse payload type. Not being used.
-// type NewCourse = {
-//   toAdd: Course;
-//   Semester: SemesterType;
-//   Year: YearType;
-//   Plan: Plan;
-// };
 
 type UserSlice = {
   currentUser: User;

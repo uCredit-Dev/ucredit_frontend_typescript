@@ -12,12 +12,19 @@ type semesterProps = {
   courses: UserCourse[];
 };
 
-// Dropdown of all courses in a semester.
+/* 
+  A component displaying all the courses in a specific semester.
+  Props:
+    courses: courses it's displaying
+    semesterYear: year this course is part of
+    semesterName: semester this course is part of
+*/
 function Semester({ semesterName, semesterYear, courses }: semesterProps) {
   // Total credits and sorted courses.
   const [totalCredits, setTotalCredits] = useState<number>(0);
   const [semesterCourses, setSemesterCourses] = useState<UserCourse[]>([]);
 
+  // Every time any courses within this semester changes, update total credit count and the list.
   useEffect(() => {
     setSemesterCourses(
       courses.sort((course1, course2) =>

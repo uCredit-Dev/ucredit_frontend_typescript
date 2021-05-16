@@ -1,6 +1,9 @@
 import React, { useState } from "react";
 import clsx from "clsx";
 
+/* 
+  This is one of the open-close prereq pill dropdowns.
+*/
 const PrereqDropdown = (props: {
   text: string;
   satisfied: boolean;
@@ -19,7 +22,6 @@ const PrereqDropdown = (props: {
     let orAndSatisfied = false;
 
     return props.element.map((el: any, index) => {
-      // TODO: Modularize this
       if (typeof el !== "number") {
         const parsed: {
           satisfied: boolean;
@@ -38,6 +40,7 @@ const PrereqDropdown = (props: {
           orAndSatisfied = false;
         }
 
+        // Updates satisfied condition if recursive depth first search prereq processing produces true.
         if (
           index === props.element.length - 1 &&
           orAndSatisfied &&

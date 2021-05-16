@@ -4,6 +4,9 @@ import Content from "./body/Content";
 import { ToastContainer } from "react-toastify";
 //import { Counter } from '../redux_sample/Counter';
 
+/* 
+  Root app component.
+*/
 function App() {
   return (
     <div className="flex flex-col w-full h-full">

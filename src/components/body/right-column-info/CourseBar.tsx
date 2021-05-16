@@ -9,6 +9,14 @@ type courseBarProps = {
   section: string;
 };
 
+/* 
+  A distribution bar.
+  Props:
+    maxCredits: maximum amound of credits
+    plannedCredits: amount of credits in your plan
+    currentCredits: current amount of credits taken
+    section: distribution name
+*/
 function CourseBar({
   maxCredits,
   plannedCredits,

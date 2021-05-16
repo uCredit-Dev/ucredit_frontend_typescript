@@ -1,6 +1,9 @@
 import React from "react";
 import UserSection from "./UserSection";
 
+/* 
+  Header bar at top of the page.
+*/
 function Header() {
   return (
     <>

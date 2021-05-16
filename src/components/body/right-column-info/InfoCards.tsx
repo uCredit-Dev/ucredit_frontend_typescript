@@ -15,7 +15,10 @@ import "react-toastify/dist/ReactToastify.css";
 
 const api = "https://ucredit-api.herokuapp.com/api";
 
-const InfoCards: React.FC<any> = () => {
+/* 
+  User/Current plan information area.
+*/
+const InfoCards = () => {
   // Redux Setup
   const dispatch = useDispatch();
   const user = useSelector(selectUser);
