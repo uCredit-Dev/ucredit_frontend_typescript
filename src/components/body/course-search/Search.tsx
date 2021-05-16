@@ -26,7 +26,7 @@ const Search = () => {
       <div
         className="fixed z-20 left-0 top-0 m-0 w-full h-screen bg-black"
         style={{
-          opacity: searchOpacity === 100 ? 0.7 : 0,
+          opacity: searchOpacity === 100 ? 0.5 : 0,
         }}
         onClick={() => {
           dispatch(updateSearchStatus(false));

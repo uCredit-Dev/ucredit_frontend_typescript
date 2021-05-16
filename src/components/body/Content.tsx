@@ -4,10 +4,15 @@ import CourseList from "./course-list/CourseList";
 import { Distribution } from "../commonTypes";
 import Search from "./course-search/Search";
 import { selectSearchStatus } from "../slices/searchSlice";
-import { updateDistributions, selectPlan } from "../slices/userSlice";
+import {
+  updateDistributions,
+  selectPlan,
+  selectDeleteStatus,
+} from "../slices/userSlice";
 import { useSelector, useDispatch } from "react-redux";
 import InfoCards from "./right-column-info/InfoCards";
 import axios from "axios";
+import DeletePlanPopup from "./DeletePlanPopup";
 
 const api = "https://ucredit-api.herokuapp.com/api";
 
@@ -15,6 +20,7 @@ function Content() {
   const [distributions, setDistributions] = useState<Distribution[]>([]);
   const searching = useSelector(selectSearchStatus);
   const currentPlan = useSelector(selectPlan);
+  const deleteStatus = useSelector(selectDeleteStatus);
   const dispatch = useDispatch();
 
   useEffect(() => {
@@ -94,6 +100,7 @@ function Content() {
             : null}
         </div>
         {searching ? <Search /> : null}
+        {deleteStatus ? <DeletePlanPopup /> : null}
       </div>
     </div>
   );
