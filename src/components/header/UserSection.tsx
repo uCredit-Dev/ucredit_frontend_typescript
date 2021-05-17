@@ -1,17 +1,14 @@
-import React, { useState, useEffect, useRef } from "react";
-import { testUser } from "../testObjs";
+import React, { useState, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { updateUser, selectUser } from "../slices/userSlice";
 import { ReactComponent as UserSvg } from "../svg/User.svg";
-import cookie, { withCookies, useCookies, Cookies } from "react-cookie";
+import { withCookies, useCookies } from "react-cookie";
 import { guestUser } from "../assets";
 import axiosCookieJarSupport from "axios-cookiejar-support";
 import axios from "axios";
-import tough from "tough-cookie";
 import useUnload from "./useUnload";
 axiosCookieJarSupport(axios);
 
-const cookieJar = new tough.CookieJar();
 const api = "https://ucredit-api.herokuapp.com/api";
 const deploy = "https://ucredit.herokuapp.com/";
 const dev = "http://localhost:3000/";
@@ -36,7 +33,7 @@ function UserSection(props: any) {
           .catch((err) => console.log(err));
       });
     }
-    e.returnValue = "";
+    e.returnValue = "Are you sure you don't want to save guest courses?";
   });
 
   const dispatch = useDispatch();
