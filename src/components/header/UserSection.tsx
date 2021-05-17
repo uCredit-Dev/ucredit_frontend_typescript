@@ -4,10 +4,7 @@ import { updateUser, selectUser } from "../slices/userSlice";
 import { ReactComponent as UserSvg } from "../svg/User.svg";
 import { withCookies, useCookies } from "react-cookie";
 import { guestUser } from "../assets";
-import axiosCookieJarSupport from "axios-cookiejar-support";
-import axios from "axios";
 import useUnload from "./useUnload";
-axiosCookieJarSupport(axios);
 
 const api = "https://ucredit-api.herokuapp.com/api";
 const deploy = "https://ucredit.herokuapp.com/";
@@ -17,6 +14,15 @@ const dev = "http://localhost:3000/";
   User login/logout buttons.
 */
 function UserSection(props: any) {
+  // Redux setup
+  const dispatch = useDispatch();
+  const user = useSelector(selectUser);
+
+  // Component state setup
+  const [cookies, setCookies] = useState(props.cookies);
+  const [authCookies, setAuthCookie] = useCookies(["connect.sid"]);
+
+  // on unload, attempts to cleanup guest user plans.
   useUnload((e: any) => {
     e.preventDefault();
     console.log("unloading");
@@ -36,12 +42,7 @@ function UserSection(props: any) {
     e.returnValue = "Are you sure you don't want to save guest courses?";
   });
 
-  const dispatch = useDispatch();
-  const user = useSelector(selectUser);
-
-  const [cookies, setCookies] = useState(props.cookies);
-  const [authCookies, setAuthCookie] = useCookies(["connect.sid"]);
-
+  // Creates a cookie based on url.
   const createCookie = () => {
     const currentURL = window.location.href;
     let token = "";
@@ -61,9 +62,8 @@ function UserSection(props: any) {
   };
 
   // Useffect runs once on page load, calling to https://ucredit-api.herokuapp.com/api/retrieveUser to retrieve user data.
-  // On successful retrieve, update redux with retrieved user,
-  // NOTE: Currently, the user is set to the testUser object found in @src/testObjs.tsx, with a JHED of mliu78 (Matthew Liu)
-  //            redux isn't being updated with retrieved user data, as login has issues.
+  // On successful retrieve, update redux with retrieved user
+  // On fail, guest user is used.
   useEffect(() => {
     console.log("cookei is ", cookies.get("connect.sid"));
     if (cookies.get("connect.sid") !== undefined) {
