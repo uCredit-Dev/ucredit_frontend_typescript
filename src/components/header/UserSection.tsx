@@ -42,14 +42,9 @@ function UserSection(props: any) {
   const [cookies, setCookies] = useState(props.cookies);
   const [authCookies, setAuthCookie] = useCookies(["connect.sid"]);
 
-  // Useffect runs once on page load, calling to https://ucredit-api.herokuapp.com/api/retrieveUser to retrieve user data.
-  // On successful retrieve, update redux with retrieved user,
-  // NOTE: Currently, the user is set to the testUser object found in @src/testObjs.tsx, with a JHED of mliu78 (Matthew Liu)
-  //            redux isn't being updated with retrieved user data, as login has issues.
-  useEffect(() => {
+  const createCookie = () => {
     const currentURL = window.location.href;
-    let token =
-      "s%3AIqAJNZFbivJbfEsoL0fZr-9-qMdKOthI.FpB65v7BX%2F6eJ6RXPYJyCUlna6uWec8fh5L2TUJ%2BbFI";
+    let token = "";
     if (currentURL.includes(deploy)) {
       token = currentURL.substr(
         deploy.length,
@@ -61,10 +56,39 @@ function UserSection(props: any) {
       console.log("token is " + token);
     }
 
-    // cookie.save("connect.sid", true, {path:"/"});
-
     setAuthCookie("connect.sid", token);
     setCookies(props.cookies);
+  };
+
+  // Useffect runs once on page load, calling to https://ucredit-api.herokuapp.com/api/retrieveUser to retrieve user data.
+  // On successful retrieve, update redux with retrieved user,
+  // NOTE: Currently, the user is set to the testUser object found in @src/testObjs.tsx, with a JHED of mliu78 (Matthew Liu)
+  //            redux isn't being updated with retrieved user data, as login has issues.
+  useEffect(() => {
+    console.log("cookei is ", cookies.get("connect.sid"));
+    if (cookies.get("connect.sid") !== undefined) {
+      console.log("in nonUndefined");
+      fetch(api + "/retrieveUser/" + cookies.get("connect.sid"), {
+        mode: "cors",
+        method: "GET",
+        credentials: "include",
+        headers: {
+          Accept: "application/json",
+          "Content-Type": "application/json",
+        },
+      })
+        .then((resp) => resp.json())
+        .then((retrievedUser) => {
+          if (retrievedUser.errors !== undefined) {
+            createCookie();
+          }
+        })
+        .catch(() => {
+          createCookie();
+        });
+    } else {
+      createCookie();
+    }
   }, [window.location.href]);
 
   // Useffect runs once on page load, calling to https://ucredit-api.herokuapp.com/api/retrieveUser to retrieve user data.
@@ -83,8 +107,6 @@ function UserSection(props: any) {
         headers: {
           Accept: "application/json",
           "Content-Type": "application/json",
-          user:
-            "connect.sid=" + cookies.get("connect.sid") + "; Path=/; HttpOnly",
         },
       })
         .then((resp) => resp.json())
