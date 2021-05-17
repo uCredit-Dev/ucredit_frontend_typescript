@@ -26,18 +26,13 @@ function UserSection(props: any) {
   // on unload, attempts to cleanup guest user plans.
   useUnload((e: any) => {
     e.preventDefault();
-    console.log("unloading");
     if (user._id === "guestUser") {
       user.plan_ids.forEach((planId) => {
         // delete plan from db
         // update plan array
         fetch(api + "/plans/" + planId, {
           method: "DELETE",
-        })
-          .then(() => {
-            console.log("deleted planId");
-          })
-          .catch((err) => console.log(err));
+        }).catch((err) => console.log(err));
       });
     }
     e.returnValue = "Are you sure you don't want to save guest courses?";
@@ -51,11 +46,8 @@ function UserSection(props: any) {
     window.location.href = deploy;
   };
 
-  // Useffect runs once on page load, calling to https://ucredit-api.herokuapp.com/api/retrieveUser to retrieve user data.
-  // On successful retrieve, update redux with retrieved user
-  // On fail, guest user is used.
-  useEffect(() => {
-    console.log("cookei is ", authCookies);
+  // Gets cookie token from url.
+  const getToken = (): string => {
     const currentURL: string = window.location.href;
     let token: string = "";
     if (currentURL.includes(deploy)) {
@@ -63,14 +55,18 @@ function UserSection(props: any) {
         deploy.length,
         currentURL.length - deploy.length
       );
-      console.log("token is " + token);
     } else {
       token = currentURL.substr(dev.length, currentURL.length - dev.length);
-      console.log("token is " + token);
     }
+    return token;
+  };
 
+  // Useffect runs once on page load, calling to https://ucredit-api.herokuapp.com/api/retrieveUser to retrieve user data.
+  // On successful retrieve, update redux with retrieved user
+  // On fail, guest user is used.
+  useEffect(() => {
+    const token: string = getToken();
     if (cookies.get("connect.sid") !== undefined && token.length > 0) {
-      console.log("in nonUndefined");
       fetch(api + "/retrieveUser/" + cookies.get("connect.sid"), {
         mode: "cors",
         method: "GET",
@@ -90,6 +86,7 @@ function UserSection(props: any) {
           createCookie(token);
         });
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [window.location.href]);
 
   // Useffect runs once on page load, calling to https://ucredit-api.herokuapp.com/api/retrieveUser to retrieve user data.
@@ -97,24 +94,10 @@ function UserSection(props: any) {
   // NOTE: Currently, the user is set to the testUser object found in @src/testObjs.tsx, with a JHED of mliu78 (Matthew Liu)
   //            redux isn't being updated with retrieved user data, as login has issues.
   useEffect(() => {
-    console.log("cookei is ", authCookies);
-    console.log("cookei is ", authCookies);
-    const currentURL: string = window.location.href;
-    let token: string = "";
-    if (currentURL.includes(deploy)) {
-      token = currentURL.substr(
-        deploy.length,
-        currentURL.length - deploy.length
-      );
-      console.log("token is " + token);
-    } else {
-      token = currentURL.substr(dev.length, currentURL.length - dev.length);
-      console.log("token is " + token);
-    }
+    const token: string = getToken();
     if (user._id === "noUser" && token.length === 0) {
       // Retrieves user if user ID is "noUser", the initial user id state for userSlice.tsx.
       // Make call for backend
-      console.log("connect.sid=" + cookies.get("connect.sid"));
       fetch(api + "/retrieveUser/" + cookies.get("connect.sid"), {
         mode: "cors",
         method: "GET",
@@ -126,11 +109,9 @@ function UserSection(props: any) {
       })
         .then((resp) => resp.json())
         .then((retrievedUser) => {
-          console.log("retrieved ", retrievedUser);
           dispatch(
-            updateUser(retrievedUser.data) // Fix issue of infinite loop
+            updateUser(retrievedUser.data) // TODO: Fix issue of infinite loop
           );
-          // setGuest(false);
           if (retrievedUser.errors !== undefined) {
             // Set user to guest user
             dispatch(updateUser(guestUser));
@@ -145,7 +126,7 @@ function UserSection(props: any) {
           dispatch(updateUser(guestUser));
         });
     }
-    // dispatch(updateUser(testUser));
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [cookies, authCookies]);
 
   return (
