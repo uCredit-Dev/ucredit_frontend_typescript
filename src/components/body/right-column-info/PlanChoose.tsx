@@ -248,7 +248,7 @@ const PlanChoose = (props: PlanChooseProps) => {
   };
 
   useEffect(() => {
-    if (user.plan_ids.length === 0 && user._id !== "noUser") {
+    if (user.plan_ids.length === 0 && user._id === "guestUser") {
       // Post req body for a new plan
       const planBody = {
         name: "Unnamed Plan",
@@ -258,6 +258,15 @@ const PlanChoose = (props: PlanChooseProps) => {
 
       axios.post(api + "/plans", planBody).then((data: any) => {
         let newRetrievedPlan = { ...data.data.data };
+        toast.success("New Unnamed Plan created!", {
+          position: "top-right",
+          autoClose: 5000,
+          hideProgressBar: true,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+        });
         testMajorCSNew.generalDistributions.forEach(
           (distr: any, index: number) => {
             axios
@@ -291,7 +300,7 @@ const PlanChoose = (props: PlanChooseProps) => {
         );
       });
     }
-  });
+  }, [user._id]);
 
   const [dropdown, setDropdown] = useState<boolean>(false);
   const openSelectDropdown = () => {
