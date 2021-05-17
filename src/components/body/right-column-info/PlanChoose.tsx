@@ -304,6 +304,7 @@ const PlanChoose = (props: PlanChooseProps) => {
         }
       });
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [user._id]);
 
   const [dropdown, setDropdown] = useState<boolean>(false);

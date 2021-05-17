@@ -377,7 +377,9 @@ const Form = () => {
         {showAllResults ? (
           <button onClick={dontShowAll}>Show Top Results (faster)</button>
         ) : (
-          <button onClick={showAll}>Show all results (slower)</button>
+          <button onClick={showAll}>
+            Don't see your class? Show all results (slower)
+          </button>
         )}
       </div>
       {showCriteria ? (
