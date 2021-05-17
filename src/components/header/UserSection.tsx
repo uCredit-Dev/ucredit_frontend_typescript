@@ -58,7 +58,7 @@ function UserSection(props: any) {
     // Retrieves user if user ID is "noUser", the initial user id state for userSlice.tsx.
     // Make call for backend
     console.log("connect.sid=" + cookies.get("connect.sid"));
-    fetch(api + "/retrieveUser" + cookies.get("connect.sid"), {
+    fetch(api + "/retrieveUser/" + cookies.get("connect.sid"), {
       mode: "cors",
       method: "GET",
       credentials: "include",
@@ -72,7 +72,7 @@ function UserSection(props: any) {
       .then((resp) => resp.json())
       .then((retrievedUser) => {
         // console.log("retrieved ", retrievedUser);
-        // dispatch(updateUser(retrievedUser.data));
+        dispatch(updateUser({ ...user, _id: retrievedUser.data.id }));
         // setGuest(false);
         if (retrievedUser.errors.length > 0) {
           // Set user to guest user
@@ -111,7 +111,7 @@ function UserSection(props: any) {
     //   });
 
     // dispatch(updateUser(testUser));
-  }, [authCookies]);
+  }, [authCookies, user._id]);
 
   return (
     <div className="flex flex-row items-center justify-end w-full h-full">
