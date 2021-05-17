@@ -61,6 +61,7 @@ function UserSection(props: any) {
     setAuthCookie("connect.sid", token);
     setCookies(props.cookies);
     setCookieUpdate(!cookieUpdate);
+    window.location.href = deploy;
   };
 
   // Useffect runs once on page load, calling to https://ucredit-api.herokuapp.com/api/retrieveUser to retrieve user data.
@@ -99,7 +100,7 @@ function UserSection(props: any) {
   //            redux isn't being updated with retrieved user data, as login has issues.
   useEffect(() => {
     console.log("cookei is ", authCookies);
-    if (user._id === "noUser") {
+    if (user._id === "noUser" && window.location.href.length === 0) {
       // Retrieves user if user ID is "noUser", the initial user id state for userSlice.tsx.
       // Make call for backend
       console.log("connect.sid=" + cookies.get("connect.sid"));
@@ -134,7 +135,7 @@ function UserSection(props: any) {
         });
     }
     // dispatch(updateUser(testUser));
-  }, [cookies.get("connect.sid")]);
+  }, [cookies, authCookies]);
 
   return (
     <div className="flex flex-row items-center justify-end w-full h-full">
