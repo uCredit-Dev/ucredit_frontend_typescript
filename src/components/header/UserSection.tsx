@@ -46,7 +46,7 @@ function UserSection(props: any) {
 
     // cookie.save("connect.sid", true, {path:"/"});
 
-    setAuthCookie("connect.sid", token, { sameSite: "none" });
+    setAuthCookie("connect.sid", token);
     setCookies(props.cookies);
   }, [cookies, props.cookies, window.location.href]);
 
@@ -58,7 +58,7 @@ function UserSection(props: any) {
     // Retrieves user if user ID is "noUser", the initial user id state for userSlice.tsx.
     // Make call for backend
     console.log("connect.sid=" + cookies.get("connect.sid"));
-    fetch(api + "/retrieveUser", {
+    fetch(api + "/retrieveUser" + cookies.get("connect.sid"), {
       mode: "cors",
       method: "GET",
       credentials: "include",
