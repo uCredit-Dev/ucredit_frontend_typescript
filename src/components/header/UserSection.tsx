@@ -89,8 +89,6 @@ function UserSection(props: any) {
         .catch(() => {
           createCookie();
         });
-    } else {
-      createCookie();
     }
   }, [window.location.href]);
 
