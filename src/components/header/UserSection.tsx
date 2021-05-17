@@ -55,61 +55,62 @@ function UserSection(props: any) {
   // NOTE: Currently, the user is set to the testUser object found in @src/testObjs.tsx, with a JHED of mliu78 (Matthew Liu)
   //            redux isn't being updated with retrieved user data, as login has issues.
   useEffect(() => {
-    // Retrieves user if user ID is "noUser", the initial user id state for userSlice.tsx.
-    // Make call for backend
-    console.log("connect.sid=" + cookies.get("connect.sid"));
-    fetch(api + "/retrieveUser/" + cookies.get("connect.sid"), {
-      mode: "cors",
-      method: "GET",
-      credentials: "include",
-      headers: {
-        Accept: "application/json",
-        "Content-Type": "application/json",
-        user:
-          "connect.sid=" + cookies.get("connect.sid") + "; Path=/; HttpOnly",
-      },
-    })
-      .then((resp) => resp.json())
-      .then((retrievedUser) => {
-        // console.log("retrieved ", retrievedUser);
-        dispatch(updateUser({ ...user, _id: retrievedUser.data.id }));
-        // setGuest(false);
-        if (retrievedUser.errors.length > 0) {
-          // Set user to guest user
-          dispatch(updateUser(guestUser));
-        }
+    if (user._id === "noUser" || user._id === "guestUser") {
+      // Retrieves user if user ID is "noUser", the initial user id state for userSlice.tsx.
+      // Make call for backend
+      console.log("connect.sid=" + cookies.get("connect.sid"));
+      fetch(api + "/retrieveUser/" + cookies.get("connect.sid"), {
+        mode: "cors",
+        method: "GET",
+        credentials: "include",
+        headers: {
+          Accept: "application/json",
+          "Content-Type": "application/json",
+          user:
+            "connect.sid=" + cookies.get("connect.sid") + "; Path=/; HttpOnly",
+        },
       })
-      .catch((err) => {
-        // TODO: If there is no retrievedUser we could
-        //    (A) redirect them to https://ucredit-api.herokuapp.com/api/login
-        //    (B) load in a local guest user and wait for them to access https://ucredit-api.herokuapp.com/api/login
-        //          by clicking the "Log In" button in the header.
-        console.log("ERROR: ", err.message);
-        dispatch(updateUser(guestUser));
-      });
-    // axios
-    //   .get(api + "/retrieveUser", {
-    //     withCredentials: true,
-    //     headers: { jar: cookieJar, withCredentials: true },
-    //   })
-    //   .then((retrievedUser: any) => {
-    //     console.log("retrieved ", retrievedUser);
-    //     // dispatch(updateUser(retrievedUser.data));
-    //     // setGuest(false);
-    //     // if (retrievedUser.errors.length > 0) {
-    //     // Set user to guest user
-    //     dispatch(updateUser(guestUser));
-    //     // }
-    //   })
-    //   .catch((err: any) => {
-    //     // TODO: If there is no retrievedUser we could
-    //     //    (A) redirect them to https://ucredit-api.herokuapp.com/api/login
-    //     //    (B) load in a local guest user and wait for them to access https://ucredit-api.herokuapp.com/api/login
-    //     //          by clicking the "Log In" button in the header.
-    //     console.log("ERROR: ", err);
-    //     dispatch(updateUser(guestUser));
-    //   });
-
+        .then((resp) => resp.json())
+        .then((retrievedUser) => {
+          // console.log("retrieved ", retrievedUser);
+          dispatch(updateUser({ ...user, _id: retrievedUser.data.id }));
+          // setGuest(false);
+          if (retrievedUser.errors.length > 0) {
+            // Set user to guest user
+            dispatch(updateUser(guestUser));
+          }
+        })
+        .catch((err) => {
+          // TODO: If there is no retrievedUser we could
+          //    (A) redirect them to https://ucredit-api.herokuapp.com/api/login
+          //    (B) load in a local guest user and wait for them to access https://ucredit-api.herokuapp.com/api/login
+          //          by clicking the "Log In" button in the header.
+          console.log("ERROR: ", err.message);
+          dispatch(updateUser(guestUser));
+        });
+      // axios
+      //   .get(api + "/retrieveUser", {
+      //     withCredentials: true,
+      //     headers: { jar: cookieJar, withCredentials: true },
+      //   })
+      //   .then((retrievedUser: any) => {
+      //     console.log("retrieved ", retrievedUser);
+      //     // dispatch(updateUser(retrievedUser.data));
+      //     // setGuest(false);
+      //     // if (retrievedUser.errors.length > 0) {
+      //     // Set user to guest user
+      //     dispatch(updateUser(guestUser));
+      //     // }
+      //   })
+      //   .catch((err: any) => {
+      //     // TODO: If there is no retrievedUser we could
+      //     //    (A) redirect them to https://ucredit-api.herokuapp.com/api/login
+      //     //    (B) load in a local guest user and wait for them to access https://ucredit-api.herokuapp.com/api/login
+      //     //          by clicking the "Log In" button in the header.
+      //     console.log("ERROR: ", err);
+      //     dispatch(updateUser(guestUser));
+      //   });
+    }
     // dispatch(updateUser(testUser));
   }, [authCookies, user._id]);
 
