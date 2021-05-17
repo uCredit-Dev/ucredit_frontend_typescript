@@ -48,7 +48,7 @@ function UserSection(props: any) {
 
     setAuthCookie("connect.sid", token);
     setCookies(props.cookies);
-  }, [cookies, props.cookies, window.location.href]);
+  }, [window.location.href]);
 
   // Useffect runs once on page load, calling to https://ucredit-api.herokuapp.com/api/retrieveUser to retrieve user data.
   // On successful retrieve, update redux with retrieved user,
@@ -90,28 +90,6 @@ function UserSection(props: any) {
           console.log("ERROR: ", err.message);
           dispatch(updateUser(guestUser));
         });
-      // axios
-      //   .get(api + "/retrieveUser", {
-      //     withCredentials: true,
-      //     headers: { jar: cookieJar, withCredentials: true },
-      //   })
-      //   .then((retrievedUser: any) => {
-      //     console.log("retrieved ", retrievedUser);
-      //     // dispatch(updateUser(retrievedUser.data));
-      //     // setGuest(false);
-      //     // if (retrievedUser.errors.length > 0) {
-      //     // Set user to guest user
-      //     dispatch(updateUser(guestUser));
-      //     // }
-      //   })
-      //   .catch((err: any) => {
-      //     // TODO: If there is no retrievedUser we could
-      //     //    (A) redirect them to https://ucredit-api.herokuapp.com/api/login
-      //     //    (B) load in a local guest user and wait for them to access https://ucredit-api.herokuapp.com/api/login
-      //     //          by clicking the "Log In" button in the header.
-      //     console.log("ERROR: ", err);
-      //     dispatch(updateUser(guestUser));
-      //   });
     }
     // dispatch(updateUser(testUser));
   }, [authCookies]);

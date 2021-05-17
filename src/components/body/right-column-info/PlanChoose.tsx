@@ -93,13 +93,25 @@ const PlanChoose = (props: PlanChooseProps) => {
             //         }
             //       });
             //   }
+            console.log("in autogen");
+            // Post req body for a new plan
             const planBody = {
               name: "Unnamed Plan",
               user_id: user._id,
-              majors: [testMajorCSNew],
+              majors: [testMajorCSNew.name],
             };
+
             axios.post(api + "/plans", planBody).then((data: any) => {
-              let newRetrievedPlan = { ...data.data.data };
+              let newRetrievedPlan: Plan = { ...data.data.data };
+              toast.success("New Unnamed Plan created!", {
+                position: "top-right",
+                autoClose: 5000,
+                hideProgressBar: true,
+                closeOnClick: true,
+                pauseOnHover: true,
+                draggable: true,
+                progress: undefined,
+              });
               testMajorCSNew.generalDistributions.forEach(
                 (distr: any, index: number) => {
                   axios
