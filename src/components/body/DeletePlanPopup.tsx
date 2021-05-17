@@ -82,12 +82,21 @@ const DeletePlanPopup = () => {
                     testMajorCSNew.generalDistributions.length - 1
                   ) {
                     dispatch(updateSelectedPlan(newRetrievedPlan));
+                    dispatch(
+                      updatePlanList([newRetrievedPlan, ...updatedList])
+                    );
+                    toast.success("New Unnamed Plan created!", {
+                      position: "top-right",
+                      autoClose: 5000,
+                      hideProgressBar: true,
+                      closeOnClick: true,
+                      pauseOnHover: true,
+                      draggable: true,
+                      progress: undefined,
+                    });
                     if (user._id === "guestUser") {
                       const planIdArray = [newRetrievedPlan._id];
                       dispatch(updateGuestPlanIds(planIdArray));
-                      dispatch(
-                        updatePlanList([newRetrievedPlan, ...updatedList])
-                      );
                     }
                   }
                 });

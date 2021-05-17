@@ -59,7 +59,6 @@ const PlanChoose = (props: PlanChooseProps) => {
               }
             });
           }
-          console.log("retrieved forr ", user._id, retrievedPlans);
 
           if (retrievedPlans.length > 0 && currentPlan._id === "noPlan") {
             // Initial load, there is no current plan, so we set the current to be the first plan in the array.
@@ -94,7 +93,6 @@ const PlanChoose = (props: PlanChooseProps) => {
             //         }
             //       });
             //   }
-            console.log("in autogen");
             // Post req body for a new plan
             const planBody = {
               name: "Unnamed Plan",
@@ -104,15 +102,6 @@ const PlanChoose = (props: PlanChooseProps) => {
 
             axios.post(api + "/plans", planBody).then((data: any) => {
               let newRetrievedPlan: Plan = { ...data.data.data };
-              toast.success("New Unnamed Plan created!", {
-                position: "top-right",
-                autoClose: 5000,
-                hideProgressBar: true,
-                closeOnClick: true,
-                pauseOnHover: true,
-                draggable: true,
-                progress: undefined,
-              });
               testMajorCSNew.generalDistributions.forEach(
                 (distr: any, index: number) => {
                   axios
@@ -138,12 +127,21 @@ const PlanChoose = (props: PlanChooseProps) => {
                       ) {
                         dispatch(updateSelectedPlan(newRetrievedPlan));
                         props.setNewPlan(props.newPlan + 1);
+                        dispatch(
+                          updatePlanList([newRetrievedPlan, ...planList])
+                        );
+                        toast.success("New Unnamed Plan created!", {
+                          position: "top-right",
+                          autoClose: 5000,
+                          hideProgressBar: true,
+                          closeOnClick: true,
+                          pauseOnHover: true,
+                          draggable: true,
+                          progress: undefined,
+                        });
                         if (user._id === "guestUser") {
                           const planIdArray = [newRetrievedPlan._id];
                           dispatch(updateGuestPlanIds(planIdArray));
-                          dispatch(
-                            updatePlanList([newRetrievedPlan, ...planList])
-                          );
                         }
                       }
                     });
@@ -183,15 +181,6 @@ const PlanChoose = (props: PlanChooseProps) => {
 
       axios.post(api + "/plans", planBody).then((data: any) => {
         let newRetrievedPlan: Plan = { ...data.data.data };
-        toast.success("New Unnamed Plan created!", {
-          position: "top-right",
-          autoClose: 5000,
-          hideProgressBar: true,
-          closeOnClick: true,
-          pauseOnHover: true,
-          draggable: true,
-          progress: undefined,
-        });
         testMajorCSNew.generalDistributions.forEach(
           (distr: any, index: number) => {
             axios
@@ -214,10 +203,19 @@ const PlanChoose = (props: PlanChooseProps) => {
                 if (index === testMajorCSNew.generalDistributions.length - 1) {
                   dispatch(updateSelectedPlan(newRetrievedPlan));
                   props.setNewPlan(props.newPlan + 1);
+                  dispatch(updatePlanList([newRetrievedPlan, ...planList]));
+                  toast.success("New Unnamed Plan created!", {
+                    position: "top-right",
+                    autoClose: 5000,
+                    hideProgressBar: true,
+                    closeOnClick: true,
+                    pauseOnHover: true,
+                    draggable: true,
+                    progress: undefined,
+                  });
                   if (user._id === "guestUser") {
                     const planIdArray = [newRetrievedPlan._id];
                     dispatch(updateGuestPlanIds(planIdArray));
-                    dispatch(updatePlanList([newRetrievedPlan, ...planList]));
                   }
                 }
               });
@@ -260,15 +258,6 @@ const PlanChoose = (props: PlanChooseProps) => {
       axios.post(api + "/plans", planBody).then((data: any) => {
         let newRetrievedPlan = { ...data.data.data };
         if (user._id === "guestUser") {
-          toast.success("New Guest Unnamed Plan created!", {
-            position: "top-right",
-            autoClose: 5000,
-            hideProgressBar: true,
-            closeOnClick: true,
-            pauseOnHover: true,
-            draggable: true,
-            progress: undefined,
-          });
           testMajorCSNew.generalDistributions.forEach(
             (distr: any, index: number) => {
               axios
@@ -294,10 +283,19 @@ const PlanChoose = (props: PlanChooseProps) => {
                   ) {
                     dispatch(updateSelectedPlan(newRetrievedPlan));
                     props.setNewPlan(props.newPlan + 1);
+                    dispatch(updatePlanList([newRetrievedPlan, ...planList]));
+                    toast.success("New Unnamed Plan created!", {
+                      position: "top-right",
+                      autoClose: 5000,
+                      hideProgressBar: true,
+                      closeOnClick: true,
+                      pauseOnHover: true,
+                      draggable: true,
+                      progress: undefined,
+                    });
                     if (user._id === "guestUser") {
                       const planIdArray = [newRetrievedPlan._id];
                       dispatch(updateGuestPlanIds(planIdArray));
-                      dispatch(updatePlanList([newRetrievedPlan, ...planList]));
                     }
                   }
                 });
