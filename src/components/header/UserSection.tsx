@@ -44,20 +44,7 @@ function UserSection(props: any) {
   });
 
   // Creates a cookie based on url.
-  const createCookie = () => {
-    const currentURL = window.location.href;
-    let token = "";
-    if (currentURL.includes(deploy)) {
-      token = currentURL.substr(
-        deploy.length,
-        currentURL.length - deploy.length
-      );
-      console.log("token is " + token);
-    } else {
-      token = currentURL.substr(dev.length, currentURL.length - dev.length);
-      console.log("token is " + token);
-    }
-
+  const createCookie = (token: string) => {
     setAuthCookie("connect.sid", token);
     setCookies(props.cookies);
     setCookieUpdate(!cookieUpdate);
@@ -69,7 +56,20 @@ function UserSection(props: any) {
   // On fail, guest user is used.
   useEffect(() => {
     console.log("cookei is ", authCookies);
-    if (cookies.get("connect.sid") !== undefined) {
+    const currentURL: string = window.location.href;
+    let token: string = "";
+    if (currentURL.includes(deploy)) {
+      token = currentURL.substr(
+        deploy.length,
+        currentURL.length - deploy.length
+      );
+      console.log("token is " + token);
+    } else {
+      token = currentURL.substr(dev.length, currentURL.length - dev.length);
+      console.log("token is " + token);
+    }
+
+    if (cookies.get("connect.sid") !== undefined && token.length > 0) {
       console.log("in nonUndefined");
       fetch(api + "/retrieveUser/" + cookies.get("connect.sid"), {
         mode: "cors",
@@ -83,11 +83,11 @@ function UserSection(props: any) {
         .then((resp) => resp.json())
         .then((retrievedUser) => {
           if (retrievedUser.errors !== undefined) {
-            createCookie();
+            createCookie(token);
           }
         })
         .catch(() => {
-          createCookie();
+          createCookie(token);
         });
     }
   }, [window.location.href]);
