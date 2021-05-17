@@ -98,7 +98,20 @@ function UserSection(props: any) {
   //            redux isn't being updated with retrieved user data, as login has issues.
   useEffect(() => {
     console.log("cookei is ", authCookies);
-    if (user._id === "noUser" && window.location.href.length === 0) {
+    console.log("cookei is ", authCookies);
+    const currentURL: string = window.location.href;
+    let token: string = "";
+    if (currentURL.includes(deploy)) {
+      token = currentURL.substr(
+        deploy.length,
+        currentURL.length - deploy.length
+      );
+      console.log("token is " + token);
+    } else {
+      token = currentURL.substr(dev.length, currentURL.length - dev.length);
+      console.log("token is " + token);
+    }
+    if (user._id === "noUser" && token.length === 0) {
       // Retrieves user if user ID is "noUser", the initial user id state for userSlice.tsx.
       // Make call for backend
       console.log("connect.sid=" + cookies.get("connect.sid"));
