@@ -165,7 +165,7 @@ const PlanChoose = (props: PlanChooseProps) => {
         });
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [user, planList, planList.length]);
+  }, [user._id]);
 
   // Handles onClick for when a dropdown option is selected
   const handlePlanChange = (event: any) => {

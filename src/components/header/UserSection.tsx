@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import { testUser } from "../testObjs";
 import { useDispatch, useSelector } from "react-redux";
 import { updateUser, selectUser } from "../slices/userSlice";
@@ -8,6 +8,7 @@ import { guestUser } from "../assets";
 import axiosCookieJarSupport from "axios-cookiejar-support";
 import axios from "axios";
 import tough from "tough-cookie";
+import useUnload from "./useUnload";
 axiosCookieJarSupport(axios);
 
 const cookieJar = new tough.CookieJar();
@@ -19,6 +20,25 @@ const dev = "http://localhost:3000/";
   User login/logout buttons.
 */
 function UserSection(props: any) {
+  useUnload((e: any) => {
+    e.preventDefault();
+    console.log("unloading");
+    if (user._id === "guestUser") {
+      user.plan_ids.forEach((planId) => {
+        // delete plan from db
+        // update plan array
+        fetch(api + "/plans/" + planId, {
+          method: "DELETE",
+        })
+          .then(() => {
+            console.log("deleted planId");
+          })
+          .catch((err) => console.log(err));
+      });
+    }
+    e.returnValue = "";
+  });
+
   const dispatch = useDispatch();
   const user = useSelector(selectUser);
 
@@ -55,7 +75,7 @@ function UserSection(props: any) {
   // NOTE: Currently, the user is set to the testUser object found in @src/testObjs.tsx, with a JHED of mliu78 (Matthew Liu)
   //            redux isn't being updated with retrieved user data, as login has issues.
   useEffect(() => {
-    if (user._id === "noUser" || user._id === "guestUser") {
+    if (user._id === "noUser") {
       // Retrieves user if user ID is "noUser", the initial user id state for userSlice.tsx.
       // Make call for backend
       console.log("connect.sid=" + cookies.get("connect.sid"));
@@ -74,7 +94,7 @@ function UserSection(props: any) {
         .then((retrievedUser) => {
           console.log("retrieved ", retrievedUser);
           dispatch(
-            updateUser({ ...retrievedUser.data, plan_ids: ["no plan"] }) // Fix issue of infinite loop
+            updateUser(retrievedUser.data) // Fix issue of infinite loop
           );
           // setGuest(false);
           if (retrievedUser.errors !== undefined) {
