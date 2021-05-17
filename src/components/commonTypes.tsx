@@ -58,8 +58,7 @@ export type Plan = {
 
 export type User = {
   _id: string; //JHED ID
-  firstName: string;
-  lastName: string;
+  name: string;
   email: string;
   affiliation: string; //STUDENT, FACULTY or STAFF
   school: string;

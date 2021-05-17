@@ -37,7 +37,7 @@ const PlanChoose = (props: PlanChooseProps) => {
 
   // Gets all users's plans and updates state everytime a new user is chosen.
   useEffect(() => {
-    if (user._id !== "noUser") {
+    if (user._id !== "noUser" && user._id !== "guestUser") {
       axios
         .get(api + "/plansByUser/" + user._id)
         .then((retrieved) => {
@@ -93,13 +93,15 @@ const PlanChoose = (props: PlanChooseProps) => {
             //         }
             //       });
             //   }
+            // Post req body for a new plan
             const planBody = {
               name: "Unnamed Plan",
               user_id: user._id,
-              majors: [testMajorCSNew],
+              majors: [testMajorCSNew.name],
             };
+
             axios.post(api + "/plans", planBody).then((data: any) => {
-              let newRetrievedPlan = { ...data.data.data };
+              let newRetrievedPlan: Plan = { ...data.data.data };
               testMajorCSNew.generalDistributions.forEach(
                 (distr: any, index: number) => {
                   axios
@@ -125,12 +127,21 @@ const PlanChoose = (props: PlanChooseProps) => {
                       ) {
                         dispatch(updateSelectedPlan(newRetrievedPlan));
                         props.setNewPlan(props.newPlan + 1);
+                        dispatch(
+                          updatePlanList([newRetrievedPlan, ...planList])
+                        );
+                        toast.success("New Unnamed Plan created!", {
+                          position: "top-right",
+                          autoClose: 5000,
+                          hideProgressBar: true,
+                          closeOnClick: true,
+                          pauseOnHover: true,
+                          draggable: true,
+                          progress: undefined,
+                        });
                         if (user._id === "guestUser") {
                           const planIdArray = [newRetrievedPlan._id];
                           dispatch(updateGuestPlanIds(planIdArray));
-                          dispatch(
-                            updatePlanList([newRetrievedPlan, ...planList])
-                          );
                         }
                       }
                     });
@@ -153,7 +164,7 @@ const PlanChoose = (props: PlanChooseProps) => {
         });
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [user, planList, planList.length]);
+  }, [user._id]);
 
   // Handles onClick for when a dropdown option is selected
   const handlePlanChange = (event: any) => {
@@ -170,15 +181,6 @@ const PlanChoose = (props: PlanChooseProps) => {
 
       axios.post(api + "/plans", planBody).then((data: any) => {
         let newRetrievedPlan: Plan = { ...data.data.data };
-        toast.success("New Unnamed Plan created!", {
-          position: "top-right",
-          autoClose: 5000,
-          hideProgressBar: true,
-          closeOnClick: true,
-          pauseOnHover: true,
-          draggable: true,
-          progress: undefined,
-        });
         testMajorCSNew.generalDistributions.forEach(
           (distr: any, index: number) => {
             axios
@@ -201,10 +203,19 @@ const PlanChoose = (props: PlanChooseProps) => {
                 if (index === testMajorCSNew.generalDistributions.length - 1) {
                   dispatch(updateSelectedPlan(newRetrievedPlan));
                   props.setNewPlan(props.newPlan + 1);
+                  dispatch(updatePlanList([newRetrievedPlan, ...planList]));
+                  toast.success("New Unnamed Plan created!", {
+                    position: "top-right",
+                    autoClose: 5000,
+                    hideProgressBar: true,
+                    closeOnClick: true,
+                    pauseOnHover: true,
+                    draggable: true,
+                    progress: undefined,
+                  });
                   if (user._id === "guestUser") {
                     const planIdArray = [newRetrievedPlan._id];
                     dispatch(updateGuestPlanIds(planIdArray));
-                    dispatch(updatePlanList([newRetrievedPlan, ...planList]));
                   }
                 }
               });
@@ -236,7 +247,7 @@ const PlanChoose = (props: PlanChooseProps) => {
   };
 
   useEffect(() => {
-    if (user.plan_ids.length === 0 && user._id !== "noUser") {
+    if (user.plan_ids.length === 0 && user._id === "guestUser") {
       // Post req body for a new plan
       const planBody = {
         name: "Unnamed Plan",
@@ -246,40 +257,55 @@ const PlanChoose = (props: PlanChooseProps) => {
 
       axios.post(api + "/plans", planBody).then((data: any) => {
         let newRetrievedPlan = { ...data.data.data };
-        testMajorCSNew.generalDistributions.forEach(
-          (distr: any, index: number) => {
-            axios
-              .post(api + "/distributions", {
-                name: distr.name,
-                required: distr.required,
-                user_id: user._id,
-                plan_id: newRetrievedPlan._id,
-              })
-              .then((newDistr: any) => {
-                newRetrievedPlan = {
-                  ...newRetrievedPlan,
-                  distribution_ids: [
-                    ...newRetrievedPlan.distribution_ids,
-                    newDistr.data.data._id,
-                  ],
-                };
-              })
-              .then(() => {
-                if (index === testMajorCSNew.generalDistributions.length - 1) {
-                  dispatch(updateSelectedPlan(newRetrievedPlan));
-                  props.setNewPlan(props.newPlan + 1);
-                  if (user._id === "guestUser") {
-                    const planIdArray = [newRetrievedPlan._id];
-                    dispatch(updateGuestPlanIds(planIdArray));
+        if (user._id === "guestUser") {
+          testMajorCSNew.generalDistributions.forEach(
+            (distr: any, index: number) => {
+              axios
+                .post(api + "/distributions", {
+                  name: distr.name,
+                  required: distr.required,
+                  user_id: user._id,
+                  plan_id: newRetrievedPlan._id,
+                })
+                .then((newDistr: any) => {
+                  newRetrievedPlan = {
+                    ...newRetrievedPlan,
+                    distribution_ids: [
+                      ...newRetrievedPlan.distribution_ids,
+                      newDistr.data.data._id,
+                    ],
+                  };
+                })
+                .then(() => {
+                  if (
+                    index ===
+                    testMajorCSNew.generalDistributions.length - 1
+                  ) {
+                    dispatch(updateSelectedPlan(newRetrievedPlan));
+                    props.setNewPlan(props.newPlan + 1);
                     dispatch(updatePlanList([newRetrievedPlan, ...planList]));
+                    toast.success("New Unnamed Plan created!", {
+                      position: "top-right",
+                      autoClose: 5000,
+                      hideProgressBar: true,
+                      closeOnClick: true,
+                      pauseOnHover: true,
+                      draggable: true,
+                      progress: undefined,
+                    });
+                    if (user._id === "guestUser") {
+                      const planIdArray = [newRetrievedPlan._id];
+                      dispatch(updateGuestPlanIds(planIdArray));
+                    }
                   }
-                }
-              });
-          }
-        );
+                });
+            }
+          );
+        }
       });
     }
-  });
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [user._id]);
 
   const [dropdown, setDropdown] = useState<boolean>(false);
   const openSelectDropdown = () => {

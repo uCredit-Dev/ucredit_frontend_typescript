@@ -14,8 +14,7 @@ type UserSlice = {
 const initialState: UserSlice = {
   currentUser: {
     _id: "noUser",
-    firstName: "",
-    lastName: "",
+    name: "",
     email: "",
     affiliation: "",
     grade: "",
@@ -42,8 +41,7 @@ const initialState: UserSlice = {
 // Updates all user info from database. This function should be called after an axios get on the user routes.
 function userUpdate(state: any, action: PayloadAction<User>) {
   state.currentUser._id = action.payload._id;
-  state.currentUser.firstName = action.payload.firstName;
-  state.currentUser.lastName = action.payload.lastName;
+  state.currentUser.name = action.payload.name;
   state.currentUser.email = action.payload.email;
   state.currentUser.grade = action.payload.grade;
   state.currentUser.school = action.payload.school;
