@@ -33,16 +33,16 @@ function UserSection(props: any) {
     const currentURL = window.location.href;
     let token =
       "s%3AIqAJNZFbivJbfEsoL0fZr-9-qMdKOthI.FpB65v7BX%2F6eJ6RXPYJyCUlna6uWec8fh5L2TUJ%2BbFI";
-    // if (currentURL.includes(deploy)) {
-    //   token = currentURL.substr(
-    //     deploy.length,
-    //     currentURL.length - deploy.length
-    //   );
-    //   console.log("token is " + token);
-    // } else {
-    //   token = currentURL.substr(dev.length, currentURL.length - dev.length);
-    //   console.log("token is " + token);
-    // }
+    if (currentURL.includes(deploy)) {
+      token = currentURL.substr(
+        deploy.length,
+        currentURL.length - deploy.length
+      );
+      console.log("token is " + token);
+    } else {
+      token = currentURL.substr(dev.length, currentURL.length - dev.length);
+      console.log("token is " + token);
+    }
 
     // cookie.save("connect.sid", true, {path:"/"});
 
