@@ -134,7 +134,7 @@ function UserSection(props: any) {
         });
     }
     // dispatch(updateUser(testUser));
-  }, [authCookies, cookieUpdate]);
+  }, [cookies.get("connect.sid")]);
 
   return (
     <div className="flex flex-row items-center justify-end w-full h-full">

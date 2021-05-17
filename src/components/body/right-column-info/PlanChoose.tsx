@@ -37,7 +37,7 @@ const PlanChoose = (props: PlanChooseProps) => {
 
   // Gets all users's plans and updates state everytime a new user is chosen.
   useEffect(() => {
-    if (user._id !== "noUser") {
+    if (user._id !== "noUser" && user._id !== "guestUser") {
       axios
         .get(api + "/plansByUser/" + user._id)
         .then((retrieved) => {
@@ -59,6 +59,7 @@ const PlanChoose = (props: PlanChooseProps) => {
               }
             });
           }
+          console.log("retrieved forr ", user._id, retrievedPlans);
 
           if (retrievedPlans.length > 0 && currentPlan._id === "noPlan") {
             // Initial load, there is no current plan, so we set the current to be the first plan in the array.
@@ -258,46 +259,51 @@ const PlanChoose = (props: PlanChooseProps) => {
 
       axios.post(api + "/plans", planBody).then((data: any) => {
         let newRetrievedPlan = { ...data.data.data };
-        toast.success("New Unnamed Plan created!", {
-          position: "top-right",
-          autoClose: 5000,
-          hideProgressBar: true,
-          closeOnClick: true,
-          pauseOnHover: true,
-          draggable: true,
-          progress: undefined,
-        });
-        testMajorCSNew.generalDistributions.forEach(
-          (distr: any, index: number) => {
-            axios
-              .post(api + "/distributions", {
-                name: distr.name,
-                required: distr.required,
-                user_id: user._id,
-                plan_id: newRetrievedPlan._id,
-              })
-              .then((newDistr: any) => {
-                newRetrievedPlan = {
-                  ...newRetrievedPlan,
-                  distribution_ids: [
-                    ...newRetrievedPlan.distribution_ids,
-                    newDistr.data.data._id,
-                  ],
-                };
-              })
-              .then(() => {
-                if (index === testMajorCSNew.generalDistributions.length - 1) {
-                  dispatch(updateSelectedPlan(newRetrievedPlan));
-                  props.setNewPlan(props.newPlan + 1);
-                  if (user._id === "guestUser") {
-                    const planIdArray = [newRetrievedPlan._id];
-                    dispatch(updateGuestPlanIds(planIdArray));
-                    dispatch(updatePlanList([newRetrievedPlan, ...planList]));
+        if (user._id === "guestUser") {
+          toast.success("New Guest Unnamed Plan created!", {
+            position: "top-right",
+            autoClose: 5000,
+            hideProgressBar: true,
+            closeOnClick: true,
+            pauseOnHover: true,
+            draggable: true,
+            progress: undefined,
+          });
+          testMajorCSNew.generalDistributions.forEach(
+            (distr: any, index: number) => {
+              axios
+                .post(api + "/distributions", {
+                  name: distr.name,
+                  required: distr.required,
+                  user_id: user._id,
+                  plan_id: newRetrievedPlan._id,
+                })
+                .then((newDistr: any) => {
+                  newRetrievedPlan = {
+                    ...newRetrievedPlan,
+                    distribution_ids: [
+                      ...newRetrievedPlan.distribution_ids,
+                      newDistr.data.data._id,
+                    ],
+                  };
+                })
+                .then(() => {
+                  if (
+                    index ===
+                    testMajorCSNew.generalDistributions.length - 1
+                  ) {
+                    dispatch(updateSelectedPlan(newRetrievedPlan));
+                    props.setNewPlan(props.newPlan + 1);
+                    if (user._id === "guestUser") {
+                      const planIdArray = [newRetrievedPlan._id];
+                      dispatch(updateGuestPlanIds(planIdArray));
+                      dispatch(updatePlanList([newRetrievedPlan, ...planList]));
+                    }
                   }
-                }
-              });
-          }
-        );
+                });
+            }
+          );
+        }
       });
     }
   }, [user._id]);
