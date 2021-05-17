@@ -21,6 +21,7 @@ function UserSection(props: any) {
   // Component state setup
   const [cookies, setCookies] = useState(props.cookies);
   const [authCookies, setAuthCookie] = useCookies(["connect.sid"]);
+  const [cookieUpdate, setCookieUpdate] = useState<boolean>(true);
 
   // on unload, attempts to cleanup guest user plans.
   useUnload((e: any) => {
@@ -59,13 +60,14 @@ function UserSection(props: any) {
 
     setAuthCookie("connect.sid", token);
     setCookies(props.cookies);
+    setCookieUpdate(!cookieUpdate);
   };
 
   // Useffect runs once on page load, calling to https://ucredit-api.herokuapp.com/api/retrieveUser to retrieve user data.
   // On successful retrieve, update redux with retrieved user
   // On fail, guest user is used.
   useEffect(() => {
-    console.log("cookei is ", cookies.get("connect.sid"));
+    console.log("cookei is ", authCookies);
     if (cookies.get("connect.sid") !== undefined) {
       console.log("in nonUndefined");
       fetch(api + "/retrieveUser/" + cookies.get("connect.sid"), {
@@ -96,6 +98,7 @@ function UserSection(props: any) {
   // NOTE: Currently, the user is set to the testUser object found in @src/testObjs.tsx, with a JHED of mliu78 (Matthew Liu)
   //            redux isn't being updated with retrieved user data, as login has issues.
   useEffect(() => {
+    console.log("cookei is ", authCookies);
     if (user._id === "noUser") {
       // Retrieves user if user ID is "noUser", the initial user id state for userSlice.tsx.
       // Make call for backend
@@ -131,7 +134,7 @@ function UserSection(props: any) {
         });
     }
     // dispatch(updateUser(testUser));
-  }, [authCookies]);
+  }, [authCookies, cookieUpdate]);
 
   return (
     <div className="flex flex-row items-center justify-end w-full h-full">
