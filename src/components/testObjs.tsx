@@ -185,8 +185,7 @@ export const testPlan2: Plan = {
 
 export const testUser: User = {
   _id: "mliu78",
-  firstName: "Matthew",
-  lastName: "Liu",
+  name: "Matthew Liu",
   email: "mliu78@jhu.edu",
   affiliation: "STUDENT",
   grade: "AE UG Sophomore",

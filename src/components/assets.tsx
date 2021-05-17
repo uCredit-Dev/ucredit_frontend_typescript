@@ -13,10 +13,9 @@ import {
 
 const api = "https://ucredit-api.herokuapp.com/api";
 
-export const guestUser = {
+export const guestUser: User = {
   _id: "guestUser",
-  firstName: "Guest",
-  lastName: "User",
+  name: "Guest User",
   email: "none",
   affiliation: "none",
   school: "none",

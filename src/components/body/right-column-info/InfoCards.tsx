@@ -86,10 +86,12 @@ const InfoCards = () => {
       .catch((err) => console.log(err));
   };
 
+  // Updates current plan every time current plan changes
   useEffect(() => {
     setPlanName(currentPlan.name);
   }, [currentPlan]);
 
+  // Activates delete plan popup.
   const activateDeletePlan = () => {
     dispatch(updateDeleteStatus(true));
   };
@@ -116,9 +118,7 @@ const InfoCards = () => {
           />
         </div>
         <div className="flex flex-col items-center">
-          <div className="w-auto h-auto text-center">
-            {user.firstName} {user.lastName}
-          </div>
+          <div className="w-auto h-auto text-center">{user.name}</div>
           <div className="w-auto h-auto font-light stroke-2">
             {currentPlan.majors}
           </div>

@@ -72,10 +72,12 @@ function UserSection(props: any) {
       })
         .then((resp) => resp.json())
         .then((retrievedUser) => {
-          // console.log("retrieved ", retrievedUser);
-          dispatch(updateUser({ ...user, _id: retrievedUser.data.id }));
+          console.log("retrieved ", retrievedUser);
+          dispatch(
+            updateUser({ ...retrievedUser.data, plan_ids: ["no plan"] }) // Fix issue of infinite loop
+          );
           // setGuest(false);
-          if (retrievedUser.errors.length > 0) {
+          if (retrievedUser.errors !== undefined) {
             // Set user to guest user
             dispatch(updateUser(guestUser));
           }
@@ -112,7 +114,7 @@ function UserSection(props: any) {
       //   });
     }
     // dispatch(updateUser(testUser));
-  }, [authCookies, user._id]);
+  }, [authCookies]);
 
   return (
     <div className="flex flex-row items-center justify-end w-full h-full">
