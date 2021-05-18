@@ -1,5 +1,7 @@
 import React, { useState } from "react";
 import clsx from "clsx";
+import { ReactComponent as ChevronRight } from "../../../svg/ChevronRight.svg";
+import { ReactComponent as ChevronDown } from "../../../svg/ChevronDown.svg";
 
 /* 
   This is one of the open-close prereq pill dropdowns.
@@ -49,12 +51,7 @@ const PrereqDropdown = (props: {
           updateSatisfied();
         }
         return (
-          <p
-            style={{
-              marginLeft: "1rem",
-            }}
-            key={el}
-          >
+          <p className='ml-4' key={el}>
             {parsed.jsx}
           </p>
         );
@@ -68,20 +65,18 @@ const PrereqDropdown = (props: {
         onClick={() => {
           setOpen(!open);
         }}
-        className={clsx(
-          "p-1 rounded",
-          {
-            "bg-green-100": trulySatisfied,
-          },
-          {
-            "bg-red-100": !trulySatisfied,
-          }
-        )}
-        style={{
-          marginLeft: `1rem`,
-        }}
-      >
-        {props.text}
+        className={clsx("transition duration-100 ease-in", {
+          "text-green-700 hover:text-green-900": props.satisfied,
+          "text-red-700 hover:text-red-900": !props.satisfied,
+        })}>
+        <div className='flex flex-row w-auto h-auto font-medium'>
+          {open ? (
+            <ChevronDown className='w-5 h-5' />
+          ) : (
+            <ChevronRight className='w-5 h-5' />
+          )}
+          <div className='text-sm'>{props.text}</div>
+        </div>
       </button>
       {open ? getChildPrereqs() : null}
     </div>
