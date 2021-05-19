@@ -5,6 +5,8 @@ import { useSelector, useDispatch } from "react-redux";
 import {
   updateInspectedCourse,
   selectInspectedCourse,
+  selectSemester,
+  selectYear,
   updateSearchStack,
 } from "../../../slices/searchSlice";
 import { selectCurrentPlanCourses } from "../../../slices/userSlice";
@@ -29,6 +31,8 @@ const PrereqDisplay = () => {
   const dispatch = useDispatch();
   const inspected = useSelector(selectInspectedCourse);
   const currPlanCourses = useSelector(selectCurrentPlanCourses);
+  const semester = useSelector(selectSemester);
+  const year = useSelector(selectYear);
 
   // Component states
   const [prereqDisplayMode, setPrereqDisplayMode] = useState(2);
@@ -56,7 +60,6 @@ const PrereqDisplay = () => {
     // Regex used to get an array of course numbers.
     const regex: RegExp = /[A-Z]{2}\.[0-9]{3}\.[0-9]{3}/g;
     const forwardSlashRegex: RegExp = /[A-Z]{2}\.[0-9]{3}\.[0-9]{3}\/[A-Z]{2}\.[0-9]{3}\.[0-9]{3}/g;
-    const courseRegex: RegExp = /[A-Z]{2}\.[0-9]{3}\.[0-9]{3}\/[A-Z]{2}\.[0-9]{3}\.[0-9]{3}/g;
 
     let description: string = preReqs[0].Description;
     let expr: any = preReqs[0].Expression;
@@ -233,11 +236,47 @@ const PrereqDisplay = () => {
     return out;
   };
 
+  // TODO: Autogenerate time ranks based on year and semester
+  const courseRank = new Map([
+    ["fr,fa", 1],
+    ["fr,sp", 3],
+    ["fr,in", 2],
+    ["fr,su", 4],
+    ["so,fa", 5],
+    ["so,in", 6],
+    ["so,sp", 7],
+    ["so,su", 8],
+    ["ju,fa", 9],
+    ["ju,in", 10],
+    ["ju,sp", 11],
+    ["ju,su", 12],
+    ["se,fa", 13],
+    ["se,in", 14],
+    ["se,sp", 15],
+    ["se,su", 16],
+  ]);
+
   // Checks if prereq is satisfied by plan
   const checkPrereq = (number: string): boolean => {
     let satisfied: boolean = false;
+    const currTimeVal = courseRank.get(
+      (year.substr(0, 2) + "," + semester.substr(0, 2)).toLowerCase()
+    );
     currPlanCourses.forEach((course) => {
-      if (course.number === number) {
+      const courseTimeVal = courseRank.get(
+        (
+          course.year.substr(0, 2) +
+          "," +
+          course.term.substr(0, 2)
+        ).toLowerCase()
+      );
+      console.log(courseTimeVal);
+      if (
+        course.number === number &&
+        currTimeVal !== undefined &&
+        courseTimeVal !== undefined &&
+        currTimeVal > courseTimeVal
+      ) {
         satisfied = true;
       }
     });
