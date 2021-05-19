@@ -56,6 +56,7 @@ const PrereqDisplay = () => {
     // Regex used to get an array of course numbers.
     const regex: RegExp = /[A-Z]{2}\.[0-9]{3}\.[0-9]{3}/g;
     const forwardSlashRegex: RegExp = /[A-Z]{2}\.[0-9]{3}\.[0-9]{3}\/[A-Z]{2}\.[0-9]{3}\.[0-9]{3}/g;
+    const courseRegex: RegExp = /[A-Z]{2}\.[0-9]{3}\.[0-9]{3}\/[A-Z]{2}\.[0-9]{3}\.[0-9]{3}/g;
 
     let description: string = preReqs[0].Description;
     let expr: any = preReqs[0].Expression;
