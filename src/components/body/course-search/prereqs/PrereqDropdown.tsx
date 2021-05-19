@@ -17,7 +17,11 @@ const PrereqDropdown = (props: {
   const [open, setOpen] = useState<boolean>(true);
   const [trulySatisfied, setTrulySatisfied] = useState<boolean>(false);
 
-  useEffect(() => {});
+  useEffect(() => {
+    if (props.satisfied) {
+      setOpen(false);
+    }
+  }, [props.satisfied]);
 
   const updateSatisfied = () => {
     setTrulySatisfied(true);
