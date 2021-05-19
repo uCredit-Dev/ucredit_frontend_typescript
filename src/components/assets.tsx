@@ -1,22 +1,9 @@
 import { Course } from "./commonTypes";
-import { Plan, Distribution, User } from "./commonTypes";
-import { testMajorCSNew } from "./testObjs";
-import axios from "axios";
-import { useDispatch, useSelector } from "react-redux";
-import {
-  updateSelectedPlan,
-  updatePlanList,
-  selectUser,
-  selectPlan,
-  selectPlanList,
-} from "./slices/userSlice";
+import { User } from "./commonTypes";
 
-const api = "https://ucredit-api.herokuapp.com/api";
-
-export const guestUser = {
+export const guestUser: User = {
   _id: "guestUser",
-  firstName: "Guest",
-  lastName: "User",
+  name: "Guest User",
   email: "none",
   affiliation: "none",
   school: "none",
@@ -277,11 +264,11 @@ export const course_tags = [
   "WRIT-POET",
 ];
 
-type generateNewPlanProps = {
-  // className?: string;
-  // newPlan: number;
-  // setNewPlan: Function;
-};
+// type generateNewPlanProps = {
+//   // className?: string;
+//   // newPlan: number;
+//   // setNewPlan: Function;
+// };
 
 // export const GenerateNewPlan: React.FC<generateNewPlanProps> = async (user: User, retrievedPlans: Plan[], props) => {
 // // export const GenerateNewPlan: React.FC<generateNewPlanProps> = async (user: User, retrievedPlans: Plan[], props): Promise<any> => {

@@ -9,6 +9,8 @@ import {
 } from "../../../slices/searchSlice";
 import { selectCurrentPlanCourses } from "../../../slices/userSlice";
 import PrereqDropdown from "./PrereqDropdown";
+import { ReactComponent as CheckMark } from "../../../svg/CheckMark.svg";
+
 const api = "https://ucredit-api.herokuapp.com/api";
 
 // Parsed prereq type
@@ -150,6 +152,7 @@ const PrereqDisplay = () => {
 
     // First get all valid preReqs (isNegative = true)
     preReqs = filterNNegatives(preReqs);
+    console.log(preReqs);
 
     // If there exists preReqs, we need to process and display them.
     if (inspected !== "None" && preReqs.length > 0) {
@@ -253,20 +256,32 @@ const PrereqDisplay = () => {
         jsx: (
           <p className="w-full" key={noCBracketsNum}>
             <button
-              className={clsx(
-                "... ml-4 p-1 max-w-md rounded truncate",
-                {
-                  "bg-green-100": satisfied,
-                },
-                {
-                  "bg-red-100": !satisfied,
-                }
-              )}
+              className={clsx("mb-1 max-w-md text-sm font-medium truncate")}
               onClick={() => {
                 updateInspected(noCBracketsNum)();
               }}
             >
-              - {noCBrackets}
+              <div className="group flex flex-row w-auto h-auto transition duration-100 ease-in">
+                {satisfied ? (
+                  <CheckMark
+                    className={clsx("mr-1 w-5 h-5", {
+                      "text-green-700 group-hover:text-red-900": !satisfied,
+                      "text-green-700 group-hover:text-green-900": satisfied,
+                    })}
+                  />
+                ) : null}
+                <div
+                  className={clsx(
+                    "border-b border-solid border-gray-300 transition duration-100 ease-in",
+                    {
+                      "text-green-700 hover:text-green-900 hover:border-green-900": satisfied,
+                      "hover:text-red-900 text-red-700 hover:border-red-900": !satisfied,
+                    }
+                  )}
+                >
+                  {noCBrackets}
+                </div>
+              </div>
             </button>
           </p>
         ),
@@ -280,11 +295,11 @@ const PrereqDisplay = () => {
           <>
             <PrereqDropdown
               satisfied={parsedSat}
-              text={"- Any one course below ▼"}
+              text={"Any one course below"}
               element={element}
               getNonStringPrereq={getNonStringPrereq}
               or={true}
-            ></PrereqDropdown>
+            />
           </>
         ),
       };
@@ -304,11 +319,11 @@ const PrereqDisplay = () => {
             <>
               <PrereqDropdown
                 satisfied={false}
-                text={"- All courses below ▼"}
+                text={"All courses below"}
                 element={element}
                 getNonStringPrereq={getNonStringPrereq}
                 or={false}
-              ></PrereqDropdown>
+              />
             </>
           ),
         };
@@ -440,29 +455,19 @@ const PrereqDisplay = () => {
         <div className="text-xl font-medium">Prerequisites</div>{" "}
         <div>
           <button
-            className={clsx(
-              "p-1 text-sm bg-secondary",
-              {
-                "bg-opacity-25": prereqDisplayMode !== 1,
-              },
-              {
-                "bg-opacity-75": prereqDisplayMode === 1,
-              }
-            )}
+            className={clsx("p-1 text-sm bg-secondary", {
+              "bg-opacity-75": prereqDisplayMode === 1,
+              "bg-opacity-25": prereqDisplayMode !== 1,
+            })}
             onClick={handlePrereqDisplayModeChange(1)}
           >
             Description
           </button>
           <button
-            className={clsx(
-              "p-1 text-sm bg-secondary",
-              {
-                "bg-opacity-25": prereqDisplayMode === 1,
-              },
-              {
-                "bg-opacity-75": prereqDisplayMode !== 1,
-              }
-            )}
+            className={clsx("p-1 text-sm bg-secondary", {
+              "bg-opacity-25": prereqDisplayMode === 1,
+              "bg-opacity-75": prereqDisplayMode !== 1,
+            })}
             onClick={handlePrereqDisplayModeChange(2)}
           >
             Bullet List (in development)

@@ -48,14 +48,20 @@ const tagFilters = ["Any", ...course_tags];
   Search form, including the search query input and filters.
 */
 const Form = () => {
-  const [showCriteria, setShowCriteria] = useState(false);
-
   // Set up redux dispatch and variables.
   const dispatch = useDispatch();
   const searchTerm = useSelector(selectSearchterm);
   const searchFilters = useSelector(selectSearchFilters);
   const semester = useSelector(selectSemester);
   const year = useSelector(selectYear);
+
+  // Component state setup
+  const [showCriteria, setShowCriteria] = useState(false);
+  const [showAllResults, setShowAllResults] = useState<boolean>(false);
+  const [searchedCourses, setSearchedCourses] = useState<
+    Map<string, SearchMapEl>
+  >(new Map<string, SearchMapEl>());
+  const [searching, setSearching] = useState<boolean>(false);
 
   // On opening search, set the term filter to match semester you're adding to.
   useEffect(() => {
@@ -78,13 +84,12 @@ const Form = () => {
     priority: number;
   };
 
+  // Search with debouncing of 2/4s of a second.
   const minLength = 3;
-  const [searching, setSearching] = useState<boolean>(false);
-
-  // Search with debouncing of 3/4s of a second.
   useEffect(() => {
     setSearchedCourses(new Map<string, SearchMapEl>());
-    // Otherwise, user is searching for something.
+
+    // Search params.
     const extras: SearchExtras = {
       query: searchTerm,
       credits: searchFilters.credits === "Any" ? null : searchFilters.credits,
@@ -98,17 +103,15 @@ const Form = () => {
         searchFilters.department === "Any" ? null : searchFilters.department,
       tags: searchFilters.tags === "Any" ? null : searchFilters.tags,
     };
+
+    // Search with half second debounce.
     const search = setTimeout(
       performSmartSearch(extras, searchTerm.length),
       500
     );
-
     return () => clearTimeout(search);
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [searchTerm, searchFilters]);
-  const [searchedCourses, setSearchedCourses] = useState<
-    Map<string, SearchMapEl>
-  >(new Map<string, SearchMapEl>());
+  }, [searchTerm, searchFilters, showAllResults]);
 
   useEffect(() => {
     if (searching) {
@@ -144,15 +147,22 @@ const Form = () => {
           params: extras,
         })
         .then((courses) => {
-          let returned = courses.data.data.sort(
+          let returned: any[] = courses.data.data.sort(
             (course1: Course, course2: Course) =>
               course1.title.localeCompare(course2.title)
           );
+
           if (searchFilters.distribution === "N") {
             returned = returned.filter(
               (course: Course) => course.areas !== "None"
             );
           }
+
+          if (!showAllResults) {
+            // if showAllResults is selected, we search for all; otherwise, we only show top few.
+            returned = returned.slice(0, 10);
+          }
+
           setSearching(false);
           dispatch(updateRetrievedCourses(returned));
 
@@ -172,6 +182,7 @@ const Form = () => {
         });
     }
 
+    // For each query substring, search.
     querySubstrs.forEach((subQuery) => {
       extras.query = subQuery;
       axios
@@ -185,6 +196,7 @@ const Form = () => {
             (course1: Course, course2: Course) =>
               course1.number.localeCompare(course2.number)
           );
+
           if (searchFilters.distribution === "N") {
             returned = returned.filter(
               (course: Course) => course.areas !== "None"
@@ -192,7 +204,12 @@ const Form = () => {
           }
 
           returned.forEach((course: Course) => {
-            if (!retrievedCourses.has(course.number)) {
+            if (
+              !retrievedCourses.has(course.number) &&
+              (searchedCourses.size < 10 ||
+                extras.query.length === 0 ||
+                showAllResults) // if showAllResults is selected, we search for all; otherwise, we only show top few.
+            ) {
               retrievedCourses.set(course.number, {
                 course: course,
                 priority: queryLength,
@@ -202,7 +219,12 @@ const Form = () => {
 
           // All subqueries are done searching
           if (doneSearchSubQueries.length === querySubstrs.length) {
-            if (queryLength > minLength) {
+            if (
+              queryLength > minLength &&
+              (searchedCourses.size < 10 ||
+                extras.query.length === 0 ||
+                showAllResults) // if showAllResults is selected, we search for all; otherwise, we only show top few.
+            ) {
               setSearchedCourses(
                 new Map<string, SearchMapEl>(retrievedCourses)
               );
@@ -315,6 +337,14 @@ const Form = () => {
     dispatch(updateSearchFilters(params));
   };
 
+  const showAll = () => {
+    setShowAllResults(true);
+  };
+
+  const dontShowAll = () => {
+    setShowAllResults(false);
+  };
+
   return (
     <div className="px-5 py-3 w-full h-auto text-coursecard border-b border-black select-none">
       <ReactTooltip />
@@ -342,6 +372,15 @@ const Form = () => {
             <HideSvg className="w-4 h-4 stroke-2" />
           )}
         </div>
+      </div>
+      <div>
+        {showAllResults ? (
+          <button onClick={dontShowAll}>Show Top Results (faster)</button>
+        ) : (
+          <button onClick={showAll}>
+            Don't see your class? Show all results (slower)
+          </button>
+        )}
       </div>
       {showCriteria ? (
         <div>

@@ -103,6 +103,7 @@ module.exports = {
       transitionProperty: ["hover", "group-hover"],
       transitionDuration: ["hover", "group-hover", "active"],
       transitionTimingFunction: ["hover", "group-hover"],
+      borderStyle: ["hover"],
     },
   },
   plugins: [],

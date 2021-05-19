@@ -1,16 +1,11 @@
 import React, { useState, useEffect } from "react";
-import { testUser } from "../testObjs";
 import { useDispatch, useSelector } from "react-redux";
 import { updateUser, selectUser } from "../slices/userSlice";
 import { ReactComponent as UserSvg } from "../svg/User.svg";
-import cookie, { withCookies, useCookies, Cookies } from "react-cookie";
+import { withCookies, useCookies } from "react-cookie";
 import { guestUser } from "../assets";
-import axiosCookieJarSupport from "axios-cookiejar-support";
-import axios from "axios";
-import tough from "tough-cookie";
-axiosCookieJarSupport(axios);
+import useUnload from "./useUnload";
 
-const cookieJar = new tough.CookieJar();
 const api = "https://ucredit-api.herokuapp.com/api";
 const deploy = "https://ucredit.herokuapp.com/";
 const dev = "http://localhost:3000/";
@@ -19,99 +14,120 @@ const dev = "http://localhost:3000/";
   User login/logout buttons.
 */
 function UserSection(props: any) {
+  // Redux setup
   const dispatch = useDispatch();
   const user = useSelector(selectUser);
 
+  // Component state setup
   const [cookies, setCookies] = useState(props.cookies);
   const [authCookies, setAuthCookie] = useCookies(["connect.sid"]);
+  const [cookieUpdate, setCookieUpdate] = useState<boolean>(true);
 
-  // Useffect runs once on page load, calling to https://ucredit-api.herokuapp.com/api/retrieveUser to retrieve user data.
-  // On successful retrieve, update redux with retrieved user,
-  // NOTE: Currently, the user is set to the testUser object found in @src/testObjs.tsx, with a JHED of mliu78 (Matthew Liu)
-  //            redux isn't being updated with retrieved user data, as login has issues.
-  useEffect(() => {
-    const currentURL = window.location.href;
-    let token =
-      "s%3AIqAJNZFbivJbfEsoL0fZr-9-qMdKOthI.FpB65v7BX%2F6eJ6RXPYJyCUlna6uWec8fh5L2TUJ%2BbFI";
-    // if (currentURL.includes(deploy)) {
-    //   token = currentURL.substr(
-    //     deploy.length,
-    //     currentURL.length - deploy.length
-    //   );
-    //   console.log("token is " + token);
-    // } else {
-    //   token = currentURL.substr(dev.length, currentURL.length - dev.length);
-    //   console.log("token is " + token);
-    // }
-
-    // cookie.save("connect.sid", true, {path:"/"});
-
-    setAuthCookie("connect.sid", token, { sameSite: "none" });
-    setCookies(props.cookies);
-  }, [cookies, props.cookies, window.location.href]);
-
-  // Useffect runs once on page load, calling to https://ucredit-api.herokuapp.com/api/retrieveUser to retrieve user data.
-  // On successful retrieve, update redux with retrieved user,
-  // NOTE: Currently, the user is set to the testUser object found in @src/testObjs.tsx, with a JHED of mliu78 (Matthew Liu)
-  //            redux isn't being updated with retrieved user data, as login has issues.
-  useEffect(() => {
-    // Retrieves user if user ID is "noUser", the initial user id state for userSlice.tsx.
-    // Make call for backend
-    console.log("connect.sid=" + cookies.get("connect.sid"));
-    fetch(api + "/retrieveUser", {
-      mode: "cors",
-      method: "GET",
-      credentials: "include",
-      headers: {
-        Accept: "application/json",
-        "Content-Type": "application/json",
-        user:
-          "connect.sid=" + cookies.get("connect.sid") + "; Path=/; HttpOnly",
-      },
-    })
-      .then((resp) => resp.json())
-      .then((retrievedUser) => {
-        // console.log("retrieved ", retrievedUser);
-        // dispatch(updateUser(retrievedUser.data));
-        // setGuest(false);
-        if (retrievedUser.errors.length > 0) {
-          // Set user to guest user
-          dispatch(updateUser(guestUser));
-        }
-      })
-      .catch((err) => {
-        // TODO: If there is no retrievedUser we could
-        //    (A) redirect them to https://ucredit-api.herokuapp.com/api/login
-        //    (B) load in a local guest user and wait for them to access https://ucredit-api.herokuapp.com/api/login
-        //          by clicking the "Log In" button in the header.
-        console.log("ERROR: ", err.message);
-        dispatch(updateUser(guestUser));
+  // on unload, attempts to cleanup guest user plans.
+  useUnload((e: any) => {
+    e.preventDefault();
+    if (user._id === "guestUser") {
+      user.plan_ids.forEach((planId) => {
+        // delete plan from db
+        // update plan array
+        fetch(api + "/plans/" + planId, {
+          method: "DELETE",
+        }).catch((err) => console.log(err));
       });
-    // axios
-    //   .get(api + "/retrieveUser", {
-    //     withCredentials: true,
-    //     headers: { jar: cookieJar, withCredentials: true },
-    //   })
-    //   .then((retrievedUser: any) => {
-    //     console.log("retrieved ", retrievedUser);
-    //     // dispatch(updateUser(retrievedUser.data));
-    //     // setGuest(false);
-    //     // if (retrievedUser.errors.length > 0) {
-    //     // Set user to guest user
-    //     dispatch(updateUser(guestUser));
-    //     // }
-    //   })
-    //   .catch((err: any) => {
-    //     // TODO: If there is no retrievedUser we could
-    //     //    (A) redirect them to https://ucredit-api.herokuapp.com/api/login
-    //     //    (B) load in a local guest user and wait for them to access https://ucredit-api.herokuapp.com/api/login
-    //     //          by clicking the "Log In" button in the header.
-    //     console.log("ERROR: ", err);
-    //     dispatch(updateUser(guestUser));
-    //   });
+    }
+    e.returnValue = "Are you sure you don't want to save guest courses?";
+  });
 
-    // dispatch(updateUser(testUser));
-  }, [authCookies]);
+  // Creates a cookie based on url.
+  const createCookie = (token: string) => {
+    setAuthCookie("connect.sid", token);
+    setCookies(props.cookies);
+    setCookieUpdate(!cookieUpdate);
+    window.location.href = deploy;
+  };
+
+  // Gets cookie token from url.
+  const getToken = (): string => {
+    const currentURL: string = window.location.href;
+    let token: string = "";
+    if (currentURL.includes(deploy)) {
+      token = currentURL.substr(
+        deploy.length,
+        currentURL.length - deploy.length
+      );
+    } else {
+      token = currentURL.substr(dev.length, currentURL.length - dev.length);
+    }
+    return token;
+  };
+
+  // Useffect runs once on page load, calling to https://ucredit-api.herokuapp.com/api/retrieveUser to retrieve user data.
+  // On successful retrieve, update redux with retrieved user
+  // On fail, guest user is used.
+  useEffect(() => {
+    const token: string = getToken();
+    if (cookies.get("connect.sid") !== undefined && token.length > 0) {
+      fetch(api + "/retrieveUser/" + cookies.get("connect.sid"), {
+        mode: "cors",
+        method: "GET",
+        credentials: "include",
+        headers: {
+          Accept: "application/json",
+          "Content-Type": "application/json",
+        },
+      })
+        .then((resp) => resp.json())
+        .then((retrievedUser) => {
+          if (retrievedUser.errors !== undefined) {
+            createCookie(token);
+          }
+        })
+        .catch(() => {
+          createCookie(token);
+        });
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [window.location.href]);
+
+  // Useffect runs once on page load, calling to https://ucredit-api.herokuapp.com/api/retrieveUser to retrieve user data.
+  // On successful retrieve, update redux with retrieved user,
+  // NOTE: Currently, the user is set to the testUser object found in @src/testObjs.tsx, with a JHED of mliu78 (Matthew Liu)
+  //            redux isn't being updated with retrieved user data, as login has issues.
+  useEffect(() => {
+    const token: string = getToken();
+    if (user._id === "noUser" && token.length === 0) {
+      // Retrieves user if user ID is "noUser", the initial user id state for userSlice.tsx.
+      // Make call for backend
+      fetch(api + "/retrieveUser/" + cookies.get("connect.sid"), {
+        mode: "cors",
+        method: "GET",
+        credentials: "include",
+        headers: {
+          Accept: "application/json",
+          "Content-Type": "application/json",
+        },
+      })
+        .then((resp) => resp.json())
+        .then((retrievedUser) => {
+          dispatch(
+            updateUser(retrievedUser.data) // TODO: Fix issue of infinite loop
+          );
+          if (retrievedUser.errors !== undefined) {
+            // Set user to guest user
+            dispatch(updateUser(guestUser));
+          }
+        })
+        .catch((err) => {
+          // TODO: If there is no retrievedUser we could
+          //    (A) redirect them to https://ucredit-api.herokuapp.com/api/login
+          //    (B) load in a local guest user and wait for them to access https://ucredit-api.herokuapp.com/api/login
+          //          by clicking the "Log In" button in the header.
+          console.log("ERROR: ", err.message);
+          dispatch(updateUser(guestUser));
+        });
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [cookies, authCookies]);
 
   return (
     <div className="flex flex-row items-center justify-end w-full h-full">
