@@ -98,19 +98,29 @@ const PlanChoose = (props: PlanChooseProps) => {
               name: "Unnamed Plan",
               user_id: user._id,
               majors: [testMajorCSNew.name],
+              createdAt:
+                user._id === "guestUser"
+                  ? Date.now() + 60 * 60 * 24 * 1000
+                  : null,
             };
 
             axios.post(api + "/plans", planBody).then((data: any) => {
               let newRetrievedPlan: Plan = { ...data.data.data };
               testMajorCSNew.generalDistributions.forEach(
                 (distr: any, index: number) => {
+                  const distributionBody = {
+                    name: distr.name,
+                    required: distr.required,
+                    user_id: user._id,
+                    plan_id: newRetrievedPlan._id,
+                    createdAt:
+                      user._id === "guestUser"
+                        ? Date.now() + 60 * 60 * 24 * 1000
+                        : null,
+                  };
+
                   axios
-                    .post(api + "/distributions", {
-                      name: distr.name,
-                      required: distr.required,
-                      user_id: user._id,
-                      plan_id: newRetrievedPlan._id,
-                    })
+                    .post(api + "/distributions", distributionBody)
                     .then((newDistr: any) => {
                       newRetrievedPlan = {
                         ...newRetrievedPlan,
@@ -177,19 +187,27 @@ const PlanChoose = (props: PlanChooseProps) => {
         name: "Unnamed Plan",
         user_id: user._id,
         majors: [testMajorCSNew.name],
+        createdAt:
+          user._id === "guestUser" ? Date.now() + 60 * 60 * 24 * 1000 : null,
       };
 
       axios.post(api + "/plans", planBody).then((data: any) => {
         let newRetrievedPlan: Plan = { ...data.data.data };
         testMajorCSNew.generalDistributions.forEach(
           (distr: any, index: number) => {
+            const distributionBody = {
+              name: distr.name,
+              required: distr.required,
+              user_id: user._id,
+              plan_id: newRetrievedPlan._id,
+              createdAt:
+                user._id === "guestUser"
+                  ? Date.now() + 60 * 60 * 24 * 1000
+                  : null,
+            };
+
             axios
-              .post(api + "/distributions", {
-                name: distr.name,
-                required: distr.required,
-                user_id: user._id,
-                plan_id: newRetrievedPlan._id,
-              })
+              .post(api + "/distributions", distributionBody)
               .then((newDistr: any) => {
                 newRetrievedPlan = {
                   ...newRetrievedPlan,
@@ -253,6 +271,8 @@ const PlanChoose = (props: PlanChooseProps) => {
         name: "Unnamed Plan",
         user_id: user._id,
         majors: [testMajorCSNew.name],
+        createdAt:
+          user._id === "guestUser" ? Date.now() + 60 * 60 * 24 * 1000 : null,
       };
 
       axios.post(api + "/plans", planBody).then((data: any) => {
@@ -260,13 +280,19 @@ const PlanChoose = (props: PlanChooseProps) => {
         if (user._id === "guestUser") {
           testMajorCSNew.generalDistributions.forEach(
             (distr: any, index: number) => {
+              const distributionBody = {
+                name: distr.name,
+                required: distr.required,
+                user_id: user._id,
+                plan_id: newRetrievedPlan._id,
+                createdAt:
+                  user._id === "guestUser"
+                    ? Date.now() + 60 * 60 * 24 * 1000
+                    : null,
+              };
+
               axios
-                .post(api + "/distributions", {
-                  name: distr.name,
-                  required: distr.required,
-                  user_id: user._id,
-                  plan_id: newRetrievedPlan._id,
-                })
+                .post(api + "/distributions", distributionBody)
                 .then((newDistr: any) => {
                   newRetrievedPlan = {
                     ...newRetrievedPlan,
