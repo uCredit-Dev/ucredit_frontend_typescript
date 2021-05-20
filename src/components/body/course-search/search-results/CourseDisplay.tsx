@@ -1,7 +1,9 @@
 import React, { useState, useEffect, useRef } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import {
+  Course,
   Distribution,
+  Filter,
   FilterType,
   SemesterType,
   UserCourse,
@@ -35,6 +37,7 @@ import ReactTooltip from "react-tooltip";
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { getColors } from "../../../assets";
+import { testMajorCSNew } from "../../../testObjs";
 
 const api = "https://ucredit-api.herokuapp.com/api";
 
@@ -71,39 +74,110 @@ const CourseDisplay = () => {
   const [inspectedArea, setInspectedArea] = useState("None");
   const [showMore, setShowMore] = useState<number>(2);
 
+  // Matches distribution filter with distribution.
+  const getFilter = (distr: Distribution) => {
+    let filter = {};
+    testMajorCSNew.distributions.forEach((distribution) => {
+      console.log(distribution, distr);
+      if (distribution.name === distr.name) {
+        filter = distribution.filter;
+      }
+    });
+    return filter;
+  };
+
+  // Checks if inspected course satisfies specific distribution
+  const checkDistribution = (distr: Distribution): boolean => {
+    const distribution: Distribution = { ...distr, filter: getFilter(distr) };
+    const filter = distribution.filter;
+    if (inspected !== "None") {
+      if (filter.exception !== undefined) {
+        if (checkFilters(filter.exception, inspected)) {
+          return false;
+        }
+      }
+      return checkFilters(filter, inspected);
+    } else {
+      return false;
+    }
+  };
+
+  // Checks if the course satisfies the filters given to it.
+  const checkFilters = (filter: Filter, course: Course) => {
+    if (filter.area !== undefined) {
+      const inspectedAreas = course.areas.split("");
+      let found: boolean = false;
+      const areaRegex: RegExp = filter.area;
+      inspectedAreas.forEach((area) => {
+        if (area.match(areaRegex)) {
+          found = true;
+        }
+      });
+      if (!found) {
+        return false;
+      }
+    }
+
+    if (filter.tags !== undefined) {
+      let found: boolean = false;
+      filter.tags.forEach((tag) => {
+        if (course.tags.includes(tag)) {
+          found = true;
+        }
+      });
+      if (!found) {
+        return false;
+      }
+    }
+
+    if (filter.wi !== undefined) {
+      if (course.wi !== filter.wi) {
+        return false;
+      }
+    }
+
+    if (filter.department !== undefined) {
+      if (!course.department.match(filter.department)) {
+        return false;
+      }
+    }
+
+    if (filter.number !== undefined) {
+      if (!course.number.match(filter.number)) {
+        return false;
+      }
+    }
+
+    if (filter.title !== undefined) {
+      if (!course.title.match(filter.title)) {
+        return false;
+      }
+    }
+
+    return true;
+  };
+
   // Adds course
   const addCourse = () => {
     // Adds course, updates user frontend distributions display, and clears search states.
     if (inspected !== "None" && distributions.length !== 0) {
-      let general = null;
-      let total = null;
-      let writtenIntensive = null;
-      let filteredDistribution: Distribution[] = [];
+      let toAdd: Distribution | null = null;
       dispatch(updatePlaceholder(false));
+      let filteredDistribution: Distribution[] = [];
 
       distributions.forEach((distribution) => {
-        if (distribution.name === "General Electives") {
-          general = distribution;
-        }
-
-        if (distribution.name === "Total Credits") {
-          total = distribution;
-        }
-
-        if (distribution.name === "Writing Intensive (WI)" && inspected.wi) {
-          writtenIntensive = distribution;
+        if (distribution.name === "Total") {
+          filteredDistribution.push(distribution);
+        } else if (checkDistribution(distribution) && toAdd === null) {
+          console.log("toAdd satisfied");
+          toAdd = distribution;
+          filteredDistribution.push(toAdd);
         }
       });
 
-      updateFilteredDistributions(
-        filteredDistribution,
-        general,
-        total,
-        writtenIntensive
-      );
-
       // Posts to add course route and then updates distribution.
       updateDistributions(filteredDistribution);
+
       toast.success(inspected.title + " added!", {
         position: "top-right",
         autoClose: 5000,
@@ -117,64 +191,6 @@ const CourseDisplay = () => {
       // Clears search state.
       dispatch(clearSearch());
     }
-  };
-
-  // Determines which distributions should the course that has just been added falls under.
-  const updateFilteredDistributions = (
-    filteredDistribution: Distribution[],
-    general: any,
-    total: any,
-    writtenIntensive: any
-  ) => {
-    if (inspected !== "None") {
-      // determine which area course falls under
-      distributions.forEach((distribution) => {
-        if (
-          filteredDistribution.length === 0 &&
-          distribution.planned < distribution.required
-        ) {
-          if (
-            (inspected.number.includes("EN.600") ||
-              inspected.number.includes("EN.601") ||
-              inspected.number.includes("EN.500")) &&
-            distribution.name.includes("Computer Science")
-          ) {
-            filteredDistribution.push(distribution);
-          } else if (
-            inspectedArea === "N" &&
-            distribution.name.includes("(N)")
-          ) {
-            filteredDistribution.push(distribution);
-          } else if (
-            inspectedArea === "S" &&
-            distribution.name.includes("(S)")
-          ) {
-            filteredDistribution.push(distribution);
-          } else if (
-            inspectedArea === "H" &&
-            distribution.name.includes("(H)")
-          ) {
-            filteredDistribution.push(distribution);
-          } else if (
-            inspectedArea === "Q" &&
-            distribution.name.includes("(Q)")
-          ) {
-            filteredDistribution.push(distribution);
-          }
-        }
-      });
-    }
-
-    // If all areas are full and there is still more for general electives
-    if (filteredDistribution.length === 0 && general !== null) {
-      filteredDistribution.push(general);
-    }
-
-    // If total distribution should be updated, push.
-    if (total !== null) filteredDistribution.push(total);
-
-    // If written intensive should be updated, push
-    if (writtenIntensive !== null) filteredDistribution.push(writtenIntensive);
   };
 
   // Updates distribution bars upon successfully adding a course.

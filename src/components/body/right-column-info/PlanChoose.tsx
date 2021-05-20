@@ -106,13 +106,14 @@ const PlanChoose = (props: PlanChooseProps) => {
 
             axios.post(api + "/plans", planBody).then((data: any) => {
               let newRetrievedPlan: Plan = { ...data.data.data };
-              testMajorCSNew.generalDistributions.forEach(
+              testMajorCSNew.distributions.forEach(
                 (distr: any, index: number) => {
                   const distributionBody = {
                     name: distr.name,
                     required: distr.required,
                     user_id: user._id,
                     plan_id: newRetrievedPlan._id,
+                    filter: distr.filter,
                     createdAt:
                       user._id === "guestUser"
                         ? Date.now() + 60 * 60 * 24 * 1000
@@ -131,10 +132,7 @@ const PlanChoose = (props: PlanChooseProps) => {
                       };
                     })
                     .then(() => {
-                      if (
-                        index ===
-                        testMajorCSNew.generalDistributions.length - 1
-                      ) {
+                      if (index === testMajorCSNew.distributions.length - 1) {
                         dispatch(updateSelectedPlan(newRetrievedPlan));
                         props.setNewPlan(props.newPlan + 1);
                         dispatch(
@@ -154,7 +152,8 @@ const PlanChoose = (props: PlanChooseProps) => {
                           dispatch(updateGuestPlanIds(planIdArray));
                         }
                       }
-                    });
+                    })
+                    .catch((err) => console.log(err));
                 }
               );
             });
@@ -193,52 +192,52 @@ const PlanChoose = (props: PlanChooseProps) => {
 
       axios.post(api + "/plans", planBody).then((data: any) => {
         let newRetrievedPlan: Plan = { ...data.data.data };
-        testMajorCSNew.generalDistributions.forEach(
-          (distr: any, index: number) => {
-            const distributionBody = {
-              name: distr.name,
-              required: distr.required,
-              user_id: user._id,
-              plan_id: newRetrievedPlan._id,
-              createdAt:
-                user._id === "guestUser"
-                  ? Date.now() + 60 * 60 * 24 * 1000
-                  : null,
-            };
+        testMajorCSNew.distributions.forEach((distr: any, index: number) => {
+          const distributionBody = {
+            name: distr.name,
+            required: distr.required,
+            user_id: user._id,
+            plan_id: newRetrievedPlan._id,
+            filter: distr.filter,
+            createdAt:
+              user._id === "guestUser"
+                ? Date.now() + 60 * 60 * 24 * 1000
+                : null,
+          };
 
-            axios
-              .post(api + "/distributions", distributionBody)
-              .then((newDistr: any) => {
-                newRetrievedPlan = {
-                  ...newRetrievedPlan,
-                  distribution_ids: [
-                    ...newRetrievedPlan.distribution_ids,
-                    newDistr.data.data._id,
-                  ],
-                };
-              })
-              .then(() => {
-                if (index === testMajorCSNew.generalDistributions.length - 1) {
-                  dispatch(updateSelectedPlan(newRetrievedPlan));
-                  props.setNewPlan(props.newPlan + 1);
-                  dispatch(updatePlanList([newRetrievedPlan, ...planList]));
-                  toast.success("New Unnamed Plan created!", {
-                    position: "top-right",
-                    autoClose: 5000,
-                    hideProgressBar: true,
-                    closeOnClick: true,
-                    pauseOnHover: true,
-                    draggable: true,
-                    progress: undefined,
-                  });
-                  if (user._id === "guestUser") {
-                    const planIdArray = [newRetrievedPlan._id];
-                    dispatch(updateGuestPlanIds(planIdArray));
-                  }
+          axios
+            .post(api + "/distributions", distributionBody)
+            .then((newDistr: any) => {
+              newRetrievedPlan = {
+                ...newRetrievedPlan,
+                distribution_ids: [
+                  ...newRetrievedPlan.distribution_ids,
+                  newDistr.data.data._id,
+                ],
+              };
+            })
+            .then(() => {
+              if (index === testMajorCSNew.distributions.length - 1) {
+                dispatch(updateSelectedPlan(newRetrievedPlan));
+                props.setNewPlan(props.newPlan + 1);
+                dispatch(updatePlanList([newRetrievedPlan, ...planList]));
+                toast.success("New Unnamed Plan created!", {
+                  position: "top-right",
+                  autoClose: 5000,
+                  hideProgressBar: true,
+                  closeOnClick: true,
+                  pauseOnHover: true,
+                  draggable: true,
+                  progress: undefined,
+                });
+                if (user._id === "guestUser") {
+                  const planIdArray = [newRetrievedPlan._id];
+                  dispatch(updateGuestPlanIds(planIdArray));
                 }
-              });
-          }
-        );
+              }
+            })
+            .catch((err) => console.log(err));
+        });
       });
     } else {
       let newSelected: Plan = currentPlan;
@@ -278,55 +277,52 @@ const PlanChoose = (props: PlanChooseProps) => {
       axios.post(api + "/plans", planBody).then((data: any) => {
         let newRetrievedPlan = { ...data.data.data };
         if (user._id === "guestUser") {
-          testMajorCSNew.generalDistributions.forEach(
-            (distr: any, index: number) => {
-              const distributionBody = {
-                name: distr.name,
-                required: distr.required,
-                user_id: user._id,
-                plan_id: newRetrievedPlan._id,
-                createdAt:
-                  user._id === "guestUser"
-                    ? Date.now() + 60 * 60 * 24 * 1000
-                    : null,
-              };
+          testMajorCSNew.distributions.forEach((distr: any, index: number) => {
+            const distributionBody = {
+              name: distr.name,
+              required: distr.required,
+              user_id: user._id,
+              plan_id: newRetrievedPlan._id,
+              filter: distr.filter,
+              createdAt:
+                user._id === "guestUser"
+                  ? Date.now() + 60 * 60 * 24 * 1000
+                  : null,
+            };
 
-              axios
-                .post(api + "/distributions", distributionBody)
-                .then((newDistr: any) => {
-                  newRetrievedPlan = {
-                    ...newRetrievedPlan,
-                    distribution_ids: [
-                      ...newRetrievedPlan.distribution_ids,
-                      newDistr.data.data._id,
-                    ],
-                  };
-                })
-                .then(() => {
-                  if (
-                    index ===
-                    testMajorCSNew.generalDistributions.length - 1
-                  ) {
-                    dispatch(updateSelectedPlan(newRetrievedPlan));
-                    props.setNewPlan(props.newPlan + 1);
-                    dispatch(updatePlanList([newRetrievedPlan, ...planList]));
-                    toast.success("New Unnamed Plan created!", {
-                      position: "top-right",
-                      autoClose: 5000,
-                      hideProgressBar: true,
-                      closeOnClick: true,
-                      pauseOnHover: true,
-                      draggable: true,
-                      progress: undefined,
-                    });
-                    if (user._id === "guestUser") {
-                      const planIdArray = [newRetrievedPlan._id];
-                      dispatch(updateGuestPlanIds(planIdArray));
-                    }
+            axios
+              .post(api + "/distributions", distributionBody)
+              .then((newDistr: any) => {
+                newRetrievedPlan = {
+                  ...newRetrievedPlan,
+                  distribution_ids: [
+                    ...newRetrievedPlan.distribution_ids,
+                    newDistr.data.data._id,
+                  ],
+                };
+              })
+              .then(() => {
+                if (index === testMajorCSNew.distributions.length - 1) {
+                  dispatch(updateSelectedPlan(newRetrievedPlan));
+                  props.setNewPlan(props.newPlan + 1);
+                  dispatch(updatePlanList([newRetrievedPlan, ...planList]));
+                  toast.success("New Unnamed Plan created!", {
+                    position: "top-right",
+                    autoClose: 5000,
+                    hideProgressBar: true,
+                    closeOnClick: true,
+                    pauseOnHover: true,
+                    draggable: true,
+                    progress: undefined,
+                  });
+                  if (user._id === "guestUser") {
+                    const planIdArray = [newRetrievedPlan._id];
+                    dispatch(updateGuestPlanIds(planIdArray));
                   }
-                });
-            }
-          );
+                }
+              })
+              .catch((err) => console.log(err));
+          });
         }
       });
     }

@@ -11,7 +11,7 @@ import {
 } from "../slices/userSlice";
 import { testMajorCSNew } from "../testObjs";
 import axios from "axios";
-import { Plan } from "../commonTypes";
+import { Distribution, Plan } from "../commonTypes";
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 const api = "https://ucredit-api.herokuapp.com/api";
@@ -63,12 +63,13 @@ const DeletePlanPopup = () => {
 
           axios.post(api + "/plans", planBody).then((data: any) => {
             let newRetrievedPlan: Plan = { ...data.data.data };
-            testMajorCSNew.generalDistributions.forEach((distr, index) => {
+            testMajorCSNew.distributions.forEach((distr, index) => {
               const distributionBody = {
                 name: distr.name,
                 required: distr.required,
                 user_id: user._id,
                 plan_id: newRetrievedPlan._id,
+                filter: distr.filter,
                 createdAt:
                   user._id === "guestUser"
                     ? Date.now() + 60 * 60 * 24 * 1000
@@ -87,10 +88,7 @@ const DeletePlanPopup = () => {
                   };
                 })
                 .then(() => {
-                  if (
-                    index ===
-                    testMajorCSNew.generalDistributions.length - 1
-                  ) {
+                  if (index === testMajorCSNew.distributions.length - 1) {
                     dispatch(updateSelectedPlan(newRetrievedPlan));
                     dispatch(
                       updatePlanList([newRetrievedPlan, ...updatedList])
@@ -109,7 +107,8 @@ const DeletePlanPopup = () => {
                       dispatch(updateGuestPlanIds(planIdArray));
                     }
                   }
-                });
+                })
+                .catch((err) => console.log(err));
             });
           });
         } else {
