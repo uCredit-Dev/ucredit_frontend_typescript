@@ -67,7 +67,7 @@ function UserSection(props: any) {
   useEffect(() => {
     const token: string = getToken();
     console.log("In first hook!");
-    if (cookies.get("connect.sid") !== undefined && token.length > 0) {
+    if (token.length > 0) {
       fetch(api + "/retrieveUser/" + cookies.get("connect.sid"), {
         mode: "cors",
         method: "GET",
@@ -86,8 +86,6 @@ function UserSection(props: any) {
         .catch(() => {
           createCookie(token);
         });
-    } else {
-      createCookie(token);
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [window.location.href]);
