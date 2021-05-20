@@ -153,9 +153,11 @@ function UserSection(props: any) {
                 Accept: "application/json",
                 "Content-Type": "application/json",
               },
-            }).catch((err) => {
-              console.log(err);
-            });
+            })
+              .then(() => dispatch(updateUser(guestUser)))
+              .catch((err) => {
+                console.log(err);
+              });
           }}
           className="flex flex-row items-center justify-center w-24 h-9 bg-white rounded cursor-pointer select-none transform hover:translate-x-0.5 hover:translate-y-0.5 transition duration-200 ease-in"
         >
