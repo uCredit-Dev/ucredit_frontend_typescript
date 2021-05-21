@@ -78,7 +78,6 @@ const CourseDisplay = () => {
   const getFilter = (distr: Distribution) => {
     let filter = {};
     testMajorCSNew.distributions.forEach((distribution) => {
-      console.log(distribution, distr);
       if (distribution.name === distr.name) {
         filter = distribution.filter;
       }
@@ -168,8 +167,11 @@ const CourseDisplay = () => {
       distributions.forEach((distribution) => {
         if (distribution.name === "Total") {
           filteredDistribution.push(distribution);
-        } else if (checkDistribution(distribution) && toAdd === null) {
-          console.log("toAdd satisfied");
+        } else if (
+          checkDistribution(distribution) &&
+          toAdd === null &&
+          distribution.planned < distribution.required
+        ) {
           toAdd = distribution;
           filteredDistribution.push(toAdd);
         }

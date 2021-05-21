@@ -1,7 +1,7 @@
 //if byCredit == false, that means the required field is counted by course amount(i.e. number of courses)
 
 //cs other courses: https://www.cs.jhu.edu/undergraduate-studies/academics/cs-other-courses/
-export const bsCS = {
+const bsCS = {
   name: "B.S. Computer Science",
   department: "EN Computer Science",
   distributions: [
