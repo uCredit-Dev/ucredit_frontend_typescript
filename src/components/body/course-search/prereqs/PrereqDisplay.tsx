@@ -10,6 +10,9 @@ import {
 import { selectCurrentPlanCourses } from "../../../slices/userSlice";
 import PrereqDropdown from "./PrereqDropdown";
 import { ReactComponent as CheckMark } from "../../../svg/CheckMark.svg";
+import { ReactComponent as DescriptionSvg } from "../../../svg/Description.svg";
+import { ReactComponent as MenuSvg } from "../../../svg/Menu.svg";
+import ReactTooltip from "react-tooltip";
 
 const api = "https://ucredit-api.herokuapp.com/api";
 
@@ -447,32 +450,37 @@ const PrereqDisplay = () => {
   };
 
   return (
-    <p className='flex-grow'>
-      <div className='border-b-2'>
+    <p className='w-full h-auto'>
+      <ReactTooltip />
+      <div className='flex flex-row justify-between pb-1 border-b'>
         <div className='text-xl font-medium'>Prerequisites</div>{" "}
-        <div>
-          <button
+        <div className='flex flex-row'>
+          <div
             className={clsx(
-              "p-1 text-sm bg-secondary",
+              "flex flex-row items-center justify-center mr-1 p-1 w-7 h-7 rounded cursor-pointer",
               {
-                "bg-opacity-75": prereqDisplayMode === 1,
-                "bg-opacity-25": prereqDisplayMode !== 1,
+                "bg-gray-200": prereqDisplayMode === 1,
+                "hover:bg-gray-200 transition duration-100 ease-in":
+                  prereqDisplayMode !== 1,
               }
             )}
-            onClick={handlePrereqDisplayModeChange(1)}>
-            Description
-          </button>
-          <button
+            onClick={handlePrereqDisplayModeChange(1)}
+            data-tip='description'>
+            <DescriptionSvg className='w-5 h-5' />
+          </div>
+          <div
             className={clsx(
-              "p-1 text-sm bg-secondary",
+              "flex flex-row items-center justify-center p-1 w-7 h-7 rounded cursor-pointer",
               {
-                "bg-opacity-25": prereqDisplayMode === 1,
-                "bg-opacity-75": prereqDisplayMode !== 1,
-              },
+                "bg-gray-200": prereqDisplayMode !== 1,
+                "hover:bg-gray-200 transition duration-100 ease-in":
+                  prereqDisplayMode === 1,
+              }
             )}
-            onClick={handlePrereqDisplayModeChange(2)}>
-            Bullet List (in development)
-          </button>
+            onClick={handlePrereqDisplayModeChange(2)}
+            data-tip='bullet list'>
+            <MenuSvg />
+          </div>
         </div>
       </div>
       {!hasPreReqs ? (
