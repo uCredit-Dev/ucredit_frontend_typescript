@@ -5,6 +5,8 @@ import { useSelector, useDispatch } from "react-redux";
 import {
   updateInspectedCourse,
   selectInspectedCourse,
+  selectSemester,
+  selectYear,
   updateSearchStack,
 } from "../../../slices/searchSlice";
 import { selectCurrentPlanCourses } from "../../../slices/userSlice";
@@ -32,6 +34,8 @@ const PrereqDisplay = () => {
   const dispatch = useDispatch();
   const inspected = useSelector(selectInspectedCourse);
   const currPlanCourses = useSelector(selectCurrentPlanCourses);
+  const semester = useSelector(selectSemester);
+  const year = useSelector(selectYear);
 
   // Component states
   const [prereqDisplayMode, setPrereqDisplayMode] = useState(2);
@@ -155,6 +159,7 @@ const PrereqDisplay = () => {
 
     // First get all valid preReqs (isNegative = true)
     preReqs = filterNNegatives(preReqs);
+    console.log(preReqs);
 
     // If there exists preReqs, we need to process and display them.
     if (inspected !== "None" && preReqs.length > 0) {
@@ -234,11 +239,47 @@ const PrereqDisplay = () => {
     return out;
   };
 
+  // TODO: Autogenerate time ranks based on year and semester
+  const courseRank = new Map([
+    ["fr,fa", 1],
+    ["fr,sp", 3],
+    ["fr,in", 2],
+    ["fr,su", 4],
+    ["so,fa", 5],
+    ["so,in", 6],
+    ["so,sp", 7],
+    ["so,su", 8],
+    ["ju,fa", 9],
+    ["ju,in", 10],
+    ["ju,sp", 11],
+    ["ju,su", 12],
+    ["se,fa", 13],
+    ["se,in", 14],
+    ["se,sp", 15],
+    ["se,su", 16],
+  ]);
+
   // Checks if prereq is satisfied by plan
   const checkPrereq = (number: string): boolean => {
     let satisfied: boolean = false;
+    const currTimeVal = courseRank.get(
+      (year.substr(0, 2) + "," + semester.substr(0, 2)).toLowerCase()
+    );
     currPlanCourses.forEach((course) => {
-      if (course.number === number) {
+      const courseTimeVal = courseRank.get(
+        (
+          course.year.substr(0, 2) +
+          "," +
+          course.term.substr(0, 2)
+        ).toLowerCase()
+      );
+      console.log(courseTimeVal);
+      if (
+        course.number === number &&
+        currTimeVal !== undefined &&
+        courseTimeVal !== undefined &&
+        currTimeVal > courseTimeVal
+      ) {
         satisfied = true;
       }
     });
@@ -258,9 +299,7 @@ const PrereqDisplay = () => {
         jsx: (
           <p className='w-full' key={noCBracketsNum}>
             <button
-              className={clsx(
-                "mb-1 ml-4 max-w-md text-sm font-medium truncate"
-              )}
+              className={clsx("mb-1 max-w-md text-sm font-medium truncate")}
               onClick={() => {
                 updateInspected(noCBracketsNum)();
               }}>
@@ -300,7 +339,8 @@ const PrereqDisplay = () => {
               text={"Any one course below"}
               element={element}
               getNonStringPrereq={getNonStringPrereq}
-              or={true}></PrereqDropdown>
+              or={true}
+            />
           </>
         ),
       };
@@ -323,7 +363,8 @@ const PrereqDisplay = () => {
                 text={"All courses below"}
                 element={element}
                 getNonStringPrereq={getNonStringPrereq}
-                or={false}></PrereqDropdown>
+                or={false}
+              />
             </>
           ),
         };

@@ -1,7 +1,8 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import clsx from "clsx";
 import { ReactComponent as ChevronRight } from "../../../svg/ChevronRight.svg";
 import { ReactComponent as ChevronDown } from "../../../svg/ChevronDown.svg";
+import { ReactComponent as CheckMark } from "../../../svg/CheckMark.svg";
 
 /* 
   This is one of the open-close prereq pill dropdowns.
@@ -15,6 +16,12 @@ const PrereqDropdown = (props: {
 }) => {
   const [open, setOpen] = useState<boolean>(true);
   const [trulySatisfied, setTrulySatisfied] = useState<boolean>(false);
+
+  useEffect(() => {
+    if (props.satisfied) {
+      setOpen(false);
+    }
+  }, [props.satisfied]);
 
   const updateSatisfied = () => {
     setTrulySatisfied(true);
@@ -51,7 +58,7 @@ const PrereqDropdown = (props: {
           updateSatisfied();
         }
         return (
-          <p className='ml-4' key={el}>
+          <p className="ml-4" key={el}>
             {parsed.jsx}
           </p>
         );
@@ -68,14 +75,27 @@ const PrereqDropdown = (props: {
         className={clsx("transition duration-100 ease-in", {
           "text-green-700 hover:text-green-900": props.satisfied,
           "text-red-700 hover:text-red-900": !props.satisfied,
-        })}>
-        <div className='flex flex-row w-auto h-auto font-medium'>
-          {open ? (
-            <ChevronDown className='w-5 h-5' />
+        })}
+      >
+        <div className="flex flex-row w-auto h-auto font-medium">
+          {props.satisfied ? (
+            <CheckMark
+              className={clsx("mr-1 w-5 h-5", {
+                "text-green-700 group-hover:text-red-900": !props.satisfied,
+                "text-green-700 group-hover:text-green-900": props.satisfied,
+              })}
+            />
           ) : (
-            <ChevronRight className='w-5 h-5' />
+            <>
+              {open ? (
+                <ChevronDown className="w-5 h-5" />
+              ) : (
+                <ChevronRight className="w-5 h-5" />
+              )}
+            </>
           )}
-          <div className='text-sm'>{props.text}</div>
+
+          <div className="text-sm">{props.text}</div>
         </div>
       </button>
       {open ? getChildPrereqs() : null}

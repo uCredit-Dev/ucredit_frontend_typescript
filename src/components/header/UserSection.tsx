@@ -24,19 +24,19 @@ function UserSection(props: any) {
   const [cookieUpdate, setCookieUpdate] = useState<boolean>(true);
 
   // on unload, attempts to cleanup guest user plans.
-  useUnload((e: any) => {
-    e.preventDefault();
-    if (user._id === "guestUser") {
-      user.plan_ids.forEach((planId) => {
-        // delete plan from db
-        // update plan array
-        fetch(api + "/plans/" + planId, {
-          method: "DELETE",
-        }).catch((err) => console.log(err));
-      });
-    }
-    e.returnValue = "Are you sure you don't want to save guest courses?";
-  });
+  // useUnload((e: any) => {
+  //   e.preventDefault();
+  //   if (user._id === "guestUser") {
+  //     user.plan_ids.forEach((planId) => {
+  //       // delete plan from db
+  //       // update plan array
+  //       fetch(api + "/plans/" + planId, {
+  //         method: "DELETE",
+  //       }).catch((err) => console.log(err));
+  //     });
+  //   }
+  //   e.returnValue = "Are you sure you don't want to save guest courses?";
+  // });
 
   // Creates a cookie based on url.
   const createCookie = (token: string) => {
@@ -66,7 +66,8 @@ function UserSection(props: any) {
   // On fail, guest user is used.
   useEffect(() => {
     const token: string = getToken();
-    if (cookies.get("connect.sid") !== undefined && token.length > 0) {
+    console.log("In first hook!");
+    if (token.length > 0) {
       fetch(api + "/retrieveUser/" + cookies.get("connect.sid"), {
         mode: "cors",
         method: "GET",
@@ -142,9 +143,26 @@ function UserSection(props: any) {
           Log In
         </a>
       ) : (
-        <div className="flex flex-row items-center justify-center w-24 h-9 bg-white rounded cursor-pointer select-none transform hover:translate-x-0.5 hover:translate-y-0.5 transition duration-200 ease-in">
+        <button
+          onClick={() => {
+            fetch(api + "/retrieveUser/" + cookies.get("connect.sid"), {
+              mode: "cors",
+              method: "DELETE",
+              credentials: "include",
+              headers: {
+                Accept: "application/json",
+                "Content-Type": "application/json",
+              },
+            })
+              .then(() => dispatch(updateUser(guestUser)))
+              .catch((err) => {
+                console.log(err);
+              });
+          }}
+          className="flex flex-row items-center justify-center w-24 h-9 bg-white rounded cursor-pointer select-none transform hover:translate-x-0.5 hover:translate-y-0.5 transition duration-200 ease-in"
+        >
           Log Out
-        </div>
+        </button>
       )}
     </div>
   );

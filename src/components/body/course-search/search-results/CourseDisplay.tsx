@@ -191,6 +191,8 @@ const CourseDisplay = () => {
         plan_id: currentPlan._id,
         number: inspected.number,
         area: inspectedArea,
+        createdAt:
+          user._id === "guestUser" ? Date.now() + 60 * 60 * 24 * 1000 : null,
       };
 
       fetch(api + "/courses", {
