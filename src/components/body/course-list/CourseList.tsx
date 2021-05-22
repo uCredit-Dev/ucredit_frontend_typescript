@@ -75,11 +75,27 @@ function CourseList() {
 
   return (
     <>
-      <div className="flex flex-row flex-wrap justify-between thin:justify-center mt-4 h-auto">
-        <Year yearName={"Freshman"} courses={fCourses} />
-        <Year yearName={"Sophomore"} courses={soCourses} />
-        <Year yearName={"Junior"} courses={jCourses} />
-        <Year yearName={"Senior"} courses={seCourses} />
+      <div className='flex flex-row flex-wrap justify-between thin:justify-center mt-4 h-auto'>
+        <Year
+          customStyle='cursor-pointer'
+          yearName={"Freshman"}
+          courses={fCourses}
+        />
+        <Year
+          customStyle='cursor-pointer'
+          yearName={"Sophomore"}
+          courses={soCourses}
+        />
+        <Year
+          customStyle='cursor-pointer'
+          yearName={"Junior"}
+          courses={jCourses}
+        />
+        <Year
+          customStyle='cursor-pointer'
+          yearName={"Senior"}
+          courses={seCourses}
+        />
       </div>
     </>
   );
