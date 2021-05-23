@@ -7,7 +7,7 @@ import {
   FilterType,
   SemesterType,
   UserCourse,
-  YearType,
+  YearType
 } from "../../../commonTypes";
 import {
   selectInspectedCourse,
@@ -38,6 +38,8 @@ import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { getColors } from "../../../assets";
 import { testMajorCSNew } from "../../../testObjs";
+import axios from "axios";
+import CourseEvalSection from "./CourseEvalSection";
 
 const api = "https://ucredit-api.herokuapp.com/api";
 
@@ -180,6 +182,8 @@ const CourseDisplay = () => {
       // Posts to add course route and then updates distribution.
       updateDistributions(filteredDistribution);
 
+
+
       toast.success(inspected.title + " added!", {
         position: "top-right",
         autoClose: 5000,
@@ -194,6 +198,7 @@ const CourseDisplay = () => {
       dispatch(clearSearch());
     }
   };
+
 
   // Updates distribution bars upon successfully adding a course.
   const updateDistributions = (filteredDistribution: Distribution[]) => {
@@ -250,6 +255,7 @@ const CourseDisplay = () => {
   // It automatically updates the current area in the add course area selection to the first area in the course areas string.
   useEffect(() => {
     setShowMore(2);
+
     if (
       inspected !== "None" &&
       inspected.areas !== "None" &&
@@ -449,6 +455,7 @@ const CourseDisplay = () => {
                   Show less...
                 </button>
               ) : null}
+              <CourseEvalSection inspected={inspected}/>
             </div>
             <PrereqDisplay />
           </div>
