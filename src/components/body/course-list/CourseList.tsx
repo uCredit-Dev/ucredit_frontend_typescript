@@ -1,27 +1,103 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import Year from "./Year";
-import { useSelector } from "react-redux";
-import { selectPlan } from "../../slices/userSlice";
+import { useSelector, useDispatch } from "react-redux";
+import { selectPlan, updateCurrentPlanCourses } from "../../slices/userSlice";
+import { UserCourse } from "../../commonTypes";
+import axios from "axios";
+const api = "https://ucredit-api.herokuapp.com/api";
 
+/* 
+  Container component that holds all the years, semesters, and courses of the current plan.
+*/
 function CourseList() {
   // Setting up redux
+  const dispatch = useDispatch();
   const currentPlan = useSelector(selectPlan);
-
   const freshmanCourseIDs = currentPlan.freshman;
   const sophomoreCourseIDs = currentPlan.sophomore;
   const juniorCourseIDs = currentPlan.junior;
   const seniorCourseIDs = currentPlan.senior;
 
+  // Course state setup.
+  const [fCourses, setFCourses] = useState<UserCourse[]>([]);
+  const [soCourses, setSoCourses] = useState<UserCourse[]>([]);
+  const [jCourses, setJCourses] = useState<UserCourse[]>([]);
+  const [seCourses, setSeCourses] = useState<UserCourse[]>([]);
+
+  // Gets all courses from a specific semester in the current plan..
+  const getCourses = (courseIDs: string[], updater: Function) => {
+    const totalCourses: UserCourse[] = [];
+    if (courseIDs.length === 0) {
+      updater([]);
+    } else {
+      courseIDs.forEach((courseId) => {
+        axios
+          .get(api + "/courses/" + courseId)
+          .then((retrieved) => {
+            const data = retrieved.data.data;
+            totalCourses.push(data);
+            if (totalCourses.length === courseIDs.length) {
+              updater(totalCourses);
+            }
+          })
+          .catch((err) => console.log(err));
+      });
+    }
+  };
+
+  // Gets and sets all freshman courses whenever it gets updated.
+  useEffect(() => {
+    getCourses(freshmanCourseIDs, setFCourses);
+  }, [currentPlan, currentPlan._id, freshmanCourseIDs]);
+
+  // Gets and sets all sophomore courses whenever it gets updated.
+  useEffect(() => {
+    getCourses(sophomoreCourseIDs, setSoCourses);
+  }, [currentPlan, currentPlan._id, sophomoreCourseIDs]);
+
+  // Gets and sets all junior courses whenever it gets updated.
+  useEffect(() => {
+    getCourses(juniorCourseIDs, setJCourses);
+  }, [currentPlan, currentPlan._id, juniorCourseIDs]);
+
+  // Gets and sets all senior courses whenever it gets updated.
+  useEffect(() => {
+    getCourses(seniorCourseIDs, setSeCourses);
+  }, [currentPlan, currentPlan._id, seniorCourseIDs]);
+
+  // When any of the freshman, sophomore, junior, or senior courses change or gets a course deleted, current plan gets updated.
+  useEffect(() => {
+    let totalCourses: UserCourse[] = [];
+    totalCourses = [...fCourses, ...seCourses, ...jCourses, ...soCourses];
+    dispatch(updateCurrentPlanCourses(totalCourses));
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [fCourses, seCourses, jCourses, soCourses]);
+
   return (
-    <div className='flex flex-col ml-1.5 mr-5 w-auto h-auto overflow-y-auto'>
-      <div className='from-background absolute z-10 left-0 medium:left-48 medium:right-blurr right-blurrsm block flex-none h-5 bg-gradient-to-b pointer-events-none'></div>
-      <div className='flex flex-row flex-wrap justify-between thin:justify-center mt-4 w-full h-auto'>
-        <Year yearName={"Freshman"} courseIDs={freshmanCourseIDs} />
-        <Year yearName={"Sophomore"} courseIDs={sophomoreCourseIDs} />
-        <Year yearName={"Junior"} courseIDs={juniorCourseIDs} />
-        <Year yearName={"Senior"} courseIDs={seniorCourseIDs} />
+    <>
+      <div className='flex flex-row flex-wrap justify-between thin:justify-center mt-4 h-auto'>
+        <Year
+          customStyle='cursor-pointer'
+          yearName={"Freshman"}
+          courses={fCourses}
+        />
+        <Year
+          customStyle='cursor-pointer'
+          yearName={"Sophomore"}
+          courses={soCourses}
+        />
+        <Year
+          customStyle='cursor-pointer'
+          yearName={"Junior"}
+          courses={jCourses}
+        />
+        <Year
+          customStyle='cursor-pointer'
+          yearName={"Senior"}
+          courses={seCourses}
+        />
       </div>
-    </div>
+    </>
   );
 }
 

@@ -1,32 +1,25 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { AppThunk, RootState } from "../../appStore/store";
-import { Distribution, Plan, User } from "../commonTypes";
-
-// addNewCourse payload type. Not being used.
-// type NewCourse = {
-//   toAdd: Course;
-//   Semester: SemesterType;
-//   Year: YearType;
-//   Plan: Plan;
-// };
+import { Distribution, Plan, User, UserCourse } from "../commonTypes";
 
 type UserSlice = {
   currentUser: User;
   currentPlan: Plan;
   planList: Plan[];
   distributions: Distribution[];
+  currentPlanCourses: UserCourse[];
+  deleting: boolean;
 };
 
 const initialState: UserSlice = {
   currentUser: {
-    _id: "",
-    firstName: "",
-    lastName: "",
+    _id: "noUser",
+    name: "",
     email: "",
     affiliation: "",
     grade: "",
     school: "",
-    plan_ids: [],
+    plan_ids: ["no plan"],
   },
   currentPlan: {
     _id: "noPlan",
@@ -41,13 +34,14 @@ const initialState: UserSlice = {
   },
   planList: [],
   distributions: [],
+  currentPlanCourses: [],
+  deleting: false,
 };
 
 // Updates all user info from database. This function should be called after an axios get on the user routes.
 function userUpdate(state: any, action: PayloadAction<User>) {
   state.currentUser._id = action.payload._id;
-  state.currentUser.firstName = action.payload.firstName;
-  state.currentUser.lastName = action.payload.lastName;
+  state.currentUser.name = action.payload.name;
   state.currentUser.email = action.payload.email;
   state.currentUser.grade = action.payload.grade;
   state.currentUser.school = action.payload.school;
@@ -62,6 +56,9 @@ export const userSlice = createSlice({
   name: "user",
   initialState,
   reducers: {
+    updateDeleteStatus: (state: any, action: PayloadAction<boolean>) => {
+      state.deleting = action.payload;
+    },
     updateUser: userUpdate,
     updateSelectedPlan: (state: any, action: PayloadAction<Plan>) => {
       state.currentPlan = { ...action.payload };
@@ -75,14 +72,26 @@ export const userSlice = createSlice({
     ) => {
       state.distributions = [...action.payload];
     },
+    updateGuestPlanIds: (state: any, action: PayloadAction<string[]>) => {
+      state.currentUser.plan_ids = action.payload;
+    },
+    updateCurrentPlanCourses: (
+      state: any,
+      action: PayloadAction<UserCourse[]>
+    ) => {
+      state.currentPlanCourses = action.payload;
+    },
   },
 });
 
 export const {
+  updateDeleteStatus,
   updateUser,
   updateSelectedPlan,
   updatePlanList,
   updateDistributions,
+  updateGuestPlanIds,
+  updateCurrentPlanCourses,
 } = userSlice.actions;
 
 // Asynch login with thunk.
@@ -99,5 +108,8 @@ export const selectPlan = (state: RootState) => state.user.currentPlan;
 export const selectPlanList = (state: RootState) => state.user.planList;
 export const selectDistributions = (state: RootState) =>
   state.user.distributions;
+export const selectCurrentPlanCourses = (state: RootState) =>
+  state.user.currentPlanCourses;
+export const selectDeleteStatus = (state: RootState) => state.user.deleting;
 
 export default userSlice.reducer;

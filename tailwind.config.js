@@ -3,20 +3,28 @@ module.exports = {
   darkMode: false, // or 'media' or 'class'
   theme: {
     extend: {
+      minWidth: {
+        yearMin: "200px",
+        narrowest: "710px",
+      },
+      maxWidth: {
+        courseCard: "50%",
+      },
       width: {
         year: "320px",
         courselist: "1400px",
-        courebars: "301px",
-        yearheading: "240px",
+        coursebars: "315px",
+        yearheading: "22.5%",
         semesterheading: "175px",
         infocard: "350px",
-        plancardinput: "250px",
-        planchoose: "274px",
+        plancardinput: "230px",
+        planchoose: "250px",
       },
       height: {
         coursebars: "600px",
         header: "65px",
         yearheading: "42px",
+        criteria: "300px",
       },
       margin: {
         content: "100px",
@@ -26,8 +34,14 @@ module.exports = {
         blurrsm: "317px",
       },
       colors: {
-        primary: "#489784",
-        secondary: "#63D2B8",
+        // primary: "#489784",
+        // primary: "#7933dc",
+        // primary: "#6755E3",
+        primary: "#3168AF",
+        // secondary: "#63D2B8",
+        // secondary: "#a65fec",
+        // secondary: "#948ADF",
+        secondary: "#5D90D3",
         background: "#f0f2f5",
       },
       backgroundColor: {
@@ -71,9 +85,6 @@ module.exports = {
         thin: { max: "820px" },
         narrow: { max: "710px" },
       },
-      minWidth: {
-        narrowest: "710px",
-      },
       keyframes: {
         fadeOut: {
           from: {
@@ -92,6 +103,7 @@ module.exports = {
       transitionProperty: ["hover", "group-hover"],
       transitionDuration: ["hover", "group-hover", "active"],
       transitionTimingFunction: ["hover", "group-hover"],
+      borderStyle: ["hover"],
     },
   },
   plugins: [],

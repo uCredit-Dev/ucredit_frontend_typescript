@@ -1,5 +1,10 @@
 import { all_majors, course_tags } from "./assets";
 
+/* 
+  File containing all the common types we use throughout the app.
+*/
+
+// Course restriction type. Has the restriction name as well as the description of the restriction.
 export type Restriction = {
   RestrictionName: string;
   Description: string;
@@ -37,6 +42,7 @@ export type UserCourse = {
   distribution_ids: string[];
   plan_id: string;
   user_id: string;
+  year: string;
 };
 
 export type Plan = {
@@ -53,8 +59,7 @@ export type Plan = {
 
 export type User = {
   _id: string; //JHED ID
-  firstName: string;
-  lastName: string;
+  name: string;
   email: string;
   affiliation: string; //STUDENT, FACULTY or STAFF
   school: string;
@@ -62,11 +67,23 @@ export type User = {
   plan_ids: string[];
 };
 
+export type Filter = {
+  area?: RegExp;
+  tags?: TagType[];
+  department?: RegExp;
+  title?: RegExp;
+  number?: RegExp;
+  wi?: boolean;
+  exception?: Filter;
+};
+
 // Info for distribution bar.
 export type Distribution = {
   _id: string;
   name: string;
   required: number;
+  filter: Filter;
+  description?: string;
   planned: number;
   current: number;
   satisfied: boolean;
@@ -91,19 +108,22 @@ export type FilterType =
   | "department"
   | "wi";
 
-export type generalDistributionType =
-  | "Total Credits"
-  | "Basic Sciences (N)"
-  | "General Electives"
-  | "Humanities/Social Sciences (H)(S)"
-  | "Mathematics (Q)"
-  | "Writing Intensive (WI)";
+export type AreaType = "N" | "S" | "H" | "W" | "E" | "Q";
 
 export type Major = {
   name: string;
-  generalDistributions: {
-    name: string | generalDistributionType;
+  department: string;
+  distributions: {
+    name: string;
     required: number;
+    filter: Filter;
+    description?: string;
   }[];
-  fineRequirements: [];
+  requirements: {
+    name: string;
+    required: number;
+    filter: Filter;
+    description?: string;
+    byCredit: boolean;
+  }[];
 };

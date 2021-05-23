@@ -1,27 +1,27 @@
 import React from "react";
-import { Course } from "../../commonTypes";
+import { Course } from "../../../commonTypes";
 import { useDispatch, useSelector } from "react-redux";
 import {
   updateInspectedCourse,
   selectInspectedCourse,
-} from "../../slices/searchSlice";
+  updatePlaceholder,
+} from "../../../slices/searchSlice";
+import clsx from "clsx";
 
 type cardProps = {
   course: Course;
 };
 
-// A course slot displayed in the course list once search is performed.
+/* 
+  A course card in the search list.
+  Props:
+    course: course being displayed
+*/
 const CourseCard = (props: cardProps) => {
   const course = props.course;
 
   // If the course displayed by this card is the selected one, style it special.
   const selectedCourse = useSelector(selectInspectedCourse);
-  const checkSelected = () => {
-    if (selectedCourse === course) {
-      return "flex bg-red-100";
-    }
-    return "flex bg-gray-100";
-  };
 
   // Setup Redux
   const dispatch = useDispatch();
@@ -29,17 +29,21 @@ const CourseCard = (props: cardProps) => {
   // User selects a course to look at.
   const handleCourseClick = () => {
     dispatch(updateInspectedCourse(course));
+    dispatch(updatePlaceholder(false));
   };
   return (
-    <button
-      className={checkSelected()}
-      style={{ height: "3rem" }}
+    <div
+      className={clsx(
+        { "bg-secondary bg-opacity-25": selectedCourse === course },
+        "mb-2 p-2 w-full h-14 bg-white rounded hover:shadow cursor-pointer transition duration-200 ease-in-out"
+      )}
       onClick={handleCourseClick}
     >
-      <div style={{ width: "25rem" }} className="ml-2 text-left">
-        {course.title}
+      <div className="flex flex-col justify-center w-full h-full">
+        <div className="truncate">{course.title}</div>
+        <div>{course.number}</div>
       </div>
-    </button>
+    </div>
   );
 };
 
