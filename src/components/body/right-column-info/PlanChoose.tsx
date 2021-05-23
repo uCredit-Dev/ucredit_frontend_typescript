@@ -13,7 +13,7 @@ import {
 import { testMajorCSNew } from "../../testObjs";
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-import GenerateNewPlan from "../../GenerateNewPlan";
+import GenerateNewPlan from "./GenerateNewPlan";
 
 const api = "https://ucredit-api.herokuapp.com/api";
 

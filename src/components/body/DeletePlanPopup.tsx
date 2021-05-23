@@ -6,15 +6,11 @@ import {
   selectPlanList,
   updatePlanList,
   updateSelectedPlan,
-  updateGuestPlanIds,
   updateDeleteStatus,
 } from "../slices/userSlice";
-import { testMajorCSNew } from "../testObjs";
-import axios from "axios";
-import { Distribution, Plan } from "../commonTypes";
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-import GenerateNewPlan from "../GenerateNewPlan";
+import GenerateNewPlan from "./right-column-info/GenerateNewPlan";
 const api = "https://ucredit-api.herokuapp.com/api";
 
 /* 
@@ -31,7 +27,7 @@ const DeletePlanPopup = () => {
   const [generateNew, setGenerateNew] = useState<boolean>(false);
   const setGenerateNewFalse = () => {
     setGenerateNew(false);
-  }
+  };
 
   // Deletes current plan.
   const deleteCurrentPlan = () => {
@@ -74,11 +70,11 @@ const DeletePlanPopup = () => {
 
   return (
     <>
-      <GenerateNewPlan 
-        generateNew = { generateNew }
-        setGenerateNewFalse = { setGenerateNewFalse }
-        _id = { user._id }
-        currentPlan = { currentPlan }
+      <GenerateNewPlan
+        generateNew={generateNew}
+        setGenerateNewFalse={setGenerateNewFalse}
+        _id={user._id}
+        currentPlan={currentPlan}
       />
       <div className="absolute top-0">
         {/* Background Grey */}
