@@ -63,7 +63,7 @@ const PrereqDropdown = (props: {
           updateSatisfied();
         }
         return (
-          <p className="ml-3" key={el}>
+          <p className="ml-2" key={el}>
             {parsed.jsx}
           </p>
         );
@@ -104,9 +104,9 @@ const PrereqDropdown = (props: {
         </div>
       </button>
       <div 
-        className = {clsx("border-l border-opacity-75 ml-2", {
-          'border-green-900': props.satisfied,
-          'border-red-900': !props.satisfied,
+        className = {clsx("border-l-2 border-opacity-50 ml-2", {
+          'border-green-600 hover:border-green-800': props.satisfied,
+          'border-red-600   hover:border-red-800': !props.satisfied,
         })}
         // style = {{
         //   borderLeft: '1px solid', 
