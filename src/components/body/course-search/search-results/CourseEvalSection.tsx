@@ -77,7 +77,6 @@ const CourseEvalSection = (inspectedArea: any) => {
         return(
         <div>
         <button className="underline" onClick={() => {
-          console.log(index)
           updateEvals(index)
         }}>
           {s} | {i} | {g} 
