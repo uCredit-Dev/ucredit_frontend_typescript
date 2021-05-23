@@ -27,6 +27,11 @@ const PrereqDropdown = (props: {
     setTrulySatisfied(true);
   };
 
+  const line = {
+    borderLeft: '2px solid green',
+    marginLeft: '1%',
+  }
+
   const getChildPrereqs = () => {
     let orAndSatisfied = false;
 
@@ -58,7 +63,7 @@ const PrereqDropdown = (props: {
           updateSatisfied();
         }
         return (
-          <p className="ml-4" key={el}>
+          <p className="ml-2" key={el}>
             {parsed.jsx}
           </p>
         );
@@ -98,7 +103,17 @@ const PrereqDropdown = (props: {
           <div className="text-sm">{props.text}</div>
         </div>
       </button>
-      {open ? getChildPrereqs() : null}
+      <div 
+        className = {clsx("border-l-2 border-opacity-50 ml-2", {
+          'border-green-600 hover:border-green-800': props.satisfied,
+          'border-red-600   hover:border-red-800': !props.satisfied,
+        })}
+        // style = {{
+        //   borderLeft: '1px solid', 
+        //   marginLeft: '1%'}}
+      >
+        {open ? getChildPrereqs() : null}
+      </div>
     </div>
   );
 };
