@@ -67,11 +67,23 @@ export type User = {
   plan_ids: string[];
 };
 
+export type Filter = {
+  area?: RegExp;
+  tags?: TagType[];
+  department?: RegExp;
+  title?: RegExp;
+  number?: RegExp;
+  wi?: boolean;
+  exception?: Filter;
+};
+
 // Info for distribution bar.
 export type Distribution = {
   _id: string;
   name: string;
   required: number;
+  filter: Filter;
+  description?: string;
   planned: number;
   current: number;
   satisfied: boolean;
@@ -100,10 +112,18 @@ export type AreaType = "N" | "S" | "H" | "W" | "E" | "Q";
 
 export type Major = {
   name: string;
-  generalDistributions: {
+  department: string;
+  distributions: {
     name: string;
     required: number;
+    filter: Filter;
+    description?: string;
   }[];
-  fineRequirements: [];
-  restrictions: [];
+  requirements: {
+    name: string;
+    required: number;
+    filter: Filter;
+    description?: string;
+    byCredit: boolean;
+  }[];
 };

@@ -11,7 +11,7 @@ import {
 } from "../slices/userSlice";
 import { testMajorCSNew } from "../testObjs";
 import axios from "axios";
-import { Plan } from "../commonTypes";
+import { Distribution, Plan } from "../commonTypes";
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import GenerateNewPlan from "../GenerateNewPlan";

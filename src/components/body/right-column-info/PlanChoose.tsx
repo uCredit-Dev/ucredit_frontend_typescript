@@ -95,6 +95,7 @@ const PlanChoose = (props: PlanChooseProps) => {
             setGenerateNew(true);
           }
           else {
+
             // If there is already a current plan, simply update the plan list.
             dispatch(updatePlanList(retrievedPlans));
           }

@@ -82,6 +82,7 @@ function UserSection(props: any) {
           if (retrievedUser.errors !== undefined) {
             createCookie(token);
           }
+          window.location.href = deploy;
         })
         .catch(() => {
           createCookie(token);

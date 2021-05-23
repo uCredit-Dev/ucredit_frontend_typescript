@@ -71,9 +71,9 @@ function Semester({
       <div className='flex flex-col w-full h-8 text-white font-medium bg-secondary rounded shadow'>
         <div className='flex flex-row items-center justify-between px-2 py-1'>
           <div
-            className='flex flex-row items-center w-full h-auto select-none'
-            onClick={displayCourses}>
-            <ReactTooltip html={true} />
+            className="flex flex-row items-center w-full h-auto select-none"
+            onClick={displayCourses}
+          >
             {semesterName === "fall"
               ? "Fall"
               : semesterName === "intersession"
@@ -81,16 +81,23 @@ function Semester({
               : semesterName === "spring"
               ? "Spring"
               : "Summer"}{" "}
-            <div
-              className='flex flex-row items-center justify-center ml-1 px-1 w-auto h-4 text-black text-xs bg-white rounded'
-              data-tip={`${courses.length} courses`}>
-              {courses.length}
-            </div>
-            <div
-              className='flex flex-row items-center justify-center ml-1 px-1 w-auto h-4 text-black text-xs bg-white rounded'
-              data-tip={`${totalCredits} credits`}>
-              {totalCredits}
-            </div>
+            {courses.length !== 0 && totalCredits !== 0 ? (
+              <>
+                {/* <div
+                  className="flex flex-row items-center justify-center ml-1 px-1 w-auto h-4 text-black text-xs bg-white rounded"
+                  data-tip={`${courses.length} courses`}
+                >
+                  {courses.length}
+                </div> */}
+                <ReactTooltip html={true} />
+                <div
+                  className="flex flex-row items-center justify-center ml-1 px-1 w-auto h-4 text-black text-xs bg-white rounded"
+                  data-tip={`${totalCredits} Credits`}
+                >
+                  {totalCredits}
+                </div>
+              </>
+            ) : null}
           </div>
           <div
             className='flex flex-row items-center justify-center w-6 h-6'
