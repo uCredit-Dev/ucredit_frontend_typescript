@@ -1,15 +1,15 @@
 import React, { useEffect } from "react";
 import axios from "axios";
 import { useDispatch, useSelector } from "react-redux";
-import { Plan } from "./commonTypes";
+import { Plan } from "../../commonTypes";
 import {
   updateSelectedPlan,
   updatePlanList,
   selectUser,
   selectPlanList,
   updateGuestPlanIds,
-} from "./slices/userSlice";
-import { testMajorCSNew } from "./testObjs";
+} from "../../slices/userSlice";
+import { testMajorCSNew } from "../../testObjs";
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
@@ -22,6 +22,9 @@ type generateNewPlanProps = {
   currentPlan?: Plan;
 };
 
+/**
+ * Reusable component that generates a new empty plan.
+ */
 const GenerateNewPlan: React.FC<generateNewPlanProps> = (props) => {
   const dispatch = useDispatch();
 
@@ -44,6 +47,8 @@ const GenerateNewPlan: React.FC<generateNewPlanProps> = (props) => {
       .post(api + "/plans", planBody)
       .then((response: any) => {
         newPlan = response.data.data;
+
+        // Make a new distribution for each distribution of the major of the plan.
         testMajorCSNew.distributions.forEach((distr: any, index: number) => {
           const distributionBody = {
             name: distr.name,
@@ -69,6 +74,7 @@ const GenerateNewPlan: React.FC<generateNewPlanProps> = (props) => {
               };
             })
             .then(() => {
+              // After making our last distribution, we update our redux stores.
               if (index === testMajorCSNew.distributions.length - 1) {
                 dispatch(updateSelectedPlan(newPlan));
                 dispatch(updatePlanList([newPlan, ...planList]));
