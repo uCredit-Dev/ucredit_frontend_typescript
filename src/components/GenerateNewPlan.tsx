@@ -16,7 +16,6 @@ import "react-toastify/dist/ReactToastify.css";
 const api = "https://ucredit-api.herokuapp.com/api";
 
 type generateNewPlanProps = {
-  //setNewPlan: Function;
   generateNew: boolean;
   setGenerateNewFalse: Function;
   _id?: String;
@@ -29,16 +28,15 @@ const GenerateNewPlan: React.FC<generateNewPlanProps> = (props) => {
   const user = useSelector(selectUser);
   const planList = useSelector(selectPlanList);
 
-  //const [generateNew, setGenerateNew] = useState<boolean>(props.generateNew);
-
   useEffect(() => {
-    console.log(props.generateNew);
     if (props.generateNew === false) return;
 
     const planBody = {
       name: "Unnamed Plan",
       user_id: user._id,
       majors: [testMajorCSNew.name],
+      createdAt:
+        user._id === "guestUser" ? Date.now() + 60 * 60 * 24 * 1000 : null,
     };
 
     let newPlan: Plan;
