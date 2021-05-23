@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import {
   selectUser,
@@ -14,6 +14,7 @@ import axios from "axios";
 import { Distribution, Plan } from "../commonTypes";
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import GenerateNewPlan from "../GenerateNewPlan";
 const api = "https://ucredit-api.herokuapp.com/api";
 
 /* 
@@ -26,6 +27,11 @@ const DeletePlanPopup = () => {
   const user = useSelector(selectUser);
   const currentPlan = useSelector(selectPlan);
   const planList = useSelector(selectPlanList);
+
+  const [generateNew, setGenerateNew] = useState<boolean>(false);
+  const setGenerateNewFalse = () => {
+    setGenerateNew(false);
+  }
 
   // Deletes current plan.
   const deleteCurrentPlan = () => {
@@ -51,66 +57,7 @@ const DeletePlanPopup = () => {
         // If it is length 1, autogenerate a new plan. Otherwise, update the list.
         if (updatedList.length === 0 && user._id !== "noUser") {
           // Post req body for a new plan
-          const planBody = {
-            name: "Unnamed Plan",
-            user_id: user._id,
-            majors: [testMajorCSNew.name],
-            createdAt:
-              user._id === "guestUser"
-                ? Date.now() + 60 * 60 * 24 * 1000
-                : null,
-          };
-
-          axios.post(api + "/plans", planBody).then((data: any) => {
-            let newRetrievedPlan: Plan = { ...data.data.data };
-            testMajorCSNew.distributions.forEach((distr, index) => {
-              const distributionBody = {
-                name: distr.name,
-                required: distr.required,
-                user_id: user._id,
-                plan_id: newRetrievedPlan._id,
-                filter: distr.filter,
-                createdAt:
-                  user._id === "guestUser"
-                    ? Date.now() + 60 * 60 * 24 * 1000
-                    : null,
-              };
-
-              axios
-                .post(api + "/distributions", distributionBody)
-                .then((newDistr: any) => {
-                  newRetrievedPlan = {
-                    ...newRetrievedPlan,
-                    distribution_ids: [
-                      ...newRetrievedPlan.distribution_ids,
-                      newDistr.data.data._id,
-                    ],
-                  };
-                })
-                .then(() => {
-                  if (index === testMajorCSNew.distributions.length - 1) {
-                    dispatch(updateSelectedPlan(newRetrievedPlan));
-                    dispatch(
-                      updatePlanList([newRetrievedPlan, ...updatedList])
-                    );
-                    toast.success("New Unnamed Plan created!", {
-                      position: "top-right",
-                      autoClose: 5000,
-                      hideProgressBar: true,
-                      closeOnClick: true,
-                      pauseOnHover: true,
-                      draggable: true,
-                      progress: undefined,
-                    });
-                    if (user._id === "guestUser") {
-                      const planIdArray = [newRetrievedPlan._id];
-                      dispatch(updateGuestPlanIds(planIdArray));
-                    }
-                  }
-                })
-                .catch((err) => console.log(err));
-            });
-          });
+          setGenerateNew(true);
         } else {
           dispatch(updateSelectedPlan(updatedList[0]));
           dispatch(updatePlanList(updatedList));
@@ -127,6 +74,12 @@ const DeletePlanPopup = () => {
 
   return (
     <>
+      <GenerateNewPlan 
+        generateNew = { generateNew }
+        setGenerateNewFalse = { setGenerateNewFalse }
+        _id = { user._id }
+        currentPlan = { currentPlan }
+      />
       <div className="absolute top-0">
         {/* Background Grey */}
         <div className="fixed z-20 left-0 top-0 m-0 w-full h-screen bg-black opacity-50"></div>

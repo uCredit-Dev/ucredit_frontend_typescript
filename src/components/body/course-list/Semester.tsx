@@ -7,6 +7,7 @@ import { ReactComponent as AddSvg } from "../../svg/Add.svg";
 import ReactTooltip from "react-tooltip";
 
 type semesterProps = {
+  customStyle: string;
   semesterName: SemesterType;
   semesterYear: YearType;
   courses: UserCourse[];
@@ -19,7 +20,12 @@ type semesterProps = {
     semesterYear: year this course is part of
     semesterName: semester this course is part of
 */
-function Semester({ semesterName, semesterYear, courses }: semesterProps) {
+function Semester({
+  customStyle,
+  semesterName,
+  semesterYear,
+  courses,
+}: semesterProps) {
   // Total credits and sorted courses.
   const [totalCredits, setTotalCredits] = useState<number>(0);
   const [semesterCourses, setSemesterCourses] = useState<UserCourse[]>([]);
@@ -61,9 +67,9 @@ function Semester({ semesterName, semesterYear, courses }: semesterProps) {
   };
 
   return (
-    <div className="mb-3 w-full h-auto">
-      <div className="flex flex-col w-full h-8 text-white font-medium bg-secondary rounded shadow">
-        <div className="flex flex-row items-center justify-between px-2 py-1">
+    <div className={`${customStyle} mb-3 w-full h-auto`}>
+      <div className='flex flex-col w-full h-8 text-white font-medium bg-secondary rounded shadow'>
+        <div className='flex flex-row items-center justify-between px-2 py-1'>
           <div
             className="flex flex-row items-center w-full h-auto select-none"
             onClick={displayCourses}
@@ -94,10 +100,9 @@ function Semester({ semesterName, semesterYear, courses }: semesterProps) {
             ) : null}
           </div>
           <div
-            className="flex flex-row items-center justify-center w-6 h-6"
-            onClick={addCourse}
-          >
-            <AddSvg className="w-full h-full stroke-2 cursor-pointer" />
+            className='flex flex-row items-center justify-center w-6 h-6'
+            onClick={addCourse}>
+            <AddSvg className='w-full h-full stroke-2 cursor-pointer' />
           </div>
         </div>
       </div>
