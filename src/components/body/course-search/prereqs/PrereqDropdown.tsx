@@ -1,6 +1,12 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import clsx from "clsx";
+import { ReactComponent as ChevronRight } from "../../../svg/ChevronRight.svg";
+import { ReactComponent as ChevronDown } from "../../../svg/ChevronDown.svg";
+import { ReactComponent as CheckMark } from "../../../svg/CheckMark.svg";
 
+/* 
+  This is one of the open-close prereq pill dropdowns.
+*/
 const PrereqDropdown = (props: {
   text: string;
   satisfied: boolean;
@@ -11,6 +17,12 @@ const PrereqDropdown = (props: {
   const [open, setOpen] = useState<boolean>(true);
   const [trulySatisfied, setTrulySatisfied] = useState<boolean>(false);
 
+  useEffect(() => {
+    if (props.satisfied) {
+      setOpen(false);
+    }
+  }, [props.satisfied]);
+
   const updateSatisfied = () => {
     setTrulySatisfied(true);
   };
@@ -19,7 +31,6 @@ const PrereqDropdown = (props: {
     let orAndSatisfied = false;
 
     return props.element.map((el: any, index) => {
-      // TODO: Modularize this
       if (typeof el !== "number") {
         const parsed: {
           satisfied: boolean;
@@ -38,6 +49,7 @@ const PrereqDropdown = (props: {
           orAndSatisfied = false;
         }
 
+        // Updates satisfied condition if recursive depth first search prereq processing produces true.
         if (
           index === props.element.length - 1 &&
           orAndSatisfied &&
@@ -46,12 +58,7 @@ const PrereqDropdown = (props: {
           updateSatisfied();
         }
         return (
-          <p
-            style={{
-              marginLeft: "1rem",
-            }}
-            key={el}
-          >
+          <p className="ml-4" key={el}>
             {parsed.jsx}
           </p>
         );
@@ -65,20 +72,31 @@ const PrereqDropdown = (props: {
         onClick={() => {
           setOpen(!open);
         }}
-        className={clsx(
-          "p-1 rounded",
-          {
-            "bg-green-100": trulySatisfied,
-          },
-          {
-            "bg-red-100": !trulySatisfied,
-          }
-        )}
-        style={{
-          marginLeft: `1rem`,
-        }}
+        className={clsx("transition duration-100 ease-in", {
+          "text-green-700 hover:text-green-900": props.satisfied,
+          "text-red-700 hover:text-red-900": !props.satisfied,
+        })}
       >
-        {props.text}
+        <div className="flex flex-row w-auto h-auto font-medium">
+          {props.satisfied ? (
+            <CheckMark
+              className={clsx("mr-1 w-5 h-5", {
+                "text-green-700 group-hover:text-red-900": !props.satisfied,
+                "text-green-700 group-hover:text-green-900": props.satisfied,
+              })}
+            />
+          ) : (
+            <>
+              {open ? (
+                <ChevronDown className="w-5 h-5" />
+              ) : (
+                <ChevronRight className="w-5 h-5" />
+              )}
+            </>
+          )}
+
+          <div className="text-sm">{props.text}</div>
+        </div>
       </button>
       {open ? getChildPrereqs() : null}
     </div>

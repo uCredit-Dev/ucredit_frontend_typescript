@@ -10,6 +10,9 @@ import ReactPaginate from "react-paginate";
 import { ReactComponent as CustomCourseSvg } from "../../../svg/Custom.svg";
 import ReactTooltip from "react-tooltip";
 
+/* 
+  List of searched courses.
+*/
 const SearchList = () => {
   const [pageNum, setPageNum] = useState(0);
   const [pageCount, setPageCount] = useState(0);
@@ -17,6 +20,7 @@ const SearchList = () => {
   const dispatch = useDispatch();
   let coursesPerPage = 10;
 
+  // Updates pagination every time the searched courses change.
   useEffect(() => {
     // If coursesPerPage doesn't divide perfectly into total courses, we need one more page.
     const division = Math.floor(courses.length / coursesPerPage);
@@ -49,6 +53,7 @@ const SearchList = () => {
     setPageNum(event.selected);
   };
 
+  // Activates placeholder adding.
   const onPlaceholderClick = () => {
     dispatch(updatePlaceholder(true));
     const placeholderCourse = {

@@ -125,6 +125,7 @@ export const userTestCourse1: UserCourse = {
   wi: testCourse1.wi,
   taken: false,
   ratings: [],
+  year: "freshman",
   distribution_ids: [testDistributionNS._id, testDistributionTot._id],
 };
 
@@ -143,6 +144,7 @@ export const userTestCourse2: UserCourse = {
   plan_id: "testPlan1",
   distribution_ids: [testDistributionHumanities._id, testDistributionTot._id],
   user_id: "mliu78",
+  year: "sophomore",
 };
 
 export const testPlan1: Plan = {
@@ -185,8 +187,7 @@ export const testPlan2: Plan = {
 
 export const testUser: User = {
   _id: "mliu78",
-  firstName: "Matthew",
-  lastName: "Liu",
+  name: "Matthew Liu",
   email: "mliu78@jhu.edu",
   affiliation: "STUDENT",
   grade: "AE UG Sophomore",

@@ -16,6 +16,9 @@ import DeletePlanPopup from "./DeletePlanPopup";
 
 const api = "https://ucredit-api.herokuapp.com/api";
 
+/* 
+  Holds all dashboard components.
+*/
 function Content() {
   const [distributions, setDistributions] = useState<Distribution[]>([]);
   const searching = useSelector(selectSearchStatus);
@@ -23,6 +26,7 @@ function Content() {
   const deleteStatus = useSelector(selectDeleteStatus);
   const dispatch = useDispatch();
 
+  // Gets distribution everytime a plan changes.
   useEffect(() => {
     getDistributions();
     // eslint-disable-next-line react-hooks/exhaustive-deps

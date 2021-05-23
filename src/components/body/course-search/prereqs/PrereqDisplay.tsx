@@ -5,121 +5,166 @@ import { useSelector, useDispatch } from "react-redux";
 import {
   updateInspectedCourse,
   selectInspectedCourse,
+  selectSemester,
+  selectYear,
   updateSearchStack,
 } from "../../../slices/searchSlice";
 import { selectCurrentPlanCourses } from "../../../slices/userSlice";
 import PrereqDropdown from "./PrereqDropdown";
+import { ReactComponent as CheckMark } from "../../../svg/CheckMark.svg";
+import { ReactComponent as DescriptionSvg } from "../../../svg/Description.svg";
+import { ReactComponent as MenuSvg } from "../../../svg/Menu.svg";
+import ReactTooltip from "react-tooltip";
+
 const api = "https://ucredit-api.herokuapp.com/api";
 
+// Parsed prereq type
+// satisfied: a boolean that tells whether the prereq should be marked with green (satisfied) or red (unsatisfied)
+// jsx: the dropdown bullet containing the current prereq course pill as well as its subsequent prereqs.
 type parsedPrereqs = {
   satisfied: boolean;
   jsx: JSX.Element;
 };
 
+/* 
+  This is the bullet-list display of the prereqs for each course.
+*/
 const PrereqDisplay = () => {
+  // Redux Setup
+  const dispatch = useDispatch();
+  const inspected = useSelector(selectInspectedCourse);
+  const currPlanCourses = useSelector(selectCurrentPlanCourses);
+  const semester = useSelector(selectSemester);
+  const year = useSelector(selectYear);
+
+  // Component states
   const [prereqDisplayMode, setPrereqDisplayMode] = useState(2);
-  // Holds preReq Display as a state that updates every time inspected course changes.
   const [preReqDisplay, setPreReqDisplay] = useState<JSX.Element[]>([]);
   const [loaded, setLoaded] = useState<boolean>(false);
   const [hasPreReqs, setHasPreReqs] = useState<boolean>(false);
   const [NNegativePreReqs, setNNegativePreReqs] = useState<any[]>();
-  const dispatch = useDispatch();
-  const inspected = useSelector(selectInspectedCourse);
-  const currPlanCourses = useSelector(selectCurrentPlanCourses);
 
+  // Parse preReq array to determine which are prereqs and which are coreq and other info. Actual Prereqs are denoted by isNegative = "N"
+  // Returns non isNegative prereqs
+  const filterNNegatives = (preReqs: any[]): any[] => {
+    if (inspected !== "None") {
+      preReqs = inspected.preReq.filter((section: any) => {
+        return section.IsNegative === "N";
+      });
+    }
+    setNNegativePreReqs(preReqs); // Continue only if}
+    return preReqs;
+  };
+
+  // Takes in a unparsed array of preReqs.
+  // Processes by checking if they're satisfied and turning them into jsx elements.
+  // Displays them after.
+  const processPrereqs = (preReqs: any[]) => {
+    // Regex used to get an array of course numbers.
+    const regex: RegExp = /[A-Z]{2}\.[0-9]{3}\.[0-9]{3}/g;
+    const forwardSlashRegex: RegExp = /[A-Z]{2}\.[0-9]{3}\.[0-9]{3}\/[A-Z]{2}\.[0-9]{3}\.[0-9]{3}/g;
+
+    let description: string = preReqs[0].Description;
+    let expr: any = preReqs[0].Expression;
+
+    // All courses that match the parttern of 'COURSE/COURSE' in description
+    let forwardSlashCondition = [...description.matchAll(forwardSlashRegex)];
+
+    // Checking for additional conditions only said in the description (ie. additional prereqs from description in CSF)
+    forwardSlashCondition.forEach((condition: any) => {
+      let newCourse = condition[0].substr(11, condition[0].length);
+      let oldCourse = condition[0].substr(0, 10);
+      if (expr.match(newCourse) === null) {
+        // If our expression doesn't already have the course to the right of the '/', we append this course to the old course in the expression with an OR
+        expr = expr.replaceAll(
+          oldCourse + "[C]",
+          oldCourse + "[C]^OR^" + newCourse + "[C]"
+        );
+      }
+    });
+
+    getEachCourseAndDisplay(expr, regex);
+  };
+
+  const getEachCourseAndDisplay = (expr: string, regex: RegExp) => {
+    // Gets an array of all courses in expression.
+    let match = expr.match(regex);
+    let numList: RegExpMatchArray = [];
+    let numNameList: any[] = []; // Contains the number with name of a course.
+    let counter = 0; // Keeps track of how many courses have been processed. Cannot rely on indices as for loop executes asynchronously compared to axios. We need a variable syncronous to axios to determine when to load prereqs
+
+    // If we were able to find course numbers in regex matches, update the numList to list of course numbers
+    if (match) {
+      numList = match;
+    }
+
+    // For the list of numbers, retrieve each course number, search for it and store the combined number + name into numNameList
+    for (let n = 0; n < numList.length; n++) {
+      let num = numList[n];
+      axios
+        .get(api + "/search", { params: { query: num } })
+        // eslint-disable-next-line no-loop-func
+        .then((retrieved) => {
+          const retrievedCourse = retrieved.data.data;
+          if (retrievedCourse.length === 1) {
+            numNameList.push(num + num + " " + retrievedCourse[0].title); // num is added twice to distinquish which was the base course (refer to the case of EN.600 below) in the case that departments change numbers (600 to 601)
+            counter++;
+          } else {
+            // TODO: Modularize this
+            // In the case where the department changed some courses from 600 to 601
+            if (num.match("EN.600") !== null) {
+              num = num.replace("EN.600", "EN.601");
+              axios
+                .get(api + "/search", { params: { query: num } })
+                // eslint-disable-next-line no-loop-func
+                .then((retrieved601) => {
+                  const retrievedCourse601 = retrieved601.data.data;
+                  if (retrievedCourse601.length === 1) {
+                    // Append original num to front for later sorting
+                    numNameList.push(
+                      numList[n] + num + " " + retrievedCourse601[0].title
+                    );
+                  } else {
+                    numNameList.push(
+                      numList[n] + numList[n] + " Older than 2 years old."
+                    );
+                  }
+                  counter++;
+
+                  afterGathering(counter, numNameList, numList, expr);
+                })
+                .catch((err) => {
+                  console.log("couldnt find", err);
+                });
+            } else {
+              numNameList.push(num + num + " Older than 2 years old.");
+              counter++;
+            }
+          }
+          afterGathering(counter, numNameList, numList, expr);
+        })
+        .catch((err) => {
+          console.log("couldnt find", err);
+        });
+    }
+  };
+
+  // This useEffect performs prereq retrieval every time a new course is displayed.
   useEffect(() => {
     // Reset state whenever new inspected course
     setPreReqDisplay([]);
     let preReqs: any[] = [];
     setLoaded(false);
     setHasPreReqs(false);
-    // Parse preReq array to determine which are prereqs and which are coreq and other info. Actual Prereqs are denoted by isNegative = "N"
-    if (inspected !== "None") {
-      preReqs = inspected.preReq.filter((section: any) => {
-        return section.IsNegative === "N";
-      });
-    }
-    setNNegativePreReqs(preReqs); // Continue only if
+
+    // First get all valid preReqs (isNegative = true)
+    preReqs = filterNNegatives(preReqs);
+    console.log(preReqs);
+
+    // If there exists preReqs, we need to process and display them.
     if (inspected !== "None" && preReqs.length > 0) {
       setHasPreReqs(true);
-
-      // Regex used to get an array of course numbers.
-      const regex: RegExp = /[A-Z]{2}\.[0-9]{3}\.[0-9]{3}/g;
-      const forwardSlashRegex: RegExp = /[A-Z]{2}\.[0-9]{3}\.[0-9]{3}\/[A-Z]{2}\.[0-9]{3}\.[0-9]{3}/g;
-
-      let description = preReqs[0].Description;
-      let expr = preReqs[0].Expression;
-
-      // All courses that match the parttern of 'COURSE/COURSE' in description
-      let forwardSlashCondition = [...description.matchAll(forwardSlashRegex)];
-
-      // Checking for additional conditions only said in the description (check CSF)
-      forwardSlashCondition.forEach((condition: any) => {
-        let newCourse = condition[0].substr(11, condition[0].length);
-        let oldCourse = condition[0].substr(0, 10);
-        if (expr.match(newCourse) === null) {
-          // If our expression doesn't already have the course to the right of the '/', we append this course to the old course in the expression with an OR
-          expr = expr.replaceAll(
-            oldCourse + "[C]",
-            oldCourse + "[C]^OR^" + newCourse + "[C]"
-          );
-        }
-      });
-
-      // Gets an array of all courses in expression.
-      let numList = expr.match(regex);
-      let numNameList: any[] = []; // Contains the number with name of a course.
-      let counter = 0; // Keeps track of how many courses have been processed. Cannot rely on indices as for loop executes asynchronously compared to axios. We need a variable syncronous to axios to determine when to load prereqs
-
-      // For the list of numbers, retrieve each course number, search for it and store the combined number + name into numNameList
-      for (let n = 0; n < numList.length; n++) {
-        let num = numList[n];
-        axios
-          .get(api + "/search", { params: { query: num } })
-          // eslint-disable-next-line no-loop-func
-          .then((retrieved) => {
-            const retrievedCourse = retrieved.data.data;
-            if (retrievedCourse.length === 1) {
-              numNameList.push(num + num + " " + retrievedCourse[0].title); // num is added twice to distinquish which was the base course (refer to the case of EN.600 below) in the case that departments change numbers (600 to 601)
-              counter++;
-            } else {
-              // TODO: Modularize this
-              // In the case where the department changed some courses from 600 to 601
-              if (num.match("EN.600") !== null) {
-                num = num.replace("EN.600", "EN.601");
-                axios
-                  .get(api + "/search", { params: { query: num } })
-                  // eslint-disable-next-line no-loop-func
-                  .then((retrieved601) => {
-                    const retrievedCourse601 = retrieved601.data.data;
-                    if (retrievedCourse601.length === 1) {
-                      // Append original num to front for later sorting
-                      numNameList.push(
-                        numList[n] + num + " " + retrievedCourse601[0].title
-                      );
-                    } else {
-                      numNameList.push(
-                        numList[n] + numList[n] + " Older than 2 years old."
-                      );
-                    }
-                    counter++;
-
-                    afterGathering(counter, numNameList, numList, expr);
-                  })
-                  .catch((err) => {
-                    console.log("couldnt find", err);
-                  });
-              } else {
-                numNameList.push(num + num + " Older than 2 years old.");
-                counter++;
-              }
-            }
-            afterGathering(counter, numNameList, numList, expr);
-          })
-          .catch((err) => {
-            console.log("couldnt find", err);
-          });
-      }
+      processPrereqs(preReqs);
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [inspected]);
@@ -194,11 +239,47 @@ const PrereqDisplay = () => {
     return out;
   };
 
+  // TODO: Autogenerate time ranks based on year and semester
+  const courseRank = new Map([
+    ["fr,fa", 1],
+    ["fr,sp", 3],
+    ["fr,in", 2],
+    ["fr,su", 4],
+    ["so,fa", 5],
+    ["so,in", 6],
+    ["so,sp", 7],
+    ["so,su", 8],
+    ["ju,fa", 9],
+    ["ju,in", 10],
+    ["ju,sp", 11],
+    ["ju,su", 12],
+    ["se,fa", 13],
+    ["se,in", 14],
+    ["se,sp", 15],
+    ["se,su", 16],
+  ]);
+
   // Checks if prereq is satisfied by plan
   const checkPrereq = (number: string): boolean => {
     let satisfied: boolean = false;
+    const currTimeVal = courseRank.get(
+      (year.substr(0, 2) + "," + semester.substr(0, 2)).toLowerCase()
+    );
     currPlanCourses.forEach((course) => {
-      if (course.number === number) {
+      const courseTimeVal = courseRank.get(
+        (
+          course.year.substr(0, 2) +
+          "," +
+          course.term.substr(0, 2)
+        ).toLowerCase()
+      );
+      console.log(courseTimeVal);
+      if (
+        course.number === number &&
+        currTimeVal !== undefined &&
+        courseTimeVal !== undefined &&
+        currTimeVal > courseTimeVal
+      ) {
         satisfied = true;
       }
     });
@@ -216,22 +297,32 @@ const PrereqDisplay = () => {
       return {
         satisfied: satisfied,
         jsx: (
-          <p className="w-full" key={noCBracketsNum}>
+          <p className='w-full' key={noCBracketsNum}>
             <button
-              className={clsx(
-                "... ml-4 p-1 max-w-md rounded truncate",
-                {
-                  "bg-green-100": satisfied,
-                },
-                {
-                  "bg-red-100": !satisfied,
-                }
-              )}
+              className={clsx("mb-1 max-w-md text-sm font-medium truncate")}
               onClick={() => {
                 updateInspected(noCBracketsNum)();
-              }}
-            >
-              - {noCBrackets}
+              }}>
+              <div className='group flex flex-row w-auto h-auto transition duration-100 ease-in'>
+                {satisfied ? (
+                  <CheckMark
+                    className={clsx("mr-1 w-5 h-5", {
+                      "text-green-700 group-hover:text-red-900": !satisfied,
+                      "text-green-700 group-hover:text-green-900": satisfied,
+                    })}
+                  />
+                ) : null}
+                <div
+                  className={clsx(
+                    "border-b border-solid border-gray-300 transition duration-100 ease-in",
+                    {
+                      "text-green-700 hover:text-green-900 hover:border-green-900": satisfied,
+                      "hover:text-red-900 text-red-700 hover:border-red-900": !satisfied,
+                    }
+                  )}>
+                  {noCBrackets}
+                </div>
+              </div>
             </button>
           </p>
         ),
@@ -245,11 +336,11 @@ const PrereqDisplay = () => {
           <>
             <PrereqDropdown
               satisfied={parsedSat}
-              text={"- Any one course below ▼"}
+              text={"Any one course below"}
               element={element}
               getNonStringPrereq={getNonStringPrereq}
               or={true}
-            ></PrereqDropdown>
+            />
           </>
         ),
       };
@@ -269,11 +360,11 @@ const PrereqDisplay = () => {
             <>
               <PrereqDropdown
                 satisfied={false}
-                text={"- All courses below ▼"}
+                text={"All courses below"}
                 element={element}
                 getNonStringPrereq={getNonStringPrereq}
                 or={false}
-              ></PrereqDropdown>
+              />
             </>
           ),
         };
@@ -400,49 +491,48 @@ const PrereqDisplay = () => {
   };
 
   return (
-    <p className="flex-grow">
-      <div className="border-b-2">
-        <div className="text-xl font-medium">Prerequisites</div>{" "}
-        <div>
-          <button
+    <p className='w-full h-auto'>
+      <ReactTooltip />
+      <div className='flex flex-row justify-between pb-1 border-b'>
+        <div className='text-xl font-medium'>Prerequisites</div>{" "}
+        <div className='flex flex-row'>
+          <div
             className={clsx(
-              "p-1 text-sm bg-secondary",
+              "flex flex-row items-center justify-center mr-1 p-1 w-7 h-7 rounded cursor-pointer",
               {
-                "bg-opacity-25": prereqDisplayMode !== 1,
-              },
-              {
-                "bg-opacity-75": prereqDisplayMode === 1,
+                "bg-gray-200": prereqDisplayMode === 1,
+                "hover:bg-gray-200 transition duration-100 ease-in":
+                  prereqDisplayMode !== 1,
               }
             )}
             onClick={handlePrereqDisplayModeChange(1)}
-          >
-            Description
-          </button>
-          <button
+            data-tip='description'>
+            <DescriptionSvg className='w-5 h-5' />
+          </div>
+          <div
             className={clsx(
-              "p-1 text-sm bg-secondary",
+              "flex flex-row items-center justify-center p-1 w-7 h-7 rounded cursor-pointer",
               {
-                "bg-opacity-25": prereqDisplayMode === 1,
-              },
-              {
-                "bg-opacity-75": prereqDisplayMode !== 1,
+                "bg-gray-200": prereqDisplayMode !== 1,
+                "hover:bg-gray-200 transition duration-100 ease-in":
+                  prereqDisplayMode === 1,
               }
             )}
             onClick={handlePrereqDisplayModeChange(2)}
-          >
-            Bullet List (in development)
-          </button>
+            data-tip='bullet list'>
+            <MenuSvg />
+          </div>
         </div>
       </div>
       {!hasPreReqs ? (
         // <div className="font-normal">No Prereqs!</div>
-        <div className="flex flex-col items-center justify-center w-full h-full font-normal">
+        <div className='flex flex-col items-center justify-center w-full h-full font-normal'>
           No Prereqs!
         </div>
       ) : prereqDisplayMode === 1 ? (
         <>
           {NNegativePreReqs !== undefined && NNegativePreReqs.length > 0 ? (
-            <div className="font-normal">{NNegativePreReqs[0].Description}</div>
+            <div className='font-normal'>{NNegativePreReqs[0].Description}</div>
           ) : (
             <div>Loading description...</div>
           )}
@@ -450,7 +540,7 @@ const PrereqDisplay = () => {
       ) : !loaded ? (
         "Loading Prereqs Status: loaded is " + loaded.toString()
       ) : (
-        <p className="p-2 overflow-y-auto">{preReqDisplay}</p>
+        <p className='p-2 overflow-y-auto'>{preReqDisplay}</p>
       )}
     </p>
   );

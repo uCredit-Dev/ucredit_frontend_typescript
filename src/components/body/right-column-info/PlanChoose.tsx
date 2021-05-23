@@ -23,7 +23,14 @@ type PlanChooseProps = {
   setNewPlan: Function;
 };
 
-const PlanChoose: React.FC<PlanChooseProps> = (props) => {
+/* 
+  Adding a placeholder
+  Props:
+    className: className of plans
+    newPlan: the amount of plans currently in the plan list
+    setNewPlan: updates newPlan
+*/
+const PlanChoose = (props: PlanChooseProps) => {
   // Redux setup
   const dispatch = useDispatch();
   const user = useSelector(selectUser);
@@ -42,7 +49,7 @@ const PlanChoose: React.FC<PlanChooseProps> = (props) => {
 
   // Gets all users's plans and updates state everytime a new user is chosen.
   useEffect(() => {
-    if (user._id !== "noUser") {
+    if (user._id !== "noUser" && user._id !== "guestUser") {
       axios
         .get(api + "/plansByUser/" + user._id)
         .then((retrieved) => {
@@ -103,7 +110,7 @@ const PlanChoose: React.FC<PlanChooseProps> = (props) => {
         });
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [user, planList, planList.length]);
+  }, [user._id]);
 
   // Handles onClick for when a dropdown option is selected
   const handlePlanChange = (event: any) => {
@@ -137,7 +144,7 @@ const PlanChoose: React.FC<PlanChooseProps> = (props) => {
   };
 
   useEffect(() => {
-    if (user.plan_ids.length === 0 && user._id !== "noUser") {
+    if (user.plan_ids.length === 0 && user._id === "guestUser") {
       // Post req body for a new plan
       setGenerateNew(true);
     }

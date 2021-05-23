@@ -44,15 +44,24 @@ const departmentFilters = ["Any", ...all_majors];
 const tagFilters = ["Any", ...course_tags];
 // Implement smarter search
 
+/* 
+  Search form, including the search query input and filters.
+*/
 const Form = () => {
-  const [showCriteria, setShowCriteria] = useState(false);
-
   // Set up redux dispatch and variables.
   const dispatch = useDispatch();
   const searchTerm = useSelector(selectSearchterm);
   const searchFilters = useSelector(selectSearchFilters);
   const semester = useSelector(selectSemester);
   const year = useSelector(selectYear);
+
+  // Component state setup
+  const [showCriteria, setShowCriteria] = useState(false);
+  const [showAllResults, setShowAllResults] = useState<boolean>(false);
+  const [searchedCourses, setSearchedCourses] = useState<
+    Map<string, SearchMapEl>
+  >(new Map<string, SearchMapEl>());
+  const [searching, setSearching] = useState<boolean>(false);
 
   // On opening search, set the term filter to match semester you're adding to.
   useEffect(() => {
@@ -75,13 +84,12 @@ const Form = () => {
     priority: number;
   };
 
+  // Search with debouncing of 2/4s of a second.
   const minLength = 3;
-  const [searching, setSearching] = useState<boolean>(false);
-
-  // Search with debouncing of 3/4s of a second.
   useEffect(() => {
     setSearchedCourses(new Map<string, SearchMapEl>());
-    // Otherwise, user is searching for something.
+
+    // Search params.
     const extras: SearchExtras = {
       query: searchTerm,
       credits: searchFilters.credits === "Any" ? null : searchFilters.credits,
@@ -95,17 +103,15 @@ const Form = () => {
         searchFilters.department === "Any" ? null : searchFilters.department,
       tags: searchFilters.tags === "Any" ? null : searchFilters.tags,
     };
+
+    // Search with half second debounce.
     const search = setTimeout(
       performSmartSearch(extras, searchTerm.length),
       500
     );
-
     return () => clearTimeout(search);
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [searchTerm, searchFilters]);
-  const [searchedCourses, setSearchedCourses] = useState<
-    Map<string, SearchMapEl>
-  >(new Map<string, SearchMapEl>());
+  }, [searchTerm, searchFilters, showAllResults]);
 
   useEffect(() => {
     if (searching) {
@@ -141,15 +147,22 @@ const Form = () => {
           params: extras,
         })
         .then((courses) => {
-          let returned = courses.data.data.sort(
+          let returned: any[] = courses.data.data.sort(
             (course1: Course, course2: Course) =>
               course1.title.localeCompare(course2.title)
           );
+
           if (searchFilters.distribution === "N") {
             returned = returned.filter(
               (course: Course) => course.areas !== "None"
             );
           }
+
+          if (!showAllResults) {
+            // if showAllResults is selected, we search for all; otherwise, we only show top few.
+            returned = returned.slice(0, 10);
+          }
+
           setSearching(false);
           dispatch(updateRetrievedCourses(returned));
 
@@ -169,6 +182,7 @@ const Form = () => {
         });
     }
 
+    // For each query substring, search.
     querySubstrs.forEach((subQuery) => {
       extras.query = subQuery;
       axios
@@ -182,6 +196,7 @@ const Form = () => {
             (course1: Course, course2: Course) =>
               course1.number.localeCompare(course2.number)
           );
+
           if (searchFilters.distribution === "N") {
             returned = returned.filter(
               (course: Course) => course.areas !== "None"
@@ -189,7 +204,12 @@ const Form = () => {
           }
 
           returned.forEach((course: Course) => {
-            if (!retrievedCourses.has(course.number)) {
+            if (
+              !retrievedCourses.has(course.number) &&
+              (searchedCourses.size < 10 ||
+                extras.query.length === 0 ||
+                showAllResults) // if showAllResults is selected, we search for all; otherwise, we only show top few.
+            ) {
               retrievedCourses.set(course.number, {
                 course: course,
                 priority: queryLength,
@@ -199,7 +219,12 @@ const Form = () => {
 
           // All subqueries are done searching
           if (doneSearchSubQueries.length === querySubstrs.length) {
-            if (queryLength > minLength) {
+            if (
+              queryLength > minLength &&
+              (searchedCourses.size < 10 ||
+                extras.query.length === 0 ||
+                showAllResults) // if showAllResults is selected, we search for all; otherwise, we only show top few.
+            ) {
               setSearchedCourses(
                 new Map<string, SearchMapEl>(retrievedCourses)
               );
@@ -229,6 +254,7 @@ const Form = () => {
     });
   };
 
+  // Gets new list of searched courses.
   const getNewSearchList = (): Course[] => {
     const searchList: Course[] = [];
 
@@ -311,43 +337,59 @@ const Form = () => {
     dispatch(updateSearchFilters(params));
   };
 
+  const showAll = () => {
+    setShowAllResults(true);
+  };
+
+  const dontShowAll = () => {
+    setShowAllResults(false);
+  };
+
   return (
-    <div className="px-5 py-3 w-full h-auto text-coursecard border-b border-black select-none">
+    <div className='px-5 py-3 w-full h-auto text-coursecard border-b border-black select-none'>
       <ReactTooltip />
-      <div className="flex-full flex flex-row h-auto">
+      <div className='flex-full flex flex-row h-auto'>
         <input
-          className={clsx(" mr-2 px-1 w-full h-6 rounded outline-none", {
+          autoFocus
+          className={clsx("mr-2 px-1 w-full h-6 rounded outline-none", {
             "mb-2": showCriteria,
           })}
-          type="text"
+          type='text'
           placeholder={"Course title or number (ie. Physics, 601.280, etc.)"}
           style={{ width: "100%" }}
           defaultValue={searchTerm}
           onChange={handleSearchTerm}
         />
         <div
-          className="flex flex-none flex-row items-center justify-center w-6 h-6 bg-white rounded cursor-pointer"
+          className='flex flex-none flex-row items-center justify-center w-6 h-6 bg-white rounded cursor-pointer'
           onClick={() => setShowCriteria(!showCriteria)}
           data-tip={
             showCriteria ? "Hide search criteria" : "Show search criteria"
-          }
-        >
+          }>
           {!showCriteria ? (
-            <ShowSvg className="w-4 h-4 stroke-2" />
+            <ShowSvg className='w-4 h-4 stroke-2' />
           ) : (
-            <HideSvg className="w-4 h-4 stroke-2" />
+            <HideSvg className='w-4 h-4 stroke-2' />
           )}
         </div>
       </div>
+      <div>
+        {showAllResults ? (
+          <button onClick={dontShowAll}>Show Top Results (faster)</button>
+        ) : (
+          <button onClick={showAll}>
+            Don't see your class? Show all results (slower)
+          </button>
+        )}
+      </div>
       {showCriteria ? (
         <div>
-          <div className="flex flex-row items-center justify-between mb-2 w-full h-auto">
+          <div className='flex flex-row items-center justify-between mb-2 w-full h-auto'>
             Department
             <select
-              className="w-36 h-6 rounded outline-none"
+              className='w-36 h-6 rounded outline-none'
               onChange={handleDepartmentFilterChange}
-              defaultValue={searchFilters.department}
-            >
+              defaultValue={searchFilters.department}>
               {departmentFilters.map((department) => (
                 <option key={department} value={department}>
                   {department}
@@ -355,13 +397,12 @@ const Form = () => {
               ))}
             </select>
           </div>
-          <div className="flex flex-row items-center justify-between mb-2 w-full h-auto">
+          <div className='flex flex-row items-center justify-between mb-2 w-full h-auto'>
             Credits
             <select
-              className="w-auto h-6 rounded outline-none"
+              className='w-auto h-6 rounded outline-none'
               onChange={handleCreditFilterChange}
-              defaultValue={searchFilters.credits}
-            >
+              defaultValue={searchFilters.credits}>
               {creditFilters.map((credits) => (
                 <option key={credits} value={credits}>
                   {credits}
@@ -369,13 +410,12 @@ const Form = () => {
               ))}
             </select>
           </div>
-          <div className="flex flex-row items-center justify-between mb-2 w-full h-auto">
+          <div className='flex flex-row items-center justify-between mb-2 w-full h-auto'>
             Area
             <select
-              className="w-auto h-6 rounded outline-none"
+              className='w-auto h-6 rounded outline-none'
               onChange={handleDistributionFilterChange}
-              defaultValue={searchFilters.distribution}
-            >
+              defaultValue={searchFilters.distribution}>
               {distributionFilters.map((distribution) => (
                 <option key={distribution} value={distribution}>
                   {distribution}
@@ -383,13 +423,12 @@ const Form = () => {
               ))}
             </select>
           </div>
-          <div className="flex flex-row items-center justify-between mb-2 w-full h-auto">
+          <div className='flex flex-row items-center justify-between mb-2 w-full h-auto'>
             Term
             <select
-              className="w-14 h-6 rounded outline-none"
+              className='w-14 h-6 rounded outline-none'
               onChange={handleTermFilterChange}
-              defaultValue={semester}
-            >
+              defaultValue={semester}>
               {termFilters.map((term) => (
                 <option key={term} value={term}>
                   {term}
@@ -397,13 +436,12 @@ const Form = () => {
               ))}
             </select>
           </div>
-          <div className="flex flex-row items-center justify-between mb-2 w-full h-auto">
+          <div className='flex flex-row items-center justify-between mb-2 w-full h-auto'>
             Writing Intensive
             <select
-              className="w-auto h-6 rounded outline-none"
+              className='w-auto h-6 rounded outline-none'
               onChange={handleWIFilterChange}
-              defaultValue={searchFilters.distribution}
-            >
+              defaultValue={searchFilters.distribution}>
               {wiFilters.map((wi) => (
                 <option key={wi} value={wi}>
                   {wi}
@@ -411,13 +449,12 @@ const Form = () => {
               ))}
             </select>
           </div>
-          <div className="flex flex-row items-center justify-between mb-2 w-full h-auto">
+          <div className='flex flex-row items-center justify-between mb-2 w-full h-auto'>
             Tag
             <select
-              className="w-18 h-6 rounded outline-none"
+              className='w-18 h-6 rounded outline-none'
               onChange={handleTagsFilterChange}
-              defaultValue={searchFilters.distribution}
-            >
+              defaultValue={searchFilters.distribution}>
               {tagFilters.map((tag) => (
                 <option key={tag} value={tag}>
                   {tag}

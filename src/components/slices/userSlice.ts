@@ -1,15 +1,6 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
-import { any } from "prop-types";
 import { AppThunk, RootState } from "../../appStore/store";
 import { Distribution, Plan, User, UserCourse } from "../commonTypes";
-
-// addNewCourse payload type. Not being used.
-// type NewCourse = {
-//   toAdd: Course;
-//   Semester: SemesterType;
-//   Year: YearType;
-//   Plan: Plan;
-// };
 
 type UserSlice = {
   currentUser: User;
@@ -23,8 +14,7 @@ type UserSlice = {
 const initialState: UserSlice = {
   currentUser: {
     _id: "noUser",
-    firstName: "",
-    lastName: "",
+    name: "",
     email: "",
     affiliation: "",
     grade: "",
@@ -51,8 +41,7 @@ const initialState: UserSlice = {
 // Updates all user info from database. This function should be called after an axios get on the user routes.
 function userUpdate(state: any, action: PayloadAction<User>) {
   state.currentUser._id = action.payload._id;
-  state.currentUser.firstName = action.payload.firstName;
-  state.currentUser.lastName = action.payload.lastName;
+  state.currentUser.name = action.payload.name;
   state.currentUser.email = action.payload.email;
   state.currentUser.grade = action.payload.grade;
   state.currentUser.school = action.payload.school;

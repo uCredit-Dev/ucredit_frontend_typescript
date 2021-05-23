@@ -6,12 +6,18 @@ import { useSelector } from "react-redux";
 import { selectPlan } from "../../slices/userSlice";
 
 type semesterProps = {
+  customStyle: string;
   yearName: YearType;
   courses: UserCourse[];
 };
 
-// Dropdown of all semesters and courses for each semester in a year.
-function Year({ yearName, courses }: semesterProps) {
+/* 
+  A component displaying all the courses in a specific semester.
+  Props:
+    courses: courses it's displaying
+    yearName: year this column is displaying
+*/
+function Year({ customStyle, yearName, courses }: semesterProps) {
   const [fallCourses, setFallCourses] = useState<UserCourse[]>([]);
   const [springCourses, setSpringCourses] = useState<UserCourse[]>([]);
   const [winterCourses, setWinterCourses] = useState<UserCourse[]>([]);
@@ -21,6 +27,7 @@ function Year({ yearName, courses }: semesterProps) {
   // Setting up redux
   const currentPlan = useSelector(selectPlan);
 
+  // Updates and parses all courses into semesters whenever the current plan or courses array changes.
   useEffect(() => {
     // For each of the user's courses for this year, put them in their respective semesters.
     const parsedFallCourses: UserCourse[] = [];
@@ -51,33 +58,37 @@ function Year({ yearName, courses }: semesterProps) {
   };
 
   return (
-    <div className="ml-auto mr-auto medium:px-4 w-yearheading min-w-yearMin">
+    <div
+      className={`${customStyle} ml-auto mr-auto medium:px-4 w-yearheading min-w-yearMin`}>
       <div
-        className="flex flex-row justify-between mb-3 p-2 w-full h-yearheading text-white font-medium bg-primary rounded shadow"
-        onClick={displaySemesters}
-      >
-        <div className="select-none">{yearName}</div>
-        <MoreSvg className="w-6 h-6 stroke-2 cursor-pointer" />
+        className='flex flex-row justify-between mb-3 p-2 w-full h-yearheading text-white font-medium bg-primary rounded shadow'
+        onClick={displaySemesters}>
+        <div className='select-none'>{yearName}</div>
+        <MoreSvg className='w-6 h-6 stroke-2 cursor-pointer' />
       </div>
       {display ? (
-        <div className="flex flex-col items-center">
+        <div className='flex flex-col items-center'>
           <Semester
-            semesterName="fall"
+            customStyle=''
+            semesterName='fall'
             semesterYear={yearName}
             courses={fallCourses}
           />
           <Semester
-            semesterName="spring"
+            customStyle=''
+            semesterName='spring'
             semesterYear={yearName}
             courses={springCourses}
           />
           <Semester
-            semesterName="intersession"
+            customStyle=''
+            semesterName='intersession'
             semesterYear={yearName}
             courses={winterCourses}
           />
           <Semester
-            semesterName="summer"
+            customStyle=''
+            semesterName='summer'
             semesterYear={yearName}
             courses={summerCourses}
           />

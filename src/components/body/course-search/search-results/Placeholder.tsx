@@ -7,11 +7,18 @@ import {
   selectPlaceholder,
 } from "../../../slices/searchSlice";
 
+/* 
+  Adding a placeholder
+  Props:
+    addCourse: function that adds a course to the plan.
+*/
 const Placeholder = (props: { addCourse: any }) => {
   // Redux Setup
   const inspected = useSelector(selectInspectedCourse);
   const placeholder = useSelector(selectPlaceholder);
   const dispatch = useDispatch();
+
+  // Component state setup.
   const [placeholderTitle, setPlaceholderTitle] = useState<string>(
     "placeholder"
   );
@@ -19,6 +26,7 @@ const Placeholder = (props: { addCourse: any }) => {
   const [placeholderCredits, setPlaceholderCredits] = useState<string>("");
   const [placeholderNumber, setPlaceholderNumber] = useState<string>("");
 
+  // Updates placeholder information everytime inspected course changes.
   useEffect(() => {
     if (placeholder && inspected !== "None") {
       setPlaceholderArea(inspected.areas);
@@ -29,6 +37,7 @@ const Placeholder = (props: { addCourse: any }) => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [inspected]);
 
+  // On placeholder title change
   const onPTChange = (event: any) => {
     const title = event.target.value;
     setPlaceholderTitle(title);
@@ -39,6 +48,7 @@ const Placeholder = (props: { addCourse: any }) => {
     }
   };
 
+  // On placeholder area change
   const onPAChange = (event: any) => {
     const area = event.target.value;
     setPlaceholderArea(event.target.value);
@@ -49,6 +59,7 @@ const Placeholder = (props: { addCourse: any }) => {
     }
   };
 
+  // On placeholder credits change
   const onPCChange = (event: any) => {
     const cred = event.target.value;
     setPlaceholderCredits(cred);
@@ -59,6 +70,7 @@ const Placeholder = (props: { addCourse: any }) => {
     }
   };
 
+  // On placeholder number change
   const onPNChange = (event: any) => {
     const num = event.target.value;
     setPlaceholderNumber(num);
@@ -68,6 +80,7 @@ const Placeholder = (props: { addCourse: any }) => {
       dispatch(updateInspectedCourse(inspCopy));
     }
   };
+
   return (
     <div className="flex flex-col h-full font-medium">
       <div className="text-2xl">Add a placeholder</div>

@@ -10,7 +10,9 @@ import Form from "./query-components/Form";
 import SearchList from "./query-components/SearchList";
 import { ReactComponent as HideSvg } from "../../svg/Hide.svg";
 
-// Search component when someone clicks a search action.
+/* 
+  Search component when someone clicks a search action./* 
+*/
 const Search = () => {
   // Controls opacity
   const [searchOpacity, setSearchOpacity] = useState<number>(100);

@@ -17,6 +17,10 @@ import "react-toastify/dist/ReactToastify.css";
 import GenerateNewPlan from "../GenerateNewPlan";
 const api = "https://ucredit-api.herokuapp.com/api";
 
+/* 
+  This is the confirmation popup that appears when users press the button to delete a plan.
+  It actually performs the deletion or cancels it.
+*/
 const DeletePlanPopup = () => {
   // Redux Setup
   const dispatch = useDispatch();
@@ -29,6 +33,7 @@ const DeletePlanPopup = () => {
     setGenerateNew(false);
   }
 
+  // Deletes current plan.
   const deleteCurrentPlan = () => {
     // delete plan from db
     // update plan array
@@ -62,6 +67,7 @@ const DeletePlanPopup = () => {
       .catch((err) => console.log(err));
   };
 
+  // Cancels plan delete
   const cancel = () => {
     dispatch(updateDeleteStatus(false));
   };
@@ -77,6 +83,8 @@ const DeletePlanPopup = () => {
       <div className="absolute top-0">
         {/* Background Grey */}
         <div className="fixed z-20 left-0 top-0 m-0 w-full h-screen bg-black opacity-50"></div>
+
+        {/* Actual popup */}
         <div
           className={
             "fixed flex flex-col bg-gray-100 rounded z-20 top-1/3 left-1/2 transform -translate-x-1/2 p-5"

@@ -48,8 +48,9 @@ const termFilters: (SemesterType | "None")[] = [
 
 const years: YearType[] = ["Freshman", "Sophomore", "Junior", "Senior"];
 
-// TODO: MODULARIZE
-// Displays course information once a user selects a course in the search list
+/* 
+  Displays course information once a user selects a course in the search list
+*/
 const CourseDisplay = () => {
   // Redux Setup
   const inspected = useSelector(selectInspectedCourse);
@@ -61,10 +62,14 @@ const CourseDisplay = () => {
   const planList = useSelector(selectPlanList);
   const distributions = useSelector(selectDistributions);
   const placeholder = useSelector(selectPlaceholder);
-  const [inspectedArea, setInspectedArea] = useState("None");
   const searchYear = useSelector(selectYear);
   const searchSemester = useSelector(selectSemester);
   const searchStack = useSelector(selectSearchStack);
+
+  // component state setup
+  const bioElRef = useRef<HTMLParagraphElement>(null);
+  const [inspectedArea, setInspectedArea] = useState("None");
+  const [showMore, setShowMore] = useState<number>(2);
 
   // Adds course
   const addCourse = () => {
@@ -165,8 +170,10 @@ const CourseDisplay = () => {
       filteredDistribution.push(general);
     }
 
+    // If total distribution should be updated, push.
     if (total !== null) filteredDistribution.push(total);
 
+    // If written intensive should be updated, push
     if (writtenIntensive !== null) filteredDistribution.push(writtenIntensive);
   };
 
@@ -184,6 +191,8 @@ const CourseDisplay = () => {
         plan_id: currentPlan._id,
         number: inspected.number,
         area: inspectedArea,
+        createdAt:
+          user._id === "guestUser" ? Date.now() + 60 * 60 * 24 * 1000 : null,
       };
 
       fetch(api + "/courses", {
@@ -270,6 +279,7 @@ const CourseDisplay = () => {
     dispatch(updateSearchFilters(params));
   };
 
+  // Gets course restrictions
   const getRestrictions = () => {
     if (inspected !== "None") {
       const restrictions = inspected.restrictions.map(
@@ -283,8 +293,7 @@ const CourseDisplay = () => {
     }
   };
 
-  const bioElRef = useRef<HTMLParagraphElement>(null);
-  const [showMore, setShowMore] = useState<number>(2);
+  // Everytime the inspected course changes or someone presses show more, update description height.
   useEffect(() => {
     let hasOverflowingChildren = false;
     if (bioElRef.current !== null) {

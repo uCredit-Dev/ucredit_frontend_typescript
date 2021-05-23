@@ -1,5 +1,10 @@
 import { all_majors, course_tags } from "./assets";
 
+/* 
+  File containing all the common types we use throughout the app.
+*/
+
+// Course restriction type. Has the restriction name as well as the description of the restriction.
 export type Restriction = {
   RestrictionName: string;
   Description: string;
@@ -37,6 +42,7 @@ export type UserCourse = {
   distribution_ids: string[];
   plan_id: string;
   user_id: string;
+  year: string;
 };
 
 export type Plan = {
@@ -53,8 +59,7 @@ export type Plan = {
 
 export type User = {
   _id: string; //JHED ID
-  firstName: string;
-  lastName: string;
+  name: string;
   email: string;
   affiliation: string; //STUDENT, FACULTY or STAFF
   school: string;

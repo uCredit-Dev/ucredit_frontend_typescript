@@ -1,22 +1,9 @@
 import { Course } from "./commonTypes";
-import { Plan, Distribution, User } from "./commonTypes";
-import { testMajorCSNew } from "./testObjs";
-import axios from "axios";
-import { useDispatch, useSelector } from "react-redux";
-import {
-  updateSelectedPlan,
-  updatePlanList,
-  selectUser,
-  selectPlan,
-  selectPlanList,
-} from "./slices/userSlice";
+import { User } from "./commonTypes";
 
-const api = "https://ucredit-api.herokuapp.com/api";
-
-export const guestUser = {
+export const guestUser: User = {
   _id: "guestUser",
-  firstName: "Guest",
-  lastName: "User",
+  name: "Guest User",
   email: "none",
   affiliation: "none",
   school: "none",
@@ -276,36 +263,3 @@ export const course_tags = [
   "WRIT-GNRL",
   "WRIT-POET",
 ];
-
-type generateNewPlanProps = {
-  className?: string;
-  newPlan: number;
-  setNewPlan: Function;
-};
-
-// export const getCourses = (courseIds: string[]): Course[] => {
-// export const tempGenerateNewPlan = async (user: User): Promise<void | Plan> => {
-//   //console.log("Generating New Plan");
-//   const planBody = {
-//     name: "Unnamed Plan",
-//     user_id: user._id,
-//     majors: [testMajorCSNew.name],
-//   };
-//   //console.log("Trying to retrieve from " + api + "/plans with " + planBody);
-//   let newRetrievedPlan : Promise<void | Plan> = axios
-//     .post(api + "/plans", planBody)
-
-//   return newRetrievedPlan;
-// }
-  // .then(() => {
-  //   if (
-  //     index ===
-  //     testMajorCSNew.generalDistributions.length - 1
-  //   ) {
-  //     dispatch(updateSelectedPlan(newRetrievedPlan));
-  //     dispatch(updatePlanList(retrievedPlans));
-  //     props.setNewPlan(props.newPlan + 1);
-  //   }
-  // });
-  //     }
-  //   );
