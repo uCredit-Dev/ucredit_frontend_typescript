@@ -22,20 +22,18 @@ const CourseEvalSection = (inspectedArea: any) => {
 
   const getEvals = () => {
     // reset the course evals view
+    setEval(initialCourseEval);
     setCourseEvalView(0);
     setReviews([]);
 
     if (inspectedArea !== "None" && inspectedArea !== undefined) {
-      console.log(inspectedArea);
+      // console.log(inspectedArea);
       const inspected = inspectedArea.inspected;
-      console.log(api + "/evals/" + inspected.number)
+      // console.log(api + "/evals/" + inspected.number)
       axios.get(api + "/evals/" + inspected.number)
       .then((retrievedData) => {
-        console.log(retrievedData.data.data.rev)
+        // console.log(retrievedData.data.data.rev)
         setReviews(retrievedData.data.data.rev)
-        console.log(courseReviews, "after update")
-        // default to latest
-        updateEvals(0);
       })
       .catch((err) => console.log(err, " - course likely does not exist"));
     }
@@ -56,6 +54,11 @@ const CourseEvalSection = (inspectedArea: any) => {
 
   // update every time inspected changes
   useEffect(getEvals, [inspectedArea]);
+  useEffect(() => {
+    // default to latest
+    updateEvals(0);
+    // console.log("default", inspectedArea.inspected.number, courseEvals);
+  }, [courseReviews])
 
   const displayEvals = () => {
     if (courseReviews.length === 0)
