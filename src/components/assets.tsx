@@ -278,57 +278,34 @@ export const course_tags = [
 ];
 
 type generateNewPlanProps = {
-  // className?: string;
-  // newPlan: number;
-  // setNewPlan: Function;
+  className?: string;
+  newPlan: number;
+  setNewPlan: Function;
 };
 
-// export const GenerateNewPlan: React.FC<generateNewPlanProps> = async (user: User, retrievedPlans: Plan[], props) => {
-// // export const GenerateNewPlan: React.FC<generateNewPlanProps> = async (user: User, retrievedPlans: Plan[], props): Promise<any> => {
-//     // Redux setup
-//     const dispatch = useDispatch();
-
+// export const getCourses = (courseIds: string[]): Course[] => {
+// export const tempGenerateNewPlan = async (user: User): Promise<void | Plan> => {
+//   //console.log("Generating New Plan");
 //   const planBody = {
 //     name: "Unnamed Plan",
 //     user_id: user._id,
-//     majors: [testMajorCSNew],
+//     majors: [testMajorCSNew.name],
 //   };
-//   const data = await axios
-//     .post(api + "/plans", planBody);
-//   const newRetrievedPlan = data.data.data;
-//   testMajorCSNew.generalDistributions.forEach(
-//     (distr: any, index: number) => {
-//       axios
-//         .post(api + "/distributions", {
-//           name: distr.name,
-//           required: distr.required,
-//           user_id: user._id,
-//           plan_id: newRetrievedPlan._id,
-//         })
-//         .then((newDistr: { data: { data: Distribution; }; }) => {
-//           newRetrievedPlan.distribution_ids = [
-//             ...newRetrievedPlan.distribution_ids,
-//             newDistr.data.data._id,
-//           ];
-//         }).then(() => {
-//           if (index ===
-//             testMajorCSNew.generalDistributions.length - 1) {
-//             dispatch(updateSelectedPlan(newRetrievedPlan));
-//             dispatch(updatePlanList(retrievedPlans));
-//             props.setNewPlan(props.newPlan + 1);
-//           }
-//         });
-//     }
-// .then(() => {
-//   if (
-//     index ===
-//     testMajorCSNew.generalDistributions.length - 1
-//   ) {
-//     dispatch(updateSelectedPlan(newRetrievedPlan));
-//     dispatch(updatePlanList(retrievedPlans));
-//     props.setNewPlan(props.newPlan + 1);
-//   }
-// });
-//     }
-//   );
+//   //console.log("Trying to retrieve from " + api + "/plans with " + planBody);
+//   let newRetrievedPlan : Promise<void | Plan> = axios
+//     .post(api + "/plans", planBody)
+
+//   return newRetrievedPlan;
 // }
+  // .then(() => {
+  //   if (
+  //     index ===
+  //     testMajorCSNew.generalDistributions.length - 1
+  //   ) {
+  //     dispatch(updateSelectedPlan(newRetrievedPlan));
+  //     dispatch(updatePlanList(retrievedPlans));
+  //     props.setNewPlan(props.newPlan + 1);
+  //   }
+  // });
+  //     }
+  //   );
