@@ -7,7 +7,7 @@ import {
   FilterType,
   SemesterType,
   UserCourse,
-  YearType
+  YearType,
 } from "../../../commonTypes";
 import {
   selectInspectedCourse,
@@ -182,8 +182,6 @@ const CourseDisplay = () => {
       // Posts to add course route and then updates distribution.
       updateDistributions(filteredDistribution);
 
-
-
       toast.success(inspected.title + " added!", {
         position: "top-right",
         autoClose: 5000,
@@ -198,7 +196,6 @@ const CourseDisplay = () => {
       dispatch(clearSearch());
     }
   };
-
 
   // Updates distribution bars upon successfully adding a course.
   const updateDistributions = (filteredDistribution: Distribution[]) => {
@@ -455,7 +452,7 @@ const CourseDisplay = () => {
                   Show less...
                 </button>
               ) : null}
-              <CourseEvalSection inspected={inspected}/>
+              <CourseEvalSection inspected={inspected} />
             </div>
             <PrereqDisplay />
           </div>
@@ -468,7 +465,7 @@ const CourseDisplay = () => {
                   <select
                     className="ml-2 text-black text-coursecard rounded"
                     onChange={handleYearChange}
-                    defaultValue={searchYear}
+                    value={searchYear}
                   >
                     {years.map((year) => (
                       <option key={year + inspected.number} value={year}>
@@ -482,7 +479,7 @@ const CourseDisplay = () => {
                   <select
                     className="ml-2 h-6 rounded outline-none"
                     onChange={handleTermFilterChange}
-                    defaultValue={semester}
+                    value={semester}
                   >
                     {termFilters.map((term) => (
                       <option key={term + inspected.number} value={term}>
