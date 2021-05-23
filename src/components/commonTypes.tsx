@@ -26,6 +26,15 @@ export type Course = {
   restrictions: Restriction[];
 };
 
+// For course Evals
+export type CourseEvals = {
+  number: string;
+  prof: string;
+  rating: string;
+  summary: string;
+  term: string;
+}
+
 // For User courses, which have extra ids with user-specific info and a single term/area that the user chose.
 export type UserCourse = {
   _id: string;
