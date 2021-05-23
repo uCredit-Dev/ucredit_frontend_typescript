@@ -1,7 +1,7 @@
-import React, { useEffect } from 'react'
-import axios from "axios"
+import React, { useEffect } from "react";
+import axios from "axios";
 import { useDispatch, useSelector } from "react-redux";
-import { Plan, Distribution } from "./commonTypes";
+import { Plan } from "./commonTypes";
 import {
   updateSelectedPlan,
   updatePlanList,
@@ -10,6 +10,8 @@ import {
   updateGuestPlanIds,
 } from "./slices/userSlice";
 import { testMajorCSNew } from "./testObjs";
+import { toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 const api = "https://ucredit-api.herokuapp.com/api";
 
@@ -24,12 +26,13 @@ type generateNewPlanProps = {
 const GenerateNewPlan: React.FC<generateNewPlanProps> = (props) => {
   const dispatch = useDispatch();
 
-  const user = useSelector(selectUser)
+  const user = useSelector(selectUser);
   const planList = useSelector(selectPlanList);
 
   //const [generateNew, setGenerateNew] = useState<boolean>(props.generateNew);
 
   useEffect(() => {
+    console.log(props.generateNew);
     if (props.generateNew === false) return;
 
     const planBody = {
@@ -38,65 +41,63 @@ const GenerateNewPlan: React.FC<generateNewPlanProps> = (props) => {
       majors: [testMajorCSNew.name],
     };
 
-    let newPlan : Plan;
+    let newPlan: Plan;
     axios
       .post(api + "/plans", planBody)
-      .then((response : any) => {
+      .then((response: any) => {
         newPlan = response.data.data;
-        //const newRetrievedPlan = data.data.data;
-        testMajorCSNew.generalDistributions.forEach(
-          (distr: any, index: number) => {
-            axios
-              .post(api + "/distributions", {
-                name: distr.name,
-                required: distr.required,
-                user_id: user._id,
-                plan_id: newPlan._id,
-              })
-              .then((newDistr: { data: { data: Distribution; }; }) => {
-                newPlan = {
-                  ...newPlan,
-                  distribution_ids: [
-                    ...newPlan.distribution_ids,
-                    newDistr.data.data._id,
-                  ],
-                };
-              })
-              .then(() => {
-                if (index === testMajorCSNew.generalDistributions.length - 1) {
-                  dispatch(updateSelectedPlan(newPlan));
-                  if (props._id == null || props.currentPlan == null) {
-                    dispatch(updatePlanList([newPlan, ...planList]));
-                    props.setGenerateNewFalse();
-                  } else {
-                    if (user._id === "guestUser") {
-                      let updatedList = [...planList]; // TODO: Once user routes are figured out, pull user info from db.
-                      updatedList = updatedList.filter((plan) => {
-                        if (props.currentPlan == undefined) return false;
-                        return plan._id !== props.currentPlan._id;
-                      });
-                      const planIdArray = [newPlan._id];
-                      dispatch(updateGuestPlanIds(planIdArray));
-                      dispatch(
-                        updatePlanList([newPlan, ...updatedList])
-                      );
-                    }
-                  }
+        testMajorCSNew.distributions.forEach((distr: any, index: number) => {
+          const distributionBody = {
+            name: distr.name,
+            required: distr.required,
+            user_id: user._id,
+            plan_id: newPlan._id,
+            filter: distr.filter,
+            createdAt:
+              user._id === "guestUser"
+                ? Date.now() + 60 * 60 * 24 * 1000
+                : null,
+          };
+
+          axios
+            .post(api + "/distributions", distributionBody)
+            .then((newDistr: any) => {
+              newPlan = {
+                ...newPlan,
+                distribution_ids: [
+                  ...newPlan.distribution_ids,
+                  newDistr.data.data._id,
+                ],
+              };
+            })
+            .then(() => {
+              if (index === testMajorCSNew.distributions.length - 1) {
+                dispatch(updateSelectedPlan(newPlan));
+                dispatch(updatePlanList([newPlan, ...planList]));
+                props.setGenerateNewFalse();
+                toast.success("New Unnamed Plan created!", {
+                  position: "top-right",
+                  autoClose: 5000,
+                  hideProgressBar: true,
+                  closeOnClick: true,
+                  pauseOnHover: true,
+                  draggable: true,
+                  progress: undefined,
+                });
+                if (user._id === "guestUser") {
+                  const planIdArray = [newPlan._id];
+                  dispatch(updateGuestPlanIds(planIdArray));
                 }
-              });
-          }
-        )
+              }
+            });
+        });
       })
       .catch((e) => {
         console.log(e);
       });
   }, [props.generateNew]);
 
+  return <div></div>;
+};
 
-  return (
-    <div>
-    </div>
-  )
-}
-
-export default GenerateNewPlan
+export default GenerateNewPlan;
