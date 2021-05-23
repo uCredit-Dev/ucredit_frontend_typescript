@@ -16,6 +16,7 @@ const PrereqDropdown = (props: {
 }) => {
   const [open, setOpen] = useState<boolean>(true);
   const [trulySatisfied, setTrulySatisfied] = useState<boolean>(false);
+  const [rootHovered, setRootHovered] = useState<boolean>(false);
 
   useEffect(() => {
     if (props.satisfied) {
@@ -28,9 +29,9 @@ const PrereqDropdown = (props: {
   };
 
   const line = {
-    borderLeft: '2px solid green',
-    marginLeft: '1%',
-  }
+    borderLeft: "2px solid green",
+    marginLeft: "1%",
+  };
 
   const getChildPrereqs = () => {
     let orAndSatisfied = false;
@@ -72,7 +73,14 @@ const PrereqDropdown = (props: {
   };
 
   return (
-    <div>
+    <div
+      onMouseEnter={() => {
+        setRootHovered(true);
+      }}
+      onMouseLeave={() => {
+        setRootHovered(false);
+      }}
+    >
       <button
         onClick={() => {
           setOpen(!open);
@@ -103,13 +111,15 @@ const PrereqDropdown = (props: {
           <div className="text-sm">{props.text}</div>
         </div>
       </button>
-      <div 
-        className = {clsx("border-l-2 border-opacity-50 ml-2", {
-          'border-green-600 hover:border-green-800': props.satisfied,
-          'border-red-600   hover:border-red-800': !props.satisfied,
+      <div
+        className={clsx("ml-2 border-l-2 border-opacity-50", {
+          "border-green-200": props.satisfied && !rootHovered,
+          "border-green-900": props.satisfied && rootHovered,
+          "border-red-200 ": !props.satisfied && !rootHovered,
+          "border-red-900 ": !props.satisfied && rootHovered,
         })}
         // style = {{
-        //   borderLeft: '1px solid', 
+        //   borderLeft: '1px solid',
         //   marginLeft: '1%'}}
       >
         {open ? getChildPrereqs() : null}
