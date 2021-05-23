@@ -45,7 +45,7 @@ const PlanChoose = (props: PlanChooseProps) => {
   const [generateNew, setGenerateNew] = useState<boolean>(false);
   const setGenerateNewFalse = () => {
     setGenerateNew(false);
-  }
+  };
 
   // Gets all users's plans and updates state everytime a new user is chosen.
   useEffect(() => {
@@ -93,9 +93,7 @@ const PlanChoose = (props: PlanChooseProps) => {
           ) {
             // If no plans, automatically generate a new plan
             setGenerateNew(true);
-          }
-          else {
-
+          } else {
             // If there is already a current plan, simply update the plan list.
             dispatch(updatePlanList(retrievedPlans));
           }
@@ -154,9 +152,10 @@ const PlanChoose = (props: PlanChooseProps) => {
   return (
     <>
       {/* dummy component to generate new plans */}
-      <GenerateNewPlan 
-        generateNew = {generateNew} 
-        setGenerateNewFalse = {setGenerateNewFalse}/>
+      <GenerateNewPlan
+        generateNew={generateNew}
+        setGenerateNewFalse={setGenerateNewFalse}
+      />
       <button
         className="text-white bg-primary rounded"
         onClick={openSelectDropdown}

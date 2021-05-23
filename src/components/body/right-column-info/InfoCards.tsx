@@ -30,14 +30,13 @@ const InfoCards = () => {
 
   // Determines whether we're editing the name.
   const [editName, setEditName] = useState<boolean>(false);
+  const [newPlan, setNewPlan] = useState(0);
 
   // Updates temporary plan name and notifies useffect on state change to update db plan name with debounce.
   const handlePlanNameChange = (event: any) => {
     setPlanName(event.target.value);
     setEditName(true);
   };
-
-  const [newPlan, setNewPlan] = useState(0);
 
   // Only edits name if editName is true. If true, calls debounce update function
   useEffect(() => {
