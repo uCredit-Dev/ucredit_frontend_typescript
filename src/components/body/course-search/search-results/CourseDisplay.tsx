@@ -455,7 +455,8 @@ const CourseDisplay = () => {
                   Show less...
                 </button>
               ) : null}
-              <CourseEvalSection inspected={inspected}/>
+              {/* <CourseEvalSection/> */}
+              {/* <CourseEvalSection inspected={inspected}/> */}
             </div>
             <PrereqDisplay />
           </div>

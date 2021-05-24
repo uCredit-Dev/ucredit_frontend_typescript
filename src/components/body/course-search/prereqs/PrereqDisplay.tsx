@@ -1,3 +1,5 @@
+// CONSIDER RENAMING THIS FILE TO GENERAL META DISPLAYS??
+
 import axios from "axios";
 import clsx from "clsx";
 import React, { useState, useEffect } from "react";
@@ -10,6 +12,7 @@ import {
   updateSearchStack,
 } from "../../../slices/searchSlice";
 import { selectCurrentPlanCourses } from "../../../slices/userSlice";
+import CourseEvalSection from "../search-results/CourseEvalSection"
 import PrereqDropdown from "./PrereqDropdown";
 import { ReactComponent as CheckMark } from "../../../svg/CheckMark.svg";
 import { ReactComponent as DescriptionSvg } from "../../../svg/Description.svg";
@@ -43,6 +46,8 @@ const PrereqDisplay = () => {
   const [loaded, setLoaded] = useState<boolean>(false);
   const [hasPreReqs, setHasPreReqs] = useState<boolean>(false);
   const [NNegativePreReqs, setNNegativePreReqs] = useState<any[]>();
+  const [displayPreReqsView, setdisplayPreReqsView] = useState<Number>(1)
+  const [displayCourseEvalView, setdisplayCourseEvalView] = useState<Number>(0)
 
   // Parse preReq array to determine which are prereqs and which are coreq and other info. Actual Prereqs are denoted by isNegative = "N"
   // Returns non isNegative prereqs
@@ -151,6 +156,8 @@ const PrereqDisplay = () => {
 
   // This useEffect performs prereq retrieval every time a new course is displayed.
   useEffect(() => {
+    // Reset displayView for prereqs
+    setdisplayPreReqsView(1)
     // Reset state whenever new inspected course
     setPreReqDisplay([]);
     let preReqs: any[] = [];
@@ -490,12 +497,11 @@ const PrereqDisplay = () => {
     setPrereqDisplayMode(mode);
   };
 
-  return (
-    <p className='w-full h-auto'>
-      <ReactTooltip />
-      <div className='flex flex-row justify-between pb-1 border-b'>
-        <div className='text-xl font-medium'>Prerequisites</div>{" "}
-        <div className='flex flex-row'>
+
+  const displayPreReqs = () => {
+    return(
+      <>
+      <div className='flex flex-row'>
           <div
             className={clsx(
               "flex flex-row items-center justify-center mr-1 p-1 w-7 h-7 rounded cursor-pointer",
@@ -523,7 +529,7 @@ const PrereqDisplay = () => {
             <MenuSvg />
           </div>
         </div>
-      </div>
+      
       {!hasPreReqs ? (
         // <div className="font-normal">No Prereqs!</div>
         <div className='flex flex-col items-center justify-center w-full h-full font-normal'>
@@ -542,8 +548,31 @@ const PrereqDisplay = () => {
       ) : (
         <p className='p-2 overflow-y-auto'>{preReqDisplay}</p>
       )}
+      </>
+    );
+  }
+
+  return (
+    <p className='w-full h-auto'>
+      <ReactTooltip />
+      <div className='flex flex-row justify-between pb-1 border-b'>
+        <button className='text-xl font-medium' onClick={() => {
+        setdisplayPreReqsView(1);
+        setdisplayCourseEvalView(0);
+      }}>
+        Prerequisites
+        </button>
+        <button className='text-xl font-medium'
+        onClick={() => {
+          setdisplayPreReqsView(0);
+          setdisplayCourseEvalView(1);
+        }}>
+        Course Evaluation</button>{" "}
+      </div>
+      {displayPreReqsView == 1 ? displayPreReqs() : (<CourseEvalSection/>)
+      }
     </p>
-  );
+  )
 };
 
 export default PrereqDisplay;
