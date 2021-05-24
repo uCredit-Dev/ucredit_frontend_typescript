@@ -1,13 +1,21 @@
 import React, { useState, useEffect } from "react";
 import { Course, CourseEvals } from "../../../commonTypes";
 import axios from "axios";
+import { useSelector, useDispatch } from "react-redux";
+import {
+  selectInspectedCourse,
+} from "../../../slices/searchSlice";
+import { number } from "prop-types";
 
 const api = "https://ucredit-api.herokuapp.com/api";
 
 // Displays course Evaluations based on inspected course
-const CourseEvalSection = (inspectedArea: any) => {
+// const CourseEvalSection = (inspectedArea: any) => {
+const CourseEvalSection = () => {
 
-  const [courseEvalView, setCourseEvalView] = useState<number>(0);
+  const inspected = useSelector(selectInspectedCourse);
+  // const [courseEvalView, setCourseEvalView] = useState<number>(0);
+  const [selectedCourseEval, setSelectedCourseEval] = useState<number>(0);
   
   let initialCourseEval: CourseEvals = {
     prof: "",
@@ -23,12 +31,13 @@ const CourseEvalSection = (inspectedArea: any) => {
   const getEvals = () => {
     // reset the course evals view
     setEval(initialCourseEval);
-    setCourseEvalView(0);
+    // setCourseEvalView(0);
+    setSelectedCourseEval(0);
     setReviews([]);
 
-    if (inspectedArea !== "None" && inspectedArea !== undefined) {
+    if (inspected !== "None" && inspected !== undefined) {
       // console.log(inspectedArea);
-      const inspected = inspectedArea.inspected;
+      // const inspected = inspectedArea.inspected;
       // console.log(api + "/evals/" + inspected.number)
       axios.get(api + "/evals/" + inspected.number)
       .then((retrievedData) => {
@@ -40,10 +49,11 @@ const CourseEvalSection = (inspectedArea: any) => {
   }
 
   const updateEvals = (revIndex: number) => {
+    setSelectedCourseEval(revIndex)
     if (courseReviews.length !== 0) {
       const chosenRev = courseReviews[revIndex];
       let courseEval: CourseEvals = {...initialCourseEval};
-      courseEval.number = inspectedArea.inspected.number;
+      // courseEval.number = inspected.number;
       courseEval.prof = chosenRev["i"];
       courseEval.rating = chosenRev["g"]; // random one
       courseEval.term = chosenRev["s"];
@@ -53,7 +63,7 @@ const CourseEvalSection = (inspectedArea: any) => {
   }
 
   // update every time inspected changes
-  useEffect(getEvals, [inspectedArea]);
+  useEffect(getEvals, [inspected]);
   useEffect(() => {
     // default to latest
     updateEvals(0);
@@ -72,7 +82,7 @@ const CourseEvalSection = (inspectedArea: any) => {
       )
     return (
       <div>
-      <div>List of available reviews: </div>
+      {/* <div>List of available reviews: </div> */}
       {courseReviews.map(({i, g, s}, index: number) => {
         return(
         <div>
@@ -81,39 +91,45 @@ const CourseEvalSection = (inspectedArea: any) => {
         }}>
           {s} | {i} | {g} 
         </button>
-        </div>
+        {selectedCourseEval === index ?
+        (<>
+        {/* <div>{courseEvals.term} | {courseEvals.prof} | {courseEvals.rating}</div> */}
+        <div>Rating: {courseEvals.rating}</div>
+        <div>Summary: {courseEvals.summary}</div>
+        </>) : null
+        }
+      </div>
         )
         })}
-      <div>Selected review: </div>
-      <div>{courseEvals.term} | {courseEvals.prof} | {courseEvals.rating}</div>
-      <div>Summary: {courseEvals.summary}</div>
+      {/* <div>Selected review: </div> */}
       </div>
     )
   }
 
-  return(
-    courseEvalView === 0 ? (
-    <button
-      className="underline"
-      onClick={() => {
-        setCourseEvalView(1);
-      }}
-    >
-      Show Course Evaluations
-    </button>
-  ) : (
-    <>
-    <button
-      className="underline"
-      onClick={() => {
-        setCourseEvalView(0);
-      }}
-    >
-      Hide Course Evaluations
-    </button>
-    {displayEvals()}
-    </>
-  )); 
+  return(displayEvals())
+  // return(
+  //   courseEvalView === 0 ? (
+  //   <button
+  //     className="underline"
+  //     onClick={() => {
+  //       setCourseEvalView(1);
+  //     }}
+  //   >
+  //     Show Course Evaluations
+  //   </button>
+  // ) : (
+  //   <>
+  //   <button
+  //     className="underline"
+  //     onClick={() => {
+  //       setCourseEvalView(0);
+  //     }}
+  //   >
+  //     Hide Course Evaluations
+  //   </button>
+  //   {displayEvals()}
+  //   </>
+  // )); 
 }
 
 export default CourseEvalSection;
