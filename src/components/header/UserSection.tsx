@@ -28,7 +28,7 @@ function UserSection(props: any) {
   // NOTE: Currently, the user is set to the testUser object found in @src/testObjs.tsx, with a JHED of mliu78 (Matthew Liu)
   //            redux isn't being updated with retrieved user data, as login has issues.
   useEffect(() => {
-    console.log("In usersection", cookies.get("connect.sid"));
+    console.log("In usersection", cookies);
     if (user._id === "noUser") {
       // console.log("user section", cookies.get("connect.sid"));
       // Retrieves user if user ID is "noUser", the initial user id state for userSlice.tsx.
