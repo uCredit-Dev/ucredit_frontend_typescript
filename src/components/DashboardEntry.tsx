@@ -52,7 +52,7 @@ const DashboardEntry = (props: any) => {
   useEffect(() => {
     const token: string = getToken();
     console.log(token);
-    if (token.length > 0 && !token.includes("dashboard")) {
+    if (token.length > 0) {
       fetch(api + "/retrieveUser/" + cookies.get("connect.sid"), {
         mode: "cors",
         method: "GET",
@@ -64,7 +64,7 @@ const DashboardEntry = (props: any) => {
       })
         .then((resp) => resp.json())
         .then((retrievedUser) => {
-          if (retrievedUser.errors !== undefined) {
+          if (retrievedUser.errors === undefined) {
             createCookie(token);
           }
         })
@@ -84,7 +84,7 @@ const DashboardEntry = (props: any) => {
     if (user._id === "noUser" && token.length === 0) {
       // Retrieves user if user ID is "noUser", the initial user id state for userSlice.tsx.
       // Make call for backend
-      fetch(api + "/retrieveUser/" + cookies.get("connect.sid"), {
+      fetch(api + "/retrieveUser/" + token, {
         mode: "cors",
         method: "GET",
         credentials: "include",
@@ -100,8 +100,6 @@ const DashboardEntry = (props: any) => {
               updateUser(retrievedUser.data) // TODO: Fix issue of infinite loop
             );
             history.push("/dashboard");
-          } else {
-            history.push("/");
           }
         })
         .catch((err) => {
