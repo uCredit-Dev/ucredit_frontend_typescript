@@ -49,7 +49,12 @@ const DashboardEntry = (props: any) => {
   // On fail, guest user is used.
   useEffect(() => {
     const token: string = getToken();
-    console.log("In first hook! ", location.pathname);
+    console.log(
+      "In first hook! ",
+      location.pathname,
+      token,
+      token.startsWith("dashboard") && location.pathname === "/"
+    );
     if (
       token.length > 0 &&
       !(token.startsWith("dashboard") && location.pathname === "/")
