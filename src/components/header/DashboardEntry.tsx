@@ -55,10 +55,7 @@ const DashboardEntry = (props: any) => {
       token,
       token.startsWith("dashboard") && location.pathname === "/"
     );
-    if (
-      token.length > 0 &&
-      !(token.startsWith("dashboard") && location.pathname === "/")
-    ) {
+    if (token.length > 0 && !token.includes("dashboard")) {
       fetch(api + "/retrieveUser/" + cookies.get("connect.sid"), {
         mode: "cors",
         method: "GET",
