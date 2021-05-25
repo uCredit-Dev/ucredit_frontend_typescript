@@ -90,7 +90,7 @@ function UserSection(props: any) {
                   "Content-Type": "application/json",
                 },
               })
-                .then(() => dispatch(updateUser(guestUser)))
+                .then(() => history.push("/"))
                 .catch((err) => {
                   console.log(err);
                 });

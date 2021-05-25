@@ -27,8 +27,8 @@ const DashboardEntry = (props: any) => {
       setAuthCookie("connect.sid", token);
       setCookies(props.cookies);
       setCookieUpdate(!cookieUpdate);
+      history.push("/");
     }
-    window.location.href = deploy;
   };
 
   // Gets cookie token from url.
@@ -65,7 +65,6 @@ const DashboardEntry = (props: any) => {
         .then((retrievedUser) => {
           if (retrievedUser.errors !== undefined) {
             createCookie(token);
-            history.push("/");
           }
         })
         .catch(() => {
