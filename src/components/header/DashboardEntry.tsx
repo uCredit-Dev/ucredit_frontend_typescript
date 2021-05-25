@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { useHistory } from "react-router-dom";
+import { useHistory, useLocation } from "react-router-dom";
 import { guestUser } from "../assets";
 import { useDispatch, useSelector } from "react-redux";
 import { updateUser, selectUser } from "../slices/userSlice";
@@ -19,6 +19,7 @@ const DashboardEntry = (props: any) => {
   const [cookieUpdate, setCookieUpdate] = useState<boolean>(true);
 
   let history = useHistory();
+  let location = useLocation();
 
   // Creates a cookie based on url.
   const createCookie = (token: string) => {
@@ -48,8 +49,8 @@ const DashboardEntry = (props: any) => {
   // On fail, guest user is used.
   useEffect(() => {
     const token: string = getToken();
-    console.log("In first hook!");
-    if (token.length > 0 && token.startsWith("dashboard")) {
+    console.log("In first hook! ", location.pathname);
+    if (token.length > 0 && location.pathname.startsWith("/dashboard")) {
       fetch(api + "/retrieveUser/" + cookies.get("connect.sid"), {
         mode: "cors",
         method: "GET",
