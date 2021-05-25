@@ -7,7 +7,7 @@ import {
 } from "../../../slices/searchSlice";
 import CourseCard from "./CourseCard";
 import ReactPaginate from "react-paginate";
-import { ReactComponent as CustomCourseSvg } from "../../../svg/Custom.svg";
+import { ReactComponent as PlaceholderSvg } from "../../../svg/Placeholder.svg";
 import ReactTooltip from "react-tooltip";
 
 /* 
@@ -75,23 +75,23 @@ const SearchList = () => {
 
   return (
     <>
-      <div className="flex flex-row items-center justify-between px-5 py-2 w-full h-12 bg-gray-200">
+      <div className="flex flex-row items-center justify-between w-full h-12 px-5 py-2 bg-gray-200">
         <div>Search Results </div>
         <div
           className="flex flex-row items-center justify-center w-6 h-6 bg-white rounded cursor-pointer"
           onClick={onPlaceholderClick}
-          data-tip="Add a placeholder/custom course"
+          data-tip="Add a placeholder or custom course"
         >
-          <CustomCourseSvg className="w-4 h-4 stroke-2" />
+          <PlaceholderSvg className="w-4 h-4 stroke-2" />
         </div>
       </div>
-      {/* <div className='relative z-10 -top-3 left-0  right-blurr block flex-none h-4 bg-gradient-to-b from-white to-gray-200 pointer-events-none'></div> */}
-      <div className="py px-5 w-full h-full bg-gray-200 border-b border-black select-none overflow-y-auto">
+      {/* <div className='relative left-0 z-10 flex-none block h-4 pointer-events-none -top-3 right-blurr bg-gradient-to-b from-white to-gray-200'></div> */}
+      <div className="w-full h-full px-5 overflow-y-auto bg-gray-200 border-b border-black select-none py">
         <ReactTooltip />
         <div className="w-full h-full">
           {courses.length > 0 ? (
             <>
-              <div className="y-full flex flex-col w-full">{courseList()}</div>
+              <div className="flex flex-col w-full y-full">{courseList()}</div>
               {pageCount > 1 ? (
                 <div className="flex flex-row justify-center w-full h-auto">
                   <Pagination

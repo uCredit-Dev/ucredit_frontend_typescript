@@ -78,7 +78,7 @@ function CourseList() {
 
   return (
     <>
-      <div className="flex flex-row flex-wrap justify-between thin:justify-center mt-4 h-auto">
+      <div className="flex flex-row flex-wrap justify-between h-auto mt-4 thin:justify-center">
         <Year
           customStyle="cursor-pointer"
           yearName={"Freshman"}

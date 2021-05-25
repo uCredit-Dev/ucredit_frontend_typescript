@@ -34,10 +34,10 @@ const api = "https://ucredit-api.herokuapp.com/api";
 const creditFilters = ["Any", 0, 1, 2, 3, 4];
 const distributionFilters = ["Any", "N", "S", "H", "Q", "E"];
 const termFilters: SemesterType[] = [
-  "fall",
-  "spring",
-  "intersession",
-  "summer",
+  "Fall",
+  "Spring",
+  "Intersession",
+  "Summer",
 ];
 const wiFilters = ["Any", "True", "False"];
 const departmentFilters = ["Any", ...all_majors];
@@ -346,9 +346,9 @@ const Form = () => {
   };
 
   return (
-    <div className='px-5 py-3 w-full h-auto text-coursecard border-b border-black select-none'>
+    <div className='w-full h-auto px-5 py-3 border-b border-black select-none text-coursecard'>
       <ReactTooltip />
-      <div className='flex-full flex flex-row h-auto'>
+      <div className='flex flex-row h-auto flex-full'>
         <input
           autoFocus
           className={clsx("mr-2 px-1 w-full h-6 rounded outline-none", {
@@ -361,7 +361,7 @@ const Form = () => {
           onChange={handleSearchTerm}
         />
         <div
-          className='flex flex-none flex-row items-center justify-center w-6 h-6 bg-white rounded cursor-pointer'
+          className='flex flex-row items-center justify-center flex-none w-6 h-6 bg-white rounded cursor-pointer'
           onClick={() => setShowCriteria(!showCriteria)}
           data-tip={
             showCriteria ? "Hide search criteria" : "Show search criteria"
@@ -384,10 +384,10 @@ const Form = () => {
       </div>
       {showCriteria ? (
         <div>
-          <div className='flex flex-row items-center justify-between mb-2 w-full h-auto'>
+          <div className='flex flex-row items-center justify-between w-full h-auto mb-2'>
             Department
             <select
-              className='w-36 h-6 rounded outline-none'
+              className='h-6 rounded outline-none w-36'
               onChange={handleDepartmentFilterChange}
               defaultValue={searchFilters.department}>
               {departmentFilters.map((department) => (
@@ -397,7 +397,7 @@ const Form = () => {
               ))}
             </select>
           </div>
-          <div className='flex flex-row items-center justify-between mb-2 w-full h-auto'>
+          <div className='flex flex-row items-center justify-between w-full h-auto mb-2'>
             Credits
             <select
               className='w-auto h-6 rounded outline-none'
@@ -410,7 +410,7 @@ const Form = () => {
               ))}
             </select>
           </div>
-          <div className='flex flex-row items-center justify-between mb-2 w-full h-auto'>
+          <div className='flex flex-row items-center justify-between w-full h-auto mb-2'>
             Area
             <select
               className='w-auto h-6 rounded outline-none'
@@ -423,10 +423,10 @@ const Form = () => {
               ))}
             </select>
           </div>
-          <div className='flex flex-row items-center justify-between mb-2 w-full h-auto'>
+          <div className='flex flex-row items-center justify-between w-full h-auto mb-2'>
             Term
             <select
-              className='w-14 h-6 rounded outline-none'
+              className='h-6 rounded outline-none w-14'
               onChange={handleTermFilterChange}
               defaultValue={semester}>
               {termFilters.map((term) => (
@@ -436,7 +436,7 @@ const Form = () => {
               ))}
             </select>
           </div>
-          <div className='flex flex-row items-center justify-between mb-2 w-full h-auto'>
+          <div className='flex flex-row items-center justify-between w-full h-auto mb-2'>
             Writing Intensive
             <select
               className='w-auto h-6 rounded outline-none'
@@ -449,10 +449,10 @@ const Form = () => {
               ))}
             </select>
           </div>
-          <div className='flex flex-row items-center justify-between mb-2 w-full h-auto'>
+          <div className='flex flex-row items-center justify-between w-full h-auto mb-2'>
             Tag
             <select
-              className='w-18 h-6 rounded outline-none'
+              className='h-6 rounded outline-none w-18'
               onChange={handleTagsFilterChange}
               defaultValue={searchFilters.distribution}>
               {tagFilters.map((tag) => (

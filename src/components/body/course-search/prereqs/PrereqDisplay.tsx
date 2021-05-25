@@ -66,7 +66,8 @@ const PrereqDisplay = () => {
   const processPrereqs = (preReqs: any[]) => {
     // Regex used to get an array of course numbers.
     const regex: RegExp = /[A-Z]{2}\.[0-9]{3}\.[0-9]{3}/g;
-    const forwardSlashRegex: RegExp = /[A-Z]{2}\.[0-9]{3}\.[0-9]{3}\/[A-Z]{2}\.[0-9]{3}\.[0-9]{3}/g;
+    const forwardSlashRegex: RegExp =
+      /[A-Z]{2}\.[0-9]{3}\.[0-9]{3}\/[A-Z]{2}\.[0-9]{3}\.[0-9]{3}/g;
 
     let description: string = preReqs[0].Description;
     let expr: any = preReqs[0].Expression;
@@ -310,7 +311,7 @@ const PrereqDisplay = () => {
                 updateInspected(noCBracketsNum)();
               }}
             >
-              <div className="group flex flex-row w-auto h-auto transition duration-100 ease-in">
+              <div className="flex flex-row w-auto h-auto transition duration-100 ease-in group">
                 {satisfied ? (
                   <CheckMark
                     className={clsx("mr-1 w-5 h-5", {
@@ -323,8 +324,10 @@ const PrereqDisplay = () => {
                   className={clsx(
                     "border-b border-solid border-gray-300 transition duration-100 ease-in",
                     {
-                      "text-green-700 hover:text-green-900 hover:border-green-900": satisfied,
-                      "hover:text-red-900 text-red-700 hover:border-red-900": !satisfied,
+                      "text-green-700 hover:text-green-900 hover:border-green-900":
+                        satisfied,
+                      "hover:text-red-900 text-red-700 hover:border-red-900":
+                        !satisfied,
                     }
                   )}
                 >
@@ -501,14 +504,14 @@ const PrereqDisplay = () => {
   const displayPreReqs = () => {
     return (
       <>
-        <div className="flex flex-row">
+        <div className="flex flex-row mt-2">
           <div
             className={clsx(
               "flex flex-row items-center justify-center mr-1 p-1 w-7 h-7 rounded cursor-pointer",
               {
-                "bg-gray-200": prereqDisplayMode === 1,
+                "bg-gray-200": prereqDisplayMode !== 1,
                 "hover:bg-gray-200 transition duration-100 ease-in":
-                  prereqDisplayMode !== 1,
+                  prereqDisplayMode === 1,
               }
             )}
             onClick={handlePrereqDisplayModeChange(1)}
@@ -520,9 +523,9 @@ const PrereqDisplay = () => {
             className={clsx(
               "flex flex-row items-center justify-center p-1 w-7 h-7 rounded cursor-pointer",
               {
-                "bg-gray-200": prereqDisplayMode !== 1,
+                "bg-gray-200": prereqDisplayMode === 1,
                 "hover:bg-gray-200 transition duration-100 ease-in":
-                  prereqDisplayMode === 1,
+                  prereqDisplayMode !== 1,
               }
             )}
             onClick={handlePrereqDisplayModeChange(2)}
