@@ -93,13 +93,13 @@ const DashboardEntry = (props: any) => {
       })
         .then((resp) => resp.json())
         .then((retrievedUser) => {
-          dispatch(
-            updateUser(retrievedUser.data) // TODO: Fix issue of infinite loop
-          );
-          if (retrievedUser.errors !== undefined) {
+          if (retrievedUser.errors === undefined) {
+            dispatch(
+              updateUser(retrievedUser.data) // TODO: Fix issue of infinite loop
+            );
+            history.push("/dashboard");
+          } else {
             history.push("/");
-            // Set user to guest user
-            // dispatch(updateUser(guestUser));
           }
         })
         .catch((err) => {
