@@ -14,7 +14,7 @@ function App() {
   const [welcomeScreen, setWelcomeScreen] = useState<boolean>(true);
   useEffect(() => {
     setTimeout(() => setWelcomeScreen(false), 1500);
-  });
+  }, []);
   return (
     <>
       {welcomeScreen ? (
@@ -27,11 +27,11 @@ function App() {
         </div>
       ) : null}
       <Switch>
-        <Route exact path="/">
-          <DashboardEntry />
-        </Route>
-        <Route exact path="/dashboard">
+        <Route path="/dashboard">
           <Dashboard />
+        </Route>
+        <Route path="/">
+          <DashboardEntry />
         </Route>
       </Switch>
     </>

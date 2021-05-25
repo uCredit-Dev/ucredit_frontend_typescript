@@ -51,6 +51,7 @@ const DashboardEntry = (props: any) => {
   // On fail, guest user is used.
   useEffect(() => {
     const token: string = getToken();
+    console.log(token);
     if (token.length > 0 && !token.includes("dashboard")) {
       fetch(api + "/retrieveUser/" + cookies.get("connect.sid"), {
         mode: "cors",
