@@ -86,9 +86,7 @@ const DashboardEntry = (props: any) => {
   // NOTE: Currently, the user is set to the testUser object found in @src/testObjs.tsx, with a JHED of mliu78 (Matthew Liu)
   //            redux isn't being updated with retrieved user data, as login has issues.
   useEffect(() => {
-    const token: string = getToken();
-    console.log(token.length, user._id === "noUser" && token.length === 0);
-    if (user._id === "noUser" && token.length === 0) {
+    if (user._id === "noUser") {
       // Retrieves user if user ID is "noUser", the initial user id state for userSlice.tsx.
       // Make call for backend
       fetch(api + "/retrieveUser/" + cookies.get("connect.sid"), {
@@ -120,7 +118,7 @@ const DashboardEntry = (props: any) => {
         });
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [cookies, authCookies, location.pathname]);
+  }, [cookies, authCookies]);
 
   const handleGuest = () => {
     dispatch(updateUser(guestUser));
