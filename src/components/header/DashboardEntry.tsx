@@ -1,10 +1,12 @@
 import React from "react";
+import { useDispatch } from "react-redux";
 import { useHistory } from "react-router-dom";
 import { guestUser } from "../assets";
 import { updateUser } from "../slices/userSlice";
 
 const DashboardEntry = () => {
   let history = useHistory();
+  const dispatch = useDispatch();
 
   const handleGuest = () => {
     dispatch(updateUser(guestUser));
