@@ -69,6 +69,7 @@ const DashboardEntry = (props: any) => {
             console.log("valid token");
           } else {
             console.log("invalid token");
+            history.push("/");
           }
         })
         .catch(() => {
@@ -119,7 +120,7 @@ const DashboardEntry = (props: any) => {
         });
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [cookies, authCookies]);
+  }, [cookies, authCookies, location.pathname]);
 
   const handleGuest = () => {
     dispatch(updateUser(guestUser));
