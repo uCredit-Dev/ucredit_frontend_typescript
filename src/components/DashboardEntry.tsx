@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from "react";
 import { useHistory, useLocation } from "react-router-dom";
-import { guestUser } from "../assets";
+import { guestUser } from "./assets";
 import { useDispatch, useSelector } from "react-redux";
-import { updateUser, selectUser } from "../slices/userSlice";
+import { updateUser, selectUser } from "./slices/userSlice";
 import { withCookies, useCookies } from "react-cookie";
 
 const api = "https://ucredit-api.herokuapp.com/api";
@@ -51,12 +51,6 @@ const DashboardEntry = (props: any) => {
   // On fail, guest user is used.
   useEffect(() => {
     const token: string = getToken();
-    console.log(
-      "In first hook! ",
-      location.pathname,
-      token,
-      token.includes("dashboard") && location.pathname === "/"
-    );
     if (token.length > 0 && !token.includes("dashboard")) {
       fetch(api + "/retrieveUser/" + cookies.get("connect.sid"), {
         mode: "cors",
@@ -86,7 +80,6 @@ const DashboardEntry = (props: any) => {
   // NOTE: Currently, the user is set to the testUser object found in @src/testObjs.tsx, with a JHED of mliu78 (Matthew Liu)
   //            redux isn't being updated with retrieved user data, as login has issues.
   useEffect(() => {
-    console.log("in user retriever", cookies.getAll(), cookies, authCookies);
     const token: string = getToken();
     if (user._id === "noUser" && token.length === 0) {
       // Retrieves user if user ID is "noUser", the initial user id state for userSlice.tsx.
