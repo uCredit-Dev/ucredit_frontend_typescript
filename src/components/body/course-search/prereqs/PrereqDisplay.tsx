@@ -11,13 +11,13 @@ import {
   selectYear,
   updateSearchStack,
 } from "../../../slices/searchSlice";
-import { selectCurrentPlanCourses } from "../../../slices/userSlice";
-import CourseEvalSection from "../search-results/CourseEvalSection"
+import CourseEvalSection from "../search-results/CourseEvalSection";
 import PrereqDropdown from "./PrereqDropdown";
 import { ReactComponent as CheckMark } from "../../../svg/CheckMark.svg";
 import { ReactComponent as DescriptionSvg } from "../../../svg/Description.svg";
 import { ReactComponent as MenuSvg } from "../../../svg/Menu.svg";
 import ReactTooltip from "react-tooltip";
+import { selectCurrentPlanCourses } from "../../../slices/currentPlanSlice";
 
 const api = "https://ucredit-api.herokuapp.com/api";
 
@@ -46,8 +46,7 @@ const PrereqDisplay = () => {
   const [loaded, setLoaded] = useState<boolean>(false);
   const [hasPreReqs, setHasPreReqs] = useState<boolean>(false);
   const [NNegativePreReqs, setNNegativePreReqs] = useState<any[]>();
-  const [displayPreReqsView, setdisplayPreReqsView] = useState<Number>(1)
-  const [displayCourseEvalView, setdisplayCourseEvalView] = useState<Number>(0)
+  const [displayPreReqsView, setdisplayPreReqsView] = useState<Number>(1);
 
   // Parse preReq array to determine which are prereqs and which are coreq and other info. Actual Prereqs are denoted by isNegative = "N"
   // Returns non isNegative prereqs
@@ -157,7 +156,7 @@ const PrereqDisplay = () => {
   // This useEffect performs prereq retrieval every time a new course is displayed.
   useEffect(() => {
     // Reset displayView for prereqs
-    setdisplayPreReqsView(1)
+    setdisplayPreReqsView(1);
     // Reset state whenever new inspected course
     setPreReqDisplay([]);
     let preReqs: any[] = [];
@@ -304,13 +303,14 @@ const PrereqDisplay = () => {
       return {
         satisfied: satisfied,
         jsx: (
-          <p className='w-full' key={noCBracketsNum}>
+          <p className="w-full" key={noCBracketsNum}>
             <button
               className={clsx("mb-1 max-w-md text-sm font-medium truncate")}
               onClick={() => {
                 updateInspected(noCBracketsNum)();
-              }}>
-              <div className='group flex flex-row w-auto h-auto transition duration-100 ease-in'>
+              }}
+            >
+              <div className="group flex flex-row w-auto h-auto transition duration-100 ease-in">
                 {satisfied ? (
                   <CheckMark
                     className={clsx("mr-1 w-5 h-5", {
@@ -326,7 +326,8 @@ const PrereqDisplay = () => {
                       "text-green-700 hover:text-green-900 hover:border-green-900": satisfied,
                       "hover:text-red-900 text-red-700 hover:border-red-900": !satisfied,
                     }
-                  )}>
+                  )}
+                >
                   {noCBrackets}
                 </div>
               </div>
@@ -497,11 +498,10 @@ const PrereqDisplay = () => {
     setPrereqDisplayMode(mode);
   };
 
-
   const displayPreReqs = () => {
-    return(
+    return (
       <>
-      <div className='flex flex-row'>
+        <div className="flex flex-row">
           <div
             className={clsx(
               "flex flex-row items-center justify-center mr-1 p-1 w-7 h-7 rounded cursor-pointer",
@@ -512,8 +512,9 @@ const PrereqDisplay = () => {
               }
             )}
             onClick={handlePrereqDisplayModeChange(1)}
-            data-tip='description'>
-            <DescriptionSvg className='w-5 h-5' />
+            data-tip="description"
+          >
+            <DescriptionSvg className="w-5 h-5" />
           </div>
           <div
             className={clsx(
@@ -525,54 +526,60 @@ const PrereqDisplay = () => {
               }
             )}
             onClick={handlePrereqDisplayModeChange(2)}
-            data-tip='bullet list'>
+            data-tip="bullet list"
+          >
             <MenuSvg />
           </div>
         </div>
-      
-      {!hasPreReqs ? (
-        // <div className="font-normal">No Prereqs!</div>
-        <div className='flex flex-col items-center justify-center w-full h-full font-normal'>
-          No Prereqs!
-        </div>
-      ) : prereqDisplayMode === 1 ? (
-        <>
-          {NNegativePreReqs !== undefined && NNegativePreReqs.length > 0 ? (
-            <div className='font-normal'>{NNegativePreReqs[0].Description}</div>
-          ) : (
-            <div>Loading description...</div>
-          )}
-        </>
-      ) : !loaded ? (
-        "Loading Prereqs Status: loaded is " + loaded.toString()
-      ) : (
-        <p className='p-2 overflow-y-auto'>{preReqDisplay}</p>
-      )}
+
+        {!hasPreReqs ? (
+          // <div className="font-normal">No Prereqs!</div>
+          <div className="flex flex-col items-center justify-center w-full h-full font-normal">
+            No Prereqs!
+          </div>
+        ) : prereqDisplayMode === 1 ? (
+          <>
+            {NNegativePreReqs !== undefined && NNegativePreReqs.length > 0 ? (
+              <div className="font-normal">
+                {NNegativePreReqs[0].Description}
+              </div>
+            ) : (
+              <div>Loading description...</div>
+            )}
+          </>
+        ) : !loaded ? (
+          "Loading Prereqs Status: loaded is " + loaded.toString()
+        ) : (
+          <p className="p-2 overflow-y-auto">{preReqDisplay}</p>
+        )}
       </>
     );
-  }
+  };
 
   return (
-    <p className='w-full h-auto'>
+    <p className="w-full h-auto">
       <ReactTooltip />
-      <div className='flex flex-row justify-between pb-1 border-b'>
-        <button className='text-xl font-medium' onClick={() => {
-        setdisplayPreReqsView(1);
-        setdisplayCourseEvalView(0);
-      }}>
-        Prerequisites
+      <div className="flex flex-row justify-between pb-1 border-b">
+        <button
+          className="text-xl font-medium"
+          onClick={() => {
+            setdisplayPreReqsView(1);
+          }}
+        >
+          Prerequisites
         </button>
-        <button className='text-xl font-medium'
-        onClick={() => {
-          setdisplayPreReqsView(0);
-          setdisplayCourseEvalView(1);
-        }}>
-        Course Evaluation</button>{" "}
+        <button
+          className="text-xl font-medium"
+          onClick={() => {
+            setdisplayPreReqsView(0);
+          }}
+        >
+          Course Evaluation
+        </button>{" "}
       </div>
-      {displayPreReqsView == 1 ? displayPreReqs() : (<CourseEvalSection/>)
-      }
+      {displayPreReqsView === 1 ? displayPreReqs() : <CourseEvalSection />}
     </p>
-  )
+  );
 };
 
 export default PrereqDisplay;

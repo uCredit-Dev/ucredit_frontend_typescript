@@ -3,15 +3,16 @@ import axios from "axios";
 import { useDispatch, useSelector } from "react-redux";
 import { Plan } from "../../commonTypes";
 import {
-  updateSelectedPlan,
   updatePlanList,
   selectUser,
   selectPlanList,
   updateGuestPlanIds,
+  selectToAddName,
 } from "../../slices/userSlice";
 import { testMajorCSNew } from "../../testObjs";
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import { updateSelectedPlan } from "../../slices/currentPlanSlice";
 
 const api = "https://ucredit-api.herokuapp.com/api";
 
@@ -30,6 +31,7 @@ const GenerateNewPlan: React.FC<generateNewPlanProps> = (props) => {
 
   const user = useSelector(selectUser);
   const planList = useSelector(selectPlanList);
+  const toAddName = useSelector(selectToAddName);
 
   useEffect(() => {
     if (props.generateNew === false) return;
@@ -41,6 +43,10 @@ const GenerateNewPlan: React.FC<generateNewPlanProps> = (props) => {
       createdAt:
         user._id === "guestUser" ? Date.now() + 60 * 60 * 24 * 1000 : null,
     };
+
+    if (toAddName !== planBody.name) {
+      planBody.name = toAddName;
+    }
 
     let newPlan: Plan;
     axios
@@ -79,7 +85,7 @@ const GenerateNewPlan: React.FC<generateNewPlanProps> = (props) => {
                 dispatch(updateSelectedPlan(newPlan));
                 dispatch(updatePlanList([newPlan, ...planList]));
                 props.setGenerateNewFalse();
-                toast.success("New Unnamed Plan created!", {
+                toast.success(newPlan.name + " created!", {
                   position: "top-right",
                   autoClose: 5000,
                   hideProgressBar: true,
@@ -99,6 +105,7 @@ const GenerateNewPlan: React.FC<generateNewPlanProps> = (props) => {
       .catch((e) => {
         console.log(e);
       });
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [props.generateNew]);
 
   return <div></div>;

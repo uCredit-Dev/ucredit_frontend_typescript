@@ -1,14 +1,14 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { AppThunk, RootState } from "../../appStore/store";
-import { Distribution, Plan, User, UserCourse } from "../commonTypes";
+import { Major, Plan, User } from "../commonTypes";
 
 type UserSlice = {
   currentUser: User;
-  currentPlan: Plan;
   planList: Plan[];
-  distributions: Distribution[];
-  currentPlanCourses: UserCourse[];
   deleting: boolean;
+  adding: boolean;
+  toAddName: string;
+  toAddMajor: Major | null;
 };
 
 const initialState: UserSlice = {
@@ -21,21 +21,11 @@ const initialState: UserSlice = {
     school: "",
     plan_ids: ["no plan"],
   },
-  currentPlan: {
-    _id: "noPlan",
-    name: "",
-    majors: [],
-    freshman: [],
-    sophomore: [],
-    junior: [],
-    senior: [],
-    distribution_ids: [],
-    user_id: "",
-  },
   planList: [],
-  distributions: [],
-  currentPlanCourses: [],
   deleting: false,
+  adding: false,
+  toAddName: "Unnamed Plan",
+  toAddMajor: null,
 };
 
 // Updates all user info from database. This function should be called after an axios get on the user routes.
@@ -60,26 +50,24 @@ export const userSlice = createSlice({
       state.deleting = action.payload;
     },
     updateUser: userUpdate,
-    updateSelectedPlan: (state: any, action: PayloadAction<Plan>) => {
-      state.currentPlan = { ...action.payload };
-    },
     updatePlanList: (state: any, action: PayloadAction<Plan[]>) => {
       state.planList = [...action.payload];
-    },
-    updateDistributions: (
-      state: any,
-      action: PayloadAction<Distribution[]>
-    ) => {
-      state.distributions = [...action.payload];
     },
     updateGuestPlanIds: (state: any, action: PayloadAction<string[]>) => {
       state.currentUser.plan_ids = action.payload;
     },
-    updateCurrentPlanCourses: (
-      state: any,
-      action: PayloadAction<UserCourse[]>
-    ) => {
-      state.currentPlanCourses = action.payload;
+    updateAddingStatus: (state: any, action: PayloadAction<boolean>) => {
+      state.adding = action.payload;
+    },
+    updateToAddName: (state: any, action: PayloadAction<string>) => {
+      state.toAddName = action.payload;
+    },
+    updateToAddMajor: (state: any, action: PayloadAction<Major>) => {
+      state.toAddMajor = action.payload;
+    },
+    clearToAdd: (state: any) => {
+      state.toAddName = initialState.toAddName;
+      state.toAddMajor = initialState.toAddMajor;
     },
   },
 });
@@ -87,11 +75,11 @@ export const userSlice = createSlice({
 export const {
   updateDeleteStatus,
   updateUser,
-  updateSelectedPlan,
   updatePlanList,
-  updateDistributions,
   updateGuestPlanIds,
-  updateCurrentPlanCourses,
+  updateAddingStatus,
+  updateToAddName,
+  updateToAddMajor,
 } = userSlice.actions;
 
 // Asynch login with thunk.
@@ -104,12 +92,10 @@ export const loginAsync = (user: Promise<User>): AppThunk => (dispatch) => {
 // The function below is called a selector and allows us to select a value from
 // the state. Please make a selector for each state :)
 export const selectUser = (state: RootState) => state.user.currentUser;
-export const selectPlan = (state: RootState) => state.user.currentPlan;
 export const selectPlanList = (state: RootState) => state.user.planList;
-export const selectDistributions = (state: RootState) =>
-  state.user.distributions;
-export const selectCurrentPlanCourses = (state: RootState) =>
-  state.user.currentPlanCourses;
 export const selectDeleteStatus = (state: RootState) => state.user.deleting;
+export const selectAddingStatus = (state: RootState) => state.user.adding;
+export const selectToAddName = (state: RootState) => state.user.toAddName;
+export const selectToAddMajor = (state: RootState) => state.user.toAddMajor;
 
 export default userSlice.reducer;

@@ -4,15 +4,12 @@ import CourseList from "./course-list/CourseList";
 import { Distribution } from "../commonTypes";
 import Search from "./course-search/Search";
 import { selectSearchStatus } from "../slices/searchSlice";
-import {
-  updateDistributions,
-  selectPlan,
-  selectDeleteStatus,
-} from "../slices/userSlice";
+import { selectDeleteStatus } from "../slices/userSlice";
 import { useSelector, useDispatch } from "react-redux";
 import InfoCards from "./right-column-info/InfoCards";
 import axios from "axios";
 import DeletePlanPopup from "./DeletePlanPopup";
+import { selectPlan, updateDistributions } from "../slices/currentPlanSlice";
 
 const api = "https://ucredit-api.herokuapp.com/api";
 

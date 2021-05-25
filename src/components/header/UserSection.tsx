@@ -4,7 +4,6 @@ import { updateUser, selectUser } from "../slices/userSlice";
 import { ReactComponent as UserSvg } from "../svg/User.svg";
 import { withCookies, useCookies } from "react-cookie";
 import { guestUser } from "../assets";
-import useUnload from "./useUnload";
 
 const api = "https://ucredit-api.herokuapp.com/api";
 const deploy = "https://ucredit.herokuapp.com/";

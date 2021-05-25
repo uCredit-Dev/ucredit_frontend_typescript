@@ -28,14 +28,10 @@ const PrereqDropdown = (props: {
     setTrulySatisfied(true);
   };
 
-  const line = {
-    borderLeft: "2px solid green",
-    marginLeft: "1%",
-  };
-
   const getChildPrereqs = () => {
     let orAndSatisfied = false;
 
+    // eslint-disable-next-line array-callback-return
     return props.element.map((el: any, index) => {
       if (typeof el !== "number") {
         const parsed: {
