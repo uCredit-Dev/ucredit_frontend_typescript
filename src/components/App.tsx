@@ -1,7 +1,13 @@
 import * as React from "react";
-import Header from "./header/Header";
-import Content from "./body/Content";
-import { ToastContainer } from "react-toastify";
+import {
+  Switch,
+  Route,
+  Link,
+  useRouteMatch,
+  useParams,
+} from "react-router-dom";
+import Dashboard from "./Dashboard";
+import DashboardEntry from "./header/DashboardEntry";
 //import { Counter } from '../redux_sample/Counter';
 
 /* 
@@ -9,23 +15,16 @@ import { ToastContainer } from "react-toastify";
 */
 function App() {
   return (
-    <div className="flex flex-col w-full h-full">
-      {/* <Counter /> */}
-      <Header />
-      <Content />
-
-      <ToastContainer
-        position="top-right"
-        autoClose={4000}
-        hideProgressBar={true}
-        newestOnTop={false}
-        closeOnClick
-        rtl={false}
-        pauseOnFocusLoss
-        draggable
-        pauseOnHover
-      />
-    </div>
+    <>
+      <Switch>
+        <Route path="/dashboard">
+          <Dashboard />
+        </Route>
+        <Route path="/">
+          <DashboardEntry />
+        </Route>
+      </Switch>
+    </>
   );
 }
 

@@ -4,9 +4,10 @@ import { updateUser, selectUser } from "../slices/userSlice";
 import { ReactComponent as UserSvg } from "../svg/User.svg";
 import { withCookies, useCookies } from "react-cookie";
 import { guestUser } from "../assets";
+import { useHistory } from "react-router-dom";
 
 const api = "https://ucredit-api.herokuapp.com/api";
-const deploy = "https://ucredit.herokuapp.com/";
+const deploy = "https://ucredit.herokuapp.com/dashboard/";
 const dev = "http://localhost:3000/";
 
 /* 
@@ -22,20 +23,7 @@ function UserSection(props: any) {
   const [authCookies, setAuthCookie] = useCookies(["connect.sid"]);
   const [cookieUpdate, setCookieUpdate] = useState<boolean>(true);
 
-  // on unload, attempts to cleanup guest user plans.
-  // useUnload((e: any) => {
-  //   e.preventDefault();
-  //   if (user._id === "guestUser") {
-  //     user.plan_ids.forEach((planId) => {
-  //       // delete plan from db
-  //       // update plan array
-  //       fetch(api + "/plans/" + planId, {
-  //         method: "DELETE",
-  //       }).catch((err) => console.log(err));
-  //     });
-  //   }
-  //   e.returnValue = "Are you sure you don't want to save guest courses?";
-  // });
+  let history = useHistory();
 
   // Creates a cookie based on url.
   const createCookie = (token: string) => {
@@ -114,8 +102,9 @@ function UserSection(props: any) {
             updateUser(retrievedUser.data) // TODO: Fix issue of infinite loop
           );
           if (retrievedUser.errors !== undefined) {
+            history.push("/");
             // Set user to guest user
-            dispatch(updateUser(guestUser));
+            // dispatch(updateUser(guestUser));
           }
         })
         .catch((err) => {
@@ -124,47 +113,50 @@ function UserSection(props: any) {
           //    (B) load in a local guest user and wait for them to access https://ucredit-api.herokuapp.com/api/login
           //          by clicking the "Log In" button in the header.
           console.log("ERROR: ", err.message);
-          dispatch(updateUser(guestUser));
+          history.push("/");
+          // dispatch(updateUser(guestUser));
         });
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [cookies, authCookies]);
 
   return (
-    <div className="flex flex-row items-center justify-end w-full h-full">
-      <div className="flex flex-row items-center justify-center mr-3 w-11 h-11 bg-white rounded-full">
-        <UserSvg className="w-6 h-6 stroke-2" />
+    <>
+      <div className="flex flex-row items-center justify-end w-full h-full">
+        <div className="flex flex-row items-center justify-center mr-3 w-11 h-11 bg-white rounded-full">
+          <UserSvg className="w-6 h-6 stroke-2" />
+        </div>
+        {user._id === "guestUser" ? (
+          <a
+            href="https://ucredit-api.herokuapp.com/api/login"
+            className="flex flex-row items-center justify-center mr-3 w-24 h-9 bg-white rounded cursor-pointer select-none transform hover:translate-x-0.5 hover:translate-y-0.5 transition duration-200 ease-in"
+          >
+            Log In
+          </a>
+        ) : (
+          <button
+            onClick={() => {
+              fetch(api + "/retrieveUser/" + cookies.get("connect.sid"), {
+                mode: "cors",
+                method: "DELETE",
+                credentials: "include",
+                headers: {
+                  Accept: "application/json",
+                  "Content-Type": "application/json",
+                },
+              })
+                .then(() => dispatch(updateUser(guestUser)))
+                .catch((err) => {
+                  console.log(err);
+                });
+            }}
+            className="flex flex-row items-center justify-center w-24 h-9 bg-white rounded cursor-pointer select-none transform hover:translate-x-0.5 hover:translate-y-0.5 transition duration-200 ease-in"
+          >
+            Log Out
+          </button>
+        )}
       </div>
-      {user._id === "guestUser" ? (
-        <a
-          href="https://ucredit-api.herokuapp.com/api/login"
-          className="flex flex-row items-center justify-center mr-3 w-24 h-9 bg-white rounded cursor-pointer select-none transform hover:translate-x-0.5 hover:translate-y-0.5 transition duration-200 ease-in"
-        >
-          Log In
-        </a>
-      ) : (
-        <button
-          onClick={() => {
-            fetch(api + "/retrieveUser/" + cookies.get("connect.sid"), {
-              mode: "cors",
-              method: "DELETE",
-              credentials: "include",
-              headers: {
-                Accept: "application/json",
-                "Content-Type": "application/json",
-              },
-            })
-              .then(() => dispatch(updateUser(guestUser)))
-              .catch((err) => {
-                console.log(err);
-              });
-          }}
-          className="flex flex-row items-center justify-center w-24 h-9 bg-white rounded cursor-pointer select-none transform hover:translate-x-0.5 hover:translate-y-0.5 transition duration-200 ease-in"
-        >
-          Log Out
-        </button>
-      )}
-    </div>
+    </>
   );
 }
 

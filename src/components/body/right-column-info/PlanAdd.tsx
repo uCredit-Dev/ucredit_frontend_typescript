@@ -63,6 +63,8 @@ const PlanAdd = (props: { setGenerateNew: Function }) => {
     <div className="absolute top-0">
       {/* Background Grey */}
       <div className="fixed z-20 left-0 top-0 m-0 w-full h-screen bg-black opacity-50"></div>
+
+      {/* Popup */}
       <div
         className={
           "fixed flex flex-col bg-primary rounded z-20 w-9/12 h-5/6 top-1/3 left-1/2 transform -translate-x-1/2 -translate-y-1/3"
