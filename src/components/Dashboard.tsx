@@ -8,7 +8,7 @@ const Dashboard = (props: any) => {
   return (
     <div className="flex flex-col w-full h-full">
       <div className="fixed z-20 p-3 medium:px-48 w-full h-header bg-primary shadow">
-        <UserSection cookie={props.cookie} />
+        <UserSection />
       </div>
       <Content />
 

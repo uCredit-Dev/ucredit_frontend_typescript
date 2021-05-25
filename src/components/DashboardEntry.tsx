@@ -22,14 +22,14 @@ const DashboardEntry = (props: any) => {
   let location = useLocation();
 
   // Creates a cookie based on url.
-  // const createCookie = (token: string) => {
-  //   if (!token.includes("dashboard")) {
-  //     setAuthCookie("connect.sid", token, { path: "/" });
-  //     setCookies(props.cookies);
-  //     setCookieUpdate(!cookieUpdate);
-  //     history.push("/");
-  //   }
-  // };
+  const createCookie = (token: string) => {
+    if (!token.includes("dashboard")) {
+      setAuthCookie("connect.sid", token, { path: "/" });
+      setCookies(props.cookies);
+      setCookieUpdate(!cookieUpdate);
+      history.push("/");
+    }
+  };
 
   // Gets cookie token from url.
   const getToken = (): string => {
@@ -65,7 +65,7 @@ const DashboardEntry = (props: any) => {
         .then((resp) => resp.json())
         .then((retrievedUser) => {
           if (retrievedUser.errors === undefined) {
-            props.createCookie(token);
+            createCookie(token);
             console.log("valid token");
           } else {
             console.log("invalid token");

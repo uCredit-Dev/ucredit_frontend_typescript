@@ -19,8 +19,8 @@ function UserSection(props: any) {
   const user = useSelector(selectUser);
 
   // Component state setup
-  // const [cookies, setCookies] = useState(props.cookies);
-  // const [authCookies, setAuthCookie] = useCookies(["connect.sid"]);
+  const [cookies, setCookies] = useState(props.cookies);
+  const [authCookies, setAuthCookie] = useCookies(["connect.sid"]);
   let history = useHistory();
 
   // Useffect runs once on page load, calling to https://ucredit-api.herokuapp.com/api/retrieveUser to retrieve user data.
@@ -28,12 +28,12 @@ function UserSection(props: any) {
   // NOTE: Currently, the user is set to the testUser object found in @src/testObjs.tsx, with a JHED of mliu78 (Matthew Liu)
   //            redux isn't being updated with retrieved user data, as login has issues.
   useEffect(() => {
-    console.log("In usersection", props.cookie);
+    console.log("In usersection", cookies.get("connect.sid"));
     if (user._id === "noUser") {
       // console.log("user section", cookies.get("connect.sid"));
       // Retrieves user if user ID is "noUser", the initial user id state for userSlice.tsx.
       // Make call for backend
-      fetch(api + "/retrieveUser/" + props.cookie, {
+      fetch(api + "/retrieveUser/" + cookies.get("connect.sid"), {
         mode: "cors",
         method: "GET",
         credentials: "include",
@@ -49,8 +49,7 @@ function UserSection(props: any) {
               updateUser(retrievedUser.data) // TODO: Fix issue of infinite loop
             );
           } else {
-            // window.location.href = deploy;
-            history.push("/");
+            window.location.href = deploy;
           }
         })
         .catch((err) => {
@@ -64,7 +63,7 @@ function UserSection(props: any) {
         });
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [props.cookie]);
+  }, [cookies, authCookies]);
 
   return (
     <>
@@ -82,7 +81,7 @@ function UserSection(props: any) {
         ) : (
           <button
             onClick={() => {
-              fetch(api + "/retrieveUser/" + props.cookie, {
+              fetch(api + "/retrieveUser/" + cookies.get("connect.sid"), {
                 mode: "cors",
                 method: "DELETE",
                 credentials: "include",
@@ -106,4 +105,4 @@ function UserSection(props: any) {
   );
 }
 
-export default UserSection;
+export default withCookies(UserSection);
