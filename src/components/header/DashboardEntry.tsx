@@ -55,7 +55,7 @@ const DashboardEntry = (props: any) => {
       "In first hook! ",
       location.pathname,
       token,
-      token.startsWith("dashboard") && location.pathname === "/"
+      token.includes("dashboard") && location.pathname === "/"
     );
     if (token.length > 0 && !token.includes("dashboard")) {
       fetch(api + "/retrieveUser/" + cookies.get("connect.sid"), {
