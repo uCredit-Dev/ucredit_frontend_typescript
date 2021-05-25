@@ -334,6 +334,8 @@ export const testMajorCSNew: Major = {
   ],
 };
 
+export const testMajorArray = [testMajorCSNew, testMajorCSNew, testMajorCSNew];
+
 // : Major = {
 //   name: "B.S. in Computer Science (new)",
 //   generalDistributions: [

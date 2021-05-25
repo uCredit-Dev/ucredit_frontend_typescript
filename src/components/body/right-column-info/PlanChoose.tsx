@@ -1,19 +1,19 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
-import { Plan, Distribution } from "../../commonTypes";
+import { Plan } from "../../commonTypes";
 import { useDispatch, useSelector } from "react-redux";
 import {
-  updateSelectedPlan,
   updatePlanList,
-  updateGuestPlanIds,
+  updateAddingStatus,
   selectUser,
-  selectPlan,
   selectPlanList,
+  selectAddingStatus,
 } from "../../slices/userSlice";
-import { testMajorCSNew } from "../../testObjs";
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import GenerateNewPlan from "./GenerateNewPlan";
+import PlanAdd from "./PlanAdd";
+import { selectPlan, updateSelectedPlan } from "../../slices/currentPlanSlice";
 
 const api = "https://ucredit-api.herokuapp.com/api";
 
@@ -36,6 +36,7 @@ const PlanChoose = (props: PlanChooseProps) => {
   const user = useSelector(selectUser);
   const currentPlan = useSelector(selectPlan);
   const planList = useSelector(selectPlanList);
+  const adding = useSelector(selectAddingStatus);
 
   const [dropdown, setDropdown] = useState<boolean>(false);
   const openSelectDropdown = () => {
@@ -92,7 +93,7 @@ const PlanChoose = (props: PlanChooseProps) => {
             user._id !== "guestUser"
           ) {
             // If no plans, automatically generate a new plan
-            setGenerateNew(true);
+            dispatch(updateAddingStatus(true));
           } else {
             // If there is already a current plan, simply update the plan list.
             dispatch(updatePlanList(retrievedPlans));
@@ -117,7 +118,7 @@ const PlanChoose = (props: PlanChooseProps) => {
     const selectedOption = event.target.value;
     const planListClone = [...planList];
     if (selectedOption === "new plan" && user._id !== "noUser") {
-      setGenerateNew(true);
+      dispatch(updateAddingStatus(true));
     } else {
       let newSelected: Plan = currentPlan;
       planList.forEach((plan, index) => {
@@ -145,8 +146,9 @@ const PlanChoose = (props: PlanChooseProps) => {
   useEffect(() => {
     if (user.plan_ids.length === 0 && user._id === "guestUser") {
       // Post req body for a new plan
-      setGenerateNew(true);
+      dispatch(updateAddingStatus(true));
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [user._id]);
 
   return (
@@ -174,6 +176,7 @@ const PlanChoose = (props: PlanChooseProps) => {
           </button>
         </div>
       ) : null}
+      {adding ? <PlanAdd setGenerateNew={setGenerateNew} /> : null}
     </>
   );
 };

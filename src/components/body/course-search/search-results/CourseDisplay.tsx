@@ -24,10 +24,7 @@ import {
 } from "../../../slices/searchSlice";
 import {
   selectUser,
-  selectPlan,
   selectPlanList,
-  selectDistributions,
-  updateSelectedPlan,
   updatePlanList,
 } from "../../../slices/userSlice";
 import Placeholder from "./Placeholder";
@@ -38,8 +35,11 @@ import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { getColors } from "../../../assets";
 import { testMajorCSNew } from "../../../testObjs";
-import axios from "axios";
-import CourseEvalSection from "./CourseEvalSection";
+import {
+  selectDistributions,
+  selectPlan,
+  updateSelectedPlan,
+} from "../../../slices/currentPlanSlice";
 
 const api = "https://ucredit-api.herokuapp.com/api";
 

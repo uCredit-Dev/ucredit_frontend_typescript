@@ -1,9 +1,12 @@
 import React, { useState, useEffect } from "react";
 import Year from "./Year";
 import { useSelector, useDispatch } from "react-redux";
-import { selectPlan, updateCurrentPlanCourses } from "../../slices/userSlice";
 import { UserCourse } from "../../commonTypes";
 import axios from "axios";
+import {
+  selectPlan,
+  updateCurrentPlanCourses,
+} from "../../slices/currentPlanSlice";
 const api = "https://ucredit-api.herokuapp.com/api";
 
 /* 
@@ -75,24 +78,24 @@ function CourseList() {
 
   return (
     <>
-      <div className='flex flex-row flex-wrap justify-between thin:justify-center mt-4 h-auto'>
+      <div className="flex flex-row flex-wrap justify-between thin:justify-center mt-4 h-auto">
         <Year
-          customStyle='cursor-pointer'
+          customStyle="cursor-pointer"
           yearName={"Freshman"}
           courses={fCourses}
         />
         <Year
-          customStyle='cursor-pointer'
+          customStyle="cursor-pointer"
           yearName={"Sophomore"}
           courses={soCourses}
         />
         <Year
-          customStyle='cursor-pointer'
+          customStyle="cursor-pointer"
           yearName={"Junior"}
           courses={jCourses}
         />
         <Year
-          customStyle='cursor-pointer'
+          customStyle="cursor-pointer"
           yearName={"Senior"}
           courses={seCourses}
         />
