@@ -1,20 +1,37 @@
 import * as React from "react";
 import { useEffect } from "react";
 import { useState } from "react";
-import { Switch, Route } from "react-router-dom";
+import { Switch, Route, useHistory } from "react-router-dom";
 import Dashboard from "./Dashboard";
 import DashboardEntry from "./DashboardEntry";
 import bird from "./birdTempGif.gif";
+import { useCookies, withCookies } from "react-cookie";
 //import { Counter } from '../redux_sample/Counter';
 
 /* 
   Root app component.
 */
-function App() {
+function App(props: any) {
   const [welcomeScreen, setWelcomeScreen] = useState<boolean>(true);
   useEffect(() => {
     setTimeout(() => setWelcomeScreen(false), 1500);
   }, []);
+
+  // Component state setup
+  const [cookies, setCookies] = useState(props.cookies);
+  const [authCookies, setAuthCookie] = useCookies(["connect.sid"]);
+  const [cookieUpdate, setCookieUpdate] = useState<boolean>(true);
+  let history = useHistory();
+
+  // Creates a cookie based on url.
+  const createCookie = (token: string) => {
+    if (!token.includes("dashboard")) {
+      setAuthCookie("connect.sid", token, { path: "/" });
+      setCookies(props.cookies);
+      setCookieUpdate(!cookieUpdate);
+      history.push("/");
+    }
+  };
   return (
     <>
       {welcomeScreen ? (
@@ -28,14 +45,14 @@ function App() {
       ) : null}
       <Switch>
         <Route path="/dashboard">
-          <Dashboard />
+          <Dashboard cookie={cookies.get("connect.sid")} />
         </Route>
         <Route path="/">
-          <DashboardEntry />
+          <DashboardEntry createCookie={createCookie} />
         </Route>
       </Switch>
     </>
   );
 }
 
-export default App;
+export default withCookies(App);

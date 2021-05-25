@@ -19,8 +19,8 @@ function UserSection(props: any) {
   const user = useSelector(selectUser);
 
   // Component state setup
-  const [cookies, setCookies] = useState(props.allCookies);
-  const [authCookies, setAuthCookie] = useCookies(["connect.sid"]);
+  // const [cookies, setCookies] = useState(props.cookies);
+  // const [authCookies, setAuthCookie] = useCookies(["connect.sid"]);
   let history = useHistory();
 
   // Useffect runs once on page load, calling to https://ucredit-api.herokuapp.com/api/retrieveUser to retrieve user data.
@@ -28,12 +28,12 @@ function UserSection(props: any) {
   // NOTE: Currently, the user is set to the testUser object found in @src/testObjs.tsx, with a JHED of mliu78 (Matthew Liu)
   //            redux isn't being updated with retrieved user data, as login has issues.
   useEffect(() => {
-    console.log("In usersection", cookies);
+    console.log("In usersection", props.cookie);
     if (user._id === "noUser") {
       // console.log("user section", cookies.get("connect.sid"));
       // Retrieves user if user ID is "noUser", the initial user id state for userSlice.tsx.
       // Make call for backend
-      fetch(api + "/retrieveUser/" + cookies.get("connect.sid"), {
+      fetch(api + "/retrieveUser/" + props.cookie, {
         mode: "cors",
         method: "GET",
         credentials: "include",
@@ -64,7 +64,7 @@ function UserSection(props: any) {
         });
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [cookies, authCookies]);
+  }, [props.cookie]);
 
   return (
     <>
@@ -82,7 +82,7 @@ function UserSection(props: any) {
         ) : (
           <button
             onClick={() => {
-              fetch(api + "/retrieveUser/" + cookies.get("connect.sid"), {
+              fetch(api + "/retrieveUser/" + props.cookie, {
                 mode: "cors",
                 method: "DELETE",
                 credentials: "include",
@@ -106,4 +106,4 @@ function UserSection(props: any) {
   );
 }
 
-export default withCookies(UserSection);
+export default UserSection;
