@@ -19,7 +19,7 @@ function UserSection(props: any) {
   const user = useSelector(selectUser);
 
   // Component state setup
-  const [cookies, setCookies] = useState(props.cookies);
+  const [cookies, setCookies] = useState(props.allCookies);
   const [authCookies, setAuthCookie] = useCookies(["connect.sid"]);
   let history = useHistory();
 
