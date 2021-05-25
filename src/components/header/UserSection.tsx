@@ -29,7 +29,7 @@ function UserSection(props: any) {
   //            redux isn't being updated with retrieved user data, as login has issues.
   useEffect(() => {
     console.log(cookies.get("connect.sid"));
-    if (user._id === "noUser" && cookies.get("connect.sid") !== undefined) {
+    if (user._id === "noUser") {
       // console.log("user section", cookies.get("connect.sid"));
       // Retrieves user if user ID is "noUser", the initial user id state for userSlice.tsx.
       // Make call for backend

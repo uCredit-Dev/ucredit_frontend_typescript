@@ -23,9 +23,11 @@ const DashboardEntry = (props: any) => {
 
   // Creates a cookie based on url.
   const createCookie = (token: string) => {
-    setAuthCookie("connect.sid", token);
-    setCookies(props.cookies);
-    setCookieUpdate(!cookieUpdate);
+    if (!token.includes("dashboard")) {
+      setAuthCookie("connect.sid", token);
+      setCookies(props.cookies);
+      setCookieUpdate(!cookieUpdate);
+    }
     window.location.href = deploy;
   };
 
