@@ -23,6 +23,7 @@ const DashboardEntry = (props: any) => {
 
   // Creates a cookie based on url.
   const createCookie = (token: string) => {
+    console.log("creating", token);
     if (!token.includes("dashboard")) {
       setAuthCookie("connect.sid", token);
       setCookies(props.cookies);
@@ -86,6 +87,7 @@ const DashboardEntry = (props: any) => {
   // NOTE: Currently, the user is set to the testUser object found in @src/testObjs.tsx, with a JHED of mliu78 (Matthew Liu)
   //            redux isn't being updated with retrieved user data, as login has issues.
   useEffect(() => {
+    console.log("in user retriever");
     const token: string = getToken();
     if (user._id === "noUser" && token.length === 0) {
       // Retrieves user if user ID is "noUser", the initial user id state for userSlice.tsx.
