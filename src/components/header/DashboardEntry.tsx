@@ -49,7 +49,7 @@ const DashboardEntry = (props: any) => {
   useEffect(() => {
     const token: string = getToken();
     console.log("In first hook!");
-    if (token.length > 0) {
+    if (token.length > 0 && token.startsWith("dashboard")) {
       fetch(api + "/retrieveUser/" + cookies.get("connect.sid"), {
         mode: "cors",
         method: "GET",

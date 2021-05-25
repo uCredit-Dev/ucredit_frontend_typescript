@@ -46,7 +46,6 @@ function UserSection(props: any) {
             dispatch(
               updateUser(retrievedUser.data) // TODO: Fix issue of infinite loop
             );
-            history.push("/dashboard");
           } else {
             history.push("/");
           }
