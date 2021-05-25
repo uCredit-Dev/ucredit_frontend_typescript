@@ -50,7 +50,10 @@ const DashboardEntry = (props: any) => {
   useEffect(() => {
     const token: string = getToken();
     console.log("In first hook! ", location.pathname);
-    if (token.length > 0 && location.pathname.startsWith("/dashboard")) {
+    if (
+      token.length > 0 &&
+      !(token.startsWith("dashboard") && location.pathname === "/")
+    ) {
       fetch(api + "/retrieveUser/" + cookies.get("connect.sid"), {
         mode: "cors",
         method: "GET",
@@ -64,15 +67,15 @@ const DashboardEntry = (props: any) => {
         .then((retrievedUser) => {
           if (retrievedUser.errors !== undefined) {
             createCookie(token);
+            history.push("/");
           }
-          window.location.href = deploy;
         })
         .catch(() => {
           createCookie(token);
         });
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [window.location.href]);
+  }, [location.pathname]);
 
   // Useffect runs once on page load, calling to https://ucredit-api.herokuapp.com/api/retrieveUser to retrieve user data.
   // On successful retrieve, update redux with retrieved user,
