@@ -53,7 +53,7 @@ const DashboardEntry = (props: any) => {
     const token: string = getToken();
     console.log(token);
     if (token.length > 0) {
-      fetch(api + "/retrieveUser/" + cookies.get("connect.sid"), {
+      fetch(api + "/retrieveUser/" + token, {
         mode: "cors",
         method: "GET",
         credentials: "include",
@@ -69,7 +69,9 @@ const DashboardEntry = (props: any) => {
           }
         })
         .catch(() => {
-          createCookie(token);
+          // createCookie(token);
+          console.log("invalid token");
+          history.push("/");
         });
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps

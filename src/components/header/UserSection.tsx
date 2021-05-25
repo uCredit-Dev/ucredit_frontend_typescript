@@ -49,7 +49,8 @@ function UserSection(props: any) {
               updateUser(retrievedUser.data) // TODO: Fix issue of infinite loop
             );
           } else {
-            window.location.href = deploy;
+            // window.location.href = deploy;
+            history.push("/");
           }
         })
         .catch((err) => {
