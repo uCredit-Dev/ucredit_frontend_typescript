@@ -83,6 +83,7 @@ const DashboardEntry = (props: any) => {
   //            redux isn't being updated with retrieved user data, as login has issues.
   useEffect(() => {
     const token: string = getToken();
+    console.log(token.length, user._id === "noUser" && token.length === 0);
     if (user._id === "noUser" && token.length === 0) {
       // Retrieves user if user ID is "noUser", the initial user id state for userSlice.tsx.
       // Make call for backend
