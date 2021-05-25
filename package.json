@@ -66,6 +66,7 @@
     ]
   },
   "devDependencies": {
+    "@types/react-router-dom": "^5.1.7",
     "prettier": "^2.2.1",
     "prettier-plugin-tailwind": "^2.2.10"
   }

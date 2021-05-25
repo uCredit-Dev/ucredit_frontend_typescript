@@ -6,12 +6,15 @@ import { store } from "./appStore/store";
 import { Provider } from "react-redux";
 import * as serviceWorker from "./serviceWorker";
 import { CookiesProvider } from "react-cookie";
+import { BrowserRouter as Router } from "react-router-dom";
 
 ReactDOM.render(
   <React.StrictMode>
     <CookiesProvider>
       <Provider store={store}>
-        <App />
+        <Router>
+          <App />
+        </Router>
       </Provider>
     </CookiesProvider>
   </React.StrictMode>,
