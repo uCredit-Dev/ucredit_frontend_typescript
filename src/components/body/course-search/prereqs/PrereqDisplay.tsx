@@ -11,6 +11,13 @@ import {
   selectYear,
   updateSearchStack,
 } from "../../../slices/searchSlice";
+
+import {
+  filterNNegatives,
+  api,
+  processPrereqs,
+} from "../../../assets"
+
 import CourseEvalSection from "../search-results/CourseEvalSection";
 import PrereqDropdown from "./PrereqDropdown";
 import { ReactComponent as CheckMark } from "../../../svg/CheckMark.svg";
@@ -18,8 +25,6 @@ import { ReactComponent as DescriptionSvg } from "../../../svg/Description.svg";
 import { ReactComponent as MenuSvg } from "../../../svg/Menu.svg";
 import ReactTooltip from "react-tooltip";
 import { selectCurrentPlanCourses } from "../../../slices/currentPlanSlice";
-
-const api = "https://ucredit-api.herokuapp.com/api";
 
 // Parsed prereq type
 // satisfied: a boolean that tells whether the prereq should be marked with green (satisfied) or red (unsatisfied)
@@ -48,111 +53,10 @@ const PrereqDisplay = () => {
   const [NNegativePreReqs, setNNegativePreReqs] = useState<any[]>();
   const [displayPreReqsView, setdisplayPreReqsView] = useState<Number>(1);
 
-  // Parse preReq array to determine which are prereqs and which are coreq and other info. Actual Prereqs are denoted by isNegative = "N"
-  // Returns non isNegative prereqs
-  const filterNNegatives = (preReqs: any[]): any[] => {
-    if (inspected !== "None") {
-      preReqs = inspected.preReq.filter((section: any) => {
-        return section.IsNegative === "N";
-      });
-    }
-    setNNegativePreReqs(preReqs); // Continue only if}
-    return preReqs;
-  };
-
-  // Takes in a unparsed array of preReqs.
-  // Processes by checking if they're satisfied and turning them into jsx elements.
-  // Displays them after.
-  const processPrereqs = (preReqs: any[]) => {
-    // Regex used to get an array of course numbers.
-    const regex: RegExp = /[A-Z]{2}\.[0-9]{3}\.[0-9]{3}/g;
-    const forwardSlashRegex: RegExp =
-      /[A-Z]{2}\.[0-9]{3}\.[0-9]{3}\/[A-Z]{2}\.[0-9]{3}\.[0-9]{3}/g;
-
-    let description: string = preReqs[0].Description;
-    let expr: any = preReqs[0].Expression;
-
-    // All courses that match the parttern of 'COURSE/COURSE' in description
-    let forwardSlashCondition = [...description.matchAll(forwardSlashRegex)];
-
-    // Checking for additional conditions only said in the description (ie. additional prereqs from description in CSF)
-    forwardSlashCondition.forEach((condition: any) => {
-      let newCourse = condition[0].substr(11, condition[0].length);
-      let oldCourse = condition[0].substr(0, 10);
-      if (expr.match(newCourse) === null) {
-        // If our expression doesn't already have the course to the right of the '/', we append this course to the old course in the expression with an OR
-        expr = expr.replaceAll(
-          oldCourse + "[C]",
-          oldCourse + "[C]^OR^" + newCourse + "[C]"
-        );
-      }
-    });
-
-    getEachCourseAndDisplay(expr, regex);
-  };
-
-  const getEachCourseAndDisplay = (expr: string, regex: RegExp) => {
-    // Gets an array of all courses in expression.
-    let match = expr.match(regex);
-    let numList: RegExpMatchArray = [];
-    let numNameList: any[] = []; // Contains the number with name of a course.
-    let counter = 0; // Keeps track of how many courses have been processed. Cannot rely on indices as for loop executes asynchronously compared to axios. We need a variable syncronous to axios to determine when to load prereqs
-
-    // If we were able to find course numbers in regex matches, update the numList to list of course numbers
-    if (match) {
-      numList = match;
-    }
-
-    // For the list of numbers, retrieve each course number, search for it and store the combined number + name into numNameList
-    for (let n = 0; n < numList.length; n++) {
-      let num = numList[n];
-      axios
-        .get(api + "/search", { params: { query: num } })
-        // eslint-disable-next-line no-loop-func
-        .then((retrieved) => {
-          const retrievedCourse = retrieved.data.data;
-          if (retrievedCourse.length === 1) {
-            numNameList.push(num + num + " " + retrievedCourse[0].title); // num is added twice to distinquish which was the base course (refer to the case of EN.600 below) in the case that departments change numbers (600 to 601)
-            counter++;
-          } else {
-            // TODO: Modularize this
-            // In the case where the department changed some courses from 600 to 601
-            if (num.match("EN.600") !== null) {
-              num = num.replace("EN.600", "EN.601");
-              axios
-                .get(api + "/search", { params: { query: num } })
-                // eslint-disable-next-line no-loop-func
-                .then((retrieved601) => {
-                  const retrievedCourse601 = retrieved601.data.data;
-                  if (retrievedCourse601.length === 1) {
-                    // Append original num to front for later sorting
-                    numNameList.push(
-                      numList[n] + num + " " + retrievedCourse601[0].title
-                    );
-                  } else {
-                    numNameList.push(
-                      numList[n] + numList[n] + " Older than 2 years old."
-                    );
-                  }
-                  counter++;
-
-                  afterGathering(counter, numNameList, numList, expr);
-                })
-                .catch((err) => {
-                  console.log("couldnt find", err);
-                });
-            } else {
-              numNameList.push(num + num + " Older than 2 years old.");
-              counter++;
-            }
-          }
-          afterGathering(counter, numNameList, numList, expr);
-        })
-        .catch((err) => {
-          console.log("couldnt find", err);
-        });
-    }
-  };
+  const display = async (preReqs: any[]) => {
+    const prereqs = await processPrereqs(preReqs);
+    afterGathering(prereqs.counter, prereqs.numNameList, prereqs.numList, prereqs.expr)
+  }
 
   // This useEffect performs prereq retrieval every time a new course is displayed.
   useEffect(() => {
@@ -165,12 +69,14 @@ const PrereqDisplay = () => {
     setHasPreReqs(false);
 
     // First get all valid preReqs (isNegative = true)
-    preReqs = filterNNegatives(preReqs);
+    preReqs = filterNNegatives(inspected, preReqs);
+    setNNegativePreReqs(preReqs);
+    //console.log(preReqs);
 
     // If there exists preReqs, we need to process and display them.
     if (inspected !== "None" && preReqs.length > 0) {
       setHasPreReqs(true);
-      processPrereqs(preReqs);
+      display(preReqs);
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [inspected]);
@@ -462,7 +368,7 @@ const PrereqDisplay = () => {
     return orParsed;
   };
 
-  // Check it it's time to update the prereq section with components.
+  // Check if it's time to update the prereq section with components.
   const afterGathering = (
     counter: number,
     numNameList: string[],
@@ -470,8 +376,9 @@ const PrereqDisplay = () => {
     expr: any
   ) => {
     // Once counter counts that the amount of courses processed equals to the number list size, we can safely process prereq components and get component list.
-    if (numList.length === numNameList.length && counter === numList.length) {
+    //if (numList.length === numNameList.length && counter === numList.length) {
       // Allign num list and name list
+      console.log("??");
       numList = numList.sort((first: any, second: any) => {
         const sub1 = first.substr(0, 10);
         const sub2 = second.substr(0, 10);
@@ -492,7 +399,7 @@ const PrereqDisplay = () => {
       const list = createPrereqBulletList(expr);
       setPreReqDisplay(preReqsToComponents(list));
       setLoaded(true);
-    }
+    //}
   };
 
   const handlePrereqDisplayModeChange = (mode: number) => () => {
