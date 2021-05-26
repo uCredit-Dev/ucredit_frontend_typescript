@@ -4,7 +4,6 @@ import Select from "react-select";
 import { all_majors, course_tags } from "../../../assets";
 import { FilterType, SemesterType } from "../../../commonTypes";
 import {
-  selectSearchterm,
   selectSearchFilters,
   selectSemester,
   selectYear,
@@ -15,10 +14,10 @@ import {
 const creditFilters = ["Any", 0, 1, 2, 3, 4];
 const distributionFilters = ["Any", "N", "S", "H", "Q", "E"];
 const termFilters: SemesterType[] = [
-  "fall",
-  "spring",
-  "intersession",
-  "summer",
+  "Fall",
+  "Spring",
+  "Intersession",
+  "Summer",
 ];
 const wiFilters = ["Any", "Yes", "No"];
 const departmentFilters = ["Any", ...all_majors];
@@ -28,7 +27,6 @@ const Filters = () => {
   // Set up redux dispatch and variables.
   const dispatch = useDispatch();
   const searchFilters = useSelector(selectSearchFilters);
-  const semester = useSelector(selectSemester);
   const year = useSelector(selectYear);
 
   // Update searching for certain amounts of credits
