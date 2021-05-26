@@ -108,7 +108,7 @@ const CourseDisplay = () => {
     if (filter.area !== undefined) {
       const inspectedAreas = course.areas.split("");
       let found: boolean = false;
-      const areaRegex: RegExp = filter.area;
+      const areaRegex: RegExp = new RegExp(filter.area);
       inspectedAreas.forEach((area) => {
         if (area.match(areaRegex)) {
           found = true;
@@ -138,13 +138,15 @@ const CourseDisplay = () => {
     }
 
     if (filter.department !== undefined) {
-      if (!course.department.match(filter.department)) {
+      const depRegex: RegExp = new RegExp(filter.department);
+      if (!course.department.match(depRegex)) {
         return false;
       }
     }
 
     if (filter.number !== undefined) {
-      if (!course.number.match(filter.number)) {
+      const numRegex: RegExp = new RegExp(filter.number);
+      if (!course.number.match(numRegex)) {
         return false;
       }
     }

@@ -4,46 +4,28 @@ import {
   updateSearchTerm,
   updateRetrievedCourses,
   updateSearchFilters,
-  updateSearchTime,
   selectSearchterm,
   selectSearchFilters,
   selectSemester,
-  selectYear,
 } from "../../../slices/searchSlice";
 import axios from "axios";
 import {
   AreaType,
   Course,
   DepartmentType,
-  FilterType,
   SemesterType,
   TagType,
 } from "../../../commonTypes";
-import { all_majors, course_tags } from "../../../assets";
 import { ReactComponent as ShowSvg } from "../../../svg/Show.svg";
 import { ReactComponent as HideSvg } from "../../../svg/Hide.svg";
 import ReactTooltip from "react-tooltip";
 import clsx from "clsx";
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-import Select from "react-select";
+import Filters from "./Filters";
 
-// TODO: This file could be modularized. Esp with the recurring code for options.
 // TODO: Multi select for various filters.
 const api = "https://ucredit-api.herokuapp.com/api";
-
-const creditFilters = ["Any", 0, 1, 2, 3, 4];
-const distributionFilters = ["Any", "N", "S", "H", "Q", "E"];
-const termFilters: SemesterType[] = [
-  "Fall",
-  "Spring",
-  "Intersession",
-  "Summer",
-];
-const wiFilters = ["Any", "True", "False"];
-const departmentFilters = ["Any", ...all_majors];
-const tagFilters = ["Any", ...course_tags];
-// Implement smarter search
 
 /* 
   Search form, including the search query input and filters.
@@ -54,7 +36,6 @@ const Form = () => {
   const searchTerm = useSelector(selectSearchterm);
   const searchFilters = useSelector(selectSearchFilters);
   const semester = useSelector(selectSemester);
-  const year = useSelector(selectYear);
 
   // Component state setup
   const [showCriteria, setShowCriteria] = useState(false);
@@ -276,68 +257,6 @@ const Form = () => {
     dispatch(updateSearchTerm(event.target.value));
   };
 
-  // Update searching for certain amounts of credits
-  const handleCreditFilterChange = (event: any): void => {
-    const params: { filter: FilterType; value: any } = {
-      filter: "credits",
-      value: event.target.value,
-    };
-    dispatch(updateSearchFilters(params));
-  };
-
-  // Update searching for a certain distribution.
-  const handleDistributionFilterChange = (event: any): void => {
-    const params: { filter: FilterType; value: any } = {
-      filter: "distribution",
-      value: event.target.value,
-    };
-    dispatch(updateSearchFilters(params));
-  };
-
-  // Update searching for a certain term.
-  const handleTermFilterChange = (event: any): void => {
-    const params: { filter: FilterType; value: any } = {
-      filter: "term",
-      value: event.target.value,
-    };
-    dispatch(
-      updateSearchTime({ searchSemester: event.target.value, searchYear: year })
-    );
-    dispatch(updateSearchFilters(params));
-  };
-
-  // Update searching for a writing intensives or not..
-  const handleWIFilterChange = (event: any): void => {
-    const params: { filter: FilterType; value: any } = {
-      filter: "wi",
-      value:
-        event.target.value === "Yes"
-          ? true
-          : event.target.value === "No"
-          ? false
-          : "Any",
-    };
-    dispatch(updateSearchFilters(params));
-  };
-
-  // Update searching for a certain department.
-  const handleDepartmentFilterChange = (event: any): void => {
-    const params: { filter: FilterType; value: any } = {
-      filter: "department",
-      value: event.target.value,
-    };
-    dispatch(updateSearchFilters(params));
-  };
-
-  // Update searching for a certain tag
-  const handleTagsFilterChange = (event: any): void => {
-    const params: { filter: FilterType; value: any } = {
-      filter: "tags",
-      value: event.target.value,
-    };
-    dispatch(updateSearchFilters(params));
-  };
-
   const showAll = () => {
     setShowAllResults(true);
   };
@@ -384,102 +303,7 @@ const Form = () => {
           </button>
         )}
       </div>
-      {showCriteria ? (
-        <div>
-          <div className="flex flex-row items-center justify-between mb-2 w-full h-auto">
-            Department
-            {/* <Select // TODO: Migrate search dropdowns to react select
-              options={[
-                ...departmentFilters.map((department) => ({
-                  value: department,
-                  label: department,
-                })),
-              ]}
-            /> */}
-            <select
-              className="w-36 h-6 rounded outline-none"
-              onChange={handleDepartmentFilterChange}
-              defaultValue={searchFilters.department}
-            >
-              {departmentFilters.map((department) => (
-                <option key={department} value={department}>
-                  {department}
-                </option>
-              ))}
-            </select>
-          </div>
-          <div className="flex flex-row items-center justify-between mb-2 w-full h-auto">
-            Credits
-            <select
-              className="w-auto h-6 rounded outline-none"
-              onChange={handleCreditFilterChange}
-              defaultValue={searchFilters.credits}
-            >
-              {creditFilters.map((credits) => (
-                <option key={credits} value={credits}>
-                  {credits}
-                </option>
-              ))}
-            </select>
-          </div>
-          <div className="flex flex-row items-center justify-between mb-2 w-full h-auto">
-            Area
-            <select
-              className="w-auto h-6 rounded outline-none"
-              onChange={handleDistributionFilterChange}
-              defaultValue={searchFilters.distribution}
-            >
-              {distributionFilters.map((distribution) => (
-                <option key={distribution} value={distribution}>
-                  {distribution}
-                </option>
-              ))}
-            </select>
-          </div>
-          <div className="flex flex-row items-center justify-between mb-2 w-full h-auto">
-            Term
-            <select
-              className="w-14 h-6 rounded outline-none"
-              onChange={handleTermFilterChange}
-              defaultValue={semester}
-            >
-              {termFilters.map((term) => (
-                <option key={term} value={term}>
-                  {term}
-                </option>
-              ))}
-            </select>
-          </div>
-          <div className="flex flex-row items-center justify-between mb-2 w-full h-auto">
-            Writing Intensive
-            <select
-              className="w-auto h-6 rounded outline-none"
-              onChange={handleWIFilterChange}
-              defaultValue={searchFilters.distribution}
-            >
-              {wiFilters.map((wi) => (
-                <option key={wi} value={wi}>
-                  {wi}
-                </option>
-              ))}
-            </select>
-          </div>
-          <div className="flex flex-row items-center justify-between mb-2 w-full h-auto">
-            Tag
-            <select
-              className="w-18 h-6 rounded outline-none"
-              onChange={handleTagsFilterChange}
-              defaultValue={searchFilters.distribution}
-            >
-              {tagFilters.map((tag) => (
-                <option key={tag} value={tag}>
-                  {tag}
-                </option>
-              ))}
-            </select>
-          </div>
-        </div>
-      ) : null}
+      {showCriteria ? <Filters /> : null}
     </div>
   );
 };
