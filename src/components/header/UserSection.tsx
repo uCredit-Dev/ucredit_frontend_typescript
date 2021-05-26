@@ -3,12 +3,10 @@ import { useDispatch, useSelector } from "react-redux";
 import { updateUser, selectUser } from "../slices/userSlice";
 import { ReactComponent as UserSvg } from "../svg/User.svg";
 import { withCookies, useCookies } from "react-cookie";
-import { guestUser } from "../assets";
 import { useHistory } from "react-router-dom";
 
 const api = "https://ucredit-api.herokuapp.com/api";
 const deploy = "https://ucredit.herokuapp.com/";
-const dev = "http://localhost:3000/";
 
 /* 
   User login/logout buttons.
@@ -28,7 +26,6 @@ function UserSection(props: any) {
   // NOTE: Currently, the user is set to the testUser object found in @src/testObjs.tsx, with a JHED of mliu78 (Matthew Liu)
   //            redux isn't being updated with retrieved user data, as login has issues.
   useEffect(() => {
-    console.log("In usersection", cookies.get("connect.sid"));
     if (user._id === "noUser") {
       // console.log("user section", cookies.get("connect.sid"));
       // Retrieves user if user ID is "noUser", the initial user id state for userSlice.tsx.

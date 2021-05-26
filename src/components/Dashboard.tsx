@@ -1,5 +1,4 @@
 import React from "react";
-import Header from "./header/Header";
 import Content from "./body/Content";
 import { ToastContainer } from "react-toastify";
 import UserSection from "./header/UserSection";
