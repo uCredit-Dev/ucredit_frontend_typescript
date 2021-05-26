@@ -33,7 +33,7 @@ export type CourseEvals = {
   rating: string;
   summary: string;
   term: string;
-}
+};
 
 // For User courses, which have extra ids with user-specific info and a single term/area that the user chose.
 export type UserCourse = {
@@ -77,11 +77,11 @@ export type User = {
 };
 
 export type Filter = {
-  area?: RegExp;
+  area?: string;
   tags?: TagType[];
-  department?: RegExp;
-  title?: RegExp;
-  number?: RegExp;
+  department?: string;
+  title?: string;
+  number?: string;
   wi?: boolean;
   exception?: Filter;
 };
