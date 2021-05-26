@@ -35,10 +35,10 @@ const api = "https://ucredit-api.herokuapp.com/api";
 const creditFilters = ["Any", 0, 1, 2, 3, 4];
 const distributionFilters = ["Any", "N", "S", "H", "Q", "E"];
 const termFilters: SemesterType[] = [
-  "fall",
-  "spring",
-  "intersession",
-  "summer",
+  "Fall",
+  "Spring",
+  "Intersession",
+  "Summer",
 ];
 const wiFilters = ["Any", "True", "False"];
 const departmentFilters = ["Any", ...all_majors];
