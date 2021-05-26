@@ -35,13 +35,13 @@ function Year({ customStyle, yearName, courses }: semesterProps) {
     const parsedIntersessionCourses: UserCourse[] = [];
     const parsedSummerCourses: UserCourse[] = [];
     courses.forEach((course) => {
-      if (course.term === "Fall") {
+      if (course.term.toLowerCase() === "fall") {
         parsedFallCourses.push(course);
-      } else if (course.term === "Spring") {
+      } else if (course.term.toLowerCase() === "spring") {
         parsedSpringCourses.push(course);
-      } else if (course.term === "Summer") {
+      } else if (course.term.toLowerCase() === "summer") {
         parsedSummerCourses.push(course);
-      } else if (course.term === "Intersession") {
+      } else if (course.term.toLowerCase() === "intersession") {
         parsedIntersessionCourses.push(course);
       }
     });
@@ -62,11 +62,11 @@ function Year({ customStyle, yearName, courses }: semesterProps) {
       className={`${customStyle} ml-auto mr-auto medium:px-4 w-yearheading min-w-yearMin`}
     >
       <div
-        className="flex flex-row justify-between w-full p-2 mb-3 font-medium text-white rounded shadow h-yearheading bg-primary"
+        className="flex flex-row justify-between mb-3 p-2 w-full h-yearheading text-white font-medium bg-primary rounded shadow"
         onClick={displaySemesters}
       >
         <div className="select-none">{yearName}</div>
-        <MoreSvg className="w-6 h-6 cursor-pointer stroke-2" />
+        <MoreSvg className="w-6 h-6 stroke-2 cursor-pointer" />
       </div>
       {display ? (
         <div className="flex flex-col items-center">

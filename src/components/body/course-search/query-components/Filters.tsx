@@ -5,7 +5,6 @@ import { all_majors, course_tags } from "../../../assets";
 import { FilterType, SemesterType } from "../../../commonTypes";
 import {
   selectSearchFilters,
-  selectSemester,
   selectYear,
   updateSearchFilters,
   updateSearchTime,

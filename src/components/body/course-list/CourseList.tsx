@@ -73,12 +73,13 @@ function CourseList() {
     let totalCourses: UserCourse[] = [];
     totalCourses = [...fCourses, ...seCourses, ...jCourses, ...soCourses];
     dispatch(updateCurrentPlanCourses(totalCourses));
+    console.log(totalCourses);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [fCourses, seCourses, jCourses, soCourses]);
 
   return (
     <>
-      <div className="flex flex-row flex-wrap justify-between h-auto mt-4 thin:justify-center">
+      <div className="flex flex-row flex-wrap justify-between thin:justify-center mt-4 h-auto">
         <Year
           customStyle="cursor-pointer"
           yearName={"Freshman"}
