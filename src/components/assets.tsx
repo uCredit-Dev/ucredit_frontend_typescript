@@ -286,8 +286,7 @@ export const course_tags = [
 
   // Takes in a unparsed array of preReqs.
   // Processes by checking if they're satisfied and turning them into jsx elements.
-  // Displays them after.
-  export const processPrereqs = async (preReqs: any[]): Promise<prereqCourses[]> => {
+  export const processPrereqs = async (preReqs: any[]): Promise<prereqCourses> => {
     // Regex used to get an array of course numbers.
     const regex: RegExp = /[A-Z]{2}\.[0-9]{3}\.[0-9]{3}/g;
     const forwardSlashRegex: RegExp =
@@ -323,7 +322,7 @@ export const course_tags = [
     expr: String,
   }
 
-  export const getEachCourse = async (expr: string, regex: RegExp): Promise<prereqCourses[]> => {
+  export const getEachCourse = async (expr: string, regex: RegExp): Promise<prereqCourses> => {
     // Gets an array of all courses in expression.
     let match = expr.match(regex);
     let numList: RegExpMatchArray = [];
@@ -404,7 +403,7 @@ export const course_tags = [
       }
       promises.push(next);
     }
-    return Promise.all(promises).then(() => out);
+    return Promise.all(promises).then(() => out[out.length - 1]);
   };
 
   // TODO: Autogenerate time ranks based on year and semester

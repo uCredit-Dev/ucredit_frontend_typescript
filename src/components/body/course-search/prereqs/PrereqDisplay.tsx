@@ -15,8 +15,7 @@ import {
 import {
   filterNNegatives,
   api,
-  prereqCourses,
-  getEachCourse,
+  processPrereqs,
 } from "../../../assets"
 
 import CourseEvalSection from "../search-results/CourseEvalSection";
@@ -54,41 +53,10 @@ const PrereqDisplay = () => {
   const [NNegativePreReqs, setNNegativePreReqs] = useState<any[]>();
   const [displayPreReqsView, setdisplayPreReqsView] = useState<Number>(1);
 
-
-  // Takes in a unparsed array of preReqs.
-  // Processes by checking if they're satisfied and turning them into jsx elements.
-  // Displays them after.
-  const processPrereqs = async (preReqs: any[]) => {
-    // Regex used to get an array of course numbers.
-    const regex: RegExp = /[A-Z]{2}\.[0-9]{3}\.[0-9]{3}/g;
-    const forwardSlashRegex: RegExp =
-      /[A-Z]{2}\.[0-9]{3}\.[0-9]{3}\/[A-Z]{2}\.[0-9]{3}\.[0-9]{3}/g;
-
-    let description: string = preReqs[0].Description;
-    let expr: any = preReqs[0].Expression;
-
-    // All courses that match the parttern of 'COURSE/COURSE' in description
-    let forwardSlashCondition = [...description.matchAll(forwardSlashRegex)];
-
-    // Checking for additional conditions only said in the description (ie. additional prereqs from description in CSF)
-    forwardSlashCondition.forEach((condition: any) => {
-      let newCourse = condition[0].substr(11, condition[0].length);
-      let oldCourse = condition[0].substr(0, 10);
-      if (expr.match(newCourse) === null) {
-        // If our expression doesn't already have the course to the right of the '/', we append this course to the old course in the expression with an OR
-        expr = expr.replaceAll(
-          oldCourse + "[C]",
-          oldCourse + "[C]^OR^" + newCourse + "[C]"
-        );
-      }
-    });
-
-    const arr = await getEachCourse(expr, regex);
-    //console.log(arr);
-    const element = arr[arr.length - 1];
-    afterGathering(element.counter, element.numNameList, element.numList, element.expr)
-  };
-
+  const display = async (preReqs: any[]) => {
+    const prereqs = await processPrereqs(preReqs);
+    afterGathering(prereqs.counter, prereqs.numNameList, prereqs.numList, prereqs.expr)
+  }
 
   // This useEffect performs prereq retrieval every time a new course is displayed.
   useEffect(() => {
@@ -108,7 +76,7 @@ const PrereqDisplay = () => {
     // If there exists preReqs, we need to process and display them.
     if (inspected !== "None" && preReqs.length > 0) {
       setHasPreReqs(true);
-      processPrereqs(preReqs);
+      display(preReqs);
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [inspected]);
