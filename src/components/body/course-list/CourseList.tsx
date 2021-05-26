@@ -73,7 +73,6 @@ function CourseList() {
     let totalCourses: UserCourse[] = [];
     totalCourses = [...fCourses, ...seCourses, ...jCourses, ...soCourses];
     dispatch(updateCurrentPlanCourses(totalCourses));
-    console.log(totalCourses);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [fCourses, seCourses, jCourses, soCourses]);
 
