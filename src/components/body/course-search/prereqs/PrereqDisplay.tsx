@@ -166,7 +166,6 @@ const PrereqDisplay = () => {
 
     // First get all valid preReqs (isNegative = true)
     preReqs = filterNNegatives(preReqs);
-    console.log(preReqs);
 
     // If there exists preReqs, we need to process and display them.
     if (inspected !== "None" && preReqs.length > 0) {
