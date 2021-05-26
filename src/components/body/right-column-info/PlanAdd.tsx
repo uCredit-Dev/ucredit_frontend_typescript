@@ -10,6 +10,7 @@ import {
   selectToAddMajor,
 } from "../../slices/userSlice";
 import { testMajorArray } from "../../testObjs";
+import Select from "react-select";
 
 const PlanAdd = (props: { setGenerateNew: Function }) => {
   // Redux setup
@@ -54,10 +55,18 @@ const PlanAdd = (props: { setGenerateNew: Function }) => {
   };
 
   const handleMajorChange = (event: any) => {
-    if (event.target.value >= 0) {
-      dispatch(updateToAddMajor(testMajorArray[event.target.value]));
+    if (event.value >= 0) {
+      dispatch(updateToAddMajor(testMajorArray[event.value]));
     }
   };
+
+  const options = [
+    // { value: -1, label: "Choose a Major" },
+    ...testMajorArray.map((major, index) => ({
+      value: index,
+      label: major.name,
+    })),
+  ];
 
   return (
     <div className="absolute top-0">
@@ -91,7 +100,8 @@ const PlanAdd = (props: { setGenerateNew: Function }) => {
               onChange={handleNameChange}
             />
             Select Major
-            <select
+            <Select options={options} onChange={handleMajorChange} />
+            {/* <select
               className="w-36 h-6 rounded outline-none"
               onChange={handleMajorChange}
             >
@@ -101,7 +111,7 @@ const PlanAdd = (props: { setGenerateNew: Function }) => {
                   {major.name}
                 </option>
               ))}
-            </select>
+            </select> */}
             <button onClick={createNewPlan}>Add</button>
             <button onClick={handleCancel}>Cancel</button>
           </div>

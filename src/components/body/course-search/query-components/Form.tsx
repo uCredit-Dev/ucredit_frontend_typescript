@@ -26,6 +26,7 @@ import ReactTooltip from "react-tooltip";
 import clsx from "clsx";
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import Select from "react-select";
 
 // TODO: This file could be modularized. Esp with the recurring code for options.
 // TODO: Multi select for various filters.
@@ -346,30 +347,31 @@ const Form = () => {
   };
 
   return (
-    <div className='w-full h-auto px-5 py-3 border-b border-black select-none text-coursecard'>
+    <div className="px-5 py-3 w-full h-auto text-coursecard border-b border-black select-none">
       <ReactTooltip />
-      <div className='flex flex-row h-auto flex-full'>
+      <div className="flex-full flex flex-row h-auto">
         <input
           autoFocus
           className={clsx("mr-2 px-1 w-full h-6 rounded outline-none", {
             "mb-2": showCriteria,
           })}
-          type='text'
+          type="text"
           placeholder={"Course title or number (ie. Physics, 601.280, etc.)"}
           style={{ width: "100%" }}
           defaultValue={searchTerm}
           onChange={handleSearchTerm}
         />
         <div
-          className='flex flex-row items-center justify-center flex-none w-6 h-6 bg-white rounded cursor-pointer'
+          className="flex flex-none flex-row items-center justify-center w-6 h-6 bg-white rounded cursor-pointer"
           onClick={() => setShowCriteria(!showCriteria)}
           data-tip={
             showCriteria ? "Hide search criteria" : "Show search criteria"
-          }>
+          }
+        >
           {!showCriteria ? (
-            <ShowSvg className='w-4 h-4 stroke-2' />
+            <ShowSvg className="w-4 h-4 stroke-2" />
           ) : (
-            <HideSvg className='w-4 h-4 stroke-2' />
+            <HideSvg className="w-4 h-4 stroke-2" />
           )}
         </div>
       </div>
@@ -384,12 +386,21 @@ const Form = () => {
       </div>
       {showCriteria ? (
         <div>
-          <div className='flex flex-row items-center justify-between w-full h-auto mb-2'>
+          <div className="flex flex-row items-center justify-between mb-2 w-full h-auto">
             Department
+            {/* <Select // TODO: Migrate search dropdowns to react select
+              options={[
+                ...departmentFilters.map((department) => ({
+                  value: department,
+                  label: department,
+                })),
+              ]}
+            /> */}
             <select
-              className='h-6 rounded outline-none w-36'
+              className="w-36 h-6 rounded outline-none"
               onChange={handleDepartmentFilterChange}
-              defaultValue={searchFilters.department}>
+              defaultValue={searchFilters.department}
+            >
               {departmentFilters.map((department) => (
                 <option key={department} value={department}>
                   {department}
@@ -397,12 +408,13 @@ const Form = () => {
               ))}
             </select>
           </div>
-          <div className='flex flex-row items-center justify-between w-full h-auto mb-2'>
+          <div className="flex flex-row items-center justify-between mb-2 w-full h-auto">
             Credits
             <select
-              className='w-auto h-6 rounded outline-none'
+              className="w-auto h-6 rounded outline-none"
               onChange={handleCreditFilterChange}
-              defaultValue={searchFilters.credits}>
+              defaultValue={searchFilters.credits}
+            >
               {creditFilters.map((credits) => (
                 <option key={credits} value={credits}>
                   {credits}
@@ -410,12 +422,13 @@ const Form = () => {
               ))}
             </select>
           </div>
-          <div className='flex flex-row items-center justify-between w-full h-auto mb-2'>
+          <div className="flex flex-row items-center justify-between mb-2 w-full h-auto">
             Area
             <select
-              className='w-auto h-6 rounded outline-none'
+              className="w-auto h-6 rounded outline-none"
               onChange={handleDistributionFilterChange}
-              defaultValue={searchFilters.distribution}>
+              defaultValue={searchFilters.distribution}
+            >
               {distributionFilters.map((distribution) => (
                 <option key={distribution} value={distribution}>
                   {distribution}
@@ -423,12 +436,13 @@ const Form = () => {
               ))}
             </select>
           </div>
-          <div className='flex flex-row items-center justify-between w-full h-auto mb-2'>
+          <div className="flex flex-row items-center justify-between mb-2 w-full h-auto">
             Term
             <select
-              className='h-6 rounded outline-none w-14'
+              className="w-14 h-6 rounded outline-none"
               onChange={handleTermFilterChange}
-              defaultValue={semester}>
+              defaultValue={semester}
+            >
               {termFilters.map((term) => (
                 <option key={term} value={term}>
                   {term}
@@ -436,12 +450,13 @@ const Form = () => {
               ))}
             </select>
           </div>
-          <div className='flex flex-row items-center justify-between w-full h-auto mb-2'>
+          <div className="flex flex-row items-center justify-between mb-2 w-full h-auto">
             Writing Intensive
             <select
-              className='w-auto h-6 rounded outline-none'
+              className="w-auto h-6 rounded outline-none"
               onChange={handleWIFilterChange}
-              defaultValue={searchFilters.distribution}>
+              defaultValue={searchFilters.distribution}
+            >
               {wiFilters.map((wi) => (
                 <option key={wi} value={wi}>
                   {wi}
@@ -449,12 +464,13 @@ const Form = () => {
               ))}
             </select>
           </div>
-          <div className='flex flex-row items-center justify-between w-full h-auto mb-2'>
+          <div className="flex flex-row items-center justify-between mb-2 w-full h-auto">
             Tag
             <select
-              className='h-6 rounded outline-none w-18'
+              className="w-18 h-6 rounded outline-none"
               onChange={handleTagsFilterChange}
-              defaultValue={searchFilters.distribution}>
+              defaultValue={searchFilters.distribution}
+            >
               {tagFilters.map((tag) => (
                 <option key={tag} value={tag}>
                   {tag}

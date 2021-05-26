@@ -12,10 +12,8 @@
     "@testing-library/user-event": "^7.1.2",
     "@types/jest": "^24.0.0",
     "@types/node": "^12.0.0",
-    "@types/react": "^16.9.0",
     "@types/react-dom": "^16.9.0",
     "@types/react-paginate": "^6.2.1",
-    "@types/react-redux": "^7.1.7",
     "@types/tough-cookie": "^4.0.0",
     "autoprefixer": "^9.8.6",
     "axios": "^0.21.1",
@@ -36,9 +34,10 @@
     "react-router": "^5.2.0",
     "react-router-dom": "^5.2.0",
     "react-scripts": "4.0.3",
+    "react-select": "^4.3.1",
     "react-toastify": "^7.0.4",
     "react-tooltip": "^4.2.17",
-    "tailwindcss": "npm:@tailwindcss/postcss7-compat@^2.0.4",
+    "tailwindcss": "npm:@tailwindcss/postcss7-compat@^2.1.2",
     "tough-cookie": "^4.0.0",
     "ts-debounce": "^3.0.0",
     "typescript": "~3.8.2"
@@ -66,7 +65,10 @@
     ]
   },
   "devDependencies": {
+    "@types/react": "^16.14.7",
+    "@types/react-redux": "^7.1.16",
     "@types/react-router-dom": "^5.1.7",
+    "@types/react-select": "^4.0.15",
     "prettier": "^2.2.1",
     "prettier-plugin-tailwind": "^2.2.10"
   }
