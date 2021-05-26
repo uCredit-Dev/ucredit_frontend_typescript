@@ -43,7 +43,7 @@ const initialState: searchStates = {
   searchTerm: "",
   searchTime: {
     searchYear: "Freshman",
-    searchSemester: "fall",
+    searchSemester: "Fall",
   },
   retrievedCourses: [], // test courses for now
   filters: {

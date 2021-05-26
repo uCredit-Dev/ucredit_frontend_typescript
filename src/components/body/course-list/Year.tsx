@@ -35,13 +35,13 @@ function Year({ customStyle, yearName, courses }: semesterProps) {
     const parsedIntersessionCourses: UserCourse[] = [];
     const parsedSummerCourses: UserCourse[] = [];
     courses.forEach((course) => {
-      if (course.term === "fall") {
+      if (course.term === "Fall") {
         parsedFallCourses.push(course);
-      } else if (course.term === "spring") {
+      } else if (course.term === "Spring") {
         parsedSpringCourses.push(course);
-      } else if (course.term === "summer") {
+      } else if (course.term === "Summer") {
         parsedSummerCourses.push(course);
-      } else if (course.term === "intersession") {
+      } else if (course.term === "Intersession") {
         parsedIntersessionCourses.push(course);
       }
     });
@@ -62,35 +62,35 @@ function Year({ customStyle, yearName, courses }: semesterProps) {
       className={`${customStyle} ml-auto mr-auto medium:px-4 w-yearheading min-w-yearMin`}
     >
       <div
-        className="flex flex-row justify-between mb-3 p-2 w-full h-yearheading text-white font-medium bg-primary rounded shadow"
+        className="flex flex-row justify-between w-full p-2 mb-3 font-medium text-white rounded shadow h-yearheading bg-primary"
         onClick={displaySemesters}
       >
         <div className="select-none">{yearName}</div>
-        <MoreSvg className="w-6 h-6 stroke-2 cursor-pointer" />
+        <MoreSvg className="w-6 h-6 cursor-pointer stroke-2" />
       </div>
       {display ? (
         <div className="flex flex-col items-center">
           <Semester
             customStyle=""
-            semesterName="fall"
+            semesterName="Fall"
             semesterYear={yearName}
             courses={fallCourses}
           />
           <Semester
             customStyle=""
-            semesterName="spring"
+            semesterName="Spring"
             semesterYear={yearName}
             courses={springCourses}
           />
           <Semester
             customStyle=""
-            semesterName="intersession"
+            semesterName="Intersession"
             semesterYear={yearName}
             courses={winterCourses}
           />
           <Semester
             customStyle=""
-            semesterName="summer"
+            semesterName="Summer"
             semesterYear={yearName}
             courses={summerCourses}
           />
