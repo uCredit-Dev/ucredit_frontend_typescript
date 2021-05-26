@@ -22,14 +22,12 @@ const PrereqDropdown = (props: {
     if (props.satisfied) {
       setOpen(false);
     }
-  }, [props.satisfied]);
-
-  const updateSatisfied = () => {
-    setTrulySatisfied(true);
-  };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   const getChildPrereqs = () => {
     let orAndSatisfied = false;
+    const alreadyDisplayed: React.Key[] = [];
 
     // eslint-disable-next-line array-callback-return
     return props.element.map((el: any, index) => {
@@ -38,6 +36,17 @@ const PrereqDropdown = (props: {
           satisfied: boolean;
           jsx: JSX.Element;
         } = props.getNonStringPrereq(el);
+
+        // If we already put this course in our prereqs, skip displaying it.
+        if (
+          parsed.jsx.key !== null &&
+          alreadyDisplayed.includes(parsed.jsx.key)
+        ) {
+          // eslint-disable-next-line array-callback-return
+          return;
+        } else if (parsed.jsx.key !== null) {
+          alreadyDisplayed.push(parsed.jsx.key);
+        }
 
         // If it's not an or statement, the first course must be satisfied.
         if (index === 0) {
@@ -57,7 +66,7 @@ const PrereqDropdown = (props: {
           orAndSatisfied &&
           !trulySatisfied
         ) {
-          updateSatisfied();
+          setTrulySatisfied(true);
         }
         return (
           <p className="ml-2" key={el}>
@@ -114,9 +123,6 @@ const PrereqDropdown = (props: {
           "border-red-200 ": !props.satisfied && !rootHovered,
           "border-red-900 ": !props.satisfied && rootHovered,
         })}
-        // style = {{
-        //   borderLeft: '1px solid',
-        //   marginLeft: '1%'}}
       >
         {open ? getChildPrereqs() : null}
       </div>
