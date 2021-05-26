@@ -71,7 +71,7 @@ const PrereqDisplay = () => {
     // First get all valid preReqs (isNegative = true)
     preReqs = filterNNegatives(inspected, preReqs);
     setNNegativePreReqs(preReqs);
-    console.log(preReqs);
+    //console.log(preReqs);
 
     // If there exists preReqs, we need to process and display them.
     if (inspected !== "None" && preReqs.length > 0) {
@@ -185,7 +185,6 @@ const PrereqDisplay = () => {
           course.term.substr(0, 2)
         ).toLowerCase()
       );
-      console.log(courseTimeVal);
       if (
         course.number === number &&
         currTimeVal !== undefined &&
@@ -216,7 +215,7 @@ const PrereqDisplay = () => {
                 updateInspected(noCBracketsNum)();
               }}
             >
-              <div className="flex flex-row w-auto h-auto transition duration-100 ease-in group">
+              <div className="group flex flex-row w-auto h-auto transition duration-100 ease-in">
                 {satisfied ? (
                   <CheckMark
                     className={clsx("mr-1 w-5 h-5", {
