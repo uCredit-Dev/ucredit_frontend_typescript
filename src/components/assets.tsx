@@ -334,7 +334,7 @@ export const course_tags = [
       numList = match;
     }
 
-    let out:prereqCourses[] = [];
+    //let out:prereqCourses[] = [];
     let promises = [];
 
     // For the list of numbers, retrieve each course number, search for it and store the combined number + name into numNameList
@@ -346,20 +346,9 @@ export const course_tags = [
         .then((retrieved) => {
           const retrievedCourse = retrieved.data.data;
           if (retrievedCourse.length === 1) {
-            numNameList.push(num + num + " " + retrievedCourse[0].title); // num is added twice to distinquish which was the base course (refer to the case of EN.600 below) in the case that departments change numbers (600 to 601)
+            numNameList[n] = (num + num + " " + retrievedCourse[0].title); // num is added twice to distinquish which was the base course (refer to the case of EN.600 below) in the case that departments change numbers (600 to 601)
             counter++;
-          } else {
-            // TODO: Modularize this
-            // In the case where the department changed some courses from 600 to 601
-            // Moved out of the .then
           }
-          let temp = {
-            counter: counter,
-            numNameList: numNameList,
-            numList: numList,
-            expr: expr,
-          }
-          out.push(temp);
         })
         .catch((err) => {
           console.log("couldnt find", err);
@@ -373,16 +362,11 @@ export const course_tags = [
             const retrievedCourse601 = retrieved601.data.data;
             if (retrievedCourse601.length === 1) {
               // Append original num to front for later sorting
-              numNameList.push(
+              numNameList[n] = (
                 numList[n] + num + " " + retrievedCourse601[0].title
-              );
-            } else {
-              numNameList.push(
-                numList[n] + numList[n] + " Older than 2 years old."
               );
             }
             counter++;
-            //afterGathering(counter, numNameList, numList, expr);
           })
           .then(() => {
             let temp = {
@@ -391,19 +375,32 @@ export const course_tags = [
               numList: numList,
               expr: expr,
             }
-            out.push(temp);
+            //out.push(temp);
           })
           .catch((err) => {
             console.log("couldnt find", err);
           });
         promises.push(what);
-      } else {
-        numNameList.push(num + num + " Older than 2 years old.");
-        counter++;
-      }
+        }
       promises.push(next);
     }
-    return Promise.all(promises).then(() => out[out.length - 1]);
+    return Promise.all(promises).then(() => {
+      for (let n = 0; n < numList.length; n++) {
+        if (numNameList[n] === undefined) {
+          numNameList[n] = (
+            numList[n] + numList[n] + " Older than 2 years old."
+          );
+        }
+      }
+
+      let out = {
+        counter: counter,
+        numNameList: numNameList,
+        numList: numList,
+        expr: expr
+      }
+      return out;
+    });
   };
 
   // TODO: Autogenerate time ranks based on year and semester
