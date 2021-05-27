@@ -11,13 +11,12 @@ import {
   selectYear,
   updateSearchStack,
 } from "../../../slices/searchSlice";
-
 import {
   filterNNegatives,
   api,
   processPrereqs,
-} from "../../../assets"
-
+  courseRank,
+} from "../../../assets";
 import CourseEvalSection from "../search-results/CourseEvalSection";
 import PrereqDropdown from "./PrereqDropdown";
 import { ReactComponent as CheckMark } from "../../../svg/CheckMark.svg";
@@ -55,8 +54,13 @@ const PrereqDisplay = () => {
 
   const display = async (preReqs: any[]) => {
     const prereqs = await processPrereqs(preReqs);
-    afterGathering(prereqs.counter, prereqs.numNameList, prereqs.numList, prereqs.expr)
-  }
+    afterGathering(
+      prereqs.counter,
+      prereqs.numNameList,
+      prereqs.numList,
+      prereqs.expr
+    );
+  };
 
   // This useEffect performs prereq retrieval every time a new course is displayed.
   useEffect(() => {
@@ -150,26 +154,6 @@ const PrereqDisplay = () => {
     out.push(parsed.jsx);
     return out;
   };
-
-  // TODO: Autogenerate time ranks based on year and semester
-  const courseRank = new Map([
-    ["fr,fa", 1],
-    ["fr,sp", 3],
-    ["fr,in", 2],
-    ["fr,su", 4],
-    ["so,fa", 5],
-    ["so,in", 6],
-    ["so,sp", 7],
-    ["so,su", 8],
-    ["ju,fa", 9],
-    ["ju,in", 10],
-    ["ju,sp", 11],
-    ["ju,su", 12],
-    ["se,fa", 13],
-    ["se,in", 14],
-    ["se,sp", 15],
-    ["se,su", 16],
-  ]);
 
   // Checks if prereq is satisfied by plan
   const checkPrereq = (number: string): boolean => {
