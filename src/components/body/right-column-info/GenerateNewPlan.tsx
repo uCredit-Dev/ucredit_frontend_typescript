@@ -40,7 +40,7 @@ const GenerateNewPlan: React.FC<generateNewPlanProps> = (props) => {
       name: "Unnamed Plan",
       user_id: user._id,
       majors: [testMajorCSNew.name],
-      createdAt:
+      expireAt:
         user._id === "guestUser" ? Date.now() + 60 * 60 * 24 * 1000 : null,
     };
 
@@ -62,7 +62,7 @@ const GenerateNewPlan: React.FC<generateNewPlanProps> = (props) => {
             user_id: user._id,
             plan_id: newPlan._id,
             filter: distr.filter,
-            createdAt:
+            expireAt:
               user._id === "guestUser"
                 ? Date.now() + 60 * 60 * 24 * 1000
                 : null,
