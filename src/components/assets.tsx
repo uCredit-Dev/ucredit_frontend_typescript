@@ -347,10 +347,7 @@ export const course_tags = [
           const retrievedCourse = retrieved.data.data;
           if (retrievedCourse.length === 1) {
             numNameList[n] = (num + num + " " + retrievedCourse[0].title); // num is added twice to distinquish which was the base course (refer to the case of EN.600 below) in the case that departments change numbers (600 to 601)
-            console.log(n, numNameList[n]);
             counter++;
-          } else {
-            
           }
         })
         .catch((err) => {
@@ -368,9 +365,6 @@ export const course_tags = [
               numNameList[n] = (
                 numList[n] + num + " " + retrievedCourse601[0].title
               );
-              console.log("lmao", n, numNameList[n]);
-            } else {
-              
             }
             counter++;
           })
@@ -387,21 +381,15 @@ export const course_tags = [
             console.log("couldnt find", err);
           });
         promises.push(what);
-        } else {
-          // numNameList[n] = (num + num + " Older than 2 years old.");
-          // console.log("xd", n, numNameList[n]);
-          // counter++;
         }
       promises.push(next);
     }
     return Promise.all(promises).then(() => {
       for (let n = 0; n < numList.length; n++) {
-        console.log("loop", n, numNameList[n]);
         if (numNameList[n] === undefined) {
           numNameList[n] = (
             numList[n] + numList[n] + " Older than 2 years old."
           );
-          console.log("xd", n, numNameList[n]);
         }
       }
 

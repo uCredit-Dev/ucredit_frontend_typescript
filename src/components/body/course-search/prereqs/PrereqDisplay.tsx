@@ -55,7 +55,6 @@ const PrereqDisplay = () => {
 
   const display = async (preReqs: any[]) => {
     const prereqs = await processPrereqs(preReqs);
-    console.log("process", prereqs);
     afterGathering(prereqs.counter, prereqs.numNameList, prereqs.numList, prereqs.expr)
   }
 
@@ -376,34 +375,28 @@ const PrereqDisplay = () => {
     numList: string[],
     expr: any
   ) => {
-    // Once counter counts that the amount of courses processed equals to the number list size, we can safely process prereq components and get component list.
-    //console.log(numNameList[22]);
-    //if (numList.length === numNameList.length && counter === numList.length) {
-      // Allign num list and name list
-      //console.log("??");
-      numList = numList.sort((first: any, second: any) => {
-        const sub1 = first.substr(0, 10);
-        const sub2 = second.substr(0, 10);
-        return sub1.localeCompare(sub2);
-      });
-      numNameList = numNameList.sort((a: any, b: any): any => {
-        const sub1 = a.substr(0, 10);
-        const sub2 = b.substr(0, 10);
-        return sub1.localeCompare(sub2);
-      });
-      for (let i = 0; i < numList.length; i++) {
-        //console.log(i);
-        expr = expr.replaceAll(
-          numList[i],
-          numNameList[i].substr(10, numNameList[i].length)
-        );
-        //console.log(i);
-      }
-      expr = expr.split("^");
-      const list = createPrereqBulletList(expr);
-      setPreReqDisplay(preReqsToComponents(list));
-      setLoaded(true);
-    //}
+    numList = numList.sort((first: any, second: any) => {
+      const sub1 = first.substr(0, 10);
+      const sub2 = second.substr(0, 10);
+      return sub1.localeCompare(sub2);
+    });
+    numNameList = numNameList.sort((a: any, b: any): any => {
+      const sub1 = a.substr(0, 10);
+      const sub2 = b.substr(0, 10);
+      return sub1.localeCompare(sub2);
+    });
+    for (let i = 0; i < numList.length; i++) {
+      //console.log(i);
+      expr = expr.replaceAll(
+        numList[i],
+        numNameList[i].substr(10, numNameList[i].length)
+      );
+      //console.log(i);
+    }
+    expr = expr.split("^");
+    const list = createPrereqBulletList(expr);
+    setPreReqDisplay(preReqsToComponents(list));
+    setLoaded(true);
   };
 
   const handlePrereqDisplayModeChange = (mode: number) => () => {
