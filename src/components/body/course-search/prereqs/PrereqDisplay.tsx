@@ -16,6 +16,7 @@ import {
   filterNNegatives,
   api,
   processPrereqs,
+  checkPrereq,
 } from "../../../assets"
 
 import CourseEvalSection from "../search-results/CourseEvalSection";
@@ -55,7 +56,7 @@ const PrereqDisplay = () => {
 
   const display = async (preReqs: any[]) => {
     const prereqs = await processPrereqs(preReqs);
-    afterGathering(prereqs.counter, prereqs.numNameList, prereqs.numList, prereqs.expr)
+    afterGathering(prereqs.numNameList, prereqs.numList, prereqs.expr)
   }
 
   // This useEffect performs prereq retrieval every time a new course is displayed.
@@ -64,12 +65,11 @@ const PrereqDisplay = () => {
     setdisplayPreReqsView(1);
     // Reset state whenever new inspected course
     setPreReqDisplay([]);
-    let preReqs: any[] = [];
     setLoaded(false);
     setHasPreReqs(false);
 
     // First get all valid preReqs (isNegative = true)
-    preReqs = filterNNegatives(inspected, preReqs);
+    let preReqs = filterNNegatives(inspected);
     setNNegativePreReqs(preReqs);
     //console.log(preReqs);
 
@@ -151,52 +151,6 @@ const PrereqDisplay = () => {
     return out;
   };
 
-  // TODO: Autogenerate time ranks based on year and semester
-  const courseRank = new Map([
-    ["fr,fa", 1],
-    ["fr,sp", 3],
-    ["fr,in", 2],
-    ["fr,su", 4],
-    ["so,fa", 5],
-    ["so,in", 6],
-    ["so,sp", 7],
-    ["so,su", 8],
-    ["ju,fa", 9],
-    ["ju,in", 10],
-    ["ju,sp", 11],
-    ["ju,su", 12],
-    ["se,fa", 13],
-    ["se,in", 14],
-    ["se,sp", 15],
-    ["se,su", 16],
-  ]);
-
-  // Checks if prereq is satisfied by plan
-  const checkPrereq = (number: string): boolean => {
-    let satisfied: boolean = false;
-    const currTimeVal = courseRank.get(
-      (year.substr(0, 2) + "," + semester.substr(0, 2)).toLowerCase()
-    );
-    currPlanCourses.forEach((course) => {
-      const courseTimeVal = courseRank.get(
-        (
-          course.year.substr(0, 2) +
-          "," +
-          course.term.substr(0, 2)
-        ).toLowerCase()
-      );
-      if (
-        course.number === number &&
-        currTimeVal !== undefined &&
-        courseTimeVal !== undefined &&
-        currTimeVal > courseTimeVal
-      ) {
-        satisfied = true;
-      }
-    });
-    return satisfied;
-  };
-
   // Parses arrays into clickable prereq number links
   const getNonStringPrereq = (input: any): parsedPrereqs => {
     const element = input;
@@ -204,7 +158,7 @@ const PrereqDisplay = () => {
       // If the element is a number
       const noCBrackets: string = element.substr(0, element.length - 3);
       const noCBracketsNum: string = element.substr(0, 10);
-      const satisfied: boolean = checkPrereq(noCBracketsNum);
+      const satisfied: boolean = checkPrereq(currPlanCourses, noCBracketsNum, year, semester);
       return {
         satisfied: satisfied,
         jsx: (
@@ -364,13 +318,11 @@ const PrereqDisplay = () => {
         orParsed.push(...parsePrereqsOr(input[i], depth));
       }
     }
-
     return orParsed;
   };
 
   // Check if it's time to update the prereq section with components.
   const afterGathering = (
-    counter: number,
     numNameList: string[],
     numList: string[],
     expr: any
@@ -395,6 +347,7 @@ const PrereqDisplay = () => {
     }
     expr = expr.split("^");
     const list = createPrereqBulletList(expr);
+    console.log(expr);
     setPreReqDisplay(preReqsToComponents(list));
     setLoaded(true);
   };
