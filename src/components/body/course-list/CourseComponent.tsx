@@ -1,6 +1,6 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { UserCourse, YearType, Plan, SemesterType } from "../../commonTypes";
-import { getColors } from "../../assets";
+import { checkAllPrereqs, getColors } from "../../assets";
 import { useDispatch, useSelector } from "react-redux";
 import {
   updateSearchStatus,
@@ -16,7 +16,8 @@ import { Transition } from "@tailwindui/react";
 import clsx from "clsx";
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-import { selectPlan, updateSelectedPlan } from "../../slices/currentPlanSlice";
+import { selectCurrentPlanCourses, selectPlan, updateSelectedPlan } from "../../slices/currentPlanSlice";
+import { checkPrereq, getCourse } from '../../assets'
 
 const api = "https://ucredit-api.herokuapp.com/api";
 
@@ -35,10 +36,16 @@ type courseProps = {
 */
 function CourseComponent({ year, course, semester }: courseProps) {
   const [activated, setActivated] = useState<boolean>(false);
+  const [satisfied, setSatisfied] = useState<boolean>(false);
 
   // Redux setup
   const dispatch = useDispatch();
   const currentPlan = useSelector(selectPlan);
+  const currPlanCourses = useSelector(selectCurrentPlanCourses);
+
+  useEffect(() => {
+    isSatisfied();
+  }, [currPlanCourses])
 
   // Sets or resets the course displayed in popout after user clicks it in course list.
   const displayCourses = () => {
@@ -136,10 +143,18 @@ function CourseComponent({ year, course, semester }: courseProps) {
     return out;
   };
 
+  const isSatisfied = async () => {
+    const temp = checkAllPrereqs(currPlanCourses, course.number, year, semester);
+    setSatisfied(await temp);
+    //console.log(course.number + " is satisfied? " + await temp);
+  }
+
+
   return (
     <>
       <div
-        className="relative items-center mt-2 p-2 h-14 bg-white rounded shadow"
+        className={clsx("relative items-center mt-2 p-2 h-14 bg-white rounded shadow", {
+         'bg-red-300': !satisfied})}
         onMouseEnter={activate}
         onMouseLeave={deactivate}
         key={course.number}
