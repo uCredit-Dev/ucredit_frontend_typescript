@@ -16,7 +16,6 @@ import {
   api,
   processPrereqs,
   checkPrereq,
-  courseRank,
 } from "../../../assets";
 
 import CourseEvalSection from "../search-results/CourseEvalSection";
