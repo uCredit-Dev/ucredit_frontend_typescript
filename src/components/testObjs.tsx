@@ -238,27 +238,20 @@ export const testMajorCSNew: Major = {
       name: "Computer Science",
       required: 40,
       filter: {
-        number: /EN\.600\.[0-9]{3}|EN\.601\.[0-9]{3}|EN\.500\.11[2-4]/g.toString(), //"EN.601.***" or "EN.500.11*"
+        number:
+          /EN\.600\.[0-9]{3}|EN\.601\.[0-9]{3}|EN\.500\.11[2-4]/g.toString(), //"EN.601.***" or "EN.500.11*"
       },
     },
     {
       name: "Math",
       required: 16,
       filter: {
-        department: /AS Mathematics|EN Applied Mathematics & Statistics/g.toString(),
+        department:
+          /AS Mathematics|EN Applied Mathematics & Statistics/g.toString(),
         exception: {
           number: /EN\.553\.171/g.toString(), //discrete math
         },
       },
-    },
-    {
-      name: "Basic Science",
-      required: 8,
-      filter: {
-        title: /General Physics|General Biology|Introductory Chemistry/g.toString(), //"General Physics", "General Biology", "Introductory Chemistry"]
-      },
-      description:
-        "Students must take two semesters of core science courses (any combination of Physics, Chemistry, Biology), with their associated labs, totaling at least 8 credits. These courses should be taken for a grade. However, AP credit is an acceptable substitute for these courses and labs.",
     },
     {
       name: "Liberal Arts",
@@ -271,6 +264,15 @@ export const testMajorCSNew: Major = {
       name: "Electives",
       required: 120 - 40 - 16 - 8 - 18,
       filter: {},
+    },
+    {
+      name: "Basic Science",
+      required: 16,
+      filter: {
+        area: /N/g.toString(), //"General Physics", "General Biology", "Introductory Chemistry"]
+      },
+      description:
+        "Students must take two semesters of core science courses (any combination of Physics, Chemistry, Biology), with their associated labs, totaling at least 8 credits. These courses should be taken for a grade. However, AP credit is an acceptable substitute for these courses and labs.",
     },
   ],
   requirements: [
@@ -287,8 +289,20 @@ export const testMajorCSNew: Major = {
       required: 6,
       byCredit: false,
       filter: {
-        number: /EN\.500\.11[2-4]|EN\.601\.220|EN\.601\.226|EN\.601\.229|EN\.601\.230|EN\.601\.443|/g.toString(),
+        number:
+          /EN\.500\.11[2-4]|EN\.601\.220|EN\.601\.226|EN\.601\.229|EN\.601\.230|EN\.601\.443|/g.toString(),
       },
+    },
+    {
+      name: "Lab Sciences",
+      required: 8,
+      byCredit: false,
+      filter: {
+        title:
+          /General Physics|General Biology|Introductory Chemistry/g.toString(), //"General Physics", "General Biology", "Introductory Chemistry"]
+      },
+      description:
+        "Students must take two semesters of core science courses (any combination of Physics, Chemistry, Biology), with their associated labs, totaling at least 8 credits. These courses should be taken for a grade. However, AP credit is an acceptable substitute for these courses and labs.",
     },
     {
       name: "Math Requirement",
