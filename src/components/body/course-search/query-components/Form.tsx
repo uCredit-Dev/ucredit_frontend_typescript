@@ -106,9 +106,18 @@ const Form = () => {
     }
   }, [searching]);
 
+  // TODO: change from any to FilterObj type (but with Redux)
+  function filterNone(searchFilters: any, returned: any[]) { 
+    if (searchFilters.distribution === "N") {
+      returned = returned.filter(
+        (course: Course) => course.areas !== "None"
+      );
+    }
+  }
+
   // Performs search call with filters to backend and updates redux with retrieved courses.
   // Smart search: performs search with all possible substring combinations of lengths 3 and above based on search query.
-  // TODO: Optimize this so it doesn't call 10 billioin search get requests.
+  // TODO: Optimize this so it doesn't call 10 billion get requests.
   const performSmartSearch =
     (extras: SearchExtras, queryLength: number) => () => {
       const querySubstrs: string[] = [];
@@ -126,7 +135,7 @@ const Form = () => {
           querySubstrs.push(searchTerm.substring(i, i + queryLength));
         }
       } else {
-        // Perform old search if search query is less than the minLength fora  smart search.
+        // Perform old search if search query is less than the minLength for a smart search.
         axios
           .get(api + "/search", {
             params: extras,
@@ -136,13 +145,9 @@ const Form = () => {
               (course1: Course, course2: Course) =>
                 course1.title.localeCompare(course2.title)
             );
-
-            if (searchFilters.distribution === "N") {
-              returned = returned.filter(
-                (course: Course) => course.areas !== "None"
-              );
-            }
-
+            
+            filterNone(searchFilters, returned);
+            
             if (!showAllResults) {
               // if showAllResults is selected, we search for all; otherwise, we only show top few.
               returned = returned.slice(0, 10);
@@ -182,11 +187,7 @@ const Form = () => {
                 course1.number.localeCompare(course2.number)
             );
 
-            if (searchFilters.distribution === "N") {
-              returned = returned.filter(
-                (course: Course) => course.areas !== "None"
-              );
-            }
+            filterNone(searchFilters, returned);
 
             returned.forEach((course: Course) => {
               if (
