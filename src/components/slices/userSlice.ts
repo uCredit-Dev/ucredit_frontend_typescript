@@ -69,6 +69,10 @@ export const userSlice = createSlice({
       state.toAddName = initialState.toAddName;
       state.toAddMajor = initialState.toAddMajor;
     },
+    resetUser: (state: any) => {
+      state.currentUser = initialState.currentUser;
+      state.planList = initialState.planList;
+    },
   },
 });
 
@@ -80,14 +84,17 @@ export const {
   updateAddingStatus,
   updateToAddName,
   updateToAddMajor,
+  resetUser,
 } = userSlice.actions;
 
 // Asynch login with thunk.
-export const loginAsync = (user: Promise<User>): AppThunk => (dispatch) => {
-  user.then((retrieved: User) => {
-    dispatch(updateUser(retrieved));
-  });
-};
+export const loginAsync =
+  (user: Promise<User>): AppThunk =>
+  (dispatch) => {
+    user.then((retrieved: User) => {
+      dispatch(updateUser(retrieved));
+    });
+  };
 
 // The function below is called a selector and allows us to select a value from
 // the state. Please make a selector for each state :)

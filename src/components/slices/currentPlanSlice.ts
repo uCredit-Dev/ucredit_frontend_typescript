@@ -43,6 +43,11 @@ export const currentPlanSlice = createSlice({
     ) => {
       state.currentPlanCourses = action.payload;
     },
+    resetCurrentPlan: (state: any) => {
+      state.plan = initialState.plan;
+      state.distributions = initialState.distributions;
+      state.currentPlanCourses = initialState.currentPlanCourses;
+    },
   },
 });
 
@@ -50,6 +55,7 @@ export const {
   updateSelectedPlan,
   updateDistributions,
   updateCurrentPlanCourses,
+  resetCurrentPlan,
 } = currentPlanSlice.actions;
 
 // The function below is called a selector and allows us to select a value from

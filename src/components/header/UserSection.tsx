@@ -1,9 +1,10 @@
 import React, { useState, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { updateUser, selectUser } from "../slices/userSlice";
+import { updateUser, selectUser, resetUser } from "../slices/userSlice";
 import { ReactComponent as UserSvg } from "../svg/User.svg";
 import { withCookies, useCookies } from "react-cookie";
 import { useHistory } from "react-router-dom";
+import { resetCurrentPlan } from "../slices/currentPlanSlice";
 
 const api = "https://ucredit-api.herokuapp.com/api";
 const deploy = "https://ucredit.herokuapp.com/";
@@ -17,7 +18,9 @@ function UserSection(props: any) {
   const user = useSelector(selectUser);
 
   // Component state setup
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const [cookies, setCookies] = useState(props.cookies);
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const [authCookies, setAuthCookie] = useCookies(["connect.sid"]);
   let history = useHistory();
 
@@ -87,7 +90,11 @@ function UserSection(props: any) {
                   "Content-Type": "application/json",
                 },
               })
-                .then(() => history.push("/"))
+                .then(() => {
+                  dispatch(resetUser());
+                  dispatch(resetCurrentPlan());
+                  history.push("/");
+                })
                 .catch((err) => {
                   console.log(err);
                 });
