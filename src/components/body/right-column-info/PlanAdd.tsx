@@ -61,7 +61,6 @@ const PlanAdd = (props: { setGenerateNew: Function }) => {
   };
 
   const options = [
-    // { value: -1, label: "Choose a Major" },
     ...testMajorArray.map((major, index) => ({
       value: index,
       label: major.name,
@@ -101,17 +100,6 @@ const PlanAdd = (props: { setGenerateNew: Function }) => {
             />
             Select Major
             <Select options={options} onChange={handleMajorChange} />
-            {/* <select
-              className="w-36 h-6 rounded outline-none"
-              onChange={handleMajorChange}
-            >
-              <option value={-1}>Choose a major</option>
-              {testMajorArray.map((major, index) => (
-                <option key={major.name} value={index}>
-                  {major.name}
-                </option>
-              ))}
-            </select> */}
             <button onClick={createNewPlan}>Add</button>
             <button onClick={handleCancel}>Cancel</button>
           </div>

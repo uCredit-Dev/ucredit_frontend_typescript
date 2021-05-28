@@ -11,13 +11,13 @@ import {
   selectYear,
   updateSearchStack,
 } from "../../../slices/searchSlice";
-
 import {
   filterNNegatives,
   api,
   processPrereqs,
   checkPrereq,
-} from "../../../assets"
+  courseRank,
+} from "../../../assets";
 
 import CourseEvalSection from "../search-results/CourseEvalSection";
 import PrereqDropdown from "./PrereqDropdown";
@@ -58,6 +58,7 @@ const PrereqDisplay = () => {
     const prereqs = await processPrereqs(preReqs);
     afterGathering(prereqs.numNameList, prereqs.numList, prereqs.expr)
   }
+
 
   // This useEffect performs prereq retrieval every time a new course is displayed.
   useEffect(() => {
@@ -150,7 +151,7 @@ const PrereqDisplay = () => {
     out.push(parsed.jsx);
     return out;
   };
-
+      
   // Parses arrays into clickable prereq number links
   const getNonStringPrereq = (input: any): parsedPrereqs => {
     const element = input;
