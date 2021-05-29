@@ -9,7 +9,8 @@ import {
   updateToAddMajor,
   selectToAddMajor,
 } from "../../slices/userSlice";
-import { testMajorArray } from "../../testObjs";
+// import { testMajorArray } from "../../testObjs";
+import { allMajors } from "../majors/major";
 import Select from "react-select";
 
 const PlanAdd = (props: { setGenerateNew: Function }) => {
@@ -56,12 +57,13 @@ const PlanAdd = (props: { setGenerateNew: Function }) => {
 
   const handleMajorChange = (event: any) => {
     if (event.value >= 0) {
-      dispatch(updateToAddMajor(testMajorArray[event.value]));
+      console.log("updating to ", allMajors[event.value]);
+      dispatch(updateToAddMajor(allMajors[event.value]));
     }
   };
 
   const options = [
-    ...testMajorArray.map((major, index) => ({
+    ...allMajors.map((major, index) => ({
       value: index,
       label: major.name,
     })),

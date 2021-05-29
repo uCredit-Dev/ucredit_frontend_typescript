@@ -85,6 +85,7 @@ export const {
   updateToAddName,
   updateToAddMajor,
   resetUser,
+  clearToAdd,
 } = userSlice.actions;
 
 // Asynch login with thunk.

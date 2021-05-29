@@ -8,6 +8,8 @@ import {
   selectPlanList,
   updateGuestPlanIds,
   selectToAddName,
+  selectToAddMajor,
+  clearToAdd,
 } from "../../slices/userSlice";
 import { testMajorCSNew } from "../../testObjs";
 import { toast } from "react-toastify";
@@ -32,14 +34,15 @@ const GenerateNewPlan: React.FC<generateNewPlanProps> = (props) => {
   const user = useSelector(selectUser);
   const planList = useSelector(selectPlanList);
   const toAddName = useSelector(selectToAddName);
+  const toAddMajor = useSelector(selectToAddMajor);
 
   useEffect(() => {
-    if (props.generateNew === false) return;
+    if (props.generateNew === false || toAddMajor === null) return;
 
     const planBody = {
       name: "Unnamed Plan",
       user_id: user._id,
-      majors: [testMajorCSNew.name],
+      majors: [toAddMajor.name],
       expireAt:
         user._id === "guestUser" ? Date.now() + 60 * 60 * 24 * 1000 : null,
     };
@@ -55,7 +58,7 @@ const GenerateNewPlan: React.FC<generateNewPlanProps> = (props) => {
         newPlan = response.data.data;
 
         // Make a new distribution for each distribution of the major of the plan.
-        testMajorCSNew.distributions.forEach((distr: any, index: number) => {
+        toAddMajor.distributions.forEach((distr: any, index: number) => {
           const distributionBody = {
             name: distr.name,
             required: distr.required,
@@ -81,7 +84,7 @@ const GenerateNewPlan: React.FC<generateNewPlanProps> = (props) => {
             })
             .then(() => {
               // After making our last distribution, we update our redux stores.
-              if (index === testMajorCSNew.distributions.length - 1) {
+              if (index === toAddMajor.distributions.length - 1) {
                 dispatch(updateSelectedPlan(newPlan));
                 dispatch(updatePlanList([newPlan, ...planList]));
                 props.setGenerateNewFalse();
@@ -98,6 +101,8 @@ const GenerateNewPlan: React.FC<generateNewPlanProps> = (props) => {
                   const planIdArray = [newPlan._id];
                   dispatch(updateGuestPlanIds(planIdArray));
                 }
+                console.log("Clearning");
+                dispatch(clearToAdd());
               }
             });
         });
