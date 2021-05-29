@@ -115,6 +115,19 @@ const Form = () => {
     }
   }
 
+  function toastResponse(returned: any[]) {
+    toast.dismiss();
+    toast.success("Found " + returned.length + " results!", {
+      position: "top-right",
+      autoClose: 5000,
+      hideProgressBar: true,
+      closeOnClick: true,
+      pauseOnHover: true,
+      draggable: true,
+      progress: undefined,
+    });
+  }
+
   function originalSearch(courses: AxiosResponse<any>) {
     let returned: any[] = courses.data.data.sort(
       (course1: Course, course2: Course) =>
@@ -130,17 +143,7 @@ const Form = () => {
 
     setSearching(false);
     dispatch(updateRetrievedCourses(returned));
-
-    toast.dismiss();
-    toast.success("Found " + returned.length + " results!", {
-      position: "top-right",
-      autoClose: 5000,
-      hideProgressBar: true,
-      closeOnClick: true,
-      pauseOnHover: true,
-      draggable: true,
-      progress: undefined,
-    });
+    toastResponse(returned);
   }
 
   function substringSearch(doneSearchSubQueries: string[], subQuery: string,
@@ -185,17 +188,7 @@ const Form = () => {
         const newSearchList: Course[] = getNewSearchList();
         dispatch(updateRetrievedCourses(newSearchList));
         setSearching(false);
-
-        toast.dismiss();
-        toast.success("Found " + newSearchList.length + " results!", {
-          position: "top-right",
-          autoClose: 5000,
-          hideProgressBar: true,
-          closeOnClick: true,
-          pauseOnHover: true,
-          draggable: true,
-          progress: undefined,
-        });
+        toastResponse(newSearchList);
       }
     }
   }
