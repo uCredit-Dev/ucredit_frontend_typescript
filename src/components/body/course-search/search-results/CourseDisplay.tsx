@@ -151,7 +151,7 @@ const CourseDisplay = () => {
       }
     }
 
-    if (filter.number !== undefined) {
+    if (filter.number !== undefined && typeof filter.number === "string") {
       const numRegex: RegExp = new RegExp(
         filter.number.substr(1, filter.number.length - 3)
       );

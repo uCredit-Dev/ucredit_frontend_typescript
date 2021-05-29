@@ -81,7 +81,7 @@ export type Filter = {
   tags?: TagType[];
   department?: string;
   title?: string;
-  number?: string;
+  number?: string | string[];
   wi?: boolean;
   exception?: Filter;
 };
@@ -128,11 +128,12 @@ export type Major = {
     filter: Filter;
     description?: string;
   }[];
-  requirements: {
+  requirements?: {
     name: string;
     required: number;
     filter: Filter;
     description?: string;
     byCredit: boolean;
+    sameCategory?: boolean;
   }[];
 };
