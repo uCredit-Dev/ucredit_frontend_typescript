@@ -393,7 +393,7 @@ const PrereqDisplay = () => {
         {!hasPreReqs ? (
           // <div className="font-normal">No Prereqs!</div>
           <div className="flex flex-col items-center justify-center w-full h-full font-normal">
-            No Prereqs!
+            No Prerequisites!
           </div>
         ) : prereqDisplayMode === 1 ? (
           <>
