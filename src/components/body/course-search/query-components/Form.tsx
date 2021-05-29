@@ -8,7 +8,7 @@ import {
   selectSearchFilters,
   selectSemester,
 } from "../../../slices/searchSlice";
-import axios from "axios";
+import axios, { AxiosResponse } from "axios";
 import {
   AreaType,
   Course,
@@ -106,9 +106,96 @@ const Form = () => {
     }
   }, [searching]);
 
+  // TODO: change from any to FilterObj type (but with Redux)
+  function filterNone(searchFilters: any, returned: any[]) {
+    if (searchFilters.distribution === "N") {
+      returned = returned.filter(
+        (course: Course) => course.areas !== "None"
+      );
+    }
+  }
+
+  function toastResponse(returned: any[]) {
+    toast.dismiss();
+    toast.success("Found " + returned.length + " results!", {
+      position: "top-right",
+      autoClose: 5000,
+      hideProgressBar: true,
+      closeOnClick: true,
+      pauseOnHover: true,
+      draggable: true,
+      progress: undefined,
+    });
+  }
+
+  function originalSearch(courses: AxiosResponse<any>) {
+    let returned: any[] = courses.data.data.sort(
+      (course1: Course, course2: Course) =>
+        course1.title.localeCompare(course2.title)
+    );
+
+    filterNone(searchFilters, returned);
+
+    if (!showAllResults) {
+      // if showAllResults is selected, we search for all; otherwise, we only show top few.
+      returned = returned.slice(0, 10);
+    }
+
+    setSearching(false);
+    dispatch(updateRetrievedCourses(returned));
+    toastResponse(returned);
+  }
+
+  function substringSearch(doneSearchSubQueries: string[], subQuery: string,
+    courses: AxiosResponse<any>, retrievedCourses: Map<string, SearchMapEl>,
+    extras: SearchExtras, queryLength: number, querySubstrs: string[]) {
+    doneSearchSubQueries.push(subQuery);
+
+    let returned: Course[] = courses.data.data.sort(
+      (course1: Course, course2: Course) =>
+        course1.number.localeCompare(course2.number)
+    );
+
+    filterNone(searchFilters, returned);
+
+    returned.forEach((course: Course) => {
+      if (
+        !retrievedCourses.has(course.number) &&
+        (searchedCourses.size < 10 ||
+          extras.query.length === 0 ||
+          showAllResults) // if showAllResults is selected, we search for all; otherwise, we only show top few.
+      ) {
+        retrievedCourses.set(course.number, {
+          course: course,
+          priority: queryLength,
+        });
+      }
+    });
+
+    // All subqueries are done searching
+    if (doneSearchSubQueries.length === querySubstrs.length) {
+      if (
+        queryLength > minLength &&
+        (searchedCourses.size < 10 ||
+          extras.query.length === 0 ||
+          showAllResults) // if showAllResults is selected, we search for all; otherwise, we only show top few.
+      ) {
+        setSearchedCourses(
+          new Map<string, SearchMapEl>(retrievedCourses)
+        );
+        performSmartSearch(extras, queryLength - 1)();
+      } else {
+        const newSearchList: Course[] = getNewSearchList();
+        dispatch(updateRetrievedCourses(newSearchList));
+        setSearching(false);
+        toastResponse(newSearchList);
+      }
+    }
+  }
+
   // Performs search call with filters to backend and updates redux with retrieved courses.
   // Smart search: performs search with all possible substring combinations of lengths 3 and above based on search query.
-  // TODO: Optimize this so it doesn't call 10 billioin search get requests.
+  // TODO: Optimize this so it doesn't call 10 billion get requests.
   const performSmartSearch =
     (extras: SearchExtras, queryLength: number) => () => {
       const querySubstrs: string[] = [];
@@ -126,41 +213,13 @@ const Form = () => {
           querySubstrs.push(searchTerm.substring(i, i + queryLength));
         }
       } else {
-        // Perform old search if search query is less than the minLength fora  smart search.
+        // Perform old search if search query is less than the minLength for a smart search.
         axios
           .get(api + "/search", {
             params: extras,
           })
           .then((courses) => {
-            let returned: any[] = courses.data.data.sort(
-              (course1: Course, course2: Course) =>
-                course1.title.localeCompare(course2.title)
-            );
-
-            if (searchFilters.distribution === "N") {
-              returned = returned.filter(
-                (course: Course) => course.areas !== "None"
-              );
-            }
-
-            if (!showAllResults) {
-              // if showAllResults is selected, we search for all; otherwise, we only show top few.
-              returned = returned.slice(0, 10);
-            }
-
-            setSearching(false);
-            dispatch(updateRetrievedCourses(returned));
-
-            toast.dismiss();
-            toast.success("Found " + returned.length + " results!", {
-              position: "top-right",
-              autoClose: 5000,
-              hideProgressBar: true,
-              closeOnClick: true,
-              pauseOnHover: true,
-              draggable: true,
-              progress: undefined,
-            });
+            originalSearch(courses);
           })
           .catch((err) => {
             console.log(err);
@@ -175,62 +234,8 @@ const Form = () => {
             params: extras,
           })
           .then((courses) => {
-            doneSearchSubQueries.push(subQuery);
-
-            let returned: Course[] = courses.data.data.sort(
-              (course1: Course, course2: Course) =>
-                course1.number.localeCompare(course2.number)
-            );
-
-            if (searchFilters.distribution === "N") {
-              returned = returned.filter(
-                (course: Course) => course.areas !== "None"
-              );
-            }
-
-            returned.forEach((course: Course) => {
-              if (
-                !retrievedCourses.has(course.number) &&
-                (searchedCourses.size < 10 ||
-                  extras.query.length === 0 ||
-                  showAllResults) // if showAllResults is selected, we search for all; otherwise, we only show top few.
-              ) {
-                retrievedCourses.set(course.number, {
-                  course: course,
-                  priority: queryLength,
-                });
-              }
-            });
-
-            // All subqueries are done searching
-            if (doneSearchSubQueries.length === querySubstrs.length) {
-              if (
-                queryLength > minLength &&
-                (searchedCourses.size < 10 ||
-                  extras.query.length === 0 ||
-                  showAllResults) // if showAllResults is selected, we search for all; otherwise, we only show top few.
-              ) {
-                setSearchedCourses(
-                  new Map<string, SearchMapEl>(retrievedCourses)
-                );
-                performSmartSearch(extras, queryLength - 1)();
-              } else {
-                const newSearchList: Course[] = getNewSearchList();
-                dispatch(updateRetrievedCourses(newSearchList));
-                setSearching(false);
-
-                toast.dismiss();
-                toast.success("Found " + newSearchList.length + " results!", {
-                  position: "top-right",
-                  autoClose: 5000,
-                  hideProgressBar: true,
-                  closeOnClick: true,
-                  pauseOnHover: true,
-                  draggable: true,
-                  progress: undefined,
-                });
-              }
-            }
+            substringSearch(doneSearchSubQueries, subQuery, courses,
+              retrievedCourses, extras, queryLength, querySubstrs);
           })
           .catch((err) => {
             doneSearchSubQueries.push(subQuery);
