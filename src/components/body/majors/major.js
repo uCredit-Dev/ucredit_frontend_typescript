@@ -109,3 +109,381 @@ const bsCS = {
     },
   ],
 };
+
+
+//https://engineering.jhu.edu/chembe/undergraduate-studies/undergraduate-degree-program/requirements/
+const bsChemBE = {
+  name: "BS Chemical and Biomolecular Engingeering",
+  department: "EN Chemical & Biomolecular Engineering",
+  distributions: [
+    {
+      name: "Total",
+      required: 128,
+      filter: {},
+    },
+    {
+      name: "Basic Science",
+      required: 17,
+      filter: {
+        title: /General Physics|General Biology|Introductory Chemistry/g, //"General Physics", "General Biology", "Introductory Chemistry"]
+      },
+    },
+    {
+      name: "Mathematics",
+      required: 16,
+      filter: {
+        department: /AS Mathematics|EN Applied Mathematics & Statistics/g,
+      }
+    },
+    {
+      name: "Advanced Chemistry/Biology",
+      required: 16,
+      filter: {
+        number: /(?=.*EN\.030\.205)(?=.*EN\.020\.305)(?=.*EN\.030\.307)(?=.*EN\.030\.452).*/g,
+      }
+    },
+    {
+      name: "Humanities and Social Sciences",
+      required: 18,
+      filter: {
+        area: /H|S/g,
+      },
+    },
+    {
+      name: "Chemical Engineering Core",
+      required: 39,
+      filter: {
+        number: /(?=.*EN\.540\.101)(?=.*EN\.540\.202)(?=.*EN\.540\.203)(?=.*EN\.540\.301)(?=.*EN\.540\.303)(?=.*EN\.540\.304)(?=.*EN\.540\.305)(?=.*EN\.540\.306)(?=.*EN\.540\.311)(?=.*EN\.540\.314)(?=.*EN\.540\.315)(?=.*EN\.540\.409)(?=.*EN\.540\.490).*/g,
+      },
+    },
+    {
+      name: "Engineering Elective Courses",
+      required: 6,
+      filter: {
+        area: /E/g,
+      },
+    },
+    {
+      name: "Undesignated Electives",
+      required: 13,
+      filter: {},
+    },
+  ],
+  requirments: [
+    {
+      name: "Basic Science",
+      required: 7,
+      byCredit: false,
+      filter: {
+        number: /(?=.*EN\.030\.101)(?=.*EN\.030\.102)(?=.*EN\.030\.105)(?=.*EN\.030\.106)(?=.*EN\.171\.101)(?=.*EN\.171\.102)(?=.*EN\.173\.111).*/g,
+      }
+    },
+    {
+      name: "Mathematics",
+      required: 4,
+      byCredit: false,
+      filter: {
+        number: /(?=.*EN\.110\.108)(?=.*EN\.110\.109)(?=.*EN\.110\.202)(?=.*EN\.110\.302).*/g,
+      },
+    },
+    {
+      name: "Advanced Chemistry/Biology",
+      required: 4,
+      byCredit: false,
+      filter: {
+        number: /(?=.*EN\.030\.205)(?=.*EN\.020\.305)(?=.*EN\.030\.307)(?=.*EN\.030\.452).*/g,
+      },
+    },
+    // FIX must be six courses that are at least 3 credits each
+    {
+      name: "Humanities and Social Sciences",
+      required: 1,
+      filter: {
+        number: /EN\.661\.315/g,
+      },
+    },
+  ],
+};
+
+
+//https://e-catalogue.jhu.edu/engineering/full-time-residential-programs/degree-programs/applied-mathematics-statistics/applied-mathematics-statistics-bs/#requirementstext
+const bsAMS = {
+  name: "Applied Mathematics and Statistics, Bachelor of Science",
+  department: "EN Computer Science",
+  distributions: [
+    {
+      name: "Total",
+      required: 120,
+      filter: {},
+    },
+  ],
+  requirments: [
+    {
+      name: "Calculus I, II, and III",
+      required: 3,
+      byCredit: false,
+      filter: {
+        number: /(?=.*AS\.110\.108)(?=.*AS\.110\.109|AS\.110\.113)(?=.*AS\.110\.202|AS\.110\.211).*/g,
+      },
+    },
+    {
+      name: "Linear Algebra",
+      required: 1,
+      byCredit: false,
+      filter: {
+        number: /AS\.110\.201|AS\.110\.212|EN\.553\.291/g,
+      },
+    },
+    {
+      name: "Differencial Equations",
+      required: 1,
+      byCredit: false,
+      filter: {
+        number: /AS\.110\.302|EN\.553\.391|EN\.553\.473/g,
+      },
+    },
+    {
+      name: "Computer Languages and Programming",
+      required: 1,
+      byCredit: false,
+      filter: {
+        //check if the notation does what you want
+        number: /EN\.500\.11[2-4]|AS\.250\.205|EN\.553\.281|EN\.580\.244|EN\.601\.220/g,
+      },
+    },
+    {
+      name: "Numerical Linear Algebra",
+      required: 1,
+      byCredit: false,
+      filter: {
+        number: /EN\.553\.385/g,
+      },
+    },
+    {
+      name: "Discrete Mathematics",
+      required: 2,
+      byCredit: false,
+      filter: {
+        number: /EN\.553\.171|EN\.553\.172|EN\.553\.371|EN\.553\.471|EN\.553\.472/g,
+      },
+    },
+    {
+      name: "Probability and Statistics",
+      required: 2,
+      byCredit: false,
+      filter: {
+        number: /(?=.*EN\.553\.420)(?=.*EN\.553\.430|EN\.553\.431).*/g,
+      },
+    },
+    {
+      name: "Optimization",
+      required: 1,
+      byCredit: false,
+      filter: {
+        number: /EN\.553\.361/g,
+      },
+    },
+    //take a look at the catagories
+    {
+      name: "Area of Focus",
+      required: 2,
+      byCredit: false,
+      sameCatagory: true,
+      filter: {
+        number: [/AS\.110\.405|AS\.110\.445|EN\.553\.426|EN\.553\.427|EN\.553\.433|EN\.553\.492/g, /AS\.110\.445|EN\.553\.400|EN\.553\.413|EN\.553\.414|EN\.553\.416|EN\.553\.417|EN\.553\.432|EN\.553\.433|EN\.553\.492/g, /AS\.110\.445|EN\.553\.400|EN\.553\.413|EN\.553\.414|EN\.553\.416|EN\.553\.417|EN\.553\.432|EN\.553\.433|EN\.553\.436|EN\.553\.439|EN\.553\.450/g, /EN\.553\.362|EN\.553\.400|EN\.553\.453|EN\.553\.463|EN\.553\.465|EN\.553\.467/g, /AS\.110\.401|EN\.553\.371|EN\.553\.463|EN\.553\.471|EN\.553\.472/g, /EN\.553\.427|EN\.553\.428|EN\.553\.441|EN\.553\.442|EN\.553\.444|EN\.553\.445|EN\.553\.447|EN\.553\.448|EN\.553\.449|EN\.553\.488/g, /(?=.*EN\.553\.481)(?=.*AS\.110\.445|EN\.553\.433|EN\.553\.467|EN\.553\.493).*/g],
+      },
+    },
+    {
+      name: "Scientific Computing",
+      required: 1,
+      byCredit: false,
+      filter: {
+        number: /AS\.110\.445|EN\.553\.400|EN\.553\.413|EN\.553\.416|EN\.553\.417|EN\.553\.432|EN\.553\.433|EN\.553\.436|EN\.553\.443|EN\.553\.450|EN\.553\.463|EN\.553\.467|EN\.553\.481|EN\.553\.488|EN\.553\.493|EN\.553\.494|EN\.601\.433|EN\.601\.475|EN\.601\.482/g,
+      },
+    },
+    {
+      name: "Natural Sciences",
+      required: 12,
+      byCredit: true,
+      filter: {
+        area: /N/g,
+      },
+    },
+    {
+      name: "Quantitative Studies",
+      required: 40,
+      byCredit: true,
+      filter: {
+        area: /Q/g,
+      },
+    },
+  ],
+};
+
+
+//https://econ.jhu.edu/undergraduate/major-requirements/
+const baEconomics = {
+  name: "B.A. Economics",
+  department: "AS Economics",
+  distributions: [
+    {
+      name: "Total",
+      required: 120,
+      filter: {},
+    },
+  ],
+  requirments: [
+    {
+      name: "Elements of Macro and Micro",
+      required: 2,
+      byCredit: false,
+      filter: {
+        number: /(?=.*AS\.180\.101)(?=.*AS\.180\.102).*/g,
+      },
+    },
+    {
+      name: "Intermediate Micro and Macro",
+      required: 2,
+      byCredit: false,
+      filter: {
+        number: /(?=.*AS\.180\.301)(?=.*AS\.180\.401)|AS\.180\.302/g,
+      },
+    },
+    {
+      name: "Economics",
+      required: 1,
+      byCredit: false,
+      filter: {
+        number: /AS\.180\.334|AS\.180\.434/g,
+      },
+    },
+    {
+      //fix
+      name: "Three elective courses at either the 200 or 300 level",
+      required: 3,
+      byCredit: false,
+      filter: {
+        number: /AS/g,
+      },
+    },
+    {
+      //fix
+      name: "Two elective courses at the 300 level",
+      required: 2,
+      byCredit: false,
+      filter: {
+        tags: [],
+      },
+    },
+    {
+      name: "One semester of calculus",
+      required: 1,
+      byCredit: false,
+      filter: {
+        number: /AS\.110\.106|AS\.110\.108|AS\.110\.113/g,
+      },
+    },
+    {
+      name: "One semester of statistics",
+      required: 1,
+      byCredit: false,
+      filter: {
+        number: /AS\.280\.345|EN\.553\.111|EN\.553\.112|EN\.553\.113|EN\.553\.211|EN\.553\.310|EN\.553\.311|EN\.553\.420|EN\.553\.430|EN\.553\.435|EN\.560\.348|EN\.560\.435/g,
+      },
+    },
+  ],
+};
+
+
+//https://www.bme.jhu.edu/academics/undergraduate/undergraduate-degree-requirements/
+const bsBME = {
+  name: "B.A. Pyschological and Brain Studies",
+  department: "EN Computer Science",
+  distributions: [
+    {
+      name: "Total",
+      required: 120,
+      filter: {},
+    },
+    {
+      name: "Basic Sciences",
+      required: 18,
+      filter: {
+        title: /General Physics|General Biology|Introductory Chemistry/g, //"General Physics", "General Biology", "Introductory Chemistry"]
+      },
+    },
+    {
+      name: "Mathematics",
+      required:20,
+      filter: {
+        department: /AS Mathematics|EN Applied Mathematics & Statistics/g,
+        exception: {
+          number: /EN\.553\.171/g, //discrete math
+        },
+      },
+    },
+    {
+      name: "Humanities and Social Sciences",
+      required: 18,
+      filter: {
+        area: /H|S/g,
+      },
+    },
+    {
+      name: "Biomedical Core Knowledge",
+      required: 33,
+      filter: {
+      },
+    },
+    {
+      name: "Focus Area",
+      required: 21,
+      filter: {
+      },
+    },
+    {
+      name: "Design",
+      required: 6,
+      filter: {
+      },
+    },
+    {
+      name: "Computer Programming",
+      required: 3,
+      filter: {
+        number: /EN\.600\.[0-9]{3}|EN\.601\.[0-9]{3}|EN\.500\.11[2-4]/, //"EN.601.***" or "EN.500.11*"
+      },
+    },
+    {
+      name: "Free Electives",
+      required: 10,
+      filter: {},
+    },
+  ],
+  requirments: [],
+};
+
+
+//https://krieger.jhu.edu/internationalstudies/undergraduate/requirements/
+const baIS = {
+  name: "B.A. International Studies",
+  department: "AS International Studies",
+  distributions: [
+    {
+      name: "Total",
+      required: 120,
+      filter: {},
+    },
+    {
+    name: "Political Science Requirements",
+    required: 18,
+    filter: {
+      tags: /INST-IR|INST-CP|INST-AP|INST-PT/g,
+      //also try to catch 
+    },
+  },
+  ],
+  requirments: [],
+};
+
+export const allMajors = [bsCS, bsChemBE, bsAMS, baEconomics, bsBME];
