@@ -16,6 +16,7 @@ import ReactTooltip from "react-tooltip";
 const SearchList = () => {
   const [pageNum, setPageNum] = useState(0);
   const [pageCount, setPageCount] = useState(0);
+  // const [allCourses, setAllCourses] =
   const courses = useSelector(selectRetrievedCourses);
   const dispatch = useDispatch();
   let coursesPerPage = 10;
@@ -75,7 +76,7 @@ const SearchList = () => {
 
   return (
     <>
-      <div className="flex flex-row items-center justify-between w-full h-12 px-5 py-2 bg-gray-200">
+      <div className="flex flex-row items-center justify-between px-5 py-2 w-full h-12 bg-gray-200">
         <div>Search Results </div>
         <div
           className="flex flex-row items-center justify-center w-6 h-6 bg-white rounded cursor-pointer"
@@ -86,12 +87,12 @@ const SearchList = () => {
         </div>
       </div>
       {/* <div className='relative left-0 z-10 flex-none block h-4 pointer-events-none -top-3 right-blurr bg-gradient-to-b from-white to-gray-200'></div> */}
-      <div className="w-full h-full px-5 overflow-y-auto bg-gray-200 border-b border-black select-none py">
+      <div className="py px-5 w-full h-full bg-gray-200 border-b border-black select-none overflow-y-auto">
         <ReactTooltip />
         <div className="w-full h-full">
           {courses.length > 0 ? (
             <>
-              <div className="flex flex-col w-full y-full">{courseList()}</div>
+              <div className="y-full flex flex-col w-full">{courseList()}</div>
               {pageCount > 1 ? (
                 <div className="flex flex-row justify-center w-full h-auto">
                   <Pagination

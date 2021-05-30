@@ -11,7 +11,7 @@ import {
   selectToAddMajor,
   clearToAdd,
 } from "../../slices/userSlice";
-import { testMajorCSNew } from "../../testObjs";
+// import { testMajorCSNew } from "../../testObjs";
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { updateSelectedPlan } from "../../slices/currentPlanSlice";

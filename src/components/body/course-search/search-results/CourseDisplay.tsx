@@ -272,6 +272,7 @@ const CourseDisplay = () => {
   // It automatically updates the current area in the add course area selection to the first area in the course areas string.
   useEffect(() => {
     setShowMore(2);
+    console.log(inspected);
 
     if (
       inspected !== "None" &&
