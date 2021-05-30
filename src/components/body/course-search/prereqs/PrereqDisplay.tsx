@@ -55,6 +55,7 @@ const PrereqDisplay = () => {
 
   const display = async (preReqs: any[]) => {
     const prereqs = await processPrereqs(preReqs);
+    console.log(prereqs);
     afterGathering(prereqs.numNameList, prereqs.numList, prereqs.expr);
   };
 
