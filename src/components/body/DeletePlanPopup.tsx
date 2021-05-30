@@ -2,15 +2,14 @@ import React, { useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import {
   selectUser,
-  selectPlan,
   selectPlanList,
   updatePlanList,
-  updateSelectedPlan,
   updateDeleteStatus,
 } from "../slices/userSlice";
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import GenerateNewPlan from "./right-column-info/GenerateNewPlan";
+import { selectPlan, updateSelectedPlan } from "../slices/currentPlanSlice";
 const api = "https://ucredit-api.herokuapp.com/api";
 
 /* 
@@ -33,34 +32,39 @@ const DeletePlanPopup = () => {
   const deleteCurrentPlan = () => {
     // delete plan from db
     // update plan array
-    fetch(api + "/plans/" + currentPlan._id, {
-      method: "DELETE",
-    })
-      .then(() => {
-        toast.error(currentPlan.name + " deleted!", {
-          position: "top-right",
-          autoClose: 5000,
-          hideProgressBar: true,
-          closeOnClick: true,
-          draggable: true,
-          progress: undefined,
-        });
-        let updatedList = [...planList]; // TODO: Once user routes are figured out, pull user info from db.
-        updatedList = updatedList.filter((plan) => {
-          return plan._id !== currentPlan._id;
-        });
-
-        // If it is length 1, autogenerate a new plan. Otherwise, update the list.
-        if (updatedList.length === 0 && user._id !== "noUser") {
-          // Post req body for a new plan
-          setGenerateNew(true);
-        } else {
+    // If plan list has more than one plan, delete. Otherwise, don't.
+    if (planList.length > 1 && user._id !== "noUser") {
+      fetch(api + "/plans/" + currentPlan._id, {
+        method: "DELETE",
+      })
+        .then(() => {
+          toast.error(currentPlan.name + " deleted!", {
+            position: "top-right",
+            autoClose: 5000,
+            hideProgressBar: true,
+            closeOnClick: true,
+            draggable: true,
+            progress: undefined,
+          });
+          let updatedList = [...planList];
+          updatedList = updatedList.filter((plan) => {
+            return plan._id !== currentPlan._id;
+          });
           dispatch(updateSelectedPlan(updatedList[0]));
           dispatch(updatePlanList(updatedList));
-        }
-        dispatch(updateDeleteStatus(false));
-      })
-      .catch((err) => console.log(err));
+          dispatch(updateDeleteStatus(false));
+        })
+        .catch((err) => console.log(err));
+    } else {
+      toast.error("Cannot delete last plan!", {
+        position: "top-right",
+        autoClose: 5000,
+        hideProgressBar: true,
+        closeOnClick: true,
+        draggable: true,
+        progress: undefined,
+      });
+    }
   };
 
   // Cancels plan delete

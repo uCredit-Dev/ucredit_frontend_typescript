@@ -1,31 +1,40 @@
 import * as React from "react";
-import Header from "./header/Header";
-import Content from "./body/Content";
-import { ToastContainer } from "react-toastify";
+import { useEffect } from "react";
+import { useState } from "react";
+import { Switch, Route } from "react-router-dom";
+import Dashboard from "./Dashboard";
+import DashboardEntry from "./DashboardEntry";
+import bird from "./birdTempGif.gif";
 //import { Counter } from '../redux_sample/Counter';
 
 /* 
   Root app component.
 */
 function App() {
+  const [welcomeScreen, setWelcomeScreen] = useState<boolean>(true);
+  useEffect(() => {
+    setTimeout(() => setWelcomeScreen(false), 1500);
+  }, []);
   return (
-    <div className="flex flex-col w-full h-full">
-      {/* <Counter /> */}
-      <Header />
-      <Content />
-
-      <ToastContainer
-        position="top-right"
-        autoClose={4000}
-        hideProgressBar={true}
-        newestOnTop={false}
-        closeOnClick
-        rtl={false}
-        pauseOnFocusLoss
-        draggable
-        pauseOnHover
-      />
-    </div>
+    <>
+      {welcomeScreen ? (
+        <div className="absolute z-50 top-0 flex flex-col m-auto w-screen h-screen text-center text-center text-white bg-primary">
+          Welcome logo animation (to be replaced)
+          <img className="mt-auto mx-auto" src={bird} alt={"logoGif"}></img>
+          <div className="mb-auto mx-auto w-full text-center text-9xl">
+            UCredit
+          </div>
+        </div>
+      ) : null}
+      <Switch>
+        <Route path="/dashboard">
+          <Dashboard />
+        </Route>
+        <Route path="/">
+          <DashboardEntry />
+        </Route>
+      </Switch>
+    </>
   );
 }
 

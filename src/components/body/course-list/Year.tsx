@@ -3,7 +3,7 @@ import Semester from "./Semester";
 import { UserCourse, YearType } from "../../commonTypes";
 import { ReactComponent as MoreSvg } from "../../svg/More.svg";
 import { useSelector } from "react-redux";
-import { selectPlan } from "../../slices/userSlice";
+import { selectPlan } from "../../slices/currentPlanSlice";
 
 type semesterProps = {
   customStyle: string;
@@ -35,13 +35,13 @@ function Year({ customStyle, yearName, courses }: semesterProps) {
     const parsedIntersessionCourses: UserCourse[] = [];
     const parsedSummerCourses: UserCourse[] = [];
     courses.forEach((course) => {
-      if (course.term === "fall") {
+      if (course.term.toLowerCase() === "fall") {
         parsedFallCourses.push(course);
-      } else if (course.term === "spring") {
+      } else if (course.term.toLowerCase() === "spring") {
         parsedSpringCourses.push(course);
-      } else if (course.term === "summer") {
+      } else if (course.term.toLowerCase() === "summer") {
         parsedSummerCourses.push(course);
-      } else if (course.term === "intersession") {
+      } else if (course.term.toLowerCase() === "intersession") {
         parsedIntersessionCourses.push(course);
       }
     });
@@ -59,36 +59,38 @@ function Year({ customStyle, yearName, courses }: semesterProps) {
 
   return (
     <div
-      className={`${customStyle} ml-auto mr-auto medium:px-4 w-yearheading min-w-yearMin`}>
+      className={`${customStyle} ml-auto mr-auto medium:px-4 w-yearheading min-w-yearMin`}
+    >
       <div
-        className='flex flex-row justify-between mb-3 p-2 w-full h-yearheading text-white font-medium bg-primary rounded shadow'
-        onClick={displaySemesters}>
-        <div className='select-none'>{yearName}</div>
-        <MoreSvg className='w-6 h-6 stroke-2 cursor-pointer' />
+        className="flex flex-row justify-between mb-3 p-2 w-full h-yearheading text-white font-medium bg-primary rounded shadow"
+        onClick={displaySemesters}
+      >
+        <div className="select-none">{yearName}</div>
+        <MoreSvg className="w-6 h-6 stroke-2 cursor-pointer" />
       </div>
       {display ? (
-        <div className='flex flex-col items-center'>
+        <div className="flex flex-col items-center">
           <Semester
-            customStyle=''
-            semesterName='fall'
+            customStyle=""
+            semesterName="Fall"
             semesterYear={yearName}
             courses={fallCourses}
           />
           <Semester
-            customStyle=''
-            semesterName='spring'
+            customStyle=""
+            semesterName="Spring"
             semesterYear={yearName}
             courses={springCourses}
           />
           <Semester
-            customStyle=''
-            semesterName='intersession'
+            customStyle=""
+            semesterName="Intersession"
             semesterYear={yearName}
             courses={winterCourses}
           />
           <Semester
-            customStyle=''
-            semesterName='summer'
+            customStyle=""
+            semesterName="Summer"
             semesterYear={yearName}
             courses={summerCourses}
           />

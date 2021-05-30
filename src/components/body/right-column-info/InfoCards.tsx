@@ -2,16 +2,15 @@ import React, { useState, useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import {
   selectUser,
-  selectPlan,
   selectPlanList,
   updatePlanList,
-  updateSelectedPlan,
   updateDeleteStatus,
 } from "../../slices/userSlice";
 import PlanChoose from "./PlanChoose";
 import { ReactComponent as RemoveSvg } from "../../svg/Remove.svg";
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import { selectPlan, updateSelectedPlan } from "../../slices/currentPlanSlice";
 
 const api = "https://ucredit-api.herokuapp.com/api";
 

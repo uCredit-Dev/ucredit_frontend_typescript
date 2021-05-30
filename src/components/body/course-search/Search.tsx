@@ -26,7 +26,7 @@ const Search = () => {
     <div className="absolute top-0">
       {/* Background Grey */}
       <div
-        className="fixed z-20 left-0 top-0 m-0 w-full h-screen bg-black"
+        className="fixed top-0 left-0 z-20 w-full h-screen m-0 bg-black"
         style={{
           opacity: searchOpacity === 100 ? 0.5 : 0,
         }}
@@ -43,8 +43,11 @@ const Search = () => {
         }
         style={{ opacity: searchOpacity === 100 ? 1 : 0.1 }}
       >
-        <div className="px-4 py-2 text-white text-coursecard font-semibold select-none">
-          Currently selecting for {searchYear} year, {searchSemester} semester
+        <div className="px-4 py-2 font-normal text-white select-none text-coursecard">
+          Currently selecting for{" "}
+          <span className="font-bold text-emphasis">{searchYear}</span> year,{" "}
+          <span className="font-bold text-emphasis">{searchSemester}</span>{" "}
+          semester
         </div>
         <div className="flex w-full h-full text-coursecard">
           <div
@@ -55,7 +58,7 @@ const Search = () => {
             <Form />
             <SearchList />
             <div
-              className="flex flex-row items-center justify-center p-1 w-full h-8"
+              className="flex flex-row items-center justify-center w-full h-8 p-1"
               onMouseEnter={() => setSearchOpacity(50)}
               onMouseLeave={() => setSearchOpacity(100)}
               data-tip="Hide search"

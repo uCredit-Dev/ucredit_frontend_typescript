@@ -7,7 +7,7 @@ import {
   FilterType,
   SemesterType,
   UserCourse,
-  YearType
+  YearType,
 } from "../../../commonTypes";
 import {
   selectInspectedCourse,
@@ -24,10 +24,7 @@ import {
 } from "../../../slices/searchSlice";
 import {
   selectUser,
-  selectPlan,
   selectPlanList,
-  selectDistributions,
-  updateSelectedPlan,
   updatePlanList,
 } from "../../../slices/userSlice";
 import Placeholder from "./Placeholder";
@@ -38,17 +35,20 @@ import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { getColors } from "../../../assets";
 import { testMajorCSNew } from "../../../testObjs";
-import axios from "axios";
-import CourseEvalSection from "./CourseEvalSection";
+import {
+  selectDistributions,
+  selectPlan,
+  updateSelectedPlan,
+} from "../../../slices/currentPlanSlice";
 
 const api = "https://ucredit-api.herokuapp.com/api";
 
 const termFilters: (SemesterType | "None")[] = [
   "None",
-  "fall",
-  "spring",
-  "intersession",
-  "summer",
+  "Fall",
+  "Spring",
+  "Intersession",
+  "Summer",
 ];
 
 const years: YearType[] = ["Freshman", "Sophomore", "Junior", "Senior"];
@@ -108,7 +108,7 @@ const CourseDisplay = () => {
     if (filter.area !== undefined) {
       const inspectedAreas = course.areas.split("");
       let found: boolean = false;
-      const areaRegex: RegExp = filter.area;
+      const areaRegex: RegExp = new RegExp(filter.area);
       inspectedAreas.forEach((area) => {
         if (area.match(areaRegex)) {
           found = true;
@@ -138,13 +138,15 @@ const CourseDisplay = () => {
     }
 
     if (filter.department !== undefined) {
-      if (!course.department.match(filter.department)) {
+      const depRegex: RegExp = new RegExp(filter.department);
+      if (!course.department.match(depRegex)) {
         return false;
       }
     }
 
     if (filter.number !== undefined) {
-      if (!course.number.match(filter.number)) {
+      const numRegex: RegExp = new RegExp(filter.number);
+      if (!course.number.match(numRegex)) {
         return false;
       }
     }
@@ -182,8 +184,6 @@ const CourseDisplay = () => {
       // Posts to add course route and then updates distribution.
       updateDistributions(filteredDistribution);
 
-
-
       toast.success(inspected.title + " added!", {
         position: "top-right",
         autoClose: 5000,
@@ -199,7 +199,6 @@ const CourseDisplay = () => {
     }
   };
 
-
   // Updates distribution bars upon successfully adding a course.
   const updateDistributions = (filteredDistribution: Distribution[]) => {
     let newUserCourse: UserCourse;
@@ -214,7 +213,7 @@ const CourseDisplay = () => {
         plan_id: currentPlan._id,
         number: inspected.number,
         area: inspectedArea,
-        createdAt:
+        expireAt:
           user._id === "guestUser" ? Date.now() + 60 * 60 * 24 * 1000 : null,
       };
 
@@ -372,6 +371,9 @@ const CourseDisplay = () => {
                   {inspected.title}
                 </div>
                 <div className="flex flex-row items-center ml-2.5 mr-2">
+                  <div className="mr-2.5 text-2xl font-light">
+                    {inspected.number}
+                  </div>
                   <div
                     className="flex items-center px-1 w-auto h-5 text-white font-semibold bg-secondary rounded select-none"
                     data-tip={inspected.credits + " credits"}
@@ -386,9 +388,8 @@ const CourseDisplay = () => {
             </div>
             <div className="grid grid-cols-2 w-auto h-auto">
               <div className="w-auto h-auto">
-                <div>{inspected.number}</div>
                 <div className="flex flex-row items-end">
-                  <div className="mr-1">Areas:</div>
+                  <div className="mr-1 font-semibold">Areas:</div>
                   {inspected.areas !== "None" ? (
                     inspected.areas.split("").map((area) => (
                       <div
@@ -412,18 +413,24 @@ const CourseDisplay = () => {
                     </div>
                   )}
                 </div>
-                <div>Department: {inspected.department}</div>
+                <div>
+                  <span className="font-semibold">Department: </span>
+                  {inspected.department}
+                </div>
               </div>
               <div className="w-auto h-auto">
                 <div>
-                  Offered in:{" "}
+                  <span className="font-semibold">Offered in: </span>
                   {inspected.terms.map((term, index) => {
                     return index === inspected.terms.length - 1
                       ? term
                       : term + ", ";
                   })}
                 </div>
-                <div>Restrictions: {getRestrictions()}</div>
+                <div>
+                  <span className="font-semibold">Restrictions: </span>
+                  {getRestrictions()}
+                </div>
               </div>
             </div>
 
@@ -469,7 +476,7 @@ const CourseDisplay = () => {
                   <select
                     className="ml-2 text-black text-coursecard rounded"
                     onChange={handleYearChange}
-                    defaultValue={searchYear}
+                    value={searchYear}
                   >
                     {years.map((year) => (
                       <option key={year + inspected.number} value={year}>
@@ -483,7 +490,7 @@ const CourseDisplay = () => {
                   <select
                     className="ml-2 h-6 rounded outline-none"
                     onChange={handleTermFilterChange}
-                    defaultValue={semester}
+                    value={semester}
                   >
                     {termFilters.map((term) => (
                       <option key={term + inspected.number} value={term}>

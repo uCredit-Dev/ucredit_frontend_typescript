@@ -2,7 +2,6 @@ import React, { useState } from "react";
 import { UserCourse, YearType, Plan, SemesterType } from "../../commonTypes";
 import { getColors } from "../../assets";
 import { useDispatch, useSelector } from "react-redux";
-import { selectPlan, updateSelectedPlan } from "../../slices/userSlice";
 import {
   updateSearchStatus,
   updateInspectedCourse,
@@ -17,6 +16,7 @@ import { Transition } from "@tailwindui/react";
 import clsx from "clsx";
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import { selectPlan, updateSelectedPlan } from "../../slices/currentPlanSlice";
 
 const api = "https://ucredit-api.herokuapp.com/api";
 

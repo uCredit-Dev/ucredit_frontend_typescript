@@ -91,7 +91,7 @@ export const testCourse1: Course = {
   title: "Test course 1",
   number: "EN.420.4204",
   areas: "NS",
-  terms: ["fall", "spring"],
+  terms: ["Fall", "Spring"],
   school: "Whiting School of Engineering",
   department: "CS",
   credits: "3",
@@ -106,7 +106,7 @@ export const testCourse2: Course = {
   title: "Test course 2",
   number: "EN.420.4205",
   areas: "H",
-  terms: ["spring"],
+  terms: ["Spring"],
   school: "KSAS",
   department: "Biology",
   credits: "2",
@@ -122,7 +122,7 @@ export const userTestCourse1: UserCourse = {
   user_id: "mliu78",
   plan_id: "testPlan1",
   title: testCourse1.title,
-  term: "fall",
+  term: "Fall",
   number: testCourse1.number,
   department: testCourse1.department,
   tags: testCourse1.tags,
@@ -138,7 +138,7 @@ export const userTestCourse1: UserCourse = {
 export const userTestCourse2: UserCourse = {
   _id: "userTestCourse2",
   title: testCourse2.title,
-  term: "spring",
+  term: "Spring",
   number: testCourse2.number,
   department: testCourse2.department,
   tags: testCourse2.tags,
@@ -238,16 +238,16 @@ export const testMajorCSNew: Major = {
       name: "Computer Science",
       required: 40,
       filter: {
-        number: /EN\.600\.[0-9]{3}|EN\.601\.[0-9]{3}|EN\.500\.11[2-4]/g, //"EN.601.***" or "EN.500.11*"
+        number: /EN\.600\.[0-9]{3}|EN\.601\.[0-9]{3}|EN\.500\.11[2-4]/g.toString(), //"EN.601.***" or "EN.500.11*"
       },
     },
     {
       name: "Math",
       required: 16,
       filter: {
-        department: /AS Mathematics|EN Applied Mathematics & Statistics/g,
+        department: /AS Mathematics|EN Applied Mathematics & Statistics/g.toString(),
         exception: {
-          number: /EN\.553\.171/g, //discrete math
+          number: /EN\.553\.171/g.toString(), //discrete math
         },
       },
     },
@@ -255,7 +255,7 @@ export const testMajorCSNew: Major = {
       name: "Basic Science",
       required: 8,
       filter: {
-        title: /General Physics|General Biology|Introductory Chemistry/g, //"General Physics", "General Biology", "Introductory Chemistry"]
+        title: /General Physics|General Biology|Introductory Chemistry/g.toString(), //"General Physics", "General Biology", "Introductory Chemistry"]
       },
       description:
         "Students must take two semesters of core science courses (any combination of Physics, Chemistry, Biology), with their associated labs, totaling at least 8 credits. These courses should be taken for a grade. However, AP credit is an acceptable substitute for these courses and labs.",
@@ -264,7 +264,7 @@ export const testMajorCSNew: Major = {
       name: "Liberal Arts",
       required: 18,
       filter: {
-        area: /H|S/g,
+        area: /H|S/g.toString(),
       },
     },
     {
@@ -279,7 +279,7 @@ export const testMajorCSNew: Major = {
       required: 16,
       byCredit: true,
       filter: {
-        number: /EN\.601\.[3-9]{1}[0-9]{2}/g, //"EN.601.3/4/5/6/7/8/9**"
+        number: /EN\.601\.[3-9]{1}[0-9]{2}/g.toString(), //"EN.601.3/4/5/6/7/8/9**"
       },
     },
     {
@@ -287,7 +287,7 @@ export const testMajorCSNew: Major = {
       required: 6,
       byCredit: false,
       filter: {
-        number: /EN\.500\.11[2-4]|EN\.601\.220|EN\.601\.226|EN\.601\.229|EN\.601\.230|EN\.601\.443|/g,
+        number: /EN\.500\.11[2-4]|EN\.601\.220|EN\.601\.226|EN\.601\.229|EN\.601\.230|EN\.601\.443|/g.toString(),
       },
     },
     {
@@ -295,7 +295,7 @@ export const testMajorCSNew: Major = {
       required: 3,
       byCredit: false,
       filter: {
-        number: /AS\.110\.10[8-9]|AS\.553\.3[0-9]{2}/g, //"AS.110.108" or "AS.110.109" or "AS.553.3**"
+        number: /AS\.110\.10[8-9]|AS\.553\.3[0-9]{2}/g.toString(), //"AS.110.108" or "AS.110.109" or "AS.553.3**"
       },
     },
     {
@@ -328,11 +328,13 @@ export const testMajorCSNew: Major = {
       byCredit: false,
       filter: {
         tags: ["CSCI-ETHS"],
-        number: /EN\.601\.104|EN\.660\.400|EN\.660\.406/g, //"601.104" or "660.400" or "660.406"
+        number: /EN\.601\.104|EN\.660\.400|EN\.660\.406/g.toString(), //"601.104" or "660.400" or "660.406"
       },
     },
   ],
 };
+
+export const testMajorArray = [testMajorCSNew, testMajorCSNew, testMajorCSNew];
 
 // : Major = {
 //   name: "B.S. in Computer Science (new)",

@@ -33,7 +33,7 @@ export type CourseEvals = {
   rating: string;
   summary: string;
   term: string;
-}
+};
 
 // For User courses, which have extra ids with user-specific info and a single term/area that the user chose.
 export type UserCourse = {
@@ -77,11 +77,11 @@ export type User = {
 };
 
 export type Filter = {
-  area?: RegExp;
+  area?: string;
   tags?: TagType[];
-  department?: RegExp;
-  title?: RegExp;
-  number?: RegExp;
+  department?: string;
+  title?: string;
+  number?: string;
   wi?: boolean;
   exception?: Filter;
 };
@@ -103,7 +103,7 @@ export type Distribution = {
 
 export type YearType = "Freshman" | "Sophomore" | "Junior" | "Senior";
 
-export type SemesterType = "fall" | "spring" | "summer" | "intersession";
+export type SemesterType = "Fall" | "Spring" | "Summer" | "Intersession";
 
 // https://stackoverflow.com/questions/52085454/typescript-define-a-union-type-from-an-array-of-strings
 export type DepartmentType = typeof all_majors[number];

@@ -43,6 +43,7 @@ module.exports = {
         // secondary: "#948ADF",
         secondary: "#5D90D3",
         background: "#f0f2f5",
+        emphasis: "#fad4f5",
       },
       backgroundColor: {
         gray: {

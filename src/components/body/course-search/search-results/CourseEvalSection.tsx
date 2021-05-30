@@ -1,28 +1,25 @@
 import React, { useState, useEffect } from "react";
-import { Course, CourseEvals } from "../../../commonTypes";
+import { CourseEvals } from "../../../commonTypes";
 import axios from "axios";
-import { useSelector, useDispatch } from "react-redux";
-import {
-  selectInspectedCourse,
-} from "../../../slices/searchSlice";
-import { number } from "prop-types";
+import { useSelector } from "react-redux";
+import { selectInspectedCourse } from "../../../slices/searchSlice";
 
 const api = "https://ucredit-api.herokuapp.com/api";
 
 // Displays course Evaluations based on inspected course
 const CourseEvalSection = () => {
-  
+
   let initialCourseEval: CourseEvals = {
     prof: "",
     number: "",
     rating: "",
     summary: "",
-    term: ""
+    term: "",
   };
 
+  const inspected = useSelector(selectInspectedCourse);
   const [courseEvals, setEval] = useState(initialCourseEval);
   const [courseReviews, setReviews] = useState([]);
-  const inspected = useSelector(selectInspectedCourse);
   // const [courseEvalView, setCourseEvalView] = useState<number>(0);
   const [selectedCourseEval, setSelectedCourseEval] = useState<number>(0);
 
@@ -34,23 +31,20 @@ const CourseEvalSection = () => {
     setReviews([]);
 
     if (inspected !== "None" && inspected !== undefined) {
-      // console.log(inspectedArea);
-      // const inspected = inspectedArea.inspected;
-      // console.log(api + "/evals/" + inspected.number)
-      axios.get(api + "/evals/" + inspected.number)
-      .then((retrievedData) => {
-        // console.log(retrievedData.data.data.rev)
-        setReviews(retrievedData.data.data.rev)
-      })
-      .catch((err) => console.log(err, " - course likely does not exist"));
+      axios
+        .get(api + "/evals/" + inspected.number)
+        .then((retrievedData) => {
+          setReviews(retrievedData.data.data.rev);
+        })
+        .catch((err) => console.log(err, " - course likely does not exist"));
     }
-  }
+  };
 
   const updateEvals = (revIndex: number) => {
-    setSelectedCourseEval(revIndex)
+    setSelectedCourseEval(revIndex);
     if (courseReviews.length !== 0) {
       const chosenRev = courseReviews[revIndex];
-      let courseEval: CourseEvals = {...initialCourseEval};
+      let courseEval: CourseEvals = { ...initialCourseEval };
       // courseEval.number = inspected.number;
       courseEval.prof = chosenRev["i"];
       courseEval.rating = chosenRev["g"]; // random one
@@ -58,26 +52,28 @@ const CourseEvalSection = () => {
       courseEval.summary = chosenRev["c"];
       setEval(courseEval);
     }
-  }
+  };
 
   // update every time inspected changes
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   useEffect(getEvals, [inspected]);
   useEffect(() => {
     // default to latest
     updateEvals(0);
-    // console.log("default", inspectedArea.inspected.number, courseEvals);
-  }, [courseReviews])
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [courseReviews]);
 
   const displayEvals = () => {
-    if (courseReviews.length === 0)
-      return (<div>No reviews available!</div>)
-    if (courseReviews.length === 1) 
+    if (courseReviews.length === 0) return <div>No reviews available!</div>;
+    if (courseReviews.length === 1)
       return (
         <>
-        <div>{courseEvals.term} | {courseEvals.prof} | {courseEvals.rating}</div>
-        <div>Summary: {courseEvals.summary}</div>
+          <div>
+            {courseEvals.term} | {courseEvals.prof} | {courseEvals.rating}
+          </div>
+          <div>Summary: {courseEvals.summary}</div>
         </>
-      )
+      );
     return (
       <div>
       {/* <div>List of available reviews: </div> */}
@@ -99,11 +95,12 @@ const CourseEvalSection = () => {
         )
         })}
       </div>
-    )
-  }
+    );
+  };
 
   return(displayEvals())
   
 }
+
 
 export default CourseEvalSection;

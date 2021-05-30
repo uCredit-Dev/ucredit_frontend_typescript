@@ -16,26 +16,37 @@ const PrereqDropdown = (props: {
 }) => {
   const [open, setOpen] = useState<boolean>(true);
   const [trulySatisfied, setTrulySatisfied] = useState<boolean>(false);
+  const [rootHovered, setRootHovered] = useState<boolean>(false);
 
   useEffect(() => {
     if (props.satisfied) {
       setOpen(false);
     }
-  }, [props.satisfied]);
-
-  const updateSatisfied = () => {
-    setTrulySatisfied(true);
-  };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   const getChildPrereqs = () => {
     let orAndSatisfied = false;
+    const alreadyDisplayed: React.Key[] = [];
 
+    // eslint-disable-next-line array-callback-return
     return props.element.map((el: any, index) => {
       if (typeof el !== "number") {
         const parsed: {
           satisfied: boolean;
           jsx: JSX.Element;
         } = props.getNonStringPrereq(el);
+
+        // If we already put this course in our prereqs, skip displaying it.
+        if (
+          parsed.jsx.key !== null &&
+          alreadyDisplayed.includes(parsed.jsx.key)
+        ) {
+          // eslint-disable-next-line array-callback-return
+          return;
+        } else if (parsed.jsx.key !== null) {
+          alreadyDisplayed.push(parsed.jsx.key);
+        }
 
         // If it's not an or statement, the first course must be satisfied.
         if (index === 0) {
@@ -55,10 +66,10 @@ const PrereqDropdown = (props: {
           orAndSatisfied &&
           !trulySatisfied
         ) {
-          updateSatisfied();
+          setTrulySatisfied(true);
         }
         return (
-          <p className="ml-4" key={el}>
+          <p className="ml-2" key={el}>
             {parsed.jsx}
           </p>
         );
@@ -67,7 +78,14 @@ const PrereqDropdown = (props: {
   };
 
   return (
-    <div>
+    <div
+      onMouseEnter={() => {
+        setRootHovered(true);
+      }}
+      onMouseLeave={() => {
+        setRootHovered(false);
+      }}
+    >
       <button
         onClick={() => {
           setOpen(!open);
@@ -98,7 +116,16 @@ const PrereqDropdown = (props: {
           <div className="text-sm">{props.text}</div>
         </div>
       </button>
-      {open ? getChildPrereqs() : null}
+      <div
+        className={clsx("ml-2 border-l-2 border-opacity-50", {
+          "border-green-200": props.satisfied && !rootHovered,
+          "border-green-900": props.satisfied && rootHovered,
+          "border-red-200 ": !props.satisfied && !rootHovered,
+          "border-red-900 ": !props.satisfied && rootHovered,
+        })}
+      >
+        {open ? getChildPrereqs() : null}
+      </div>
     </div>
   );
 };
