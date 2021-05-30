@@ -122,7 +122,7 @@ const DashboardEntry = (props: any) => {
 
   return (
     <div className="flex w-screen h-screen bg-primary">
-      <div className="flex flex-col mx-auto my-auto w-1/4 h-1/2 bg-gray-200 rounded">
+      <div className="flex flex-col w-1/4 mx-auto my-auto bg-gray-200 rounded h-1/2">
         <a
           href="https://ucredit-api.herokuapp.com/api/login"
           className="flex flex-row items-center justify-center mt-auto mx-auto w-24 h-9 bg-secondary rounded cursor-pointer select-none transform hover:translate-x-0.5 hover:translate-y-0.5 transition duration-200 ease-in"

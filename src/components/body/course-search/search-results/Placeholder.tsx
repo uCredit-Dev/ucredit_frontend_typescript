@@ -115,8 +115,8 @@ const Placeholder = (props: { addCourse: any }) => {
     <div className="flex flex-col h-full font-medium">
       <div className="text-2xl">Add a placeholder</div>
       <div className="flex flex-col mb-10">
-        <div className="flex flex-col mt-3 w-2/6">
-          Name
+        <div className="flex flex-col w-2/6 mt-3">
+          Title
           <input
             className="mt-1"
             onChange={onPTChange}
@@ -124,7 +124,7 @@ const Placeholder = (props: { addCourse: any }) => {
             value={placeholderTitle}
           ></input>
         </div>
-        <div className="flex flex-col mt-2 w-2/6">
+        <div className="flex flex-col w-2/6 mt-2">
           Number
           <input
             className="mt-1"
@@ -134,7 +134,7 @@ const Placeholder = (props: { addCourse: any }) => {
           ></input>
         </div>
 
-        <div className="flex flex-col mt-2 w-1/6">
+        <div className="flex flex-col w-1/6 mt-2">
           Department
           <Select
             options={[
@@ -151,13 +151,13 @@ const Placeholder = (props: { addCourse: any }) => {
             }}
           />
         </div>
-        <div className="flex flex-col mt-2 w-1/6">
+        <div className="flex flex-col w-1/6 mt-2">
           Tag
           <Select
             options={[
               ...tagFilters.map((tag: any) => ({ label: tag, value: tag })),
             ]}
-            className="mt-1 w-40 rounded outline-none"
+            className="w-40 mt-1 rounded outline-none"
             onChange={onPTagChange}
             value={{
               value: placeholderTag,
@@ -165,7 +165,7 @@ const Placeholder = (props: { addCourse: any }) => {
             }}
           />
         </div>
-        <div className="flex flex-col mt-2 w-1/6">
+        <div className="flex flex-col w-1/6 mt-2">
           Credits
           <Select
             onChange={onPCChange}
@@ -194,7 +194,7 @@ const Placeholder = (props: { addCourse: any }) => {
             className="mt-1"
           />
         </div>
-        <div className="flex flex-col mt-2 w-1/6">
+        <div className="flex flex-col w-1/6 mt-2">
           Area
           <Select
             options={[
@@ -203,7 +203,7 @@ const Placeholder = (props: { addCourse: any }) => {
                 value: area,
               })),
             ]}
-            className="mt-1 w-40 rounded outline-none"
+            className="w-40 mt-1 rounded outline-none"
             onChange={onPAChange}
             value={{
               value: placeholderArea,
@@ -213,7 +213,7 @@ const Placeholder = (props: { addCourse: any }) => {
         </div>
       </div>
       <button
-        className="mr-0 p-2 w-1/6 text-white bg-primary rounded"
+        className="w-1/6 p-2 mr-0 text-white rounded bg-primary"
         onClick={props.addCourse}
       >
         Add Course
