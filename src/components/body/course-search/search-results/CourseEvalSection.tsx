@@ -10,12 +10,12 @@ import { number } from "prop-types";
 const api = "https://ucredit-api.herokuapp.com/api";
 
 // Displays course Evaluations based on inspected course
-// Consider turning selected Course Evals, selected Course evals into an array to display multiple sim??
+// const CourseEvalSection = (inspectedArea: any) => {
 const CourseEvalSection = () => {
 
   const inspected = useSelector(selectInspectedCourse);
   // const [courseEvalView, setCourseEvalView] = useState<number>(0);
-  const [selectedCourseEval, setSelectedCourseEval] = useState<number[]>([0]);
+  const [selectedCourseEval, setSelectedCourseEval] = useState<number>(0);
   
   let initialCourseEval: CourseEvals = {
     prof: "",
@@ -32,7 +32,7 @@ const CourseEvalSection = () => {
     // reset the course evals view
     setEval(initialCourseEval);
     // setCourseEvalView(0);
-    setSelectedCourseEval([0]);
+    setSelectedCourseEval(0);
     setReviews([]);
 
     if (inspected !== "None" && inspected !== undefined) {
@@ -49,17 +49,7 @@ const CourseEvalSection = () => {
   }
 
   const updateEvals = (revIndex: number) => {
-    // Check if need to collapse
-    if (selectedCourseEval.includes(revIndex)) {
-      // selectedCourseEval.splice(revIndex);
-      // setSelectedCourseEval(selectedCourseEval);
-      setSelectedCourseEval([-1]);
-      return;
-    }
-    // otherwise add to the list
-    // selectedCourseEval.push(revIndex);
-    // setSelectedCourseEval(selectedCourseEval);
-    setSelectedCourseEval([revIndex]);
+    setSelectedCourseEval(revIndex)
     if (courseReviews.length !== 0) {
       const chosenRev = courseReviews[revIndex];
       let courseEval: CourseEvals = {...initialCourseEval};
@@ -101,8 +91,9 @@ const CourseEvalSection = () => {
         }}>
           {s} | {i} | {g} 
         </button>
-        {selectedCourseEval.includes(index) ?
+        {selectedCourseEval === index ?
         (<>
+        {/* <div>{courseEvals.term} | {courseEvals.prof} | {courseEvals.rating}</div> */}
         <div>Rating: {courseEvals.rating}</div>
         <div>Summary: {courseEvals.summary}</div>
         </>) : null
@@ -110,11 +101,35 @@ const CourseEvalSection = () => {
       </div>
         )
         })}
+      {/* <div>Selected review: </div> */}
       </div>
     )
   }
 
   return(displayEvals())
+  // return(
+  //   courseEvalView === 0 ? (
+  //   <button
+  //     className="underline"
+  //     onClick={() => {
+  //       setCourseEvalView(1);
+  //     }}
+  //   >
+  //     Show Course Evaluations
+  //   </button>
+  // ) : (
+  //   <>
+  //   <button
+  //     className="underline"
+  //     onClick={() => {
+  //       setCourseEvalView(0);
+  //     }}
+  //   >
+  //     Hide Course Evaluations
+  //   </button>
+  //   {displayEvals()}
+  //   </>
+  // )); 
 }
 
 export default CourseEvalSection;
