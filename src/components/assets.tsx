@@ -283,6 +283,7 @@ export const filterNNegatives = (inspected: Course | "None"): any[] => {
       return section.IsNegative === "N";
     });
   }
+  //console.log(preReqs);
   return preReqs;
 };
 
@@ -360,7 +361,8 @@ const getCourses = async (
       // eslint-disable-next-line no-loop-func
       .then((retrieved) => {
         const retrievedCourse = retrieved.data.data;
-        if (retrievedCourse.length === 1) {
+        //console.log(retrievedCourse);
+        if (retrievedCourse.length > 0) {
           numNameList[n] = num + num + " " + retrievedCourse[0].title; // num is added twice to distinquish which was the base course (refer to the case of EN.600 below) in the case that departments change numbers (600 to 601)
           counter++;
         }
@@ -392,6 +394,7 @@ const getCourses = async (
   return Promise.all(promises).then(() => {
     for (let n = 0; n < numList.length; n++) {
       if (numNameList[n] === undefined) {
+        //console.log(n);
         numNameList[n] =
           numList[n] +
           numList[n] +
