@@ -102,7 +102,6 @@ function Semester({
           <div
             className="flex flex-row items-center justify-center w-6 h-6 transition duration-100 ease-in rounded-md group hover:bg-white"
             onClick={addCourse}
-            data-tip="add a course"
           >
             <AddSvg className="w-6 h-6 stroke-2 group-hover:text-black" />
           </div>

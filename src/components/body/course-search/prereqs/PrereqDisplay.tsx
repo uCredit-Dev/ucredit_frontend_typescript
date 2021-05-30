@@ -364,6 +364,7 @@ const PrereqDisplay = () => {
     return (
       <>
         <div className="flex flex-row mt-2">
+          <ReactTooltip />
           <div
             className={clsx(
               "flex flex-row items-center justify-center mr-1 p-1 w-7 h-7 rounded cursor-pointer",
@@ -421,9 +422,15 @@ const PrereqDisplay = () => {
   return (
     <p className="w-full h-auto">
       <ReactTooltip />
-      <div className="flex flex-row justify-between pb-1 border-b">
+      <div className="flex flex-row border-b-2">
         <button
-          className="text-xl font-medium"
+          className={clsx(
+            "mr-3 text-xl font-medium hover:border-b-2 border-secondary",
+            {
+              "border-b-2 -mb-0.5": displayPreReqsView === 1,
+              "hover:-mb-0.5": displayPreReqsView !== 1,
+            }
+          )}
           onClick={() => {
             setdisplayPreReqsView(1);
           }}
@@ -431,7 +438,13 @@ const PrereqDisplay = () => {
           Prerequisites
         </button>
         <button
-          className="text-xl font-medium"
+          className={clsx(
+            "mr-3 text-xl font-medium hover:border-b-2 border-secondary",
+            {
+              "border-b-2 -mb-0.5": displayPreReqsView === 0,
+              "hover:-mb-0.5": displayPreReqsView !== 0,
+            }
+          )}
           onClick={() => {
             setdisplayPreReqsView(0);
           }}

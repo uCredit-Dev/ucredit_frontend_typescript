@@ -96,6 +96,9 @@ module.exports = {
           },
         },
       },
+      fill: (theme) => ({
+        gold: theme("colors.yellow.400"),
+      }),
     },
   },
   variants: {
@@ -105,7 +108,9 @@ module.exports = {
       transitionDuration: ["hover", "group-hover", "active"],
       transitionTimingFunction: ["hover", "group-hover"],
       borderStyle: ["hover"],
-      backgroundColor: ["group-hover, hover"],
+      borderWidth: ["hover", "focus"],
+      margin: ["hover"],
+      fill: ["hover"],
     },
   },
   plugins: [],
