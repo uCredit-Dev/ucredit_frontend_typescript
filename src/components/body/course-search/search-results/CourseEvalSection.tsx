@@ -7,11 +7,7 @@ import { selectInspectedCourse } from "../../../slices/searchSlice";
 const api = "https://ucredit-api.herokuapp.com/api";
 
 // Displays course Evaluations based on inspected course
-// const CourseEvalSection = (inspectedArea: any) => {
 const CourseEvalSection = () => {
-  const inspected = useSelector(selectInspectedCourse);
-  // const [courseEvalView, setCourseEvalView] = useState<number>(0);
-  const [selectedCourseEval, setSelectedCourseEval] = useState<number>(0);
 
   let initialCourseEval: CourseEvals = {
     prof: "",
@@ -21,8 +17,11 @@ const CourseEvalSection = () => {
     term: "",
   };
 
+  const inspected = useSelector(selectInspectedCourse);
   const [courseEvals, setEval] = useState(initialCourseEval);
   const [courseReviews, setReviews] = useState([]);
+  // const [courseEvalView, setCourseEvalView] = useState<number>(0);
+  const [selectedCourseEval, setSelectedCourseEval] = useState<number>(0);
 
   const getEvals = () => {
     // reset the course evals view
@@ -77,57 +76,31 @@ const CourseEvalSection = () => {
       );
     return (
       <div>
-        {/* <div>List of available reviews: </div> */}
-        {courseReviews.map(({ i, g, s }, index: number) => {
-          return (
-            <div>
-              <button
-                className="underline"
-                onClick={() => {
-                  updateEvals(index);
-                }}
-              >
-                {s} | {i} | {g}
-              </button>
-              {selectedCourseEval === index ? (
-                <>
-                  {/* <div>{courseEvals.term} | {courseEvals.prof} | {courseEvals.rating}</div> */}
-                  <div>Rating: {courseEvals.rating}</div>
-                  <div>Summary: {courseEvals.summary}</div>
-                </>
-              ) : null}
-            </div>
-          );
+      {/* <div>List of available reviews: </div> */}
+      {courseReviews.map(({i, g, s}, index: number) => {
+        return(
+        <div>
+        <button className="underline" onClick={() => {
+          updateEvals(index)
+        }}>
+          {s} | {i} | {g} 
+        </button>
+        {selectedCourseEval === index ?
+        (<>
+        <div>Rating: {courseEvals.rating}</div>
+        <div>Summary: {courseEvals.summary}</div>
+        </>) : null
+        }
+      </div>
+        )
         })}
-        {/* <div>Selected review: </div> */}
       </div>
     );
   };
 
-  return displayEvals();
-  // return(
-  //   courseEvalView === 0 ? (
-  //   <button
-  //     className="underline"
-  //     onClick={() => {
-  //       setCourseEvalView(1);
-  //     }}
-  //   >
-  //     Show Course Evaluations
-  //   </button>
-  // ) : (
-  //   <>
-  //   <button
-  //     className="underline"
-  //     onClick={() => {
-  //       setCourseEvalView(0);
-  //     }}
-  //   >
-  //     Hide Course Evaluations
-  //   </button>
-  //   {displayEvals()}
-  //   </>
-  // ));
-};
+  return(displayEvals())
+  
+}
+
 
 export default CourseEvalSection;
