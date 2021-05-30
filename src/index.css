@@ -36,12 +36,12 @@ code {
 /* Handle */
 ::-webkit-scrollbar-thumb {
   border-radius: 0.5rem;
-  background: #5D90D3;
+  background: #5d90d3;
   fill-opacity: 0.5;
 }
 
 /* Handle on hover */
 ::-webkit-scrollbar-thumb:hover {
   /* background: #6755E3; */
-  background: #3168AF;
+  background: #3168af;
 }

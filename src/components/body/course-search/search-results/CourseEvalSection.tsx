@@ -3,12 +3,13 @@ import { CourseEvals } from "../../../commonTypes";
 import axios from "axios";
 import { useSelector } from "react-redux";
 import { selectInspectedCourse } from "../../../slices/searchSlice";
+import CourseEvalCard from "./CourseEvalCard";
+import clsx from "clsx";
 
 const api = "https://ucredit-api.herokuapp.com/api";
 
 // Displays course Evaluations based on inspected course
 const CourseEvalSection = () => {
-
   let initialCourseEval: CourseEvals = {
     prof: "",
     number: "",
@@ -64,43 +65,54 @@ const CourseEvalSection = () => {
   }, [courseReviews]);
 
   const displayEvals = () => {
-    if (courseReviews.length === 0) return <div>No reviews available!</div>;
-    if (courseReviews.length === 1)
+    if (courseReviews.length === 0)
       return (
-        <>
-          <div>
-            {courseEvals.term} | {courseEvals.prof} | {courseEvals.rating}
-          </div>
-          <div>Summary: {courseEvals.summary}</div>
-        </>
+        <div className="flex flex-row justify-center mt-2">
+          No reviews available!
+        </div>
       );
+    // Is this following if statement necessary? Commented out for now
+    // if (courseReviews.length === 1)
+    //   return (
+    //     <>
+    //       <div>
+    //         {courseEvals.term} | {courseEvals.prof} | {courseEvals.rating}
+    //       </div>
+    //       <div>Summary: {courseEvals.summary}</div>
+    //     </>
+    //   );
     return (
-      <div>
-      {/* <div>List of available reviews: </div> */}
-      {courseReviews.map(({i, g, s}, index: number) => {
-        return(
-        <div>
-        <button className="underline" onClick={() => {
-          updateEvals(index)
-        }}>
-          {s} | {i} | {g} 
-        </button>
-        {selectedCourseEval === index ?
-        (<>
-        <div>Rating: {courseEvals.rating}</div>
-        <div>Summary: {courseEvals.summary}</div>
-        </>) : null
-        }
-      </div>
-        )
+      <div className="mt-2">
+        {courseReviews.map(({ i, g, s }, index: number) => {
+          return (
+            <div>
+              <button
+                className={clsx(
+                  "mb-2 border-b border-solid hover:border-black border-gray-300 transition duration-100 ease-in",
+                  {
+                    "border-gray-900": selectedCourseEval === index,
+                  }
+                )}
+                onClick={() => {
+                  updateEvals(index);
+                }}
+              >
+                {s} | {i} | {g}
+              </button>
+              {selectedCourseEval === index ? (
+                <CourseEvalCard
+                  rating={courseEvals.rating}
+                  summary={courseEvals.summary}
+                />
+              ) : null}
+            </div>
+          );
         })}
       </div>
     );
   };
 
-  return(displayEvals())
-  
-}
-
+  return displayEvals();
+};
 
 export default CourseEvalSection;

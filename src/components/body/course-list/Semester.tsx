@@ -68,8 +68,9 @@ function Semester({
 
   return (
     <div className={`${customStyle} mb-3 w-full h-auto`}>
-      <div className="flex flex-col w-full h-8 text-white font-medium bg-secondary rounded shadow">
+      <div className="flex flex-col w-full h-8 font-medium text-white rounded shadow bg-secondary">
         <div className="flex flex-row items-center justify-between px-2 py-1">
+          <ReactTooltip html={true} />
           <div
             className="flex flex-row items-center w-full h-auto select-none"
             onClick={displayCourses}
@@ -89,9 +90,8 @@ function Semester({
                 >
                   {courses.length}
                 </div> */}
-                <ReactTooltip html={true} />
                 <div
-                  className="flex flex-row items-center justify-center ml-1 px-1 w-auto h-4 text-black text-xs bg-white rounded"
+                  className="flex flex-row items-center justify-center w-auto h-4 px-1 ml-1 text-xs text-black bg-white rounded"
                   data-tip={`${totalCredits} Credits`}
                 >
                   {totalCredits}
@@ -100,10 +100,10 @@ function Semester({
             ) : null}
           </div>
           <div
-            className="flex flex-row items-center justify-center w-6 h-6"
+            className="flex flex-row items-center justify-center w-6 h-6 transition duration-100 ease-in rounded-md group hover:bg-white"
             onClick={addCourse}
           >
-            <AddSvg className="w-full h-full stroke-2 cursor-pointer" />
+            <AddSvg className="w-6 h-6 stroke-2 group-hover:text-black" />
           </div>
         </div>
       </div>

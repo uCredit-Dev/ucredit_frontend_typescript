@@ -392,7 +392,10 @@ const getCourses = async (
   return Promise.all(promises).then(() => {
     for (let n = 0; n < numList.length; n++) {
       if (numNameList[n] === undefined) {
-        numNameList[n] = numList[n] + numList[n] + " Older than 2 years old.";
+        numNameList[n] =
+          numList[n] +
+          numList[n] +
+          " Has not been offered in the past 2 years.";
       }
     }
     let out = {

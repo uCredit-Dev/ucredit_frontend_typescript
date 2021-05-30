@@ -364,7 +364,7 @@ const CourseDisplay = () => {
   };
 
   return (
-    <div className="flex flex-col p-5 w-full bg-gray-200 rounded-r">
+    <div className="flex flex-col w-full p-5 bg-gray-200 rounded-r">
       {inspected === "None" ? (
         <div className="flex flex-col items-center justify-center w-full h-full font-normal">
           No selected course!
@@ -373,8 +373,7 @@ const CourseDisplay = () => {
         <Placeholder addCourse={addCourse} />
       ) : (
         <>
-          <ReactTooltip />
-          <div className="pb-5 pt-4 px-5 w-full h-full text-base bg-white rounded overflow-y-auto">
+          <div className="w-full h-full px-5 pt-4 pb-5 overflow-y-auto text-base bg-white rounded">
             {searchStack.length !== 0 ? (
               <button
                 onClick={() => {
@@ -384,30 +383,37 @@ const CourseDisplay = () => {
                 Back
               </button>
             ) : null}
-            <div className="flex flex-row justify-between mb-1 w-full h-auto">
+            <div className="flex flex-row justify-between w-full h-auto mb-1">
               <h1 className="flex flex-row w-auto h-auto">
                 <div className="w-full h-auto text-2xl font-bold">
                   {inspected.title}
                 </div>
-                <div className="flex flex-row items-center ml-2.5 mr-2">
-                  <div className="mr-2.5 text-2xl font-light">
-                    {inspected.number}
-                  </div>
+              </h1>
+              <button className="text-2xl" onClick={clearInspected}>
+                <CloseSvg className="stroke-2 w-7 h-7" />
+              </button>
+            </div>
+            <div className="grid w-auto h-auto grid-cols-2">
+              <ReactTooltip />
+              <div className="w-auto h-auto">
+                <div className="flex flex-row items-center">
+                  <div className="mr-1 font-semibold">Number: </div>
+                  {inspected.number}
+                </div>
+              </div>
+              <div className="w-auto h-auto">
+                <div className="flex flex-row items-center">
+                  <div className="mr-1 font-semibold">Credit: </div>
                   <div
-                    className="flex items-center px-1 w-auto h-5 text-white font-semibold bg-secondary rounded select-none"
+                    className="flex items-center w-auto h-5 px-1 font-semibold text-white rounded select-none bg-secondary"
                     data-tip={inspected.credits + " credits"}
                   >
                     {inspected.credits}
                   </div>
                 </div>
-              </h1>
-              <button className="text-2xl" onClick={clearInspected}>
-                <CloseSvg className="w-7 h-7 stroke-2" />
-              </button>
-            </div>
-            <div className="grid grid-cols-2 w-auto h-auto">
+              </div>
               <div className="w-auto h-auto">
-                <div className="flex flex-row items-end">
+                <div className="flex flex-row items-center">
                   <div className="mr-1 font-semibold">Areas:</div>
                   {inspected.areas !== "None" ? (
                     inspected.areas.split("").map((area) => (
@@ -416,7 +422,7 @@ const CourseDisplay = () => {
                         key={area + inspected.number}
                       >
                         <div
-                          className="flex items-center px-1 w-auto h-5 text-white font-semibold rounded select-none"
+                          className="flex items-center w-auto h-5 px-1 font-semibold text-white rounded select-none"
                           style={{ backgroundColor: getColors(area)[0] }}
                         >
                           {area}
@@ -425,7 +431,7 @@ const CourseDisplay = () => {
                     ))
                   ) : (
                     <div
-                      className="flex items-center px-1 w-auto h-5 text-white font-semibold rounded select-none"
+                      className="flex items-center w-auto h-5 px-1 font-semibold text-white rounded select-none"
                       style={{ backgroundColor: getColors(inspected.areas)[0] }}
                     >
                       None
@@ -453,9 +459,9 @@ const CourseDisplay = () => {
               </div>
             </div>
 
-            <div className="mb-3 mt-3">
+            <div className="mt-3 mb-3">
               <p
-                className="font-normal overflow-y-hidden"
+                className="overflow-y-hidden font-normal"
                 style={{ maxHeight: showMore === 1 ? "100%" : "6rem" }}
                 ref={bioElRef}
               >
@@ -486,14 +492,14 @@ const CourseDisplay = () => {
             </div>
             <PrereqDisplay />
           </div>
-          <div className="flex flex-row flex-grow items-center mt-2">
-            <div className="flex flex-col flex-grow justify-center">
+          <div className="flex flex-row items-center flex-grow mt-2">
+            <div className="flex flex-col justify-center flex-grow">
               <div className="mb-1 font-medium">Selecting for</div>
               <div className="flex flex-row">
                 <div className="flex flex-row items-center w-auto h-auto">
                   Year:
                   <select
-                    className="ml-2 text-black text-coursecard rounded"
+                    className="ml-2 text-black rounded text-coursecard"
                     onChange={handleYearChange}
                     value={searchYear}
                   >
@@ -504,10 +510,10 @@ const CourseDisplay = () => {
                     ))}
                   </select>
                 </div>
-                <div className="flex flex-row items-center ml-5 w-auto h-auto">
+                <div className="flex flex-row items-center w-auto h-auto ml-5">
                   Term:
                   <select
-                    className="ml-2 h-6 rounded outline-none"
+                    className="h-6 ml-2 rounded outline-none"
                     onChange={handleTermFilterChange}
                     value={semester}
                   >
@@ -518,10 +524,10 @@ const CourseDisplay = () => {
                     ))}
                   </select>
                 </div>
-                <div className="flex flex-row flex-grow items-center ml-5 w-auto h-auto">
+                <div className="flex flex-row items-center flex-grow w-auto h-auto ml-5">
                   Area:
                   <select
-                    className="ml-2 w-14 h-6 rounded outline-none"
+                    className="h-6 ml-2 rounded outline-none w-14"
                     value={inspectedArea}
                     onChange={(event) => setInspectedArea(event.target.value)}
                   >
@@ -531,7 +537,7 @@ const CourseDisplay = () => {
               </div>
             </div>
             <button
-              className="mt-2 p-2 w-1/6 h-10 text-white bg-primary rounded"
+              className="w-1/6 h-10 p-2 mt-2 text-white rounded bg-primary"
               onClick={addCourse}
             >
               Add Course

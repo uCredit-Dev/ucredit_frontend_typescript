@@ -55,9 +55,8 @@ const PrereqDisplay = () => {
 
   const display = async (preReqs: any[]) => {
     const prereqs = await processPrereqs(preReqs);
-    afterGathering(prereqs.numNameList, prereqs.numList, prereqs.expr)
-  }
-
+    afterGathering(prereqs.numNameList, prereqs.numList, prereqs.expr);
+  };
 
   // This useEffect performs prereq retrieval every time a new course is displayed.
   useEffect(() => {
@@ -150,7 +149,7 @@ const PrereqDisplay = () => {
     out.push(parsed.jsx);
     return out;
   };
-      
+
   // Parses arrays into clickable prereq number links
   const getNonStringPrereq = (input: any): parsedPrereqs => {
     const element = input;
@@ -158,7 +157,12 @@ const PrereqDisplay = () => {
       // If the element is a number
       const noCBrackets: string = element.substr(0, element.length - 3);
       const noCBracketsNum: string = element.substr(0, 10);
-      const satisfied: boolean = checkPrereq(currPlanCourses, noCBracketsNum, year, semester);
+      const satisfied: boolean = checkPrereq(
+        currPlanCourses,
+        noCBracketsNum,
+        year,
+        semester
+      );
       return {
         satisfied: satisfied,
         jsx: (
@@ -169,7 +173,7 @@ const PrereqDisplay = () => {
                 updateInspected(noCBracketsNum)();
               }}
             >
-              <div className="group flex flex-row w-auto h-auto transition duration-100 ease-in">
+              <div className="flex flex-row w-auto h-auto transition duration-100 ease-in group">
                 {satisfied ? (
                   <CheckMark
                     className={clsx("mr-1 w-5 h-5", {
@@ -360,6 +364,7 @@ const PrereqDisplay = () => {
     return (
       <>
         <div className="flex flex-row mt-2">
+          <ReactTooltip />
           <div
             className={clsx(
               "flex flex-row items-center justify-center mr-1 p-1 w-7 h-7 rounded cursor-pointer",
@@ -369,10 +374,10 @@ const PrereqDisplay = () => {
                   prereqDisplayMode === 1,
               }
             )}
-            onClick={handlePrereqDisplayModeChange(1)}
-            data-tip="description"
+            onClick={handlePrereqDisplayModeChange(2)}
+            data-tip="bullet list"
           >
-            <DescriptionSvg className="w-5 h-5" />
+            <MenuSvg />
           </div>
           <div
             className={clsx(
@@ -383,10 +388,10 @@ const PrereqDisplay = () => {
                   prereqDisplayMode !== 1,
               }
             )}
-            onClick={handlePrereqDisplayModeChange(2)}
-            data-tip="bullet list"
+            onClick={handlePrereqDisplayModeChange(1)}
+            data-tip="description"
           >
-            <MenuSvg />
+            <DescriptionSvg className="w-5 h-5" />
           </div>
         </div>
 
@@ -417,9 +422,15 @@ const PrereqDisplay = () => {
   return (
     <p className="w-full h-auto">
       <ReactTooltip />
-      <div className="flex flex-row justify-between pb-1 border-b">
+      <div className="flex flex-row border-b-2">
         <button
-          className="text-xl font-medium"
+          className={clsx(
+            "mr-3 text-xl font-medium hover:border-b-2 border-secondary",
+            {
+              "border-b-2 -mb-0.5": displayPreReqsView === 1,
+              "hover:-mb-0.5": displayPreReqsView !== 1,
+            }
+          )}
           onClick={() => {
             setdisplayPreReqsView(1);
           }}
@@ -427,7 +438,13 @@ const PrereqDisplay = () => {
           Prerequisites
         </button>
         <button
-          className="text-xl font-medium"
+          className={clsx(
+            "mr-3 text-xl font-medium hover:border-b-2 border-secondary",
+            {
+              "border-b-2 -mb-0.5": displayPreReqsView === 0,
+              "hover:-mb-0.5": displayPreReqsView !== 0,
+            }
+          )}
           onClick={() => {
             setdisplayPreReqsView(0);
           }}
