@@ -232,7 +232,7 @@ const PrereqDisplay = () => {
           jsx: (
             <>
               <PrereqDropdown
-                satisfied={false}
+                satisfied={parsedSat}
                 text={"All courses below"}
                 element={element}
                 getNonStringPrereq={getNonStringPrereq}
