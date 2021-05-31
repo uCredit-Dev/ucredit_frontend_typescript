@@ -10,6 +10,12 @@ module.exports = {
       maxWidth: {
         courseCard: "50%",
       },
+      minHeight: {
+        "1/4": "25%",
+        "1/2": "50%",
+        "3/4": "75%",
+        full: "100%",
+      },
       width: {
         year: "320px",
         courselist: "1400px",

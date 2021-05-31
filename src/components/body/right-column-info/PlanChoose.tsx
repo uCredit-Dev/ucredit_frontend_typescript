@@ -12,7 +12,7 @@ import {
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import GenerateNewPlan from "./GenerateNewPlan";
-import PlanAdd from "./PlanAdd";
+import PlanAdd from "../PlanAdd";
 import { selectPlan, updateSelectedPlan } from "../../slices/currentPlanSlice";
 
 const api = "https://ucredit-api.herokuapp.com/api";

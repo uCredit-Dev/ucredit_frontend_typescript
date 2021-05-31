@@ -4,6 +4,8 @@ import { guestUser } from "./assets";
 import { useDispatch, useSelector } from "react-redux";
 import { updateUser, selectUser } from "./slices/userSlice";
 import { withCookies, useCookies } from "react-cookie";
+import bg from "./images/bg.png";
+import placeholder from "./images/placeholder_logo.png";
 
 const api = "https://ucredit-api.herokuapp.com/api";
 const deploy = "https://ucredit.herokuapp.com/";
@@ -121,16 +123,34 @@ const DashboardEntry = (props: any) => {
   };
 
   return (
-    <div className="flex w-screen h-screen bg-primary">
-      <div className="flex flex-col w-1/4 mx-auto my-auto bg-gray-200 rounded h-1/2">
+    <div
+      className="flex w-screen h-screen"
+      style={{
+        backgroundImage: "url(" + bg + ")",
+        backgroundRepeat: "no-repeat",
+        backgroundSize: "cover",
+        backgroundPosition: "top",
+      }}
+    >
+      <div
+        className="min-w-1/4 flex flex-col mx-auto my-auto p-14 text-white text-lg font-bold rounded"
+        style={{ backgroundColor: "#00316F" }}
+      >
+        <div className="flex flex-row items-center justify-center mt-auto w-full text-3xl">
+          <img src={placeholder} alt="logo" className="h-14" />
+          <div>uCredit</div>
+        </div>
+        <div className="mb-14 mt-8 mx-auto w-full text-center text-4xl">
+          Streamlined Degree Planning.
+        </div>
         <a
           href="https://ucredit-api.herokuapp.com/api/login"
-          className="flex flex-row items-center justify-center mt-auto mx-auto w-24 h-9 bg-secondary rounded cursor-pointer select-none transform hover:translate-x-0.5 hover:translate-y-0.5 transition duration-200 ease-in"
+          className="flex flex-row items-center justify-center mx-auto w-64 h-12 font-semibold tracking-widest bg-secondary rounded-full cursor-pointer select-none transform hover:translate-x-0.5 hover:translate-y-0.5 transition duration-200 ease-in"
         >
           Log In
         </a>
         <button
-          className="h-15 flex flex-row items-center justify-center mb-auto mt-20 mx-auto w-24 bg-secondary rounded cursor-pointer select-none transform hover:translate-x-0.5 hover:translate-y-0.5 transition duration-200 ease-in"
+          className="flex flex-row items-center justify-center mb-auto mt-5 mx-auto w-64 h-12 font-semibold tracking-widest bg-secondary rounded-full cursor-pointer select-none transform hover:translate-x-0.5 hover:translate-y-0.5 transition duration-200 ease-in"
           onClick={handleGuest}
         >
           Continue as guest
