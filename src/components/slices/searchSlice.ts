@@ -98,7 +98,7 @@ export const searchSlice = createSlice({
       state.searchStack = [];
     },
     updateRetrievedCourses: (state: any, action: PayloadAction<Course[]>) => {
-      state.retrievedCourses = action.payload;
+      state.retrievedCourses = [...action.payload];
     },
     updatePlaceholder: (state: any, action: PayloadAction<boolean>) => {
       state.placeholder = action.payload;
@@ -145,9 +145,11 @@ export const {
 } = searchSlice.actions;
 
 // Asynch search with thunk.
-export const searchAsync = (param: any): AppThunk => (dispatch) => {
-  // async action here
-};
+export const searchAsync =
+  (param: any): AppThunk =>
+  (dispatch) => {
+    // async action here
+  };
 
 // The function below is called a selector and allows us to select a value from
 // the state. Please make a selector for each state :)

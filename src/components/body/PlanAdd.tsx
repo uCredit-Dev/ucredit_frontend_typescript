@@ -8,9 +8,9 @@ import {
   selectPlanList,
   updateToAddMajor,
   selectToAddMajor,
-} from "../../slices/userSlice";
+} from "../slices/userSlice";
 // import { testMajorArray } from "../../testObjs";
-import { allMajors } from "../majors/major";
+import { allMajors } from "./majors/major";
 import Select from "react-select";
 
 const PlanAdd = (props: { setGenerateNew: Function }) => {

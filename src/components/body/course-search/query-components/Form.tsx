@@ -69,7 +69,7 @@ const Form = () => {
   // Search with debouncing of 2/4s of a second.
   const minLength = 3;
   useEffect(() => {
-    setSearchedCourses(new Map<string, SearchMapEl>());
+    searchedCourses.clear();
 
     // Search params.
     const extras: SearchExtras = {
@@ -109,9 +109,7 @@ const Form = () => {
   // TODO: change from any to FilterObj type (but with Redux)
   function filterNone(searchFilters: any, returned: any[]) {
     if (searchFilters.distribution === "N") {
-      returned = returned.filter(
-        (course: Course) => course.areas !== "None"
-      );
+      returned = returned.filter((course: Course) => course.areas !== "None");
     }
   }
 
@@ -141,14 +139,20 @@ const Form = () => {
       returned = returned.slice(0, 10);
     }
 
-    setSearching(false);
     dispatch(updateRetrievedCourses(returned));
+    setSearching(false);
     toastResponse(returned);
   }
 
-  function substringSearch(doneSearchSubQueries: string[], subQuery: string,
-    courses: AxiosResponse<any>, retrievedCourses: Map<string, SearchMapEl>,
-    extras: SearchExtras, queryLength: number, querySubstrs: string[]) {
+  function substringSearch(
+    doneSearchSubQueries: string[],
+    subQuery: string,
+    courses: AxiosResponse<any>,
+    retrievedCourses: Map<string, SearchMapEl>,
+    extras: SearchExtras,
+    queryLength: number,
+    querySubstrs: string[]
+  ) {
     doneSearchSubQueries.push(subQuery);
 
     let returned: Course[] = courses.data.data.sort(
@@ -180,9 +184,7 @@ const Form = () => {
           extras.query.length === 0 ||
           showAllResults) // if showAllResults is selected, we search for all; otherwise, we only show top few.
       ) {
-        setSearchedCourses(
-          new Map<string, SearchMapEl>(retrievedCourses)
-        );
+        setSearchedCourses(new Map<string, SearchMapEl>(retrievedCourses));
         performSmartSearch(extras, queryLength - 1)();
       } else {
         const newSearchList: Course[] = getNewSearchList();
@@ -202,6 +204,7 @@ const Form = () => {
       const retrievedCourses: Map<string, SearchMapEl> = searchedCourses;
       const doneSearchSubQueries: string[] = [];
       setSearching(true);
+      console.log("performing smart search");
 
       if (
         queryLength >= minLength &&
@@ -234,8 +237,15 @@ const Form = () => {
             params: extras,
           })
           .then((courses) => {
-            substringSearch(doneSearchSubQueries, subQuery, courses,
-              retrievedCourses, extras, queryLength, querySubstrs);
+            substringSearch(
+              doneSearchSubQueries,
+              subQuery,
+              courses,
+              retrievedCourses,
+              extras,
+              queryLength,
+              querySubstrs
+            );
           })
           .catch((err) => {
             doneSearchSubQueries.push(subQuery);

@@ -4,7 +4,7 @@ import { useState } from "react";
 import { Switch, Route } from "react-router-dom";
 import Dashboard from "./Dashboard";
 import DashboardEntry from "./DashboardEntry";
-import bird from "./birdTempGif.gif";
+import bird from "./images/birdTempGif.gif";
 //import { Counter } from '../redux_sample/Counter';
 
 /* 
