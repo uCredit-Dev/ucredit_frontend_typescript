@@ -232,7 +232,7 @@ const CourseDisplay = () => {
         number: inspected.number,
         area: inspectedArea,
         expireAt:
-          user._id === "guestUser" ? Date.now() + 60 * 60 * 24 * 1000 : null,
+          user._id === "guestUser" ? Date.now() + 60 * 60 * 24 * 1000 : undefined,
       };
 
       fetch(api + "/courses", {
