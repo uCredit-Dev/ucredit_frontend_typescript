@@ -30,7 +30,7 @@ const api = "https://ucredit-api.herokuapp.com/api";
 /* 
   Search form, including the search query input and filters.
 */
-const Form = () => {
+const Form = (props: { setSearching: Function }) => {
   // Set up redux dispatch and variables.
   const dispatch = useDispatch();
   const searchTerm = useSelector(selectSearchterm);
@@ -43,7 +43,6 @@ const Form = () => {
   const [searchedCourses, setSearchedCourses] = useState<
     Map<string, SearchMapEl>
   >(new Map<string, SearchMapEl>());
-  const [searching, setSearching] = useState<boolean>(false);
 
   // On opening search, set the term filter to match semester you're adding to.
   useEffect(() => {
@@ -70,6 +69,19 @@ const Form = () => {
   const minLength = 3;
   useEffect(() => {
     searchedCourses.clear();
+    props.setSearching(false);
+    // Skip searching if no filters or queries are specified
+    if (
+      searchTerm.length === 0 &&
+      searchFilters.credits === "Any" &&
+      searchFilters.distribution === "Any" &&
+      searchFilters.wi === "Any" &&
+      searchFilters.department === "Any" &&
+      searchFilters.tags === "Any"
+    ) {
+      dispatch(updateRetrievedCourses([]));
+      return;
+    }
 
     // Search params.
     const extras: SearchExtras = {
@@ -95,16 +107,16 @@ const Form = () => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [searchTerm, searchFilters, showAllResults]);
 
-  useEffect(() => {
-    if (searching) {
-      toast("Searching!", {
-        position: "top-right",
-        autoClose: false,
-        draggable: true,
-        progress: undefined,
-      });
-    }
-  }, [searching]);
+  // useEffect(() => {
+  //   if (searching) {
+  //     toast("Searching!", {
+  //       position: "top-right",
+  //       autoClose: false,
+  //       draggable: true,
+  //       progress: undefined,
+  //     });
+  //   }
+  // }, [searching]);
 
   // TODO: change from any to FilterObj type (but with Redux)
   function filterNone(searchFilters: any, returned: any[]) {
@@ -140,8 +152,10 @@ const Form = () => {
     }
 
     dispatch(updateRetrievedCourses(returned));
-    setSearching(false);
-    toastResponse(returned);
+    if (returned.length > 0) {
+      props.setSearching(false);
+      toastResponse(returned);
+    }
   }
 
   function substringSearch(
@@ -189,8 +203,10 @@ const Form = () => {
       } else {
         const newSearchList: Course[] = getNewSearchList();
         dispatch(updateRetrievedCourses(newSearchList));
-        setSearching(false);
-        toastResponse(newSearchList);
+        if (newSearchList.length > 0) {
+          props.setSearching(false);
+          toastResponse(newSearchList);
+        }
       }
     }
   }
@@ -203,8 +219,7 @@ const Form = () => {
       const querySubstrs: string[] = [];
       const retrievedCourses: Map<string, SearchMapEl> = searchedCourses;
       const doneSearchSubQueries: string[] = [];
-      setSearching(true);
-      console.log("performing smart search");
+      props.setSearching(true);
 
       if (
         queryLength >= minLength &&

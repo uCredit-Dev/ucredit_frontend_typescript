@@ -24,7 +24,10 @@ import { ReactComponent as CheckMark } from "../../../svg/CheckMark.svg";
 import { ReactComponent as DescriptionSvg } from "../../../svg/Description.svg";
 import { ReactComponent as MenuSvg } from "../../../svg/Menu.svg";
 import ReactTooltip from "react-tooltip";
-import { selectCurrentPlanCourses } from "../../../slices/currentPlanSlice";
+import {
+  selectCurrentPlanCourses,
+  selectPlan,
+} from "../../../slices/currentPlanSlice";
 
 // Parsed prereq type
 // satisfied: a boolean that tells whether the prereq should be marked with green (satisfied) or red (unsatisfied)
@@ -44,6 +47,7 @@ const PrereqDisplay = () => {
   const currPlanCourses = useSelector(selectCurrentPlanCourses);
   const semester = useSelector(selectSemester);
   const year = useSelector(selectYear);
+  const currentPlan = useSelector(selectPlan);
 
   // Component states
   const [prereqDisplayMode, setPrereqDisplayMode] = useState(2);
@@ -159,6 +163,7 @@ const PrereqDisplay = () => {
       const noCBracketsNum: string = element.substr(0, 10);
       const satisfied: boolean = checkPrereq(
         currPlanCourses,
+        currentPlan,
         noCBracketsNum,
         year,
         semester
@@ -173,7 +178,7 @@ const PrereqDisplay = () => {
                 updateInspected(noCBracketsNum)();
               }}
             >
-              <div className="flex flex-row w-auto h-auto transition duration-100 ease-in group">
+              <div className="group flex flex-row w-auto h-auto transition duration-100 ease-in">
                 {satisfied ? (
                   <CheckMark
                     className={clsx("mr-1 w-5 h-5", {

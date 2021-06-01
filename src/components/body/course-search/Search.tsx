@@ -14,8 +14,9 @@ import { ReactComponent as HideSvg } from "../../svg/Hide.svg";
   Search component when someone clicks a search action./* 
 */
 const Search = () => {
-  // Controls opacity
+  // Component states
   const [searchOpacity, setSearchOpacity] = useState<number>(100);
+  const [searching, setSearching] = useState<boolean>(false);
 
   // Redux selectors and dispatch
   const dispatch = useDispatch();
@@ -26,7 +27,7 @@ const Search = () => {
     <div className="absolute top-0">
       {/* Background Grey */}
       <div
-        className="fixed top-0 left-0 z-20 w-full h-screen m-0 bg-black"
+        className="fixed z-20 left-0 top-0 m-0 w-full h-screen bg-black"
         style={{
           opacity: searchOpacity === 100 ? 0.5 : 0,
         }}
@@ -43,10 +44,10 @@ const Search = () => {
         }
         style={{ opacity: searchOpacity === 100 ? 1 : 0.1 }}
       >
-        <div className="px-4 py-2 font-normal text-white select-none text-coursecard">
+        <div className="px-4 py-2 text-white text-coursecard font-normal select-none">
           Currently selecting for{" "}
-          <span className="font-bold text-emphasis">{searchYear}</span> year,{" "}
-          <span className="font-bold text-emphasis">{searchSemester}</span>{" "}
+          <span className="text-emphasis font-bold">{searchYear}</span> year,{" "}
+          <span className="text-emphasis font-bold">{searchSemester}</span>{" "}
           semester
         </div>
         <div className="flex w-full h-full text-coursecard">
@@ -55,10 +56,10 @@ const Search = () => {
               "flex flex-col rounded-l bg-gray-200 w-4/12 h-full flex-none"
             }
           >
-            <Form />
-            <SearchList />
+            <Form setSearching={setSearching} />
+            <SearchList searching={searching} />
             <div
-              className="flex flex-row items-center justify-center w-full h-8 p-1"
+              className="flex flex-row items-center justify-center p-1 w-full h-8"
               onMouseEnter={() => setSearchOpacity(50)}
               onMouseLeave={() => setSearchOpacity(100)}
               data-tip="Hide search"
