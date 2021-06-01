@@ -74,7 +74,6 @@ const PlanChoose = (props: PlanChooseProps) => {
           }
 
           if (retrievedPlans.length > 0 && currentPlan._id === "noPlan") {
-            console.log("retrieved are", retrievedPlans);
             const totPlans: Plan[] = [];
             retrievedPlans.forEach((plan) => {
               axios

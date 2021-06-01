@@ -98,32 +98,10 @@ function CourseComponent({ year, course, semester }: courseProps) {
           const courses = planYear.courses.filter(
             (yearCourse) => yearCourse !== course._id
           );
-          years[index].courses = courses;
+          years[index] = { ...years[index], courses: courses };
         }
       });
       newPlan = { ...currentPlan, years: years };
-
-      // if (year === "Freshman") {
-      //   const freshmanCourses = currentPlan.freshman.filter(
-      //     (freshCourse) => freshCourse !== course._id
-      //   );
-      //   newPlan = { ...currentPlan, freshman: freshmanCourses };
-      // } else if (year === "Sophomore") {
-      //   const sophomoreCourses = currentPlan.sophomore.filter(
-      //     (sophCourse) => sophCourse !== course._id
-      //   );
-      //   newPlan = { ...currentPlan, sophomore: sophomoreCourses };
-      // } else if (year === "Junior") {
-      //   const juniorCourses = currentPlan.junior.filter(
-      //     (juniorCourse) => juniorCourse !== course._id
-      //   );
-      //   newPlan = { ...currentPlan, junior: juniorCourses };
-      // } else {
-      //   const seniorCourses = currentPlan.senior.filter(
-      //     (seniorCourse) => seniorCourse !== course._id
-      //   );
-      //   newPlan = { ...currentPlan, senior: seniorCourses };
-      // }
 
       toast.error(course.title + " deleted!", {
         position: "top-right",

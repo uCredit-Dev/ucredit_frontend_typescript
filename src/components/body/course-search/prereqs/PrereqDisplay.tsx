@@ -347,16 +347,13 @@ const PrereqDisplay = () => {
       return sub1.localeCompare(sub2);
     });
     for (let i = 0; i < numList.length; i++) {
-      //console.log(i);
       expr = expr.replaceAll(
         numList[i],
         numNameList[i].substr(10, numNameList[i].length)
       );
-      //console.log(i);
     }
     expr = expr.split("^");
     const list = createPrereqBulletList(expr);
-    console.log(expr);
     setPreReqDisplay(preReqsToComponents(list));
     setLoaded(true);
   };

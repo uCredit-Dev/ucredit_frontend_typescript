@@ -51,12 +51,9 @@ function CourseList() {
   useEffect(() => {
     const jsx: JSX.Element[] = [];
     const totCourses: UserCourse[] = [];
-    console.log("in current plan", currentPlan.years);
     currentPlan.years.forEach((year) => {
       const courses: UserCourse[] = [];
-      console.log("here course is ", year.name);
       if (year.courses.length === 0) {
-        console.log("0");
         jsx.push(
           <Year
             id={year.year}

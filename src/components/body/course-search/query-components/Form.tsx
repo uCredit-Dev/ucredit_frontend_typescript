@@ -275,7 +275,9 @@ const Form = (props: { setSearching: Function }) => {
 
     // sorts searchedCourses map by priority.
     searchedCourses[Symbol.iterator] = function* () {
-      yield* [...this.entries()].sort((a, b) => b[1].priority - a[1].priority);
+      yield* [...this.entries()]
+        .sort((a, b) => a[1].course.title.length - b[1].course.title.length)
+        .sort((a, b) => b[1].priority - a[1].priority);
     };
 
     // eslint-disable-next-line @typescript-eslint/no-unused-vars

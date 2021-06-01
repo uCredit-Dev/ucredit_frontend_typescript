@@ -217,7 +217,6 @@ const CourseDisplay = () => {
   };
 
   const getYear = (): Year | null => {
-    console.log("curr plan year is ", currentPlan.years, year);
     let out: Year | null = null;
     currentPlan.years.forEach((currPlanYear) => {
       if (currPlanYear.year === year) {
@@ -232,7 +231,6 @@ const CourseDisplay = () => {
     let newUserCourse: UserCourse;
     if (inspected !== "None") {
       const addingYear: Year | null = getYear();
-      console.log("addingyear is ", addingYear);
 
       const body = {
         user_id: user._id,
@@ -260,7 +258,6 @@ const CourseDisplay = () => {
       }).then((retrieved) => {
         retrieved.json().then((data) => {
           if (data.errors === undefined) {
-            console.log("new course is ", data);
             newUserCourse = { ...data.data };
             const allYears: Year[] = [...currentPlan.years];
             const newYears: Year[] = [];
@@ -294,8 +291,6 @@ const CourseDisplay = () => {
   // It automatically updates the current area in the add course area selection to the first area in the course areas string.
   useEffect(() => {
     setShowMore(2);
-    console.log(inspected);
-
     if (
       inspected !== "None" &&
       inspected.areas !== "None" &&
@@ -373,9 +368,10 @@ const CourseDisplay = () => {
 
   // For changing the year to add course while in the search popout.
   const handleYearChange = (event: any) => {
+    console.log("changing to", event.target.value);
     dispatch(
       updateSearchTime({
-        searchYear: event.target.value,
+        searchYear: parseInt(event.target.value),
         searchSemester: searchSemester,
       })
     );
