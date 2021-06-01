@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { UserCourse, YearType, Plan, SemesterType } from "../../commonTypes";
+import { UserCourse, Plan, SemesterType } from "../../commonTypes";
 import { checkAllPrereqs, getColors } from "../../assets";
 import { useDispatch, useSelector } from "react-redux";
 import {
@@ -16,14 +16,18 @@ import { Transition } from "@tailwindui/react";
 import clsx from "clsx";
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-import { selectCurrentPlanCourses, selectPlan, updateSelectedPlan } from "../../slices/currentPlanSlice";
-import { checkPrereq, getCourse } from '../../assets'
+import {
+  selectCurrentPlanCourses,
+  selectPlan,
+  updateSelectedPlan,
+} from "../../slices/currentPlanSlice";
+import { checkPrereq, getCourse } from "../../assets";
 
 const api = "https://ucredit-api.herokuapp.com/api";
 
 type courseProps = {
   course: UserCourse;
-  year: YearType;
+  year: number;
   semester: SemesterType;
 };
 
@@ -45,7 +49,7 @@ function CourseComponent({ year, course, semester }: courseProps) {
 
   useEffect(() => {
     isSatisfied();
-  }, [currPlanCourses])
+  }, [currPlanCourses]);
 
   // Sets or resets the course displayed in popout after user clicks it in course list.
   const displayCourses = () => {
@@ -85,29 +89,41 @@ function CourseComponent({ year, course, semester }: courseProps) {
 
   // Deletes a course on click of the delete button. Updates currently displayed plan with changes.
   const deleteCourse = () => {
-    fetch(api + "/courses/" + course._id, { method: "DELETE" }).then((resp) => {
+    fetch(api + "/courses/" + course._id, { method: "DELETE" }).then(() => {
       let newPlan: Plan;
-      if (year === "Freshman") {
-        const freshmanCourses = currentPlan.freshman.filter(
-          (freshCourse) => freshCourse !== course._id
-        );
-        newPlan = { ...currentPlan, freshman: freshmanCourses };
-      } else if (year === "Sophomore") {
-        const sophomoreCourses = currentPlan.sophomore.filter(
-          (sophCourse) => sophCourse !== course._id
-        );
-        newPlan = { ...currentPlan, sophomore: sophomoreCourses };
-      } else if (year === "Junior") {
-        const juniorCourses = currentPlan.junior.filter(
-          (juniorCourse) => juniorCourse !== course._id
-        );
-        newPlan = { ...currentPlan, junior: juniorCourses };
-      } else {
-        const seniorCourses = currentPlan.senior.filter(
-          (seniorCourse) => seniorCourse !== course._id
-        );
-        newPlan = { ...currentPlan, senior: seniorCourses };
-      }
+      // TODO: Delete specific course by year AND semester
+      const years = [...currentPlan.years];
+      currentPlan.years.forEach((planYear, index) => {
+        if (planYear.year === year) {
+          const courses = planYear.courses.filter(
+            (yearCourse) => yearCourse !== course._id
+          );
+          years[index].courses = courses;
+        }
+      });
+      newPlan = { ...currentPlan, years: years };
+
+      // if (year === "Freshman") {
+      //   const freshmanCourses = currentPlan.freshman.filter(
+      //     (freshCourse) => freshCourse !== course._id
+      //   );
+      //   newPlan = { ...currentPlan, freshman: freshmanCourses };
+      // } else if (year === "Sophomore") {
+      //   const sophomoreCourses = currentPlan.sophomore.filter(
+      //     (sophCourse) => sophCourse !== course._id
+      //   );
+      //   newPlan = { ...currentPlan, sophomore: sophomoreCourses };
+      // } else if (year === "Junior") {
+      //   const juniorCourses = currentPlan.junior.filter(
+      //     (juniorCourse) => juniorCourse !== course._id
+      //   );
+      //   newPlan = { ...currentPlan, junior: juniorCourses };
+      // } else {
+      //   const seniorCourses = currentPlan.senior.filter(
+      //     (seniorCourse) => seniorCourse !== course._id
+      //   );
+      //   newPlan = { ...currentPlan, senior: seniorCourses };
+      // }
 
       toast.error(course.title + " deleted!", {
         position: "top-right",
@@ -144,17 +160,26 @@ function CourseComponent({ year, course, semester }: courseProps) {
   };
 
   const isSatisfied = async () => {
-    const temp = checkAllPrereqs(currPlanCourses, course.number, year, semester);
+    const temp = checkAllPrereqs(
+      currPlanCourses,
+      currentPlan,
+      course.number,
+      year,
+      semester
+    );
     setSatisfied(await temp);
     //console.log(course.number + " is satisfied? " + await temp);
-  }
-
+  };
 
   return (
     <>
       <div
-        className={clsx("relative items-center mt-2 p-2 h-14 bg-white rounded shadow", {
-         'bg-red-300': !satisfied})}
+        className={clsx(
+          "relative items-center mt-2 p-2 h-14 bg-white rounded shadow",
+          {
+            "bg-red-300": !satisfied,
+          }
+        )}
         onMouseEnter={activate}
         onMouseLeave={deactivate}
         key={course.number}

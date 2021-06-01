@@ -3,7 +3,6 @@ import { AppThunk, RootState } from "../../appStore/store";
 import {
   SemesterType,
   Course,
-  YearType,
   FilterType,
   TagType,
   DepartmentType,
@@ -12,7 +11,7 @@ import {
 
 // Contains the year and semester that we are currently adding courses to.
 type TimeBundle = {
-  searchYear: YearType;
+  searchYear: number;
   searchSemester: SemesterType;
 };
 
@@ -42,7 +41,7 @@ const initialState: searchStates = {
   searching: false,
   searchTerm: "",
   searchTime: {
-    searchYear: "Freshman",
+    searchYear: 0,
     searchSemester: "Fall",
   },
   retrievedCourses: [], // test courses for now

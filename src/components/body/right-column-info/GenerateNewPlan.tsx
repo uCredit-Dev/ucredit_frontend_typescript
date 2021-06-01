@@ -55,56 +55,58 @@ const GenerateNewPlan: React.FC<generateNewPlanProps> = (props) => {
     axios
       .post(api + "/plans", planBody)
       .then((response: any) => {
-        newPlan = response.data.data;
+        const newPlanResponse = response.data.data;
+        axios.get(api + "/years/" + newPlanResponse._id).then((resp) => {
+          newPlan = { ...newPlanResponse, years: resp.data.data };
+          // Make a new distribution for each distribution of the major of the plan.
+          toAddMajor.distributions.forEach((distr: any, index: number) => {
+            const distributionBody = {
+              name: distr.name,
+              required: distr.required,
+              user_id: user._id,
+              plan_id: newPlan._id,
+              filter: distr.filter,
+              expireAt:
+                user._id === "guestUser"
+                  ? Date.now() + 60 * 60 * 24 * 1000
+                  : undefined,
+            };
 
-        // Make a new distribution for each distribution of the major of the plan.
-        toAddMajor.distributions.forEach((distr: any, index: number) => {
-          const distributionBody = {
-            name: distr.name,
-            required: distr.required,
-            user_id: user._id,
-            plan_id: newPlan._id,
-            filter: distr.filter,
-            expireAt:
-              user._id === "guestUser"
-                ? Date.now() + 60 * 60 * 24 * 1000
-                : undefined,
-          };
-
-          axios
-            .post(api + "/distributions", distributionBody)
-            .then((newDistr: any) => {
-              newPlan = {
-                ...newPlan,
-                distribution_ids: [
-                  ...newPlan.distribution_ids,
-                  newDistr.data.data._id,
-                ],
-              };
-            })
-            .then(() => {
-              // After making our last distribution, we update our redux stores.
-              if (index === toAddMajor.distributions.length - 1) {
-                dispatch(updateSelectedPlan(newPlan));
-                dispatch(updatePlanList([newPlan, ...planList]));
-                props.setGenerateNewFalse();
-                toast.success(newPlan.name + " created!", {
-                  position: "top-right",
-                  autoClose: 5000,
-                  hideProgressBar: true,
-                  closeOnClick: true,
-                  pauseOnHover: true,
-                  draggable: true,
-                  progress: undefined,
-                });
-                if (user._id === "guestUser") {
-                  const planIdArray = [newPlan._id];
-                  dispatch(updateGuestPlanIds(planIdArray));
+            axios
+              .post(api + "/distributions", distributionBody)
+              .then((newDistr: any) => {
+                newPlan = {
+                  ...newPlan,
+                  distribution_ids: [
+                    ...newPlan.distribution_ids,
+                    newDistr.data.data._id,
+                  ],
+                };
+              })
+              .then(() => {
+                // After making our last distribution, we update our redux stores.
+                if (index === toAddMajor.distributions.length - 1) {
+                  dispatch(updateSelectedPlan(newPlan));
+                  dispatch(updatePlanList([newPlan, ...planList]));
+                  console.log(newPlan);
+                  toast.success(newPlan.name + " created!", {
+                    position: "top-right",
+                    autoClose: 5000,
+                    hideProgressBar: true,
+                    closeOnClick: true,
+                    pauseOnHover: true,
+                    draggable: true,
+                    progress: undefined,
+                  });
+                  if (user._id === "guestUser") {
+                    const planIdArray = [newPlan._id];
+                    dispatch(updateGuestPlanIds(planIdArray));
+                  }
+                  dispatch(clearToAdd());
+                  props.setGenerateNewFalse();
                 }
-                console.log("Clearning");
-                dispatch(clearToAdd());
-              }
-            });
+              });
+          });
         });
       })
       .catch((e) => {

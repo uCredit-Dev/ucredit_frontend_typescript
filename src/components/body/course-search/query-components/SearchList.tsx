@@ -13,7 +13,7 @@ import ReactTooltip from "react-tooltip";
 /* 
   List of searched courses.
 */
-const SearchList = () => {
+const SearchList = (props: { searching: boolean }) => {
   const [pageNum, setPageNum] = useState(0);
   const [pageCount, setPageCount] = useState(0);
   // const [allCourses, setAllCourses] =
@@ -104,8 +104,17 @@ const SearchList = () => {
             </>
           ) : (
             <div className="flex flex-col items-center justify-center w-full h-full">
-              <div>😢</div>
-              Sorry, no course found...
+              {props.searching ? (
+                <>
+                  <div>😢</div>
+                  Sorry, no course found...
+                </>
+              ) : (
+                <div>
+                  Type something in the search box or use the filters to start
+                  searching!
+                </div>
+              )}
             </div>
           )}
         </div>

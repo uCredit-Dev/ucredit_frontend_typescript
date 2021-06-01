@@ -153,43 +153,43 @@ export const userTestCourse2: UserCourse = {
   year: "sophomore",
 };
 
-export const testPlan1: Plan = {
-  _id: "testPlan1",
-  name: "testPlan1",
-  user_id: "mliu78",
-  majors: ["Computer Science"],
-  freshman: [userTestCourse1._id],
-  sophomore: [],
-  junior: [userTestCourse2._id],
-  senior: [],
-  distribution_ids: [
-    testDistributionTot._id,
-    testDistributionCS._id,
-    testDistributionElec._id,
-    testDistributionHumanities._id,
-    testDistributionMath._id,
-    testDistributionNS._id,
-  ],
-};
+// export const testPlan1: Plan = {
+//   _id: "testPlan1",
+//   name: "testPlan1",
+//   user_id: "mliu78",
+//   majors: ["Computer Science"],
+//   freshman: [userTestCourse1._id],
+//   sophomore: [],
+//   junior: [userTestCourse2._id],
+//   senior: [],
+//   distribution_ids: [
+//     testDistributionTot._id,
+//     testDistributionCS._id,
+//     testDistributionElec._id,
+//     testDistributionHumanities._id,
+//     testDistributionMath._id,
+//     testDistributionNS._id,
+//   ],
+// };
 
-export const testPlan2: Plan = {
-  _id: "testPlan2",
-  name: "testPlan2",
-  user_id: "mliu78",
-  majors: ["Computer Science"],
-  freshman: [],
-  sophomore: [userTestCourse1._id],
-  junior: [],
-  senior: [userTestCourse2._id],
-  distribution_ids: [
-    testDistributionTot._id,
-    testDistributionCS._id,
-    testDistributionElec._id,
-    testDistributionHumanities._id,
-    testDistributionMath._id,
-    testDistributionNS._id,
-  ],
-};
+// export const testPlan2: Plan = {
+//   _id: "testPlan2",
+//   name: "testPlan2",
+//   user_id: "mliu78",
+//   majors: ["Computer Science"],
+//   freshman: [],
+//   sophomore: [userTestCourse1._id],
+//   junior: [],
+//   senior: [userTestCourse2._id],
+//   distribution_ids: [
+//     testDistributionTot._id,
+//     testDistributionCS._id,
+//     testDistributionElec._id,
+//     testDistributionHumanities._id,
+//     testDistributionMath._id,
+//     testDistributionNS._id,
+//   ],
+// };
 
 export const testUser: User = {
   _id: "mliu78",
