@@ -44,7 +44,7 @@ const GenerateNewPlan: React.FC<generateNewPlanProps> = (props) => {
       user_id: user._id,
       majors: [toAddMajor.name],
       expireAt:
-        user._id === "guestUser" ? Date.now() + 60 * 60 * 24 * 1000 : null,
+        user._id === "guestUser" ? Date.now() + 60 * 60 * 24 * 1000 : undefined,
     };
 
     if (toAddName !== planBody.name) {
@@ -68,7 +68,7 @@ const GenerateNewPlan: React.FC<generateNewPlanProps> = (props) => {
             expireAt:
               user._id === "guestUser"
                 ? Date.now() + 60 * 60 * 24 * 1000
-                : null,
+                : undefined,
           };
 
           axios
