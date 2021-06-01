@@ -23,6 +23,7 @@ import clsx from "clsx";
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import Filters from "./Filters";
+import { selectAllCourses } from "../../../slices/userSlice";
 
 // TODO: Multi select for various filters.
 const api = "https://ucredit-api.herokuapp.com/api";
@@ -36,6 +37,7 @@ const Form = (props: { setSearching: Function }) => {
   const searchTerm = useSelector(selectSearchterm);
   const searchFilters = useSelector(selectSearchFilters);
   const semester = useSelector(selectSemester);
+  const allCourses = useSelector(selectAllCourses);
 
   // Component state setup
   const [showCriteria, setShowCriteria] = useState(false);
@@ -107,17 +109,6 @@ const Form = (props: { setSearching: Function }) => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [searchTerm, searchFilters, showAllResults]);
 
-  // useEffect(() => {
-  //   if (searching) {
-  //     toast("Searching!", {
-  //       position: "top-right",
-  //       autoClose: false,
-  //       draggable: true,
-  //       progress: undefined,
-  //     });
-  //   }
-  // }, [searching]);
-
   // TODO: change from any to FilterObj type (but with Redux)
   function filterNone(searchFilters: any, returned: any[]) {
     if (searchFilters.distribution === "N") {
@@ -138,30 +129,10 @@ const Form = (props: { setSearching: Function }) => {
     });
   }
 
-  function originalSearch(courses: AxiosResponse<any>) {
-    let returned: any[] = courses.data.data.sort(
-      (course1: Course, course2: Course) =>
-        course1.title.localeCompare(course2.title)
-    );
-
-    filterNone(searchFilters, returned);
-
-    if (!showAllResults) {
-      // if showAllResults is selected, we search for all; otherwise, we only show top few.
-      returned = returned.slice(0, 10);
-    }
-
-    dispatch(updateRetrievedCourses(returned));
-    if (returned.length > 0) {
-      props.setSearching(false);
-      toastResponse(returned);
-    }
-  }
-
   function substringSearch(
     doneSearchSubQueries: string[],
     subQuery: string,
-    courses: AxiosResponse<any>,
+    courses: Course[],
     retrievedCourses: Map<string, SearchMapEl>,
     extras: SearchExtras,
     queryLength: number,
@@ -169,14 +140,13 @@ const Form = (props: { setSearching: Function }) => {
   ) {
     doneSearchSubQueries.push(subQuery);
 
-    let returned: Course[] = courses.data.data.sort(
-      (course1: Course, course2: Course) =>
-        course1.number.localeCompare(course2.number)
+    let sorted: Course[] = courses.sort((course1: Course, course2: Course) =>
+      course1.number.localeCompare(course2.number)
     );
 
-    filterNone(searchFilters, returned);
+    filterNone(searchFilters, sorted);
 
-    returned.forEach((course: Course) => {
+    sorted.forEach((course: Course) => {
       if (
         !retrievedCourses.has(course.number) &&
         (searchedCourses.size < 10 ||
@@ -211,6 +181,65 @@ const Form = (props: { setSearching: Function }) => {
     }
   }
 
+  const find = (extras: SearchExtras): Course[] => {
+    let courses: Course[] = [...allCourses];
+    if (extras.query.length > 0) {
+      courses = courses.filter((course) => {
+        if (extras.query.includes(".") || !isNaN(parseInt(extras.query))) {
+          return course.number.includes(extras.query);
+        } else {
+          return course.title.includes(extras.query);
+        }
+      });
+    }
+
+    const credits = extras.credits;
+    if (credits !== null) {
+      courses = courses.filter(
+        (course) => course.credits.toString() === credits.toString()
+      );
+    }
+
+    const areas = extras.areas;
+    if (areas !== null) {
+      courses = courses.filter((course) => course.areas.includes(areas));
+
+      if (searchFilters.distribution === "N") {
+        courses = courses.filter((course: Course) => course.areas !== "None");
+      }
+    }
+
+    const department = extras.department;
+    if (department !== null) {
+      courses = courses.filter((course) => course.department === department);
+    }
+
+    const tag = extras.tags;
+    if (tag !== null) {
+      courses = courses.filter((course) => course.tags.includes(tag));
+    }
+
+    const term = extras.term;
+    if (term !== null) {
+      courses = courses.filter((course) => {
+        let found = false;
+        course.terms.forEach((courseTerm) => {
+          if (courseTerm.includes(term)) {
+            found = true;
+          }
+        });
+        return found;
+      });
+    }
+
+    const wi = extras.wi;
+    if (wi !== null) {
+      courses = courses.filter((course) => course.wi && wi);
+    }
+
+    return courses;
+  };
+
   // Performs search call with filters to backend and updates redux with retrieved courses.
   // Smart search: performs search with all possible substring combinations of lengths 3 and above based on search query.
   // TODO: Optimize this so it doesn't call 10 billion get requests.
@@ -232,40 +261,38 @@ const Form = (props: { setSearching: Function }) => {
         }
       } else {
         // Perform old search if search query is less than the minLength for a smart search.
-        axios
-          .get(api + "/search", {
-            params: extras,
-          })
-          .then((courses) => {
-            originalSearch(courses);
-          })
-          .catch((err) => {
-            console.log(err);
-          });
+        const courses: Course[] = find(extras);
+        let sorted: any[] = courses.sort((course1: Course, course2: Course) =>
+          course1.number.localeCompare(course2.number)
+        );
+
+        filterNone(searchFilters, sorted);
+
+        if (!showAllResults) {
+          // if showAllResults is selected, we search for all; otherwise, we only show top few.
+          sorted = sorted.slice(0, 10);
+        }
+
+        dispatch(updateRetrievedCourses(sorted));
+        if (sorted.length > 0) {
+          props.setSearching(false);
+          toastResponse(sorted);
+        }
       }
 
       // For each query substring, search.
       querySubstrs.forEach((subQuery) => {
         extras.query = subQuery;
-        axios
-          .get(api + "/search", {
-            params: extras,
-          })
-          .then((courses) => {
-            substringSearch(
-              doneSearchSubQueries,
-              subQuery,
-              courses,
-              retrievedCourses,
-              extras,
-              queryLength,
-              querySubstrs
-            );
-          })
-          .catch((err) => {
-            doneSearchSubQueries.push(subQuery);
-            console.log(err);
-          });
+        const courses = find(extras);
+        substringSearch(
+          doneSearchSubQueries,
+          subQuery,
+          courses,
+          retrievedCourses,
+          extras,
+          queryLength,
+          querySubstrs
+        );
       });
     };
 
