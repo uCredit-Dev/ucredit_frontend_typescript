@@ -62,7 +62,6 @@ const InfoCards = () => {
       .then((resp) => {
         const newUpdatedPlan = { ...currentPlan, name: planName };
         dispatch(updateSelectedPlan(newUpdatedPlan));
-        // TODO: There are many codes like this to update the planList in other functions. we need to generalize or simplify this sometime. either as a common function or a function on the userSlice
         let newPlanList = [...planList];
         for (let i = 0; i < planList.length; i++) {
           if (newPlanList[i]._id === currentPlan._id) {

@@ -1,20 +1,61 @@
+import axios from "axios";
 import * as React from "react";
 import { useEffect } from "react";
 import { useState } from "react";
+import { useDispatch } from "react-redux";
 import { Switch, Route } from "react-router-dom";
 import Dashboard from "./Dashboard";
 import DashboardEntry from "./DashboardEntry";
 import bird from "./images/birdTempGif.gif";
+import { updateAllCourses } from "./slices/userSlice";
 //import { Counter } from '../redux_sample/Counter';
+
+const api = "https://ucredit-api.herokuapp.com/api";
 
 /* 
   Root app component.
 */
 function App() {
+  const dispatch = useDispatch();
+
+  // Component state setup.
   const [welcomeScreen, setWelcomeScreen] = useState<boolean>(true);
+  // Makes sure that the welcome screen displays for at least a set amount of time.
+  const [minTimerGuard, setMinTimerGuard] = useState<boolean>(false);
+
+  // Checks whether we should close the welcome screen. Will not if the guard is up.
+  const checkWelcomeScreenState = () => {
+    if (minTimerGuard) {
+      setWelcomeScreen(false);
+    } else {
+      setMinTimerGuard(true);
+    }
+  };
+
+  // Makes sure that welcome screen stays on for at least 1.5 seconds.
   useEffect(() => {
-    setTimeout(() => setWelcomeScreen(false), 1500);
+    setTimeout(() => {
+      checkWelcomeScreenState();
+    }, 1500);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [minTimerGuard]);
+
+  // Retrieves all database SIS courses.
+  useEffect(() => {
+    axios
+      .get(api + "/search", {
+        params: {},
+      })
+      .then((courses: any) => {
+        dispatch(updateAllCourses(courses.data.data));
+        checkWelcomeScreenState();
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
+
   return (
     <>
       {welcomeScreen ? (

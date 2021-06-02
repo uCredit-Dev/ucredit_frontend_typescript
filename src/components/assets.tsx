@@ -1,11 +1,4 @@
-import {
-  Course,
-  User,
-  Plan,
-  YearType,
-  SemesterType,
-  UserCourse,
-} from "./commonTypes";
+import { Course, User, Plan, SemesterType, UserCourse } from "./commonTypes";
 import axios from "axios";
 import React from "react";
 
@@ -343,7 +336,6 @@ const getCourses = async (
   let match = expr.match(regex);
   let numList: RegExpMatchArray = [];
   let numNameList: any[] = []; // Contains the number with name of a course.
-  let counter = 0; // Keeps track of how many courses have been processed. Cannot rely on indices as for loop executes asynchronously compared to axios. We need a variable syncronous to axios to determine when to load prereqs
 
   // If we were able to find course numbers in regex matches, update the numList to list of course numbers
   if (match) {
@@ -364,7 +356,6 @@ const getCourses = async (
         //console.log(retrievedCourse);
         if (retrievedCourse.length > 0) {
           numNameList[n] = num + num + " " + retrievedCourse[0].title; // num is added twice to distinquish which was the base course (refer to the case of EN.600 below) in the case that departments change numbers (600 to 601)
-          counter++;
         }
       })
       .catch((err) => {
@@ -382,7 +373,6 @@ const getCourses = async (
             numNameList[n] =
               numList[n] + num + " " + retrievedCourse601[0].title;
           }
-          counter++;
         })
         .catch((err) => {
           console.log("couldnt find", err);
@@ -410,26 +400,6 @@ const getCourses = async (
   });
 };
 
-// TODO: Autogenerate time ranks based on year and semester
-const courseRank = new Map([
-  ["fr,fa", 1],
-  ["fr,sp", 3],
-  ["fr,in", 2],
-  ["fr,su", 4],
-  ["so,fa", 5],
-  ["so,in", 6],
-  ["so,sp", 7],
-  ["so,su", 8],
-  ["ju,fa", 9],
-  ["ju,in", 10],
-  ["ju,sp", 11],
-  ["ju,su", 12],
-  ["se,fa", 13],
-  ["se,in", 14],
-  ["se,sp", 15],
-  ["se,su", 16],
-]);
-
 export const getCourse = async (courseNumber: String): Promise<Course> => {
   const retrieved = await axios.get(api + "/search", {
     params: { query: courseNumber },
@@ -439,9 +409,10 @@ export const getCourse = async (courseNumber: String): Promise<Course> => {
 
 // Checks the prereqs for a given course is satisifed
 export const checkAllPrereqs = async (
-  plan: UserCourse[],
+  currCourses: UserCourse[],
+  plan: Plan,
   number: String,
-  year: YearType,
+  year: number,
   semester: SemesterType
 ): Promise<boolean> => {
   const out = getCourse(number)
@@ -464,7 +435,8 @@ export const checkAllPrereqs = async (
       let split = process(processed);
       let list = createPrereqBulletList(split);
       let orParsed = parsePrereqsOr(list, 0);
-      return getNonStringPrereq(plan, orParsed, year, semester).satisfied;
+      return getNonStringPrereq(currCourses, plan, orParsed, year, semester)
+        .satisfied;
     });
   return out;
 };
@@ -484,12 +456,10 @@ const process = (input: prereqCourses) => {
     return sub1.localeCompare(sub2);
   });
   for (let i = 0; i < numList.length; i++) {
-    //console.log(i);
     expr = expr.replaceAll(
       numList[i],
       numNameList[i].substr(10, numNameList[i].length)
     );
-    //console.log(i);
   }
   const out = expr.split("^");
   return out;
@@ -502,17 +472,19 @@ type parsedPrereqs = {
 
 const getNonStringPrereq = (
   currPlanCourses: UserCourse[],
+  plan: Plan,
   input: any,
-  year: YearType,
+  year: number,
   semester: SemesterType
 ): parsedPrereqs => {
   const element = input;
   if (typeof element === "string") {
     // If the element is a number
-    const noCBrackets: string = element.substr(0, element.length - 3);
+    // const noCBrackets: string = element.substr(0, element.length - 3);
     const noCBracketsNum: string = element.substr(0, 10);
     const satisfied: boolean = checkPrereq(
       currPlanCourses,
+      plan,
       noCBracketsNum,
       year,
       semester
@@ -525,6 +497,7 @@ const getNonStringPrereq = (
     // If the element is a OR sequence (denoted by the depth number in the first index)
     const parsedSat: boolean = isSatisfied(
       element,
+      plan,
       true,
       currPlanCourses,
       year,
@@ -539,6 +512,7 @@ const getNonStringPrereq = (
     if (element.length === 1) {
       const parsed: parsedPrereqs = getNonStringPrereq(
         currPlanCourses,
+        plan,
         element[0],
         year,
         semester
@@ -550,6 +524,7 @@ const getNonStringPrereq = (
     } else {
       const parsedSat: boolean = isSatisfied(
         element,
+        plan,
         false,
         currPlanCourses,
         year,
@@ -570,9 +545,10 @@ const getNonStringPrereq = (
 
 const isSatisfied = (
   element: [],
+  plan: Plan,
   or: boolean,
   currPlanCourses: UserCourse[],
-  year: YearType,
+  year: number,
   semester: SemesterType
 ): boolean => {
   let orAndSatisfied = false;
@@ -582,7 +558,7 @@ const isSatisfied = (
       const parsed: {
         satisfied: boolean;
         jsx: JSX.Element;
-      } = getNonStringPrereq(currPlanCourses, el, year, semester);
+      } = getNonStringPrereq(currPlanCourses, plan, el, year, semester);
 
       // If it's not an or statement, the first course must be satisfied.
       if (index === 0) {
@@ -684,25 +660,52 @@ const parsePrereqsOr = (input: any, depth: number): any => {
   return orParsed;
 };
 
+const semesters = ["fall", "intersession", "spring", "summer"];
+
+const makeCourseRanks = (
+  courses: UserCourse[],
+  courseRank: Map<string, number>,
+  planNameNumPairs: Map<string, number>
+) => {
+  courses.forEach((course) => {
+    const yearRank = planNameNumPairs.get(course.year);
+    if (yearRank !== undefined) {
+      courseRank.set(
+        yearRank + "," + semesters.indexOf(course.term),
+        yearRank + semesters.indexOf(course.term)
+      );
+    }
+  });
+};
+
 // Checks if a prereq is satisfied by plan
 // plan is the user's plan
 // number is the course number of a prereq
 // year, semseter are the year and semester of the prereq
 export const checkPrereq = (
-  plan: UserCourse[],
+  courses: UserCourse[],
+  plan: Plan,
   preReqNumber: string,
-  year: YearType,
+  year: number,
   semester: SemesterType
 ): boolean => {
+  const courseRank = new Map<string, number>();
   let satisfied: boolean = false;
-  const currTimeVal = courseRank.get(
-    (year.substr(0, 2) + "," + semester.substr(0, 2)).toLowerCase()
+  const planNameNumPairs = new Map(
+    plan.years.map((year) => {
+      return [year.name, year.year];
+    })
   );
-  plan.forEach((course) => {
+  makeCourseRanks(courses, courseRank, planNameNumPairs);
+
+  const currTimeVal = courseRank.get(
+    year + "," + semesters.indexOf(semester.toLowerCase())
+  );
+
+  courses.forEach((course) => {
     const courseTimeVal = courseRank.get(
-      (course.year.substr(0, 2) + "," + course.term.substr(0, 2)).toLowerCase()
+      planNameNumPairs.get(course.year) + "," + semesters.indexOf(course.term)
     );
-    //console.log(course);
     if (
       course.number === preReqNumber &&
       currTimeVal !== undefined &&

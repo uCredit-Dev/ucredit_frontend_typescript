@@ -24,7 +24,10 @@ import { ReactComponent as CheckMark } from "../../../svg/CheckMark.svg";
 import { ReactComponent as DescriptionSvg } from "../../../svg/Description.svg";
 import { ReactComponent as MenuSvg } from "../../../svg/Menu.svg";
 import ReactTooltip from "react-tooltip";
-import { selectCurrentPlanCourses } from "../../../slices/currentPlanSlice";
+import {
+  selectCurrentPlanCourses,
+  selectPlan,
+} from "../../../slices/currentPlanSlice";
 
 // Parsed prereq type
 // satisfied: a boolean that tells whether the prereq should be marked with green (satisfied) or red (unsatisfied)
@@ -44,6 +47,7 @@ const PrereqDisplay = () => {
   const currPlanCourses = useSelector(selectCurrentPlanCourses);
   const semester = useSelector(selectSemester);
   const year = useSelector(selectYear);
+  const currentPlan = useSelector(selectPlan);
 
   // Component states
   const [prereqDisplayMode, setPrereqDisplayMode] = useState(2);
@@ -81,7 +85,6 @@ const PrereqDisplay = () => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [inspected]);
 
-  // TODO: MODULARIZE THE BELOW FUNCTIONS SOMETIME.
   // This is that one open expression calculator leetcode problem.
   // We're basically modifying it and adapting it to parse through prereqs
   // Input param is the prereq expression to parse (ie. AS.110.202 AND (EN.550.310 OR EN.553.211 OR EN.553.310 OR EN.553.311 OR ((EN.550.420 OR EN.553.420) AND (EN.550.430 OR EN.553.430 OR EN.553.431)) OR EN.560.348) AND (AS.110.201 OR AS.110.212 OR EN.553.291) AND (EN.500.112 OR EN.500.113 OR EN.500.114 OR (EN.601.220 OR EN.600.120) OR AS.250.205 OR EN.580.200 OR (EN.600.107 OR EN.601.107)))
@@ -160,6 +163,7 @@ const PrereqDisplay = () => {
       const noCBracketsNum: string = element.substr(0, 10);
       const satisfied: boolean = checkPrereq(
         currPlanCourses,
+        currentPlan,
         noCBracketsNum,
         year,
         semester
@@ -174,7 +178,7 @@ const PrereqDisplay = () => {
                 updateInspected(noCBracketsNum)();
               }}
             >
-              <div className="flex flex-row w-auto h-auto transition duration-100 ease-in group">
+              <div className="group flex flex-row w-auto h-auto transition duration-100 ease-in">
                 {satisfied ? (
                   <CheckMark
                     className={clsx("mr-1 w-5 h-5", {
@@ -343,16 +347,13 @@ const PrereqDisplay = () => {
       return sub1.localeCompare(sub2);
     });
     for (let i = 0; i < numList.length; i++) {
-      //console.log(i);
       expr = expr.replaceAll(
         numList[i],
         numNameList[i].substr(10, numNameList[i].length)
       );
-      //console.log(i);
     }
     expr = expr.split("^");
     const list = createPrereqBulletList(expr);
-    console.log(expr);
     setPreReqDisplay(preReqsToComponents(list));
     setLoaded(true);
   };

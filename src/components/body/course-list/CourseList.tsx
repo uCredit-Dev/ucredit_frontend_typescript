@@ -7,6 +7,10 @@ import {
   selectPlan,
   updateCurrentPlanCourses,
 } from "../../slices/currentPlanSlice";
+import {
+  selectPlaceholder,
+  selectSearchStatus,
+} from "../../slices/searchSlice";
 const api = "https://ucredit-api.herokuapp.com/api";
 
 /* 
@@ -16,89 +20,68 @@ function CourseList() {
   // Setting up redux
   const dispatch = useDispatch();
   const currentPlan = useSelector(selectPlan);
-  const freshmanCourseIDs = currentPlan.freshman;
-  const sophomoreCourseIDs = currentPlan.sophomore;
-  const juniorCourseIDs = currentPlan.junior;
-  const seniorCourseIDs = currentPlan.senior;
+  const searching = useSelector(selectSearchStatus);
+  const placeholder = useSelector(selectPlaceholder);
 
-  // Course state setup.
-  const [fCourses, setFCourses] = useState<UserCourse[]>([]);
-  const [soCourses, setSoCourses] = useState<UserCourse[]>([]);
-  const [jCourses, setJCourses] = useState<UserCourse[]>([]);
-  const [seCourses, setSeCourses] = useState<UserCourse[]>([]);
+  // Component State setup.
+  const [elements, setElements] = useState<JSX.Element[]>([]);
 
-  // Gets all courses from a specific semester in the current plan..
-  const getCourses = (courseIDs: string[], updater: Function) => {
-    const totalCourses: UserCourse[] = [];
-    if (courseIDs.length === 0) {
-      updater([]);
-    } else {
-      courseIDs.forEach((courseId) => {
-        axios
-          .get(api + "/courses/" + courseId)
-          .then((retrieved) => {
-            const data = retrieved.data.data;
-            totalCourses.push(data);
-            if (totalCourses.length === courseIDs.length) {
-              updater(totalCourses);
-            }
-          })
-          .catch((err) => console.log(err));
-      });
-    }
-  };
-
-  // Gets and sets all freshman courses whenever it gets updated.
+  // Gets all courses for each year and generates year objects based on them.
   useEffect(() => {
-    getCourses(freshmanCourseIDs, setFCourses);
-  }, [currentPlan, currentPlan._id, freshmanCourseIDs]);
-
-  // Gets and sets all sophomore courses whenever it gets updated.
-  useEffect(() => {
-    getCourses(sophomoreCourseIDs, setSoCourses);
-  }, [currentPlan, currentPlan._id, sophomoreCourseIDs]);
-
-  // Gets and sets all junior courses whenever it gets updated.
-  useEffect(() => {
-    getCourses(juniorCourseIDs, setJCourses);
-  }, [currentPlan, currentPlan._id, juniorCourseIDs]);
-
-  // Gets and sets all senior courses whenever it gets updated.
-  useEffect(() => {
-    getCourses(seniorCourseIDs, setSeCourses);
-  }, [currentPlan, currentPlan._id, seniorCourseIDs]);
-
-  // When any of the freshman, sophomore, junior, or senior courses change or gets a course deleted, current plan gets updated.
-  useEffect(() => {
-    let totalCourses: UserCourse[] = [];
-    totalCourses = [...fCourses, ...seCourses, ...jCourses, ...soCourses];
-    dispatch(updateCurrentPlanCourses(totalCourses));
+    const jsx: JSX.Element[] = [];
+    const totCourses: UserCourse[] = [];
+    currentPlan.years.forEach((year) => {
+      const courses: UserCourse[] = [];
+      if (year.courses.length === 0) {
+        jsx.push(
+          <Year
+            key={year._id}
+            id={year.year}
+            customStyle="cursor-pointer"
+            yearNum={year.year}
+            courses={[]}
+          />
+        );
+        if (jsx.length === currentPlan.years.length) {
+          jsx.sort((el1, el2) => el1.props.id - el2.props.id);
+          dispatch(updateCurrentPlanCourses(totCourses));
+          setElements(jsx);
+        }
+      } else {
+        year.courses.forEach((courseId) => {
+          axios
+            .get(api + "/courses/" + courseId)
+            .then((resp) => {
+              courses.push(resp.data.data);
+              totCourses.push(resp.data.data);
+              if (courses.length === year.courses.length) {
+                jsx.push(
+                  <Year
+                    key={year._id}
+                    id={year.year}
+                    customStyle="cursor-pointer"
+                    yearNum={year.year}
+                    courses={courses}
+                  />
+                );
+                if (jsx.length === currentPlan.years.length) {
+                  jsx.sort((el1, el2) => el1.props.id - el2.props.id);
+                  dispatch(updateCurrentPlanCourses(totCourses));
+                  setElements(jsx);
+                }
+              }
+            })
+            .catch((err) => console.log(err));
+        });
+      }
+    });
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [fCourses, seCourses, jCourses, soCourses]);
+  }, [currentPlan, currentPlan._id, searching, placeholder]);
 
   return (
     <>
       <div className="flex flex-row flex-wrap justify-between thin:justify-center mt-4 h-auto">
-        <Year
-          customStyle="cursor-pointer"
-          yearName={"Freshman"}
-          courses={fCourses}
-        />
-        <Year
-          customStyle="cursor-pointer"
-          yearName={"Sophomore"}
-          courses={soCourses}
-        />
-        <Year
-          customStyle="cursor-pointer"
-          yearName={"Junior"}
-          courses={jCourses}
-        />
-        <Year
-          customStyle="cursor-pointer"
-          yearName={"Senior"}
-          courses={seCourses}
-        />
+        {elements}
       </div>
     </>
   );

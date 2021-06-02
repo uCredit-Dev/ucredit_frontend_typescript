@@ -12,6 +12,7 @@ const deploy = "https://ucredit.herokuapp.com/";
 /* 
   User login/logout buttons.
 */
+// TODO: Clean this up!!!
 function UserSection(props: any) {
   // Redux setup
   const dispatch = useDispatch();
@@ -26,11 +27,8 @@ function UserSection(props: any) {
 
   // Useffect runs once on page load, calling to https://ucredit-api.herokuapp.com/api/retrieveUser to retrieve user data.
   // On successful retrieve, update redux with retrieved user,
-  // NOTE: Currently, the user is set to the testUser object found in @src/testObjs.tsx, with a JHED of mliu78 (Matthew Liu)
-  //            redux isn't being updated with retrieved user data, as login has issues.
   useEffect(() => {
     if (user._id === "noUser") {
-      // console.log("user section", cookies.get("connect.sid"));
       // Retrieves user if user ID is "noUser", the initial user id state for userSlice.tsx.
       // Make call for backend
       fetch(api + "/retrieveUser/" + cookies.get("connect.sid"), {
@@ -53,13 +51,8 @@ function UserSection(props: any) {
           }
         })
         .catch((err) => {
-          // TODO: If there is no retrievedUser we could
-          //    (A) redirect them to https://ucredit-api.herokuapp.com/api/login
-          //    (B) load in a local guest user and wait for them to access https://ucredit-api.herokuapp.com/api/login
-          //          by clicking the "Log In" button in the header.
           console.log("ERROR: ", err.message);
           history.push("/");
-          // dispatch(updateUser(guestUser));
         });
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps

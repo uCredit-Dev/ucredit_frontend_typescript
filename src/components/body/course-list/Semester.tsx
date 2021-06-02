@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { SemesterType, UserCourse, YearType } from "../../commonTypes";
+import { SemesterType, UserCourse } from "../../commonTypes";
 import CourseComponent from "./CourseComponent";
 import { useDispatch } from "react-redux";
 import { updateSearchStatus, updateSearchTime } from "../../slices/searchSlice";
@@ -9,7 +9,7 @@ import ReactTooltip from "react-tooltip";
 type semesterProps = {
   customStyle: string;
   semesterName: SemesterType;
-  semesterYear: YearType;
+  semesterYear: number;
   courses: UserCourse[];
 };
 
@@ -26,6 +26,11 @@ function Semester({
   semesterYear,
   courses,
 }: semesterProps) {
+  // Redux setup
+  const dispatch = useDispatch();
+
+  // State used to control whether dropdown is opened or closed
+  const [display, setDisplay] = useState<boolean>(true);
   // Total credits and sorted courses.
   const [totalCredits, setTotalCredits] = useState<number>(0);
   const [semesterCourses, setSemesterCourses] = useState<UserCourse[]>([]);
@@ -43,12 +48,6 @@ function Semester({
     });
     setTotalCredits(count);
   }, [courses, courses.length]);
-
-  // Redux setup
-  const dispatch = useDispatch();
-
-  // State used to control whether dropdown is opened or closed
-  const [display, setDisplay] = useState<boolean>(true);
 
   // Sets closed to open and open to closed for course display dropdown
   const displayCourses = () => {
@@ -68,7 +67,7 @@ function Semester({
 
   return (
     <div className={`${customStyle} mb-3 w-full h-auto`}>
-      <div className="flex flex-col w-full h-8 font-medium text-white rounded shadow bg-secondary">
+      <div className="flex flex-col w-full h-8 text-white font-medium bg-secondary rounded shadow">
         <div className="flex flex-row items-center justify-between px-2 py-1">
           <ReactTooltip html={true} />
           <div
@@ -91,7 +90,7 @@ function Semester({
                   {courses.length}
                 </div> */}
                 <div
-                  className="flex flex-row items-center justify-center w-auto h-4 px-1 ml-1 text-xs text-black bg-white rounded"
+                  className="flex flex-row items-center justify-center ml-1 px-1 w-auto h-4 text-black text-xs bg-white rounded"
                   data-tip={`${totalCredits} Credits`}
                 >
                   {totalCredits}
@@ -100,10 +99,10 @@ function Semester({
             ) : null}
           </div>
           <div
-            className="flex flex-row items-center justify-center w-6 h-6 transition duration-100 ease-in rounded-md group hover:bg-white"
+            className="group flex flex-row items-center justify-center w-6 h-6 hover:bg-white rounded-md transition duration-100 ease-in"
             onClick={addCourse}
           >
-            <AddSvg className="w-6 h-6 stroke-2 group-hover:text-black" />
+            <AddSvg className="w-6 h-6 group-hover:text-black stroke-2" />
           </div>
         </div>
       </div>

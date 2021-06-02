@@ -5,9 +5,10 @@ import {
   Distribution,
   Filter,
   FilterType,
+  Plan,
   SemesterType,
   UserCourse,
-  YearType,
+  Year,
 } from "../../../commonTypes";
 import {
   selectInspectedCourse,
@@ -51,15 +52,14 @@ const termFilters: (SemesterType | "None")[] = [
   "Summer",
 ];
 
-const years: YearType[] = ["Freshman", "Sophomore", "Junior", "Senior"];
-
 /* 
   Displays course information once a user selects a course in the search list
 */
+// TODO: Try to split this up into more, smaller components.
 const CourseDisplay = () => {
   // Redux Setup
-  const inspected = useSelector(selectInspectedCourse);
   const dispatch = useDispatch();
+  const inspected = useSelector(selectInspectedCourse);
   const user = useSelector(selectUser);
   const semester = useSelector(selectSemester);
   const year = useSelector(selectYear);
@@ -104,6 +104,7 @@ const CourseDisplay = () => {
   };
 
   // Checks if the course satisfies the filters given to it.
+  // Behavior differs based on whether you're checking for credit distributions or fine requirements.
   const checkFilters = (filter: Filter, course: Course, fine: boolean) => {
     if (filter.area !== undefined) {
       const areaRegex: RegExp = new RegExp(
@@ -217,22 +218,38 @@ const CourseDisplay = () => {
     }
   };
 
+  // Gets current year name.
+  const getYear = (): Year | null => {
+    let out: Year | null = null;
+    currentPlan.years.forEach((currPlanYear) => {
+      if (currPlanYear.year === year) {
+        out = currPlanYear;
+      }
+    });
+    return out;
+  };
+
   // Updates distribution bars upon successfully adding a course.
   const updateDistributions = (filteredDistribution: Distribution[]) => {
     let newUserCourse: UserCourse;
     if (inspected !== "None") {
+      const addingYear: Year | null = getYear();
+
       const body = {
         user_id: user._id,
+        year_id: addingYear !== null ? addingYear._id : "",
+        plan_id: currentPlan._id,
         title: inspected.title,
         term: semester.toLowerCase(),
-        year: year.toLowerCase(),
+        year: addingYear !== null ? addingYear.name : "",
         credits: inspected.credits,
         distribution_ids: filteredDistribution.map((distr) => distr._id),
-        plan_id: currentPlan._id,
         number: inspected.number,
         area: inspectedArea,
         expireAt:
-          user._id === "guestUser" ? Date.now() + 60 * 60 * 24 * 1000 : null,
+          user._id === "guestUser"
+            ? Date.now() + 60 * 60 * 24 * 1000
+            : undefined,
       };
 
       fetch(api + "/courses", {
@@ -243,26 +260,31 @@ const CourseDisplay = () => {
         body: JSON.stringify(body),
       }).then((retrieved) => {
         retrieved.json().then((data) => {
-          newUserCourse = { ...data.data };
-          const newPlan = { ...currentPlan };
-          // Update distributions
-          if (year === "Freshman") {
-            newPlan.freshman = [...newPlan.freshman, newUserCourse._id];
-          } else if (year === "Sophomore") {
-            newPlan.sophomore = [...newPlan.sophomore, newUserCourse._id];
-          } else if (year === "Junior") {
-            newPlan.junior = [...newPlan.junior, newUserCourse._id];
-          } else {
-            newPlan.senior = [...newPlan.senior, newUserCourse._id];
-          }
-          dispatch(updateSelectedPlan(newPlan));
-          const newPlanList = [...planList];
-          for (let i = 0; i < planList.length; i++) {
-            if (planList[i]._id === newPlan._id) {
-              newPlanList[i] = newPlan;
+          if (data.errors === undefined) {
+            newUserCourse = { ...data.data };
+            const allYears: Year[] = [...currentPlan.years];
+            const newYears: Year[] = [];
+            allYears.forEach((y) => {
+              if (y.year === year) {
+                const yCourses = [...y.courses, newUserCourse._id];
+                newYears.push({ ...y, courses: yCourses });
+              } else {
+                newYears.push(y);
+              }
+            });
+            const newPlan: Plan = { ...currentPlan, years: newYears };
+
+            dispatch(updateSelectedPlan(newPlan));
+            const newPlanList = [...planList];
+            for (let i = 0; i < planList.length; i++) {
+              if (planList[i]._id === newPlan._id) {
+                newPlanList[i] = newPlan;
+              }
             }
+            dispatch(updatePlanList(newPlanList));
+          } else {
+            console.log("Failed to add", data.errors);
           }
-          dispatch(updatePlanList(newPlanList));
         });
       });
     }
@@ -272,8 +294,6 @@ const CourseDisplay = () => {
   // It automatically updates the current area in the add course area selection to the first area in the course areas string.
   useEffect(() => {
     setShowMore(2);
-    console.log(inspected);
-
     if (
       inspected !== "None" &&
       inspected.areas !== "None" &&
@@ -353,18 +373,19 @@ const CourseDisplay = () => {
   const handleYearChange = (event: any) => {
     dispatch(
       updateSearchTime({
-        searchYear: event.target.value,
+        searchYear: parseInt(event.target.value),
         searchSemester: searchSemester,
       })
     );
   };
 
+  // Clears inspected course.
   const clearInspected = () => {
     dispatch(updateInspectedCourse("None"));
   };
 
   return (
-    <div className="flex flex-col w-full p-5 bg-gray-200 rounded-r">
+    <div className="flex flex-col p-5 w-full bg-gray-200 rounded-r">
       {inspected === "None" ? (
         <div className="flex flex-col items-center justify-center w-full h-full font-normal">
           No selected course!
@@ -373,7 +394,7 @@ const CourseDisplay = () => {
         <Placeholder addCourse={addCourse} />
       ) : (
         <>
-          <div className="w-full h-full px-5 pt-4 pb-5 overflow-y-auto text-base bg-white rounded">
+          <div className="pb-5 pt-4 px-5 w-full h-full text-base bg-white rounded overflow-y-auto">
             {searchStack.length !== 0 ? (
               <button
                 onClick={() => {
@@ -383,17 +404,17 @@ const CourseDisplay = () => {
                 Back
               </button>
             ) : null}
-            <div className="flex flex-row justify-between w-full h-auto mb-1">
+            <div className="flex flex-row justify-between mb-1 w-full h-auto">
               <h1 className="flex flex-row w-auto h-auto">
                 <div className="w-full h-auto text-2xl font-bold">
                   {inspected.title}
                 </div>
               </h1>
               <button className="text-2xl" onClick={clearInspected}>
-                <CloseSvg className="stroke-2 w-7 h-7" />
+                <CloseSvg className="w-7 h-7 stroke-2" />
               </button>
             </div>
-            <div className="grid w-auto h-auto grid-cols-2">
+            <div className="grid grid-cols-2 w-auto h-auto">
               <ReactTooltip />
               <div className="w-auto h-auto">
                 <div className="flex flex-row items-center">
@@ -405,7 +426,7 @@ const CourseDisplay = () => {
                 <div className="flex flex-row items-center">
                   <div className="mr-1 font-semibold">Credit: </div>
                   <div
-                    className="flex items-center w-auto h-5 px-1 font-semibold text-white rounded select-none bg-secondary"
+                    className="flex items-center px-1 w-auto h-5 text-white font-semibold bg-secondary rounded select-none"
                     data-tip={inspected.credits + " credits"}
                   >
                     {inspected.credits}
@@ -422,7 +443,7 @@ const CourseDisplay = () => {
                         key={area + inspected.number}
                       >
                         <div
-                          className="flex items-center w-auto h-5 px-1 font-semibold text-white rounded select-none"
+                          className="flex items-center px-1 w-auto h-5 text-white font-semibold rounded select-none"
                           style={{ backgroundColor: getColors(area)[0] }}
                         >
                           {area}
@@ -431,7 +452,7 @@ const CourseDisplay = () => {
                     ))
                   ) : (
                     <div
-                      className="flex items-center w-auto h-5 px-1 font-semibold text-white rounded select-none"
+                      className="flex items-center px-1 w-auto h-5 text-white font-semibold rounded select-none"
                       style={{ backgroundColor: getColors(inspected.areas)[0] }}
                     >
                       None
@@ -459,9 +480,9 @@ const CourseDisplay = () => {
               </div>
             </div>
 
-            <div className="mt-3 mb-3">
+            <div className="mb-3 mt-3">
               <p
-                className="overflow-y-hidden font-normal"
+                className="font-normal overflow-y-hidden"
                 style={{ maxHeight: showMore === 1 ? "100%" : "6rem" }}
                 ref={bioElRef}
               >
@@ -492,28 +513,28 @@ const CourseDisplay = () => {
             </div>
             <PrereqDisplay />
           </div>
-          <div className="flex flex-row items-center flex-grow mt-2">
-            <div className="flex flex-col justify-center flex-grow">
+          <div className="flex flex-row flex-grow items-center mt-2">
+            <div className="flex flex-col flex-grow justify-center">
               <div className="mb-1 font-medium">Selecting for</div>
               <div className="flex flex-row">
                 <div className="flex flex-row items-center w-auto h-auto">
                   Year:
                   <select
-                    className="ml-2 text-black rounded text-coursecard"
+                    className="ml-2 text-black text-coursecard rounded"
                     onChange={handleYearChange}
                     value={searchYear}
                   >
-                    {years.map((year) => (
-                      <option key={year + inspected.number} value={year}>
-                        {year}
+                    {currentPlan.years.map((currPlanYear) => (
+                      <option key={currPlanYear.year} value={currPlanYear.year}>
+                        {currPlanYear.name}
                       </option>
                     ))}
                   </select>
                 </div>
-                <div className="flex flex-row items-center w-auto h-auto ml-5">
+                <div className="flex flex-row items-center ml-5 w-auto h-auto">
                   Term:
                   <select
-                    className="h-6 ml-2 rounded outline-none"
+                    className="ml-2 h-6 rounded outline-none"
                     onChange={handleTermFilterChange}
                     value={semester}
                   >
@@ -524,10 +545,10 @@ const CourseDisplay = () => {
                     ))}
                   </select>
                 </div>
-                <div className="flex flex-row items-center flex-grow w-auto h-auto ml-5">
+                <div className="flex flex-row flex-grow items-center ml-5 w-auto h-auto">
                   Area:
                   <select
-                    className="h-6 ml-2 rounded outline-none w-14"
+                    className="ml-2 w-14 h-6 rounded outline-none"
                     value={inspectedArea}
                     onChange={(event) => setInspectedArea(event.target.value)}
                   >
@@ -537,7 +558,7 @@ const CourseDisplay = () => {
               </div>
             </div>
             <button
-              className="w-1/6 h-10 p-2 mt-2 text-white rounded bg-primary"
+              className="mt-2 p-2 w-1/6 h-10 text-white bg-primary rounded"
               onClick={addCourse}
             >
               Add Course

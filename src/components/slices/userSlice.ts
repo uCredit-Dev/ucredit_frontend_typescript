@@ -1,6 +1,6 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { AppThunk, RootState } from "../../appStore/store";
-import { Major, Plan, User } from "../commonTypes";
+import { Course, Major, Plan, User } from "../commonTypes";
 
 type UserSlice = {
   currentUser: User;
@@ -9,6 +9,7 @@ type UserSlice = {
   adding: boolean;
   toAddName: string;
   toAddMajor: Major | null;
+  allCourses: Course[];
 };
 
 const initialState: UserSlice = {
@@ -26,6 +27,7 @@ const initialState: UserSlice = {
   adding: false,
   toAddName: "Unnamed Plan",
   toAddMajor: null,
+  allCourses: [],
 };
 
 // Updates all user info from database. This function should be called after an axios get on the user routes.
@@ -65,6 +67,9 @@ export const userSlice = createSlice({
     updateToAddMajor: (state: any, action: PayloadAction<Major>) => {
       state.toAddMajor = action.payload;
     },
+    updateAllCourses: (state: any, action: PayloadAction<Course[]>) => {
+      state.allCourses = action.payload;
+    },
     clearToAdd: (state: any) => {
       state.toAddName = initialState.toAddName;
       state.toAddMajor = initialState.toAddMajor;
@@ -84,6 +89,7 @@ export const {
   updateAddingStatus,
   updateToAddName,
   updateToAddMajor,
+  updateAllCourses,
   resetUser,
   clearToAdd,
 } = userSlice.actions;
@@ -105,5 +111,6 @@ export const selectDeleteStatus = (state: RootState) => state.user.deleting;
 export const selectAddingStatus = (state: RootState) => state.user.adding;
 export const selectToAddName = (state: RootState) => state.user.toAddName;
 export const selectToAddMajor = (state: RootState) => state.user.toAddMajor;
+export const selectAllCourses = (state: RootState) => state.user.allCourses;
 
 export default userSlice.reducer;

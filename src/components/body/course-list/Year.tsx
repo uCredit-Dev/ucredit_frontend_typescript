@@ -1,13 +1,14 @@
 import React, { useState, useEffect } from "react";
 import Semester from "./Semester";
-import { UserCourse, YearType } from "../../commonTypes";
+import { UserCourse } from "../../commonTypes";
 import { ReactComponent as MoreSvg } from "../../svg/More.svg";
 import { useSelector } from "react-redux";
 import { selectPlan } from "../../slices/currentPlanSlice";
 
 type semesterProps = {
+  id: number;
   customStyle: string;
-  yearName: YearType;
+  yearNum: number;
   courses: UserCourse[];
 };
 
@@ -17,7 +18,7 @@ type semesterProps = {
     courses: courses it's displaying
     yearName: year this column is displaying
 */
-function Year({ customStyle, yearName, courses }: semesterProps) {
+function Year({ id, customStyle, yearNum, courses }: semesterProps) {
   const [fallCourses, setFallCourses] = useState<UserCourse[]>([]);
   const [springCourses, setSpringCourses] = useState<UserCourse[]>([]);
   const [winterCourses, setWinterCourses] = useState<UserCourse[]>([]);
@@ -57,41 +58,52 @@ function Year({ customStyle, yearName, courses }: semesterProps) {
     setDisplay(!display);
   };
 
+  const getYearName = (): string => {
+    let name = "";
+    currentPlan.years.forEach((year) => {
+      if (year.year === yearNum) {
+        name = year.name;
+      }
+    });
+    return name;
+  };
+
   return (
     <div
+      id={id.toString()}
       className={`${customStyle} ml-auto mr-auto medium:px-4 w-yearheading min-w-yearMin`}
     >
       <div
-        className="flex flex-row justify-between w-full p-2 mb-3 font-medium text-white rounded shadow h-yearheading bg-primary"
+        className="flex flex-row justify-between mb-3 p-2 w-full h-yearheading text-white font-medium bg-primary rounded shadow"
         onClick={displaySemesters}
       >
-        <div className="select-none">{yearName}</div>
-        <MoreSvg className="w-6 h-6 cursor-pointer stroke-2" />
+        <div className="select-none">{getYearName()}</div>
+        <MoreSvg className="w-6 h-6 stroke-2 cursor-pointer" />
       </div>
       {display ? (
         <div className="flex flex-col items-center">
           <Semester
             customStyle=""
             semesterName="Fall"
-            semesterYear={yearName}
+            semesterYear={yearNum}
             courses={fallCourses}
           />
           <Semester
             customStyle=""
             semesterName="Spring"
-            semesterYear={yearName}
+            semesterYear={yearNum}
             courses={springCourses}
           />
           <Semester
             customStyle=""
             semesterName="Intersession"
-            semesterYear={yearName}
+            semesterYear={yearNum}
             courses={winterCourses}
           />
           <Semester
             customStyle=""
             semesterName="Summer"
-            semesterYear={yearName}
+            semesterYear={yearNum}
             courses={summerCourses}
           />
         </div>

@@ -74,9 +74,20 @@ const PlanChoose = (props: PlanChooseProps) => {
           }
 
           if (retrievedPlans.length > 0 && currentPlan._id === "noPlan") {
-            // Initial load, there is no current plan, so we set the current to be the first plan in the array.
-            dispatch(updatePlanList(retrievedPlans));
-            dispatch(updateSelectedPlan(retrievedPlans[0]));
+            const totPlans: Plan[] = [];
+            retrievedPlans.forEach((plan) => {
+              axios
+                .get(api + "/years/" + plan._id)
+                .then((resp) => {
+                  totPlans.push({ ...plan, years: resp.data.data });
+                  if (totPlans.length === retrievedPlans.length) {
+                    // Initial load, there is no current plan, so we set the current to be the first plan in the array.
+                    dispatch(updatePlanList(totPlans));
+                    dispatch(updateSelectedPlan(totPlans[0]));
+                  }
+                })
+                .catch((err) => console.log(err));
+            });
 
             toast("Retrieved " + retrievedPlans.length + " plans!", {
               position: "top-right",
@@ -143,6 +154,7 @@ const PlanChoose = (props: PlanChooseProps) => {
     }
   };
 
+  // Adds a new plan every time a new guest user is created and they don't have a a plan.
   useEffect(() => {
     if (user.plan_ids.length === 0 && user._id === "guestUser") {
       // Post req body for a new plan

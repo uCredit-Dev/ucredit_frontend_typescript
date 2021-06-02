@@ -10,14 +10,15 @@ interface CourseEvalCardProps {
 
 const ratingStars = Array(5).fill(0);
 
+// A course evaluation card display component.
 const CourseEvalCard: React.FC<CourseEvalCardProps> = ({ rating, summary }) => {
   const ratingNum = Math.trunc(parseInt(rating)) - 1;
 
   return (
-    <div className="w-full px-6 py-8 mb-2 rounded shadow h-52 bg-gray-50">
+    <div className="mb-2 px-6 py-8 w-full h-52 bg-gray-50 rounded shadow">
       <ReactTooltip />
       <div className="flex flex-row w-full h-full">
-        <div className="flex flex-col items-center justify-center w-40 h-full p-4 mr-4">
+        <div className="flex flex-col items-center justify-center mr-4 p-4 w-40 h-full">
           <h2 className="mb-2">Rating</h2>
           <div className="flex flex-row" data-tip={rating}>
             {ratingStars.map((_, i) => (

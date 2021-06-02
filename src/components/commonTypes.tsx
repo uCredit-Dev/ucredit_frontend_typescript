@@ -54,16 +54,23 @@ export type UserCourse = {
   year: string;
 };
 
+export type Year = {
+  _id: string;
+  name: string;
+  year: number;
+  courses: string[];
+  plan_id: any;
+  user_id: string;
+};
+
 export type Plan = {
   _id: string;
   name: string;
   majors: string[];
-  freshman: string[];
-  sophomore: string[];
-  junior: string[];
-  senior: string[];
   distribution_ids: string[];
   user_id: string;
+  numYears: number;
+  years: Year[];
 };
 
 export type User = {
@@ -101,7 +108,7 @@ export type Distribution = {
   plan_id: string;
 };
 
-export type YearType = "Freshman" | "Sophomore" | "Junior" | "Senior";
+// export type YearType = "Freshman" | "Sophomore" | "Junior" | "Senior";
 
 export type SemesterType = "Fall" | "Spring" | "Summer" | "Intersession";
 

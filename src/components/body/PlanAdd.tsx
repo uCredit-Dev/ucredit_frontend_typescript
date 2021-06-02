@@ -9,10 +9,21 @@ import {
   updateToAddMajor,
   selectToAddMajor,
 } from "../slices/userSlice";
-// import { testMajorArray } from "../../testObjs";
 import { allMajors } from "./majors/major";
 import Select from "react-select";
 
+const majorOptions = [
+  ...allMajors.map((major, index) => ({
+    value: index,
+    label: major.name,
+  })),
+];
+
+/**
+ * Popup for adding a new plan.
+ * Props:
+ *  setGenerateNew - function that gives a signal to make a new plan.
+ * */
 const PlanAdd = (props: { setGenerateNew: Function }) => {
   // Redux setup
   const dispatch = useDispatch();
@@ -20,6 +31,7 @@ const PlanAdd = (props: { setGenerateNew: Function }) => {
   const toAddMajor = useSelector(selectToAddMajor);
   const planList = useSelector(selectPlanList);
 
+  // Handles the user's intention to create a new plan.
   const createNewPlan = () => {
     if (toAddMajor === null) {
       toast.error("Please choose a valid major!", {
@@ -36,10 +48,12 @@ const PlanAdd = (props: { setGenerateNew: Function }) => {
     }
   };
 
+  // Handles new plan name change.
   const handleNameChange = (event: any) => {
     dispatch(updateToAddName(event.target.value));
   };
 
+  // Handles user's intention to cancel creating a new plan.
   const handleCancel = () => {
     if (planList.length === 0) {
       toast.error("Please create at least one plan to continue!", {
@@ -55,19 +69,12 @@ const PlanAdd = (props: { setGenerateNew: Function }) => {
     }
   };
 
+  // Handles changing the major of the new plan.
   const handleMajorChange = (event: any) => {
     if (event.value >= 0) {
-      console.log("updating to ", allMajors[event.value]);
       dispatch(updateToAddMajor(allMajors[event.value]));
     }
   };
-
-  const options = [
-    ...allMajors.map((major, index) => ({
-      value: index,
-      label: major.name,
-    })),
-  ];
 
   return (
     <div className="absolute top-0">
@@ -101,7 +108,7 @@ const PlanAdd = (props: { setGenerateNew: Function }) => {
               onChange={handleNameChange}
             />
             Select Major
-            <Select options={options} onChange={handleMajorChange} />
+            <Select options={majorOptions} onChange={handleMajorChange} />
             <button onClick={createNewPlan}>Add</button>
             <button onClick={handleCancel}>Cancel</button>
           </div>

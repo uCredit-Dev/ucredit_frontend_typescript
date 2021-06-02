@@ -11,15 +11,21 @@ const api = "https://ucredit-api.herokuapp.com/api";
 const deploy = "https://ucredit.herokuapp.com/";
 const dev = "http://localhost:3000/";
 
+/**
+ * The login page, designed after the Spotify login page..
+ * @param props contains the various resources provided by react-cookie
+ */
 const DashboardEntry = (props: any) => {
+  // Redux setup.
   const dispatch = useDispatch();
   const user = useSelector(selectUser);
 
-  // Component state setup
+  // Component state setup.
   const [cookies, setCookies] = useState(props.cookies);
   const [authCookies, setAuthCookie] = useCookies(["connect.sid"]);
   const [cookieUpdate, setCookieUpdate] = useState<boolean>(true);
 
+  // React router state setup.
   let history = useHistory();
   let location = useLocation();
 
@@ -98,25 +104,19 @@ const DashboardEntry = (props: any) => {
         .then((resp) => resp.json())
         .then((retrievedUser) => {
           if (retrievedUser.errors === undefined) {
-            dispatch(
-              updateUser(retrievedUser.data) // TODO: Fix issue of infinite loop
-            );
+            dispatch(updateUser(retrievedUser.data));
             history.push("/dashboard");
           }
         })
         .catch((err) => {
-          // TODO: If there is no retrievedUser we could
-          //    (A) redirect them to https://ucredit-api.herokuapp.com/api/login
-          //    (B) load in a local guest user and wait for them to access https://ucredit-api.herokuapp.com/api/login
-          //          by clicking the "Log In" button in the header.
           console.log("ERROR: ", err.message);
           history.push("/");
-          // dispatch(updateUser(guestUser));
         });
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [cookies, authCookies]);
 
+  // Handles if the user is invalid.
   const handleGuest = () => {
     dispatch(updateUser(guestUser));
     history.push("/dashboard");
