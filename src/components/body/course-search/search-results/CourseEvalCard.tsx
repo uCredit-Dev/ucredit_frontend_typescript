@@ -11,6 +11,8 @@ interface CourseEvalCardProps {
 const ratingStars = Array(5).fill(0);
 
 const CourseEvalCard: React.FC<CourseEvalCardProps> = ({ rating, summary }) => {
+  const ratingNum = Math.trunc(parseInt(rating)) - 1;
+
   return (
     <div className="w-full px-6 py-8 mb-2 rounded shadow h-52 bg-gray-50">
       <ReactTooltip />
@@ -21,7 +23,7 @@ const CourseEvalCard: React.FC<CourseEvalCardProps> = ({ rating, summary }) => {
             {ratingStars.map((_, i) => (
               <StarSvg
                 className={clsx("w-6 h-6", {
-                  "fill-gold": i <= Math.trunc(parseInt(rating)) - 1,
+                  "fill-gold": i <= ratingNum,
                 })}
               />
             ))}
