@@ -26,6 +26,11 @@ function Semester({
   semesterYear,
   courses,
 }: semesterProps) {
+  // Redux setup
+  const dispatch = useDispatch();
+
+  // State used to control whether dropdown is opened or closed
+  const [display, setDisplay] = useState<boolean>(true);
   // Total credits and sorted courses.
   const [totalCredits, setTotalCredits] = useState<number>(0);
   const [semesterCourses, setSemesterCourses] = useState<UserCourse[]>([]);
@@ -43,12 +48,6 @@ function Semester({
     });
     setTotalCredits(count);
   }, [courses, courses.length]);
-
-  // Redux setup
-  const dispatch = useDispatch();
-
-  // State used to control whether dropdown is opened or closed
-  const [display, setDisplay] = useState<boolean>(true);
 
   // Sets closed to open and open to closed for course display dropdown
   const displayCourses = () => {

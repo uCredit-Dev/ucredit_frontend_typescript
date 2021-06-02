@@ -88,7 +88,6 @@ const GenerateNewPlan: React.FC<generateNewPlanProps> = (props) => {
                 if (index === toAddMajor.distributions.length - 1) {
                   dispatch(updateSelectedPlan(newPlan));
                   dispatch(updatePlanList([newPlan, ...planList]));
-                  console.log(newPlan);
                   toast.success(newPlan.name + " created!", {
                     position: "top-right",
                     autoClose: 5000,

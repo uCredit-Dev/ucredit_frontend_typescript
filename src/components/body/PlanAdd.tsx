@@ -57,7 +57,6 @@ const PlanAdd = (props: { setGenerateNew: Function }) => {
 
   const handleMajorChange = (event: any) => {
     if (event.value >= 0) {
-      console.log("updating to ", allMajors[event.value]);
       dispatch(updateToAddMajor(allMajors[event.value]));
     }
   };

@@ -9,6 +9,7 @@ import CourseDisplay from "./search-results/CourseDisplay";
 import Form from "./query-components/Form";
 import SearchList from "./query-components/SearchList";
 import { ReactComponent as HideSvg } from "../../svg/Hide.svg";
+import { selectPlan } from "../../slices/currentPlanSlice";
 
 /* 
   Search component when someone clicks a search action./* 
@@ -22,6 +23,17 @@ const Search = () => {
   const dispatch = useDispatch();
   const searchYear = useSelector(selectYear);
   const searchSemester = useSelector(selectSemester);
+  const currentPlan = useSelector(selectPlan);
+
+  const getYearName = (): string => {
+    let name = "";
+    currentPlan.years.forEach((year) => {
+      if (year.year === searchYear) {
+        name = year.name;
+      }
+    });
+    return name;
+  };
 
   return (
     <div className="absolute top-0">
@@ -46,7 +58,7 @@ const Search = () => {
       >
         <div className="px-4 py-2 text-white text-coursecard font-normal select-none">
           Currently selecting for{" "}
-          <span className="text-emphasis font-bold">{searchYear}</span> year,{" "}
+          <span className="text-emphasis font-bold">{getYearName()}</span> year,{" "}
           <span className="text-emphasis font-bold">{searchSemester}</span>{" "}
           semester
         </div>
