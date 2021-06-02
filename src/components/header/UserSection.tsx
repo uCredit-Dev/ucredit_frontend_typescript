@@ -51,13 +51,8 @@ function UserSection(props: any) {
           }
         })
         .catch((err) => {
-          // TODO: If there is no retrievedUser we could
-          //    (A) redirect them to https://ucredit-api.herokuapp.com/api/login
-          //    (B) load in a local guest user and wait for them to access https://ucredit-api.herokuapp.com/api/login
-          //          by clicking the "Log In" button in the header.
           console.log("ERROR: ", err.message);
           history.push("/");
-          // dispatch(updateUser(guestUser));
         });
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps

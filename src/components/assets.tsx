@@ -400,26 +400,6 @@ const getCourses = async (
   });
 };
 
-// TODO: Autogenerate time ranks based on year and semester
-// const courseRank = new Map([
-//   ["fr,fa", 1],
-//   ["fr,sp", 3],
-//   ["fr,in", 2],
-//   ["fr,su", 4],
-//   ["so,fa", 5],
-//   ["so,in", 6],
-//   ["so,sp", 7],
-//   ["so,su", 8],
-//   ["ju,fa", 9],
-//   ["ju,in", 10],
-//   ["ju,sp", 11],
-//   ["ju,su", 12],
-//   ["se,fa", 13],
-//   ["se,in", 14],
-//   ["se,sp", 15],
-//   ["se,su", 16],
-// ]);
-
 export const getCourse = async (courseNumber: String): Promise<Course> => {
   const retrieved = await axios.get(api + "/search", {
     params: { query: courseNumber },
