@@ -608,20 +608,19 @@ export const checkPrereq = (
 };
 
 const semesters = ["fall", "intersession", "spring", "summer"];
+const years = ["Freshman", "Sophomore", "Junior", "Senior"];
 
 const prereqInPast = (course: UserCourse, year: number, semester: SemesterType): boolean => {
-  return true;
-  // TODO: implement this
-
   // console.log(course.year);
+  // console.log(years.indexOf(course.year));
   // console.log(year);
-  // if (course.year < year) {
-  //   return true;
-  // } else if (course.year > year) {
-  //   return false;
-  // } else {
-  //   return semesters.indexOf(course.term) < semesters.indexOf(semester);
-  // }
+  if ((years.indexOf(course.year) + 1) < year) {
+    return true;
+  } else if ((years.indexOf(course.year) + 1) > year) {
+    return false;
+  } else {
+    return semesters.indexOf(course.term) < semesters.indexOf(semester);
+  }
 }
 
 export const checkAllPrereqs = (
