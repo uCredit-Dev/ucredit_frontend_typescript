@@ -8,6 +8,7 @@ import {
   updateSearchTime,
   updateSearchTerm,
   updatePlaceholder,
+  selectInspectedCourse,
 } from "../../slices/searchSlice";
 import axios from "axios";
 import { ReactComponent as RemoveSvg } from "../../svg/Remove.svg";
@@ -50,9 +51,12 @@ function CourseComponent({ year, course, semester }: courseProps) {
 
   useEffect(() => {
     isSatisfied();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [currPlanCourses]);
+  });
 
+  useEffect(() => {
+    isSatisfied();
+  }, [currPlanCourses]);
+  
   const isSatisfied = () => {
     const temp = checkAllPrereqs(
       currPlanCourses,
@@ -64,7 +68,6 @@ function CourseComponent({ year, course, semester }: courseProps) {
     );
     setSatisfied(temp);
   };
-  isSatisfied();
 
   // Sets or resets the course displayed in popout after user clicks it in course list.
   const displayCourses = () => {
