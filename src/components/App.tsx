@@ -20,35 +20,30 @@ function App() {
 
   // Component state setup.
   const [welcomeScreen, setWelcomeScreen] = useState<boolean>(true);
-  // Makes sure that the welcome screen displays for at least a set amount of time.
-  const [minTimerGuard, setMinTimerGuard] = useState<boolean>(false);
-
-  // Checks whether we should close the welcome screen. Will not if the guard is up.
-  const checkWelcomeScreenState = () => {
-    if (minTimerGuard) {
-      setWelcomeScreen(false);
-    } else {
-      setMinTimerGuard(true);
-    }
-  };
-
-  // Makes sure that welcome screen stays on for at least 1.5 seconds.
-  useEffect(() => {
-    setTimeout(() => {
-      checkWelcomeScreenState();
-    }, 1500);
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [minTimerGuard]);
 
   // Retrieves all database SIS courses.
   useEffect(() => {
+    // Makes sure that welcome screen stays on for at least 1.5 seconds.
+    let guard = false;
+    setTimeout(() => {
+      if (guard) {
+        setWelcomeScreen(false);
+      } else {
+        guard = true;
+      }
+    }, 1500);
+
     axios
       .get(api + "/search", {
         params: {},
       })
       .then((courses: any) => {
         dispatch(updateAllCourses(courses.data.data));
-        checkWelcomeScreenState();
+        if (guard) {
+          setWelcomeScreen(false);
+        } else {
+          guard = true;
+        }
       })
       .catch((err) => {
         console.log(err);
