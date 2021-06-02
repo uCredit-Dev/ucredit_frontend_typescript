@@ -84,7 +84,6 @@ const PrereqDisplay = () => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [inspected]);
 
-  // TODO: MODULARIZE THE BELOW FUNCTIONS SOMETIME.
   // This is that one open expression calculator leetcode problem.
   // We're basically modifying it and adapting it to parse through prereqs
   // Input param is the prereq expression to parse (ie. AS.110.202 AND (EN.550.310 OR EN.553.211 OR EN.553.310 OR EN.553.311 OR ((EN.550.420 OR EN.553.420) AND (EN.550.430 OR EN.553.430 OR EN.553.431)) OR EN.560.348) AND (AS.110.201 OR AS.110.212 OR EN.553.291) AND (EN.500.112 OR EN.500.113 OR EN.500.114 OR (EN.601.220 OR EN.600.120) OR AS.250.205 OR EN.580.200 OR (EN.600.107 OR EN.601.107)))
