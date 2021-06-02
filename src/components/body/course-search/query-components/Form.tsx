@@ -109,74 +109,52 @@ const Form = (props: { setSearching: Function }) => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [searchTerm, searchFilters, showAllResults]);
 
-  // TODO: change from any to FilterObj type (but with Redux)
-  function filterNone(searchFilters: any, returned: any[]) {
-    if (searchFilters.distribution === "N") {
-      returned = returned.filter((course: Course) => course.areas !== "None");
-    }
-  }
-
-  function toastResponse(returned: any[]) {
-    toast.dismiss();
-    toast.success("Found " + returned.length + " results!", {
-      position: "top-right",
-      autoClose: 5000,
-      hideProgressBar: true,
-      closeOnClick: true,
-      pauseOnHover: true,
-      draggable: true,
-      progress: undefined,
-    });
-  }
-
   function substringSearch(
-    doneSearchSubQueries: string[],
-    subQuery: string,
-    courses: Course[],
-    retrievedCourses: Map<string, SearchMapEl>,
     extras: SearchExtras,
     queryLength: number,
     querySubstrs: string[]
   ) {
-    doneSearchSubQueries.push(subQuery);
+    let courses: Course[] = [];
 
-    let sorted: Course[] = courses.sort((course1: Course, course2: Course) =>
-      course1.number.localeCompare(course2.number)
-    );
+    querySubstrs.forEach((subQuery) => {
+      courses.push(...find({ ...extras, query: subQuery }));
+    });
 
-    filterNone(searchFilters, sorted);
-
-    sorted.forEach((course: Course) => {
-      if (
-        !retrievedCourses.has(course.number) &&
-        (searchedCourses.size < 10 ||
-          extras.query.length === 0 ||
-          showAllResults) // if showAllResults is selected, we search for all; otherwise, we only show top few.
-      ) {
-        retrievedCourses.set(course.number, {
+    courses.forEach((course: Course) => {
+      if (!searchedCourses.has(course.number)) {
+        searchedCourses.set(course.number, {
           course: course,
           priority: queryLength,
         });
       }
     });
 
-    // All subqueries are done searching
-    if (doneSearchSubQueries.length === querySubstrs.length) {
-      if (
-        queryLength > minLength &&
-        (searchedCourses.size < 10 ||
-          extras.query.length === 0 ||
-          showAllResults) // if showAllResults is selected, we search for all; otherwise, we only show top few.
-      ) {
-        setSearchedCourses(new Map<string, SearchMapEl>(retrievedCourses));
-        performSmartSearch(extras, queryLength - 1)();
+    if (queryLength > minLength) {
+      performSmartSearch(extras, queryLength - 1)();
+    } else {
+      const newSearchList: Course[] = getNewSearchList();
+      dispatch(updateRetrievedCourses(newSearchList));
+      if (newSearchList.length > 0) {
+        props.setSearching(false);
+        toast.success("Found " + newSearchList.length + " results!", {
+          position: "top-right",
+          autoClose: 5000,
+          hideProgressBar: true,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+        });
       } else {
-        const newSearchList: Course[] = getNewSearchList();
-        dispatch(updateRetrievedCourses(newSearchList));
-        if (newSearchList.length > 0) {
-          props.setSearching(false);
-          toastResponse(newSearchList);
-        }
+        toast.error("Found 0 results!", {
+          position: "top-right",
+          autoClose: 5000,
+          hideProgressBar: true,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+        });
       }
     }
   }
@@ -185,10 +163,19 @@ const Form = (props: { setSearching: Function }) => {
     let courses: Course[] = [...allCourses];
     if (extras.query.length > 0) {
       courses = courses.filter((course) => {
-        if (extras.query.includes(".") || !isNaN(parseInt(extras.query))) {
-          return course.number.includes(extras.query);
+        if (
+          extras.query.includes(".") ||
+          !isNaN(parseInt(extras.query)) ||
+          extras.query.startsWith("EN.") ||
+          extras.query.startsWith("AS.")
+        ) {
+          return course.number
+            .toLowerCase()
+            .includes(extras.query.toLowerCase());
         } else {
-          return course.title.includes(extras.query);
+          return course.title
+            .toLowerCase()
+            .includes(extras.query.toLowerCase());
         }
       });
     }
@@ -246,59 +233,56 @@ const Form = (props: { setSearching: Function }) => {
   const performSmartSearch =
     (extras: SearchExtras, queryLength: number) => () => {
       const querySubstrs: string[] = [];
-      const retrievedCourses: Map<string, SearchMapEl> = searchedCourses;
-      const doneSearchSubQueries: string[] = [];
       props.setSearching(true);
 
       if (
         queryLength >= minLength &&
         !extras.query.startsWith("EN.") &&
         !extras.query.startsWith("AS.") &&
-        !extras.query.includes(".")
+        !extras.query.includes(".") &&
+        isNaN(parseInt(extras.query))
       ) {
         for (let i = 0; i < searchTerm.length - queryLength + 1; i++) {
           querySubstrs.push(searchTerm.substring(i, i + queryLength));
         }
+        console.log("searching", queryLength, querySubstrs);
+
+        // For each query substring, search.
+        substringSearch(extras, queryLength, querySubstrs);
       } else {
         // Perform old search if search query is less than the minLength for a smart search.
-        const courses: Course[] = find(extras);
-        let sorted: any[] = courses.sort((course1: Course, course2: Course) =>
-          course1.number.localeCompare(course2.number)
-        );
+        let courses: Course[] = find(extras);
+        dispatch(updateRetrievedCourses(courses));
 
-        filterNone(searchFilters, sorted);
-
-        if (!showAllResults) {
-          // if showAllResults is selected, we search for all; otherwise, we only show top few.
-          sorted = sorted.slice(0, 10);
-        }
-
-        dispatch(updateRetrievedCourses(sorted));
-        if (sorted.length > 0) {
+        if (courses.length > 0) {
           props.setSearching(false);
-          toastResponse(sorted);
+          toast.success("Found " + courses.length + " results!", {
+            position: "top-right",
+            autoClose: 5000,
+            hideProgressBar: true,
+            closeOnClick: true,
+            pauseOnHover: true,
+            draggable: true,
+            progress: undefined,
+          });
+        } else {
+          toast.error("Found 0 results!", {
+            position: "top-right",
+            autoClose: 5000,
+            hideProgressBar: true,
+            closeOnClick: true,
+            pauseOnHover: true,
+            draggable: true,
+            progress: undefined,
+          });
         }
       }
-
-      // For each query substring, search.
-      querySubstrs.forEach((subQuery) => {
-        extras.query = subQuery;
-        const courses = find(extras);
-        substringSearch(
-          doneSearchSubQueries,
-          subQuery,
-          courses,
-          retrievedCourses,
-          extras,
-          queryLength,
-          querySubstrs
-        );
-      });
     };
 
   // Gets new list of searched courses.
   const getNewSearchList = (): Course[] => {
-    const searchList: Course[] = [];
+    console.log("getting new searched list");
+    let searchList: Course[] = [];
 
     // sorts searchedCourses map by priority.
     searchedCourses[Symbol.iterator] = function* () {
@@ -309,8 +293,14 @@ const Form = (props: { setSearching: Function }) => {
 
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
     for (let [key, value] of searchedCourses) {
+      console.log(value);
       searchList.push(value.course);
     }
+
+    if (!showAllResults) {
+      searchList = searchList.slice(0, 10);
+    }
+    console.log(searchedCourses, searchList);
     return searchList;
   };
 
