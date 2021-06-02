@@ -21,6 +21,7 @@ import {
   selectPlan,
   updateSelectedPlan,
 } from "../../slices/currentPlanSlice";
+import { selectAllCourses } from "../../slices/userSlice";
 
 const api = "https://ucredit-api.herokuapp.com/api";
 
@@ -45,6 +46,7 @@ function CourseComponent({ year, course, semester }: courseProps) {
   const dispatch = useDispatch();
   const currentPlan = useSelector(selectPlan);
   const currPlanCourses = useSelector(selectCurrentPlanCourses);
+  const allCourses = useSelector(selectAllCourses);
 
   useEffect(() => {
     isSatisfied();
@@ -137,15 +139,16 @@ function CourseComponent({ year, course, semester }: courseProps) {
     return out;
   };
 
-  const isSatisfied = async () => {
+  const isSatisfied = () => {
     const temp = checkAllPrereqs(
       currPlanCourses,
       currentPlan,
       course.number,
       year,
-      semester
+      semester,
+      allCourses
     );
-    setSatisfied(await temp);
+    setSatisfied(temp);
   };
 
   return (

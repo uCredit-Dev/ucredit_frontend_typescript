@@ -276,19 +276,19 @@ export const filterNNegatives = (inspected: Course | "None"): any[] => {
       return section.IsNegative === "N";
     });
   }
-  //console.log(preReqs);
   return preReqs;
 };
 
 // Takes in a unparsed array of preReqs.
 // Processes by checking if they're satisfied and turning them into jsx elements.
-// Returns an object contating the course numbers
+// Returns an object containg the course numbers
 // as well as the names associated with each course number
 // expr is the input expression for the prereqs, regex is the regex to parse
 // numList is a list of the numbers in the expr
-export const processPrereqs = async (
-  preReqs: any[]
-): Promise<prereqCourses> => {
+export const processPrereqs =  (
+  preReqs: any[],
+  allCourses: Course[],
+): prereqCourses => {
   // Regex used to get an array of course numbers.
   const regex: RegExp = /[A-Z]{2}\.[0-9]{3}\.[0-9]{3}/g;
   const forwardSlashRegex: RegExp =
@@ -313,7 +313,7 @@ export const processPrereqs = async (
     }
   });
 
-  let obj = await getCourses(expr, regex);
+  let obj = getCourses(expr, regex, allCourses);
   return obj;
 };
 
@@ -328,10 +328,11 @@ export interface prereqCourses {
 // expr is the input expression for the prereqs, regex is the regex to parse
 // numList is a list of the numbers in the expr
 // numNameList is the list of the numbers and associated course names
-const getCourses = async (
+const getCourses = (
   expr: string,
-  regex: RegExp
-): Promise<prereqCourses> => {
+  regex: RegExp,
+  allCourses: Course[],
+): prereqCourses => {
   // Gets an array of all courses in expression.
   let match = expr.match(regex);
   let numList: RegExpMatchArray = [];
@@ -342,104 +343,48 @@ const getCourses = async (
     numList = match;
   }
 
-  //let out:prereqCourses[] = [];
-  let promises = [];
-
   // For the list of numbers, retrieve each course number, search for it and store the combined number + name into numNameList
   for (let n = 0; n < numList.length; n++) {
     let num = numList[n];
-    const next = axios
-      .get(api + "/search", { params: { query: num } })
-      // eslint-disable-next-line no-loop-func
-      .then((retrieved) => {
-        const retrievedCourse = retrieved.data.data;
-        //console.log(retrievedCourse);
-        if (retrievedCourse.length > 0) {
-          numNameList[n] = num + num + " " + retrievedCourse[0].title; // num is added twice to distinquish which was the base course (refer to the case of EN.600 below) in the case that departments change numbers (600 to 601)
-        }
-      })
-      .catch((err) => {
-        console.log("couldnt find", err);
-      });
+    let retrievedCourse = getCourse(num, allCourses);
+    //console.log(retrievedCourse);
+    if (retrievedCourse !== null) {
+        numNameList[n] = num + num + " " + retrievedCourse.title; 
+        // num is added twice to distinquish which was the base course (refer to the case of EN.600 below) in the case that departments change numbers (600 to 601)
+    }
     if (num.match("EN.600") !== null) {
       num = num.replace("EN.600", "EN.601");
-      const what = axios
-        .get(api + "/search", { params: { query: num } })
-        // eslint-disable-next-line no-loop-func
-        .then((retrieved601) => {
-          const retrievedCourse601 = retrieved601.data.data;
-          if (retrievedCourse601.length === 1) {
-            // Append original num to front for later sorting
-            numNameList[n] =
-              numList[n] + num + " " + retrievedCourse601[0].title;
-          }
-        })
-        .catch((err) => {
-          console.log("couldnt find", err);
-        });
-      promises.push(what);
-    }
-    promises.push(next);
-  }
-  return Promise.all(promises).then(() => {
-    for (let n = 0; n < numList.length; n++) {
-      if (numNameList[n] === undefined) {
-        //console.log(n);
+      const retrievedCourse601 = getCourse(num, allCourses);
+      if (retrievedCourse601 !== null) {
+        // Append original num to front for later sorting
         numNameList[n] =
-          numList[n] +
-          numList[n] +
-          " Has not been offered in the past 2 years.";
+          numList[n] + num + " " + retrievedCourse601.title;
       }
     }
-    let out = {
-      numNameList: numNameList,
-      numList: numList,
-      expr: expr,
-    };
-    return out;
-  });
+    if (numNameList[n] == null) {
+      numNameList[n] = numList[n] + numList[n] + " Has not been offered in the past 2 years.";
+    }
+  }
+  let out = {
+    numNameList: numNameList,
+    numList: numList,
+    expr: expr,
+  };
+  return out;
 };
 
-export const getCourse = async (courseNumber: String): Promise<Course> => {
-  const retrieved = await axios.get(api + "/search", {
-    params: { query: courseNumber },
-  });
-  return retrieved.data.data[0];
+export const getCourse = (courseNumber: String, allCourses: Course[]): Course | null => {
+  let out = null;
+  for (let element of allCourses) {
+    if (element.number === courseNumber) {
+      out = element;
+      break;
+    }
+  }
+  return out;
 };
 
 // Checks the prereqs for a given course is satisifed
-export const checkAllPrereqs = async (
-  currCourses: UserCourse[],
-  plan: Plan,
-  number: String,
-  year: number,
-  semester: SemesterType
-): Promise<boolean> => {
-  const out = getCourse(number)
-    .then((course) => {
-      let filtered = filterNNegatives(course);
-      if (filtered.length === 0) {
-        const empty: prereqCourses = {
-          numList: [],
-          numNameList: [],
-          expr: "",
-        };
-        return empty;
-      }
-      return processPrereqs(filtered);
-    })
-    .then((processed) => {
-      if (processed.numList.length === 0) {
-        return true;
-      }
-      let split = process(processed);
-      let list = createPrereqBulletList(split);
-      let orParsed = parsePrereqsOr(list, 0);
-      return getNonStringPrereq(currCourses, plan, orParsed, year, semester)
-        .satisfied;
-    });
-  return out;
-};
 
 const process = (input: prereqCourses) => {
   let numList = input.numList;
@@ -465,18 +410,13 @@ const process = (input: prereqCourses) => {
   return out;
 };
 
-type parsedPrereqs = {
-  satisfied: boolean;
-  jsx: JSX.Element;
-};
-
 const getNonStringPrereq = (
   currPlanCourses: UserCourse[],
   plan: Plan,
   input: any,
   year: number,
   semester: SemesterType
-): parsedPrereqs => {
+): boolean => {
   const element = input;
   if (typeof element === "string") {
     // If the element is a number
@@ -489,10 +429,7 @@ const getNonStringPrereq = (
       year,
       semester
     );
-    return {
-      satisfied: satisfied,
-      jsx: <div></div>,
-    };
+    return satisfied;
   } else if (typeof element[0] === "number") {
     // If the element is a OR sequence (denoted by the depth number in the first index)
     const parsedSat: boolean = isSatisfied(
@@ -503,24 +440,17 @@ const getNonStringPrereq = (
       year,
       semester
     );
-    return {
-      satisfied: parsedSat,
-      jsx: <div></div>,
-    };
+    return parsedSat;
   } else if (typeof element === "object") {
     // If the element is a parentheses sequence
     if (element.length === 1) {
-      const parsed: parsedPrereqs = getNonStringPrereq(
+      return getNonStringPrereq(
         currPlanCourses,
         plan,
         element[0],
         year,
         semester
       );
-      return {
-        satisfied: parsed.satisfied,
-        jsx: <p>{parsed.jsx}</p>,
-      };
     } else {
       const parsedSat: boolean = isSatisfied(
         element,
@@ -530,18 +460,13 @@ const getNonStringPrereq = (
         year,
         semester
       );
-      return {
-        satisfied: parsedSat,
-        jsx: <div></div>,
-      };
+      return parsedSat
     }
   } else {
-    return {
-      satisfied: true,
-      jsx: <></>,
-    };
+    return true;
   }
 };
+
 
 const isSatisfied = (
   element: [],
@@ -555,20 +480,17 @@ const isSatisfied = (
 
   element.forEach((el: any, index) => {
     if (typeof el !== "number") {
-      const parsed: {
-        satisfied: boolean;
-        jsx: JSX.Element;
-      } = getNonStringPrereq(currPlanCourses, plan, el, year, semester);
+      const satisfied = getNonStringPrereq(currPlanCourses, plan, el, year, semester);
 
       // If it's not an or statement, the first course must be satisfied.
       if (index === 0) {
-        orAndSatisfied = parsed.satisfied;
+        orAndSatisfied = satisfied;
       }
 
       // If it's an or statement, only one course would need to be satisfied. Otherwise, every course would need to be satisfied.
-      if (or && parsed.satisfied) {
+      if (or && satisfied) {
         orAndSatisfied = true;
-      } else if (!or && !parsed.satisfied) {
+      } else if (!or && !satisfied) {
         orAndSatisfied = false;
       }
     }
@@ -660,24 +582,6 @@ const parsePrereqsOr = (input: any, depth: number): any => {
   return orParsed;
 };
 
-const semesters = ["fall", "intersession", "spring", "summer"];
-
-const makeCourseRanks = (
-  courses: UserCourse[],
-  courseRank: Map<string, number>,
-  planNameNumPairs: Map<string, number>
-) => {
-  courses.forEach((course) => {
-    const yearRank = planNameNumPairs.get(course.year);
-    if (yearRank !== undefined) {
-      courseRank.set(
-        yearRank + "," + semesters.indexOf(course.term),
-        yearRank + semesters.indexOf(course.term)
-      );
-    }
-  });
-};
-
 // Checks if a prereq is satisfied by plan
 // plan is the user's plan
 // number is the course number of a prereq
@@ -689,31 +593,65 @@ export const checkPrereq = (
   year: number,
   semester: SemesterType
 ): boolean => {
-  const courseRank = new Map<string, number>();
   let satisfied: boolean = false;
-  const planNameNumPairs = new Map(
-    plan.years.map((year) => {
-      return [year.name, year.year];
-    })
-  );
-  makeCourseRanks(courses, courseRank, planNameNumPairs);
-
-  const currTimeVal = courseRank.get(
-    year + "," + semesters.indexOf(semester.toLowerCase())
-  );
-
+  
   courses.forEach((course) => {
-    const courseTimeVal = courseRank.get(
-      planNameNumPairs.get(course.year) + "," + semesters.indexOf(course.term)
-    );
     if (
       course.number === preReqNumber &&
-      currTimeVal !== undefined &&
-      courseTimeVal !== undefined &&
-      currTimeVal > courseTimeVal
+      prereqInPast(course, year, semester)
     ) {
       satisfied = true;
     }
   });
+  //console.log(preReqNumber, satisfied);
   return satisfied;
+};
+
+const semesters = ["fall", "intersession", "spring", "summer"];
+
+const prereqInPast = (course: UserCourse, year: number, semester: SemesterType): boolean => {
+  return true;
+  // TODO: implement this
+
+  // console.log(course.year);
+  // console.log(year);
+  // if (course.year < year) {
+  //   return true;
+  // } else if (course.year > year) {
+  //   return false;
+  // } else {
+  //   return semesters.indexOf(course.term) < semesters.indexOf(semester);
+  // }
+}
+
+export const checkAllPrereqs = (
+  currCourses: UserCourse[],
+  plan: Plan,
+  number: String,
+  year: number,
+  semester: SemesterType,
+  allCourses: Course[],
+): boolean => {
+  const course = getCourse(number, allCourses);
+  if (course !== null) {
+    let filtered = filterNNegatives(course);
+    let processed;
+    if (filtered.length === 0) {
+      processed = {
+        numList: [],
+        numNameList: [],
+        expr: "",
+      };
+    } else {
+      processed = processPrereqs(filtered, allCourses);
+    }
+    if (processed.numList.length === 0) {
+      return true;
+    }
+    let split = process(processed);
+    let list = createPrereqBulletList(split);
+    let orParsed = parsePrereqsOr(list, 0);
+    return getNonStringPrereq(currCourses, plan, orParsed, year, semester);
+  }
+  return false;
 };

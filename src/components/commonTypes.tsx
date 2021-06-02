@@ -51,7 +51,7 @@ export type UserCourse = {
   distribution_ids: string[];
   plan_id: string;
   user_id: string;
-  year: string;
+  year: number;
 };
 
 export type Year = {
