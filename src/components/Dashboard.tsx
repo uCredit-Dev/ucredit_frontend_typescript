@@ -3,6 +3,9 @@ import Content from "./body/Content";
 import { ToastContainer } from "react-toastify";
 import UserSection from "./header/UserSection";
 
+/**
+ * The dashboard that displays the user's plan.
+ */
 const Dashboard = () => {
   return (
     <div className="flex flex-col w-full h-full">

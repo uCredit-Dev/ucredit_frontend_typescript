@@ -106,56 +106,8 @@ const Form = (props: { setSearching: Function }) => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [searchTerm, searchFilters, showAllResults]);
 
-  function substringSearch(
-    extras: SearchExtras,
-    queryLength: number,
-    querySubstrs: string[]
-  ) {
-    let courses: Course[] = [];
-
-    querySubstrs.forEach((subQuery) => {
-      courses.push(...find({ ...extras, query: subQuery }));
-    });
-
-    courses.forEach((course: Course) => {
-      if (!searchedCourses.has(course.number)) {
-        searchedCourses.set(course.number, {
-          course: course,
-          priority: queryLength,
-        });
-      }
-    });
-
-    if (queryLength > minLength) {
-      performSmartSearch(extras, queryLength - 1)();
-    } else {
-      const newSearchList: Course[] = getNewSearchList();
-      dispatch(updateRetrievedCourses(newSearchList));
-      if (newSearchList.length > 0) {
-        props.setSearching(false);
-        toast.success("Found " + newSearchList.length + " results!", {
-          position: "top-right",
-          autoClose: 5000,
-          hideProgressBar: true,
-          closeOnClick: true,
-          pauseOnHover: true,
-          draggable: true,
-          progress: undefined,
-        });
-      } else {
-        toast.error("Found 0 results!", {
-          position: "top-right",
-          autoClose: 5000,
-          hideProgressBar: true,
-          closeOnClick: true,
-          pauseOnHover: true,
-          draggable: true,
-          progress: undefined,
-        });
-      }
-    }
-  }
-
+  // Finds course based on the search conditions given in extras.
+  // Finds all relevant courses by starting with all courses and filtering them out.
   const find = (extras: SearchExtras): Course[] => {
     let courses: Course[] = [...allCourses];
     if (extras.query.length > 0) {
@@ -224,9 +176,66 @@ const Form = (props: { setSearching: Function }) => {
     return courses;
   };
 
+  // Updates search results and makes a toast based on amount of results found.
+  const updateSearchResults = (results: Course[]) => {
+    dispatch(updateRetrievedCourses(results));
+    if (results.length > 0) {
+      props.setSearching(false);
+      toast.success("Found " + results.length + " results!", {
+        position: "top-right",
+        autoClose: 5000,
+        hideProgressBar: true,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+      });
+    } else {
+      toast.error("Found 0 results!", {
+        position: "top-right",
+        autoClose: 5000,
+        hideProgressBar: true,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+      });
+    }
+  };
+
+  // Searches for all subquery combinations for the specific substring length, queryLength.
+  // Calls performSmartSearch again if the queryLength is still greater than the
+  // minimum query length. Otherwise, displays results.
+  function substringSearch(
+    extras: SearchExtras,
+    queryLength: number,
+    querySubstrs: string[]
+  ) {
+    let courses: Course[] = [];
+
+    querySubstrs.forEach((subQuery) => {
+      courses.push(...find({ ...extras, query: subQuery }));
+    });
+
+    courses.forEach((course: Course) => {
+      if (!searchedCourses.has(course.number)) {
+        searchedCourses.set(course.number, {
+          course: course,
+          priority: queryLength,
+        });
+      }
+    });
+
+    if (queryLength > minLength) {
+      performSmartSearch(extras, queryLength - 1)();
+    } else {
+      const newSearchList: Course[] = getNewSearchList();
+      updateSearchResults(newSearchList);
+    }
+  }
+
   // Performs search call with filters to backend and updates redux with retrieved courses.
   // Smart search: performs search with all possible substring combinations of lengths 3 and above based on search query.
-  // TODO: Optimize this so it doesn't call 10 billion get requests.
   const performSmartSearch =
     (extras: SearchExtras, queryLength: number) => () => {
       const querySubstrs: string[] = [];
@@ -239,39 +248,15 @@ const Form = (props: { setSearching: Function }) => {
         !extras.query.includes(".") &&
         isNaN(parseInt(extras.query))
       ) {
+        // Finds all substring combinations and searches.
         for (let i = 0; i < searchTerm.length - queryLength + 1; i++) {
           querySubstrs.push(searchTerm.substring(i, i + queryLength));
         }
-
-        // For each query substring, search.
         substringSearch(extras, queryLength, querySubstrs);
       } else {
         // Perform old search if search query is less than the minLength for a smart search.
         let courses: Course[] = find(extras);
-        dispatch(updateRetrievedCourses(courses));
-
-        if (courses.length > 0) {
-          props.setSearching(false);
-          toast.success("Found " + courses.length + " results!", {
-            position: "top-right",
-            autoClose: 5000,
-            hideProgressBar: true,
-            closeOnClick: true,
-            pauseOnHover: true,
-            draggable: true,
-            progress: undefined,
-          });
-        } else {
-          toast.error("Found 0 results!", {
-            position: "top-right",
-            autoClose: 5000,
-            hideProgressBar: true,
-            closeOnClick: true,
-            pauseOnHover: true,
-            draggable: true,
-            progress: undefined,
-          });
-        }
+        updateSearchResults(courses);
       }
     };
 
@@ -303,10 +288,12 @@ const Form = (props: { setSearching: Function }) => {
     dispatch(updateSearchTerm(event.target.value));
   };
 
+  // Shows all results.
   const showAll = () => {
     setShowAllResults(true);
   };
 
+  // Only shows first page of results.
   const dontShowAll = () => {
     setShowAllResults(false);
   };

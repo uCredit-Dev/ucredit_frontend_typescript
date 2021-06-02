@@ -14,11 +14,14 @@ import ReactTooltip from "react-tooltip";
   List of searched courses.
 */
 const SearchList = (props: { searching: boolean }) => {
+  // Component state setup.
   const [pageNum, setPageNum] = useState(0);
   const [pageCount, setPageCount] = useState(0);
-  // const [allCourses, setAllCourses] =
+
+  // Redux setup
   const courses = useSelector(selectRetrievedCourses);
   const dispatch = useDispatch();
+
   let coursesPerPage = 10;
 
   // Updates pagination every time the searched courses change.
@@ -71,6 +74,7 @@ const SearchList = (props: { searching: boolean }) => {
       preReq: [],
       restrictions: [],
     };
+
     dispatch(updateInspectedCourse(placeholderCourse));
   };
 
@@ -123,6 +127,7 @@ const SearchList = (props: { searching: boolean }) => {
   );
 };
 
+// Below is the pagination component.
 type PaginationProps = {
   pageCount: number;
   handlePageClick: any;

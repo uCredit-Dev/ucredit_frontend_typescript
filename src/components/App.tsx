@@ -17,10 +17,13 @@ const api = "https://ucredit-api.herokuapp.com/api";
 */
 function App() {
   const dispatch = useDispatch();
+
+  // Component state setup.
   const [welcomeScreen, setWelcomeScreen] = useState<boolean>(true);
   // Makes sure that the welcome screen displays for at least a set amount of time.
   const [minTimerGuard, setMinTimerGuard] = useState<boolean>(false);
 
+  // Checks whether we should close the welcome screen. Will not if the guard is up.
   const checkWelcomeScreenState = () => {
     if (minTimerGuard) {
       setWelcomeScreen(false);
@@ -29,6 +32,7 @@ function App() {
     }
   };
 
+  // Makes sure that welcome screen stays on for at least 1.5 seconds.
   useEffect(() => {
     setTimeout(() => {
       checkWelcomeScreenState();
@@ -36,6 +40,7 @@ function App() {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [minTimerGuard]);
 
+  // Retrieves all database SIS courses.
   useEffect(() => {
     axios
       .get(api + "/search", {

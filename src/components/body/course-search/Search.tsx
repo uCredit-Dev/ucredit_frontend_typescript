@@ -25,6 +25,7 @@ const Search = () => {
   const searchSemester = useSelector(selectSemester);
   const currentPlan = useSelector(selectPlan);
 
+  // Gets specific year's name.
   const getYearName = (): string => {
     let name = "";
     currentPlan.years.forEach((year) => {

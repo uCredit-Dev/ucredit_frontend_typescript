@@ -55,10 +55,11 @@ const termFilters: (SemesterType | "None")[] = [
 /* 
   Displays course information once a user selects a course in the search list
 */
+// TODO: Try to split this up into more, smaller components.
 const CourseDisplay = () => {
   // Redux Setup
-  const inspected = useSelector(selectInspectedCourse);
   const dispatch = useDispatch();
+  const inspected = useSelector(selectInspectedCourse);
   const user = useSelector(selectUser);
   const semester = useSelector(selectSemester);
   const year = useSelector(selectYear);
@@ -103,6 +104,7 @@ const CourseDisplay = () => {
   };
 
   // Checks if the course satisfies the filters given to it.
+  // Behavior differs based on whether you're checking for credit distributions or fine requirements.
   const checkFilters = (filter: Filter, course: Course, fine: boolean) => {
     if (filter.area !== undefined) {
       const areaRegex: RegExp = new RegExp(
@@ -216,6 +218,7 @@ const CourseDisplay = () => {
     }
   };
 
+  // Gets current year name.
   const getYear = (): Year | null => {
     let out: Year | null = null;
     currentPlan.years.forEach((currPlanYear) => {
@@ -368,7 +371,6 @@ const CourseDisplay = () => {
 
   // For changing the year to add course while in the search popout.
   const handleYearChange = (event: any) => {
-    console.log("changing to", event.target.value);
     dispatch(
       updateSearchTime({
         searchYear: parseInt(event.target.value),
@@ -377,6 +379,7 @@ const CourseDisplay = () => {
     );
   };
 
+  // Clears inspected course.
   const clearInspected = () => {
     dispatch(updateInspectedCourse("None"));
   };
