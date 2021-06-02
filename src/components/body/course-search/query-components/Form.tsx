@@ -8,7 +8,6 @@ import {
   selectSearchFilters,
   selectSemester,
 } from "../../../slices/searchSlice";
-import axios, { AxiosResponse } from "axios";
 import {
   AreaType,
   Course,
@@ -25,12 +24,10 @@ import "react-toastify/dist/ReactToastify.css";
 import Filters from "./Filters";
 import { selectAllCourses } from "../../../slices/userSlice";
 
-// TODO: Multi select for various filters.
-const api = "https://ucredit-api.herokuapp.com/api";
-
 /* 
   Search form, including the search query input and filters.
 */
+// TODO: Multi select for various filters.
 const Form = (props: { setSearching: Function }) => {
   // Set up redux dispatch and variables.
   const dispatch = useDispatch();
@@ -42,9 +39,9 @@ const Form = (props: { setSearching: Function }) => {
   // Component state setup
   const [showCriteria, setShowCriteria] = useState(false);
   const [showAllResults, setShowAllResults] = useState<boolean>(false);
-  const [searchedCourses, setSearchedCourses] = useState<
-    Map<string, SearchMapEl>
-  >(new Map<string, SearchMapEl>());
+  const [searchedCourses] = useState<Map<string, SearchMapEl>>(
+    new Map<string, SearchMapEl>()
+  );
 
   // On opening search, set the term filter to match semester you're adding to.
   useEffect(() => {
@@ -56,9 +53,9 @@ const Form = (props: { setSearching: Function }) => {
     query: string;
     credits: number | null;
     areas: AreaType | null;
-    tags: TagType | null; // TODO: fill this out with array of all tags
+    tags: TagType | null;
     term: SemesterType | null;
-    department: DepartmentType | null; // TODO: fill this out with array of departments
+    department: DepartmentType | null;
     wi: boolean | null;
   };
 
@@ -245,7 +242,6 @@ const Form = (props: { setSearching: Function }) => {
         for (let i = 0; i < searchTerm.length - queryLength + 1; i++) {
           querySubstrs.push(searchTerm.substring(i, i + queryLength));
         }
-        console.log("searching", queryLength, querySubstrs);
 
         // For each query substring, search.
         substringSearch(extras, queryLength, querySubstrs);
@@ -281,7 +277,6 @@ const Form = (props: { setSearching: Function }) => {
 
   // Gets new list of searched courses.
   const getNewSearchList = (): Course[] => {
-    console.log("getting new searched list");
     let searchList: Course[] = [];
 
     // sorts searchedCourses map by priority.
@@ -293,14 +288,13 @@ const Form = (props: { setSearching: Function }) => {
 
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
     for (let [key, value] of searchedCourses) {
-      console.log(value);
       searchList.push(value.course);
     }
 
     if (!showAllResults) {
       searchList = searchList.slice(0, 10);
     }
-    console.log(searchedCourses, searchList);
+
     return searchList;
   };
 

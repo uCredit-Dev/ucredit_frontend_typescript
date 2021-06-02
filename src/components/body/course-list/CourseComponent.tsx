@@ -21,7 +21,6 @@ import {
   selectPlan,
   updateSelectedPlan,
 } from "../../slices/currentPlanSlice";
-import { checkPrereq, getCourse } from "../../assets";
 
 const api = "https://ucredit-api.herokuapp.com/api";
 
@@ -49,6 +48,7 @@ function CourseComponent({ year, course, semester }: courseProps) {
 
   useEffect(() => {
     isSatisfied();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [currPlanCourses]);
 
   // Sets or resets the course displayed in popout after user clicks it in course list.
@@ -146,7 +146,6 @@ function CourseComponent({ year, course, semester }: courseProps) {
       semester
     );
     setSatisfied(await temp);
-    //console.log(course.number + " is satisfied? " + await temp);
   };
 
   return (

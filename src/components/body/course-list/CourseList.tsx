@@ -1,14 +1,12 @@
 import React, { useState, useEffect } from "react";
 import Year from "./Year";
 import { useSelector, useDispatch } from "react-redux";
-import { Course, UserCourse } from "../../commonTypes";
+import { UserCourse } from "../../commonTypes";
 import axios from "axios";
 import {
   selectPlan,
   updateCurrentPlanCourses,
 } from "../../slices/currentPlanSlice";
-import {} from "../../slices/userSlice";
-import { JsxElement } from "typescript";
 import {
   selectPlaceholder,
   selectSearchStatus,
@@ -25,27 +23,7 @@ function CourseList() {
   const searching = useSelector(selectSearchStatus);
   const placeholder = useSelector(selectPlaceholder);
 
-  // Gets all courses from a specific semester in the current plan..
-  const getCourses = (courseIDs: string[], updater: Function) => {
-    const totalCourses: UserCourse[] = [];
-    if (courseIDs.length === 0) {
-      updater([]);
-    } else {
-      courseIDs.forEach((courseId) => {
-        axios
-          .get(api + "/courses/" + courseId)
-          .then((retrieved) => {
-            const data = retrieved.data.data;
-            totalCourses.push(data);
-            if (totalCourses.length === courseIDs.length) {
-              updater(totalCourses);
-            }
-          })
-          .catch((err) => console.log(err));
-      });
-    }
-  };
-
+  // Component State setup.
   const [elements, setElements] = useState<JSX.Element[]>([]);
 
   useEffect(() => {
@@ -94,6 +72,7 @@ function CourseList() {
         });
       }
     });
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [currentPlan, currentPlan._id, searching, placeholder]);
 
   return (
