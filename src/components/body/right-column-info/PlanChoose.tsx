@@ -79,11 +79,11 @@ const PlanChoose = (props: PlanChooseProps) => {
               axios
                 .get(api + "/years/" + plan._id)
                 .then((resp) => {
-                  totPlans.push({ ...resp.data.data, years: resp.data.data });
+                  totPlans.push({ ...plan, years: resp.data.data });
                   if (totPlans.length === retrievedPlans.length) {
                     // Initial load, there is no current plan, so we set the current to be the first plan in the array.
-                    dispatch(updatePlanList(retrievedPlans));
-                    dispatch(updateSelectedPlan(retrievedPlans[0]));
+                    dispatch(updatePlanList(totPlans));
+                    dispatch(updateSelectedPlan(totPlans[0]));
                   }
                 })
                 .catch((err) => console.log(err));

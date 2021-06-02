@@ -26,6 +26,7 @@ function CourseList() {
   // Component State setup.
   const [elements, setElements] = useState<JSX.Element[]>([]);
 
+  // Gets all courses for each year and generates year objects based on them.
   useEffect(() => {
     const jsx: JSX.Element[] = [];
     const totCourses: UserCourse[] = [];
@@ -34,6 +35,7 @@ function CourseList() {
       if (year.courses.length === 0) {
         jsx.push(
           <Year
+            key={year._id}
             id={year.year}
             customStyle="cursor-pointer"
             yearNum={year.year}
@@ -55,6 +57,7 @@ function CourseList() {
               if (courses.length === year.courses.length) {
                 jsx.push(
                   <Year
+                    key={year._id}
                     id={year.year}
                     customStyle="cursor-pointer"
                     yearNum={year.year}
