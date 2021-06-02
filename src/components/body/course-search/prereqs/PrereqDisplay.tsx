@@ -28,6 +28,7 @@ import {
   selectCurrentPlanCourses,
   selectPlan,
 } from "../../../slices/currentPlanSlice";
+import { selectAllCourses } from "../../../slices/userSlice";
 
 // Parsed prereq type
 // satisfied: a boolean that tells whether the prereq should be marked with green (satisfied) or red (unsatisfied)
@@ -48,6 +49,7 @@ const PrereqDisplay = () => {
   const semester = useSelector(selectSemester);
   const year = useSelector(selectYear);
   const currentPlan = useSelector(selectPlan);
+  const allCourses = useSelector(selectAllCourses);
 
   // Component states
   const [prereqDisplayMode, setPrereqDisplayMode] = useState(2);
@@ -58,8 +60,7 @@ const PrereqDisplay = () => {
   const [displayPreReqsView, setdisplayPreReqsView] = useState<Number>(1);
 
   const display = async (preReqs: any[]) => {
-    const prereqs = await processPrereqs(preReqs);
-    console.log(prereqs);
+    const prereqs = processPrereqs(preReqs, allCourses);
     afterGathering(prereqs.numNameList, prereqs.numList, prereqs.expr);
   };
 
@@ -75,7 +76,6 @@ const PrereqDisplay = () => {
     // First get all valid preReqs (isNegative = true)
     let preReqs = filterNNegatives(inspected);
     setNNegativePreReqs(preReqs);
-    //console.log(preReqs);
 
     // If there exists preReqs, we need to process and display them.
     if (inspected !== "None" && preReqs.length > 0) {
