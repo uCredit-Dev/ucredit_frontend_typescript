@@ -29,13 +29,14 @@ type generateNewPlanProps = {
  * Reusable component that generates a new empty plan.
  */
 const GenerateNewPlan: React.FC<generateNewPlanProps> = (props) => {
+  // Redux setup
   const dispatch = useDispatch();
-
   const user = useSelector(selectUser);
   const planList = useSelector(selectPlanList);
   const toAddName = useSelector(selectToAddName);
   const toAddMajor = useSelector(selectToAddMajor);
 
+  // UseEffect that generates a new plan everytime generateNew is true.
   useEffect(() => {
     if (props.generateNew === false || toAddMajor === null) return;
 

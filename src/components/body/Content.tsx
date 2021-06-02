@@ -17,7 +17,11 @@ const api = "https://ucredit-api.herokuapp.com/api";
   Holds all dashboard components.
 */
 function Content() {
+  // Component state setup.
   const [distributions, setDistributions] = useState<Distribution[]>([]);
+  const [distributionOpen, setDistributionOpen] = useState<boolean>(true);
+
+  // Redux setup.
   const searching = useSelector(selectSearchStatus);
   const currentPlan = useSelector(selectPlan);
   const deleteStatus = useSelector(selectDeleteStatus);
@@ -53,8 +57,6 @@ function Content() {
         });
     }
   };
-
-  const [distributionOpen, setDistributionOpen] = useState<boolean>(true);
 
   return (
     // <div className="flex flex-row flex-wrap-reverse mt-content medium:px-48 h-full">

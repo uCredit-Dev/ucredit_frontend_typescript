@@ -11,15 +11,21 @@ const api = "https://ucredit-api.herokuapp.com/api";
 const deploy = "https://ucredit.herokuapp.com/";
 const dev = "http://localhost:3000/";
 
+/**
+ * The login page, designed after the Spotify login page..
+ * @param props contains the various resources provided by react-cookie
+ */
 const DashboardEntry = (props: any) => {
+  // Redux setup.
   const dispatch = useDispatch();
   const user = useSelector(selectUser);
 
-  // Component state setup
+  // Component state setup.
   const [cookies, setCookies] = useState(props.cookies);
   const [authCookies, setAuthCookie] = useCookies(["connect.sid"]);
   const [cookieUpdate, setCookieUpdate] = useState<boolean>(true);
 
+  // React router state setup.
   let history = useHistory();
   let location = useLocation();
 
@@ -117,6 +123,7 @@ const DashboardEntry = (props: any) => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [cookies, authCookies]);
 
+  // Handles if the user is invalid.
   const handleGuest = () => {
     dispatch(updateUser(guestUser));
     history.push("/dashboard");

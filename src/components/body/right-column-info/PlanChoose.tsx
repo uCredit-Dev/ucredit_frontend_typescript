@@ -154,6 +154,7 @@ const PlanChoose = (props: PlanChooseProps) => {
     }
   };
 
+  // Adds a new plan every time a new guest user is created and they don't have a a plan.
   useEffect(() => {
     if (user.plan_ids.length === 0 && user._id === "guestUser") {
       // Post req body for a new plan

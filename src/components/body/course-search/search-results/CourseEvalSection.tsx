@@ -64,6 +64,7 @@ const CourseEvalSection = () => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [courseReviews]);
 
+  // Display component function.
   const displayEvals = () => {
     if (courseReviews.length === 0)
       return (
@@ -71,16 +72,6 @@ const CourseEvalSection = () => {
           No reviews available!
         </div>
       );
-    // Is this following if statement necessary? Commented out for now
-    // if (courseReviews.length === 1)
-    //   return (
-    //     <>
-    //       <div>
-    //         {courseEvals.term} | {courseEvals.prof} | {courseEvals.rating}
-    //       </div>
-    //       <div>Summary: {courseEvals.summary}</div>
-    //     </>
-    //   );
     return (
       <div className="mt-2">
         {courseReviews.map(({ i, g, s }, index: number) => {
