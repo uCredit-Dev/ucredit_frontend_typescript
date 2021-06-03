@@ -329,10 +329,12 @@ const Form = (props: { setSearching: Function }) => {
       </div>
       <div>
         {showAllResults ? (
-          <button onClick={dontShowAll}>Show Top Results (faster)</button>
+          <button onClick={dontShowAll}>
+            <u>Show Top 10 Results</u>
+          </button>
         ) : (
           <button onClick={showAll}>
-            Don't see your class? Show all results (slower)
+            <u>Don't see your class? Show all results.</u>
           </button>
         )}
       </div>

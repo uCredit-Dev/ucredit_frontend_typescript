@@ -8,6 +8,7 @@ import {
   updateSearchTime,
   updateSearchTerm,
   updatePlaceholder,
+  selectInspectedCourse,
 } from "../../slices/searchSlice";
 import axios from "axios";
 import { ReactComponent as RemoveSvg } from "../../svg/Remove.svg";
@@ -21,6 +22,7 @@ import {
   selectPlan,
   updateSelectedPlan,
 } from "../../slices/currentPlanSlice";
+import { selectAllCourses } from "../../slices/userSlice";
 
 const api = "https://ucredit-api.herokuapp.com/api";
 
@@ -45,11 +47,27 @@ function CourseComponent({ year, course, semester }: courseProps) {
   const dispatch = useDispatch();
   const currentPlan = useSelector(selectPlan);
   const currPlanCourses = useSelector(selectCurrentPlanCourses);
+  const allCourses = useSelector(selectAllCourses);
 
   useEffect(() => {
     isSatisfied();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
+  });
+
+  useEffect(() => {
+    isSatisfied();
   }, [currPlanCourses]);
+  
+  const isSatisfied = () => {
+    const temp = checkAllPrereqs(
+      currPlanCourses,
+      currentPlan,
+      course.number,
+      year,
+      semester,
+      allCourses
+    );
+    setSatisfied(temp);
+  };
 
   // Sets or resets the course displayed in popout after user clicks it in course list.
   const displayCourses = () => {
@@ -135,17 +153,6 @@ function CourseComponent({ year, course, semester }: courseProps) {
       }
     });
     return out;
-  };
-
-  const isSatisfied = async () => {
-    const temp = checkAllPrereqs(
-      currPlanCourses,
-      currentPlan,
-      course.number,
-      year,
-      semester
-    );
-    setSatisfied(await temp);
   };
 
   return (

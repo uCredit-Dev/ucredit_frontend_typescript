@@ -114,7 +114,7 @@ const SearchList = (props: { searching: boolean }) => {
                   Sorry, no course found...
                 </>
               ) : (
-                <div>
+                <div className="text-center text-gray-400 text-lg">
                   Type something in the search box or use the filters to start
                   searching!
                 </div>
