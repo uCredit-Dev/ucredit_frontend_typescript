@@ -53,6 +53,18 @@ function CourseComponent({ year, course, semester }: courseProps) {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [currPlanCourses]);
 
+  const isSatisfied = () => {
+    const temp = checkAllPrereqs(
+      currPlanCourses,
+      currentPlan,
+      course.number,
+      year,
+      semester,
+      allCourses
+    );
+    setSatisfied(temp);
+  };
+
   // Sets or resets the course displayed in popout after user clicks it in course list.
   const displayCourses = () => {
     dispatch(updateSearchTime({ searchYear: year, searchSemester: semester }));
@@ -112,7 +124,6 @@ function CourseComponent({ year, course, semester }: courseProps) {
         closeOnClick: true,
         pauseOnHover: true,
         draggable: true,
-        progress: undefined,
       });
       dispatch(updateSelectedPlan(newPlan));
     });
@@ -137,18 +148,6 @@ function CourseComponent({ year, course, semester }: courseProps) {
       }
     });
     return out;
-  };
-
-  const isSatisfied = () => {
-    const temp = checkAllPrereqs(
-      currPlanCourses,
-      currentPlan,
-      course.number,
-      year,
-      semester,
-      allCourses
-    );
-    setSatisfied(temp);
   };
 
   return (

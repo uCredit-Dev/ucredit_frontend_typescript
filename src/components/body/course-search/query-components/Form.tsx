@@ -188,7 +188,6 @@ const Form = (props: { setSearching: Function }) => {
         closeOnClick: true,
         pauseOnHover: true,
         draggable: true,
-        progress: undefined,
       });
     } else {
       toast.error("Found 0 results!", {
@@ -198,7 +197,6 @@ const Form = (props: { setSearching: Function }) => {
         closeOnClick: true,
         pauseOnHover: true,
         draggable: true,
-        progress: undefined,
       });
     }
   };
