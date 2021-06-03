@@ -76,41 +76,104 @@ const PlanAdd = (props: { setGenerateNew: Function }) => {
     }
   };
 
+  const placeholderOptions = [
+    { value: "foo", label: "foo" },
+    { value: "bar", label: "bar" },
+    { value: "baz", label: "baz" },
+  ];
+
+  const selectPlanOption = [
+    { value: "default", label: "Default" },
+    { value: "template", label: "Template" },
+  ];
+
   return (
     <div className="absolute top-0">
       {/* Background Grey */}
-      <div className="fixed z-20 left-0 top-0 m-0 w-full h-screen bg-black opacity-50"></div>
+      <div className="fixed top-0 left-0 z-20 w-full h-screen m-0 bg-black opacity-50"></div>
 
       {/* Popup */}
       <div
         className={
-          "fixed flex flex-col bg-primary rounded z-20 w-9/12 h-5/6 top-1/3 left-1/2 transform -translate-x-1/2 -translate-y-1/3"
+          "fixed flex flex-col bg-primary rounded z-20 w-9/12 h-auto top-1/3 left-1/2 transform -translate-x-1/2 -translate-y-1/3"
         }
       >
-        <div className="px-4 py-2 text-white text-coursecard font-semibold select-none">
+        <div className="px-4 py-2 text-white select-none text-coursecard">
           Adding a new plan!
         </div>
         {/* Search area */}
-        <div className="flex w-full h-full text-coursecard">
-          <div
-            className={
-              "flex flex-col rounded bg-gray-200 w-full h-full flex-none"
-            }
-          >
-            <input
-              autoFocus
-              className="mr-2 px-1 w-full w-full h-6 rounded outline-none"
-              type="text"
-              placeholder={
-                "Course title or number (ie. Physics, 601.280, etc.)"
-              }
-              defaultValue={toAddName}
-              onChange={handleNameChange}
-            />
-            Select Major
-            <Select options={majorOptions} onChange={handleMajorChange} />
-            <button onClick={createNewPlan}>Add</button>
-            <button onClick={handleCancel}>Cancel</button>
+        <div className="w-full h-full text-coursecard">
+          <div className="w-full h-auto p-8 bg-gray-200 rounded">
+            <div className="flex flex-row mb-4">
+              <input
+                autoFocus
+                className="flex-none w-5/12 px-1 mr-8 rounded h-selectbox"
+                type="text"
+                placeholder="Plan Name"
+                defaultValue={toAddName}
+                onChange={handleNameChange}
+              />
+              <div className="flex flex-row w-full">
+                <div className="flex flex-row items-center flex-none mr-2">
+                  Number of years
+                </div>
+                <Select
+                  options={placeholderOptions}
+                  className="flex-grow h-6 px-1 rounded"
+                />
+              </div>
+            </div>
+            <div className="flex flex-row justify-between mb-4">
+              <Select
+                options={majorOptions}
+                onChange={handleMajorChange}
+                placeholder="Primary Major"
+                className="w-full mr-8"
+              />
+              <Select
+                options={placeholderOptions}
+                onChange={() => {}}
+                placeholder="Secondary Major (developing)"
+                className="w-full"
+              />
+            </div>
+            <div className="flex flex-row justify-between mb-4">
+              <Select
+                options={placeholderOptions}
+                onChange={() => {}}
+                placeholder="Select a Plan Option (developing)"
+                className="w-full mr-8"
+              />
+              <Select
+                options={placeholderOptions}
+                onChange={() => {}}
+                placeholder="Minor (developing)"
+                className="w-full"
+              />
+            </div>
+            <div className="flex flex-row items-center w-full mb-4">
+              <div className="flex-none mr-8">Select a Plan Option</div>
+              <Select
+                options={selectPlanOption}
+                onChange={() => {}}
+                placeholder="Please Select"
+                className="w-full"
+              />
+            </div>
+            <div className="flex flex-row justify-end">
+              <button
+                className="w-16 h-10 p-2 mr-4 text-white rounded bg-primary"
+                onClick={createNewPlan}
+              >
+                Add
+              </button>
+              <button
+                className="w-16 h-10 p-2 text-white rounded bg-primary"
+                onClick={handleCancel}
+              >
+                Cancel
+              </button>
+            </div>
           </div>
         </div>
       </div>

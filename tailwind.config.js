@@ -31,6 +31,7 @@ module.exports = {
         header: "65px",
         yearheading: "42px",
         criteria: "300px",
+        selectbox: "38px",
       },
       margin: {
         content: "100px",
