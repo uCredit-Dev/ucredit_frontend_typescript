@@ -43,7 +43,7 @@ const GenerateNewPlan: React.FC<generateNewPlanProps> = (props) => {
     const planBody = {
       name: "Unnamed Plan",
       user_id: user._id,
-      majors: [toAddMajor.name],
+      majors: [toAddMajor.degree_name],
       expireAt:
         user._id === "guestUser" ? Date.now() + 60 * 60 * 24 * 1000 : undefined,
     };
@@ -96,7 +96,6 @@ const GenerateNewPlan: React.FC<generateNewPlanProps> = (props) => {
                     closeOnClick: true,
                     pauseOnHover: true,
                     draggable: true,
-                    progress: undefined,
                   });
                   if (user._id === "guestUser") {
                     const planIdArray = [newPlan._id];

@@ -9,83 +9,83 @@ import {
 
 // IMPORTANT: All test objs may be inaccurate with new types
 
-export const testDistributionTot: Distribution = {
-  _id: "testDistribution0",
-  name: "Total Credits",
-  required: 127,
-  planned: 64,
-  current: 56,
-  satisfied: false,
-  courses: [],
-  filter: {},
-  user_id: "testUser1",
-  plan_id: "testPlan1",
-};
+// export const testDistributionTot: Distribution = {
+//   _id: "testDistribution0",
+//   name: "Total Credits",
+//   required: 127,
+//   planned: 64,
+//   current: 56,
+//   satisfied: false,
+//   courses: [],
+//   filter: {},
+//   user_id: "testUser1",
+//   plan_id: "testPlan1",
+// };
 
-export const testDistributionElec: Distribution = {
-  _id: "testDistribution3",
-  name: "General Electives",
-  required: 28,
-  planned: 18,
-  current: 10,
-  satisfied: false,
-  courses: [],
-  filter: {},
-  user_id: "testUser1",
-  plan_id: "testPlan1",
-};
+// export const testDistributionElec: Distribution = {
+//   _id: "testDistribution3",
+//   name: "General Electives",
+//   required: 28,
+//   planned: 18,
+//   current: 10,
+//   satisfied: false,
+//   courses: [],
+//   filter: {},
+//   user_id: "testUser1",
+//   plan_id: "testPlan1",
+// };
 
-export const testDistributionCS: Distribution = {
-  _id: "testDistribution1",
-  name: "Computer Science",
-  required: 24,
-  planned: 18,
-  current: 15,
-  satisfied: false,
-  courses: [],
-  filter: {},
-  user_id: "testUser1",
-  plan_id: "testPlan1",
-};
+// export const testDistributionCS: Distribution = {
+//   _id: "testDistribution1",
+//   name: "Computer Science",
+//   required: 24,
+//   planned: 18,
+//   current: 15,
+//   satisfied: false,
+//   courses: [],
+//   filter: {},
+//   user_id: "testUser1",
+//   plan_id: "testPlan1",
+// };
 
-export const testDistributionMath: Distribution = {
-  _id: "testDistribution2",
-  name: "Mathematics",
-  required: 24,
-  planned: 12,
-  current: 8,
-  satisfied: false,
-  courses: [],
-  filter: {},
-  user_id: "testUser1",
-  plan_id: "testPlan1",
-};
+// export const testDistributionMath: Distribution = {
+//   _id: "testDistribution2",
+//   name: "Mathematics",
+//   required: 24,
+//   planned: 12,
+//   current: 8,
+//   satisfied: false,
+//   courses: [],
+//   filter: {},
+//   user_id: "testUser1",
+//   plan_id: "testPlan1",
+// };
 
-export const testDistributionNS: Distribution = {
-  _id: "testDistribution4",
-  name: "Natural Sciences",
-  required: 18,
-  planned: 12,
-  current: 8,
-  satisfied: false,
-  courses: [],
-  filter: {},
-  user_id: "testUser1",
-  plan_id: "testPlan1",
-};
+// export const testDistributionNS: Distribution = {
+//   _id: "testDistribution4",
+//   name: "Natural Sciences",
+//   required: 18,
+//   planned: 12,
+//   current: 8,
+//   satisfied: false,
+//   courses: [],
+//   filter: {},
+//   user_id: "testUser1",
+//   plan_id: "testPlan1",
+// };
 
-export const testDistributionHumanities: Distribution = {
-  _id: "testDistribution5",
-  name: "Humanities",
-  required: 16,
-  planned: 12,
-  current: 8,
-  satisfied: false,
-  courses: [],
-  filter: {},
-  user_id: "testUser1",
-  plan_id: "testPlan1",
-};
+// export const testDistributionHumanities: Distribution = {
+//   _id: "testDistribution5",
+//   name: "Humanities",
+//   required: 16,
+//   planned: 12,
+//   current: 8,
+//   satisfied: false,
+//   courses: [],
+//   filter: {},
+//   user_id: "testUser1",
+//   plan_id: "testPlan1",
+// };
 
 export const testCourse1: Course = {
   title: "Test course 1",
@@ -117,41 +117,41 @@ export const testCourse2: Course = {
   restrictions: [],
 };
 
-export const userTestCourse1: UserCourse = {
-  _id: "userTestCourse1",
-  user_id: "mliu78",
-  plan_id: "testPlan1",
-  title: testCourse1.title,
-  term: "Fall",
-  number: testCourse1.number,
-  department: testCourse1.department,
-  tags: testCourse1.tags,
-  area: "N",
-  credits: parseInt(testCourse1.credits),
-  wi: testCourse1.wi,
-  taken: false,
-  ratings: [],
-  year: "Freshman",
-  distribution_ids: [testDistributionNS._id, testDistributionTot._id],
-};
+// export const userTestCourse1: UserCourse = {
+//   _id: "userTestCourse1",
+//   user_id: "mliu78",
+//   plan_id: "testPlan1",
+//   title: testCourse1.title,
+//   term: "Fall",
+//   number: testCourse1.number,
+//   department: testCourse1.department,
+//   tags: testCourse1.tags,
+//   area: "N",
+//   credits: parseInt(testCourse1.credits),
+//   wi: testCourse1.wi,
+//   taken: false,
+//   ratings: [],
+//   year: "Freshman",
+//   distribution_ids: [testDistributionNS._id, testDistributionTot._id],
+// };
 
-export const userTestCourse2: UserCourse = {
-  _id: "userTestCourse2",
-  title: testCourse2.title,
-  term: "Spring",
-  number: testCourse2.number,
-  department: testCourse2.department,
-  tags: testCourse2.tags,
-  area: "H",
-  credits: parseInt(testCourse2.credits),
-  wi: testCourse2.wi,
-  taken: false,
-  ratings: [],
-  plan_id: "testPlan1",
-  distribution_ids: [testDistributionHumanities._id, testDistributionTot._id],
-  user_id: "mliu78",
-  year: "Sophomore",
-};
+// export const userTestCourse2: UserCourse = {
+//   _id: "userTestCourse2",
+//   title: testCourse2.title,
+//   term: "Spring",
+//   number: testCourse2.number,
+//   department: testCourse2.department,
+//   tags: testCourse2.tags,
+//   area: "H",
+//   credits: parseInt(testCourse2.credits),
+//   wi: testCourse2.wi,
+//   taken: false,
+//   ratings: [],
+//   plan_id: "testPlan1",
+//   distribution_ids: [testDistributionHumanities._id, testDistributionTot._id],
+//   user_id: "mliu78",
+//   year: "Sophomore",
+// };
 
 // export const testPlan1: Plan = {
 //   _id: "testPlan1",
@@ -201,14 +201,14 @@ export const testUser: User = {
   plan_ids: ["na"],
 };
 
-export const testMajorDistributions = [
-  testDistributionTot,
-  testDistributionElec,
-  testDistributionCS,
-  testDistributionMath,
-  testDistributionNS,
-  testDistributionHumanities,
-];
+// export const testMajorDistributions = [
+//   testDistributionTot,
+//   testDistributionElec,
+//   testDistributionCS,
+//   testDistributionMath,
+//   testDistributionNS,
+//   testDistributionHumanities,
+// ];
 
 // export const testMajorCSOld: Major = {
 //   name: "B.S. in Computer Science (old)",
@@ -225,7 +225,7 @@ export const testMajorDistributions = [
 //   restrictions: [],
 // };
 
-export const testMajorCSNew: Major = {
+export const testMajorCSNew = {
   name: "B.S. Computer Science",
   department: "EN Computer Science",
   distributions: [
