@@ -168,7 +168,7 @@ const PlanAdd = (props: { setGenerateNew: Function }) => {
                 Add
               </button>
               <button
-                className="w-16 h-10 p-2 text-white rounded bg-primary"
+                className="w-16 h-10 p-2 text-black bg-white border border-solid rounded border-secondary"
                 onClick={handleCancel}
               >
                 Cancel
