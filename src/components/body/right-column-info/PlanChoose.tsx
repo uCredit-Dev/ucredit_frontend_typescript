@@ -96,7 +96,6 @@ const PlanChoose = (props: PlanChooseProps) => {
               closeOnClick: true,
               pauseOnHover: true,
               draggable: true,
-              progress: undefined,
             });
           } else if (
             retrievedPlans.length === 0 &&
@@ -147,7 +146,6 @@ const PlanChoose = (props: PlanChooseProps) => {
         closeOnClick: true,
         pauseOnHover: true,
         draggable: true,
-        progress: undefined,
       });
       dispatch(updateSelectedPlan(newSelected));
       dispatch(updatePlanList(planListClone));

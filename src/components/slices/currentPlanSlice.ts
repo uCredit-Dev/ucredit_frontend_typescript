@@ -6,6 +6,7 @@ type CurrentPlanSlice = {
   plan: Plan;
   distributions: Distribution[];
   currentPlanCourses: UserCourse[];
+  totalCredits: number;
 };
 
 const initialState: CurrentPlanSlice = {
@@ -20,6 +21,7 @@ const initialState: CurrentPlanSlice = {
   },
   distributions: [],
   currentPlanCourses: [],
+  totalCredits: 0,
 };
 
 export const currentPlanSlice = createSlice({
@@ -41,6 +43,9 @@ export const currentPlanSlice = createSlice({
     ) => {
       state.currentPlanCourses = action.payload;
     },
+    updateTotalCredits: (state: any, action: PayloadAction<number>) => {
+      state.totalCredits = action.payload;
+    },
     resetCurrentPlan: (state: any) => {
       state.plan = initialState.plan;
       state.distributions = initialState.distributions;
@@ -53,6 +58,7 @@ export const {
   updateSelectedPlan,
   updateDistributions,
   updateCurrentPlanCourses,
+  updateTotalCredits,
   resetCurrentPlan,
 } = currentPlanSlice.actions;
 
@@ -63,5 +69,7 @@ export const selectDistributions = (state: RootState) =>
   state.currentPlan.distributions;
 export const selectCurrentPlanCourses = (state: RootState) =>
   state.currentPlan.currentPlanCourses;
+export const selectTotalCredits = (state: RootState) =>
+  state.currentPlan.totalCredits;
 
 export default currentPlanSlice.reducer;
