@@ -1,52 +1,34 @@
 import React, { useState, useEffect } from "react";
 import Semester from "./Semester";
-import { UserCourse, YearType } from "../../commonTypes";
-import { ReactComponent as MoreSvg } from "../../svg/more.svg";
+import { UserCourse } from "../../commonTypes";
+import { ReactComponent as MoreSvg } from "../../svg/More.svg";
 import { useSelector } from "react-redux";
-import { selectPlan } from "../../slices/userSlice";
-import axios from "axios";
-const api = "https://ucredit-api.herokuapp.com/api";
+import { selectPlan } from "../../slices/currentPlanSlice";
 
 type semesterProps = {
-  yearName: YearType;
-  courseIDs: string[];
+  id: number;
+  customStyle: string;
+  yearNum: number;
+  courses: UserCourse[];
 };
 
-// Dropdown of all semesters and courses for each semester in a year.
-function Year({ yearName, courseIDs }: semesterProps) {
+/*
+  A component displaying all the courses in a specific semester.
+  Props:
+    courses: courses it's displaying
+    yearName: year this column is displaying
+*/
+function Year({ id, customStyle, yearNum, courses }: semesterProps) {
   const [fallCourses, setFallCourses] = useState<UserCourse[]>([]);
   const [springCourses, setSpringCourses] = useState<UserCourse[]>([]);
   const [winterCourses, setWinterCourses] = useState<UserCourse[]>([]);
   const [summerCourses, setSummerCourses] = useState<UserCourse[]>([]);
   const [display, setDisplay] = useState<boolean>(true);
-  const [courses, setCourses] = useState<UserCourse[]>([]);
 
   // Setting up redux
   const currentPlan = useSelector(selectPlan);
 
-  const getCourses = () => {
-    const totalCourses: UserCourse[] = [];
-    if (courseIDs !== undefined) {
-      courseIDs.forEach((courseId) => {
-        // TODO: fetch each course
-        axios
-          .get(api + "/courses/" + courseId)
-          .then((retrieved) => {
-            const data = retrieved.data.data;
-            totalCourses.push(data);
-            setCourses([...totalCourses]);
-          })
-          .catch((err) => console.log(err));
-      });
-    }
-  };
-
-  useEffect(() => {
-    setCourses([]);
-    getCourses();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [currentPlan]);
-
+  // Updates and parses all courses into semesters whenever the current plan or courses array changes.
   useEffect(() => {
     // For each of the user's courses for this year, put them in their respective semesters.
     const parsedFallCourses: UserCourse[] = [];
@@ -54,13 +36,13 @@ function Year({ yearName, courseIDs }: semesterProps) {
     const parsedIntersessionCourses: UserCourse[] = [];
     const parsedSummerCourses: UserCourse[] = [];
     courses.forEach((course) => {
-      if (course.term === "fall") {
+      if (course.term.toLowerCase() === "fall") {
         parsedFallCourses.push(course);
-      } else if (course.term === "spring") {
+      } else if (course.term.toLowerCase() === "spring") {
         parsedSpringCourses.push(course);
-      } else if (course.term === "summer") {
+      } else if (course.term.toLowerCase() === "summer") {
         parsedSummerCourses.push(course);
-      } else if (course.term === "intersession") {
+      } else if (course.term.toLowerCase() === "intersession") {
         parsedIntersessionCourses.push(course);
       }
     });
@@ -69,41 +51,59 @@ function Year({ yearName, courseIDs }: semesterProps) {
     setWinterCourses(parsedIntersessionCourses);
     setSummerCourses(parsedSummerCourses);
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [courses.length, currentPlan]);
+  }, [courses, currentPlan, currentPlan.name]);
 
   // Displays dropdown showing semester categories
   const displaySemesters = () => {
     setDisplay(!display);
   };
 
+  const getYearName = (): string => {
+    let name = "";
+    currentPlan.years.forEach((year) => {
+      if (year.year === yearNum) {
+        name = year.name;
+      }
+    });
+    return name;
+  };
+
   return (
-    <div className='ml-auto mr-auto w-yearheading'>
+    <div
+      id={id.toString()}
+      className={`${customStyle} ml-auto mr-auto medium:px-4 w-yearheading min-w-yearMin`}
+    >
       <div
-        className='flex flex-row justify-between mb-3 p-2 w-full h-yearheading text-white font-medium bg-primary rounded shadow'
-        onClick={displaySemesters}>
-        <div className='select-none'>{yearName}</div>
-        <MoreSvg className='w-6 h-6 stroke-2' />
+        className="flex flex-row justify-between mb-3 p-2 w-full h-yearheading text-white font-medium bg-primary rounded shadow"
+        onClick={displaySemesters}
+      >
+        <div className="select-none">{getYearName()}</div>
+        <MoreSvg className="w-6 h-6 stroke-2 cursor-pointer" />
       </div>
       {display ? (
-        <div className='flex flex-col items-center'>
+        <div className="flex flex-col items-center">
           <Semester
-            semesterName='fall'
-            semesterYear={yearName}
+            customStyle=""
+            semesterName="Fall"
+            semesterYear={yearNum}
             courses={fallCourses}
           />
           <Semester
-            semesterName='spring'
-            semesterYear={yearName}
+            customStyle=""
+            semesterName="Spring"
+            semesterYear={yearNum}
             courses={springCourses}
           />
           <Semester
-            semesterName='intersession'
-            semesterYear={yearName}
+            customStyle=""
+            semesterName="Intersession"
+            semesterYear={yearNum}
             courses={winterCourses}
           />
           <Semester
-            semesterName='summer'
-            semesterYear={yearName}
+            customStyle=""
+            semesterName="Summer"
+            semesterYear={yearNum}
             courses={summerCourses}
           />
         </div>

@@ -3,20 +3,35 @@ module.exports = {
   darkMode: false, // or 'media' or 'class'
   theme: {
     extend: {
+      minWidth: {
+        yearMin: "200px",
+        narrowest: "710px",
+      },
+      maxWidth: {
+        courseCard: "50%",
+      },
+      minHeight: {
+        "1/4": "25%",
+        "1/2": "50%",
+        "3/4": "75%",
+        full: "100%",
+      },
       width: {
         year: "320px",
         courselist: "1400px",
-        coursebars: "301px",
-        yearheading: "240px",
-        semesterheading: "175px",
+        coursebars: "315px",
+        yearheading: "20%",
+        semesterheading: "20%",
         infocard: "350px",
-        plancardinput: "250px",
-        planchoose: "274px",
+        plancardinput: "230px",
+        planchoose: "250px",
       },
       height: {
         coursebars: "600px",
         header: "65px",
         yearheading: "42px",
+        criteria: "300px",
+        selectbox: "38px",
       },
       margin: {
         content: "100px",
@@ -27,10 +42,15 @@ module.exports = {
       },
       colors: {
         // primary: "#489784",
-        primary: "#7933dc",
+        // primary: "#7933dc",
+        // primary: "#6755E3",
+        primary: "#3168AF",
         // secondary: "#63D2B8",
-        secondary: "#a65fec",
+        // secondary: "#a65fec",
+        // secondary: "#948ADF",
+        secondary: "#5D90D3",
         background: "#f0f2f5",
+        emphasis: "#fad4f5",
       },
       backgroundColor: {
         gray: {
@@ -73,9 +93,6 @@ module.exports = {
         thin: { max: "820px" },
         narrow: { max: "710px" },
       },
-      minWidth: {
-        narrowest: "710px",
-      },
       keyframes: {
         fadeOut: {
           from: {
@@ -86,6 +103,9 @@ module.exports = {
           },
         },
       },
+      fill: (theme) => ({
+        gold: theme("colors.yellow.400"),
+      }),
     },
   },
   variants: {
@@ -94,6 +114,10 @@ module.exports = {
       transitionProperty: ["hover", "group-hover"],
       transitionDuration: ["hover", "group-hover", "active"],
       transitionTimingFunction: ["hover", "group-hover"],
+      borderStyle: ["hover"],
+      borderWidth: ["hover", "focus"],
+      margin: ["hover"],
+      fill: ["hover"],
     },
   },
   plugins: [],

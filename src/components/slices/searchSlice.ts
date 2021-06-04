@@ -3,62 +3,66 @@ import { AppThunk, RootState } from "../../appStore/store";
 import {
   SemesterType,
   Course,
-  YearType,
   FilterType,
   TagType,
   DepartmentType,
+  AreaType,
 } from "../commonTypes";
-// import { testCourse1, testCourse2 } from '../testObjs'; // For testing
-import { all_majors, course_tags } from "../assets";
 
-type timeBundle = {
-  searchYear: YearType;
+// Contains the year and semester that we are currently adding courses to.
+type TimeBundle = {
+  searchYear: number;
   searchSemester: SemesterType;
 };
 
-type filterObj = {
-  credits: number | "None";
-  distribution: "N" | "S" | "H" | "W" | "E" | "Q" | "None";
-  tags: TagType | "None"; // TODO: fill this out with array of all tags
-  term: SemesterType | "None";
-  department: DepartmentType | "None"; // TODO: fill this out with array of departments
-  wi: "None" | boolean;
+// Contains all the filters.
+type FilterObj = {
+  credits: number | "Any";
+  distribution: AreaType | "Any";
+  tags: TagType | "Any"; // TODO: fill this out with array of all tags
+  term: SemesterType | "Any";
+  department: DepartmentType | "Any"; // TODO: fill this out with array of departments
+  wi: "Any" | boolean;
 };
 
+// Contains all the search states.
 type searchStates = {
   searching: boolean;
   searchTerm: string;
-  searchTime: timeBundle;
-  filters: filterObj;
+  searchTime: TimeBundle;
+  filters: FilterObj;
   retrievedCourses: Course[];
   inspectedCourse: Course | "None";
   placeholder: boolean;
+  searchStack: Course[];
 };
 
 const initialState: searchStates = {
   searching: false,
   searchTerm: "",
   searchTime: {
-    searchYear: "Freshman",
-    searchSemester: "fall",
+    searchYear: 0,
+    searchSemester: "Fall",
   },
   retrievedCourses: [], // test courses for now
   filters: {
-    credits: "None",
-    distribution: "None",
-    tags: "None",
-    term: "None",
-    wi: "None",
-    department: "None",
+    credits: "Any",
+    distribution: "Any",
+    tags: "Any",
+    term: "Any",
+    wi: "Any",
+    department: "Any",
   },
   inspectedCourse: "None",
   placeholder: false,
+  searchStack: [],
 };
+
 export const searchSlice = createSlice({
   name: "search",
   initialState,
   reducers: {
-    updateSearchTime: (state: any, action: PayloadAction<timeBundle>) => {
+    updateSearchTime: (state: any, action: PayloadAction<TimeBundle>) => {
       // Updates year and semester in search time bundle.
       state.searchTime.searchYear = action.payload.searchYear;
       state.searchTime.searchSemester = action.payload.searchSemester;
@@ -69,22 +73,31 @@ export const searchSlice = createSlice({
     updateSearchStatus: (state: any, action: PayloadAction<boolean>) => {
       state.searching = action.payload;
     },
-    updateInspectedCourse: (state: any, action: PayloadAction<Course>) => {
+    updateInspectedCourse: (
+      state: any,
+      action: PayloadAction<Course | "None">
+    ) => {
       // Course we're looking at in search popout
       state.inspectedCourse = action.payload;
     },
     clearSearch: (state: any) => {
-      state.filters = { credits: "None", distribution: "None", tags: "None" };
+      state.filters = {
+        credits: "Any",
+        distribution: "Any",
+        tags: "Any",
+        term: "Any",
+        wi: "Any",
+        department: "Any",
+      };
       state.searchTerm = "";
       state.searchTime = { searchSemester: "", searchYear: "" };
       state.searching = false;
       state.inspectedCourse = "None";
       state.retrievedCourses = [];
-      state.searchMode = "Title";
-      console.log("clearing");
+      state.searchStack = [];
     },
     updateRetrievedCourses: (state: any, action: PayloadAction<Course[]>) => {
-      state.retrievedCourses = action.payload;
+      state.retrievedCourses = [...action.payload];
     },
     updatePlaceholder: (state: any, action: PayloadAction<boolean>) => {
       state.placeholder = action.payload;
@@ -107,6 +120,13 @@ export const searchSlice = createSlice({
         state.filters.wi = action.payload.value;
       }
     },
+    updateSearchStack: (state: any, action: PayloadAction<Course>) => {
+      state.searchStack.push(action.payload);
+    },
+    popSearchStack: (state: any) => {
+      const popped = state.searchStack.pop();
+      state.inspectedCourse = popped;
+    },
   },
 });
 
@@ -118,13 +138,17 @@ export const {
   updateInspectedCourse,
   updateRetrievedCourses,
   updatePlaceholder,
+  updateSearchStack,
   clearSearch,
+  popSearchStack,
 } = searchSlice.actions;
 
 // Asynch search with thunk.
-export const searchAsync = (param: any): AppThunk => (dispatch) => {
-  // async action here
-};
+export const searchAsync =
+  (param: any): AppThunk =>
+  (dispatch) => {
+    // async action here
+  };
 
 // The function below is called a selector and allows us to select a value from
 // the state. Please make a selector for each state :)
@@ -140,5 +164,6 @@ export const selectRetrievedCourses = (state: RootState) =>
 export const selectInspectedCourse = (state: RootState) =>
   state.search.inspectedCourse;
 export const selectPlaceholder = (state: RootState) => state.search.placeholder;
+export const selectSearchStack = (state: RootState) => state.search.searchStack;
 
 export default searchSlice.reducer;

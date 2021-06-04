@@ -1,5 +1,10 @@
 import { all_majors, course_tags } from "./assets";
 
+/* 
+  File containing all the common types we use throughout the app.
+*/
+
+// Course restriction type. Has the restriction name as well as the description of the restriction.
 export type Restriction = {
   RestrictionName: string;
   Description: string;
@@ -21,6 +26,15 @@ export type Course = {
   restrictions: Restriction[];
 };
 
+// For course Evals
+export type CourseEvals = {
+  number: string;
+  prof: string;
+  rating: string;
+  summary: string;
+  term: string;
+};
+
 // For User courses, which have extra ids with user-specific info and a single term/area that the user chose.
 export type UserCourse = {
   _id: string;
@@ -37,24 +51,31 @@ export type UserCourse = {
   distribution_ids: string[];
   plan_id: string;
   user_id: string;
+  year: string;
+};
+
+export type Year = {
+  _id: string;
+  name: string;
+  year: number;
+  courses: string[];
+  plan_id: any;
+  user_id: string;
 };
 
 export type Plan = {
   _id: string;
   name: string;
   majors: string[];
-  freshman: string[];
-  sophomore: string[];
-  junior: string[];
-  senior: string[];
   distribution_ids: string[];
   user_id: string;
+  numYears: number;
+  years: Year[];
 };
 
 export type User = {
   _id: string; //JHED ID
-  firstName: string;
-  lastName: string;
+  name: string;
   email: string;
   affiliation: string; //STUDENT, FACULTY or STAFF
   school: string;
@@ -62,11 +83,23 @@ export type User = {
   plan_ids: string[];
 };
 
+export type Filter = {
+  area?: string;
+  tags?: TagType[];
+  department?: string;
+  title?: string;
+  number?: string | string[];
+  wi?: boolean;
+  exception?: Filter;
+};
+
 // Info for distribution bar.
 export type Distribution = {
   _id: string;
   name: string;
   required: number;
+  filter: Filter;
+  description?: string;
   planned: number;
   current: number;
   satisfied: boolean;
@@ -75,9 +108,9 @@ export type Distribution = {
   plan_id: string;
 };
 
-export type YearType = "Freshman" | "Sophomore" | "Junior" | "Senior";
+// export type YearType = "Freshman" | "Sophomore" | "Junior" | "Senior";
 
-export type SemesterType = "fall" | "spring" | "summer" | "intersession";
+export type SemesterType = "Fall" | "Spring" | "Summer" | "Intersession";
 
 // https://stackoverflow.com/questions/52085454/typescript-define-a-union-type-from-an-array-of-strings
 export type DepartmentType = typeof all_majors[number];
@@ -91,20 +124,23 @@ export type FilterType =
   | "department"
   | "wi";
 
-export type generalDistributionType =
-  | "Total Credits"
-  | "Basic Sciences (N)"
-  | "General Electives"
-  | "Humanities/Social Sciences (H)(S)"
-  | "Mathematics (Q)"
-  | "Writing Intensive (WI)";
+export type AreaType = "N" | "S" | "H" | "W" | "E" | "Q";
 
 export type Major = {
   name: string;
-  generalDistributions: {
-    name: string | generalDistributionType;
+  department: string;
+  distributions: {
+    name: string;
     required: number;
+    filter: Filter;
+    description?: string;
   }[];
-  fineRequirements: [];
-  restrictions: [];
+  requirements?: {
+    name: string;
+    required: number;
+    filter: Filter;
+    description?: string;
+    byCredit: boolean;
+    sameCategory?: boolean;
+  }[];
 };

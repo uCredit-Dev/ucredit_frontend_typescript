@@ -1,27 +1,89 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import Year from "./Year";
-import { useSelector } from "react-redux";
-import { selectPlan } from "../../slices/userSlice";
+import { useSelector, useDispatch } from "react-redux";
+import { UserCourse } from "../../commonTypes";
+import axios from "axios";
+import {
+  selectPlan,
+  updateCurrentPlanCourses,
+} from "../../slices/currentPlanSlice";
+import {
+  selectPlaceholder,
+  selectSearchStatus,
+} from "../../slices/searchSlice";
+const api = "https://ucredit-api.herokuapp.com/api";
 
+/* 
+  Container component that holds all the years, semesters, and courses of the current plan.
+*/
 function CourseList() {
   // Setting up redux
+  const dispatch = useDispatch();
   const currentPlan = useSelector(selectPlan);
+  const searching = useSelector(selectSearchStatus);
+  const placeholder = useSelector(selectPlaceholder);
 
-  const freshmanCourseIDs = currentPlan.freshman;
-  const sophomoreCourseIDs = currentPlan.sophomore;
-  const juniorCourseIDs = currentPlan.junior;
-  const seniorCourseIDs = currentPlan.senior;
+  // Component State setup.
+  const [elements, setElements] = useState<JSX.Element[]>([]);
+
+  // Gets all courses for each year and generates year objects based on them.
+  useEffect(() => {
+    const jsx: JSX.Element[] = [];
+    const totCourses: UserCourse[] = [];
+    currentPlan.years.forEach((year) => {
+      const courses: UserCourse[] = [];
+      if (year.courses.length === 0) {
+        jsx.push(
+          <Year
+            key={year._id}
+            id={year.year}
+            customStyle="cursor-pointer"
+            yearNum={year.year}
+            courses={[]}
+          />
+        );
+        if (jsx.length === currentPlan.years.length) {
+          jsx.sort((el1, el2) => el1.props.id - el2.props.id);
+          dispatch(updateCurrentPlanCourses(totCourses));
+          setElements(jsx);
+        }
+      } else {
+        year.courses.forEach((courseId) => {
+          axios
+            .get(api + "/courses/" + courseId)
+            .then((resp) => {
+              courses.push(resp.data.data);
+              totCourses.push(resp.data.data);
+              if (courses.length === year.courses.length) {
+                jsx.push(
+                  <Year
+                    key={year._id}
+                    id={year.year}
+                    customStyle="cursor-pointer"
+                    yearNum={year.year}
+                    courses={courses}
+                  />
+                );
+                if (jsx.length === currentPlan.years.length) {
+                  jsx.sort((el1, el2) => el1.props.id - el2.props.id);
+                  dispatch(updateCurrentPlanCourses(totCourses));
+                  setElements(jsx);
+                }
+              }
+            })
+            .catch((err) => console.log(err));
+        });
+      }
+    });
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [currentPlan, currentPlan._id, searching, placeholder]);
 
   return (
-    <div className='flex flex-col ml-1.5 mr-5 w-auto h-auto overflow-y-auto'>
-      {/* <div className='fixed z-10 left-0 medium:left-48 medium:right-blurr right-blurrsm block flex-none h-5 bg-gradient-to-b from-background pointer-events-none'></div> */}
-      <div className='flex flex-row flex-wrap justify-between thin:justify-center mt-4 w-full h-auto'>
-        <Year yearName={"Freshman"} courseIDs={freshmanCourseIDs} />
-        <Year yearName={"Sophomore"} courseIDs={sophomoreCourseIDs} />
-        <Year yearName={"Junior"} courseIDs={juniorCourseIDs} />
-        <Year yearName={"Senior"} courseIDs={seniorCourseIDs} />
+    <>
+      <div className="flex flex-row flex-wrap justify-between thin:justify-center mt-4 h-auto">
+        {elements}
       </div>
-    </div>
+    </>
   );
 }
 
