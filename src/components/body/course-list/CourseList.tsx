@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import Year from "./Year";
+// import Year from "./YearComponent";
 import { useSelector, useDispatch } from "react-redux";
 import { UserCourse } from "../../commonTypes";
 import axios from "axios";
@@ -11,6 +11,7 @@ import {
   selectPlaceholder,
   selectSearchStatus,
 } from "../../slices/searchSlice";
+import YearComponent from "./YearComponent";
 const api = "https://ucredit-api.herokuapp.com/api";
 
 /* 
@@ -34,11 +35,11 @@ function CourseList() {
       const courses: UserCourse[] = [];
       if (year.courses.length === 0) {
         jsx.push(
-          <Year
+          <YearComponent
             key={year._id}
             id={year.year}
             customStyle="cursor-pointer"
-            yearNum={year.year}
+            year={year}
             courses={[]}
           />
         );
@@ -56,11 +57,11 @@ function CourseList() {
               totCourses.push(resp.data.data);
               if (courses.length === year.courses.length) {
                 jsx.push(
-                  <Year
+                  <YearComponent
                     key={year._id}
                     id={year.year}
                     customStyle="cursor-pointer"
-                    yearNum={year.year}
+                    year={year}
                     courses={courses}
                   />
                 );
