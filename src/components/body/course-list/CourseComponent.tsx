@@ -56,7 +56,7 @@ function CourseComponent({ year, course, semester }: courseProps) {
   useEffect(() => {
     isSatisfied();
   }, [currPlanCourses]);
-  
+
   const isSatisfied = () => {
     const temp = checkAllPrereqs(
       currPlanCourses,
@@ -128,7 +128,7 @@ function CourseComponent({ year, course, semester }: courseProps) {
         closeOnClick: true,
         pauseOnHover: true,
         draggable: true,
-        progress: undefined,
+        progress: 0,
       });
       dispatch(updateSelectedPlan(newPlan));
     });

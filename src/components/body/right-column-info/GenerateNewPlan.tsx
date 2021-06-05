@@ -96,7 +96,7 @@ const GenerateNewPlan: React.FC<generateNewPlanProps> = (props) => {
                     closeOnClick: true,
                     pauseOnHover: true,
                     draggable: true,
-                    progress: undefined,
+                    progress: 0,
                   });
                   if (user._id === "guestUser") {
                     const planIdArray = [newPlan._id];

@@ -38,15 +38,13 @@ function YearComponent({ id, customStyle, year, courses }: yearProps) {
   const [summerCourses, setSummerCourses] = useState<UserCourse[]>([]);
   const [display, setDisplay] = useState<boolean>(true);
 
-  const [yearName, setYearName] = useState<string> (year.name);
+  const [yearName, setYearName] = useState<string>(year.name);
   // Determines whether we're editing the name.
   const [editName, setEditName] = useState<boolean>(false);
-
 
   // Setting up redux
   const currentPlan = useSelector(selectPlan);
   const dispatch = useDispatch();
-
 
   // Updates and parses all courses into semesters whenever the current plan or courses array changes.
   useEffect(() => {
@@ -77,7 +75,7 @@ function YearComponent({ id, customStyle, year, courses }: yearProps) {
   const displaySemesters = () => {
     setDisplay(!display);
   };
- 
+
   // Updates temporary year name and notifies useffect on state change to update db plan name with debounce.
   const handleYearNameChange = (event: any) => {
     setYearName(event.target.value);
@@ -94,7 +92,7 @@ function YearComponent({ id, customStyle, year, courses }: yearProps) {
   }, [yearName]);
 
   const updateName = () => {
-    console.log("updateName called")
+    console.log("updateName called");
 
     const body = {
       year_id: year._id,
@@ -109,15 +107,15 @@ function YearComponent({ id, customStyle, year, courses }: yearProps) {
       body: JSON.stringify(body),
     })
       .then((resp) => {
-        console.log("new name - ", yearName, resp)
-        const newUpdatedYear = {...year, name: yearName};
-        const newYearArray = [...currentPlan.years] 
+        console.log("new name - ", yearName, resp);
+        const newUpdatedYear = { ...year, name: yearName };
+        const newYearArray = [...currentPlan.years];
         newYearArray.forEach((yr, index) => {
           if (yr._id === newUpdatedYear._id) {
-            newYearArray[index] = {...newUpdatedYear};
+            newYearArray[index] = { ...newUpdatedYear };
           }
         });
-        let newUpdatedPlan = { ...currentPlan, years:newYearArray};
+        let newUpdatedPlan = { ...currentPlan, years: newYearArray };
         dispatch(updateSelectedPlan(newUpdatedPlan));
 
         toast.success("Year name changed to " + yearName + "!", {
@@ -127,7 +125,7 @@ function YearComponent({ id, customStyle, year, courses }: yearProps) {
           closeOnClick: true,
           pauseOnHover: true,
           draggable: true,
-          progress: undefined,
+          progress: 0,
         });
         setEditName(false);
         // dispatch(updatePlanList(newPlanList));
@@ -144,20 +142,23 @@ function YearComponent({ id, customStyle, year, courses }: yearProps) {
         className="flex flex-row justify-between mb-3 p-2 w-full h-yearheading text-white font-medium bg-primary rounded shadow"
         // onClick={displaySemesters}
       >
-            <input
-              value={yearName}
-              className="select-none text-black"
-              onChange={handleYearNameChange}
-            />
-            <RemoveSvg
-              className="w-6 h-6 stroke-2 cursor-pointer select-none transform hover:translate-x-0.5 hover:translate-y-0.5 transition duration-200 ease-in"
-              // onClick={activateDeletePlan}
-            />
+        <input
+          value={yearName}
+          className="flex-shrink w-full text-white font-semibold bg-primary border-b select-none"
+          onChange={handleYearNameChange}
+        />
+        <RemoveSvg
+          className="w-6 h-6 stroke-2 cursor-pointer select-none transform hover:translate-x-0.5 hover:translate-y-0.5 transition duration-200 ease-in"
+          // onClick={activateDeletePlan}
+        />
         {/* <div className="select-none"
         // onMouseEnter={() => setSearchOpacity(50)}
         // onMouseLeave={() => setSearchOpacity(100)}
         >{getYearName()}</div> */}
-        <MoreSvg className="w-6 h-6 stroke-2 cursor-pointer" onClick={displaySemesters} />
+        <MoreSvg
+          className="w-6 h-6 stroke-2 cursor-pointer"
+          onClick={displaySemesters}
+        />
       </div>
       {display ? (
         <div className="flex flex-col items-center">

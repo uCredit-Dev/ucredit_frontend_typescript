@@ -41,7 +41,7 @@ const PlanAdd = (props: { setGenerateNew: Function }) => {
         hideProgressBar: true,
         closeOnClick: true,
         draggable: true,
-        progress: undefined,
+        progress: 0,
       });
     } else {
       dispatch(updateAddingStatus(false));
@@ -63,7 +63,7 @@ const PlanAdd = (props: { setGenerateNew: Function }) => {
         hideProgressBar: true,
         closeOnClick: true,
         draggable: true,
-        progress: undefined,
+        progress: 0,
       });
     } else {
       dispatch(updateAddingStatus(false));
@@ -108,7 +108,7 @@ const PlanAdd = (props: { setGenerateNew: Function }) => {
             <div className="flex flex-row mb-4">
               <input
                 autoFocus
-                className="h-selectbox flex-none mr-8 px-1 w-full rounded"
+                className="flex-none mr-8 px-1 w-full h-selectbox rounded"
                 type="text"
                 placeholder="Plan Name"
                 defaultValue={toAddName}

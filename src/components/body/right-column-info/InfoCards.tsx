@@ -75,7 +75,7 @@ const InfoCards = () => {
           closeOnClick: true,
           pauseOnHover: true,
           draggable: true,
-          progress: undefined,
+          progress: 0,
         });
         setEditName(false);
         dispatch(updatePlanList(newPlanList));
@@ -94,13 +94,13 @@ const InfoCards = () => {
   };
 
   return (
-    <div className="flex flex-row h-auto mb-4 tight:flex-col tight:items-center">
-      <div className="flex flex-col items-center justify-center w-full h-auto p-6 bg-white rounded shadow tight:mb-4 tight:mr-0">
-        <div className="flex flex-col w-auto h-auto mb-2">
-          <div className="flex flex-row items-center justify-center w-full h-auto mb-2">
+    <div className="flex tight:flex-col flex-row tight:items-center mb-4 h-auto">
+      <div className="flex flex-col items-center justify-center tight:mb-4 tight:mr-0 p-6 w-full h-auto bg-white rounded shadow">
+        <div className="flex flex-col mb-2 w-auto h-auto">
+          <div className="flex flex-row items-center justify-center mb-2 w-full h-auto">
             <input
               value={planName}
-              className="h-auto text-center outline-none w-plancardinput text-myplan"
+              className="w-plancardinput h-auto text-center text-myplan outline-none"
               onChange={handlePlanNameChange}
             />
             <RemoveSvg
@@ -109,14 +109,14 @@ const InfoCards = () => {
             />
           </div>
           <PlanChoose
-            className="flex flex-row items-center justify-center h-auto text-white cursor-pointer select-none w-planchoose text-infocard bg-secondary"
+            className="flex flex-row items-center justify-center w-planchoose h-auto text-white text-infocard bg-secondary cursor-pointer select-none"
             newPlan={newPlan}
             setNewPlan={setNewPlan}
           />
         </div>
         <div className="flex flex-col items-center">
           <div className="w-auto h-auto text-center">{user.name}</div>
-          <div className="w-auto h-auto font-light text-center stroke-2">
+          <div className="w-auto h-auto text-center font-light stroke-2">
             {currentPlan.majors}
           </div>
         </div>
