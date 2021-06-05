@@ -44,7 +44,7 @@ const DeletePlanPopup = () => {
             hideProgressBar: true,
             closeOnClick: true,
             draggable: true,
-            progress: undefined,
+            progress: 0,
           });
           let updatedList = [...planList];
           updatedList = updatedList.filter((plan) => {
@@ -62,7 +62,7 @@ const DeletePlanPopup = () => {
         hideProgressBar: true,
         closeOnClick: true,
         draggable: true,
-        progress: undefined,
+        progress: 0,
       });
     }
   };
