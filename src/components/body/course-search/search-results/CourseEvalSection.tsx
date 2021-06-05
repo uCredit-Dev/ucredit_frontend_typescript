@@ -42,6 +42,11 @@ const CourseEvalSection = () => {
   };
 
   const updateEvals = (revIndex: number) => {
+    // remove if already selected
+    if (revIndex == selectedCourseEval) {
+      setSelectedCourseEval(-1);
+      return;
+    }
     setSelectedCourseEval(revIndex);
     if (courseReviews.length !== 0) {
       const chosenRev = courseReviews[revIndex];
