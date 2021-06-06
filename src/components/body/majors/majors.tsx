@@ -101,13 +101,13 @@ const baIS: Major = {
       description:
         "International Studies students must complete 15 credits in history, including:\n\tOne introductory course at the 100-level in the JHU History Department (e.g., AS.100.1xx).\n\tFour courses designated INST-GLOBAL in the course description.",
       criteria:
-        "(AS History[D]^AND^Lower Level Undergraduate)^OR^INST-GLOBAL[T]",
+        "(AS History[D]^AND^Lower Level Undergraduate[N])^OR^INST-GLOBAL[T]",
       fine_requirements: [
         {
           required_credits: 3,
           description:
             "One introductory course at the 100-level in the JHU History Department (e.g., AS.100.1xx)",
-          criteria: "AS History[D]^AND^Lower Level Undergraduate",
+          criteria: "AS History[D]^AND^Lower Level Undergraduate[N]",
         },
         {
           required_credits: 12,
