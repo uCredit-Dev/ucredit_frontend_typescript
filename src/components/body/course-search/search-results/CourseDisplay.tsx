@@ -42,6 +42,8 @@ import {
   selectPlan,
   updateSelectedPlan,
 } from "../../../slices/currentPlanSlice";
+import { getMajor } from "../../../assets"
+import { getRequirements, requirements } from "../../right-column-info/distributionFunctions"
 
 const api = "https://ucredit-api.herokuapp.com/api";
 
@@ -77,144 +79,27 @@ const CourseDisplay = () => {
   const [inspectedArea, setInspectedArea] = useState("None");
   const [showMore, setShowMore] = useState<number>(2);
 
-  // Matches distribution filter with distribution.
-  // const getFilter = (distr: Distribution) => {
-  //   let filter = {};
-  //   testMajorCSNew.distributions.forEach((distribution) => {
-  //     if (distribution.name === distr.name) {
-  //       filter = distribution.filter;
-  //     }
-  //   });
-  //   return filter;
-  // };
-
-  const checkCriteria = (criteria: String): boolean => {
-    return false;
-  };
-
-  const checkDistribution = (distr: Distribution): boolean => {
-    if (
-      inspected !== "None" &&
-      parseFloat(inspected.credits) >= distr.min_cedits_per_course
-    ) {
-      if (checkCriteria(distr.criteria)) {
-      }
+  const getDistributions = () => {
+    let major = currentPlan.majors[0];
+    if (major === undefined) {
+      return null;
     }
-    return false;
+    let majorObj = getMajor(major);
+    if (majorObj === undefined) {
+      return null;
+    }
+    let distr = getRequirements(majorObj);
+    return distr;
   };
-
-  // Checks if inspected course satisfies specific distribution
-  // const checkDistribution = (distr: Distribution): boolean => {
-  //   // const filter = distribution.filter;
-  //   if (inspected !== "None") {
-  //     if (filter.exception !== undefined) {
-  //       if (checkFilters(filter.exception, inspected, false)) {
-  //         return false;
-  //       }
-  //     }
-  //     return checkFilters(filter, inspected, false);
-  //   } else {
-  //     return false;
-  //   }
-  // };
-
-  // Checks if the course satisfies the filters given to it.
-  // Behavior differs based on whether you're checking for credit distributions or fine requirements.
-  // const checkFilters = (filter: Filter, course: Course, fine: boolean) => {
-  //   if (filter.area !== undefined) {
-  //     const areaRegex: RegExp = new RegExp(
-  //       filter.area.substr(1, filter.area.length - 3)
-  //     );
-  //     const regexMatches = inspectedArea.match(areaRegex);
-  //     if (regexMatches === null && fine) {
-  //       return false;
-  //     } else if (regexMatches !== null && !fine) {
-  //       return true;
-  //     }
-  //   }
-
-  //   if (filter.tags !== undefined) {
-  //     let found: boolean = false;
-  //     filter.tags.forEach((tag) => {
-  //       if (course.tags.includes(tag)) {
-  //         found = true;
-  //       }
-  //     });
-  //     if (!found && fine) {
-  //       return false;
-  //     } else if (found && !fine) {
-  //       return true;
-  //     }
-  //   }
-
-  //   if (filter.wi !== undefined) {
-  //     if (course.wi !== filter.wi && fine) {
-  //       return false;
-  //     } else if (!fine && course.wi === filter.wi) {
-  //       return true;
-  //     }
-  //   }
-
-  //   if (filter.department !== undefined) {
-  //     const depRegex: RegExp = new RegExp(
-  //       filter.department.substr(1, filter.department.length - 3)
-  //     );
-  //     const regexMatches = course.department.match(depRegex);
-  //     if (regexMatches === null && fine) {
-  //       return false;
-  //     } else if (regexMatches !== null && !fine) {
-  //       return true;
-  //     }
-  //   }
-
-  //   if (filter.number !== undefined && typeof filter.number === "string") {
-  //     const numRegex: RegExp = new RegExp(
-  //       filter.number.substr(1, filter.number.length - 3)
-  //     );
-  //     const regexMatches = course.number.match(numRegex);
-  //     if (regexMatches === null && fine) {
-  //       return false;
-  //     } else if (regexMatches !== null && !fine) {
-  //       return true;
-  //     }
-  //   }
-
-  //   // if (filter.title !== undefined) {
-  //   //   if (!course.title.match(filter.title)) {
-  //   //     return false;
-  //   //   } else if (!fine) {
-  //   //     return true;
-  //   //   }
-  //   // }
-
-  //   if (!fine) {
-  //     return false;
-  //   } else {
-  //     return true;
-  //   }
-  // };
 
   // Adds course
   const addCourse = () => {
     // Adds course, updates user frontend distributions display, and clears search states.
-    if (inspected !== "None" && distributions.length !== 0) {
-      let toAdd: Distribution | null = null;
+    if (inspected !== "None") {
       dispatch(updatePlaceholder(false));
-      let filteredDistribution: Distribution[] = [];
-
-      distributions.forEach((distribution: Distribution) => {
-        if (
-          checkDistribution(distribution) &&
-          toAdd === null &&
-          distribution.planned_credits < distribution.required_credits
-        ) {
-          toAdd = distribution;
-          filteredDistribution.push(toAdd);
-        }
-      });
 
       // Posts to add course route and then updates distribution.
-      updateDistributions(filteredDistribution);
+      updateDistributions();
 
       toast.success(inspected.title + " added!", {
         position: "top-right",
@@ -242,7 +127,7 @@ const CourseDisplay = () => {
   };
 
   // Updates distribution bars upon successfully adding a course.
-  const updateDistributions = (filteredDistribution: Distribution[]) => {
+  const updateDistributions = () => {
     let newUserCourse: UserCourse;
     if (inspected !== "None") {
       const addingYear: Year | null = getYear();
@@ -255,7 +140,7 @@ const CourseDisplay = () => {
         term: semester.toLowerCase(),
         year: addingYear !== null ? addingYear.name : "",
         credits: inspected.credits,
-        distribution_ids: filteredDistribution.map((distr) => distr._id),
+        distribution_ids: currentPlan.distribution_ids,
         number: inspected.number,
         area: inspectedArea,
         expireAt:
@@ -285,7 +170,6 @@ const CourseDisplay = () => {
               }
             });
             const newPlan: Plan = { ...currentPlan, years: newYears };
-
             dispatch(updateSelectedPlan(newPlan));
             const newPlanList = [...planList];
             for (let i = 0; i < planList.length; i++) {

@@ -183,7 +183,7 @@ const bsCS: Major = {
           description:
             "Required Courses:\n\t110.108 Calculus I or AP equivalent\n\t110.109 Calculus II or AP equivalent",
           required_credits: 8,
-          criteria: "EN.110.108^OR^EN.110.109",
+          criteria: "EN.110.108[C]^OR^EN.110.109[C]",
         },
         {
           description: "Probability and Statistics",

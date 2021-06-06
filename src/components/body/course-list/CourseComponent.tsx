@@ -56,18 +56,6 @@ function CourseComponent({ year, course, semester }: courseProps) {
   useEffect(() => {
     isSatisfied();
   }, [currPlanCourses]);
-  
-  const isSatisfied = () => {
-    const temp = checkAllPrereqs(
-      currPlanCourses,
-      currentPlan,
-      course.number,
-      year,
-      semester,
-      allCourses
-    );
-    setSatisfied(temp);
-  };
 
   const isSatisfied = () => {
     const temp = checkAllPrereqs(

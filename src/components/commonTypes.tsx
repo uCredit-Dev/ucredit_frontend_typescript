@@ -130,7 +130,7 @@ export type FilterType =
 export type AreaType = "N" | "S" | "H" | "W" | "E" | "Q";
 
 export type FineReq = {
-  required_credits: Number;
+  required_credits: number;
   description: String;
   criteria: String;
   exclusive?: boolean;
