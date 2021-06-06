@@ -1,7 +1,5 @@
 import { Course, User, Plan, SemesterType, UserCourse } from "./commonTypes";
-import axios from "axios";
-import React from "react";
-import { allMajors } from "./body/majors/majors"
+import { allMajors } from "./body/majors/majors";
 
 export const api = "https://ucredit-api.herokuapp.com/api";
 
@@ -286,9 +284,9 @@ export const filterNNegatives = (inspected: Course | "None"): any[] => {
 // as well as the names associated with each course number
 // expr is the input expression for the prereqs, regex is the regex to parse
 // numList is a list of the numbers in the expr
-export const processPrereqs =  (
+export const processPrereqs = (
   preReqs: any[],
-  allCourses: Course[],
+  allCourses: Course[]
 ): prereqCourses => {
   // Regex used to get an array of course numbers.
   const regex: RegExp = /[A-Z]{2}\.[0-9]{3}\.[0-9]{3}/g;
@@ -332,7 +330,7 @@ export interface prereqCourses {
 export const getCourses = (
   expr: string,
   regex: RegExp,
-  allCourses: Course[],
+  allCourses: Course[]
 ): prereqCourses => {
   // Gets an array of all courses in expression.
   let match = expr.match(regex);
@@ -350,20 +348,20 @@ export const getCourses = (
     let retrievedCourse = getCourse(num, allCourses);
     //console.log(retrievedCourse);
     if (retrievedCourse !== null) {
-        numNameList[n] = num + num + " " + retrievedCourse.title; 
-        // num is added twice to distinquish which was the base course (refer to the case of EN.600 below) in the case that departments change numbers (600 to 601)
+      numNameList[n] = num + num + " " + retrievedCourse.title;
+      // num is added twice to distinquish which was the base course (refer to the case of EN.600 below) in the case that departments change numbers (600 to 601)
     }
     if (num.match("EN.600") !== null) {
       num = num.replace("EN.600", "EN.601");
       const retrievedCourse601 = getCourse(num, allCourses);
       if (retrievedCourse601 !== null) {
         // Append original num to front for later sorting
-        numNameList[n] =
-          numList[n] + num + " " + retrievedCourse601.title;
+        numNameList[n] = numList[n] + num + " " + retrievedCourse601.title;
       }
     }
     if (numNameList[n] == null) {
-      numNameList[n] = numList[n] + numList[n] + " Has not been offered in the past 2 years.";
+      numNameList[n] =
+        numList[n] + numList[n] + " Has not been offered in the past 2 years.";
     }
   }
   let out = {
@@ -374,7 +372,10 @@ export const getCourses = (
   return out;
 };
 
-export const getCourse = (courseNumber: String, allCourses: Course[]): Course | null => {
+export const getCourse = (
+  courseNumber: String,
+  allCourses: Course[]
+): Course | null => {
   let out = null;
   for (let element of allCourses) {
     if (element.number === courseNumber) {
@@ -461,13 +462,12 @@ const getNonStringPrereq = (
         year,
         semester
       );
-      return parsedSat
+      return parsedSat;
     }
   } else {
     return true;
   }
 };
-
 
 const isSatisfied = (
   element: [],
@@ -481,7 +481,13 @@ const isSatisfied = (
 
   element.forEach((el: any, index) => {
     if (typeof el !== "number") {
-      const satisfied = getNonStringPrereq(currPlanCourses, plan, el, year, semester);
+      const satisfied = getNonStringPrereq(
+        currPlanCourses,
+        plan,
+        el,
+        year,
+        semester
+      );
 
       // If it's not an or statement, the first course must be satisfied.
       if (index === 0) {
@@ -595,7 +601,7 @@ export const checkPrereq = (
   semester: SemesterType
 ): boolean => {
   let satisfied: boolean = false;
-  
+
   courses.forEach((course) => {
     if (
       course.number === preReqNumber &&
@@ -611,18 +617,22 @@ export const checkPrereq = (
 const semesters = ["fall", "intersession", "spring", "summer"];
 const years = ["Freshman", "Sophomore", "Junior", "Senior"];
 
-const prereqInPast = (course: UserCourse, year: number, semester: SemesterType): boolean => {
+const prereqInPast = (
+  course: UserCourse,
+  year: number,
+  semester: SemesterType
+): boolean => {
   // console.log(course.year);
   // console.log(years.indexOf(course.year));
   // console.log(year);
-  if ((years.indexOf(course.year) + 1) < year) {
+  if (years.indexOf(course.year) + 1 < year) {
     return true;
-  } else if ((years.indexOf(course.year) + 1) > year) {
+  } else if (years.indexOf(course.year) + 1 > year) {
     return false;
   } else {
     return semesters.indexOf(course.term) < semesters.indexOf(semester);
   }
-}
+};
 
 export const checkAllPrereqs = (
   currCourses: UserCourse[],
@@ -630,7 +640,7 @@ export const checkAllPrereqs = (
   number: String,
   year: number,
   semester: SemesterType,
-  allCourses: Course[],
+  allCourses: Course[]
 ): boolean => {
   const course = getCourse(number, allCourses);
   if (course !== null) {
@@ -662,4 +672,4 @@ export const getMajor = (major: string) => {
       return allMajors[i];
     }
   }
-}
+};
