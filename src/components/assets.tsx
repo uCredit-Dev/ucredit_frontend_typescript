@@ -605,34 +605,43 @@ export const checkPrereq = (
   courses.forEach((course) => {
     if (
       course.number === preReqNumber &&
-      prereqInPast(course, year, semester)
+      prereqInPast(course, year, semester, plan)
     ) {
       satisfied = true;
     }
   });
-  //console.log(preReqNumber, satisfied);
   return satisfied;
 };
 
-const semesters = ["fall", "intersession", "spring", "summer"];
-const years = ["Freshman", "Sophomore", "Junior", "Senior"];
+const semesters: String[] = ["fall", "intersession", "spring", "summer"];
 
 const prereqInPast = (
   course: UserCourse,
   year: number,
-  semester: SemesterType
+  semester: SemesterType,
+  plan: Plan
 ): boolean => {
-  // console.log(course.year);
-  // console.log(years.indexOf(course.year));
-  // console.log(year);
-  if (years.indexOf(course.year) + 1 < year) {
+  const courseYearRank: number = getCourseYearRank(plan, course);
+  if (courseYearRank < year) {
     return true;
-  } else if (years.indexOf(course.year) + 1 > year) {
+  } else if (courseYearRank > year) {
     return false;
   } else {
-    return semesters.indexOf(course.term) < semesters.indexOf(semester);
+    return (
+      semesters.indexOf(course.term) < semesters.indexOf(semester.toLowerCase())
+    );
   }
 };
+
+function getCourseYearRank(plan: Plan, course: UserCourse): number {
+  let yearNum = -1;
+  plan.years.forEach((currPlanYear) => {
+    if (currPlanYear.name === course.year) {
+      yearNum = currPlanYear.year;
+    }
+  });
+  return yearNum;
+}
 
 export const checkAllPrereqs = (
   currCourses: UserCourse[],
