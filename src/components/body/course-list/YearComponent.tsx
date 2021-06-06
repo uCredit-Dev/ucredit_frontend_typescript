@@ -6,6 +6,7 @@ import { useSelector, useDispatch } from "react-redux";
 import { selectPlan, updateSelectedPlan } from "../../slices/currentPlanSlice";
 import { ReactComponent as RemoveSvg } from "../../svg/Remove.svg";
 import { toast } from "react-toastify";
+import { updateDeleteStatus } from "../../slices/userSlice";
 
 const api = "https://ucredit-api.herokuapp.com/api";
 
@@ -16,13 +17,13 @@ type yearProps = {
   courses: UserCourse[];
 };
 
-const emptyYear = {
-  _id: "emptyYear",
-  name: "emptyYear",
+export const newYearTemplate:Year = {
+  _id: "New Year",
+  name: "New Year",
   year: -1,
-  courses: ["emptyYear"],
+  courses: ["New Year"],
   plan_id: "",
-  user_id: "emptyYear",
+  user_id: "New Year",
 };
 
 /*
@@ -91,12 +92,11 @@ function YearComponent({ id, customStyle, year, courses }: yearProps) {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [yearName]);
 
+  // update the name of the year
   const updateName = () => {
     console.log("updateName called");
-
     const body = {
       year_id: year._id,
-      // majors: currentPlan.majors,
       name: yearName,
     };
     fetch(api + "/years/update", {
@@ -109,29 +109,38 @@ function YearComponent({ id, customStyle, year, courses }: yearProps) {
       .then((resp) => {
         console.log("new name - ", yearName, resp);
         const newUpdatedYear = { ...year, name: yearName };
-        const newYearArray = [...currentPlan.years];
-        newYearArray.forEach((yr, index) => {
-          if (yr._id === newUpdatedYear._id) {
-            newYearArray[index] = { ...newUpdatedYear };
-          }
-        });
-        let newUpdatedPlan = { ...currentPlan, years: newYearArray };
+        const newYearArray = [...currentPlan.years].map(yr => yr._id === year._id ? newUpdatedYear : yr);
+        const newUpdatedPlan = { ...currentPlan, years: newYearArray };
         dispatch(updateSelectedPlan(newUpdatedPlan));
 
-        toast.success("Year name changed to " + yearName + "!", {
-          position: "top-right",
-          autoClose: 5000,
-          hideProgressBar: true,
-          closeOnClick: true,
-          pauseOnHover: true,
-          draggable: true,
-          progress: 0,
-        });
+        toast.success("Year name changed to " + yearName + "!");
         setEditName(false);
-        // dispatch(updatePlanList(newPlanList));
       })
       .catch((err) => console.log(err));
   };
+
+  // Delete the selected year
+  const activateDeleteYear = () => {
+    if (currentPlan.years.length > 1) {
+      fetch(api + "/years/" + year._id, {
+        method: "DELETE",
+        headers: {
+          "Content-Type": "application/json",
+        }
+      })
+        .then((resp) => {
+          console.log("delete Year - ", yearName, resp);
+          const newYearArray = [...currentPlan.years].filter(yr => yr._id !== year._id);
+          const newUpdatedPlan = { ...currentPlan, years: newYearArray };
+          dispatch(updateSelectedPlan(newUpdatedPlan));
+          toast.success("Deleted " + yearName + "!");
+          setEditName(false);
+        })
+        .catch((err) => console.log(err));
+    } else {
+      toast.error("Cannot delete last year!");
+    }
+  }
 
   return (
     <div
@@ -140,21 +149,16 @@ function YearComponent({ id, customStyle, year, courses }: yearProps) {
     >
       <div
         className="flex flex-row justify-between mb-3 p-2 w-full h-yearheading text-white font-medium bg-primary rounded shadow"
-        // onClick={displaySemesters}
       >
         <input
           value={yearName}
-          className="flex-shrink w-full text-white font-semibold bg-primary border-b select-none"
+          className="flex-shrink w-full text-white font-semibold bg-primary hover:border-b select-none" // focus:border-transparent???
           onChange={handleYearNameChange}
         />
         <RemoveSvg
           className="w-6 h-6 stroke-2 cursor-pointer select-none transform hover:translate-x-0.5 hover:translate-y-0.5 transition duration-200 ease-in"
-          // onClick={activateDeletePlan}
+          onClick={activateDeleteYear}
         />
-        {/* <div className="select-none"
-        // onMouseEnter={() => setSearchOpacity(50)}
-        // onMouseLeave={() => setSearchOpacity(100)}
-        >{getYearName()}</div> */}
         <MoreSvg
           className="w-6 h-6 stroke-2 cursor-pointer"
           onClick={displaySemesters}
