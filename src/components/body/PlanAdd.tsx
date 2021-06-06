@@ -21,6 +21,7 @@ const majorOptions = [
 
 /**
  * Popup for adding a new plan.
+ * TODO: Implement all commented code features
  * Props:
  *  setGenerateNew - function that gives a signal to make a new plan.
  * */
@@ -40,6 +41,7 @@ const PlanAdd = (props: { setGenerateNew: Function }) => {
         hideProgressBar: true,
         closeOnClick: true,
         draggable: true,
+        progress: 0,
       });
     } else {
       dispatch(updateAddingStatus(false));
@@ -61,6 +63,7 @@ const PlanAdd = (props: { setGenerateNew: Function }) => {
         hideProgressBar: true,
         closeOnClick: true,
         draggable: true,
+        progress: 0,
       });
     } else {
       dispatch(updateAddingStatus(false));
@@ -74,6 +77,17 @@ const PlanAdd = (props: { setGenerateNew: Function }) => {
     }
   };
 
+  // const placeholderOptions = [
+  //   { value: "foo", label: "foo" },
+  //   { value: "bar", label: "bar" },
+  //   { value: "baz", label: "baz" },
+  // ];
+
+  // const selectPlanOption = [
+  //   { value: "default", label: "Default" },
+  //   { value: "template", label: "Template" },
+  // ];
+
   return (
     <div className="absolute top-0">
       {/* Background Grey */}
@@ -82,10 +96,10 @@ const PlanAdd = (props: { setGenerateNew: Function }) => {
       {/* Popup */}
       <div
         className={
-          "fixed flex flex-col bg-primary rounded z-20 w-9/12 h-5/6 top-1/3 left-1/2 transform -translate-x-1/2 -translate-y-1/3"
+          "fixed flex flex-col bg-primary rounded z-20 w-3/12 h-auto top-1/3 left-1/2 transform -translate-x-1/2 -translate-y-1/3"
         }
       >
-        <div className="px-4 py-2 text-white text-coursecard font-semibold select-none">
+        <div className="px-4 py-2 text-white text-coursecard select-none">
           Adding a new plan!
         </div>
         {/* Search area */}

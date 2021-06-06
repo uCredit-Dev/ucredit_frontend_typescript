@@ -90,14 +90,7 @@ const GenerateNewPlan: React.FC<generateNewPlanProps> = (props) => {
                 if (index === toAddMajor.distributions.length - 1) {
                   dispatch(updateSelectedPlan(newPlan));
                   dispatch(updatePlanList([newPlan, ...planList]));
-                  toast.success(newPlan.name + " created!", {
-                    position: "top-right",
-                    autoClose: 5000,
-                    hideProgressBar: true,
-                    closeOnClick: true,
-                    pauseOnHover: true,
-                    draggable: true,
-                  });
+                  toast.success(newPlan.name + " created!");
                   if (user._id === "guestUser") {
                     const planIdArray = [newPlan._id];
                     dispatch(updateGuestPlanIds(planIdArray));

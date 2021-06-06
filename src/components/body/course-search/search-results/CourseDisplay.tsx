@@ -108,6 +108,7 @@ const CourseDisplay = () => {
         closeOnClick: true,
         pauseOnHover: true,
         draggable: true,
+        progress: 0,
       });
 
       // Clears search state.

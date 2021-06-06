@@ -75,7 +75,7 @@ const InfoCards = () => {
           closeOnClick: true,
           pauseOnHover: true,
           draggable: true,
-          progress: undefined,
+          progress: 0,
         });
         setEditName(false);
         dispatch(updatePlanList(newPlanList));
@@ -116,7 +116,7 @@ const InfoCards = () => {
         </div>
         <div className="flex flex-col items-center">
           <div className="w-auto h-auto text-center">{user.name}</div>
-          <div className="w-auto h-auto font-light stroke-2">
+          <div className="w-auto h-auto text-center font-light stroke-2">
             {currentPlan.majors}
           </div>
         </div>
