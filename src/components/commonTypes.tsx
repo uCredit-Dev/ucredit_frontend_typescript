@@ -51,6 +51,7 @@ export type UserCourse = {
   distribution_ids: string[];
   plan_id: string;
   user_id: string;
+  year_id: string;
   year: string;
 };
 

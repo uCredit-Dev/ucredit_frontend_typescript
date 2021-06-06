@@ -636,7 +636,7 @@ const prereqInPast = (
 function getCourseYearRank(plan: Plan, course: UserCourse): number {
   let yearNum = -1;
   plan.years.forEach((currPlanYear) => {
-    if (currPlanYear.name === course.year) {
+    if (currPlanYear._id === course.year_id) {
       yearNum = currPlanYear.year;
     }
   });
