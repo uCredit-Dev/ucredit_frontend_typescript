@@ -3,7 +3,7 @@
 import { Major } from "../../commonTypes";
 
 //cs other courses: https://www.cs.jhu.edu/undergraduate-studies/academics/cs-other-courses/
-const bsCS: Major = {
+const bsCS = {
   name: "B.S. Computer Science",
   department: "EN Computer Science",
   distributions: [
@@ -132,7 +132,7 @@ const bsCS: Major = {
 };
 
 //https://engineering.jhu.edu/chembe/undergraduate-studies/undergraduate-degree-program/requirements/
-const bsChemBE: Major = {
+const bsChemBE = {
   name: "BS Chemical and Biomolecular Engingeering",
   department: "EN Chemical & Biomolecular Engineering",
   distributions: [
@@ -234,7 +234,7 @@ const bsChemBE: Major = {
 };
 
 //https://e-catalogue.jhu.edu/engineering/full-time-residential-programs/degree-programs/applied-mathematics-statistics/applied-mathematics-statistics-bs/#requirementstext
-const bsAMS: Major = {
+const bsAMS = {
   name: "Applied Mathematics and Statistics, Bachelor of Science",
   department: "EN Computer Science",
   distributions: [
@@ -361,7 +361,7 @@ const bsAMS: Major = {
 };
 
 //https://econ.jhu.edu/undergraduate/major-requirements/
-const baEconomics: Major = {
+const baEconomics = {
   name: "B.A. Economics",
   department: "AS Economics",
   distributions: [
@@ -435,7 +435,7 @@ const baEconomics: Major = {
 };
 
 //https://www.bme.jhu.edu/academics/undergraduate/undergraduate-degree-requirements/
-const bsBME: Major = {
+const bsBME = {
   name: "B.A. Pyschological and Brain Studies",
   department: "EN Computer Science",
   distributions: [
@@ -524,4 +524,4 @@ const baIS = {
   requirments: [],
 };
 
-export const allMajors: Major[] = [bsCS, bsChemBE, bsAMS, baEconomics, bsBME];
+export const allMajors = [bsCS, bsChemBE, bsAMS, baEconomics, bsBME];

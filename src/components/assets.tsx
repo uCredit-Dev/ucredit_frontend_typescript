@@ -1,6 +1,7 @@
 import { Course, User, Plan, SemesterType, UserCourse } from "./commonTypes";
 import axios from "axios";
 import React from "react";
+import { allMajors } from "./body/majors/majors"
 
 export const api = "https://ucredit-api.herokuapp.com/api";
 
@@ -328,7 +329,7 @@ export interface prereqCourses {
 // expr is the input expression for the prereqs, regex is the regex to parse
 // numList is a list of the numbers in the expr
 // numNameList is the list of the numbers and associated course names
-const getCourses = (
+export const getCourses = (
   expr: string,
   regex: RegExp,
   allCourses: Course[],
@@ -654,3 +655,11 @@ export const checkAllPrereqs = (
   }
   return false;
 };
+
+export const getMajor = (major: string) => {
+  for (let i = 0; i < allMajors.length; i++) {
+    if (allMajors[i].degree_name === major) {
+      return allMajors[i];
+    }
+  }
+}

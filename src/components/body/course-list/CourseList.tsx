@@ -5,8 +5,10 @@ import { UserCourse, Year } from "../../commonTypes";
 import axios from "axios";
 import {
   selectPlan,
+  selectTotalCredits,
   updateCurrentPlanCourses,
   updateSelectedPlan,
+  updateTotalCredits,
 } from "../../slices/currentPlanSlice";
 import {
   selectPlaceholder,
@@ -30,6 +32,7 @@ function CourseList() {
   const user = useSelector(selectUser);
   const searching = useSelector(selectSearchStatus);
   const placeholder = useSelector(selectPlaceholder);
+  const totalCredits = useSelector(selectTotalCredits);
 
   // Component State setup.
   const [elements, setElements] = useState<JSX.Element[]>([]);
@@ -60,8 +63,10 @@ function CourseList() {
           axios
             .get(api + "/courses/" + courseId)
             .then((resp) => {
-              courses.push(resp.data.data);
-              totCourses.push(resp.data.data);
+              const course: UserCourse = resp.data.data;
+              courses.push(course);
+              dispatch(updateTotalCredits(totalCredits + course.credits));
+              totCourses.push(course);
               if (courses.length === year.courses.length) {
                 jsx.push(
                   <YearComponent

@@ -1,7 +1,7 @@
 import React, { useEffect } from "react";
 import axios from "axios";
 import { useDispatch, useSelector } from "react-redux";
-import { Plan } from "../../commonTypes";
+import { DistributionObj, Plan } from "../../commonTypes";
 import {
   updatePlanList,
   selectUser,
@@ -43,7 +43,7 @@ const GenerateNewPlan: React.FC<generateNewPlanProps> = (props) => {
     const planBody = {
       name: "Unnamed Plan",
       user_id: user._id,
-      majors: [toAddMajor.name],
+      majors: [toAddMajor.degree_name],
       expireAt:
         user._id === "guestUser" ? Date.now() + 60 * 60 * 24 * 1000 : undefined,
     };
@@ -60,19 +60,20 @@ const GenerateNewPlan: React.FC<generateNewPlanProps> = (props) => {
         axios.get(api + "/years/" + newPlanResponse._id).then((resp) => {
           newPlan = { ...newPlanResponse, years: resp.data.data };
           // Make a new distribution for each distribution of the major of the plan.
-          toAddMajor.distributions.forEach((distr: any, index: number) => {
+          toAddMajor.distributions.forEach((distr: DistributionObj, index: number) => {
+            //console.log(distr);
             const distributionBody = {
               name: distr.name,
-              required: distr.required,
+              required: true,
               user_id: user._id,
               plan_id: newPlan._id,
-              filter: distr.filter,
+              filter: "",
               expireAt:
                 user._id === "guestUser"
                   ? Date.now() + 60 * 60 * 24 * 1000
                   : undefined,
             };
-
+            console.log(distributionBody);
             axios
               .post(api + "/distributions", distributionBody)
               .then((newDistr: any) => {

@@ -96,13 +96,16 @@ export type Filter = {
 // Info for distribution bar.
 export type Distribution = {
   _id: string;
-  name: string;
-  required: number;
-  filter: Filter;
-  description?: string;
-  planned: number;
-  current: number;
-  satisfied: boolean;
+  name: String;
+  required_credits: number;
+  min_cedits_per_course: number;
+  description: String;
+  criteria: String;
+  fine_requirements?: FineReq[];
+  user_select?: boolean;
+  double_count?: boolean;
+  exception?: String;
+  planned_credits: number;
   courses: string[];
   user_id: string;
   plan_id: string;
@@ -126,21 +129,29 @@ export type FilterType =
 
 export type AreaType = "N" | "S" | "H" | "W" | "E" | "Q";
 
+export type FineReq = {
+  required_credits: number;
+  description: String;
+  criteria: String;
+  exclusive?: boolean;
+};
+
+export type DistributionObj = {
+  name: String;
+  required_credits: number;
+  min_cedits_per_course: number;
+  description: String;
+  criteria: String;
+  fine_requirements?: FineReq[];
+  user_select?: boolean;
+  double_count?: boolean;
+  exception?: String;
+};
+
 export type Major = {
-  name: string;
+  degree_name: string;
   department: string;
-  distributions: {
-    name: string;
-    required: number;
-    filter: Filter;
-    description?: string;
-  }[];
-  requirements?: {
-    name: string;
-    required: number;
-    filter: Filter;
-    description?: string;
-    byCredit: boolean;
-    sameCategory?: boolean;
-  }[];
+  total_degree_credit: number;
+  wi_credit: number;
+  distributions: DistributionObj[];
 };

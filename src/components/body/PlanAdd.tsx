@@ -9,13 +9,13 @@ import {
   updateToAddMajor,
   selectToAddMajor,
 } from "../slices/userSlice";
-import { allMajors } from "./majors/major";
+import { allMajors } from "./majors/majors";
 import Select from "react-select";
 
 const majorOptions = [
   ...allMajors.map((major, index) => ({
     value: index,
-    label: major.name,
+    label: major.degree_name,
   })),
 ];
 

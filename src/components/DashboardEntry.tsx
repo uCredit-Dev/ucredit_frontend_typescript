@@ -6,6 +6,7 @@ import { updateUser, selectUser } from "./slices/userSlice";
 import { withCookies, useCookies } from "react-cookie";
 import bg from "./images/bg.png";
 import placeholder from "./images/placeholder_logo.png";
+import Test from './Test'
 
 const api = "https://ucredit-api.herokuapp.com/api";
 const deploy = "https://ucredit.herokuapp.com/";
@@ -132,6 +133,7 @@ const DashboardEntry = (props: any) => {
         backgroundPosition: "top",
       }}
     >
+      <Test />
       <div
         className="min-w-1/4 flex flex-col mx-auto my-auto p-14 text-white text-lg font-bold rounded"
         style={{ backgroundColor: "#00316F" }}
