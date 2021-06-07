@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from "react";
-// import Year from "./YearComponent";
 import { useSelector, useDispatch } from "react-redux";
 import { UserCourse, Year } from "../../commonTypes";
 import axios from "axios";
@@ -17,14 +16,12 @@ import {
 import YearComponent, { newYearTemplate } from "./YearComponent";
 import { ReactComponent as AddSvg } from "../../svg/Add.svg";
 import { toast } from "react-toastify";
-import userEvent from "@testing-library/user-event";
 import { selectUser } from "../../slices/userSlice";
+import { api } from "../../assets";
 
-const api = "https://ucredit-api.herokuapp.com/api";
-
-/* 
-  Container component that holds all the years, semesters, and courses of the current plan.
-*/
+/**
+ * Container component that holds all the years, semesters, and courses of the current plan.
+ */
 function CourseList() {
   // Setting up redux
   const dispatch = useDispatch();

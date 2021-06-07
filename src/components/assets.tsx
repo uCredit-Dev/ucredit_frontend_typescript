@@ -1,4 +1,11 @@
-import { Course, User, Plan, SemesterType, UserCourse } from "./commonTypes";
+import {
+  Course,
+  User,
+  Plan,
+  SemesterType,
+  UserCourse,
+  SISRetrievedCourse,
+} from "./commonTypes";
 import { allMajors } from "./body/majors/majors";
 
 export const api = "https://ucredit-api.herokuapp.com/api";
@@ -286,7 +293,7 @@ export const filterNNegatives = (inspected: Course | "None"): any[] => {
 // numList is a list of the numbers in the expr
 export const processPrereqs = (
   preReqs: any[],
-  allCourses: Course[]
+  allCourses: SISRetrievedCourse[]
 ): prereqCourses => {
   // Regex used to get an array of course numbers.
   const regex: RegExp = /[A-Z]{2}\.[0-9]{3}\.[0-9]{3}/g;
@@ -330,7 +337,7 @@ export interface prereqCourses {
 export const getCourses = (
   expr: string,
   regex: RegExp,
-  allCourses: Course[]
+  allCourses: SISRetrievedCourse[]
 ): prereqCourses => {
   // Gets an array of all courses in expression.
   let match = expr.match(regex);
@@ -345,15 +352,14 @@ export const getCourses = (
   // For the list of numbers, retrieve each course number, search for it and store the combined number + name into numNameList
   for (let n = 0; n < numList.length; n++) {
     let num = numList[n];
-    let retrievedCourse = getCourse(num, allCourses);
-    //console.log(retrievedCourse);
+    let retrievedCourse = getCourse(num, allCourses, "Any", "Any");
     if (retrievedCourse !== null) {
       numNameList[n] = num + num + " " + retrievedCourse.title;
       // num is added twice to distinquish which was the base course (refer to the case of EN.600 below) in the case that departments change numbers (600 to 601)
     }
     if (num.match("EN.600") !== null) {
       num = num.replace("EN.600", "EN.601");
-      const retrievedCourse601 = getCourse(num, allCourses);
+      const retrievedCourse601 = getCourse(num, allCourses, "Any", "Any");
       if (retrievedCourse601 !== null) {
         // Append original num to front for later sorting
         numNameList[n] = numList[n] + num + " " + retrievedCourse601.title;
@@ -374,15 +380,26 @@ export const getCourses = (
 
 export const getCourse = (
   courseNumber: String,
-  allCourses: Course[]
+  allCourses: SISRetrievedCourse[],
+  semester: SemesterType | "Any",
+  year: number | "Any"
 ): Course | null => {
-  let out = null;
-  for (let element of allCourses) {
+  let out: Course | null = null;
+  allCourses.forEach((element) => {
     if (element.number === courseNumber) {
-      out = element;
-      break;
+      element.versions.forEach((el) => {
+        if (
+          el.term === semester + " " + year ||
+          semester === "Any" ||
+          year === "Any"
+        ) {
+          out = { title: element.title, number: element.number, ...el };
+          return;
+        }
+      });
+      return;
     }
-  }
+  });
   return out;
 };
 
@@ -649,9 +666,9 @@ export const checkAllPrereqs = (
   number: String,
   year: number,
   semester: SemesterType,
-  allCourses: Course[]
+  allCourses: SISRetrievedCourse[]
 ): boolean => {
-  const course = getCourse(number, allCourses);
+  const course = getCourse(number, allCourses, semester, year);
   if (course !== null) {
     let filtered = filterNNegatives(course);
     let processed;

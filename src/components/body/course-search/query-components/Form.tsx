@@ -10,9 +10,9 @@ import {
 } from "../../../slices/searchSlice";
 import {
   AreaType,
-  Course,
   DepartmentType,
   SemesterType,
+  SISRetrievedCourse,
   TagType,
 } from "../../../commonTypes";
 import { ReactComponent as ShowSvg } from "../../../svg/Show.svg";
@@ -24,10 +24,12 @@ import "react-toastify/dist/ReactToastify.css";
 import Filters from "./Filters";
 import { selectAllCourses } from "../../../slices/userSlice";
 
-/* 
-  Search form, including the search query input and filters.
-*/
-// TODO: Multi select for various filters.
+/**
+ * Search form, including the search query input and filters.
+ * TODO: Multi select for various filters.
+ *
+ * @param setSearching - sets searching state
+ */
 const Form = (props: { setSearching: Function }) => {
   // Set up redux dispatch and variables.
   const dispatch = useDispatch();
@@ -39,8 +41,8 @@ const Form = (props: { setSearching: Function }) => {
   // Component state setup
   const [showCriteria, setShowCriteria] = useState(false);
   const [showAllResults, setShowAllResults] = useState<boolean>(false);
-  const [searchedCourses] = useState<Map<string, SearchMapEl>>(
-    new Map<string, SearchMapEl>()
+  const [searchedCourses] = useState<Map<String, SearchMapEl>>(
+    new Map<String, SearchMapEl>()
   );
 
   // On opening search, set the term filter to match semester you're adding to.
@@ -60,7 +62,7 @@ const Form = (props: { setSearching: Function }) => {
   };
 
   type SearchMapEl = {
-    course: Course;
+    course: SISRetrievedCourse;
     priority: number;
   };
 
@@ -108,8 +110,8 @@ const Form = (props: { setSearching: Function }) => {
 
   // Finds course based on the search conditions given in extras.
   // Finds all relevant courses by starting with all courses and filtering them out.
-  const find = (extras: SearchExtras): Course[] => {
-    let courses: Course[] = [...allCourses];
+  const find = (extras: SearchExtras): SISRetrievedCourse[] => {
+    let courses: SISRetrievedCourse[] = [...allCourses];
     if (extras.query.length > 0) {
       courses = courses.filter((course) => {
         if (
@@ -131,28 +133,63 @@ const Form = (props: { setSearching: Function }) => {
 
     const credits = extras.credits;
     if (credits !== null) {
-      courses = courses.filter(
-        (course) => course.credits.toString() === credits.toString()
-      );
+      courses = courses.filter((course) => {
+        let satisfied = false;
+        course.versions.forEach((v) => {
+          if (v.credits.toString() === credits.toString()) {
+            satisfied = true;
+          }
+        });
+        return satisfied;
+      });
+      // courses = courses.filter(
+      //   (course) => course.credits.toString() === credits.toString()
+      // );
     }
 
     const areas = extras.areas;
     if (areas !== null) {
-      courses = courses.filter((course) => course.areas.includes(areas));
+      courses = courses.filter((course) => {
+        let satisfied = false;
+        course.versions.forEach((v) => {
+          if (v.areas.includes(areas)) {
+            satisfied = true;
+          }
+        });
+        return satisfied;
+      });
 
-      if (searchFilters.distribution === "N") {
-        courses = courses.filter((course: Course) => course.areas !== "None");
-      }
+      // if (extras.areas === "N") {
+      //   courses = courses.filter((course: Course) => course.areas !== "None");
+      // }
     }
 
     const department = extras.department;
     if (department !== null) {
-      courses = courses.filter((course) => course.department === department);
+      courses = courses.filter((course) => {
+        let satisfied = false;
+        course.versions.forEach((v) => {
+          if (v.department === department) {
+            satisfied = true;
+          }
+        });
+        return satisfied;
+      });
+      // courses = courses.filter((course) => course.department === department);
     }
 
     const tag = extras.tags;
     if (tag !== null) {
-      courses = courses.filter((course) => course.tags.includes(tag));
+      courses = courses.filter((course) => {
+        let satisfied = false;
+        course.versions.forEach((v) => {
+          if (v.tags.includes(tag)) {
+            satisfied = true;
+          }
+        });
+        return satisfied;
+      });
+      // courses = courses.filter((course) => course.tags.includes(tag));
     }
 
     const term = extras.term;
@@ -170,14 +207,23 @@ const Form = (props: { setSearching: Function }) => {
 
     const wi = extras.wi;
     if (wi !== null) {
-      courses = courses.filter((course) => course.wi && wi);
+      courses = courses.filter((course) => {
+        let satisfied = false;
+        course.versions.forEach((v) => {
+          if (v.wi && wi) {
+            satisfied = true;
+          }
+        });
+        return satisfied;
+      });
+      // courses = courses.filter((course) => course.wi && wi);
     }
 
     return courses;
   };
 
   // Updates search results and makes a toast based on amount of results found.
-  const updateSearchResults = (results: Course[]) => {
+  const updateSearchResults = (results: SISRetrievedCourse[]) => {
     dispatch(updateRetrievedCourses(results));
     if (results.length > 0) {
       props.setSearching(false);
@@ -211,13 +257,13 @@ const Form = (props: { setSearching: Function }) => {
     queryLength: number,
     querySubstrs: string[]
   ) {
-    let courses: Course[] = [];
+    let courses: SISRetrievedCourse[] = [];
 
     querySubstrs.forEach((subQuery) => {
       courses.push(...find({ ...extras, query: subQuery }));
     });
 
-    courses.forEach((course: Course) => {
+    courses.forEach((course: SISRetrievedCourse) => {
       if (!searchedCourses.has(course.number)) {
         searchedCourses.set(course.number, {
           course: course,
@@ -229,7 +275,7 @@ const Form = (props: { setSearching: Function }) => {
     if (queryLength > minLength) {
       performSmartSearch(extras, queryLength - 1)();
     } else {
-      const newSearchList: Course[] = getNewSearchList();
+      const newSearchList: SISRetrievedCourse[] = getNewSearchList();
       updateSearchResults(newSearchList);
     }
   }
@@ -255,14 +301,14 @@ const Form = (props: { setSearching: Function }) => {
         substringSearch(extras, queryLength, querySubstrs);
       } else {
         // Perform old search if search query is less than the minLength for a smart search.
-        let courses: Course[] = find(extras);
+        let courses: SISRetrievedCourse[] = find(extras);
         updateSearchResults(courses);
       }
     };
 
   // Gets new list of searched courses.
-  const getNewSearchList = (): Course[] => {
-    let searchList: Course[] = [];
+  const getNewSearchList = (): SISRetrievedCourse[] => {
+    let searchList: SISRetrievedCourse[] = [];
 
     // sorts searchedCourses map by priority.
     searchedCourses[Symbol.iterator] = function* () {

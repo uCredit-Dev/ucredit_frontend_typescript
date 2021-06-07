@@ -11,12 +11,11 @@ import { ReactComponent as RemoveSvg } from "../../svg/Remove.svg";
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { selectPlan, updateSelectedPlan } from "../../slices/currentPlanSlice";
+import { api } from "../../assets";
 
-const api = "https://ucredit-api.herokuapp.com/api";
-
-/* 
-  User/Current plan information area.
-*/
+/**
+ * User/Current plan information area.
+ */
 const InfoCards = () => {
   // Redux Setup
   const dispatch = useDispatch();
@@ -29,7 +28,6 @@ const InfoCards = () => {
 
   // Determines whether we're editing the name.
   const [editName, setEditName] = useState<boolean>(false);
-  const [newPlan, setNewPlan] = useState(0);
 
   // Updates temporary plan name and notifies useffect on state change to update db plan name with debounce.
   const handlePlanNameChange = (event: any) => {
@@ -108,11 +106,7 @@ const InfoCards = () => {
               onClick={activateDeletePlan}
             />
           </div>
-          <PlanChoose
-            className="flex flex-row items-center justify-center w-planchoose h-auto text-white text-infocard bg-secondary cursor-pointer select-none"
-            newPlan={newPlan}
-            setNewPlan={setNewPlan}
-          />
+          <PlanChoose />
         </div>
         <div className="flex flex-col items-center">
           <div className="w-auto h-auto text-center">{user.name}</div>

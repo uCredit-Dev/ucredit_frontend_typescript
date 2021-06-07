@@ -4,9 +4,14 @@ import { ReactComponent as ChevronRight } from "../../../svg/ChevronRight.svg";
 import { ReactComponent as ChevronDown } from "../../../svg/ChevronDown.svg";
 import { ReactComponent as CheckMark } from "../../../svg/CheckMark.svg";
 
-/* 
-  This is one of the open-close prereq pill dropdowns.
-*/
+/**
+ * This is one of the open-close prereq dropdowns.
+ * @param text - the raw text of the dropdown
+ * @param satisfied - whether the dropdown is satisfied
+ * @param element - the parsed version of the raw text
+ * @param getNonStringPrereq - function called to get a parsed prereq object
+ * @param or - whether this dropdown is an or or and dropdown.
+ */
 const PrereqDropdown = (props: {
   text: string;
   satisfied: boolean;

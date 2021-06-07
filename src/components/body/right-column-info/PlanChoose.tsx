@@ -14,23 +14,12 @@ import "react-toastify/dist/ReactToastify.css";
 import GenerateNewPlan from "./GenerateNewPlan";
 import PlanAdd from "../PlanAdd";
 import { selectPlan, updateSelectedPlan } from "../../slices/currentPlanSlice";
+import { api } from "../../assets";
 
-const api = "https://ucredit-api.herokuapp.com/api";
-
-type PlanChooseProps = {
-  className?: string;
-  newPlan: number;
-  setNewPlan: Function;
-};
-
-/* 
-  Adding a placeholder
-  Props:
-    className: className of plans
-    newPlan: the amount of plans currently in the plan list
-    setNewPlan: updates newPlan
-*/
-const PlanChoose = (props: PlanChooseProps) => {
+/**
+ * Dropdown for choosing a plan to display.
+ */
+const PlanChoose = () => {
   // Redux setup
   const dispatch = useDispatch();
   const user = useSelector(selectUser);

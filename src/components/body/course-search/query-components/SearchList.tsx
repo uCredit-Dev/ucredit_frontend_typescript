@@ -2,13 +2,14 @@ import React, { useState, useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import {
   selectRetrievedCourses,
-  updateInspectedCourse,
+  updateInspectedVersion,
   updatePlaceholder,
 } from "../../../slices/searchSlice";
 import CourseCard from "./CourseCard";
 import ReactPaginate from "react-paginate";
 import { ReactComponent as PlaceholderSvg } from "../../../svg/Placeholder.svg";
 import ReactTooltip from "react-tooltip";
+import { Course } from "../../../commonTypes";
 
 /* 
   List of searched courses.
@@ -59,12 +60,11 @@ const SearchList = (props: { searching: boolean }) => {
 
   // Activates placeholder adding.
   const onPlaceholderClick = () => {
-    dispatch(updatePlaceholder(true));
-    const placeholderCourse = {
+    const placeholderCourse: Course = {
       title: "placeholder",
       number: "placeholder",
       areas: "",
-      terms: [],
+      term: "",
       school: "none",
       department: "none",
       credits: "",
@@ -74,8 +74,8 @@ const SearchList = (props: { searching: boolean }) => {
       preReq: [],
       restrictions: [],
     };
-
-    dispatch(updateInspectedCourse(placeholderCourse));
+    dispatch(updatePlaceholder(true));
+    dispatch(updateInspectedVersion(placeholderCourse));
   };
 
   return (

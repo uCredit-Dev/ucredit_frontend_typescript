@@ -22,6 +22,9 @@ const wiFilters = ["Any", "Yes", "No"];
 const departmentFilters = ["Any", ...all_majors];
 const tagFilters = ["Any", ...course_tags];
 
+/**
+ * The component containing all search filters.
+ */
 const Filters = () => {
   // Set up redux dispatch and variables.
   const dispatch = useDispatch();

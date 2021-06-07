@@ -22,8 +22,7 @@ const majorOptions = [
 /**
  * Popup for adding a new plan.
  * TODO: Implement all commented code features
- * Props:
- *  setGenerateNew - function that gives a signal to make a new plan.
+ * @param setGenerateNew - signals the generateNewPlan component to generate a new plan.
  * */
 const PlanAdd = (props: { setGenerateNew: Function }) => {
   // Redux setup
@@ -32,7 +31,9 @@ const PlanAdd = (props: { setGenerateNew: Function }) => {
   const toAddMajor = useSelector(selectToAddMajor);
   const planList = useSelector(selectPlanList);
 
-  // Handles the user's intention to create a new plan.
+  /**
+   * Handles the user's intention to create a new plan.
+   */
   const createNewPlan = () => {
     if (toAddMajor === null) {
       toast.error("Please choose a valid major!", {

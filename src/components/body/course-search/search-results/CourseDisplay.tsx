@@ -1,28 +1,13 @@
-import React, { useState, useEffect, useRef } from "react";
+import React, { useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
+import { Plan, UserCourse, Year } from "../../../commonTypes";
 import {
-  Course,
-  Distribution,
-  DistributionObj,
-  Filter,
-  FilterType,
-  Plan,
-  SemesterType,
-  UserCourse,
-  Year,
-} from "../../../commonTypes";
-import {
-  selectInspectedCourse,
   clearSearch,
-  popSearchStack,
   selectSemester,
   selectYear,
   selectPlaceholder,
-  selectSearchStack,
   updatePlaceholder,
-  updateSearchTime,
-  updateSearchFilters,
-  updateInspectedCourse,
+  selectVersion,
 } from "../../../slices/searchSlice";
 import {
   selectUser,
@@ -30,86 +15,40 @@ import {
   updatePlanList,
 } from "../../../slices/userSlice";
 import Placeholder from "./Placeholder";
-import PrereqDisplay from "../prereqs/PrereqDisplay";
-import { ReactComponent as CloseSvg } from "../../../svg/Close.svg";
-import ReactTooltip from "react-tooltip";
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-import { getColors } from "../../../assets";
-// import { testMajorCSNew } from "../../../testObjs";
 import {
-  selectDistributions,
   selectPlan,
   updateSelectedPlan,
 } from "../../../slices/currentPlanSlice";
-import { getMajor } from "../../../assets"
-import { getRequirements, requirements } from "../../right-column-info/distributionFunctions"
+import { api } from "../../../assets";
+import SisCourse from "./SisCourse";
 
-const api = "https://ucredit-api.herokuapp.com/api";
-
-const termFilters: (SemesterType | "None")[] = [
-  "None",
-  "Fall",
-  "Spring",
-  "Intersession",
-  "Summer",
-];
-
-/* 
-  Displays course information once a user selects a course in the search list
-*/
-// TODO: Try to split this up into more, smaller components.
+/**
+ * Displays course information once a user selects a course in the search list
+ */
 const CourseDisplay = () => {
   // Redux Setup
   const dispatch = useDispatch();
-  const inspected = useSelector(selectInspectedCourse);
+  const version = useSelector(selectVersion);
   const user = useSelector(selectUser);
   const semester = useSelector(selectSemester);
   const year = useSelector(selectYear);
   const currentPlan = useSelector(selectPlan);
   const planList = useSelector(selectPlanList);
-  const distributions = useSelector(selectDistributions);
   const placeholder = useSelector(selectPlaceholder);
-  const searchYear = useSelector(selectYear);
-  const searchSemester = useSelector(selectSemester);
-  const searchStack = useSelector(selectSearchStack);
 
   // component state setup
-  const bioElRef = useRef<HTMLParagraphElement>(null);
-  const [inspectedArea, setInspectedArea] = useState("None");
-  const [showMore, setShowMore] = useState<number>(2);
-
-  const getDistributions = () => {
-    let major = currentPlan.majors[0];
-    if (major === undefined) {
-      return null;
-    }
-    let majorObj = getMajor(major);
-    if (majorObj === undefined) {
-      return null;
-    }
-    let distr = getRequirements(majorObj);
-    return distr;
-  };
+  const [inspectedArea, setInspectedArea] = useState<string>("None");
 
   // Adds course
-  const addCourse = () => {
+  const addCourse = (): void => {
     // Adds course, updates user frontend distributions display, and clears search states.
-    if (inspected !== "None") {
+    if (version !== "None") {
       dispatch(updatePlaceholder(false));
 
       // Posts to add course route and then updates distribution.
       updateDistributions();
-
-      toast.success(inspected.title + " added!", {
-        position: "top-right",
-        autoClose: 5000,
-        hideProgressBar: true,
-        closeOnClick: true,
-        pauseOnHover: true,
-        draggable: true,
-        progress: 0,
-      });
 
       // Clears search state.
       dispatch(clearSearch());
@@ -128,21 +67,21 @@ const CourseDisplay = () => {
   };
 
   // Updates distribution bars upon successfully adding a course.
-  const updateDistributions = () => {
+  const updateDistributions = (): void => {
     let newUserCourse: UserCourse;
-    if (inspected !== "None") {
+    if (version !== "None") {
       const addingYear: Year | null = getYear();
 
       const body = {
         user_id: user._id,
         year_id: addingYear !== null ? addingYear._id : "",
         plan_id: currentPlan._id,
-        title: inspected.title,
+        title: version.title,
         term: semester.toLowerCase(),
         year: addingYear !== null ? addingYear.name : "",
-        credits: inspected.credits,
+        credits: version.credits,
         distribution_ids: currentPlan.distribution_ids,
-        number: inspected.number,
+        number: version.number,
         area: inspectedArea,
         expireAt:
           user._id === "guestUser"
@@ -179,6 +118,15 @@ const CourseDisplay = () => {
               }
             }
             dispatch(updatePlanList(newPlanList));
+            toast.success(version.title + " added!", {
+              position: "top-right",
+              autoClose: 5000,
+              hideProgressBar: true,
+              closeOnClick: true,
+              pauseOnHover: true,
+              draggable: true,
+              progress: 0,
+            });
           } else {
             console.log("Failed to add", data.errors);
           }
@@ -186,282 +134,20 @@ const CourseDisplay = () => {
       });
     }
   };
-
-  // UseEffect runs when a new course is inspected.
-  // It automatically updates the current area in the add course area selection to the first area in the course areas string.
-  useEffect(() => {
-    setShowMore(2);
-    if (
-      inspected !== "None" &&
-      inspected.areas !== "None" &&
-      inspected.areas !== undefined
-    ) {
-      const firstArea = inspected.areas.charAt(0);
-      if (
-        firstArea === "N" ||
-        firstArea === "S" ||
-        firstArea === "H" ||
-        firstArea === "Q" ||
-        firstArea === "E"
-      ) {
-        setInspectedArea(firstArea);
-      }
-    } else {
-      setInspectedArea("None");
-    }
-  }, [inspected]);
-
-  // Returns an array of select options for the distribution area users want to add the course to.
-  const getInspectedAreas = () => {
-    if (inspected !== "None" && inspected.areas !== "None") {
-      const areaOptions = inspected.areas.split("").map((area) => (
-        <option key={inspected.number + area} value={area}>
-          {area}
-        </option>
-      ));
-      areaOptions.push(<option value={"None"}>None</option>);
-      return areaOptions;
-    } else {
-      return <option value={"None"}>None</option>;
-    }
-  };
-
-  // Update searching for a certain term.
-  const handleTermFilterChange = (event: any): void => {
-    const params: { filter: FilterType; value: any } = {
-      filter: "term",
-      value: event.target.value,
-    };
-    dispatch(
-      updateSearchTime({ searchSemester: event.target.value, searchYear: year })
-    );
-    dispatch(updateSearchFilters(params));
-  };
-
-  // Gets course restrictions
-  const getRestrictions = () => {
-    if (inspected !== "None") {
-      const restrictions = inspected.restrictions.map(
-        (restriction) => restriction.RestrictionName
-      );
-      if (restrictions.length !== 0) {
-        return restrictions;
-      } else {
-        return "No Restrictions!";
-      }
-    }
-  };
-
-  // Everytime the inspected course changes or someone presses show more, update description height.
-  useEffect(() => {
-    let hasOverflowingChildren = false;
-    if (bioElRef.current !== null) {
-      const bioEl: HTMLParagraphElement = bioElRef.current;
-      hasOverflowingChildren =
-        bioEl.offsetHeight < bioEl.scrollHeight ||
-        bioEl.offsetWidth < bioEl.scrollWidth;
-    }
-    if (hasOverflowingChildren && showMore === 2) {
-      setShowMore(0);
-    }
-  }, [showMore, bioElRef, inspected]);
-
-  // For changing the year to add course while in the search popout.
-  const handleYearChange = (event: any) => {
-    dispatch(
-      updateSearchTime({
-        searchYear: parseInt(event.target.value),
-        searchSemester: searchSemester,
-      })
-    );
-  };
-
-  // Clears inspected course.
-  const clearInspected = () => {
-    dispatch(updateInspectedCourse("None"));
-  };
-
   return (
     <div className="flex flex-col p-5 w-full bg-gray-200 rounded-r">
-      {inspected === "None" ? (
+      {version === "None" ? (
         <div className="flex flex-col items-center justify-center w-full h-full font-normal">
           No selected course!
         </div>
       ) : placeholder ? (
         <Placeholder addCourse={addCourse} />
       ) : (
-        <>
-          <div className="pb-5 pt-4 px-5 w-full h-full text-base bg-white rounded overflow-y-auto">
-            {searchStack.length !== 0 ? (
-              <button
-                onClick={() => {
-                  dispatch(popSearchStack());
-                }}
-              >
-                Back
-              </button>
-            ) : null}
-            <div className="flex flex-row justify-between mb-1 w-full h-auto">
-              <h1 className="flex flex-row w-auto h-auto">
-                <div className="w-full h-auto text-2xl font-bold">
-                  {inspected.title}
-                </div>
-              </h1>
-              <button className="text-2xl" onClick={clearInspected}>
-                <CloseSvg className="w-7 h-7 stroke-2" />
-              </button>
-            </div>
-            <div className="grid grid-cols-2 w-auto h-auto">
-              <ReactTooltip />
-              <div className="w-auto h-auto">
-                <div className="flex flex-row items-center">
-                  <div className="mr-1 font-semibold">Number: </div>
-                  {inspected.number}
-                </div>
-              </div>
-              <div className="w-auto h-auto">
-                <div className="flex flex-row items-center">
-                  <div className="mr-1 font-semibold">Credit: </div>
-                  <div
-                    className="flex items-center px-1 w-auto h-5 text-white font-semibold bg-secondary rounded select-none"
-                    data-tip={inspected.credits + " credits"}
-                  >
-                    {inspected.credits}
-                  </div>
-                </div>
-              </div>
-              <div className="w-auto h-auto">
-                <div className="flex flex-row items-center">
-                  <div className="mr-1 font-semibold">Areas:</div>
-                  {inspected.areas !== "None" ? (
-                    inspected.areas.split("").map((area) => (
-                      <div
-                        className="flex flex-row items-center"
-                        key={area + inspected.number}
-                      >
-                        <div
-                          className="flex items-center px-1 w-auto h-5 text-white font-semibold rounded select-none"
-                          style={{ backgroundColor: getColors(area)[0] }}
-                        >
-                          {area}
-                        </div>
-                      </div>
-                    ))
-                  ) : (
-                    <div
-                      className="flex items-center px-1 w-auto h-5 text-white font-semibold rounded select-none"
-                      style={{ backgroundColor: getColors(inspected.areas)[0] }}
-                    >
-                      None
-                    </div>
-                  )}
-                </div>
-                <div>
-                  <span className="font-semibold">Department: </span>
-                  {inspected.department}
-                </div>
-              </div>
-              <div className="w-auto h-auto">
-                <div>
-                  <span className="font-semibold">Offered in: </span>
-                  {inspected.terms.map((term, index) => {
-                    return index === inspected.terms.length - 1
-                      ? term
-                      : term + ", ";
-                  })}
-                </div>
-                <div>
-                  <span className="font-semibold">Restrictions: </span>
-                  {getRestrictions()}
-                </div>
-              </div>
-            </div>
-
-            <div className="mb-3 mt-3">
-              <p
-                className="font-normal overflow-y-hidden"
-                style={{ maxHeight: showMore === 1 ? "100%" : "6rem" }}
-                ref={bioElRef}
-              >
-                {inspected.bio}
-              </p>
-
-              {showMore === 0 ? (
-                <button
-                  className="underline"
-                  onClick={() => {
-                    setShowMore(1);
-                  }}
-                >
-                  Show more...
-                </button>
-              ) : showMore === 1 ? (
-                <button
-                  className="underline"
-                  onClick={() => {
-                    setShowMore(0);
-                  }}
-                >
-                  Show less...
-                </button>
-              ) : null}
-              {/* <CourseEvalSection/> */}
-              {/* <CourseEvalSection inspected={inspected}/> */}
-            </div>
-            <PrereqDisplay />
-          </div>
-          <div className="flex flex-row flex-grow items-center mt-2">
-            <div className="flex flex-col flex-grow justify-center">
-              <div className="mb-1 font-medium">Selecting for</div>
-              <div className="flex flex-row">
-                <div className="flex flex-row items-center w-auto h-auto">
-                  Year:
-                  <select
-                    className="ml-2 text-black text-coursecard rounded"
-                    onChange={handleYearChange}
-                    value={searchYear}
-                  >
-                    {currentPlan.years.map((currPlanYear) => (
-                      <option key={currPlanYear.year} value={currPlanYear.year}>
-                        {currPlanYear.name}
-                      </option>
-                    ))}
-                  </select>
-                </div>
-                <div className="flex flex-row items-center ml-5 w-auto h-auto">
-                  Term:
-                  <select
-                    className="ml-2 h-6 rounded outline-none"
-                    onChange={handleTermFilterChange}
-                    value={semester}
-                  >
-                    {termFilters.map((term) => (
-                      <option key={term + inspected.number} value={term}>
-                        {term}
-                      </option>
-                    ))}
-                  </select>
-                </div>
-                <div className="flex flex-row flex-grow items-center ml-5 w-auto h-auto">
-                  Area:
-                  <select
-                    className="ml-2 w-14 h-6 rounded outline-none"
-                    value={inspectedArea}
-                    onChange={(event) => setInspectedArea(event.target.value)}
-                  >
-                    {getInspectedAreas()}
-                  </select>
-                </div>
-              </div>
-            </div>
-            <button
-              className="mt-2 p-2 w-auto h-10 text-white bg-primary rounded"
-              onClick={addCourse}
-            >
-              Add Course
-            </button>
-          </div>
-        </>
+        <SisCourse
+          inspectedArea={inspectedArea}
+          setInspectedArea={setInspectedArea}
+          addCourse={addCourse}
+        />
       )}
     </div>
   );

@@ -1,6 +1,6 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { AppThunk, RootState } from "../../appStore/store";
-import { Course, Major, Plan, User } from "../commonTypes";
+import { Major, Plan, SISRetrievedCourse, User } from "../commonTypes";
 
 type UserSlice = {
   currentUser: User;
@@ -9,7 +9,7 @@ type UserSlice = {
   adding: boolean;
   toAddName: string;
   toAddMajor: Major | null;
-  allCourses: Course[];
+  allCourses: SISRetrievedCourse[];
 };
 
 const initialState: UserSlice = {
@@ -67,7 +67,10 @@ export const userSlice = createSlice({
     updateToAddMajor: (state: any, action: PayloadAction<Major>) => {
       state.toAddMajor = action.payload;
     },
-    updateAllCourses: (state: any, action: PayloadAction<Course[]>) => {
+    updateAllCourses: (
+      state: any,
+      action: PayloadAction<SISRetrievedCourse[]>
+    ) => {
       state.allCourses = action.payload;
     },
     clearToAdd: (state: any) => {

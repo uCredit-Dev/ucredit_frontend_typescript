@@ -5,14 +5,15 @@ import { ReactComponent as UserSvg } from "../svg/User.svg";
 import { withCookies, useCookies } from "react-cookie";
 import { useHistory } from "react-router-dom";
 import { resetCurrentPlan } from "../slices/currentPlanSlice";
+import { api } from "../assets";
 
-const api = "https://ucredit-api.herokuapp.com/api";
 const deploy = "https://ucredit.herokuapp.com/";
 
-/* 
-  User login/logout buttons.
-*/
-// TODO: Clean this up!!!
+/**
+ * User login/logout buttons.
+ * TODO: Clean this up!!!
+ * @param cookies the cookies passed in from the wrapper component of react-cookie
+ */
 function UserSection(props: any) {
   // Redux setup
   const dispatch = useDispatch();
