@@ -10,12 +10,12 @@ export type Restriction = {
   Description: string;
 };
 
-// For SIS courses
+// For inspected SIS courses
 export type Course = {
   title: string;
   number: string;
   areas: string;
-  terms: SemesterType[];
+  term: String;
   school: string;
   department: string;
   credits: string;
@@ -24,6 +24,26 @@ export type Course = {
   tags: string[];
   preReq: any;
   restrictions: Restriction[];
+};
+
+export type SISRetrievedCourse = {
+  title: string;
+  number: string;
+  terms: string[];
+  versions: {
+    areas: string;
+    term: string;
+    school: string;
+    department: string;
+    credits: string;
+    wi: boolean;
+    bio: string;
+    level: string;
+    tags: string[];
+    preReq: string[];
+    coReq: string[];
+    restrictions: any[];
+  }[];
 };
 
 // For course Evals
@@ -97,15 +117,15 @@ export type Filter = {
 // Info for distribution bar.
 export type Distribution = {
   _id: string;
-  name: String;
+  name: string;
   required_credits: number;
   min_cedits_per_course: number;
-  description: String;
-  criteria: String;
+  description: string;
+  criteria: string;
   fine_requirements?: FineReq[];
   user_select?: boolean;
   double_count?: boolean;
-  exception?: String;
+  exception?: string;
   planned_credits: number;
   courses: string[];
   user_id: string;
@@ -132,21 +152,21 @@ export type AreaType = "N" | "S" | "H" | "W" | "E" | "Q";
 
 export type FineReq = {
   required_credits: number;
-  description: String;
-  criteria: String;
+  description: string;
+  criteria: string;
   exclusive?: boolean;
 };
 
 export type DistributionObj = {
-  name: String;
+  name: string;
   required_credits: number;
   min_cedits_per_course: number;
-  description: String;
-  criteria: String;
+  description: string;
+  criteria: string;
   fine_requirements?: FineReq[];
   user_select?: boolean;
   double_count?: boolean;
-  exception?: String;
+  exception?: string;
 };
 
 export type Major = {

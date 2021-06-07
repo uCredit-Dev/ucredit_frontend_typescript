@@ -1,23 +1,16 @@
 // CONSIDER RENAMING THIS FILE TO GENERAL META DISPLAYS??
 
-import axios from "axios";
 import clsx from "clsx";
 import React, { useState, useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import {
   updateInspectedCourse,
-  selectInspectedCourse,
   selectSemester,
   selectYear,
   updateSearchStack,
+  selectVersion,
 } from "../../../slices/searchSlice";
-import {
-  filterNNegatives,
-  api,
-  processPrereqs,
-  checkPrereq,
-} from "../../../assets";
-
+import { filterNNegatives, processPrereqs, checkPrereq } from "../../../assets";
 import CourseEvalSection from "../search-results/CourseEvalSection";
 import PrereqDropdown from "./PrereqDropdown";
 import { ReactComponent as CheckMark } from "../../../svg/CheckMark.svg";
@@ -38,13 +31,14 @@ type parsedPrereqs = {
   jsx: JSX.Element;
 };
 
-/* 
-  This is the bullet-list display of the prereqs for each course.
-*/
+/**
+ * This is the bullet-list display of the prereqs for each course.
+ * @returns
+ */
 const PrereqDisplay = () => {
   // Redux Setup
   const dispatch = useDispatch();
-  const inspected = useSelector(selectInspectedCourse);
+  const version = useSelector(selectVersion);
   const currPlanCourses = useSelector(selectCurrentPlanCourses);
   const semester = useSelector(selectSemester);
   const year = useSelector(selectYear);
@@ -74,16 +68,16 @@ const PrereqDisplay = () => {
     setHasPreReqs(false);
 
     // First get all valid preReqs (isNegative = true)
-    let preReqs = filterNNegatives(inspected);
+    let preReqs = filterNNegatives(version);
     setNNegativePreReqs(preReqs);
 
     // If there exists preReqs, we need to process and display them.
-    if (inspected !== "None" && preReqs.length > 0) {
+    if (version !== "None" && preReqs.length > 0) {
       setHasPreReqs(true);
       display(preReqs);
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [inspected]);
+  }, [version]);
 
   // This is that one open expression calculator leetcode problem.
   // We're basically modifying it and adapting it to parse through prereqs
@@ -127,22 +121,14 @@ const PrereqDisplay = () => {
 
   // Function currying to produce a function that would update the store when clicking on prereqs
   const updateInspected = (courseNumber: string) => () => {
-    axios
-      .get(api + "/search", { params: { query: courseNumber } })
-      .then((retrieved) => {
-        const retrievedCourse = retrieved.data.data;
-        if (retrievedCourse.length === 1) {
-          if (inspected !== "None") {
-            dispatch(updateSearchStack(inspected));
-          }
-          dispatch(updateInspectedCourse(retrievedCourse[0]));
-        } else {
-          console.log("no such course exists in db");
+    allCourses.forEach((course) => {
+      if (course.number === courseNumber) {
+        if (version !== "None") {
+          dispatch(updateSearchStack(course));
         }
-      })
-      .catch((err) => {
-        console.log("couldnt find", err);
-      });
+        dispatch(updateInspectedCourse(course));
+      }
+    });
   };
 
   // Outputs the prereqs as components

@@ -6,9 +6,7 @@ import { useSelector, useDispatch } from "react-redux";
 import { selectPlan, updateSelectedPlan } from "../../slices/currentPlanSlice";
 import { ReactComponent as RemoveSvg } from "../../svg/Remove.svg";
 import { toast } from "react-toastify";
-import { updateDeleteStatus } from "../../slices/userSlice";
-
-const api = "https://ucredit-api.herokuapp.com/api";
+import { api } from "../../assets";
 
 type yearProps = {
   id: number;
@@ -17,7 +15,7 @@ type yearProps = {
   courses: UserCourse[];
 };
 
-export const newYearTemplate:Year = {
+export const newYearTemplate: Year = {
   _id: "New Year",
   name: "New Year",
   year: -1,
@@ -26,19 +24,22 @@ export const newYearTemplate:Year = {
   user_id: "New Year",
 };
 
-/*
-  A component displaying all the courses in a specific semester.
-  Props:
-    courses: courses it's displaying
-    yearName: year this column is displaying
-*/
+/**
+ * A component displaying all the courses in a specific semester.
+ * TODO: Add popups confirmind delete!
+ *
+ * @param id - id of year
+ * @param customStyle - style object for year
+ * @param year - the year designator
+ * @param courses - courses that belong to this year
+ */
 function YearComponent({ id, customStyle, year, courses }: yearProps) {
+  // Component state setup.
   const [fallCourses, setFallCourses] = useState<UserCourse[]>([]);
   const [springCourses, setSpringCourses] = useState<UserCourse[]>([]);
   const [winterCourses, setWinterCourses] = useState<UserCourse[]>([]);
   const [summerCourses, setSummerCourses] = useState<UserCourse[]>([]);
   const [display, setDisplay] = useState<boolean>(true);
-
   const [yearName, setYearName] = useState<string>(year.name);
   // Determines whether we're editing the name.
   const [editName, setEditName] = useState<boolean>(false);
@@ -94,7 +95,6 @@ function YearComponent({ id, customStyle, year, courses }: yearProps) {
 
   // update the name of the year
   const updateName = () => {
-    console.log("updateName called");
     const body = {
       year_id: year._id,
       name: yearName,
@@ -107,9 +107,10 @@ function YearComponent({ id, customStyle, year, courses }: yearProps) {
       body: JSON.stringify(body),
     })
       .then((resp) => {
-        console.log("new name - ", yearName, resp);
         const newUpdatedYear = { ...year, name: yearName };
-        const newYearArray = [...currentPlan.years].map(yr => yr._id === year._id ? newUpdatedYear : yr);
+        const newYearArray = [...currentPlan.years].map((yr) =>
+          yr._id === year._id ? newUpdatedYear : yr
+        );
         const newUpdatedPlan = { ...currentPlan, years: newYearArray };
         dispatch(updateSelectedPlan(newUpdatedPlan));
 
@@ -126,11 +127,12 @@ function YearComponent({ id, customStyle, year, courses }: yearProps) {
         method: "DELETE",
         headers: {
           "Content-Type": "application/json",
-        }
+        },
       })
-        .then((resp) => {
-          console.log("delete Year - ", yearName, resp);
-          const newYearArray = [...currentPlan.years].filter(yr => yr._id !== year._id);
+        .then(() => {
+          const newYearArray = [...currentPlan.years].filter(
+            (yr) => yr._id !== year._id
+          );
           const newUpdatedPlan = { ...currentPlan, years: newYearArray };
           dispatch(updateSelectedPlan(newUpdatedPlan));
           toast.success("Deleted " + yearName + "!");
@@ -140,16 +142,14 @@ function YearComponent({ id, customStyle, year, courses }: yearProps) {
     } else {
       toast.error("Cannot delete last year!");
     }
-  }
+  };
 
   return (
     <div
       id={id.toString()}
       className={`${customStyle} ml-auto mr-auto medium:px-4 w-yearheading min-w-yearMin`}
     >
-      <div
-        className="flex flex-row justify-between mb-3 p-2 w-full h-yearheading text-white font-medium bg-primary rounded shadow"
-      >
+      <div className="flex flex-row justify-between mb-3 p-2 w-full h-yearheading text-white font-medium bg-primary rounded shadow">
         <input
           value={yearName}
           className="flex-shrink w-full text-white font-semibold bg-primary hover:border-b select-none" // focus:border-transparent???

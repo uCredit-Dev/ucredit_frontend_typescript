@@ -1,5 +1,5 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
-import { AppThunk, RootState } from "../../appStore/store";
+import { RootState } from "../../appStore/store";
 import {
   SemesterType,
   Course,
@@ -7,6 +7,7 @@ import {
   TagType,
   DepartmentType,
   AreaType,
+  SISRetrievedCourse,
 } from "../commonTypes";
 
 // Contains the year and semester that we are currently adding courses to.
@@ -31,10 +32,11 @@ type searchStates = {
   searchTerm: string;
   searchTime: TimeBundle;
   filters: FilterObj;
-  retrievedCourses: Course[];
-  inspectedCourse: Course | "None";
+  retrievedCourses: SISRetrievedCourse[];
+  inspectedVersion: Course | "None";
+  inspectedCourse: SISRetrievedCourse | "None";
   placeholder: boolean;
-  searchStack: Course[];
+  searchStack: SISRetrievedCourse[];
 };
 
 const initialState: searchStates = {
@@ -54,6 +56,7 @@ const initialState: searchStates = {
     department: "Any",
   },
   inspectedCourse: "None",
+  inspectedVersion: "None",
   placeholder: false,
   searchStack: [],
 };
@@ -75,10 +78,26 @@ export const searchSlice = createSlice({
     },
     updateInspectedCourse: (
       state: any,
+      action: PayloadAction<SISRetrievedCourse | "None">
+    ) => {
+      const course = action.payload;
+      if (course !== "None") {
+        const initCourseVer: Course = {
+          title: course.title,
+          number: course.number,
+          ...course.versions[0],
+        };
+        state.inspectedVersion = initCourseVer;
+      } else {
+        state.inspectedVersion = "None";
+      }
+      state.inspectedCourse = action.payload;
+    },
+    updateInspectedVersion: (
+      state: any,
       action: PayloadAction<Course | "None">
     ) => {
-      // Course we're looking at in search popout
-      state.inspectedCourse = action.payload;
+      state.inspectedVersion = action.payload;
     },
     clearSearch: (state: any) => {
       state.filters = {
@@ -96,7 +115,10 @@ export const searchSlice = createSlice({
       state.retrievedCourses = [];
       state.searchStack = [];
     },
-    updateRetrievedCourses: (state: any, action: PayloadAction<Course[]>) => {
+    updateRetrievedCourses: (
+      state: any,
+      action: PayloadAction<SISRetrievedCourse[]>
+    ) => {
       state.retrievedCourses = [...action.payload];
     },
     updatePlaceholder: (state: any, action: PayloadAction<boolean>) => {
@@ -120,7 +142,10 @@ export const searchSlice = createSlice({
         state.filters.wi = action.payload.value;
       }
     },
-    updateSearchStack: (state: any, action: PayloadAction<Course>) => {
+    updateSearchStack: (
+      state: any,
+      action: PayloadAction<SISRetrievedCourse>
+    ) => {
       state.searchStack.push(action.payload);
     },
     popSearchStack: (state: any) => {
@@ -139,16 +164,10 @@ export const {
   updateRetrievedCourses,
   updatePlaceholder,
   updateSearchStack,
+  updateInspectedVersion,
   clearSearch,
   popSearchStack,
 } = searchSlice.actions;
-
-// Asynch search with thunk.
-export const searchAsync =
-  (param: any): AppThunk =>
-  (dispatch) => {
-    // async action here
-  };
 
 // The function below is called a selector and allows us to select a value from
 // the state. Please make a selector for each state :)
@@ -165,5 +184,7 @@ export const selectInspectedCourse = (state: RootState) =>
   state.search.inspectedCourse;
 export const selectPlaceholder = (state: RootState) => state.search.placeholder;
 export const selectSearchStack = (state: RootState) => state.search.searchStack;
+export const selectVersion = (state: RootState) =>
+  state.search.inspectedVersion;
 
 export default searchSlice.reducer;

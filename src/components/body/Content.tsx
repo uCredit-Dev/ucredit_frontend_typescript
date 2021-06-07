@@ -4,21 +4,28 @@ import CourseList from "./course-list/CourseList";
 import Search from "./course-search/Search";
 import { selectSearchStatus } from "../slices/searchSlice";
 import { selectAllCourses, selectDeleteStatus } from "../slices/userSlice";
-import { useSelector, useDispatch } from "react-redux";
+import { useSelector } from "react-redux";
 import InfoCards from "./right-column-info/InfoCards";
 import DeletePlanPopup from "./DeletePlanPopup";
-import { selectCurrentPlanCourses, selectPlan, updateDistributions } from "../slices/currentPlanSlice";
-import { getRequirements, requirements, updateFulfilled } from './right-column-info/distributionFunctions'
-import { getMajor } from "../assets"
+import {
+  selectCurrentPlanCourses,
+  selectPlan,
+} from "../slices/currentPlanSlice";
+import {
+  getRequirements,
+  requirements,
+  updateFulfilled,
+} from "./right-column-info/distributionFunctions";
+import { getMajor } from "../assets";
 
-const api = "https://ucredit-api.herokuapp.com/api";
-
-/*
-  Holds all dashboard components.
-*/
+/**
+ * Holds all dashboard components.
+ */
 function Content() {
   // Component state setup.
-  const [distributions, setDistributions] = useState<[string, requirements[]][]>([]);
+  const [distributions, setDistributions] = useState<
+    [string, requirements[]][]
+  >([]);
   const [distributionOpen, setDistributionOpen] = useState<boolean>(true);
 
   // Redux setup.
@@ -27,13 +34,11 @@ function Content() {
   const deleteStatus = useSelector(selectDeleteStatus);
   const allCourses = useSelector(selectAllCourses);
   const currPlanCourses = useSelector(selectCurrentPlanCourses);
-  const dispatch = useDispatch();
 
   // Gets distribution everytime a plan changes.
   useEffect(() => {
     const distr = getDistributions();
     if (distr !== null) {
-      console.log("updating fulfilled");
       updateFulfilled(distr, currPlanCourses, allCourses);
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -82,19 +87,19 @@ function Content() {
           </div>
           {distributionOpen
             ? distributions.map((pair) => {
-              return pair[1].map((dis) => {
-                const name = dis.name;
-                return (
-                  <div key={name}>
-                    <CourseBar
-                      maxCredits={dis.required_credits}
-                      plannedCredits={dis.fulfilled_credits}
-                      currentCredits={dis.required_credits}
-                      section={name}
-                    />
-                  </div>
-                );
-              });
+                return pair[1].map((dis) => {
+                  const name = dis.name;
+                  return (
+                    <div key={name}>
+                      <CourseBar
+                        maxCredits={dis.required_credits}
+                        plannedCredits={dis.fulfilled_credits}
+                        currentCredits={dis.required_credits}
+                        section={name}
+                      />
+                    </div>
+                  );
+                });
               })
             : null}
         </div>

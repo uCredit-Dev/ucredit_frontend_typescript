@@ -5,10 +5,11 @@ import { useSelector } from "react-redux";
 import { selectInspectedCourse } from "../../../slices/searchSlice";
 import CourseEvalCard from "./CourseEvalCard";
 import clsx from "clsx";
+import { api } from "../../../assets";
 
-const api = "https://ucredit-api.herokuapp.com/api";
-
-// Displays course Evaluations based on inspected course
+/**
+ * Displays course Evaluations based on inspected course
+ */
 const CourseEvalSection = () => {
   let initialCourseEval: CourseEvals = {
     prof: "",
@@ -21,14 +22,13 @@ const CourseEvalSection = () => {
   const inspected = useSelector(selectInspectedCourse);
   const [courseEvals, setEval] = useState(initialCourseEval);
   const [courseReviews, setReviews] = useState([]);
-  // const [courseEvalView, setCourseEvalView] = useState<number>(0);
-  const [selectedCourseEval, setSelectedCourseEval] = useState<number>(0);
+  const [selectedCourseEval, setSelectedCourseEval] = useState<number>(-1);
 
+  // Gets all evaluations for a particular course.
   const getEvals = () => {
     // reset the course evals view
     setEval(initialCourseEval);
-    // setCourseEvalView(0);
-    setSelectedCourseEval(0);
+    setSelectedCourseEval(-1);
     setReviews([]);
 
     if (inspected !== "None" && inspected !== undefined) {
@@ -41,9 +41,10 @@ const CourseEvalSection = () => {
     }
   };
 
+  // Updates the evaluations to a certain course evaluation.
   const updateEvals = (revIndex: number) => {
     // remove if already selected
-    if (revIndex == selectedCourseEval) {
+    if (revIndex === selectedCourseEval) {
       setSelectedCourseEval(-1);
       return;
     }
@@ -51,7 +52,6 @@ const CourseEvalSection = () => {
     if (courseReviews.length !== 0) {
       const chosenRev = courseReviews[revIndex];
       let courseEval: CourseEvals = { ...initialCourseEval };
-      // courseEval.number = inspected.number;
       courseEval.prof = chosenRev["i"];
       courseEval.rating = chosenRev["g"]; // random one
       courseEval.term = chosenRev["s"];

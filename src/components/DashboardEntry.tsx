@@ -1,20 +1,19 @@
 import React, { useEffect, useState } from "react";
 import { useHistory, useLocation } from "react-router-dom";
-import { guestUser } from "./assets";
+import { api, guestUser } from "./assets";
 import { useDispatch, useSelector } from "react-redux";
 import { updateUser, selectUser } from "./slices/userSlice";
 import { withCookies, useCookies } from "react-cookie";
 import bg from "./images/bg.png";
 import placeholder from "./images/placeholder_logo.png";
-import Test from './Test'
+import Test from "./Test";
 
-const api = "https://ucredit-api.herokuapp.com/api";
 const deploy = "https://ucredit.herokuapp.com/";
 const dev = "http://localhost:3000/";
 
 /**
  * The login page, designed after the Spotify login page..
- * @param props contains the various resources provided by react-cookie
+ * @param cookies contains the various resources provided by the wrapper component of react-cookie
  */
 const DashboardEntry = (props: any) => {
   // Redux setup.

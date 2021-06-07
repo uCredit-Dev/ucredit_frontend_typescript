@@ -4,17 +4,16 @@ import { useEffect } from "react";
 import { useState } from "react";
 import { useDispatch } from "react-redux";
 import { Switch, Route } from "react-router-dom";
+import { api } from "./assets";
 import Dashboard from "./Dashboard";
 import DashboardEntry from "./DashboardEntry";
 import bird from "./images/birdTempGif.gif";
 import { updateAllCourses } from "./slices/userSlice";
-//import { Counter } from '../redux_sample/Counter';
 
-const api = "https://ucredit-api.herokuapp.com/api";
-
-/* 
-  Root app component.
-*/
+/**
+ * Root app component, where it all begins...
+ * @returns
+ */
 function App() {
   const dispatch = useDispatch();
 
@@ -34,11 +33,12 @@ function App() {
     }, 1500);
 
     axios
-      .get(api + "/search", {
+      .get(api + "/search/all", {
         params: {},
       })
       .then((courses: any) => {
-        dispatch(updateAllCourses(courses.data.data));
+        const retrieved = courses.data.data;
+        dispatch(updateAllCourses(retrieved));
         if (guard) {
           setWelcomeScreen(false);
         } else {

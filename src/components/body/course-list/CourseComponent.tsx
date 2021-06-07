@@ -1,16 +1,15 @@
 import React, { useState, useEffect } from "react";
-import { UserCourse, Plan, SemesterType } from "../../commonTypes";
-import { checkAllPrereqs, getColors } from "../../assets";
+import { UserCourse, Plan, SemesterType, Course } from "../../commonTypes";
+import { api, checkAllPrereqs, getColors } from "../../assets";
 import { useDispatch, useSelector } from "react-redux";
 import {
-  updateSearchStatus,
   updateInspectedCourse,
   updateSearchTime,
   updateSearchTerm,
   updatePlaceholder,
-  selectInspectedCourse,
+  updateInspectedVersion,
+  updateSearchStatus,
 } from "../../slices/searchSlice";
-import axios from "axios";
 import { ReactComponent as RemoveSvg } from "../../svg/Remove.svg";
 import { ReactComponent as DetailsSvg } from "../../svg/Details.svg";
 import { Transition } from "@tailwindui/react";
@@ -24,22 +23,20 @@ import {
 } from "../../slices/currentPlanSlice";
 import { selectAllCourses } from "../../slices/userSlice";
 
-const api = "https://ucredit-api.herokuapp.com/api";
-
 type courseProps = {
   course: UserCourse;
   year: number;
   semester: SemesterType;
 };
 
-/*
-  This is a course card displayed in the course list under each semester.
-  Props:
-    Course: course it's displaying
-    Year: year this course is part of
-    Semester: semester this course is part of
-*/
+/**
+ * This is a course card displayed in the course list under each semester.
+ * @param course: course it's displaying
+ * @param year: year the course is part of
+ * @param semester: semester this course is part of
+ */
 function CourseComponent({ year, course, semester }: courseProps) {
+  // React setup
   const [activated, setActivated] = useState<boolean>(false);
   const [satisfied, setSatisfied] = useState<boolean>(false);
 
@@ -55,6 +52,7 @@ function CourseComponent({ year, course, semester }: courseProps) {
 
   useEffect(() => {
     isSatisfied();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [currPlanCourses]);
 
   const isSatisfied = () => {
@@ -73,36 +71,35 @@ function CourseComponent({ year, course, semester }: courseProps) {
   const displayCourses = () => {
     dispatch(updateSearchTime({ searchYear: year, searchSemester: semester }));
     dispatch(updateSearchTerm(course.number));
-    axios
-      .get(api + "/search", { params: { query: course.number } })
-      .then((retrievedData) => {
-        const retrievedCourse = retrievedData.data.data;
-        if (retrievedCourse.length === 0) {
-          dispatch(updatePlaceholder(true));
-          const placeholderCourse = {
-            title: course.title,
-            number: course.number,
-            areas: course.area,
-            terms: [],
-            school: "none",
-            department: "none",
-            credits: course.credits.toString(),
-            wi: false,
-            bio: "This is a placeholder course",
-            tags: [],
-            preReq: [],
-            restrictions: [],
-          };
-          dispatch(updateInspectedCourse(placeholderCourse));
-        } else {
-          dispatch(updatePlaceholder(false));
-          dispatch(updateInspectedCourse(retrievedCourse[0]));
-        }
-      })
-      .then(() => {
-        dispatch(updateSearchStatus(true));
-      })
-      .catch((err) => console.log(err));
+    let found = false;
+    allCourses.forEach((c) => {
+      if (c.number === course.number) {
+        dispatch(updateInspectedCourse(c));
+        dispatch(updatePlaceholder(false));
+        found = true;
+      }
+    });
+
+    if (!found) {
+      const placeholderCourse: Course = {
+        title: course.title,
+        number: course.number,
+        areas: course.area,
+        term: "",
+        school: "none",
+        department: "none",
+        credits: course.credits.toString(),
+        wi: false,
+        bio: "This is a placeholder course",
+        tags: [],
+        preReq: [],
+        restrictions: [],
+      };
+      dispatch(updatePlaceholder(true));
+      dispatch(updateInspectedVersion(placeholderCourse));
+    }
+
+    dispatch(updateSearchStatus(true));
   };
 
   // Deletes a course on click of the delete button. Updates currently displayed plan with changes.

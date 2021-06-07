@@ -5,6 +5,7 @@ import {
   Plan,
   UserCourse,
   Major,
+  SISRetrievedCourse,
 } from "./commonTypes";
 
 // IMPORTANT: All test objs may be inaccurate with new types
@@ -87,35 +88,35 @@ import {
 //   plan_id: "testPlan1",
 // };
 
-export const testCourse1: Course = {
-  title: "Test course 1",
-  number: "EN.420.4204",
-  areas: "NS",
-  terms: ["Fall", "Spring"],
-  school: "Whiting School of Engineering",
-  department: "CS",
-  credits: "3",
-  wi: false,
-  bio: "Lorem ipsum. This is a test course.",
-  tags: ["TEST-COURSE"],
-  preReq: [],
-  restrictions: [],
-};
+// export const testCourse1: Course = {
+//   title: "Test course 1",
+//   number: "EN.420.4204",
+//   areas: "NS",
+//   terms: ["Fall", "Spring"],
+//   school: "Whiting School of Engineering",
+//   department: "CS",
+//   credits: "3",
+//   wi: false,
+//   bio: "Lorem ipsum. This is a test course.",
+//   tags: ["TEST-COURSE"],
+//   preReq: [],
+//   restrictions: [],
+// };
 
-export const testCourse2: Course = {
-  title: "Test course 2",
-  number: "EN.420.4205",
-  areas: "H",
-  terms: ["Spring"],
-  school: "KSAS",
-  department: "Biology",
-  credits: "2",
-  wi: true,
-  bio: "Lorem ipsum. This is another test course.",
-  tags: ["TEST-COURSE"],
-  preReq: [testCourse1],
-  restrictions: [],
-};
+// export const testCourse2: Course = {
+//   title: "Test course 2",
+//   number: "EN.420.4205",
+//   areas: "H",
+//   terms: ["Spring"],
+//   school: "KSAS",
+//   department: "Biology",
+//   credits: "2",
+//   wi: true,
+//   bio: "Lorem ipsum. This is another test course.",
+//   tags: ["TEST-COURSE"],
+//   preReq: [testCourse1],
+//   restrictions: [],
+// };
 
 // export const userTestCourse1: UserCourse = {
 //   _id: "userTestCourse1",
@@ -364,3 +365,53 @@ export const testMajorArray = [testMajorCSNew, testMajorCSNew, testMajorCSNew];
 //   fineRequirements: [],
 //   restrictions: [],
 // };
+
+export const testSISRetrievedCourse: SISRetrievedCourse = {
+  title: "test",
+  number: "testCourse",
+  terms: ["Fall 2019, Fall 2020, Fall 2021"],
+  versions: [
+    {
+      areas: "NS",
+      term: "Fall 2019",
+      school: "Test school",
+      department: "EN CS",
+      credits: "3",
+      wi: false,
+      bio: "This is a test course",
+      level: "lower",
+      tags: ["CSCI-SOFT"],
+      preReq: [],
+      coReq: [],
+      restrictions: [],
+    },
+    {
+      areas: "E",
+      term: "Fall 2020",
+      school: "Test school",
+      department: "EN CS",
+      credits: "3",
+      wi: false,
+      bio: "This is a test course",
+      level: "lower",
+      tags: ["CSCI-SOFT"],
+      preReq: [],
+      coReq: [],
+      restrictions: [],
+    },
+    {
+      areas: "H",
+      term: "Fall 2021",
+      school: "Test school",
+      department: "EN CS",
+      credits: "3",
+      wi: false,
+      bio: "This is a test course",
+      level: "lower",
+      tags: ["CSCI-SOFT"],
+      preReq: [],
+      coReq: [],
+      restrictions: [],
+    },
+  ],
+};

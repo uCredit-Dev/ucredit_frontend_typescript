@@ -11,9 +11,9 @@ import SearchList from "./query-components/SearchList";
 import { ReactComponent as HideSvg } from "../../svg/Hide.svg";
 import { selectPlan } from "../../slices/currentPlanSlice";
 
-/* 
-  Search component when someone clicks a search action./* 
-*/
+/**
+ * Search component for when someone clicks a search action.
+ */
 const Search = () => {
   // Component states
   const [searchOpacity, setSearchOpacity] = useState<number>(100);
@@ -50,7 +50,6 @@ const Search = () => {
       ></div>
 
       {/* Search area */}
-      {/* {"flex fixed bg-red-200 rounded-xl p-8 md:p-0 z-20"} */}
       <div
         className={
           "fixed flex flex-col bg-primary rounded z-20 w-9/12 h-5/6 top-1/3 left-1/2 transform -translate-x-1/2 -translate-y-1/3"

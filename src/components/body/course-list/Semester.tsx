@@ -13,13 +13,13 @@ type semesterProps = {
   courses: UserCourse[];
 };
 
-/* 
-  A component displaying all the courses in a specific semester.
-  Props:
-    courses: courses it's displaying
-    semesterYear: year this course is part of
-    semesterName: semester this course is part of
-*/
+/**
+ * A component displaying all the courses in a specific semester.
+ * @param courses - all the courses in the semester
+ * @param semesterYear - year this semester is part of
+ * @param semesterName - name of the semester
+ * @param customStyle - custom styling for the semester
+ */
 function Semester({
   customStyle,
   semesterName,
