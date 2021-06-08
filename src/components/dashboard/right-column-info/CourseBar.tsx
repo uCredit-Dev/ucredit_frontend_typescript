@@ -1,4 +1,3 @@
-import clsx from "clsx";
 import React from "react";
 import ReactTooltip from "react-tooltip";
 import { ReactComponent as CheckSvg } from "../../../resources/svg/Check.svg";
@@ -8,7 +7,6 @@ type courseBarProps = {
   plannedCredits: number;
   currentCredits: number;
   section: string;
-  general: boolean;
 };
 
 /**
@@ -17,20 +15,17 @@ type courseBarProps = {
  * @param plannedCredits - amount of credits planned in plan
  * @param currentCredits - amount of credits currently earned
  * @param section - the distribution title
- * @param general - if this is a general distribution
  */
 function CourseBar({
   maxCredits,
   plannedCredits,
   currentCredits: _,
   section,
-  general,
 }: courseBarProps) {
   const remainingCredits =
     plannedCredits <= maxCredits ? maxCredits - plannedCredits : 0;
 
   const tooltip =
-    `<div>${section}</div>`+
     `<div style='width: 90px; height: auto;'><div style='width: 100%; display: flex; flex-direction: row; justify-content: space-between;'>` +
     `<div>Planned</div><div>${plannedCredits}</div></div><div style='display: flex; flex-direction: row; justify-content: space-between;'>${
       remainingCredits !== 0
@@ -41,9 +36,7 @@ function CourseBar({
   return (
     <>
       <ReactTooltip html={true} />
-      <div className={clsx("text mb-1 overflow-ellipsis overflow-hidden whitespace-nowrap", {
-        "font-bold" : general
-      })} key={section}>
+      <div className="text mb-1" key={section}>
         {section}
       </div>
       {/* <div>

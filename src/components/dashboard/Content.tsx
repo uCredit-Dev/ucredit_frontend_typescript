@@ -17,7 +17,6 @@ import {
   updateFulfilled,
 } from "./right-column-info/distributionFunctions";
 import { getMajor } from "../../resources/assets";
-import clsx from "clsx";
 
 /**
  * Holds all dashboard components.
@@ -28,7 +27,6 @@ function Content() {
     [string, requirements[]][]
   >([]);
   const [distributionOpen, setDistributionOpen] = useState<boolean>(true);
-  const [displayGeneral, setDisplayGeneral] = useState<boolean>(true);
 
   // Redux setup.
   const searching = useSelector(selectSearchStatus);
@@ -87,57 +85,21 @@ function Content() {
               </button>
             </div>
           </div>
-          <div className="flex flex-row justify-evenly my-4">
-            <button 
-              onClick={() => setDisplayGeneral(true)}
-              className={clsx({"underline" : displayGeneral})}
-            >
-              General
-            </button>
-            <button 
-              onClick={() => setDisplayGeneral(false)}
-              className={clsx({"underline" : !displayGeneral})}>
-                Fine
-            </button>
-          </div>
           {distributionOpen
             ? distributions.map((pair) => {
-                if (displayGeneral) {
-                  const dis = pair[1][0];
+                return pair[1].map((dis) => {
+                  const name = dis.name;
                   return (
-                    <div key={dis.name}>
+                    <div key={name}>
                       <CourseBar
                         maxCredits={dis.required_credits}
                         plannedCredits={dis.fulfilled_credits}
                         currentCredits={dis.required_credits}
-                        section={dis.name}
-                        general={true}
+                        section={name}
                       />
                     </div>
                   );
-                } else {
-                  let general = "";
-                  return pair[1].map((dis, index) => {
-                    if (index === 0) {
-                      general = dis.name;
-                      return;
-                    }
-                    return (
-                      <div key={dis.name}>
-                        <div className="font-bold">
-                          {index === 1 ? general : null}
-                        </div>
-                        <CourseBar
-                          maxCredits={dis.required_credits}
-                          plannedCredits={dis.fulfilled_credits}
-                          currentCredits={dis.required_credits}
-                          section={dis.name}
-                          general={false}
-                        />
-                      </div>
-                    );
-                  });
-                }
+                });
               })
             : null}
         </div>
