@@ -85,7 +85,7 @@ const CourseVersion = (props: { setInspectedArea: Function }) => {
               <div className="flex flex-row items-center">
                 <div className="mr-1 font-semibold">Credit: </div>
                 <div
-                  className="flex items-center px-1 w-auto h-5 text-white font-semibold bg-secondary rounded select-none"
+                  className="flex items-center px-1 w-auto text-white font-semibold bg-secondary rounded select-none"
                   data-tip={version.credits + " credits"}
                 >
                   {version.credits}
@@ -102,7 +102,7 @@ const CourseVersion = (props: { setInspectedArea: Function }) => {
                       key={area + version.number}
                     >
                       <div
-                        className="flex items-center px-1 w-auto h-5 text-white font-semibold rounded select-none"
+                        className="flex items-center px-1 w-auto text-white font-semibold rounded select-none"
                         style={{ backgroundColor: getColors(area)[0] }}
                       >
                         {area}
@@ -111,7 +111,7 @@ const CourseVersion = (props: { setInspectedArea: Function }) => {
                   ))
                 ) : (
                   <div
-                    className="flex items-center px-1 w-auto h-5 text-white font-semibold rounded select-none"
+                    className="flex items-center px-1 w-auto text-white font-semibold rounded select-none"
                     style={{ backgroundColor: getColors(version.areas)[0] }}
                   >
                     None
@@ -121,6 +121,19 @@ const CourseVersion = (props: { setInspectedArea: Function }) => {
               <div>
                 <span className="font-semibold">Department: </span>
                 {version.department}
+              </div>
+              <div className="flex flex-row">
+                <span className="font-semibold">Tags: </span>
+                <div className="flex flex-row ml-1">
+                  {version.tags.map((tag, i) => (
+                    <>
+                      {i !== 0 ? ", " : null}
+                      <div className="px-1 text-white font-semibold bg-primary rounded select-none">
+                        {tag}
+                      </div>
+                    </>
+                  ))}
+                </div>
               </div>
             </div>
             <div className="w-auto h-auto">
