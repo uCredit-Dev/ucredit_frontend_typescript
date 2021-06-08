@@ -41,7 +41,7 @@ function Content() {
   useEffect(() => {
     const distr = getDistributions();
     if (distr !== null) {
-      updateFulfilled(distr, currPlanCourses, allCourses);
+      updateFulfilled(distr, currPlanCourses, allCourses, currPlanCourses);
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [currPlanCourses]);

@@ -30,7 +30,7 @@ function CourseBar({
     plannedCredits <= maxCredits ? maxCredits - plannedCredits : 0;
 
   const tooltip =
-    `<div>${section}</div>`+
+    `<div>${section}</div>` +
     `<div style='width: 90px; height: auto;'><div style='width: 100%; display: flex; flex-direction: row; justify-content: space-between;'>` +
     `<div>Planned</div><div>${plannedCredits}</div></div><div style='display: flex; flex-direction: row; justify-content: space-between;'>${
       remainingCredits !== 0
@@ -41,9 +41,15 @@ function CourseBar({
   return (
     <>
       <ReactTooltip html={true} />
-      <div className={clsx("text mb-1 overflow-ellipsis overflow-hidden whitespace-nowrap", {
-        "font-bold" : general
-      })} key={section}>
+      <div
+        className={clsx(
+          "text mb-1 whitespace-nowrap overflow-hidden overflow-ellipsis",
+          {
+            "font-bold": general,
+          }
+        )}
+        key={section}
+      >
         {section}
       </div>
       {/* <div>

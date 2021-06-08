@@ -122,13 +122,13 @@ const CourseVersion = (props: { setInspectedArea: Function }) => {
                 <span className="font-semibold">Department: </span>
                 {version.department}
               </div>
-              <div className="flex flex-row">
+              <div className="flex flex-row w-full h-auto">
                 <span className="font-semibold">Tags: </span>
-                <div className="flex flex-row ml-1">
+                <div className="flex flex-row flex-wrap ml-1">
                   {version.tags.map((tag, i) => (
                     <>
                       {i !== 0 ? ", " : null}
-                      <div className="px-1 text-white font-semibold bg-primary rounded select-none">
+                      <div className="px-1 w-max text-white font-semibold bg-primary rounded select-none">
                         {tag}
                       </div>
                     </>
@@ -172,8 +172,6 @@ const CourseVersion = (props: { setInspectedArea: Function }) => {
                 Show less...
               </button>
             ) : null}
-            {/* <CourseEvalSection/> */}
-            {/* <CourseEvalSection version={version}/> */}
           </div>
           <PrereqDisplay />
         </>

@@ -5,6 +5,7 @@ import {
   SemesterType,
   UserCourse,
   SISRetrievedCourse,
+  Year,
 } from "./commonTypes";
 import { allMajors } from "../components/dashboard/majors/majors";
 
@@ -293,7 +294,8 @@ export const filterNNegatives = (inspected: Course | "None"): any[] => {
 // numList is a list of the numbers in the expr
 export const processPrereqs = (
   preReqs: any[],
-  allCourses: SISRetrievedCourse[]
+  allCourses: SISRetrievedCourse[],
+  planCourses: UserCourse[]
 ): prereqCourses => {
   // Regex used to get an array of course numbers.
   const regex: RegExp = /[A-Z]{2}\.[0-9]{3}\.[0-9]{3}/g;
@@ -319,7 +321,7 @@ export const processPrereqs = (
     }
   });
 
-  let obj = getCourses(expr, regex, allCourses);
+  let obj = getCourses(expr, regex, allCourses, planCourses);
   return obj;
 };
 
@@ -337,7 +339,8 @@ export interface prereqCourses {
 export const getCourses = (
   expr: string,
   regex: RegExp,
-  allCourses: SISRetrievedCourse[]
+  allCourses: SISRetrievedCourse[],
+  planCourses: UserCourse[]
 ): prereqCourses => {
   // Gets an array of all courses in expression.
   let match = expr.match(regex);
@@ -352,14 +355,20 @@ export const getCourses = (
   // For the list of numbers, retrieve each course number, search for it and store the combined number + name into numNameList
   for (let n = 0; n < numList.length; n++) {
     let num = numList[n];
-    let retrievedCourse = getCourse(num, allCourses, "Any", "Any");
+    let retrievedCourse = getCourse(num, allCourses, "Any", "Any", planCourses);
     if (retrievedCourse !== null) {
       numNameList[n] = num + num + " " + retrievedCourse.title;
       // num is added twice to distinquish which was the base course (refer to the case of EN.600 below) in the case that departments change numbers (600 to 601)
     }
     if (num.match("EN.600") !== null) {
       num = num.replace("EN.600", "EN.601");
-      const retrievedCourse601 = getCourse(num, allCourses, "Any", "Any");
+      const retrievedCourse601 = getCourse(
+        num,
+        allCourses,
+        "Any",
+        "Any",
+        planCourses
+      );
       if (retrievedCourse601 !== null) {
         // Append original num to front for later sorting
         numNameList[n] = numList[n] + num + " " + retrievedCourse601.title;
@@ -379,27 +388,47 @@ export const getCourses = (
 };
 
 export const getCourse = (
-  courseNumber: String,
+  courseNumber: string,
   allCourses: SISRetrievedCourse[],
   semester: SemesterType | "Any",
-  year: number | "Any"
+  year: number | "Any",
+  allPlanCourses: UserCourse[]
 ): Course | null => {
   let out: Course | null = null;
+  let userC: UserCourse | null = null;
+  allPlanCourses.forEach((c) => {
+    if (c.number === courseNumber) {
+      userC = c;
+    }
+  });
+
   allCourses.forEach((element) => {
+    if (userC === null) {
+      return;
+    }
     if (element.number === courseNumber) {
-      element.versions.forEach((el) => {
-        if (
-          el.term === semester + " " + year ||
-          semester === "Any" ||
-          year === "Any"
-        ) {
-          out = { title: element.title, number: element.number, ...el };
-          return;
-        }
-      });
+      out = {
+        ...userC,
+        ...element.versions[0],
+        credits: userC.credits.toString(),
+      };
       return;
     }
   });
+
+  if (userC === null) {
+    allCourses.forEach((element) => {
+      if (element.number === courseNumber) {
+        out = {
+          title: element.title,
+          number: element.number,
+          ...element.versions[0],
+        };
+      }
+    });
+  }
+  console.log("out is ", out, userC);
+
   return out;
 };
 
@@ -638,37 +667,43 @@ const prereqInPast = (
   semester: SemesterType,
   plan: Plan
 ): boolean => {
-  const courseYearRank: number = getCourseYearRank(plan, course);
-  if (courseYearRank < year) {
-    return true;
-  } else if (courseYearRank > year) {
-    return false;
+  const retrievedYear = getCourseYearRank(plan, course);
+  if (retrievedYear !== null) {
+    const courseYearRank: number = retrievedYear.year;
+    if (courseYearRank < year) {
+      return true;
+    } else if (courseYearRank > year) {
+      return false;
+    } else {
+      return (
+        semesters.indexOf(course.term) <
+        semesters.indexOf(semester.toLowerCase())
+      );
+    }
   } else {
-    return (
-      semesters.indexOf(course.term) < semesters.indexOf(semester.toLowerCase())
-    );
+    return false;
   }
 };
 
-function getCourseYearRank(plan: Plan, course: UserCourse): number {
-  let yearNum = -1;
+function getCourseYearRank(plan: Plan, course: UserCourse): Year | null {
+  let year = null;
   plan.years.forEach((currPlanYear) => {
     if (currPlanYear._id === course.year_id) {
-      yearNum = currPlanYear.year;
+      year = currPlanYear;
     }
   });
-  return yearNum;
+  return year;
 }
 
 export const checkAllPrereqs = (
   currCourses: UserCourse[],
   plan: Plan,
-  number: String,
+  number: string,
   year: number,
   semester: SemesterType,
   allCourses: SISRetrievedCourse[]
 ): boolean => {
-  const course = getCourse(number, allCourses, semester, year);
+  const course = getCourse(number, allCourses, semester, year, currCourses);
   if (course !== null) {
     let filtered = filterNNegatives(course);
     let processed;
@@ -679,7 +714,7 @@ export const checkAllPrereqs = (
         expr: "",
       };
     } else {
-      processed = processPrereqs(filtered, allCourses);
+      processed = processPrereqs(filtered, allCourses, currCourses);
     }
     if (processed.numList.length === 0) {
       return true;
