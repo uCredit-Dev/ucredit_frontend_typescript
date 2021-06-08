@@ -11,10 +11,17 @@ import { getCourse } from "../../../resources/assets";
 export const updateFulfilled = (
   requirements: [string, requirements[]][],
   courses: UserCourse[],
-  allCourses: SISRetrievedCourse[]
+  allCourses: SISRetrievedCourse[],
+  currPlanCourses: UserCourse[]
 ) => {
   courses.forEach((course) => {
-    const courseObj = getCourse(course.number, allCourses, "Any", "Any");
+    const courseObj = getCourse(
+      course.number,
+      allCourses,
+      "Any",
+      "Any",
+      currPlanCourses
+    );
     if (courseObj === null || courseObj === undefined) {
       return;
     }

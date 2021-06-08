@@ -58,7 +58,7 @@ const PrereqDisplay = () => {
   const [displayPreReqsView, setdisplayPreReqsView] = useState<Number>(1);
 
   const display = async (preReqs: any[]) => {
-    const prereqs = processPrereqs(preReqs, allCourses);
+    const prereqs = processPrereqs(preReqs, allCourses, currPlanCourses);
     afterGathering(prereqs.numNameList, prereqs.numList, prereqs.expr);
   };
 

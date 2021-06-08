@@ -73,6 +73,7 @@ export type UserCourse = {
   user_id: string;
   year_id: string;
   year: string;
+  preReq: string;
 };
 
 export type Year = {
