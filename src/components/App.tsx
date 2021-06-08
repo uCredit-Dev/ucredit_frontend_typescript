@@ -4,11 +4,13 @@ import { useEffect } from "react";
 import { useState } from "react";
 import { useDispatch } from "react-redux";
 import { Switch, Route } from "react-router-dom";
-import { api } from "./assets";
-import Dashboard from "./Dashboard";
-import DashboardEntry from "./DashboardEntry";
-import bird from "./images/birdTempGif.gif";
-import { updateAllCourses } from "./slices/userSlice";
+import { api } from "./../resources/assets";
+import Dashboard from "./dashboard/Dashboard";
+import DashboardEntry from "./login/DashboardEntry";
+import bird from "./../resources/images/birdTempGif.gif";
+import { updateAllCourses } from "../slices/userSlice";
+import LandingPage from "./landing-page/LandingPage";
+import { toast } from "react-toastify";
 
 /**
  * Root app component, where it all begins...
@@ -24,9 +26,15 @@ function App() {
   useEffect(() => {
     // Makes sure that welcome screen stays on for at least 1.5 seconds.
     let guard = false;
+    toast.info("Loading resources...", {
+      autoClose: false,
+      closeOnClick: false,
+    });
     setTimeout(() => {
       if (guard) {
         setWelcomeScreen(false);
+        toast.dismiss();
+        toast.success("SIS Courses Cached!");
       } else {
         guard = true;
       }
@@ -41,6 +49,8 @@ function App() {
         dispatch(updateAllCourses(retrieved));
         if (guard) {
           setWelcomeScreen(false);
+          toast.dismiss();
+          toast.success("SIS Courses Cached!");
         } else {
           guard = true;
         }
@@ -54,11 +64,19 @@ function App() {
   return (
     <>
       {welcomeScreen ? (
-        <div className="absolute z-50 top-0 flex flex-col m-auto w-screen h-screen text-center text-center text-white bg-primary">
+        <div className="fixed z-50 flex flex-col m-auto w-screen h-screen text-center text-center text-white bg-primary">
           Welcome logo animation (to be replaced)
+          <button
+            onClick={() => {
+              setWelcomeScreen(false);
+            }}
+          >
+            Click here to dismiss loading screen (resource loading will still be
+            performed in the background)
+          </button>
           <img className="mt-auto mx-auto" src={bird} alt={"logoGif"}></img>
-          <div className="mb-auto mx-auto w-full text-center text-9xl">
-            UCredit
+          <div className="mb-auto mx-auto w-full text-center text-8xl">
+            UCredit - Loading resources...
           </div>
         </div>
       ) : null}
@@ -66,8 +84,11 @@ function App() {
         <Route path="/dashboard">
           <Dashboard />
         </Route>
-        <Route path="/">
+        <Route path="/login">
           <DashboardEntry />
+        </Route>
+        <Route path="/">
+          <LandingPage />
         </Route>
       </Switch>
     </>
