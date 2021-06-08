@@ -21,9 +21,8 @@ const DashboardEntry = (props: any) => {
   const user = useSelector(selectUser);
 
   // Component state setup.
-  const [cookies, setCookies] = useState(props.cookies);
+  const [cookies] = useState(props.cookies);
   const [authCookies, setAuthCookie] = useCookies(["connect.sid"]);
-  const [cookieUpdate, setCookieUpdate] = useState<boolean>(true);
 
   // React router state setup.
   let history = useHistory();
@@ -33,8 +32,6 @@ const DashboardEntry = (props: any) => {
   const createCookie = (token: string) => {
     if (!token.includes("dashboard")) {
       setAuthCookie("connect.sid", token, { path: "/" });
-      setCookies(props.cookies);
-      setCookieUpdate(!cookieUpdate);
       history.push("/login");
     }
   };
@@ -43,7 +40,7 @@ const DashboardEntry = (props: any) => {
   const getToken = (): string => {
     const currentURL: string = window.location.href;
     let token: string = "";
-    if (currentURL.includes(deploy)) {
+    if (!currentURL.includes("localhost")) {
       token = currentURL.substr(
         deploy.length,
         currentURL.length - deploy.length
@@ -59,7 +56,7 @@ const DashboardEntry = (props: any) => {
   // On fail, guest user is used.
   useEffect(() => {
     const token: string = getToken();
-    console.log("token is ", token);
+    console.log("token is '" + token + "'");
     if (token.length > 0) {
       fetch(api + "/retrieveUser/" + token, {
         mode: "cors",

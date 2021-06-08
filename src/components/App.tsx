@@ -11,19 +11,27 @@ import bird from "./../resources/images/birdTempGif.gif";
 import { updateAllCourses } from "../slices/userSlice";
 import LandingPage from "./landing-page/LandingPage";
 import { toast } from "react-toastify";
+import { useCookies, withCookies } from "react-cookie";
 
 /**
  * Root app component, where it all begins...
  * @returns
  */
-function App() {
+function App(props: any) {
   const dispatch = useDispatch();
 
   // Component state setup.
   const [welcomeScreen, setWelcomeScreen] = useState<boolean>(true);
+  const [cookies] = useState(props.cookies);
+  const [sisCookies, setSisCookie] = useCookies(["sisCourses"]);
 
   // Retrieves all database SIS courses.
   useEffect(() => {
+    console.log(
+      "Cached courses are ",
+      cookies.get(sisCookies),
+      document.cookie
+    );
     // Makes sure that welcome screen stays on for at least 1.5 seconds.
     let guard = false;
     toast.info("Loading resources...", {
@@ -40,24 +48,37 @@ function App() {
       }
     }, 1500);
 
-    axios
-      .get(api + "/search/all", {
-        params: {},
-      })
-      .then((courses: any) => {
-        const retrieved = courses.data.data;
-        dispatch(updateAllCourses(retrieved));
-        if (guard) {
-          setWelcomeScreen(false);
-          toast.dismiss();
-          toast.success("SIS Courses Cached!");
-        } else {
-          guard = true;
-        }
-      })
-      .catch((err) => {
-        console.log(err);
-      });
+    if (cookies.get(sisCookies) === undefined) {
+      axios
+        .get(api + "/search/all", {
+          params: {},
+        })
+        .then((courses: any) => {
+          const retrieved = courses.data.data;
+          console.log("setting sis cookie to ", JSON.stringify(retrieved));
+          setSisCookie("sisCourses", JSON.stringify(retrieved), { path: "/" });
+          dispatch(updateAllCourses(retrieved));
+          if (guard) {
+            setWelcomeScreen(false);
+            toast.dismiss();
+            toast.success("SIS Courses Cached!");
+          } else {
+            guard = true;
+          }
+        })
+        .catch((err) => {
+          console.log(err);
+        });
+    } else {
+      dispatch(updateAllCourses(JSON.parse(cookies.get(sisCookies))));
+      if (guard) {
+        setWelcomeScreen(false);
+        toast.dismiss();
+        toast.success("SIS Courses Cached!");
+      } else {
+        guard = true;
+      }
+    }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
@@ -95,4 +116,4 @@ function App() {
   );
 }
 
-export default App;
+export default withCookies(App);
