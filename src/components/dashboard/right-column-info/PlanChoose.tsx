@@ -30,12 +30,13 @@ const PlanChoose = () => {
   const planList = useSelector(selectPlanList);
   const adding = useSelector(selectAddingStatus);
 
+  // Component state setup
   const [dropdown, setDropdown] = useState<boolean>(false);
+  const [generateNew, setGenerateNew] = useState<boolean>(false);
+
   const openSelectDropdown = () => {
     setDropdown(!dropdown);
   };
-
-  const [generateNew, setGenerateNew] = useState<boolean>(false);
   const setGenerateNewFalse = () => {
     setGenerateNew(false);
   };
@@ -84,7 +85,6 @@ const PlanChoose = () => {
             toast("Retrieved " + retrievedPlans.length + " plans!", {
               position: "top-right",
               autoClose: 5000,
-              hideProgressBar: false,
               closeOnClick: true,
               pauseOnHover: true,
               draggable: true,
