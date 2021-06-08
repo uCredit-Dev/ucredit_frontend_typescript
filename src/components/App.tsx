@@ -4,11 +4,12 @@ import { useEffect } from "react";
 import { useState } from "react";
 import { useDispatch } from "react-redux";
 import { Switch, Route } from "react-router-dom";
-import { api } from "./assets";
-import Dashboard from "./Dashboard";
-import DashboardEntry from "./DashboardEntry";
-import bird from "./images/birdTempGif.gif";
+import { api } from "./resources/assets";
+import Dashboard from "./dashboard/Dashboard";
+import DashboardEntry from "./login/DashboardEntry";
+import bird from "./resources/images/birdTempGif.gif";
 import { updateAllCourses } from "./slices/userSlice";
+import LandingPage from "./landing-page/LandingPage";
 
 /**
  * Root app component, where it all begins...
@@ -66,8 +67,11 @@ function App() {
         <Route path="/dashboard">
           <Dashboard />
         </Route>
-        <Route path="/">
+        <Route path="/login">
           <DashboardEntry />
+        </Route>
+        <Route path="/">
+          <LandingPage />
         </Route>
       </Switch>
     </>

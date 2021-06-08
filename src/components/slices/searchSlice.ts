@@ -8,7 +8,7 @@ import {
   DepartmentType,
   AreaType,
   SISRetrievedCourse,
-} from "../commonTypes";
+} from "../resources/commonTypes";
 
 // Contains the year and semester that we are currently adding courses to.
 type TimeBundle = {

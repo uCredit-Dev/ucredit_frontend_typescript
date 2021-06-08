@@ -1,6 +1,11 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { AppThunk, RootState } from "../../appStore/store";
-import { Major, Plan, SISRetrievedCourse, User } from "../commonTypes";
+import {
+  Major,
+  Plan,
+  SISRetrievedCourse,
+  User,
+} from "../resources/commonTypes";
 
 type UserSlice = {
   currentUser: User;
