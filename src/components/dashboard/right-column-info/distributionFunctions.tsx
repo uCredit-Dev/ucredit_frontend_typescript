@@ -27,7 +27,7 @@ export const updateFulfilled = (
             courseObj
           )
         ) {
-          requirement.fulfilled_credits += parseInt(courseObj.credits);
+          requirement.fulfilled_credits += parseFloat(courseObj.credits);
         }
       }
     }
@@ -46,6 +46,8 @@ const checkRequirementSatisfied = (
     return false;
   }
   let concat;
+  console.log(course)
+  console.log(splitArr);
   while (index < splitArr.length) {
     if (splitArr[index] === "(") {
       concat = "(";
@@ -147,7 +149,8 @@ export const getRequirements = (major: Major) => {
   major.distributions.forEach((element) => {
     let allReq: requirements[] = [];
     let general: requirements = {
-      name: "General " + element.name.toString(),
+      //name: "General " + element.name.toString(),
+      name: element.name.toString(),
       expr: element.criteria.toString(),
       required_credits: element.required_credits,
       fulfilled_credits: 0,
