@@ -2,21 +2,21 @@ import React, { useState, useEffect } from "react";
 import CourseBar from "./right-column-info/CourseBar";
 import CourseList from "./course-list/CourseList";
 import Search from "./course-search/Search";
-import { selectSearchStatus } from "../slices/searchSlice";
-import { selectAllCourses, selectDeleteStatus } from "../slices/userSlice";
+import { selectSearchStatus } from "../../slices/searchSlice";
+import { selectAllCourses, selectDeleteStatus } from "../../slices/userSlice";
 import { useSelector } from "react-redux";
 import InfoCards from "./right-column-info/InfoCards";
 import DeletePlanPopup from "./DeletePlanPopup";
 import {
   selectCurrentPlanCourses,
   selectPlan,
-} from "../slices/currentPlanSlice";
+} from "../../slices/currentPlanSlice";
 import {
   getRequirements,
   requirements,
   updateFulfilled,
 } from "./right-column-info/distributionFunctions";
-import { getMajor } from "../resources/assets";
+import { getMajor } from "../../resources/assets";
 
 /**
  * Holds all dashboard components.

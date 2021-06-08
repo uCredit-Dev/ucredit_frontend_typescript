@@ -1,13 +1,13 @@
 import React, { useState, useEffect } from "react";
-import { Course } from "../../../resources/commonTypes";
+import { Course } from "../../../../resources/commonTypes";
 import { useSelector, useDispatch } from "react-redux";
 import {
   updateInspectedVersion,
   selectPlaceholder,
   selectVersion,
-} from "../../../slices/searchSlice";
+} from "../../../../slices/searchSlice";
 import Select from "react-select";
-import { all_majors, course_tags } from "../../../resources/assets";
+import { all_majors, course_tags } from "../../../../resources/assets";
 
 const departmentFilters = ["none", ...all_majors];
 const tagFilters = ["none", ...course_tags];

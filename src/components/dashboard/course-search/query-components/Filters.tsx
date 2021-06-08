@@ -1,14 +1,14 @@
 import React from "react";
 import { useDispatch, useSelector } from "react-redux";
 import Select from "react-select";
-import { all_majors, course_tags } from "../../../resources/assets";
-import { FilterType, SemesterType } from "../../../resources/commonTypes";
+import { all_majors, course_tags } from "../../../../resources/assets";
+import { FilterType, SemesterType } from "../../../../resources/commonTypes";
 import {
   selectSearchFilters,
   selectYear,
   updateSearchFilters,
   updateSearchTime,
-} from "../../../slices/searchSlice";
+} from "../../../../slices/searchSlice";
 
 const creditFilters = ["Any", 0, 1, 2, 3, 4];
 const distributionFilters = ["Any", "N", "S", "H", "Q", "E"];

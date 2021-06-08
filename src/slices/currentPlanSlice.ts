@@ -1,6 +1,10 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
-import { RootState } from "../../appStore/store";
-import { Distribution, Plan, UserCourse } from "../resources/commonTypes";
+import { RootState } from "../appStore/store";
+import {
+  Distribution,
+  Plan,
+  UserCourse,
+} from "../components/../resources/commonTypes";
 
 type CurrentPlanSlice = {
   plan: Plan;

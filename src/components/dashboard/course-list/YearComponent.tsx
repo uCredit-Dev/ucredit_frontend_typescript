@@ -1,12 +1,15 @@
 import React, { useState, useEffect } from "react";
 import Semester from "./Semester";
-import { UserCourse, Year } from "../../resources/commonTypes";
-import { ReactComponent as MoreSvg } from "../../resources/svg/More.svg";
+import { UserCourse, Year } from "../../../resources/commonTypes";
+import { ReactComponent as MoreSvg } from "../../../resources/svg/More.svg";
 import { useSelector, useDispatch } from "react-redux";
-import { selectPlan, updateSelectedPlan } from "../../slices/currentPlanSlice";
-import { ReactComponent as RemoveSvg } from "../../resources/svg/Remove.svg";
+import {
+  selectPlan,
+  updateSelectedPlan,
+} from "../../../slices/currentPlanSlice";
+import { ReactComponent as RemoveSvg } from "../../../resources/svg/Remove.svg";
 import { toast } from "react-toastify";
-import { api } from "../../resources/assets";
+import { api } from "../../../resources/assets";
 
 type yearProps = {
   id: number;

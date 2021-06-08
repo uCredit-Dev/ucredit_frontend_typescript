@@ -4,12 +4,12 @@ import {
   selectRetrievedCourses,
   updateInspectedVersion,
   updatePlaceholder,
-} from "../../../slices/searchSlice";
+} from "../../../../slices/searchSlice";
 import CourseCard from "./CourseCard";
 import ReactPaginate from "react-paginate";
-import { ReactComponent as PlaceholderSvg } from "../../../resources/svg/Placeholder.svg";
+import { ReactComponent as PlaceholderSvg } from "../../../../resources/svg/Placeholder.svg";
 import ReactTooltip from "react-tooltip";
-import { Course } from "../../../resources/commonTypes";
+import { Course } from "../../../../resources/commonTypes";
 
 /* 
   List of searched courses.

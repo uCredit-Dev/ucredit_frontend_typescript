@@ -1,7 +1,7 @@
 import React, { useEffect } from "react";
 import axios from "axios";
 import { useDispatch, useSelector } from "react-redux";
-import { DistributionObj, Plan } from "../../resources/commonTypes";
+import { DistributionObj, Plan } from "../../../resources/commonTypes";
 import {
   updatePlanList,
   selectUser,
@@ -10,11 +10,11 @@ import {
   selectToAddName,
   selectToAddMajor,
   clearToAdd,
-} from "../../slices/userSlice";
+} from "../../../slices/userSlice";
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-import { updateSelectedPlan } from "../../slices/currentPlanSlice";
-import { api } from "../../resources/assets";
+import { updateSelectedPlan } from "../../../slices/currentPlanSlice";
+import { api } from "../../../resources/assets";
 
 type generateNewPlanProps = {
   generateNew: boolean;

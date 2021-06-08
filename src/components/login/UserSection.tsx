@@ -1,10 +1,10 @@
 import React, { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { updateUser, selectUser, resetUser } from "../slices/userSlice";
-import { ReactComponent as UserSvg } from "../resources/svg/User.svg";
+import { updateUser, selectUser, resetUser } from "../../slices/userSlice";
+import { ReactComponent as UserSvg } from "../../resources/svg/User.svg";
 import { useHistory } from "react-router-dom";
-import { resetCurrentPlan } from "../slices/currentPlanSlice";
-import { api } from "../resources/assets";
+import { resetCurrentPlan } from "../../slices/currentPlanSlice";
+import { api } from "../../resources/assets";
 
 /**
  * User login/logout buttons.
@@ -22,6 +22,7 @@ function UserSection() {
   // Useffect runs once on page load, calling to https://ucredit-api.herokuapp.com/api/retrieveUser to retrieve user data.
   // On successful retrieve, update redux with retrieved user,
   useEffect(() => {
+    console.log(document.cookie);
     if (user._id === "noUser") {
       // Retrieves user if user ID is "noUser", the initial user id state for userSlice.tsx.
       // Make call for backend

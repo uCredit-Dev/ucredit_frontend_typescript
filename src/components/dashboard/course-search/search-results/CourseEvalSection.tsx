@@ -1,11 +1,11 @@
 import React, { useState, useEffect } from "react";
-import { CourseEvals } from "../../../resources/commonTypes";
+import { CourseEvals } from "../../../../resources/commonTypes";
 import axios from "axios";
 import { useSelector } from "react-redux";
-import { selectInspectedCourse } from "../../../slices/searchSlice";
+import { selectInspectedCourse } from "../../../../slices/searchSlice";
 import CourseEvalCard from "./CourseEvalCard";
 import clsx from "clsx";
-import { api } from "../../../resources/assets";
+import { api } from "../../../../resources/assets";
 
 /**
  * Displays course Evaluations based on inspected course

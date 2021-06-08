@@ -1,6 +1,6 @@
 import React from "react";
 import ReactTooltip from "react-tooltip";
-import { ReactComponent as CheckSvg } from "../../resources/svg/Check.svg";
+import { ReactComponent as CheckSvg } from "../../../resources/svg/Check.svg";
 
 type courseBarProps = {
   maxCredits: number;

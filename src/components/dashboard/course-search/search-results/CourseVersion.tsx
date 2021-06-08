@@ -1,8 +1,8 @@
 import React, { useState, useRef, useEffect } from "react";
 import { useSelector } from "react-redux";
 import ReactTooltip from "react-tooltip";
-import { getColors } from "../../../resources/assets";
-import { selectVersion } from "../../../slices/searchSlice";
+import { getColors } from "../../../../resources/assets";
+import { selectVersion } from "../../../../slices/searchSlice";
 import PrereqDisplay from "../prereqs/PrereqDisplay";
 
 /**

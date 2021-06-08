@@ -1,6 +1,6 @@
 import React, { useEffect } from "react";
 import { useSelector } from "react-redux";
-import { allMajors } from "../dashboard/majors/majors";
+import { allMajors } from "../components/dashboard/majors/majors";
 import { DistributionObj, Major } from "./commonTypes";
 
 import { processPrereqs, getCourse } from "./assets";

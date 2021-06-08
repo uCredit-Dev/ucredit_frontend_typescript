@@ -9,23 +9,23 @@ import {
   selectYear,
   updateSearchStack,
   selectVersion,
-} from "../../../slices/searchSlice";
+} from "../../../../slices/searchSlice";
 import {
   filterNNegatives,
   processPrereqs,
   checkPrereq,
-} from "../../../resources/assets";
+} from "../../../../resources/assets";
 import CourseEvalSection from "../search-results/CourseEvalSection";
 import PrereqDropdown from "./PrereqDropdown";
-import { ReactComponent as CheckMark } from "../../../resources/svg/CheckMark.svg";
-import { ReactComponent as DescriptionSvg } from "../../../resources/svg/Description.svg";
-import { ReactComponent as MenuSvg } from "../../../resources/svg/Menu.svg";
+import { ReactComponent as CheckMark } from "../../../../resources/svg/CheckMark.svg";
+import { ReactComponent as DescriptionSvg } from "../../../../resources/svg/Description.svg";
+import { ReactComponent as MenuSvg } from "../../../../resources/svg/Menu.svg";
 import ReactTooltip from "react-tooltip";
 import {
   selectCurrentPlanCourses,
   selectPlan,
-} from "../../../slices/currentPlanSlice";
-import { selectAllCourses } from "../../../slices/userSlice";
+} from "../../../../slices/currentPlanSlice";
+import { selectAllCourses } from "../../../../slices/userSlice";
 
 // Parsed prereq type
 // satisfied: a boolean that tells whether the prereq should be marked with green (satisfied) or red (unsatisfied)

@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from "react";
 import clsx from "clsx";
-import { ReactComponent as ChevronRight } from "../../../resources/svg/ChevronRight.svg";
-import { ReactComponent as ChevronDown } from "../../../resources/svg/ChevronDown.svg";
-import { ReactComponent as CheckMark } from "../../../resources/svg/CheckMark.svg";
+import { ReactComponent as ChevronRight } from "../../../../resources/svg/ChevronRight.svg";
+import { ReactComponent as ChevronDown } from "../../../../resources/svg/ChevronDown.svg";
+import { ReactComponent as CheckMark } from "../../../../resources/svg/CheckMark.svg";
 
 /**
  * This is one of the open-close prereq dropdowns.

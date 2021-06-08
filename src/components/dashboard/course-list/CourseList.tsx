@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
-import { UserCourse, Year } from "../../resources/commonTypes";
+import { UserCourse, Year } from "../../../resources/commonTypes";
 import axios from "axios";
 import {
   selectPlan,
@@ -8,16 +8,16 @@ import {
   updateCurrentPlanCourses,
   updateSelectedPlan,
   updateTotalCredits,
-} from "../../slices/currentPlanSlice";
+} from "../../../slices/currentPlanSlice";
 import {
   selectPlaceholder,
   selectSearchStatus,
-} from "../../slices/searchSlice";
+} from "../../../slices/searchSlice";
 import YearComponent, { newYearTemplate } from "./YearComponent";
-import { ReactComponent as AddSvg } from "../../resources/svg/Add.svg";
+import { ReactComponent as AddSvg } from "../../../resources/svg/Add.svg";
 import { toast } from "react-toastify";
-import { selectUser } from "../../slices/userSlice";
-import { api } from "../../resources/assets";
+import { selectUser } from "../../../slices/userSlice";
+import { api } from "../../../resources/assets";
 
 /**
  * Container component that holds all the years, semesters, and courses of the current plan.

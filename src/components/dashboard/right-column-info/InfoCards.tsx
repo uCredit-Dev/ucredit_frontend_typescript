@@ -5,13 +5,16 @@ import {
   selectPlanList,
   updatePlanList,
   updateDeleteStatus,
-} from "../../slices/userSlice";
+} from "../../../slices/userSlice";
 import PlanChoose from "./PlanChoose";
-import { ReactComponent as RemoveSvg } from "../../resources/svg/Remove.svg";
+import { ReactComponent as RemoveSvg } from "../../../resources/svg/Remove.svg";
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-import { selectPlan, updateSelectedPlan } from "../../slices/currentPlanSlice";
-import { api } from "../../resources/assets";
+import {
+  selectPlan,
+  updateSelectedPlan,
+} from "../../../slices/currentPlanSlice";
+import { api } from "../../../resources/assets";
 
 /**
  * User/Current plan information area.

@@ -1,5 +1,5 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
-import { RootState } from "../../appStore/store";
+import { RootState } from "../appStore/store";
 import {
   SemesterType,
   Course,
@@ -8,7 +8,7 @@ import {
   DepartmentType,
   AreaType,
   SISRetrievedCourse,
-} from "../resources/commonTypes";
+} from "../components/../resources/commonTypes";
 
 // Contains the year and semester that we are currently adding courses to.
 type TimeBundle = {

@@ -1,7 +1,7 @@
 import clsx from "clsx";
 import React from "react";
 import ReactTooltip from "react-tooltip";
-import { ReactComponent as StarSvg } from "../../../resources/svg/Star.svg";
+import { ReactComponent as StarSvg } from "../../../../resources/svg/Star.svg";
 
 const ratingStars = Array(5).fill(0);
 

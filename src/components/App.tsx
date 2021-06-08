@@ -4,11 +4,11 @@ import { useEffect } from "react";
 import { useState } from "react";
 import { useDispatch } from "react-redux";
 import { Switch, Route } from "react-router-dom";
-import { api } from "./resources/assets";
+import { api } from "./../resources/assets";
 import Dashboard from "./dashboard/Dashboard";
 import DashboardEntry from "./login/DashboardEntry";
-import bird from "./resources/images/birdTempGif.gif";
-import { updateAllCourses } from "./slices/userSlice";
+import bird from "./../resources/images/birdTempGif.gif";
+import { updateAllCourses } from "../slices/userSlice";
 import LandingPage from "./landing-page/LandingPage";
 
 /**
@@ -55,11 +55,18 @@ function App() {
   return (
     <>
       {welcomeScreen ? (
-        <div className="absolute z-50 top-0 flex flex-col m-auto w-screen h-screen text-center text-center text-white bg-primary">
+        <div className="absolute static z-50 top-0 flex flex-col m-auto w-screen h-screen text-center text-center text-white bg-primary">
           Welcome logo animation (to be replaced)
+          <button
+            onClick={() => {
+              setWelcomeScreen(false);
+            }}
+          >
+            Click here to dismiss loading screen
+          </button>
           <img className="mt-auto mx-auto" src={bird} alt={"logoGif"}></img>
-          <div className="mb-auto mx-auto w-full text-center text-9xl">
-            UCredit
+          <div className="mb-auto mx-auto w-full text-center text-8xl">
+            UCredit - Loading resources...
           </div>
         </div>
       ) : null}

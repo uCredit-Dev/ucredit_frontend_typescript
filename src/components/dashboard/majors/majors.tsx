@@ -1,4 +1,4 @@
-import { Major } from "../../resources/commonTypes";
+import { Major } from "../../../resources/commonTypes";
 
 //https://krieger.jhu.edu/internationalstudies/undergraduate/requirements/
 const baIS: Major = {

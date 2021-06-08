@@ -8,7 +8,7 @@ import {
   selectPlanList,
   updateToAddMajor,
   selectToAddMajor,
-} from "../slices/userSlice";
+} from "../../slices/userSlice";
 import { allMajors } from "./majors/majors";
 import Select from "react-select";
 

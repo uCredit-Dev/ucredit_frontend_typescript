@@ -4,12 +4,12 @@ import {
   selectYear,
   selectSemester,
   updateSearchStatus,
-} from "../../slices/searchSlice";
+} from "../../../slices/searchSlice";
 import CourseDisplay from "./search-results/CourseDisplay";
 import Form from "./query-components/Form";
 import SearchList from "./query-components/SearchList";
-import { ReactComponent as HideSvg } from "../../resources/svg/Hide.svg";
-import { selectPlan } from "../../slices/currentPlanSlice";
+import { ReactComponent as HideSvg } from "../../../resources/svg/Hide.svg";
+import { selectPlan } from "../../../slices/currentPlanSlice";
 
 /**
  * Search component for when someone clicks a search action.

@@ -4,8 +4,8 @@ import {
   Plan,
   SemesterType,
   Course,
-} from "../../resources/commonTypes";
-import { api, checkAllPrereqs, getColors } from "../../resources/assets";
+} from "../../../resources/commonTypes";
+import { api, checkAllPrereqs, getColors } from "../../../resources/assets";
 import { useDispatch, useSelector } from "react-redux";
 import {
   updateInspectedCourse,
@@ -14,9 +14,9 @@ import {
   updatePlaceholder,
   updateInspectedVersion,
   updateSearchStatus,
-} from "../../slices/searchSlice";
-import { ReactComponent as RemoveSvg } from "../../resources/svg/Remove.svg";
-import { ReactComponent as DetailsSvg } from "../../resources/svg/Details.svg";
+} from "../../../slices/searchSlice";
+import { ReactComponent as RemoveSvg } from "../../../resources/svg/Remove.svg";
+import { ReactComponent as DetailsSvg } from "../../../resources/svg/Details.svg";
 import { Transition } from "@tailwindui/react";
 import clsx from "clsx";
 import { toast } from "react-toastify";
@@ -25,8 +25,8 @@ import {
   selectCurrentPlanCourses,
   selectPlan,
   updateSelectedPlan,
-} from "../../slices/currentPlanSlice";
-import { selectAllCourses } from "../../slices/userSlice";
+} from "../../../slices/currentPlanSlice";
+import { selectAllCourses } from "../../../slices/userSlice";
 
 type courseProps = {
   course: UserCourse;

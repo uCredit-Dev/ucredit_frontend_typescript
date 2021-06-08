@@ -1,6 +1,6 @@
 //if byCredit == false, that means the required field is counted by course amount(i.e. number of courses)
 
-import { Major } from "../../resources/commonTypes";
+import { Major } from "../../../resources/commonTypes";
 
 //cs other courses: https://www.cs.jhu.edu/undergraduate-studies/academics/cs-other-courses/
 const bsCS = {

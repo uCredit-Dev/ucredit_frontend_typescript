@@ -1,12 +1,12 @@
 import React, { useEffect, useState } from "react";
 import { useHistory, useLocation } from "react-router-dom";
-import { api, guestUser } from "../resources/assets";
+import { api, guestUser } from "../../resources/assets";
 import { useDispatch, useSelector } from "react-redux";
-import { updateUser, selectUser } from "../slices/userSlice";
+import { updateUser, selectUser } from "../../slices/userSlice";
 import { withCookies, useCookies } from "react-cookie";
-import bg from "../resources/images/bg.png";
-import placeholder from "../resources/images/placeholder_logo.png";
-import Test from "../resources/Test";
+import bg from "../../resources/images/bg.png";
+import placeholder from "../../resources/images/placeholder_logo.png";
+import Test from "../../resources/Test";
 
 const deploy = "https://ucredit.herokuapp.com/login/";
 const dev = "http://localhost:3000/login/";

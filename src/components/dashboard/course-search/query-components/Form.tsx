@@ -7,22 +7,22 @@ import {
   selectSearchterm,
   selectSearchFilters,
   selectSemester,
-} from "../../../slices/searchSlice";
+} from "../../../../slices/searchSlice";
 import {
   AreaType,
   DepartmentType,
   SemesterType,
   SISRetrievedCourse,
   TagType,
-} from "../../../resources/commonTypes";
-import { ReactComponent as ShowSvg } from "../../../resources/svg/Show.svg";
-import { ReactComponent as HideSvg } from "../../../resources/svg/Hide.svg";
+} from "../../../../resources/commonTypes";
+import { ReactComponent as ShowSvg } from "../../../../resources/svg/Show.svg";
+import { ReactComponent as HideSvg } from "../../../../resources/svg/Hide.svg";
 import ReactTooltip from "react-tooltip";
 import clsx from "clsx";
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import Filters from "./Filters";
-import { selectAllCourses } from "../../../slices/userSlice";
+import { selectAllCourses } from "../../../../slices/userSlice";
 
 /**
  * Search form, including the search query input and filters.

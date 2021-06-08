@@ -1,11 +1,11 @@
 import React from "react";
-import { SISRetrievedCourse } from "../../../resources/commonTypes";
+import { SISRetrievedCourse } from "../../../../resources/commonTypes";
 import { useDispatch, useSelector } from "react-redux";
 import {
   updatePlaceholder,
   selectVersion,
   updateInspectedCourse,
-} from "../../../slices/searchSlice";
+} from "../../../../slices/searchSlice";
 import clsx from "clsx";
 
 type cardProps = {

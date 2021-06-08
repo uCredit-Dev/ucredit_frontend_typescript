@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
-import { Plan, UserCourse, Year } from "../../../resources/commonTypes";
+import { Plan, UserCourse, Year } from "../../../../resources/commonTypes";
 import {
   clearSearch,
   selectSemester,
@@ -8,20 +8,20 @@ import {
   selectPlaceholder,
   updatePlaceholder,
   selectVersion,
-} from "../../../slices/searchSlice";
+} from "../../../../slices/searchSlice";
 import {
   selectUser,
   selectPlanList,
   updatePlanList,
-} from "../../../slices/userSlice";
+} from "../../../../slices/userSlice";
 import Placeholder from "./Placeholder";
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import {
   selectPlan,
   updateSelectedPlan,
-} from "../../../slices/currentPlanSlice";
-import { api } from "../../../resources/assets";
+} from "../../../../slices/currentPlanSlice";
+import { api } from "../../../../resources/assets";
 import SisCourse from "./SisCourse";
 
 /**

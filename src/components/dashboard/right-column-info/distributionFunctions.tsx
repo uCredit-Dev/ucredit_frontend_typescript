@@ -3,8 +3,8 @@ import {
   Major,
   UserCourse,
   SISRetrievedCourse,
-} from "../../resources/commonTypes";
-import { getCourse } from "../../resources/assets";
+} from "../../../resources/commonTypes";
+import { getCourse } from "../../../resources/assets";
 
 // args: an array containing focus areas and their associated requirements, and all courses
 // updates the requirements obj so that the fulfilled credits accurately reflects the plan

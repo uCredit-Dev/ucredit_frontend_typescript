@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
-import { Plan } from "../../resources/commonTypes";
+import { Plan } from "../../../resources/commonTypes";
 import { useDispatch, useSelector } from "react-redux";
 import {
   updatePlanList,
@@ -8,13 +8,16 @@ import {
   selectUser,
   selectPlanList,
   selectAddingStatus,
-} from "../../slices/userSlice";
+} from "../../../slices/userSlice";
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import GenerateNewPlan from "./GenerateNewPlan";
 import PlanAdd from "../PlanAdd";
-import { selectPlan, updateSelectedPlan } from "../../slices/currentPlanSlice";
-import { api } from "../../resources/assets";
+import {
+  selectPlan,
+  updateSelectedPlan,
+} from "../../../slices/currentPlanSlice";
+import { api } from "../../../resources/assets";
 
 /**
  * Dropdown for choosing a plan to display.

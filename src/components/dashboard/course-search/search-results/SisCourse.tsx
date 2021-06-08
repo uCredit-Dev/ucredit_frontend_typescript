@@ -1,9 +1,9 @@
 import React, { MouseEventHandler } from "react";
-import { ReactComponent as CloseSvg } from "../../../resources/svg/Close.svg";
+import { ReactComponent as CloseSvg } from "../../../../resources/svg/Close.svg";
 import Select from "react-select";
 import CourseVersion from "./CourseVersion";
 import { useDispatch, useSelector } from "react-redux";
-import { selectPlan } from "../../../slices/currentPlanSlice";
+import { selectPlan } from "../../../../slices/currentPlanSlice";
 import {
   selectInspectedCourse,
   selectSemester,
@@ -15,12 +15,12 @@ import {
   updateInspectedVersion,
   updateSearchFilters,
   updateSearchTime,
-} from "../../../slices/searchSlice";
+} from "../../../../slices/searchSlice";
 import {
   FilterType,
   Course,
   SemesterType,
-} from "../../../resources/commonTypes";
+} from "../../../../resources/commonTypes";
 
 type SisCourseProps = {
   inspectedArea: string;

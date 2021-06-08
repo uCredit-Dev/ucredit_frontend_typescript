@@ -1,9 +1,12 @@
 import React, { useState, useEffect } from "react";
-import { SemesterType, UserCourse } from "../../resources/commonTypes";
+import { SemesterType, UserCourse } from "../../../resources/commonTypes";
 import CourseComponent from "./CourseComponent";
 import { useDispatch } from "react-redux";
-import { updateSearchStatus, updateSearchTime } from "../../slices/searchSlice";
-import { ReactComponent as AddSvg } from "../../resources/svg/Add.svg";
+import {
+  updateSearchStatus,
+  updateSearchTime,
+} from "../../../slices/searchSlice";
+import { ReactComponent as AddSvg } from "../../../resources/svg/Add.svg";
 import ReactTooltip from "react-tooltip";
 
 type semesterProps = {
