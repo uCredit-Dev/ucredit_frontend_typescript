@@ -1,5 +1,110 @@
 import { Major } from "../../../resources/commonTypes";
 
+//https://engineering.jhu.edu/chembe/undergraduate-studies/undergraduate-degree-program/
+const bsCBE: Major = {
+  degree_name: "B.S. Chemical & Biomolecular Engineering",
+  department: "EN Chemical and Biomolecular Engineering",
+  total_degree_credit: 120,
+  wi_credit: 6,
+  distributions: [
+    {
+      name: "Chemical and Biomolecular Engineering",
+      required_credits: 40,
+      min_cedits_per_course: 1,
+      description:
+        "For more information please visit the <a href='https://www.cs.jhu.edu/2021undergraduate-advising-manual/'>major degree requirement</a> section on the department website.",
+      criteria: "EN Computer Science[D]^OR^CSCI-OTHER[T]",
+      fine_requirements: [
+        {
+          description:
+            "Computer Ethics(601.104). Practical Ethics for Future Leaders (660.400/406) may be used as a substitute for the computer ethics requirement for the BS program, but does not count towards the CS total credits at all.",
+          required_credits: 1,
+          criteria: "EN.601.104[C]",
+        },
+        {
+          description:
+            "Required Courses: \n\t500.112/113/114 Gateway Computing or AP Comp Sci A or equivalent\n\t601.220 Intermediate Programming\n\t601.226 Data Structures\n\t601.229 Computer System Fundamentals\n\t601.230 Mathematical Foundations for Computer Science\n\t601.433 Algorithms",
+          required_credits: 21,
+          criteria:
+            "EN.500.112[C]^OR^EN.500.113[C]^OR^EN.500.114[C]^OR^EN.601.220[C]^OR^EN.601.226[C]^OR^EN.601.229[C]^OR^EN.601.230[C]^OR^EN.601.443[C]",
+        },
+        {
+          description:
+            "12 upper level CS credits in addition to the required Algorithms course",
+          required_credits: 12,
+          criteria: "EN Computer Science[D]^AND^Upper Level Undergraduate[L]",
+        },
+        {
+          description:
+            "At least one upper level course in two of these four different classification areas: Applications(CSCI-APPL), Systems(CSCI-SYST), Software(CSCI-SOFT) and Reasoning(CSCI-RSNG)",
+          required_credits: 6,
+          exclusive: true,
+          criteria:
+            "CSCI-APPL[T]^OR^CSCI-SYST[T]^OR^CSCI-SOFT[T]^OR^CSCI-RSNG[T]",
+        },
+        {
+          description:
+            "One Team(CSCI-TEAM) designated course. This Team course may overlap other course requirements, for example to count as both Team and Software.",
+          required_credits: 3,
+          criteria: "CSCI-TEAM[T]",
+        },
+      ],
+    },
+    {
+      name: "Math",
+      required_credits: 16,
+      min_cedits_per_course: 3,
+      description:
+        "All courses in this category must be from one of the two math departments on campus: Mathematics or Applied Math and Statistics. However, 553.171 Discrete Mathematics may not count towards these math requirements. Other than Calculus I and II, all the remaining courses must be 200-level or above. The BS math courses must include coverage of both probability and statistics, which can be satisfied in many ways, including taking any of the 553.3xx combined Probability & Statistics courses.",
+      criteria: "AS Mathematics[D]^OR^EN Applied Math and Statistics[D]",
+      exception: "EN.553.171[C]",
+      fine_requirements: [
+        {
+          description:
+            "Required Courses:\n\t110.108 Calculus I or AP equivalent\n\t110.109 Calculus II or AP equivalent",
+          required_credits: 8,
+          criteria: "AS.110.108[C]^OR^AS.110.109[C]",
+        },
+        {
+          description: "Probability and Statistics",
+          required_credits: 4,
+          criteria:
+            "EN Applied Math and Statistics[D]^AND^Probability and Statistics[N]^AND^Upper Level Undergraduate[L]",
+        },
+      ],
+    },
+    {
+      name: "Science",
+      required_credits: 8,
+      min_cedits_per_course: 1,
+      description:
+        "Students must take two semesters of core science courses (any combination of Physics, Chemistry, Biology), with their associated labs. AP credit is an acceptable substitute for these courses and labs.",
+      criteria:
+        "General Physics[N]^OR^General Biology[N]^OR^Introductory Chemistry[N]",
+    },
+    {
+      name: "Liberal Arts",
+      required_credits: 18,
+      min_cedits_per_course: 3,
+      double_count: true,
+      description:
+        "These courses must have either an ‘H’ or ‘S’ area designator on them, but can be from any department. At most 2 of these courses may be taken S/U (if not counted towards the writing requirement). Foreign language courses can be counted as well, even if they don’t carry an ‘H’ or ‘S’ designator.",
+      criteria:
+        "AS Center for Language Education[D]^OR^AS Modern Languages and Literatures[D]^OR^H[A]^OR^S[A]",
+    },
+    {
+      name: "English Focused Writing Intensive",
+      required_credits: 3,
+      min_cedits_per_course: 3,
+      double_count: true,
+      description:
+        "At least one course with a primary focus on writing in English must be chosen. Courses that satisfy this requirement are: EN.661.110, EN.661.111, EN.661.250, EN.661.251, EN.661.315, AS.060.100, AS.060.113, AS.220.105, AS.180.248, AS.290.303, AS.360.133.",
+      criteria:
+        "EN.661.110[C]^OR^EN.661.111[C]^OR^EN.661.250[C]^OR^EN.661.251[C]^OR^EN.661.315[C]^OR^AS.060.100[C]^OR^AS.060.113[C]^OR^AS.220.105[C]^OR^AS.180.248[C]^OR^AS.290.303[C]^OR^AS.360.133",
+    },
+  ],
+};
+
 //https://krieger.jhu.edu/internationalstudies/undergraduate/requirements/
 const baIS: Major = {
   degree_name: "B.A. International Studies",
@@ -225,4 +330,4 @@ const bsCS: Major = {
   ],
 };
 
-export const allMajors: Major[] = [baIS, bsCS];
+export const allMajors: Major[] = [baIS, bsCS, bsCBE];
