@@ -15,13 +15,7 @@ export const updateFulfilled = (
   currPlanCourses: UserCourse[]
 ) => {
   courses.forEach((course) => {
-    const courseObj = getCourse(
-      course.number,
-      allCourses,
-      "Any",
-      "Any",
-      currPlanCourses
-    );
+    const courseObj = getCourse(course.number, allCourses, currPlanCourses);
     if (courseObj === null || courseObj === undefined) {
       return;
     }

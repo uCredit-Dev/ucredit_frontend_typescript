@@ -355,20 +355,14 @@ export const getCourses = (
   // For the list of numbers, retrieve each course number, search for it and store the combined number + name into numNameList
   for (let n = 0; n < numList.length; n++) {
     let num = numList[n];
-    let retrievedCourse = getCourse(num, allCourses, "Any", "Any", planCourses);
+    let retrievedCourse = getCourse(num, allCourses, planCourses);
     if (retrievedCourse !== null) {
       numNameList[n] = num + num + " " + retrievedCourse.title;
       // num is added twice to distinquish which was the base course (refer to the case of EN.600 below) in the case that departments change numbers (600 to 601)
     }
     if (num.match("EN.600") !== null) {
       num = num.replace("EN.600", "EN.601");
-      const retrievedCourse601 = getCourse(
-        num,
-        allCourses,
-        "Any",
-        "Any",
-        planCourses
-      );
+      const retrievedCourse601 = getCourse(num, allCourses, planCourses);
       if (retrievedCourse601 !== null) {
         // Append original num to front for later sorting
         numNameList[n] = numList[n] + num + " " + retrievedCourse601.title;
@@ -390,8 +384,6 @@ export const getCourses = (
 export const getCourse = (
   courseNumber: string,
   allCourses: SISRetrievedCourse[],
-  semester: SemesterType | "Any",
-  year: number | "Any",
   allPlanCourses: UserCourse[]
 ): Course | null => {
   let out: Course | null = null;
@@ -702,7 +694,7 @@ export const checkAllPrereqs = (
   semester: SemesterType,
   allCourses: SISRetrievedCourse[]
 ): boolean => {
-  const course = getCourse(number, allCourses, semester, year, currCourses);
+  const course = getCourse(number, allCourses, currCourses);
   if (course !== null) {
     let filtered = filterNNegatives(course);
     let processed;
