@@ -22,7 +22,7 @@ export type Course = {
   wi: boolean;
   bio: string;
   tags: string[];
-  preReq: any;
+  preReq: string[];
   restrictions: Restriction[];
 };
 

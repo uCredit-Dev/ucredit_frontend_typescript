@@ -57,13 +57,9 @@ const SisCourse = (props: SisCourseProps) => {
 
   // Returns an array of select options for the distribution area users want to add the course to.
   const getInspectedAreas = () => {
-    if (
-      inspected !== "None" &&
-      version !== "None" &&
-      version.areas === "None"
-    ) {
+    if (version !== "None" && version.areas !== "None") {
       const areaOptions = version.areas.split("").map((area) => (
-        <option key={inspected.number + area} value={area}>
+        <option key={version.number + area} value={area}>
           {area}
         </option>
       ));
