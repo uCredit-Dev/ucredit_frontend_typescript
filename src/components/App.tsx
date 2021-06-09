@@ -22,24 +22,7 @@ function App() {
   // Component state setup.
   const [welcomeScreen, setWelcomeScreen] = useState<boolean>(true);
 
-  // Retrieves all database SIS courses.
-  useEffect(() => {
-    // Makes sure that welcome screen stays on for at least 1.5 seconds.
-    let guard = false;
-    toast.info("Loading resources...", {
-      autoClose: false,
-      closeOnClick: false,
-    });
-    setTimeout(() => {
-      if (guard) {
-        setWelcomeScreen(false);
-        toast.dismiss();
-        toast.success("SIS Courses Cached!");
-      } else {
-        guard = true;
-      }
-    }, 1500);
-
+  const retrieveData = () => {
     axios
       .get(api + "/search/all", {
         params: {},
@@ -47,17 +30,25 @@ function App() {
       .then((courses: any) => {
         const retrieved = courses.data.data;
         dispatch(updateAllCourses(retrieved));
-        if (guard) {
-          setWelcomeScreen(false);
-          toast.dismiss();
-          toast.success("SIS Courses Cached!");
-        } else {
-          guard = true;
-        }
+
+        setWelcomeScreen(false);
+        toast.dismiss();
+        toast.success("SIS Courses Cached!");
       })
       .catch((err) => {
+        retrieveData();
         console.log(err);
       });
+  };
+
+  // Retrieves all database SIS courses.
+  useEffect(() => {
+    toast.info("Loading resources...", {
+      autoClose: false,
+      closeOnClick: false,
+    });
+
+    retrieveData();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
