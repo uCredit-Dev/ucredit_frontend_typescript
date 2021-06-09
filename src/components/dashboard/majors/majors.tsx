@@ -1,4 +1,5 @@
 import { Major } from "../../../resources/commonTypes";
+/* INCOMPLETE */
 
 //https://engineering.jhu.edu/chembe/undergraduate-studies/undergraduate-degree-program/
 const bsCBE: Major = {
@@ -104,6 +105,11 @@ const bsCBE: Major = {
     },
   ],
 };
+
+
+
+
+/* COMPLETED */
 
 //https://krieger.jhu.edu/internationalstudies/undergraduate/requirements/
 const baIS: Major = {
