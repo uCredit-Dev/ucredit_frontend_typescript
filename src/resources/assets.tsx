@@ -427,7 +427,6 @@ export const getCourse = (
       }
     });
   }
-  console.log("out is ", out, userC);
 
   return out;
 };

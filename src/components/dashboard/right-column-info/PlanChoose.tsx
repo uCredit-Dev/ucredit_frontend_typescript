@@ -99,7 +99,19 @@ const PlanChoose = () => {
             dispatch(updateAddingStatus(true));
           } else {
             // If there is already a current plan, simply update the plan list.
-            dispatch(updatePlanList(retrievedPlans));
+            const totPlans: Plan[] = [];
+            retrievedPlans.forEach((plan) => {
+              axios
+                .get(api + "/years/" + plan._id)
+                .then((resp) => {
+                  totPlans.push({ ...plan, years: resp.data.data });
+                  if (totPlans.length === retrievedPlans.length) {
+                    // Initial load, there is no current plan, so we set the current to be the first plan in the array.
+                    dispatch(updatePlanList(retrievedPlans));
+                  }
+                })
+                .catch((err) => console.log(err));
+            });
           }
         })
         .catch((err) => {

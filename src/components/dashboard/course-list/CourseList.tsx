@@ -40,49 +40,52 @@ function CourseList() {
     const totCourses: UserCourse[] = [];
     currentPlan.years.forEach((year) => {
       const courses: UserCourse[] = [];
-      if (year.courses.length === 0) {
-        jsx.push(
-          <YearComponent
-            key={year._id}
-            id={year.year}
-            customStyle="cursor-pointer"
-            year={year}
-            courses={[]}
-          />
-        );
-        if (jsx.length === currentPlan.years.length) {
-          jsx.sort((el1, el2) => el1.props.id - el2.props.id);
-          dispatch(updateCurrentPlanCourses(totCourses));
-          setElements(jsx);
+      if (year.courses !== undefined) {
+        if (year.courses.length === 0) {
+          jsx.push(
+            <YearComponent
+              key={year._id}
+              id={year.year}
+              customStyle="cursor-pointer"
+              year={year}
+              courses={[]}
+            />
+          );
+          if (jsx.length === currentPlan.years.length) {
+            jsx.sort((el1, el2) => el1.props.id - el2.props.id);
+            dispatch(updateCurrentPlanCourses(totCourses));
+            setElements(jsx);
+          }
+        } else {
+          year.courses.forEach((courseId) => {
+            axios
+              .get(api + "/courses/" + courseId)
+              .then((resp) => {
+                const course: UserCourse = resp.data.data;
+                courses.push(course);
+                dispatch(updateTotalCredits(totalCredits + course.credits));
+                totCourses.push(course);
+                if (courses.length === year.courses.length) {
+                  jsx.push(
+                    <YearComponent
+                      key={year._id}
+                      id={year.year}
+                      customStyle="cursor-pointer"
+                      year={year}
+                      courses={courses}
+                    />
+                  );
+                  if (jsx.length === currentPlan.years.length) {
+                    jsx.sort((el1, el2) => el1.props.id - el2.props.id);
+                    dispatch(updateCurrentPlanCourses(totCourses));
+                    setElements(jsx);
+                  }
+                }
+              })
+              .catch((err) => console.log(err));
+          });
         }
       } else {
-        year.courses.forEach((courseId) => {
-          axios
-            .get(api + "/courses/" + courseId)
-            .then((resp) => {
-              const course: UserCourse = resp.data.data;
-              courses.push(course);
-              dispatch(updateTotalCredits(totalCredits + course.credits));
-              totCourses.push(course);
-              if (courses.length === year.courses.length) {
-                jsx.push(
-                  <YearComponent
-                    key={year._id}
-                    id={year.year}
-                    customStyle="cursor-pointer"
-                    year={year}
-                    courses={courses}
-                  />
-                );
-                if (jsx.length === currentPlan.years.length) {
-                  jsx.sort((el1, el2) => el1.props.id - el2.props.id);
-                  dispatch(updateCurrentPlanCourses(totCourses));
-                  setElements(jsx);
-                }
-              }
-            })
-            .catch((err) => console.log(err));
-        });
       }
     });
     // eslint-disable-next-line react-hooks/exhaustive-deps
