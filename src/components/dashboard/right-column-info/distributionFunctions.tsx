@@ -53,8 +53,6 @@ const checkRequirementSatisfied = (
     return false;
   }
   let concat;
-  console.log(course)
-  console.log(splitArr);
   while (index < splitArr.length) {
     if (splitArr[index] === "(") {
       concat = "(";
