@@ -155,7 +155,7 @@ const CourseVersion = (props: { setInspectedArea: Function }) => {
 
             {showMore === 0 ? (
               <button
-                className="underline"
+                className="underline focus:outline-none"
                 onClick={() => {
                   setShowMore(1);
                 }}
@@ -164,7 +164,7 @@ const CourseVersion = (props: { setInspectedArea: Function }) => {
               </button>
             ) : showMore === 1 ? (
               <button
-                className="underline"
+                className="underline focus:outline-none"
                 onClick={() => {
                   setShowMore(0);
                 }}

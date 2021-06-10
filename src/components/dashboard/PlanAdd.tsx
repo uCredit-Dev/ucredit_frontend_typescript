@@ -109,7 +109,7 @@ const PlanAdd = (props: { setGenerateNew: Function }) => {
             <div className="flex flex-row mb-4">
               <input
                 autoFocus
-                className="flex-none mr-8 px-1 w-full h-selectbox rounded"
+                className="flex-none mr-8 px-1 w-full h-selectbox rounded focus:outline-none"
                 type="text"
                 placeholder="Plan Name"
                 defaultValue={toAddName}
@@ -164,13 +164,13 @@ const PlanAdd = (props: { setGenerateNew: Function }) => {
             </div> */}
             <div className="flex flex-row justify-end">
               <button
-                className="mr-4 p-2 w-16 h-10 text-white bg-primary rounded"
+                className="mr-4 p-2 w-16 h-10 text-white bg-primary rounded focus:outline-none"
                 onClick={createNewPlan}
               >
                 Add
               </button>
               <button
-                className="p-2 w-16 h-10 text-black bg-white border border-solid border-secondary rounded"
+                className="p-2 w-16 h-10 text-black bg-white border border-solid border-secondary rounded focus:outline-none"
                 onClick={handleCancel}
               >
                 Cancel

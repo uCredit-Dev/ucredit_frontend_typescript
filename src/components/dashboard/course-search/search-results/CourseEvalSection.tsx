@@ -84,7 +84,7 @@ const CourseEvalSection = () => {
             <div>
               <button
                 className={clsx(
-                  "mb-2 border-b border-solid hover:border-black border-gray-300 transition duration-100 ease-in",
+                  "mb-2 border-b border-solid hover:border-black border-gray-300 focus:outline-none transition duration-100 ease-in",
                   {
                     "border-gray-900": selectedCourseEval === index,
                   }

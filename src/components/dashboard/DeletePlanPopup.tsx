@@ -96,13 +96,13 @@ const DeletePlanPopup = () => {
           </b>
           <div className="flex flex-row justify-center mb-4 mt-8 w-full">
             <button
-              className="m-1 p-1 w-1/6 text-white bg-red-500"
+              className="m-1 p-1 w-1/6 text-white bg-red-500 focus:outline-none"
               onClick={deleteCurrentPlan}
             >
               <b>Yes</b>
             </button>
             <button
-              className="m-1 ml-20 p-1 w-1/6 text-white bg-secondary"
+              className="m-1 ml-20 p-1 w-1/6 text-white bg-secondary focus:outline-none"
               onClick={cancel}
             >
               <b>No</b>

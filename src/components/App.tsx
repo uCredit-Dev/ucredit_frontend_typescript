@@ -31,9 +31,9 @@ function App() {
         const retrieved = courses.data.data;
         dispatch(updateAllCourses(retrieved));
 
-        setWelcomeScreen(false);
         toast.dismiss();
         toast.success("SIS Courses Cached!");
+        setWelcomeScreen(false);
       })
       .catch((err) => {
         retrieveData();
