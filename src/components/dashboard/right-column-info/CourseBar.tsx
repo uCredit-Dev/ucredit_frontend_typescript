@@ -40,7 +40,7 @@ function CourseBar({
 
   return (
     <>
-      <ReactTooltip html={true} className="w-1/4" />
+      <ReactTooltip html={true} className="w-max-1/4" />
       <div
         className={clsx(
           "text mb-1 whitespace-nowrap overflow-hidden overflow-ellipsis",
