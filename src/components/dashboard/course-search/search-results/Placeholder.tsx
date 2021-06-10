@@ -112,7 +112,7 @@ const Placeholder = (props: { addCourse: any }) => {
         <div className="flex flex-col mt-3 w-2/6">
           Title
           <input
-            className="mt-1"
+            className="mt-1 focus:outline-none"
             onChange={onPTChange}
             value={placeholderTitle}
           ></input>
@@ -120,7 +120,7 @@ const Placeholder = (props: { addCourse: any }) => {
         <div className="flex flex-col mt-2 w-2/6">
           Number
           <input
-            className="mt-1"
+            className="mt-1 focus:outline-none"
             onChange={onPNChange}
             value={placeholderNumber}
           ></input>
@@ -201,7 +201,7 @@ const Placeholder = (props: { addCourse: any }) => {
         </div>
       </div>
       <button
-        className="mr-0 p-2 w-1/6 text-white bg-primary rounded"
+        className="mr-0 p-2 w-1/6 text-white bg-primary rounded focus:outline-none"
         onClick={props.addCourse}
       >
         Add Course

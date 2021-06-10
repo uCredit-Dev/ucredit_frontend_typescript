@@ -78,7 +78,7 @@ function Content() {
             </div>
             <div className="relative flex-grow">
               <button
-                className="absolute bottom-0 right-0 underline"
+                className="absolute bottom-0 right-0 underline focus:outline-none"
                 onClick={() => {
                   setDistributionOpen(!distributionOpen);
                 }}
@@ -90,13 +90,17 @@ function Content() {
           <div className="flex flex-row justify-evenly my-4">
             <button
               onClick={() => setDisplayGeneral(true)}
-              className={clsx({ underline: displayGeneral })}
+              className={clsx("focus:outline-none", {
+                underline: displayGeneral,
+              })}
             >
               General
             </button>
             <button
               onClick={() => setDisplayGeneral(false)}
-              className={clsx({ underline: !displayGeneral })}
+              className={clsx("focus:outline-none", {
+                underline: !displayGeneral,
+              })}
             >
               Fine
             </button>

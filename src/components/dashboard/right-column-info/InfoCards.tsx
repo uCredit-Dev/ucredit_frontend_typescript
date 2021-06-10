@@ -101,7 +101,7 @@ const InfoCards = () => {
           <div className="flex flex-row items-end justify-center mb-2 w-full">
             <input
               value={planName}
-              className="w-plancardinput h-9 text-myplan leading-none border-b hover:border-gray-400 border-transparent outline-none"
+              className="w-plancardinput h-9 text-myplan leading-none border-b hover:border-gray-400 border-transparent focus:outline-none outline-none"
               onChange={handlePlanNameChange}
             />
             <RemoveSvg

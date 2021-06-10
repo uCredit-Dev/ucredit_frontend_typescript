@@ -155,7 +155,7 @@ function YearComponent({ id, customStyle, year, courses }: yearProps) {
       <div className="flex flex-row justify-between mb-3 p-2 w-full h-yearheading text-white font-medium bg-primary rounded shadow">
         <input
           value={yearName}
-          className="flex-shrink w-full text-white font-semibold bg-primary hover:border-b select-none" // focus:border-transparent???
+          className="flex-shrink w-full text-white font-semibold bg-primary hover:border-b focus:outline-none select-none" // focus:border-transparent???
           onChange={handleYearNameChange}
         />
         <RemoveSvg

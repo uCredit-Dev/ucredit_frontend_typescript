@@ -120,6 +120,7 @@ const SisCourse = (props: SisCourseProps) => {
           <div className="pb-5 pt-4 px-5 w-full h-full text-base bg-white rounded overflow-y-auto">
             {searchStack.length !== 0 ? (
               <button
+                className="focus:outline-none"
                 onClick={() => {
                   dispatch(popSearchStack());
                 }}
@@ -133,7 +134,10 @@ const SisCourse = (props: SisCourseProps) => {
                   {inspected.title}
                 </div>
               </h1>
-              <button className="text-2xl" onClick={clearInspected}>
+              <button
+                className="text-2xl focus:outline-none"
+                onClick={clearInspected}
+              >
                 <CloseSvg className="w-7 h-7 stroke-2" />
               </button>
             </div>
@@ -200,7 +204,7 @@ const SisCourse = (props: SisCourseProps) => {
               </div>
             </div>
             <button
-              className="mt-2 p-2 w-auto h-10 text-white bg-primary rounded"
+              className="mt-2 p-2 w-auto h-10 text-white bg-primary rounded focus:outline-none"
               onClick={props.addCourse}
             >
               Add Course
