@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import ReactTooltip from "react-tooltip";
 import {
   UserCourse,
   Plan,
@@ -17,6 +18,7 @@ import {
 } from "../../../slices/searchSlice";
 import { ReactComponent as RemoveSvg } from "../../../resources/svg/Remove.svg";
 import { ReactComponent as DetailsSvg } from "../../../resources/svg/Details.svg";
+import { ReactComponent as WarningSvg } from "../../../resources/svg/Warning.svg"
 import { Transition } from "@tailwindui/react";
 import clsx from "clsx";
 import { toast } from "react-toastify";
@@ -157,14 +159,13 @@ function CourseComponent({ year, course, semester }: courseProps) {
     return out;
   };
 
+  const tooltip = `<div>Prereqs not yet satisfied</div>`; 
+
   return (
     <>
       <div
         className={clsx(
-          "relative items-center mt-2 p-2 h-14 bg-white rounded shadow",
-          {
-            "bg-red-300": !satisfied,
-          }
+          "relative items-center mt-2 p-2 h-14 bg-white rounded shadow flex justify-between",
         )}
         onMouseEnter={activate}
         onMouseLeave={deactivate}
@@ -198,6 +199,15 @@ function CourseComponent({ year, course, semester }: courseProps) {
             ) : null}
           </div>
         </div>
+        { !satisfied ? 
+          <div className="z-20">
+            <ReactTooltip html={true} />
+            <div data-tip={tooltip}>
+              <WarningSvg />
+            </div> 
+          </div>
+          : null
+        }
         <div className="absolute inset-0 flex items-center justify-center">
           <Transition
             show={activated}
