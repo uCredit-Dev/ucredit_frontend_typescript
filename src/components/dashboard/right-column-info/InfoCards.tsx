@@ -98,14 +98,14 @@ const InfoCards = () => {
     <div className="flex tight:flex-col flex-row tight:items-center mb-4 h-auto">
       <div className="flex flex-col items-center justify-center tight:mb-4 tight:mr-0 p-6 w-full h-auto bg-white rounded shadow">
         <div className="flex flex-col mb-2 w-auto h-auto">
-          <div className="flex flex-row items-center justify-center mb-2 w-full h-auto">
+          <div className="flex flex-row items-end justify-center mb-2 w-full">
             <input
               value={planName}
-              className="w-plancardinput h-auto text-center text-myplan outline-none"
+              className="w-plancardinput h-9 text-myplan leading-none border-b hover:border-gray-400 border-transparent outline-none"
               onChange={handlePlanNameChange}
             />
             <RemoveSvg
-              className="w-6 h-6 stroke-2 cursor-pointer select-none transform hover:translate-x-0.5 hover:translate-y-0.5 transition duration-200 ease-in"
+              className="w-5 h-7 stroke-2 cursor-pointer select-none transform hover:translate-x-0.5 hover:translate-y-0.5 transition duration-200 ease-in"
               onClick={activateDeletePlan}
             />
           </div>

@@ -63,7 +63,7 @@ function Content() {
 
   return (
     // <div className="flex flex-row flex-wrap-reverse mt-content medium:px-48 h-full">
-    <div className="flex flex-row flex-wrap-reverse mt-content medium:px-48 h-full">
+    <div className="flex flex-row thin:flex-wrap-reverse mt-content medium:px-48 h-full">
       <div className="flex-grow h-auto">
         <CourseList />
       </div>
@@ -88,16 +88,17 @@ function Content() {
             </div>
           </div>
           <div className="flex flex-row justify-evenly my-4">
-            <button 
+            <button
               onClick={() => setDisplayGeneral(true)}
-              className={clsx({"underline" : displayGeneral})}
+              className={clsx({ underline: displayGeneral })}
             >
               General
             </button>
-            <button 
+            <button
               onClick={() => setDisplayGeneral(false)}
-              className={clsx({"underline" : !displayGeneral})}>
-                Fine
+              className={clsx({ underline: !displayGeneral })}
+            >
+              Fine
             </button>
           </div>
           {distributionOpen
@@ -120,7 +121,7 @@ function Content() {
                   return pair[1].map((dis, index) => {
                     if (index === 0) {
                       general = dis.name;
-                      return;
+                      return <></>;
                     }
                     return (
                       <div key={dis.name}>

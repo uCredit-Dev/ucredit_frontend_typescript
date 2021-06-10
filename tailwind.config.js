@@ -23,7 +23,8 @@ module.exports = {
         yearheading: "20%",
         semesterheading: "20%",
         infocard: "350px",
-        plancardinput: "230px",
+        plancardinput: "220px",
+        planselect: "200px",
         planchoose: "250px",
       },
       height: {
@@ -68,12 +69,7 @@ module.exports = {
         },
       },
       fontSize: {
-        myplan: [
-          "2.25rem",
-          {
-            lineHeight: "2.625rem",
-          },
-        ],
+        myplan: ["2.1rem"],
         infocard: [
           "1.125rem",
           {
