@@ -10,7 +10,7 @@ import DashboardEntry from "./login/DashboardEntry";
 import bird from "./../resources/images/birdTempGif.gif";
 import { updateAllCourses } from "../slices/userSlice";
 import LandingPage from "./landing-page/LandingPage";
-import { toast } from "react-toastify";
+import { toast, ToastContainer } from "react-toastify";
 
 /**
  * Root app component, where it all begins...
@@ -30,7 +30,6 @@ function App() {
       .then((courses: any) => {
         const retrieved = courses.data.data;
         dispatch(updateAllCourses(retrieved));
-
         toast.dismiss();
         toast.success("SIS Courses Cached!");
         setWelcomeScreen(false);
@@ -82,6 +81,17 @@ function App() {
           <LandingPage />
         </Route>
       </Switch>
+      <ToastContainer
+        position="top-right"
+        autoClose={4000}
+        hideProgressBar={true}
+        newestOnTop={false}
+        closeOnClick
+        rtl={false}
+        pauseOnFocusLoss
+        draggable
+        pauseOnHover
+      />
     </>
   );
 }
