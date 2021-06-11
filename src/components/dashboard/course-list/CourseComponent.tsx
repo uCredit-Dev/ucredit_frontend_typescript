@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from "react";
-import ReactTooltip from "react-tooltip";
 import {
   UserCourse,
   Plan,
@@ -214,7 +213,6 @@ function CourseComponent({ year, course, semester }: courseProps) {
                 />
                 {!satisfied ? (
                   <>
-                    <ReactTooltip html={true} />
                     <div data-tip={tooltip}>
                       <WarningSvg className="relative z-20 flex flex-row items-center justify-center p-0.5 w-6 h-6 text-white bg-secondary rounded-md outline-none stroke-2 cursor-pointer transform hover:scale-110 transition duration-150 ease-in" />
                     </div>

@@ -95,7 +95,7 @@ const SearchList = (props: { searching: boolean }) => {
       </div>
       {/* <div className='relative left-0 z-10 flex-none block h-4 pointer-events-none -top-3 right-blurr bg-gradient-to-b from-white to-gray-200'></div> */}
       <div className="py px-5 w-full h-full bg-gray-200 border-b border-black select-none overflow-y-auto">
-        <ReactTooltip />
+        {/* <ReactTooltip /> */}
         <div className="w-full h-full">
           {courses.length > 0 ? (
             <>
