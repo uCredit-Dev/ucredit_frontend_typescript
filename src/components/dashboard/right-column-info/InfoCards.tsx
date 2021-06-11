@@ -101,11 +101,11 @@ const InfoCards = () => {
           <div className="flex flex-row items-end justify-center mb-2 w-full">
             <input
               value={planName}
-              className="w-plancardinput h-9 text-myplan leading-none border-b hover:border-gray-300 border-transparent focus:outline-none outline-none transform hover:scale-105 transition duration-200 ease-in"
+              className="ml-6 w-plancardinput h-9 text-center text-myplan leading-none border-b hover:border-gray-300 border-transparent focus:outline-none outline-none transform hover:scale-105 transition duration-200 ease-in"
               onChange={handlePlanNameChange}
             />
             <RemoveSvg
-              className="w-5 h-7 stroke-2 cursor-pointer select-none transform hover:scale-125 transition duration-200 ease-in"
+              className="ml-1 w-5 h-7 stroke-2 cursor-pointer select-none transform hover:scale-125 transition duration-200 ease-in"
               onClick={activateDeletePlan}
             />
           </div>

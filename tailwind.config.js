@@ -23,7 +23,7 @@ module.exports = {
         yearheading: "18%",
         semesterheading: "18%",
         infocard: "350px",
-        plancardinput: "220px",
+        plancardinput: "205px",
         planselect: "200px",
         planchoose: "250px",
       },
@@ -69,7 +69,7 @@ module.exports = {
         },
       },
       fontSize: {
-        myplan: ["2.1rem"],
+        myplan: ["2rem"],
         infocard: [
           "1.125rem",
           {
