@@ -5,16 +5,20 @@ import {
   Plan,
   SISRetrievedCourse,
   User,
+  Year,
 } from "../components/../resources/commonTypes";
 
 type UserSlice = {
   currentUser: User;
   planList: Plan[];
   deleting: boolean;
-  adding: boolean;
+  addingPlan: boolean;
   toAddName: string;
   toAddMajor: Major | null;
+  generateAdd: boolean;
+  deleteYear: boolean;
   allCourses: SISRetrievedCourse[];
+  yearToDelete: Year | null;
 };
 
 const initialState: UserSlice = {
@@ -29,10 +33,13 @@ const initialState: UserSlice = {
   },
   planList: [],
   deleting: false,
-  adding: false,
+  addingPlan: false,
+  generateAdd: false,
+  deleteYear: false,
   toAddName: "Unnamed Plan",
   toAddMajor: null,
   allCourses: [],
+  yearToDelete: null,
 };
 
 // Updates all user info from database. This function should be called after an axios get on the user routes.
@@ -53,7 +60,7 @@ export const userSlice = createSlice({
   name: "user",
   initialState,
   reducers: {
-    updateDeleteStatus: (state: any, action: PayloadAction<boolean>) => {
+    updateDeletePlanStatus: (state: any, action: PayloadAction<boolean>) => {
       state.deleting = action.payload;
     },
     updateUser: userUpdate,
@@ -63,8 +70,8 @@ export const userSlice = createSlice({
     updateGuestPlanIds: (state: any, action: PayloadAction<string[]>) => {
       state.currentUser.plan_ids = action.payload;
     },
-    updateAddingStatus: (state: any, action: PayloadAction<boolean>) => {
-      state.adding = action.payload;
+    updateAddingPlanStatus: (state: any, action: PayloadAction<boolean>) => {
+      state.addingPlan = action.payload;
     },
     updateToAddName: (state: any, action: PayloadAction<string>) => {
       state.toAddName = action.payload;
@@ -78,6 +85,18 @@ export const userSlice = createSlice({
     ) => {
       state.allCourses = action.payload;
     },
+    updateGeneratePlanAddStatus: (
+      state: any,
+      action: PayloadAction<boolean>
+    ) => {
+      state.generateAdd = action.payload;
+    },
+    updateDeleteYearStatus: (state: any, action: PayloadAction<boolean>) => {
+      state.deleteYear = action.payload;
+    },
+    updateYearToDelete: (state: any, action: PayloadAction<Year | null>) => {
+      state.yearToDelete = action.payload;
+    },
     clearToAdd: (state: any) => {
       state.toAddName = initialState.toAddName;
       state.toAddMajor = initialState.toAddMajor;
@@ -90,14 +109,17 @@ export const userSlice = createSlice({
 });
 
 export const {
-  updateDeleteStatus,
+  updateDeletePlanStatus,
   updateUser,
   updatePlanList,
   updateGuestPlanIds,
-  updateAddingStatus,
+  updateAddingPlanStatus,
   updateToAddName,
   updateToAddMajor,
   updateAllCourses,
+  updateGeneratePlanAddStatus,
+  updateYearToDelete,
+  updateDeleteYearStatus,
   resetUser,
   clearToAdd,
 } = userSlice.actions;
@@ -115,10 +137,16 @@ export const loginAsync =
 // the state. Please make a selector for each state :)
 export const selectUser = (state: RootState) => state.user.currentUser;
 export const selectPlanList = (state: RootState) => state.user.planList;
-export const selectDeleteStatus = (state: RootState) => state.user.deleting;
-export const selectAddingStatus = (state: RootState) => state.user.adding;
+export const selectDeletePlanStatus = (state: RootState) => state.user.deleting;
+export const selectAddingPlanStatus = (state: RootState) =>
+  state.user.addingPlan;
 export const selectToAddName = (state: RootState) => state.user.toAddName;
 export const selectToAddMajor = (state: RootState) => state.user.toAddMajor;
 export const selectAllCourses = (state: RootState) => state.user.allCourses;
+export const selectGeneratePlanAddStatus = (state: RootState) =>
+  state.user.generateAdd;
+export const selectDeleteYearStatus = (state: RootState) =>
+  state.user.deleteYear;
+export const selectYearToDelete = (state: RootState) => state.user.yearToDelete;
 
 export default userSlice.reducer;

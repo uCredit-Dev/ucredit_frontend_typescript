@@ -36,7 +36,13 @@ type searchStates = {
   inspectedVersion: Course | "None";
   inspectedCourse: SISRetrievedCourse | "None";
   placeholder: boolean;
-  searchStack: SISRetrievedCourse[];
+  searchStack: { sis: SISRetrievedCourse; ver: Course }[];
+};
+
+type searchStackUpdate = {
+  new: SISRetrievedCourse;
+  oldSIS: SISRetrievedCourse;
+  oldV: Course;
 };
 
 const initialState: searchStates = {
@@ -144,13 +150,24 @@ export const searchSlice = createSlice({
     },
     updateSearchStack: (
       state: any,
-      action: PayloadAction<SISRetrievedCourse>
+      action: PayloadAction<searchStackUpdate>
     ) => {
-      state.searchStack.push(action.payload);
+      const newCourse = action.payload.new;
+      state.searchStack.push({
+        sis: action.payload.oldSIS,
+        ver: action.payload.oldV,
+      });
+      state.inspectedCourse = newCourse;
+      state.inspectedVersion = {
+        title: newCourse.title,
+        number: newCourse.number,
+        ...newCourse.versions[0],
+      };
     },
     popSearchStack: (state: any) => {
-      const popped = state.searchStack.pop();
-      state.inspectedCourse = popped;
+      const oldBundle = state.searchStack.pop();
+      state.inspectedCourse = oldBundle.sis;
+      state.inspectedVersion = oldBundle.ver;
     },
   },
 });

@@ -144,12 +144,12 @@ const DashboardEntry = (props: any) => {
         </div>
         <a
           href="https://ucredit-api.herokuapp.com/api/login"
-          className="flex flex-row items-center justify-center mx-auto w-64 h-12 font-semibold tracking-widest bg-secondary rounded-full cursor-pointer select-none transform hover:translate-x-0.5 hover:translate-y-0.5 transition duration-200 ease-in"
+          className="flex flex-row items-center justify-center mx-auto w-64 h-12 font-semibold tracking-widest bg-secondary rounded-full cursor-pointer select-none transform hover:scale-105 transition duration-200 ease-in"
         >
           JHU SSO Login
         </a>
         <button
-          className="flex flex-row items-center justify-center mb-auto mt-5 mx-auto w-64 h-12 font-semibold tracking-widest bg-secondary rounded-full focus:outline-none cursor-pointer select-none transform hover:translate-x-0.5 hover:translate-y-0.5 transition duration-200 ease-in"
+          className="flex flex-row items-center justify-center mb-auto mt-5 mx-auto w-64 h-12 font-semibold tracking-widest bg-secondary rounded-full focus:outline-none cursor-pointer select-none transform hover:scale-105 transition duration-200 ease-in"
           onClick={handleGuest}
         >
           Continue as guest

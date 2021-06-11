@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from "react";
-import ReactTooltip from "react-tooltip";
 import {
   UserCourse,
   Plan,
@@ -18,7 +17,7 @@ import {
 } from "../../../slices/searchSlice";
 import { ReactComponent as RemoveSvg } from "../../../resources/svg/Remove.svg";
 import { ReactComponent as DetailsSvg } from "../../../resources/svg/Details.svg";
-import { ReactComponent as WarningSvg } from "../../../resources/svg/Warning.svg"
+import { ReactComponent as WarningSvg } from "../../../resources/svg/Warning.svg";
 import { Transition } from "@tailwindui/react";
 import clsx from "clsx";
 import { toast } from "react-toastify";
@@ -76,6 +75,7 @@ function CourseComponent({ year, course, semester }: courseProps) {
 
   // Sets or resets the course displayed in popout after user clicks it in course list.
   const displayCourses = () => {
+    console.log("Course is ", course);
     dispatch(updateSearchTime({ searchYear: year, searchSemester: semester }));
     dispatch(updateSearchTerm(course.number));
     let found = false;
@@ -146,68 +146,39 @@ function CourseComponent({ year, course, semester }: courseProps) {
     setActivated(false);
   };
 
-  const getFirst20 = (toParse: string) => {
-    let out = "";
-    const toParseArr = toParse.split("");
-    toParseArr.forEach((char: string, index) => {
-      if (index < 33) {
-        out = out + char;
-      } else if (index === 33) {
-        out = out + "...";
-      }
-    });
-    return out;
-  };
-
-  const tooltip = `<div>Prereqs not yet satisfied</div>`; 
+  const tooltip = `<div>Prereqs not yet satisfied</div>`;
 
   return (
     <>
       <div
         className={clsx(
-          "relative items-center mt-2 p-2 h-14 bg-white rounded shadow flex justify-between",
+          "relative flex items-center justify-between mt-2 p-2 bg-white rounded shadow transform hover:scale-105 transition duration-200 ease-in"
         )}
         onMouseEnter={activate}
         onMouseLeave={deactivate}
         key={course.number}
       >
-        <div className="flex flex-col gap-1 h-full">
-          <div className="w-4/6 text-coursecard truncate">
-            {getFirst20(course.title)}
-          </div>
-          {/* <div className="grid gap-1 grid-cols-3 text-center text-coursecard divide-x-2">
+        <div className="flex flex-col gap-1 w-full h-full">
+          <div className="w-full text-coursecard truncate">{course.title}</div>
+          <div className="flex flex-row gap-1 items-center text-center text-coursecard">
             <div>{course.number}</div>
-            <div className="truncate">{course.credits} credits</div>
-            <div className="truncate">{course.area}</div>
-          </div> */}
-          <div className="flex flex-row gap-1 text-center text-coursecard">
-            <div>{course.number}</div>
-            <div className="flex flex-row items-center">
-              <div className="flex items-center px-1 w-auto h-5 text-white font-semibold bg-secondary rounded select-none">
-                {course.credits}
-              </div>
+            <div className="flex items-center px-1 text-white font-semibold bg-secondary rounded select-none">
+              {course.credits}
             </div>
             {course.area !== "None" ? (
-              <div className="flex flex-row items-center">
-                <div
-                  className="flex items-center px-1 w-auto h-5 text-white font-semibold rounded select-none"
-                  style={{ backgroundColor: getColors(course.area)[0] }}
-                >
-                  {course.area}
-                </div>
+              <div
+                className="flex items-center px-1 text-white font-semibold rounded select-none"
+                style={{ backgroundColor: getColors(course.area)[0] }}
+              >
+                {course.area}
               </div>
+            ) : null}{" "}
+            {!satisfied ? (
+              <WarningSvg className="flex items-center w-5 h-5 text-white font-semibold rounded select-none" />
             ) : null}
           </div>
         </div>
-        { !satisfied ? 
-          <div className="z-20">
-            <ReactTooltip html={true} />
-            <div data-tip={tooltip}>
-              <WarningSvg />
-            </div> 
-          </div>
-          : null
-        }
+
         <div className="absolute inset-0 flex items-center justify-center">
           <Transition
             show={activated}
@@ -230,13 +201,23 @@ function CourseComponent({ year, course, semester }: courseProps) {
               >
                 <div className="absolute left-0 top-0 w-full h-full bg-white bg-opacity-80 rounded" />
                 <DetailsSvg
-                  className="relative z-20 flex flex-row items-center justify-center mr-5 p-0.5 w-6 h-6 text-white bg-secondary rounded-md outline-none stroke-2 cursor-pointer transform hover:translate-x-0.5 hover:translate-y-0.5 transition duration-150 ease-in"
+                  className="relative z-20 flex flex-row items-center justify-center mr-5 p-0.5 w-6 h-6 text-white bg-secondary rounded-md outline-none stroke-2 cursor-pointer transform hover:scale-110 transition duration-150 ease-in"
                   onClick={displayCourses}
                 />
                 <RemoveSvg
-                  className="relative z-20 flex flex-row items-center justify-center p-0.5 w-6 h-6 text-white bg-secondary rounded-md outline-none stroke-2 cursor-pointer transform hover:translate-x-0.5 hover:translate-y-0.5 transition duration-150 ease-in"
+                  className={clsx(
+                    "relative z-20 flex flex-row items-center justify-center p-0.5 w-6 h-6 text-white bg-secondary rounded-md outline-none stroke-2 cursor-pointer transform hover:scale-110 transition duration-150 ease-in",
+                    { "mr-5": !satisfied }
+                  )}
                   onClick={deleteCourse}
                 />
+                {!satisfied ? (
+                  <>
+                    <div data-tip={tooltip}>
+                      <WarningSvg className="relative z-20 flex flex-row items-center justify-center p-0.5 w-6 h-6 text-white bg-secondary rounded-md outline-none stroke-2 cursor-pointer transform hover:scale-110 transition duration-150 ease-in" />
+                    </div>
+                  </>
+                ) : null}
               </div>
             )}
           </Transition>

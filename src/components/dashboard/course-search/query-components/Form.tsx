@@ -15,10 +15,8 @@ import {
   SISRetrievedCourse,
   TagType,
 } from "../../../../resources/commonTypes";
-import { ReactComponent as ShowSvg } from "../../../../resources/svg/Show.svg";
-import { ReactComponent as HideSvg } from "../../../../resources/svg/Hide.svg";
-import ReactTooltip from "react-tooltip";
-import clsx from "clsx";
+import { ReactComponent as FilterFilledSvg } from "../../../../resources/svg/FilterFilled.svg";
+import { ReactComponent as FilterNonFilledSvg } from "../../../../resources/svg/FilterNonFilled.svg";
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import Filters from "./Filters";
@@ -142,9 +140,6 @@ const Form = (props: { setSearching: Function }) => {
         });
         return satisfied;
       });
-      // courses = courses.filter(
-      //   (course) => course.credits.toString() === credits.toString()
-      // );
     }
 
     const areas = extras.areas;
@@ -158,10 +153,6 @@ const Form = (props: { setSearching: Function }) => {
         });
         return satisfied;
       });
-
-      // if (extras.areas === "N") {
-      //   courses = courses.filter((course: Course) => course.areas !== "None");
-      // }
     }
 
     const department = extras.department;
@@ -175,7 +166,6 @@ const Form = (props: { setSearching: Function }) => {
         });
         return satisfied;
       });
-      // courses = courses.filter((course) => course.department === department);
     }
 
     const tag = extras.tags;
@@ -189,7 +179,6 @@ const Form = (props: { setSearching: Function }) => {
         });
         return satisfied;
       });
-      // courses = courses.filter((course) => course.tags.includes(tag));
     }
 
     const term = extras.term;
@@ -345,14 +334,11 @@ const Form = (props: { setSearching: Function }) => {
   };
 
   return (
-    <div className="px-5 py-3 w-full h-auto text-coursecard border-b border-black select-none">
-      <ReactTooltip />
+    <div className="pt-3 px-5 w-full h-auto text-coursecard border-b border-black select-none">
       <div className="flex-full flex flex-row h-auto">
         <input
           autoFocus
-          className={clsx("mr-2 px-1 w-full h-6 rounded outline-none", {
-            "mb-2": showCriteria,
-          })}
+          className="mb-2 mr-2 px-1 w-full h-6 rounded outline-none"
           type="text"
           placeholder={"Course title or number (ie. Physics, 601.280, etc.)"}
           style={{ width: "100%" }}
@@ -360,20 +346,20 @@ const Form = (props: { setSearching: Function }) => {
           onChange={handleSearchTerm}
         />
         <div
-          className="flex flex-none flex-row items-center justify-center w-6 h-6 bg-white rounded cursor-pointer"
+          className="flex flex-none flex-row items-center justify-center w-6 h-6 bg-white rounded cursor-pointer transform hover:scale-125 transition duration-200 ease-in"
           onClick={() => setShowCriteria(!showCriteria)}
           data-tip={
             showCriteria ? "Hide search criteria" : "Show search criteria"
           }
         >
           {!showCriteria ? (
-            <ShowSvg className="w-4 h-4 stroke-2" />
+            <FilterNonFilledSvg className="w-4 h-4" />
           ) : (
-            <HideSvg className="w-4 h-4 stroke-2" />
+            <FilterFilledSvg className="w-4 h-4" />
           )}
         </div>
       </div>
-      <div>
+      <div className="mb-2">
         {showAllResults ? (
           <button onClick={dontShowAll} className="focus:outline-none">
             <u>Show Top 10 Results</u>

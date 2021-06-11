@@ -79,7 +79,7 @@ const CourseDisplay = () => {
         title: version.title,
         term: semester.toLowerCase(),
         year: addingYear !== null ? addingYear.name : "",
-        credits: version.credits,
+        credits: version.credits === "" ? 0 : version.credits,
         distribution_ids: currentPlan.distribution_ids,
         number: version.number,
         area: inspectedArea,

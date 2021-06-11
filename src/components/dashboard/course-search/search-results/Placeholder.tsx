@@ -76,7 +76,7 @@ const Placeholder = (props: { addCourse: any }) => {
 
   // On placeholder number change
   const onPNChange = (event: any) => {
-    const num = event.value;
+    const num = event.target.value;
     setPlaceholderNumber(num);
     if (inspected !== "None") {
       const inspCopy: Course = { ...inspected, number: num };
@@ -108,11 +108,14 @@ const Placeholder = (props: { addCourse: any }) => {
   return (
     <div className="flex flex-col h-full font-medium">
       <div className="text-2xl">Add a placeholder</div>
-      <div className="flex flex-col mb-10">
+      <div
+        className="flex flex-col flex-wrap pb-5"
+        style={{ maxHeight: "70%" }}
+      >
         <div className="flex flex-col mt-3 w-2/6">
           Title
           <input
-            className="mt-1 focus:outline-none"
+            className="mt-1 p-1 focus:outline-none"
             onChange={onPTChange}
             value={placeholderTitle}
           ></input>
@@ -120,7 +123,7 @@ const Placeholder = (props: { addCourse: any }) => {
         <div className="flex flex-col mt-2 w-2/6">
           Number
           <input
-            className="mt-1 focus:outline-none"
+            className="mt-1 p-1 focus:outline-none"
             onChange={onPNChange}
             value={placeholderNumber}
           ></input>
@@ -201,7 +204,7 @@ const Placeholder = (props: { addCourse: any }) => {
         </div>
       </div>
       <button
-        className="mr-0 p-2 w-1/6 text-white bg-primary rounded focus:outline-none"
+        className="mr-0 p-2 w-1/6 text-white bg-primary rounded focus:outline-none transform hover:scale-110 transition duration-200 ease-in"
         onClick={props.addCourse}
       >
         Add Course

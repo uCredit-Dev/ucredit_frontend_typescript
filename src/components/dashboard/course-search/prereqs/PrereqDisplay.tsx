@@ -1,26 +1,22 @@
-// TODO: CONSIDER RENAMING THIS FILE TO GENERAL META DISPLAYS??
-
 import clsx from "clsx";
 import React, { useState, useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import {
-  updateInspectedCourse,
   selectSemester,
   selectYear,
   updateSearchStack,
   selectVersion,
+  selectInspectedCourse,
 } from "../../../../slices/searchSlice";
 import {
   filterNNegatives,
   processPrereqs,
   checkPrereq,
 } from "../../../../resources/assets";
-import CourseEvalSection from "../search-results/CourseEvalSection";
 import PrereqDropdown from "./PrereqDropdown";
 import { ReactComponent as CheckMark } from "../../../../resources/svg/CheckMark.svg";
 import { ReactComponent as DescriptionSvg } from "../../../../resources/svg/Description.svg";
 import { ReactComponent as MenuSvg } from "../../../../resources/svg/Menu.svg";
-import ReactTooltip from "react-tooltip";
 import {
   selectCurrentPlanCourses,
   selectPlan,
@@ -37,12 +33,12 @@ type parsedPrereqs = {
 
 /**
  * This is the bullet-list display of the prereqs for each course.
- * @returns
  */
 const PrereqDisplay = () => {
   // Redux Setup
   const dispatch = useDispatch();
   const version = useSelector(selectVersion);
+  const inspected = useSelector(selectInspectedCourse);
   const currPlanCourses = useSelector(selectCurrentPlanCourses);
   const semester = useSelector(selectSemester);
   const year = useSelector(selectYear);
@@ -55,7 +51,6 @@ const PrereqDisplay = () => {
   const [loaded, setLoaded] = useState<boolean>(false);
   const [hasPreReqs, setHasPreReqs] = useState<boolean>(false);
   const [NNegativePreReqs, setNNegativePreReqs] = useState<any[]>();
-  const [displayPreReqsView, setdisplayPreReqsView] = useState<Number>(1);
 
   const display = async (preReqs: any[]) => {
     const prereqs = processPrereqs(preReqs, allCourses, currPlanCourses);
@@ -64,8 +59,6 @@ const PrereqDisplay = () => {
 
   // This useEffect performs prereq retrieval every time a new course is displayed.
   useEffect(() => {
-    // Reset displayView for prereqs
-    setdisplayPreReqsView(1);
     // Reset state whenever new inspected course
     setPreReqDisplay([]);
     setLoaded(false);
@@ -124,13 +117,17 @@ const PrereqDisplay = () => {
   };
 
   // Function currying to produce a function that would update the store when clicking on prereqs
+  // TODO: cross-check with title
   const updateInspected = (courseNumber: string) => () => {
     allCourses.forEach((course) => {
-      if (course.number === courseNumber) {
-        if (version !== "None") {
-          dispatch(updateSearchStack(course));
-        }
-        dispatch(updateInspectedCourse(course));
+      if (
+        course.number === courseNumber &&
+        inspected !== "None" &&
+        version !== "None"
+      ) {
+        dispatch(
+          updateSearchStack({ new: course, oldSIS: inspected, oldV: version })
+        );
       }
     });
   };
@@ -164,7 +161,7 @@ const PrereqDisplay = () => {
           <p className="w-full" key={noCBracketsNum}>
             <button
               className={clsx(
-                "mb-1 max-w-md text-sm font-medium focus:outline-none truncate"
+                "flex flex-wrap mb-1 max-w-md text-left text-sm font-medium focus:outline-none transform hover:scale-101 transition duration-200 ease-in"
               )}
               onClick={() => {
                 updateInspected(noCBracketsNum)();
@@ -354,100 +351,58 @@ const PrereqDisplay = () => {
     setPrereqDisplayMode(mode);
   };
 
-  const displayPreReqs = () => {
-    return (
-      <>
-        <div className="flex flex-row mt-2">
-          <ReactTooltip />
-          <div
-            className={clsx(
-              "flex flex-row items-center justify-center mr-1 p-1 w-7 h-7 rounded cursor-pointer",
-              {
-                "bg-gray-200": prereqDisplayMode !== 1,
-                "hover:bg-gray-200 transition duration-100 ease-in":
-                  prereqDisplayMode === 1,
-              }
-            )}
-            onClick={handlePrereqDisplayModeChange(2)}
-            data-tip="bullet list"
-          >
-            <MenuSvg />
-          </div>
-          <div
-            className={clsx(
-              "flex flex-row items-center justify-center p-1 w-7 h-7 rounded cursor-pointer",
-              {
-                "bg-gray-200": prereqDisplayMode === 1,
-                "hover:bg-gray-200 transition duration-100 ease-in":
-                  prereqDisplayMode !== 1,
-              }
-            )}
-            onClick={handlePrereqDisplayModeChange(1)}
-            data-tip="description"
-          >
-            <DescriptionSvg className="w-5 h-5" />
-          </div>
-        </div>
-
-        {!hasPreReqs ? (
-          // <div className="font-normal">No Prereqs!</div>
-          <div className="flex flex-col items-center justify-center w-full h-full font-normal">
-            No Prerequisites!
-          </div>
-        ) : prereqDisplayMode === 1 ? (
-          <>
-            {NNegativePreReqs !== undefined && NNegativePreReqs.length > 0 ? (
-              <div className="font-normal">
-                {NNegativePreReqs[0].Description}
-              </div>
-            ) : (
-              <div>Loading description...</div>
-            )}
-          </>
-        ) : !loaded ? (
-          "Loading Prereqs Status: loaded is " + loaded.toString()
-        ) : (
-          <p className="p-2 overflow-y-auto">{preReqDisplay}</p>
-        )}
-      </>
-    );
-  };
-
   return (
-    <p className="w-full h-auto">
-      <ReactTooltip />
-      <div className="flex flex-row border-b-2">
-        <button
+    <>
+      <div className="flex flex-row mt-2">
+        <div
           className={clsx(
-            "mr-3 text-xl font-medium hover:border-b-2 border-secondary focus:outline-none",
+            "flex flex-row items-center justify-center mr-1 p-1 w-7 h-7 rounded cursor-pointer transform hover:scale-110 transition duration-200 ease-in",
             {
-              "border-b-2 -mb-0.5": displayPreReqsView === 1,
-              "hover:-mb-0.5": displayPreReqsView !== 1,
+              "bg-gray-200": prereqDisplayMode !== 1,
+              "hover:bg-gray-200 transition duration-100 ease-in":
+                prereqDisplayMode === 1,
             }
           )}
-          onClick={() => {
-            setdisplayPreReqsView(1);
-          }}
+          onClick={handlePrereqDisplayModeChange(2)}
+          data-tip="bullet list"
         >
-          Prerequisites
-        </button>
-        <button
+          <MenuSvg />
+        </div>
+        <div
           className={clsx(
-            "mr-3 text-xl font-medium hover:border-b-2 border-secondary focus:outline-none",
+            "flex flex-row items-center justify-center p-1 w-7 h-7 rounded cursor-pointer transform hover:scale-110 transition duration-200 ease-in",
             {
-              "border-b-2 -mb-0.5": displayPreReqsView === 0,
-              "hover:-mb-0.5": displayPreReqsView !== 0,
+              "bg-gray-200": prereqDisplayMode === 1,
+              "hover:bg-gray-200 transition duration-100 ease-in":
+                prereqDisplayMode !== 1,
             }
           )}
-          onClick={() => {
-            setdisplayPreReqsView(0);
-          }}
+          onClick={handlePrereqDisplayModeChange(1)}
+          data-tip="description"
         >
-          Course Evaluation
-        </button>{" "}
+          <DescriptionSvg className="w-5 h-5" />
+        </div>
       </div>
-      {displayPreReqsView === 1 ? displayPreReqs() : <CourseEvalSection />}
-    </p>
+
+      {!hasPreReqs ? (
+        // <div className="font-normal">No Prereqs!</div>
+        <div className="flex flex-col items-center justify-center w-full h-full font-normal">
+          No Prerequisites!
+        </div>
+      ) : prereqDisplayMode === 1 ? (
+        <>
+          {NNegativePreReqs !== undefined && NNegativePreReqs.length > 0 ? (
+            <div className="font-normal">{NNegativePreReqs[0].Description}</div>
+          ) : (
+            <div>Loading description...</div>
+          )}
+        </>
+      ) : !loaded ? (
+        "Loading Prereqs Status: loaded is " + loaded.toString()
+      ) : (
+        <p className="p-2 overflow-y-auto">{preReqDisplay}</p>
+      )}
+    </>
   );
 };
 

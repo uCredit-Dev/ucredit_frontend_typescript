@@ -10,6 +10,10 @@ import {
 import { ReactComponent as RemoveSvg } from "../../../resources/svg/Remove.svg";
 import { toast } from "react-toastify";
 import { api } from "../../../resources/assets";
+import {
+  updateDeleteYearStatus,
+  updateYearToDelete,
+} from "../../../slices/userSlice";
 
 type yearProps = {
   id: number;
@@ -123,28 +127,9 @@ function YearComponent({ id, customStyle, year, courses }: yearProps) {
       .catch((err) => console.log(err));
   };
 
-  // Delete the selected year
-  const activateDeleteYear = () => {
-    if (currentPlan.years.length > 1) {
-      fetch(api + "/years/" + year._id, {
-        method: "DELETE",
-        headers: {
-          "Content-Type": "application/json",
-        },
-      })
-        .then(() => {
-          const newYearArray = [...currentPlan.years].filter(
-            (yr) => yr._id !== year._id
-          );
-          const newUpdatedPlan = { ...currentPlan, years: newYearArray };
-          dispatch(updateSelectedPlan(newUpdatedPlan));
-          toast.success("Deleted " + yearName + "!");
-          setEditName(false);
-        })
-        .catch((err) => console.log(err));
-    } else {
-      toast.error("Cannot delete last year!");
-    }
+  const activateDeleteYearPopup = () => {
+    dispatch(updateYearToDelete(year));
+    dispatch(updateDeleteYearStatus(true));
   };
 
   return (
@@ -152,15 +137,15 @@ function YearComponent({ id, customStyle, year, courses }: yearProps) {
       id={id.toString()}
       className={`${customStyle} ml-auto mr-auto medium:px-4 w-yearheading min-w-yearMin`}
     >
-      <div className="flex flex-row justify-between mb-3 p-2 w-full h-yearheading text-white font-medium bg-primary rounded shadow">
+      <div className="flex flex-row justify-between mb-3 p-2 w-full h-yearheading text-white font-medium bg-primary rounded shadow transform hover:scale-105 transition duration-200 ease-in">
         <input
           value={yearName}
           className="flex-shrink w-full text-white font-semibold bg-primary hover:border-b focus:outline-none select-none" // focus:border-transparent???
           onChange={handleYearNameChange}
         />
         <RemoveSvg
-          className="w-6 h-6 stroke-2 cursor-pointer select-none transform hover:translate-x-0.5 hover:translate-y-0.5 transition duration-200 ease-in"
-          onClick={activateDeleteYear}
+          className="w-6 h-6 stroke-2 cursor-pointer select-none transform hover:scale-110 transition duration-200 ease-in"
+          onClick={activateDeleteYearPopup}
         />
         <MoreSvg
           className="w-6 h-6 stroke-2 cursor-pointer"

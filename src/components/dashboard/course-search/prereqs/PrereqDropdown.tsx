@@ -90,15 +90,19 @@ const PrereqDropdown = (props: {
       onMouseLeave={() => {
         setRootHovered(false);
       }}
+      className="hover:scale-101 transform transition duration-200 ease-in"
     >
       <button
         onClick={() => {
           setOpen(!open);
         }}
-        className={clsx("transition duration-100 ease-in", {
-          "text-green-700 hover:text-green-900": props.satisfied,
-          "text-red-700 hover:text-red-900": !props.satisfied,
-        })}
+        className={clsx(
+          "focus:outline-none transform hover:scale-105 transition transition duration-100 duration-200 ease-in ease-in",
+          {
+            "text-green-700 hover:text-green-900": props.satisfied,
+            "text-red-700 hover:text-red-900": !props.satisfied,
+          }
+        )}
       >
         <div className="flex flex-row w-auto h-auto font-medium">
           {props.satisfied ? (

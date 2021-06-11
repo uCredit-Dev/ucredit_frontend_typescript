@@ -4,10 +4,11 @@ import { toast } from "react-toastify";
 import {
   selectToAddName,
   updateToAddName,
-  updateAddingStatus,
+  updateAddingPlanStatus,
   selectPlanList,
   updateToAddMajor,
   selectToAddMajor,
+  updateGeneratePlanAddStatus,
 } from "../../slices/userSlice";
 import { allMajors } from "./majors/majors";
 import Select from "react-select";
@@ -24,7 +25,7 @@ const majorOptions = [
  * TODO: Implement all commented code features
  * @param setGenerateNew - signals the generateNewPlan component to generate a new plan.
  * */
-const PlanAdd = (props: { setGenerateNew: Function }) => {
+const PlanAdd = () => {
   // Redux setup
   const dispatch = useDispatch();
   const toAddName = useSelector(selectToAddName);
@@ -45,8 +46,9 @@ const PlanAdd = (props: { setGenerateNew: Function }) => {
         progress: 0,
       });
     } else {
-      dispatch(updateAddingStatus(false));
-      props.setGenerateNew(true);
+      // TODO: resolve confusing naming; generatePlanAddStatus signals generateNewPlan to generate a new plan, updateAdding signals planAdd to pop up
+      dispatch(updateAddingPlanStatus(false));
+      dispatch(updateGeneratePlanAddStatus(true));
     }
   };
 
@@ -67,7 +69,7 @@ const PlanAdd = (props: { setGenerateNew: Function }) => {
         progress: 0,
       });
     } else {
-      dispatch(updateAddingStatus(false));
+      dispatch(updateAddingPlanStatus(false));
     }
   };
 
@@ -125,12 +127,12 @@ const PlanAdd = (props: { setGenerateNew: Function }) => {
                 />
               </div> */}
             </div>
-            <div className="flex flex-row justify-between mb-4">
+            <div className="z-50 flex flex-row justify-between mb-4">
               <Select
                 options={majorOptions}
                 onChange={handleMajorChange}
                 placeholder="Primary Major"
-                className="w-full"
+                className="z-50 w-full"
               />
               {/* <Select
                 options={placeholderOptions}
@@ -164,13 +166,13 @@ const PlanAdd = (props: { setGenerateNew: Function }) => {
             </div> */}
             <div className="flex flex-row justify-end">
               <button
-                className="mr-4 p-2 w-16 h-10 text-white bg-primary rounded focus:outline-none"
+                className="z-30 mr-4 p-2 w-16 h-10 text-white bg-primary rounded focus:outline-none transform hover:scale-105 transition duration-200 ease-in"
                 onClick={createNewPlan}
               >
                 Add
               </button>
               <button
-                className="p-2 w-16 h-10 text-black bg-white border border-solid border-secondary rounded focus:outline-none"
+                className="z-30 p-2 w-16 h-10 text-black bg-white border border-solid border-secondary rounded focus:outline-none transform hover:scale-105 transition duration-200 ease-in"
                 onClick={handleCancel}
               >
                 Cancel

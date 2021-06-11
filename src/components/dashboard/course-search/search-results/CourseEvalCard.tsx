@@ -21,9 +21,12 @@ const CourseEvalCard = (props: { rating: string; summary: string }) => {
           <div className="flex flex-row" data-tip={props.rating}>
             {ratingStars.map((_, i) => (
               <StarSvg
-                className={clsx("w-6 h-6", {
-                  "fill-gold": i <= ratingNum,
-                })}
+                className={clsx(
+                  "w-6 h-6 transform hover:scale-125 transition duration-200 ease-in",
+                  {
+                    "fill-gold": i <= ratingNum,
+                  }
+                )}
               />
             ))}
           </div>

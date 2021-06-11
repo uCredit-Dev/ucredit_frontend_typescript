@@ -4,15 +4,13 @@ import { Plan } from "../../../resources/commonTypes";
 import { useDispatch, useSelector } from "react-redux";
 import {
   updatePlanList,
-  updateAddingStatus,
+  updateAddingPlanStatus,
   selectUser,
   selectPlanList,
-  selectAddingStatus,
 } from "../../../slices/userSlice";
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import GenerateNewPlan from "./GenerateNewPlan";
-import PlanAdd from "../PlanAdd";
 import {
   selectPlan,
   updateSelectedPlan,
@@ -28,17 +26,12 @@ const PlanChoose = () => {
   const user = useSelector(selectUser);
   const currentPlan = useSelector(selectPlan);
   const planList = useSelector(selectPlanList);
-  const adding = useSelector(selectAddingStatus);
 
   // Component state setup
   const [dropdown, setDropdown] = useState<boolean>(false);
-  const [generateNew, setGenerateNew] = useState<boolean>(false);
 
   const openSelectDropdown = () => {
     setDropdown(!dropdown);
-  };
-  const setGenerateNewFalse = () => {
-    setGenerateNew(false);
   };
 
   // Gets all users's plans and updates state everytime a new user is chosen.
@@ -96,7 +89,7 @@ const PlanChoose = () => {
             user._id !== "guestUser"
           ) {
             // If no plans, automatically generate a new plan
-            dispatch(updateAddingStatus(true));
+            dispatch(updateAddingPlanStatus(true));
           } else {
             // If there is already a current plan, simply update the plan list.
             const totPlans: Plan[] = [];
@@ -133,7 +126,7 @@ const PlanChoose = () => {
     const selectedOption = event.target.value;
     const planListClone = [...planList];
     if (selectedOption === "new plan" && user._id !== "noUser") {
-      dispatch(updateAddingStatus(true));
+      dispatch(updateAddingPlanStatus(true));
     } else {
       let newSelected: Plan = currentPlan;
       planList.forEach((plan, index) => {
@@ -162,7 +155,8 @@ const PlanChoose = () => {
   useEffect(() => {
     if (user.plan_ids.length === 0 && user._id === "guestUser") {
       // Post req body for a new plan
-      dispatch(updateAddingStatus(true));
+      console.log("new plan");
+      dispatch(updateAddingPlanStatus(true));
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [user._id]);
@@ -170,24 +164,21 @@ const PlanChoose = () => {
   return (
     <>
       {/* dummy component to generate new plans */}
-      <GenerateNewPlan
-        generateNew={generateNew}
-        setGenerateNewFalse={setGenerateNewFalse}
-      />
+      <GenerateNewPlan />
       <button
-        className="w-planselect mx-auto text-white bg-primary rounded focus:outline-none"
+        className="mx-auto w-planselect text-white bg-primary rounded focus:outline-none transform hover:scale-105 transition duration-200 ease-in"
         onClick={openSelectDropdown}
       >
         Select Plan
       </button>
       {dropdown ? (
-        <div className="w-planselect flex flex-col mx-auto text-white bg-secondary rounded">
+        <div className="flex flex-col mx-auto w-planselect text-white bg-secondary rounded">
           {planList.map((plan, index) => (
             <button
               key={index}
               value={plan._id}
               onClick={handlePlanChange}
-              className="focus:outline-none"
+              className="focus:outline-none transform hover:scale-105 transition duration-200 ease-in"
             >
               {plan.name}
             </button>
@@ -195,13 +186,12 @@ const PlanChoose = () => {
           <button
             value="new plan"
             onClick={handlePlanChange}
-            className="focus:outline-none"
+            className="focus:outline-none transform hover:scale-105 transition duration-200 ease-in"
           >
             Create a plan +
           </button>
         </div>
       ) : null}
-      {adding ? <PlanAdd setGenerateNew={setGenerateNew} /> : null}
     </>
   );
 };

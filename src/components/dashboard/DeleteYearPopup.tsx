@@ -2,9 +2,9 @@ import React from "react";
 import { useSelector, useDispatch } from "react-redux";
 import {
   selectUser,
-  selectPlanList,
-  updatePlanList,
-  updateDeletePlanStatus,
+  selectYearToDelete,
+  updateYearToDelete,
+  updateDeleteYearStatus,
 } from "../../slices/userSlice";
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
@@ -16,57 +16,44 @@ import { api } from "../../resources/assets";
  * This is the confirmation popup that appears when users press the button to delete a plan.
  * It actually performs the deletion or cancels it.
  */
-const DeletePlanPopup = () => {
+const DeleteYearPopup = () => {
   // Redux Setup
   const dispatch = useDispatch();
   const user = useSelector(selectUser);
   const currentPlan = useSelector(selectPlan);
-  const planList = useSelector(selectPlanList);
+  const year = useSelector(selectYearToDelete);
 
   /**
    * Popup for deleting current plan.
    */
-  const deleteCurrentPlan = () => {
-    // delete plan from db
-    // update plan array
-    // If plan list has more than one plan, delete. Otherwise, don't.
-    if (planList.length > 1 && user._id !== "noUser") {
-      fetch(api + "/plans/" + currentPlan._id, {
+  // Delete the selected year
+  const activateDeleteYear = () => {
+    if (currentPlan.years.length > 1 && year !== null) {
+      fetch(api + "/years/" + year._id, {
         method: "DELETE",
+        headers: {
+          "Content-Type": "application/json",
+        },
       })
         .then(() => {
-          toast.error(currentPlan.name + " deleted!", {
-            position: "top-right",
-            autoClose: 5000,
-            hideProgressBar: true,
-            closeOnClick: true,
-            draggable: true,
-            progress: 0,
-          });
-          let updatedList = [...planList];
-          updatedList = updatedList.filter((plan) => {
-            return plan._id !== currentPlan._id;
-          });
-          dispatch(updateSelectedPlan(updatedList[0]));
-          dispatch(updatePlanList(updatedList));
-          dispatch(updateDeletePlanStatus(false));
+          const newYearArray = [...currentPlan.years].filter(
+            (yr) => yr._id !== year._id
+          );
+          const newUpdatedPlan = { ...currentPlan, years: newYearArray };
+          dispatch(updateSelectedPlan(newUpdatedPlan));
+          dispatch(updateYearToDelete(null));
+          dispatch(updateDeleteYearStatus(false));
+          toast.error("Deleted " + year.name + "!");
         })
         .catch((err) => console.log(err));
     } else {
-      toast.error("Cannot delete last plan!", {
-        position: "top-right",
-        autoClose: 5000,
-        hideProgressBar: true,
-        closeOnClick: true,
-        draggable: true,
-        progress: 0,
-      });
+      toast.error("Cannot delete last year!");
     }
   };
 
   // Cancels plan delete
   const cancel = () => {
-    dispatch(updateDeletePlanStatus(false));
+    dispatch(updateDeleteYearStatus(false));
   };
 
   return (
@@ -83,12 +70,13 @@ const DeletePlanPopup = () => {
           }
         >
           <b className="mr-8 mt-4 w-full text-center">
-            Are you sure you want to delete {currentPlan.name}?
+            Are you sure you want to delete{" "}
+            {year !== null ? year.name : " invalid year"}?
           </b>
           <div className="flex flex-row justify-center mb-4 mt-8 w-full">
             <button
               className="m-1 p-1 w-1/6 text-white bg-red-500 focus:outline-none transform hover:scale-110 transition duration-200 ease-in"
-              onClick={deleteCurrentPlan}
+              onClick={activateDeleteYear}
             >
               <b>Yes</b>
             </button>
@@ -105,4 +93,4 @@ const DeletePlanPopup = () => {
   );
 };
 
-export default DeletePlanPopup;
+export default DeleteYearPopup;
