@@ -61,7 +61,7 @@ function UserSection() {
         {user._id === "guestUser" ? (
           <a
             href="https://ucredit-api.herokuapp.com/api/login"
-            className="flex flex-row items-center justify-center mr-3 w-24 h-9 bg-white rounded cursor-pointer select-none transform hover:translate-x-0.5 hover:translate-y-0.5 transition duration-200 ease-in"
+            className="flex flex-row items-center justify-center mr-3 w-24 h-9 bg-white rounded cursor-pointer select-none transform hover:scale-110 transition duration-200 ease-in"
           >
             Log In
           </a>
@@ -86,7 +86,7 @@ function UserSection() {
                   console.log(err);
                 });
             }}
-            className="flex flex-row items-center justify-center w-24 h-9 bg-white rounded focus:outline-none cursor-pointer select-none transform hover:translate-x-0.5 hover:translate-y-0.5 transition duration-200 ease-in"
+            className="flex flex-row items-center justify-center w-24 h-9 bg-white rounded focus:outline-none cursor-pointer select-none transform hover:scale-110 transition duration-200 ease-in"
           >
             Log Out
           </button>

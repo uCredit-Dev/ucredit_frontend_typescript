@@ -71,7 +71,7 @@ const Search = () => {
             <Form setSearching={setSearching} />
             <SearchList searching={searching} />
             <div
-              className="flex flex-row items-center justify-center p-1 w-full h-8"
+              className="flex flex-row items-center justify-center p-1 w-full h-8 transform hover:scale-125 transition duration-200 ease-in"
               onMouseEnter={() => setSearchOpacity(50)}
               onMouseLeave={() => setSearchOpacity(100)}
               data-tip="Hide search"

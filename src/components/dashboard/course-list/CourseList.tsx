@@ -133,17 +133,21 @@ function CourseList() {
     <>
       <ReactTooltip html={true} />
       <div className="flex flex-row flex-wrap justify-between thin:justify-center mt-4 h-auto">
-        <AddSvg
-          onClick={() => addNewYear(true)}
-          className="ml-auto my-auto w-10 h-10 border-2 rounded-full cursor-pointer select-none transform hover:translate-x-0.5 hover:translate-y-0.5 transition duration-200 ease-in"
-          data-tip={`Add a pre-university year!`}
-        />
+        {currentPlan._id !== "noPlan" ? (
+          <AddSvg
+            onClick={() => addNewYear(true)}
+            className="ml-auto my-auto w-10 h-10 border-2 rounded-full cursor-pointer select-none transform hover:scale-125 transition duration-200 ease-in"
+            data-tip={`Add a pre-university year!`}
+          />
+        ) : null}
         {elements}
-        <AddSvg
-          onClick={() => addNewYear(false)}
-          className="mr-auto my-auto w-10 h-10 border-2 rounded-full cursor-pointer select-none transform hover:translate-x-0.5 hover:translate-y-0.5 transition duration-200 ease-in"
-          data-tip={`Add an additional year after!`}
-        />
+        {currentPlan._id !== "noPlan" ? (
+          <AddSvg
+            onClick={() => addNewYear(false)}
+            className="mr-auto my-auto w-10 h-10 border-2 rounded-full cursor-pointer select-none transform hover:scale-125 transition duration-200 ease-in"
+            data-tip={`Add an additional year after!`}
+          />
+        ) : null}
       </div>
     </>
   );

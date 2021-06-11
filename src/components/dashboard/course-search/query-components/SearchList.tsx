@@ -45,7 +45,10 @@ const SearchList = (props: { searching: boolean }) => {
         : startingIndex + coursesPerPage - 1;
     for (let i = startingIndex; i <= endingIndex; i++) {
       toDisplay[i - startingIndex] = (
-        <div key={courses[i].number}>
+        <div
+          key={courses[i].number}
+          className="transform hover:scale-105 transition duration-200 ease-in"
+        >
           <CourseCard course={courses[i]} />
         </div>
       );
@@ -83,7 +86,7 @@ const SearchList = (props: { searching: boolean }) => {
       <div className="flex flex-row items-center justify-between px-5 py-2 w-full h-12 bg-gray-200">
         <div>Search Results </div>
         <div
-          className="flex flex-row items-center justify-center w-6 h-6 bg-white rounded cursor-pointer"
+          className="flex flex-row items-center justify-center w-6 h-6 bg-white rounded cursor-pointer transform hover:scale-125 transition duration-200 ease-in"
           onClick={onPlaceholderClick}
           data-tip="Add a placeholder or custom course"
         >

@@ -120,7 +120,7 @@ const SisCourse = (props: SisCourseProps) => {
           <div className="pb-5 pt-4 px-5 w-full h-full text-base bg-white rounded overflow-y-auto">
             {searchStack.length !== 0 ? (
               <button
-                className="focus:outline-none"
+                className="focus:outline-none transform hover:scale-125 transition duration-200 ease-in"
                 onClick={() => {
                   dispatch(popSearchStack());
                 }}
@@ -129,13 +129,13 @@ const SisCourse = (props: SisCourseProps) => {
               </button>
             ) : null}
             <div className="flex flex-row justify-between mb-1 w-full h-auto">
-              <h1 className="flex flex-row w-auto h-auto">
+              <h1 className="flex flex-row w-auto h-auto transform hover:scale-105 transition duration-200 ease-in">
                 <div className="w-full h-auto text-2xl font-bold">
                   {inspected.title}
                 </div>
               </h1>
               <button
-                className="text-2xl focus:outline-none"
+                className="text-2xl focus:outline-none transform hover:scale-110 transition duration-200 ease-in"
                 onClick={clearInspected}
               >
                 <CloseSvg className="w-7 h-7 stroke-2" />
@@ -161,10 +161,10 @@ const SisCourse = (props: SisCourseProps) => {
             <div className="flex flex-col flex-grow justify-center">
               <div className="mb-1 font-medium">Selecting for</div>
               <div className="flex flex-row">
-                <div className="flex flex-row items-center w-auto h-auto">
+                <div className="flex flex-row items-center w-auto h-auto transform hover:scale-105 transition duration-200 ease-in">
                   Year:
                   <select
-                    className="ml-2 text-black text-coursecard rounded"
+                    className="ml-2 text-black text-coursecard rounded focus:outline-none"
                     onChange={handleYearChange}
                     value={searchYear}
                   >
@@ -175,7 +175,7 @@ const SisCourse = (props: SisCourseProps) => {
                     ))}
                   </select>
                 </div>
-                <div className="flex flex-row items-center ml-5 w-auto h-auto">
+                <div className="flex flex-row items-center ml-5 w-auto h-auto transform hover:scale-105 transition duration-200 ease-in">
                   Term:
                   <select
                     className="ml-2 h-6 rounded outline-none"
@@ -189,7 +189,7 @@ const SisCourse = (props: SisCourseProps) => {
                     ))}
                   </select>
                 </div>
-                <div className="flex flex-row flex-grow items-center ml-5 w-auto h-auto">
+                <div className="flex flex-row items-center ml-5 w-auto h-auto transform hover:scale-105 transition duration-200 ease-in">
                   Area:
                   <select
                     className="ml-2 w-14 h-6 rounded outline-none"
@@ -204,7 +204,7 @@ const SisCourse = (props: SisCourseProps) => {
               </div>
             </div>
             <button
-              className="mt-2 p-2 w-auto h-10 text-white bg-primary rounded focus:outline-none"
+              className="mt-2 p-2 w-auto h-10 text-white bg-primary rounded focus:outline-none transform hover:scale-110 transition duration-200 ease-in"
               onClick={props.addCourse}
             >
               Add Course
