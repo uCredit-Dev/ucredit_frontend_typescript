@@ -131,12 +131,12 @@ function CourseList() {
   };
   return (
     <>
-      <ReactTooltip html={true} />
       <div className="flex flex-row flex-wrap justify-between thin:justify-center mt-4 h-auto">
+        <ReactTooltip html={true} />
         {currentPlan._id !== "noPlan" ? (
           <AddSvg
             onClick={() => addNewYear(true)}
-            className="ml-auto my-auto w-10 h-10 border-2 rounded-full cursor-pointer select-none transform hover:scale-125 transition duration-200 ease-in"
+            className="ml-auto my-auto w-10 h-10 border-2 border-gray-300 rounded-full cursor-pointer select-none transform hover:scale-125 transition duration-200 ease-in"
             data-tip={`Add a pre-university year!`}
           />
         ) : null}
@@ -144,7 +144,7 @@ function CourseList() {
         {currentPlan._id !== "noPlan" ? (
           <AddSvg
             onClick={() => addNewYear(false)}
-            className="mr-auto my-auto w-10 h-10 border-2 rounded-full cursor-pointer select-none transform hover:scale-125 transition duration-200 ease-in"
+            className="mr-auto my-auto w-10 h-10 border-2 border-gray-300 rounded-full cursor-pointer select-none transform hover:scale-125 transition duration-200 ease-in"
             data-tip={`Add an additional year after!`}
           />
         ) : null}
