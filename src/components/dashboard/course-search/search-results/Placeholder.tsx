@@ -76,7 +76,7 @@ const Placeholder = (props: { addCourse: any }) => {
 
   // On placeholder number change
   const onPNChange = (event: any) => {
-    const num = event.value;
+    const num = event.target.value;
     setPlaceholderNumber(num);
     if (inspected !== "None") {
       const inspCopy: Course = { ...inspected, number: num };

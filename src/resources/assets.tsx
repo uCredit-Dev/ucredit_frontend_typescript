@@ -370,7 +370,9 @@ export const getCourses = (
     }
     if (numNameList[n] == null) {
       numNameList[n] =
-        numList[n] + numList[n] + " Has not been offered in the past 2 years.";
+        numList[n] +
+        numList[n] +
+        " Has not been offered in the past 4 years or listed on SIS. Please click on the Prerequisites Description tab for full description.";
     }
   }
   let out = {
