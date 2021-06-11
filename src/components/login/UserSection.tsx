@@ -23,6 +23,13 @@ function UserSection() {
   // On successful retrieve, update redux with retrieved user,
   useEffect(() => {
     if (user._id === "noUser") {
+      const cookieVals = document.cookie.split("=");
+      let cookieVal = "";
+      cookieVals.forEach((val: string) => {
+        if (val.length === 20) {
+          cookieVal = val;
+        }
+      });
       // Retrieves user if user ID is "noUser", the initial user id state for userSlice.tsx.
       // Make call for backend
       fetch(api + "/retrieveUser/" + cookieVal, {

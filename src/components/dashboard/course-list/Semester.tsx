@@ -7,7 +7,6 @@ import {
   updateSearchTime,
 } from "../../../slices/searchSlice";
 import { ReactComponent as AddSvg } from "../../../resources/svg/Add.svg";
-import ReactTooltip from "react-tooltip";
 
 type semesterProps = {
   customStyle: string;
@@ -72,7 +71,6 @@ function Semester({
     <div
       className={`${customStyle} mb-3 w-full h-auto transform hover:scale-105 transition duration-200 ease-in`}
     >
-      <ReactTooltip html={true} />
       <div className="flex flex-col w-full h-8 text-white font-medium bg-secondary rounded shadow">
         <div className="flex flex-row items-center justify-between px-2 py-1">
           <div

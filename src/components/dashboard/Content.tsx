@@ -32,7 +32,7 @@ function Content() {
           <CourseList />
         </div>
         <div className="flex flex-col ml-auto mr-auto my-4 w-coursebars h-auto">
-          <div className="hover:scale-101 ml-4 mr-4">
+          <div className="ml-4 mr-4 hover:scale-101">
             <InfoCards />
           </div>
           <Distributions />

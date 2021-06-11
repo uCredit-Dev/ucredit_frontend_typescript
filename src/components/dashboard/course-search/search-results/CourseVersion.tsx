@@ -93,7 +93,7 @@ const CourseVersion = (props: { setInspectedArea: Function }) => {
     <>
       {version !== "None" ? (
         <>
-          <ReactTooltip />
+          {/* <ReactTooltip /> */}
           <div className="grid grid-cols-2 w-auto h-auto">
             <div className="w-auto h-auto">
               <div className="flex flex-row items-center">
