@@ -56,29 +56,43 @@ const checkRequirementSatisfied = (
       concat = "||";
     } else if (splitArr[index] === "AND") {
       concat = "&&";
-    } else if (splitArr[index + 1] === "C") {
-      if (splitArr[index] === course.number) {
-        concat = "true";
-      } else {
-        concat = "false";
-      }
-    } else if (splitArr[index + 1] === "T") {
-      if (course?.tags !== undefined && course.tags.includes(splitArr[index])) {
-        concat = "true";
-      } else {
-        concat = "false";
-      }
-    } else if (splitArr[index + 1] === "D") {
-      if (course.department === splitArr[index]) {
-        concat = "true";
-      } else {
-        concat = "false";
-      }
-    } else if (splitArr[index + 1] === "Y") {
-      //TODO: implement for year.
-      concat = "false";
     } else {
-      concat = "false";
+      switch (splitArr[index + 1]) {
+        case "C": // Course Number
+          if (splitArr[index] === course.number) {
+            concat = "true";
+          } else {
+            concat = "false";
+          }
+          break;
+        case "T": // Tag
+          if (course?.tags !== undefined && course.tags.includes(splitArr[index])) {
+            concat = "true";
+          } else {
+            concat = "false";
+          }
+          break;
+        case "D": // Department
+          if (course.department === splitArr[index]) {
+            concat = "true";
+          } else {
+            concat = "false";
+          }
+          break;
+        case "Y": // Year
+          //TODO: implement for year.
+          concat = "false";
+          break;
+        case "A": // Area
+          if (course.areas.includes(splitArr[index])) {
+            concat = "true";
+          } else {
+            concat = "false";
+          }
+          break;
+        default:
+          concat = "false";
+      }
     }
     concat.length > 2 ? (index = index + 2) : index++;
     boolExpr = boolExpr.concat(concat);
