@@ -33,7 +33,7 @@ const Distributions = () => {
       updateFulfilled(distr, currPlanCourses, allCourses, currPlanCourses);
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [currPlanCourses]);
+  }, [currPlanCourses.length, allCourses.length, currentPlan._id]);
 
   const getDistributions = () => {
     let major = currentPlan.majors[0];
@@ -49,7 +49,7 @@ const Distributions = () => {
     return distr;
   };
   return (
-    <div className="hover:scale-101 flex-none ml-4 mr-4 p-6 h-auto bg-white rounded shadow transform transition duration-200 ease-in">
+    <div className="flex-none ml-4 mr-4 p-6 h-auto bg-white rounded shadow transform hover:scale-101 transition duration-200 ease-in">
       <div className="flex flex-row mb-3 w-full">
         <div className="self-start text-xl font-medium">
           Overall Distribution
