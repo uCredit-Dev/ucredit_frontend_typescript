@@ -75,7 +75,6 @@ function CourseComponent({ year, course, semester }: courseProps) {
 
   // Sets or resets the course displayed in popout after user clicks it in course list.
   const displayCourses = () => {
-    console.log("Course is ", course);
     dispatch(updateSearchTime({ searchYear: year, searchSemester: semester }));
     dispatch(updateSearchTerm(course.number));
     let found = false;
