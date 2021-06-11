@@ -4,7 +4,7 @@ module.exports = {
   theme: {
     extend: {
       minWidth: {
-        yearMin: "200px",
+        yearMin: "180px",
         narrowest: "710px",
       },
       maxWidth: {
@@ -20,10 +20,10 @@ module.exports = {
         year: "320px",
         courselist: "1400px",
         coursebars: "315px",
-        yearheading: "20%",
-        semesterheading: "20%",
+        yearheading: "18%",
+        semesterheading: "18%",
         infocard: "350px",
-        plancardinput: "220px",
+        plancardinput: "205px",
         planselect: "200px",
         planchoose: "250px",
       },
@@ -69,7 +69,7 @@ module.exports = {
         },
       },
       fontSize: {
-        myplan: ["2.1rem"],
+        myplan: ["2rem"],
         infocard: [
           "1.125rem",
           {
@@ -79,7 +79,7 @@ module.exports = {
         coursecard: [
           "0.9rem",
           {
-            lineHeight: "1.2rem",
+            lineHeight: "1rem",
           },
         ],
       },
@@ -88,6 +88,21 @@ module.exports = {
         tight: { max: "1200px" },
         thin: { max: "820px" },
         narrow: { max: "710px" },
+      },
+      scale: {
+        0: "0",
+        25: ".25",
+        50: ".5",
+        75: ".75",
+        90: ".9",
+        95: ".95",
+        100: "1",
+        101: "1.01",
+        105: "1.05",
+        110: "1.1",
+        125: "1.25",
+        150: "1.5",
+        200: "2",
       },
       keyframes: {
         fadeOut: {

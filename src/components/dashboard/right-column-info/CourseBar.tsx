@@ -40,7 +40,7 @@ function CourseBar({
 
   return (
     <>
-      <ReactTooltip html={true} className="w-max-1/4" />
+      <ReactTooltip html={true} className="max-w-sm" />
       <div
         className={clsx(
           "text mb-1 whitespace-nowrap overflow-hidden overflow-ellipsis",
@@ -56,7 +56,7 @@ function CourseBar({
         Bar here {maxCredits}|{plannedCredits}|{currentCredits}
       </div> */}
       <div
-        className="relative flex flex-row mb-2 w-full h-6 bg-gray-200 rounded"
+        className="relative flex flex-row mb-2 w-full h-6 bg-gray-200 rounded transform hover:scale-105 transition duration-200 ease-in"
         data-tip={tooltip}
       >
         <div

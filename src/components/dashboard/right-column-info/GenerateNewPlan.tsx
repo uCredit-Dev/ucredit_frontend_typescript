@@ -10,6 +10,8 @@ import {
   selectToAddName,
   selectToAddMajor,
   clearToAdd,
+  updateGeneratePlanAddStatus,
+  selectGeneratePlanAddStatus,
 } from "../../../slices/userSlice";
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
@@ -17,15 +19,11 @@ import { updateSelectedPlan } from "../../../slices/currentPlanSlice";
 import { api } from "../../../resources/assets";
 
 type generateNewPlanProps = {
-  generateNew: boolean;
-  setGenerateNewFalse: Function;
   _id?: String;
 };
 
 /**
  * Reusable component that generates a new empty plan.
- * @param generateNew - state that this component listens to in order to decide when to generate a new plan.
- * @param setGenerateNewFalse - sets generateNew state to false after dealing with signal
  * @param _id - id of component
  */
 const GenerateNewPlan = (props: generateNewPlanProps) => {
@@ -35,10 +33,11 @@ const GenerateNewPlan = (props: generateNewPlanProps) => {
   const planList = useSelector(selectPlanList);
   const toAddName = useSelector(selectToAddName);
   const toAddMajor = useSelector(selectToAddMajor);
+  const generatePlanAddStatus = useSelector(selectGeneratePlanAddStatus);
 
   // UseEffect that generates a new plan everytime generateNew is true.
   useEffect(() => {
-    if (props.generateNew === false || toAddMajor === null) return;
+    if (generatePlanAddStatus === false || toAddMajor === null) return;
 
     const planBody = {
       name: "Unnamed Plan",
@@ -95,7 +94,7 @@ const GenerateNewPlan = (props: generateNewPlanProps) => {
                       dispatch(updateGuestPlanIds(planIdArray));
                     }
                     dispatch(clearToAdd());
-                    props.setGenerateNewFalse();
+                    dispatch(updateGeneratePlanAddStatus(false));
                   }
                 });
             }
@@ -106,7 +105,7 @@ const GenerateNewPlan = (props: generateNewPlanProps) => {
         console.log(e);
       });
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [props.generateNew]);
+  }, [generatePlanAddStatus]);
 
   return <div></div>;
 };

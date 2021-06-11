@@ -754,7 +754,7 @@ const bsCS: Major = {
         "Students must take two semesters of core science courses (any combination of Physics, " +
         "Chemistry, Biology), with their associated labs. AP credit is an acceptable substitute for these courses and labs.",
       criteria:
-        "General Physics[N]^OR^General Biology[N]^OR^Introductory Chemistry[N]",
+        "N[A]",
     },
     {
       name: "Liberal Arts",

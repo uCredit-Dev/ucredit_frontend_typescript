@@ -1,9 +1,11 @@
+import clsx from "clsx";
 import React, { useState, useRef, useEffect } from "react";
 import { useSelector } from "react-redux";
 import ReactTooltip from "react-tooltip";
 import { getColors } from "../../../../resources/assets";
 import { selectVersion } from "../../../../slices/searchSlice";
 import PrereqDisplay from "../prereqs/PrereqDisplay";
+import CourseEvalSection from "../search-results/CourseEvalSection";
 
 /**
  * A component showing the specific version of the course at a particular semester/year
@@ -16,10 +18,13 @@ const CourseVersion = (props: { setInspectedArea: Function }) => {
   // component state setup
   const bioElRef = useRef<HTMLParagraphElement>(null);
   const [showMore, setShowMore] = useState<number>(2);
+  const [displayPreReqsView, setdisplayPreReqsView] = useState<Number>(1);
 
   // UseEffect runs when a new course is version.
   // It automatically updates the current area in the add course area selection to the first area in the course areas string.
   useEffect(() => {
+    // Reset displayView for prereqs
+    setdisplayPreReqsView(1);
     setShowMore(2);
     if (
       version !== "None" &&
@@ -69,12 +74,27 @@ const CourseVersion = (props: { setInspectedArea: Function }) => {
       }
     }
   };
+
+  const getAreaName = (area: string): string => {
+    if (area === "N") {
+      return "Basic Sciences";
+    } else if (area === "E") {
+      return "Engineering";
+    } else if (area === "S") {
+      return "Social Sciences";
+    } else if (area === "H") {
+      return "Humanities";
+    } else {
+      return "None";
+    }
+  };
+
   return (
     <>
       {version !== "None" ? (
         <>
+          <ReactTooltip />
           <div className="grid grid-cols-2 w-auto h-auto">
-            <ReactTooltip />
             <div className="w-auto h-auto">
               <div className="flex flex-row items-center">
                 <div className="mr-1 font-semibold">Number: </div>
@@ -85,7 +105,7 @@ const CourseVersion = (props: { setInspectedArea: Function }) => {
               <div className="flex flex-row items-center">
                 <div className="mr-1 font-semibold">Credit: </div>
                 <div
-                  className="flex items-center px-1 w-auto text-white font-semibold bg-secondary rounded select-none"
+                  className="flex items-center px-1 w-auto text-white font-semibold bg-secondary rounded select-none transform hover:scale-110 transition duration-200 ease-in"
                   data-tip={version.credits + " credits"}
                 >
                   {version.credits}
@@ -98,12 +118,13 @@ const CourseVersion = (props: { setInspectedArea: Function }) => {
                 {version.areas !== "None" ? (
                   version.areas.split("").map((area) => (
                     <div
-                      className="flex flex-row items-center"
+                      className="flex flex-row items-center transform hover:scale-110 transition duration-200 ease-in"
                       key={area + version.number}
                     >
                       <div
                         className="flex items-center px-1 w-auto text-white font-semibold rounded select-none"
                         style={{ backgroundColor: getColors(area)[0] }}
+                        data-tip={getAreaName(area)}
                       >
                         {area}
                       </div>
@@ -128,7 +149,7 @@ const CourseVersion = (props: { setInspectedArea: Function }) => {
                   {version.tags.map((tag, i) => (
                     <>
                       {i !== 0 ? ", " : null}
-                      <div className="px-1 w-max text-white font-semibold bg-primary rounded select-none">
+                      <div className="mt-1 px-1 w-max text-white font-semibold bg-primary rounded transform hover:scale-110 transition duration-200 ease-in">
                         {tag}
                       </div>
                     </>
@@ -155,7 +176,7 @@ const CourseVersion = (props: { setInspectedArea: Function }) => {
 
             {showMore === 0 ? (
               <button
-                className="underline focus:outline-none"
+                className="underline focus:outline-none transform hover:scale-105 transition duration-200 ease-in"
                 onClick={() => {
                   setShowMore(1);
                 }}
@@ -164,7 +185,7 @@ const CourseVersion = (props: { setInspectedArea: Function }) => {
               </button>
             ) : showMore === 1 ? (
               <button
-                className="underline focus:outline-none"
+                className="underline focus:outline-none transform hover:scale-105 transition duration-200 ease-in"
                 onClick={() => {
                   setShowMore(0);
                 }}
@@ -173,7 +194,38 @@ const CourseVersion = (props: { setInspectedArea: Function }) => {
               </button>
             ) : null}
           </div>
-          <PrereqDisplay />
+          <ReactTooltip />
+          <div className="flex flex-row border-b-2">
+            <button
+              className={clsx(
+                "mr-3 text-xl font-medium hover:border-b-2 border-secondary focus:outline-none",
+                {
+                  "border-b-2 -mb-0.5": displayPreReqsView === 1,
+                  "hover:-mb-0.5": displayPreReqsView !== 1,
+                }
+              )}
+              onClick={() => {
+                setdisplayPreReqsView(1);
+              }}
+            >
+              Prerequisites
+            </button>
+            <button
+              className={clsx(
+                "mr-3 text-xl font-medium hover:border-b-2 border-secondary focus:outline-none",
+                {
+                  "border-b-2 -mb-0.5": displayPreReqsView === 0,
+                  "hover:-mb-0.5": displayPreReqsView !== 0,
+                }
+              )}
+              onClick={() => {
+                setdisplayPreReqsView(0);
+              }}
+            >
+              Course Evaluation
+            </button>{" "}
+          </div>
+          {displayPreReqsView === 1 ? <PrereqDisplay /> : <CourseEvalSection />}
         </>
       ) : null}
     </>
