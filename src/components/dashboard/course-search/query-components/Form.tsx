@@ -375,11 +375,11 @@ const Form = (props: { setSearching: Function }) => {
       </div>
       <div>
         {showAllResults ? (
-          <button onClick={dontShowAll}>
+          <button onClick={dontShowAll} className="focus:outline-none">
             <u>Show Top 10 Results</u>
           </button>
         ) : (
-          <button onClick={showAll}>
+          <button onClick={showAll} className="focus:outline-none">
             <u>Don't see your class? Show all results.</u>
           </button>
         )}

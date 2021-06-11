@@ -163,7 +163,9 @@ const PrereqDisplay = () => {
         jsx: (
           <p className="w-full" key={noCBracketsNum}>
             <button
-              className={clsx("mb-1 max-w-md text-sm font-medium truncate")}
+              className={clsx(
+                "mb-1 max-w-md text-sm font-medium focus:outline-none truncate"
+              )}
               onClick={() => {
                 updateInspected(noCBracketsNum)();
               }}
@@ -417,7 +419,7 @@ const PrereqDisplay = () => {
       <div className="flex flex-row border-b-2">
         <button
           className={clsx(
-            "mr-3 text-xl font-medium hover:border-b-2 border-secondary",
+            "mr-3 text-xl font-medium hover:border-b-2 border-secondary focus:outline-none",
             {
               "border-b-2 -mb-0.5": displayPreReqsView === 1,
               "hover:-mb-0.5": displayPreReqsView !== 1,
@@ -431,7 +433,7 @@ const PrereqDisplay = () => {
         </button>
         <button
           className={clsx(
-            "mr-3 text-xl font-medium hover:border-b-2 border-secondary",
+            "mr-3 text-xl font-medium hover:border-b-2 border-secondary focus:outline-none",
             {
               "border-b-2 -mb-0.5": displayPreReqsView === 0,
               "hover:-mb-0.5": displayPreReqsView !== 0,

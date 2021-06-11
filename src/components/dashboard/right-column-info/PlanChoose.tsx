@@ -175,19 +175,28 @@ const PlanChoose = () => {
         setGenerateNewFalse={setGenerateNewFalse}
       />
       <button
-        className="text-white bg-primary rounded"
+        className="w-planselect mx-auto text-white bg-primary rounded focus:outline-none"
         onClick={openSelectDropdown}
       >
         Select Plan
       </button>
       {dropdown ? (
-        <div className="flex flex-col text-white bg-secondary">
+        <div className="w-planselect flex flex-col mx-auto text-white bg-secondary rounded">
           {planList.map((plan, index) => (
-            <button key={index} value={plan._id} onClick={handlePlanChange}>
+            <button
+              key={index}
+              value={plan._id}
+              onClick={handlePlanChange}
+              className="focus:outline-none"
+            >
               {plan.name}
             </button>
           ))}
-          <button value="new plan" onClick={handlePlanChange}>
+          <button
+            value="new plan"
+            onClick={handlePlanChange}
+            className="focus:outline-none"
+          >
             Create a plan +
           </button>
         </div>

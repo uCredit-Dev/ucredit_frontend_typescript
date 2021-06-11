@@ -1,6 +1,5 @@
 import React from "react";
 import Content from "./Content";
-import { ToastContainer } from "react-toastify";
 import UserSection from "../login/UserSection";
 
 /**
@@ -13,18 +12,6 @@ const Dashboard = () => {
         <UserSection />
       </div>
       <Content />
-
-      <ToastContainer
-        position="top-right"
-        autoClose={4000}
-        hideProgressBar={true}
-        newestOnTop={false}
-        closeOnClick
-        rtl={false}
-        pauseOnFocusLoss
-        draggable
-        pauseOnHover
-      />
     </div>
   );
 };
