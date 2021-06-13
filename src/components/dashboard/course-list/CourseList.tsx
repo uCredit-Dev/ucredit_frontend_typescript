@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import {
   DroppableType,
+  Plan,
   SemesterType,
   UserCourse,
   Year,
@@ -23,7 +24,11 @@ import {
 import YearComponent, { newYearTemplate } from "./YearComponent";
 import { ReactComponent as AddSvg } from "../../../resources/svg/Add.svg";
 import { toast } from "react-toastify";
-import { selectUser } from "../../../slices/userSlice";
+import {
+  selectPlanList,
+  selectUser,
+  updatePlanList,
+} from "../../../slices/userSlice";
 import { api } from "../../../resources/assets";
 import { DragDropContext } from "react-beautiful-dnd";
 
@@ -40,6 +45,7 @@ function CourseList() {
   const totalCredits = useSelector(selectTotalCredits);
   const droppables = useSelector(selectDroppables);
   const currentPlanCourses = useSelector(selectCurrentPlanCourses);
+  const planList = useSelector(selectPlanList);
 
   // Component State setup.
   const [elements, setElements] = useState<JSX.Element[]>([]);
@@ -70,12 +76,15 @@ function CourseList() {
             />
           );
           if (jsx.length === currentPlan.years.length) {
+            jsx.sort(
+              (el1: JSX.Element, el2: JSX.Element) =>
+                el1.props.id - el2.props.id
+            );
             dispatch(updateCurrentPlanCourses(totCourses));
             setElements(jsx);
           }
         } else if (currentPlanId !== currentPlan._id) {
           setCurrentPlanId(currentPlan._id);
-          console.log("fetching");
           year.courses.forEach((courseId) => {
             axios
               .get(api + "/courses/" + courseId)
@@ -96,6 +105,10 @@ function CourseList() {
                     />
                   );
                   if (jsx.length === currentPlan.years.length) {
+                    jsx.sort(
+                      (el1: JSX.Element, el2: JSX.Element) =>
+                        el1.props.id - el2.props.id
+                    );
                     dispatch(updateCurrentPlanCourses(totCourses));
                     setElements(jsx);
                   }
@@ -176,7 +189,6 @@ function CourseList() {
     }
   };
 
-  // TODO: Make these typed.
   const onDragEnd = (result: any) => {
     const { source, destination } = result;
 
@@ -189,6 +201,7 @@ function CourseList() {
       // if different, move to new droppable
       let sourceDroppable: DroppableType | null = null;
       let destDroppable: DroppableType | null = null;
+
       droppables.forEach((droppable: DroppableType) => {
         if (source.droppableId === droppable.semester + "|" + droppable.year) {
           sourceDroppable = droppable;
@@ -199,12 +212,14 @@ function CourseList() {
           destDroppable = droppable;
         }
       });
+
       if (sourceDroppable !== null && destDroppable !== null) {
         swap(sourceDroppable, destDroppable, source.index);
       }
     }
   };
 
+  // Swaps course from source droppable to destination droppable.
   const swap = (
     source: DroppableType,
     destination: DroppableType,
@@ -217,16 +232,14 @@ function CourseList() {
       destination.year
     );
 
-    // TODO: make fetch, it also seems like it takes wuite long to move... hmmm
+    // TODO: CLEANUP!!!!!
     if (sourceObj.year !== null && destObj.year !== null) {
       const sourceYear: Year = sourceObj.year;
       const destYear: Year = destObj.year;
-      const sourceCourses = [...source.courses];
-      const sourceSorted = sourceCourses.sort(
+      const courseId: string = [...source.courses].sort(
         (course1: UserCourse, course2: UserCourse) =>
           course2._id.localeCompare(course1._id)
-      );
-      const courseId: string = sourceSorted[sourceIndex]._id;
+      )[sourceIndex]._id;
       const courseYearIndex: number = sourceYear.courses.indexOf(courseId);
       const sourceCourseArr = [...sourceYear.courses];
       const destCourseArr = [...destYear.courses];
@@ -243,7 +256,34 @@ function CourseList() {
         ...destYear,
         courses: destCourseArr,
       };
-      dispatch(updateSelectedPlan({ ...currentPlan, years: currPlanYears }));
+
+      const body = {
+        newYear: destYear._id,
+        oldYear: sourceYear._id,
+        courseId: courseId,
+        newTerm: destination.semester,
+      };
+
+      fetch(api + "/courses/dragged", {
+        method: "PATCH",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(body),
+      })
+        .then((res) => {
+          if (!res.ok) {
+            console.log(res);
+          } else {
+            toast.success("Successfully moved course!");
+          }
+        })
+        .catch((err) => console.log("error is", err.message));
+      const newCurrentPlan: Plan = { ...currentPlan, years: currPlanYears };
+      dispatch(updateSelectedPlan(newCurrentPlan));
+      const planListClone = [...planList];
+      planListClone[0] = newCurrentPlan;
+      dispatch(updatePlanList(planListClone));
       updatePlanCourses(destYear, destination.semester, courseId);
     }
   };
