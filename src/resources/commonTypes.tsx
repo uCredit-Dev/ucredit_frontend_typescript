@@ -177,3 +177,9 @@ export type Major = {
   wi_credit: number;
   distributions: DistributionObj[];
 };
+
+export type DroppableType = {
+  year: string;
+  semester: SemesterType;
+  courses: UserCourse[];
+};

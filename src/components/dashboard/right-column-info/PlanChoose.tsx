@@ -155,7 +155,6 @@ const PlanChoose = () => {
   useEffect(() => {
     if (user.plan_ids.length === 0 && user._id === "guestUser") {
       // Post req body for a new plan
-      console.log("new plan");
       dispatch(updateAddingPlanStatus(true));
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps

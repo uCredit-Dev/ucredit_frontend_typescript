@@ -18,7 +18,9 @@ import Placeholder from "./Placeholder";
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import {
+  selectCurrentPlanCourses,
   selectPlan,
+  updateCurrentPlanCourses,
   updateSelectedPlan,
 } from "../../../../slices/currentPlanSlice";
 import { api } from "../../../../resources/assets";
@@ -37,6 +39,7 @@ const CourseDisplay = () => {
   const currentPlan = useSelector(selectPlan);
   const planList = useSelector(selectPlanList);
   const placeholder = useSelector(selectPlaceholder);
+  const currentCourses = useSelector(selectCurrentPlanCourses);
 
   // component state setup
   const [inspectedArea, setInspectedArea] = useState<string>("None");
@@ -100,6 +103,9 @@ const CourseDisplay = () => {
         retrieved.json().then((data) => {
           if (data.errors === undefined) {
             newUserCourse = { ...data.data };
+            dispatch(
+              updateCurrentPlanCourses([...currentCourses, newUserCourse])
+            );
             const allYears: Year[] = [...currentPlan.years];
             const newYears: Year[] = [];
             allYears.forEach((y) => {
