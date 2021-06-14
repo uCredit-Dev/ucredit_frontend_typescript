@@ -353,6 +353,7 @@ const Form = (props: { setSearching: Function }) => {
           data-tip={
             showCriteria ? "Hide search criteria" : "Show search criteria"
           }
+          data-for="dashboard-tip-search"
         >
           {!showCriteria ? (
             <FilterNonFilledSvg className="w-4 h-4" />

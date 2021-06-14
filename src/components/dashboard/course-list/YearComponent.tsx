@@ -113,7 +113,7 @@ function YearComponent({ id, customStyle, year, courses }: yearProps) {
       },
       body: JSON.stringify(body),
     })
-      .then((resp) => {
+      .then(() => {
         const newUpdatedYear = { ...year, name: yearName };
         const newYearArray = [...currentPlan.years].map((yr) =>
           yr._id === year._id ? newUpdatedYear : yr
@@ -157,25 +157,25 @@ function YearComponent({ id, customStyle, year, courses }: yearProps) {
           <Semester
             customStyle=""
             semesterName="Fall"
-            semesterYear={year.year}
+            semesterYear={year}
             courses={fallCourses}
           />
           <Semester
             customStyle=""
             semesterName="Spring"
-            semesterYear={year.year}
+            semesterYear={year}
             courses={springCourses}
           />
           <Semester
             customStyle=""
             semesterName="Intersession"
-            semesterYear={year.year}
+            semesterYear={year}
             courses={winterCourses}
           />
           <Semester
             customStyle=""
             semesterName="Summer"
-            semesterYear={year.year}
+            semesterYear={year}
             courses={summerCourses}
           />
         </div>

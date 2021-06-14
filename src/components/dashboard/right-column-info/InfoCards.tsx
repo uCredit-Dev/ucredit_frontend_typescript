@@ -60,7 +60,7 @@ const InfoCards = () => {
       },
       body: JSON.stringify(body),
     })
-      .then((resp) => {
+      .then(() => {
         const newUpdatedPlan = { ...currentPlan, name: planName };
         dispatch(updateSelectedPlan(newUpdatedPlan));
         let newPlanList = [...planList];
@@ -95,7 +95,7 @@ const InfoCards = () => {
   };
 
   return (
-    <div className="hover:scale-101 flex tight:flex-col flex-row tight:items-center mb-4 h-auto transform transition duration-200 ease-in">
+    <div className="flex tight:flex-col flex-row tight:items-center mb-4 h-auto transform hover:scale-101 transition duration-200 ease-in">
       <div className="flex flex-col items-center justify-center tight:mb-4 tight:mr-0 p-6 w-full h-auto bg-white rounded shadow">
         <div className="flex flex-col mb-2 w-auto h-auto">
           <div className="flex flex-row items-end justify-center mb-2 w-full">
