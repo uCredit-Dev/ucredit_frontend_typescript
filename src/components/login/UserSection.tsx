@@ -71,9 +71,11 @@ function UserSection() {
           <img src={bird} alt="logo" className="mr-2 h-12"></img>
           UCredit
         </div>
-        <div className="mr-3 text-white font-semibold">
-          Logged in as {user.name}!
-        </div>
+        {window.innerWidth > 800 ? (
+          <div className="mr-3 text-white font-semibold">
+            Logged in as {user.name}!
+          </div>
+        ) : null}
         {user._id === "guestUser" ? (
           <a
             href="https://ucredit-api.herokuapp.com/api/login"

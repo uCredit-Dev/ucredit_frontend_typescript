@@ -1,5 +1,4 @@
 import React, { useState } from "react";
-import ReactTooltip from "react-tooltip";
 import Distributions from "./right-column-info/Distributions";
 import InfoCards from "./right-column-info/InfoCards";
 
@@ -10,23 +9,14 @@ const InfoMenu = () => {
       className="fixed right-0 flex flex-col justify-between w-8"
       style={{ height: "80vh" }}
     >
-      <ReactTooltip id="side-bar-tip" effect="solid" />
-
-      <div
-        className="my-auto transform -rotate-90"
-        data-tip="View and edit plan info!"
-        data-for="side-bar-tip"
-        onMouseOver={() => {
-          ReactTooltip.rebuild();
-        }}
-      >
+      <div className="my-auto transform -rotate-90">
         <button
-          className="w-28 h-8 text-center bg-white focus:outline-none shadow transform hover:scale-110 transition duration-200 ease-in"
+          className="w-32 h-8 text-center bg-white focus:outline-none shadow transform hover:scale-110 transition duration-200 ease-in"
           onClick={() => {
             setInfoOpen(!infoOpen);
           }}
         >
-          Degree Overview
+          Plan Overview
         </button>
       </div>
       {infoOpen ? (
