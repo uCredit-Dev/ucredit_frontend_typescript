@@ -43,6 +43,15 @@ function App() {
 
   // Retrieves all database SIS courses.
   useEffect(() => {
+    if (
+      !window.location.href.includes("https") &&
+      !window.location.href.includes("localhost")
+    ) {
+      window.location.href =
+        "https://" +
+        window.location.href.substr(7, window.location.href.length);
+    }
+
     toast.info("Loading resources...", {
       autoClose: false,
       closeOnClick: false,
