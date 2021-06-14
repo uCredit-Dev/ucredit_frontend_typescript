@@ -60,7 +60,7 @@ function CourseComponent({ year, course, semester }: courseProps) {
   useEffect(() => {
     isSatisfied();
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [currPlanCourses]);
+  }, [currPlanCourses, allCourses]);
 
   const isSatisfied = () => {
     const temp = checkAllPrereqs(

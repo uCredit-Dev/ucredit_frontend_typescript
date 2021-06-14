@@ -34,7 +34,7 @@ const Distributions = () => {
       updateFulfilled(distr, currPlanCourses, allCourses, currPlanCourses);
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [currPlanCourses.length, allCourses.length, currentPlan._id]);
+  }, [currPlanCourses, allCourses]);
 
   const getDistributions = () => {
     let major = currentPlan.majors[0];
