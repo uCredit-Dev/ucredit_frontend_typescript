@@ -41,6 +41,7 @@ function UserSection() {
               updateUser(retrievedUser.data) // TODO: Fix issue of infinite loop
             );
           } else {
+            console.log("errors are", retrievedUser.errors);
             history.push("/login");
           }
         })
