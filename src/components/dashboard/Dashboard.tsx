@@ -8,7 +8,7 @@ import UserSection from "../login/UserSection";
 const Dashboard = () => {
   return (
     <div className="flex flex-col w-full h-full">
-      <div className="fixed z-20 p-3 medium:px-48 w-full h-header bg-primary shadow">
+      <div className="fixed z-20 p-3 px-6 w-full h-header bg-primary bg-gradient-to-r rounded shadow from-blue-500 to-green-400">
         <UserSection />
       </div>
       <Content />

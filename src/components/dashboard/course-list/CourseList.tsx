@@ -325,11 +325,11 @@ function CourseList() {
   return (
     <>
       <DragDropContext onDragEnd={onDragEnd}>
-        <div className="flex flex-row flex-wrap justify-between thin:justify-center mt-4 h-auto">
+        <div className="flex flex-row flex-wrap justify-between thin:justify-center mt-4 w-full h-auto">
           {currentPlan._id !== "noPlan" ? (
             <AddSvg
               onClick={() => addNewYear(true)}
-              className="ml-auto w-10 h-10 border-2 border-gray-300 rounded-full cursor-pointer select-none transform hover:scale-125 transition duration-200 ease-in"
+              className="mb-4 mr-3 w-14 h-auto border-2 border-gray-300 rounded cursor-pointer select-none transform hover:scale-105 transition duration-200 ease-in"
               data-tip={`Add a pre-university year!`}
               data-for="godTip"
             />
@@ -338,7 +338,7 @@ function CourseList() {
           {currentPlan._id !== "noPlan" ? (
             <AddSvg
               onClick={() => addNewYear(false)}
-              className="mr-auto w-10 h-10 border-2 border-gray-300 rounded-full cursor-pointer select-none transform hover:scale-125 transition duration-200 ease-in"
+              className="mb-4 ml-3 ml-auto mr-6 w-14 h-auto border-2 border-gray-300 rounded cursor-pointer select-none transform hover:scale-105 transition duration-200 ease-in"
               data-tip={`Add an additional year after!`}
               data-for="godTip"
             />

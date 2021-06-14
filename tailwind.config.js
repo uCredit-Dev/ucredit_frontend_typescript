@@ -4,11 +4,12 @@ module.exports = {
   theme: {
     extend: {
       minWidth: {
-        yearMin: "180px",
+        yearMin: "160px",
         narrowest: "710px",
       },
       maxWidth: {
         courseCard: "50%",
+        yearheading: "250px",
       },
       minHeight: {
         "1/4": "25%",
@@ -20,7 +21,7 @@ module.exports = {
         year: "320px",
         courselist: "1400px",
         coursebars: "315px",
-        yearheading: "18%",
+        yearheading: "16%",
         semesterheading: "18%",
         infocard: "350px",
         plancardinput: "205px",
@@ -30,12 +31,13 @@ module.exports = {
       height: {
         coursebars: "600px",
         header: "65px",
-        yearheading: "42px",
+        yearheading: "32px",
+        yearheading1: "31px",
         criteria: "300px",
         selectbox: "38px",
       },
       margin: {
-        content: "100px",
+        content: "80px",
       },
       inset: {
         blurr: "509px",

@@ -135,22 +135,24 @@ function YearComponent({ id, customStyle, year, courses }: yearProps) {
   return (
     <div
       id={id.toString()}
-      className={`${customStyle} ml-auto mr-auto medium:px-4 w-yearheading min-w-yearMin`}
+      className={`${customStyle} max-w-yearheading w-yearheading min-w-yearMin bg-white rounded p-2 mb-4 mx-auto`}
     >
-      <div className="flex flex-row justify-between mb-3 p-2 w-full h-yearheading text-white font-medium bg-primary rounded shadow transform hover:scale-105 transition duration-200 ease-in">
-        <input
-          value={yearName}
-          className="flex-shrink w-full text-white font-semibold bg-primary hover:border-b focus:outline-none select-none" // focus:border-transparent???
-          onChange={handleYearNameChange}
-        />
-        <RemoveSvg
-          className="w-6 h-6 stroke-2 cursor-pointer select-none transform hover:scale-110 transition duration-200 ease-in"
-          onClick={activateDeleteYearPopup}
-        />
-        <MoreSvg
-          className="w-6 h-6 stroke-2 cursor-pointer"
-          onClick={displaySemesters}
-        />
+      <div className="mb-2 h-yearheading font-medium bg-gradient-to-r from-blue-500 to-green-400">
+        <div className="h-yearheading1 flex flex-row justify-between px-0.5 w-full bg-white">
+          <input
+            value={yearName}
+            className="flex-shrink mt-auto w-full h-5/6 font-bold border-b hover:border-gray-400 border-transparent focus:outline-none select-none"
+            onChange={handleYearNameChange}
+          />
+          <RemoveSvg
+            className="w-6 stroke-2 cursor-pointer select-none transform hover:scale-110 transition duration-200 ease-in"
+            onClick={activateDeleteYearPopup}
+          />
+          <MoreSvg
+            className="w-6 stroke-2 cursor-pointer"
+            onClick={displaySemesters}
+          />
+        </div>
       </div>
       {display ? (
         <div className="flex flex-col items-center">

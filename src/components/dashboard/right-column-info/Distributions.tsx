@@ -55,7 +55,7 @@ const Distributions = () => {
   }, [displayGeneral, distributions]);
 
   return (
-    <div className="flex-none ml-4 mr-4 p-6 h-auto bg-white rounded shadow transform hover:scale-101 transition duration-200 ease-in">
+    <div className="flex-none ml-4 mr-4 p-6 w-coursebars h-auto bg-white rounded shadow transform hover:scale-101 transition duration-200 ease-in">
       <div className="flex flex-row mb-3 w-full">
         <div className="self-start text-xl font-medium">
           Overall Distribution

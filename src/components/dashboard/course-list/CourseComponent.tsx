@@ -53,10 +53,6 @@ function CourseComponent({ year, course, semester }: courseProps) {
   const currPlanCourses = useSelector(selectCurrentPlanCourses);
   const allCourses = useSelector(selectAllCourses);
 
-  // useEffect(() => {
-  //   isSatisfied();
-  // });
-
   useEffect(() => {
     isSatisfied();
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -152,7 +148,7 @@ function CourseComponent({ year, course, semester }: courseProps) {
     <>
       <div
         className={clsx(
-          "relative flex items-center justify-between mt-2 p-2 bg-white rounded shadow transform hover:scale-105 transition duration-200 ease-in"
+          "relative flex items-center justify-between mt-2 p-2 bg-gray-100 rounded shadow transform hover:scale-105 transition duration-200 ease-in"
         )}
         onMouseEnter={activate}
         onMouseLeave={deactivate}
