@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { updateUser, selectUser, resetUser } from "../../slices/userSlice";
 import { ReactComponent as UserSvg } from "../../resources/svg/User.svg";
@@ -10,13 +10,12 @@ import { api } from "../../resources/assets";
  * User login/logout buttons.
  */
 function UserSection() {
-  const cookieVal = document.cookie.split("=")[1];
-
   // Redux setup
   const dispatch = useDispatch();
   const user = useSelector(selectUser);
 
   // Component state setup
+  const [loginId, setLoginId] = useState("");
   let history = useHistory();
 
   // Useffect runs once on page load, calling to https://ucredit-api.herokuapp.com/api/retrieveUser to retrieve user data.
@@ -24,7 +23,15 @@ function UserSection() {
   useEffect(() => {
     if (user._id === "noUser") {
       // Retrieves user if user ID is "noUser", the initial user id state for userSlice.tsx.
-      // Make call for backend
+      // Make call for backend const cookieVals = document.cookie.split("=");
+      const cookieVals = document.cookie.split("=");
+      let cookieVal = "";
+      cookieVals.forEach((val: string) => {
+        if (val.length === 20) {
+          cookieVal = val;
+          setLoginId(cookieVal);
+        }
+      });
       fetch(api + "/retrieveUser/" + cookieVal, {
         mode: "cors",
         method: "GET",
@@ -69,7 +76,7 @@ function UserSection() {
         ) : (
           <button
             onClick={() => {
-              fetch(api + "/retrieveUser/" + cookieVal, {
+              fetch(api + "/retrieveUser/" + loginId, {
                 mode: "cors",
                 method: "DELETE",
                 credentials: "include",
@@ -81,7 +88,7 @@ function UserSection() {
                 .then(() => {
                   dispatch(resetUser());
                   dispatch(resetCurrentPlan());
-                  history.push("/");
+                  history.push("/login");
                 })
                 .catch((err) => {
                   console.log(err);
