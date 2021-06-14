@@ -39,12 +39,6 @@ const Search = () => {
 
   return (
     <div className="absolute top-0">
-      <ReactTooltip
-        html={true}
-        id="dashboard-tip-search"
-        place="top"
-        effect="solid"
-      />
       {/* Background Grey */}
       <div
         className="fixed z-20 left-0 top-0 m-0 w-full h-screen bg-black"
@@ -81,8 +75,9 @@ const Search = () => {
               className="flex flex-row items-center justify-center p-1 w-full h-8 transform hover:scale-125 transition duration-200 ease-in"
               onMouseEnter={() => setSearchOpacity(50)}
               onMouseLeave={() => setSearchOpacity(100)}
+              onMouseOver={() => ReactTooltip.rebuild()}
               data-tip="Hide search"
-              data-for="dashboard-tip"
+              data-for="godTip"
             >
               <HideSvg className="w-6 h-6 stroke-2" />
             </div>

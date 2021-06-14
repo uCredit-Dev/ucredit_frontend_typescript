@@ -88,7 +88,7 @@ const SearchList = (props: { searching: boolean }) => {
           className="flex flex-row items-center justify-center w-6 h-6 bg-white rounded cursor-pointer transform hover:scale-125 transition duration-200 ease-in"
           onClick={onPlaceholderClick}
           data-tip="Add a placeholder or custom course"
-          data-for="dashboard-tip-search"
+          data-for="godTip"
         >
           <PlaceholderSvg className="w-4 h-4 stroke-2" />
         </div>

@@ -1,6 +1,7 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { ReactComponent as StarSvg } from "../../../../resources/svg/Star.svg";
 import clsx from "clsx";
+import ReactTooltip from "react-tooltip";
 
 const ratingStars = Array(5).fill(0);
 
@@ -11,6 +12,10 @@ const ratingStars = Array(5).fill(0);
 const CourseEvalCard = (props: { rating: string; summary: string }) => {
   const ratingNum = Math.trunc(parseInt(props.rating)) - 1;
 
+  useEffect(() => {
+    ReactTooltip.rebuild();
+  }, [props.rating, props.summary]);
+
   return (
     <div className="mb-2 px-6 py-8 w-full h-52 bg-gray-50 rounded shadow">
       <div className="flex flex-row w-full h-full">
@@ -19,7 +24,7 @@ const CourseEvalCard = (props: { rating: string; summary: string }) => {
           <div
             className="flex flex-row"
             data-tip={props.rating}
-            data-for="dashboard-tip-search"
+            data-for="godTip"
           >
             {ratingStars.map((_, i) => (
               <StarSvg
