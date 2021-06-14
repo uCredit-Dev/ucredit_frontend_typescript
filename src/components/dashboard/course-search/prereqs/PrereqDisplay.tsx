@@ -367,7 +367,6 @@ const PrereqDisplay = () => {
           )}
           onClick={handlePrereqDisplayModeChange(2)}
           data-tip="bullet list"
-          data-for="dashboard-tip-search"
         >
           <MenuSvg />
         </div>
@@ -382,7 +381,6 @@ const PrereqDisplay = () => {
           )}
           onClick={handlePrereqDisplayModeChange(1)}
           data-tip="description"
-          data-for="dashboard-tip-search"
         >
           <DescriptionSvg className="w-5 h-5" />
         </div>

@@ -84,8 +84,6 @@ const CourseVersion = (props: { setInspectedArea: Function }) => {
       return "Social Sciences";
     } else if (area === "H") {
       return "Humanities";
-    } else if (area === "Q") {
-      return "Quantitative";
     } else {
       return "None";
     }
@@ -95,6 +93,7 @@ const CourseVersion = (props: { setInspectedArea: Function }) => {
     <>
       {version !== "None" ? (
         <>
+          <ReactTooltip />
           <div className="grid grid-cols-2 w-auto h-auto">
             <div className="w-auto h-auto">
               <div className="flex flex-row items-center">
@@ -108,7 +107,6 @@ const CourseVersion = (props: { setInspectedArea: Function }) => {
                 <div
                   className="flex items-center px-1 w-auto text-white font-semibold bg-secondary rounded select-none transform hover:scale-110 transition duration-200 ease-in"
                   data-tip={version.credits + " credits"}
-                  data-for="dashboard-tip-search"
                 >
                   {version.credits}
                 </div>
@@ -119,23 +117,18 @@ const CourseVersion = (props: { setInspectedArea: Function }) => {
                 <div className="mr-1 font-semibold">Areas:</div>
                 {version.areas !== "None" ? (
                   version.areas.split("").map((area) => (
-                    <>
-                      <ReactTooltip
-                        html={true}
-                        id={"dashboard-tip-" + area}
-                        place="top"
-                        effect="solid"
-                      />
+                    <div
+                      className="flex flex-row items-center transform hover:scale-110 transition duration-200 ease-in"
+                      key={area + version.number}
+                    >
                       <div
-                        className="flex items-center px-1 w-auto text-white font-semibold rounded select-none transform hover:scale-110 transition duration-200 ease-in"
+                        className="flex items-center px-1 w-auto text-white font-semibold rounded select-none"
                         style={{ backgroundColor: getColors(area)[0] }}
                         data-tip={getAreaName(area)}
-                        data-for={"dashboard-tip-" + area}
-                        key={area + version.number}
                       >
                         {area}
                       </div>
-                    </>
+                    </div>
                   ))
                 ) : (
                   <div
@@ -201,6 +194,7 @@ const CourseVersion = (props: { setInspectedArea: Function }) => {
               </button>
             ) : null}
           </div>
+          <ReactTooltip />
           <div className="flex flex-row border-b-2">
             <button
               className={clsx(

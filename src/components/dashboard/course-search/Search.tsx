@@ -10,7 +10,6 @@ import Form from "./query-components/Form";
 import SearchList from "./query-components/SearchList";
 import { ReactComponent as HideSvg } from "../../../resources/svg/Hide.svg";
 import { selectPlan } from "../../../slices/currentPlanSlice";
-import ReactTooltip from "react-tooltip";
 
 /**
  * Search component for when someone clicks a search action.
@@ -39,12 +38,6 @@ const Search = () => {
 
   return (
     <div className="absolute top-0">
-      <ReactTooltip
-        html={true}
-        id="dashboard-tip-search"
-        place="top"
-        effect="solid"
-      />
       {/* Background Grey */}
       <div
         className="fixed z-20 left-0 top-0 m-0 w-full h-screen bg-black"
@@ -82,7 +75,6 @@ const Search = () => {
               onMouseEnter={() => setSearchOpacity(50)}
               onMouseLeave={() => setSearchOpacity(100)}
               data-tip="Hide search"
-              data-for="dashboard-tip"
             >
               <HideSvg className="w-6 h-6 stroke-2" />
             </div>

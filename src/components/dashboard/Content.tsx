@@ -25,6 +25,7 @@ function Content() {
   const deleteYearStatus = useSelector(selectDeleteYearStatus);
 
   return (
+    // <div className="flex flex-row flex-wrap-reverse mt-content medium:px-48 h-full">
     <>
       <div className="flex flex-row thin:flex-wrap-reverse mt-content medium:px-48 h-full">
         <div className="flex-grow h-auto">

@@ -151,12 +151,6 @@ function CourseComponent({ year, course, semester }: courseProps) {
 
   return (
     <>
-      <ReactTooltip
-        html={true}
-        id="dashboard-tip-2"
-        place="top"
-        effect="solid"
-      />
       <div
         className={clsx(
           "relative flex items-center justify-between mt-2 p-2 bg-white rounded shadow transform hover:scale-105 transition duration-200 ease-in"
