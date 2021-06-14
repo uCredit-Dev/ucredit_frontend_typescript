@@ -137,14 +137,13 @@ function Semester({
                 ? "Spring"
                 : "Summer"}{" "}
               {courses.length !== 0 && totalCredits !== 0 ? (
-                <>
-                  <div
-                    className="flex flex-row items-center justify-center ml-1 px-1 w-auto text-black text-xs bg-white rounded transform hover:scale-125 transition duration-200 ease-in"
-                    data-tip={`${totalCredits} Credits`}
-                  >
-                    {totalCredits}
-                  </div>
-                </>
+                <div
+                  className="flex flex-row items-center justify-center ml-1 px-1 w-auto text-black text-xs bg-white rounded transform hover:scale-125 transition duration-200 ease-in"
+                  data-tip={`${totalCredits} Credits`}
+                  data-for="dashboard-tip-2"
+                >
+                  {totalCredits}
+                </div>
               ) : null}
             </div>
             <div

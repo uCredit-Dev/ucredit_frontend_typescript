@@ -31,6 +31,7 @@ import {
 } from "../../../slices/userSlice";
 import { api } from "../../../resources/assets";
 import { DragDropContext } from "react-beautiful-dnd";
+import ReactTooltip from "react-tooltip";
 
 /**
  * Container component that holds all the years, semesters, and courses of the current plan.
@@ -325,12 +326,19 @@ function CourseList() {
   return (
     <>
       <DragDropContext onDragEnd={onDragEnd}>
+        <ReactTooltip
+          html={true}
+          id="dashboard-tip-1"
+          place="top"
+          effect="solid"
+        />
         <div className="flex flex-row flex-wrap justify-between thin:justify-center mt-4 h-auto">
           {currentPlan._id !== "noPlan" ? (
             <AddSvg
               onClick={() => addNewYear(true)}
               className="ml-auto w-10 h-10 border-2 border-gray-300 rounded-full cursor-pointer select-none transform hover:scale-125 transition duration-200 ease-in"
               data-tip={`Add a pre-university year!`}
+              data-for="dashboard-tip-1"
             />
           ) : null}
           {elements}
@@ -339,6 +347,7 @@ function CourseList() {
               onClick={() => addNewYear(false)}
               className="mr-auto w-10 h-10 border-2 border-gray-300 rounded-full cursor-pointer select-none transform hover:scale-125 transition duration-200 ease-in"
               data-tip={`Add an additional year after!`}
+              data-for="dashboard-tip-1"
             />
           ) : null}
         </div>

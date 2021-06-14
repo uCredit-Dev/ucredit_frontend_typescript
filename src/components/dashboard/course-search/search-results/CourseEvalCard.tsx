@@ -16,7 +16,11 @@ const CourseEvalCard = (props: { rating: string; summary: string }) => {
       <div className="flex flex-row w-full h-full">
         <div className="flex flex-col items-center justify-center mr-4 p-4 w-40 h-full">
           <h2 className="mb-2">Rating</h2>
-          <div className="flex flex-row" data-tip={props.rating}>
+          <div
+            className="flex flex-row"
+            data-tip={props.rating}
+            data-for="dashboard-tip-search"
+          >
             {ratingStars.map((_, i) => (
               <StarSvg
                 className={clsx(
