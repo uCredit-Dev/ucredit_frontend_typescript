@@ -331,6 +331,7 @@ function CourseList() {
               onClick={() => addNewYear(true)}
               className="ml-auto w-10 h-10 border-2 border-gray-300 rounded-full cursor-pointer select-none transform hover:scale-125 transition duration-200 ease-in"
               data-tip={`Add a pre-university year!`}
+              data-for="godTip"
             />
           ) : null}
           {elements}
@@ -339,6 +340,7 @@ function CourseList() {
               onClick={() => addNewYear(false)}
               className="mr-auto w-10 h-10 border-2 border-gray-300 rounded-full cursor-pointer select-none transform hover:scale-125 transition duration-200 ease-in"
               data-tip={`Add an additional year after!`}
+              data-for="godTip"
             />
           ) : null}
         </div>

@@ -1,6 +1,5 @@
 import clsx from "clsx";
 import React from "react";
-import ReactTooltip from "react-tooltip";
 import { ReactComponent as CheckSvg } from "../../../resources/svg/Check.svg";
 
 type courseBarProps = {
@@ -40,7 +39,6 @@ function CourseBar({
 
   return (
     <>
-      <ReactTooltip html={true} className="max-w-sm" />
       <div
         className={clsx(
           "text mb-1 whitespace-nowrap overflow-hidden overflow-ellipsis",
@@ -52,12 +50,10 @@ function CourseBar({
       >
         {section}
       </div>
-      {/* <div>
-        Bar here {maxCredits}|{plannedCredits}|{currentCredits}
-      </div> */}
       <div
         className="relative flex flex-row mb-2 w-full h-6 bg-gray-200 rounded transform hover:scale-105 transition duration-200 ease-in"
         data-tip={tooltip}
+        data-for="godTip"
       >
         <div
           className="h-full bg-secondary rounded"

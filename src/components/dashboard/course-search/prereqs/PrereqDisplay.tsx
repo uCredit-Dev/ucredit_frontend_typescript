@@ -17,7 +17,6 @@ import PrereqDropdown from "./PrereqDropdown";
 import { ReactComponent as CheckMark } from "../../../../resources/svg/CheckMark.svg";
 import { ReactComponent as DescriptionSvg } from "../../../../resources/svg/Description.svg";
 import { ReactComponent as MenuSvg } from "../../../../resources/svg/Menu.svg";
-import ReactTooltip from "react-tooltip";
 import {
   selectCurrentPlanCourses,
   selectPlan,
@@ -355,7 +354,6 @@ const PrereqDisplay = () => {
   return (
     <>
       <div className="flex flex-row mt-2">
-        <ReactTooltip />
         <div
           className={clsx(
             "flex flex-row items-center justify-center mr-1 p-1 w-7 h-7 rounded cursor-pointer transform hover:scale-110 transition duration-200 ease-in",
@@ -367,6 +365,7 @@ const PrereqDisplay = () => {
           )}
           onClick={handlePrereqDisplayModeChange(2)}
           data-tip="bullet list"
+          data-for="godTip"
         >
           <MenuSvg />
         </div>
@@ -381,6 +380,7 @@ const PrereqDisplay = () => {
           )}
           onClick={handlePrereqDisplayModeChange(1)}
           data-tip="description"
+          data-for="godTip"
         >
           <DescriptionSvg className="w-5 h-5" />
         </div>

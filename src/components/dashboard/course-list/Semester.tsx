@@ -14,6 +14,7 @@ import {
 import { ReactComponent as AddSvg } from "../../../resources/svg/Add.svg";
 import { Droppable, Draggable } from "react-beautiful-dnd";
 import { updateDroppables } from "../../../slices/currentPlanSlice";
+import ReactTooltip from "react-tooltip";
 
 type semesterProps = {
   customStyle: string;
@@ -118,6 +119,10 @@ function Semester({
     ));
   };
 
+  useEffect(() => {
+    ReactTooltip.rebuild();
+  }, [courses.length, totalCredits]);
+
   return (
     <>
       <div
@@ -141,6 +146,7 @@ function Semester({
                   <div
                     className="flex flex-row items-center justify-center ml-1 px-1 w-auto text-black text-xs bg-white rounded transform hover:scale-125 transition duration-200 ease-in"
                     data-tip={`${totalCredits} Credits`}
+                    data-for="godTip"
                   >
                     {totalCredits}
                   </div>
