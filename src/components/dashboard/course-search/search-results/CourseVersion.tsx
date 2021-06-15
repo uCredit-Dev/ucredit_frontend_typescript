@@ -89,11 +89,14 @@ const CourseVersion = (props: { setInspectedArea: Function }) => {
     }
   };
 
+  useEffect(() => {
+    ReactTooltip.rebuild();
+  }, [displayPreReqsView]);
+
   return (
     <>
       {version !== "None" ? (
         <>
-          <ReactTooltip />
           <div className="grid grid-cols-2 w-auto h-auto">
             <div className="w-auto h-auto">
               <div className="flex flex-row items-center">
@@ -107,6 +110,7 @@ const CourseVersion = (props: { setInspectedArea: Function }) => {
                 <div
                   className="flex items-center px-1 w-auto text-white font-semibold bg-secondary rounded select-none transform hover:scale-110 transition duration-200 ease-in"
                   data-tip={version.credits + " credits"}
+                  data-for="godTip"
                 >
                   {version.credits}
                 </div>
@@ -125,6 +129,7 @@ const CourseVersion = (props: { setInspectedArea: Function }) => {
                         className="flex items-center px-1 w-auto text-white font-semibold rounded select-none"
                         style={{ backgroundColor: getColors(area)[0] }}
                         data-tip={getAreaName(area)}
+                        data-for="godTip"
                       >
                         {area}
                       </div>
@@ -194,7 +199,6 @@ const CourseVersion = (props: { setInspectedArea: Function }) => {
               </button>
             ) : null}
           </div>
-          <ReactTooltip />
           <div className="flex flex-row border-b-2">
             <button
               className={clsx(

@@ -53,14 +53,14 @@ function CourseComponent({ year, course, semester }: courseProps) {
   const currPlanCourses = useSelector(selectCurrentPlanCourses);
   const allCourses = useSelector(selectAllCourses);
 
-  useEffect(() => {
-    isSatisfied();
-  });
+  // useEffect(() => {
+  //   isSatisfied();
+  // });
 
   useEffect(() => {
     isSatisfied();
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [currPlanCourses]);
+  }, [currPlanCourses, allCourses]);
 
   const isSatisfied = () => {
     const temp = checkAllPrereqs(
@@ -76,7 +76,6 @@ function CourseComponent({ year, course, semester }: courseProps) {
 
   // Sets or resets the course displayed in popout after user clicks it in course list.
   const displayCourses = () => {
-    console.log("Course is ", course);
     dispatch(updateSearchTime({ searchYear: year, searchSemester: semester }));
     dispatch(updateSearchTerm(course.number));
     let found = false;
@@ -157,6 +156,9 @@ function CourseComponent({ year, course, semester }: courseProps) {
         )}
         onMouseEnter={activate}
         onMouseLeave={deactivate}
+        onMouseOver={() => {
+          ReactTooltip.rebuild();
+        }}
         key={course.number}
       >
         <div className="flex flex-col gap-1 w-full h-full">
@@ -214,10 +216,11 @@ function CourseComponent({ year, course, semester }: courseProps) {
                 />
                 {!satisfied ? (
                   <>
-                    <ReactTooltip html={true} />
-                    <div data-tip={tooltip}>
-                      <WarningSvg className="relative z-20 flex flex-row items-center justify-center p-0.5 w-6 h-6 text-white bg-secondary rounded-md outline-none stroke-2 cursor-pointer transform hover:scale-110 transition duration-150 ease-in" />
-                    </div>
+                    <WarningSvg
+                      data-tip={tooltip}
+                      data-for="godTip"
+                      className="relative z-20 flex flex-row items-center justify-center p-0.5 w-6 h-6 text-white bg-secondary rounded-md outline-none stroke-2 cursor-pointer transform hover:scale-110 transition duration-150 ease-in"
+                    />
                   </>
                 ) : null}
               </div>

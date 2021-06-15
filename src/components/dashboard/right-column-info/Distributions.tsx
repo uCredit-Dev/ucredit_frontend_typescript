@@ -1,6 +1,7 @@
 import clsx from "clsx";
 import React, { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
+import ReactTooltip from "react-tooltip";
 import { getMajor } from "../../../resources/assets";
 import {
   selectPlan,
@@ -33,7 +34,7 @@ const Distributions = () => {
       updateFulfilled(distr, currPlanCourses, allCourses, currPlanCourses);
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [currPlanCourses]);
+  }, [currPlanCourses, allCourses]);
 
   const getDistributions = () => {
     let major = currentPlan.majors[0];
@@ -48,8 +49,13 @@ const Distributions = () => {
     setDistributions(distr);
     return distr;
   };
+
+  useEffect(() => {
+    ReactTooltip.rebuild();
+  }, [displayGeneral, distributions]);
+
   return (
-    <div className="hover:scale-101 flex-none ml-4 mr-4 p-6 h-auto bg-white rounded shadow transform transition duration-200 ease-in">
+    <div className="flex-none ml-4 mr-4 p-6 h-auto bg-white rounded shadow transform hover:scale-101 transition duration-200 ease-in">
       <div className="flex flex-row mb-3 w-full">
         <div className="self-start text-xl font-medium">
           Overall Distribution

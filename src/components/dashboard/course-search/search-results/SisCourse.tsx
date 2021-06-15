@@ -1,4 +1,4 @@
-import React, { MouseEventHandler } from "react";
+import React, { MouseEventHandler, useEffect } from "react";
 import { ReactComponent as CloseSvg } from "../../../../resources/svg/Close.svg";
 import Select from "react-select";
 import CourseVersion from "./CourseVersion";
@@ -21,6 +21,7 @@ import {
   Course,
   SemesterType,
 } from "../../../../resources/commonTypes";
+import ReactTooltip from "react-tooltip";
 
 type SisCourseProps = {
   inspectedArea: string;
@@ -54,6 +55,10 @@ const SisCourse = (props: SisCourseProps) => {
   const searchYear = useSelector(selectYear);
   const searchSemester = useSelector(selectSemester);
   const searchStack = useSelector(selectSearchStack);
+
+  useEffect(() => {
+    ReactTooltip.rebuild();
+  }, [version]);
 
   // Returns an array of select options for the distribution area users want to add the course to.
   const getInspectedAreas = () => {

@@ -8,7 +8,6 @@ import {
 import CourseCard from "./CourseCard";
 import ReactPaginate from "react-paginate";
 import { ReactComponent as PlaceholderSvg } from "../../../../resources/svg/Placeholder.svg";
-import ReactTooltip from "react-tooltip";
 import { Course } from "../../../../resources/commonTypes";
 
 /* 
@@ -89,13 +88,12 @@ const SearchList = (props: { searching: boolean }) => {
           className="flex flex-row items-center justify-center w-6 h-6 bg-white rounded cursor-pointer transform hover:scale-125 transition duration-200 ease-in"
           onClick={onPlaceholderClick}
           data-tip="Add a placeholder or custom course"
+          data-for="godTip"
         >
           <PlaceholderSvg className="w-4 h-4 stroke-2" />
         </div>
       </div>
-      {/* <div className='relative left-0 z-10 flex-none block h-4 pointer-events-none -top-3 right-blurr bg-gradient-to-b from-white to-gray-200'></div> */}
       <div className="py px-5 w-full h-full bg-gray-200 border-b border-black select-none overflow-y-auto">
-        <ReactTooltip />
         <div className="w-full h-full">
           {courses.length > 0 ? (
             <>

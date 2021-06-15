@@ -11,6 +11,7 @@ import bird from "./../resources/images/birdTempGif.gif";
 import { updateAllCourses } from "../slices/userSlice";
 import LandingPage from "./landing-page/LandingPage";
 import { toast, ToastContainer } from "react-toastify";
+import ReactTooltip from "react-tooltip";
 
 /**
  * Root app component, where it all begins...
@@ -42,6 +43,15 @@ function App() {
 
   // Retrieves all database SIS courses.
   useEffect(() => {
+    if (
+      !window.location.href.includes("https") &&
+      !window.location.href.includes("localhost")
+    ) {
+      window.location.href =
+        "https://" +
+        window.location.href.substr(7, window.location.href.length);
+    }
+
     toast.info("Loading resources...", {
       autoClose: false,
       closeOnClick: false,
@@ -51,8 +61,19 @@ function App() {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
+  useEffect(() => {
+    ReactTooltip.rebuild();
+  });
+
   return (
     <>
+      <ReactTooltip
+        id="godTip"
+        html={true}
+        className="max-w-sm"
+        place="top"
+        effect="solid"
+      />
       {welcomeScreen ? (
         <div className="fixed z-50 flex flex-col m-auto w-screen h-screen text-center text-center text-white bg-primary">
           Welcome logo animation (to be replaced)
