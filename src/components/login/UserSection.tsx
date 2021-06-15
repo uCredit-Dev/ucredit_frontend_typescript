@@ -16,7 +16,7 @@ function UserSection() {
   const user = useSelector(selectUser);
 
   // Component state setup
-  const [loginId, setLoginId] = useState("");
+  const [loginId, setLoginId] = useState(document.cookie.split("=")[1]);
   let history = useHistory();
 
   // Useffect runs once on page load, calling to https://ucredit-api.herokuapp.com/api/retrieveUser to retrieve user data.
