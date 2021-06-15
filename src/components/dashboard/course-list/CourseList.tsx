@@ -329,7 +329,7 @@ function CourseList() {
           {currentPlan._id !== "noPlan" ? (
             <AddSvg
               onClick={() => addNewYear(true)}
-              className="mb-4 mr-3 w-14 h-auto max-h-80 border-2 border-gray-300 rounded cursor-pointer select-none transform hover:scale-105 transition duration-200 ease-in"
+              className="-mt-1 mb-4 mr-3 w-14 h-auto max-h-48 border-2 border-gray-300 rounded focus:outline-none cursor-pointer select-none transform hover:scale-105 transition duration-200 ease-in"
               data-tip={`Add a pre-university year!`}
               data-for="godTip"
             />
@@ -338,7 +338,7 @@ function CourseList() {
           {currentPlan._id !== "noPlan" ? (
             <AddSvg
               onClick={() => addNewYear(false)}
-              className="mb-4 ml-3 ml-auto mr-5 w-14 h-auto border-2 border-gray-300 rounded cursor-pointer select-none transform hover:scale-105 transition duration-200 ease-in"
+              className="-mt-1 mb-4 ml-3 ml-auto mr-5 w-14 h-auto max-h-48 border-2 border-gray-300 rounded focus:outline-none cursor-pointer select-none transform hover:scale-105 transition duration-200 ease-in"
               data-tip={`Add an additional year after!`}
               data-for="godTip"
             />
