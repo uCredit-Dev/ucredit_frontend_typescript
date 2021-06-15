@@ -141,7 +141,7 @@ const DashboardEntry = (props: any) => {
       <Test />
       <div className="absolute flex w-full h-full">
         <div
-          className="min-w-1/4 flex flex-col mx-auto mx-auto my-auto p-14 w-1/2 text-white text-lg font-bold bg-gradient-to-b rounded shadow from-blue-500 to-green-400"
+          className="flex flex-col mx-auto mx-auto my-auto p-14 text-white text-lg font-bold bg-gradient-to-b rounded shadow from-blue-500 to-green-400"
           // style={{ backgroundColor: "#00316F", zIndex: 50 }}
         >
           <div className="flex flex-row items-center justify-center mt-auto w-full text-3xl">

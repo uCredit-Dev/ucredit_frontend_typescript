@@ -165,8 +165,8 @@ const SisCourse = (props: SisCourseProps) => {
           <div className="flex flex-row flex-grow items-center mt-2">
             <div className="flex flex-col flex-grow justify-center">
               <div className="mb-1 font-medium">Selecting for</div>
-              <div className="flex flex-row">
-                <div className="flex flex-row items-center w-auto h-auto">
+              <div className="flex tight:flex-col flex-row">
+                <div className="flex flex-row items-center tight:ml-0 tight:mt-2 w-auto h-auto">
                   Year:
                   <select
                     className="ml-2 text-black text-coursecard rounded focus:outline-none"
@@ -180,7 +180,7 @@ const SisCourse = (props: SisCourseProps) => {
                     ))}
                   </select>
                 </div>
-                <div className="flex flex-row items-center ml-5 w-auto h-auto">
+                <div className="flex flex-row items-center tight:ml-0 ml-5 tight:mt-2 w-auto h-auto">
                   Term:
                   <select
                     className="ml-2 h-6 rounded outline-none"
@@ -194,7 +194,7 @@ const SisCourse = (props: SisCourseProps) => {
                     ))}
                   </select>
                 </div>
-                <div className="flex flex-row items-center ml-5 w-auto h-auto">
+                <div className="flex flex-row items-center tight:ml-0 ml-5 tight:mt-2 w-auto h-auto">
                   Area:
                   <select
                     className="ml-2 w-14 h-6 rounded outline-none"

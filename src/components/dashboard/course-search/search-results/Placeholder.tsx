@@ -1,10 +1,12 @@
 import React, { useState, useEffect } from "react";
 import { Course } from "../../../../resources/commonTypes";
 import { useSelector, useDispatch } from "react-redux";
+import { ReactComponent as CloseSvg } from "../../../../resources/svg/Close.svg";
 import {
   updateInspectedVersion,
   selectPlaceholder,
   selectVersion,
+  updateInspectedCourse,
 } from "../../../../slices/searchSlice";
 import Select from "react-select";
 import { all_majors, course_tags } from "../../../../resources/assets";
@@ -105,9 +107,22 @@ const Placeholder = (props: { addCourse: any }) => {
     }
   };
 
+  // Clears inspected course.
+  const clearInspected = (): void => {
+    dispatch(updateInspectedCourse("None"));
+  };
+
   return (
     <div className="flex flex-col h-full font-medium">
-      <div className="text-2xl">Add a placeholder</div>
+      <div className="flex flex-row items-center w-full">
+        <div className="mr-auto text-2xl">Add a placeholder</div>
+        <button
+          className="mr-10 pl-16 text-2xl focus:outline-none transform hover:scale-110 transition duration-200 ease-in"
+          onClick={clearInspected}
+        >
+          <CloseSvg className="w-7 h-7 stroke-2" />
+        </button>
+      </div>
       <div
         className="flex flex-col flex-wrap pb-5"
         style={{ maxHeight: "70%" }}
@@ -129,7 +144,7 @@ const Placeholder = (props: { addCourse: any }) => {
           ></input>
         </div>
 
-        <div className="flex flex-col mt-2 w-1/6">
+        <div className="flex flex-col mt-2 w-56">
           Department
           <Select
             options={[
@@ -160,7 +175,7 @@ const Placeholder = (props: { addCourse: any }) => {
             }}
           />
         </div>
-        <div className="flex flex-col mt-2 w-1/6">
+        <div className="flex flex-col mt-2 w-20">
           Credits
           <Select
             onChange={onPCChange}
@@ -204,7 +219,7 @@ const Placeholder = (props: { addCourse: any }) => {
         </div>
       </div>
       <button
-        className="mr-0 p-2 w-1/6 text-white bg-blue-500 rounded focus:outline-none transform hover:scale-110 transition duration-200 ease-in"
+        className="mr-0 p-2 w-28 text-white bg-blue-500 rounded focus:outline-none transform hover:scale-110 transition duration-200 ease-in"
         onClick={props.addCourse}
       >
         Add Course

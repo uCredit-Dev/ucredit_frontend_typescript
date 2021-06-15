@@ -17,8 +17,8 @@ const CourseEvalCard = (props: { rating: string; summary: string }) => {
   }, [props.rating, props.summary]);
 
   return (
-    <div className="mb-2 px-6 py-8 w-full h-52 bg-gray-50 rounded shadow">
-      <div className="flex flex-row w-full h-full">
+    <div className="mb-2 tight:pt-0 px-6 py-8 w-full h-52 tight:h-96 bg-gray-50 rounded shadow">
+      <div className="flex tight:flex-col flex-row w-full h-full">
         <div className="flex flex-col items-center justify-center mr-4 p-4 w-40 h-full">
           <h2 className="mb-2">Rating</h2>
           <div

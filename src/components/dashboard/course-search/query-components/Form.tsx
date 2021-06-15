@@ -334,7 +334,7 @@ const Form = (props: { setSearching: Function }) => {
   };
 
   return (
-    <div className="pt-3 px-5 w-full h-auto text-coursecard border-b border-black select-none">
+    <div className="pt-3 px-5 w-full h-auto text-coursecard border-b border-gray-400 select-none">
       <div className="flex-full flex flex-row h-auto">
         <input
           autoFocus
@@ -367,7 +367,7 @@ const Form = (props: { setSearching: Function }) => {
           </button>
         ) : (
           <button onClick={showAll} className="focus:outline-none">
-            <u>Don't see your class? Show all results.</u>
+            <u>Don't see your class? Show all results</u>
           </button>
         )}
       </div>

@@ -18,6 +18,7 @@ module.exports = {
         "3/4": "75%",
         full: "100%",
       },
+      maxHeight: { mobileSearch: "75vh" },
       width: {
         year: "320px",
         courselist: "1400px",
@@ -28,6 +29,7 @@ module.exports = {
         plancardinput: "205px",
         planselect: "200px",
         planchoose: "250px",
+        loginPage: "520px",
       },
       height: {
         coursebars: "600px",

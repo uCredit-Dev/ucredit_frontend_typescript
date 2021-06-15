@@ -97,7 +97,7 @@ const CourseVersion = (props: { setInspectedArea: Function }) => {
     <>
       {version !== "None" ? (
         <>
-          <div className="grid grid-cols-2 w-auto h-auto">
+          <div className="tight:flex grid tight:flex-col grid-cols-2 w-auto h-auto">
             <div className="w-auto h-auto">
               <div className="flex flex-row items-center">
                 <div className="mr-1 font-semibold">Number: </div>
