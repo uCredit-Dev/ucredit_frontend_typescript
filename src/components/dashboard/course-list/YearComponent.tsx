@@ -198,15 +198,16 @@ function YearComponent({ id, customStyle, year, courses }: yearProps) {
             className="w-6 stroke-2 cursor-pointer select-none transform hover:scale-110 transition duration-200 ease-in"
             onClick={activateDeleteYearPopup}
           /> */}
-            <div
-              onMouseOver={() => {
-                setDisplay(true);
-              }}
-            >
-              <MoreSvg className="w-6 stroke-2 cursor-pointer" />
+            <div className="relative">
+              <MoreSvg
+                onClick={() => {
+                  setDisplay(true);
+                }}
+                className="w-6 stroke-2 cursor-pointer"
+              />
               {display ? (
                 // <div className="flex flex-col mx-auto w-planselect text-white bg-secondary rounded">
-                <div className="absolute z-50 right-2 top-10 flex flex-col w-40 text-black bg-gray-100 rounded shadow">
+                <div className="absolute z-50 right-1 flex flex-col w-40 text-black bg-gray-100 rounded shadow">
                   <button
                     onClick={() => {
                       setEdittingName(true);
