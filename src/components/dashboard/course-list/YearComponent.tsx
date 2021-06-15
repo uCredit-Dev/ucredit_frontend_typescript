@@ -171,7 +171,7 @@ function YearComponent({ id, customStyle, year, courses }: yearProps) {
   return (
     <div
       id={id.toString()}
-      className={`${customStyle} max-w-yearheading w-yearheading min-w-yearMin rounded mb-4 mx-auto transform hover:scale-101 transition duration-200 ease-in z-20`}
+      className={`${customStyle} max-w-yearheading w-yearheading min-w-yearMin rounded mb-4 mx-auto`}
     >
       <div className="p-2 bg-white rounded shadow">
         <div
