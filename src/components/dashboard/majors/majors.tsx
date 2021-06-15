@@ -395,8 +395,8 @@ const bsCBE: Major = {
   wi_credit: 6,
   distributions: [
     {
-      name: "ChemBE CORE",
-      required_credits: 40,
+      name: "Core ChemBE",
+      required_credits: 40-43,
       min_cedits_per_course: 1,
       description:
         "For more information please visit the" +
@@ -408,40 +408,34 @@ const bsCBE: Major = {
           description:
             "Required Courses: \n\t500.113 Gateway Computing/Python\n\t540.101 Chemical Engineering Today\n\t" +
             "540.202 Intro to Chemical and Biological Process Analysis\n\t540.203 Engineering Thermodynamics\n\t" +
-            "540.301 Kinetic Processes\n\t",
-          required_credits: 3,
-          criteria: "EN.500.113[C]",
-        },
-        // {
-        //   description:
-        //     "Required Courses: \n\t500.112/113/114 Gateway Computing or AP Comp Sci A or \
-        // equivalent\n\t601.220 Intermediate Programming\n\t601.226 Data Structures\n\t601.229 \ 
-        // Computer System Fundamentals\n\t601.230 Mathematical Foundations for Computer Science\n\t601.433 Algorithms",
-        //   required_credits: 21,
-        //   criteria:
-        //     "EN.500.112[C]^OR^EN.500.113[C]^OR^EN.500.114[C]^OR^EN.601.220[C]^OR^EN.601.226[C]^OR^EN.601.229[C]^OR^EN.601.230[C]^OR^EN.601.443[C]",
-        // },
-        {
-          description:
-            "12 upper level CS credits in addition to the required Algorithms course",
-          required_credits: 12,
-          criteria: "EN Computer Science[D]^AND^Upper Level Undergraduate[L]",
+            "540.301 Kinetic Processes\n\t540.303 Transport Phenomena I\n\t540.304 Transport Phenomena II\n\t" +
+            "540.306 Chemical and Biological Separations\n\t540.315 Process Design with ASPEN\n\t" + 
+            "540.409 Modeling Dynamics and Control for Chemical and Biological Systems\n\t" +
+            "540.490 Chemical and Biomolecular Lab Safety and Ethics",
+          required_credits: 33,
+          criteria: "EN.500.113[C]^AND^EN.540.101[C]^AND^EN.540.202[C]^AND^EN.540.203[C]^AND^EN.540.301[C]^AND^" +
+            "EN.540.304[C]^AND^EN.540.306[C]^AND^EN.540.315[C]^AND^EN.540.409[C]^AND^EN.540.409[C]",
         },
         {
           description:
-            "At least one upper level course in two of these four different classification areas:" +
-            "Applications(CSCI-APPL), Systems(CSCI-SYST), Software(CSCI-SOFT) and Reasoning(CSCI-RSNG)",
-          required_credits: 6,
-          exclusive: true,
+            "Take one of the following courses for Senior Lab: 540.311 Projects in Chemical " +
+            "Engineering Unit Operations\n\t540.313 Projects in Chemical and Biomolecular " + 
+            "Engineering Unit Operations\n\tChemical Engineering Laboratory at DTU " +
+            "(Technical University of Denmark)",
+          required_credits: 4,
           criteria:
-            "CSCI-APPL[T]^OR^CSCI-SYST[T]^OR^CSCI-SOFT[T]^OR^CSCI-RSNG[T]",
+            "EN.540.311[C]^OR^EN.540.313[C]",
         },
         {
           description:
-            "One Team(CSCI-TEAM) designated course. This Team course may overlap other course " +
-            "requirements, for example to count as both Team and Software.",
-          required_credits: 3,
-          criteria: "CSCI-TEAM[T]",
+            "Take one of the following course options for Product Design (3 to 6 credits): " +
+            "\n\tOption 1: One-semester design (Spring) - 540.314 ChemBE Product Design\n\t" +
+            "Option 2: Two-semester design (two consecutive semesters) - 540.309 Product Design Part 1\n\t" +
+            "540.310 Product Design Part 2 (Must take both courses to receive credit. 540.309 counts towards " +
+            "core credits; 540.310 counts toward engineering electives)\n\tOption 3: WSE one-semester design - " +
+            "500.308 Multidisciplinary Design",
+          required_credits: 3-6,
+          criteria: "(EN.540.314[C])^OR^(EN.540.309[C]^OR^EN.540.310[C])^OR^(EN.500.308[C])",
         },
       ],
     },
@@ -450,14 +444,9 @@ const bsCBE: Major = {
       required_credits: 16,
       min_cedits_per_course: 3,
       description:
-        "All courses in this category must be from one of the two math departments on " +
-        "campus: Mathematics or Applied Math and Statistics. However, 553.171 Discrete Mathematics " +
-        "may not count towards these math requirements. Other than Calculus I and II, all the " +
-        "remaining courses must be 200-level or above. The BS math courses must include coverage " +
-        "of both probability and statistics, which can be satisfied in many ways, including " +
-        "taking any of the 553.3xx combined Probability & Statistics courses.",
+        "Must complete all the following courses",
       criteria: "AS Mathematics[D]^OR^EN Applied Math and Statistics[D]",
-      exception: "EN.553.171[C]",
+      exception: "",
       fine_requirements: [
         {
           description:
