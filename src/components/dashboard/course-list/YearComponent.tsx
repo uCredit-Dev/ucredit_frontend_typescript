@@ -135,13 +135,13 @@ function YearComponent({ id, customStyle, year, courses }: yearProps) {
   return (
     <div
       id={id.toString()}
-      className={`${customStyle} max-w-yearheading w-yearheading min-w-yearMin bg-white rounded p-2 mb-4 mx-auto`}
+      className={`${customStyle} max-w-yearheading w-yearheading min-w-yearMin bg-white rounded p-2 mb-4 mx-auto transform hover:scale-101 transition duration-200 ease-in`}
     >
-      <div className="mb-2 h-yearheading font-medium bg-gradient-to-r from-blue-500 to-green-400">
-        <div className="h-yearheading1 flex flex-row justify-between px-0.5 w-full bg-white">
+      <div className="flex flex-col mt-1 h-yearheading font-medium">
+        <div className="flex flex-row justify-between px-0.5 w-full bg-white">
           <input
             value={yearName}
-            className="flex-shrink mt-auto w-full h-5/6 font-bold border-b hover:border-gray-400 border-transparent focus:outline-none select-none"
+            className="flex-shrink mt-auto w-full text-lg font-semibold border-b hover:border-gray-400 border-transparent focus:outline-none select-none"
             onChange={handleYearNameChange}
           />
           <RemoveSvg
@@ -153,6 +153,7 @@ function YearComponent({ id, customStyle, year, courses }: yearProps) {
             onClick={displaySemesters}
           />
         </div>
+        <div className="w-full h-px bg-gradient-to-r from-blue-500 to-green-400"></div>
       </div>
       {display ? (
         <div className="flex flex-col items-center">

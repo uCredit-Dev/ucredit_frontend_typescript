@@ -95,12 +95,12 @@ const InfoCards = () => {
   };
 
   return (
-    <div className="tight:items-center mb-4 mx-auto p-6 w-coursebars h-auto bg-white rounded shadow transform hover:scale-101 transition duration-200 ease-in">
+    <div className="tight:items-center mb-4 mx-auto p-6 w-coursebars h-auto bg-white rounded shadow">
       <div className="flex flex-col mb-2 w-auto h-auto">
         <div className="flex flex-row items-end justify-center mb-2 w-full">
           <input
             value={planName}
-            className="ml-6 w-plancardinput h-9 text-center text-myplan leading-none border-b hover:border-gray-300 border-transparent focus:outline-none outline-none transform hover:scale-105 transition duration-200 ease-in"
+            className="ml-6 w-plancardinput h-9 text-center text-myplan leading-none border-b hover:border-gray-300 border-transparent focus:outline-none outline-none"
             onChange={handlePlanNameChange}
           />
           <RemoveSvg

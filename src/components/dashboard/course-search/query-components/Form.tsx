@@ -346,7 +346,7 @@ const Form = (props: { setSearching: Function }) => {
           onChange={handleSearchTerm}
         />
         <div
-          className="flex flex-none flex-row items-center justify-center w-6 h-6 bg-white rounded cursor-pointer transform hover:scale-125 transition duration-200 ease-in"
+          className="flex flex-none flex-row items-center justify-center w-6 h-6 bg-white rounded cursor-pointer transform hover:scale-110 transition duration-200 ease-in"
           onClick={() => setShowCriteria(!showCriteria)}
           data-tip={
             showCriteria ? "Hide search criteria" : "Show search criteria"

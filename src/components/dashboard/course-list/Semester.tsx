@@ -86,15 +86,25 @@ function Semester({
     return semesterCourses.map((course, index) => (
       <Draggable key={course._id} index={index} draggableId={course._id}>
         {(provided, snapshot) => {
+          const el = document.getElementById(
+            semesterName + "|" + semesterYear._id
+          );
+          const newStyle: any = { ...provided.draggableProps.style };
+          if (
+            el !== null &&
+            newStyle.top !== undefined &&
+            newStyle.left !== undefined
+          ) {
+            let rect = el.getBoundingClientRect();
+            newStyle.top -= rect.top - 115;
+            newStyle.left -= rect.left - 5;
+          }
           return (
             <div
               ref={provided.innerRef}
               {...provided.draggableProps}
               {...provided.dragHandleProps}
-              style={getItemStyle(
-                snapshot.isDragging,
-                provided.draggableProps.style
-              )}
+              style={getItemStyle(snapshot.isDragging, newStyle)}
             >
               <CourseComponent
                 year={semesterYear.year}
@@ -115,10 +125,10 @@ function Semester({
   return (
     <>
       <div className={`${customStyle} mb-3 w-full h-auto pr-1`}>
-        <div className="flex flex-col h-8 h-yearheading font-medium bg-gradient-to-r rounded from-blue-500 to-green-400">
+        <div className="flex flex-col h-yearheading font-medium">
           <div className="h-yearheading1 flex flex-row items-center justify-between px-0.5 py-1 bg-white">
             <div
-              className="flex flex-row items-center w-full h-auto select-none"
+              className="flex flex-row items-center w-full h-auto font-normal select-none"
               onClick={displayCourses}
             >
               {semesterName === "Fall"
@@ -147,6 +157,7 @@ function Semester({
               <AddSvg className="w-6 h-6 group-hover:text-primary stroke-2" />
             </div>
           </div>
+          <div className="w-full h-px bg-gradient-to-r from-blue-500 to-green-400"></div>
         </div>
         <div id={semesterName + "|" + semesterYear._id}>
           <Droppable droppableId={semesterName + "|" + semesterYear._id}>
@@ -167,7 +178,7 @@ function Semester({
   );
 }
 const getListStyle = (isDraggingOver: any) => ({
-  background: isDraggingOver ? "lightblue" : "lightgrey",
+  background: isDraggingOver ? "skyblue" : "lightblue",
 });
 
 const getItemStyle = (isDragging: any, draggableStyle: any) => ({

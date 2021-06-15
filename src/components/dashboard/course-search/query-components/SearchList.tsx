@@ -85,7 +85,7 @@ const SearchList = (props: { searching: boolean }) => {
       <div className="flex flex-row items-center justify-between px-5 py-2 w-full h-12 bg-gray-200">
         <div>Search Results </div>
         <div
-          className="flex flex-row items-center justify-center w-6 h-6 bg-white rounded cursor-pointer transform hover:scale-125 transition duration-200 ease-in"
+          className="flex flex-row items-center justify-center w-6 h-6 bg-white rounded cursor-pointer transform hover:scale-110 transition duration-200 ease-in"
           onClick={onPlaceholderClick}
           data-tip="Add a placeholder or custom course"
           data-for="godTip"

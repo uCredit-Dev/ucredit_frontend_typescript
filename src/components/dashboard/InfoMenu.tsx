@@ -6,7 +6,7 @@ const InfoMenu = () => {
   const [infoOpen, setInfoOpen] = useState(false);
   return (
     <div
-      className="fixed right-0 flex flex-col justify-between w-8"
+      className="fixed z-50 right-0 flex flex-col justify-between w-8"
       style={{ height: "80vh" }}
     >
       <div className="my-auto transform -rotate-90">
@@ -20,7 +20,7 @@ const InfoMenu = () => {
         </button>
       </div>
       {infoOpen ? (
-        <div className="absolute -left-96 top-20 ml-5 p-4 px-0 max-h-full bg-white bg-opacity-90 shadow overflow-y-scroll transform hover:scale-101 transition duration-200 ease-in">
+        <div className="absolute -left-96 top-20 ml-5 p-4 px-0 max-h-full bg-white bg-opacity-90 shadow overflow-y-scroll">
           <InfoCards />
           <Distributions />
         </div>

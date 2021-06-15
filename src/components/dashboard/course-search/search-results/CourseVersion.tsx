@@ -151,14 +151,20 @@ const CourseVersion = (props: { setInspectedArea: Function }) => {
               <div className="flex flex-row w-full h-auto">
                 <span className="font-semibold">Tags: </span>
                 <div className="flex flex-row flex-wrap ml-1">
-                  {version.tags.map((tag, i) => (
+                  {version.tags.length === 0 ? (
+                    "No tags!"
+                  ) : (
                     <>
-                      {i !== 0 ? ", " : null}
-                      <div className="mt-1 px-1 w-max text-white font-semibold bg-primary rounded transform hover:scale-110 transition duration-200 ease-in">
-                        {tag}
-                      </div>
+                      {version.tags.map((tag, i) => (
+                        <>
+                          {i !== 0 ? ", " : null}
+                          <div className="mt-1 px-1 w-max text-white font-semibold bg-primary rounded transform hover:scale-101 transition duration-200 ease-in">
+                            {tag}
+                          </div>
+                        </>
+                      ))}
                     </>
-                  ))}
+                  )}
                 </div>
               </div>
             </div>
@@ -181,7 +187,7 @@ const CourseVersion = (props: { setInspectedArea: Function }) => {
 
             {showMore === 0 ? (
               <button
-                className="underline focus:outline-none transform hover:scale-105 transition duration-200 ease-in"
+                className="underline focus:outline-none transform"
                 onClick={() => {
                   setShowMore(1);
                 }}
@@ -190,7 +196,7 @@ const CourseVersion = (props: { setInspectedArea: Function }) => {
               </button>
             ) : showMore === 1 ? (
               <button
-                className="underline focus:outline-none transform hover:scale-105 transition duration-200 ease-in"
+                className="underline focus:outline-none transform"
                 onClick={() => {
                   setShowMore(0);
                 }}

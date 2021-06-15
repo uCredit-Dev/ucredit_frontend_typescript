@@ -170,14 +170,14 @@ const PlanChoose = () => {
       > */}
       <div className="relative flex flex-col">
         <button
-          className="mr-auto px-2 py-1 text-black bg-white rounded focus:outline-none shadow transform hover:scale-105 transition duration-200 ease-in"
+          className="ml-auto mr-4 px-2 py-1 text-black bg-white rounded focus:outline-none shadow transform hover:scale-105 transition duration-200 ease-in"
           onClick={openSelectDropdown}
         >
           Select Plan
         </button>
         {dropdown ? (
           // <div className="flex flex-col mx-auto w-planselect text-white bg-secondary rounded">
-          <div className="absolute z-50 left-0 top-9 flex flex-col w-40 text-black bg-white rounded shadow">
+          <div className="absolute z-50 right-4 top-9 flex flex-col w-40 text-black bg-white rounded shadow">
             {planList.map((plan, index) => (
               <button
                 key={index}
