@@ -41,7 +41,7 @@ const Search = () => {
     <div className="absolute top-0">
       {/* Background Grey */}
       <div
-        className="fixed z-20 left-0 top-0 m-0 w-full h-screen bg-black"
+        className="fixed z-40 left-0 top-0 m-0 w-full h-screen bg-black"
         style={{
           opacity: searchOpacity === 100 ? 0.5 : 0,
         }}
@@ -53,7 +53,7 @@ const Search = () => {
       {/* Search area */}
       <div
         className={
-          "fixed flex flex-col bg-gradient-to-r shadow from-blue-500 to-green-400 select-none rounded z-50 w-9/12 tight:overflow-y-none h-5/6 top-1/3 left-1/2 transform -translate-x-1/2 -translate-y-1/3 tight:h-auto"
+          "fixed flex flex-col bg-gradient-to-r shadow from-blue-500 to-green-400 select-none rounded z-40 w-9/12 tight:overflow-y-none h-5/6 top-1/3 left-1/2 transform -translate-x-1/2 -translate-y-1/3 tight:h-auto"
         }
         style={{ opacity: searchOpacity === 100 ? 1 : 0.1 }}
       >
@@ -63,7 +63,7 @@ const Search = () => {
           <span className="text-emphasis font-bold">{searchSemester}</span>{" "}
           semester
         </div>
-        <div className="tight:max-h-mobileSearch flex tight:flex-col flex-row w-full tight:h-auto h-full text-coursecard tight:overflow-y-scroll">
+        <div className="flex tight:flex-col flex-row w-full tight:h-auto h-full tight:max-h-mobileSearch text-coursecard tight:overflow-y-scroll">
           <div
             className={
               "flex flex-col rounded-l bg-gray-200 h-auto flex-none border-r-2 tight:border-0 border-gray-300 tight:w-auto w-80"

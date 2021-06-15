@@ -177,7 +177,7 @@ const PlanChoose = () => {
         </button>
         {dropdown ? (
           // <div className="flex flex-col mx-auto w-planselect text-white bg-secondary rounded">
-          <div className="absolute z-50 right-4 top-9 flex flex-col w-40 text-black bg-white rounded shadow">
+          <div className="absolute z-40 right-4 top-9 flex flex-col w-40 text-black bg-white rounded shadow">
             {planList.map((plan, index) => (
               <button
                 key={index}
