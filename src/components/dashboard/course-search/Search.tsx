@@ -53,7 +53,7 @@ const Search = () => {
       {/* Search area */}
       <div
         className={
-          "fixed flex flex-col bg-primary rounded z-20 w-9/12 h-5/6 top-1/3 left-1/2 transform -translate-x-1/2 -translate-y-1/3"
+          "fixed flex flex-col  bg-gradient-to-r shadow from-blue-500 to-green-400 select-none rounded z-20 w-9/12 h-5/6 top-1/3 left-1/2 transform -translate-x-1/2 -translate-y-1/3"
         }
         style={{ opacity: searchOpacity === 100 ? 1 : 0.1 }}
       >

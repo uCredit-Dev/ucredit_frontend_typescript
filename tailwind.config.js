@@ -6,6 +6,7 @@ module.exports = {
       minWidth: {
         yearMin: "160px",
         narrowest: "710px",
+        planAdd: "360px",
       },
       maxWidth: {
         courseCard: "50%",

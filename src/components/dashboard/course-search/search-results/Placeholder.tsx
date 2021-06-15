@@ -204,7 +204,7 @@ const Placeholder = (props: { addCourse: any }) => {
         </div>
       </div>
       <button
-        className="mr-0 p-2 w-1/6 text-white bg-primary rounded focus:outline-none transform hover:scale-110 transition duration-200 ease-in"
+        className="mr-0 p-2 w-1/6 text-white bg-blue-500 rounded focus:outline-none transform hover:scale-110 transition duration-200 ease-in"
         onClick={props.addCourse}
       >
         Add Course
