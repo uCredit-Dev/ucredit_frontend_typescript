@@ -329,7 +329,7 @@ function CourseList() {
           {currentPlan._id !== "noPlan" ? (
             <AddSvg
               onClick={() => addNewYear(true)}
-              className="mb-4 mr-3 w-14 h-auto border-2 border-gray-300 rounded cursor-pointer select-none transform hover:scale-105 transition duration-200 ease-in"
+              className="mb-4 mr-3 w-14 h-auto max-h-80 border-2 border-gray-300 rounded cursor-pointer select-none transform hover:scale-105 transition duration-200 ease-in"
               data-tip={`Add a pre-university year!`}
               data-for="godTip"
             />

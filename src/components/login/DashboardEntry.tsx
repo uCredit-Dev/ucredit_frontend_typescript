@@ -131,10 +131,10 @@ const DashboardEntry = (props: any) => {
             "), linear-gradient(205deg, rgba(52, 211, 153), rgba(59, 130, 246))",
           backgroundRepeat: "no-repeat",
           backgroundSize: "cover",
-          backgroundPosition: "top",
-          // backgroundColor: "whitesmoke",
+          backgroundPosition: "center center",
+          // backgroundColor: "black",
           backgroundBlendMode: "lighten",
-          filter: "blur(5px)",
+          filter: "blur(9px) hue-rotate(340deg)",
           zIndex: 0,
         }}
       ></div>
