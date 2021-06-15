@@ -30,7 +30,6 @@ function UserSection() {
       cookieVals.forEach((val: string) => {
         if (val.length === 20) {
           cookieVal = val;
-          setLoginId(cookieVal);
         }
       });
       fetch(api + "/retrieveUser/" + cookieVal, {
@@ -45,9 +44,8 @@ function UserSection() {
         .then((resp) => resp.json())
         .then((retrievedUser) => {
           if (retrievedUser.errors === undefined) {
-            dispatch(
-              updateUser(retrievedUser.data) // TODO: Fix issue of infinite loop
-            );
+            dispatch(updateUser(retrievedUser.data));
+            setLoginId(cookieVal);
           } else {
             console.log("errors are", retrievedUser.errors);
             history.push("/login");
