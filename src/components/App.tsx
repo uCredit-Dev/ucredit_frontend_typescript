@@ -12,6 +12,7 @@ import { updateAllCourses } from "../slices/userSlice";
 import LandingPage from "./landing-page/LandingPage";
 import { toast, ToastContainer } from "react-toastify";
 import ReactTooltip from "react-tooltip";
+import { SISRetrievedCourse } from "../resources/commonTypes";
 
 /**
  * Root app component, where it all begins...
@@ -23,20 +24,24 @@ function App() {
   // Component state setup.
   const [welcomeScreen, setWelcomeScreen] = useState<boolean>(true);
 
-  const retrieveData = () => {
+  const retrieveData = (counter: number, retrieved: SISRetrievedCourse[]) => {
     axios
-      .get(api + "/searchV")
+      .get(api + "/search/skip/" + counter + "?mod=" + 500)
       .then((courses: any) => {
-        // const retrieved = courses.data.data;
-        // dispatch(updateAllCourses(retrieved));
-        // toast.dismiss();
-        // toast.success("SIS Courses Cached!");
-        // setWelcomeScreen(false);
-        console.log(courses);
+        if (courses.data.data.length > 0) {
+          console.log("counter is ", counter);
+
+          retrieveData(counter + 1, [...retrieved, ...courses.data.data]);
+        } else {
+          toast.dismiss();
+          toast.success("SIS Courses Cached!");
+          setWelcomeScreen(false);
+          dispatch(updateAllCourses(retrieved));
+        }
+        console.log(courses.data);
       })
       .catch((err) => {
-        // retrieveData();
-        console.log(err);
+        console.log("err is ", err.message);
       });
     // axios
     //   .get(api + "/search/all", {
@@ -71,7 +76,7 @@ function App() {
       closeOnClick: false,
     });
 
-    retrieveData();
+    retrieveData(0, []);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
