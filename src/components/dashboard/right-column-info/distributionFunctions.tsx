@@ -90,6 +90,28 @@ const checkRequirementSatisfied = (
             concat = "false";
           }
           break;
+        case "N":
+          if (course.title.includes(splitArr[index])) {
+            concat = "true";
+          } else {
+            concat = "false";
+          }
+          break;
+        case "L":
+          if (splitArr[index].includes("Upper")) {
+            if (course.number[7] >= '3') {
+              concat = "true";
+            } else {
+              concat = "false";
+            }
+          } else {
+            if (course.number[7] <= '2') {
+              concat = "false";
+            } else {
+              concat = "true";
+            }
+          }
+          break;
         default:
           concat = "false";
       }
