@@ -176,7 +176,7 @@ const bsCS: Major = {
       min_cedits_per_course: 3,
       description:
         "All courses in this category must be from one of the two math departments on campus: Mathematics or Applied Math and Statistics. However, 553.171 Discrete Mathematics may not count towards these math requirements. Other than Calculus I and II, all the remaining courses must be 200-level or above. The BS math courses must include coverage of both probability and statistics, which can be satisfied in many ways, including taking any of the 553.3xx combined Probability & Statistics courses.",
-      criteria: "AS Mathematics[D]^OR^EN Applied Math and Statistics[D]",
+      criteria: "AS Mathematics[D]^OR^EN Applied Mathematics & Statistics[D]",
       exception: "EN.553.171[C]",
       fine_requirements: [
         {
@@ -189,7 +189,7 @@ const bsCS: Major = {
           description: "Probability and Statistics",
           required_credits: 4,
           criteria:
-            "EN Applied Math and Statistics[D]^AND^Probability and Statistics[N]^AND^Upper Level Undergraduate[L]",
+            "EN Applied Mathematics & Statistics[D]^AND^(Probability & Statistics[N]^OR^Probability and Statistics[N])^AND^Upper Level Undergraduate[L]",
         },
       ],
     },
