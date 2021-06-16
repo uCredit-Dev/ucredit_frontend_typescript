@@ -26,7 +26,7 @@ function App() {
 
   const retrieveData = (counter: number, retrieved: SISRetrievedCourse[]) => {
     axios
-      .get(api + "/search/skip/" + counter + "?mod=" + 500)
+      .get(api + "/search/skip/" + counter + "?mod=" + 450)
       .then((courses: any) => {
         if (courses.data.data.length > 0) {
           console.log("counter is ", counter);
