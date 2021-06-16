@@ -25,20 +25,34 @@ function App() {
 
   const retrieveData = () => {
     axios
-      .get(api + "/search/all", {
-        params: {},
-      })
+      .get(api + "/searchV")
       .then((courses: any) => {
-        const retrieved = courses.data.data;
-        dispatch(updateAllCourses(retrieved));
-        toast.dismiss();
-        toast.success("SIS Courses Cached!");
-        setWelcomeScreen(false);
+        // const retrieved = courses.data.data;
+        // dispatch(updateAllCourses(retrieved));
+        // toast.dismiss();
+        // toast.success("SIS Courses Cached!");
+        // setWelcomeScreen(false);
+        console.log(courses);
       })
       .catch((err) => {
-        retrieveData();
+        // retrieveData();
         console.log(err);
       });
+    // axios
+    //   .get(api + "/search/all", {
+    //     params: {},
+    //   })
+    //   .then((courses: any) => {
+    //     const retrieved = courses.data.data;
+    //     dispatch(updateAllCourses(retrieved));
+    //     toast.dismiss();
+    //     toast.success("SIS Courses Cached!");
+    //     setWelcomeScreen(false);
+    //   })
+    //   .catch((err) => {
+    //     retrieveData();
+    //     console.log(err);
+    //   });
   };
 
   // Retrieves all database SIS courses.

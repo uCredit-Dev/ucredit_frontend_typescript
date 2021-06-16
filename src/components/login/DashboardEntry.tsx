@@ -107,8 +107,7 @@ const DashboardEntry = (props: any) => {
           }
         })
         .catch((err) => {
-          console.log("ERROR: ", err.message);
-          history.push("/");
+          console.log("ERROR IS: ", err);
         });
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
