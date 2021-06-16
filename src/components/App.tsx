@@ -41,6 +41,7 @@ function App() {
         console.log(courses.data);
       })
       .catch((err) => {
+        retrieveData(counter, retrieved);
         console.log("err is ", err.message);
       });
     // axios
