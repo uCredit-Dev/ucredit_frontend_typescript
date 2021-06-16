@@ -75,7 +75,7 @@ function App() {
         effect="solid"
       />
       {welcomeScreen ? (
-        <div className="fixed z-50 flex flex-col m-auto w-screen h-screen text-center text-center text-white bg-primary">
+        <div className="fixed z-50 flex flex-col m-auto w-screen h-screen text-center text-center text-white bg-blue-500">
           Welcome logo animation (to be replaced)
           <button
             onClick={() => {

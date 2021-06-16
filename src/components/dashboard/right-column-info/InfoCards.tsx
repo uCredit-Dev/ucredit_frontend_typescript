@@ -6,7 +6,7 @@ import {
   updatePlanList,
   updateDeletePlanStatus,
 } from "../../../slices/userSlice";
-import PlanChoose from "./PlanChoose";
+// import PlanChoose from "./PlanChoose";
 import { ReactComponent as RemoveSvg } from "../../../resources/svg/Remove.svg";
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
@@ -95,27 +95,24 @@ const InfoCards = () => {
   };
 
   return (
-    <div className="flex tight:flex-col flex-row tight:items-center mb-4 h-auto transform hover:scale-101 transition duration-200 ease-in">
-      <div className="flex flex-col items-center justify-center tight:mb-4 tight:mr-0 p-6 w-full h-auto bg-white rounded shadow">
-        <div className="flex flex-col mb-2 w-auto h-auto">
-          <div className="flex flex-row items-end justify-center mb-2 w-full">
-            <input
-              value={planName}
-              className="ml-6 w-plancardinput h-9 text-center text-myplan leading-none border-b hover:border-gray-300 border-transparent focus:outline-none outline-none transform hover:scale-105 transition duration-200 ease-in"
-              onChange={handlePlanNameChange}
-            />
-            <RemoveSvg
-              className="ml-1 w-5 h-7 stroke-2 cursor-pointer select-none transform hover:scale-125 transition duration-200 ease-in"
-              onClick={activateDeletePlan}
-            />
-          </div>
-          <PlanChoose />
+    <div className="tight:items-center mb-4 mx-auto p-6 w-coursebars h-auto bg-white rounded shadow">
+      <div className="flex flex-col mb-2 w-auto h-auto">
+        <div className="flex flex-row items-end justify-center mb-2 w-full">
+          <input
+            value={planName}
+            className="ml-6 w-plancardinput h-9 text-center text-myplan leading-none border-b hover:border-gray-300 border-transparent focus:outline-none outline-none"
+            onChange={handlePlanNameChange}
+          />
+          <RemoveSvg
+            className="ml-1 w-5 h-7 stroke-2 cursor-pointer select-none transform hover:scale-125 transition duration-200 ease-in"
+            onClick={activateDeletePlan}
+          />
         </div>
-        <div className="flex flex-col items-center">
-          <div className="w-auto h-auto text-center">{user.name}</div>
-          <div className="w-auto h-auto text-center font-light stroke-2">
-            {currentPlan.majors}
-          </div>
+      </div>
+      <div className="flex flex-col items-center">
+        <div className="w-auto h-auto text-center">{user.name}</div>
+        <div className="w-auto h-auto text-center font-light stroke-2">
+          {currentPlan.majors}
         </div>
       </div>
     </div>

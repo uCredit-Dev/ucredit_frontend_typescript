@@ -164,33 +164,40 @@ const PlanChoose = () => {
     <>
       {/* dummy component to generate new plans */}
       <GenerateNewPlan />
-      <button
+      {/* <button
         className="mx-auto w-planselect text-white bg-primary rounded focus:outline-none transform hover:scale-105 transition duration-200 ease-in"
         onClick={openSelectDropdown}
-      >
-        Select Plan
-      </button>
-      {dropdown ? (
-        <div className="flex flex-col mx-auto w-planselect text-white bg-secondary rounded">
-          {planList.map((plan, index) => (
+      > */}
+      <div className="relative flex flex-col">
+        <button
+          className="ml-auto mr-4 px-2 py-1 text-black bg-white rounded focus:outline-none shadow select-none transform hover:scale-105 transition duration-200 ease-in"
+          onClick={openSelectDropdown}
+        >
+          Select Plan
+        </button>
+        {dropdown ? (
+          // <div className="flex flex-col mx-auto w-planselect text-white bg-secondary rounded">
+          <div className="absolute z-40 right-4 top-9 flex flex-col w-40 text-black bg-white rounded shadow">
+            {planList.map((plan, index) => (
+              <button
+                key={index}
+                value={plan._id}
+                onClick={handlePlanChange}
+                className="py-1 hover:bg-gray-300 border-t focus:outline-none transform"
+              >
+                {plan.name}
+              </button>
+            ))}
             <button
-              key={index}
-              value={plan._id}
+              value="new plan"
               onClick={handlePlanChange}
-              className="focus:outline-none transform hover:scale-105 transition duration-200 ease-in"
+              className="py-1 hover:bg-gray-300 border-t focus:outline-none"
             >
-              {plan.name}
+              Create a plan +
             </button>
-          ))}
-          <button
-            value="new plan"
-            onClick={handlePlanChange}
-            className="focus:outline-none transform hover:scale-105 transition duration-200 ease-in"
-          >
-            Create a plan +
-          </button>
-        </div>
-      ) : null}
+          </div>
+        ) : null}
+      </div>
     </>
   );
 };

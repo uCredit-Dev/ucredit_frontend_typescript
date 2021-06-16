@@ -56,7 +56,7 @@ function CourseBar({
         data-for="godTip"
       >
         <div
-          className="h-full bg-secondary rounded"
+          className="h-full bg-blue-300 rounded"
           style={{
             width: `${
               plannedCredits <= maxCredits

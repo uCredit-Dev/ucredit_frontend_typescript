@@ -4,7 +4,7 @@ import { api, guestUser } from "../../resources/assets";
 import { useDispatch, useSelector } from "react-redux";
 import { updateUser, selectUser } from "../../slices/userSlice";
 import { withCookies, useCookies } from "react-cookie";
-import bg from "../../resources/images/bg.png";
+import samplePlan from "../../resources/images/samplePlan.png";
 import placeholder from "../../resources/images/placeholder_logo.png";
 import Test from "../../resources/Test";
 
@@ -121,41 +121,52 @@ const DashboardEntry = (props: any) => {
   };
 
   return (
-    <div
-      className="flex w-screen h-screen"
-      style={{
-        backgroundImage: "url(" + bg + ")",
-        backgroundRepeat: "no-repeat",
-        backgroundSize: "cover",
-        backgroundPosition: "top",
-      }}
-    >
-      <Test />
+    <>
       <div
-        className="min-w-1/4 flex flex-col mx-auto my-auto p-14 text-white text-lg font-bold rounded"
-        style={{ backgroundColor: "#00316F" }}
-      >
-        <div className="flex flex-row items-center justify-center mt-auto w-full text-3xl">
-          <img src={placeholder} alt="logo" className="h-14" />
-          <div>uCredit</div>
-        </div>
-        <div className="mb-14 mt-8 mx-auto w-full text-center text-4xl">
-          Streamlined Degree Planning.
-        </div>
-        <a
-          href="https://ucredit-api.herokuapp.com/api/login"
-          className="flex flex-row items-center justify-center mx-auto w-64 h-12 font-semibold tracking-widest bg-secondary rounded-full cursor-pointer select-none transform hover:scale-105 transition duration-200 ease-in"
+        className="absolute flex w-screen h-screen"
+        style={{
+          backgroundImage:
+            "url(" +
+            samplePlan +
+            "), linear-gradient(205deg, rgba(52, 211, 153), rgba(59, 130, 246))",
+          backgroundRepeat: "no-repeat",
+          backgroundSize: "cover",
+          backgroundPosition: "center center",
+          // backgroundColor: "black",
+          backgroundBlendMode: "lighten",
+          filter: "blur(9px) hue-rotate(340deg)",
+          zIndex: 0,
+        }}
+      ></div>
+      <Test />
+      <div className="absolute flex w-full h-full">
+        <div
+          className="flex flex-col mx-auto mx-auto my-auto p-14 text-white text-lg font-bold bg-gradient-to-b rounded shadow from-blue-500 to-green-400"
+          // style={{ backgroundColor: "#00316F", zIndex: 50 }}
         >
-          JHU SSO Login
-        </a>
-        <button
-          className="flex flex-row items-center justify-center mb-auto mt-5 mx-auto w-64 h-12 font-semibold tracking-widest bg-secondary rounded-full focus:outline-none cursor-pointer select-none transform hover:scale-105 transition duration-200 ease-in"
-          onClick={handleGuest}
-        >
-          Continue as guest
-        </button>
+          <div className="flex flex-row items-center justify-center mt-auto w-full text-3xl">
+            <img src={placeholder} alt="logo" className="h-14" />
+            <div>uCredit</div>
+          </div>
+          <div className="mb-14 mt-8 mx-auto w-full text-center text-4xl">
+            Streamlined Degree Planning.
+          </div>
+          <a
+            href="https://ucredit-api.herokuapp.com/api/login"
+            className="flex flex-row items-center justify-center mx-auto w-64 h-12 font-semibold tracking-widest bg-primary rounded-full shadow cursor-pointer select-none transform hover:scale-105 transition duration-200 ease-in"
+          >
+            JHU SSO Login
+          </a>
+          <button
+            className="flex flex-row items-center justify-center mb-auto mt-5 mx-auto w-64 h-12 font-semibold tracking-widest bg-primary rounded-full focus:outline-none shadow cursor-pointer select-none transform hover:scale-105 transition duration-200 ease-in"
+            onClick={handleGuest}
+          >
+            Continue as guest
+          </button>
+        </div>
       </div>
-    </div>
+      {/* </div> */}
+    </>
   );
 };
 

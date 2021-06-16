@@ -13,6 +13,8 @@ import DeletePlanPopup from "./DeletePlanPopup";
 import Distributions from "./right-column-info/Distributions";
 import PlanAdd from "./PlanAdd";
 import DeleteYearPopup from "./DeleteYearPopup";
+import PlanChoose from "./right-column-info/PlanChoose";
+import InfoMenu from "./InfoMenu";
 
 /**
  * Holds all dashboard components.
@@ -27,16 +29,25 @@ function Content() {
   return (
     // <div className="flex flex-row flex-wrap-reverse mt-content medium:px-48 h-full">
     <>
-      <div className="flex flex-row thin:flex-wrap-reverse mt-content medium:px-48 h-full">
-        <div className="flex-grow h-auto">
-          <CourseList />
-        </div>
-        <div className="flex flex-col ml-auto mr-auto my-4 w-coursebars h-auto">
-          <div className="hover:scale-101 ml-4 mr-4">
-            <InfoCards />
+      <div className="flex flex-row">
+        <div className="flex flex-row thin:flex-wrap-reverse mt-content medium:px-10 px-5 w-full h-full">
+          <div className="flex flex-col flex-grow h-auto">
+            <PlanChoose />
+            <CourseList />
           </div>
-          <Distributions />
+
+          {window.innerWidth > 1600 ? (
+            <div className="flex flex-col flex-wrap ml-auto mr-auto w-coursebars h-auto">
+              <InfoCards />
+              <Distributions />
+            </div>
+          ) : null}
         </div>
+        {window.innerWidth <= 1600 ? (
+          <div className="w-10">
+            <InfoMenu />
+          </div>
+        ) : null}
       </div>
       {searching ? <Search /> : null}
       {deletePlanStatus ? <DeletePlanPopup /> : null}
