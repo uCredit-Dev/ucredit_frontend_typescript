@@ -308,7 +308,7 @@ const baEcon: Major = {
     {
       name: "Economics CORE",
       required_credits: 40,
-      min_cedits_per_course: 1,
+      min_credits_per_course: 1,
       description:
         "For more information please visit the" +
         "<a href='https://econ.jhu.edu/undergraduate/major-requirements/'>" +
@@ -328,7 +328,7 @@ const baEcon: Major = {
     {
       name: "Math",
       required_credits: 16,
-      min_cedits_per_course: 3,
+      min_credits_per_course: 3,
       description:
         "All courses in this category must be from one of the two math departments on " +
         "campus: Mathematics or Applied Math and Statistics. However, 553.171 Discrete Mathematics " +
@@ -350,7 +350,7 @@ const baEcon: Major = {
     {
       name: "Science",
       required_credits: 8,
-      min_cedits_per_course: 1,
+      min_credits_per_course: 1,
       description:
         "Students must take two semesters of core science courses (any combination of Physics, " +
           "Chemistry, Biology), with their associated labs. AP credit is an acceptable substitute " +
@@ -361,7 +361,7 @@ const baEcon: Major = {
     {
       name: "Liberal Arts",
       required_credits: 18,
-      min_cedits_per_course: 3,
+      min_credits_per_course: 3,
       double_count: true,
       description:
         "These courses must have either an ‘H’ or ‘S’ area designator on them, but can be " +
@@ -374,7 +374,7 @@ const baEcon: Major = {
     {
       name: "English Focused Writing Intensive",
       required_credits: 3,
-      min_cedits_per_course: 3,
+      min_credits_per_course: 3,
       double_count: true,
       description:
         "At least one course with a primary focus on writing in English must be chosen. " +
@@ -387,17 +387,19 @@ const baEcon: Major = {
   ],
 };
 
+/* COMPLETED */
+
 // https://engineering.jhu.edu/chembe/undergraduate-studies/undergraduate-degree-program/
 const bsCBE: Major = {
   degree_name: "B.S. Chemical & Biomolecular Engineering",
   department: "EN Chemical & Biomolecular Engineering",
-  total_degree_credit: 120,
+  total_degree_credit: 128,
   wi_credit: 6,
   distributions: [
     {
       name: "Core ChemBE",
-      required_credits: 40-43,
-      min_cedits_per_course: 1,
+      required_credits: 48,
+      min_credits_per_course: 3,
       description:
         "For more information please visit the" +
         "<a href='https://engineering.jhu.edu/chembe/undergraduate-studies/undergraduate-degree-program/'>" +
@@ -442,30 +444,26 @@ const bsCBE: Major = {
     {
       name: "Math",
       required_credits: 16,
-      min_cedits_per_course: 3,
+      min_credits_per_course: 4,
       description:
-        "Must complete all the following courses",
+        "All courses in this category must be from one of the two math departments on " +
+        "campus: Mathematics or Applied Math and Statistics.",
       criteria: "AS Mathematics[D]^OR^EN Applied Math and Statistics[D]",
       exception: "",
       fine_requirements: [
         {
           description:
-            "Required Courses:\n\t110.108 Calculus I or AP equivalent\n\t110.109 Calculus II or AP equivalent",
-          required_credits: 8,
-          criteria: "AS.110.108[C]^OR^AS.110.109[C]",
-        },
-        {
-          description: "Probability and Statistics",
-          required_credits: 4,
-          criteria:
-            "EN Applied Math and Statistics[D]^AND^Probability and Statistics[N]^AND^Upper Level Undergraduate[L]",
+            "Required Courses:\n\t110.108 Calculus I or AP equivalent\n\t110.109 Calculus II or AP equivalent\n\t" +
+            "110.202 Calculus III or AP equivalent\n\t110.302 Differential Equations with Applications",
+          required_credits: 16,
+          criteria: "AS.110.108[C]^OR^AS.110.109[C]^OR^AS.110.202[C]^OR^AS.110.302[C]",
         },
       ],
     },
     {
       name: "Science",
-      required_credits: 8,
-      min_cedits_per_course: 1,
+      required_credits: 14,
+      min_credits_per_course: 1,
       description:
         "Students must take two semesters of core science courses (any combination of Physics, " +
           "Chemistry, Biology), with their associated labs. AP credit is an acceptable substitute " +
@@ -476,7 +474,7 @@ const bsCBE: Major = {
     {
       name: "Liberal Arts",
       required_credits: 18,
-      min_cedits_per_course: 3,
+      min_credits_per_course: 3,
       double_count: true,
       description:
         "These courses must have either an ‘H’ or ‘S’ area designator on them, but can be " +
@@ -485,27 +483,30 @@ const bsCBE: Major = {
         "they don’t carry an ‘H’ or ‘S’ designator.",
       criteria:
         "AS Center for Language Education[D]^OR^AS Modern Languages and Literatures[D]^OR^H[A]^OR^S[A]",
+      fine_requirements: [
+        {
+          description:
+            "Required Course: 661.315 Culture of the Engineering Profession",
+          required_credits: 3,
+          criteria: "AS.661.315[C]",
+        },
+      ],
     },
-    {
-      name: "English Focused Writing Intensive",
-      required_credits: 3,
-      min_cedits_per_course: 3,
-      double_count: true,
-      description:
-        "At least one course with a primary focus on writing in English must be chosen. " +
-        "Courses that satisfy this requirement are: EN.661.110, EN.661.111, EN.661.250, EN.661.251, " +
-        "EN.661.315, AS.060.100, AS.060.113, AS.220.105, AS.180.248, AS.290.303, AS.360.133.",
-      criteria:
-        "EN.661.110[C]^OR^EN.661.111[C]^OR^EN.661.250[C]^OR^EN.661.251[C]^OR^EN.661.315[C]" +
-        "^OR^AS.060.100[C]^OR^AS.060.113[C]^OR^AS.220.105[C]^OR^AS.180.248[C]^OR^AS.290.303[C]^OR^AS.360.133",
-    },
+    // {
+    //   name: "English Focused Writing Intensive",
+    //   required_credits: 3,
+    //   min_credits_per_course: 3,
+    //   double_count: true,
+    //   description:
+    //     "At least one course with a primary focus on writing in English must be chosen. " +
+    //     "Courses that satisfy this requirement are: EN.661.110, EN.661.111, EN.661.250, EN.661.251, " +
+    //     "EN.661.315, AS.060.100, AS.060.113, AS.220.105, AS.180.248, AS.290.303, AS.360.133.",
+    //   criteria:
+    //     "EN.661.110[C]^OR^EN.661.111[C]^OR^EN.661.250[C]^OR^EN.661.251[C]^OR^EN.661.315[C]" +
+    //     "^OR^AS.060.100[C]^OR^AS.060.113[C]^OR^AS.220.105[C]^OR^AS.180.248[C]^OR^AS.290.303[C]^OR^AS.360.133",
+    // },
   ],
 };
-
-
-
-
-/* COMPLETED */
 
 // https://krieger.jhu.edu/internationalstudies/undergraduate/requirements/
 const baIS: Major = {
@@ -517,7 +518,7 @@ const baIS: Major = {
     {
       name: "Political Science",
       required_credits: 18,
-      min_cedits_per_course: 3,
+      min_credits_per_course: 3,
       description:
         "International studies students must complete 18 credits in political science, including:\n\t" +
         "One course in international relations (IR)\n\tTwo courses in comparative politics (CP)\n\tOne " +
@@ -559,7 +560,7 @@ const baIS: Major = {
     {
       name: "Economics",
       required_credits: 12,
-      min_cedits_per_course: 3,
+      min_credits_per_course: 3,
       description:
         "Note: both Elements of Macroeconomics and Elements of Microeconomics must be " +
         "completed by the end of the sophomore year.",
@@ -594,7 +595,7 @@ const baIS: Major = {
     {
       name: "Foreign Language",
       required_credits: 6,
-      min_cedits_per_course: 3,
+      min_credits_per_course: 3,
       description:
         "International studies majors must demonstrate proficiency in at least one" +
         "foreign language. Proficiency through the second semester of the advanced/third-year " +
@@ -614,7 +615,7 @@ const baIS: Major = {
     {
       name: "Focus Area",
       required_credits: 12,
-      min_cedits_per_course: 3,
+      min_credits_per_course: 3,
       description:
         "Four courses within a coherent field of interest. For more detail please visit " +
         "https://krieger.jhu.edu/internationalstudies/undergraduate/requirements/",
@@ -624,7 +625,7 @@ const baIS: Major = {
     {
       name: "History",
       required_credits: 15,
-      min_cedits_per_course: 3,
+      min_credits_per_course: 3,
       description:
         "International Studies students must complete 15 credits in history, including:\n\t" +
         "One introductory course at the 100-level in the JHU History Department " +
@@ -659,7 +660,7 @@ const bsCS: Major = {
     {
       name: "Computer Science",
       required_credits: 40,
-      min_cedits_per_course: 1,
+      min_credits_per_course: 1,
       description:
         "For more information please visit the <a href='https://www.cs.jhu.edu/2021undergraduate-advising-manual/'>" +
         "major degree requirement</a> section on the department website.",
@@ -710,7 +711,7 @@ const bsCS: Major = {
     {
       name: "Math",
       required_credits: 16,
-      min_cedits_per_course: 3,
+      min_credits_per_course: 3,
       description:
         "All courses in this category must be from one of the two math departments on " +
         "campus: Mathematics or Applied Math and Statistics. However, 553.171 Discrete Mathematics " +
@@ -738,7 +739,7 @@ const bsCS: Major = {
     {
       name: "Science",
       required_credits: 8,
-      min_cedits_per_course: 1,
+      min_credits_per_course: 1,
       description:
         "Students must take two semesters of core science courses (any combination of Physics, " +
         "Chemistry, Biology), with their associated labs. AP credit is an acceptable substitute for these courses and labs.",
@@ -748,7 +749,7 @@ const bsCS: Major = {
     {
       name: "Liberal Arts",
       required_credits: 18,
-      min_cedits_per_course: 3,
+      min_credits_per_course: 3,
       double_count: true,
       description:
         "These courses must have either an ‘H’ or ‘S’ area designator on them, but can be " +
@@ -761,7 +762,7 @@ const bsCS: Major = {
     {
       name: "English Focused Writing Intensive",
       required_credits: 3,
-      min_cedits_per_course: 3,
+      min_credits_per_course: 3,
       double_count: true,
       description:
         "At least one course with a primary focus on writing in English must be chosen. " +

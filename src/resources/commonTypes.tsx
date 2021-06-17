@@ -120,7 +120,7 @@ export type Distribution = {
   _id: string;
   name: string;
   required_credits: number;
-  min_cedits_per_course: number;
+  min_credits_per_course: number;
   description: string;
   criteria: string;
   fine_requirements?: FineReq[];
@@ -161,7 +161,7 @@ export type FineReq = {
 export type DistributionObj = {
   name: string;
   required_credits: number;
-  min_cedits_per_course: number;
+  min_credits_per_course: number;
   description: string;
   criteria: string;
   fine_requirements?: FineReq[];
