@@ -1,10 +1,11 @@
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { updateUser, selectUser, resetUser } from "../../slices/userSlice";
-import { ReactComponent as UserSvg } from "../../resources/svg/User.svg";
+// import { ReactComponent as UserSvg } from "../../resources/svg/User.svg";
 import { useHistory } from "react-router-dom";
 import { resetCurrentPlan } from "../../slices/currentPlanSlice";
 import { api } from "../../resources/assets";
+import bird from "../../resources/images/placeholder_logo.png";
 
 /**
  * User login/logout buttons.
@@ -15,7 +16,7 @@ function UserSection() {
   const user = useSelector(selectUser);
 
   // Component state setup
-  const [loginId, setLoginId] = useState("");
+  const [loginId, setLoginId] = useState(document.cookie.split("=")[1]);
   let history = useHistory();
 
   // Useffect runs once on page load, calling to https://ucredit-api.herokuapp.com/api/retrieveUser to retrieve user data.
@@ -29,7 +30,6 @@ function UserSection() {
       cookieVals.forEach((val: string) => {
         if (val.length === 20) {
           cookieVal = val;
-          setLoginId(cookieVal);
         }
       });
       fetch(api + "/retrieveUser/" + cookieVal, {
@@ -44,9 +44,8 @@ function UserSection() {
         .then((resp) => resp.json())
         .then((retrievedUser) => {
           if (retrievedUser.errors === undefined) {
-            dispatch(
-              updateUser(retrievedUser.data) // TODO: Fix issue of infinite loop
-            );
+            dispatch(updateUser(retrievedUser.data));
+            setLoginId(cookieVal);
           } else {
             console.log("errors are", retrievedUser.errors);
             history.push("/login");
@@ -63,9 +62,18 @@ function UserSection() {
   return (
     <>
       <div className="flex flex-row items-center justify-end w-full h-full">
-        <div className="flex flex-row items-center justify-center mr-3 w-11 h-11 bg-white rounded-full">
-          <UserSvg className="w-6 h-6 stroke-2" />
+        {/* <div className="flex flex-row items-center justify-center mr-3 w-11 h-11 bg-white rounded-full"> */}
+        {/* <UserSvg className="w-6 h-6 stroke-2" /> */}
+        {/* </div> */}
+        <div className="flex flex-row flex-grow items-center text-white text-4xl italic font-bold">
+          <img src={bird} alt="logo" className="mr-2 h-12"></img>
+          UCredit
         </div>
+        {window.innerWidth > 800 ? (
+          <div className="mr-3 text-white font-semibold">
+            Logged in as {user.name}!
+          </div>
+        ) : null}
         {user._id === "guestUser" ? (
           <a
             href="https://ucredit-api.herokuapp.com/api/login"
