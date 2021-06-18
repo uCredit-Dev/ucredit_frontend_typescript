@@ -732,7 +732,7 @@ const bsCS: Major = {
           description: "Probability and Statistics",
           required_credits: 4,
           criteria:
-            "EN Applied Math and Statistics[D]^AND^Probability and Statistics[N]^AND^Upper Level Undergraduate[L]",
+            "EN Applied Mathematics & Statistics[D]^AND^(Probability & Statistics[N]^OR^Probability and Statistics[N])^AND^Upper Level Undergraduate[L]",
         },
       ],
     },

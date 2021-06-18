@@ -12,6 +12,7 @@ import { updateAllCourses } from "../slices/userSlice";
 import LandingPage from "./landing-page/LandingPage";
 import { toast, ToastContainer } from "react-toastify";
 import ReactTooltip from "react-tooltip";
+import { SISRetrievedCourse } from "../resources/commonTypes";
 
 /**
  * Root app component, where it all begins...
@@ -23,22 +24,39 @@ function App() {
   // Component state setup.
   const [welcomeScreen, setWelcomeScreen] = useState<boolean>(true);
 
-  const retrieveData = () => {
+  const retrieveData = (counter: number, retrieved: SISRetrievedCourse[]) => {
     axios
-      .get(api + "/search/all", {
-        params: {},
-      })
+      .get(api + "/search/skip/" + counter + "?mod=" + 450)
       .then((courses: any) => {
-        const retrieved = courses.data.data;
-        dispatch(updateAllCourses(retrieved));
-        toast.dismiss();
-        toast.success("SIS Courses Cached!");
-        setWelcomeScreen(false);
+        if (courses.data.data.length > 0) {
+          retrieveData(counter + 1, [...retrieved, ...courses.data.data]);
+        } else {
+          toast.dismiss();
+          toast.success("SIS Courses Cached!");
+          setWelcomeScreen(false);
+          dispatch(updateAllCourses(retrieved));
+        }
       })
       .catch((err) => {
-        retrieveData();
-        console.log(err);
+        retrieveData(counter, retrieved);
+        console.log("err is ", err.message);
       });
+    // Old caching code, where all courses are cacched
+    // axios
+    //   .get(api + "/search/all", {
+    //     params: {},
+    //   })
+    //   .then((courses: any) => {
+    //     const retrieved = courses.data.data;
+    //     dispatch(updateAllCourses(retrieved));
+    //     toast.dismiss();
+    //     toast.success("SIS Courses Cached!");
+    //     setWelcomeScreen(false);
+    //   })
+    //   .catch((err) => {
+    //     retrieveData();
+    //     console.log(err);
+    //   });
   };
 
   // Retrieves all database SIS courses.
@@ -57,7 +75,7 @@ function App() {
       closeOnClick: false,
     });
 
-    retrieveData();
+    retrieveData(0, []);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
