@@ -29,8 +29,6 @@ function App() {
       .get(api + "/search/skip/" + counter + "?mod=" + 450)
       .then((courses: any) => {
         if (courses.data.data.length > 0) {
-          console.log("counter is ", counter);
-
           retrieveData(counter + 1, [...retrieved, ...courses.data.data]);
         } else {
           toast.dismiss();
@@ -38,12 +36,12 @@ function App() {
           setWelcomeScreen(false);
           dispatch(updateAllCourses(retrieved));
         }
-        console.log(courses.data);
       })
       .catch((err) => {
         retrieveData(counter, retrieved);
         console.log("err is ", err.message);
       });
+    // Old caching code, where all courses are cacched
     // axios
     //   .get(api + "/search/all", {
     //     params: {},
