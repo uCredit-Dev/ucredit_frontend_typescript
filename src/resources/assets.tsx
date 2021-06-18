@@ -300,14 +300,19 @@ export const processPrereqs = (
   // Regex used to get an array of course numbers.
   const regex: RegExp = /[A-Z]{2}\.[0-9]{3}\.[0-9]{3}/g;
   const forwardSlashRegex: RegExp =
-    /[A-Z]{2}\.[0-9]{3}\.[0-9]{3}\/[A-Z]{2}\.[0-9]{3}\.[0-9]{3}/g;
+    /[A-Z]{2}\.[0-9]{3}\.[0-9]{3}\/[A-Z]{2}\.[0-9]{3}\.[0-9]{3}/g; // e.g. EN.XXX.XXX/EN.XXX.XXX
+  const forwardSlashRegex2: RegExp = 
+    /[A-Z]{2}\.[0-9]{3}\.[0-9]{3}\/[0-9]{3}\.[0-9]{3}/g // e.g. EN.XXX.XXX/XXX.XXX
+  const forwardSlashRegex3: RegExp = 
+    /[A-Z]{2}\.[0-9]{3}\/[0-9]{3}\.[0-9]{3}/g // e.g. EN.XXX/XXX.XXX
 
   let description: string = preReqs[0].Description;
   let expr: any = preReqs[0].Expression;
 
   // All courses that match the parttern of 'COURSE/COURSE' in description
   let forwardSlashCondition = [...description.matchAll(forwardSlashRegex)];
-
+  let forwardSlashCondition2 = [...description.matchAll(forwardSlashRegex2)];
+  let forwardSlashCondition3 = [...description.matchAll(forwardSlashRegex3)];
   // Checking for additional conditions only said in the description (ie. additional prereqs from description in CSF)
   forwardSlashCondition.forEach((condition: any) => {
     let newCourse = condition[0].substr(11, condition[0].length);
@@ -320,6 +325,30 @@ export const processPrereqs = (
       );
     }
   });
+
+  forwardSlashCondition2.forEach((condition: any) => {
+    let firstCourse = condition[0].substr(0, 10);
+    let secondCourse = condition[0].substr(0, 3) + condition[0].substr(11);
+    if (expr.match(secondCourse) === null) {
+      // If our expression doesn't already have the course to the right of the '/', we append this course to the old course in the expression with an OR
+      expr = expr.replaceAll(
+        firstCourse + "[C]",
+        firstCourse + "[C]^OR^" + secondCourse + "[C]"
+      );
+    }
+  })
+
+  forwardSlashCondition3.forEach((condition: any) => {
+    let firstCourse = condition[0].substr(0, 6) + condition[0].substr(10, 13);
+    let secondCourse = condition[0].substr(0, 3) + condition[0].substr(7, 13);
+    if (expr.match(secondCourse) === null) {
+      // If our expression doesn't already have the course to the right of the '/', we append this course to the old course in the expression with an OR
+      expr = expr.replaceAll(
+        firstCourse + "[C]",
+        firstCourse + "[C]^OR^" + secondCourse + "[C]"
+      );
+    }
+  })
 
   let obj = getCourses(expr, regex, allCourses, planCourses);
   return obj;
@@ -582,7 +611,6 @@ const createPrereqBulletList = (input: any): any => {
 // Takes parsed prereq array and then parses this array again to make OR sequences
 const parsePrereqsOr = (input: any, depth: number): any => {
   const orParsed: any[] = [];
-
   // Group by ORs: Put elements connected by ORs as arrays starting with depth number (as an identifier). All other elements are treated as ands.
   // if OR, pop last element from orParsed. If it's a string, make a new array. If array, push the next element into this array. Put the array back into orParsed.
   // if not OR, push element into orParsed
