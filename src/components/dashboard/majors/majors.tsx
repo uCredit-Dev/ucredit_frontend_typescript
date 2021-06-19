@@ -591,7 +591,84 @@ const baHistory: Major = {
   total_degree_credit: 120,
   wi_credit: 6,
   distributions: [
-
+    {
+      name: "Introductory History Courses",
+      required_credits: 6,
+      min_credits_per_course: 3,
+      description:
+        "For more information please visit the" +
+        "<a href='https://e-catalogue.jhu.edu/arts-sciences/full-time-residential-programs/degree-programs/history/history-bachelor-arts/'>" +
+        "major degree requirement</a> section on the department website.",
+      criteria: "AS Political Science[D]",
+      fine_requirements: [
+        {
+          description: "Select one of the following: Two introductory history courses (AS.100.1xx) OR \n\t" +
+            "One introductory history course (AS.100.1xx) + one Freshman Seminar (AS.100.130-AS.100.160)",
+          required_credits: 6,
+          criteria: "Introductory History[D]",
+        },
+      ],
+    },
+    {
+      name: "Method Requirement (All Majors)",
+      required_credits: 6,
+      min_credits_per_course: 3,
+      description:
+        "Required courses for History majors.",
+      criteria: "AS Economics[D]",
+      fine_requirements: [
+        {
+          description: "Required Courses: AS.100.293 Undergraduate Seminar in History\n\t100.294 Undergraduate Seminar in History",
+          required_credits: 6,
+          criteria: "AS.100.293[C]^OR^AS.100.294[C]",
+        },
+      ],
+    },
+    {
+      name: "Elective Courses",
+      required_credits: 18,
+      min_credits_per_course: 3,
+      description:
+        "Required elective courses for History majors.",
+      criteria:
+        "AS Electives[D]",
+      fine_requirements: [
+        {
+          description: "Required Courses: Two history courses at any level\n\tFour 300-level or higher history courses",
+          required_credits: 18,
+          criteria: "AS History[D]^AND^Lower Level Undergraduate[N]",
+        },
+      ],
+    },
+    {
+      name: "Additional Upper-Level Courses",
+      required_credits: 6,
+      min_credits_per_course: 3,
+      description:
+        "Required additional upper-level courses for History majors. Note: Students must have a cumulative GPA of 3.25 " +
+        "and a cumulative GPA in history of 3.5 or higher by December of their junior year to be eligible for the senior " +
+        "thesis option to graduate with honors in history.",
+      criteria: "",
+      fine_requirements: [
+        {
+          required_credits: 6,
+          description:
+            "Select one of the following: Two 300-level or higher history courses\n\t OR (AS.100.507 Senior Thesis\n\t AND" + 
+            "\n\tAS.100.508 Senior Thesis",
+          criteria: "AS History[D]^OR^AS.100.507[C]^OR^AS.100.508[C]",
+        },
+      ],
+    },
+    {
+      name: "Foreign Language",
+      required_credits: 18,
+      min_credits_per_course: 0,
+      description:
+        "Foreign language proficiency may be demonstrated by coursework or by special examination, but a language " +
+        "requirement waived by exam must be documented on the student's transcript. Up to 18 credits.",
+      criteria:
+        "AS Center for Language Education[D]^OR^AS Modern Languages and Literatures[D]",
+    },
   ]
 };
 
@@ -602,7 +679,235 @@ const bsBiology: Major = {
   total_degree_credit: 120,
   wi_credit: 6,
   distributions: [
-
+    {
+      name: "Biomedical Core",
+      required_credits: 34,
+      min_credits_per_course: 1,
+      description:
+        "For more information please visit the" +
+        "<a href='https://e-catalogue.jhu.edu/engineering/full-time-residential-programs/degree-programs/biomedical-engineering/biomedical-engineering-bachelor-science/#requirementstext'>" +
+        "major degree requirement</a> section on the department website.",
+      criteria: "EN Biomedical Core[D]^OR^Biomedical Core[D]",
+      fine_requirements: [
+        {
+          description:
+            "Required Courses: \n\t580.111 Biomedical Engineering and Design\n\tEN.580.151 Structural Biology of Cells\n\t" +
+            "580.153 Structural Biology of Cells Laboratory\n\t580.221 Biochemistry and Molecular Engineering\n\t" +
+            "580.241 Statistical Physics\n\t580.242 Biological Models and Simulations\n\t580.243 Linear Signals and Systems\n\t" +
+            "580.244 Nonlinear Dynamics of Biological Systems\n\t580.246 Systems and Controls\n\t" +
+            "580.248 Systems Biology of the Cell\n\t580.475 Biomedical Data Science\n\t580.477 Biomedical Data Science Laboratory\n\t" +
+            "580.485 Computational Medicine: Cardiology\n\t580.487 Computational Medicine: Cardiology Laboratory\n\t",
+          required_credits: 28,
+          criteria:
+            "EN.580.111[C]^OR^EN.580.151[C]^OR^EN.580.153[C]^OR^EN.580.221[C]^OR^EN.580.241[C]^OR^EN.580.242[C]^OR^EN.580.243[C]" +
+            "EN.580.244[C]^OR^EN.580.246[C]^OR^EN.580.248[C]^OR^EN.580.475[C]^OR^EN.580.477[C]^OR^EN.580.485[C]^OR^EN.580.487[C]",
+        },
+        {
+          description:
+            "Select two of the following core electives (Note: These courses cannot be double-counted toward the 21-credit focus area " + 
+            "requirement. Courses taken in excess of the 6 credit core elective requirement can be counted in a relevant focus area):" + 
+            "\n\t580.424 Neuroengineering Lab\n\t580.451 Cell and Tissue Engineering Lab\n\t" +
+            "580.452 Cell and Tissue Engineering Lab\n\t580.454 Methods in Nucleic Acid Sequencing Lab\n\t" +
+            "580.494 Build an Imager\n\t580.242 Biological Models and Simulations\n\t580.243 Linear Signals and Systems\n\t" +
+            "580.244 Nonlinear Dynamics of Biological Systems\n\t580.246 Systems and Controls\n\t",
+          required_credits: 6,
+          criteria:
+            "EN.580.424[C]^OR^EN.580.451[C]^OR^EN.580.452[C]^OR^EN.580.454[C]^OR^EN.580.494[C]^OR^EN.580.242[C]^OR^EN.580.243[C]" +
+            "EN.580.244[C]^OR^EN.580.246[C]^OR^EN.580.248[C]^OR^EN.580.475[C]^OR^EN.580.477[C]^OR^EN.580.485[C]^OR^EN.580.487[C]",
+        },
+        {
+          description:
+            "Career Exploration in BME is a 0-credit self-identified set of career related events (lectures, panels, journal clubs, etc.) " +
+            "beginning in the spring semester of year one and continuing until graduation. Career Exploration is administered through a " +
+            "Community Blackboard site; students will be enrolled by the department.",
+          required_credits: 0,
+          criteria:"EN Career Exploration[D]",
+        },
+      ],
+    },
+    {
+      name: "Design",
+      required_credits: 6,
+      min_credits_per_course: 3,
+      description:
+        "Must complete one of the several design sequences. Each 2-semester sequence must be taken in its entirety.",
+      criteria: "EN Design[D]",
+      exception: "",
+      fine_requirements: [
+        {
+          description:
+            "Select at least one of the following design sequences:\n\t510.433 Senior Design Research AND\n\t510.434 Senior Design/Research II " +
+            "(This option must be approved by the Materials Science & Engineering Department)\n\tOR" +
+            "520.462 Leading Innovation Design Team AND\n\t520.463 Leading Innovation Design Team II\n\tOR " +
+            "\n\t520.498 Senior Design Project AND\n\t520.499 Senior Design Project II\n\tOR" +
+            "540.400 Project in Design: Pharmacokinetics AND\n\t540.421 Project in Design: Pharmacodynamics\n\tOR" +
+            "580.411 BME Design Group AND\n\t580.412 BME Design Group II\n\tOR" +
+            "\n\tE580.437 Neuro Data Design I AND\n\t580.438 Neuro Data Design II" + 
+            "580.456 Introduction to Rehabilitation Engineering AND\n\t580.457 Introduction to Rehabilitation Engineering: Design Lab\n\tOR " +
+            "\n\t580.471 Principles of Design of BME Instrumentation\n\tOR 580.480 Precision Care Medicine I " +
+            "AND\n\t580.481 Precision Care Medicine II\n\tOR 580.580 Senior Design Project I AND" +
+            "\n\t580.581 Senior Design Project II\n\tOR 601.455 Computer Integrated Surgery I\n\tAND " +
+            "601.456 Computer Integrated Surgery II",
+          required_credits: 6,
+          criteria: "EN.510.433[C]^OR^EN.510.434[C]^OR^EN.520.462[C]^OR^EN.520.463[C]^OR^EN.520.498[C]" + 
+            "EN.520.499[C]^OR^EN.540.421[C]^OR^EN.580.411[C]^OR^EN.580.412[C]^OR^EN.580.437[C]" + 
+            "EN.580.438[C]^OR^EN.580.456[C]^OR^EN.580.457[C]^OR^EN.580.471[C]^OR^EN.580.480[C]" + 
+            "EN.580.580[C]^OR^EN.580.581[C]^OR^EN.601.455[C]^OR^EN.601.456[C]",
+        },
+      ],
+    },
+    {
+      name: "Focus Area",
+      required_credits: 21,
+      min_credits_per_course: 1,
+      description:
+        "Select one of the following: ",
+      criteria:
+        "Focus Area[N]",
+      fine_requirements: [
+        {
+          description:
+            "Biomedical Data Science",
+          required_credits: 0,
+          criteria: "",
+        },
+        {
+          description:
+            "Computational Medicine",
+          required_credits: 0,
+          criteria: "",
+        },
+        {
+          description:
+            "Genomics and Systems Biology",
+          required_credits: 0,
+          criteria: "",
+        },
+        {
+          description:
+            "Imaging and Medical Devices",
+          required_credits: 0,
+          criteria: "",
+        },
+        {
+          description:
+            "Imunoengineering",
+          required_credits: 0,
+          criteria: "",
+        },
+        {
+          description:
+            "Neuroengineering",
+          required_credits: 0,
+          criteria: "",
+        },
+        {
+          description:
+            "Translational Cell and Tissue Engineering",
+          required_credits: 0,
+          criteria: "",
+        },
+      ],
+    },
+    {
+      name: "Computer Programming",
+      required_credits: 3,
+      min_credits_per_course: 3,
+      description:
+        "Must complete at least one of the courses in Computer Science.",
+      criteria:
+        "EN Computer Science[D]",
+      fine_requirements: [
+        {
+          description:
+            "Select one of the following:\n\tEN.500.112 Gateway Computing: JAVA\n\tEN.500.113 Gateway Computing: Python\n\t" +
+            "EN.500.114 Gateway Computing: Matlab",
+          required_credits: 3,
+          criteria: "EN.500.112[C]^OR^EN.500.113[C]^OR^EN.500.114[C]",
+        },
+      ],
+    },
+    {
+      name: "Humanities and Social Sciences",
+      required_credits: 18,
+      min_credits_per_course: 3,
+      description:
+        "Select courses to form a coherent program, relevant to the student’s goals. One course in which ethical and social " +
+        "issues related to technology or medicine is recommended. and at least two semesters of writing-intensive courses.",
+      criteria:
+        "AS Humanities and Social Sciences[D]",
+    },
+    {
+      name: "Basic Sciences",
+      required_credits: 18,
+      min_credits_per_course: 1,
+      description:
+        "Students who receive credit for AP Physics I and/or Physics II will receive a waiver for the laboratory course. " +
+        "This will reduce the required number of credits for Basic Sciences by 1 or 2 credits. Students are still required " + 
+        "to complete at least 129 total credits for the degree.",
+      criteria:
+        "AS Basic Sciences[N]",
+      fine_requirements: [
+        {
+          description:
+            "Required Courses:\n\t171.101 General Physics: Physical Science Major I\n\t171.107 General Physics for Physical Sciences Majors (AL)" +
+            "\n\t171.102 General Physics: Physical Science Major II\n\t171.108 General Physics for Physical Science Majors (AL)" +
+            "\n\t173.111 General Physics Laboratory I\n\t173.112 General Physics Laboratory II" +
+            "\n\t030.101 Introductory Chemistry I\n\t030.102 Introductory Chemistry II" +
+            "\n\t030.105 Introductory Chemistry Laboratory I\n\t030.106 Introductory Chemistry Laboratory II",
+          required_credits: 18,
+          criteria: "AS.171.101[C]^OR^AS.171.107[C]^OR^AS.171.102[C]^OR^AS.171.108[C]^OR^AS.171.111[C]^OR^AS.173.112[C]" +
+            "^OR^AS.030.101[C]^OR^AS.030.102[C]^OR^AS.030.105[C]^OR^AS.030.106[C]",
+        },
+        {
+          description:
+            "Select one Biology Lab Course of the following:\n\t" +
+            "AS.020.153 General Biology Laboratory I\n\tAS.020.154 General Biology Lab II\n\tAS.020.315 Biochemistry Project labs\n\t" +
+            "\n\tAS.020.316 Cell Biology Lab\n\tAS.020.340 Developmental Genetics Lab\n\tAS.020.377 Comparative Physiology Lab\n\t" +
+            "AS.250.253 Protein Engineering and Biochemistry Lab\n\tAS.250.254 Protein Biochemistry and Engineering Laboratory",
+          required_credits: 1,
+          criteria: "AS.020.153[C]^OR^AS.020.154[C]^OR^AS.020.315[C]^OR^AS.020.316[C]^OR^AS.020.340[C]^OR^AS.020.377[C]" +
+            "^OR^AS.250.253[C]^OR^AS.250.254[C]",
+        },
+      ],
+    },
+    {
+      name: "Mathematics",
+      required_credits: 19,
+      min_credits_per_course: 3,
+      description:
+        "Students who take an approved math course and receive 3 credits will have a total of 19 credits. Students are " + 
+        "still required to complete at least 129 total credits for the degree.",
+      criteria:
+        "AS Mathematics[N]",
+      fine_requirements: [
+        {
+          description:
+            "Required Courses:\n\t110.108 Calculus I (Physical Sciences & Engineering)\n\t" + 
+            "110.109 Calculus II (Physical Sciences & Engineering)\n\t(110.202 Calculus III\n\tOR 110.211 Honors Multivariable Calculus)" +
+            "\n\t553.291 Linear Algebra and Differential Equations",
+          required_credits: 4,
+          criteria: "AS.110.108[C]^OR^AS.110.109[C]^OR^AS.110.202^OR^AS.110.211^OR^EN.553.291",
+        },
+        {
+          description:
+            "Select one of the following:\n\t553.311 Probability and Statistics for the Biological Sciences and Engineering\n\t" + 
+            "553.310 Probability & Statistics for the Physical Sciences & Engineering\n\t553.413 Applied Statistics and Data Analysis\n\t" +
+            "553.430 Introduction to Statistics\n\t553.433 Monte Carlo Methods\n\t560.348 Probability & Statistics in Civil Engineering",
+          required_credits: 3,
+          criteria: "EN.553.311[C]^OR^EN.553.310[C]^OR^EN.553.413[C]^OR^EN.553.430[C]^OR^EN.553.433[C]^OR^EN.560.348[C]",
+        },
+      ],
+    },
+    {
+      name: "Free Electives",
+      required_credits: 9,
+      min_credits_per_course: 1,
+      description:
+        "Select 9 credits from any area.",
+      criteria:
+        "Free Electives[N]",
+    },
   ]
 };
 
