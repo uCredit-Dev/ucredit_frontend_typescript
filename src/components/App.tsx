@@ -29,11 +29,7 @@ function App() {
       .get(api + "/search/skip/" + counter + "?mod=" + 450)
       .then((courses: any) => {
         if (courses.data.data.length > 0) {
-<<<<<<< HEAD
-=======
-          //console.log("counter is ", counter);
 
->>>>>>> Fixed Bug with slashes and duplicate names
           retrieveData(counter + 1, [...retrieved, ...courses.data.data]);
         } else {
           toast.dismiss();
@@ -41,10 +37,6 @@ function App() {
           setWelcomeScreen(false);
           dispatch(updateAllCourses(retrieved));
         }
-<<<<<<< HEAD
-=======
-        //console.log(courses.data);
->>>>>>> Fixed Bug with slashes and duplicate names
       })
       .catch((err) => {
         retrieveData(counter, retrieved);
