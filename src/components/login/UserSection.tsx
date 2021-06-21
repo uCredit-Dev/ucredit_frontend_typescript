@@ -5,7 +5,7 @@ import { updateUser, selectUser, resetUser } from "../../slices/userSlice";
 import { useHistory } from "react-router-dom";
 import { resetCurrentPlan } from "../../slices/currentPlanSlice";
 import { api } from "../../resources/assets";
-import bird from "../../resources/images/placeholder_logo.png";
+import bird from "../../resources/images/logo.png";
 
 /**
  * User login/logout buttons.
@@ -65,9 +65,9 @@ function UserSection() {
         {/* <div className="flex flex-row items-center justify-center mr-3 w-11 h-11 bg-white rounded-full"> */}
         {/* <UserSvg className="w-6 h-6 stroke-2" /> */}
         {/* </div> */}
-        <div className="flex flex-row flex-grow items-center text-white text-4xl italic font-bold">
-          <img src={bird} alt="logo" className="mr-2 h-12"></img>
-          UCredit
+        <div className="flex flex-row flex-grow items-center ml-5 text-white text-4xl italic font-bold">
+          <img src={bird} alt="logo" className="mr-3 h-9"></img>
+          <div>UCredit</div>
         </div>
         {window.innerWidth > 800 ? (
           <div className="mr-3 text-white font-semibold">
