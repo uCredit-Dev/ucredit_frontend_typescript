@@ -10,7 +10,7 @@ import {
   selectToAddMajor,
   updateGeneratePlanAddStatus,
 } from "../../slices/userSlice";
-import { allMajors } from "./majors/majors";
+import { allMajors } from "../../resources/majors";
 import Select from "react-select";
 
 const majorOptions = [

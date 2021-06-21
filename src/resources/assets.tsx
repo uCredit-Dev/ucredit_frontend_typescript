@@ -7,7 +7,7 @@ import {
   SISRetrievedCourse,
   Year,
 } from "./commonTypes";
-import { allMajors } from "../components/dashboard/majors/majors";
+import { allMajors } from "./majors";
 
 export const api = "https://ucredit-api.herokuapp.com/api";
 
