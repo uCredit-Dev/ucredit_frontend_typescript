@@ -21,7 +21,8 @@ type FilterObj = {
   credits: number | "Any";
   distribution: AreaType | "Any";
   tags: TagType | "Any"; // TODO: fill this out with array of all tags
-  term: SemesterType | "Any";
+  term: SemesterType;
+  year: number;
   department: DepartmentType | "Any"; // TODO: fill this out with array of departments
   wi: "Any" | boolean;
 };
@@ -33,6 +34,7 @@ type searchStates = {
   searchTime: TimeBundle;
   filters: FilterObj;
   retrievedCourses: SISRetrievedCourse[];
+  retrievedVerions: number[];
   inspectedVersion: Course | "None";
   inspectedCourse: SISRetrievedCourse | "None";
   placeholder: boolean;
@@ -53,11 +55,13 @@ const initialState: searchStates = {
     searchSemester: "Fall",
   },
   retrievedCourses: [], // test courses for now
+  retrievedVerions: [],
   filters: {
     credits: "Any",
     distribution: "Any",
     tags: "Any",
-    term: "Any",
+    term: "Fall",
+    year: 2021,
     wi: "Any",
     department: "Any",
   },
@@ -113,6 +117,8 @@ export const searchSlice = createSlice({
         term: "Any",
         wi: "Any",
         department: "Any",
+        year: "2021",
+        semeseter: "Fall"
       };
       state.searchTerm = "";
       state.searchTime = { searchSemester: "", searchYear: "" };
@@ -126,6 +132,12 @@ export const searchSlice = createSlice({
       action: PayloadAction<SISRetrievedCourse[]>
     ) => {
       state.retrievedCourses = [...action.payload];
+    },
+    updateRetrievedVersions: (
+      state: any,
+      action: PayloadAction<number[]>
+    ) => {
+      state.retrievedVerions = [...action.payload];
     },
     updatePlaceholder: (state: any, action: PayloadAction<boolean>) => {
       state.placeholder = action.payload;
@@ -144,6 +156,8 @@ export const searchSlice = createSlice({
         state.filters.tags = action.payload.value;
       } else if (action.payload.filter === "term") {
         state.filters.term = action.payload.value;
+      } else if (action.payload.filter === "year") {
+        state.filters.year = action.payload.value;
       } else if (action.payload.filter === "wi") {
         state.filters.wi = action.payload.value;
       }
@@ -179,6 +193,7 @@ export const {
   updateSearchFilters,
   updateInspectedCourse,
   updateRetrievedCourses,
+  updateRetrievedVersions,
   updatePlaceholder,
   updateSearchStack,
   updateInspectedVersion,
@@ -197,6 +212,8 @@ export const selectSearchStatus = (state: RootState) => state.search.searching;
 export const selectSearchFilters = (state: RootState) => state.search.filters;
 export const selectRetrievedCourses = (state: RootState) =>
   state.search.retrievedCourses;
+export const selectRetrievedVersions = (state: RootState) => 
+  state.search.retrievedVerions;
 export const selectInspectedCourse = (state: RootState) =>
   state.search.inspectedCourse;
 export const selectPlaceholder = (state: RootState) => state.search.placeholder;

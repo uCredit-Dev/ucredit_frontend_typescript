@@ -1,4 +1,4 @@
-import React, { MouseEventHandler, useEffect } from "react";
+import React, { MouseEventHandler, useEffect, useState } from "react";
 import { ReactComponent as CloseSvg } from "../../../../resources/svg/Close.svg";
 import Select from "react-select";
 import CourseVersion from "./CourseVersion";
@@ -20,6 +20,7 @@ import {
   FilterType,
   Course,
   SemesterType,
+  SISRetrievedCourse,
 } from "../../../../resources/commonTypes";
 import ReactTooltip from "react-tooltip";
 
@@ -56,7 +57,13 @@ const SisCourse = (props: SisCourseProps) => {
   const searchSemester = useSelector(selectSemester);
   const searchStack = useSelector(selectSearchStack);
 
+  const [versionIndex, updateVersionIndex] = useState(0);
+
   useEffect(() => {
+    if (inspected !== "None" && version !== "None") {
+      updateVersionIndex(inspected.terms.indexOf(version.term.toString()));
+      console.log(inspected.terms[inspected.terms.indexOf(version.term.toString())  ])
+    }
     ReactTooltip.rebuild();
   }, [version]);
 
@@ -153,9 +160,9 @@ const SisCourse = (props: SisCourseProps) => {
                 options={inspected.terms.map((term) => {
                   return { label: term, value: term };
                 })}
-                defaultValue={{
-                  label: inspected.terms[0],
-                  value: inspected.terms[0],
+                value={{
+                  label: inspected.terms[versionIndex],
+                  value: inspected.terms[versionIndex],
                 }}
                 onChange={handleTermSwitch}
               />

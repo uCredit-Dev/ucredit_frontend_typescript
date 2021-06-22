@@ -1,12 +1,16 @@
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
+import Select from "react-select";
 import {
   updateSearchTerm,
   updateRetrievedCourses,
+  updateRetrievedVersions,
   updateSearchFilters,
   selectSearchterm,
   selectSearchFilters,
   selectSemester,
+  selectYear,
+  updateSearchTime,
 } from "../../../../slices/searchSlice";
 import {
   AreaType,
@@ -21,6 +25,7 @@ import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import Filters from "./Filters";
 import { selectAllCourses } from "../../../../slices/userSlice";
+import { versions } from "process";
 
 /**
  * Search form, including the search query input and filters.
@@ -35,6 +40,7 @@ const Form = (props: { setSearching: Function }) => {
   const searchFilters = useSelector(selectSearchFilters);
   const semester = useSelector(selectSemester);
   const allCourses = useSelector(selectAllCourses);
+  const year = useSelector(selectYear);
 
   // Component state setup
   const [showCriteria, setShowCriteria] = useState(false);
@@ -54,13 +60,15 @@ const Form = (props: { setSearching: Function }) => {
     credits: number | null;
     areas: AreaType | null;
     tags: TagType | null;
-    term: SemesterType | null;
+    term: SemesterType;
+    year: number;
     department: DepartmentType | null;
     wi: boolean | null;
   };
 
   type SearchMapEl = {
     course: SISRetrievedCourse;
+    version: number;
     priority: number;
   };
 
@@ -79,6 +87,7 @@ const Form = (props: { setSearching: Function }) => {
       searchFilters.tags === "Any"
     ) {
       dispatch(updateRetrievedCourses([]));
+      dispatch(updateRetrievedVersions([]));
       return;
     }
 
@@ -91,7 +100,8 @@ const Form = (props: { setSearching: Function }) => {
           ? null
           : searchFilters.distribution,
       wi: searchFilters.wi === "Any" ? null : searchFilters.wi,
-      term: searchFilters.term === "Any" ? null : searchFilters.term,
+      term: searchFilters.term,
+      year: searchFilters.year,
       department:
         searchFilters.department === "Any" ? null : searchFilters.department,
       tags: searchFilters.tags === "Any" ? null : searchFilters.tags,
@@ -108,7 +118,7 @@ const Form = (props: { setSearching: Function }) => {
 
   // Finds course based on the search conditions given in extras.
   // Finds all relevant courses by starting with all courses and filtering them out.
-  const find = (extras: SearchExtras): SISRetrievedCourse[] => {
+  const find = (extras: SearchExtras): [SISRetrievedCourse[], number[]] => {
     let courses: SISRetrievedCourse[] = [...allCourses];
     if (extras.query.length > 0) {
       courses = courses.filter((course) => {
@@ -128,7 +138,7 @@ const Form = (props: { setSearching: Function }) => {
         }
       });
     }
-
+    
     const credits = extras.credits;
     if (credits !== null) {
       courses = courses.filter((course) => {
@@ -181,19 +191,6 @@ const Form = (props: { setSearching: Function }) => {
       });
     }
 
-    const term = extras.term;
-    if (term !== null) {
-      courses = courses.filter((course) => {
-        let found = false;
-        course.terms.forEach((courseTerm) => {
-          if (courseTerm.includes(term)) {
-            found = true;
-          }
-        });
-        return found;
-      });
-    }
-
     const wi = extras.wi;
     if (wi !== null) {
       courses = courses.filter((course) => {
@@ -205,15 +202,29 @@ const Form = (props: { setSearching: Function }) => {
         });
         return satisfied;
       });
-      // courses = courses.filter((course) => course.wi && wi);
     }
 
-    return courses;
+    const semeseter = extras.term + " " + extras.year;
+    console.log(semeseter); 
+    let versions: number[] = [];
+    courses = courses.filter((course) => {
+      let index = course.terms.indexOf(semeseter);
+      if (index !== -1) {
+        versions.push(index);
+        return true;
+      } else {
+        courses.splice(courses.indexOf(course), 1);
+        return false;
+      }
+    })
+
+    return [courses, versions];
   };
 
   // Updates search results and makes a toast based on amount of results found.
-  const updateSearchResults = (results: SISRetrievedCourse[]) => {
+  const updateSearchResults = (results: SISRetrievedCourse[], versions: number[]) => {
     dispatch(updateRetrievedCourses(results));
+    dispatch(updateRetrievedVersions(versions));
     if (results.length > 0) {
       props.setSearching(false);
       toast.success("Found " + results.length + " results!", {
@@ -247,15 +258,18 @@ const Form = (props: { setSearching: Function }) => {
     querySubstrs: string[]
   ) {
     let courses: SISRetrievedCourse[] = [];
-
+    let versions: number[] = [];
     querySubstrs.forEach((subQuery) => {
-      courses.push(...find({ ...extras, query: subQuery }));
+      const courseVersions = find({...extras, query: subQuery});
+      courses.push(...courseVersions[0]);
+      versions.push(...courseVersions[1]);
     });
 
-    courses.forEach((course: SISRetrievedCourse) => {
+    courses.forEach((course: SISRetrievedCourse, index: number) => {
       if (!searchedCourses.has(course.number)) {
         searchedCourses.set(course.number, {
           course: course,
+          version: versions[index],
           priority: queryLength,
         });
       }
@@ -264,8 +278,8 @@ const Form = (props: { setSearching: Function }) => {
     if (queryLength > minLength) {
       performSmartSearch(extras, queryLength - 1)();
     } else {
-      const newSearchList: SISRetrievedCourse[] = getNewSearchList();
-      updateSearchResults(newSearchList);
+      const newSearchList: [SISRetrievedCourse[], number[]] = getNewSearchList();
+      updateSearchResults(newSearchList[0], newSearchList[1]);
     }
   }
 
@@ -290,15 +304,15 @@ const Form = (props: { setSearching: Function }) => {
         substringSearch(extras, queryLength, querySubstrs);
       } else {
         // Perform old search if search query is less than the minLength for a smart search.
-        let courses: SISRetrievedCourse[] = find(extras);
-        updateSearchResults(courses);
+        let courses: [SISRetrievedCourse[], number[]] = find(extras);
+        updateSearchResults(courses[0], courses[1]);
       }
     };
 
   // Gets new list of searched courses.
-  const getNewSearchList = (): SISRetrievedCourse[] => {
+  const getNewSearchList = (): [SISRetrievedCourse[], number[]] => {
     let searchList: SISRetrievedCourse[] = [];
-
+    let versions: number[] = [];
     // sorts searchedCourses map by priority.
     searchedCourses[Symbol.iterator] = function* () {
       yield* [...this.entries()]
@@ -309,13 +323,13 @@ const Form = (props: { setSearching: Function }) => {
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
     for (let [key, value] of searchedCourses) {
       searchList.push(value.course);
+      versions.push(value.version);
     }
 
     if (!showAllResults) {
       searchList = searchList.slice(0, 10);
     }
-
-    return searchList;
+    return [searchList, versions];
   };
 
   // Update search term
@@ -371,7 +385,8 @@ const Form = (props: { setSearching: Function }) => {
           </button>
         )}
       </div>
-      {showCriteria ? <Filters /> : null}
+      <Filters 
+        showCriteria={showCriteria}/>
     </div>
   );
 };

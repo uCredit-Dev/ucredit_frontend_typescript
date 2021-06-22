@@ -1,15 +1,17 @@
 import React from "react";
-import { SISRetrievedCourse } from "../../../../resources/commonTypes";
+import { SISRetrievedCourse, Course } from "../../../../resources/commonTypes";
 import { useDispatch, useSelector } from "react-redux";
 import {
   updatePlaceholder,
   selectVersion,
   updateInspectedCourse,
+  updateInspectedVersion,
 } from "../../../../slices/searchSlice";
 import clsx from "clsx";
 
 type cardProps = {
   course: SISRetrievedCourse;
+  version: number;
 };
 
 /**
@@ -27,6 +29,13 @@ const CourseCard = (props: cardProps) => {
   const handleCourseClick = () => {
     dispatch(updateInspectedCourse(props.course));
     dispatch(updatePlaceholder(false));
+    const newInspected: Course = {
+      title: props.course.title,
+      number: props.course.number,
+      ...props.course.versions[props.version],
+    };
+    console.log(newInspected);
+    dispatch(updateInspectedVersion(newInspected));
   };
 
   return (
@@ -43,7 +52,7 @@ const CourseCard = (props: cardProps) => {
     >
       <div className="flex flex-col justify-center w-full h-full">
         <div className="truncate">{props.course.title}</div>
-        <div>{props.course.number}</div>
+        <div>{props.course.number} {props.course.terms[props.version]}</div>
       </div>
     </div>
   );

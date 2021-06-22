@@ -146,6 +146,7 @@ export type FilterType =
   | "distribution"
   | "tags"
   | "term"
+  | "year"
   | "department"
   | "wi";
 
