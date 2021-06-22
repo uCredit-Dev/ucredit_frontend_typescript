@@ -5,7 +5,7 @@ import { updateUser, selectUser, resetUser } from "../../slices/userSlice";
 import { useHistory } from "react-router-dom";
 import { resetCurrentPlan } from "../../slices/currentPlanSlice";
 import { api } from "../../resources/assets";
-import bird from "../../resources/images/logo.png";
+import bird from "../../resources/images/logoDarker.png";
 
 /**
  * User login/logout buttons.
@@ -60,7 +60,7 @@ function UserSection() {
   }, [document.cookie]);
 
   return (
-    <>
+    <div className="fixed z-20 p-3 px-6 w-full h-header bg-gradient-to-r shadow from-blue-500 to-green-400 select-none">
       <div className="flex flex-row items-center justify-end w-full h-full">
         {/* <div className="flex flex-row items-center justify-center mr-3 w-11 h-11 bg-white rounded-full"> */}
         {/* <UserSvg className="w-6 h-6 stroke-2" /> */}
@@ -108,7 +108,7 @@ function UserSection() {
           </button>
         )}
       </div>
-    </>
+    </div>
   );
 }
 
