@@ -5,7 +5,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { updateUser, selectUser } from "../../slices/userSlice";
 import { withCookies, useCookies } from "react-cookie";
 import samplePlan from "../../resources/images/samplePlan.png";
-import placeholder from "../../resources/images/placeholder_logo.png";
+import logo from "../../resources/images/logoDarker.png";
 import Test from "../../resources/Test";
 
 const deploy = "https://ucredit.herokuapp.com/login/";
@@ -139,12 +139,9 @@ const DashboardEntry = (props: any) => {
       ></div>
       <Test />
       <div className="absolute flex w-full h-full">
-        <div
-          className="flex flex-col mx-auto mx-auto my-auto p-14 text-white text-lg font-bold bg-gradient-to-b rounded shadow from-blue-500 to-green-400"
-          // style={{ backgroundColor: "#00316F", zIndex: 50 }}
-        >
-          <div className="flex flex-row items-center justify-center mt-auto w-full text-3xl">
-            <img src={placeholder} alt="logo" className="h-14" />
+        <div className="flex flex-col mx-auto mx-auto my-auto p-14 text-white text-lg font-bold bg-gradient-to-b rounded shadow from-blue-500 to-green-400">
+          <div className="flex flex-row items-center justify-center mt-auto pr-2 w-full text-3xl">
+            <img src={logo} alt="logo" className="mr-2 h-16" />
             <div>uCredit</div>
           </div>
           <div className="mb-14 mt-8 mx-auto w-full text-center text-4xl">

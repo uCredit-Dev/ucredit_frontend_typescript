@@ -7,12 +7,13 @@ import { Switch, Route } from "react-router-dom";
 import { api } from "./../resources/assets";
 import Dashboard from "./dashboard/Dashboard";
 import DashboardEntry from "./login/DashboardEntry";
-import bird from "./../resources/images/birdTempGif.gif";
 import { updateAllCourses } from "../slices/userSlice";
 import LandingPage from "./landing-page/LandingPage";
 import { toast, ToastContainer } from "react-toastify";
 import ReactTooltip from "react-tooltip";
 import { SISRetrievedCourse } from "../resources/commonTypes";
+// import bird from "./../resources/images/birdTempGif.gif";
+import logoLine from "../resources/images/line-art/logo_line_lighter.png";
 
 /**
  * Root app component, where it all begins...
@@ -93,20 +94,26 @@ function App() {
         effect="solid"
       />
       {welcomeScreen ? (
-        <div className="fixed z-50 flex flex-col m-auto w-screen h-screen text-center text-center text-white bg-blue-500">
-          Welcome logo animation (to be replaced)
+        <div className="fixed z-50 flex flex-col m-auto w-screen h-screen text-center text-center text-white bg-blue-900">
+          <img
+            className="mt-auto mx-auto w-1/6"
+            src={logoLine}
+            alt={"logo line art"}
+          ></img>
+          <div className="mb-auto mt-4 mx-auto w-full text-center text-5xl italic font-thin select-none">
+            UCredit
+          </div>
           <button
             onClick={() => {
               setWelcomeScreen(false);
             }}
+            data-tip="Tap to dismiss loading screen. Resource loading will still be
+              performed in the background."
+            data-for="godTip"
+            className="mb-3 focus:outline-none"
           >
-            Click here to dismiss loading screen (resource loading will still be
-            performed in the background)
+            Dismiss Loading Screen
           </button>
-          <img className="mt-auto mx-auto" src={bird} alt={"logoGif"}></img>
-          <div className="mb-auto mx-auto w-full text-center text-8xl">
-            UCredit - Loading resources...
-          </div>
         </div>
       ) : null}
       <Switch>
