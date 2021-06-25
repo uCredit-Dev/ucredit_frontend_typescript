@@ -30,6 +30,7 @@ function App() {
       .get(api + "/search/skip/" + counter + "?mod=" + 450)
       .then((courses: any) => {
         if (courses.data.data.length > 0) {
+
           retrieveData(counter + 1, [...retrieved, ...courses.data.data]);
         } else {
           toast.dismiss();

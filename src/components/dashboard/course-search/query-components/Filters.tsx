@@ -18,18 +18,24 @@ const termFilters: SemesterType[] = [
   "Intersession",
   "Summer",
 ];
+const yearFilters = [2021, 2020, 2019, 2018, 2017];
 const wiFilters = ["Any", "Yes", "No"];
 const departmentFilters = ["Any", ...all_majors];
 const tagFilters = ["Any", ...course_tags];
+type filterProps = {
+  showCriteria: boolean;
+}
 
 /**
  * The component containing all search filters.
  */
-const Filters = () => {
+const Filters = ({showCriteria} : filterProps) => {
   // Set up redux dispatch and variables.
   const dispatch = useDispatch();
   const searchFilters = useSelector(selectSearchFilters);
   const year = useSelector(selectYear);
+  
+
 
   // Update searching for certain amounts of credits
   const handleCreditFilterChange = (event: any): void => {
@@ -89,58 +95,17 @@ const Filters = () => {
     dispatch(updateSearchFilters(params));
   };
 
+  const handleYearFilterChange = (event: any): void => {
+    const params: { filter: FilterType; value: any } = {
+      filter: "year",
+      value: event.value,
+    }
+    dispatch(updateSearchFilters(params));
+  }
+
   return (
     <>
       <div className="flex flex-row items-center justify-between mb-2 w-full h-auto">
-        Department
-        <Select
-          options={[
-            ...departmentFilters.map((department) => ({
-              value: department,
-              label: department,
-            })),
-          ]}
-          className="w-40 rounded outline-none"
-          onChange={handleDepartmentFilterChange}
-          value={{
-            value: searchFilters.department,
-            label: searchFilters.department,
-          }}
-        />
-      </div>
-      <div className="flex flex-row items-center justify-between mb-2 w-full h-auto">
-        Credits
-        <Select
-          onChange={handleCreditFilterChange}
-          value={{ value: searchFilters.credits, label: searchFilters.credits }}
-          options={[
-            ...creditFilters.map((credits: any) => ({
-              value: credits,
-              label: credits,
-            })),
-          ]}
-          className="w-40 rounded outline-none"
-        />
-      </div>
-      <div className="flex flex-row items-center justify-between mb-2 w-full h-auto">
-        Area
-        <Select
-          options={[
-            ...distributionFilters.map((distribution: any) => ({
-              value: distribution,
-              label: distribution,
-            })),
-          ]}
-          className="w-40 rounded outline-none"
-          onChange={handleDistributionFilterChange}
-          value={{
-            value: searchFilters.distribution,
-            label: searchFilters.distribution,
-          }}
-        />
-      </div>
-      <div className="flex flex-row items-center justify-between mb-2 w-full h-auto">
-        Term
         <Select
           options={[
             ...termFilters.map((term: any) => ({
@@ -155,37 +120,102 @@ const Filters = () => {
             label: searchFilters.term,
           }}
         />
-      </div>
-      <div className="flex flex-row items-center justify-between mb-2 w-full h-auto">
-        Writing Intensive
         <Select
           options={[
-            ...wiFilters.map((wi: any) => ({
-              value: wi,
-              label: wi,
+            ...yearFilters.map((year: any) => ({
+              value: year,
+              label: year,
             })),
           ]}
           className="w-40 rounded outline-none"
-          onChange={handleWIFilterChange}
-        />
-      </div>
-      <div className="flex flex-row items-center justify-between mb-2 w-full h-auto">
-        Tag
-        <Select
-          options={[
-            ...tagFilters.map((tag: any) => ({
-              value: tag,
-              label: tag,
-            })),
-          ]}
-          className="w-40 rounded outline-none"
-          onChange={handleTagsFilterChange}
+          onChange={handleYearFilterChange}
           value={{
-            value: searchFilters.tags,
-            label: searchFilters.tags,
+            value: searchFilters.year,
+            label: searchFilters.year,
           }}
         />
       </div>
+      {showCriteria ? 
+        <div>
+          <div className="flex flex-row items-center justify-between mb-2 w-full h-auto">
+            Department
+            <Select
+              options={[
+                ...departmentFilters.map((department) => ({
+                  value: department,
+                  label: department,
+                })),
+              ]}
+              className="w-40 rounded outline-none"
+              onChange={handleDepartmentFilterChange}
+              value={{
+                value: searchFilters.department,
+                label: searchFilters.department,
+              }}
+            />
+          </div>
+          <div className="flex flex-row items-center justify-between mb-2 w-full h-auto">
+            Credits
+            <Select
+              onChange={handleCreditFilterChange}
+              value={{ value: searchFilters.credits, label: searchFilters.credits }}
+              options={[
+                ...creditFilters.map((credits: any) => ({
+                  value: credits,
+                  label: credits,
+                })),
+              ]}
+              className="w-40 rounded outline-none"
+            />
+          </div>
+          <div className="flex flex-row items-center justify-between mb-2 w-full h-auto">
+            Area
+            <Select
+              options={[
+                ...distributionFilters.map((distribution: any) => ({
+                  value: distribution,
+                  label: distribution,
+                })),
+              ]}
+              className="w-40 rounded outline-none"
+              onChange={handleDistributionFilterChange}
+              value={{
+                value: searchFilters.distribution,
+                label: searchFilters.distribution,
+              }}
+            />
+          </div>
+          <div className="flex flex-row items-center justify-between mb-2 w-full h-auto">
+            Writing Intensive
+            <Select
+              options={[
+                ...wiFilters.map((wi: any) => ({
+                  value: wi,
+                  label: wi,
+                })),
+              ]}
+              className="w-40 rounded outline-none"
+              onChange={handleWIFilterChange}
+            />
+          </div>
+          <div className="flex flex-row items-center justify-between mb-2 w-full h-auto">
+            Tag
+            <Select
+              options={[
+                ...tagFilters.map((tag: any) => ({
+                  value: tag,
+                  label: tag,
+                })),
+              ]}
+              className="w-40 rounded outline-none"
+              onChange={handleTagsFilterChange}
+              value={{
+                value: searchFilters.tags,
+                label: searchFilters.tags,
+              }}
+            />
+          </div>
+        </div> : null}
     </>
   );
 };

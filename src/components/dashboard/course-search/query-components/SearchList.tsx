@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import {
   selectRetrievedCourses,
+  selectRetrievedVersions,
   updateInspectedVersion,
   updatePlaceholder,
 } from "../../../../slices/searchSlice";
@@ -21,6 +22,7 @@ const SearchList = (props: { searching: boolean }) => {
 
   // Redux setup
   const courses = useSelector(selectRetrievedCourses);
+  const versions = useSelector(selectRetrievedVersions);
   const dispatch = useDispatch();
 
   let coursesPerPage = 10;
@@ -50,7 +52,7 @@ const SearchList = (props: { searching: boolean }) => {
           className="transform hover:scale-105 transition duration-200 ease-in"
           onClick={() => setHideResults(true)}
         >
-          <CourseCard course={courses[i]} />
+          <CourseCard course={courses[i]} version={versions[i]}/>
         </div>
       );
     }
