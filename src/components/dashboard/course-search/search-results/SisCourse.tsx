@@ -62,7 +62,6 @@ const SisCourse = (props: SisCourseProps) => {
   useEffect(() => {
     if (inspected !== "None" && version !== "None") {
       updateVersionIndex(inspected.terms.indexOf(version.term.toString()));
-      console.log(inspected.terms[inspected.terms.indexOf(version.term.toString())  ])
     }
     ReactTooltip.rebuild();
   }, [version]);

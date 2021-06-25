@@ -34,7 +34,6 @@ const CourseCard = (props: cardProps) => {
       number: props.course.number,
       ...props.course.versions[props.version],
     };
-    console.log(newInspected);
     dispatch(updateInspectedVersion(newInspected));
   };
 
