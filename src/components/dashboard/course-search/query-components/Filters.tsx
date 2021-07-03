@@ -24,18 +24,16 @@ const departmentFilters = ["Any", ...all_majors];
 const tagFilters = ["Any", ...course_tags];
 type filterProps = {
   showCriteria: boolean;
-}
+};
 
 /**
  * The component containing all search filters.
  */
-const Filters = ({showCriteria} : filterProps) => {
+const Filters = ({ showCriteria }: filterProps) => {
   // Set up redux dispatch and variables.
   const dispatch = useDispatch();
   const searchFilters = useSelector(selectSearchFilters);
   const year = useSelector(selectYear);
-  
-
 
   // Update searching for certain amounts of credits
   const handleCreditFilterChange = (event: any): void => {
@@ -99,9 +97,9 @@ const Filters = ({showCriteria} : filterProps) => {
     const params: { filter: FilterType; value: any } = {
       filter: "year",
       value: event.value,
-    }
+    };
     dispatch(updateSearchFilters(params));
-  }
+  };
 
   return (
     <>
@@ -113,7 +111,7 @@ const Filters = ({showCriteria} : filterProps) => {
               label: term,
             })),
           ]}
-          className="w-40 rounded outline-none"
+          className="mx-1 w-40 rounded outline-none"
           onChange={handleTermFilterChange}
           value={{
             value: searchFilters.term,
@@ -127,7 +125,7 @@ const Filters = ({showCriteria} : filterProps) => {
               label: year,
             })),
           ]}
-          className="w-40 rounded outline-none"
+          className="mx-1 w-40 rounded outline-none"
           onChange={handleYearFilterChange}
           value={{
             value: searchFilters.year,
@@ -135,7 +133,7 @@ const Filters = ({showCriteria} : filterProps) => {
           }}
         />
       </div>
-      {showCriteria ? 
+      {showCriteria ? (
         <div>
           <div className="flex flex-row items-center justify-between mb-2 w-full h-auto">
             Department
@@ -158,7 +156,10 @@ const Filters = ({showCriteria} : filterProps) => {
             Credits
             <Select
               onChange={handleCreditFilterChange}
-              value={{ value: searchFilters.credits, label: searchFilters.credits }}
+              value={{
+                value: searchFilters.credits,
+                label: searchFilters.credits,
+              }}
               options={[
                 ...creditFilters.map((credits: any) => ({
                   value: credits,
@@ -215,7 +216,8 @@ const Filters = ({showCriteria} : filterProps) => {
               }}
             />
           </div>
-        </div> : null}
+        </div>
+      ) : null}
     </>
   );
 };

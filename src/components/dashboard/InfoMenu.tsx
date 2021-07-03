@@ -11,7 +11,7 @@ const InfoMenu = () => {
     >
       <div className="my-auto transform -rotate-90">
         <button
-          className="w-32 h-8 text-center bg-white focus:outline-none shadow transform hover:scale-110 transition duration-200 ease-in"
+          className="w-32 h-8 text-center bg-white focus:outline-none shadow"
           onClick={() => {
             setInfoOpen(!infoOpen);
           }}

@@ -8,7 +8,6 @@ import {
 } from "../../../slices/userSlice";
 // import PlanChoose from "./PlanChoose";
 import { ReactComponent as RemoveSvg } from "../../../resources/svg/Remove.svg";
-import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import {
   selectPlan,
@@ -69,15 +68,6 @@ const InfoCards = () => {
             newPlanList[i] = { ...newUpdatedPlan };
           }
         }
-        toast.success("Plan name changed to " + newUpdatedPlan.name + "!", {
-          position: "top-right",
-          autoClose: 5000,
-          hideProgressBar: true,
-          closeOnClick: true,
-          pauseOnHover: true,
-          draggable: true,
-          progress: 0,
-        });
         setEditName(false);
         dispatch(updatePlanList(newPlanList));
       })

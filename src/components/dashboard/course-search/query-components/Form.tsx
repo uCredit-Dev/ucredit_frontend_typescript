@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import Select from "react-select";
 import {
   updateSearchTerm,
   updateRetrievedCourses,
@@ -9,8 +8,6 @@ import {
   selectSearchterm,
   selectSearchFilters,
   selectSemester,
-  selectYear,
-  updateSearchTime,
 } from "../../../../slices/searchSlice";
 import {
   AreaType,
@@ -21,11 +18,9 @@ import {
 } from "../../../../resources/commonTypes";
 import { ReactComponent as FilterFilledSvg } from "../../../../resources/svg/FilterFilled.svg";
 import { ReactComponent as FilterNonFilledSvg } from "../../../../resources/svg/FilterNonFilled.svg";
-import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import Filters from "./Filters";
 import { selectAllCourses } from "../../../../slices/userSlice";
-import { versions } from "process";
 
 /**
  * Search form, including the search query input and filters.
@@ -40,7 +35,6 @@ const Form = (props: { setSearching: Function }) => {
   const searchFilters = useSelector(selectSearchFilters);
   const semester = useSelector(selectSemester);
   const allCourses = useSelector(selectAllCourses);
-  const year = useSelector(selectYear);
 
   // Component state setup
   const [showCriteria, setShowCriteria] = useState(false);
@@ -138,7 +132,7 @@ const Form = (props: { setSearching: Function }) => {
         }
       });
     }
-    
+
     const credits = extras.credits;
     if (credits !== null) {
       courses = courses.filter((course) => {
@@ -205,7 +199,7 @@ const Form = (props: { setSearching: Function }) => {
     }
 
     const semeseter = extras.term + " " + extras.year;
-    console.log(semeseter); 
+    console.log(semeseter);
     let versions: number[] = [];
     courses = courses.filter((course) => {
       let index = course.terms.indexOf(semeseter);
@@ -216,37 +210,18 @@ const Form = (props: { setSearching: Function }) => {
         courses.splice(courses.indexOf(course), 1);
         return false;
       }
-    })
+    });
 
     return [courses, versions];
   };
 
-  // Updates search results and makes a toast based on amount of results found.
-  const updateSearchResults = (results: SISRetrievedCourse[], versions: number[]) => {
+  // Updates search results.
+  const updateSearchResults = (
+    results: SISRetrievedCourse[],
+    versions: number[]
+  ) => {
     dispatch(updateRetrievedCourses(results));
     dispatch(updateRetrievedVersions(versions));
-    if (results.length > 0) {
-      props.setSearching(false);
-      toast.success("Found " + results.length + " results!", {
-        position: "top-right",
-        autoClose: 5000,
-        hideProgressBar: true,
-        closeOnClick: true,
-        pauseOnHover: true,
-        draggable: true,
-        progress: 0,
-      });
-    } else {
-      toast.error("Found 0 results!", {
-        position: "top-right",
-        autoClose: 5000,
-        hideProgressBar: true,
-        closeOnClick: true,
-        pauseOnHover: true,
-        draggable: true,
-        progress: 0,
-      });
-    }
   };
 
   // Searches for all subquery combinations for the specific substring length, queryLength.
@@ -260,7 +235,7 @@ const Form = (props: { setSearching: Function }) => {
     let courses: SISRetrievedCourse[] = [];
     let versions: number[] = [];
     querySubstrs.forEach((subQuery) => {
-      const courseVersions = find({...extras, query: subQuery});
+      const courseVersions = find({ ...extras, query: subQuery });
       courses.push(...courseVersions[0]);
       versions.push(...courseVersions[1]);
     });
@@ -278,7 +253,8 @@ const Form = (props: { setSearching: Function }) => {
     if (queryLength > minLength) {
       performSmartSearch(extras, queryLength - 1)();
     } else {
-      const newSearchList: [SISRetrievedCourse[], number[]] = getNewSearchList();
+      const newSearchList: [SISRetrievedCourse[], number[]] =
+        getNewSearchList();
       updateSearchResults(newSearchList[0], newSearchList[1]);
     }
   }
@@ -368,9 +344,9 @@ const Form = (props: { setSearching: Function }) => {
           data-for="godTip"
         >
           {!showCriteria ? (
-            <FilterNonFilledSvg className="w-4 h-4" />
+            <FilterNonFilledSvg className="w-4 h-4 transform rotate-90" />
           ) : (
-            <FilterFilledSvg className="w-4 h-4" />
+            <FilterFilledSvg className="w-4 h-4 transform rotate-90" />
           )}
         </div>
       </div>
@@ -385,8 +361,7 @@ const Form = (props: { setSearching: Function }) => {
           </button>
         )}
       </div>
-      <Filters 
-        showCriteria={showCriteria}/>
+      <Filters showCriteria={showCriteria} />
     </div>
   );
 };
