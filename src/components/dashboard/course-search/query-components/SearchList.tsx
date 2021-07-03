@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import {
+  selectPlaceholder,
   selectRetrievedCourses,
   selectRetrievedVersions,
   updateInspectedVersion,
@@ -8,7 +9,8 @@ import {
 } from "../../../../slices/searchSlice";
 import CourseCard from "./CourseCard";
 import ReactPaginate from "react-paginate";
-import { ReactComponent as PlaceholderSvg } from "../../../../resources/svg/Placeholder.svg";
+import { ReactComponent as PlaceholderFilledSvg } from "../../../../resources/svg/PlaceholderFilled.svg";
+import { ReactComponent as PlaceholderEmptySvg } from "../../../../resources/svg/PlaceholderEmpty.svg";
 import { Course } from "../../../../resources/commonTypes";
 
 /* 
@@ -23,6 +25,7 @@ const SearchList = (props: { searching: boolean }) => {
   // Redux setup
   const courses = useSelector(selectRetrievedCourses);
   const versions = useSelector(selectRetrievedVersions);
+  const placeholder = useSelector(selectPlaceholder);
   const dispatch = useDispatch();
 
   let coursesPerPage = 10;
@@ -52,7 +55,7 @@ const SearchList = (props: { searching: boolean }) => {
           className="transform hover:scale-105 transition duration-200 ease-in"
           onClick={() => setHideResults(true)}
         >
-          <CourseCard course={courses[i]} version={versions[i]}/>
+          <CourseCard course={courses[i]} version={versions[i]} />
         </div>
       );
     }
@@ -66,23 +69,28 @@ const SearchList = (props: { searching: boolean }) => {
 
   // Activates placeholder adding.
   const onPlaceholderClick = () => {
-    const placeholderCourse: Course = {
-      title: "placeholder",
-      number: "placeholder",
-      areas: "",
-      term: "",
-      school: "none",
-      department: "none",
-      credits: "",
-      wi: false,
-      bio: "This is a placeholder course",
-      tags: [],
-      preReq: [],
-      restrictions: [],
-    };
-    dispatch(updatePlaceholder(true));
-    dispatch(updateInspectedVersion(placeholderCourse));
-    setHideResults(true);
+    if (placeholder) {
+      dispatch(updatePlaceholder(false));
+      setHideResults(false);
+    } else {
+      const placeholderCourse: Course = {
+        title: "placeholder",
+        number: "placeholder",
+        areas: "",
+        term: "",
+        school: "none",
+        department: "none",
+        credits: "",
+        wi: false,
+        bio: "This is a placeholder course",
+        tags: [],
+        preReq: [],
+        restrictions: [],
+      };
+      dispatch(updatePlaceholder(true));
+      dispatch(updateInspectedVersion(placeholderCourse));
+      setHideResults(true);
+    }
   };
 
   return (
@@ -110,7 +118,11 @@ const SearchList = (props: { searching: boolean }) => {
           data-tip="Add a placeholder or custom course"
           data-for="godTip"
         >
-          <PlaceholderSvg className="w-4 h-4 stroke-2" />
+          {placeholder ? (
+            <PlaceholderFilledSvg className="w-4 h-4 stroke-2" />
+          ) : (
+            <PlaceholderEmptySvg className="w-4 h-4 stroke-2" />
+          )}
         </div>
       </div>
       {!hideResults || window.innerWidth > 700 ? (

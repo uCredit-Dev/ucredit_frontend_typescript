@@ -7,6 +7,7 @@ import {
   selectPlaceholder,
   selectVersion,
   updateInspectedCourse,
+  updatePlaceholder,
 } from "../../../../slices/searchSlice";
 import Select from "react-select";
 import { all_majors, course_tags } from "../../../../resources/assets";
@@ -109,6 +110,7 @@ const Placeholder = (props: { addCourse: any }) => {
 
   // Clears inspected course.
   const clearInspected = (): void => {
+    dispatch(updatePlaceholder(false));
     dispatch(updateInspectedCourse("None"));
   };
 

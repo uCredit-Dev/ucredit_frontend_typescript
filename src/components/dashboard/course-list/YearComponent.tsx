@@ -7,8 +7,6 @@ import {
   selectPlan,
   updateSelectedPlan,
 } from "../../../slices/currentPlanSlice";
-// import { ReactComponent as RemoveSvg } from "../../../resources/svg/Remove.svg";
-import { toast } from "react-toastify";
 import { api } from "../../../resources/assets";
 import {
   updateDeleteYearStatus,
@@ -119,8 +117,6 @@ function YearComponent({ id, customStyle, year, courses }: yearProps) {
         );
         const newUpdatedPlan = { ...currentPlan, years: newYearArray };
         dispatch(updateSelectedPlan(newUpdatedPlan));
-
-        toast.success("Year name changed to " + yearName + "!");
         setEditedName(false);
       })
       .catch((err) => console.log(err));
