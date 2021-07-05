@@ -220,11 +220,10 @@ const Form = (props: { setSearching: Function }) => {
       });
     }
 
-    const semeseter = extras.term + " " + extras.year;
-    console.log(semeseter);
+    const semester = extras.term + " " + extras.year;
     let versions: number[] = [];
     courses = courses.filter((course) => {
-      let index = course.terms.indexOf(semeseter);
+      let index = course.terms.indexOf(semester);
       if (index !== -1) {
         versions.push(index);
         return true;
@@ -352,7 +351,7 @@ const Form = (props: { setSearching: Function }) => {
           autoFocus
           className="mb-2 mr-2 px-1 w-full h-6 rounded outline-none"
           type="text"
-          placeholder={"Course title or number (ie. Physics, 601.280, etc.)"}
+          placeholder={"Course title or number"}
           style={{ width: "100%" }}
           defaultValue={searchTerm}
           onChange={handleSearchTerm}

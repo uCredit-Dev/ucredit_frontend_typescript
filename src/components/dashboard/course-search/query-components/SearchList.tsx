@@ -134,7 +134,7 @@ const SearchList = (props: { searching: boolean }) => {
         </div>
       </div>
       {!hideResults || window.innerWidth > 700 ? (
-        <div className="py px-5 w-full h-full bg-gray-200 border-b border-gray-400 select-none">
+        <div className="py px-5 w-full bg-gray-200 select-none">
           <div className="w-full h-full">
             {courses.length > 0 ? (
               <>
@@ -151,7 +151,7 @@ const SearchList = (props: { searching: boolean }) => {
                 ) : null}
               </>
             ) : (
-              <div className="flex flex-col items-center justify-center w-full h-full">
+              <div className="flex flex-col items-center justify-center mt-24 w-full">
                 {props.searching ? (
                   <>
                     <div>😢</div>

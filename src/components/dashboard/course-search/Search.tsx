@@ -66,10 +66,10 @@ const Search = () => {
         <div className="flex tight:flex-col flex-row w-full tight:h-auto h-full tight:max-h-mobileSearch text-coursecard tight:overflow-y-scroll">
           <div
             className={
-              "flex flex-col rounded-l bg-gray-200 h-auto flex-none border-r-2 tight:border-0 border-gray-300 tight:w-auto w-80"
+              "flex flex-col rounded-l bg-gray-200 flex-none border-r-2 tight:border-0 border-gray-300 tight:w-auto w-80"
             }
           >
-            <div className="overflow-y-auto">
+            <div className="h-full overflow-y-auto">
               <Form setSearching={setSearching} />
               <SearchList searching={searching} />
             </div>

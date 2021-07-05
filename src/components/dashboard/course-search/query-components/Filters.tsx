@@ -142,6 +142,35 @@ const Filters = ({ showCriteria }: filterProps) => {
     ReactTooltip.rebuild();
   });
 
+  const getDepString = () => {
+    console.log(searchFilters);
+    return (
+      "Selected " +
+      (searchFilters.department !== null
+        ? searchFilters.department.split("|").map((dep) => " " + dep)
+        : "nothing")
+    );
+  };
+
+  const getTagString = () => {
+    console.log(searchFilters);
+    return (
+      "Selected " +
+      (searchFilters.tags !== null
+        ? searchFilters.tags.split("|").map((tag) => " " + tag)
+        : "nothing")
+    );
+  };
+
+  const getLevelString = () => {
+    return (
+      "Selected " +
+      (searchFilters.levels !== null
+        ? searchFilters.levels.split("|").map((level) => " " + level)
+        : "nothing")
+    );
+  };
+
   return (
     <>
       <div className="flex flex-row items-center justify-between mb-2 w-full h-auto">
@@ -178,15 +207,7 @@ const Filters = ({ showCriteria }: filterProps) => {
         <div>
           <div className="flex flex-row items-center justify-between mb-2 w-full h-auto">
             Department
-            <div
-              data-tip={
-                "Selected " +
-                (searchFilters.department !== null
-                  ? searchFilters.department.split("|").map((dep) => " " + dep)
-                  : "nothing")
-              }
-              data-for="godTip"
-            >
+            <div data-tip={getDepString()} data-for="godTip">
               <Select
                 options={[
                   ...all_deps.map((department) => ({
@@ -243,15 +264,7 @@ const Filters = ({ showCriteria }: filterProps) => {
           </div>
           <div className="flex flex-row items-center justify-between mb-2 w-full h-auto">
             Tag
-            <div
-              data-tip={
-                "Selected " +
-                (searchFilters.tags !== null
-                  ? searchFilters.tags.split("|").map((tag) => " " + tag)
-                  : "nothing")
-              }
-              data-for="godTip"
-            >
+            <div data-tip={getTagString()} data-for="godTip">
               <Select
                 options={[
                   ...course_tags.map((tag: any) => ({
@@ -267,15 +280,7 @@ const Filters = ({ showCriteria }: filterProps) => {
           </div>{" "}
           <div className="flex flex-row items-center justify-between mb-2 w-full h-auto">
             Level
-            <div
-              data-tip={
-                "Selected " +
-                (searchFilters.levels !== null
-                  ? searchFilters.levels.split("|").map((level) => " " + level)
-                  : "nothing")
-              }
-              data-for="godTip"
-            >
+            <div data-tip={getLevelString()} data-for="godTip">
               <Select
                 options={[
                   ...[

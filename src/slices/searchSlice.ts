@@ -112,16 +112,7 @@ export const searchSlice = createSlice({
       state.inspectedVersion = action.payload;
     },
     clearSearch: (state: any) => {
-      state.filters = {
-        credits: null,
-        distribution: null,
-        tags: null,
-        term: null,
-        wi: null,
-        department: null,
-        year: "2021",
-        semeseter: "Fall",
-      };
+      state.filters = initialState.filters;
       state.searchTerm = "";
       state.searchTime = { searchSemester: "", searchYear: "" };
       state.searching = false;
