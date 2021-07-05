@@ -18,13 +18,14 @@ type TimeBundle = {
 
 // Contains all the filters.
 type FilterObj = {
-  credits: number | "Any";
-  distribution: AreaType | "Any";
-  tags: TagType | "Any"; // TODO: fill this out with array of all tags
+  credits: number | null;
+  distribution: AreaType | null;
+  tags: TagType | null;
   term: SemesterType;
   year: number;
-  department: DepartmentType | "Any"; // TODO: fill this out with array of departments
-  wi: "Any" | boolean;
+  department: DepartmentType | null;
+  wi: boolean | null;
+  levels: string | null;
 };
 
 // Contains all the search states.
@@ -57,13 +58,14 @@ const initialState: searchStates = {
   retrievedCourses: [], // test courses for now
   retrievedVerions: [],
   filters: {
-    credits: "Any",
-    distribution: "Any",
-    tags: "Any",
+    credits: null,
+    distribution: null,
+    tags: null,
     term: "Fall",
     year: 2021,
-    wi: "Any",
-    department: "Any",
+    wi: null,
+    department: null,
+    levels: null,
   },
   inspectedCourse: "None",
   inspectedVersion: "None",
@@ -111,14 +113,14 @@ export const searchSlice = createSlice({
     },
     clearSearch: (state: any) => {
       state.filters = {
-        credits: "Any",
-        distribution: "Any",
-        tags: "Any",
-        term: "Any",
-        wi: "Any",
-        department: "Any",
+        credits: null,
+        distribution: null,
+        tags: null,
+        term: null,
+        wi: null,
+        department: null,
         year: "2021",
-        semeseter: "Fall"
+        semeseter: "Fall",
       };
       state.searchTerm = "";
       state.searchTime = { searchSemester: "", searchYear: "" };
@@ -133,10 +135,7 @@ export const searchSlice = createSlice({
     ) => {
       state.retrievedCourses = [...action.payload];
     },
-    updateRetrievedVersions: (
-      state: any,
-      action: PayloadAction<number[]>
-    ) => {
+    updateRetrievedVersions: (state: any, action: PayloadAction<number[]>) => {
       state.retrievedVerions = [...action.payload];
     },
     updatePlaceholder: (state: any, action: PayloadAction<boolean>) => {
@@ -160,6 +159,8 @@ export const searchSlice = createSlice({
         state.filters.year = action.payload.value;
       } else if (action.payload.filter === "wi") {
         state.filters.wi = action.payload.value;
+      } else if (action.payload.filter === "levels") {
+        state.filters.levels = action.payload.value;
       }
     },
     updateSearchStack: (
@@ -212,7 +213,7 @@ export const selectSearchStatus = (state: RootState) => state.search.searching;
 export const selectSearchFilters = (state: RootState) => state.search.filters;
 export const selectRetrievedCourses = (state: RootState) =>
   state.search.retrievedCourses;
-export const selectRetrievedVersions = (state: RootState) => 
+export const selectRetrievedVersions = (state: RootState) =>
   state.search.retrievedVerions;
 export const selectInspectedCourse = (state: RootState) =>
   state.search.inspectedCourse;

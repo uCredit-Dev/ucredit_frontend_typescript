@@ -97,6 +97,7 @@ function CourseComponent({ year, course, semester }: courseProps) {
         tags: [],
         preReq: [],
         restrictions: [],
+        level: "",
       };
       dispatch(updatePlaceholder(true));
       dispatch(updateInspectedVersion(placeholderCourse));

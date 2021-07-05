@@ -173,6 +173,18 @@ const CourseVersion = (props: { setInspectedArea: Function }) => {
                 <span className="font-semibold">Restrictions: </span>
                 {getRestrictions()}
               </div>
+              <div className="w-auto h-auto">
+                <div>
+                  <span className="font-semibold">Level: </span>
+                  {version.level}
+                </div>
+              </div>
+              <div className="w-auto h-auto">
+                <div>
+                  <span className="font-semibold">Writing Intensive: </span>
+                  {version.wi ? "Yes" : "No"}
+                </div>
+              </div>
             </div>
           </div>
 

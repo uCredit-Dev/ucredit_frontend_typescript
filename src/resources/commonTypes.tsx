@@ -1,4 +1,4 @@
-import { all_majors, course_tags } from "./assets";
+import { all_deps, course_tags } from "./assets";
 
 /* 
   File containing all the common types we use throughout the app.
@@ -24,6 +24,7 @@ export type Course = {
   tags: string[];
   preReq: string[];
   restrictions: Restriction[];
+  level: string;
 };
 
 export type SISRetrievedCourse = {
@@ -138,7 +139,7 @@ export type Distribution = {
 export type SemesterType = "Fall" | "Spring" | "Summer" | "Intersession";
 
 // https://stackoverflow.com/questions/52085454/typescript-define-a-union-type-from-an-array-of-strings
-export type DepartmentType = typeof all_majors[number];
+export type DepartmentType = typeof all_deps[number];
 export type TagType = typeof course_tags[number];
 
 export type FilterType =
@@ -148,7 +149,8 @@ export type FilterType =
   | "term"
   | "year"
   | "department"
-  | "wi";
+  | "wi"
+  | "levels";
 
 export type AreaType = "N" | "S" | "H" | "W" | "E" | "Q";
 

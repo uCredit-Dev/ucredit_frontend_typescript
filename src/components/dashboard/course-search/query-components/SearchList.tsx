@@ -87,6 +87,7 @@ const SearchList = (props: { searching: boolean }) => {
         tags: [],
         preReq: [],
         restrictions: [],
+        level: "",
       };
       dispatch(updatePlaceholder(true));
       dispatch(updateInspectedVersion(placeholderCourse));

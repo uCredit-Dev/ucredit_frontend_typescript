@@ -58,6 +58,7 @@ const Form = (props: { setSearching: Function }) => {
     year: number;
     department: DepartmentType | null;
     wi: boolean | null;
+    levels: string | null;
   };
 
   type SearchMapEl = {
@@ -74,11 +75,11 @@ const Form = (props: { setSearching: Function }) => {
     // Skip searching if no filters or queries are specified
     if (
       searchTerm.length === 0 &&
-      searchFilters.credits === "Any" &&
-      searchFilters.distribution === "Any" &&
-      searchFilters.wi === "Any" &&
-      searchFilters.department === "Any" &&
-      searchFilters.tags === "Any"
+      searchFilters.credits === null &&
+      searchFilters.distribution === null &&
+      searchFilters.wi === null &&
+      searchFilters.department === null &&
+      searchFilters.tags === null
     ) {
       dispatch(updateRetrievedCourses([]));
       dispatch(updateRetrievedVersions([]));
@@ -88,17 +89,14 @@ const Form = (props: { setSearching: Function }) => {
     // Search params.
     const extras: SearchExtras = {
       query: searchTerm,
-      credits: searchFilters.credits === "Any" ? null : searchFilters.credits,
-      areas:
-        searchFilters.distribution === "Any"
-          ? null
-          : searchFilters.distribution,
-      wi: searchFilters.wi === "Any" ? null : searchFilters.wi,
+      credits: searchFilters.credits,
+      areas: searchFilters.distribution,
+      wi: searchFilters.wi,
       term: searchFilters.term,
       year: searchFilters.year,
-      department:
-        searchFilters.department === "Any" ? null : searchFilters.department,
-      tags: searchFilters.tags === "Any" ? null : searchFilters.tags,
+      department: searchFilters.department,
+      tags: searchFilters.tags,
+      levels: searchFilters.levels,
     };
 
     // Search with half second debounce.
@@ -133,15 +131,18 @@ const Form = (props: { setSearching: Function }) => {
       });
     }
 
-    const credits = extras.credits;
+    let credits = extras.credits;
     if (credits !== null) {
+      const creditsString = credits.toString();
       courses = courses.filter((course) => {
         let satisfied = false;
-        course.versions.forEach((v) => {
-          if (v.credits.toString() === credits.toString()) {
-            satisfied = true;
-          }
-        });
+        creditsString.split("").forEach((c: string) =>
+          course.versions.forEach((v) => {
+            if (v.credits.toString() === c) {
+              satisfied = true;
+            }
+          })
+        );
         return satisfied;
       });
     }
@@ -150,36 +151,57 @@ const Form = (props: { setSearching: Function }) => {
     if (areas !== null) {
       courses = courses.filter((course) => {
         let satisfied = false;
-        course.versions.forEach((v) => {
-          if (v.areas.includes(areas)) {
-            satisfied = true;
-          }
-        });
+        areas.split("").forEach((a: string) =>
+          course.versions.forEach((v) => {
+            if (v.areas.includes(a)) {
+              satisfied = true;
+            }
+          })
+        );
         return satisfied;
       });
     }
 
-    const department = extras.department;
-    if (department !== null) {
+    const departments = extras.department;
+    if (departments !== null) {
       courses = courses.filter((course) => {
         let satisfied = false;
-        course.versions.forEach((v) => {
-          if (v.department === department) {
-            satisfied = true;
-          }
-        });
+        departments.split("|").forEach((d: string) =>
+          course.versions.forEach((v) => {
+            if (v.department === d) {
+              satisfied = true;
+            }
+          })
+        );
         return satisfied;
       });
     }
 
-    const tag = extras.tags;
-    if (tag !== null) {
+    const tags = extras.tags;
+    if (tags !== null) {
+      courses = courses.filter((course) => {
+        let satisfied = false;
+        tags.split("|").forEach((t: string) =>
+          course.versions.forEach((v) => {
+            if (v.tags.includes(t)) {
+              satisfied = true;
+            }
+          })
+        );
+        return satisfied;
+      });
+    }
+
+    const levels = extras.levels;
+    if (levels !== null) {
       courses = courses.filter((course) => {
         let satisfied = false;
         course.versions.forEach((v) => {
-          if (v.tags.includes(tag)) {
-            satisfied = true;
-          }
+          levels.split("|").forEach((level) => {
+            if (v.level === level) {
+              satisfied = true;
+            }
+          });
         });
         return satisfied;
       });

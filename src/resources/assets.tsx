@@ -72,7 +72,7 @@ export const getColors = function (distribution: string): string[] {
 // };
 
 // On SIS, scrape the majors using the console, check Notion for more info
-export const AS_majors = [
+export const AS_deps = [
   "AS Agora Institute",
   "AS Anthropology",
   "AS Archaeology",
@@ -128,7 +128,7 @@ export const AS_majors = [
   "AS Theatre Arts & Studies",
   "AS Writing Seminars",
 ];
-export const WSE_majors = [
+export const WSE_deps = [
   "EN Applied Mathematics & Statistics",
   "EN Biomedical Engineering",
   "EN Center for Leadership Education",
@@ -150,7 +150,7 @@ export const WSE_majors = [
   "EN Reserved Registrar",
   "EN Robotics",
 ];
-export const all_majors = [...AS_majors, ...WSE_majors];
+export const all_deps = [...AS_deps, ...WSE_deps];
 export const course_tags = [
   "AFRS-AFAMER",
   "AFRS-DIASPO",
@@ -301,10 +301,9 @@ export const processPrereqs = (
   const regex: RegExp = /[A-Z]{2}\.[0-9]{3}\.[0-9]{3}/g;
   const forwardSlashRegex: RegExp =
     /[A-Z]{2}\.[0-9]{3}\.[0-9]{3}\/[A-Z]{2}\.[0-9]{3}\.[0-9]{3}/g; // e.g. EN.XXX.XXX/EN.XXX.XXX
-  const forwardSlashRegex2: RegExp = 
-    /[A-Z]{2}\.[0-9]{3}\.[0-9]{3}\/[0-9]{3}\.[0-9]{3}/g // e.g. EN.XXX.XXX/XXX.XXX
-  const forwardSlashRegex3: RegExp = 
-    /[A-Z]{2}\.[0-9]{3}\/[0-9]{3}\.[0-9]{3}/g // e.g. EN.XXX/XXX.XXX
+  const forwardSlashRegex2: RegExp =
+    /[A-Z]{2}\.[0-9]{3}\.[0-9]{3}\/[0-9]{3}\.[0-9]{3}/g; // e.g. EN.XXX.XXX/XXX.XXX
+  const forwardSlashRegex3: RegExp = /[A-Z]{2}\.[0-9]{3}\/[0-9]{3}\.[0-9]{3}/g; // e.g. EN.XXX/XXX.XXX
 
   let description: string = preReqs[0].Description;
   let expr: any = preReqs[0].Expression;
@@ -336,7 +335,7 @@ export const processPrereqs = (
         firstCourse + "[C]^OR^" + secondCourse + "[C]"
       );
     }
-  })
+  });
 
   forwardSlashCondition3.forEach((condition: any) => {
     let firstCourse = condition[0].substr(0, 6) + condition[0].substr(10, 13);
@@ -348,7 +347,7 @@ export const processPrereqs = (
         firstCourse + "[C]^OR^" + secondCourse + "[C]"
       );
     }
-  })
+  });
 
   let obj = getCourses(expr, regex, allCourses, planCourses);
   return obj;
