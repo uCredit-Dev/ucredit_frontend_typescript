@@ -1,6 +1,7 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import Select from "react-select";
+import ReactTooltip from "react-tooltip";
 import { all_deps, course_tags } from "../../../../resources/assets";
 import { FilterType, SemesterType } from "../../../../resources/commonTypes";
 import {
@@ -137,6 +138,10 @@ const Filters = ({ showCriteria }: filterProps) => {
     dispatch(updateSearchFilters(params));
   };
 
+  useEffect(() => {
+    ReactTooltip.rebuild();
+  });
+
   return (
     <>
       <div className="flex flex-row items-center justify-between mb-2 w-full h-auto">
@@ -173,17 +178,27 @@ const Filters = ({ showCriteria }: filterProps) => {
         <div>
           <div className="flex flex-row items-center justify-between mb-2 w-full h-auto">
             Department
-            <Select
-              options={[
-                ...all_deps.map((department) => ({
-                  value: department,
-                  label: department,
-                })),
-              ]}
-              isMulti
-              className="w-40 rounded outline-none"
-              onChange={handleDepartmentFilterChange}
-            />
+            <div
+              data-tip={
+                "Selected " +
+                (searchFilters.department !== null
+                  ? searchFilters.department.split("|").map((dep) => " " + dep)
+                  : "nothing")
+              }
+              data-for="godTip"
+            >
+              <Select
+                options={[
+                  ...all_deps.map((department) => ({
+                    value: department,
+                    label: department,
+                  })),
+                ]}
+                isMulti
+                className="w-40 rounded outline-none"
+                onChange={handleDepartmentFilterChange}
+              />
+            </div>
           </div>
           <div className="flex flex-row items-center justify-between mb-2 w-full h-auto">
             Credits
@@ -228,34 +243,54 @@ const Filters = ({ showCriteria }: filterProps) => {
           </div>
           <div className="flex flex-row items-center justify-between mb-2 w-full h-auto">
             Tag
-            <Select
-              options={[
-                ...course_tags.map((tag: any) => ({
-                  value: tag,
-                  label: tag,
-                })),
-              ]}
-              className="w-40 rounded outline-none"
-              onChange={handleTagsFilterChange}
-              isMulti
-            />
+            <div
+              data-tip={
+                "Selected " +
+                (searchFilters.tags !== null
+                  ? searchFilters.tags.split("|").map((tag) => " " + tag)
+                  : "nothing")
+              }
+              data-for="godTip"
+            >
+              <Select
+                options={[
+                  ...course_tags.map((tag: any) => ({
+                    value: tag,
+                    label: tag,
+                  })),
+                ]}
+                className="w-40 rounded outline-none"
+                onChange={handleTagsFilterChange}
+                isMulti
+              />
+            </div>
           </div>{" "}
           <div className="flex flex-row items-center justify-between mb-2 w-full h-auto">
             Level
-            <Select
-              options={[
-                ...[
-                  "Upper Level Undergraduate",
-                  "Lower Level Undergraduate",
-                ].map((level: any) => ({
-                  value: level,
-                  label: level,
-                })),
-              ]}
-              className="w-40 rounded outline-none"
-              onChange={handleLevelFilterChange}
-              isMulti
-            />
+            <div
+              data-tip={
+                "Selected " +
+                (searchFilters.levels !== null
+                  ? searchFilters.levels.split("|").map((level) => " " + level)
+                  : "nothing")
+              }
+              data-for="godTip"
+            >
+              <Select
+                options={[
+                  ...[
+                    "Upper Level Undergraduate",
+                    "Lower Level Undergraduate",
+                  ].map((level: any) => ({
+                    value: level,
+                    label: level,
+                  })),
+                ]}
+                className="w-40 rounded outline-none"
+                onChange={handleLevelFilterChange}
+                isMulti
+              />
+            </div>
           </div>
         </div>
       ) : null}
