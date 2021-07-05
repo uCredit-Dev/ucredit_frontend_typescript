@@ -75,6 +75,7 @@ export type UserCourse = {
   year_id: string;
   year: string;
   preReq: string;
+  isPlaceholder: boolean;
 };
 
 export type Year = {
