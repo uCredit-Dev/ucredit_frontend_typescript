@@ -96,6 +96,7 @@ const Distributions = () => {
                       currentCredits={dis.required_credits}
                       section={dis.name}
                       general={true}
+                      description={dis.description}
                     />
                   </div>
                 );
