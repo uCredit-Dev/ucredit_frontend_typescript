@@ -51,7 +51,7 @@ function CourseBar({
         {section}
       </div>
       <div
-        className="relative flex flex-row mb-2 w-full h-6 bg-gray-200 rounded transform hover:scale-105 transition duration-200 ease-in"
+        className="relative flex flex-row w-full h-6 bg-gray-200 rounded transform hover:scale-105 transition duration-200 ease-in"
         data-tip={tooltip}
         data-for="godTip"
       >

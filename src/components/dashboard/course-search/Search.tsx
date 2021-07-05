@@ -69,8 +69,11 @@ const Search = () => {
               "flex flex-col rounded-l bg-gray-200 h-auto flex-none border-r-2 tight:border-0 border-gray-300 tight:w-auto w-80"
             }
           >
-            <Form setSearching={setSearching} />
-            <SearchList searching={searching} />
+            <div className="overflow-y-auto">
+              <Form setSearching={setSearching} />
+              <SearchList searching={searching} />
+            </div>
+
             <div
               className="flex flex-row items-center justify-center p-1 w-full h-8 transform hover:scale-125 transition duration-200 ease-in"
               onMouseEnter={() => setSearchOpacity(50)}

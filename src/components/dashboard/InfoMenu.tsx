@@ -20,7 +20,7 @@ const InfoMenu = () => {
         </button>
       </div>
       {infoOpen ? (
-        <div className="absolute -left-96 top-20 ml-5 p-4 px-0 max-h-full bg-white bg-opacity-90 shadow overflow-y-scroll">
+        <div className="absolute right-14 top-20 ml-5 p-4 px-0 w-max max-h-full bg-white bg-opacity-90 shadow overflow-y-scroll">
           <InfoCards />
           <Distributions />
         </div>
