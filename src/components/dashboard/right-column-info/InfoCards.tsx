@@ -85,7 +85,7 @@ const InfoCards = () => {
   };
 
   return (
-    <div className="tight:items-center mb-4 mx-auto p-6 w-coursebars h-auto bg-white rounded shadow">
+    <div className="tight:items-center mb-4 mx-4 p-6 h-auto bg-white rounded shadow">
       <div className="flex flex-col mb-2 w-auto h-auto">
         <div className="flex flex-row items-end justify-center mb-2 w-full">
           <input

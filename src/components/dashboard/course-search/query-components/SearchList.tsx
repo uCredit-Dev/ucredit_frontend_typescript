@@ -12,6 +12,7 @@ import ReactPaginate from "react-paginate";
 import { ReactComponent as PlaceholderFilledSvg } from "../../../../resources/svg/PlaceholderFilled.svg";
 import { ReactComponent as PlaceholderEmptySvg } from "../../../../resources/svg/PlaceholderEmpty.svg";
 import { Course } from "../../../../resources/commonTypes";
+import ReactTooltip from "react-tooltip";
 
 /* 
   List of searched courses.
@@ -112,21 +113,27 @@ const SearchList = (props: { searching: boolean }) => {
             </button>
           ) : null}
         </div>
-        <div
-          className="flex flex-row items-center justify-center w-6 h-6 bg-white rounded cursor-pointer transform hover:scale-110 transition duration-200 ease-in"
-          onClick={onPlaceholderClick}
-          data-tip="Add a placeholder or custom course"
-          data-for="godTip"
-        >
-          {placeholder ? (
-            <PlaceholderFilledSvg className="w-4 h-4 stroke-2" />
-          ) : (
-            <PlaceholderEmptySvg className="w-4 h-4 stroke-2" />
-          )}
+        <div className="flex flex-row items-center">
+          <div
+            className="flex flex-row items-center justify-center px-1 w-auto h-6 bg-white rounded cursor-pointer transform hover:scale-110 transition duration-200 ease-in"
+            onClick={onPlaceholderClick}
+            data-tip="Add a placeholder or non-SIS course"
+            data-for="godTip"
+            onMouseOver={() => {
+              ReactTooltip.rebuild();
+            }}
+          >
+            <div className="mr-1">Custom</div>
+            {placeholder ? (
+              <PlaceholderFilledSvg className="w-4 h-4 stroke-2" />
+            ) : (
+              <PlaceholderEmptySvg className="w-4 h-4 stroke-2" />
+            )}
+          </div>
         </div>
       </div>
       {!hideResults || window.innerWidth > 700 ? (
-        <div className="py px-5 w-full h-full bg-gray-200 border-b border-gray-400 select-none overflow-y-auto">
+        <div className="py px-5 w-full h-full bg-gray-200 border-b border-gray-400 select-none">
           <div className="w-full h-full">
             {courses.length > 0 ? (
               <>

@@ -14,8 +14,7 @@ import {
   updateFulfilled,
   getRequirements,
 } from "./distributionFunctions";
-import { ReactComponent as Check } from "../../../resources/svg/CheckMark.svg"
-import { ReactComponent as X } from "../../../resources/svg/Close.svg"
+import FineDistribution from "./FineDistribution";
 
 const Distributions = () => {
   const currentPlan = useSelector(selectPlan);
@@ -27,8 +26,11 @@ const Distributions = () => {
     [string, requirements[]][]
   >([]);
   const [distributionOpen, setDistributionOpen] = useState<boolean>(true);
-  const [displayGeneral, setDisplayGeneral] = useState<boolean>(true); // Sets all distributions for distribution bars.
-  const [showDistributions, setShowDistributions] = useState<boolean[]>(new Array(distributions.length));
+  const [displayGeneral] = useState<boolean>(true); // Sets all distributions for distribution bars.
+  const [showDistributions, setShowDistributions] = useState<boolean[]>(
+    new Array(distributions.length)
+  );
+
   // Gets distribution everytime a plan changes.
   useEffect(() => {
     const distr = getDistributions();
@@ -54,23 +56,22 @@ const Distributions = () => {
 
   useEffect(() => {
     ReactTooltip.rebuild();
+    console.log(distributions);
   }, [displayGeneral, distributions]);
 
-  const changeDistributionVisibility = (i : number) => {
+  const changeDistributionVisibility = (i: number) => {
     let showDistributionsCopy = showDistributions.slice();
     showDistributionsCopy[i] = !showDistributions[i];
     setShowDistributions(showDistributionsCopy);
-  }
+  };
 
   return (
-    <div className="flex-none ml-4 mr-4 p-6 w-coursebars h-auto bg-white rounded shadow">
+    <div className="flex-none mx-4 p-6 w-96 h-auto bg-white rounded shadow">
       <div className="flex flex-row mb-3 w-full">
-        <div className="self-start text-xl font-medium">
-          Overall Distribution
-        </div>
+        <div className="self-start text-2xl font-medium">Degree Progress</div>
         <div className="relative flex-grow">
           <button
-            className="absolute bottom-0 right-0 underline focus:outline-none transform hover:scale-110 transition duration-200 ease-in"
+            className="absolute bottom-1 right-0 underline focus:outline-none transform hover:scale-110 transition duration-200 ease-in"
             onClick={() => {
               setDistributionOpen(!distributionOpen);
             }}
@@ -85,7 +86,10 @@ const Distributions = () => {
             {pair[1].map((dis, index) => {
               if (index === 0) {
                 return (
-                  <div key={dis.name} className={clsx({"hidden" : !distributionOpen})}>
+                  <div
+                    key={dis.name}
+                    className={clsx({ hidden: !distributionOpen })}
+                  >
                     <CourseBar
                       maxCredits={dis.required_credits}
                       plannedCredits={dis.fulfilled_credits}
@@ -97,26 +101,30 @@ const Distributions = () => {
                 );
               } else {
                 return showDistributions[i] === true ? (
-                  <div key={dis.name} className={clsx("flex justify-between", {"hidden" : !distributionOpen})}>
-                    <div className="flex mb-1 whitespace-nowrap overflow-hidden overflow-ellipsis pr-2 w-full">
-                      <div>
-                        {dis.fulfilled_credits >= dis.required_credits ? <Check fill="green"/> : <X stroke="red"/>}
-                      </div>
-                      <p className="whitespace-nowrap overflow-hidden overflow-ellipsis pr-2">{dis.name}</p>
-                    </div>
-                    <p className="font-bold">{dis.fulfilled_credits}/{dis.required_credits}</p>
-                  </div> 
-                ) : null
+                  <FineDistribution
+                    dis={dis}
+                    distributionOpen={distributionOpen}
+                  />
+                ) : null;
               }
             })}
-            <button
-              onClick={() => {changeDistributionVisibility(i)}}
-              className={clsx("focus:outline-none transform hover:scale-110 transition duration-200 ease-in underline", {"hidden" : !distributionOpen})}
-            >
-              {showDistributions[i] === true ? "Show Less" : "Show More"}
-            </button>
+            {pair[1].length > 1 ? (
+              <button
+                onClick={() => {
+                  changeDistributionVisibility(i);
+                }}
+                className={clsx(
+                  "mb-2 underline text-sm focus:outline-none transform hover:scale-101 transition duration-200 ease-in",
+                  { hidden: !distributionOpen }
+                )}
+              >
+                {showDistributions[i] === true
+                  ? "Hide Fine Requirements"
+                  : "Show Fine Requirements"}
+              </button>
+            ) : null}
           </div>
-        )
+        );
       })}
     </div>
   );
