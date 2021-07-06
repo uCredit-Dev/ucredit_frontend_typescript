@@ -130,7 +130,6 @@ const Form = (props: { setSearching: Function }) => {
         }
       });
     }
-    console.log("courses before", courses, extras);
 
     let credits = extras.credits;
     if (credits !== null) {
@@ -232,7 +231,7 @@ const Form = (props: { setSearching: Function }) => {
       });
       return toReturn;
     });
-    console.log(courses, semester);
+    console.log(courses);
 
     return [courses, versions];
   };

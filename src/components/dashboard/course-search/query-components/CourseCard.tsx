@@ -29,6 +29,7 @@ const CourseCard = (props: cardProps) => {
   const handleCourseClick = () => {
     dispatch(updateInspectedCourse(props.course));
     dispatch(updatePlaceholder(false));
+    console.log("/////Props are?/////", props);
     const newInspected: Course = {
       title: props.course.title,
       number: props.course.number,
@@ -51,7 +52,9 @@ const CourseCard = (props: cardProps) => {
     >
       <div className="flex flex-col justify-center w-full h-full">
         <div className="truncate">{props.course.title}</div>
-        <div>{props.course.number} {props.course.terms[props.version]}</div>
+        <div>
+          {props.course.number} {props.course.terms[props.version]}
+        </div>
       </div>
     </div>
   );

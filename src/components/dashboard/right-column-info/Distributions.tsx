@@ -56,7 +56,6 @@ const Distributions = () => {
 
   useEffect(() => {
     ReactTooltip.rebuild();
-    console.log(distributions);
   }, [displayGeneral, distributions]);
 
   const changeDistributionVisibility = (i: number) => {

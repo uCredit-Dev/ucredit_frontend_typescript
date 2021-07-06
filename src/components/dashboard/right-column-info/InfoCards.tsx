@@ -40,7 +40,6 @@ const InfoCards = () => {
 
   // Only edits name if editName is true. If true, calls debounce update function
   useEffect(() => {
-    console.log(user, planList);
     if (editName) {
       const update = setTimeout(updateName, 1000);
       return () => clearTimeout(update);

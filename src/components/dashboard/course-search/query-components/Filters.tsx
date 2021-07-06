@@ -90,7 +90,6 @@ const Filters = ({ showCriteria }: filterProps) => {
         departments = departments.concat("|");
       }
     });
-    console.log(departments, event);
     const params: { filter: FilterType; value: any } = {
       filter: "department",
       value: departments.length === 0 ? null : departments,
@@ -143,7 +142,6 @@ const Filters = ({ showCriteria }: filterProps) => {
   });
 
   const getDepString = () => {
-    console.log(searchFilters);
     return (
       "Selected " +
       (searchFilters.department !== null
@@ -153,7 +151,6 @@ const Filters = ({ showCriteria }: filterProps) => {
   };
 
   const getTagString = () => {
-    console.log(searchFilters);
     return (
       "Selected " +
       (searchFilters.tags !== null
