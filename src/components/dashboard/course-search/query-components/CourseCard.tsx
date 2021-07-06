@@ -29,7 +29,6 @@ const CourseCard = (props: cardProps) => {
   const handleCourseClick = () => {
     dispatch(updateInspectedCourse(props.course));
     dispatch(updatePlaceholder(false));
-    console.log("/////Props are?/////", props);
     const newInspected: Course = {
       title: props.course.title,
       number: props.course.number,
