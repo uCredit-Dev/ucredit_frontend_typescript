@@ -91,21 +91,19 @@ const Distributions = () => {
                     className={clsx({ hidden: !distributionOpen })}
                   >
                     <CourseBar
-                      maxCredits={dis.required_credits}
-                      plannedCredits={dis.fulfilled_credits}
-                      currentCredits={dis.required_credits}
-                      section={dis.name}
+                      distribution={dis}
                       general={true}
                     />
                   </div>
                 );
               } else {
-                return showDistributions[i] === true ? (
+                return (
                   <FineDistribution
                     dis={dis}
                     distributionOpen={distributionOpen}
+                    hidden={showDistributions[i] !== true}
                   />
-                ) : null;
+                );
               }
             })}
             {pair[1].length > 1 ? (
