@@ -120,7 +120,7 @@ const checkRequirementSatisfied = (
       }
     }
     concat.length > 2 ? (index = index + 2) : index++;
-    boolExpr = boolExpr.concat(concat);
+    boolExpr = boolExpr.concat(concat); // Causing issues with biology major.
   }
   // eslint-disable-next-line no-eval
   return eval(boolExpr);

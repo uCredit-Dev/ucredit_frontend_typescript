@@ -84,6 +84,8 @@ const CourseVersion = (props: { setInspectedArea: Function }) => {
       return "Social Sciences";
     } else if (area === "H") {
       return "Humanities";
+    } else if (area === "Q") {
+      return "Quantitative";
     } else {
       return "None";
     }

@@ -130,6 +130,7 @@ const Form = (props: { setSearching: Function }) => {
         }
       });
     }
+    console.log("courses before", courses, extras);
 
     let credits = extras.credits;
     if (credits !== null) {
@@ -223,15 +224,15 @@ const Form = (props: { setSearching: Function }) => {
     const semester = extras.term + " " + extras.year;
     let versions: number[] = [];
     courses = courses.filter((course) => {
-      let index = course.terms.indexOf(semester);
-      if (index !== -1) {
-        versions.push(index);
-        return true;
-      } else {
-        courses.splice(courses.indexOf(course), 1);
-        return false;
-      }
+      let toReturn = false;
+      course.terms.forEach((term) => {
+        if (term === semester) {
+          toReturn = true;
+        }
+      });
+      return toReturn;
     });
+    console.log(courses, semester);
 
     return [courses, versions];
   };
