@@ -58,13 +58,13 @@ function DistributionPopup({
   }
 
   return (
-  <div className="fixed inset-1/2 w-80 h-80 overflow-auto transform -translate-x-2/4 -translate-y-1/2">
-    <div className="text-center font-bold bg-gray-50 shadow rounded-t-lg">
+  <div className="fixed inset-1/2 w-96 h-80 overflow-auto transform -translate-x-2/4 -translate-y-1/2">
+    <div className="text-center font-bold bg-gray-50 shadow rounded-t-lg pb-3">
       <h1 >{distribution.name}</h1>
     </div>
     {courses.map((course) => {
       return (
-        <div className="flex block h-7 bg-gray-50">
+        <div className="flex block h-7 bg-gray-50 pl-3">
           {satisfies(course) ? 
             <Minus className="transform hover:scale-150 transition duration-200 ease-in" onClick={() => flip(course)}/> 
             : <Plus className="transform hover:scale-150 transition duration-200 ease-in"onClick={() => flip(course)} />
@@ -75,7 +75,7 @@ function DistributionPopup({
         </div>
       )
     })}
-    <div className="flex justify-evenly bg-gray-50 p-2 shadow-md rounded-b-lg">
+    <div className="flex justify-evenly bg-gray-50 p-2 shadow-md rounded-b-lg pt-5">
       <div className="bg-red-300 p-2 transform hover:scale-105 transition duration-200 ease-in rounded-lg" onClick={cleanup}>
         Cancel
       </div>
