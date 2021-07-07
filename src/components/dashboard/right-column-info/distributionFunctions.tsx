@@ -37,7 +37,7 @@ export const updateFulfilled = (
 
 // args: array where every entry is a seperate parentheses, OR/AND, requirement, or type, name of a class, and all courses
 // returns: whether the class satisifies the requirement
-const checkRequirementSatisfied = (
+export const checkRequirementSatisfied = (
   splitArr: string[],
   course: Course
 ): boolean => {
@@ -128,7 +128,7 @@ const checkRequirementSatisfied = (
 
 // args: expression for requirments
 // returns: an array where each entry is one of a requirement (always followed by type of requirement), parentheses, OR/AND,
-const splitRequirements = (expr: string): string[] => {
+export const splitRequirements = (expr: string): string[] => {
   let out: string[] = [];
   let index = 0;
   while (index < expr.length) {
