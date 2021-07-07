@@ -37,7 +37,7 @@ function Content() {
           </div>
 
           {window.innerWidth > 1600 ? (
-            <div className="flex flex-col flex-wrap ml-auto mr-auto w-coursebars h-auto">
+            <div className="flex flex-col flex-wrap ml-auto mr-16 w-coursebars h-auto">
               <InfoCards />
               <Distributions />
             </div>
