@@ -59,15 +59,19 @@ function CourseComponent({ year, course, semester }: courseProps) {
   }, [currPlanCourses, allCourses]);
 
   const isSatisfied = () => {
-    const temp = checkAllPrereqs(
-      currPlanCourses,
-      currentPlan,
-      course.number,
-      year,
-      semester,
-      allCourses
-    );
-    setSatisfied(temp);
+    if (course.isPlaceholder) {
+      setSatisfied(true);
+    } else {
+      const temp = checkAllPrereqs(
+        currPlanCourses,
+        currentPlan,
+        course.number,
+        year,
+        semester,
+        allCourses
+      );
+      setSatisfied(temp);
+    }
   };
 
   // Sets or resets the course displayed in popout after user clicks it in course list.
@@ -97,6 +101,7 @@ function CourseComponent({ year, course, semester }: courseProps) {
         tags: [],
         preReq: [],
         restrictions: [],
+        level: "",
       };
       dispatch(updatePlaceholder(true));
       dispatch(updateInspectedVersion(placeholderCourse));

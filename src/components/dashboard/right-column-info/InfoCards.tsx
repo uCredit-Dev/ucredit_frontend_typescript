@@ -14,6 +14,7 @@ import {
   updateSelectedPlan,
 } from "../../../slices/currentPlanSlice";
 import { api } from "../../../resources/assets";
+import { toast } from "react-toastify";
 
 /**
  * User/Current plan information area.
@@ -68,6 +69,7 @@ const InfoCards = () => {
             newPlanList[i] = { ...newUpdatedPlan };
           }
         }
+        toast.success("Plan name changed to " + planName + "!");
         setEditName(false);
         dispatch(updatePlanList(newPlanList));
       })

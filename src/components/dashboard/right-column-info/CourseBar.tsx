@@ -8,6 +8,7 @@ type courseBarProps = {
   currentCredits: number;
   section: string;
   general: boolean;
+  description: string;
 };
 
 /**
@@ -17,6 +18,7 @@ type courseBarProps = {
  * @param currentCredits - amount of credits currently earned
  * @param section - the distribution title
  * @param general - if this is a general distribution
+ * @param description - this is the description of the distribution.
  */
 function CourseBar({
   maxCredits,
@@ -24,12 +26,14 @@ function CourseBar({
   currentCredits: _,
   section,
   general,
+  description,
 }: courseBarProps) {
   const remainingCredits =
     plannedCredits <= maxCredits ? maxCredits - plannedCredits : 0;
 
   const tooltip =
     `<div style="overflow: wrap; margin-bottom: 1rem;">${section}</div>` +
+    `<div style="margin-bottom: 1rem;">${description}</div>` +
     `<div style='width: 90px; height: auto;'><div style='width: 100%; display: flex; flex-direction: row; justify-content: space-between;'>` +
     `<div>Planned</div><div>${plannedCredits}</div></div><div style='display: flex; flex-direction: row; justify-content: space-between;'>${
       remainingCredits !== 0
@@ -51,7 +55,7 @@ function CourseBar({
         {section}
       </div>
       <div
-        className="relative flex flex-row mb-2 w-full h-6 bg-gray-200 rounded transform hover:scale-105 transition duration-200 ease-in"
+        className="relative flex flex-row w-full h-6 bg-gray-200 rounded transform hover:scale-105 transition duration-200 ease-in"
         data-tip={tooltip}
         data-for="godTip"
       >

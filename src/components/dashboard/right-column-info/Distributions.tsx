@@ -56,7 +56,6 @@ const Distributions = () => {
 
   useEffect(() => {
     ReactTooltip.rebuild();
-    console.log(distributions);
   }, [displayGeneral, distributions]);
 
   const changeDistributionVisibility = (i: number) => {
@@ -96,6 +95,7 @@ const Distributions = () => {
                       currentCredits={dis.required_credits}
                       section={dis.name}
                       general={true}
+                      description={dis.description}
                     />
                   </div>
                 );

@@ -48,13 +48,12 @@ const CourseDisplay = () => {
   const addCourse = (): void => {
     // Adds course, updates user frontend distributions display, and clears search states.
     if (version !== "None") {
-      dispatch(updatePlaceholder(false));
-
       // Posts to add course route and then updates distribution.
       updateDistributions();
 
       // Clears search state.
       dispatch(clearSearch());
+      dispatch(updatePlaceholder(false));
     }
   };
 
@@ -84,6 +83,7 @@ const CourseDisplay = () => {
         year: addingYear !== null ? addingYear.name : "",
         credits: version.credits === "" ? 0 : version.credits,
         distribution_ids: currentPlan.distribution_ids,
+        isPlaceholder: placeholder,
         number: version.number,
         area: inspectedArea,
         preReq: version.preReq,

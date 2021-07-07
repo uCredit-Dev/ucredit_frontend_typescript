@@ -10,9 +10,9 @@ import {
   updatePlaceholder,
 } from "../../../../slices/searchSlice";
 import Select from "react-select";
-import { all_majors, course_tags } from "../../../../resources/assets";
+import { all_deps, course_tags } from "../../../../resources/assets";
 
-const departmentFilters = ["none", ...all_majors];
+const departmentFilters = ["none", ...all_deps];
 const tagFilters = ["none", ...course_tags];
 
 /**
