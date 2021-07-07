@@ -56,7 +56,6 @@ const Distributions = () => {
 
   useEffect(() => {
     ReactTooltip.rebuild();
-    console.log(distributions);
   }, [displayGeneral, distributions]);
 
   const changeDistributionVisibility = (i: number) => {
@@ -93,6 +92,7 @@ const Distributions = () => {
                     <CourseBar
                       distribution={dis}
                       general={true}
+                      description={dis.description}
                     />
                   </div>
                 );

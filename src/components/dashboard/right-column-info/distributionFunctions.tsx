@@ -66,7 +66,10 @@ export const checkRequirementSatisfied = (
           }
           break;
         case "T": // Tag
-          if (course?.tags !== undefined && course.tags.includes(splitArr[index])) {
+          if (
+            course?.tags !== undefined &&
+            course.tags.includes(splitArr[index])
+          ) {
             concat = "true";
           } else {
             concat = "false";
@@ -99,13 +102,13 @@ export const checkRequirementSatisfied = (
           break;
         case "L":
           if (splitArr[index].includes("Upper")) {
-            if (course.number[7] >= '3') {
+            if (course.number[7] >= "3") {
               concat = "true";
             } else {
               concat = "false";
             }
           } else {
-            if (course.number[7] <= '2') {
+            if (course.number[7] <= "2") {
               concat = "false";
             } else {
               concat = "true";
@@ -117,7 +120,7 @@ export const checkRequirementSatisfied = (
       }
     }
     concat.length > 2 ? (index = index + 2) : index++;
-    boolExpr = boolExpr.concat(concat);
+    boolExpr = boolExpr.concat(concat); // Causing issues with biology major.
   }
   // eslint-disable-next-line no-eval
   return eval(boolExpr);
@@ -174,6 +177,7 @@ export type requirements = {
   expr: string;
   required_credits: number;
   fulfilled_credits: number;
+  description: string;
 };
 // args: major
 // returns:
@@ -189,6 +193,7 @@ export const getRequirements = (major: Major) => {
       expr: element.criteria.toString(),
       required_credits: element.required_credits,
       fulfilled_credits: 0,
+      description: element.description,
     };
     allReq.push(general);
     if (element.fine_requirements !== undefined) {
@@ -200,6 +205,7 @@ export const getRequirements = (major: Major) => {
             expr: fine.criteria.toString(),
             required_credits: fine.required_credits,
             fulfilled_credits: 0,
+            description: "",
           },
         ];
       });

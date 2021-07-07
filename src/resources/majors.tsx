@@ -642,8 +642,7 @@ const baBiology: Major = {
             "250.254 Protein Biochemistry and Engineering Laboratory\n\t020.363 Developmental Biology",
           required_credits: 28,
           criteria:
-            "AS.020.151[C]^OR^AS.020.152[C]^OR^AS.020.303[C]^OR^AS.020.340[C]^OR^AS.020.304[C]^OR^AS.020.306[C]^OR^AS.020.316[C]" +
-            "AS.020.305[C]^OR^AS.020.315[C]^OR^AS.250.253[C]^OR^AS.250.254[C]^OR^AS.020.363[C]",
+            "AS.020.151[C]^OR^AS.020.152[C]^OR^AS.020.303[C]^OR^AS.020.340[C]^OR^AS.020.304[C]^OR^AS.020.306[C]^OR^AS.020.316[C]^OR^AS.020.305[C]^OR^AS.020.315[C]^OR^AS.250.253[C]^OR^AS.250.254[C]^OR^AS.020.363[C]",
         },
       ],
     },
@@ -665,7 +664,7 @@ const baBiology: Major = {
             "(030.225 Introductory Organic Chemistry Laboratory OR\n\t030.227 Chemical Chirality: An Introduction in Organic Chem. Lab, Techniques)",
           required_credits: 6,
           criteria:
-            "AS.030.101[C]^OR^AS.030.105[C]^OR^AS.030.102[C]^OR^AS.030.106[C]^OR^AS.030.103[C]" +
+            "AS.030.101[C]^OR^AS.030.105[C]^OR^AS.030.102[C]^OR^AS.030.106[C]^OR^AS.030.103[C]^OR^" +
             "AS.030.205[C]^OR^AS.030.206[C]^OR^AS.030.212[C]^OR^AS.030.225[C]^OR^AS.030.227[C]",
         },
       ],

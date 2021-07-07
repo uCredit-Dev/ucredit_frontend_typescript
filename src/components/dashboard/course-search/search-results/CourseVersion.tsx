@@ -84,6 +84,8 @@ const CourseVersion = (props: { setInspectedArea: Function }) => {
       return "Social Sciences";
     } else if (area === "H") {
       return "Humanities";
+    } else if (area === "Q") {
+      return "Quantitative";
     } else {
       return "None";
     }
@@ -172,6 +174,18 @@ const CourseVersion = (props: { setInspectedArea: Function }) => {
               <div>
                 <span className="font-semibold">Restrictions: </span>
                 {getRestrictions()}
+              </div>
+              <div className="w-auto h-auto">
+                <div>
+                  <span className="font-semibold">Level: </span>
+                  {version.level}
+                </div>
+              </div>
+              <div className="w-auto h-auto">
+                <div>
+                  <span className="font-semibold">Writing Intensive: </span>
+                  {version.wi ? "Yes" : "No"}
+                </div>
               </div>
             </div>
           </div>

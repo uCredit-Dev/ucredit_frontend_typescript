@@ -3,7 +3,7 @@ import { useSelector, useDispatch } from "react-redux";
 import {
   selectPlaceholder,
   selectRetrievedCourses,
-  selectRetrievedVersions,
+  selectSearchFilters,
   updateInspectedVersion,
   updatePlaceholder,
 } from "../../../../slices/searchSlice";
@@ -25,8 +25,8 @@ const SearchList = (props: { searching: boolean }) => {
 
   // Redux setup
   const courses = useSelector(selectRetrievedCourses);
-  const versions = useSelector(selectRetrievedVersions);
   const placeholder = useSelector(selectPlaceholder);
+  const searchFilters = useSelector(selectSearchFilters);
   const dispatch = useDispatch();
 
   let coursesPerPage = 10;
@@ -50,15 +50,20 @@ const SearchList = (props: { searching: boolean }) => {
         ? courses.length - 1
         : startingIndex + coursesPerPage - 1;
     for (let i = startingIndex; i <= endingIndex; i++) {
-      toDisplay[i - startingIndex] = (
-        <div
-          key={courses[i].number}
-          className="transform hover:scale-105 transition duration-200 ease-in"
-          onClick={() => setHideResults(true)}
-        >
-          <CourseCard course={courses[i]} version={versions[i]} />
-        </div>
-      );
+      const inspecting = { ...courses[i] };
+      inspecting.versions.forEach((v: any, i: number) => {
+        if (v.term === searchFilters.term + " " + searchFilters.year) {
+          toDisplay.push(
+            <div
+              key={inspecting.number}
+              className="transform hover:scale-105 transition duration-200 ease-in"
+              onClick={() => setHideResults(true)}
+            >
+              <CourseCard course={inspecting} version={i} />
+            </div>
+          );
+        }
+      });
     }
     return toDisplay;
   };
@@ -87,6 +92,7 @@ const SearchList = (props: { searching: boolean }) => {
         tags: [],
         preReq: [],
         restrictions: [],
+        level: "",
       };
       dispatch(updatePlaceholder(true));
       dispatch(updateInspectedVersion(placeholderCourse));
@@ -133,7 +139,7 @@ const SearchList = (props: { searching: boolean }) => {
         </div>
       </div>
       {!hideResults || window.innerWidth > 700 ? (
-        <div className="py px-5 w-full h-full bg-gray-200 border-b border-gray-400 select-none">
+        <div className="py px-5 w-full bg-gray-200 select-none">
           <div className="w-full h-full">
             {courses.length > 0 ? (
               <>
@@ -150,7 +156,7 @@ const SearchList = (props: { searching: boolean }) => {
                 ) : null}
               </>
             ) : (
-              <div className="flex flex-col items-center justify-center w-full h-full">
+              <div className="flex flex-col items-center justify-center mt-24 w-full">
                 {props.searching ? (
                   <>
                     <div>😢</div>

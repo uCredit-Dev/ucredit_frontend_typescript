@@ -13,16 +13,19 @@ import DistributionPopup from "./DistributionPopup";
 type courseBarProps = {
   distribution: requirements;
   general: boolean;
+  description: string;
 };
 
 /**
  * A distribution bar.
  * @param distribution - the distribution the bar refers to
  * @param general - if this is a general distribution
+ * @param description - this is the description of the distribution.
  */
 function CourseBar({
   distribution,
   general,
+  description,
 }: courseBarProps) {
 
   const [displayAdd, setDisplayAdd] = useState(false);
@@ -61,6 +64,7 @@ function CourseBar({
 
   const tooltip =
     `<div style="overflow: wrap; margin-bottom: 1rem;">${section}</div>` +
+    `<div style="margin-bottom: 1rem;">${description}</div>` +
     `<div style='width: 90px; height: auto;'><div style='width: 100%; display: flex; flex-direction: row; justify-content: space-between;'>` +
     `<div>Planned</div><div>${plannedCredits}</div></div><div style='display: flex; flex-direction: row; justify-content: space-between;'>${
       remainingCredits !== 0
@@ -95,7 +99,11 @@ function CourseBar({
       >
         {section}
       </div>
-      <div className="flex">
+      <div
+        className="relative flex flex-row w-full h-6 bg-gray-200 rounded transform hover:scale-105 transition duration-200 ease-in"
+        data-tip={tooltip}
+        data-for="godTip"
+      >
         <div
           className="relative flex flex-row mb-2 w-full h-6 bg-gray-200 rounded transform hover:scale-105 transition duration-200 ease-in"
           data-tip={tooltip}

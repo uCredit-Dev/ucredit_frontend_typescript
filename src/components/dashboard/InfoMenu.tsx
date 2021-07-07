@@ -6,8 +6,8 @@ const InfoMenu = () => {
   const [infoOpen, setInfoOpen] = useState(false);
   return (
     <div
-      className="fixed z-50 right-0 flex flex-col justify-between w-8"
-      style={{ height: "80vh" }}
+      className="fixed z-50 -top-10 right-0 flex flex-col justify-between w-8"
+      style={{ height: "76vh" }}
     >
       <div className="my-auto transform -rotate-90">
         <button
