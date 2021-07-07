@@ -59,27 +59,27 @@ function DistributionPopup({
 
   return (
   <div className="fixed inset-1/2 w-80 h-80 overflow-auto transform -translate-x-2/4 -translate-y-1/2">
-    <div className="text-center font-bold bg-gray-300">
+    <div className="text-center font-bold bg-gray-50 shadow rounded-t-lg">
       <h1 >{distribution.name}</h1>
     </div>
     {courses.map((course) => {
       return (
-        <div className="flex block h-8 bg-gray-300">
+        <div className="flex block h-7 bg-gray-50">
           {satisfies(course) ? 
             <Minus className="transform hover:scale-150 transition duration-200 ease-in" onClick={() => flip(course)}/> 
             : <Plus className="transform hover:scale-150 transition duration-200 ease-in"onClick={() => flip(course)} />
           }
-          <div>
+          <div className="text-lg">
             {course.title}
           </div>
         </div>
       )
     })}
-    <div className="flex justify-evenly bg-gray-300 p-2">
-      <div className="bg-red-300 p-2 transform hover:scale-105 transition duration-200 ease-in" onClick={cleanup}>
+    <div className="flex justify-evenly bg-gray-50 p-2 shadow-md rounded-b-lg">
+      <div className="bg-red-300 p-2 transform hover:scale-105 transition duration-200 ease-in rounded-lg" onClick={cleanup}>
         Cancel
       </div>
-      <div className="bg-green-300 p-2 transform hover:scale-105 transition duration-200 ease-in" onClick={() => onSaveClick(flippedArr)}>
+      <div className="bg-green-300 p-2 transform hover:scale-105 transition duration-200 ease-in rounded-lg" onClick={() => onSaveClick(flippedArr)}>
         Save
       </div>
     </div>
