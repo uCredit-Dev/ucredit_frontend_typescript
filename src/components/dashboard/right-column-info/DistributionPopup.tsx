@@ -57,6 +57,10 @@ function DistributionPopup({
     cleanup();
   }
 
+  const onResetClick = () => {
+    setFlippedArr([]);
+  }
+
   return (
   <div className="fixed inset-1/2 w-96 h-80 overflow-auto transform -translate-x-2/4 -translate-y-1/2">
     <div className="text-center font-bold bg-gray-50 shadow rounded-t-lg p-3">
@@ -76,6 +80,9 @@ function DistributionPopup({
       )
     })}
     <div className="flex justify-evenly bg-gray-50 p-2 shadow-md rounded-b-lg pt-5 pb-3">
+      <div className="bg-red-500 p-2 transform hover:scale-105 transition duration-200 ease-in rounded-lg" onClick={() => onResetClick()}>
+        Reset
+      </div>
       <div className="bg-red-300 p-2 transform hover:scale-105 transition duration-200 ease-in rounded-lg" onClick={cleanup}>
         Cancel
       </div>
