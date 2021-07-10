@@ -18,7 +18,7 @@ type TimeBundle = {
 
 // Contains all the filters.
 type FilterObj = {
-  credits: number | null;
+  credits: string | null;
   distribution: AreaType | null;
   tags: TagType | null;
   term: SemesterType;

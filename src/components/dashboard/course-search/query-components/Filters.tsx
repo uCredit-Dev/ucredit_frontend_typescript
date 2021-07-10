@@ -215,6 +215,13 @@ const Filters = ({ showCriteria }: filterProps) => {
                 isMulti
                 className="w-40 rounded outline-none"
                 onChange={handleDepartmentFilterChange}
+                value={
+                  searchFilters.department !== null
+                    ? searchFilters.department
+                        .split("|")
+                        .map((dep) => ({ label: dep, value: dep }))
+                    : []
+                }
               />
             </div>
           </div>
@@ -229,6 +236,13 @@ const Filters = ({ showCriteria }: filterProps) => {
                   label: credits,
                 })),
               ]}
+              value={
+                searchFilters.credits !== null
+                  ? searchFilters.credits
+                      .split("")
+                      .map((c) => ({ label: c, value: c }))
+                  : []
+              }
               className="w-40 rounded outline-none"
             />
           </div>
@@ -244,6 +258,13 @@ const Filters = ({ showCriteria }: filterProps) => {
               ]}
               className="w-40 rounded outline-none"
               onChange={handleDistributionFilterChange}
+              value={
+                searchFilters.distribution !== null
+                  ? searchFilters.distribution
+                      .split("")
+                      .map((distr) => ({ label: distr, value: distr }))
+                  : []
+              }
             />
           </div>
           <div className="flex flex-row items-center justify-between mb-2 w-full h-auto">
@@ -255,6 +276,7 @@ const Filters = ({ showCriteria }: filterProps) => {
                   label: wi,
                 })),
               ]}
+              value={{ value: searchFilters.wi, label: searchFilters.wi }}
               className="w-40 rounded outline-none"
               onChange={handleWIFilterChange}
             />
@@ -271,6 +293,13 @@ const Filters = ({ showCriteria }: filterProps) => {
                 ]}
                 className="w-40 rounded outline-none"
                 onChange={handleTagsFilterChange}
+                value={
+                  searchFilters.tags !== null
+                    ? searchFilters.tags
+                        .split("|")
+                        .map((tag) => ({ label: tag, value: tag }))
+                    : []
+                }
                 isMulti
               />
             </div>
@@ -290,6 +319,13 @@ const Filters = ({ showCriteria }: filterProps) => {
                 ]}
                 className="w-40 rounded outline-none"
                 onChange={handleLevelFilterChange}
+                value={
+                  searchFilters.levels !== null
+                    ? searchFilters.levels
+                        .split("|")
+                        .map((level) => ({ label: level, value: level }))
+                    : []
+                }
                 isMulti
               />
             </div>
