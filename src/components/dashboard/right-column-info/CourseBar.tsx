@@ -1,10 +1,14 @@
 import clsx from "clsx";
 import React, { useState, useEffect } from "react";
-import { useSelector } from 'react-redux';
-import { selectCurrentPlanCourses, } from "../../../slices/currentPlanSlice";
+import { useSelector } from "react-redux";
+import { selectCurrentPlanCourses } from "../../../slices/currentPlanSlice";
 import { selectAllCourses } from "../../../slices/userSlice";
-import { getCourse } from '../../../resources/assets';
-import { requirements, checkRequirementSatisfied, splitRequirements } from './distributionFunctions';
+import { getCourse } from "../../../resources/assets";
+import {
+  requirements,
+  checkRequirementSatisfied,
+  splitRequirements,
+} from "./distributionFunctions";
 
 import { ReactComponent as CheckSvg } from "../../../resources/svg/Check.svg";
 import { ReactComponent as Add } from "../../../resources/svg/Add.svg";
@@ -22,15 +26,12 @@ type courseBarProps = {
  * @param general - if this is a general distribution
  * @param description - this is the description of the distribution.
  */
-function CourseBar({
-  distribution,
-  general,
-  description,
-}: courseBarProps) {
-
+function CourseBar({ distribution, general, description }: courseBarProps) {
   const [displayAdd, setDisplayAdd] = useState(false);
   const [flipped, setFlipped] = useState<string[]>([]);
-  const [plannedCredits, setPlannedCredits] = useState(distribution.fulfilled_credits);
+  const [plannedCredits, setPlannedCredits] = useState(
+    distribution.fulfilled_credits
+  );
 
   const allCourses = useSelector(selectAllCourses);
   const currPlanCourses = useSelector(selectCurrentPlanCourses);
@@ -45,7 +46,8 @@ function CourseBar({
     currPlanCourses.forEach((course) => {
       const courseObj = getCourse(course.number, allCourses, currPlanCourses);
       if (
-        courseObj != null && checkRequirementSatisfied(
+        courseObj != null &&
+        checkRequirementSatisfied(
           splitRequirements(distribution.expr),
           courseObj
         )
@@ -60,7 +62,13 @@ function CourseBar({
       }
     });
     setPlannedCredits(temp);
-  }, [allCourses, currPlanCourses, distribution.expr, flipped, distribution.fulfilled_credits])
+  }, [
+    allCourses,
+    currPlanCourses,
+    distribution.expr,
+    flipped,
+    distribution.fulfilled_credits,
+  ]);
 
   const tooltip =
     `<div style="overflow: wrap; margin-bottom: 1rem;">${section}</div>` +
@@ -74,20 +82,27 @@ function CourseBar({
 
   const addToDistribution = () => {
     setDisplayAdd(true);
-  }
+  };
 
   const closePopup = () => {
     setDisplayAdd(false);
-  }
+  };
 
   const onSave = (s: string[]) => {
     console.log(s);
     setFlipped(s);
-  }
+  };
 
   return (
     <>
-      {displayAdd ? <DistributionPopup distribution={distribution} cleanup={closePopup} save={onSave} flipped={flipped.slice()}/> : null}
+      {displayAdd ? (
+        <DistributionPopup
+          distribution={distribution}
+          cleanup={closePopup}
+          save={onSave}
+          flipped={flipped.slice()}
+        />
+      ) : null}
       <div
         className={clsx(
           "text mb-1 whitespace-nowrap overflow-hidden overflow-ellipsis",
@@ -123,9 +138,9 @@ function CourseBar({
             <CheckSvg className="absolute left-1/2 top-1/2 w-5 h-5 text-white stroke-2 transform -translate-x-1/2 -translate-y-1/2" />
           ) : null}
         </div>
-        <Add 
+        {/* <Add 
           className="h-6 transform hover:scale-150 transition duration-200 ease-in"
-          onClick={addToDistribution}/>
+          onClick={addToDistribution}/> */}
       </div>
     </>
   );
