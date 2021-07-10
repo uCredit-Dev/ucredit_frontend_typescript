@@ -1,4 +1,9 @@
 import { Major } from "./commonTypes";
+
+// All Major Requirements can be found at the links below
+// https://e-catalogue.jhu.edu/arts-sciences/full-time-residential-programs/degree-programs/
+// https://e-catalogue.jhu.edu/engineering/full-time-residential-programs/degree-programs/
+
 /* INCOMPLETE */
 
 // https://me.jhu.edu/undergraduate-studies/academic-advising-undergraduate/
