@@ -6,46 +6,10 @@ import { Major } from "./commonTypes";
 
 /* INCOMPLETE */
 
-// https://me.jhu.edu/undergraduate-studies/academic-advising-undergraduate/
-const bsME: Major = {
-  degree_name: "B.S. Mechanical Engineering",
-  department: "AS Mechanical Engineering",
-  total_degree_credit: 120,
-  wi_credit: 6,
-  distributions: [],
-};
-
-// https://engineering.jhu.edu/materials/undergraduate-studies/bs-requirements/
-const bsMatSci: Major = {
-  degree_name: "B.S. Materials Science & Engineering",
-  department: "EN Materials Science & Engineering",
-  total_degree_credit: 120,
-  wi_credit: 6,
-  distributions: [],
-};
-
-// https://arthist.jhu.edu/undergraduate/requirements/
-const baHistArt: Major = {
-  degree_name: "B.A. History of Art",
-  department: "AS History",
-  total_degree_credit: 120,
-  wi_credit: 6,
-  distributions: [],
-};
-
-// https://eps.jhu.edu/undergraduate/eps-major-and-minor/
-const bsEPS: Major = {
-  degree_name: "B.S. Earth & Planetary Sciences",
-  department: "AS Earth & Planetary Sciences",
-  total_degree_credit: 120,
-  wi_credit: 6,
-  distributions: [],
-};
-
-// https://krieger.jhu.edu/envs/requirements/majors/
-const bsEnvSci: Major = {
-  degree_name: "B.S. Environmental Science",
-  department: "AS Medicine, Science, & the Humanities",
+// https://engineering.jhu.edu/case/academic-advising/
+const bsCivEng: Major = {
+  degree_name: "B.S. Civil Engineering",
+  department: "EN Civil Engineering",
   total_degree_credit: 120,
   wi_credit: 6,
   distributions: [],
@@ -60,6 +24,24 @@ const baEnglish: Major = {
   distributions: [],
 };
 
+// https://krieger.jhu.edu/envs/requirements/majors/
+const bsEnvSci: Major = {
+  degree_name: "B.S. Environmental Science",
+  department: "AS Medicine, Science, & the Humanities",
+  total_degree_credit: 120,
+  wi_credit: 6,
+  distributions: [],
+};
+
+// https://eps.jhu.edu/undergraduate/eps-major-and-minor/
+const bsEPS: Major = {
+  degree_name: "B.S. Earth & Planetary Sciences",
+  department: "AS Earth & Planetary Sciences",
+  total_degree_credit: 120,
+  wi_credit: 6,
+  distributions: [],
+};
+
 // https://engineering.jhu.edu/ece/undergraduate-studies/degree-options/
 const bsCompEng: Major = {
   degree_name: "B.S. Computer Engineering",
@@ -69,10 +51,10 @@ const bsCompEng: Major = {
   distributions: [],
 };
 
-// https://engineering.jhu.edu/case/academic-advising/
-const bsCivEng: Major = {
-  degree_name: "B.S. Civil Engineering",
-  department: "EN Civil Engineering",
+// https://arthist.jhu.edu/undergraduate/requirements/
+const baHistArt: Major = {
+  degree_name: "B.A. History of Art",
+  department: "AS History",
   total_degree_credit: 120,
   wi_credit: 6,
   distributions: [],
@@ -87,6 +69,15 @@ const bsBBio: Major = {
   distributions: [],
 };
 
+// https://engineering.jhu.edu/materials/undergraduate-studies/bs-requirements/
+const bsMatSci: Major = {
+  degree_name: "B.S. Materials Science & Engineering",
+  department: "EN Materials Science & Engineering",
+  total_degree_credit: 120,
+  wi_credit: 6,
+  distributions: [],
+};
+
 // https://cogsci.jhu.edu/undergraduate/cognitive-science-major/
 const bsCogSci: Major = {
   degree_name: "B.S. Cognitive Science",
@@ -96,46 +87,10 @@ const bsCogSci: Major = {
   distributions: [],
 };
 
-// https://writingseminars.jhu.edu/undergraduate/requirements/
-const baWritingSems: Major = {
-  degree_name: "B.A. Writing Seminars",
-  department: "AS Writing Seminars",
-  total_degree_credit: 120,
-  wi_credit: 6,
-  distributions: [],
-};
-
-// https://physics-astronomy.jhu.edu/undergraduate/major-requirements/
-const bsPhysics: Major = {
-  degree_name: "B.S. Physics",
-  department: "AS Physics",
-  total_degree_credit: 120,
-  wi_credit: 6,
-  distributions: [],
-};
-
-// https://krieger.jhu.edu/msh/major-requirements/
-const baMSH: Major = {
-  degree_name: "B.A. Medicine, Science, & the Humanities",
-  department: "AS Medicine, Science, & the Humanities",
-  total_degree_credit: 120,
-  wi_credit: 6,
-  distributions: [],
-};
-
-// https://mathematics.jhu.edu/undergraduate/major-in-mathematics/
-const bsMath: Major = {
-  degree_name: "B.S. Mathematics",
-  department: "AS Mathematics",
-  total_degree_credit: 120,
-  wi_credit: 6,
-  distributions: [],
-};
-
-// https://ehe.jhu.edu/undergraduate/undergraduate-advising/undergraduate-major-advising/index.html
-const bsEnvEng: Major = {
-  degree_name: "B.S. Environment Engineering",
-  department: "AS Environment Engineering",
+// https://me.jhu.edu/undergraduate-studies/academic-advising-undergraduate/
+const bsME: Major = {
+  degree_name: "B.S. Mechanical Engineering",
+  department: "AS Mechanical Engineering",
   total_degree_credit: 120,
   wi_credit: 6,
   distributions: [],
@@ -159,10 +114,46 @@ const bsBioPhysics: Major = {
   distributions: [],
 };
 
-// https://soc.jhu.edu/undergraduate/requirements/
-const baSoc: Major = {
-  degree_name: "B.A. Sociology",
-  department: "AS Sociology",
+// https://krieger.jhu.edu/msh/major-requirements/
+const baMSH: Major = {
+  degree_name: "B.A. Medicine, Science, & the Humanities",
+  department: "AS Medicine, Science, & the Humanities",
+  total_degree_credit: 120,
+  wi_credit: 6,
+  distributions: [],
+};
+
+// https://physics-astronomy.jhu.edu/undergraduate/major-requirements/
+const bsPhysics: Major = {
+  degree_name: "B.S. Physics",
+  department: "AS Physics",
+  total_degree_credit: 120,
+  wi_credit: 6,
+  distributions: [],
+};
+
+// https://mathematics.jhu.edu/undergraduate/major-in-mathematics/
+const bsMath: Major = {
+  degree_name: "B.S. Mathematics",
+  department: "AS Mathematics",
+  total_degree_credit: 120,
+  wi_credit: 6,
+  distributions: [],
+};
+
+// https://writingseminars.jhu.edu/undergraduate/requirements/
+const baWritingSems: Major = {
+  degree_name: "B.A. Writing Seminars",
+  department: "AS Writing Seminars",
+  total_degree_credit: 120,
+  wi_credit: 6,
+  distributions: [],
+};
+
+// https://ehe.jhu.edu/undergraduate/undergraduate-advising/undergraduate-major-advising/index.html
+const bsEnvEng: Major = {
+  degree_name: "B.S. Environment Engineering",
+  department: "AS Environment Engineering",
   total_degree_credit: 120,
   wi_credit: 6,
   distributions: [],
@@ -172,6 +163,15 @@ const baSoc: Major = {
 const bsElectricEng: Major = {
   degree_name: "B.S. Electrical Engineering",
   department: "EN Electrical & Computer Engineering",
+  total_degree_credit: 120,
+  wi_credit: 6,
+  distributions: [],
+};
+
+// https://soc.jhu.edu/undergraduate/requirements/
+const baSoc: Major = {
+  degree_name: "B.A. Sociology",
+  department: "AS Sociology",
   total_degree_credit: 120,
   wi_credit: 6,
   distributions: [],
@@ -1264,8 +1264,29 @@ export const allMajors: Major[] = [
   baHistory,
   baBiology,
   bsCBE,
-  // baIS, baEcon, baPsych, baPH, baMolCell, baNeuro, baSoc, baHistory, baMSH, baWritingSems,
-  // baEnglish, baHistArt,
-  // bsCS, bsCBE, baEcon, bsAMS, bsBME, bsElectricEng, bsBioPhysics, bsChem, bsEnvEng, bsMath,
-  // bsPhysics, bsCogSci, bsBBio, baBiology, bsCivEng, bsCompEng, bsEnvSci, bsEPS, bsMatSci, bsME
+
+  baEcon,
+  bsAMS,
+  baPsych,
+  baMolCell,
+  baNeuro,
+  baSoc,
+  bsElectricEng,
+  bsEnvEng,
+  baWritingSems,
+  bsMath,
+  bsPhysics,
+  baMSH,
+  bsBioPhysics,
+  bsChem,
+  bsME,
+  bsCogSci,
+  bsMatSci,
+  bsBBio,
+  baHistArt,
+  bsCompEng,
+  bsEPS,
+  bsEnvSci,
+  baEnglish,
+  bsCivEng,
 ];
