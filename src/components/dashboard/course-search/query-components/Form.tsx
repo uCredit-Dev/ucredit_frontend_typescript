@@ -49,9 +49,16 @@ const Form = (props: { setSearching: Function }) => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
+  type SearchMapEl = {
+    course: SISRetrievedCourse;
+    version: number;
+    priority: number;
+  };
+
+  // TODO: A lot of redundancies with FilterType. Please look into modularization.
   type SearchExtras = {
     query: string;
-    credits: number | null;
+    credits: string | null;
     areas: AreaType | null;
     tags: TagType | null;
     term: SemesterType;
@@ -59,12 +66,6 @@ const Form = (props: { setSearching: Function }) => {
     department: DepartmentType | null;
     wi: boolean | null;
     levels: string | null;
-  };
-
-  type SearchMapEl = {
-    course: SISRetrievedCourse;
-    version: number;
-    priority: number;
   };
 
   // Search with debouncing of 2/4s of a second.
