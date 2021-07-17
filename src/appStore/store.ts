@@ -1,8 +1,9 @@
 import { configureStore, ThunkAction, Action } from "@reduxjs/toolkit";
-import counterReducer from "../redux_sample/counterSlice";
-import userReducer from "../components/slices/userSlice";
-import searchReducer from "../components/slices/searchSlice";
-import currentPlanReducer from "../components/slices/currentPlanSlice";
+import counterReducer from "../components/../resources/redux_sample/counterSlice";
+import userReducer from "../slices/userSlice";
+import searchReducer from "../slices/searchSlice";
+import currentPlanReducer from "../slices/currentPlanSlice";
+// import logger from "redux-logger";
 
 export const store = configureStore({
   reducer: {
@@ -11,6 +12,10 @@ export const store = configureStore({
     search: searchReducer,
     currentPlan: currentPlanReducer,
   },
+  middleware: (getDefaultMiddleware) =>
+    getDefaultMiddleware({
+      serializableCheck: false,
+    }), //.concat(logger),
 });
 
 export type RootState = ReturnType<typeof store.getState>;
