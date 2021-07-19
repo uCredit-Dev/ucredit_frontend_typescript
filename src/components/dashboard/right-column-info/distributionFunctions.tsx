@@ -93,26 +93,30 @@ export const checkRequirementSatisfied = (
             concat = "false";
           }
           break;
-        case "N":
+        case "N": // Name
           if (course.title.includes(splitArr[index])) {
             concat = "true";
           } else {
             concat = "false";
           }
           break;
-        case "L":
+        case "L": // Level
           if (splitArr[index].includes("Upper")) {
             if (course.number[7] >= "3") {
               concat = "true";
             } else {
               concat = "false";
             }
-          } else {
+          } else if (splitArr[index].includes("Lower")) {
             if (course.number[7] <= "2") {
               concat = "false";
             } else {
               concat = "true";
             }
+          } else if (course.number[7] === splitArr[index][0]) { // For solely 100, 200, etc. levels
+            concat = "true";
+          } else {
+            concat = "false";
           }
           break;
         default:

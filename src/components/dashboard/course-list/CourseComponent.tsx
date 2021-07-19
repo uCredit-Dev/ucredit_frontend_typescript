@@ -29,6 +29,7 @@ import {
   updateSelectedPlan,
 } from "../../../slices/currentPlanSlice";
 import { selectAllCourses } from "../../../slices/userSlice";
+import OverridePrereqpopup from "./OverridePrereqPopup";
 
 type courseProps = {
   course: UserCourse;
@@ -46,6 +47,8 @@ function CourseComponent({ year, course, semester }: courseProps) {
   // React setup
   const [activated, setActivated] = useState<boolean>(false);
   const [satisfied, setSatisfied] = useState<boolean>(false);
+  const [overridden, setOverridden] = useState<boolean>(false);
+  const [displayPopup, setDisplayPopup] = useState<boolean>(false);
 
   // Redux setup
   const dispatch = useDispatch();
@@ -177,7 +180,7 @@ function CourseComponent({ year, course, semester }: courseProps) {
                 {course.area}
               </div>
             ) : null}{" "}
-            {!satisfied ? (
+            {!satisfied && !overridden ? (
               <WarningSvg className="flex items-center w-5 h-5 text-white font-semibold rounded select-none" />
             ) : null}
           </div>
@@ -215,15 +218,21 @@ function CourseComponent({ year, course, semester }: courseProps) {
                   )}
                   onClick={deleteCourse}
                 />
-                {!satisfied ? (
+                {!satisfied && !overridden ? (
                   <>
                     <WarningSvg
                       data-tip={tooltip}
                       data-for="godTip"
                       className="relative z-20 flex flex-row items-center justify-center p-0.5 w-6 h-6 text-white bg-secondary rounded-md outline-none stroke-2 cursor-pointer transform hover:scale-110 transition duration-150 ease-in"
+                      onClick={() => setDisplayPopup(true)}
                     />
                   </>
                 ) : null}
+                {displayPopup ? (
+                <OverridePrereqpopup 
+                  courseName={course.number} 
+                  cleanup={() => setDisplayPopup(false)} 
+                  save={() => setOverridden(true)}/>) : null}
               </div>
             )}
           </Transition>
