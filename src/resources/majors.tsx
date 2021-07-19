@@ -1,6 +1,14 @@
 import { Major } from "./commonTypes";
 /* INCOMPLETE */
 
+//TODO:
+// BME
+// 	 Career Exploration
+// 	 Focus Area
+
+// Public Health
+// 	 Social Sciences
+
 // https://me.jhu.edu/undergraduate-studies/academic-advising-undergraduate/
 const bsME: Major = {
   degree_name: "B.S. Mechanical Engineering",
@@ -308,13 +316,13 @@ const bsBME: Major = {
   distributions: [
     {
       name: "Biomedical Core",
-      required_credits: 34,
+      required_credits: 33,
       min_credits_per_course: 1,
       description:
-        "For more information please visit the" +
+        "For more information please visit the " +
         "<a href='https://e-catalogue.jhu.edu/engineering/full-time-residential-programs/degree-programs/biomedical-engineering/biomedical-engineering-bachelor-science/#requirementstext'>" +
         "major degree requirement</a> section on the department website.",
-      criteria: "EN Biomedical Core[D]^OR^Biomedical Core[D]",
+      criteria: "EN Biomedical Engineering[D]",
       fine_requirements: [
         {
           description:
@@ -377,10 +385,12 @@ const bsBME: Major = {
             "601.456 Computer Integrated Surgery II",
           required_credits: 6,
           criteria:
-            "EN.510.433[C]^OR^EN.510.434[C]^OR^EN.520.462[C]^OR^EN.520.463[C]^OR^EN.520.498[C]" +
-            "EN.520.499[C]^OR^EN.540.421[C]^OR^EN.580.411[C]^OR^EN.580.412[C]^OR^EN.580.437[C]" +
-            "EN.580.438[C]^OR^EN.580.456[C]^OR^EN.580.457[C]^OR^EN.580.471[C]^OR^EN.580.480[C]" +
-            "EN.580.580[C]^OR^EN.580.581[C]^OR^EN.601.455[C]^OR^EN.601.456[C]",
+            "(EN.510.433[C]^AND^EN.510.434[C])^OR^(EN.520.462[C]^AND^EN.520.463[C])^OR^" +
+            "(EN.520.498[C]^AND^EN.520.499[C])^OR^(EN.540.400[C]^AND^EN.540.421[C])^OR^" +
+            "(EN.580.311[C]^AND^EN.580.312[C])^OR^(EN.580.411[C]^AND^EN.580.412[C])^OR^" +
+            "(EN.580.456[C]^AND^EN.580.457[C])^OR^(EN.580.471[C]^AND^EN.580.571[C])^OR^" +
+            "(EN.580.480[C]^AND^EN.580.481[C])^OR^(EN.580.580[C]^AND^EN.580.581[C])^OR^" +
+            "(EN.601.455[C]^AND^EN.601.456[C])^OR^(EN.580.437[C]^AND^EN.580.438[C])",
         },
       ],
     },
@@ -452,7 +462,7 @@ const bsBME: Major = {
       description:
         "Select courses to form a coherent program, relevant to the student’s goals. One course in which ethical and social " +
         "issues related to technology or medicine is recommended. and at least two semesters of writing-intensive courses.",
-      criteria: "AS Humanities and Social Sciences[D]",
+      criteria: "H[S]^OR^S[A]",
     },
     {
       name: "Basic Sciences",
@@ -462,32 +472,8 @@ const bsBME: Major = {
         "Students who receive credit for AP Physics I and/or Physics II will receive a waiver for the laboratory course. " +
         "This will reduce the required number of credits for Basic Sciences by 1 or 2 credits. Students are still required " +
         "to complete at least 129 total credits for the degree.",
-      criteria: "AS Basic Sciences[N]",
-      fine_requirements: [
-        {
-          description:
-            "Required Courses:\n\t171.101 General Physics: Physical Science Major I\n\t171.107 General Physics for Physical Sciences Majors (AL)" +
-            "\n\t171.102 General Physics: Physical Science Major II\n\t171.108 General Physics for Physical Science Majors (AL)" +
-            "\n\t173.111 General Physics Laboratory I\n\t173.112 General Physics Laboratory II" +
-            "\n\t030.101 Introductory Chemistry I\n\t030.102 Introductory Chemistry II" +
-            "\n\t030.105 Introductory Chemistry Laboratory I\n\t030.106 Introductory Chemistry Laboratory II",
-          required_credits: 18,
-          criteria:
-            "AS.171.101[C]^OR^AS.171.107[C]^OR^AS.171.102[C]^OR^AS.171.108[C]^OR^AS.171.111[C]^OR^AS.173.112[C]" +
-            "^OR^AS.030.101[C]^OR^AS.030.102[C]^OR^AS.030.105[C]^OR^AS.030.106[C]",
-        },
-        {
-          description:
-            "Select one Biology Lab Course of the following:\n\t" +
-            "AS.020.153 General Biology Laboratory I\n\tAS.020.154 General Biology Lab II\n\tAS.020.315 Biochemistry Project labs\n\t" +
-            "\n\tAS.020.316 Cell Biology Lab\n\tAS.020.340 Developmental Genetics Lab\n\tAS.020.377 Comparative Physiology Lab\n\t" +
-            "AS.250.253 Protein Engineering and Biochemistry Lab\n\tAS.250.254 Protein Biochemistry and Engineering Laboratory",
-          required_credits: 1,
-          criteria:
-            "AS.020.153[C]^OR^AS.020.154[C]^OR^AS.020.315[C]^OR^AS.020.316[C]^OR^AS.020.340[C]^OR^AS.020.377[C]" +
-            "^OR^AS.250.253[C]^OR^AS.250.254[C]",
-        },
-      ],
+      criteria: "AS.171.101[C]^OR^AS.171.107[C]^OR^AS.171.102[C]^OR^AS.171.108[C]^OR^AS.171.111[C]^OR^AS.173.112[C]" +
+      "^OR^AS.030.101[C]^OR^AS.030.102[C]^OR^AS.030.105[C]^OR^AS.030.106[C]",
     },
     {
       name: "Mathematics",
@@ -518,13 +504,6 @@ const bsBME: Major = {
         },
       ],
     },
-    {
-      name: "Free Electives",
-      required_credits: 9,
-      min_credits_per_course: 1,
-      description: "Select 9 credits from any area.",
-      criteria: "Free Electives[N]",
-    },
   ],
 };
 
@@ -540,47 +519,34 @@ const baHistory: Major = {
       required_credits: 6,
       min_credits_per_course: 3,
       description:
-        "For more information please visit the" +
-        "<a href='https://e-catalogue.jhu.edu/arts-sciences/full-time-residential-programs/degree-programs/history/history-bachelor-arts/'>" +
-        "major degree requirement</a> section on the department website.",
-      criteria: "AS Political Science[D]",
-      fine_requirements: [
-        {
-          description:
             "Select one of the following: Two introductory history courses (AS.100.1xx) OR \n\t" +
             "One introductory history course (AS.100.1xx) + one Freshman Seminar (AS.100.130-AS.100.160)",
-          required_credits: 6,
-          criteria: "Introductory History[D]",
-        },
-      ],
+            criteria: "(AS History[D]^AND^100[L])^OR^AS.100.130[C]",
     },
     {
       name: "Method Requirement (All Majors)",
       required_credits: 6,
       min_credits_per_course: 3,
-      description: "Required courses for History majors.",
-      criteria: "AS Economics[D]",
-      fine_requirements: [
-        {
-          description:
-            "Required Courses: AS.100.293 Undergraduate Seminar in History\n\t100.294 Undergraduate Seminar in History",
-          required_credits: 6,
-          criteria: "AS.100.293[C]^OR^AS.100.294[C]",
-        },
-      ],
+      description: "Required Courses: AS.100.293 Undergraduate Seminar in History\n\t100.294 Undergraduate Seminar in History",
+      criteria: "AS.100.293[C]^OR^AS.100.294[C]",
     },
     {
       name: "Elective Courses",
-      required_credits: 18,
+      required_credits: 24,
       min_credits_per_course: 3,
       description: "Required elective courses for History majors.",
-      criteria: "AS Electives[D]",
+      criteria: "AS History[D]",
       fine_requirements: [
         {
           description:
-            "Required Courses: Two history courses at any level\n\tFour 300-level or higher history courses",
-          required_credits: 18,
-          criteria: "AS History[D]^AND^Lower Level Undergraduate[N]",
+            "Required Courses: Two history courses at any level",
+          required_credits: 12,
+          criteria: "AS History[D]",
+        },
+        {
+          description: "Four 300-level or higher history courses",
+          required_credits: 12,
+          criteria: "AS History[D]^AND^Upper Level Undergraduate[L]",
         },
       ],
     },
@@ -592,16 +558,7 @@ const baHistory: Major = {
         "Required additional upper-level courses for History majors. Note: Students must have a cumulative GPA of 3.25 " +
         "and a cumulative GPA in history of 3.5 or higher by December of their junior year to be eligible for the senior " +
         "thesis option to graduate with honors in history.",
-      criteria: "",
-      fine_requirements: [
-        {
-          required_credits: 6,
-          description:
-            "Select one of the following: Two 300-level or higher history courses\n\t OR (AS.100.507 Senior Thesis\n\t AND" +
-            "\n\tAS.100.508 Senior Thesis",
-          criteria: "AS History[D]^OR^AS.100.507[C]^OR^AS.100.508[C]",
-        },
-      ],
+      criteria: "(AS History[D]^AND^Upper Level Undergraduate[L])^OR^AS.100.507[C]^OR^AS.100.508[C]",
     },
     {
       name: "Foreign Language",
@@ -631,7 +588,7 @@ const baBiology: Major = {
         "For more information please visit the" +
         "<a href='https://e-catalogue.jhu.edu/arts-sciences/full-time-residential-programs/degree-programs/biology/biology-bachelor-arts/'>" +
         "major degree requirement</a> section on the department website.",
-      criteria: "AS Biology[D]^OR^Bio[D]",
+      criteria: "AS Biology[D]",
       fine_requirements: [
         {
           description:
@@ -674,7 +631,7 @@ const baBiology: Major = {
       required_credits: 10,
       min_credits_per_course: 1,
       description: "Must complete all Physics courses.",
-      criteria: "AS Physics[N]",
+      criteria: "AS Physics[D]",
       fine_requirements: [
         {
           description:
@@ -694,7 +651,7 @@ const baBiology: Major = {
       required_credits: 8,
       min_credits_per_course: 4,
       description: "Must complete all Mathematics Course.",
-      criteria: "AS Mathematics[N]",
+      criteria: "AS Mathematics[D]",
       fine_requirements: [
         {
           description:
@@ -721,6 +678,13 @@ const baBiology: Major = {
         "the courses approved by the Director of Undergraduate Studies. At least one course must be taught by the Biology " +
         "Department (AS.020.xxx) and be a 2 or 3 credit course.",
       criteria: "AS Electives[N]",
+      fine_requirements: [
+        {
+          description: "At least one course must be taught by the Biology Department (AS.020.xxx) and be a 2 or 3 credit course",
+          required_credits: 2,
+          criteria: "AS Biology[D]"
+        }
+      ]
     },
   ],
 };
@@ -740,7 +704,7 @@ const baPH: Major = {
         "For more information please visit the" +
         "<a href='https://e-catalogue.jhu.edu/arts-sciences/full-time-residential-programs/degree-programs/public-health-studies/public-health-studies-bachelor-arts/'>" +
         "major degree requirement</a> section on the department website.",
-      criteria: "AS Public Health Studies[D]^OR^Public Health[D]",
+      criteria: "AS Public Health Studies[D]",
       fine_requirements: [
         {
           description:
@@ -755,13 +719,13 @@ const baPH: Major = {
     },
     {
       name: "Intermediate Public Health Courses at Homewood",
-      required_credits: 12,
+      required_credits: 15,
       min_credits_per_course: 3,
       description:
         "One course at the 200-400 level focusing on social and behavioral aspects of public health from the list below." +
         "Other courses may apply with advisor approval. All courses must be at least 3 credits and only 2 Gordis Teaching " +
         "Fellowship (GTF) courses may apply (AS.280.4xx courses).",
-      criteria: "AS Intermediate Public Health Courses at Homewood[D]",
+      criteria: "AS Intermediate Public Health[D]^AND^(200[L]^OR^300[L]^OR^400[L])",
       exception: "",
       fine_requirements: [
         {
@@ -782,15 +746,7 @@ const baPH: Major = {
         " public health setting. The Applied Experience gives students an opportunity to explore an area of interest within" +
         " the field of public health by actively engaging in and directly contributing to a public health project or program." +
         " The AE must be at least 80 hours and 4 weeks long under the supervision of a public health profession.",
-      criteria: "Applied Experience[N]",
-      fine_requirements: [
-        {
-          description:
-            "Required Courses:\n\t280.500	Applied Experience-Public Health\n\t",
-          required_credits: 1,
-          criteria: "AS.280.500[C]",
-        },
-      ],
+      criteria: "AS.280.500[C]",
     },
     {
       name: "Courses at Johns Hopkins Bloomberg School of Public Health (JHSPH)",
@@ -1107,13 +1063,13 @@ const baIS: Major = {
         "One introductory course at the 100-level in the JHU History Department " +
         "(e.g., AS.100.1xx).\n\tFour courses designated INST-GLOBAL in the course description.",
       criteria:
-        "(AS History[D]^AND^Lower Level Undergraduate[N])^OR^INST-GLOBAL[T]",
+        "(AS History[D]^AND^Lower Level Undergraduate[L])^OR^INST-GLOBAL[T]",
       fine_requirements: [
         {
           required_credits: 3,
           description:
             "One introductory course at the 100-level in the JHU History Department (e.g., AS.100.1xx)",
-          criteria: "AS History[D]^AND^Lower Level Undergraduate[N]",
+          criteria: "AS History[D]^AND^Lower Level Undergraduate[L]",
         },
         {
           required_credits: 12,
