@@ -104,9 +104,10 @@ const FineDistribution = ({
       <p className="font-bold">
         {plannedCredits}/{dis.required_credits}
       </p>
-      {/* <Add 
-          className="h-6 transform hover:scale-150 transition duration-200 ease-in"
-          onClick={addToDistribution}/> */}
+      <Add
+        className="h-6 transform hover:scale-150 transition duration-200 ease-in"
+        onClick={addToDistribution}
+      />
       {displayAdd ? (
         <DistributionPopup
           distribution={dis}
