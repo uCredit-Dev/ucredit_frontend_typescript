@@ -90,7 +90,7 @@ const PrereqDropdown = (props: {
       onMouseLeave={() => {
         setRootHovered(false);
       }}
-      className="hover:scale-101 transform transition duration-200 ease-in"
+      className="transform hover:scale-101 transition duration-200 ease-in"
     >
       <button
         onClick={() => {
