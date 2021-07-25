@@ -8,7 +8,7 @@ import {
 } from "../../slices/userSlice";
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-import GenerateNewPlan from "./right-column-info/GenerateNewPlan";
+import GenerateNewPlan from "../dashboard/right-column-info/GenerateNewPlan";
 import { selectPlan, updateSelectedPlan } from "../../slices/currentPlanSlice";
 import { api } from "../../resources/assets";
 

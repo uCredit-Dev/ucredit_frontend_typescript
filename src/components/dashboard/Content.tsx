@@ -1,6 +1,6 @@
 import React from "react";
 import CourseList from "./course-list/CourseList";
-import Search from "./course-search/Search";
+import Search from "../popups/course-search/Search";
 import { selectSearchStatus } from "../../slices/searchSlice";
 import {
   selectAddingPlanStatus,
@@ -9,10 +9,10 @@ import {
 } from "../../slices/userSlice";
 import { useSelector } from "react-redux";
 import InfoCards from "./right-column-info/InfoCards";
-import DeletePlanPopup from "./DeletePlanPopup";
+import DeletePlanPopup from "../popups/DeletePlanPopup";
 import Distributions from "./right-column-info/Distributions";
 import PlanAdd from "./PlanAdd";
-import DeleteYearPopup from "./DeleteYearPopup";
+import DeleteYearPopup from "../popups/DeleteYearPopup";
 import PlanChoose from "./right-column-info/PlanChoose";
 import InfoMenu from "./InfoMenu";
 
