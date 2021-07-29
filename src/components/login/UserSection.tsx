@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { updateUser, selectUser, resetUser, updatePlanList, updateGeneratePlanAddStatus, updateToAddMajor, selectPlanList } from "../../slices/userSlice";
+import { updateUser, selectUser, resetUser, updatePlanList, updateGeneratePlanAddStatus, updateToAddMajor, selectPlanList, selectAllCourses } from "../../slices/userSlice";
 // import { ReactComponent as UserSvg } from "../../resources/svg/User.svg";
 import { useHistory } from "react-router-dom";
 import { resetCurrentPlan, selectCurrentPlanCourses, selectPlan, updateCurrentPlanCourses, updateSelectedPlan } from "../../slices/currentPlanSlice";
@@ -9,7 +9,8 @@ import bird from "../../resources/images/logoDarker.png";
 import axios from "axios";
 import { Course, Plan, SemesterType, UserCourse, Year } from "../../resources/commonTypes";
 import { getMajorFromCommonName } from "../../resources/majors";
-import { updateSearchTime } from "../../slices/searchSlice";
+import { updateSearchStatus, updateSearchTime } from "../../slices/searchSlice";
+import { toast, ToastContainer } from "react-toastify";
 
 type UserProps = {
   _id: string | null;
@@ -25,6 +26,7 @@ function UserSection({_id} : UserProps) {
   const curPlan = useSelector(selectPlan);
   const currentCourses = useSelector(selectCurrentPlanCourses);
   const planList = useSelector(selectPlanList);
+  const allCourses = useSelector(selectAllCourses);
 
   // Component state setup
   const [loginId, setLoginId] = useState(document.cookie.split("=")[1]);
@@ -32,35 +34,44 @@ function UserSection({_id} : UserProps) {
   const [shouldAdd, setShouldAdd] = useState<boolean>(false);
   let history = useHistory();
 
+  var curCourses : UserCourse[] = [];
+
   useEffect(() => {
-    if (shouldAdd && user._id !== "noUser" && curPlan._id !== "noPlan") {
+    if (shouldAdd && user._id !== "noUser" && curPlan._id !== "noPlan" && allCourses.length > 0) {
       addCourses(toAdd, curPlan);
-      // toAdd.forEach((year) => {
-      //   year.courses.forEach((course) => {
-      //     addCourse(course, year, curPlan);
-      //   })
-      // })
       setShouldAdd(false);
+      toast.info("Importing Plan...", {
+        closeOnClick: false,
+      });
     }
-  }, [shouldAdd, toAdd, user, curPlan])
+  }, [shouldAdd, toAdd, user, curPlan, allCourses, currentCourses])
 
   const addCourses = async (years: Year[], curPlan: Plan) => {
-    curPlan = await addCourse(years[0].courses[0], years[0], curPlan);
-    console.log(curPlan);
-    curPlan = await addCourse(years[0].courses[1], years[0], curPlan);
-    console.log(curPlan);
-    // for (const year of toAdd) {
-    //   for (const course of year.courses) {
-    //     curPlan = await addCourse(course, year, curPlan);
-    //     console.log(course);
-    //   };
-    // };
+    // curCourses = [];
+    // curPlan = await addCourse(years[0].courses[0], years[0], curPlan);
+    // console.log(currentCourses);
+    // curPlan = await addCourse(years[0].courses[1], years[0], curPlan);
+    // console.log(currentCourses);
+    // dispatch(updateCurrentPlanCourses(curCourses));
+    // dispatch(updateSelectedPlan(curPlan));
+    // console.log(curPlan);
+    
+    for (const year of toAdd) {
+      for (const course of year.courses) {
+        curPlan = await addCourse(course, year, curPlan);
+      };
+    };
+    dispatch(updateCurrentPlanCourses(curCourses));
+    dispatch(updateSelectedPlan(curPlan));
+    toast.success("Plan Imported!", {
+      autoClose: 5000,
+      closeOnClick: false,
+    });
   }
 
   const addCourse = async (id: string, year: Year, currentPlan: Plan): Promise<Plan> => {
     var newPlan: Plan;
     const response = await axios.get(api + '/courses/' + id);
-    console.log(response.data.data.title);
     var course:UserCourse = response.data.data; 
     const addingYear: Year = year;
     const body = {
@@ -91,9 +102,8 @@ function UserSection({_id} : UserProps) {
     const data = await retrieved.json();
     if (data.errors === undefined) {
       var newUserCourse: UserCourse = { ...data.data };
-      dispatch(
-        updateCurrentPlanCourses([...currentCourses, newUserCourse])
-      );
+      // updatePlanCourses(newUserCourse);
+      curCourses = [...curCourses, newUserCourse];
       const allYears: Year[] = [...currentPlan.years];
       const newYears: Year[] = [];
       allYears.forEach((y) => {
@@ -113,14 +123,13 @@ function UserSection({_id} : UserProps) {
         }
       }
       dispatch(updatePlanList(newPlanList));
-      console.log(response.data.data.title);
       return newPlan;
     } else {
       console.log("Failed to add", data.errors);
     }
     return new Promise(() => newPlan);
   };
-  
+
   const createUser = () => new Promise<void>((resolve) => {
     // do anything here
     dispatch(updateUser({...guestUser}));
@@ -139,6 +148,7 @@ function UserSection({_id} : UserProps) {
     if (_id != null) {
       // means that the user entered a sharable link
       // first login with guest, then populate the plan with the information from the id
+      history.push('/dashboard');
       var plan: Plan;
       axios.get(api + '/plans/' + _id)
       .then((planResponse) => {
@@ -151,21 +161,8 @@ function UserSection({_id} : UserProps) {
             createPlan(plan).then(async () => {
               setToAdd(years);
               setShouldAdd(true);
-                // years.forEach((year) => {
-                //   year.courses.forEach((course) => {
-                //     addCourse(course, year, curPlan);
-                //   })
-                // })
             })
           })
-          // create the plan
-          // add courses to the plan
-
-
-
-          //dispatch(updateSel  ectedPlan(planCopy));
-          //dispatch(updatePlanList([{...planCopy}]));
-          //history.push("/dashboard");
         })
         .catch((e) => {
           console.log(e);
@@ -173,8 +170,11 @@ function UserSection({_id} : UserProps) {
       })
       .catch((e) => {
         console.log(e);
-        console.log("Couldn't find id from link");
-        history.push("/dashboard");
+        toast.error("Failed to Import", {
+          autoClose: 5000,
+          closeOnClick: false,
+        });
+        history.push("/login");
       })
     } else if (user._id === "noUser") {
       // Retrieves user if user ID is "noUser", the initial user id state for userSlice.tsx.

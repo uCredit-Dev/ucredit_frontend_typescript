@@ -92,7 +92,6 @@ const CourseDisplay = () => {
             ? Date.now() + 60 * 60 * 24 * 1000
             : undefined,
       };
-      console.log(body);
 
       fetch(api + "/courses", {
         method: "POST",

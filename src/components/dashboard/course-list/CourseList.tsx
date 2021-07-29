@@ -63,6 +63,7 @@ function CourseList() {
           // We simply update courses
           year.courses.forEach((course: string) => {
             const courseObj: UserCourse = getCourse(course);
+            if (courseObj._id === "invalid_course") return;
             totCourses.push(courseObj);
             yearCourses.push(courseObj);
           });
@@ -143,8 +144,9 @@ function CourseList() {
       preReq: "",
       isPlaceholder: false,
     };
-    console.log(currentPlanCourses);
+    //console.log(id);
     currentPlanCourses.forEach((c: UserCourse) => {
+      //console.log(c.title);
       if (c._id === id) {
         course = c;
         return;
