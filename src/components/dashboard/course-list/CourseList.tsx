@@ -143,6 +143,7 @@ function CourseList() {
       preReq: "",
       isPlaceholder: false,
     };
+    console.log(currentPlanCourses);
     currentPlanCourses.forEach((c: UserCourse) => {
       if (c._id === id) {
         course = c;

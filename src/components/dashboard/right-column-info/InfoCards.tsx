@@ -32,6 +32,9 @@ const InfoCards = () => {
   // Determines whether we're editing the name.
   const [editName, setEditName] = useState<boolean>(false);
 
+  // shareable URL
+  const [shareableURL, setShareableURL] = useState<string>("");
+
   // Updates temporary plan name and notifies useffect on state change to update db plan name with debounce.
   const handlePlanNameChange = (event: any) => {
     setPlanName(event.target.value);
@@ -86,6 +89,11 @@ const InfoCards = () => {
     dispatch(updateDeletePlanStatus(true));
   };
 
+  const onShareClick = () => {
+    setShareableURL("http://localhost:3000/dashboard?_id=" + currentPlan._id);
+    console.log(user);
+  }
+
   return (
     <div className="tight:items-center mb-4 mx-4 p-6 h-auto bg-white rounded shadow">
       <div className="flex flex-col mb-2 w-auto h-auto">
@@ -105,6 +113,14 @@ const InfoCards = () => {
         <div className="w-auto h-auto text-center">{user.name}</div>
         <div className="w-auto h-auto text-center font-light stroke-2">
           {currentPlan.majors}
+        </div>
+        <div>
+      </div>
+      <button className="m-auto" onClick={onShareClick}>
+          Share
+        </button>
+        <div>
+          {shareableURL}
         </div>
       </div>
     </div>

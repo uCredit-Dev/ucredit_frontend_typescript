@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { Plan, UserCourse, Year } from "../../../../resources/commonTypes";
 import {
@@ -92,6 +92,7 @@ const CourseDisplay = () => {
             ? Date.now() + 60 * 60 * 24 * 1000
             : undefined,
       };
+      console.log(body);
 
       fetch(api + "/courses", {
         method: "POST",

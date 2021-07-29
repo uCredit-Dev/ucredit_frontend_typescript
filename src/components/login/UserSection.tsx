@@ -1,28 +1,182 @@
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { updateUser, selectUser, resetUser } from "../../slices/userSlice";
+import { updateUser, selectUser, resetUser, updatePlanList, updateGeneratePlanAddStatus, updateToAddMajor, selectPlanList } from "../../slices/userSlice";
 // import { ReactComponent as UserSvg } from "../../resources/svg/User.svg";
 import { useHistory } from "react-router-dom";
-import { resetCurrentPlan } from "../../slices/currentPlanSlice";
-import { api } from "../../resources/assets";
+import { resetCurrentPlan, selectCurrentPlanCourses, selectPlan, updateCurrentPlanCourses, updateSelectedPlan } from "../../slices/currentPlanSlice";
+import { api, guestUser } from "../../resources/assets";
 import bird from "../../resources/images/logoDarker.png";
+import axios from "axios";
+import { Course, Plan, SemesterType, UserCourse, Year } from "../../resources/commonTypes";
+import { getMajorFromCommonName } from "../../resources/majors";
+import { updateSearchTime } from "../../slices/searchSlice";
+
+type UserProps = {
+  _id: string | null;
+}
 
 /**
  * User login/logout buttons.
  */
-function UserSection() {
+function UserSection({_id} : UserProps) {
   // Redux setup
   const dispatch = useDispatch();
   const user = useSelector(selectUser);
+  const curPlan = useSelector(selectPlan);
+  const currentCourses = useSelector(selectCurrentPlanCourses);
+  const planList = useSelector(selectPlanList);
 
   // Component state setup
   const [loginId, setLoginId] = useState(document.cookie.split("=")[1]);
+  const [toAdd, setToAdd] = useState<Year[]>([]);
+  const [shouldAdd, setShouldAdd] = useState<boolean>(false);
   let history = useHistory();
+
+  useEffect(() => {
+    if (shouldAdd && user._id !== "noUser" && curPlan._id !== "noPlan") {
+      addCourses(toAdd, curPlan);
+      // toAdd.forEach((year) => {
+      //   year.courses.forEach((course) => {
+      //     addCourse(course, year, curPlan);
+      //   })
+      // })
+      setShouldAdd(false);
+    }
+  }, [shouldAdd, toAdd, user, curPlan])
+
+  const addCourses = async (years: Year[], curPlan: Plan) => {
+    curPlan = await addCourse(years[0].courses[0], years[0], curPlan);
+    console.log(curPlan);
+    curPlan = await addCourse(years[0].courses[1], years[0], curPlan);
+    console.log(curPlan);
+    // for (const year of toAdd) {
+    //   for (const course of year.courses) {
+    //     curPlan = await addCourse(course, year, curPlan);
+    //     console.log(course);
+    //   };
+    // };
+  }
+
+  const addCourse = async (id: string, year: Year, currentPlan: Plan): Promise<Plan> => {
+    var newPlan: Plan;
+    const response = await axios.get(api + '/courses/' + id);
+    console.log(response.data.data.title);
+    var course:UserCourse = response.data.data; 
+    const addingYear: Year = year;
+    const body = {
+      user_id: user._id,
+      year_id: addingYear !== null ? addingYear._id : "",
+      plan_id: currentPlan._id,
+      title: course.title,
+      term: course.term,
+      year: addingYear !== null ? addingYear.name : "",
+      credits: course.credits,
+      distribution_ids: currentPlan.distribution_ids,
+      isPlaceholder: false,
+      number: course.number,
+      area: course.area,
+      preReq: course.preReq,
+      expireAt:
+        user._id === "guestUser"
+          ? Date.now() + 60 * 60 * 24 * 1000
+          : undefined,
+    };
+    const retrieved = await fetch(api + "/courses", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(body),
+    })
+    const data = await retrieved.json();
+    if (data.errors === undefined) {
+      var newUserCourse: UserCourse = { ...data.data };
+      dispatch(
+        updateCurrentPlanCourses([...currentCourses, newUserCourse])
+      );
+      const allYears: Year[] = [...currentPlan.years];
+      const newYears: Year[] = [];
+      allYears.forEach((y) => {
+        if (y.year === year.year) {
+          const yCourses = [...y.courses, newUserCourse._id];
+          newYears.push({ ...y, courses: yCourses });
+        } else {
+          newYears.push(y);
+        }
+      });
+      newPlan = ({ ...currentPlan, years: newYears });
+      dispatch(updateSelectedPlan(newPlan));
+      const newPlanList = [...planList];
+      for (let i = 0; i < planList.length; i++) {
+        if (planList[i]._id === newPlan._id) {
+          newPlanList[i] = newPlan;
+        }
+      }
+      dispatch(updatePlanList(newPlanList));
+      console.log(response.data.data.title);
+      return newPlan;
+    } else {
+      console.log("Failed to add", data.errors);
+    }
+    return new Promise(() => newPlan);
+  };
+  
+  const createUser = () => new Promise<void>((resolve) => {
+    // do anything here
+    dispatch(updateUser({...guestUser}));
+    resolve();
+  });
+
+  const createPlan = (plan: Plan) => new Promise<void>((resolve) => {
+    dispatch(updateToAddMajor(getMajorFromCommonName(plan.majors[0])));
+    dispatch(updateGeneratePlanAddStatus(true));
+    resolve();
+  });
 
   // Useffect runs once on page load, calling to https://ucredit-api.herokuapp.com/api/retrieveUser to retrieve user data.
   // On successful retrieve, update redux with retrieved user,
   useEffect(() => {
-    if (user._id === "noUser") {
+    if (_id != null) {
+      // means that the user entered a sharable link
+      // first login with guest, then populate the plan with the information from the id
+      var plan: Plan;
+      axios.get(api + '/plans/' + _id)
+      .then((planResponse) => {
+        plan = planResponse.data.data;
+        axios.get(api + '/years/' + _id).then((yearsResponse) => {
+          var years: Year[] = yearsResponse.data.data;
+          // set the user to guest user
+          createUser()
+          .then(() => {
+            createPlan(plan).then(async () => {
+              setToAdd(years);
+              setShouldAdd(true);
+                // years.forEach((year) => {
+                //   year.courses.forEach((course) => {
+                //     addCourse(course, year, curPlan);
+                //   })
+                // })
+            })
+          })
+          // create the plan
+          // add courses to the plan
+
+
+
+          //dispatch(updateSel  ectedPlan(planCopy));
+          //dispatch(updatePlanList([{...planCopy}]));
+          //history.push("/dashboard");
+        })
+        .catch((e) => {
+          console.log(e);
+        })
+      })
+      .catch((e) => {
+        console.log(e);
+        console.log("Couldn't find id from link");
+        history.push("/dashboard");
+      })
+    } else if (user._id === "noUser") {
       // Retrieves user if user ID is "noUser", the initial user id state for userSlice.tsx.
       // Make call for backend const cookieVals = document.cookie.split("=");
       const cookieVals = document.cookie.split("=");
