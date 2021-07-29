@@ -338,7 +338,8 @@ const PrereqDisplay = () => {
     for (let i = 0; i < numList.length; i++) {
       expr = expr.replaceAll(
         numList[i],
-        numNameList[i].substr(0, 10) + numNameList[i].substr(20, numNameList[i].length)
+        numNameList[i].substr(0, 10) +
+          numNameList[i].substr(20, numNameList[i].length)
       );
     }
     expr = expr.split("^");

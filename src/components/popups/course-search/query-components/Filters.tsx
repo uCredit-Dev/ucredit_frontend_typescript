@@ -168,6 +168,7 @@ const Filters = ({ showCriteria }: filterProps) => {
     );
   };
 
+  // TODO: We can probably modularize distribution bars.
   return (
     <>
       <div className="flex flex-row items-center justify-between mb-2 w-full h-auto">

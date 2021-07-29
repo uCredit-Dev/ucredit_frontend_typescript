@@ -1,13 +1,17 @@
 import clsx from "clsx";
 import React, { useState, useEffect } from "react";
-import { useSelector } from 'react-redux';
+import { useSelector } from "react-redux";
 import { ReactComponent as Check } from "../../../resources/svg/CheckMark.svg";
 import { ReactComponent as X } from "../../../resources/svg/Close.svg";
 import { ReactComponent as Add } from "../../../resources/svg/Add.svg";
-import { requirements, checkRequirementSatisfied, splitRequirements } from './distributionFunctions';
+import {
+  requirements,
+  checkRequirementSatisfied,
+  splitRequirements,
+} from "./distributionFunctions";
 import { selectCurrentPlanCourses } from "../../../slices/currentPlanSlice";
 import { selectAllCourses } from "../../../slices/userSlice";
-import { getCourse } from '../../../resources/assets';
+import { getCourse } from "../../../resources/assets";
 import DistributionPopup from "./DistributionPopup";
 
 type FineDistributionProps = {
@@ -22,7 +26,11 @@ type FineDistributionProps = {
  * @prop dis - general distribution fine distribution is for.
  * @prop distributionOpen - whether this distribution bar is open or not.
  */
-const FineDistribution = ({ dis, distributionOpen, hidden }: FineDistributionProps) => {
+const FineDistribution = ({
+  dis,
+  distributionOpen,
+  hidden,
+}: FineDistributionProps) => {
   const [showDistrDesc, setShowDistrDesc] = useState<boolean>(false);
   const [displayAdd, setDisplayAdd] = useState(false);
   const [flipped, setFlipped] = useState<string[]>([]);
@@ -33,26 +41,24 @@ const FineDistribution = ({ dis, distributionOpen, hidden }: FineDistributionPro
 
   const addToDistribution = () => {
     setDisplayAdd(true);
-  }
+  };
 
   const closePopup = () => {
     setDisplayAdd(false);
-  }
+  };
 
   const onSave = (s: string[]) => {
     console.log(s);
     setFlipped(s);
-  }
+  };
 
   useEffect(() => {
     var temp = dis.fulfilled_credits;
     currPlanCourses.forEach((course) => {
       const courseObj = getCourse(course.number, allCourses, currPlanCourses);
       if (
-        courseObj != null && checkRequirementSatisfied(
-          splitRequirements(dis.expr),
-          courseObj
-        )
+        courseObj != null &&
+        checkRequirementSatisfied(splitRequirements(dis.expr), courseObj)
       ) {
         if (flipped.includes(course.number)) {
           temp -= course.credits;
@@ -64,7 +70,7 @@ const FineDistribution = ({ dis, distributionOpen, hidden }: FineDistributionPro
       }
     });
     setPlannedCredits(temp);
-  }, [allCourses, currPlanCourses, dis.expr, flipped, dis.fulfilled_credits])
+  }, [allCourses, currPlanCourses, dis.expr, flipped, dis.fulfilled_credits]);
 
   return (
     <div
@@ -98,10 +104,18 @@ const FineDistribution = ({ dis, distributionOpen, hidden }: FineDistributionPro
       <p className="font-bold">
         {plannedCredits}/{dis.required_credits}
       </p>
-      <Add 
-          className="h-6 transform hover:scale-150 transition duration-200 ease-in"
-          onClick={addToDistribution}/>
-      {displayAdd ? <DistributionPopup distribution={dis} cleanup={closePopup} save={onSave} flipped={flipped.slice()}/> : null}
+      <Add
+        className="h-6 transform hover:scale-150 transition duration-200 ease-in"
+        onClick={addToDistribution}
+      />
+      {displayAdd ? (
+        <DistributionPopup
+          distribution={dis}
+          cleanup={closePopup}
+          save={onSave}
+          flipped={flipped.slice()}
+        />
+      ) : null}
     </div>
   );
 };
