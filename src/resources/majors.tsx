@@ -352,7 +352,7 @@ const bsBME: Major = {
             "580.244 Nonlinear Dynamics of Biological Systems\n\t580.246 Systems and Controls\n\t",
           required_credits: 6,
           criteria:
-            "EN.580.424[C]^OR^EN.580.451[C]^OR^EN.580.452[C]^OR^EN.580.454[C]^OR^EN.580.494[C]^OR^EN.580.242[C]^OR^EN.580.243[C]" +
+            "EN.580.424[C]^OR^EN.580.451[C]^OR^EN.580.452[C]^OR^EN.580.454[C]^OR^EN.580.494[C]^OR^EN.580.242[C]^OR^EN.580.243[C]^OR^" +
             "EN.580.244[C]^OR^EN.580.246[C]^OR^EN.580.248[C]^OR^EN.580.475[C]^OR^EN.580.477[C]^OR^EN.580.485[C]^OR^EN.580.487[C]",
         },
         {
