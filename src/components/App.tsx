@@ -3,7 +3,7 @@ import * as React from "react";
 import { useEffect } from "react";
 import { useState } from "react";
 import { useDispatch } from "react-redux";
-import { Switch, Route } from "react-router-dom";
+import { Switch, Route, useLocation } from "react-router-dom";
 import { api } from "./../resources/assets";
 import Dashboard from "./dashboard/Dashboard";
 import DashboardEntry from "./login/DashboardEntry";
@@ -81,10 +81,15 @@ function App() {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
+  const useQuery = () => {
+    return new URLSearchParams(useLocation().search);
+  }
+
+  const _id = useQuery().get("_id");
+
   useEffect(() => {
     ReactTooltip.rebuild();
   });
-
   return (
     <>
       <ReactTooltip
@@ -116,10 +121,10 @@ function App() {
             Dismiss Loading Screen
           </button>
         </div>
-      ) : null}
+      ) : null} 
       <Switch>
         <Route path="/dashboard">
-          <Dashboard />
+          <Dashboard _id={_id}/>
         </Route>
         <Route path="/login">
           <DashboardEntry />
