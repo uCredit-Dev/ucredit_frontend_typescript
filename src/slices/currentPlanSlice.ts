@@ -48,6 +48,7 @@ export const currentPlanSlice = createSlice({
       state: any,
       action: PayloadAction<UserCourse[]>
     ) => {
+      //console.log(action.payload);
       state.currentPlanCourses = action.payload;
     },
     updateTotalCredits: (state: any, action: PayloadAction<number>) => {
