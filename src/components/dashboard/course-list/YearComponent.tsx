@@ -5,13 +5,11 @@ import { ReactComponent as MoreSvg } from "../../../resources/svg/More.svg";
 import { useSelector, useDispatch } from "react-redux";
 import {
   selectPlan,
+  updateDeleteYearStatus,
   updateSelectedPlan,
+  updateYearToDelete,
 } from "../../../slices/currentPlanSlice";
 import { api } from "../../../resources/assets";
-import {
-  updateDeleteYearStatus,
-  updateYearToDelete,
-} from "../../../slices/userSlice";
 import clsx from "clsx";
 
 type yearProps = {

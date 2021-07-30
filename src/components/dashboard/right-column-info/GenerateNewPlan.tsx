@@ -7,15 +7,17 @@ import {
   selectUser,
   selectPlanList,
   updateGuestPlanIds,
-  selectToAddName,
-  selectToAddMajor,
-  clearToAdd,
-  updateGeneratePlanAddStatus,
-  selectGeneratePlanAddStatus,
 } from "../../../slices/userSlice";
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-import { updateSelectedPlan } from "../../../slices/currentPlanSlice";
+import {
+  clearToAdd,
+  selectGeneratePlanAddStatus,
+  selectToAddMajor,
+  selectToAddName,
+  updateGeneratePlanAddStatus,
+  updateSelectedPlan,
+} from "../../../slices/currentPlanSlice";
 import { api } from "../../../resources/assets";
 
 type generateNewPlanProps = {
