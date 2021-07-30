@@ -1,25 +1,39 @@
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { updateUser, selectUser, resetUser, updatePlanList, updateGeneratePlanAddStatus, updateToAddMajor, selectPlanList, selectAllCourses } from "../../slices/userSlice";
+import {
+  updateUser,
+  selectUser,
+  resetUser,
+  updatePlanList,
+  selectAllCourses,
+  selectPlanList,
+} from "../../slices/userSlice";
 // import { ReactComponent as UserSvg } from "../../resources/svg/User.svg";
 import { useHistory } from "react-router-dom";
-import { resetCurrentPlan, selectCurrentPlanCourses, selectPlan, updateCurrentPlanCourses, updateSelectedPlan } from "../../slices/currentPlanSlice";
+import {
+  resetCurrentPlan,
+  selectCurrentPlanCourses,
+  selectPlan,
+  updateCurrentPlanCourses,
+  updateGeneratePlanAddStatus,
+  updateSelectedPlan,
+  updateToAddMajor,
+} from "../../slices/currentPlanSlice";
 import { api, guestUser } from "../../resources/assets";
 import bird from "../../resources/images/logoDarker.png";
 import axios from "axios";
-import { Course, Plan, SemesterType, UserCourse, Year } from "../../resources/commonTypes";
+import { Plan, UserCourse, Year } from "../../resources/commonTypes";
 import { getMajorFromCommonName } from "../../resources/majors";
-import { updateSearchStatus, updateSearchTime } from "../../slices/searchSlice";
-import { toast, ToastContainer } from "react-toastify";
+import { toast } from "react-toastify";
 
 type UserProps = {
   _id: string | null;
-}
+};
 
 /**
  * User login/logout buttons.
  */
-function UserSection({_id} : UserProps) {
+function UserSection({ _id }: UserProps) {
   // Redux setup
   const dispatch = useDispatch();
   const user = useSelector(selectUser);
@@ -34,17 +48,23 @@ function UserSection({_id} : UserProps) {
   const [shouldAdd, setShouldAdd] = useState<boolean>(false);
   let history = useHistory();
 
-  var curCourses : UserCourse[] = [];
+  var curCourses: UserCourse[] = [];
 
   useEffect(() => {
-    if (shouldAdd && user._id !== "noUser" && curPlan._id !== "noPlan" && allCourses.length > 0) {
+    if (
+      shouldAdd &&
+      user._id !== "noUser" &&
+      curPlan._id !== "noPlan" &&
+      allCourses.length > 0
+    ) {
       addCourses(toAdd, curPlan);
       setShouldAdd(false);
       toast.info("Importing Plan...", {
         closeOnClick: false,
       });
     }
-  }, [shouldAdd, toAdd, user, curPlan, allCourses, currentCourses])
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [shouldAdd, toAdd, user, curPlan, allCourses, currentCourses]);
 
   const addCourses = async (years: Year[], curPlan: Plan) => {
     // curCourses = [];
@@ -55,24 +75,28 @@ function UserSection({_id} : UserProps) {
     // dispatch(updateCurrentPlanCourses(curCourses));
     // dispatch(updateSelectedPlan(curPlan));
     // console.log(curPlan);
-    
+
     for (const year of toAdd) {
       for (const course of year.courses) {
         curPlan = await addCourse(course, year, curPlan);
-      };
-    };
+      }
+    }
     dispatch(updateCurrentPlanCourses(curCourses));
     dispatch(updateSelectedPlan(curPlan));
     toast.success("Plan Imported!", {
       autoClose: 5000,
       closeOnClick: false,
     });
-  }
+  };
 
-  const addCourse = async (id: string, year: Year, currentPlan: Plan): Promise<Plan> => {
+  const addCourse = async (
+    id: string,
+    year: Year,
+    currentPlan: Plan
+  ): Promise<Plan> => {
     var newPlan: Plan;
-    const response = await axios.get(api + '/courses/' + id);
-    var course:UserCourse = response.data.data; 
+    const response = await axios.get(api + "/courses/" + id);
+    var course: UserCourse = response.data.data;
     const addingYear: Year = year;
     const body = {
       user_id: user._id,
@@ -88,9 +112,7 @@ function UserSection({_id} : UserProps) {
       area: course.area,
       preReq: course.preReq,
       expireAt:
-        user._id === "guestUser"
-          ? Date.now() + 60 * 60 * 24 * 1000
-          : undefined,
+        user._id === "guestUser" ? Date.now() + 60 * 60 * 24 * 1000 : undefined,
     };
     const retrieved = await fetch(api + "/courses", {
       method: "POST",
@@ -98,7 +120,7 @@ function UserSection({_id} : UserProps) {
         "Content-Type": "application/json",
       },
       body: JSON.stringify(body),
-    })
+    });
     const data = await retrieved.json();
     if (data.errors === undefined) {
       var newUserCourse: UserCourse = { ...data.data };
@@ -114,7 +136,7 @@ function UserSection({_id} : UserProps) {
           newYears.push(y);
         }
       });
-      newPlan = ({ ...currentPlan, years: newYears });
+      newPlan = { ...currentPlan, years: newYears };
       dispatch(updateSelectedPlan(newPlan));
       const newPlanList = [...planList];
       for (let i = 0; i < planList.length; i++) {
@@ -130,17 +152,19 @@ function UserSection({_id} : UserProps) {
     return new Promise(() => newPlan);
   };
 
-  const createUser = () => new Promise<void>((resolve) => {
-    // do anything here
-    dispatch(updateUser({...guestUser}));
-    resolve();
-  });
+  const createUser = () =>
+    new Promise<void>((resolve) => {
+      // do anything here
+      dispatch(updateUser({ ...guestUser }));
+      resolve();
+    });
 
-  const createPlan = (plan: Plan) => new Promise<void>((resolve) => {
-    dispatch(updateToAddMajor(getMajorFromCommonName(plan.majors[0])));
-    dispatch(updateGeneratePlanAddStatus(true));
-    resolve();
-  });
+  const createPlan = (plan: Plan) =>
+    new Promise<void>((resolve) => {
+      dispatch(updateToAddMajor(getMajorFromCommonName(plan.majors[0])));
+      dispatch(updateGeneratePlanAddStatus(true));
+      resolve();
+    });
 
   // Useffect runs once on page load, calling to https://ucredit-api.herokuapp.com/api/retrieveUser to retrieve user data.
   // On successful retrieve, update redux with retrieved user,
@@ -148,34 +172,36 @@ function UserSection({_id} : UserProps) {
     if (_id != null) {
       // means that the user entered a sharable link
       // first login with guest, then populate the plan with the information from the id
-      history.push('/dashboard');
+      history.push("/dashboard");
       var plan: Plan;
-      axios.get(api + '/plans/' + _id)
-      .then((planResponse) => {
-        plan = planResponse.data.data;
-        axios.get(api + '/years/' + _id).then((yearsResponse) => {
-          var years: Year[] = yearsResponse.data.data;
-          // set the user to guest user
-          createUser()
-          .then(() => {
-            createPlan(plan).then(async () => {
-              setToAdd(years);
-              setShouldAdd(true);
+      axios
+        .get(api + "/plans/" + _id)
+        .then((planResponse) => {
+          plan = planResponse.data.data;
+          axios
+            .get(api + "/years/" + _id)
+            .then((yearsResponse) => {
+              var years: Year[] = yearsResponse.data.data;
+              // set the user to guest user
+              createUser().then(() => {
+                createPlan(plan).then(async () => {
+                  setToAdd(years);
+                  setShouldAdd(true);
+                });
+              });
             })
-          })
+            .catch((e) => {
+              console.log(e);
+            });
         })
         .catch((e) => {
           console.log(e);
-        })
-      })
-      .catch((e) => {
-        console.log(e);
-        toast.error("Failed to Import", {
-          autoClose: 5000,
-          closeOnClick: false,
+          toast.error("Failed to Import", {
+            autoClose: 5000,
+            closeOnClick: false,
+          });
+          history.push("/login");
         });
-        history.push("/login");
-      })
     } else if (user._id === "noUser") {
       // Retrieves user if user ID is "noUser", the initial user id state for userSlice.tsx.
       // Make call for backend const cookieVals = document.cookie.split("=");

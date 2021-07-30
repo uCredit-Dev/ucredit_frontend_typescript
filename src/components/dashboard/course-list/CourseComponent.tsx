@@ -26,6 +26,8 @@ import "react-toastify/dist/ReactToastify.css";
 import {
   selectCurrentPlanCourses,
   selectPlan,
+  updateCourseToDelete,
+  updateDeleteCourseStatus,
   updateSelectedPlan,
 } from "../../../slices/currentPlanSlice";
 import { selectAllCourses } from "../../../slices/userSlice";
@@ -115,31 +117,8 @@ function CourseComponent({ year, course, semester }: courseProps) {
 
   // Deletes a course on click of the delete button. Updates currently displayed plan with changes.
   const deleteCourse = () => {
-    fetch(api + "/courses/" + course._id, { method: "DELETE" }).then(() => {
-      let newPlan: Plan;
-      // TODO: Delete specific course by year AND semester
-      const years = [...currentPlan.years];
-      currentPlan.years.forEach((planYear, index) => {
-        if (planYear.year === year) {
-          const courses = planYear.courses.filter(
-            (yearCourse) => yearCourse !== course._id
-          );
-          years[index] = { ...years[index], courses: courses };
-        }
-      });
-      newPlan = { ...currentPlan, years: years };
-
-      toast.error(course.title + " deleted!", {
-        position: "top-right",
-        autoClose: 5000,
-        hideProgressBar: true,
-        closeOnClick: true,
-        pauseOnHover: true,
-        draggable: true,
-        progress: 0,
-      });
-      dispatch(updateSelectedPlan(newPlan));
-    });
+    dispatch(updateCourseToDelete({ course: course, year: year }));
+    dispatch(updateDeleteCourseStatus(true));
   };
 
   const activate = () => {
@@ -229,10 +208,12 @@ function CourseComponent({ year, course, semester }: courseProps) {
                   </>
                 ) : null}
                 {displayPopup ? (
-                <OverridePrereqpopup 
-                  courseName={course.number} 
-                  cleanup={() => setDisplayPopup(false)} 
-                  save={() => setOverridden(true)}/>) : null}
+                  <OverridePrereqpopup
+                    courseName={course.number}
+                    cleanup={() => setDisplayPopup(false)}
+                    save={() => setOverridden(true)}
+                  />
+                ) : null}
               </div>
             )}
           </Transition>

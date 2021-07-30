@@ -4,13 +4,13 @@ import {
   selectUser,
   selectPlanList,
   updatePlanList,
-  updateDeletePlanStatus,
 } from "../../../slices/userSlice";
 // import PlanChoose from "./PlanChoose";
 import { ReactComponent as RemoveSvg } from "../../../resources/svg/Remove.svg";
 import "react-toastify/dist/ReactToastify.css";
 import {
   selectPlan,
+  updateDeletePlanStatus,
   updateSelectedPlan,
 } from "../../../slices/currentPlanSlice";
 import { api } from "../../../resources/assets";
@@ -92,7 +92,7 @@ const InfoCards = () => {
   const onShareClick = () => {
     setShareableURL("http://localhost:3000/dashboard?_id=" + currentPlan._id);
     console.log(user);
-  }
+  };
 
   return (
     <div className="tight:items-center mb-4 mx-4 p-6 h-auto bg-white rounded shadow">
@@ -114,14 +114,11 @@ const InfoCards = () => {
         <div className="w-auto h-auto text-center font-light stroke-2">
           {currentPlan.majors}
         </div>
-        <div>
-      </div>
-      <button className="m-auto" onClick={onShareClick}>
+        <div></div>
+        <button className="m-auto" onClick={onShareClick}>
           Share
         </button>
-        <div>
-          {shareableURL}
-        </div>
+        <div>{shareableURL}</div>
       </div>
     </div>
   );
