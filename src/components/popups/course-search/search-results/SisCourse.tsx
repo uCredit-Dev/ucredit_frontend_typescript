@@ -66,8 +66,6 @@ const SisCourse = (props: SisCourseProps) => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [version]);
 
-  const course = useSelector(selectInspectedCourse);
-
   // Returns an array of select options for the distribution area users want to add the course to.
   const getInspectedAreas = () => {
     if (version !== "None" && version.areas !== "None") {

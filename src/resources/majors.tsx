@@ -1206,6 +1206,19 @@ const bsCS: Major = {
   ],
 };
 
+export function getMajorFromCommonName(name: string) {
+  var out: Major | null = null;
+  allMajors.forEach((major) => {
+    if (major.degree_name === name) {
+      out = major;
+    }
+  });
+  if (out === null) {
+    throw Error('Major not found');
+  }
+  return out;
+}
+
 // TODO: Separate code for BA and BS into separate sections
 export const allMajors: Major[] = [
   bsCS,
