@@ -14,15 +14,18 @@ import {
   resetCurrentPlan,
   selectCurrentPlanCourses,
   selectPlan,
+  updateAddingPlanStatus,
   updateCurrentPlanCourses,
   updateGeneratePlanAddStatus,
+  updateImportingStatus,
   updateSelectedPlan,
   updateToAddMajor,
+  updateToAddName,
 } from "../../slices/currentPlanSlice";
 import { api, guestUser } from "../../resources/assets";
 import bird from "../../resources/images/logoDarker.png";
 import axios from "axios";
-import { Plan, UserCourse, Year } from "../../resources/commonTypes";
+import { Plan, User, UserCourse, Year } from "../../resources/commonTypes";
 import { getMajorFromCommonName } from "../../resources/majors";
 import { toast } from "react-toastify";
 
@@ -59,23 +62,12 @@ function UserSection({ _id }: UserProps) {
     ) {
       addCourses(toAdd, curPlan);
       setShouldAdd(false);
-      toast.info("Importing Plan...", {
-        closeOnClick: false,
-      });
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [shouldAdd, toAdd, user, curPlan, allCourses, currentCourses]);
 
   const addCourses = async (years: Year[], curPlan: Plan) => {
-    // curCourses = [];
-    // curPlan = await addCourse(years[0].courses[0], years[0], curPlan);
-    // console.log(currentCourses);
-    // curPlan = await addCourse(years[0].courses[1], years[0], curPlan);
-    // console.log(currentCourses);
-    // dispatch(updateCurrentPlanCourses(curCourses));
-    // dispatch(updateSelectedPlan(curPlan));
-    // console.log(curPlan);
-
+    console.log(planList);
     for (const year of toAdd) {
       for (const course of year.courses) {
         curPlan = await addCourse(course, year, curPlan);
@@ -83,10 +75,12 @@ function UserSection({ _id }: UserProps) {
     }
     dispatch(updateCurrentPlanCourses(curCourses));
     dispatch(updateSelectedPlan(curPlan));
+    dispatch(updateImportingStatus(false));
     toast.success("Plan Imported!", {
       autoClose: 5000,
       closeOnClick: false,
     });
+    dispatch(updateAddingPlanStatus(false));
   };
 
   const addCourse = async (
@@ -152,50 +146,146 @@ function UserSection({ _id }: UserProps) {
     return new Promise(() => newPlan);
   };
 
+  // create a guest user
   const createUser = () =>
     new Promise<void>((resolve) => {
-      // do anything here
       dispatch(updateUser({ ...guestUser }));
       resolve();
     });
 
+  // create a new plan
   const createPlan = (plan: Plan) =>
     new Promise<void>((resolve) => {
+      dispatch(updateToAddName("Imported Plan"));
       dispatch(updateToAddMajor(getMajorFromCommonName(plan.majors[0])));
       dispatch(updateGeneratePlanAddStatus(true));
       resolve();
     });
 
+  const login = (cookieVal: string) =>
+    new Promise<void>((resolve) => {
+      if (user._id === "noUser") {
+        var curUser : User;
+        // Retrieves user if user ID is "noUser", the initial user id state for userSlice.tsx.
+        // Make call for backend
+        fetch(api + "/retrieveUser/" + cookieVal, {
+          mode: "cors",
+          method: "GET",
+          credentials: "include",
+          headers: {
+            Accept: "application/json",
+            "Content-Type": "application/json",
+          },
+        })
+        .then((resp) => resp.json())
+        .then((retrievedUser) => {
+          if (retrievedUser.errors === undefined) {
+            dispatch(updateUser(retrievedUser.data));
+            curUser = retrievedUser.data;
+          }
+        })
+        .then(() => getPlans(curUser))
+        .then(() => {
+          console.log(planList);
+          resolve()
+        })
+        // .then(() => axios.get(api + '/plansByUser/' + curUser._id))
+        // .then((plans) => {
+        //   dispatch(updatePlanList(plans.data.data));
+        //   resolve();
+        // })
+        .catch((err) => {
+          console.log("ERROR IS: ", err);
+        });
+      } else {
+        resolve();
+      }
+    })
+
+  const getPlans = (curUser : User) =>
+    new Promise<void>((resolve) =>
+     axios
+        .get(api + "/plansByUser/" + curUser._id)
+        .then((retrieved) => {
+          const retrievedPlans: Plan[] = retrieved.data.data;
+
+          if (retrievedPlans.length > 0) {
+            const totPlans: Plan[] = [];
+            retrievedPlans.forEach((plan) => {
+              axios
+                .get(api + "/years/" + plan._id)
+                .then((resp) => {
+                  totPlans.push({ ...plan, years: resp.data.data });
+                  if (totPlans.length === retrievedPlans.length) {
+                    // Initial load, there is no current plan, so we set the current to be the first plan in the array.
+                    dispatch(updatePlanList(totPlans));
+                    dispatch(updateSelectedPlan(totPlans[0]));
+                    resolve();
+                  }
+                })
+                .catch((err) => console.log(err));
+            });
+          }
+        })
+        .catch((err) => {
+          if (curUser._id === "guestUser") {
+            console.log(
+              "In guest user! This is expected as there are no users with this id."
+            );
+          } else {
+            console.log(err);
+          }
+        }))
+
   // Useffect runs once on page load, calling to https://ucredit-api.herokuapp.com/api/retrieveUser to retrieve user data.
   // On successful retrieve, update redux with retrieved user,
   useEffect(() => {
     if (_id != null) {
+      toast.info("Importing Plan...", {
+        autoClose:false,
+        closeOnClick: false,
+      });
+      dispatch(updateImportingStatus(true));
       // means that the user entered a sharable link
       // first login with guest, then populate the plan with the information from the id
       history.push("/dashboard");
       var plan: Plan;
+      // Get the plan that we are importing, stored in plan
       axios
         .get(api + "/plans/" + _id)
         .then((planResponse) => {
           plan = planResponse.data.data;
+          // get the years of that plan, stored in years
           axios
             .get(api + "/years/" + _id)
             .then((yearsResponse) => {
               var years: Year[] = yearsResponse.data.data;
-              // set the user to guest user
-              createUser().then(() => {
-                createPlan(plan).then(async () => {
+              // check whether the user is logged in (whether a cookie exists)
+              const cookieVal = document.cookie.split("=")[1];
+              if (cookieVal === '') {
+                // if not, create a user first, then add
+                createUser().then(() => {
+                  createPlan(plan).then(async () => {
+                    setToAdd(years);
+                    setShouldAdd(true);
+                  });
+                });
+              } else {
+                // if so, login first, then add
+                login(cookieVal).then(() => {
+                  createPlan(plan).then(async () => {
                   setToAdd(years);
                   setShouldAdd(true);
+                })
                 });
-              });
+              }
             })
             .catch((e) => {
               console.log(e);
             });
         })
         .catch((e) => {
-          console.log(e);
+          dispatch(updateImportingStatus(false));
           toast.error("Failed to Import", {
             autoClose: 5000,
             closeOnClick: false,
