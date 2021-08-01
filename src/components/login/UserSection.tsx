@@ -67,8 +67,7 @@ function UserSection({ _id }: UserProps) {
   }, [shouldAdd, toAdd, user, curPlan, allCourses, currentCourses]);
 
   const addCourses = async (years: Year[], curPlan: Plan) => {
-    console.log(planList);
-    for (const year of toAdd) {
+      for (const year of toAdd) {
       for (const course of year.courses) {
         curPlan = await addCourse(course, year, curPlan);
       }
@@ -262,7 +261,7 @@ function UserSection({ _id }: UserProps) {
               var years: Year[] = yearsResponse.data.data;
               // check whether the user is logged in (whether a cookie exists)
               const cookieVal = document.cookie.split("=")[1];
-              if (cookieVal === '') {
+              if (cookieVal === undefined) {
                 // if not, create a user first, then add
                 createUser().then(() => {
                   createPlan(plan).then(async () => {
