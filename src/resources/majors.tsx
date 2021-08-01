@@ -1087,7 +1087,7 @@ const bsAMS: Major = {
   distributions: [
     {
       name: "Math",
-      required_credits: 16,
+      required_credits: 39,
       min_credits_per_course: 3,
       description: "",
       criteria: "AS Mathematics[D]^OR^EN Applied Math and Statistics[D]",
@@ -1200,7 +1200,7 @@ const bsAMS: Major = {
         "Students are required to fulfill the university’s requirement of two writing intensive courses, " +
         "each at least 3 credits. Students must receive at least a C- grade or better in these writing courses. " +
         "At least one course must be explicitly focused on writing skills in English (eg, courses in professional, " +
-        "fiction or expository writing). These courses may overlap other requirements.",
+        "fiction or expository writing). These courses may overlap with other requirements.",
       criteria:
         "N[A]",
     },
@@ -1324,7 +1324,7 @@ const bsCS_Old: Major = {
         "Students are required to fulfill the university’s requirement of two writing intensive courses, " +
         "each at least 3 credits. Students must receive at least a C- grade or better in these writing courses. " +
         "At least one course must be explicitly focused on writing skills in English (eg, courses in professional, " +
-        "fiction or expository writing). These courses may overlap other requirements.",
+        "fiction or expository writing). These courses may overlap with other requirements.",
       criteria:
         "N[A]",
     },
@@ -1448,7 +1448,7 @@ const bsCS_New: Major = {
         "Students are required to fulfill the university’s requirement of two writing intensive courses, " +
         "each at least 3 credits. Students must receive at least a C- grade or better in these writing courses. " +
         "At least one course must be explicitly focused on writing skills in English (eg, courses in professional, " +
-        "fiction or expository writing). These courses may overlap other requirements.",
+        "fiction or expository writing). These courses may overlap with other requirements.",
       criteria:
         "N[A]",
     },
