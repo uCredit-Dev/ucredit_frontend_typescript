@@ -1312,17 +1312,17 @@ const bsCS_Old: Major = {
         "AS Center for Language Education[D]^OR^AS Modern Languages and Literatures[D]^OR^H[A]^OR^S[A]",
     },
     {
-      name: "English Focused Writing Intensive",
-      required_credits: 3,
+      name: "Writing Intensive",
+      required_credits: 6,
       min_credits_per_course: 3,
       double_count: true,
       description:
-        "At least one course with a primary focus on writing in English must be chosen. " +
-        "Courses that satisfy this requirement are: EN.661.110, EN.661.111, EN.661.250, EN.661.251, " +
-        "EN.661.315, AS.060.100, AS.060.113, AS.220.105, AS.180.248, AS.290.303, AS.360.133.",
+        "Students are required to fulfill the university’s requirement of two writing intensive courses, " +
+        "each at least 3 credits. Students must receive at least a C- grade or better in these writing courses. " +
+        "At least one course must be explicitly focused on writing skills in English (eg, courses in professional, " +
+        "fiction or expository writing). These courses may overlap other requirements.",
       criteria:
-        "EN.661.110[C]^OR^EN.661.111[C]^OR^EN.661.250[C]^OR^EN.661.251[C]^OR^EN.661.315[C]" +
-        "^OR^AS.060.100[C]^OR^AS.060.113[C]^OR^AS.220.105[C]^OR^AS.180.248[C]^OR^AS.290.303[C]^OR^AS.360.133",
+        "N[A]",
     },
   ],
 };
@@ -1436,17 +1436,17 @@ const bsCS_New: Major = {
         "AS Center for Language Education[D]^OR^AS Modern Languages and Literatures[D]^OR^H[A]^OR^S[A]",
     },
     {
-      name: "English Focused Writing Intensive",
-      required_credits: 3,
+      name: "Writing Intensive",
+      required_credits: 6,
       min_credits_per_course: 3,
       double_count: true,
       description:
-        "At least one course with a primary focus on writing in English must be chosen. " +
-        "Courses that satisfy this requirement are: EN.661.110, EN.661.111, EN.661.250, EN.661.251, " +
-        "EN.661.315, AS.060.100, AS.060.113, AS.220.105, AS.180.248, AS.290.303, AS.360.133.",
+        "Students are required to fulfill the university’s requirement of two writing intensive courses, " +
+        "each at least 3 credits. Students must receive at least a C- grade or better in these writing courses. " +
+        "At least one course must be explicitly focused on writing skills in English (eg, courses in professional, " +
+        "fiction or expository writing). These courses may overlap other requirements.",
       criteria:
-        "EN.661.110[C]^OR^EN.661.111[C]^OR^EN.661.250[C]^OR^EN.661.251[C]^OR^EN.661.315[C]" +
-        "^OR^AS.060.100[C]^OR^AS.060.113[C]^OR^AS.220.105[C]^OR^AS.180.248[C]^OR^AS.290.303[C]^OR^AS.360.133",
+        "N[A]",
     },
   ],
 };
