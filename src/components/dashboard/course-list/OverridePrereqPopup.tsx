@@ -16,7 +16,7 @@ function OverridePrereqpopup({ courseName, cleanup, save }: PopupType) {
     <div className="fixed z-40 inset-1/2 w-96 h-80 overflow-auto transform -translate-x-2/4 -translate-y-1/2">
       <div className="p-3 text-center font-bold bg-gray-50 rounded-t-lg shadow">
         <h1>
-          Override warning that prereqs for {courseName} is not satisfied?
+          Override warning that prerequisites for {courseName} is not satisfied?
         </h1>
         <h1>Warning: cannot be undone.</h1>
       </div>
