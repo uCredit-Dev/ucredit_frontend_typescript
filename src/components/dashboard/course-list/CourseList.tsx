@@ -35,6 +35,7 @@ import YearDraggable from "./YearDraggable";
 
 /**
  * Container component that holds all the years, semesters, and courses of the current plan.
+ * TODO: Cleanup and modularize
  */
 function CourseList() {
   // Setting up redux
@@ -140,9 +141,7 @@ function CourseList() {
       preReq: "",
       isPlaceholder: false,
     };
-    //console.log(id);
     currentPlanCourses.forEach((c: UserCourse) => {
-      //console.log(c.title);
       if (c._id === id) {
         course = c;
         return;
@@ -188,13 +187,10 @@ function CourseList() {
     }
 
     if (source.droppableId.includes("year")) {
-      //Swap years
+      // Swap years if we're raggin a year.
       swapYear(source.index, destination.index);
     } else if (source.droppableId !== destination.droppableId) {
       // if different, move to new droppable
-
-      console.log(source, destination);
-
       let sourceDroppable: DroppableType | null = null;
       let destDroppable: DroppableType | null = null;
       droppables.forEach((droppable: DroppableType) => {
@@ -216,15 +212,11 @@ function CourseList() {
 
   // Swaps year from source droppable to destination droppable.
   const swapYear = (sourceIndex: number, destIndex: number): void => {
-    // const sourceIndex: number = parseInt(sourceId.split("|")[1]);
-    // const destIndex: number = parseInt(destId.split("|")[1]);
     const yearArr: Year[] = [...currentPlan.years];
-    console.log("orig is ", yearArr, currentPlan.years);
     const temp: Year = yearArr[sourceIndex];
     yearArr.splice(sourceIndex, 1);
     yearArr.splice(destIndex, 0, temp);
     dispatch(updateSelectedPlan({ ...currentPlan, years: yearArr }));
-    console.log("after is ", yearArr);
     const yearIdArr: string[] = yearArr.map((year) => year._id);
     const body = {
       plan_id: currentPlan._id,
@@ -240,9 +232,6 @@ function CourseList() {
       .then((resp) => {
         if (!resp.ok) {
           console.log(resp);
-        } else {
-          console.log(resp);
-          toast.success("swapped years");
         }
       })
       .catch((err) => console.log(err));

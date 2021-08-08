@@ -1,9 +1,15 @@
 import React from "react";
-import { Droppable, Draggable } from "react-beautiful-dnd";
+import { Draggable } from "react-beautiful-dnd";
 import { UserCourse, Year } from "../../../resources/commonTypes";
 import YearComponent from "./YearComponent";
 
-const YearDroppable = (props: {
+/**
+ * The year draggable for shifting around year ordering.
+ * @param year - The year contained in the draggable.
+ * @param yearIndex - The index of the year among the other years.
+ * @param yearCourses - The courses contained in the year.
+ */
+const YearDraggable = (props: {
   year: Year;
   yearIndex: number;
   yearCourses: UserCourse[];
@@ -52,4 +58,4 @@ const getItemStyle = (isDragging: any, draggableStyle: any) => ({
   margin: "0rem",
 });
 
-export default YearDroppable;
+export default YearDraggable;
