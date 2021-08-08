@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React from "react";
 import CourseList from "./course-list/CourseList";
 import Search from "../popups/course-search/Search";
 import { selectSearchStatus } from "../../slices/searchSlice";
