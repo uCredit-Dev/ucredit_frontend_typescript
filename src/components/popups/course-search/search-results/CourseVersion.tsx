@@ -5,7 +5,7 @@ import ReactTooltip from "react-tooltip";
 import { getColors } from "../../../../resources/assets";
 import { selectVersion } from "../../../../slices/searchSlice";
 import PrereqDisplay from "../prereqs/PrereqDisplay";
-import CourseEvalSection from "../search-results/CourseEvalSection";
+import CourseEvalSection from "./CourseEvalSection";
 
 /**
  * A component showing the specific version of the course at a particular semester/year

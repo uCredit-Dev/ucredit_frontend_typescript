@@ -66,8 +66,6 @@ const SisCourse = (props: SisCourseProps) => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [version]);
 
-  const course = useSelector(selectInspectedCourse);
-
   // Returns an array of select options for the distribution area users want to add the course to.
   const getInspectedAreas = () => {
     if (version !== "None" && version.areas !== "None") {
@@ -99,7 +97,7 @@ const SisCourse = (props: SisCourseProps) => {
   const handleYearChange = (event: any): void => {
     dispatch(
       updateSearchTime({
-        searchYear: parseInt(event.target.value),
+        searchYear: event.target.value,
         searchSemester: searchSemester,
       })
     );
@@ -182,7 +180,7 @@ const SisCourse = (props: SisCourseProps) => {
                     value={searchYear}
                   >
                     {currentPlan.years.map((currPlanYear) => (
-                      <option key={currPlanYear.year} value={currPlanYear.year}>
+                      <option key={currPlanYear._id} value={currPlanYear._id}>
                         {currPlanYear.name}
                       </option>
                     ))}

@@ -2,11 +2,11 @@ import React, { useState, useEffect } from "react";
 import ReactTooltip from "react-tooltip";
 import {
   UserCourse,
-  Plan,
   SemesterType,
   Course,
+  Year,
 } from "../../../resources/commonTypes";
-import { api, checkAllPrereqs, getColors } from "../../../resources/assets";
+import { checkAllPrereqs, getColors } from "../../../resources/assets";
 import { useDispatch, useSelector } from "react-redux";
 import {
   updateInspectedCourse,
@@ -21,18 +21,19 @@ import { ReactComponent as DetailsSvg } from "../../../resources/svg/Details.svg
 import { ReactComponent as WarningSvg } from "../../../resources/svg/Warning.svg";
 import { Transition } from "@tailwindui/react";
 import clsx from "clsx";
-import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import {
   selectCurrentPlanCourses,
   selectPlan,
-  updateSelectedPlan,
+  updateCourseToDelete,
+  updateDeleteCourseStatus,
 } from "../../../slices/currentPlanSlice";
 import { selectAllCourses } from "../../../slices/userSlice";
+import OverridePrereqpopup from "./OverridePrereqPopup";
 
 type courseProps = {
   course: UserCourse;
-  year: number;
+  year: Year;
   semester: SemesterType;
 };
 
@@ -46,6 +47,8 @@ function CourseComponent({ year, course, semester }: courseProps) {
   // React setup
   const [activated, setActivated] = useState<boolean>(false);
   const [satisfied, setSatisfied] = useState<boolean>(false);
+  const [overridden, setOverridden] = useState<boolean>(false);
+  const [displayPopup, setDisplayPopup] = useState<boolean>(false);
 
   // Redux setup
   const dispatch = useDispatch();
@@ -76,7 +79,9 @@ function CourseComponent({ year, course, semester }: courseProps) {
 
   // Sets or resets the course displayed in popout after user clicks it in course list.
   const displayCourses = () => {
-    dispatch(updateSearchTime({ searchYear: year, searchSemester: semester }));
+    dispatch(
+      updateSearchTime({ searchYear: year._id, searchSemester: semester })
+    );
     dispatch(updateSearchTerm(course.number));
     let found = false;
     allCourses.forEach((c) => {
@@ -112,31 +117,8 @@ function CourseComponent({ year, course, semester }: courseProps) {
 
   // Deletes a course on click of the delete button. Updates currently displayed plan with changes.
   const deleteCourse = () => {
-    fetch(api + "/courses/" + course._id, { method: "DELETE" }).then(() => {
-      let newPlan: Plan;
-      // TODO: Delete specific course by year AND semester
-      const years = [...currentPlan.years];
-      currentPlan.years.forEach((planYear, index) => {
-        if (planYear.year === year) {
-          const courses = planYear.courses.filter(
-            (yearCourse) => yearCourse !== course._id
-          );
-          years[index] = { ...years[index], courses: courses };
-        }
-      });
-      newPlan = { ...currentPlan, years: years };
-
-      toast.error(course.title + " deleted!", {
-        position: "top-right",
-        autoClose: 5000,
-        hideProgressBar: true,
-        closeOnClick: true,
-        pauseOnHover: true,
-        draggable: true,
-        progress: 0,
-      });
-      dispatch(updateSelectedPlan(newPlan));
-    });
+    dispatch(updateCourseToDelete({ course: course, year: year }));
+    dispatch(updateDeleteCourseStatus(true));
   };
 
   const activate = () => {
@@ -177,7 +159,7 @@ function CourseComponent({ year, course, semester }: courseProps) {
                 {course.area}
               </div>
             ) : null}{" "}
-            {!satisfied ? (
+            {!satisfied && !overridden ? (
               <WarningSvg className="flex items-center w-5 h-5 text-white font-semibold rounded select-none" />
             ) : null}
           </div>
@@ -215,14 +197,22 @@ function CourseComponent({ year, course, semester }: courseProps) {
                   )}
                   onClick={deleteCourse}
                 />
-                {!satisfied ? (
+                {!satisfied && !overridden ? (
                   <>
                     <WarningSvg
                       data-tip={tooltip}
                       data-for="godTip"
                       className="relative z-20 flex flex-row items-center justify-center p-0.5 w-6 h-6 text-white bg-secondary rounded-md outline-none stroke-2 cursor-pointer transform hover:scale-110 transition duration-150 ease-in"
+                      onClick={() => setDisplayPopup(true)}
                     />
                   </>
+                ) : null}
+                {displayPopup ? (
+                  <OverridePrereqpopup
+                    courseName={course.number}
+                    cleanup={() => setDisplayPopup(false)}
+                    save={() => setOverridden(true)}
+                  />
                 ) : null}
               </div>
             )}

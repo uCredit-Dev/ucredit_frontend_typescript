@@ -1,15 +1,16 @@
 import React from "react";
 import { useSelector, useDispatch } from "react-redux";
-import {
-  selectUser,
-  selectYearToDelete,
-  updateYearToDelete,
-  updateDeleteYearStatus,
-} from "../../slices/userSlice";
+import { selectUser } from "../../slices/userSlice";
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-import GenerateNewPlan from "./right-column-info/GenerateNewPlan";
-import { selectPlan, updateSelectedPlan } from "../../slices/currentPlanSlice";
+import GenerateNewPlan from "../../resources/GenerateNewPlan";
+import {
+  selectPlan,
+  selectYearToDelete,
+  updateDeleteYearStatus,
+  updateSelectedPlan,
+  updateYearToDelete,
+} from "../../slices/currentPlanSlice";
 import { api } from "../../resources/assets";
 
 /**

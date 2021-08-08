@@ -4,15 +4,15 @@ import { Plan } from "../../../resources/commonTypes";
 import { useDispatch, useSelector } from "react-redux";
 import {
   updatePlanList,
-  updateAddingPlanStatus,
   selectUser,
   selectPlanList,
 } from "../../../slices/userSlice";
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-import GenerateNewPlan from "./GenerateNewPlan";
+import GenerateNewPlan from "../../../resources/GenerateNewPlan";
 import {
   selectPlan,
+  updateAddingPlanStatus,
   updateSelectedPlan,
 } from "../../../slices/currentPlanSlice";
 import { api } from "../../../resources/assets";

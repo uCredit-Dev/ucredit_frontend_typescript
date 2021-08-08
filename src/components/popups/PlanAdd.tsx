@@ -1,15 +1,15 @@
 import React from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { toast } from "react-toastify";
+import { selectPlanList } from "../../slices/userSlice";
 import {
   selectToAddName,
   updateToAddName,
   updateAddingPlanStatus,
-  selectPlanList,
   updateToAddMajor,
   selectToAddMajor,
   updateGeneratePlanAddStatus,
-} from "../../slices/userSlice";
+} from "../../slices/currentPlanSlice";
 import { allMajors } from "../../resources/majors";
 import Select from "react-select";
 
