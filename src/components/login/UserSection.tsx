@@ -129,7 +129,7 @@ function UserSection({ _id }: UserProps) {
       const allYears: Year[] = [...currentPlan.years];
       const newYears: Year[] = [];
       allYears.forEach((y) => {
-        if (y.year === year.year) {
+        if (y._id === year._id) {
           const yCourses = [...y.courses, newUserCourse._id];
           newYears.push({ ...y, courses: yCourses });
         } else {

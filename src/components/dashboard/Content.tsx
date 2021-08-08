@@ -6,7 +6,7 @@ import { useSelector } from "react-redux";
 import InfoCards from "./right-column-info/InfoCards";
 import DeletePlanPopup from "../popups/DeletePlanPopup";
 import Distributions from "./right-column-info/Distributions";
-import PlanAdd from "./PlanAdd";
+import PlanAdd from "../popups/PlanAdd";
 import DeleteYearPopup from "../popups/DeleteYearPopup";
 import PlanChoose from "./right-column-info/PlanChoose";
 import InfoMenu from "./InfoMenu";

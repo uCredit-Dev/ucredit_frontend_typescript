@@ -22,7 +22,6 @@ type yearProps = {
 export const newYearTemplate: Year = {
   _id: "New Year",
   name: "New Year",
-  year: -1,
   courses: ["New Year"],
   plan_id: "",
   user_id: "New Year",
@@ -165,7 +164,7 @@ function YearComponent({ id, customStyle, year, courses }: yearProps) {
   return (
     <div
       id={id.toString()}
-      className={`${customStyle} max-w-yearheading w-yearheading min-w-yearMin rounded mb-4 mx-auto`}
+      className={`${customStyle} rounded mb-4 w-yearheading min-w-yearMin max-w-yearheading mx-auto`}
     >
       <div className="p-2 bg-white rounded shadow">
         <div

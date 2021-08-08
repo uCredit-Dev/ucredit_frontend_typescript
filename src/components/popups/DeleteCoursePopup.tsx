@@ -3,7 +3,7 @@ import { useSelector, useDispatch } from "react-redux";
 import { selectUser } from "../../slices/userSlice";
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-import GenerateNewPlan from "../dashboard/right-column-info/GenerateNewPlan";
+import GenerateNewPlan from "../../resources/GenerateNewPlan";
 import {
   selectCourseToDelete,
   selectPlan,
@@ -36,7 +36,7 @@ const DeleteCoursePopup = () => {
         let newPlan: Plan;
         const years = [...currentPlan.years];
         currentPlan.years.forEach((planYear, index) => {
-          if (planYear.year === courseInfo.year) {
+          if (planYear._id === courseInfo.course.year_id) {
             const courses = planYear.courses.filter(
               (yearCourse) => yearCourse !== courseInfo.course._id
             );

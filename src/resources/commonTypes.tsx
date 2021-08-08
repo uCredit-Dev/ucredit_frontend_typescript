@@ -73,7 +73,6 @@ export type UserCourse = {
   plan_id: string;
   user_id: string;
   year_id: string;
-  year: string;
   preReq: string;
   isPlaceholder: boolean;
 };
@@ -81,7 +80,6 @@ export type UserCourse = {
 export type Year = {
   _id: string;
   name: string;
-  year: number;
   courses: string[];
   plan_id: any;
   user_id: string;

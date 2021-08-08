@@ -21,7 +21,7 @@ import {
   selectPlaceholder,
   selectSearchStatus,
 } from "../../../slices/searchSlice";
-import YearComponent, { newYearTemplate } from "./YearComponent";
+import { newYearTemplate } from "./YearComponent";
 import { ReactComponent as AddSvg } from "../../../resources/svg/Add.svg";
 import { toast } from "react-toastify";
 import {
@@ -30,7 +30,8 @@ import {
   updatePlanList,
 } from "../../../slices/userSlice";
 import { api } from "../../../resources/assets";
-import { DragDropContext } from "react-beautiful-dnd";
+import { DragDropContext, Droppable } from "react-beautiful-dnd";
+import YearDraggable from "./YearDraggable";
 
 /**
  * Container component that holds all the years, semesters, and courses of the current plan.
@@ -55,7 +56,7 @@ function CourseList() {
   useEffect(() => {
     const jsx: JSX.Element[] = [];
     const totCourses: UserCourse[] = [];
-    currentPlan.years.forEach((year) => {
+    currentPlan.years.forEach((year: Year, yearIndex: number) => {
       const yearCourses: UserCourse[] = [];
       if (year.courses !== undefined) {
         setCurrentPlanId(currentPlan._id);
@@ -68,12 +69,10 @@ function CourseList() {
             yearCourses.push(courseObj);
           });
           jsx.push(
-            <YearComponent
-              key={year._id}
-              id={year.year}
-              customStyle="cursor-pointer"
+            <YearDraggable
               year={year}
-              courses={yearCourses}
+              yearIndex={yearIndex}
+              yearCourses={yearCourses}
             />
           );
           if (jsx.length === currentPlan.years.length) {
@@ -86,7 +85,7 @@ function CourseList() {
           }
         } else if (currentPlanId !== currentPlan._id) {
           setCurrentPlanId(currentPlan._id);
-          year.courses.forEach((courseId) => {
+          year.courses.forEach((courseId: string, courseIndex: number) => {
             axios
               .get(api + "/courses/" + courseId)
               .then((resp) => {
@@ -97,19 +96,17 @@ function CourseList() {
                 if (yearCourses.length === year.courses.length) {
                   // make all the updates here
                   jsx.push(
-                    <YearComponent
-                      key={year._id}
-                      id={year.year}
-                      customStyle="cursor-pointer"
+                    <YearDraggable
                       year={year}
-                      courses={yearCourses}
+                      yearIndex={yearIndex}
+                      yearCourses={yearCourses}
                     />
                   );
                   if (jsx.length === currentPlan.years.length) {
-                    jsx.sort(
-                      (el1: JSX.Element, el2: JSX.Element) =>
-                        el1.props.id - el2.props.id
-                    );
+                    // jsx.sort(
+                    //   (el1: JSX.Element, el2: JSX.Element) =>
+                    //     el1.props.id - el2.props.id
+                    // );
                     dispatch(updateCurrentPlanCourses(totCourses));
                     setElements(jsx);
                   }
@@ -139,7 +136,6 @@ function CourseList() {
       distribution_ids: [],
       plan_id: "",
       user_id: "",
-      year: "",
       year_id: "",
       preReq: "",
       isPlaceholder: false,
@@ -157,26 +153,16 @@ function CourseList() {
 
   // add a new year, if preUni is true, add to the start of the plan, otherwise add to the end
   const addNewYear = (preUniversity: boolean) => {
-    if (preUniversity) {
-      let preAdded = false;
-      currentPlan.years.forEach((currYear) => {
-        if (currYear.year === 0) {
-          preAdded = true;
-          return;
-        }
-      });
-      if (preAdded) {
-        toast.error("Already added pre-year!");
-        return;
-      }
-    }
-
     if (currentPlan.years.length < 8) {
       const body = {
         name: newYearTemplate.name,
         plan_id: currentPlan._id,
         preUniversity: preUniversity,
         user_id: user._id,
+        expireAt:
+          user._id === "guestUser"
+            ? Date.now() + 60 * 60 * 24 * 1000
+            : undefined,
       }; // add to end by default
       axios
         .post(api + "/years", body)
@@ -201,12 +187,18 @@ function CourseList() {
       return;
     }
 
-    if (source.droppableId !== destination.droppableId) {
+    if (source.droppableId.includes("year")) {
+      //Swap years
+      swapYear(source.index, destination.index);
+    } else if (source.droppableId !== destination.droppableId) {
       // if different, move to new droppable
+
+      console.log(source, destination);
+
       let sourceDroppable: DroppableType | null = null;
       let destDroppable: DroppableType | null = null;
-
       droppables.forEach((droppable: DroppableType) => {
+        // Semester droppables
         if (source.droppableId === droppable.semester + "|" + droppable.year) {
           sourceDroppable = droppable;
         } else if (
@@ -217,18 +209,51 @@ function CourseList() {
         }
       });
 
-      if (sourceDroppable !== null && destDroppable !== null) {
-        swap(sourceDroppable, destDroppable, source.index);
-      }
+      if (sourceDroppable !== null && destDroppable !== null)
+        swapCourse(sourceDroppable, destDroppable, source.index);
     }
   };
 
+  // Swaps year from source droppable to destination droppable.
+  const swapYear = (sourceIndex: number, destIndex: number): void => {
+    // const sourceIndex: number = parseInt(sourceId.split("|")[1]);
+    // const destIndex: number = parseInt(destId.split("|")[1]);
+    const yearArr: Year[] = [...currentPlan.years];
+    console.log("orig is ", yearArr, currentPlan.years);
+    const temp: Year = yearArr[sourceIndex];
+    yearArr.splice(sourceIndex, 1);
+    yearArr.splice(destIndex, 0, temp);
+    dispatch(updateSelectedPlan({ ...currentPlan, years: yearArr }));
+    console.log("after is ", yearArr);
+    const yearIdArr: string[] = yearArr.map((year) => year._id);
+    const body = {
+      plan_id: currentPlan._id,
+      year_ids: yearIdArr,
+    };
+    fetch(api + "/years/changeOrder", {
+      method: "PATCH",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(body),
+    })
+      .then((resp) => {
+        if (!resp.ok) {
+          console.log(resp);
+        } else {
+          console.log(resp);
+          toast.success("swapped years");
+        }
+      })
+      .catch((err) => console.log(err));
+  };
+
   // Swaps course from source droppable to destination droppable.
-  const swap = (
+  const swapCourse = (
     source: DroppableType,
     destination: DroppableType,
     sourceIndex: number
-  ) => {
+  ): void => {
     const sourceObj: { year: Year | null; index: number } = getYear(
       source.year
     );
@@ -301,7 +326,6 @@ function CourseList() {
       if (c._id === courseId) {
         const newCourse: UserCourse = {
           ...c,
-          year: destYear.year.toString(),
           year_id: destYear._id,
           term,
         };
@@ -330,19 +354,33 @@ function CourseList() {
     <>
       <DragDropContext onDragEnd={onDragEnd}>
         <div className="flex flex-row flex-wrap justify-between thin:justify-center mt-4 w-full h-auto">
-          {currentPlan._id !== "noPlan" ? (
+          {/* {currentPlan._id !== "noPlan" ? (
             <AddSvg
               onClick={() => addNewYear(true)}
               className="-mt-1 mb-4 mr-3 w-14 h-auto max-h-48 border-2 border-gray-300 rounded focus:outline-none cursor-pointer select-none transform hover:scale-105 transition duration-200 ease-in"
               data-tip={`Add a pre-university year!`}
               data-for="godTip"
             />
-          ) : null}
-          {elements}
+          ) : null} */}
+          <div className="mx-auto">
+            <Droppable droppableId={"years"} type="YEAR" direction="horizontal">
+              {(provided, snapshot) => (
+                <div
+                  ref={provided.innerRef}
+                  className="rounded"
+                  style={getListStyle(snapshot.isDraggingOver)}
+                >
+                  {elements}
+                  {provided.placeholder}
+                </div>
+              )}
+            </Droppable>
+          </div>
+
           {currentPlan._id !== "noPlan" ? (
             <AddSvg
               onClick={() => addNewYear(false)}
-              className="-mt-1 mb-4 ml-3 ml-auto mr-5 w-14 h-auto max-h-48 border-2 border-gray-300 rounded focus:outline-none cursor-pointer select-none transform hover:scale-105 transition duration-200 ease-in"
+              className="min-h-addSVG -mt-1 mb-4 ml-5 mr-5 w-14 h-auto max-h-48 border-2 border-gray-300 rounded focus:outline-none cursor-pointer select-none transform hover:scale-105 transition duration-200 ease-in"
               data-tip={`Add an additional year after!`}
               data-for="godTip"
             />
@@ -352,5 +390,14 @@ function CourseList() {
     </>
   );
 }
+
+const getListStyle = (isDraggingOver: any) => ({
+  //background: isDraggingOver ? "lightblue" : "lightgrey",
+  display: "flex",
+  //padding: "grid",
+  //overflow: "auto",
+  margin: "0rem",
+  padding: "0rem",
+});
 
 export default CourseList;

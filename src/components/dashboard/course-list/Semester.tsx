@@ -77,7 +77,7 @@ function Semester({
     dispatch(
       updateSearchTime({
         searchSemester: semesterName,
-        searchYear: semesterYear.year,
+        searchYear: semesterYear._id,
       })
     );
   };
@@ -110,7 +110,7 @@ function Semester({
               )}
             >
               <CourseComponent
-                year={semesterYear.year}
+                year={semesterYear}
                 course={course}
                 semester={semesterName}
               />
@@ -163,7 +163,10 @@ function Semester({
           <div className="w-full h-px bg-gradient-to-r from-blue-500 to-green-400"></div>
         </div>
         <div id={semesterName + "|" + semesterYear._id}>
-          <Droppable droppableId={semesterName + "|" + semesterYear._id}>
+          <Droppable
+            droppableId={semesterName + "|" + semesterYear._id}
+            type="COURSE"
+          >
             {(provided, snapshot) => (
               <div
                 ref={provided.innerRef}
@@ -180,6 +183,7 @@ function Semester({
     </>
   );
 }
+
 const getListStyle = (isDraggingOver: any) => ({
   background: isDraggingOver ? "skyblue" : "lightblue",
 });

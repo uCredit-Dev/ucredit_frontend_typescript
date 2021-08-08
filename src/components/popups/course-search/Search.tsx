@@ -11,6 +11,7 @@ import SearchList from "./query-components/SearchList";
 import { ReactComponent as HideSvg } from "../../../resources/svg/Hide.svg";
 import { selectPlan } from "../../../slices/currentPlanSlice";
 import ReactTooltip from "react-tooltip";
+import { Year } from "../../../resources/commonTypes";
 
 /**
  * Search component for when someone clicks a search action.
@@ -29,8 +30,8 @@ const Search = () => {
   // Gets specific year's name.
   const getYearName = (): string => {
     let name = "";
-    currentPlan.years.forEach((year) => {
-      if (year.year === searchYear) {
+    currentPlan.years.forEach((year: Year, index: number) => {
+      if (year._id === searchYear) {
         name = year.name;
       }
     });

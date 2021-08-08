@@ -9,7 +9,7 @@ import {
 } from "../../../slices/userSlice";
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-import GenerateNewPlan from "./GenerateNewPlan";
+import GenerateNewPlan from "../../../resources/GenerateNewPlan";
 import {
   selectPlan,
   updateAddingPlanStatus,

@@ -23,7 +23,7 @@ type CurrentPlanSlice = {
   deleteYear: boolean;
   yearToDelete: Year | null;
   deleteCourse: boolean;
-  courseToDelete: { course: UserCourse; year: number } | null;
+  courseToDelete: { course: UserCourse; year: Year } | null;
 };
 
 const initialState: CurrentPlanSlice = {
@@ -127,7 +127,7 @@ export const currentPlanSlice = createSlice({
     },
     updateCourseToDelete: (
       state: any,
-      action: PayloadAction<{ course: UserCourse; year: number } | null>
+      action: PayloadAction<{ course: UserCourse; year: Year } | null>
     ) => {
       state.courseToDelete = action.payload;
     },

@@ -97,7 +97,7 @@ const SisCourse = (props: SisCourseProps) => {
   const handleYearChange = (event: any): void => {
     dispatch(
       updateSearchTime({
-        searchYear: parseInt(event.target.value),
+        searchYear: event.target.value,
         searchSemester: searchSemester,
       })
     );
@@ -180,7 +180,7 @@ const SisCourse = (props: SisCourseProps) => {
                     value={searchYear}
                   >
                     {currentPlan.years.map((currPlanYear) => (
-                      <option key={currPlanYear.year} value={currPlanYear.year}>
+                      <option key={currPlanYear._id} value={currPlanYear._id}>
                         {currPlanYear.name}
                       </option>
                     ))}

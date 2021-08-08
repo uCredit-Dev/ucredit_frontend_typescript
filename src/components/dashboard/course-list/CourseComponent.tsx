@@ -2,11 +2,11 @@ import React, { useState, useEffect } from "react";
 import ReactTooltip from "react-tooltip";
 import {
   UserCourse,
-  Plan,
   SemesterType,
   Course,
+  Year,
 } from "../../../resources/commonTypes";
-import { api, checkAllPrereqs, getColors } from "../../../resources/assets";
+import { checkAllPrereqs, getColors } from "../../../resources/assets";
 import { useDispatch, useSelector } from "react-redux";
 import {
   updateInspectedCourse,
@@ -21,21 +21,19 @@ import { ReactComponent as DetailsSvg } from "../../../resources/svg/Details.svg
 import { ReactComponent as WarningSvg } from "../../../resources/svg/Warning.svg";
 import { Transition } from "@tailwindui/react";
 import clsx from "clsx";
-import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import {
   selectCurrentPlanCourses,
   selectPlan,
   updateCourseToDelete,
   updateDeleteCourseStatus,
-  updateSelectedPlan,
 } from "../../../slices/currentPlanSlice";
 import { selectAllCourses } from "../../../slices/userSlice";
 import OverridePrereqpopup from "./OverridePrereqPopup";
 
 type courseProps = {
   course: UserCourse;
-  year: number;
+  year: Year;
   semester: SemesterType;
 };
 
@@ -81,7 +79,9 @@ function CourseComponent({ year, course, semester }: courseProps) {
 
   // Sets or resets the course displayed in popout after user clicks it in course list.
   const displayCourses = () => {
-    dispatch(updateSearchTime({ searchYear: year, searchSemester: semester }));
+    dispatch(
+      updateSearchTime({ searchYear: year._id, searchSemester: semester })
+    );
     dispatch(updateSearchTerm(course.number));
     let found = false;
     allCourses.forEach((c) => {

@@ -1,13 +1,13 @@
 import React, { useEffect } from "react";
 import axios from "axios";
 import { useDispatch, useSelector } from "react-redux";
-import { DistributionObj, Plan } from "../../../resources/commonTypes";
+import { DistributionObj, Plan } from "./commonTypes";
 import {
   updatePlanList,
   selectUser,
   selectPlanList,
   updateGuestPlanIds,
-} from "../../../slices/userSlice";
+} from "../slices/userSlice";
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import {
@@ -17,8 +17,9 @@ import {
   selectToAddName,
   updateGeneratePlanAddStatus,
   updateSelectedPlan,
-} from "../../../slices/currentPlanSlice";
-import { api } from "../../../resources/assets";
+} from "../slices/currentPlanSlice";
+import { api } from "./assets";
+import { updateSearchTime } from "../slices/searchSlice";
 
 type generateNewPlanProps = {
   _id?: String;
@@ -60,6 +61,13 @@ const GenerateNewPlan = (props: generateNewPlanProps) => {
         const newPlanResponse = response.data.data;
         axios.get(api + "/years/" + newPlanResponse._id).then((resp) => {
           newPlan = { ...newPlanResponse, years: resp.data.data };
+          console.log("new years are ", resp.data.data);
+          dispatch(
+            updateSearchTime({
+              searchSemester: "Fall",
+              searchYear: newPlan.years[0]._id,
+            })
+          );
           // Make a new distribution for each distribution of the major of the plan.
           toAddMajor.distributions.forEach(
             (distr: DistributionObj, index: number) => {
