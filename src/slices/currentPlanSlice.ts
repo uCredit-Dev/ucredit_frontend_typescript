@@ -23,7 +23,8 @@ type CurrentPlanSlice = {
   deleteYear: boolean;
   yearToDelete: Year | null;
   deleteCourse: boolean;
-  courseToDelete: { course: UserCourse; year: Year } | null;
+  courseToDelete: { course: UserCourse; year: number } | null;
+  importing: boolean;
 };
 
 const initialState: CurrentPlanSlice = {
@@ -49,6 +50,7 @@ const initialState: CurrentPlanSlice = {
   toAddMajor: null,
   deleteCourse: false,
   courseToDelete: null,
+  importing: false,
 };
 
 export const currentPlanSlice = createSlice({
@@ -131,6 +133,9 @@ export const currentPlanSlice = createSlice({
     ) => {
       state.courseToDelete = action.payload;
     },
+    updateImportingStatus: (state: any, action: PayloadAction<boolean>) => {
+      state.importing = action.payload;
+    },
   },
 });
 
@@ -151,6 +156,7 @@ export const {
   updateDeletePlanStatus,
   updateCourseToDelete,
   updateDeleteCourseStatus,
+  updateImportingStatus,
 } = currentPlanSlice.actions;
 
 // The function below is called a selector and allows us to select a value from
@@ -182,5 +188,7 @@ export const selectCourseToDelete = (state: RootState) =>
   state.currentPlan.courseToDelete;
 export const selectDeleteCourseStatus = (state: RootState) =>
   state.currentPlan.deleteCourse;
+export const selectImportingStatus = (state: RootState) =>
+  state.currentPlan.importing;
 
 export default currentPlanSlice.reducer;
