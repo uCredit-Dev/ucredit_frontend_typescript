@@ -90,18 +90,21 @@ const InfoCards = () => {
   };
 
   const onShareClick = () => {
+    console.log("click!");
     setShareableURL(
       (window.location.href.includes("localhost")
-        ? "https://localhost:3000"
+        ? "localhost:3000"
         : "https://ucredit.herokuapp.com") +
         "/share?_id=" +
         currentPlan._id
     );
-    navigator.clipboard.writeText(shareableURL);
-    toast.info("Copied to Clipboard!", {
-      autoClose: 5000,
-      closeOnClick: false,
-    });
+    navigator.clipboard.writeText(shareableURL)
+    .then(() => {
+      toast.info("Copied to Clipboard!", {
+        autoClose: 5000,
+        closeOnClick: false,
+      });
+    })
   };
 
   return (
