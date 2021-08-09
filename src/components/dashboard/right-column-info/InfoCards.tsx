@@ -10,11 +10,11 @@ import { ReactComponent as RemoveSvg } from "../../../resources/svg/Remove.svg";
 import "react-toastify/dist/ReactToastify.css";
 import {
   selectPlan,
-  updateDeletePlanStatus,
   updateSelectedPlan,
 } from "../../../slices/currentPlanSlice";
 import { api } from "../../../resources/assets";
 import { toast } from "react-toastify";
+import { updateDeletePlanStatus } from "../../../slices/popupSlice";
 
 /**
  * User/Current plan information area.
@@ -90,10 +90,16 @@ const InfoCards = () => {
   };
 
   const onShareClick = () => {
-    setShareableURL("http://localhost:3000/share?_id=" + currentPlan._id);
+    setShareableURL(
+      (window.location.href.includes("localhost")
+        ? "https://localhost:3000"
+        : "https://ucredit.herokuapp.com") +
+        "/share?_id=" +
+        currentPlan._id
+    );
     navigator.clipboard.writeText(shareableURL);
     toast.info("Copied to Clipboard!", {
-      autoClose:5000,
+      autoClose: 5000,
       closeOnClick: false,
     });
   };

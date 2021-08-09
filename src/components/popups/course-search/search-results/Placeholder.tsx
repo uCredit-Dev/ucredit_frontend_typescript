@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { Course } from "../../../../resources/commonTypes";
+import { Course, Plan, Year } from "../../../../resources/commonTypes";
 import { useSelector, useDispatch } from "react-redux";
 import { ReactComponent as CloseSvg } from "../../../../resources/svg/Close.svg";
 import {
@@ -8,9 +8,17 @@ import {
   selectVersion,
   updateInspectedCourse,
   updatePlaceholder,
+  selectSearchStatus,
 } from "../../../../slices/searchSlice";
 import Select from "react-select";
-import { all_deps, course_tags } from "../../../../resources/assets";
+import { all_deps, api, course_tags } from "../../../../resources/assets";
+import { selectCourseToShow } from "../../../../slices/popupSlice";
+import {
+  selectCurrentPlanCourses,
+  selectPlan,
+  updateCurrentPlanCourses,
+  updateSelectedPlan,
+} from "../../../../slices/currentPlanSlice";
 
 const departmentFilters = ["none", ...all_deps];
 const tagFilters = ["none", ...course_tags];
@@ -21,8 +29,12 @@ const tagFilters = ["none", ...course_tags];
  */
 const Placeholder = (props: { addCourse: any }) => {
   // Redux Setup
-  const inspected = useSelector(selectVersion);
+  const inspectedVersion = useSelector(selectVersion);
+  const courseToShow = useSelector(selectCourseToShow);
   const placeholder = useSelector(selectPlaceholder);
+  const searchStatus = useSelector(selectSearchStatus);
+  const currentCourses = useSelector(selectCurrentPlanCourses);
+  const currentPlan = useSelector(selectPlan);
   const dispatch = useDispatch();
 
   // Component state setup.
@@ -37,22 +49,22 @@ const Placeholder = (props: { addCourse: any }) => {
 
   // Updates placeholder information everytime inspected course changes.
   useEffect(() => {
-    if (placeholder && inspected !== "None") {
-      setPlaceholderArea(inspected.areas);
-      setPlaceholderTitle(inspected.title);
-      setPlaceholderCredits(inspected.credits);
-      setPlaceholderNumber(inspected.number);
-      setPlaceholderDepartment(inspected.department);
+    if (placeholder && inspectedVersion !== "None") {
+      setPlaceholderArea(inspectedVersion.areas);
+      setPlaceholderTitle(inspectedVersion.title);
+      setPlaceholderCredits(inspectedVersion.credits);
+      setPlaceholderNumber(inspectedVersion.number);
+      setPlaceholderDepartment(inspectedVersion.department);
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [inspected]);
+  }, [inspectedVersion]);
 
   // On placeholder title change
   const onPTChange = (event: any) => {
     const title = event.target.value;
     setPlaceholderTitle(title);
-    if (inspected !== "None") {
-      const inspCopy: Course = { ...inspected, title: title };
+    if (inspectedVersion !== "None") {
+      const inspCopy: Course = { ...inspectedVersion, title: title };
       dispatch(updateInspectedVersion(inspCopy));
     }
   };
@@ -61,8 +73,8 @@ const Placeholder = (props: { addCourse: any }) => {
   const onPAChange = (event: any) => {
     const area = event.value;
     setPlaceholderArea(area);
-    if (inspected !== "None") {
-      const inspectedCourseCopy: Course = { ...inspected, areas: area };
+    if (inspectedVersion !== "None") {
+      const inspectedCourseCopy: Course = { ...inspectedVersion, areas: area };
       dispatch(updateInspectedVersion(inspectedCourseCopy));
     }
   };
@@ -71,8 +83,8 @@ const Placeholder = (props: { addCourse: any }) => {
   const onPCChange = (event: any) => {
     const cred = event.value;
     setPlaceholderCredits(cred);
-    if (inspected !== "None") {
-      const inspCopy: Course = { ...inspected, credits: cred };
+    if (inspectedVersion !== "None") {
+      const inspCopy: Course = { ...inspectedVersion, credits: cred };
       dispatch(updateInspectedVersion(inspCopy));
     }
   };
@@ -81,8 +93,8 @@ const Placeholder = (props: { addCourse: any }) => {
   const onPNChange = (event: any) => {
     const num = event.target.value;
     setPlaceholderNumber(num);
-    if (inspected !== "None") {
-      const inspCopy: Course = { ...inspected, number: num };
+    if (inspectedVersion !== "None") {
+      const inspCopy: Course = { ...inspectedVersion, number: num };
       dispatch(updateInspectedVersion(inspCopy));
     }
   };
@@ -91,8 +103,8 @@ const Placeholder = (props: { addCourse: any }) => {
   const onPDChange = (event: any) => {
     const dep = event.value;
     setPlaceholderDepartment(dep);
-    if (inspected !== "None") {
-      const inspCopy: Course = { ...inspected, department: dep };
+    if (inspectedVersion !== "None") {
+      const inspCopy: Course = { ...inspectedVersion, department: dep };
       dispatch(updateInspectedVersion(inspCopy));
     }
   };
@@ -101,8 +113,8 @@ const Placeholder = (props: { addCourse: any }) => {
   const onPTagChange = (event: any) => {
     const tag = event.value;
     setPlaceholderTag(tag);
-    if (inspected !== "None") {
-      const inspCopy: Course = { ...inspected };
+    if (inspectedVersion !== "None") {
+      const inspCopy: Course = { ...inspectedVersion };
       inspCopy.tags.push(tag);
       dispatch(updateInspectedVersion(inspCopy));
     }
@@ -112,6 +124,50 @@ const Placeholder = (props: { addCourse: any }) => {
   const clearInspected = (): void => {
     dispatch(updatePlaceholder(false));
     dispatch(updateInspectedCourse("None"));
+  };
+
+  const updateCourse = (): void => {
+    console.log(courseToShow);
+    if (courseToShow !== null) {
+      fetch(api + "/courses/" + courseToShow._id, {
+        method: "DELETE",
+        headers: {
+          "Content-Type": "application/json",
+        },
+      }).then((retrieved) => {
+        retrieved.json().then((data) => {
+          console.log(data);
+          if (data.errors === undefined) {
+            const updated = currentCourses.filter((course) => {
+              if (course._id === courseToShow._id) {
+                return false;
+              } else {
+                return true;
+              }
+            });
+            console.log("updating", updated);
+            dispatch(updateCurrentPlanCourses(updated));
+            const allYears: Year[] = [...currentPlan.years];
+            const newYears: Year[] = [];
+            allYears.forEach((y) => {
+              const yCourses = y.courses.filter((course) => {
+                if (course === courseToShow._id) {
+                  return false;
+                } else {
+                  return true;
+                }
+              });
+              newYears.push({ ...y, courses: yCourses });
+            });
+            const newPlan: Plan = { ...currentPlan, years: newYears };
+            dispatch(updateSelectedPlan(newPlan));
+            props.addCourse(newPlan);
+          } else {
+            console.log("Failed to add", data.errors);
+          }
+        });
+      });
+    }
   };
 
   return (
@@ -220,12 +276,21 @@ const Placeholder = (props: { addCourse: any }) => {
           />
         </div>
       </div>
-      <button
-        className="mr-0 p-2 w-28 text-white bg-blue-500 rounded focus:outline-none transform hover:scale-110 transition duration-200 ease-in"
-        onClick={props.addCourse}
-      >
-        Add Course
-      </button>
+      {searchStatus ? (
+        <button
+          className="mr-0 p-2 w-28 text-white bg-blue-500 rounded focus:outline-none transform hover:scale-110 transition duration-200 ease-in"
+          onClick={props.addCourse}
+        >
+          Add Course
+        </button>
+      ) : (
+        <button
+          className="mr-0 p-2 w-28 text-white bg-blue-500 rounded focus:outline-none transform hover:scale-110 transition duration-200 ease-in"
+          onClick={updateCourse}
+        >
+          Update Course
+        </button>
+      )}
     </div>
   );
 };

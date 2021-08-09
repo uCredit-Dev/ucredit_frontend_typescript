@@ -14,13 +14,9 @@ import {
   resetCurrentPlan,
   selectCurrentPlanCourses,
   selectPlan,
-  updateAddingPlanStatus,
   updateCurrentPlanCourses,
-  updateGeneratePlanAddStatus,
   updateImportingStatus,
   updateSelectedPlan,
-  updateToAddMajor,
-  updateToAddName,
 } from "../../slices/currentPlanSlice";
 import { api, guestUser } from "../../resources/assets";
 import bird from "../../resources/images/logoDarker.png";
@@ -28,6 +24,12 @@ import axios from "axios";
 import { Plan, User, UserCourse, Year } from "../../resources/commonTypes";
 import { getMajorFromCommonName } from "../../resources/majors";
 import { toast } from "react-toastify";
+import {
+  updateAddingPlanStatus,
+  updateToAddName,
+  updateToAddMajor,
+  updateGeneratePlanAddStatus,
+} from "../../slices/popupSlice";
 
 type UserProps = {
   _id: string | null;
@@ -67,7 +69,7 @@ function UserSection({ _id }: UserProps) {
   }, [shouldAdd, toAdd, user, curPlan, allCourses, currentCourses]);
 
   const addCourses = async (years: Year[], curPlan: Plan) => {
-      for (const year of toAdd) {
+    for (const year of toAdd) {
       for (const course of year.courses) {
         curPlan = await addCourse(course, year, curPlan);
       }
@@ -163,8 +165,9 @@ function UserSection({ _id }: UserProps) {
 
   const login = (cookieVal: string) =>
     new Promise<void>((resolve) => {
+      console.log("logging in", user);
       if (user._id === "noUser") {
-        var curUser : User;
+        var curUser: User;
         // Retrieves user if user ID is "noUser", the initial user id state for userSlice.tsx.
         // Make call for backend
         fetch(api + "/retrieveUser/" + cookieVal, {
@@ -176,34 +179,32 @@ function UserSection({ _id }: UserProps) {
             "Content-Type": "application/json",
           },
         })
-        .then((resp) => resp.json())
-        .then((retrievedUser) => {
-          if (retrievedUser.errors === undefined) {
-            dispatch(updateUser(retrievedUser.data));
-            curUser = retrievedUser.data;
-          }
-        })
-        .then(() => getPlans(curUser))
-        .then(() => {
-          console.log(planList);
-          resolve()
-        })
-        // .then(() => axios.get(api + '/plansByUser/' + curUser._id))
-        // .then((plans) => {
-        //   dispatch(updatePlanList(plans.data.data));
-        //   resolve();
-        // })
-        .catch((err) => {
-          console.log("ERROR IS: ", err);
-        });
+          .then((resp) => resp.json())
+          .then((retrievedUser) => {
+            console.log(retrievedUser);
+            if (retrievedUser.errors === undefined) {
+              dispatch(updateUser(retrievedUser.data));
+              curUser = retrievedUser.data;
+              getPlans(curUser);
+              resolve();
+            }
+          })
+          // .then(() => axios.get(api + '/plansByUser/' + curUser._id))
+          // .then((plans) => {
+          //   dispatch(updatePlanList(plans.data.data));
+          //   resolve();
+          // })
+          .catch((err) => {
+            console.log("ERROR IS: ", err);
+          });
       } else {
         resolve();
       }
-    })
+    });
 
-  const getPlans = (curUser : User) =>
+  const getPlans = (curUser: User) =>
     new Promise<void>((resolve) =>
-     axios
+      axios
         .get(api + "/plansByUser/" + curUser._id)
         .then((retrieved) => {
           const retrievedPlans: Plan[] = retrieved.data.data;
@@ -234,37 +235,40 @@ function UserSection({ _id }: UserProps) {
           } else {
             console.log(err);
           }
-        }))
+        })
+    );
 
   // Useffect runs once on page load, calling to https://ucredit-api.herokuapp.com/api/retrieveUser to retrieve user data.
   // On successful retrieve, update redux with retrieved user,
   useEffect(() => {
-    if (_id != null) {
+    if (_id !== null) {
       toast.info("Importing Plan...", {
-        autoClose:false,
+        autoClose: false,
         closeOnClick: false,
       });
       dispatch(updateImportingStatus(true));
       // means that the user entered a sharable link
       // first login with guest, then populate the plan with the information from the id
-      history.push("/dashboard");
-      var plan: Plan;
+      history.push("/dashboard/asdfasdf");
+      let plan: Plan;
       // Get the plan that we are importing, stored in plan
       axios
         .get(api + "/plans/" + _id)
         .then((planResponse) => {
           plan = planResponse.data.data;
+          console.log("plan is ", plan);
           // get the years of that plan, stored in years
           axios
             .get(api + "/years/" + _id)
             .then((yearsResponse) => {
-              var years: Year[] = yearsResponse.data.data;
+              let years: Year[] = yearsResponse.data.data;
               // check whether the user is logged in (whether a cookie exists)
               const cookieVal = document.cookie.split("=")[1];
               if (cookieVal === undefined) {
                 // if not, create a user first, then add
                 createUser().then(() => {
                   createPlan(plan).then(async () => {
+                    console.log("created plan");
                     setToAdd(years);
                     setShouldAdd(true);
                   });
@@ -273,9 +277,10 @@ function UserSection({ _id }: UserProps) {
                 // if so, login first, then add
                 login(cookieVal).then(() => {
                   createPlan(plan).then(async () => {
-                  setToAdd(years);
-                  setShouldAdd(true);
-                })
+                    console.log("created plan");
+                    setToAdd(years);
+                    setShouldAdd(true);
+                  });
                 });
               }
             })

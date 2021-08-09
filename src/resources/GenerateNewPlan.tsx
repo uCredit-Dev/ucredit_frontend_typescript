@@ -11,16 +11,18 @@ import {
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import {
-  clearToAdd,
-  selectGeneratePlanAddStatus,
   selectImportingStatus,
-  selectToAddMajor,
-  selectToAddName,
-  updateGeneratePlanAddStatus,
   updateSelectedPlan,
 } from "../slices/currentPlanSlice";
 import { api } from "./assets";
 import { updateSearchTime } from "../slices/searchSlice";
+import {
+  selectToAddName,
+  selectToAddMajor,
+  selectGeneratePlanAddStatus,
+  clearToAdd,
+  updateGeneratePlanAddStatus,
+} from "../slices/popupSlice";
 
 type generateNewPlanProps = {
   _id?: String;
