@@ -4,6 +4,7 @@ import {
   DroppableType,
   Plan,
   SemesterType,
+  SISRetrievedCourse,
   UserCourse,
   Year,
 } from "../../../resources/commonTypes";
@@ -25,6 +26,7 @@ import { newYearTemplate } from "./YearComponent";
 import { ReactComponent as AddSvg } from "../../../resources/svg/Add.svg";
 import { toast } from "react-toastify";
 import {
+  selectAllCourses,
   selectPlanList,
   selectUser,
   updatePlanList,
@@ -48,6 +50,7 @@ function CourseList() {
   const droppables = useSelector(selectDroppables);
   const currentPlanCourses = useSelector(selectCurrentPlanCourses);
   const planList = useSelector(selectPlanList);
+  const allCourses = useSelector(selectAllCourses);
 
   // Component State setup.
   const [elements, setElements] = useState<JSX.Element[]>([]);
@@ -64,7 +67,7 @@ function CourseList() {
         if (year.courses.length === 0 || currentPlanId === currentPlan._id) {
           // We simply update courses
           year.courses.forEach((course: string) => {
-            const courseObj: UserCourse = getCourse(course);
+            const courseObj: UserCourse = getUserCourse(course);
             if (courseObj._id === "invalid_course") return;
             totCourses.push(courseObj);
             yearCourses.push(courseObj);
@@ -121,7 +124,7 @@ function CourseList() {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [currentPlan, currentPlan._id, searching, placeholder]);
 
-  const getCourse = (id: string): UserCourse => {
+  const getUserCourse = (id: string): UserCourse => {
     let course: UserCourse = {
       _id: "invalid_course",
       title: "invalid course",
@@ -178,6 +181,7 @@ function CourseList() {
     }
   };
 
+  // Handles all drag n drop logic within the drag n drop context.
   const onDragEnd = (result: any) => {
     const { source, destination } = result;
 
@@ -259,6 +263,12 @@ function CourseList() {
           course2._id.localeCompare(course1._id)
       )[sourceIndex]._id;
       const courseYearIndex: number = sourceYear.courses.indexOf(courseId);
+
+      if (!checkDestValid(courseId, destination)) {
+        toast.error("Course isn't usually held this semester!");
+        return;
+      }
+
       const sourceCourseArr = [...sourceYear.courses];
       const destCourseArr = [...destYear.courses];
       sourceCourseArr.splice(courseYearIndex, 1);
@@ -304,6 +314,30 @@ function CourseList() {
       dispatch(updatePlanList(planListClone));
       updatePlanCourses(destYear, destination.semester, courseId);
     }
+  };
+
+  const checkDestValid = (courseId: string, dest: DroppableType): boolean => {
+    const userCourse: UserCourse = getUserCourse(courseId);
+    const sisVer: SISRetrievedCourse | null = getSISCourse(userCourse);
+    let valid = false;
+    if (sisVer !== null) {
+      sisVer.terms.forEach((term: string) => {
+        if (term.split(" ")[0] === dest.semester) {
+          valid = true;
+        }
+      });
+    }
+    return valid;
+  };
+
+  const getSISCourse = (userCourse: UserCourse): SISRetrievedCourse | null => {
+    let out: SISRetrievedCourse | null = null;
+    allCourses.forEach((course) => {
+      if (course.number === userCourse.number) {
+        out = course;
+      }
+    });
+    return out;
   };
 
   const updatePlanCourses = (

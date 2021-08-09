@@ -15,6 +15,7 @@ import { ReactComponent as AddSvg } from "../../../resources/svg/Add.svg";
 import { Droppable, Draggable } from "react-beautiful-dnd";
 import { updateDroppables } from "../../../slices/currentPlanSlice";
 import ReactTooltip from "react-tooltip";
+import clsx from "clsx";
 
 type semesterProps = {
   customStyle: string;
@@ -112,6 +113,14 @@ function Semester({
     ReactTooltip.rebuild();
   }, [courses.length, totalCredits]);
 
+  const getCreditString = (): string => {
+    let string = `<div>${totalCredits} Credits</div>`;
+    if (totalCredits < 12) string += "\nMore than 12 credits required!";
+    else if (totalCredits > 18)
+      string += "\nCritical credit count reached! Check with your advisor!";
+    return string;
+  };
+
   return (
     <>
       <div className={`${customStyle} mb-3 w-full h-auto pr-1`}>
@@ -131,8 +140,16 @@ function Semester({
               {courses.length !== 0 && totalCredits !== 0 ? (
                 <>
                   <div
-                    className="flex flex-row items-center justify-center ml-1 px-1 w-auto text-black text-xs bg-gray-200 bg-white rounded transform hover:scale-125 transition duration-200 ease-in"
-                    data-tip={`${totalCredits} Credits`}
+                    className={clsx(
+                      { "bg-red-200": totalCredits < 12 },
+                      { "bg-yellow-200": totalCredits > 18 },
+                      {
+                        "bg-green-200":
+                          totalCredits <= 18 && totalCredits >= 12,
+                      },
+                      "flex flex-row items-center justify-center ml-1 px-1 w-auto text-black text-xs bg-white rounded transform hover:scale-125 transition duration-200 ease-in"
+                    )}
+                    data-tip={getCreditString()}
                     data-for="godTip"
                   >
                     {totalCredits}
