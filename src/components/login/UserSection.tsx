@@ -53,8 +53,6 @@ function UserSection({ _id }: UserProps) {
   const [shouldAdd, setShouldAdd] = useState<boolean>(false);
   let history = useHistory();
 
-  var curCourses: UserCourse[] = [];
-
   useEffect(() => {
     if (
       shouldAdd &&
@@ -62,26 +60,51 @@ function UserSection({ _id }: UserProps) {
       curPlan._id !== "noPlan" &&
       allCourses.length > 0
     ) {
-      console.log(toAdd);
-      addCourses(toAdd, curPlan);
+      addCourses();
       setShouldAdd(false);
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [shouldAdd, toAdd, user, curPlan, allCourses, currentCourses]);
 
-  const addCourses = async (years: Year[], curPlan: Plan) => {
-    let index = 0;
-    let added = 0;
+  const addCourses = async () => {
+    let added: UserCourse[] = [];
     let total = 0;
     for (const year of toAdd) {
       for (const course of year.courses) {
         total++;
         // eslint-disable-next-line no-loop-func
-        addCourse(course, year, curPlan, index).then((curPlan) => {
-          added++;
-          if (added === total) {
-            dispatch(updateCurrentPlanCourses(curCourses));
-            dispatch(updateSelectedPlan(curPlan));
+        addCourse(course, toAdd.indexOf(year)).then((curCourse) => {
+          added.push(curCourse);
+          if (added.length === total) {
+            let allYears: Year[] = [...curPlan.years];
+            let newYears: Year[] = [];
+            for (let y of allYears) {
+              newYears.push({...y});
+            }
+            for (let cur of added) {
+              const nextYears: Year[] = [];
+              for (let y of newYears) {
+                if (cur.year_id === y._id) {
+                  nextYears.push({...y, courses: [...y.courses, cur._id]});
+                  //const yCourses = [...y.courses, cur._id];
+                  //newYears.push({ ...y, courses: yCourses });
+                } else {
+                  nextYears.push(y);
+                }
+              }
+              newYears = nextYears;
+            }
+            //const newYears: Year[] = allYears;
+            let newPlan : Plan = { ...curPlan, years: newYears };
+            const newPlanList = [...planList];
+            for (let i = 0; i < planList.length; i++) {
+              if (planList[i]._id === newPlan._id) {
+                newPlanList[i] = newPlan;
+              }
+            }
+            dispatch(updatePlanList(newPlanList));
+            dispatch(updateCurrentPlanCourses(added));
+            dispatch(updateSelectedPlan(newPlan));
             dispatch(updateImportingStatus(false));
             toast.success("Plan Imported!", {
               autoClose: 5000,
@@ -90,32 +113,27 @@ function UserSection({ _id }: UserProps) {
             dispatch(updateAddingPlanStatus(false));
           }
         })
-        console.log(curPlan);
       }
-      index++;
     }
   };
 
   const addCourse = async (
     id: string,
-    year: Year,
-    currentPlan: Plan,
-    index: number,
-  ): Promise<Plan> => {
+    yearIndex: number,
+  ): Promise<UserCourse> => {
     return new Promise((resolve) => {
-      let newPlan: Plan;
       axios.get(api + "/courses/" + id).then((response) => {
         let course: UserCourse = response.data.data;
-        const addingYear: Year = year;
+        const addingYear: Year = curPlan.years[yearIndex];
         const body = {
           user_id: user._id,
           year_id: addingYear !== null ? addingYear._id : "",
-          plan_id: currentPlan._id,
+          plan_id: curPlan._id,
           title: course.title,
           term: course.term,
           year: addingYear !== null ? addingYear.name : "",
           credits: course.credits,
-          distribution_ids: currentPlan.distribution_ids,
+          distribution_ids: curPlan.distribution_ids,
           isPlaceholder: false,
           number: course.number,
           area: course.area,
@@ -133,28 +151,7 @@ function UserSection({ _id }: UserProps) {
           retrieved.json().then((data) => {
             if (data.errors === undefined) {
               var newUserCourse: UserCourse = { ...data.data };
-              console.log(newUserCourse);
-              // updatePlanCourses(newUserCourse);
-              curCourses = [...curCourses, newUserCourse];
-              const allYears: Year[] = [...currentPlan.years];
-              const newYears: Year[] = [];
-              allYears.forEach((y) => {
-                if (index === allYears.indexOf(y)) {
-                  const yCourses = [...y.courses, newUserCourse._id];
-                  newYears.push({ ...y, courses: yCourses });
-                } else {
-                  newYears.push(y);
-                }
-              });
-              newPlan = { ...currentPlan, years: newYears };
-              const newPlanList = [...planList];
-              for (let i = 0; i < planList.length; i++) {
-                if (planList[i]._id === newPlan._id) {
-                  newPlanList[i] = newPlan;
-                }
-              }
-              dispatch(updatePlanList(newPlanList));
-              return resolve(newPlan);
+              return resolve(newUserCourse);
             } else {
               console.log("Failed to add", data.errors);
             }
@@ -182,19 +179,14 @@ function UserSection({ _id }: UserProps) {
         })
           .then((resp) => resp.json())
           .then((retrievedUser) => {
-            console.log(retrievedUser);
             if (retrievedUser.errors === undefined) {
               dispatch(updateUser(retrievedUser.data));
               curUser = retrievedUser.data;
-              getPlans(curUser);
-              resolve();
+              getPlans(curUser).then(() => {
+                resolve();
+              })
             }
           })
-          // .then(() => axios.get(api + '/plansByUser/' + curUser._id))
-          // .then((plans) => {
-          //   dispatch(updatePlanList(plans.data.data));
-          //   resolve();
-          // })
           .catch((err) => {
             console.log("ERROR IS: ", err);
           });
@@ -227,15 +219,6 @@ function UserSection({ _id }: UserProps) {
             });
           }
         })
-        .catch((err) => {
-          if (curUser._id === "guestUser") {
-            console.log(
-              "In guest user! This is expected as there are no users with this id."
-            );
-          } else {
-            console.log(err);
-          }
-        })
     );
 
   // Useffect runs once on page load, calling to https://ucredit-api.herokuapp.com/api/retrieveUser to retrieve user data.
@@ -256,7 +239,6 @@ function UserSection({ _id }: UserProps) {
         .get(api + "/plans/" + _id)
         .then((planResponse) => {
           plan = planResponse.data.data;
-          console.log("plan is ", plan);
           // get the years of that plan, stored in years
           axios
             .get(api + "/years/" + _id)
