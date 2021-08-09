@@ -21,6 +21,7 @@ import {
   SemesterType,
 } from "../../../../resources/commonTypes";
 import ReactTooltip from "react-tooltip";
+import { selectShowCourseInfo } from "../../../../slices/popupSlice";
 
 type SisCourseProps = {
   inspectedArea: string;
@@ -54,6 +55,7 @@ const SisCourse = (props: SisCourseProps) => {
   const searchYear = useSelector(selectYear);
   const searchSemester = useSelector(selectSemester);
   const searchStack = useSelector(selectSearchStack);
+  const showCourseInfo = useSelector(selectShowCourseInfo);
 
   const [versionIndex, updateVersionIndex] = useState(0);
 
@@ -167,59 +169,61 @@ const SisCourse = (props: SisCourseProps) => {
             </div>
             <CourseVersion setInspectedArea={props.setInspectedArea} />
           </div>
-          <div className="flex flex-row flex-grow items-center mt-2">
-            <div className="flex flex-col flex-grow justify-center">
-              <div className="mb-1 font-medium">Selecting for</div>
-              <div className="flex tight:flex-col flex-row">
-                <div className="flex flex-row items-center tight:ml-0 tight:mt-2 w-auto h-auto">
-                  Year:
-                  <select
-                    className="ml-2 text-black text-coursecard rounded focus:outline-none"
-                    onChange={handleYearChange}
-                    value={searchYear}
-                  >
-                    {currentPlan.years.map((currPlanYear) => (
-                      <option key={currPlanYear._id} value={currPlanYear._id}>
-                        {currPlanYear.name}
-                      </option>
-                    ))}
-                  </select>
-                </div>
-                <div className="flex flex-row items-center tight:ml-0 ml-5 tight:mt-2 w-auto h-auto">
-                  Term:
-                  <select
-                    className="ml-2 h-6 rounded outline-none"
-                    onChange={handleTermFilterChange}
-                    value={semester}
-                  >
-                    {termFilters.map((term) => (
-                      <option key={term + inspected.number} value={term}>
-                        {term}
-                      </option>
-                    ))}
-                  </select>
-                </div>
-                <div className="flex flex-row items-center tight:ml-0 ml-5 tight:mt-2 w-auto h-auto">
-                  Area:
-                  <select
-                    className="ml-2 w-14 h-6 rounded outline-none"
-                    value={props.inspectedArea}
-                    onChange={(event) =>
-                      props.setInspectedArea(event.target.value)
-                    }
-                  >
-                    {getInspectedAreas()}
-                  </select>
+          {!showCourseInfo ? (
+            <div className="flex flex-row flex-grow items-center mt-2">
+              <div className="flex flex-col flex-grow justify-center">
+                <div className="mb-1 font-medium">Selecting for</div>
+                <div className="flex tight:flex-col flex-row">
+                  <div className="flex flex-row items-center tight:ml-0 tight:mt-2 w-auto h-auto">
+                    Year:
+                    <select
+                      className="ml-2 text-black text-coursecard rounded focus:outline-none"
+                      onChange={handleYearChange}
+                      value={searchYear}
+                    >
+                      {currentPlan.years.map((currPlanYear) => (
+                        <option key={currPlanYear._id} value={currPlanYear._id}>
+                          {currPlanYear.name}
+                        </option>
+                      ))}
+                    </select>
+                  </div>
+                  <div className="flex flex-row items-center tight:ml-0 ml-5 tight:mt-2 w-auto h-auto">
+                    Term:
+                    <select
+                      className="ml-2 h-6 rounded outline-none"
+                      onChange={handleTermFilterChange}
+                      value={semester}
+                    >
+                      {termFilters.map((term) => (
+                        <option key={term + inspected.number} value={term}>
+                          {term}
+                        </option>
+                      ))}
+                    </select>
+                  </div>
+                  <div className="flex flex-row items-center tight:ml-0 ml-5 tight:mt-2 w-auto h-auto">
+                    Area:
+                    <select
+                      className="ml-2 w-14 h-6 rounded outline-none"
+                      value={props.inspectedArea}
+                      onChange={(event) =>
+                        props.setInspectedArea(event.target.value)
+                      }
+                    >
+                      {getInspectedAreas()}
+                    </select>
+                  </div>
                 </div>
               </div>
+              <button
+                className="mt-2 p-2 w-auto h-10 text-white bg-blue-500 rounded focus:outline-none transform hover:scale-110 transition duration-200 ease-in"
+                onClick={props.addCourse}
+              >
+                Add Course
+              </button>
             </div>
-            <button
-              className="mt-2 p-2 w-auto h-10 text-white bg-blue-500 rounded focus:outline-none transform hover:scale-110 transition duration-200 ease-in"
-              onClick={props.addCourse}
-            >
-              Add Course
-            </button>
-          </div>
+          ) : null}
         </>
       ) : null}
     </>
