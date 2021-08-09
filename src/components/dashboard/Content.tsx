@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import CourseList from "./course-list/CourseList";
 import Search from "../popups/course-search/Search";
 import { selectSearchStatus } from "../../slices/searchSlice";
@@ -15,6 +15,7 @@ import {
   selectAddingPlanStatus,
   selectDeleteYearStatus,
   selectCourseToDelete,
+  selectImportingStatus,
 } from "../../slices/currentPlanSlice";
 import DeleteCoursePopup from "../popups/DeleteCoursePopup";
 
@@ -28,6 +29,7 @@ function Content() {
   const addPlanStatus = useSelector(selectAddingPlanStatus);
   const deleteYearStatus = useSelector(selectDeleteYearStatus);
   const deleteCourseStatus = useSelector(selectCourseToDelete);
+  const importingStatus = useSelector(selectImportingStatus);
 
   return (
     // <div className="flex flex-row flex-wrap-reverse mt-content medium:px-48 h-full">
@@ -54,7 +56,7 @@ function Content() {
       </div>
       {searching ? <Search /> : null}
       {deletePlanStatus ? <DeletePlanPopup /> : null}
-      {addPlanStatus ? <PlanAdd /> : null}
+      {addPlanStatus && !importingStatus ? <PlanAdd /> : null}
       {deleteYearStatus ? <DeleteYearPopup /> : null}
       {deleteCourseStatus ? <DeleteCoursePopup /> : null}
     </>

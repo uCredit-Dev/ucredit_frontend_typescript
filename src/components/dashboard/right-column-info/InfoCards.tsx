@@ -90,8 +90,12 @@ const InfoCards = () => {
   };
 
   const onShareClick = () => {
-    setShareableURL("http://localhost:3000/dashboard?_id=" + currentPlan._id);
-    console.log(user);
+    setShareableURL("http://localhost:3000/share?_id=" + currentPlan._id);
+    navigator.clipboard.writeText(shareableURL);
+    toast.info("Copied to Clipboard!", {
+      autoClose:5000,
+      closeOnClick: false,
+    });
   };
 
   return (
@@ -109,16 +113,15 @@ const InfoCards = () => {
           />
         </div>
       </div>
-      <div className="flex flex-col items-center">
+      <div className="flex flex-col items-center min-w-min">
         <div className="w-auto h-auto text-center">{user.name}</div>
         <div className="w-auto h-auto text-center font-light stroke-2">
           {currentPlan.majors}
         </div>
         <div></div>
-        <button className="m-auto" onClick={onShareClick}>
+        <button className="m-auto hover:underline" onClick={onShareClick}>
           Share
         </button>
-        <div>{shareableURL}</div>
       </div>
     </div>
   );
