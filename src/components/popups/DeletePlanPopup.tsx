@@ -8,12 +8,9 @@ import {
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import GenerateNewPlan from "../../resources/GenerateNewPlan";
-import {
-  selectPlan,
-  updateDeletePlanStatus,
-  updateSelectedPlan,
-} from "../../slices/currentPlanSlice";
+import { selectPlan, updateSelectedPlan } from "../../slices/currentPlanSlice";
 import { api } from "../../resources/assets";
+import { updateDeletePlanStatus } from "../../slices/popupSlice";
 
 /**
  * This is the confirmation popup that appears when users press the button to delete a plan.

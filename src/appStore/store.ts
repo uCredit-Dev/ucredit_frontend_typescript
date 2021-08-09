@@ -3,7 +3,7 @@ import counterReducer from "../components/../resources/redux_sample/counterSlice
 import userReducer from "../slices/userSlice";
 import searchReducer from "../slices/searchSlice";
 import currentPlanReducer from "../slices/currentPlanSlice";
-// import logger from "redux-logger";
+import popupReducer from "../slices/popupSlice";
 
 export const store = configureStore({
   reducer: {
@@ -11,6 +11,7 @@ export const store = configureStore({
     user: userReducer,
     search: searchReducer,
     currentPlan: currentPlanReducer,
+    popup: popupReducer,
   },
   middleware: (getDefaultMiddleware) =>
     getDefaultMiddleware({

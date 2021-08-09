@@ -10,14 +10,16 @@ import PlanAdd from "../popups/PlanAdd";
 import DeleteYearPopup from "../popups/DeleteYearPopup";
 import PlanChoose from "./right-column-info/PlanChoose";
 import InfoMenu from "./InfoMenu";
+import { selectImportingStatus } from "../../slices/currentPlanSlice";
+import DeleteCoursePopup from "../popups/DeleteCoursePopup";
 import {
   selectDeletePlanStatus,
   selectAddingPlanStatus,
   selectDeleteYearStatus,
   selectCourseToDelete,
-  selectImportingStatus,
-} from "../../slices/currentPlanSlice";
-import DeleteCoursePopup from "../popups/DeleteCoursePopup";
+  selectShowCourseInfo,
+} from "../../slices/popupSlice";
+import CourseDisplayPopup from "../popups/CourseDisplayPopup";
 
 /**
  * Holds all dashboard components.
@@ -30,6 +32,7 @@ function Content() {
   const deleteYearStatus = useSelector(selectDeleteYearStatus);
   const deleteCourseStatus = useSelector(selectCourseToDelete);
   const importingStatus = useSelector(selectImportingStatus);
+  const courseInfoStatus = useSelector(selectShowCourseInfo);
 
   return (
     // <div className="flex flex-row flex-wrap-reverse mt-content medium:px-48 h-full">
@@ -59,6 +62,7 @@ function Content() {
       {addPlanStatus && !importingStatus ? <PlanAdd /> : null}
       {deleteYearStatus ? <DeleteYearPopup /> : null}
       {deleteCourseStatus ? <DeleteCoursePopup /> : null}
+      {courseInfoStatus ? <CourseDisplayPopup /> : null}
     </>
   );
 }
