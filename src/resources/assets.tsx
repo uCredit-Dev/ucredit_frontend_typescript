@@ -1,3 +1,4 @@
+import axios from "axios";
 import {
   Course,
   User,
@@ -411,11 +412,13 @@ export const getCourses = (
   return out;
 };
 
-export const getCourse = (
+export const getCourse = async (
   courseNumber: string,
-  allCourses: SISRetrievedCourse[],
-  allPlanCourses: UserCourse[]
-): Course | null => {
+  cachedCourses: SISRetrievedCourse[],
+  allPlanCourses: UserCourse[],
+  dispatch: any,
+  updateCache: Function
+): Promise<Course | null> => {
   let out: Course | null = null;
   let userC: UserCourse | null = null;
   allPlanCourses.forEach((c) => {
@@ -424,7 +427,8 @@ export const getCourse = (
     }
   });
 
-  allCourses.forEach((element) => {
+  // First check course cache.
+  cachedCourses.forEach((element) => {
     if (userC === null) {
       return;
     }
@@ -438,16 +442,22 @@ export const getCourse = (
     }
   });
 
-  if (userC === null) {
-    allCourses.forEach((element) => {
-      if (element.number === courseNumber) {
-        out = {
-          title: element.title,
-          number: element.number,
-          ...element.versions[0],
-        };
-      }
-    });
+  // Then pull from db.
+  if (out !== null) {
+    axios
+      .get(api + "/search", {
+        params: { query: courseNumber },
+      })
+      .then((courses) => {
+        if (userC !== null) {
+          out = {
+            ...userC,
+            ...courses.data.data[0],
+            credits: userC.credits.toString(),
+          };
+        }
+      })
+      .catch((err) => console.log(err));
   }
 
   return out;

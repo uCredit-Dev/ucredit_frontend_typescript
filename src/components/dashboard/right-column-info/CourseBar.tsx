@@ -1,8 +1,11 @@
 import clsx from "clsx";
 import React, { useState, useEffect } from "react";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { selectCurrentPlanCourses } from "../../../slices/currentPlanSlice";
-import { selectAllCourses } from "../../../slices/userSlice";
+import {
+  selectCourseCache,
+  updateCourseCache,
+} from "../../../slices/userSlice";
 import { getCourse } from "../../../resources/assets";
 import {
   requirements,
@@ -33,7 +36,8 @@ function CourseBar({ distribution, general, description }: courseBarProps) {
     distribution.fulfilled_credits
   );
 
-  const allCourses = useSelector(selectAllCourses);
+  const dispatch = useDispatch();
+  const cachedCourses = useSelector(selectCourseCache);
   const currPlanCourses = useSelector(selectCurrentPlanCourses);
   const maxCredits = distribution.required_credits;
   const section = distribution.name;
@@ -44,7 +48,13 @@ function CourseBar({ distribution, general, description }: courseBarProps) {
   useEffect(() => {
     var temp = distribution.fulfilled_credits;
     currPlanCourses.forEach((course) => {
-      const courseObj = getCourse(course.number, allCourses, currPlanCourses);
+      const courseObj = getCourse(
+        course.number,
+        cachedCourses,
+        currPlanCourses,
+        dispatch,
+        updateCourseCache
+      );
       if (
         courseObj != null &&
         checkRequirementSatisfied(
@@ -63,7 +73,7 @@ function CourseBar({ distribution, general, description }: courseBarProps) {
     });
     setPlannedCredits(temp);
   }, [
-    allCourses,
+    cachedCourses,
     currPlanCourses,
     distribution.expr,
     flipped,
