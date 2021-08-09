@@ -26,7 +26,7 @@ import CourseDisplayPopup from "../popups/CourseDisplayPopup";
  */
 function Content() {
   // Redux setup.
-  const searching = useSelector(selectSearchStatus);
+  const searchStatus = useSelector(selectSearchStatus);
   const deletePlanStatus = useSelector(selectDeletePlanStatus);
   const addPlanStatus = useSelector(selectAddingPlanStatus);
   const deleteYearStatus = useSelector(selectDeleteYearStatus);
@@ -55,9 +55,13 @@ function Content() {
           <div className="w-10">
             <InfoMenu />
           </div>
+        ) : window.innerWidth > 1600 && searchStatus ? (
+          <div className="w-10">
+            <InfoMenu />
+          </div>
         ) : null}
       </div>
-      {searching ? <Search /> : null}
+      {searchStatus ? <Search /> : null}
       {deletePlanStatus ? <DeletePlanPopup /> : null}
       {addPlanStatus && !importingStatus ? <PlanAdd /> : null}
       {deleteYearStatus ? <DeleteYearPopup /> : null}
