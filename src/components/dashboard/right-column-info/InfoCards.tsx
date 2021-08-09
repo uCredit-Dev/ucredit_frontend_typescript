@@ -10,11 +10,11 @@ import { ReactComponent as RemoveSvg } from "../../../resources/svg/Remove.svg";
 import "react-toastify/dist/ReactToastify.css";
 import {
   selectPlan,
-  updateDeletePlanStatus,
   updateSelectedPlan,
 } from "../../../slices/currentPlanSlice";
 import { api } from "../../../resources/assets";
 import { toast } from "react-toastify";
+import { updateDeletePlanStatus } from "../../../slices/popupSlice";
 
 /**
  * User/Current plan information area.

@@ -12,10 +12,10 @@ import "react-toastify/dist/ReactToastify.css";
 import GenerateNewPlan from "../../../resources/GenerateNewPlan";
 import {
   selectPlan,
-  updateAddingPlanStatus,
   updateSelectedPlan,
 } from "../../../slices/currentPlanSlice";
 import { api } from "../../../resources/assets";
+import { updateAddingPlanStatus } from "../../../slices/popupSlice";
 
 /**
  * Dropdown for choosing a plan to display.

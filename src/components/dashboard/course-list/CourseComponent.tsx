@@ -25,11 +25,15 @@ import "react-toastify/dist/ReactToastify.css";
 import {
   selectCurrentPlanCourses,
   selectPlan,
-  updateCourseToDelete,
-  updateDeleteCourseStatus,
 } from "../../../slices/currentPlanSlice";
 import { selectAllCourses } from "../../../slices/userSlice";
 import OverridePrereqpopup from "./OverridePrereqPopup";
+import {
+  updateCourseToDelete,
+  updateCourseToShow,
+  updateDeleteCourseStatus,
+  updateShowCourseInfo,
+} from "../../../slices/popupSlice";
 
 type courseProps = {
   course: UserCourse;
@@ -79,40 +83,40 @@ function CourseComponent({ year, course, semester }: courseProps) {
 
   // Sets or resets the course displayed in popout after user clicks it in course list.
   const displayCourses = () => {
-    dispatch(
-      updateSearchTime({ searchYear: year._id, searchSemester: semester })
-    );
-    dispatch(updateSearchTerm(course.number));
-    let found = false;
-    allCourses.forEach((c) => {
-      if (c.number === course.number) {
-        dispatch(updateInspectedCourse(c));
-        dispatch(updatePlaceholder(false));
-        found = true;
-      }
-    });
-
-    if (!found) {
-      const placeholderCourse: Course = {
-        title: course.title,
-        number: course.number,
-        areas: course.area,
-        term: "",
-        school: "none",
-        department: "none",
-        credits: course.credits.toString(),
-        wi: false,
-        bio: "This is a placeholder course",
-        tags: [],
-        preReq: [],
-        restrictions: [],
-        level: "",
-      };
-      dispatch(updatePlaceholder(true));
-      dispatch(updateInspectedVersion(placeholderCourse));
-    }
-
-    dispatch(updateSearchStatus(true));
+    dispatch(updateCourseToShow(course));
+    dispatch(updateShowCourseInfo(true));
+    // dispatch(
+    //   updateSearchTime({ searchYear: year._id, searchSemester: semester })
+    // );
+    // dispatch(updateSearchTerm(course.number));
+    // let found = false;
+    // allCourses.forEach((c) => {
+    //   if (c.number === course.number) {
+    //     dispatch(updateInspectedCourse(c));
+    //     dispatch(updatePlaceholder(false));
+    //     found = true;
+    //   }
+    // });
+    // if (!found) {
+    //   const placeholderCourse: Course = {
+    //     title: course.title,
+    //     number: course.number,
+    //     areas: course.area,
+    //     term: "",
+    //     school: "none",
+    //     department: "none",
+    //     credits: course.credits.toString(),
+    //     wi: false,
+    //     bio: "This is a placeholder course",
+    //     tags: [],
+    //     preReq: [],
+    //     restrictions: [],
+    //     level: "",
+    //   };
+    //   dispatch(updatePlaceholder(true));
+    //   dispatch(updateInspectedVersion(placeholderCourse));
+    // }
+    // dispatch(updateSearchStatus(true));
   };
 
   // Deletes a course on click of the delete button. Updates currently displayed plan with changes.

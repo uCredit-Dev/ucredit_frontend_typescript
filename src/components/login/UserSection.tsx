@@ -14,13 +14,9 @@ import {
   resetCurrentPlan,
   selectCurrentPlanCourses,
   selectPlan,
-  updateAddingPlanStatus,
   updateCurrentPlanCourses,
-  updateGeneratePlanAddStatus,
   updateImportingStatus,
   updateSelectedPlan,
-  updateToAddMajor,
-  updateToAddName,
 } from "../../slices/currentPlanSlice";
 import { api, guestUser } from "../../resources/assets";
 import bird from "../../resources/images/logoDarker.png";
@@ -28,6 +24,12 @@ import axios from "axios";
 import { Plan, User, UserCourse, Year } from "../../resources/commonTypes";
 import { getMajorFromCommonName } from "../../resources/majors";
 import { toast } from "react-toastify";
+import {
+  updateAddingPlanStatus,
+  updateToAddName,
+  updateToAddMajor,
+  updateGeneratePlanAddStatus,
+} from "../../slices/popupSlice";
 
 type UserProps = {
   _id: string | null;
@@ -247,6 +249,7 @@ function UserSection({ _id }: UserProps) {
       dispatch(updateImportingStatus(true));
       // means that the user entered a sharable link
       // first login with guest, then populate the plan with the information from the id
+      history.push("/dashboard/asdfasdf");
       let plan: Plan;
       // Get the plan that we are importing, stored in plan
       axios
@@ -268,7 +271,6 @@ function UserSection({ _id }: UserProps) {
                     console.log("created plan");
                     setToAdd(years);
                     setShouldAdd(true);
-                    history.push("/dashboard");
                   });
                 });
               } else {
@@ -278,7 +280,6 @@ function UserSection({ _id }: UserProps) {
                     console.log("created plan");
                     setToAdd(years);
                     setShouldAdd(true);
-                    history.push("/dashboard");
                   });
                 });
               }

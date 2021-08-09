@@ -1,5 +1,5 @@
 import React, { MouseEventHandler, useEffect, useState } from "react";
-import { ReactComponent as CloseSvg } from "../../../../resources/svg/Close.svg";
+// import { ReactComponent as CloseSvg } from "../../../../resources/svg/Close.svg";
 import Select from "react-select";
 import CourseVersion from "./CourseVersion";
 import { useDispatch, useSelector } from "react-redux";
@@ -11,7 +11,6 @@ import {
   selectSearchStack,
   popSearchStack,
   selectVersion,
-  updateInspectedCourse,
   updateInspectedVersion,
   updateSearchFilters,
   updateSearchTime,
@@ -104,9 +103,9 @@ const SisCourse = (props: SisCourseProps) => {
   };
 
   // Clears inspected course.
-  const clearInspected = (): void => {
-    dispatch(updateInspectedCourse("None"));
-  };
+  // const clearInspected = (): void => {
+  //   dispatch(updateInspectedCourse("None"));
+  // };
 
   // Handles switching displayed term.
   const handleTermSwitch = (event: any): void => {
@@ -145,12 +144,12 @@ const SisCourse = (props: SisCourseProps) => {
                   {inspected.title}
                 </div>
               </h1>
-              <button
+              {/* <button
                 className="text-2xl focus:outline-none transform hover:scale-110 transition duration-200 ease-in"
                 onClick={clearInspected}
               >
                 <CloseSvg className="w-7 h-7 stroke-2" />
-              </button>
+              </button> */}
             </div>
             <div className="flex flex-row items-center font-semibold">
               Term:{" "}

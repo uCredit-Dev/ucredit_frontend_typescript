@@ -4,14 +4,13 @@ import { selectUser } from "../../slices/userSlice";
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import GenerateNewPlan from "../../resources/GenerateNewPlan";
-import {
-  selectPlan,
-  selectYearToDelete,
-  updateDeleteYearStatus,
-  updateSelectedPlan,
-  updateYearToDelete,
-} from "../../slices/currentPlanSlice";
+import { selectPlan, updateSelectedPlan } from "../../slices/currentPlanSlice";
 import { api } from "../../resources/assets";
+import {
+  selectYearToDelete,
+  updateYearToDelete,
+  updateDeleteYearStatus,
+} from "../../slices/popupSlice";
 
 /**
  * This is the confirmation popup that appears when users press the button to delete a plan.

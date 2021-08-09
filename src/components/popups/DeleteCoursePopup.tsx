@@ -4,15 +4,14 @@ import { selectUser } from "../../slices/userSlice";
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import GenerateNewPlan from "../../resources/GenerateNewPlan";
-import {
-  selectCourseToDelete,
-  selectPlan,
-  updateCourseToDelete,
-  updateDeleteCourseStatus,
-  updateSelectedPlan,
-} from "../../slices/currentPlanSlice";
+import { selectPlan, updateSelectedPlan } from "../../slices/currentPlanSlice";
 import { api } from "../../resources/assets";
 import { Plan } from "../../resources/commonTypes";
+import {
+  selectCourseToDelete,
+  updateDeleteCourseStatus,
+  updateCourseToDelete,
+} from "../../slices/popupSlice";
 
 /**
  * This is the confirmation popup that appears when users press the button to delete a course.

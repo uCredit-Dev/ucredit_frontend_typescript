@@ -31,15 +31,13 @@ const YearDraggable = (props: {
               provided.draggableProps.style
             )}
           >
-            <div className="mx-auto">
-              <YearComponent
-                key={props.year._id}
-                id={props.yearIndex}
-                customStyle="cursor-pointer"
-                year={props.year}
-                courses={props.yearCourses}
-              />
-            </div>
+            <YearComponent
+              key={props.year._id}
+              id={props.yearIndex}
+              customStyle="cursor-pointer"
+              year={props.year}
+              courses={props.yearCourses}
+            />
           </div>
         );
       }}
@@ -55,7 +53,11 @@ const getItemStyle = (isDragging: any, draggableStyle: any) => ({
   ...draggableStyle,
 
   padding: "0rem",
-  margin: "0rem",
+  marginLeft: "auto",
+  marginRight: "auto",
+  width: "20%",
+  minWidth: "205px",
+  maxWIdth: "255px",
 });
 
 export default YearDraggable;
