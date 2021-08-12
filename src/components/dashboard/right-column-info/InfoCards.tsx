@@ -15,6 +15,7 @@ import {
 import { api } from "../../../resources/assets";
 import { toast } from "react-toastify";
 import { updateDeletePlanStatus } from "../../../slices/popupSlice";
+import ShareLinksPopup from "./ShareLinksPopup";
 
 /**
  * User/Current plan information area.
@@ -90,7 +91,10 @@ const InfoCards = () => {
   };
 
   const onShareClick = () => {
-    console.log("click!");
+    if (shareableURL !== '') {
+      setShareableURL("");
+      return;
+    }
     setShareableURL(
       (window.location.href.includes("localhost")
         ? "localhost:3000"
@@ -98,13 +102,6 @@ const InfoCards = () => {
         "/share?_id=" +
         currentPlan._id
     );
-    navigator.clipboard.writeText(shareableURL)
-    .then(() => {
-      toast.info("Copied to Clipboard!", {
-        autoClose: 5000,
-        closeOnClick: false,
-      });
-    })
   };
 
   return (
@@ -131,6 +128,7 @@ const InfoCards = () => {
         <button className="m-auto hover:underline" onClick={onShareClick}>
           Share
         </button>
+        {shareableURL === "" ? null: <ShareLinksPopup link={shareableURL} />}
       </div>
     </div>
   );
