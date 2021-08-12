@@ -124,11 +124,12 @@ const InfoCards = () => {
         <div className="w-auto h-auto text-center font-light stroke-2">
           {currentPlan.majors}
         </div>
-        <div></div>
         <button className="m-auto hover:underline" onClick={onShareClick}>
           Share
         </button>
-        {shareableURL === "" ? null: <ShareLinksPopup link={shareableURL} />}
+        <div>
+          {shareableURL === "" ? null: <ShareLinksPopup link={shareableURL} setURL={onShareClick}/>}
+        </div>
       </div>
     </div>
   );
