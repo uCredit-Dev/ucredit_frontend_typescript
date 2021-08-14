@@ -36,7 +36,7 @@ function ShareLinksPopup({link, setURL} : ShareProps) {
               disabled={true} />
           </form>
         </div>
-        <div className="h-6 w-6 cursor-pointer transform hover:scale-105 transition duration-200 ease-in" onClick={copyToClipBoard}>
+        <div className="h-4 w-4 cursor-pointer transform hover:scale-105 transition duration-200 ease-in" onClick={copyToClipBoard}>
           <Copy/>
         </div>
       </div>
