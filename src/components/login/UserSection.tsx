@@ -69,9 +69,11 @@ function UserSection({ _id }: UserProps) {
   const addCourses = async () => {
     let added: UserCourse[] = [];
     let total = 0;
+    let empty = true;
     for (const year of toAdd) {
       for (const course of year.courses) {
         total++;
+        empty = false;
         // eslint-disable-next-line no-loop-func
         addCourse(course, toAdd.indexOf(year)).then((curCourse) => {
           added.push(curCourse);
@@ -115,6 +117,11 @@ function UserSection({ _id }: UserProps) {
         })
       }
     }
+    if (empty) {
+      dispatch(updateImportingStatus(false));
+      dispatch(updateAddingPlanStatus(false));
+    }
+    console.log("done");
   };
 
   const addCourse = async (
