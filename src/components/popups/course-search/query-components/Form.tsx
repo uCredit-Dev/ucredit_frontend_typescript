@@ -37,7 +37,7 @@ const Form = (props: { setSearching: Function }) => {
   const allCourses = useSelector(selectAllCourses);
 
   // Component state setup
-  const [showCriteria, setShowCriteria] = useState(false);
+  const [showCriteria, setShowCriteria] = useState(true);
   const [showAllResults, setShowAllResults] = useState<boolean>(false);
   const [searchedCourses] = useState<Map<String, SearchMapEl>>(
     new Map<String, SearchMapEl>()
