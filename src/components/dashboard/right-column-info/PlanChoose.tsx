@@ -12,10 +12,10 @@ import "react-toastify/dist/ReactToastify.css";
 import GenerateNewPlan from "../../../resources/GenerateNewPlan";
 import {
   selectPlan,
-  updateAddingPlanStatus,
   updateSelectedPlan,
 } from "../../../slices/currentPlanSlice";
 import { api } from "../../../resources/assets";
+import { updateAddingPlanStatus } from "../../../slices/popupSlice";
 
 /**
  * Dropdown for choosing a plan to display.
@@ -37,6 +37,7 @@ const PlanChoose = () => {
   // Gets all users's plans and updates state everytime a new user is chosen.
   useEffect(() => {
     if (user._id !== "noUser" && user._id !== "guestUser") {
+      console.log(user._id);
       axios
         .get(api + "/plansByUser/" + user._id)
         .then((retrieved) => {

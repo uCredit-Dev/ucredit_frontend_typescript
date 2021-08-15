@@ -678,6 +678,7 @@ export const checkPrereq = (
 ): boolean => {
   let satisfied: boolean = false;
   const yearObj = getYearFromId(year, plan);
+  console.log("checking prereq", yearObj, year);
 
   courses.forEach((course) => {
     if (
@@ -724,6 +725,7 @@ const prereqInPast = (
   const retrievedYear = getCourseYear(plan, course);
   if (retrievedYear !== null) {
     const courseYearRank: number = getYearIndex(retrievedYear, plan);
+    console.log("two are", year, courseYearRank, course);
     if (courseYearRank < year) {
       return true;
     } else if (courseYearRank > year) {

@@ -2,7 +2,7 @@ import axios from "axios";
 import * as React from "react";
 import { useEffect } from "react";
 import { useState } from "react";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { Switch, Route, useLocation } from "react-router-dom";
 import { api } from "./../resources/assets";
 import Dashboard from "./dashboard/Dashboard";
@@ -14,6 +14,7 @@ import ReactTooltip from "react-tooltip";
 import { SISRetrievedCourse } from "../resources/commonTypes";
 // import bird from "./../resources/images/birdTempGif.gif";
 import logoLine from "../resources/images/line-art/logo_line_lighter.png";
+import { selectImportingStatus } from "../slices/currentPlanSlice";
 
 /**
  * Root app component, where it all begins...
@@ -21,9 +22,11 @@ import logoLine from "../resources/images/line-art/logo_line_lighter.png";
  */
 function App() {
   const dispatch = useDispatch();
+  const importing = useSelector(selectImportingStatus);
 
   // Component state setup.
   const [welcomeScreen, setWelcomeScreen] = useState<boolean>(true);
+  const [forceClose, setForceClose] = useState<boolean>(false);
 
   const retrieveData = (counter: number, retrieved: SISRetrievedCourse[]) => {
     axios
@@ -99,7 +102,7 @@ function App() {
         place="top"
         effect="solid"
       />
-      {welcomeScreen ? (
+      {(welcomeScreen || importing) && !forceClose ? (
         <div className="fixed z-50 flex flex-col m-auto w-screen h-screen text-center text-center text-white bg-blue-900">
           <img
             className="mt-auto mx-auto w-1/6"
@@ -111,7 +114,7 @@ function App() {
           </div>
           <button
             onClick={() => {
-              setWelcomeScreen(false);
+              setForceClose(true);
             }}
             data-tip="Tap to dismiss loading screen. Resource loading will still be
               performed in the background."
@@ -124,10 +127,13 @@ function App() {
       ) : null} 
       <Switch>
         <Route path="/dashboard">
-          <Dashboard _id={_id}/>
+          <Dashboard _id={null}/>
         </Route>
         <Route path="/login">
           <DashboardEntry />
+        </Route>
+        <Route path='/share'>
+          <Dashboard _id={_id}/>
         </Route>
         <Route path="/">
           <LandingPage />

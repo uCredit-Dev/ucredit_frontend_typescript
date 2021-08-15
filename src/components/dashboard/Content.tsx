@@ -10,24 +10,29 @@ import PlanAdd from "../popups/PlanAdd";
 import DeleteYearPopup from "../popups/DeleteYearPopup";
 import PlanChoose from "./right-column-info/PlanChoose";
 import InfoMenu from "./InfoMenu";
+import { selectImportingStatus } from "../../slices/currentPlanSlice";
+import DeleteCoursePopup from "../popups/DeleteCoursePopup";
 import {
   selectDeletePlanStatus,
   selectAddingPlanStatus,
   selectDeleteYearStatus,
   selectCourseToDelete,
-} from "../../slices/currentPlanSlice";
-import DeleteCoursePopup from "../popups/DeleteCoursePopup";
+  selectShowCourseInfo,
+} from "../../slices/popupSlice";
+import CourseDisplayPopup from "../popups/CourseDisplayPopup";
 
 /**
  * Holds all dashboard components.
  */
 function Content() {
   // Redux setup.
-  const searching = useSelector(selectSearchStatus);
+  const searchStatus = useSelector(selectSearchStatus);
   const deletePlanStatus = useSelector(selectDeletePlanStatus);
   const addPlanStatus = useSelector(selectAddingPlanStatus);
   const deleteYearStatus = useSelector(selectDeleteYearStatus);
   const deleteCourseStatus = useSelector(selectCourseToDelete);
+  const importingStatus = useSelector(selectImportingStatus);
+  const courseInfoStatus = useSelector(selectShowCourseInfo);
 
   return (
     // <div className="flex flex-row flex-wrap-reverse mt-content medium:px-48 h-full">
@@ -50,13 +55,18 @@ function Content() {
           <div className="w-10">
             <InfoMenu />
           </div>
+        ) : window.innerWidth > 1600 && searchStatus ? (
+          <div className="w-10">
+            <InfoMenu />
+          </div>
         ) : null}
       </div>
-      {searching ? <Search /> : null}
+      {searchStatus ? <Search /> : null}
       {deletePlanStatus ? <DeletePlanPopup /> : null}
-      {addPlanStatus ? <PlanAdd /> : null}
+      {addPlanStatus && !importingStatus ? <PlanAdd /> : null}
       {deleteYearStatus ? <DeleteYearPopup /> : null}
       {deleteCourseStatus ? <DeleteCoursePopup /> : null}
+      {courseInfoStatus ? <CourseDisplayPopup /> : null}
     </>
   );
 }

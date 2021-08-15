@@ -2,21 +2,25 @@ import React, { useState, useEffect } from "react";
 import Semester from "./Semester";
 import { UserCourse, Year } from "../../../resources/commonTypes";
 import { ReactComponent as MoreSvg } from "../../../resources/svg/More.svg";
+import { ReactComponent as GrabSvg } from "../../../resources/svg/Grab.svg";
 import { useSelector, useDispatch } from "react-redux";
 import {
   selectPlan,
-  updateDeleteYearStatus,
   updateSelectedPlan,
-  updateYearToDelete,
 } from "../../../slices/currentPlanSlice";
 import { api } from "../../../resources/assets";
 import clsx from "clsx";
+import {
+  updateYearToDelete,
+  updateDeleteYearStatus,
+} from "../../../slices/popupSlice";
 
 type yearProps = {
   id: number;
   customStyle: string;
   year: Year;
   courses: UserCourse[];
+  setDraggable: Function;
 };
 
 export const newYearTemplate: Year = {
@@ -36,7 +40,13 @@ export const newYearTemplate: Year = {
  * @param year - the year designator
  * @param courses - courses that belong to this year
  */
-function YearComponent({ id, customStyle, year, courses }: yearProps) {
+function YearComponent({
+  id,
+  customStyle,
+  year,
+  courses,
+  setDraggable,
+}: yearProps) {
   // Component state setup.
   const [fallCourses, setFallCourses] = useState<UserCourse[]>([]);
   const [springCourses, setSpringCourses] = useState<UserCourse[]>([]);
@@ -46,6 +56,7 @@ function YearComponent({ id, customStyle, year, courses }: yearProps) {
   const [hide, setHide] = useState<boolean>(false);
   const [yearName, setYearName] = useState<string>(year.name);
   const [semSelect, setSemSelect] = useState<boolean>(false);
+  const [onHover, setOnHover] = useState<boolean>(false);
   // Determines whether we're editing the name.
   const [editedName, setEditedName] = useState<boolean>(false);
   const [edittingName, setEdittingName] = useState<boolean>(false);
@@ -172,14 +183,37 @@ function YearComponent({ id, customStyle, year, courses }: yearProps) {
           onMouseLeave={() => {
             setDisplay(false);
             setSemSelect(false);
+            setOnHover(false);
+          }}
+          onMouseEnter={() => {
+            if (!edittingName) setOnHover(true);
           }}
         >
           <div className="flex flex-row justify-between px-0.5 w-full bg-white">
+            <div
+              className={clsx(
+                "mt-1 h-5 rounded transform duration-150 ease-in",
+                {
+                  "mr-1 h-5 bg-blue-400": onHover,
+                }
+              )}
+              onMouseEnter={() => setDraggable(false)}
+              onMouseLeave={() => setDraggable(true)}
+            >
+              <GrabSvg
+                className={clsx(
+                  "py-auto m-auto h-0 text-white transform duration-150 ease-in",
+                  {
+                    "h-5": onHover,
+                  }
+                )}
+              />
+            </div>
             <input
               id={year._id + "input"}
               value={yearName}
               className={clsx(
-                "flex-shrink mt-auto w-full text-lg font-semibold bg-white border-b focus:border-gray-400 border-transparent focus:outline-none select-none select-none"
+                "flex-shrink mt-auto w-full text-lg font-semibold bg-white border-b focus:border-gray-400 border-transparent focus:outline-none select-none"
               )}
               onChange={handleYearNameChange}
               disabled={!edittingName}
@@ -205,6 +239,7 @@ function YearComponent({ id, customStyle, year, courses }: yearProps) {
                     onClick={() => {
                       setEdittingName(true);
                       setDisplay(false);
+                      setOnHover(false);
                     }}
                     className="hover:bg-gray-300 focus:outline-none"
                   >

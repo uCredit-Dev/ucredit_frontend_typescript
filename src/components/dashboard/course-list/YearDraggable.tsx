@@ -1,24 +1,28 @@
-import React from "react";
+import React, { useState } from "react";
 import { Draggable } from "react-beautiful-dnd";
 import { UserCourse, Year } from "../../../resources/commonTypes";
 import YearComponent from "./YearComponent";
 
 /**
  * The year draggable for shifting around year ordering.
+ * @param id - The index of the year among the other years.
  * @param year - The year contained in the draggable.
  * @param yearIndex - The index of the year among the other years.
  * @param yearCourses - The courses contained in the year.
  */
 const YearDraggable = (props: {
+  id: number;
   year: Year;
   yearIndex: number;
   yearCourses: UserCourse[];
 }) => {
+  const [draggable, setDraggable] = useState<boolean>(true);
   return (
     <Draggable
       key={props.year._id}
       index={props.yearIndex}
       draggableId={props.year._id}
+      isDragDisabled={draggable}
     >
       {(provided, snapshot) => {
         return (
@@ -31,15 +35,14 @@ const YearDraggable = (props: {
               provided.draggableProps.style
             )}
           >
-            <div className="mx-auto">
-              <YearComponent
-                key={props.year._id}
-                id={props.yearIndex}
-                customStyle="cursor-pointer"
-                year={props.year}
-                courses={props.yearCourses}
-              />
-            </div>
+            <YearComponent
+              key={props.year._id}
+              id={props.yearIndex}
+              customStyle=""
+              year={props.year}
+              courses={props.yearCourses}
+              setDraggable={setDraggable}
+            />
           </div>
         );
       }}
@@ -55,7 +58,11 @@ const getItemStyle = (isDragging: any, draggableStyle: any) => ({
   ...draggableStyle,
 
   padding: "0rem",
-  margin: "0rem",
+  marginLeft: "auto",
+  marginRight: "auto",
+  width: "20%",
+  minWidth: "205px",
+  maxWIdth: "255px",
 });
 
 export default YearDraggable;

@@ -3,10 +3,8 @@ import { RootState } from "../appStore/store";
 import {
   Distribution,
   DroppableType,
-  Major,
   Plan,
   UserCourse,
-  Year,
 } from "../components/../resources/commonTypes";
 
 type CurrentPlanSlice = {
@@ -15,15 +13,7 @@ type CurrentPlanSlice = {
   currentPlanCourses: UserCourse[];
   totalCredits: number;
   droppables: DroppableType[];
-  deleting: boolean;
-  addingPlan: boolean;
-  toAddName: string;
-  toAddMajor: Major | null;
-  generateAdd: boolean;
-  deleteYear: boolean;
-  yearToDelete: Year | null;
-  deleteCourse: boolean;
-  courseToDelete: { course: UserCourse; year: Year } | null;
+  importing: boolean;
 };
 
 const initialState: CurrentPlanSlice = {
@@ -40,15 +30,7 @@ const initialState: CurrentPlanSlice = {
   currentPlanCourses: [],
   totalCredits: 0,
   droppables: [],
-  yearToDelete: null,
-  deleting: false,
-  addingPlan: false,
-  generateAdd: false,
-  deleteYear: false,
-  toAddName: "Unnamed Plan",
-  toAddMajor: null,
-  deleteCourse: false,
-  courseToDelete: null,
+  importing: false,
 };
 
 export const currentPlanSlice = createSlice({
@@ -94,42 +76,8 @@ export const currentPlanSlice = createSlice({
         state.droppables.push(action.payload);
       }
     },
-    updateGeneratePlanAddStatus: (
-      state: any,
-      action: PayloadAction<boolean>
-    ) => {
-      state.generateAdd = action.payload;
-    },
-    updateDeleteYearStatus: (state: any, action: PayloadAction<boolean>) => {
-      state.deleteYear = action.payload;
-    },
-    updateYearToDelete: (state: any, action: PayloadAction<Year | null>) => {
-      state.yearToDelete = action.payload;
-    },
-    clearToAdd: (state: any) => {
-      state.toAddName = initialState.toAddName;
-      state.toAddMajor = initialState.toAddMajor;
-    },
-    updateAddingPlanStatus: (state: any, action: PayloadAction<boolean>) => {
-      state.addingPlan = action.payload;
-    },
-    updateToAddName: (state: any, action: PayloadAction<string>) => {
-      state.toAddName = action.payload;
-    },
-    updateToAddMajor: (state: any, action: PayloadAction<Major>) => {
-      state.toAddMajor = action.payload;
-    },
-    updateDeletePlanStatus: (state: any, action: PayloadAction<boolean>) => {
-      state.deleting = action.payload;
-    },
-    updateDeleteCourseStatus: (state: any, action: PayloadAction<boolean>) => {
-      state.deleteCourse = action.payload;
-    },
-    updateCourseToDelete: (
-      state: any,
-      action: PayloadAction<{ course: UserCourse; year: Year } | null>
-    ) => {
-      state.courseToDelete = action.payload;
+    updateImportingStatus: (state: any, action: PayloadAction<boolean>) => {
+      state.importing = action.payload;
     },
   },
 });
@@ -141,16 +89,7 @@ export const {
   updateTotalCredits,
   updateDroppables,
   resetCurrentPlan,
-  updateAddingPlanStatus,
-  updateToAddName,
-  updateToAddMajor,
-  updateGeneratePlanAddStatus,
-  updateYearToDelete,
-  updateDeleteYearStatus,
-  clearToAdd,
-  updateDeletePlanStatus,
-  updateCourseToDelete,
-  updateDeleteCourseStatus,
+  updateImportingStatus,
 } = currentPlanSlice.actions;
 
 // The function below is called a selector and allows us to select a value from
@@ -164,23 +103,7 @@ export const selectTotalCredits = (state: RootState) =>
   state.currentPlan.totalCredits;
 export const selectDroppables = (state: RootState) =>
   state.currentPlan.droppables;
-export const selectGeneratePlanAddStatus = (state: RootState) =>
-  state.currentPlan.generateAdd;
-export const selectDeleteYearStatus = (state: RootState) =>
-  state.currentPlan.deleteYear;
-export const selectYearToDelete = (state: RootState) =>
-  state.currentPlan.yearToDelete;
-export const selectDeletePlanStatus = (state: RootState) =>
-  state.currentPlan.deleting;
-export const selectAddingPlanStatus = (state: RootState) =>
-  state.currentPlan.addingPlan;
-export const selectToAddName = (state: RootState) =>
-  state.currentPlan.toAddName;
-export const selectToAddMajor = (state: RootState) =>
-  state.currentPlan.toAddMajor;
-export const selectCourseToDelete = (state: RootState) =>
-  state.currentPlan.courseToDelete;
-export const selectDeleteCourseStatus = (state: RootState) =>
-  state.currentPlan.deleteCourse;
+export const selectImportingStatus = (state: RootState) =>
+  state.currentPlan.importing;
 
 export default currentPlanSlice.reducer;

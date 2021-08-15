@@ -10,11 +10,12 @@ import { ReactComponent as RemoveSvg } from "../../../resources/svg/Remove.svg";
 import "react-toastify/dist/ReactToastify.css";
 import {
   selectPlan,
-  updateDeletePlanStatus,
   updateSelectedPlan,
 } from "../../../slices/currentPlanSlice";
 import { api } from "../../../resources/assets";
 import { toast } from "react-toastify";
+import { updateDeletePlanStatus } from "../../../slices/popupSlice";
+import ShareLinksPopup from "./ShareLinksPopup";
 
 /**
  * User/Current plan information area.
@@ -90,8 +91,17 @@ const InfoCards = () => {
   };
 
   const onShareClick = () => {
-    setShareableURL("http://localhost:3000/dashboard?_id=" + currentPlan._id);
-    console.log(user);
+    if (shareableURL !== '') {
+      setShareableURL("");
+      return;
+    }
+    setShareableURL(
+      (window.location.href.includes("localhost")
+        ? "localhost:3000"
+        : "https://ucredit.herokuapp.com") +
+        "/share?_id=" +
+        currentPlan._id
+    );
   };
 
   return (
@@ -109,16 +119,17 @@ const InfoCards = () => {
           />
         </div>
       </div>
-      <div className="flex flex-col items-center">
+      <div className="flex flex-col items-center min-w-min">
         <div className="w-auto h-auto text-center">{user.name}</div>
         <div className="w-auto h-auto text-center font-light stroke-2">
           {currentPlan.majors}
         </div>
-        <div></div>
-        <button className="m-auto" onClick={onShareClick}>
+        <button className="m-auto hover:underline" onClick={onShareClick}>
           Share
         </button>
-        <div>{shareableURL}</div>
+        <div>
+          {shareableURL === "" ? null: <ShareLinksPopup link={shareableURL} setURL={onShareClick}/>}
+        </div>
       </div>
     </div>
   );

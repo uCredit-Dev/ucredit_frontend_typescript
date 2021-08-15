@@ -5,16 +5,17 @@ import {
   UserCourse,
   Year,
 } from "../../../resources/commonTypes";
-import CourseComponent from "./CourseComponent";
 import { useDispatch } from "react-redux";
 import {
   updateSearchStatus,
   updateSearchTime,
 } from "../../../slices/searchSlice";
 import { ReactComponent as AddSvg } from "../../../resources/svg/Add.svg";
-import { Droppable, Draggable } from "react-beautiful-dnd";
+import { Droppable } from "react-beautiful-dnd";
 import { updateDroppables } from "../../../slices/currentPlanSlice";
 import ReactTooltip from "react-tooltip";
+import clsx from "clsx";
+import CourseDraggable from "./CourseDraggable";
 
 type semesterProps = {
   customStyle: string;
@@ -84,33 +85,26 @@ function Semester({
 
   const getDraggables = () => {
     return semesterCourses.map((course, index) => (
-      <Draggable key={course._id} index={index} draggableId={course._id}>
-        {(provided, snapshot) => {
-          return (
-            <div
-              ref={provided.innerRef}
-              {...provided.draggableProps}
-              {...provided.dragHandleProps}
-              style={getItemStyle(
-                snapshot.isDragging,
-                provided.draggableProps.style
-              )}
-            >
-              <CourseComponent
-                year={semesterYear}
-                course={course}
-                semester={semesterName}
-              />
-            </div>
-          );
-        }}
-      </Draggable>
+      <CourseDraggable
+        course={course}
+        index={index}
+        semesterName={semesterName}
+        semesterYear={semesterYear}
+      />
     ));
   };
 
   useEffect(() => {
     ReactTooltip.rebuild();
   }, [courses.length, totalCredits]);
+
+  const getCreditString = (): string => {
+    let string = `<div>${totalCredits} Credits</div>`;
+    if (totalCredits < 12) string += "\nMore than 12 credits required!";
+    else if (totalCredits > 18)
+      string += "\nCritical credit count reached! Check with your advisor!";
+    return string;
+  };
 
   return (
     <>
@@ -131,8 +125,16 @@ function Semester({
               {courses.length !== 0 && totalCredits !== 0 ? (
                 <>
                   <div
-                    className="flex flex-row items-center justify-center ml-1 px-1 w-auto text-black text-xs bg-gray-200 bg-white rounded transform hover:scale-125 transition duration-200 ease-in"
-                    data-tip={`${totalCredits} Credits`}
+                    className={clsx(
+                      { "bg-red-200": totalCredits < 12 },
+                      { "bg-yellow-200": totalCredits > 18 },
+                      {
+                        "bg-green-200":
+                          totalCredits <= 18 && totalCredits >= 12,
+                      },
+                      "flex flex-row items-center justify-center ml-1 px-1 w-auto text-black text-xs bg-white rounded transform hover:scale-125 transition duration-200 ease-in"
+                    )}
+                    data-tip={getCreditString()}
                     data-for="godTip"
                   >
                     {totalCredits}
@@ -173,14 +175,6 @@ function Semester({
 
 const getListStyle = (isDraggingOver: any) => ({
   background: isDraggingOver ? "skyblue" : "lightblue",
-});
-
-const getItemStyle = (isDragging: any, draggableStyle: any) => ({
-  // some basic styles to make the items look a bit nicer
-  userSelect: "none",
-
-  // styles we need to apply on draggables
-  ...draggableStyle,
 });
 
 export default Semester;

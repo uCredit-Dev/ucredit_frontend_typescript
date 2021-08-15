@@ -22,6 +22,7 @@ import {
   selectPlan,
 } from "../../../../slices/currentPlanSlice";
 import { selectAllCourses } from "../../../../slices/userSlice";
+import { selectCourseToShow } from "../../../../slices/popupSlice";
 
 // Parsed prereq type
 // satisfied: a boolean that tells whether the prereq should be marked with green (satisfied) or red (unsatisfied)
@@ -44,6 +45,7 @@ const PrereqDisplay = () => {
   const year = useSelector(selectYear);
   const currentPlan = useSelector(selectPlan);
   const allCourses = useSelector(selectAllCourses);
+  const courseToShow = useSelector(selectCourseToShow);
 
   // Component states
   const [prereqDisplayMode, setPrereqDisplayMode] = useState(2);
@@ -52,7 +54,7 @@ const PrereqDisplay = () => {
   const [hasPreReqs, setHasPreReqs] = useState<boolean>(false);
   const [NNegativePreReqs, setNNegativePreReqs] = useState<any[]>();
 
-  const display = async (preReqs: any[]) => {
+  const display = (preReqs: any[]) => {
     const prereqs = processPrereqs(preReqs, allCourses, currPlanCourses);
     afterGathering(prereqs.numNameList, prereqs.numList, prereqs.expr);
   };
@@ -148,11 +150,12 @@ const PrereqDisplay = () => {
       // If the element is a number
       const noCBrackets: string = element.substr(0, element.length - 3);
       const noCBracketsNum: string = element.substr(0, 10);
-      const satisfied: boolean = checkPrereq(
+      const yearToCheck = courseToShow !== null ? courseToShow.year_id : year;
+      let satisfied: boolean = checkPrereq(
         currPlanCourses,
         currentPlan,
         noCBracketsNum,
-        year,
+        yearToCheck,
         semester
       );
       return {

@@ -11,15 +11,18 @@ import {
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import {
-  clearToAdd,
-  selectGeneratePlanAddStatus,
-  selectToAddMajor,
-  selectToAddName,
-  updateGeneratePlanAddStatus,
+  selectImportingStatus,
   updateSelectedPlan,
 } from "../slices/currentPlanSlice";
 import { api } from "./assets";
 import { updateSearchTime } from "../slices/searchSlice";
+import {
+  selectToAddName,
+  selectToAddMajor,
+  selectGeneratePlanAddStatus,
+  clearToAdd,
+  updateGeneratePlanAddStatus,
+} from "../slices/popupSlice";
 
 type generateNewPlanProps = {
   _id?: String;
@@ -37,6 +40,7 @@ const GenerateNewPlan = (props: generateNewPlanProps) => {
   const toAddName = useSelector(selectToAddName);
   const toAddMajor = useSelector(selectToAddMajor);
   const generatePlanAddStatus = useSelector(selectGeneratePlanAddStatus);
+  const importing = useSelector(selectImportingStatus);
 
   // UseEffect that generates a new plan everytime generateNew is true.
   useEffect(() => {
@@ -98,7 +102,9 @@ const GenerateNewPlan = (props: generateNewPlanProps) => {
                   if (index === toAddMajor.distributions.length - 1) {
                     dispatch(updateSelectedPlan(newPlan));
                     dispatch(updatePlanList([newPlan, ...planList]));
-                    toast.success(newPlan.name + " created!");
+                    if (!importing) {
+                      toast.success(newPlan.name + " created!");
+                    }
                     if (user._id === "guestUser") {
                       const planIdArray = [newPlan._id];
                       dispatch(updateGuestPlanIds(planIdArray));

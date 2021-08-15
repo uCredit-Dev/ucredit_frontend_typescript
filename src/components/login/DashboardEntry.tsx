@@ -6,7 +6,6 @@ import { updateUser, selectUser } from "../../slices/userSlice";
 import { withCookies, useCookies } from "react-cookie";
 import samplePlan from "../../resources/images/samplePlan.png";
 import logo from "../../resources/images/logoDarker.png";
-import Test from "../../resources/Test";
 
 const deploy = "https://ucredit.herokuapp.com/login/";
 const dev = "http://localhost:3000/login/";
@@ -137,7 +136,6 @@ const DashboardEntry = (props: any) => {
           zIndex: 0,
         }}
       ></div>
-      <Test />
       <div className="absolute flex w-full h-full">
         <div className="flex flex-col mx-auto mx-auto my-auto p-14 text-white text-lg font-bold bg-gradient-to-b rounded shadow from-blue-500 to-green-400">
           <div className="flex flex-row items-center justify-center mt-auto pr-2 w-full text-3xl">

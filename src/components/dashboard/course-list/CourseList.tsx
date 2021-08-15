@@ -4,6 +4,7 @@ import {
   DroppableType,
   Plan,
   SemesterType,
+  SISRetrievedCourse,
   UserCourse,
   Year,
 } from "../../../resources/commonTypes";
@@ -25,12 +26,13 @@ import { newYearTemplate } from "./YearComponent";
 import { ReactComponent as AddSvg } from "../../../resources/svg/Add.svg";
 import { toast } from "react-toastify";
 import {
+  selectAllCourses,
   selectPlanList,
   selectUser,
   updatePlanList,
 } from "../../../slices/userSlice";
 import { api } from "../../../resources/assets";
-import { DragDropContext, Droppable } from "react-beautiful-dnd";
+import { DragDropContext, Draggable, Droppable } from "react-beautiful-dnd";
 import YearDraggable from "./YearDraggable";
 
 /**
@@ -48,6 +50,7 @@ function CourseList() {
   const droppables = useSelector(selectDroppables);
   const currentPlanCourses = useSelector(selectCurrentPlanCourses);
   const planList = useSelector(selectPlanList);
+  const allCourses = useSelector(selectAllCourses);
 
   // Component State setup.
   const [elements, setElements] = useState<JSX.Element[]>([]);
@@ -64,18 +67,20 @@ function CourseList() {
         if (year.courses.length === 0 || currentPlanId === currentPlan._id) {
           // We simply update courses
           year.courses.forEach((course: string) => {
-            const courseObj: UserCourse = getCourse(course);
+            const courseObj: UserCourse = getUserCourse(course);
             if (courseObj._id === "invalid_course") return;
             totCourses.push(courseObj);
             yearCourses.push(courseObj);
           });
           jsx.push(
             <YearDraggable
+              id={yearIndex}
               year={year}
               yearIndex={yearIndex}
               yearCourses={yearCourses}
             />
           );
+          console.log("Same Year is ", yearIndex, year);
           if (jsx.length === currentPlan.years.length) {
             jsx.sort(
               (el1: JSX.Element, el2: JSX.Element) =>
@@ -98,16 +103,17 @@ function CourseList() {
                   // make all the updates here
                   jsx.push(
                     <YearDraggable
+                      id={yearIndex}
                       year={year}
                       yearIndex={yearIndex}
                       yearCourses={yearCourses}
                     />
                   );
                   if (jsx.length === currentPlan.years.length) {
-                    // jsx.sort(
-                    //   (el1: JSX.Element, el2: JSX.Element) =>
-                    //     el1.props.id - el2.props.id
-                    // );
+                    jsx.sort(
+                      (el1: JSX.Element, el2: JSX.Element) =>
+                        el1.props.id - el2.props.id
+                    );
                     dispatch(updateCurrentPlanCourses(totCourses));
                     setElements(jsx);
                   }
@@ -121,7 +127,7 @@ function CourseList() {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [currentPlan, currentPlan._id, searching, placeholder]);
 
-  const getCourse = (id: string): UserCourse => {
+  const getUserCourse = (id: string): UserCourse => {
     let course: UserCourse = {
       _id: "invalid_course",
       title: "invalid course",
@@ -178,6 +184,7 @@ function CourseList() {
     }
   };
 
+  // Handles all drag n drop logic within the drag n drop context.
   const onDragEnd = (result: any) => {
     const { source, destination } = result;
 
@@ -259,6 +266,12 @@ function CourseList() {
           course2._id.localeCompare(course1._id)
       )[sourceIndex]._id;
       const courseYearIndex: number = sourceYear.courses.indexOf(courseId);
+
+      if (!checkDestValid(courseId, destination)) {
+        toast.error("Course isn't usually held this semester!");
+        return;
+      }
+
       const sourceCourseArr = [...sourceYear.courses];
       const destCourseArr = [...destYear.courses];
       sourceCourseArr.splice(courseYearIndex, 1);
@@ -306,6 +319,30 @@ function CourseList() {
     }
   };
 
+  const checkDestValid = (courseId: string, dest: DroppableType): boolean => {
+    const userCourse: UserCourse = getUserCourse(courseId);
+    const sisVer: SISRetrievedCourse | null = getSISCourse(userCourse);
+    let valid = false;
+    if (sisVer !== null) {
+      sisVer.terms.forEach((term: string) => {
+        if (term.split(" ")[0] === dest.semester) {
+          valid = true;
+        }
+      });
+    }
+    return valid;
+  };
+
+  const getSISCourse = (userCourse: UserCourse): SISRetrievedCourse | null => {
+    let out: SISRetrievedCourse | null = null;
+    allCourses.forEach((course) => {
+      if (course.number === userCourse.number) {
+        out = course;
+      }
+    });
+    return out;
+  };
+
   const updatePlanCourses = (
     destYear: Year,
     term: SemesterType,
@@ -343,37 +380,43 @@ function CourseList() {
     <>
       <DragDropContext onDragEnd={onDragEnd}>
         <div className="flex flex-row flex-wrap justify-between thin:justify-center mt-4 w-full h-auto">
-          {/* {currentPlan._id !== "noPlan" ? (
-            <AddSvg
-              onClick={() => addNewYear(true)}
-              className="-mt-1 mb-4 mr-3 w-14 h-auto max-h-48 border-2 border-gray-300 rounded focus:outline-none cursor-pointer select-none transform hover:scale-105 transition duration-200 ease-in"
-              data-tip={`Add a pre-university year!`}
-              data-for="godTip"
-            />
-          ) : null} */}
-          <div className="mx-auto">
-            <Droppable droppableId={"years"} type="YEAR" direction="horizontal">
-              {(provided, snapshot) => (
-                <div
-                  ref={provided.innerRef}
-                  className="rounded"
-                  style={getListStyle(snapshot.isDraggingOver)}
-                >
-                  {elements}
-                  {provided.placeholder}
-                </div>
-              )}
-            </Droppable>
-          </div>
-
-          {currentPlan._id !== "noPlan" ? (
-            <AddSvg
-              onClick={() => addNewYear(false)}
-              className="min-h-addSVG -mt-1 mb-4 ml-5 mr-5 w-14 h-auto max-h-48 border-2 border-gray-300 rounded focus:outline-none cursor-pointer select-none transform hover:scale-105 transition duration-200 ease-in"
-              data-tip={`Add an additional year after!`}
-              data-for="godTip"
-            />
-          ) : null}
+          <Droppable droppableId={"years"} type="YEAR" direction="horizontal">
+            {(provided, snapshot) => (
+              <div
+                ref={provided.innerRef}
+                className="flex-grow flex-wrap rounded"
+                style={getListStyle(snapshot.isDraggingOver)}
+              >
+                {elements}
+                {currentPlan._id !== "noPlan" ? (
+                  <Draggable
+                    index={currentPlan.years.length}
+                    key="addButton"
+                    draggableId={"addButton"}
+                    isDragDisabled={true}
+                  >
+                    {(provided, snapshot) => {
+                      return (
+                        <div
+                          ref={provided.innerRef}
+                          {...provided.draggableProps}
+                          {...provided.dragHandleProps}
+                        >
+                          <AddSvg
+                            onClick={() => addNewYear(false)}
+                            className="-mt-1 mb-4 ml-5 mr-5 w-14 h-auto max-h-48 min-h-addSVG border-2 border-gray-300 rounded focus:outline-none cursor-pointer select-none transform hover:scale-105 transition duration-200 ease-in"
+                            data-tip={`Add an additional year after!`}
+                            data-for="godTip"
+                          />
+                        </div>
+                      );
+                    }}
+                  </Draggable>
+                ) : null}
+                {provided.placeholder}
+              </div>
+            )}
+          </Droppable>
         </div>
       </DragDropContext>
     </>
