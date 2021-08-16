@@ -32,7 +32,7 @@ import {
   updatePlanList,
 } from "../../../slices/userSlice";
 import { api } from "../../../resources/assets";
-import { DragDropContext, Droppable } from "react-beautiful-dnd";
+import { DragDropContext, Draggable, Droppable } from "react-beautiful-dnd";
 import YearDraggable from "./YearDraggable";
 
 /**
@@ -74,11 +74,13 @@ function CourseList() {
           });
           jsx.push(
             <YearDraggable
+              id={yearIndex}
               year={year}
               yearIndex={yearIndex}
               yearCourses={yearCourses}
             />
           );
+          console.log("Same Year is ", yearIndex, year);
           if (jsx.length === currentPlan.years.length) {
             jsx.sort(
               (el1: JSX.Element, el2: JSX.Element) =>
@@ -101,16 +103,17 @@ function CourseList() {
                   // make all the updates here
                   jsx.push(
                     <YearDraggable
+                      id={yearIndex}
                       year={year}
                       yearIndex={yearIndex}
                       yearCourses={yearCourses}
                     />
                   );
                   if (jsx.length === currentPlan.years.length) {
-                    // jsx.sort(
-                    //   (el1: JSX.Element, el2: JSX.Element) =>
-                    //     el1.props.id - el2.props.id
-                    // );
+                    jsx.sort(
+                      (el1: JSX.Element, el2: JSX.Element) =>
+                        el1.props.id - el2.props.id
+                    );
                     dispatch(updateCurrentPlanCourses(totCourses));
                     setElements(jsx);
                   }
@@ -377,29 +380,38 @@ function CourseList() {
     <>
       <DragDropContext onDragEnd={onDragEnd}>
         <div className="flex flex-row flex-wrap justify-between thin:justify-center mt-4 w-full h-auto">
-          {/* {currentPlan._id !== "noPlan" ? (
-            <AddSvg
-              onClick={() => addNewYear(true)}
-              className="-mt-1 mb-4 mr-3 w-14 h-auto max-h-48 border-2 border-gray-300 rounded focus:outline-none cursor-pointer select-none transform hover:scale-105 transition duration-200 ease-in"
-              data-tip={`Add a pre-university year!`}
-              data-for="godTip"
-            />
-          ) : null} */}
           <Droppable droppableId={"years"} type="YEAR" direction="horizontal">
             {(provided, snapshot) => (
               <div
                 ref={provided.innerRef}
-                className="flex-wrap rounded"
+                className="flex-grow flex-wrap rounded"
                 style={getListStyle(snapshot.isDraggingOver)}
               >
                 {elements}
                 {currentPlan._id !== "noPlan" ? (
-                  <AddSvg
-                    onClick={() => addNewYear(false)}
-                    className="min-h-addSVG -mt-1 mb-4 ml-5 mr-5 w-14 h-auto max-h-48 border-2 border-gray-300 rounded focus:outline-none cursor-pointer select-none transform hover:scale-105 transition duration-200 ease-in"
-                    data-tip={`Add an additional year after!`}
-                    data-for="godTip"
-                  />
+                  <Draggable
+                    index={currentPlan.years.length}
+                    key="addButton"
+                    draggableId={"addButton"}
+                    isDragDisabled={true}
+                  >
+                    {(provided, snapshot) => {
+                      return (
+                        <div
+                          ref={provided.innerRef}
+                          {...provided.draggableProps}
+                          {...provided.dragHandleProps}
+                        >
+                          <AddSvg
+                            onClick={() => addNewYear(false)}
+                            className="-mt-1 mb-4 ml-5 mr-5 w-14 h-auto max-h-48 min-h-addSVG border-2 border-gray-300 rounded focus:outline-none cursor-pointer select-none transform hover:scale-105 transition duration-200 ease-in"
+                            data-tip={`Add an additional year after!`}
+                            data-for="godTip"
+                          />
+                        </div>
+                      );
+                    }}
+                  </Draggable>
                 ) : null}
                 {provided.placeholder}
               </div>

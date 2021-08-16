@@ -5,17 +5,17 @@ import {
   UserCourse,
   Year,
 } from "../../../resources/commonTypes";
-import CourseComponent from "./CourseComponent";
 import { useDispatch } from "react-redux";
 import {
   updateSearchStatus,
   updateSearchTime,
 } from "../../../slices/searchSlice";
 import { ReactComponent as AddSvg } from "../../../resources/svg/Add.svg";
-import { Droppable, Draggable } from "react-beautiful-dnd";
+import { Droppable } from "react-beautiful-dnd";
 import { updateDroppables } from "../../../slices/currentPlanSlice";
 import ReactTooltip from "react-tooltip";
 import clsx from "clsx";
+import CourseDraggable from "./CourseDraggable";
 
 type semesterProps = {
   customStyle: string;
@@ -85,27 +85,12 @@ function Semester({
 
   const getDraggables = () => {
     return semesterCourses.map((course, index) => (
-      <Draggable key={course._id} index={index} draggableId={course._id}>
-        {(provided, snapshot) => {
-          return (
-            <div
-              ref={provided.innerRef}
-              {...provided.draggableProps}
-              {...provided.dragHandleProps}
-              style={getItemStyle(
-                snapshot.isDragging,
-                provided.draggableProps.style
-              )}
-            >
-              <CourseComponent
-                year={semesterYear}
-                course={course}
-                semester={semesterName}
-              />
-            </div>
-          );
-        }}
-      </Draggable>
+      <CourseDraggable
+        course={course}
+        index={index}
+        semesterName={semesterName}
+        semesterYear={semesterYear}
+      />
     ));
   };
 
@@ -190,14 +175,6 @@ function Semester({
 
 const getListStyle = (isDraggingOver: any) => ({
   background: isDraggingOver ? "skyblue" : "lightblue",
-});
-
-const getItemStyle = (isDragging: any, draggableStyle: any) => ({
-  // some basic styles to make the items look a bit nicer
-  userSelect: "none",
-
-  // styles we need to apply on draggables
-  ...draggableStyle,
 });
 
 export default Semester;

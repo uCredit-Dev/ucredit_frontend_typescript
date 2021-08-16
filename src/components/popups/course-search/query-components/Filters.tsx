@@ -277,7 +277,15 @@ const Filters = ({ showCriteria }: filterProps) => {
                   label: wi,
                 })),
               ]}
-              value={{ value: searchFilters.wi, label: searchFilters.wi }}
+              value={{
+                value: searchFilters.wi,
+                label:
+                  searchFilters.wi === null
+                    ? "Any"
+                    : searchFilters.wi
+                    ? "True"
+                    : "False",
+              }}
               className="w-40 rounded outline-none"
               onChange={handleWIFilterChange}
             />
