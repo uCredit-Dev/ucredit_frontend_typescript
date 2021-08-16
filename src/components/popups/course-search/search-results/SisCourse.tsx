@@ -103,7 +103,7 @@ const SisCourse = (props: SisCourseProps) => {
     <>
       {inspected !== "None" ? (
         <>
-          <div className="pb-5 pt-4 px-5 w-full h-full text-base bg-white rounded overflow-y-auto">
+          <div className="pb-5 pt-4 px-5 w-full h-full text-base bg-white rounded select-text overflow-y-auto">
             {searchStack.length !== 0 ? (
               <button
                 className="focus:outline-none transform hover:scale-125 transition duration-200 ease-in"

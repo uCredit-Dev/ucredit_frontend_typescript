@@ -179,7 +179,7 @@ const CourseVersion = (props: { setInspectedArea: Function }) => {
                 </span>
                 <div className="flex flex-row flex-wrap ml-1">
                   {version.tags.length === 0 ? (
-                    "No tags!"
+                    <div className="select-none">No tags!</div>
                   ) : (
                     <>
                       {version.tags.map((tag, i) => (
