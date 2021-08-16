@@ -2,23 +2,16 @@ import React, { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import Select from "react-select";
 import ReactTooltip from "react-tooltip";
+import { ReactComponent as Question } from "../../../../resources/svg/Question.svg";
 import { all_deps, course_tags } from "../../../../resources/assets";
-import { FilterType, SemesterType } from "../../../../resources/commonTypes";
+import { FilterType } from "../../../../resources/commonTypes";
 import {
   selectSearchFilters,
-  selectYear,
   updateSearchFilters,
-  updateSearchTime,
 } from "../../../../slices/searchSlice";
 
 const creditFilters = ["Any", 0, 1, 2, 3, 4];
 const distributionFilters = ["N", "S", "H", "Q", "E"];
-const termFilters: SemesterType[] = [
-  "Fall",
-  "Spring",
-  "Intersession",
-  "Summer",
-];
 const yearFilters = [2021, 2020, 2019, 2018, 2017];
 const wiFilters = ["Any", "Yes", "No"];
 type filterProps = {
@@ -32,7 +25,6 @@ const Filters = ({ showCriteria }: filterProps) => {
   // Set up redux dispatch and variables.
   const dispatch = useDispatch();
   const searchFilters = useSelector(selectSearchFilters);
-  const year = useSelector(selectYear);
 
   // Update searching for certain amounts of credits
   const handleCreditFilterChange = (event: any): void => {
@@ -57,18 +49,6 @@ const Filters = ({ showCriteria }: filterProps) => {
       filter: "distribution",
       value: areas.length === 0 ? null : areas,
     };
-    dispatch(updateSearchFilters(params));
-  };
-
-  // Update searching for a certain term.
-  const handleTermFilterChange = (event: any): void => {
-    const params: { filter: FilterType; value: any } = {
-      filter: "term",
-      value: event.value,
-    };
-    dispatch(
-      updateSearchTime({ searchSemester: event.value, searchYear: year })
-    );
     dispatch(updateSearchFilters(params));
   };
 
@@ -172,20 +152,14 @@ const Filters = ({ showCriteria }: filterProps) => {
   return (
     <>
       <div className="flex flex-row items-center justify-between mb-2 w-full h-auto">
-        <Select
-          options={[
-            ...termFilters.map((term: any) => ({
-              value: term,
-              label: term,
-            })),
-          ]}
-          className="mx-1 w-40 rounded outline-none"
-          onChange={handleTermFilterChange}
-          value={{
-            value: searchFilters.term,
-            label: searchFilters.term,
-          }}
-        />
+        Version Year
+        <div className="flex flex-row flex-grow">
+          <Question
+            className="fill-gray h-4"
+            data-for="godTip"
+            data-tip={`<p>This is to search for a specific snapshot of course information at a specific time in the past or present.</p><p>NOTE: This is NOT to determine where on the plan you are adding the course.</p><p>(ie. Course Version "Spring, 2021" may not equal "Spring, Senior")</p>`}
+          />
+        </div>{" "}
         <Select
           options={[
             ...yearFilters.map((year: any) => ({
@@ -249,6 +223,15 @@ const Filters = ({ showCriteria }: filterProps) => {
           </div>
           <div className="flex flex-row items-center justify-between mb-2 w-full h-auto">
             Areas
+            <div className="flex-grow">
+              <Question
+                className="h-4"
+                data-for="godTip"
+                data-tip={
+                  "<p>Areas designate the specific subset a course belongs to. Each degree requires students to take a certain amount of credits or courses in a spcific area.</p><p>H - Humanities</p><p>S - Social Sciences</p><p>E - Engineering</p><p>N - Natural Sciences</p><p>Q - Quantitative</p>"
+                }
+              />
+            </div>
             <Select
               isMulti
               options={[
@@ -291,7 +274,16 @@ const Filters = ({ showCriteria }: filterProps) => {
             />
           </div>
           <div className="flex flex-row items-center justify-between mb-2 w-full h-auto">
-            Tag
+            Tag{" "}
+            <div className="flex-grow">
+              <Question
+                className="h-4"
+                data-for="godTip"
+                data-tip={
+                  "<p>Many degree and a few courses require students to complete a specific amount of courses under a certain tag.</p><p>These usually come in the form of 3-4 letters designating department (ie. CSC = Computer Science) followed by 2+ letters signalling the specific subgroup designation within the department (ie. SOFT = Software).</p>"
+                }
+              />
+            </div>
             <div data-tip={getTagString()} data-for="godTip">
               <Select
                 options={[

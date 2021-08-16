@@ -11,6 +11,8 @@ import {
   updateSearchTime,
 } from "../../../slices/searchSlice";
 import { ReactComponent as AddSvg } from "../../../resources/svg/Add.svg";
+import { ReactComponent as ArrowUp } from "../../../resources/svg/ArrowUp.svg";
+import { ReactComponent as ArrowDown } from "../../../resources/svg/ArrowDown.svg";
 import { Droppable } from "react-beautiful-dnd";
 import { updateDroppables } from "../../../slices/currentPlanSlice";
 import ReactTooltip from "react-tooltip";
@@ -44,6 +46,7 @@ function Semester({
   const [display, setDisplay] = useState<boolean>(true);
   const [totalCredits, setTotalCredits] = useState<number>(0);
   const [semesterCourses, setSemesterCourses] = useState<UserCourse[]>([]);
+  const [onHover, setOnHover] = useState<boolean>(false);
 
   // Every time any courses within this semester changes, update total credit count and the list.
   useEffect(() => {
@@ -66,11 +69,6 @@ function Semester({
     setTotalCredits(count);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [courses, courses.length]);
-
-  // Sets closed to open and open to closed for course display dropdown
-  const displayCourses = () => {
-    setDisplay(!display);
-  };
 
   // Opens search popup to add new course.
   const addCourse = () => {
@@ -112,8 +110,41 @@ function Semester({
         <div className="flex flex-col h-yearheading font-medium">
           <div className="flex flex-row items-center justify-between px-0.5 py-1 h-yearheading1 bg-white">
             <div
+              className={clsx(
+                "mt-1 h-5 rounded transform duration-150 ease-in",
+                {
+                  "mr-1 h-5 bg-blue-400": onHover,
+                }
+              )}
+              onMouseEnter={() => setOnHover(true)}
+              onMouseLeave={() => setOnHover(false)}
+            >
+              {display ? (
+                <ArrowDown
+                  className={clsx(
+                    "py-auto m-auto h-0 text-white cursor-pointer transform duration-150 ease-in",
+                    {
+                      "h-5": onHover,
+                    }
+                  )}
+                  onClick={() => setDisplay(false)}
+                />
+              ) : (
+                <ArrowUp
+                  className={clsx(
+                    "py-auto m-auto h-0 text-white cursor-pointer transform duration-150 ease-in",
+                    {
+                      "h-5": onHover,
+                    }
+                  )}
+                  onClick={() => setDisplay(true)}
+                />
+              )}
+            </div>
+            <div
               className="flex flex-row items-center w-full h-auto font-normal select-none"
-              onClick={displayCourses}
+              onMouseLeave={() => setOnHover(false)}
+              onMouseEnter={() => setOnHover(true)}
             >
               {semesterName === "Fall"
                 ? "Fall"
@@ -143,7 +174,7 @@ function Semester({
               ) : null}
             </div>
             <div
-              className="group flex flex-row items-center justify-center text-secondary hover:text-white bg-gray-100 hover:bg-white rounded-md"
+              className="group flex flex-row items-center justify-center text-secondary hover:text-white bg-gray-100 hover:bg-white rounded-md cursor-pointer"
               onClick={addCourse}
             >
               <AddSvg className="w-6 h-6 group-hover:text-primary stroke-2" />

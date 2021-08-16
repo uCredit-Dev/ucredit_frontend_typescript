@@ -42,7 +42,7 @@ const Search = () => {
     <div className="absolute top-0">
       {/* Background Grey */}
       <div
-        className="fixed z-40 left-0 top-0 m-0 w-full h-screen bg-black"
+        className="fixed z-40 left-0 top-0 m-0 w-full h-screen bg-black transform transition duration-700 ease-in"
         style={{
           opacity: searchOpacity === 100 ? 0.5 : 0,
         }}
