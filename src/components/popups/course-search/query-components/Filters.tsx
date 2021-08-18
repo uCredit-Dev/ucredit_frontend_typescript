@@ -203,7 +203,11 @@ const Filters = ({ showCriteria }: filterProps) => {
       </div>
       {showCriteria ? (
         <div>
-          <div className="flex flex-row items-center justify-between mb-2 w-full h-auto">
+          <div
+            className="flex flex-row items-center justify-between mb-2 w-full h-auto"
+            data-tip={"Department of the searched courses"}
+            data-for="godTip"
+          >
             Department
             <div data-tip={getDepString()} data-for="godTip">
               <Select
@@ -226,7 +230,11 @@ const Filters = ({ showCriteria }: filterProps) => {
               />
             </div>
           </div>
-          <div className="flex flex-row items-center justify-between mb-2 w-full h-auto">
+          <div
+            className="flex flex-row items-center justify-between mb-2 w-full h-auto"
+            data-tip={"Number of credits provided by the searched courses"}
+            data-for="godTip"
+          >
             Credits
             <Select
               onChange={handleCreditFilterChange}
@@ -247,7 +255,11 @@ const Filters = ({ showCriteria }: filterProps) => {
               className="w-40 rounded outline-none"
             />
           </div>
-          <div className="flex flex-row items-center justify-between mb-2 w-full h-auto">
+          <div
+            className="flex flex-row items-center justify-between mb-2 w-full h-auto"
+            data-tip={"Areas of study for the searched courses, please refer to your advisor for more info about the tags that you need to fulfill your major."}
+            data-for="godTip"
+          >
             Areas
             <Select
               isMulti
@@ -290,7 +302,11 @@ const Filters = ({ showCriteria }: filterProps) => {
               onChange={handleWIFilterChange}
             />
           </div>
-          <div className="flex flex-row items-center justify-between mb-2 w-full h-auto">
+          <div
+            className="flex flex-row items-center justify-between mb-2 w-full h-auto"
+            data-tip={"Tags for the searched courses, please refer to your advisor for more info about the tags that you need to fulfill your major."}
+            data-for="godTip"
+          >
             Tag
             <div data-tip={getTagString()} data-for="godTip">
               <Select
@@ -313,7 +329,11 @@ const Filters = ({ showCriteria }: filterProps) => {
               />
             </div>
           </div>{" "}
-          <div className="flex flex-row items-center justify-between mb-2 w-full h-auto">
+          <div
+            className="flex flex-row items-center justify-between mb-2 w-full h-auto"
+            data-tip={"course level of the searched courses, eg Upper Level"}
+            data-for="godTip"
+          >
             Level
             <div data-tip={getLevelString()} data-for="godTip">
               <Select
