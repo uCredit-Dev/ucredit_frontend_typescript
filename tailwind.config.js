@@ -72,6 +72,7 @@ module.exports = {
           semester: "#BEBEBE",
           year: "#D4D4D4",
         },
+        theme: "#3168AF",
       },
       fontSize: {
         myplan: ["2rem"],

@@ -8,7 +8,7 @@ import { api } from "./../resources/assets";
 import Dashboard from "./dashboard/Dashboard";
 import DashboardEntry from "./login/DashboardEntry";
 import { updateAllCourses } from "../slices/userSlice";
-import LandingPage from "./landing-page/LandingPage";
+import LandingPage from "./landing-page";
 import { toast, ToastContainer } from "react-toastify";
 import ReactTooltip from "react-tooltip";
 import { SISRetrievedCourse } from "../resources/commonTypes";
@@ -30,7 +30,6 @@ function App() {
       .get(api + "/search/skip/" + counter + "?mod=" + 450)
       .then((courses: any) => {
         if (courses.data.data.length > 0) {
-
           retrieveData(counter + 1, [...retrieved, ...courses.data.data]);
         } else {
           toast.dismiss();
@@ -88,48 +87,46 @@ function App() {
   return (
     <>
       <ReactTooltip
-        id="godTip"
+        id='godTip'
         html={true}
-        className="max-w-sm"
-        place="top"
-        effect="solid"
+        className='max-w-sm'
+        place='top'
+        effect='solid'
       />
       {welcomeScreen ? (
-        <div className="fixed z-50 flex flex-col m-auto w-screen h-screen text-center text-center text-white bg-blue-900">
+        <div className='fixed z-50 flex flex-col w-screen h-screen m-auto text-center text-white bg-blue-900'>
           <img
-            className="mt-auto mx-auto w-1/6"
+            className='w-1/6 mx-auto mt-auto'
             src={logoLine}
-            alt={"logo line art"}
-          ></img>
-          <div className="mb-auto mt-4 mx-auto w-full text-center text-5xl italic font-thin select-none">
+            alt={"logo line art"}></img>
+          <div className='w-full mx-auto mt-4 mb-auto text-5xl italic font-thin text-center select-none'>
             UCredit
           </div>
           <button
             onClick={() => {
               setWelcomeScreen(false);
             }}
-            data-tip="Tap to dismiss loading screen. Resource loading will still be
-              performed in the background."
-            data-for="godTip"
-            className="mb-3 focus:outline-none"
-          >
+            data-tip='Tap to dismiss loading screen. Resource loading will still be
+              performed in the background.'
+            data-for='godTip'
+            className='mb-3 focus:outline-none'>
             Dismiss Loading Screen
           </button>
         </div>
       ) : null}
       <Switch>
-        <Route path="/dashboard">
+        <Route path='/dashboard'>
           <Dashboard />
         </Route>
-        <Route path="/login">
+        <Route path='/login'>
           <DashboardEntry />
         </Route>
-        <Route path="/">
+        <Route path='/'>
           <LandingPage />
         </Route>
       </Switch>
       <ToastContainer
-        position="top-right"
+        position='top-right'
         autoClose={4000}
         hideProgressBar={true}
         newestOnTop={false}
