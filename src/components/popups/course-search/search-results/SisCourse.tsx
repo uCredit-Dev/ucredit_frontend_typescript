@@ -2,6 +2,7 @@ import React, { MouseEventHandler, useEffect, useState } from "react";
 // import { ReactComponent as CloseSvg } from "../../../../resources/svg/Close.svg";
 import Select from "react-select";
 import CourseVersion from "./CourseVersion";
+import { ReactComponent as Question } from "../../../../resources/svg/Question.svg";
 import { useDispatch, useSelector } from "react-redux";
 import { selectPlan } from "../../../../slices/currentPlanSlice";
 import {
@@ -12,14 +13,9 @@ import {
   popSearchStack,
   selectVersion,
   updateInspectedVersion,
-  updateSearchFilters,
   updateSearchTime,
 } from "../../../../slices/searchSlice";
-import {
-  FilterType,
-  Course,
-  SemesterType,
-} from "../../../../resources/commonTypes";
+import { Course } from "../../../../resources/commonTypes";
 import ReactTooltip from "react-tooltip";
 import { selectShowCourseInfo } from "../../../../slices/popupSlice";
 
@@ -28,14 +24,6 @@ type SisCourseProps = {
   setInspectedArea: Function;
   addCourse: MouseEventHandler<HTMLButtonElement>;
 };
-
-const termFilters: (SemesterType | "None")[] = [
-  "None",
-  "Fall",
-  "Spring",
-  "Intersession",
-  "Summer",
-];
 
 /**
  * Displays a sis course when searching.
@@ -49,8 +37,6 @@ const SisCourse = (props: SisCourseProps) => {
   const dispatch = useDispatch();
   const inspected = useSelector(selectInspectedCourse);
   const version = useSelector(selectVersion);
-  const semester = useSelector(selectSemester);
-  const year = useSelector(selectYear);
   const currentPlan = useSelector(selectPlan);
   const searchYear = useSelector(selectYear);
   const searchSemester = useSelector(selectSemester);
@@ -80,18 +66,6 @@ const SisCourse = (props: SisCourseProps) => {
     } else {
       return <option value={"None"}>None</option>;
     }
-  };
-
-  // Update searching for a certain term.
-  const handleTermFilterChange = (event: any): void => {
-    const params: { filter: FilterType; value: any } = {
-      filter: "term",
-      value: event.target.value,
-    };
-    dispatch(
-      updateSearchTime({ searchSemester: event.target.value, searchYear: year })
-    );
-    dispatch(updateSearchFilters(params));
   };
 
   // For changing the year to add course while in the search popout.
@@ -129,7 +103,7 @@ const SisCourse = (props: SisCourseProps) => {
     <>
       {inspected !== "None" ? (
         <>
-          <div className="pb-5 pt-4 px-5 w-full h-full text-base bg-white rounded overflow-y-auto">
+          <div className="pb-5 pt-4 px-5 w-full h-full text-base bg-white rounded select-text overflow-y-auto">
             {searchStack.length !== 0 ? (
               <button
                 className="focus:outline-none transform hover:scale-125 transition duration-200 ease-in"
@@ -154,7 +128,17 @@ const SisCourse = (props: SisCourseProps) => {
               </button> */}
             </div>
             <div className="flex flex-row items-center font-semibold">
-              Term:{" "}
+              <div className="flex flex-row">
+                Term
+                <div className="flex-grow mt-1">
+                  <Question
+                    className="h-4"
+                    data-for="godTip"
+                    data-tip={`<p>This is a specific snapshot of course information at a specific time in the past or present.</p><p>NOTE: This is NOT to determine where on the plan you are adding the course.</p><p>(ie. Course Version "Spring, 2021" may not equal "Spring, Senior")</p>`}
+                  />
+                </div>
+                :
+              </div>
               <Select
                 className="ml-2 w-44"
                 options={inspected.terms.map((term) => {
@@ -175,7 +159,14 @@ const SisCourse = (props: SisCourseProps) => {
                 <div className="mb-1 font-medium">Selecting for</div>
                 <div className="flex tight:flex-col flex-row">
                   <div className="flex flex-row items-center tight:ml-0 tight:mt-2 w-auto h-auto">
-                    Year:
+                    Year
+                    <div className="flex-grow">
+                      <Question
+                        className="h-4"
+                        data-for="godTip"
+                        data-tip={`<p>This is the year you're selecting for.</p><p>The version you are viewing gives you a snapshot of the information of the course at a specific time to give you an understanding of the past and current states of the course. This is NOT to determine where on the plan you are adding the course.</p><p>NOTE: This could be different from the version of the course you are viewing.</p><p>(ie. Course Version "Spring, 2021" may not equal "Spring, Senior")</p>`}
+                      />
+                    </div>
                     <select
                       className="ml-2 text-black text-coursecard rounded focus:outline-none"
                       onChange={handleYearChange}
@@ -189,21 +180,17 @@ const SisCourse = (props: SisCourseProps) => {
                     </select>
                   </div>
                   <div className="flex flex-row items-center tight:ml-0 ml-5 tight:mt-2 w-auto h-auto">
-                    Term:
-                    <select
-                      className="ml-2 h-6 rounded outline-none"
-                      onChange={handleTermFilterChange}
-                      value={semester}
-                    >
-                      {termFilters.map((term) => (
-                        <option key={term + inspected.number} value={term}>
-                          {term}
-                        </option>
-                      ))}
-                    </select>
-                  </div>
-                  <div className="flex flex-row items-center tight:ml-0 ml-5 tight:mt-2 w-auto h-auto">
-                    Area:
+                    Area
+                    <div className="flex-grow">
+                      <Question
+                        className="h-4"
+                        data-for="godTip"
+                        data-tip={
+                          "<p>Areas designate the specific subset a course belongs to. Each degree requires students to take a certain amount of credits or courses in a spcific area.</p><p>H - Humanities</p><p>S - Social Sciences</p><p>E - Engineering</p><p>N - Natural Sciences</p><p>Q - Quantitative</p>"
+                        }
+                      />
+                    </div>
+                    :
                     <select
                       className="ml-2 w-14 h-6 rounded outline-none"
                       value={props.inspectedArea}

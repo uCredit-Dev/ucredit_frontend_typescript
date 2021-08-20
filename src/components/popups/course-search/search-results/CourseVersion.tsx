@@ -6,6 +6,7 @@ import { getColors } from "../../../../resources/assets";
 import { selectVersion } from "../../../../slices/searchSlice";
 import PrereqDisplay from "../prereqs/PrereqDisplay";
 import CourseEvalSection from "./CourseEvalSection";
+import { ReactComponent as Question } from "../../../../resources/svg/Question.svg";
 
 /**
  * A component showing the specific version of the course at a particular semester/year
@@ -77,7 +78,7 @@ const CourseVersion = (props: { setInspectedArea: Function }) => {
 
   const getAreaName = (area: string): string => {
     if (area === "N") {
-      return "Basic Sciences";
+      return "Natural Sciences";
     } else if (area === "E") {
       return "Engineering";
     } else if (area === "S") {
@@ -120,7 +121,19 @@ const CourseVersion = (props: { setInspectedArea: Function }) => {
             </div>
             <div className="w-auto h-auto">
               <div className="flex flex-row items-center">
-                <div className="mr-1 font-semibold">Areas:</div>
+                <div className="flex flex-row mr-1 font-semibold">
+                  Areas
+                  <div className="flex-grow mt-1">
+                    <Question
+                      className="h-4"
+                      data-for="godTip"
+                      data-tip={
+                        "<p>Areas designate the specific subset a course belongs to. Each degree requires students to take a certain amount of credits or courses in a spcific area.</p><p>H - Humanities</p><p>S - Social Sciences</p><p>E - Engineering</p><p>N - Natural Sciences</p><p>Q - Quantitative</p>"
+                      }
+                    />
+                  </div>
+                  :
+                </div>
                 {version.areas !== "None" ? (
                   version.areas.split("").map((area) => (
                     <div
@@ -151,10 +164,22 @@ const CourseVersion = (props: { setInspectedArea: Function }) => {
                 {version.department}
               </div>
               <div className="flex flex-row w-full h-auto">
-                <span className="font-semibold">Tags: </span>
+                <span className="flex flex-row font-semibold">
+                  Tags
+                  <div className="flex-grow mt-1">
+                    <Question
+                      className="h-4"
+                      data-for="godTip"
+                      data-tip={
+                        "<p>Many degree and a few courses require students to complete a specific amount of courses under a certain tag.</p><p>These usually come in the form of 3-4 letters designating department (ie. CSC = Computer Science) followed by 2+ letters signalling the specific subgroup designation within the department (ie. SOFT = Software).</p>"
+                      }
+                    />
+                  </div>
+                  :{" "}
+                </span>
                 <div className="flex flex-row flex-wrap ml-1">
                   {version.tags.length === 0 ? (
-                    "No tags!"
+                    <div className="select-none">No tags!</div>
                   ) : (
                     <>
                       {version.tags.map((tag, i) => (

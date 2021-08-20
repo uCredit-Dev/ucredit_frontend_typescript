@@ -138,10 +138,10 @@ function CourseBar({ distribution, general, description }: courseBarProps) {
             <CheckSvg className="absolute left-1/2 top-1/2 w-5 h-5 text-white stroke-2 transform -translate-x-1/2 -translate-y-1/2" />
           ) : null}
         </div>
-        <Add
+        {/* <Add
           className="h-6 transform hover:scale-150 transition duration-200 ease-in"
           onClick={addToDistribution}
-        />
+        /> */}
       </div>
     </>
   );

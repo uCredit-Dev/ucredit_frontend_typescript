@@ -16,8 +16,8 @@ import {
   SISRetrievedCourse,
   TagType,
 } from "../../../../resources/commonTypes";
-import { ReactComponent as FilterFilledSvg } from "../../../../resources/svg/FilterFilled.svg";
-import { ReactComponent as FilterNonFilledSvg } from "../../../../resources/svg/FilterNonFilled.svg";
+import { ReactComponent as ArrowUp } from "../../../../resources/svg/ArrowUp.svg";
+import { ReactComponent as ArrowDown } from "../../../../resources/svg/ArrowDown.svg";
 import "react-toastify/dist/ReactToastify.css";
 import Filters from "./Filters";
 import { selectAllCourses } from "../../../../slices/userSlice";
@@ -111,6 +111,7 @@ const Form = (props: { setSearching: Function }) => {
 
   // Finds course based on the search conditions given in extras.
   // Finds all relevant courses by starting with all courses and filtering them out.
+  // TODO: Modularize this.
   const find = (extras: SearchExtras): [SISRetrievedCourse[], number[]] => {
     let courses: SISRetrievedCourse[] = [...allCourses];
     if (extras.query.length > 0) {
@@ -358,7 +359,7 @@ const Form = (props: { setSearching: Function }) => {
           onChange={handleSearchTerm}
         />
         <div
-          className="flex flex-none flex-row items-center justify-center w-6 h-6 bg-white rounded cursor-pointer transform hover:scale-110 transition duration-200 ease-in"
+          className="flex flex-none flex-row items-center justify-center w-6 h-6 bg-white rounded-full cursor-pointer transform hover:scale-110 transition duration-200 ease-in"
           onClick={() => setShowCriteria(!showCriteria)}
           data-tip={
             showCriteria ? "Hide search criteria" : "Show search criteria"
@@ -366,9 +367,9 @@ const Form = (props: { setSearching: Function }) => {
           data-for="godTip"
         >
           {!showCriteria ? (
-            <FilterNonFilledSvg className="w-4 h-4 transform rotate-90" />
+            <ArrowUp className="w-4 h-4 transform" />
           ) : (
-            <FilterFilledSvg className="w-4 h-4 transform rotate-90" />
+            <ArrowDown className="w-4 h-4 transform" />
           )}
         </div>
       </div>
