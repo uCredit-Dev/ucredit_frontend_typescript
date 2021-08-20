@@ -185,7 +185,11 @@ const CourseVersion = (props: { setInspectedArea: Function }) => {
                       {version.tags.map((tag, i) => (
                         <>
                           {i !== 0 ? ", " : null}
-                          <div className="mt-1 px-1 w-max text-white font-semibold bg-blue-500 rounded transform hover:scale-101 transition duration-200 ease-in">
+                          <div
+                            data-tip={"Ask your advisor for more info about " + tag + " tag!"}
+                            data-for="godTip"
+                            className="mt-1 px-1 w-max text-white font-semibold bg-blue-500 rounded transform hover:scale-101 transition duration-200 ease-in"
+                          >
                             {tag}
                           </div>
                         </>
