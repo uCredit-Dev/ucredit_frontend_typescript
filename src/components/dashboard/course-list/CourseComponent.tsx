@@ -1,51 +1,54 @@
 import React, { useState, useEffect } from "react";
 import ReactTooltip from "react-tooltip";
-import {
-  UserCourse,
-  Plan,
-  SemesterType,
-  Course,
-} from "../../../resources/commonTypes";
-import { api, checkAllPrereqs, getColors } from "../../../resources/assets";
+import { UserCourse, SemesterType, Year } from "../../../resources/commonTypes";
+import { checkAllPrereqs, getColors } from "../../../resources/assets";
 import { useDispatch, useSelector } from "react-redux";
-import {
-  updateInspectedCourse,
-  updateSearchTime,
-  updateSearchTerm,
-  updatePlaceholder,
-  updateInspectedVersion,
-  updateSearchStatus,
-} from "../../../slices/searchSlice";
 import { ReactComponent as RemoveSvg } from "../../../resources/svg/Remove.svg";
 import { ReactComponent as DetailsSvg } from "../../../resources/svg/Details.svg";
 import { ReactComponent as WarningSvg } from "../../../resources/svg/Warning.svg";
+import { ReactComponent as GrabSvg } from "../../../resources/svg/Grab.svg";
 import { Transition } from "@tailwindui/react";
 import clsx from "clsx";
-import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import {
   selectCurrentPlanCourses,
   selectPlan,
-  updateSelectedPlan,
 } from "../../../slices/currentPlanSlice";
 import { selectAllCourses } from "../../../slices/userSlice";
+import OverridePrereqpopup from "./OverridePrereqPopup";
+import {
+  updateCourseToDelete,
+  updateCourseToShow,
+  updateDeleteCourseStatus,
+  updateShowCourseInfo,
+} from "../../../slices/popupSlice";
 
 type courseProps = {
+  setDraggable: Function;
   course: UserCourse;
-  year: number;
+  year: Year;
   semester: SemesterType;
 };
 
 /**
  * This is a course card displayed in the course list under each semester.
+ * @param setDraggable: to determine if we can drag this item.
  * @param course: course it's displaying
  * @param year: year the course is part of
  * @param semester: semester this course is part of
  */
-function CourseComponent({ year, course, semester }: courseProps) {
+function CourseComponent({
+  setDraggable,
+  year,
+  course,
+  semester,
+}: courseProps) {
   // React setup
   const [activated, setActivated] = useState<boolean>(false);
   const [satisfied, setSatisfied] = useState<boolean>(false);
+  const [overridden, setOverridden] = useState<boolean>(false);
+  const [displayPopup, setDisplayPopup] = useState<boolean>(false);
+  const [hovered, setHovered] = useState<boolean>(false);
 
   // Redux setup
   const dispatch = useDispatch();
@@ -76,75 +79,24 @@ function CourseComponent({ year, course, semester }: courseProps) {
 
   // Sets or resets the course displayed in popout after user clicks it in course list.
   const displayCourses = () => {
-    dispatch(updateSearchTime({ searchYear: year, searchSemester: semester }));
-    dispatch(updateSearchTerm(course.number));
-    let found = false;
-    allCourses.forEach((c) => {
-      if (c.number === course.number) {
-        dispatch(updateInspectedCourse(c));
-        dispatch(updatePlaceholder(false));
-        found = true;
-      }
-    });
-
-    if (!found) {
-      const placeholderCourse: Course = {
-        title: course.title,
-        number: course.number,
-        areas: course.area,
-        term: "",
-        school: "none",
-        department: "none",
-        credits: course.credits.toString(),
-        wi: false,
-        bio: "This is a placeholder course",
-        tags: [],
-        preReq: [],
-        restrictions: [],
-        level: "",
-      };
-      dispatch(updatePlaceholder(true));
-      dispatch(updateInspectedVersion(placeholderCourse));
-    }
-
-    dispatch(updateSearchStatus(true));
+    dispatch(updateCourseToShow(course));
+    dispatch(updateShowCourseInfo(true));
   };
 
   // Deletes a course on click of the delete button. Updates currently displayed plan with changes.
   const deleteCourse = () => {
-    fetch(api + "/courses/" + course._id, { method: "DELETE" }).then(() => {
-      let newPlan: Plan;
-      // TODO: Delete specific course by year AND semester
-      const years = [...currentPlan.years];
-      currentPlan.years.forEach((planYear, index) => {
-        if (planYear.year === year) {
-          const courses = planYear.courses.filter(
-            (yearCourse) => yearCourse !== course._id
-          );
-          years[index] = { ...years[index], courses: courses };
-        }
-      });
-      newPlan = { ...currentPlan, years: years };
-
-      toast.error(course.title + " deleted!", {
-        position: "top-right",
-        autoClose: 5000,
-        hideProgressBar: true,
-        closeOnClick: true,
-        pauseOnHover: true,
-        draggable: true,
-        progress: 0,
-      });
-      dispatch(updateSelectedPlan(newPlan));
-    });
+    dispatch(updateCourseToDelete({ course: course, year: year }));
+    dispatch(updateDeleteCourseStatus(true));
   };
 
   const activate = () => {
     setActivated(true);
+    setTimeout(() => setHovered(true), 100);
   };
 
   const deactivate = () => {
     setActivated(false);
+    setHovered(false);
   };
 
   const tooltip = `<div>Prereqs not yet satisfied</div>`;
@@ -177,7 +129,7 @@ function CourseComponent({ year, course, semester }: courseProps) {
                 {course.area}
               </div>
             ) : null}{" "}
-            {!satisfied ? (
+            {!satisfied && !overridden ? (
               <WarningSvg className="flex items-center w-5 h-5 text-white font-semibold rounded select-none" />
             ) : null}
           </div>
@@ -204,8 +156,20 @@ function CourseComponent({ year, course, semester }: courseProps) {
                 )}
               >
                 <div className="absolute left-0 top-0 w-full h-full bg-white bg-opacity-80 rounded" />
+                <div
+                  className={clsx(
+                    "absolute z-20 left-0 w-0 h-full bg-blue-400 bg-opacity-80 rounded transform duration-150 ease-in",
+                    {
+                      "w-1/4": hovered,
+                    }
+                  )}
+                  onMouseEnter={() => setDraggable(false)}
+                  onMouseLeave={() => setDraggable(true)}
+                >
+                  <GrabSvg className="p-auto py-auto z-20 m-auto w-6 h-full text-white" />
+                </div>
                 <DetailsSvg
-                  className="relative z-20 flex flex-row items-center justify-center mr-5 p-0.5 w-6 h-6 text-white bg-secondary rounded-md outline-none stroke-2 cursor-pointer transform hover:scale-110 transition duration-150 ease-in"
+                  className="relative z-20 flex flex-row items-center justify-center ml-12 mr-5 p-0.5 w-6 h-6 text-white bg-secondary rounded-md outline-none stroke-2 cursor-pointer transform hover:scale-110 transition duration-150 ease-in"
                   onClick={displayCourses}
                 />
                 <RemoveSvg
@@ -215,14 +179,22 @@ function CourseComponent({ year, course, semester }: courseProps) {
                   )}
                   onClick={deleteCourse}
                 />
-                {!satisfied ? (
+                {!satisfied && !overridden ? (
                   <>
                     <WarningSvg
                       data-tip={tooltip}
                       data-for="godTip"
                       className="relative z-20 flex flex-row items-center justify-center p-0.5 w-6 h-6 text-white bg-secondary rounded-md outline-none stroke-2 cursor-pointer transform hover:scale-110 transition duration-150 ease-in"
+                      onClick={() => setDisplayPopup(true)}
                     />
                   </>
+                ) : null}
+                {displayPopup ? (
+                  <OverridePrereqpopup
+                    courseName={course.number}
+                    cleanup={() => setDisplayPopup(false)}
+                    save={() => setOverridden(true)}
+                  />
                 ) : null}
               </div>
             )}

@@ -4,7 +4,6 @@ import {
   selectUser,
   selectPlanList,
   updatePlanList,
-  updateDeletePlanStatus,
 } from "../../../slices/userSlice";
 // import PlanChoose from "./PlanChoose";
 import { ReactComponent as RemoveSvg } from "../../../resources/svg/Remove.svg";
@@ -15,6 +14,8 @@ import {
 } from "../../../slices/currentPlanSlice";
 import { api } from "../../../resources/assets";
 import { toast } from "react-toastify";
+import { updateDeletePlanStatus } from "../../../slices/popupSlice";
+import ShareLinksPopup from "./ShareLinksPopup";
 
 /**
  * User/Current plan information area.
@@ -31,6 +32,9 @@ const InfoCards = () => {
 
   // Determines whether we're editing the name.
   const [editName, setEditName] = useState<boolean>(false);
+
+  // shareable URL
+  const [shareableURL, setShareableURL] = useState<string>("");
 
   // Updates temporary plan name and notifies useffect on state change to update db plan name with debounce.
   const handlePlanNameChange = (event: any) => {
@@ -86,6 +90,20 @@ const InfoCards = () => {
     dispatch(updateDeletePlanStatus(true));
   };
 
+  const onShareClick = () => {
+    if (shareableURL !== '') {
+      setShareableURL("");
+      return;
+    }
+    setShareableURL(
+      (window.location.href.includes("localhost")
+        ? "localhost:3000"
+        : "https://ucredit.herokuapp.com") +
+        "/share?_id=" +
+        currentPlan._id
+    );
+  };
+
   return (
     <div className="tight:items-center mb-4 mx-4 p-6 h-auto bg-white rounded shadow">
       <div className="flex flex-col mb-2 w-auto h-auto">
@@ -101,10 +119,16 @@ const InfoCards = () => {
           />
         </div>
       </div>
-      <div className="flex flex-col items-center">
+      <div className="flex flex-col items-center min-w-min">
         <div className="w-auto h-auto text-center">{user.name}</div>
         <div className="w-auto h-auto text-center font-light stroke-2">
           {currentPlan.majors}
+        </div>
+        <button className="m-auto hover:underline" onClick={onShareClick}>
+          Share
+        </button>
+        <div>
+          {shareableURL === "" ? null: <ShareLinksPopup link={shareableURL} setURL={onShareClick}/>}
         </div>
       </div>
     </div>

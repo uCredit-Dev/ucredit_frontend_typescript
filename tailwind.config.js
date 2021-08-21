@@ -4,7 +4,7 @@ module.exports = {
   theme: {
     extend: {
       minWidth: {
-        yearMin: "160px",
+        yearMin: "200px",
         narrowest: "710px",
         planAdd: "360px",
       },
@@ -16,6 +16,7 @@ module.exports = {
         "1/4": "25%",
         "1/2": "50%",
         "3/4": "75%",
+        addSVG: "12rem",
         full: "100%",
       },
       maxHeight: { mobileSearch: "75vh" },
@@ -116,6 +117,11 @@ module.exports = {
       },
       fill: (theme) => ({
         gold: theme("colors.yellow.400"),
+        red: theme("colors.red.500"),
+        green: theme("colors.green.500"),
+        blue: theme("colors.blue.500"),
+        gray: theme("colors.gray.500"),
+        white: theme("colors.white"),
       }),
     },
   },

@@ -1,17 +1,17 @@
 import React from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { toast } from "react-toastify";
-import {
-  selectToAddName,
-  updateToAddName,
-  updateAddingPlanStatus,
-  selectPlanList,
-  updateToAddMajor,
-  selectToAddMajor,
-  updateGeneratePlanAddStatus,
-} from "../../slices/userSlice";
+import { selectPlanList } from "../../slices/userSlice";
 import { allMajors } from "../../resources/majors";
 import Select from "react-select";
+import {
+  selectToAddName,
+  selectToAddMajor,
+  updateAddingPlanStatus,
+  updateGeneratePlanAddStatus,
+  updateToAddName,
+  updateToAddMajor,
+} from "../../slices/popupSlice";
 
 const majorOptions = [
   ...allMajors.map((major, index) => ({

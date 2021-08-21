@@ -61,7 +61,7 @@ const CourseDisplay = () => {
   const getYear = (): Year | null => {
     let out: Year | null = null;
     currentPlan.years.forEach((currPlanYear) => {
-      if (currPlanYear.year === year) {
+      if (currPlanYear._id === year) {
         out = currPlanYear;
       }
     });
@@ -109,7 +109,7 @@ const CourseDisplay = () => {
             const allYears: Year[] = [...currentPlan.years];
             const newYears: Year[] = [];
             allYears.forEach((y) => {
-              if (y.year === year) {
+              if (y._id === year) {
                 const yCourses = [...y.courses, newUserCourse._id];
                 newYears.push({ ...y, courses: yCourses });
               } else {

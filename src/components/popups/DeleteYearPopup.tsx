@@ -1,16 +1,16 @@
 import React from "react";
 import { useSelector, useDispatch } from "react-redux";
+import { selectUser } from "../../slices/userSlice";
+import { toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
+import GenerateNewPlan from "../../resources/GenerateNewPlan";
+import { selectPlan, updateSelectedPlan } from "../../slices/currentPlanSlice";
+import { api } from "../../resources/assets";
 import {
-  selectUser,
   selectYearToDelete,
   updateYearToDelete,
   updateDeleteYearStatus,
-} from "../../slices/userSlice";
-import { toast } from "react-toastify";
-import "react-toastify/dist/ReactToastify.css";
-import GenerateNewPlan from "../dashboard/right-column-info/GenerateNewPlan";
-import { selectPlan, updateSelectedPlan } from "../../slices/currentPlanSlice";
-import { api } from "../../resources/assets";
+} from "../../slices/popupSlice";
 
 /**
  * This is the confirmation popup that appears when users press the button to delete a plan.

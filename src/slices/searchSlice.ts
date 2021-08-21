@@ -12,7 +12,7 @@ import {
 
 // Contains the year and semester that we are currently adding courses to.
 type TimeBundle = {
-  searchYear: number;
+  searchYear: string;
   searchSemester: SemesterType;
 };
 
@@ -52,7 +52,7 @@ const initialState: searchStates = {
   searching: false,
   searchTerm: "",
   searchTime: {
-    searchYear: 0,
+    searchYear: "",
     searchSemester: "Fall",
   },
   retrievedCourses: [], // test courses for now

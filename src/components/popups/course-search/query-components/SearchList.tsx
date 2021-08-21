@@ -11,6 +11,7 @@ import CourseCard from "./CourseCard";
 import ReactPaginate from "react-paginate";
 import { ReactComponent as PlaceholderFilledSvg } from "../../../../resources/svg/PlaceholderFilled.svg";
 import { ReactComponent as PlaceholderEmptySvg } from "../../../../resources/svg/PlaceholderEmpty.svg";
+import { ReactComponent as Question } from "../../../../resources/svg/Question.svg";
 import { Course } from "../../../../resources/commonTypes";
 import ReactTooltip from "react-tooltip";
 
@@ -120,6 +121,15 @@ const SearchList = (props: { searching: boolean }) => {
           ) : null}
         </div>
         <div className="flex flex-row items-center">
+          <div className="flex-grow mr-1">
+            <Question
+              className="h-4"
+              data-for="godTip"
+              data-tip={
+                "<p>Placeholder course used to flexibly add courses to your plan. Any course not covered by the plan can be added in this way. Just remember to fill out all necessary information of the placeholder course you'd like the plan to count towards!</p><p>Examples:</p><p>- A future 3 credit H course.</p><p>- A required lab safety course of number EN.990.110</p><p>- An AP course covering for the 4 credit course, Calculus I (AS.110.108)</p>"
+              }
+            />
+          </div>
           <div
             className="flex flex-row items-center justify-center px-1 w-auto h-6 bg-white rounded cursor-pointer transform hover:scale-110 transition duration-200 ease-in"
             onClick={onPlaceholderClick}

@@ -39,9 +39,9 @@ const FineDistribution = ({
   const allCourses = useSelector(selectAllCourses);
   const currPlanCourses = useSelector(selectCurrentPlanCourses);
 
-  const addToDistribution = () => {
-    setDisplayAdd(true);
-  };
+  // const addToDistribution = () => {
+  //   setDisplayAdd(true);
+  // };
 
   const closePopup = () => {
     setDisplayAdd(false);
@@ -94,7 +94,7 @@ const FineDistribution = ({
         </div>
         <p
           className={clsx("pr-2 h-auto", {
-            "overflow-hidden overflow-ellipsis whitespace-nowrap":
+            "overflow-hidden overflow-ellipsis whitespace-nowrap select-text":
               !showDistrDesc,
           })}
         >
@@ -104,9 +104,10 @@ const FineDistribution = ({
       <p className="font-bold">
         {plannedCredits}/{dis.required_credits}
       </p>
-      {/* <Add 
-          className="h-6 transform hover:scale-150 transition duration-200 ease-in"
-          onClick={addToDistribution}/> */}
+      {/* <Add
+        className="h-6 transform hover:scale-150 transition duration-200 ease-in"
+        onClick={addToDistribution}
+      /> */}
       {displayAdd ? (
         <DistributionPopup
           distribution={dis}

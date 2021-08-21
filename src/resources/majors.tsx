@@ -1,46 +1,23 @@
 import { Major } from "./commonTypes";
+
+// All Major Requirements can be found at the links below
+// https://e-catalogue.jhu.edu/arts-sciences/full-time-residential-programs/degree-programs/
+// https://e-catalogue.jhu.edu/engineering/full-time-residential-programs/degree-programs/
+
+//TODO:
+// BME
+// 	 Career Exploration
+// 	 Focus Area
+
+// Public Health
+// 	 Social Sciences
+
 /* INCOMPLETE */
 
-// https://me.jhu.edu/undergraduate-studies/academic-advising-undergraduate/
-const bsME: Major = {
-  degree_name: "B.S. Mechanical Engineering",
-  department: "AS Mechanical Engineering",
-  total_degree_credit: 120,
-  wi_credit: 6,
-  distributions: [],
-};
-
-// https://engineering.jhu.edu/materials/undergraduate-studies/bs-requirements/
-const bsMatSci: Major = {
-  degree_name: "B.S. Materials Science & Engineering",
-  department: "EN Materials Science & Engineering",
-  total_degree_credit: 120,
-  wi_credit: 6,
-  distributions: [],
-};
-
-// https://arthist.jhu.edu/undergraduate/requirements/
-const baHistArt: Major = {
-  degree_name: "B.A. History of Art",
-  department: "AS History",
-  total_degree_credit: 120,
-  wi_credit: 6,
-  distributions: [],
-};
-
-// https://eps.jhu.edu/undergraduate/eps-major-and-minor/
-const bsEPS: Major = {
-  degree_name: "B.S. Earth & Planetary Sciences",
-  department: "AS Earth & Planetary Sciences",
-  total_degree_credit: 120,
-  wi_credit: 6,
-  distributions: [],
-};
-
-// https://krieger.jhu.edu/envs/requirements/majors/
-const bsEnvSci: Major = {
-  degree_name: "B.S. Environmental Science",
-  department: "AS Medicine, Science, & the Humanities",
+// https://engineering.jhu.edu/case/academic-advising/
+const bsCivEng: Major = {
+  degree_name: "B.S. Civil Engineering",
+  department: "EN Civil Engineering",
   total_degree_credit: 120,
   wi_credit: 6,
   distributions: [],
@@ -55,6 +32,24 @@ const baEnglish: Major = {
   distributions: [],
 };
 
+// https://krieger.jhu.edu/envs/requirements/majors/
+const bsEnvSci: Major = {
+  degree_name: "B.S. Environmental Science",
+  department: "AS Medicine, Science, & the Humanities",
+  total_degree_credit: 120,
+  wi_credit: 6,
+  distributions: [],
+};
+
+// https://eps.jhu.edu/undergraduate/eps-major-and-minor/
+const bsEPS: Major = {
+  degree_name: "B.S. Earth & Planetary Sciences",
+  department: "AS Earth & Planetary Sciences",
+  total_degree_credit: 120,
+  wi_credit: 6,
+  distributions: [],
+};
+
 // https://engineering.jhu.edu/ece/undergraduate-studies/degree-options/
 const bsCompEng: Major = {
   degree_name: "B.S. Computer Engineering",
@@ -64,10 +59,10 @@ const bsCompEng: Major = {
   distributions: [],
 };
 
-// https://engineering.jhu.edu/case/academic-advising/
-const bsCivEng: Major = {
-  degree_name: "B.S. Civil Engineering",
-  department: "EN Civil Engineering",
+// https://arthist.jhu.edu/undergraduate/requirements/
+const baHistArt: Major = {
+  degree_name: "B.A. History of Art",
+  department: "AS History",
   total_degree_credit: 120,
   wi_credit: 6,
   distributions: [],
@@ -82,6 +77,15 @@ const bsBBio: Major = {
   distributions: [],
 };
 
+// https://engineering.jhu.edu/materials/undergraduate-studies/bs-requirements/
+const bsMatSci: Major = {
+  degree_name: "B.S. Materials Science & Engineering",
+  department: "EN Materials Science & Engineering",
+  total_degree_credit: 120,
+  wi_credit: 6,
+  distributions: [],
+};
+
 // https://cogsci.jhu.edu/undergraduate/cognitive-science-major/
 const bsCogSci: Major = {
   degree_name: "B.S. Cognitive Science",
@@ -91,46 +95,10 @@ const bsCogSci: Major = {
   distributions: [],
 };
 
-// https://writingseminars.jhu.edu/undergraduate/requirements/
-const baWritingSems: Major = {
-  degree_name: "B.A. Writing Seminars",
-  department: "AS Writing Seminars",
-  total_degree_credit: 120,
-  wi_credit: 6,
-  distributions: [],
-};
-
-// https://physics-astronomy.jhu.edu/undergraduate/major-requirements/
-const bsPhysics: Major = {
-  degree_name: "B.S. Physics",
-  department: "AS Physics",
-  total_degree_credit: 120,
-  wi_credit: 6,
-  distributions: [],
-};
-
-// https://krieger.jhu.edu/msh/major-requirements/
-const baMSH: Major = {
-  degree_name: "B.A. Medicine, Science, & the Humanities",
-  department: "AS Medicine, Science, & the Humanities",
-  total_degree_credit: 120,
-  wi_credit: 6,
-  distributions: [],
-};
-
-// https://mathematics.jhu.edu/undergraduate/major-in-mathematics/
-const bsMath: Major = {
-  degree_name: "B.S. Mathematics",
-  department: "AS Mathematics",
-  total_degree_credit: 120,
-  wi_credit: 6,
-  distributions: [],
-};
-
-// https://ehe.jhu.edu/undergraduate/undergraduate-advising/undergraduate-major-advising/index.html
-const bsEnvEng: Major = {
-  degree_name: "B.S. Environment Engineering",
-  department: "AS Environment Engineering",
+// https://me.jhu.edu/undergraduate-studies/academic-advising-undergraduate/
+const bsME: Major = {
+  degree_name: "B.S. Mechanical Engineering",
+  department: "AS Mechanical Engineering",
   total_degree_credit: 120,
   wi_credit: 6,
   distributions: [],
@@ -154,10 +122,46 @@ const bsBioPhysics: Major = {
   distributions: [],
 };
 
-// https://soc.jhu.edu/undergraduate/requirements/
-const baSoc: Major = {
-  degree_name: "B.A. Sociology",
-  department: "AS Sociology",
+// https://krieger.jhu.edu/msh/major-requirements/
+const baMSH: Major = {
+  degree_name: "B.A. Medicine, Science, & the Humanities",
+  department: "AS Medicine, Science, & the Humanities",
+  total_degree_credit: 120,
+  wi_credit: 6,
+  distributions: [],
+};
+
+// https://physics-astronomy.jhu.edu/undergraduate/major-requirements/
+const bsPhysics: Major = {
+  degree_name: "B.S. Physics",
+  department: "AS Physics",
+  total_degree_credit: 120,
+  wi_credit: 6,
+  distributions: [],
+};
+
+// https://mathematics.jhu.edu/undergraduate/major-in-mathematics/
+const bsMath: Major = {
+  degree_name: "B.S. Mathematics",
+  department: "AS Mathematics",
+  total_degree_credit: 120,
+  wi_credit: 6,
+  distributions: [],
+};
+
+// https://writingseminars.jhu.edu/undergraduate/requirements/
+const baWritingSems: Major = {
+  degree_name: "B.A. Writing Seminars",
+  department: "AS Writing Seminars",
+  total_degree_credit: 120,
+  wi_credit: 6,
+  distributions: [],
+};
+
+// https://ehe.jhu.edu/undergraduate/undergraduate-advising/undergraduate-major-advising/index.html
+const bsEnvEng: Major = {
+  degree_name: "B.S. Environment Engineering",
+  department: "AS Environment Engineering",
   total_degree_credit: 120,
   wi_credit: 6,
   distributions: [],
@@ -167,6 +171,15 @@ const baSoc: Major = {
 const bsElectricEng: Major = {
   degree_name: "B.S. Electrical Engineering",
   department: "EN Electrical & Computer Engineering",
+  total_degree_credit: 120,
+  wi_credit: 6,
+  distributions: [],
+};
+
+// https://soc.jhu.edu/undergraduate/requirements/
+const baSoc: Major = {
+  degree_name: "B.A. Sociology",
+  department: "AS Sociology",
   total_degree_credit: 120,
   wi_credit: 6,
   distributions: [],
@@ -194,15 +207,6 @@ const baMolCell: Major = {
 const baPsych: Major = {
   degree_name: "B.S. Psychology",
   department: "AS Psychology",
-  total_degree_credit: 120,
-  wi_credit: 6,
-  distributions: [],
-};
-
-// https://engineering.jhu.edu/ams/major-requirements/
-const bsAMS: Major = {
-  degree_name: "B.S. Applied Mathematics & Statistics",
-  department: "EN Applied Mathematics & Statistics",
   total_degree_credit: 120,
   wi_credit: 6,
   distributions: [],
@@ -308,13 +312,13 @@ const bsBME: Major = {
   distributions: [
     {
       name: "Biomedical Core",
-      required_credits: 34,
+      required_credits: 33,
       min_credits_per_course: 1,
       description:
-        "For more information please visit the" +
+        "For more information please visit the " +
         "<a href='https://e-catalogue.jhu.edu/engineering/full-time-residential-programs/degree-programs/biomedical-engineering/biomedical-engineering-bachelor-science/#requirementstext'>" +
         "major degree requirement</a> section on the department website.",
-      criteria: "EN Biomedical Core[D]^OR^Biomedical Core[D]",
+      criteria: "EN Biomedical Engineering[D]",
       fine_requirements: [
         {
           description:
@@ -339,7 +343,7 @@ const bsBME: Major = {
             "580.244 Nonlinear Dynamics of Biological Systems\n\t580.246 Systems and Controls\n\t",
           required_credits: 6,
           criteria:
-            "EN.580.424[C]^OR^EN.580.451[C]^OR^EN.580.452[C]^OR^EN.580.454[C]^OR^EN.580.494[C]^OR^EN.580.242[C]^OR^EN.580.243[C]" +
+            "EN.580.424[C]^OR^EN.580.451[C]^OR^EN.580.452[C]^OR^EN.580.454[C]^OR^EN.580.494[C]^OR^EN.580.242[C]^OR^EN.580.243[C]^OR^" +
             "EN.580.244[C]^OR^EN.580.246[C]^OR^EN.580.248[C]^OR^EN.580.475[C]^OR^EN.580.477[C]^OR^EN.580.485[C]^OR^EN.580.487[C]",
         },
         {
@@ -377,10 +381,12 @@ const bsBME: Major = {
             "601.456 Computer Integrated Surgery II",
           required_credits: 6,
           criteria:
-            "EN.510.433[C]^OR^EN.510.434[C]^OR^EN.520.462[C]^OR^EN.520.463[C]^OR^EN.520.498[C]" +
-            "EN.520.499[C]^OR^EN.540.421[C]^OR^EN.580.411[C]^OR^EN.580.412[C]^OR^EN.580.437[C]" +
-            "EN.580.438[C]^OR^EN.580.456[C]^OR^EN.580.457[C]^OR^EN.580.471[C]^OR^EN.580.480[C]" +
-            "EN.580.580[C]^OR^EN.580.581[C]^OR^EN.601.455[C]^OR^EN.601.456[C]",
+            "(EN.510.433[C]^AND^EN.510.434[C])^OR^(EN.520.462[C]^AND^EN.520.463[C])^OR^" +
+            "(EN.520.498[C]^AND^EN.520.499[C])^OR^(EN.540.400[C]^AND^EN.540.421[C])^OR^" +
+            "(EN.580.311[C]^AND^EN.580.312[C])^OR^(EN.580.411[C]^AND^EN.580.412[C])^OR^" +
+            "(EN.580.456[C]^AND^EN.580.457[C])^OR^(EN.580.471[C]^AND^EN.580.571[C])^OR^" +
+            "(EN.580.480[C]^AND^EN.580.481[C])^OR^(EN.580.580[C]^AND^EN.580.581[C])^OR^" +
+            "(EN.601.455[C]^AND^EN.601.456[C])^OR^(EN.580.437[C]^AND^EN.580.438[C])",
         },
       ],
     },
@@ -452,7 +458,7 @@ const bsBME: Major = {
       description:
         "Select courses to form a coherent program, relevant to the student’s goals. One course in which ethical and social " +
         "issues related to technology or medicine is recommended. and at least two semesters of writing-intensive courses.",
-      criteria: "AS Humanities and Social Sciences[D]",
+      criteria: "H[S]^OR^S[A]",
     },
     {
       name: "Basic Sciences",
@@ -462,32 +468,8 @@ const bsBME: Major = {
         "Students who receive credit for AP Physics I and/or Physics II will receive a waiver for the laboratory course. " +
         "This will reduce the required number of credits for Basic Sciences by 1 or 2 credits. Students are still required " +
         "to complete at least 129 total credits for the degree.",
-      criteria: "AS Basic Sciences[N]",
-      fine_requirements: [
-        {
-          description:
-            "Required Courses:\n\t171.101 General Physics: Physical Science Major I\n\t171.107 General Physics for Physical Sciences Majors (AL)" +
-            "\n\t171.102 General Physics: Physical Science Major II\n\t171.108 General Physics for Physical Science Majors (AL)" +
-            "\n\t173.111 General Physics Laboratory I\n\t173.112 General Physics Laboratory II" +
-            "\n\t030.101 Introductory Chemistry I\n\t030.102 Introductory Chemistry II" +
-            "\n\t030.105 Introductory Chemistry Laboratory I\n\t030.106 Introductory Chemistry Laboratory II",
-          required_credits: 18,
-          criteria:
-            "AS.171.101[C]^OR^AS.171.107[C]^OR^AS.171.102[C]^OR^AS.171.108[C]^OR^AS.171.111[C]^OR^AS.173.112[C]" +
-            "^OR^AS.030.101[C]^OR^AS.030.102[C]^OR^AS.030.105[C]^OR^AS.030.106[C]",
-        },
-        {
-          description:
-            "Select one Biology Lab Course of the following:\n\t" +
-            "AS.020.153 General Biology Laboratory I\n\tAS.020.154 General Biology Lab II\n\tAS.020.315 Biochemistry Project labs\n\t" +
-            "\n\tAS.020.316 Cell Biology Lab\n\tAS.020.340 Developmental Genetics Lab\n\tAS.020.377 Comparative Physiology Lab\n\t" +
-            "AS.250.253 Protein Engineering and Biochemistry Lab\n\tAS.250.254 Protein Biochemistry and Engineering Laboratory",
-          required_credits: 1,
-          criteria:
-            "AS.020.153[C]^OR^AS.020.154[C]^OR^AS.020.315[C]^OR^AS.020.316[C]^OR^AS.020.340[C]^OR^AS.020.377[C]" +
-            "^OR^AS.250.253[C]^OR^AS.250.254[C]",
-        },
-      ],
+      criteria: "AS.171.101[C]^OR^AS.171.107[C]^OR^AS.171.102[C]^OR^AS.171.108[C]^OR^AS.171.111[C]^OR^AS.173.112[C]" +
+      "^OR^AS.030.101[C]^OR^AS.030.102[C]^OR^AS.030.105[C]^OR^AS.030.106[C]",
     },
     {
       name: "Mathematics",
@@ -518,13 +500,6 @@ const bsBME: Major = {
         },
       ],
     },
-    {
-      name: "Free Electives",
-      required_credits: 9,
-      min_credits_per_course: 1,
-      description: "Select 9 credits from any area.",
-      criteria: "Free Electives[N]",
-    },
   ],
 };
 
@@ -540,47 +515,34 @@ const baHistory: Major = {
       required_credits: 6,
       min_credits_per_course: 3,
       description:
-        "For more information please visit the" +
-        "<a href='https://e-catalogue.jhu.edu/arts-sciences/full-time-residential-programs/degree-programs/history/history-bachelor-arts/'>" +
-        "major degree requirement</a> section on the department website.",
-      criteria: "AS Political Science[D]",
-      fine_requirements: [
-        {
-          description:
             "Select one of the following: Two introductory history courses (AS.100.1xx) OR \n\t" +
             "One introductory history course (AS.100.1xx) + one Freshman Seminar (AS.100.130-AS.100.160)",
-          required_credits: 6,
-          criteria: "Introductory History[D]",
-        },
-      ],
+            criteria: "(AS History[D]^AND^100[L])^OR^AS.100.130[C]",
     },
     {
       name: "Method Requirement (All Majors)",
       required_credits: 6,
       min_credits_per_course: 3,
-      description: "Required courses for History majors.",
-      criteria: "AS Economics[D]",
-      fine_requirements: [
-        {
-          description:
-            "Required Courses: AS.100.293 Undergraduate Seminar in History\n\t100.294 Undergraduate Seminar in History",
-          required_credits: 6,
-          criteria: "AS.100.293[C]^OR^AS.100.294[C]",
-        },
-      ],
+      description: "Required Courses: AS.100.293 Undergraduate Seminar in History\n\t100.294 Undergraduate Seminar in History",
+      criteria: "AS.100.293[C]^OR^AS.100.294[C]",
     },
     {
       name: "Elective Courses",
-      required_credits: 18,
+      required_credits: 24,
       min_credits_per_course: 3,
       description: "Required elective courses for History majors.",
-      criteria: "AS Electives[D]",
+      criteria: "AS History[D]",
       fine_requirements: [
         {
           description:
-            "Required Courses: Two history courses at any level\n\tFour 300-level or higher history courses",
-          required_credits: 18,
-          criteria: "AS History[D]^AND^Lower Level Undergraduate[N]",
+            "Required Courses: Two history courses at any level",
+          required_credits: 12,
+          criteria: "AS History[D]",
+        },
+        {
+          description: "Four 300-level or higher history courses",
+          required_credits: 12,
+          criteria: "AS History[D]^AND^Upper Level Undergraduate[L]",
         },
       ],
     },
@@ -592,16 +554,7 @@ const baHistory: Major = {
         "Required additional upper-level courses for History majors. Note: Students must have a cumulative GPA of 3.25 " +
         "and a cumulative GPA in history of 3.5 or higher by December of their junior year to be eligible for the senior " +
         "thesis option to graduate with honors in history.",
-      criteria: "",
-      fine_requirements: [
-        {
-          required_credits: 6,
-          description:
-            "Select one of the following: Two 300-level or higher history courses\n\t OR (AS.100.507 Senior Thesis\n\t AND" +
-            "\n\tAS.100.508 Senior Thesis",
-          criteria: "AS History[D]^OR^AS.100.507[C]^OR^AS.100.508[C]",
-        },
-      ],
+      criteria: "(AS History[D]^AND^Upper Level Undergraduate[L])^OR^AS.100.507[C]^OR^AS.100.508[C]",
     },
     {
       name: "Foreign Language",
@@ -631,7 +584,7 @@ const baBiology: Major = {
         "For more information please visit the" +
         "<a href='https://e-catalogue.jhu.edu/arts-sciences/full-time-residential-programs/degree-programs/biology/biology-bachelor-arts/'>" +
         "major degree requirement</a> section on the department website.",
-      criteria: "AS Biology[D]^OR^Bio[D]",
+      criteria: "AS Biology[D]",
       fine_requirements: [
         {
           description:
@@ -674,7 +627,7 @@ const baBiology: Major = {
       required_credits: 10,
       min_credits_per_course: 1,
       description: "Must complete all Physics courses.",
-      criteria: "AS Physics[N]",
+      criteria: "AS Physics[D]",
       fine_requirements: [
         {
           description:
@@ -694,7 +647,7 @@ const baBiology: Major = {
       required_credits: 8,
       min_credits_per_course: 4,
       description: "Must complete all Mathematics Course.",
-      criteria: "AS Mathematics[N]",
+      criteria: "AS Mathematics[D]",
       fine_requirements: [
         {
           description:
@@ -721,6 +674,13 @@ const baBiology: Major = {
         "the courses approved by the Director of Undergraduate Studies. At least one course must be taught by the Biology " +
         "Department (AS.020.xxx) and be a 2 or 3 credit course.",
       criteria: "AS Electives[N]",
+      fine_requirements: [
+        {
+          description: "At least one course must be taught by the Biology Department (AS.020.xxx) and be a 2 or 3 credit course",
+          required_credits: 2,
+          criteria: "AS Biology[D]"
+        }
+      ]
     },
   ],
 };
@@ -740,7 +700,7 @@ const baPH: Major = {
         "For more information please visit the" +
         "<a href='https://e-catalogue.jhu.edu/arts-sciences/full-time-residential-programs/degree-programs/public-health-studies/public-health-studies-bachelor-arts/'>" +
         "major degree requirement</a> section on the department website.",
-      criteria: "AS Public Health Studies[D]^OR^Public Health[D]",
+      criteria: "AS Public Health Studies[D]",
       fine_requirements: [
         {
           description:
@@ -755,13 +715,13 @@ const baPH: Major = {
     },
     {
       name: "Intermediate Public Health Courses at Homewood",
-      required_credits: 12,
+      required_credits: 15,
       min_credits_per_course: 3,
       description:
         "One course at the 200-400 level focusing on social and behavioral aspects of public health from the list below." +
         "Other courses may apply with advisor approval. All courses must be at least 3 credits and only 2 Gordis Teaching " +
         "Fellowship (GTF) courses may apply (AS.280.4xx courses).",
-      criteria: "AS Intermediate Public Health Courses at Homewood[D]",
+      criteria: "AS Intermediate Public Health[D]^AND^(200[L]^OR^300[L]^OR^400[L])",
       exception: "",
       fine_requirements: [
         {
@@ -782,15 +742,7 @@ const baPH: Major = {
         " public health setting. The Applied Experience gives students an opportunity to explore an area of interest within" +
         " the field of public health by actively engaging in and directly contributing to a public health project or program." +
         " The AE must be at least 80 hours and 4 weeks long under the supervision of a public health profession.",
-      criteria: "Applied Experience[N]",
-      fine_requirements: [
-        {
-          description:
-            "Required Courses:\n\t280.500	Applied Experience-Public Health\n\t",
-          required_credits: 1,
-          criteria: "AS.280.500[C]",
-        },
-      ],
+      criteria: "AS.280.500[C]",
     },
     {
       name: "Courses at Johns Hopkins Bloomberg School of Public Health (JHSPH)",
@@ -1107,13 +1059,13 @@ const baIS: Major = {
         "One introductory course at the 100-level in the JHU History Department " +
         "(e.g., AS.100.1xx).\n\tFour courses designated INST-GLOBAL in the course description.",
       criteria:
-        "(AS History[D]^AND^Lower Level Undergraduate[N])^OR^INST-GLOBAL[T]",
+        "(AS History[D]^AND^Lower Level Undergraduate[L])^OR^INST-GLOBAL[T]",
       fine_requirements: [
         {
           required_credits: 3,
           description:
             "One introductory course at the 100-level in the JHU History Department (e.g., AS.100.1xx)",
-          criteria: "AS History[D]^AND^Lower Level Undergraduate[N]",
+          criteria: "AS History[D]^AND^Lower Level Undergraduate[L]",
         },
         {
           required_credits: 12,
@@ -1126,9 +1078,262 @@ const baIS: Major = {
   ],
 };
 
+// https://e-catalogue.jhu.edu/engineering/full-time-residential-programs/degree-programs/applied-mathematics-statistics/applied-mathematics-statistics-bs/#requirementstext
+const bsAMS: Major = {
+  degree_name: "B.S. Applied Mathematics & Statistics",
+  department: "EN Applied Mathematics & Statistics",
+  total_degree_credit: 120,
+  wi_credit: 6,
+  distributions: [
+    {
+      name: "Math",
+      required_credits: 39,
+      min_credits_per_course: 3,
+      description: "",
+      criteria: "AS Mathematics[D]^OR^EN Applied Math and Statistics[D]",
+      fine_requirements: [
+        {
+          description:
+            "Calculus I, II, and III",
+          required_credits: 12,
+          criteria:
+            "AS.110.108[C]^OR^AS.110.109[C]^OR^AS.110.113[C]^OR^AS.110.202[C]^OR^AS.110.211[C]",
+        },
+        {
+          description: "Linear Algebra",
+          required_credits: 4,
+          criteria:
+            "AS.110.201[C]^OR^AS.110.212[C]^OR^EN.553.291[C]",
+        },
+        {
+          description: "Differential Equations",
+          required_credits: 3,
+          criteria:
+            "AS.110.302[C]^OR^EN.553.391[C]^OR^EN.553.473[C]",
+        },
+        {
+          description: "Numerical Linear Algebra",
+          required_credits: 4,
+          criteria:
+            "EN.553.385[C]",
+        },
+        {
+          description: "Discrete Mathematics",
+          required_credits: 4,
+          criteria:
+            "EN.553.171[C]^OR^EN.553.172[C]^OR^EN.553.371[C]^OR^EN.553.471[C]^OR^EN.553.472[C]",
+        },
+        {
+          description: "Probability and Statistics",
+          required_credits: 8,
+          criteria:
+            "EN.553.420[C]^OR^EN.553.430[C]^OR^EN.553.431[C]",
+        },
+        {
+          description: "Optimization",
+          required_credits: 4,
+          criteria:
+            "EN.553.361[C]",
+        },
+      ],
+    },
+    {
+      name: "Computer Languages and Programming",
+      required_credits: 3,
+      min_credits_per_course: 1,
+      description: "Select one of the following: " +
+      "EN.500.112 Gateway Computing: JAVA\n\tEN.500.113 Gateway Computing: Python\n\tEN.500.114Gateway Computing: Matlab\n\t" + 
+      "AS.250.205 Introduction to Computing\n\tEN.553.281 Introduction to Mathematical Computing\n\tEN.580.242 & EN.580.244" +
+      "Biological Models and Simulations and Nonlinear Dynamics of Biological Systems\n\tEN.601.220 Intermediate Programming" +
+      ". NOTE: Students are strongly encouraged to fulfill this element of the requirement by taking EN.500.113 Gateway Computing: Python, and to do this in their first semester at Johns Hopkins University.",
+      criteria:
+        "EN.500.112[C]^OR^EN.500.113[C]^OR^EN.500.114[C]^OR^AS.250.205[C]^OR^EN.553.281[C]^OR^EN.580.242[C]^OR^EN.580.244[C]^OR^" +
+        "EN.601.220",
+    },
+    {
+      name: "Area of Focus",
+      required_credits: 12,
+      min_credits_per_course: 3,
+      description:
+        "Two courses within a coherent field of interest. For more detail please visit " +
+        "https://e-catalogue.jhu.edu/engineering/full-time-residential-programs/degree-programs/applied-mathematics-statistics/applied-mathematics-statistics-bs/#requirementstext",
+      criteria: "",
+      user_select: true,
+    },
+    {
+      name: "Natural Sciences",
+      required_credits: 12,
+      min_credits_per_course: 1,
+      description:
+        "Courses coded Natural Sciences. Laboratory courses that accompany Natural Science courses may" +
+        " be used in reaching this total. (Courses used to meet the requirements above may be counted toward this total.)",
+      criteria: "AS Natural Science[N]",
+    },
+    {
+      name: "Quantitative Studies",
+      required_credits: 40,
+      min_credits_per_course: 1,
+      description:
+        "Courses coded Quantitative Studies totaling 40 credits of which at least 18 credits must be in courses " + 
+        "numbered 300 or higher. (Courses used to meet the requirements above may be counted toward this total.)",
+      criteria: "AS Natural Science[N]",
+    },
+    {
+      name: "Liberal Arts",
+      required_credits: 18,
+      min_credits_per_course: 3,
+      double_count: true,
+      description:
+        "These courses must have either an ‘H’ or ‘S’ area designator on them, but can be " +
+        "from any department. At most 2 of these courses may be taken S/U (if not counted towards " +
+        "the writing requirement). Foreign language courses can be counted as well, even if " +
+        "they don’t carry an ‘H’ or ‘S’ designator.",
+      criteria:
+        "AS Center for Language Education[D]^OR^AS Modern Languages and Literatures[D]^OR^H[A]^OR^S[A]",
+    },
+    {
+      name: "Writing Intensive",
+      required_credits: 6,
+      min_credits_per_course: 3,
+      double_count: true,
+      description:
+        "Students are required to fulfill the university’s requirement of two writing intensive courses, " +
+        "each at least 3 credits. Students must receive at least a C- grade or better in these writing courses. " +
+        "At least one course must be explicitly focused on writing skills in English (eg, courses in professional, " +
+        "fiction or expository writing). These courses may overlap with other requirements.",
+      criteria:
+        "N[A]",
+    },
+  ],
+};
+
+// https://www.cs.jhu.edu/undergraduate-studies/academics/ugrad-advising-manual/
+const bsCS_Old: Major = {
+  degree_name: "B.S. Computer Science (OLD - Pre-2021)",
+  department: "EN Computer Science",
+  total_degree_credit: 126,
+  wi_credit: 6,
+  distributions: [
+    {
+      name: "Computer Science",
+      required_credits: 45,
+      min_credits_per_course: 1,
+      description:
+        "For more information please visit the <a href='https://www.cs.jhu.edu/undergraduate-studies/academics/ugrad-advising-manual/'>" +
+        "major degree requirement</a> section on the department website.",
+      criteria: "EN Computer Science[D]^OR^CSCI-OTHER[T]",
+      fine_requirements: [
+        {
+          description:
+            "Computer Ethics(601.104). Practical Ethics for Future Leaders (660.400/406) " +
+            "may be used as a substitute for the computer ethics requirement for the BS program, " +
+            "but does not count towards the CS total credits at all.",
+          required_credits: 1,
+          criteria: "EN.600.104[C]^OR^EN.601.104[C]",
+        },
+        {
+          description:
+            "Required Courses: \n\t500.112/113/114 Gateway Computing or AP Comp Sci A or " +
+            "equivalent\n\t601.220 Intermediate Programming\n\t601.226 Data Structures\n\t601.229 " +
+            "Computer System Fundamentals\n\t600.231/271 Automata and Computation Theory\n\t601.433 Algorithms",
+          required_credits: 20,
+          criteria:
+            "EN.500.112[C]^OR^EN.500.113[C]^OR^EN.500.114[C]^OR^EN.601.220[C]^OR^EN.601.226[C]" +
+            "^OR^EN.601.229[C]^OR^EN.600.231[C]^OR^EN.600.271[C]^OR^EN.601.443[C]",
+        },
+        {
+          description:
+            "13 upper level CS credits in addition to the required Algorithms course",
+          required_credits: 13,
+          criteria: "EN Computer Science[D]^AND^Upper Level Undergraduate[L]",
+        },
+        {
+          description:
+            "At least one upper level course in two of these four different classification " +
+            "areas: Applications(CSCI-APPL), Systems(CSCI-SYST), Software(CSCI-SOFT) and Reasoning(CSCI-RSNG)",
+          required_credits: 8,
+          exclusive: true,
+          criteria:
+            "CSCI-APPL[T]^OR^CSCI-SYST[T]^OR^CSCI-SOFT[T]^OR^CSCI-RSNG[T]",
+        },
+        {
+          description:
+            "One Team(CSCI-TEAM) designated course. This Team course may overlap other course " +
+            "requirements, for example to count as both Team and Software.",
+          required_credits: 3,
+          criteria: "CSCI-TEAM[T]",
+        },
+      ],
+    },
+    {
+      name: "Math",
+      required_credits: 24,
+      min_credits_per_course: 3,
+      description:
+        "All courses in this category must be from one of the two math departments on " +
+        "campus: Mathematics or Applied Math and Statistics. However, 553.171 Discrete Mathematics " +
+        "may not count towards these math requirements. Other than Calculus I and II, all the " +
+        "remaining courses must be 200-level or above. The BS math courses must include coverage " +
+        "of both probability and statistics, which can be satisfied in many ways, including " +
+        "taking any of the 553.3xx combined Probability & Statistics courses.",
+      criteria: "AS Mathematics[D]^OR^EN Applied Math and Statistics[D]",
+      exception: "EN.553.171[C]",
+      fine_requirements: [
+        {
+          description:
+            "Required Courses:\n\t110.108 Calculus I or AP equivalent\n\t110.109 Calculus II or AP equivalent\n\t" +
+            "550.171/553.171 Discrete Mathematics",
+          required_credits: 12,
+          criteria: "AS.110.108[C]^OR^AS.110.109[C]^OR^EN.550.171[C]^OR^EN.553.171[C]",
+        },
+        {
+          description: "Probability and Statistics",
+          required_credits: 4,
+          criteria:
+            "EN Applied Mathematics & Statistics[D]^AND^(Probability & Statistics[N]^OR^Probability and Statistics[N])^AND^Upper Level Undergraduate[L]",
+        },
+      ],
+    },
+    {
+      name: "Science",
+      required_credits: 16,
+      min_credits_per_course: 1,
+      description:
+        "At least two semesters of physics or two semesters of chemistry, with the associated laboratories, must be included.",
+      criteria: "N[A]",
+    },
+    {
+      name: "Liberal Arts",
+      required_credits: 18,
+      min_credits_per_course: 3,
+      double_count: true,
+      description:
+        "These courses must have either an ‘H’ or ‘S’ area designator on them, but can be " +
+        "from any department. At most 2 of these courses may be taken S/U (if not counted towards " +
+        "the writing requirement). Foreign language courses can be counted as well, even if " +
+        "they don’t carry an ‘H’ or ‘S’ designator.",
+      criteria:
+        "AS Center for Language Education[D]^OR^AS Modern Languages and Literatures[D]^OR^H[A]^OR^S[A]",
+    },
+    {
+      name: "Writing Intensive",
+      required_credits: 6,
+      min_credits_per_course: 3,
+      double_count: true,
+      description:
+        "Students are required to fulfill the university’s requirement of two writing intensive courses, " +
+        "each at least 3 credits. Students must receive at least a C- grade or better in these writing courses. " +
+        "At least one course must be explicitly focused on writing skills in English (eg, courses in professional, " +
+        "fiction or expository writing). These courses may overlap with other requirements.",
+      criteria:
+        "N[A]",
+    },
+  ],
+};
+
 // https://www.cs.jhu.edu/2021undergraduate-advising-manual/
-const bsCS: Major = {
-  degree_name: "B.S. Computer Science(NEW)",
+const bsCS_New: Major = {
+  degree_name: "B.S. Computer Science (NEW - 2021 & after)",
   department: "EN Computer Science",
   total_degree_credit: 120,
   wi_credit: 6,
@@ -1235,32 +1440,68 @@ const bsCS: Major = {
         "AS Center for Language Education[D]^OR^AS Modern Languages and Literatures[D]^OR^H[A]^OR^S[A]",
     },
     {
-      name: "English Focused Writing Intensive",
-      required_credits: 3,
+      name: "Writing Intensive",
+      required_credits: 6,
       min_credits_per_course: 3,
       double_count: true,
       description:
-        "At least one course with a primary focus on writing in English must be chosen. " +
-        "Courses that satisfy this requirement are: EN.661.110, EN.661.111, EN.661.250, EN.661.251, " +
-        "EN.661.315, AS.060.100, AS.060.113, AS.220.105, AS.180.248, AS.290.303, AS.360.133.",
+        "Students are required to fulfill the university’s requirement of two writing intensive courses, " +
+        "each at least 3 credits. Students must receive at least a C- grade or better in these writing courses. " +
+        "At least one course must be explicitly focused on writing skills in English (eg, courses in professional, " +
+        "fiction or expository writing). These courses may overlap with other requirements.",
       criteria:
-        "EN.661.110[C]^OR^EN.661.111[C]^OR^EN.661.250[C]^OR^EN.661.251[C]^OR^EN.661.315[C]" +
-        "^OR^AS.060.100[C]^OR^AS.060.113[C]^OR^AS.220.105[C]^OR^AS.180.248[C]^OR^AS.290.303[C]^OR^AS.360.133",
+        "N[A]",
     },
   ],
 };
 
+export function getMajorFromCommonName(name: string) {
+  var out: Major | null = null;
+  allMajors.forEach((major) => {
+    if (major.degree_name === name) {
+      out = major;
+    }
+  });
+  if (out === null) {
+    throw Error('Major not found');
+  }
+  return out;
+}
+
 // TODO: Separate code for BA and BS into separate sections
 export const allMajors: Major[] = [
-  bsCS,
+  bsCS_Old,
+  bsCS_New,
+  bsAMS,
   baIS,
   baPH,
   bsBME,
   baHistory,
   baBiology,
   bsCBE,
-  // baIS, baEcon, baPsych, baPH, baMolCell, baNeuro, baSoc, baHistory, baMSH, baWritingSems,
-  // baEnglish, baHistArt,
-  // bsCS, bsCBE, baEcon, bsAMS, bsBME, bsElectricEng, bsBioPhysics, bsChem, bsEnvEng, bsMath,
-  // bsPhysics, bsCogSci, bsBBio, baBiology, bsCivEng, bsCompEng, bsEnvSci, bsEPS, bsMatSci, bsME
+
+  // baEcon,
+  // bsAMS,
+  // baPsych,
+  // baMolCell,
+  // baNeuro,
+  // baSoc,
+  // bsElectricEng,
+  // bsEnvEng,
+  // baWritingSems,
+  // bsMath,
+  // bsPhysics,
+  // baMSH,
+  // bsBioPhysics,
+  // bsChem,
+  // bsME,
+  // bsCogSci,
+  // bsMatSci,
+  // bsBBio,
+  // baHistArt,
+  // bsCompEng,
+  // bsEPS,
+  // bsEnvSci,
+  // baEnglish,
+  // bsCivEng,
 ];

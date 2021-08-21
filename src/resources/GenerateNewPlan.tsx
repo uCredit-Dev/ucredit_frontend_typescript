@@ -1,22 +1,28 @@
 import React, { useEffect } from "react";
 import axios from "axios";
 import { useDispatch, useSelector } from "react-redux";
-import { DistributionObj, Plan } from "../../../resources/commonTypes";
+import { DistributionObj, Plan } from "./commonTypes";
 import {
   updatePlanList,
   selectUser,
   selectPlanList,
   updateGuestPlanIds,
-  selectToAddName,
-  selectToAddMajor,
-  clearToAdd,
-  updateGeneratePlanAddStatus,
-  selectGeneratePlanAddStatus,
-} from "../../../slices/userSlice";
+} from "../slices/userSlice";
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-import { updateSelectedPlan } from "../../../slices/currentPlanSlice";
-import { api } from "../../../resources/assets";
+import {
+  selectImportingStatus,
+  updateSelectedPlan,
+} from "../slices/currentPlanSlice";
+import { api } from "./assets";
+import { updateSearchTime } from "../slices/searchSlice";
+import {
+  selectToAddName,
+  selectToAddMajor,
+  selectGeneratePlanAddStatus,
+  clearToAdd,
+  updateGeneratePlanAddStatus,
+} from "../slices/popupSlice";
 
 type generateNewPlanProps = {
   _id?: String;
@@ -34,6 +40,7 @@ const GenerateNewPlan = (props: generateNewPlanProps) => {
   const toAddName = useSelector(selectToAddName);
   const toAddMajor = useSelector(selectToAddMajor);
   const generatePlanAddStatus = useSelector(selectGeneratePlanAddStatus);
+  const importing = useSelector(selectImportingStatus);
 
   // UseEffect that generates a new plan everytime generateNew is true.
   useEffect(() => {
@@ -58,6 +65,13 @@ const GenerateNewPlan = (props: generateNewPlanProps) => {
         const newPlanResponse = response.data.data;
         axios.get(api + "/years/" + newPlanResponse._id).then((resp) => {
           newPlan = { ...newPlanResponse, years: resp.data.data };
+          console.log("new years are ", resp.data.data);
+          dispatch(
+            updateSearchTime({
+              searchSemester: "Fall",
+              searchYear: newPlan.years[0]._id,
+            })
+          );
           // Make a new distribution for each distribution of the major of the plan.
           toAddMajor.distributions.forEach(
             (distr: DistributionObj, index: number) => {
@@ -88,7 +102,9 @@ const GenerateNewPlan = (props: generateNewPlanProps) => {
                   if (index === toAddMajor.distributions.length - 1) {
                     dispatch(updateSelectedPlan(newPlan));
                     dispatch(updatePlanList([newPlan, ...planList]));
-                    toast.success(newPlan.name + " created!");
+                    if (!importing) {
+                      toast.success(newPlan.name + " created!");
+                    }
                     if (user._id === "guestUser") {
                       const planIdArray = [newPlan._id];
                       dispatch(updateGuestPlanIds(planIdArray));

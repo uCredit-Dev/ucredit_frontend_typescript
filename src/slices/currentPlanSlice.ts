@@ -13,6 +13,7 @@ type CurrentPlanSlice = {
   currentPlanCourses: UserCourse[];
   totalCredits: number;
   droppables: DroppableType[];
+  importing: boolean;
 };
 
 const initialState: CurrentPlanSlice = {
@@ -29,6 +30,7 @@ const initialState: CurrentPlanSlice = {
   currentPlanCourses: [],
   totalCredits: 0,
   droppables: [],
+  importing: false,
 };
 
 export const currentPlanSlice = createSlice({
@@ -48,6 +50,7 @@ export const currentPlanSlice = createSlice({
       state: any,
       action: PayloadAction<UserCourse[]>
     ) => {
+      //console.log(action.payload);
       state.currentPlanCourses = action.payload;
     },
     updateTotalCredits: (state: any, action: PayloadAction<number>) => {
@@ -73,6 +76,9 @@ export const currentPlanSlice = createSlice({
         state.droppables.push(action.payload);
       }
     },
+    updateImportingStatus: (state: any, action: PayloadAction<boolean>) => {
+      state.importing = action.payload;
+    },
   },
 });
 
@@ -83,6 +89,7 @@ export const {
   updateTotalCredits,
   updateDroppables,
   resetCurrentPlan,
+  updateImportingStatus,
 } = currentPlanSlice.actions;
 
 // The function below is called a selector and allows us to select a value from
@@ -96,5 +103,7 @@ export const selectTotalCredits = (state: RootState) =>
   state.currentPlan.totalCredits;
 export const selectDroppables = (state: RootState) =>
   state.currentPlan.droppables;
+export const selectImportingStatus = (state: RootState) =>
+  state.currentPlan.importing;
 
 export default currentPlanSlice.reducer;
