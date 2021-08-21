@@ -112,7 +112,6 @@ const CourseDisplayPopup = () => {
             ? Date.now() + 60 * 60 * 24 * 1000
             : undefined,
       };
-      console.log("body is ", body);
       fetch(api + "/courses", {
         method: "POST",
         headers: {

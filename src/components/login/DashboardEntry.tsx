@@ -20,6 +20,7 @@ const DashboardEntry = () => {
   const user = useSelector(selectUser);
 
   const [authCookies, setAuthCookie] = useCookies(["connect.sid"]);
+  const [cookies] = useCookies(["connect.sid"]);
 
   // React router state setup.
   let history = useHistory();
@@ -83,10 +84,14 @@ const DashboardEntry = () => {
   // NOTE: Currently, the user is set to the testUser object found in @src/testObjs.tsx, with a JHED of mliu78 (Matthew Liu)
   //            redux isn't being updated with retrieved user data, as login has issues.
   useEffect(() => {
-    const cookieVal = document.cookie.split("=")[1];
+    let cookieVal = "";
     if (user._id === "noUser") {
       // Retrieves user if user ID is "noUser", the initial user id state for userSlice.tsx.
       // Make call for backend
+      Object.entries(cookies).forEach((cookie: any) => {
+        if (cookie[0] === "_hjid" || cookie[0] === "connect.sid")
+          cookieVal = cookie[1];
+      });
       fetch(api + "/retrieveUser/" + cookieVal, {
         mode: "cors",
         method: "GET",

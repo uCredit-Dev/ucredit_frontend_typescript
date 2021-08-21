@@ -233,7 +233,6 @@ const Form = (props: { setSearching: Function }) => {
       });
       return toReturn;
     });
-    console.log(courses);
 
     return [courses, versions];
   };

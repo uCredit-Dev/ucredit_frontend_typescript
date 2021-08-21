@@ -30,6 +30,7 @@ import {
   updateToAddMajor,
   updateGeneratePlanAddStatus,
 } from "../../slices/popupSlice";
+import { useCookies } from "react-cookie";
 
 type UserProps = {
   _id: string | null;
@@ -51,6 +52,7 @@ function UserSection({ _id }: UserProps) {
   const [loginId, setLoginId] = useState(document.cookie.split("=")[1]);
   const [toAdd, setToAdd] = useState<Year[]>([]);
   const [shouldAdd, setShouldAdd] = useState<boolean>(false);
+  const [cookies] = useCookies(["connect.sid"]);
   let history = useHistory();
 
   useEffect(() => {
@@ -121,7 +123,6 @@ function UserSection({ _id }: UserProps) {
       dispatch(updateImportingStatus(false));
       dispatch(updateAddingPlanStatus(false));
     }
-    console.log("done");
   };
 
   const addCourse = async (
@@ -172,7 +173,6 @@ function UserSection({ _id }: UserProps) {
 
   const login = (cookieVal: string) =>
     new Promise<void>((resolve) => {
-      console.log("logging in", user);
       if (user._id === "noUser") {
         var curUser: User;
         // Retrieves user if user ID is "noUser", the initial user id state for userSlice.tsx.
@@ -252,7 +252,11 @@ function UserSection({ _id }: UserProps) {
             .then((yearsResponse) => {
               let years: Year[] = yearsResponse.data.data;
               // check whether the user is logged in (whether a cookie exists)
-              const cookieVal = document.cookie.split("=")[1];
+              let cookieVal = "";
+              Object.entries(cookies).forEach((cookie: any) => {
+                if (cookie[0] === "_hjid" || cookie[0] === "connect.sid")
+                  cookieVal = cookie[1];
+              });
               if (cookieVal === undefined) {
                 // if not, create a user first, then add
                 dispatch(updateUser({ ...guestUser }));
@@ -277,7 +281,7 @@ function UserSection({ _id }: UserProps) {
               }
             })
             .catch((e) => {
-              console.log(e);
+              console.log("ERROR: ", e);
             });
         })
         .catch((e) => {
@@ -291,12 +295,10 @@ function UserSection({ _id }: UserProps) {
     } else if (user._id === "noUser") {
       // Retrieves user if user ID is "noUser", the initial user id state for userSlice.tsx.
       // Make call for backend const cookieVals = document.cookie.split("=");
-      const cookieVals = document.cookie.split("=");
       let cookieVal = "";
-      cookieVals.forEach((val: string) => {
-        if (val.length === 20) {
-          cookieVal = val;
-        }
+      Object.entries(cookies).forEach((cookie: any) => {
+        if (cookie[0] === "_hjid" || cookie[0] === "connect.sid")
+          cookieVal = cookie[1];
       });
       fetch(api + "/retrieveUser/" + cookieVal, {
         mode: "cors",
@@ -313,13 +315,9 @@ function UserSection({ _id }: UserProps) {
             dispatch(updateUser(retrievedUser.data));
             setLoginId(cookieVal);
           } else {
-            console.log("errors are", retrievedUser.errors);
+            console.log("ERROR: ", retrievedUser.errors);
             history.push("/login");
           }
-        })
-        .catch((err) => {
-          console.log("ERROR: ", err.message);
-          history.push("/login");
         });
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
