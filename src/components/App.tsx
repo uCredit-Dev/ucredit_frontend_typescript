@@ -93,7 +93,7 @@ function App() {
         place='top'
         effect='solid'
       />
-      {welcomeScreen ? (
+      {false ? (
         <div className='fixed z-50 flex flex-col w-screen h-screen m-auto text-center text-white bg-blue-900'>
           <img
             className='w-1/6 mx-auto mt-auto'

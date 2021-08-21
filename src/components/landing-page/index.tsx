@@ -1,5 +1,6 @@
 import React from "react";
 import Banner from "./Banner";
+import Footer from "./Footer";
 import Header from "./Header";
 import Promo from "./Promo";
 
@@ -8,10 +9,11 @@ import Promo from "./Promo";
  */
 const LandingPage = () => {
   return (
-    <div className='w-screen h-screen bg-white'>
+    <div className='w-full h-full pb-4 bg-white'>
       <Header />
       <Banner />
       <Promo />
+      <Footer />
     </div>
   );
 };
