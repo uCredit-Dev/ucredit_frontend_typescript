@@ -18,6 +18,7 @@ type PopupSlice = {
   courseToDelete: { course: UserCourse; year: number } | null;
   showCourseInfo: boolean;
   courseToShow: UserCourse | null;
+  addingPrereq: boolean;
 };
 
 const initialState: PopupSlice = {
@@ -32,6 +33,7 @@ const initialState: PopupSlice = {
   courseToDelete: null,
   showCourseInfo: false,
   courseToShow: null,
+  addingPrereq: false,
 };
 
 export const popupSlice = createSlice({
@@ -84,6 +86,9 @@ export const popupSlice = createSlice({
     ) => {
       state.courseToShow = action.payload;
     },
+    updateAddingPrereq: (state: any, action: PayloadAction<boolean>) => {
+      state.addingPrereq = action.payload;
+    },
   },
 });
 
@@ -100,6 +105,7 @@ export const {
   updateDeleteCourseStatus,
   updateShowCourseInfo,
   updateCourseToShow,
+  updateAddingPrereq,
 } = popupSlice.actions;
 
 // The function below is called a selector and allows us to select a value from
@@ -123,5 +129,7 @@ export const selectShowCourseInfo = (state: RootState) =>
   state.popup.showCourseInfo;
 export const selectCourseToShow = (state: RootState) =>
   state.popup.courseToShow;
+export const selectAddingPrereq = (state: RootState) =>
+  state.popup.addingPrereq;
 
 export default popupSlice.reducer;

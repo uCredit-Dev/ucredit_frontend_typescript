@@ -170,6 +170,7 @@ const CourseDisplayPopup = () => {
       <div
         className="fixed z-40 left-0 top-0 m-0 w-full h-screen bg-black opacity-50"
         onClick={() => {
+          dispatch(updateCourseToShow(null));
           dispatch(updateShowCourseInfo(false));
         }}
       ></div>

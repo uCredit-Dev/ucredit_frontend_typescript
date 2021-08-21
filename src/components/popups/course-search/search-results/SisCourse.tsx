@@ -3,6 +3,7 @@ import React, { MouseEventHandler, useEffect, useState } from "react";
 import Select from "react-select";
 import CourseVersion from "./CourseVersion";
 import { ReactComponent as Question } from "../../../../resources/svg/Question.svg";
+import { ReactComponent as Arrow } from "../../../../resources/svg/ArrowDown.svg";
 import { useDispatch, useSelector } from "react-redux";
 import { selectPlan } from "../../../../slices/currentPlanSlice";
 import {
@@ -17,7 +18,12 @@ import {
 } from "../../../../slices/searchSlice";
 import { Course } from "../../../../resources/commonTypes";
 import ReactTooltip from "react-tooltip";
-import { selectShowCourseInfo } from "../../../../slices/popupSlice";
+import {
+  selectShowCourseInfo,
+  updateAddingPrereq,
+  updateCourseToShow,
+  updateShowCourseInfo,
+} from "../../../../slices/popupSlice";
 
 type SisCourseProps = {
   inspectedArea: string;
@@ -99,33 +105,41 @@ const SisCourse = (props: SisCourseProps) => {
     }
   };
 
+  const addPrereq = () => {
+    dispatch(updateCourseToShow(null));
+    dispatch(updateShowCourseInfo(false));
+    dispatch(updateAddingPrereq(true));
+  };
+
   return (
     <>
       {inspected !== "None" ? (
         <>
           <div className="pb-5 pt-4 px-5 w-full h-full text-base bg-white rounded select-text overflow-y-auto">
-            {searchStack.length !== 0 ? (
-              <button
-                className="focus:outline-none transform hover:scale-125 transition duration-200 ease-in"
-                onClick={() => {
-                  dispatch(popSearchStack());
-                }}
-              >
-                Back
-              </button>
-            ) : null}
-            <div className="flex flex-row justify-between mb-1 w-full h-auto">
+            <div className="flex flex-row mb-1 w-full h-auto">
+              {searchStack.length !== 0 ? (
+                <button
+                  className="mt-1 focus:outline-none transform rotate-90 hover:scale-125 transition duration-200 ease-in"
+                  onClick={() => {
+                    dispatch(popSearchStack());
+                  }}
+                >
+                  <Arrow />
+                </button>
+              ) : null}
               <h1 className="flex flex-row w-auto h-auto transform hover:scale-105 transition duration-200 ease-in">
                 <div className="w-full h-auto text-2xl font-bold">
                   {inspected.title}
                 </div>
               </h1>
-              {/* <button
-                className="text-2xl focus:outline-none transform hover:scale-110 transition duration-200 ease-in"
-                onClick={clearInspected}
-              >
-                <CloseSvg className="w-7 h-7 stroke-2" />
-              </button> */}
+              {searchStack.length !== 0 && showCourseInfo ? (
+                <button
+                  className="-mt-1 ml-auto p-1 px-2 text-xl bg-blue-300 rounded focus:outline-none transform hover:scale-110 transition duration-200 ease-in"
+                  onClick={addPrereq}
+                >
+                  Add Prereq
+                </button>
+              ) : null}
             </div>
             <div className="flex flex-row items-center font-semibold">
               <div className="flex flex-row">
