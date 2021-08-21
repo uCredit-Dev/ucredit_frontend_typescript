@@ -81,13 +81,13 @@ function UserSection({ _id }: UserProps) {
             let allYears: Year[] = [...curPlan.years];
             let newYears: Year[] = [];
             for (let y of allYears) {
-              newYears.push({...y});
+              newYears.push({ ...y });
             }
             for (let cur of added) {
               const nextYears: Year[] = [];
               for (let y of newYears) {
                 if (cur.year_id === y._id) {
-                  nextYears.push({...y, courses: [...y.courses, cur._id]});
+                  nextYears.push({ ...y, courses: [...y.courses, cur._id] });
                   //const yCourses = [...y.courses, cur._id];
                   //newYears.push({ ...y, courses: yCourses });
                 } else {
@@ -97,7 +97,7 @@ function UserSection({ _id }: UserProps) {
               newYears = nextYears;
             }
             //const newYears: Year[] = allYears;
-            let newPlan : Plan = { ...curPlan, years: newYears };
+            let newPlan: Plan = { ...curPlan, years: newYears };
             const newPlanList = [...planList];
             for (let i = 0; i < planList.length; i++) {
               if (planList[i]._id === newPlan._id) {
@@ -114,7 +114,7 @@ function UserSection({ _id }: UserProps) {
             });
             dispatch(updateAddingPlanStatus(false));
           }
-        })
+        });
       }
     }
     if (empty) {
@@ -126,7 +126,7 @@ function UserSection({ _id }: UserProps) {
 
   const addCourse = async (
     id: string,
-    yearIndex: number,
+    yearIndex: number
   ): Promise<UserCourse> => {
     return new Promise((resolve) => {
       axios.get(api + "/courses/" + id).then((response) => {
@@ -146,7 +146,9 @@ function UserSection({ _id }: UserProps) {
           area: course.area,
           preReq: course.preReq,
           expireAt:
-            user._id === "guestUser" ? Date.now() + 60 * 60 * 24 * 1000 : undefined,
+            user._id === "guestUser"
+              ? Date.now() + 60 * 60 * 24 * 1000
+              : undefined,
         };
         fetch(api + "/courses", {
           method: "POST",
@@ -164,8 +166,8 @@ function UserSection({ _id }: UserProps) {
             }
           });
         });
-      })
-    })
+      });
+    });
   };
 
   const login = (cookieVal: string) =>
@@ -191,7 +193,7 @@ function UserSection({ _id }: UserProps) {
               curUser = retrievedUser.data;
               getPlans(curUser).then(() => {
                 resolve();
-              })
+              });
             }
           })
           .catch((err) => {
@@ -204,28 +206,26 @@ function UserSection({ _id }: UserProps) {
 
   const getPlans = (curUser: User) =>
     new Promise<void>((resolve) =>
-      axios
-        .get(api + "/plansByUser/" + curUser._id)
-        .then((retrieved) => {
-          const retrievedPlans: Plan[] = retrieved.data.data;
-          if (retrievedPlans.length > 0) {
-            const totPlans: Plan[] = [];
-            retrievedPlans.forEach((plan) => {
-              axios
-                .get(api + "/years/" + plan._id)
-                .then((resp) => {
-                  totPlans.push({ ...plan, years: resp.data.data });
-                  if (totPlans.length === retrievedPlans.length) {
-                    // Initial load, there is no current plan, so we set the current to be the first plan in the array.
-                    dispatch(updatePlanList(totPlans));
-                    dispatch(updateSelectedPlan(totPlans[0]));
-                    resolve();
-                  }
-                })
-                .catch((err) => console.log(err));
-            });
-          }
-        })
+      axios.get(api + "/plansByUser/" + curUser._id).then((retrieved) => {
+        const retrievedPlans: Plan[] = retrieved.data.data;
+        if (retrievedPlans.length > 0) {
+          const totPlans: Plan[] = [];
+          retrievedPlans.forEach((plan) => {
+            axios
+              .get(api + "/years/" + plan._id)
+              .then((resp) => {
+                totPlans.push({ ...plan, years: resp.data.data });
+                if (totPlans.length === retrievedPlans.length) {
+                  // Initial load, there is no current plan, so we set the current to be the first plan in the array.
+                  dispatch(updatePlanList(totPlans));
+                  dispatch(updateSelectedPlan(totPlans[0]));
+                  resolve();
+                }
+              })
+              .catch((err) => console.log(err));
+          });
+        }
+      })
     );
 
   // Useffect runs once on page load, calling to https://ucredit-api.herokuapp.com/api/retrieveUser to retrieve user data.
@@ -257,7 +257,9 @@ function UserSection({ _id }: UserProps) {
                 // if not, create a user first, then add
                 dispatch(updateUser({ ...guestUser }));
                 dispatch(updateToAddName("Imported Plan"));
-                dispatch(updateToAddMajor(getMajorFromCommonName(plan.majors[0])));
+                dispatch(
+                  updateToAddMajor(getMajorFromCommonName(plan.majors[0]))
+                );
                 dispatch(updateGeneratePlanAddStatus(true));
                 setToAdd(years);
                 setShouldAdd(true);
@@ -265,7 +267,9 @@ function UserSection({ _id }: UserProps) {
                 // if so, login first, then add
                 login(cookieVal).then(() => {
                   dispatch(updateToAddName("Imported Plan"));
-                  dispatch(updateToAddMajor(getMajorFromCommonName(plan.majors[0])));
+                  dispatch(
+                    updateToAddMajor(getMajorFromCommonName(plan.majors[0]))
+                  );
                   dispatch(updateGeneratePlanAddStatus(true));
                   setToAdd(years);
                   setShouldAdd(true);
@@ -329,7 +333,7 @@ function UserSection({ _id }: UserProps) {
         {/* </div> */}
         <div className="flex flex-row flex-grow items-center ml-5 text-white text-4xl italic font-bold">
           <img src={bird} alt="logo" className="mr-3 h-9"></img>
-          <div>UCredit</div>
+          <div>uCredit</div>
         </div>
         {window.innerWidth > 800 ? (
           <div className="mr-3 text-white font-semibold">

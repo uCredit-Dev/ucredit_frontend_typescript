@@ -1,9 +1,9 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect } from "react";
 import { useHistory, useLocation } from "react-router-dom";
 import { api, guestUser } from "../../resources/assets";
 import { useDispatch, useSelector } from "react-redux";
 import { updateUser, selectUser } from "../../slices/userSlice";
-import { withCookies, useCookies } from "react-cookie";
+import { useCookies } from "react-cookie";
 import samplePlan from "../../resources/images/samplePlan.png";
 import logo from "../../resources/images/logoDarker.png";
 
@@ -14,13 +14,11 @@ const dev = "http://localhost:3000/login/";
  * The login page, designed after the Spotify login page..
  * @param cookies contains the various resources provided by the wrapper component of react-cookie
  */
-const DashboardEntry = (props: any) => {
+const DashboardEntry = () => {
   // Redux setup.
   const dispatch = useDispatch();
   const user = useSelector(selectUser);
 
-  // Component state setup.
-  const [cookies] = useState(props.cookies);
   const [authCookies, setAuthCookie] = useCookies(["connect.sid"]);
 
   // React router state setup.
@@ -110,7 +108,7 @@ const DashboardEntry = (props: any) => {
         });
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [cookies, authCookies]);
+  }, [authCookies]);
 
   // Handles if the user is invalid.
   const handleGuest = () => {
@@ -164,4 +162,4 @@ const DashboardEntry = (props: any) => {
   );
 };
 
-export default withCookies(DashboardEntry);
+export default DashboardEntry;
