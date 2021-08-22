@@ -1229,17 +1229,16 @@ const bsCS_Old: Major = {
       fine_requirements: [
         {
           description:
-            "Computer Ethics(601.104). Practical Ethics for Future Leaders (660.400/406) " +
-            "may be used as a substitute for the computer ethics requirement for the BS program, " +
-            "but does not count towards the CS total credits at all.",
+            "<b>Computer Ethics(601.104).</b><p>Practical Ethics for Future Leaders (660.400/406) may be used as a substitute for the computer ethics requirement for the BS program, but does not count towards the CS total credits at all.</p>",
           required_credits: 1,
-          criteria: "EN.600.104[C]^OR^EN.601.104[C]",
+          criteria: "EN.600.104[C]^OR^EN.601.104[C]^OR^EN.660.400[C]",
         },
         {
+          // TODO: show criteria rather than description
           description:
-            "Required Courses: \n\t500.112/113/114 Gateway Computing or AP Comp Sci A or " +
-            "equivalent\n\t601.220 Intermediate Programming\n\t601.226 Data Structures\n\t601.229 " +
-            "Computer System Fundamentals\n\t600.231/271 Automata and Computation Theory\n\t601.433 Algorithms",
+            "<b>Lower Level Undergraduate:</b><p>500.112/113/114 Gateway Computing or AP Comp Sci A or " +
+            "equivalent<p>601.220 Intermediate Programming</p><p>601.226 Data Structures</p><p>601.229 " +
+            "Computer System Fundamentals</p><p>600.231/271 Automata and Computation Theory</p><p>601.433 Algorithms</p>",
           required_credits: 20,
           criteria:
             "EN.500.112[C]^OR^EN.500.113[C]^OR^EN.500.114[C]^OR^EN.601.220[C]^OR^EN.601.226[C]" +
@@ -1247,13 +1246,13 @@ const bsCS_Old: Major = {
         },
         {
           description:
-            "13 upper level CS credits in addition to the required Algorithms course",
+            "<b>Upper Level Undergraduate: </b><p>13 upper level CS credits in addition to the required Algorithms course</p>",
           required_credits: 13,
           criteria: "EN Computer Science[D]^AND^Upper Level Undergraduate[L]",
         },
         {
           description:
-            "At least one upper level course in two of these four different classification " +
+            "<b>2 Upper Level Classifications:</b><p>At least one upper level course in two of these four different classification</p> " +
             "areas: Applications(CSCI-APPL), Systems(CSCI-SYST), Software(CSCI-SOFT) and Reasoning(CSCI-RSNG)",
           required_credits: 6,
           exclusive: true,
@@ -1262,8 +1261,8 @@ const bsCS_Old: Major = {
         },
         {
           description:
-            "One Team(CSCI-TEAM) designated course. This Team course may overlap other course " +
-            "requirements, for example to count as both Team and Software.",
+            "<b>One Team(CSCI-TEAM) designated course.</b><p> This Team course may overlap other course " +
+            "requirements, for example to count as both Team and Software.</p>",
           required_credits: 3,
           criteria: "CSCI-TEAM[T]",
         },
@@ -1285,17 +1284,18 @@ const bsCS_Old: Major = {
       fine_requirements: [
         {
           description:
-            "Required Courses:\n\t110.108 Calculus I or AP equivalent\n\t110.109 Calculus II or AP equivalent\n\t" +
-            "550.171/553.171 Discrete Mathematics",
+            "<b>Required Courses:</b><p>110.108 Calculus I or AP equivalent</p>110.109 Calculus II or AP equivalent</p>" +
+            "<p>550.171/553.171 Discrete Mathematics</p>",
           required_credits: 12,
           criteria:
             "AS.110.108[C]^OR^AS.110.109[C]^OR^EN.550.171[C]^OR^EN.553.171[C]",
         },
         {
-          description: "Probability and Statistics",
+          description:
+            "<b>Probability and Statistics:</b><p>Two paths:</p><p>1. Any of the three courses below:</p><p>EN.553.211</p><p>EN.553.310</p><p>EN.553.311</p><p>2. Both Intro to Probability and Intro to Statistics</p><p>En.553.420</p><p>EN.553.430</p> ",
           required_credits: 4,
           criteria:
-            "EN Applied Mathematics & Statistics[D]^AND^(Probability & Statistics[N]^OR^Probability and Statistics[N])^AND^Upper Level Undergraduate[L]",
+            "(EN.553.211^OR^EN.553.310^OR^EN.553.311)^OR^(EN.553.420^AND^EN.553.430)",
         },
       ],
     },
@@ -1331,8 +1331,8 @@ const bsCS_Old: Major = {
       fine_requirements: [
         {
           description:
-            "At least one course must be explicitly focused on writing skills in English (eg, courses in professional, " +
-            "fiction or expository writing). These courses may overlap with other requirements.",
+            "<b>Writing-focused WI</b><p>At least one course must be explicitly focused on writing skills in English (eg, courses in professional, " +
+            "fiction or expository writing). These courses may overlap with other requirements.</p><p>Any of the courses below would be satisfactory:</p><p>AS.060.100</p><p>AS.060.113</p><p>AS.060.114</p><p>AS.180.248</p><p>AS.220.105</p><p>AS.220.106</p><p>AS.220.108</p><p>AS.290.303</p><p>AS.360.133</p><p>EN.661.110</p><p>EN.661.111</p><p>EN.661.250</p><p>EN.661.251</p><p>EN.661.315</p>",
           required_credits: 3,
           criteria:
             "AS.060.100[C]^OR^AS.060.113[C]^OR^AS.060.114[C]^OR^AS.180.248[C]^OR^AS.220.105[C]^OR^AS.220.106[C]^OR^AS.220.108[C]^OR^AS.290.303[C]^OR^AS.360.133[C]^OR^EN.661.110[C]^OR^EN.661.111[C]^OR^EN.661.250[C]^OR^EN.661.251[C]^OR^EN.661.315[C]",
@@ -1360,17 +1360,15 @@ const bsCS_New: Major = {
       fine_requirements: [
         {
           description:
-            "Computer Ethics(601.104). Practical Ethics for Future Leaders (660.400/406) " +
-            "may be used as a substitute for the computer ethics requirement for the BS program, " +
-            "but does not count towards the CS total credits at all.",
+            "<b>Computer Ethics(601.104).</b><p>Practical Ethics for Future Leaders (660.400/406) may be used as a substitute for the computer ethics requirement for the BS program, but does not count towards the CS total credits at all.</p>",
           required_credits: 1,
-          criteria: "EN.601.104[C]",
+          criteria: "EN.600.104[C]^OR^EN.601.104[C]^OR^EN.660.400[C]",
         },
         {
           description:
-            "Required Courses: \n\t500.112/113/114 Gateway Computing or AP Comp Sci A or " +
-            "equivalent\n\t601.220 Intermediate Programming\n\t601.226 Data Structures\n\t601.229 " +
-            "Computer System Fundamentals\n\t601.230 Mathematical Foundations for Computer Science\n\t601.433 Algorithms",
+            "<b>Lower Level Undergraduate:</b><p>500.112/113/114 Gateway Computing or AP Comp Sci A or " +
+            "equivalent<p>601.220 Intermediate Programming</p><p>601.226 Data Structures</p><p>601.229 " +
+            "Computer System Fundamentals</p><p>600.231/271 Automata and Computation Theory</p><p>601.433 Algorithms</p>",
           required_credits: 21,
           criteria:
             "EN.500.112[C]^OR^EN.500.113[C]^OR^EN.500.114[C]^OR^EN.601.220[C]^OR^EN.601.226[C]" +
@@ -1378,14 +1376,15 @@ const bsCS_New: Major = {
         },
         {
           description:
-            "12 upper level CS credits in addition to the required Algorithms course",
+            "<b>Upper Level Undergraduate: </b><p>13 upper level CS credits in addition to the required Algorithms course</p>",
+
           required_credits: 12,
           criteria:
             "EN Computer Science[D]^AND^Upper Level Undergraduate[L]^NOT^EN.601.433[C]^NOT^EN.601.633[C]",
         },
         {
           description:
-            "At least one upper level course in two of these four different classification " +
+            "<b>2 Upper Level Classifications:</b><p>At least one upper level course in two of these four different classification</p> " +
             "areas: Applications(CSCI-APPL), Systems(CSCI-SYST), Software(CSCI-SOFT) and Reasoning(CSCI-RSNG)",
           required_credits: 6,
           exclusive: true,
@@ -1394,8 +1393,8 @@ const bsCS_New: Major = {
         },
         {
           description:
-            "One Team(CSCI-TEAM) designated course. This Team course may overlap other course " +
-            "requirements, for example to count as both Team and Software.",
+            "<b>One Team(CSCI-TEAM) designated course.</b><p> This Team course may overlap other course " +
+            "requirements, for example to count as both Team and Software.</p>",
           required_credits: 3,
           criteria: "CSCI-TEAM[T]",
         },
@@ -1417,12 +1416,14 @@ const bsCS_New: Major = {
       fine_requirements: [
         {
           description:
-            "Required Courses:\n\t110.108 Calculus I or AP equivalent\n\t110.109 Calculus II or AP equivalent",
+            "<b>Required Courses:</b><p>110.108 Calculus I or AP equivalent</p>110.109 Calculus II or AP equivalent</p>" +
+            "<p>550.171/553.171 Discrete Mathematics</p>",
           required_credits: 8,
           criteria: "AS.110.108[C]^OR^AS.110.109[C]",
         },
         {
-          description: "Probability and Statistics",
+          description:
+            "<b>Probability and Statistics:</b><p>Two paths:</p><p>1. Any of the three courses below:</p><p>EN.553.211</p><p>EN.553.310</p><p>EN.553.311</p><p>2. Both Intro to Probability and Intro to Statistics</p><p>En.553.420</p><p>EN.553.430</p> ",
           required_credits: 4,
           criteria:
             "EN Applied Mathematics & Statistics[D]^AND^(Probability & Statistics[N]^OR^Probability and Statistics[N])^AND^Upper Level Undergraduate[L]",
@@ -1462,8 +1463,9 @@ const bsCS_New: Major = {
       fine_requirements: [
         {
           description:
-            "At least one course must be explicitly focused on writing skills in English (eg, courses in professional, " +
-            "fiction or expository writing). These courses may overlap with other requirements.",
+            "<b>Writing-focused WI</b><p>At least one course must be explicitly focused on writing skills in English (eg, courses in professional, " +
+            "fiction or expository writing). These courses may overlap with other requirements.</p><p>Any of the courses below would be satisfactory:</p><p>AS.060.100</p><p>AS.060.113</p><p>AS.060.114</p><p>AS.180.248</p><p>AS.220.105</p><p>AS.220.106</p><p>AS.220.108</p><p>AS.290.303</p><p>AS.360.133</p><p>EN.661.110</p><p>EN.661.111</p><p>EN.661.250</p><p>EN.661.251</p><p>EN.661.315</p>",
+
           required_credits: 3,
           criteria:
             "AS.060.100[C]^OR^AS.060.113[C]^OR^AS.060.114[C]^OR^AS.180.248[C]^OR^AS.220.105[C]^OR^AS.220.106[C]^OR^AS.220.108[C]^OR^AS.290.303[C]^OR^AS.360.133[C]^OR^EN.661.110[C]^OR^EN.661.111[C]^OR^EN.661.250[C]^OR^EN.661.251[C]^OR^EN.661.315[C]",

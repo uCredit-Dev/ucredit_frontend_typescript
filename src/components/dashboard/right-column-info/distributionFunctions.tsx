@@ -41,12 +41,24 @@ export const checkRequirementSatisfied = (
   splitArr: string[],
   course: Course
 ): boolean => {
-  let boolExpr = "";
-  let index = 0;
-  if (course === null) {
+  const boolExpr: string | void = getBoolExpr(splitArr, course);
+  if (boolExpr !== undefined) {
+    return eval(boolExpr);
+  } else {
     return false;
   }
-  let concat;
+};
+
+export const getBoolExpr = (
+  splitArr: string[],
+  course: Course
+): string | void => {
+  let boolExpr: string = "";
+  let index: number = 0;
+  let concat: string;
+  if (course === null) {
+    return;
+  }
   while (index < splitArr.length) {
     if (splitArr[index] === "(") {
       concat = "(";
@@ -61,7 +73,6 @@ export const checkRequirementSatisfied = (
     } else {
       switch (splitArr[index + 1]) {
         case "C": // Course Number
-          console.log(splitArr[index], course.number, splitArr);
           if (splitArr[index] === course.number) {
             concat = "true";
           } else {
@@ -131,16 +142,12 @@ export const checkRequirementSatisfied = (
           }
           break;
         default:
-          console.log("in default", index, splitArr.length);
           concat = "false";
       }
     }
     concat.length > 3 ? (index = index + 2) : index++;
     boolExpr = boolExpr.concat(concat); // Causing issues with biology major.
   }
-  console.log(splitArr, boolExpr);
-  // eslint-disable-next-line no-eval
-  return eval(boolExpr);
 };
 
 // args: expression for requirments
