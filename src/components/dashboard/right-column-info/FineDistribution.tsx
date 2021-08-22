@@ -12,7 +12,6 @@ import { selectCurrentPlanCourses } from "../../../slices/currentPlanSlice";
 import { selectAllCourses } from "../../../slices/userSlice";
 import { getCourse } from "../../../resources/assets";
 import DistributionPopup from "./DistributionPopup";
-import { Course } from "../../../resources/commonTypes";
 import ReactHtmlParser from "react-html-parser";
 
 type FineDistributionProps = {
