@@ -491,14 +491,18 @@ const getNonStringPrereq = (
     // If the element is a number
     // const noCBrackets: string = element.substr(0, element.length - 3);
     const noCBracketsNum: string = element.substr(0, 10);
-    const satisfied: boolean = checkPrereq(
-      currPlanCourses,
-      plan,
-      noCBracketsNum,
-      plan.years[year]._id,
-      semester
-    );
-    return satisfied;
+    if (plan.years[year]) {
+      const satisfied: boolean = checkPrereq(
+        currPlanCourses,
+        plan,
+        noCBracketsNum,
+        plan.years[year]._id,
+        semester
+      );
+      return satisfied;
+    } else {
+      return false;
+    }
   } else if (typeof element[0] === "number") {
     // If the element is a OR sequence (denoted by the depth number in the first index)
     const parsedSat: boolean = isSatisfied(

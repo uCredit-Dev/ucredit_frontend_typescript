@@ -56,9 +56,12 @@ export const checkRequirementSatisfied = (
       concat = "||";
     } else if (splitArr[index] === "AND") {
       concat = "&&";
+    } else if (splitArr[index] === "NOT") {
+      concat = "&&!";
     } else {
       switch (splitArr[index + 1]) {
         case "C": // Course Number
+          console.log(splitArr[index], course.number, splitArr);
           if (splitArr[index] === course.number) {
             concat = "true";
           } else {
@@ -100,6 +103,13 @@ export const checkRequirementSatisfied = (
             concat = "false";
           }
           break;
+        case "W": //Written intensive
+          if (course.wi) {
+            concat = "true";
+          } else {
+            concat = "false";
+          }
+          break;
         case "L": // Level
           if (splitArr[index].includes("Upper")) {
             if (course.number[7] >= "3") {
@@ -113,19 +123,22 @@ export const checkRequirementSatisfied = (
             } else {
               concat = "true";
             }
-          } else if (course.number[7] === splitArr[index][0]) { // For solely 100, 200, etc. levels
+          } else if (course.number[7] === splitArr[index][0]) {
+            // For solely 100, 200, etc. levels
             concat = "true";
           } else {
             concat = "false";
           }
           break;
         default:
+          console.log("in default", index, splitArr.length);
           concat = "false";
       }
     }
-    concat.length > 2 ? (index = index + 2) : index++;
+    concat.length > 3 ? (index = index + 2) : index++;
     boolExpr = boolExpr.concat(concat); // Causing issues with biology major.
   }
+  console.log(splitArr, boolExpr);
   // eslint-disable-next-line no-eval
   return eval(boolExpr);
 };
@@ -155,8 +168,10 @@ const getNextEntry = (expr: string, index: number): [string, number] => {
   } else if (expr[index] === "^") {
     if (expr[index + 1] === "O") {
       return ["OR", index + 4];
-    } else {
+    } else if (expr[index + 1] === "A") {
       return ["AND", index + 5];
+    } else {
+      return ["NOT", index + 5];
     }
   }
   let out = expr[index];
@@ -182,6 +197,7 @@ export type requirements = {
   required_credits: number;
   fulfilled_credits: number;
   description: string;
+  wi?: boolean;
 };
 // args: major
 // returns:

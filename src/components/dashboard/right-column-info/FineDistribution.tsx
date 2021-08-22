@@ -13,6 +13,7 @@ import { selectCurrentPlanCourses } from "../../../slices/currentPlanSlice";
 import { selectAllCourses } from "../../../slices/userSlice";
 import { getCourse } from "../../../resources/assets";
 import DistributionPopup from "./DistributionPopup";
+import { Course } from "../../../resources/commonTypes";
 
 type FineDistributionProps = {
   dis: requirements;
@@ -52,10 +53,25 @@ const FineDistribution = ({
     setFlipped(s);
   };
 
+  function checkWiReqsSatisfied(dis: requirements, courseObj: Course): boolean {
+    if (dis.wi && courseObj.wi && dis.expr.length !== 0) {
+      return checkRequirementSatisfied(splitRequirements(dis.expr), courseObj);
+    } else if (dis.wi && courseObj.wi) {
+      return true;
+    }
+    return false;
+  }
+
   useEffect(() => {
     var temp = dis.fulfilled_credits;
     currPlanCourses.forEach((course) => {
       const courseObj = getCourse(course.number, allCourses, currPlanCourses);
+      console.log(
+        course,
+        dis.expr,
+        courseObj != null &&
+          checkRequirementSatisfied(splitRequirements(dis.expr), courseObj)
+      );
       if (
         courseObj != null &&
         checkRequirementSatisfied(splitRequirements(dis.expr), courseObj)

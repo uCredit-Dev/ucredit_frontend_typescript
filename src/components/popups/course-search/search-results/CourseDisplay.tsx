@@ -88,6 +88,7 @@ const CourseDisplay = () => {
         number: version.number,
         area: inspectedArea,
         preReq: version.preReq,
+        wi: version.wi,
         expireAt:
           user._id === "guestUser"
             ? Date.now() + 60 * 60 * 24 * 1000

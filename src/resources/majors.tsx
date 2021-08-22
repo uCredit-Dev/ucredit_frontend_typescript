@@ -468,8 +468,9 @@ const bsBME: Major = {
         "Students who receive credit for AP Physics I and/or Physics II will receive a waiver for the laboratory course. " +
         "This will reduce the required number of credits for Basic Sciences by 1 or 2 credits. Students are still required " +
         "to complete at least 129 total credits for the degree.",
-      criteria: "AS.171.101[C]^OR^AS.171.107[C]^OR^AS.171.102[C]^OR^AS.171.108[C]^OR^AS.171.111[C]^OR^AS.173.112[C]" +
-      "^OR^AS.030.101[C]^OR^AS.030.102[C]^OR^AS.030.105[C]^OR^AS.030.106[C]",
+      criteria:
+        "AS.171.101[C]^OR^AS.171.107[C]^OR^AS.171.102[C]^OR^AS.171.108[C]^OR^AS.171.111[C]^OR^AS.173.112[C]" +
+        "^OR^AS.030.101[C]^OR^AS.030.102[C]^OR^AS.030.105[C]^OR^AS.030.106[C]",
     },
     {
       name: "Mathematics",
@@ -515,15 +516,16 @@ const baHistory: Major = {
       required_credits: 6,
       min_credits_per_course: 3,
       description:
-            "Select one of the following: Two introductory history courses (AS.100.1xx) OR \n\t" +
-            "One introductory history course (AS.100.1xx) + one Freshman Seminar (AS.100.130-AS.100.160)",
-            criteria: "(AS History[D]^AND^100[L])^OR^AS.100.130[C]",
+        "Select one of the following: Two introductory history courses (AS.100.1xx) OR \n\t" +
+        "One introductory history course (AS.100.1xx) + one Freshman Seminar (AS.100.130-AS.100.160)",
+      criteria: "(AS History[D]^AND^100[L])^OR^AS.100.130[C]",
     },
     {
       name: "Method Requirement (All Majors)",
       required_credits: 6,
       min_credits_per_course: 3,
-      description: "Required Courses: AS.100.293 Undergraduate Seminar in History\n\t100.294 Undergraduate Seminar in History",
+      description:
+        "Required Courses: AS.100.293 Undergraduate Seminar in History\n\t100.294 Undergraduate Seminar in History",
       criteria: "AS.100.293[C]^OR^AS.100.294[C]",
     },
     {
@@ -534,8 +536,7 @@ const baHistory: Major = {
       criteria: "AS History[D]",
       fine_requirements: [
         {
-          description:
-            "Required Courses: Two history courses at any level",
+          description: "Required Courses: Two history courses at any level",
           required_credits: 12,
           criteria: "AS History[D]",
         },
@@ -554,7 +555,8 @@ const baHistory: Major = {
         "Required additional upper-level courses for History majors. Note: Students must have a cumulative GPA of 3.25 " +
         "and a cumulative GPA in history of 3.5 or higher by December of their junior year to be eligible for the senior " +
         "thesis option to graduate with honors in history.",
-      criteria: "(AS History[D]^AND^Upper Level Undergraduate[L])^OR^AS.100.507[C]^OR^AS.100.508[C]",
+      criteria:
+        "(AS History[D]^AND^Upper Level Undergraduate[L])^OR^AS.100.507[C]^OR^AS.100.508[C]",
     },
     {
       name: "Foreign Language",
@@ -676,11 +678,12 @@ const baBiology: Major = {
       criteria: "AS Electives[N]",
       fine_requirements: [
         {
-          description: "At least one course must be taught by the Biology Department (AS.020.xxx) and be a 2 or 3 credit course",
+          description:
+            "At least one course must be taught by the Biology Department (AS.020.xxx) and be a 2 or 3 credit course",
           required_credits: 2,
-          criteria: "AS Biology[D]"
-        }
-      ]
+          criteria: "AS Biology[D]",
+        },
+      ],
     },
   ],
 };
@@ -721,7 +724,8 @@ const baPH: Major = {
         "One course at the 200-400 level focusing on social and behavioral aspects of public health from the list below." +
         "Other courses may apply with advisor approval. All courses must be at least 3 credits and only 2 Gordis Teaching " +
         "Fellowship (GTF) courses may apply (AS.280.4xx courses).",
-      criteria: "AS Intermediate Public Health[D]^AND^(200[L]^OR^300[L]^OR^400[L])",
+      criteria:
+        "AS Intermediate Public Health[D]^AND^(200[L]^OR^300[L]^OR^400[L])",
       exception: "",
       fine_requirements: [
         {
@@ -1093,8 +1097,7 @@ const bsAMS: Major = {
       criteria: "AS Mathematics[D]^OR^EN Applied Math and Statistics[D]",
       fine_requirements: [
         {
-          description:
-            "Calculus I, II, and III",
+          description: "Calculus I, II, and III",
           required_credits: 12,
           criteria:
             "AS.110.108[C]^OR^AS.110.109[C]^OR^AS.110.113[C]^OR^AS.110.202[C]^OR^AS.110.211[C]",
@@ -1102,20 +1105,17 @@ const bsAMS: Major = {
         {
           description: "Linear Algebra",
           required_credits: 4,
-          criteria:
-            "AS.110.201[C]^OR^AS.110.212[C]^OR^EN.553.291[C]",
+          criteria: "AS.110.201[C]^OR^AS.110.212[C]^OR^EN.553.291[C]",
         },
         {
           description: "Differential Equations",
           required_credits: 3,
-          criteria:
-            "AS.110.302[C]^OR^EN.553.391[C]^OR^EN.553.473[C]",
+          criteria: "AS.110.302[C]^OR^EN.553.391[C]^OR^EN.553.473[C]",
         },
         {
           description: "Numerical Linear Algebra",
           required_credits: 4,
-          criteria:
-            "EN.553.385[C]",
+          criteria: "EN.553.385[C]",
         },
         {
           description: "Discrete Mathematics",
@@ -1126,14 +1126,12 @@ const bsAMS: Major = {
         {
           description: "Probability and Statistics",
           required_credits: 8,
-          criteria:
-            "EN.553.420[C]^OR^EN.553.430[C]^OR^EN.553.431[C]",
+          criteria: "EN.553.420[C]^OR^EN.553.430[C]^OR^EN.553.431[C]",
         },
         {
           description: "Optimization",
           required_credits: 4,
-          criteria:
-            "EN.553.361[C]",
+          criteria: "EN.553.361[C]",
         },
       ],
     },
@@ -1141,11 +1139,12 @@ const bsAMS: Major = {
       name: "Computer Languages and Programming",
       required_credits: 3,
       min_credits_per_course: 1,
-      description: "Select one of the following: " +
-      "EN.500.112 Gateway Computing: JAVA\n\tEN.500.113 Gateway Computing: Python\n\tEN.500.114Gateway Computing: Matlab\n\t" + 
-      "AS.250.205 Introduction to Computing\n\tEN.553.281 Introduction to Mathematical Computing\n\tEN.580.242 & EN.580.244" +
-      "Biological Models and Simulations and Nonlinear Dynamics of Biological Systems\n\tEN.601.220 Intermediate Programming" +
-      ". NOTE: Students are strongly encouraged to fulfill this element of the requirement by taking EN.500.113 Gateway Computing: Python, and to do this in their first semester at Johns Hopkins University.",
+      description:
+        "Select one of the following: " +
+        "EN.500.112 Gateway Computing: JAVA\n\tEN.500.113 Gateway Computing: Python\n\tEN.500.114Gateway Computing: Matlab\n\t" +
+        "AS.250.205 Introduction to Computing\n\tEN.553.281 Introduction to Mathematical Computing\n\tEN.580.242 & EN.580.244" +
+        "Biological Models and Simulations and Nonlinear Dynamics of Biological Systems\n\tEN.601.220 Intermediate Programming" +
+        ". NOTE: Students are strongly encouraged to fulfill this element of the requirement by taking EN.500.113 Gateway Computing: Python, and to do this in their first semester at Johns Hopkins University.",
       criteria:
         "EN.500.112[C]^OR^EN.500.113[C]^OR^EN.500.114[C]^OR^AS.250.205[C]^OR^EN.553.281[C]^OR^EN.580.242[C]^OR^EN.580.244[C]^OR^" +
         "EN.601.220",
@@ -1174,7 +1173,7 @@ const bsAMS: Major = {
       required_credits: 40,
       min_credits_per_course: 1,
       description:
-        "Courses coded Quantitative Studies totaling 40 credits of which at least 18 credits must be in courses " + 
+        "Courses coded Quantitative Studies totaling 40 credits of which at least 18 credits must be in courses " +
         "numbered 300 or higher. (Courses used to meet the requirements above may be counted toward this total.)",
       criteria: "AS Natural Science[N]",
     },
@@ -1182,7 +1181,6 @@ const bsAMS: Major = {
       name: "Liberal Arts",
       required_credits: 18,
       min_credits_per_course: 3,
-      double_count: true,
       description:
         "These courses must have either an ‘H’ or ‘S’ area designator on them, but can be " +
         "from any department. At most 2 of these courses may be taken S/U (if not counted towards " +
@@ -1198,11 +1196,17 @@ const bsAMS: Major = {
       double_count: true,
       description:
         "Students are required to fulfill the university’s requirement of two writing intensive courses, " +
-        "each at least 3 credits. Students must receive at least a C- grade or better in these writing courses. " +
-        "At least one course must be explicitly focused on writing skills in English (eg, courses in professional, " +
-        "fiction or expository writing). These courses may overlap with other requirements.",
-      criteria:
-        "N[A]",
+        "each at least 3 credits. Students must receive at least a C- grade or better in these writing courses. ",
+      criteria: "",
+      fine_requirements: [
+        {
+          description:
+            "At least one course must be explicitly focused on writing skills in English (eg, courses in professional, " +
+            "fiction or expository writing). These courses may overlap with other requirements.",
+          required_credits: 3,
+          criteria: "N[A]",
+        },
+      ],
     },
   ],
 };
@@ -1216,7 +1220,7 @@ const bsCS_Old: Major = {
   distributions: [
     {
       name: "Computer Science",
-      required_credits: 45,
+      required_credits: 42,
       min_credits_per_course: 1,
       description:
         "For more information please visit the <a href='https://www.cs.jhu.edu/undergraduate-studies/academics/ugrad-advising-manual/'>" +
@@ -1251,7 +1255,7 @@ const bsCS_Old: Major = {
           description:
             "At least one upper level course in two of these four different classification " +
             "areas: Applications(CSCI-APPL), Systems(CSCI-SYST), Software(CSCI-SOFT) and Reasoning(CSCI-RSNG)",
-          required_credits: 8,
+          required_credits: 6,
           exclusive: true,
           criteria:
             "CSCI-APPL[T]^OR^CSCI-SYST[T]^OR^CSCI-SOFT[T]^OR^CSCI-RSNG[T]",
@@ -1284,7 +1288,8 @@ const bsCS_Old: Major = {
             "Required Courses:\n\t110.108 Calculus I or AP equivalent\n\t110.109 Calculus II or AP equivalent\n\t" +
             "550.171/553.171 Discrete Mathematics",
           required_credits: 12,
-          criteria: "AS.110.108[C]^OR^AS.110.109[C]^OR^EN.550.171[C]^OR^EN.553.171[C]",
+          criteria:
+            "AS.110.108[C]^OR^AS.110.109[C]^OR^EN.550.171[C]^OR^EN.553.171[C]",
         },
         {
           description: "Probability and Statistics",
@@ -1306,7 +1311,6 @@ const bsCS_Old: Major = {
       name: "Liberal Arts",
       required_credits: 18,
       min_credits_per_course: 3,
-      double_count: true,
       description:
         "These courses must have either an ‘H’ or ‘S’ area designator on them, but can be " +
         "from any department. At most 2 of these courses may be taken S/U (if not counted towards " +
@@ -1322,11 +1326,18 @@ const bsCS_Old: Major = {
       double_count: true,
       description:
         "Students are required to fulfill the university’s requirement of two writing intensive courses, " +
-        "each at least 3 credits. Students must receive at least a C- grade or better in these writing courses. " +
-        "At least one course must be explicitly focused on writing skills in English (eg, courses in professional, " +
-        "fiction or expository writing). These courses may overlap with other requirements.",
-      criteria:
-        "N[A]",
+        "each at least 3 credits. Students must receive at least a C- grade or better in these writing courses. ",
+      criteria: "Written Intensive[W]",
+      fine_requirements: [
+        {
+          description:
+            "At least one course must be explicitly focused on writing skills in English (eg, courses in professional, " +
+            "fiction or expository writing). These courses may overlap with other requirements.",
+          required_credits: 3,
+          criteria:
+            "AS.060.100[C]^OR^AS.060.113[C]^OR^AS.060.114[C]^OR^AS.180.248[C]^OR^AS.220.105[C]^OR^AS.220.106[C]^OR^AS.220.108[C]^OR^AS.290.303[C]^OR^AS.360.133[C]^OR^EN.661.110[C]^OR^EN.661.111[C]^OR^EN.661.250[C]^OR^EN.661.251[C]^OR^EN.661.315[C]",
+        },
+      ],
     },
   ],
 };
@@ -1369,7 +1380,8 @@ const bsCS_New: Major = {
           description:
             "12 upper level CS credits in addition to the required Algorithms course",
           required_credits: 12,
-          criteria: "EN Computer Science[D]^AND^Upper Level Undergraduate[L]",
+          criteria:
+            "EN Computer Science[D]^AND^Upper Level Undergraduate[L]^NOT^EN.601.433[C]^NOT^EN.601.633[C]",
         },
         {
           description:
@@ -1430,7 +1442,6 @@ const bsCS_New: Major = {
       name: "Liberal Arts",
       required_credits: 18,
       min_credits_per_course: 3,
-      double_count: true,
       description:
         "These courses must have either an ‘H’ or ‘S’ area designator on them, but can be " +
         "from any department. At most 2 of these courses may be taken S/U (if not counted towards " +
@@ -1446,11 +1457,18 @@ const bsCS_New: Major = {
       double_count: true,
       description:
         "Students are required to fulfill the university’s requirement of two writing intensive courses, " +
-        "each at least 3 credits. Students must receive at least a C- grade or better in these writing courses. " +
-        "At least one course must be explicitly focused on writing skills in English (eg, courses in professional, " +
-        "fiction or expository writing). These courses may overlap with other requirements.",
-      criteria:
-        "N[A]",
+        "each at least 3 credits. Students must receive at least a C- grade or better in these writing courses. ",
+      criteria: "Written Intensive[W]",
+      fine_requirements: [
+        {
+          description:
+            "At least one course must be explicitly focused on writing skills in English (eg, courses in professional, " +
+            "fiction or expository writing). These courses may overlap with other requirements.",
+          required_credits: 3,
+          criteria:
+            "AS.060.100[C]^OR^AS.060.113[C]^OR^AS.060.114[C]^OR^AS.180.248[C]^OR^AS.220.105[C]^OR^AS.220.106[C]^OR^AS.220.108[C]^OR^AS.290.303[C]^OR^AS.360.133[C]^OR^EN.661.110[C]^OR^EN.661.111[C]^OR^EN.661.250[C]^OR^EN.661.251[C]^OR^EN.661.315[C]",
+        },
+      ],
     },
   ],
 };
@@ -1463,7 +1481,7 @@ export function getMajorFromCommonName(name: string) {
     }
   });
   if (out === null) {
-    throw Error('Major not found');
+    throw Error("Major not found");
   }
   return out;
 }
@@ -1472,13 +1490,13 @@ export function getMajorFromCommonName(name: string) {
 export const allMajors: Major[] = [
   bsCS_Old,
   bsCS_New,
-  bsAMS,
-  baIS,
-  baPH,
-  bsBME,
-  baHistory,
-  baBiology,
-  bsCBE,
+  // bsAMS,
+  // baIS,
+  // baPH,
+  // bsBME,
+  // baHistory,
+  // baBiology,
+  // bsCBE,
 
   // baEcon,
   // bsAMS,
