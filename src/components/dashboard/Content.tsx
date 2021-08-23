@@ -18,8 +18,10 @@ import {
   selectDeleteYearStatus,
   selectCourseToDelete,
   selectShowCourseInfo,
+  selectAddingPrereq,
 } from "../../slices/popupSlice";
 import CourseDisplayPopup from "../popups/CourseDisplayPopup";
+import AddingPrereqPopup from "../popups/AddingPrereqPopup";
 
 /**
  * Holds all dashboard components.
@@ -33,6 +35,7 @@ function Content() {
   const deleteCourseStatus = useSelector(selectCourseToDelete);
   const importingStatus = useSelector(selectImportingStatus);
   const courseInfoStatus = useSelector(selectShowCourseInfo);
+  const addingPrereqStatus = useSelector(selectAddingPrereq);
 
   return (
     // <div className="flex flex-row flex-wrap-reverse mt-content medium:px-48 h-full">
@@ -67,6 +70,7 @@ function Content() {
       {deleteYearStatus ? <DeleteYearPopup /> : null}
       {deleteCourseStatus ? <DeleteCoursePopup /> : null}
       {courseInfoStatus ? <CourseDisplayPopup /> : null}
+      {addingPrereqStatus ? <AddingPrereqPopup /> : null}
     </>
   );
 }

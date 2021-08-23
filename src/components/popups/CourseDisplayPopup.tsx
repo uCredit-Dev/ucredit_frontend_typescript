@@ -107,12 +107,12 @@ const CourseDisplayPopup = () => {
         number: version.number,
         area: courseToShow.area,
         preReq: version.preReq,
+        wi: version.wi,
         expireAt:
           user._id === "guestUser"
             ? Date.now() + 60 * 60 * 24 * 1000
             : undefined,
       };
-      console.log("body is ", body);
       fetch(api + "/courses", {
         method: "POST",
         headers: {
@@ -171,6 +171,7 @@ const CourseDisplayPopup = () => {
       <div
         className="fixed z-40 left-0 top-0 m-0 w-full h-screen bg-black opacity-50"
         onClick={() => {
+          dispatch(updateCourseToShow(null));
           dispatch(updateShowCourseInfo(false));
         }}
       ></div>

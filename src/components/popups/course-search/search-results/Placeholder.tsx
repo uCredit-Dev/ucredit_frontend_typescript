@@ -129,7 +129,6 @@ const Placeholder = (props: { addCourse: any }) => {
   };
 
   const updateCourse = (): void => {
-    console.log(courseToShow);
     if (courseToShow !== null) {
       fetch(api + "/courses/" + courseToShow._id, {
         method: "DELETE",
@@ -138,7 +137,6 @@ const Placeholder = (props: { addCourse: any }) => {
         },
       }).then((retrieved) => {
         retrieved.json().then((data) => {
-          console.log(data);
           if (data.errors === undefined) {
             const updated = currentCourses.filter((course) => {
               if (course._id === courseToShow._id) {
@@ -147,7 +145,6 @@ const Placeholder = (props: { addCourse: any }) => {
                 return true;
               }
             });
-            console.log("updating", updated);
             dispatch(updateCurrentPlanCourses(updated));
             const allYears: Year[] = [...currentPlan.years];
             const newYears: Year[] = [];
@@ -165,7 +162,7 @@ const Placeholder = (props: { addCourse: any }) => {
             dispatch(updateSelectedPlan(newPlan));
             props.addCourse(newPlan);
           } else {
-            console.log("Failed to add", data.errors);
+            console.log("ERROR: Failed to add", data.errors);
           }
         });
       });

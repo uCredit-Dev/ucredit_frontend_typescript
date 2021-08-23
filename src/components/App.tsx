@@ -33,7 +33,6 @@ function App() {
       .get(api + "/search/skip/" + counter + "?mod=" + 450)
       .then((courses: any) => {
         if (courses.data.data.length > 0) {
-
           retrieveData(counter + 1, [...retrieved, ...courses.data.data]);
         } else {
           toast.dismiss();
@@ -86,7 +85,7 @@ function App() {
 
   const useQuery = () => {
     return new URLSearchParams(useLocation().search);
-  }
+  };
 
   const _id = useQuery().get("_id");
 
@@ -110,7 +109,7 @@ function App() {
             alt={"logo line art"}
           ></img>
           <div className="mb-auto mt-4 mx-auto w-full text-center text-5xl italic font-thin select-none">
-            UCredit
+            uCredit
           </div>
           <button
             onClick={() => {
@@ -124,16 +123,16 @@ function App() {
             Dismiss Loading Screen
           </button>
         </div>
-      ) : null} 
+      ) : null}
       <Switch>
         <Route path="/dashboard">
-          <Dashboard _id={null}/>
+          <Dashboard _id={null} />
         </Route>
         <Route path="/login">
           <DashboardEntry />
         </Route>
-        <Route path='/share'>
-          <Dashboard _id={_id}/>
+        <Route path="/share">
+          <Dashboard _id={_id} />
         </Route>
         <Route path="/">
           <LandingPage />

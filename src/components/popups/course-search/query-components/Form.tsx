@@ -37,7 +37,7 @@ const Form = (props: { setSearching: Function }) => {
   const allCourses = useSelector(selectAllCourses);
 
   // Component state setup
-  const [showCriteria, setShowCriteria] = useState(true);
+  const [showCriteria, setShowCriteria] = useState(false);
   const [showAllResults, setShowAllResults] = useState<boolean>(false);
   const [searchedCourses] = useState<Map<String, SearchMapEl>>(
     new Map<String, SearchMapEl>()
@@ -233,7 +233,6 @@ const Form = (props: { setSearching: Function }) => {
       });
       return toReturn;
     });
-    console.log(courses);
 
     return [courses, versions];
   };
@@ -359,7 +358,7 @@ const Form = (props: { setSearching: Function }) => {
           onChange={handleSearchTerm}
         />
         <div
-          className="flex flex-none flex-row items-center justify-center w-6 h-6 bg-white rounded-full cursor-pointer transform hover:scale-110 transition duration-200 ease-in"
+          className="flex flex-none flex-row items-center justify-center w-6 h-6 bg-white rounded-full shadow cursor-pointer transform hover:scale-110 transition duration-200 ease-in"
           onClick={() => setShowCriteria(!showCriteria)}
           data-tip={
             showCriteria ? "Hide search criteria" : "Show search criteria"
