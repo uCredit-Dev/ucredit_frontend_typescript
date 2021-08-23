@@ -26,7 +26,7 @@ import { newYearTemplate } from "./YearComponent";
 import { ReactComponent as AddSvg } from "../../../resources/svg/Add.svg";
 import { toast } from "react-toastify";
 import {
-  selectAllCourses,
+  selectCourseCache,
   selectPlanList,
   selectUser,
   updatePlanList,
@@ -50,7 +50,7 @@ function CourseList() {
   const droppables = useSelector(selectDroppables);
   const currentPlanCourses = useSelector(selectCurrentPlanCourses);
   const planList = useSelector(selectPlanList);
-  const allCourses = useSelector(selectAllCourses);
+  const courseCache = useSelector(selectCourseCache);
 
   // Component State setup.
   const [elements, setElements] = useState<JSX.Element[]>([]);
@@ -80,7 +80,6 @@ function CourseList() {
               yearCourses={yearCourses}
             />
           );
-          console.log("Same Year is ", yearIndex, year);
           if (jsx.length === currentPlan.years.length) {
             jsx.sort(
               (el1: JSX.Element, el2: JSX.Element) =>
@@ -144,7 +143,7 @@ function CourseList() {
       plan_id: "",
       user_id: "",
       year_id: "",
-      preReq: "",
+      preReq: [],
       isPlaceholder: false,
     };
     currentPlanCourses.forEach((c: UserCourse) => {
@@ -335,7 +334,7 @@ function CourseList() {
 
   const getSISCourse = (userCourse: UserCourse): SISRetrievedCourse | null => {
     let out: SISRetrievedCourse | null = null;
-    allCourses.forEach((course) => {
+    courseCache.forEach((course) => {
       if (course.number === userCourse.number) {
         out = course;
       }

@@ -10,6 +10,8 @@ type UserSlice = {
   currentUser: User;
   planList: Plan[];
   courseCache: SISRetrievedCourse[];
+  cacheNumbers: String[];
+  retrievedAll: boolean;
 };
 
 const initialState: UserSlice = {
@@ -24,6 +26,8 @@ const initialState: UserSlice = {
   },
   planList: [],
   courseCache: [],
+  retrievedAll: false,
+  cacheNumbers: [],
 };
 
 // Updates all user info from database. This function should be called after an axios get on the user routes.
@@ -55,7 +59,28 @@ export const userSlice = createSlice({
       state: any,
       action: PayloadAction<SISRetrievedCourse[]>
     ) => {
-      state.allCourses = action.payload;
+      if (!state.selectedAll) {
+        for (let course of action.payload) {
+          if (!state.cacheNumbers.includes(course.number)) {
+            state.cacheNumbers.push(course.number);
+            state.courseCache = [...state.courseCache, course];
+          }
+        }
+      }
+    },
+    updateAllCoursesCached: (
+      state: any,
+      action: PayloadAction<SISRetrievedCourse[]>
+    ) => {
+      if (!state.selectedAll) {
+        state.courseCache = [...action.payload];
+      }
+    },
+    updateRetrievedAll: (
+      state: any,
+      action: PayloadAction<Boolean>
+    ) => {
+      state.selectedAll = action.payload;
     },
     resetUser: (state: any) => {
       state.currentUser = initialState.currentUser;
@@ -69,6 +94,8 @@ export const {
   updatePlanList,
   updateGuestPlanIds,
   updateCourseCache,
+  updateAllCoursesCached,
+  updateRetrievedAll,
   resetUser,
 } = userSlice.actions;
 
@@ -86,5 +113,6 @@ export const loginAsync =
 export const selectUser = (state: RootState) => state.user.currentUser;
 export const selectPlanList = (state: RootState) => state.user.planList;
 export const selectCourseCache = (state: RootState) => state.user.courseCache;
+export const selectRetrievedAll = (state: RootState) => state.user.retrievedAll;
 
 export default userSlice.reducer;

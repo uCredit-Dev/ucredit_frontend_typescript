@@ -10,7 +10,7 @@ import {
   splitRequirements,
 } from "./distributionFunctions";
 import { selectCurrentPlanCourses } from "../../../slices/currentPlanSlice";
-import { selectAllCourses } from "../../../slices/userSlice";
+import { selectCourseCache } from "../../../slices/userSlice";
 import { getCourse } from "../../../resources/assets";
 import DistributionPopup from "./DistributionPopup";
 
@@ -36,7 +36,7 @@ const FineDistribution = ({
   const [flipped, setFlipped] = useState<string[]>([]);
   const [plannedCredits, setPlannedCredits] = useState(dis.fulfilled_credits);
 
-  const allCourses = useSelector(selectAllCourses);
+  const courseCache = useSelector(selectCourseCache);
   const currPlanCourses = useSelector(selectCurrentPlanCourses);
 
   const addToDistribution = () => {
@@ -55,22 +55,24 @@ const FineDistribution = ({
   useEffect(() => {
     var temp = dis.fulfilled_credits;
     currPlanCourses.forEach((course) => {
-      const courseObj = getCourse(course.number, allCourses, currPlanCourses);
-      if (
-        courseObj != null &&
-        checkRequirementSatisfied(splitRequirements(dis.expr), courseObj)
-      ) {
-        if (flipped.includes(course.number)) {
-          temp -= course.credits;
+      getCourse(course.number, courseCache, currPlanCourses).then((courseObj) => {
+        if (
+          courseObj != null &&
+          checkRequirementSatisfied(splitRequirements(dis.expr), courseObj)
+        ) {
+          if (flipped.includes(course.number)) {
+            temp -= course.credits;
+          }
+        } else {
+          if (flipped.includes(course.number)) {
+            temp += course.credits;
+          }
         }
-      } else {
-        if (flipped.includes(course.number)) {
-          temp += course.credits;
-        }
-      }
+      })
     });
     setPlannedCredits(temp);
-  }, [allCourses, currPlanCourses, dis.expr, flipped, dis.fulfilled_credits]);
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [currPlanCourses, dis.expr, flipped, dis.fulfilled_credits]);
 
   return (
     <div

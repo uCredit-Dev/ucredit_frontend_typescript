@@ -133,10 +133,10 @@ const DashboardEntry = (props: any) => {
           // backgroundColor: "black",
           backgroundBlendMode: "lighten",
           filter: "blur(9px) hue-rotate(340deg)",
-          zIndex: 0,
+          zIndex: 45,
         }}
       ></div>
-      <div className="absolute flex w-full h-full">
+      <div className="absolute flex w-full h-full z-50">
         <div className="flex flex-col mx-auto mx-auto my-auto p-14 text-white text-lg font-bold bg-gradient-to-b rounded shadow from-blue-500 to-green-400">
           <div className="flex flex-row items-center justify-center mt-auto pr-2 w-full text-3xl">
             <img src={logo} alt="logo" className="mr-2 h-16" />

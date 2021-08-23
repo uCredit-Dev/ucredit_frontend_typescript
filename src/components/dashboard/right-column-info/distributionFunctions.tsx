@@ -11,27 +11,28 @@ import { getCourse } from "../../../resources/assets";
 export const updateFulfilled = (
   requirements: [string, requirements[]][],
   courses: UserCourse[],
-  allCourses: SISRetrievedCourse[],
+  courseCache: SISRetrievedCourse[],
   currPlanCourses: UserCourse[]
 ) => {
   courses.forEach((course) => {
-    const courseObj = getCourse(course.number, allCourses, currPlanCourses);
-    if (courseObj === null || courseObj === undefined) {
-      return;
-    }
-    for (let i = 0; i < requirements.length; i++) {
-      for (let j = 0; j < requirements[i][1].length; j++) {
-        let requirement = requirements[i][1][j];
-        if (
-          checkRequirementSatisfied(
-            splitRequirements(requirement.expr),
-            courseObj
-          )
-        ) {
-          requirement.fulfilled_credits += parseFloat(courseObj.credits);
+    getCourse(course.number, courseCache, currPlanCourses).then((courseObj) => {
+      if (courseObj === null || courseObj === undefined) {
+        return;
+      }
+      for (let i = 0; i < requirements.length; i++) {
+        for (let j = 0; j < requirements[i][1].length; j++) {
+          let requirement = requirements[i][1][j];
+          if (
+            checkRequirementSatisfied(
+              splitRequirements(requirement.expr),
+              courseObj
+            )
+          ) {
+            requirement.fulfilled_credits += parseFloat(courseObj.credits);
+          }
         }
       }
-    }
+    })
   });
 };
 

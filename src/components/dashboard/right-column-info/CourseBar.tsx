@@ -4,7 +4,6 @@ import { useDispatch, useSelector } from "react-redux";
 import { selectCurrentPlanCourses } from "../../../slices/currentPlanSlice";
 import {
   selectCourseCache,
-  updateCourseCache,
 } from "../../../slices/userSlice";
 import { getCourse } from "../../../resources/assets";
 import {
@@ -36,9 +35,8 @@ function CourseBar({ distribution, general, description }: courseBarProps) {
     distribution.fulfilled_credits
   );
 
-  const dispatch = useDispatch();
-  const cachedCourses = useSelector(selectCourseCache);
   const currPlanCourses = useSelector(selectCurrentPlanCourses);
+  const courseCache = useSelector(selectCourseCache);
   const maxCredits = distribution.required_credits;
   const section = distribution.name;
 
@@ -48,37 +46,31 @@ function CourseBar({ distribution, general, description }: courseBarProps) {
   useEffect(() => {
     var temp = distribution.fulfilled_credits;
     currPlanCourses.forEach((course) => {
-      const courseObj = getCourse(
+      getCourse(
         course.number,
-        cachedCourses,
+        courseCache,
         currPlanCourses,
-        dispatch,
-        updateCourseCache
-      );
-      if (
-        courseObj != null &&
-        checkRequirementSatisfied(
-          splitRequirements(distribution.expr),
-          courseObj
-        )
-      ) {
-        if (flipped.includes(course.number)) {
-          temp -= course.credits;
+      ).then((courseObj) => {
+        if (
+          courseObj != null &&
+          checkRequirementSatisfied(
+            splitRequirements(distribution.expr),
+            courseObj
+          )
+        ) {
+          if (flipped.includes(course.number)) {
+            temp -= course.credits;
+          }
+        } else {
+          if (flipped.includes(course.number)) {
+            temp += course.credits;
+          }
         }
-      } else {
-        if (flipped.includes(course.number)) {
-          temp += course.credits;
-        }
-      }
+      })
     });
     setPlannedCredits(temp);
-  }, [
-    cachedCourses,
-    currPlanCourses,
-    distribution.expr,
-    flipped,
-    distribution.fulfilled_credits,
-  ]);
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [currPlanCourses, distribution.expr, flipped, distribution.fulfilled_credits]);
 
   const tooltip =
     `<div style="overflow: wrap; margin-bottom: 1rem;">${section}</div>` +
