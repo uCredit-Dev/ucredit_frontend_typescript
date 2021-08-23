@@ -8,7 +8,7 @@ import { api } from "./../resources/assets";
 import Dashboard from "./dashboard/Dashboard";
 import DashboardEntry from "./login/DashboardEntry";
 import { updateAllCourses } from "../slices/userSlice";
-import LandingPage from "./landing-page/LandingPage";
+import LandingPage from "./landing-page";
 import { toast, ToastContainer } from "react-toastify";
 import ReactTooltip from "react-tooltip";
 import { SISRetrievedCourse } from "../resources/commonTypes";
@@ -95,16 +95,16 @@ function App() {
   return (
     <>
       <ReactTooltip
-        id="godTip"
+        id='godTip'
         html={true}
-        className="max-w-sm"
-        place="top"
-        effect="solid"
+        className='max-w-sm'
+        place='top'
+        effect='solid'
       />
       {(welcomeScreen || importing) && !forceClose ? (
         <div className="fixed z-50 flex flex-col m-auto w-screen h-screen text-center text-center text-white bg-blue-900">
           <img
-            className="mt-auto mx-auto w-1/6"
+            className='w-1/6 mx-auto mt-auto'
             src={logoLine}
             alt={"logo line art"}
           ></img>
@@ -115,11 +115,10 @@ function App() {
             onClick={() => {
               setForceClose(true);
             }}
-            data-tip="Tap to dismiss loading screen. Resource loading will still be
-              performed in the background."
-            data-for="godTip"
-            className="mb-3 focus:outline-none"
-          >
+            data-tip='Tap to dismiss loading screen. Resource loading will still be
+              performed in the background.'
+            data-for='godTip'
+            className='mb-3 focus:outline-none'>
             Dismiss Loading Screen
           </button>
         </div>
@@ -128,7 +127,7 @@ function App() {
         <Route path="/dashboard">
           <Dashboard _id={null} />
         </Route>
-        <Route path="/login">
+        <Route path='/login'>
           <DashboardEntry />
         </Route>
         <Route path="/share">
