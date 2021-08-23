@@ -155,7 +155,7 @@ const Filters = ({ showCriteria }: filterProps) => {
         Version Year
         <div className="flex flex-row flex-grow">
           <Question
-            className="fill-gray h-4"
+            className="h-4 fill-gray"
             data-for="godTip"
             data-tip={`<p>This is to search for a specific snapshot of course information at a specific time in the past or present.</p><p>NOTE: This is NOT to determine where on the plan you are adding the course.</p><p>(ie. Course Version "Spring, 2021" may not equal "Spring, Senior")</p>`}
           />
@@ -231,7 +231,9 @@ const Filters = ({ showCriteria }: filterProps) => {
           </div>
           <div
             className="flex flex-row items-center justify-between mb-2 w-full h-auto"
-            data-tip={"Areas of study for the searched courses, please refer to your advisor for more info about the tags that you need to fulfill your major."}
+            data-tip={
+              "Areas of study for the searched courses, please refer to your advisor for more info about the tags that you need to fulfill your major."
+            }
             data-for="godTip"
           >
             Areas

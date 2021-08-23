@@ -1,9 +1,9 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect } from "react";
 import { useHistory, useLocation } from "react-router-dom";
 import { api, guestUser } from "../../resources/assets";
 import { useDispatch, useSelector } from "react-redux";
 import { updateUser, selectUser } from "../../slices/userSlice";
-import { withCookies, useCookies } from "react-cookie";
+import { useCookies } from "react-cookie";
 import samplePlan from "../../resources/images/samplePlan.png";
 import logo from "../../resources/images/logoDarker.png";
 
@@ -14,14 +14,13 @@ const dev = "http://localhost:3000/login/";
  * The login page, designed after the Spotify login page..
  * @param cookies contains the various resources provided by the wrapper component of react-cookie
  */
-const DashboardEntry = (props: any) => {
+const DashboardEntry = () => {
   // Redux setup.
   const dispatch = useDispatch();
   const user = useSelector(selectUser);
 
-  // Component state setup.
-  const [cookies] = useState(props.cookies);
   const [authCookies, setAuthCookie] = useCookies(["connect.sid"]);
+  const [cookies] = useCookies(["connect.sid"]);
 
   // React router state setup.
   let history = useHistory();
@@ -85,10 +84,14 @@ const DashboardEntry = (props: any) => {
   // NOTE: Currently, the user is set to the testUser object found in @src/testObjs.tsx, with a JHED of mliu78 (Matthew Liu)
   //            redux isn't being updated with retrieved user data, as login has issues.
   useEffect(() => {
-    const cookieVal = document.cookie.split("=")[1];
+    let cookieVal = "";
     if (user._id === "noUser") {
       // Retrieves user if user ID is "noUser", the initial user id state for userSlice.tsx.
       // Make call for backend
+      Object.entries(cookies).forEach((cookie: any) => {
+        if (cookie[0] === "_hjid" || cookie[0] === "connect.sid")
+          cookieVal = cookie[1];
+      });
       fetch(api + "/retrieveUser/" + cookieVal, {
         mode: "cors",
         method: "GET",
@@ -110,7 +113,7 @@ const DashboardEntry = (props: any) => {
         });
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [cookies, authCookies]);
+  }, [authCookies]);
 
   // Handles if the user is invalid.
   const handleGuest = () => {
@@ -164,4 +167,4 @@ const DashboardEntry = (props: any) => {
   );
 };
 
-export default withCookies(DashboardEntry);
+export default DashboardEntry;

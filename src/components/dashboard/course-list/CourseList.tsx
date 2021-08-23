@@ -80,7 +80,6 @@ function CourseList() {
               yearCourses={yearCourses}
             />
           );
-          console.log("Same Year is ", yearIndex, year);
           if (jsx.length === currentPlan.years.length) {
             jsx.sort(
               (el1: JSX.Element, el2: JSX.Element) =>
@@ -238,7 +237,7 @@ function CourseList() {
     })
       .then((resp) => {
         if (!resp.ok) {
-          console.log(resp);
+          console.log("ERROR:", resp);
         }
       })
       .catch((err) => console.log(err));
@@ -304,7 +303,7 @@ function CourseList() {
       })
         .then((res) => {
           if (!res.ok) {
-            console.log(res);
+            console.log("ERROR:", res);
           } else {
             toast.success("Successfully moved course!");
           }

@@ -30,6 +30,7 @@ import {
   updateToAddMajor,
   updateGeneratePlanAddStatus,
 } from "../../slices/popupSlice";
+import { useCookies } from "react-cookie";
 
 type UserProps = {
   _id: string | null;
@@ -51,6 +52,7 @@ function UserSection({ _id }: UserProps) {
   const [loginId, setLoginId] = useState(document.cookie.split("=")[1]);
   const [toAdd, setToAdd] = useState<Year[]>([]);
   const [shouldAdd, setShouldAdd] = useState<boolean>(false);
+  const [cookies] = useCookies(["connect.sid"]);
   let history = useHistory();
 
   useEffect(() => {
@@ -81,13 +83,13 @@ function UserSection({ _id }: UserProps) {
             let allYears: Year[] = [...curPlan.years];
             let newYears: Year[] = [];
             for (let y of allYears) {
-              newYears.push({...y});
+              newYears.push({ ...y });
             }
             for (let cur of added) {
               const nextYears: Year[] = [];
               for (let y of newYears) {
                 if (cur.year_id === y._id) {
-                  nextYears.push({...y, courses: [...y.courses, cur._id]});
+                  nextYears.push({ ...y, courses: [...y.courses, cur._id] });
                   //const yCourses = [...y.courses, cur._id];
                   //newYears.push({ ...y, courses: yCourses });
                 } else {
@@ -97,7 +99,7 @@ function UserSection({ _id }: UserProps) {
               newYears = nextYears;
             }
             //const newYears: Year[] = allYears;
-            let newPlan : Plan = { ...curPlan, years: newYears };
+            let newPlan: Plan = { ...curPlan, years: newYears };
             const newPlanList = [...planList];
             for (let i = 0; i < planList.length; i++) {
               if (planList[i]._id === newPlan._id) {
@@ -114,19 +116,18 @@ function UserSection({ _id }: UserProps) {
             });
             dispatch(updateAddingPlanStatus(false));
           }
-        })
+        });
       }
     }
     if (empty) {
       dispatch(updateImportingStatus(false));
       dispatch(updateAddingPlanStatus(false));
     }
-    console.log("done");
   };
 
   const addCourse = async (
     id: string,
-    yearIndex: number,
+    yearIndex: number
   ): Promise<UserCourse> => {
     return new Promise((resolve) => {
       axios.get(api + "/courses/" + id).then((response) => {
@@ -146,7 +147,9 @@ function UserSection({ _id }: UserProps) {
           area: course.area,
           preReq: course.preReq,
           expireAt:
-            user._id === "guestUser" ? Date.now() + 60 * 60 * 24 * 1000 : undefined,
+            user._id === "guestUser"
+              ? Date.now() + 60 * 60 * 24 * 1000
+              : undefined,
         };
         fetch(api + "/courses", {
           method: "POST",
@@ -164,13 +167,12 @@ function UserSection({ _id }: UserProps) {
             }
           });
         });
-      })
-    })
+      });
+    });
   };
 
   const login = (cookieVal: string) =>
     new Promise<void>((resolve) => {
-      console.log("logging in", user);
       if (user._id === "noUser") {
         var curUser: User;
         // Retrieves user if user ID is "noUser", the initial user id state for userSlice.tsx.
@@ -191,7 +193,7 @@ function UserSection({ _id }: UserProps) {
               curUser = retrievedUser.data;
               getPlans(curUser).then(() => {
                 resolve();
-              })
+              });
             }
           })
           .catch((err) => {
@@ -204,28 +206,26 @@ function UserSection({ _id }: UserProps) {
 
   const getPlans = (curUser: User) =>
     new Promise<void>((resolve) =>
-      axios
-        .get(api + "/plansByUser/" + curUser._id)
-        .then((retrieved) => {
-          const retrievedPlans: Plan[] = retrieved.data.data;
-          if (retrievedPlans.length > 0) {
-            const totPlans: Plan[] = [];
-            retrievedPlans.forEach((plan) => {
-              axios
-                .get(api + "/years/" + plan._id)
-                .then((resp) => {
-                  totPlans.push({ ...plan, years: resp.data.data });
-                  if (totPlans.length === retrievedPlans.length) {
-                    // Initial load, there is no current plan, so we set the current to be the first plan in the array.
-                    dispatch(updatePlanList(totPlans));
-                    dispatch(updateSelectedPlan(totPlans[0]));
-                    resolve();
-                  }
-                })
-                .catch((err) => console.log(err));
-            });
-          }
-        })
+      axios.get(api + "/plansByUser/" + curUser._id).then((retrieved) => {
+        const retrievedPlans: Plan[] = retrieved.data.data;
+        if (retrievedPlans.length > 0) {
+          const totPlans: Plan[] = [];
+          retrievedPlans.forEach((plan) => {
+            axios
+              .get(api + "/years/" + plan._id)
+              .then((resp) => {
+                totPlans.push({ ...plan, years: resp.data.data });
+                if (totPlans.length === retrievedPlans.length) {
+                  // Initial load, there is no current plan, so we set the current to be the first plan in the array.
+                  dispatch(updatePlanList(totPlans));
+                  dispatch(updateSelectedPlan(totPlans[0]));
+                  resolve();
+                }
+              })
+              .catch((err) => console.log(err));
+          });
+        }
+      })
     );
 
   // Useffect runs once on page load, calling to https://ucredit-api.herokuapp.com/api/retrieveUser to retrieve user data.
@@ -252,12 +252,18 @@ function UserSection({ _id }: UserProps) {
             .then((yearsResponse) => {
               let years: Year[] = yearsResponse.data.data;
               // check whether the user is logged in (whether a cookie exists)
-              const cookieVal = document.cookie.split("=")[1];
+              let cookieVal = "";
+              Object.entries(cookies).forEach((cookie: any) => {
+                if (cookie[0] === "_hjid" || cookie[0] === "connect.sid")
+                  cookieVal = cookie[1];
+              });
               if (cookieVal === undefined) {
                 // if not, create a user first, then add
                 dispatch(updateUser({ ...guestUser }));
                 dispatch(updateToAddName("Imported Plan"));
-                dispatch(updateToAddMajor(getMajorFromCommonName(plan.majors[0])));
+                dispatch(
+                  updateToAddMajor(getMajorFromCommonName(plan.majors[0]))
+                );
                 dispatch(updateGeneratePlanAddStatus(true));
                 setToAdd(years);
                 setShouldAdd(true);
@@ -265,7 +271,9 @@ function UserSection({ _id }: UserProps) {
                 // if so, login first, then add
                 login(cookieVal).then(() => {
                   dispatch(updateToAddName("Imported Plan"));
-                  dispatch(updateToAddMajor(getMajorFromCommonName(plan.majors[0])));
+                  dispatch(
+                    updateToAddMajor(getMajorFromCommonName(plan.majors[0]))
+                  );
                   dispatch(updateGeneratePlanAddStatus(true));
                   setToAdd(years);
                   setShouldAdd(true);
@@ -273,7 +281,7 @@ function UserSection({ _id }: UserProps) {
               }
             })
             .catch((e) => {
-              console.log(e);
+              console.log("ERROR: ", e);
             });
         })
         .catch((e) => {
@@ -287,12 +295,10 @@ function UserSection({ _id }: UserProps) {
     } else if (user._id === "noUser") {
       // Retrieves user if user ID is "noUser", the initial user id state for userSlice.tsx.
       // Make call for backend const cookieVals = document.cookie.split("=");
-      const cookieVals = document.cookie.split("=");
       let cookieVal = "";
-      cookieVals.forEach((val: string) => {
-        if (val.length === 20) {
-          cookieVal = val;
-        }
+      Object.entries(cookies).forEach((cookie: any) => {
+        if (cookie[0] === "_hjid" || cookie[0] === "connect.sid")
+          cookieVal = cookie[1];
       });
       fetch(api + "/retrieveUser/" + cookieVal, {
         mode: "cors",
@@ -309,13 +315,9 @@ function UserSection({ _id }: UserProps) {
             dispatch(updateUser(retrievedUser.data));
             setLoginId(cookieVal);
           } else {
-            console.log("errors are", retrievedUser.errors);
+            console.log("ERROR: ", retrievedUser.errors);
             history.push("/login");
           }
-        })
-        .catch((err) => {
-          console.log("ERROR: ", err.message);
-          history.push("/login");
         });
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -329,7 +331,7 @@ function UserSection({ _id }: UserProps) {
         {/* </div> */}
         <div className="flex flex-row flex-grow items-center ml-5 text-white text-4xl italic font-bold">
           <img src={bird} alt="logo" className="mr-3 h-9"></img>
-          <div>UCredit</div>
+          <div>uCredit</div>
         </div>
         {window.innerWidth > 800 ? (
           <div className="mr-3 text-white font-semibold">

@@ -65,7 +65,6 @@ const GenerateNewPlan = (props: generateNewPlanProps) => {
         const newPlanResponse = response.data.data;
         axios.get(api + "/years/" + newPlanResponse._id).then((resp) => {
           newPlan = { ...newPlanResponse, years: resp.data.data };
-          console.log("new years are ", resp.data.data);
           dispatch(
             updateSearchTime({
               searchSemester: "Fall",
@@ -118,7 +117,7 @@ const GenerateNewPlan = (props: generateNewPlanProps) => {
         });
       })
       .catch((e) => {
-        console.log(e);
+        console.log("ERROR: ", e);
       });
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [generatePlanAddStatus]);
