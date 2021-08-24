@@ -104,7 +104,7 @@ function App() {
 
   const useQuery = () => {
     return new URLSearchParams(useLocation().search);
-  }
+  };
 
   const _id = useQuery().get("_id");
 
@@ -128,7 +128,7 @@ function App() {
             alt={"logo line art"}
           ></img>
           <div className="mb-auto mt-4 mx-auto w-full text-center text-5xl italic font-thin select-none">
-            UCredit
+            uCredit
           </div>
           <button
             onClick={() => {
@@ -142,23 +142,23 @@ function App() {
             Dismiss Loading Screen
           </button>
         </div>
-      ) : null} 
+      ) : null}
       <Switch>
         <Route path="/dashboard">
-          <Dashboard _id={null}/>
+          <Dashboard _id={null} />
         </Route>
         <Route path="/login">
           <DashboardEntry />
         </Route>
-        <Route path='/share'>
-          <Dashboard _id={_id}/>
+        <Route path="/share">
+          <Dashboard _id={_id} />
         </Route>
         <Route path="/">
           <LandingPage />
         </Route>
       </Switch>
       <ToastContainer
-        position="top-right"
+        position="bottom-left"
         autoClose={4000}
         hideProgressBar={true}
         newestOnTop={false}

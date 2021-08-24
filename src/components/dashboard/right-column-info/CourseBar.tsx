@@ -13,7 +13,6 @@ import {
 } from "./distributionFunctions";
 
 import { ReactComponent as CheckSvg } from "../../../resources/svg/Check.svg";
-import { ReactComponent as Add } from "../../../resources/svg/Add.svg";
 import DistributionPopup from "./DistributionPopup";
 
 type courseBarProps = {
@@ -82,16 +81,11 @@ function CourseBar({ distribution, general, description }: courseBarProps) {
         : `<div style="width: 100%; height: auto; display: flex; flex-direction: row; justify-content: center">Completed!</div>`
     }</div>`;
 
-  const addToDistribution = () => {
-    setDisplayAdd(true);
-  };
-
   const closePopup = () => {
     setDisplayAdd(false);
   };
 
   const onSave = (s: string[]) => {
-    console.log(s);
     setFlipped(s);
   };
 
@@ -140,10 +134,10 @@ function CourseBar({ distribution, general, description }: courseBarProps) {
             <CheckSvg className="absolute left-1/2 top-1/2 w-5 h-5 text-white stroke-2 transform -translate-x-1/2 -translate-y-1/2" />
           ) : null}
         </div>
-        <Add
+        {/* <Add
           className="h-6 transform hover:scale-150 transition duration-200 ease-in"
           onClick={addToDistribution}
-        />
+        /> */}
       </div>
     </>
   );

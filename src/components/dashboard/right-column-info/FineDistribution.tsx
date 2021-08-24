@@ -3,7 +3,6 @@ import React, { useState, useEffect } from "react";
 import { useSelector } from "react-redux";
 import { ReactComponent as Check } from "../../../resources/svg/CheckMark.svg";
 import { ReactComponent as X } from "../../../resources/svg/Close.svg";
-import { ReactComponent as Add } from "../../../resources/svg/Add.svg";
 import {
   requirements,
   checkRequirementSatisfied,
@@ -13,6 +12,7 @@ import { selectCurrentPlanCourses } from "../../../slices/currentPlanSlice";
 import { selectCourseCache } from "../../../slices/userSlice";
 import { getCourse } from "../../../resources/assets";
 import DistributionPopup from "./DistributionPopup";
+import ReactHtmlParser from "react-html-parser";
 
 type FineDistributionProps = {
   dis: requirements;
@@ -39,16 +39,11 @@ const FineDistribution = ({
   const courseCache = useSelector(selectCourseCache);
   const currPlanCourses = useSelector(selectCurrentPlanCourses);
 
-  const addToDistribution = () => {
-    setDisplayAdd(true);
-  };
-
   const closePopup = () => {
     setDisplayAdd(false);
   };
 
   const onSave = (s: string[]) => {
-    console.log(s);
     setFlipped(s);
   };
 
@@ -95,21 +90,20 @@ const FineDistribution = ({
           )}
         </div>
         <p
-          className={clsx("pr-2 h-auto", {
-            "overflow-hidden overflow-ellipsis whitespace-nowrap":
-              !showDistrDesc,
+          className={clsx("pr-2", {
+            "overflow-y-hidden h-6 select-text": !showDistrDesc,
           })}
         >
-          {dis.name}
+          {ReactHtmlParser(dis.name)}
         </p>
       </button>
       <p className="font-bold">
         {plannedCredits}/{dis.required_credits}
       </p>
-      <Add
+      {/* <Add
         className="h-6 transform hover:scale-150 transition duration-200 ease-in"
         onClick={addToDistribution}
-      />
+      /> */}
       {displayAdd ? (
         <DistributionPopup
           distribution={dis}

@@ -237,7 +237,7 @@ function CourseList() {
     })
       .then((resp) => {
         if (!resp.ok) {
-          console.log(resp);
+          console.log("ERROR:", resp);
         }
       })
       .catch((err) => console.log(err));
@@ -303,7 +303,7 @@ function CourseList() {
       })
         .then((res) => {
           if (!res.ok) {
-            console.log(res);
+            console.log("ERROR:", res);
           } else {
             toast.success("Successfully moved course!");
           }

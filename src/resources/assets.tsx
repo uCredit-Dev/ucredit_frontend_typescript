@@ -548,14 +548,18 @@ const getNonStringPrereq = (
     // If the element is a number
     // const noCBrackets: string = element.substr(0, element.length - 3);
     const noCBracketsNum: string = element.substr(0, 10);
-    const satisfied: boolean = checkPrereq(
-      currPlanCourses,
-      plan,
-      noCBracketsNum,
-      plan.years[year]._id,
-      semester
-    );
-    return satisfied;
+    if (plan.years[year]) {
+      const satisfied: boolean = checkPrereq(
+        currPlanCourses,
+        plan,
+        noCBracketsNum,
+        plan.years[year]._id,
+        semester
+      );
+      return satisfied;
+    } else {
+      return false;
+    }
   } else if (typeof element[0] === "number") {
     // If the element is a OR sequence (denoted by the depth number in the first index)
     const parsedSat: boolean = isSatisfied(
@@ -629,8 +633,8 @@ const isSatisfied = (
   return orAndSatisfied;
 };
 
-const createPrereqBulletList = (input: any): any => {
-  const courseArr = [];
+const createPrereqBulletList = (input: string[]): string[] => {
+  const courseArr: any[] = [];
   for (let i = 0; i < input.length; i++) {
     if (input[i] === "AND") {
       // skip
@@ -639,7 +643,7 @@ const createPrereqBulletList = (input: any): any => {
 
       // Keeps track of whether we have closed the original open parentheses
       const parenthesesStack = [input[i]];
-      const subCourseArr = [];
+      const subCourseArr: string[] = [];
       while (parenthesesStack.length > 0) {
         i++;
         if (input[i] === ")") {
@@ -738,7 +742,7 @@ export const checkPrereq = (
 };
 
 const getYearFromId = (id: string, plan: Plan): Year | null => {
-  let year = null;
+  let year: Year | null = null;
 
   plan.years.forEach((y: Year, i: number) => {
     if (id === y._id) {
@@ -786,7 +790,7 @@ const prereqInPast = (
 };
 
 function getCourseYear(plan: Plan, course: UserCourse): Year | null {
-  let year = null;
+  let year: Year | null = null;
   plan.years.forEach((currPlanYear) => {
     if (currPlanYear._id === course.year_id) {
       year = currPlanYear;

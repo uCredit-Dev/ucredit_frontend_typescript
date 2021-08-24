@@ -16,8 +16,8 @@ import {
   SISRetrievedCourse,
   TagType,
 } from "../../../../resources/commonTypes";
-import { ReactComponent as FilterFilledSvg } from "../../../../resources/svg/FilterFilled.svg";
-import { ReactComponent as FilterNonFilledSvg } from "../../../../resources/svg/FilterNonFilled.svg";
+import { ReactComponent as ArrowUp } from "../../../../resources/svg/ArrowUp.svg";
+import { ReactComponent as ArrowDown } from "../../../../resources/svg/ArrowDown.svg";
 import "react-toastify/dist/ReactToastify.css";
 import Filters from "./Filters";
 import { selectCourseCache, selectRetrievedAll, updateCourseCache } from "../../../../slices/userSlice";
@@ -40,7 +40,7 @@ const Form = (props: { setSearching: Function }) => {
   const retrievedAll = useSelector(selectRetrievedAll);
 
   // Component state setup
-  const [showCriteria, setShowCriteria] = useState(true);
+  const [showCriteria, setShowCriteria] = useState(false);
   const [showAllResults, setShowAllResults] = useState<boolean>(false);
   const [searchedCourses] = useState<Map<String, SearchMapEl>>(
     new Map<String, SearchMapEl>()
@@ -256,8 +256,6 @@ const Form = (props: { setSearching: Function }) => {
           });
           return toReturn;
         });
-        console.log(courses);
-    
         return resolve([courses, versions]);
       }
     })
@@ -390,7 +388,7 @@ const Form = (props: { setSearching: Function }) => {
           onChange={handleSearchTerm}
         />
         <div
-          className="flex flex-none flex-row items-center justify-center w-6 h-6 bg-white rounded cursor-pointer transform hover:scale-110 transition duration-200 ease-in"
+          className="flex flex-none flex-row items-center justify-center w-6 h-6 bg-white rounded-full shadow cursor-pointer transform hover:scale-110 transition duration-200 ease-in"
           onClick={() => setShowCriteria(!showCriteria)}
           data-tip={
             showCriteria ? "Hide search criteria" : "Show search criteria"
@@ -398,9 +396,9 @@ const Form = (props: { setSearching: Function }) => {
           data-for="godTip"
         >
           {!showCriteria ? (
-            <FilterNonFilledSvg className="w-4 h-4 transform rotate-90" />
+            <ArrowUp className="w-4 h-4 transform" />
           ) : (
-            <FilterFilledSvg className="w-4 h-4 transform rotate-90" />
+            <ArrowDown className="w-4 h-4 transform" />
           )}
         </div>
       </div>

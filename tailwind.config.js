@@ -122,6 +122,11 @@ module.exports = {
       },
       fill: (theme) => ({
         gold: theme("colors.yellow.400"),
+        red: theme("colors.red.500"),
+        green: theme("colors.green.500"),
+        blue: theme("colors.blue.500"),
+        gray: theme("colors.gray.500"),
+        white: theme("colors.white"),
       }),
     },
   },

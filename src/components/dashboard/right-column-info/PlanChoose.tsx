@@ -75,14 +75,7 @@ const PlanChoose = () => {
                 .catch((err) => console.log(err));
             });
 
-            toast("Retrieved " + retrievedPlans.length + " plans!", {
-              position: "top-right",
-              autoClose: 5000,
-              closeOnClick: true,
-              pauseOnHover: true,
-              draggable: true,
-              progress: 0,
-            });
+            toast("Retrieved " + retrievedPlans.length + " plans!");
           } else if (
             retrievedPlans.length === 0 &&
             user._id !== "noUser" &&
