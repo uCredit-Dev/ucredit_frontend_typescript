@@ -455,30 +455,34 @@ export const getCourse = async (
     let out: Course | null = null;
     let userC: UserCourse | null = null;
 
-    allPlanCourses.forEach((c) => {
+    for (let c of allPlanCourses) {
       if (c.number === courseNumber) {
         userC = c;
       }
-    })
+    }
 
     // then check the cache
     if (out === null) {
-      courseCache.forEach((element) => {
+      for (let element of courseCache) {
         if (element.number === courseNumber) {
-          if (userC === null) {
-            return;
+          for (let v of element.versions) {
+            if (userC === null) {
+              continue;
+            }
+            if (v.term === userC.term) {
+              out = {
+                ...userC,
+                ...element.versions[0],
+              };
+            }
           }
-          out = {
-            ...userC,
-            ...element.versions[0],
-          };
-          return out;
         }
-      });
+      };
     }
-
+    console.log(out);
     // Then pull from db.
     if (out === null) {
+      console.log("D");
       axios
         .get("https://ucredit-dev.herokuapp.com/api/search", {
           params: { query: courseNumber },

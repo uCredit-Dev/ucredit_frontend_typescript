@@ -45,6 +45,7 @@ const Form = (props: { setSearching: Function }) => {
   const [searchedCourses] = useState<Map<String, SearchMapEl>>(
     new Map<String, SearchMapEl>()
   );
+  const [initialQueryLength, setInitialQueryLength] = useState<number>(0);
 
   // On opening search, set the term filter to match semester you're adding to.
   useEffect(() => {
@@ -73,8 +74,10 @@ const Form = (props: { setSearching: Function }) => {
 
   // Search with debouncing of 2/4s of a second.
   const minLength = 3;
+  const maxLess = 3;
   useEffect(() => {
     searchedCourses.clear();
+    setInitialQueryLength(searchTerm.length);
     props.setSearching(false);
     // Skip searching if no filters or queries are specified
     if (
@@ -119,6 +122,7 @@ const Form = (props: { setSearching: Function }) => {
       let courses: SISRetrievedCourse[] = [...courseCache];
       console.log(retrievedAll);
       if (!retrievedAll) {
+        console.log("C");
         axios.get("https://ucredit-dev.herokuapp.com/api/search", {
           params: {
             query: extras.query,
@@ -302,7 +306,7 @@ const Form = (props: { setSearching: Function }) => {
           const newSearchList: [SISRetrievedCourse[], number[]] =
               getNewSearchList();
           updateSearchResults(newSearchList[0], newSearchList[1]);
-          if (queryLength > minLength) {
+          if (queryLength > minLength && initialQueryLength - queryLength < 3) {
             performSmartSearch(extras, queryLength - 1)();
           }
         }
@@ -319,6 +323,7 @@ const Form = (props: { setSearching: Function }) => {
 
       if (
         queryLength >= minLength &&
+        initialQueryLength - queryLength < 3 && 
         !extras.query.startsWith("EN.") &&
         !extras.query.startsWith("AS.") &&
         !extras.query.includes(".") &&

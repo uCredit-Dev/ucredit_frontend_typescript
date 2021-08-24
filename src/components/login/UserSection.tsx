@@ -80,6 +80,7 @@ function UserSection({ _id }: UserProps) {
     years.forEach((y) => {
       y.courses.forEach((c) => {
         total++;
+        console.log("b");
         axios
           .get("https://ucredit-dev.herokuapp.com/api/search", {
             params: { query: c },

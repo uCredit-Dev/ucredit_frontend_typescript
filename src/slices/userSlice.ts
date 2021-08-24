@@ -80,7 +80,7 @@ export const userSlice = createSlice({
       state: any,
       action: PayloadAction<Boolean>
     ) => {
-      state.selectedAll = action.payload;
+      state.retrievedAll = action.payload;
     },
     resetUser: (state: any) => {
       state.currentUser = initialState.currentUser;

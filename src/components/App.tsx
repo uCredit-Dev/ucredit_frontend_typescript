@@ -77,12 +77,14 @@ function App() {
     }
   }, [user])
 
+  let needsToLoad = true;
   useEffect(() => {
-    if (courseCache.length === 0 && curPlan._id !== "noPlan") {
+    if (courseCache.length === 0 && curPlan._id !== "noPlan" && needsToLoad) {
       let total = 0;
       let cum = 0;
       let SISCourses: SISRetrievedCourse[] = [];
       axios.get(api + '/coursesByPlan/' + curPlan._id).then((response) => {
+        console.log("A");
         response.data.data.forEach((c: UserCourse) => {
           total++;
           axios.get("https://ucredit-dev.herokuapp.com/api/search", {
@@ -94,6 +96,7 @@ function App() {
               SISCourses.push(SISRetrieved);
               if (cum === total) {
                 dispatch(updateCourseCache([...SISCourses]));
+                needsToLoad = false;
               }
             })
           })
