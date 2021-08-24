@@ -37,7 +37,7 @@ const Form = (props: { setSearching: Function }) => {
   const searchFilters = useSelector(selectSearchFilters);
   const semester = useSelector(selectSemester);
   const courseCache = useSelector(selectCourseCache);
-  const retrievedAll = useSelector(selectRetrievedAll)
+  const retrievedAll = useSelector(selectRetrievedAll);
 
   // Component state setup
   const [showCriteria, setShowCriteria] = useState(true);
@@ -72,7 +72,7 @@ const Form = (props: { setSearching: Function }) => {
   };
 
   // Search with debouncing of 2/4s of a second.
-  const minLength = 99999;
+  const minLength = 3;
   useEffect(() => {
     searchedCourses.clear();
     props.setSearching(false);
@@ -117,13 +117,13 @@ const Form = (props: { setSearching: Function }) => {
   const find = (extras: SearchExtras): Promise<[SISRetrievedCourse[], number[]]> => {
     return new Promise((resolve) => {
       let courses: SISRetrievedCourse[] = [...courseCache];
-
-    if (!retrievedAll) {
-      axios.get("https://ucredit-dev.herokuapp.com/api/search", {
+      console.log(retrievedAll);
+      if (!retrievedAll) {
+        axios.get("https://ucredit-dev.herokuapp.com/api/search", {
           params: {
             query: extras.query,
             department: extras.department,
-            term: extras.department,
+            term: extras.term,
             areas: extras.areas,
             credits: extras.credits,
             wi: extras.wi,
@@ -301,13 +301,11 @@ const Form = (props: { setSearching: Function }) => {
               });
             }
           });
-      
+          const newSearchList: [SISRetrievedCourse[], number[]] =
+              getNewSearchList();
+          updateSearchResults(newSearchList[0], newSearchList[1]);
           if (queryLength > minLength) {
             performSmartSearch(extras, queryLength - 1)();
-          } else {
-            const newSearchList: [SISRetrievedCourse[], number[]] =
-              getNewSearchList();
-            updateSearchResults(newSearchList[0], newSearchList[1]);
           }
         }
       })
