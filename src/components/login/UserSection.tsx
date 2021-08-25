@@ -86,6 +86,7 @@ function UserSection({ _id }: UserProps) {
             params: { query: c },
           })
           .then((retrieved) => {
+            console.log("B");
             dispatch(updateCourseCache([retrieved.data.data]));
             cum++;
             if (cum === total) {

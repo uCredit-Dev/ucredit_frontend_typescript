@@ -80,7 +80,6 @@ function CourseComponent({
 
   // Sets or resets the course displayed in popout after user clicks it in course list.
   const displayCourses = () => {
-    console.log(course);
     dispatch(updateCourseToShow(course));
     dispatch(updateShowCourseInfo(true));
   };

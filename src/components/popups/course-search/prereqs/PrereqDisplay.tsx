@@ -55,9 +55,7 @@ const PrereqDisplay = () => {
   const [NNegativePreReqs, setNNegativePreReqs] = useState<any[]>();
 
   const display = (preReqs: any[]) => {
-    console.log("displaying...", preReqs);
     processPrereqs(preReqs, courseCache, currPlanCourses).then((resolved) => {
-      console.log(resolved);
       afterGathering(resolved.numNameList, resolved.numList, resolved.expr);
     })
   };
@@ -347,7 +345,6 @@ const PrereqDisplay = () => {
           numNameList[i].substr(20, numNameList[i].length)
       );
     }
-    console.log("after gathering");
     expr = expr.split("^");
     const list = createPrereqBulletList(expr);
     setPreReqDisplay(preReqsToComponents(list));

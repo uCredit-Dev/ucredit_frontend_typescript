@@ -1,6 +1,5 @@
 import axios from "axios";
-import { useDispatch } from "react-redux";
-import { updateCourseCache } from "../slices/userSlice";
+import { selectUnfoundNumbers, updateCourseCache, updateUnfoundNumbers } from "../slices/userSlice";
 import {
   Course,
   User,
@@ -461,28 +460,38 @@ export const getCourse = async (
       }
     }
 
-    // then check the cache
+    // check the cache
+    for (let element of courseCache) {
+      if (element.number === courseNumber) {
+        out = {
+          ...element,
+          ...element.versions[0],
+        };
+        return resolve(out);
+        // for (let i = 0; i < element.versions.length; i++) {
+        //   let v = element.versions[i];
+        //   let t = element.terms[i];
+        //   if (userC === null) {
+        //     continue;
+        //   }
+        //   //console.log(t + " vs " + userC.term);
+        //   //if (t === userC.term) {
+        //   out = {
+        //     ...userC,
+        //     ...element.versions[0],
+        //   };
+        //   //}
+        // }
+      }
+    };
+
     if (out === null) {
-      for (let element of courseCache) {
-        if (element.number === courseNumber) {
-          for (let v of element.versions) {
-            if (userC === null) {
-              continue;
-            }
-            if (v.term === userC.term) {
-              out = {
-                ...userC,
-                ...element.versions[0],
-              };
-            }
-          }
-        }
-      };
+      if (store.getState().user.unfoundNumbers.includes(courseNumber)) {
+        return resolve(null);
+      }
     }
-    console.log(out);
     // Then pull from db.
     if (out === null) {
-      console.log("D");
       axios
         .get("https://ucredit-dev.herokuapp.com/api/search", {
           params: { query: courseNumber },
@@ -490,6 +499,7 @@ export const getCourse = async (
         .then((courses) => {
           let retrieved : SISRetrievedCourse = courses.data.data[0];
           if (retrieved === undefined) {
+            store.dispatch(updateUnfoundNumbers(courseNumber));
             return resolve(null);
           } 
           let versionIndex = 0;
@@ -499,6 +509,7 @@ export const getCourse = async (
               versionIndex = index;
             }
           });
+          //console.log(retrieved);
           store.dispatch(updateCourseCache([retrieved]));
           out = {
             ...retrieved,

@@ -4,7 +4,7 @@ import { useEffect } from "react";
 import { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Switch, Route, useLocation } from "react-router-dom";
-import { api } from "./../resources/assets";
+import { api, checkAllPrereqs, processPrereqs } from "./../resources/assets";
 import Dashboard from "./dashboard/Dashboard";
 import DashboardEntry from "./login/DashboardEntry";
 import { selectCourseCache, selectUser, updateAllCoursesCached, updateCourseCache, updateRetrievedAll } from "../slices/userSlice";
@@ -14,7 +14,7 @@ import ReactTooltip from "react-tooltip";
 import { SISRetrievedCourse, UserCourse } from "../resources/commonTypes";
 // import bird from "./../resources/images/birdTempGif.gif";
 import logoLine from "../resources/images/line-art/logo_line_lighter.png";
-import { selectImportingStatus, selectPlan } from "../slices/currentPlanSlice";
+import { selectCurrentPlanCourses, selectImportingStatus, selectPlan } from "../slices/currentPlanSlice";
 
 /**
  * Root app component, where it all begins...
@@ -25,11 +25,13 @@ function App() {
   const importing = useSelector(selectImportingStatus);
   const user = useSelector(selectUser);
   const curPlan = useSelector(selectPlan);
+  const curPlanCourses = useSelector(selectCurrentPlanCourses);
   const courseCache = useSelector(selectCourseCache);
 
   // Component state setup.
   const [welcomeScreen, setWelcomeScreen] = useState<boolean>(true);
   const [forceClose, setForceClose] = useState<boolean>(false);
+  const [needsToLoad, setNeedsToLoad] = useState<boolean>(true);
 
   const retrieveData = (counter: number, retrieved: SISRetrievedCourse[]) => {
     axios
@@ -67,36 +69,36 @@ function App() {
   };
 
   useEffect(() => {
-    retrieveData(0, []);
+    //retrieveData(0, []);
   }, []);
 
   useEffect(() => {
-    if (user._id !== "noUser") {
+    if (user._id !== "noUser" && !needsToLoad) {
       setWelcomeScreen(false);
       // TODO: SOMETHING IDK
     }
-  }, [user])
+  }, [user, needsToLoad])
 
-  let needsToLoad = true;
   useEffect(() => {
     if (courseCache.length === 0 && curPlan._id !== "noPlan" && needsToLoad) {
       let total = 0;
       let cum = 0;
       let SISCourses: SISRetrievedCourse[] = [];
       axios.get(api + '/coursesByPlan/' + curPlan._id).then((response) => {
-        console.log("A");
         response.data.data.forEach((c: UserCourse) => {
           total++;
           axios.get("https://ucredit-dev.herokuapp.com/api/search", {
             params: { query: c.number },
             // eslint-disable-next-line no-loop-func
             }).then((retrieved) => {
-              let SISRetrieved : SISRetrievedCourse = retrieved.data.data[0]; 
-              cum++;
+              let SISRetrieved : SISRetrievedCourse = retrieved.data.data[0];   
+
               SISCourses.push(SISRetrieved);
+              cum++;
               if (cum === total) {
+                console.log("A");
                 dispatch(updateCourseCache([...SISCourses]));
-                needsToLoad = false;
+                setNeedsToLoad(false);
               }
             })
           })

@@ -11,6 +11,7 @@ type UserSlice = {
   planList: Plan[];
   courseCache: SISRetrievedCourse[];
   cacheNumbers: String[];
+  unfoundNumbers: String[];
   retrievedAll: boolean;
 };
 
@@ -28,6 +29,7 @@ const initialState: UserSlice = {
   courseCache: [],
   retrievedAll: false,
   cacheNumbers: [],
+  unfoundNumbers: [],
 };
 
 // Updates all user info from database. This function should be called after an axios get on the user routes.
@@ -62,10 +64,18 @@ export const userSlice = createSlice({
       if (!state.selectedAll) {
         for (let course of action.payload) {
           if (!state.cacheNumbers.includes(course.number)) {
-            state.cacheNumbers.push(course.number);
+            state.cacheNumbers = [...state.cacheNumbers, course.number];
             state.courseCache = [...state.courseCache, course];
           }
         }
+      }
+    },
+    updateUnfoundNumbers: (
+      state: any,
+      action: PayloadAction<String>
+    ) => {
+      if (!state.unfoundNumbers.includes(action.payload)) {
+        state.unfoundNumbers = [...state.unfoundNumbers, action.payload];
       }
     },
     updateAllCoursesCached: (
@@ -96,6 +106,7 @@ export const {
   updateCourseCache,
   updateAllCoursesCached,
   updateRetrievedAll,
+  updateUnfoundNumbers,
   resetUser,
 } = userSlice.actions;
 
@@ -114,5 +125,6 @@ export const selectUser = (state: RootState) => state.user.currentUser;
 export const selectPlanList = (state: RootState) => state.user.planList;
 export const selectCourseCache = (state: RootState) => state.user.courseCache;
 export const selectRetrievedAll = (state: RootState) => state.user.retrievedAll;
+export const selectUnfoundNumbers = (state: RootState) => state.user.unfoundNumbers;
 
 export default userSlice.reducer;

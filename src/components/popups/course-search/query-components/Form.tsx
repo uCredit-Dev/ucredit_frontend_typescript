@@ -122,7 +122,6 @@ const Form = (props: { setSearching: Function }) => {
       let courses: SISRetrievedCourse[] = [...courseCache];
       console.log(retrievedAll);
       if (!retrievedAll) {
-        console.log("C");
         axios.get("https://ucredit-dev.herokuapp.com/api/search", {
           params: {
             query: extras.query,
