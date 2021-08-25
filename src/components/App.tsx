@@ -8,13 +8,13 @@ import { api, checkAllPrereqs, processPrereqs } from "./../resources/assets";
 import Dashboard from "./dashboard/Dashboard";
 import DashboardEntry from "./login/DashboardEntry";
 import { selectCourseCache, selectUser, updateAllCoursesCached, updateCourseCache, updateRetrievedAll } from "../slices/userSlice";
-import LandingPage from "./landing-page/LandingPage";
 import { toast, ToastContainer } from "react-toastify";
 import ReactTooltip from "react-tooltip";
 import { SISRetrievedCourse, UserCourse } from "../resources/commonTypes";
 // import bird from "./../resources/images/birdTempGif.gif";
 import logoLine from "../resources/images/line-art/logo_line_lighter.png";
 import { selectCurrentPlanCourses, selectImportingStatus, selectPlan } from "../slices/currentPlanSlice";
+import LandingPage from "./landing-page";
 
 /**
  * Root app component, where it all begins...
