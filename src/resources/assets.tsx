@@ -1,5 +1,5 @@
 import axios from "axios";
-import { selectUnfoundNumbers, updateCourseCache, updateUnfoundNumbers } from "../slices/userSlice";
+import { updateCourseCache, updateUnfoundNumbers } from "../slices/userSlice";
 import {
   Course,
   User,
@@ -10,7 +10,7 @@ import {
   Year,
 } from "./commonTypes";
 import { allMajors } from "./majors";
-import { store } from '../appStore/store'
+import { store } from "../appStore/store";
 
 export const api = "https://ucredit-api.herokuapp.com/api";
 
@@ -351,12 +351,11 @@ export const processPrereqs = async (
       );
     }
   });
-  
+
   return new Promise((resolve) => {
-    getCourses(expr, regex, courseCache, planCourses)
-    .then((c) => {
+    getCourses(expr, regex, courseCache, planCourses).then((c) => {
       return resolve(c);
-    })
+    });
   });
 };
 
@@ -375,7 +374,7 @@ export const getCourses = (
   expr: string,
   regex: RegExp,
   courseCache: SISRetrievedCourse[],
-  planCourses: UserCourse[],
+  planCourses: UserCourse[]
 ): Promise<prereqCourses> => {
   return new Promise((resolve) => {
     // Gets an array of all courses in expression.
@@ -401,46 +400,49 @@ export const getCourses = (
         }
         if (num.match("EN.600") !== null) {
           num = num.replace("EN.600", "EN.601");
-          getCourse(num, courseCache, planCourses).then((retrievedCourse601) => {
-            if (retrievedCourse601 !== null) {
-              retrieved++;
-              // Append original num to front for later sorting
-              numNameList[n] = numList[n] + num + " " + retrievedCourse601.title;
+          getCourse(num, courseCache, planCourses).then(
+            (retrievedCourse601) => {
+              if (retrievedCourse601 !== null) {
+                retrieved++;
+                // Append original num to front for later sorting
+                numNameList[n] =
+                  numList[n] + num + " " + retrievedCourse601.title;
+              }
+              if (numNameList[n] == null) {
+                retrieved++;
+                numNameList[n] =
+                  numList[n] +
+                  numList[n] +
+                  " Has not been offered in the past 4 years or listed on SIS. Please click on the Prerequisites Description tab for full description.";
+              }
+              if (retrieved === numList.length) {
+                let out = {
+                  numNameList: numNameList,
+                  numList: numList,
+                  expr: expr,
+                };
+                return resolve(out);
+              }
             }
-            if (numNameList[n] == null) {
-              retrieved++;
-              numNameList[n] =
-                numList[n] +
-                numList[n] +
-                " Has not been offered in the past 4 years or listed on SIS. Please click on the Prerequisites Description tab for full description.";
-            }
-            if (retrieved === numList.length) {
-              let out = {
-                numNameList: numNameList,
-                numList: numList,
-                expr: expr,
-              };
-              return resolve(out);
-            }
-          })
+          );
         } else {
           if (numNameList[n] == null) {
-              retrieved++;
-              numNameList[n] =
-                numList[n] +
-                numList[n] +
-                " Has not been offered in the past 4 years or listed on SIS. Please click on the Prerequisites Description tab for full description.";
-            }
-            if (retrieved === numList.length) {
-              let out = {
-                numNameList: numNameList,
-                numList: numList,
-                expr: expr,
-              };
-              return resolve(out);
-            }
+            retrieved++;
+            numNameList[n] =
+              numList[n] +
+              numList[n] +
+              " Has not been offered in the past 4 years or listed on SIS. Please click on the Prerequisites Description tab for full description.";
+          }
+          if (retrieved === numList.length) {
+            let out = {
+              numNameList: numNameList,
+              numList: numList,
+              expr: expr,
+            };
+            return resolve(out);
+          }
         }
-      })
+      });
     }
   });
 };
@@ -448,7 +450,7 @@ export const getCourses = (
 export const getCourse = async (
   courseNumber: string,
   courseCache: SISRetrievedCourse[],
-  allPlanCourses: UserCourse[],
+  allPlanCourses: UserCourse[]
 ): Promise<Course | null> => {
   return new Promise((resolve) => {
     let out: Course | null = null;
@@ -468,22 +470,8 @@ export const getCourse = async (
           ...element.versions[0],
         };
         return resolve(out);
-        // for (let i = 0; i < element.versions.length; i++) {
-        //   let v = element.versions[i];
-        //   let t = element.terms[i];
-        //   if (userC === null) {
-        //     continue;
-        //   }
-        //   //console.log(t + " vs " + userC.term);
-        //   //if (t === userC.term) {
-        //   out = {
-        //     ...userC,
-        //     ...element.versions[0],
-        //   };
-        //   //}
-        // }
       }
-    };
+    }
 
     if (out === null) {
       if (store.getState().user.unfoundNumbers.includes(courseNumber)) {
@@ -497,15 +485,15 @@ export const getCourse = async (
           params: { query: courseNumber },
         })
         .then((courses) => {
-          let retrieved : SISRetrievedCourse = courses.data.data[0];
+          let retrieved: SISRetrievedCourse = courses.data.data[0];
           if (retrieved === undefined) {
             store.dispatch(updateUnfoundNumbers(courseNumber));
             return resolve(null);
-          } 
+          }
           let versionIndex = 0;
           retrieved.versions.forEach((element, index) => {
             if (userC === null) return;
-            if (element.term === userC.term) {  
+            if (element.term === userC.term) {
               versionIndex = index;
             }
           });
@@ -515,14 +503,14 @@ export const getCourse = async (
             ...retrieved,
             ...retrieved.versions[versionIndex],
           };
-          if (out !== null)  {
+          if (out !== null) {
             return resolve(out);
           }
         })
         .catch((err) => console.log(err));
     }
     if (out !== null) return resolve(out);
-  })
+  });
 };
 
 // Checks the prereqs for a given course is satisifed
@@ -820,7 +808,7 @@ export const checkAllPrereqs = (
   number: string,
   year: Year,
   semester: SemesterType,
-  courseCache: SISRetrievedCourse[],
+  courseCache: SISRetrievedCourse[]
 ): Promise<boolean> => {
   return new Promise((resolve) => {
     getCourse(number, courseCache, currCourses).then((course) => {
@@ -829,28 +817,30 @@ export const checkAllPrereqs = (
         if (filtered.length === 0) {
           return resolve(true);
         } else {
-          processPrereqs(filtered, courseCache, currCourses).then((processed) => {
-            if (processed.numList.length === 0) {
-              return resolve(true);
+          processPrereqs(filtered, courseCache, currCourses).then(
+            (processed) => {
+              if (processed.numList.length === 0) {
+                return resolve(true);
+              }
+              let split = process(processed);
+              let list = createPrereqBulletList(split);
+              let orParsed = parsePrereqsOr(list, 0);
+              let bool = getNonStringPrereq(
+                currCourses,
+                plan,
+                orParsed,
+                getYearIndex(year, plan),
+                semester
+              );
+              return resolve(bool);
             }
-            let split = process(processed);
-            let list = createPrereqBulletList(split);
-            let orParsed = parsePrereqsOr(list, 0);
-            let bool = getNonStringPrereq(
-              currCourses,
-              plan,
-              orParsed,
-              getYearIndex(year, plan),
-              semester
-            );
-            return resolve(bool);
-          })
+          );
         }
       } else {
         return resolve(false);
       }
-    })
-  })
+    });
+  });
 };
 
 export const getMajor = (major: string) => {

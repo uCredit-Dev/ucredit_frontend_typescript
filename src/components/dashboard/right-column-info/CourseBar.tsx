@@ -1,10 +1,8 @@
 import clsx from "clsx";
 import React, { useState, useEffect } from "react";
-import { useDispatch, useSelector } from "react-redux";
+import { useSelector } from "react-redux";
 import { selectCurrentPlanCourses } from "../../../slices/currentPlanSlice";
-import {
-  selectCourseCache,
-} from "../../../slices/userSlice";
+import { selectCourseCache } from "../../../slices/userSlice";
 import { getCourse } from "../../../resources/assets";
 import {
   requirements,
@@ -45,31 +43,34 @@ function CourseBar({ distribution, general, description }: courseBarProps) {
   useEffect(() => {
     var temp = distribution.fulfilled_credits;
     currPlanCourses.forEach((course) => {
-      getCourse(
-        course.number,
-        courseCache,
-        currPlanCourses,
-      ).then((courseObj) => {
-        if (
-          courseObj != null &&
-          checkRequirementSatisfied(
-            splitRequirements(distribution.expr),
-            courseObj
-          )
-        ) {
-          if (flipped.includes(course.number)) {
-            temp -= course.credits;
-          }
-        } else {
-          if (flipped.includes(course.number)) {
-            temp += course.credits;
+      getCourse(course.number, courseCache, currPlanCourses).then(
+        (courseObj) => {
+          if (
+            courseObj != null &&
+            checkRequirementSatisfied(
+              splitRequirements(distribution.expr),
+              courseObj
+            )
+          ) {
+            if (flipped.includes(course.number)) {
+              temp -= course.credits;
+            }
+          } else {
+            if (flipped.includes(course.number)) {
+              temp += course.credits;
+            }
           }
         }
-      })
+      );
     });
     setPlannedCredits(temp);
-  // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [currPlanCourses, distribution.expr, flipped, distribution.fulfilled_credits]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [
+    currPlanCourses,
+    distribution.expr,
+    flipped,
+    distribution.fulfilled_credits,
+  ]);
 
   const tooltip =
     `<div style="overflow: wrap; margin-bottom: 1rem;">${section}</div>` +
