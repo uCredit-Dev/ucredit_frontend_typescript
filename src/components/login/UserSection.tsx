@@ -6,7 +6,6 @@ import {
   resetUser,
   updatePlanList,
   selectPlanList,
-  selectCourseCache,
   updateCourseCache,
 } from "../../slices/userSlice";
 // import { ReactComponent as UserSvg } from "../../resources/svg/User.svg";
@@ -19,10 +18,10 @@ import {
   updateImportingStatus,
   updateSelectedPlan,
 } from "../../slices/currentPlanSlice";
-import { api, getCourse, guestUser } from "../../resources/assets";
+import { api, guestUser } from "../../resources/assets";
 import bird from "../../resources/images/logoDarker.png";
 import axios from "axios";
-import { Plan, SISRetrievedCourse, User, UserCourse, Year } from "../../resources/commonTypes";
+import { Plan, User, UserCourse, Year } from "../../resources/commonTypes";
 import { getMajorFromCommonName } from "../../resources/majors";
 import { toast } from "react-toastify";
 import {
@@ -30,7 +29,6 @@ import {
   updateToAddName,
   updateToAddMajor,
   updateGeneratePlanAddStatus,
-  selectAddingPlanStatus,
   selectGeneratePlanAddStatus,
 } from "../../slices/popupSlice";
 import { useCookies } from "react-cookie";
@@ -50,7 +48,6 @@ function UserSection({ _id }: UserProps) {
   const currentCourses = useSelector(selectCurrentPlanCourses);
   const planList = useSelector(selectPlanList);
   const generatePlanAddStatus = useSelector(selectGeneratePlanAddStatus);
-  const courseCache = useSelector(selectCourseCache);
 
   // Component state setup
   const [loginId, setLoginId] = useState(document.cookie.split("=")[1]);
@@ -72,9 +69,17 @@ function UserSection({ _id }: UserProps) {
       setShouldAdd(false);
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [shouldAdd, toAdd, user, curPlan, currentCourses, cached, generatePlanAddStatus]);
+  }, [
+    shouldAdd,
+    toAdd,
+    user,
+    curPlan,
+    currentCourses,
+    cached,
+    generatePlanAddStatus,
+  ]);
 
-  const cache = (years : Year[]) => {
+  const cache = (years: Year[]) => {
     let total = 0;
     let cum = 0;
     years.forEach((y) => {
@@ -92,10 +97,10 @@ function UserSection({ _id }: UserProps) {
             if (cum === total) {
               setCached(true);
             }
-          })
-      })
-    })
-  }
+          });
+      });
+    });
+  };
 
   const addCourses = async () => {
     let added: UserCourse[] = [];

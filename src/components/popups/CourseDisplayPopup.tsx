@@ -1,7 +1,7 @@
 import React, { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import Placeholder from "./course-search/search-results/Placeholder";
-import { Course, Plan, SISRetrievedCourse, UserCourse, Year } from "../../resources/commonTypes";
+import { Course, Plan, UserCourse, Year } from "../../resources/commonTypes";
 import {
   selectCourseToShow,
   updateCourseToShow,

@@ -20,9 +20,12 @@ import { ReactComponent as ArrowUp } from "../../../../resources/svg/ArrowUp.svg
 import { ReactComponent as ArrowDown } from "../../../../resources/svg/ArrowDown.svg";
 import "react-toastify/dist/ReactToastify.css";
 import Filters from "./Filters";
-import { selectCourseCache, selectRetrievedAll, updateCourseCache } from "../../../../slices/userSlice";
+import {
+  selectCourseCache,
+  selectRetrievedAll,
+  updateCourseCache,
+} from "../../../../slices/userSlice";
 import axios from "axios";
-import { api } from "../../../../resources/assets";
 
 /**
  * Search form, including the search query input and filters.
@@ -74,7 +77,6 @@ const Form = (props: { setSearching: Function }) => {
 
   // Search with debouncing of 2/4s of a second.
   const minLength = 3;
-  const maxLess = 3;
   useEffect(() => {
     searchedCourses.clear();
     setInitialQueryLength(searchTerm.length);
@@ -117,28 +119,33 @@ const Form = (props: { setSearching: Function }) => {
 
   // Finds course based on the search conditions given in extras.
   // Finds all relevant courses by starting with all courses and filtering them out.
-  const find = (extras: SearchExtras): Promise<[SISRetrievedCourse[], number[]]> => {
+  const find = (
+    extras: SearchExtras
+  ): Promise<[SISRetrievedCourse[], number[]]> => {
     return new Promise((resolve) => {
       let courses: SISRetrievedCourse[] = [...courseCache];
-      console.log(retrievedAll);
       if (!retrievedAll) {
-        axios.get("https://ucredit-dev.herokuapp.com/api/search", {
-          params: {
-            query: extras.query,
-            department: extras.department,
-            term: extras.term,
-            areas: extras.areas,
-            credits: extras.credits,
-            wi: extras.wi,
-            tags: extras.tags,
-          },
-        }).then((retrieved) => {
-          let retrievedCourses : SISRetrievedCourse[] = retrieved.data.data;
-          dispatch(updateCourseCache([...retrievedCourses]));
-          let SISRetrieved: SISRetrievedCourse[] = retrieved.data.data;
-          return resolve([SISRetrieved, []]);
-        })
-        .catch(() => {return [[], []]});
+        axios
+          .get("https://ucredit-dev.herokuapp.com/api/search", {
+            params: {
+              query: extras.query,
+              department: extras.department,
+              term: extras.term,
+              areas: extras.areas,
+              credits: extras.credits,
+              wi: extras.wi,
+              tags: extras.tags,
+            },
+          })
+          .then((retrieved) => {
+            let retrievedCourses: SISRetrievedCourse[] = retrieved.data.data;
+            dispatch(updateCourseCache([...retrievedCourses]));
+            let SISRetrieved: SISRetrievedCourse[] = retrieved.data.data;
+            return resolve([SISRetrieved, []]);
+          })
+          .catch(() => {
+            return [[], []];
+          });
       } else {
         if (extras.query.length > 0) {
           courses = courses.filter((course) => {
@@ -158,7 +165,7 @@ const Form = (props: { setSearching: Function }) => {
             }
           });
         }
-    
+
         let credits = extras.credits;
         if (credits !== null) {
           const creditsString = credits.toString();
@@ -174,7 +181,7 @@ const Form = (props: { setSearching: Function }) => {
             return satisfied;
           });
         }
-    
+
         const areas = extras.areas;
         if (areas !== null) {
           courses = courses.filter((course) => {
@@ -189,7 +196,7 @@ const Form = (props: { setSearching: Function }) => {
             return satisfied;
           });
         }
-    
+
         const departments = extras.department;
         if (departments !== null) {
           courses = courses.filter((course) => {
@@ -204,7 +211,7 @@ const Form = (props: { setSearching: Function }) => {
             return satisfied;
           });
         }
-    
+
         const tags = extras.tags;
         if (tags !== null) {
           courses = courses.filter((course) => {
@@ -219,7 +226,7 @@ const Form = (props: { setSearching: Function }) => {
             return satisfied;
           });
         }
-    
+
         const levels = extras.levels;
         if (levels !== null) {
           courses = courses.filter((course) => {
@@ -234,7 +241,7 @@ const Form = (props: { setSearching: Function }) => {
             return satisfied;
           });
         }
-    
+
         const wi = extras.wi;
         if (wi !== null) {
           courses = courses.filter((course) => {
@@ -247,7 +254,7 @@ const Form = (props: { setSearching: Function }) => {
             return satisfied;
           });
         }
-    
+
         const semester = extras.term + " " + extras.year;
         let versions: number[] = [];
         courses = courses.filter((course) => {
@@ -261,7 +268,7 @@ const Form = (props: { setSearching: Function }) => {
         });
         return resolve([courses, versions]);
       }
-    })
+    });
   };
 
   // Updates search results.
@@ -303,13 +310,13 @@ const Form = (props: { setSearching: Function }) => {
             }
           });
           const newSearchList: [SISRetrievedCourse[], number[]] =
-              getNewSearchList();
+            getNewSearchList();
           updateSearchResults(newSearchList[0], newSearchList[1]);
           if (queryLength > minLength && initialQueryLength - queryLength < 3) {
             performSmartSearch(extras, queryLength - 1)();
           }
         }
-      })
+      });
     });
   }
 
@@ -322,7 +329,7 @@ const Form = (props: { setSearching: Function }) => {
 
       if (
         queryLength >= minLength &&
-        initialQueryLength - queryLength < 3 && 
+        initialQueryLength - queryLength < 3 &&
         !extras.query.startsWith("EN.") &&
         !extras.query.startsWith("AS.") &&
         !extras.query.includes(".") &&
@@ -337,7 +344,7 @@ const Form = (props: { setSearching: Function }) => {
         // Perform old search if search query is less than the minLength for a smart search.
         find(extras).then((courses) => {
           updateSearchResults(courses[0], courses[1]);
-        })
+        });
       }
     };
 
