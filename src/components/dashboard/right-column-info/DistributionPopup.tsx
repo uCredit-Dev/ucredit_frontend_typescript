@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { requirements, checkRequirementSatisfied, splitRequirements } from './distributionFunctions';
 import { useSelector } from 'react-redux';
 import { selectCurrentPlanCourses, } from "../../../slices/currentPlanSlice";
-import { selectAllCourses } from "../../../slices/userSlice";
+import { selectCourseCache } from "../../../slices/userSlice";
 import { getCourse } from '../../../resources/assets';
 import { UserCourse } from '../../../resources/commonTypes';
 
@@ -23,23 +23,26 @@ function DistributionPopup({
   save,
   flipped
 } : DistributionPopupType) {
-  const allCourses = useSelector(selectAllCourses);
+  const courseCache = useSelector(selectCourseCache);
   const currPlanCourses = useSelector(selectCurrentPlanCourses);
   const courses = useSelector(selectCurrentPlanCourses);
 
   const [flippedArr, setFlippedArr] = useState(flipped);
 
-  const satisfies = (course: UserCourse):boolean => {
-    const courseObj = getCourse(course.number, allCourses, currPlanCourses);
-    if (
-      courseObj != null && checkRequirementSatisfied(
-        splitRequirements(distribution.expr),
-        courseObj
-      )
-    ) {
-      return !flippedArr.includes(course.number);
-    }
-    return flippedArr.includes(course.number);
+  const satisfies = (course: UserCourse):Promise<boolean> => {
+    return new Promise(() => {
+      getCourse(course.number, courseCache, currPlanCourses).then((courseObj) => {
+        if (
+          courseObj != null && checkRequirementSatisfied(
+            splitRequirements(distribution.expr),
+            courseObj
+          )
+        ) {
+          return !flippedArr.includes(course.number);
+        }
+        return flippedArr.includes(course.number);
+      })
+    })
   }
 
   const flip = (course: UserCourse) => {

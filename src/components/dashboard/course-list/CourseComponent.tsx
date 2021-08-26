@@ -14,7 +14,7 @@ import {
   selectCurrentPlanCourses,
   selectPlan,
 } from "../../../slices/currentPlanSlice";
-import { selectAllCourses } from "../../../slices/userSlice";
+import { selectCourseCache } from "../../../slices/userSlice";
 import OverridePrereqpopup from "./OverridePrereqPopup";
 import {
   updateCourseToDelete,
@@ -54,26 +54,27 @@ function CourseComponent({
   const dispatch = useDispatch();
   const currentPlan = useSelector(selectPlan);
   const currPlanCourses = useSelector(selectCurrentPlanCourses);
-  const allCourses = useSelector(selectAllCourses);
+  const courseCache = useSelector(selectCourseCache);
 
   useEffect(() => {
     isSatisfied();
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [currPlanCourses, allCourses]);
+  }, [currPlanCourses]);
 
   const isSatisfied = () => {
     if (course.isPlaceholder) {
       setSatisfied(true);
     } else {
-      const temp = checkAllPrereqs(
+      checkAllPrereqs(
         currPlanCourses,
         currentPlan,
         course.number,
         year,
         semester,
-        allCourses
-      );
-      setSatisfied(temp);
+        courseCache, 
+      ).then((satisfied) => {
+        setSatisfied(satisfied);
+      })
     }
   };
 

@@ -73,7 +73,7 @@ export type UserCourse = {
   plan_id: string;
   user_id: string;
   year_id: string;
-  preReq: string;
+  preReq: string[];
   isPlaceholder: boolean;
 };
 

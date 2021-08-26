@@ -5,8 +5,9 @@ import {
   selectUser,
   resetUser,
   updatePlanList,
-  selectAllCourses,
   selectPlanList,
+  selectCourseCache,
+  updateCourseCache,
 } from "../../slices/userSlice";
 // import { ReactComponent as UserSvg } from "../../resources/svg/User.svg";
 import { useHistory } from "react-router-dom";
@@ -18,10 +19,10 @@ import {
   updateImportingStatus,
   updateSelectedPlan,
 } from "../../slices/currentPlanSlice";
-import { api, guestUser } from "../../resources/assets";
+import { api, getCourse, guestUser } from "../../resources/assets";
 import bird from "../../resources/images/logoDarker.png";
 import axios from "axios";
-import { Plan, User, UserCourse, Year } from "../../resources/commonTypes";
+import { Plan, SISRetrievedCourse, User, UserCourse, Year } from "../../resources/commonTypes";
 import { getMajorFromCommonName } from "../../resources/majors";
 import { toast } from "react-toastify";
 import {
@@ -29,6 +30,8 @@ import {
   updateToAddName,
   updateToAddMajor,
   updateGeneratePlanAddStatus,
+  selectAddingPlanStatus,
+  selectGeneratePlanAddStatus,
 } from "../../slices/popupSlice";
 import { useCookies } from "react-cookie";
 
@@ -46,12 +49,14 @@ function UserSection({ _id }: UserProps) {
   const curPlan = useSelector(selectPlan);
   const currentCourses = useSelector(selectCurrentPlanCourses);
   const planList = useSelector(selectPlanList);
-  const allCourses = useSelector(selectAllCourses);
+  const generatePlanAddStatus = useSelector(selectGeneratePlanAddStatus);
+  const courseCache = useSelector(selectCourseCache);
 
   // Component state setup
   const [loginId, setLoginId] = useState(document.cookie.split("=")[1]);
   const [toAdd, setToAdd] = useState<Year[]>([]);
   const [shouldAdd, setShouldAdd] = useState<boolean>(false);
+  const [cached, setCached] = useState<boolean>(false);
   const [cookies] = useCookies(["connect.sid"]);
   let history = useHistory();
 
@@ -60,13 +65,37 @@ function UserSection({ _id }: UserProps) {
       shouldAdd &&
       user._id !== "noUser" &&
       curPlan._id !== "noPlan" &&
-      allCourses.length > 0
+      cached &&
+      !generatePlanAddStatus
     ) {
       addCourses();
       setShouldAdd(false);
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [shouldAdd, toAdd, user, curPlan, allCourses, currentCourses]);
+  }, [shouldAdd, toAdd, user, curPlan, currentCourses, cached, generatePlanAddStatus]);
+
+  const cache = (years : Year[]) => {
+    let total = 0;
+    let cum = 0;
+    years.forEach((y) => {
+      y.courses.forEach((c) => {
+        total++;
+        console.log("b");
+        axios
+          .get("https://ucredit-dev.herokuapp.com/api/search", {
+            params: { query: c },
+          })
+          .then((retrieved) => {
+            console.log("B");
+            dispatch(updateCourseCache([retrieved.data.data]));
+            cum++;
+            if (cum === total) {
+              setCached(true);
+            }
+          })
+      })
+    })
+  }
 
   const addCourses = async () => {
     let added: UserCourse[] = [];
@@ -251,6 +280,7 @@ function UserSection({ _id }: UserProps) {
             .get(api + "/years/" + _id)
             .then((yearsResponse) => {
               let years: Year[] = yearsResponse.data.data;
+              cache(years);
               // check whether the user is logged in (whether a cookie exists)
               let cookieVal = "";
               Object.entries(cookies).forEach((cookie: any) => {
