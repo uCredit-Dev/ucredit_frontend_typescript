@@ -37,7 +37,6 @@ const PlanChoose = () => {
   // Gets all users's plans and updates state everytime a new user is chosen.
   useEffect(() => {
     if (user._id !== "noUser" && user._id !== "guestUser") {
-      console.log(user._id);
       axios
         .get(api + "/plansByUser/" + user._id)
         .then((retrieved) => {
@@ -76,14 +75,7 @@ const PlanChoose = () => {
                 .catch((err) => console.log(err));
             });
 
-            toast("Retrieved " + retrievedPlans.length + " plans!", {
-              position: "top-right",
-              autoClose: 5000,
-              closeOnClick: true,
-              pauseOnHover: true,
-              draggable: true,
-              progress: 0,
-            });
+            toast("Retrieved " + retrievedPlans.length + " plans!");
           } else if (
             retrievedPlans.length === 0 &&
             user._id !== "noUser" &&

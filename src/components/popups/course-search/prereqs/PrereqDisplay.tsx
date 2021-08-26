@@ -21,7 +21,8 @@ import {
   selectCurrentPlanCourses,
   selectPlan,
 } from "../../../../slices/currentPlanSlice";
-import { selectAllCourses } from "../../../../slices/userSlice";
+import { selectCourseCache } from "../../../../slices/userSlice";
+import { selectCourseToShow } from "../../../../slices/popupSlice";
 
 // Parsed prereq type
 // satisfied: a boolean that tells whether the prereq should be marked with green (satisfied) or red (unsatisfied)
@@ -43,7 +44,8 @@ const PrereqDisplay = () => {
   const semester = useSelector(selectSemester);
   const year = useSelector(selectYear);
   const currentPlan = useSelector(selectPlan);
-  const allCourses = useSelector(selectAllCourses);
+  const courseCache = useSelector(selectCourseCache);
+  const courseToShow = useSelector(selectCourseToShow);
 
   // Component states
   const [prereqDisplayMode, setPrereqDisplayMode] = useState(2);
@@ -52,9 +54,10 @@ const PrereqDisplay = () => {
   const [hasPreReqs, setHasPreReqs] = useState<boolean>(false);
   const [NNegativePreReqs, setNNegativePreReqs] = useState<any[]>();
 
-  const display = async (preReqs: any[]) => {
-    const prereqs = processPrereqs(preReqs, allCourses, currPlanCourses);
-    afterGathering(prereqs.numNameList, prereqs.numList, prereqs.expr);
+  const display = (preReqs: any[]) => {
+    processPrereqs(preReqs, courseCache, currPlanCourses).then((resolved) => {
+      afterGathering(resolved.numNameList, resolved.numList, resolved.expr);
+    })
   };
 
   // This useEffect performs prereq retrieval every time a new course is displayed.
@@ -67,7 +70,6 @@ const PrereqDisplay = () => {
     // First get all valid preReqs (isNegative = true)
     let preReqs = filterNNegatives(version);
     setNNegativePreReqs(preReqs);
-
     // If there exists preReqs, we need to process and display them.
     if (version !== "None" && preReqs.length > 0) {
       setHasPreReqs(true);
@@ -81,8 +83,8 @@ const PrereqDisplay = () => {
   // Input param is the prereq expression to parse (ie. AS.110.202 AND (EN.550.310 OR EN.553.211 OR EN.553.310 OR EN.553.311 OR ((EN.550.420 OR EN.553.420) AND (EN.550.430 OR EN.553.430 OR EN.553.431)) OR EN.560.348) AND (AS.110.201 OR AS.110.212 OR EN.553.291) AND (EN.500.112 OR EN.500.113 OR EN.500.114 OR (EN.601.220 OR EN.600.120) OR AS.250.205 OR EN.580.200 OR (EN.600.107 OR EN.601.107)))
   // Output is an array of prereqs, which could be a single course number, an array of course numbers, or the word "OR". Any course not seperated by an "OR" is another prereq to fullfill.
   // This output can then be redisplayed as a nice bullet list.
-  const createPrereqBulletList = (input: any): any => {
-    const courseArr = [];
+  const createPrereqBulletList = (input: string[]): any[] => {
+    const courseArr: any[] = [];
     for (let i = 0; i < input.length; i++) {
       if (input[i] === "AND") {
         // skip
@@ -91,7 +93,7 @@ const PrereqDisplay = () => {
 
         // Keeps track of whether we have closed the original open parentheses
         const parenthesesStack = [input[i]];
-        const subCourseArr = [];
+        const subCourseArr: string[] = [];
         while (parenthesesStack.length > 0) {
           i++;
           if (input[i] === ")") {
@@ -119,7 +121,7 @@ const PrereqDisplay = () => {
   // Function currying to produce a function that would update the store when clicking on prereqs
   // TODO: cross-check with title
   const updateInspected = (courseNumber: string) => () => {
-    allCourses.forEach((course) => {
+    courseCache.forEach((course) => {
       if (
         course.number === courseNumber &&
         inspected !== "None" &&
@@ -148,11 +150,12 @@ const PrereqDisplay = () => {
       // If the element is a number
       const noCBrackets: string = element.substr(0, element.length - 3);
       const noCBracketsNum: string = element.substr(0, 10);
-      const satisfied: boolean = checkPrereq(
+      const yearToCheck = courseToShow !== null ? courseToShow.year_id : year;
+      let satisfied: boolean = checkPrereq(
         currPlanCourses,
         currentPlan,
         noCBracketsNum,
-        year,
+        yearToCheck,
         semester
       );
       return {

@@ -9,7 +9,10 @@ import {
 type UserSlice = {
   currentUser: User;
   planList: Plan[];
-  allCourses: SISRetrievedCourse[];
+  courseCache: SISRetrievedCourse[];
+  cacheNumbers: String[];
+  unfoundNumbers: String[];
+  retrievedAll: boolean;
 };
 
 const initialState: UserSlice = {
@@ -23,7 +26,10 @@ const initialState: UserSlice = {
     plan_ids: ["no plan"],
   },
   planList: [],
-  allCourses: [],
+  courseCache: [],
+  retrievedAll: false,
+  cacheNumbers: [],
+  unfoundNumbers: [],
 };
 
 // Updates all user info from database. This function should be called after an axios get on the user routes.
@@ -51,11 +57,40 @@ export const userSlice = createSlice({
     updateGuestPlanIds: (state: any, action: PayloadAction<string[]>) => {
       state.currentUser.plan_ids = action.payload;
     },
-    updateAllCourses: (
+    updateCourseCache: (
       state: any,
       action: PayloadAction<SISRetrievedCourse[]>
     ) => {
-      state.allCourses = action.payload;
+      if (!state.selectedAll) {
+        for (let course of action.payload) {
+          if (!state.cacheNumbers.includes(course.number)) {
+            state.cacheNumbers = [...state.cacheNumbers, course.number];
+            state.courseCache = [...state.courseCache, course];
+          }
+        }
+      }
+    },
+    updateUnfoundNumbers: (
+      state: any,
+      action: PayloadAction<String>
+    ) => {
+      if (!state.unfoundNumbers.includes(action.payload)) {
+        state.unfoundNumbers = [...state.unfoundNumbers, action.payload];
+      }
+    },
+    updateAllCoursesCached: (
+      state: any,
+      action: PayloadAction<SISRetrievedCourse[]>
+    ) => {
+      if (!state.selectedAll) {
+        state.courseCache = [...action.payload];
+      }
+    },
+    updateRetrievedAll: (
+      state: any,
+      action: PayloadAction<Boolean>
+    ) => {
+      state.retrievedAll = action.payload;
     },
     resetUser: (state: any) => {
       state.currentUser = initialState.currentUser;
@@ -68,7 +103,10 @@ export const {
   updateUser,
   updatePlanList,
   updateGuestPlanIds,
-  updateAllCourses,
+  updateCourseCache,
+  updateAllCoursesCached,
+  updateRetrievedAll,
+  updateUnfoundNumbers,
   resetUser,
 } = userSlice.actions;
 
@@ -85,6 +123,8 @@ export const loginAsync =
 // the state. Please make a selector for each state :)
 export const selectUser = (state: RootState) => state.user.currentUser;
 export const selectPlanList = (state: RootState) => state.user.planList;
-export const selectAllCourses = (state: RootState) => state.user.allCourses;
+export const selectCourseCache = (state: RootState) => state.user.courseCache;
+export const selectRetrievedAll = (state: RootState) => state.user.retrievedAll;
+export const selectUnfoundNumbers = (state: RootState) => state.user.unfoundNumbers;
 
 export default userSlice.reducer;

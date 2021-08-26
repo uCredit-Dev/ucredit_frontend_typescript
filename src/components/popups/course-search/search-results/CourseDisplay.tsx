@@ -69,6 +69,7 @@ const CourseDisplay = () => {
   };
 
   // Updates distribution bars upon successfully adding a course.
+  // TODO: Move this to assets and modularize
   const updateDistributions = (): void => {
     let newUserCourse: UserCourse;
     if (version !== "None") {
@@ -87,6 +88,7 @@ const CourseDisplay = () => {
         number: version.number,
         area: inspectedArea,
         preReq: version.preReq,
+        wi: version.wi,
         expireAt:
           user._id === "guestUser"
             ? Date.now() + 60 * 60 * 24 * 1000

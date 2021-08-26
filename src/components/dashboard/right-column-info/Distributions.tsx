@@ -7,7 +7,7 @@ import {
   selectPlan,
   selectCurrentPlanCourses,
 } from "../../../slices/currentPlanSlice";
-import { selectAllCourses } from "../../../slices/userSlice";
+import { selectCourseCache } from "../../../slices/userSlice";
 import CourseBar from "./CourseBar";
 import {
   requirements,
@@ -18,7 +18,7 @@ import FineDistribution from "./FineDistribution";
 
 const Distributions = () => {
   const currentPlan = useSelector(selectPlan);
-  const allCourses = useSelector(selectAllCourses);
+  const courseCache = useSelector(selectCourseCache);
   const currPlanCourses = useSelector(selectCurrentPlanCourses);
 
   // Component state setup.
@@ -35,10 +35,10 @@ const Distributions = () => {
   useEffect(() => {
     const distr = getDistributions();
     if (distr !== null) {
-      updateFulfilled(distr, currPlanCourses, allCourses, currPlanCourses);
+      updateFulfilled(distr, currPlanCourses, courseCache, currPlanCourses);
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [currPlanCourses, allCourses]);
+  }, [currPlanCourses]);
 
   const getDistributions = () => {
     let major = currentPlan.majors[0];

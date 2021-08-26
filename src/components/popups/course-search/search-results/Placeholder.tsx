@@ -10,6 +10,7 @@ import {
   updatePlaceholder,
   selectSearchStatus,
 } from "../../../../slices/searchSlice";
+import { ReactComponent as Question } from "../../../../resources/svg/Question.svg";
 import Select from "react-select";
 import { all_deps, api, course_tags } from "../../../../resources/assets";
 import { selectCourseToShow } from "../../../../slices/popupSlice";
@@ -19,6 +20,7 @@ import {
   updateCurrentPlanCourses,
   updateSelectedPlan,
 } from "../../../../slices/currentPlanSlice";
+import ReactTooltip from "react-tooltip";
 
 const departmentFilters = ["none", ...all_deps];
 const tagFilters = ["none", ...course_tags];
@@ -127,7 +129,6 @@ const Placeholder = (props: { addCourse: any }) => {
   };
 
   const updateCourse = (): void => {
-    console.log(courseToShow);
     if (courseToShow !== null) {
       fetch(api + "/courses/" + courseToShow._id, {
         method: "DELETE",
@@ -136,7 +137,6 @@ const Placeholder = (props: { addCourse: any }) => {
         },
       }).then((retrieved) => {
         retrieved.json().then((data) => {
-          console.log(data);
           if (data.errors === undefined) {
             const updated = currentCourses.filter((course) => {
               if (course._id === courseToShow._id) {
@@ -145,7 +145,6 @@ const Placeholder = (props: { addCourse: any }) => {
                 return true;
               }
             });
-            console.log("updating", updated);
             dispatch(updateCurrentPlanCourses(updated));
             const allYears: Year[] = [...currentPlan.years];
             const newYears: Year[] = [];
@@ -163,12 +162,16 @@ const Placeholder = (props: { addCourse: any }) => {
             dispatch(updateSelectedPlan(newPlan));
             props.addCourse(newPlan);
           } else {
-            console.log("Failed to add", data.errors);
+            console.log("ERROR: Failed to add", data.errors);
           }
         });
       });
     }
   };
+
+  useEffect(() => {
+    ReactTooltip.rebuild();
+  });
 
   return (
     <div className="flex flex-col h-full font-medium">
@@ -220,7 +223,18 @@ const Placeholder = (props: { addCourse: any }) => {
           />
         </div>
         <div className="flex flex-col mt-2 w-1/6">
-          Tag
+          <div className="flex flex-row">
+            Tag
+            <div className="flex-grow">
+              <Question
+                className="h-4"
+                data-for="godTip"
+                data-tip={
+                  "<p>Many degree and a few courses require students to complete a specific amount of courses under a certain tag.</p><p>These usually come in the form of 3-4 letters designating department (ie. CSC = Computer Science) followed by 2+ letters signalling the specific subgroup designation within the department (ie. SOFT = Software).</p>"
+                }
+              />
+            </div>
+          </div>
           <Select
             options={[
               ...tagFilters.map((tag: any) => ({ label: tag, value: tag })),
@@ -264,7 +278,18 @@ const Placeholder = (props: { addCourse: any }) => {
           />
         </div>
         <div className="flex flex-col mt-2 w-1/6">
-          Area
+          <div className="flex flex-row">
+            Area
+            <div className="flex-grow">
+              <Question
+                className="h-4"
+                data-for="godTip"
+                data-tip={
+                  "<p>Areas designate the specific subset a course belongs to. Each degree requires students to take a certain amount of credits or courses in a spcific area.</p><p>H - Humanities</p><p>S - Social Sciences</p><p>E - Engineering</p><p>N - Natural Sciences</p><p>Q - Quantitative</p>"
+                }
+              />
+            </div>
+          </div>
           <Select
             options={["none", "N", "S", "H", "E", "Q"].map((area: any) => ({
               label: area,

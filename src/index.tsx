@@ -8,7 +8,7 @@ import * as serviceWorker from "./serviceWorker";
 import { CookiesProvider } from "react-cookie";
 import { BrowserRouter as Router } from "react-router-dom";
 
-ReactDOM.render(
+ReactDOM.hydrate(
   <React.StrictMode>
     <CookiesProvider>
       <Provider store={store}>

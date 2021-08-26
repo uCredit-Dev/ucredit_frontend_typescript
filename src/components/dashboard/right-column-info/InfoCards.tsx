@@ -15,6 +15,7 @@ import {
 import { api } from "../../../resources/assets";
 import { toast } from "react-toastify";
 import { updateDeletePlanStatus } from "../../../slices/popupSlice";
+import ShareLinksPopup from "./ShareLinksPopup";
 
 /**
  * User/Current plan information area.
@@ -90,18 +91,17 @@ const InfoCards = () => {
   };
 
   const onShareClick = () => {
+    if (shareableURL !== '') {
+      setShareableURL("");
+      return;
+    }
     setShareableURL(
       (window.location.href.includes("localhost")
-        ? "https://localhost:3000"
+        ? "localhost:3000"
         : "https://ucredit.herokuapp.com") +
         "/share?_id=" +
         currentPlan._id
     );
-    navigator.clipboard.writeText(shareableURL);
-    toast.info("Copied to Clipboard!", {
-      autoClose: 5000,
-      closeOnClick: false,
-    });
   };
 
   return (
@@ -124,10 +124,12 @@ const InfoCards = () => {
         <div className="w-auto h-auto text-center font-light stroke-2">
           {currentPlan.majors}
         </div>
-        <div></div>
         <button className="m-auto hover:underline" onClick={onShareClick}>
           Share
         </button>
+        <div>
+          {shareableURL === "" ? null: <ShareLinksPopup link={shareableURL} setURL={onShareClick}/>}
+        </div>
       </div>
     </div>
   );

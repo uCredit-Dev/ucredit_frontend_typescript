@@ -1,7 +1,7 @@
 import React, { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import Placeholder from "./course-search/search-results/Placeholder";
-import { Course, Plan, UserCourse, Year } from "../../resources/commonTypes";
+import { Course, Plan, SISRetrievedCourse, UserCourse, Year } from "../../resources/commonTypes";
 import {
   selectCourseToShow,
   updateCourseToShow,
@@ -16,7 +16,7 @@ import {
   clearSearch,
 } from "../../slices/searchSlice";
 import {
-  selectAllCourses,
+  selectCourseCache,
   selectPlanList,
   selectUser,
   updatePlanList,
@@ -34,7 +34,7 @@ const CourseDisplayPopup = () => {
   // Redux Setup
   const dispatch = useDispatch();
   const courseToShow = useSelector(selectCourseToShow);
-  const allCourses = useSelector(selectAllCourses);
+  const courseCache = useSelector(selectCourseCache);
   const placeholder = useSelector(selectPlaceholder);
   const user = useSelector(selectUser);
   const version = useSelector(selectVersion);
@@ -45,13 +45,24 @@ const CourseDisplayPopup = () => {
     if (courseToShow !== null) {
       //const course:Course = {...courseToShow}
       let found = false;
-      allCourses.forEach((c) => {
+      courseCache.forEach((c) => {
         if (c.number === courseToShow.number) {
           dispatch(updateInspectedCourse(c));
           dispatch(updatePlaceholder(false));
           found = true;
         }
       });
+      // if (!found) {
+      //   courseCache.forEach((c) => {
+      //     if (c.number === courseToShow.number) {
+      //       let converted : SISRetrievedCourse = {
+      //       }
+      //       dispatch(updateInspectedCourse(c));
+      //       dispatch(updatePlaceholder(false));
+      //       found = true;
+      //     }
+      //   })
+      // }
       if (!found) {
         const placeholderCourse: Course = {
           title: courseToShow.title,
@@ -107,12 +118,12 @@ const CourseDisplayPopup = () => {
         number: version.number,
         area: courseToShow.area,
         preReq: version.preReq,
+        wi: version.wi,
         expireAt:
           user._id === "guestUser"
             ? Date.now() + 60 * 60 * 24 * 1000
             : undefined,
       };
-      console.log("body is ", body);
       fetch(api + "/courses", {
         method: "POST",
         headers: {
@@ -171,6 +182,7 @@ const CourseDisplayPopup = () => {
       <div
         className="fixed z-40 left-0 top-0 m-0 w-full h-screen bg-black opacity-50"
         onClick={() => {
+          dispatch(updateCourseToShow(null));
           dispatch(updateShowCourseInfo(false));
         }}
       ></div>
