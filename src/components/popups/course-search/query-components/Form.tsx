@@ -26,6 +26,7 @@ import {
   updateCourseCache,
 } from "../../../../slices/userSlice";
 import axios from "axios";
+import { api } from "../../../../resources/assets";
 
 /**
  * Search form, including the search query input and filters.
@@ -126,7 +127,7 @@ const Form = (props: { setSearching: Function }) => {
       let courses: SISRetrievedCourse[] = [...courseCache];
       if (!retrievedAll) {
         axios
-          .get("https://ucredit-dev.herokuapp.com/api/search", {
+          .get(api + "/search", {
             params: {
               query: extras.query,
               department: extras.department,
