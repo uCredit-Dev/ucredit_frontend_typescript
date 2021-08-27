@@ -101,7 +101,7 @@ function App() {
         place='top'
         effect='solid'
       />
-      {(welcomeScreen || importing) && !forceClose ? (
+      {/* {(welcomeScreen || importing) && !forceClose ? (
         <div className="fixed z-50 flex flex-col m-auto w-screen h-screen text-center text-center text-white bg-blue-900">
           <img
             className='w-1/6 mx-auto mt-auto'
@@ -122,7 +122,7 @@ function App() {
             Dismiss Loading Screen
           </button>
         </div>
-      ) : null}
+      ) : null} */}
       <Switch>
         <Route path="/dashboard">
           <Dashboard _id={null} />
