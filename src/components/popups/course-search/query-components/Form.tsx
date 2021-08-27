@@ -20,7 +20,12 @@ import { ReactComponent as ArrowUp } from "../../../../resources/svg/ArrowUp.svg
 import { ReactComponent as ArrowDown } from "../../../../resources/svg/ArrowDown.svg";
 import "react-toastify/dist/ReactToastify.css";
 import Filters from "./Filters";
-import { selectAllCourses } from "../../../../slices/userSlice";
+import {
+  selectCourseCache,
+  selectRetrievedAll,
+  updateCourseCache,
+} from "../../../../slices/userSlice";
+import axios from "axios";
 
 /**
  * Search form, including the search query input and filters.
@@ -34,7 +39,8 @@ const Form = (props: { setSearching: Function }) => {
   const searchTerm = useSelector(selectSearchterm);
   const searchFilters = useSelector(selectSearchFilters);
   const semester = useSelector(selectSemester);
-  const allCourses = useSelector(selectAllCourses);
+  const courseCache = useSelector(selectCourseCache);
+  const retrievedAll = useSelector(selectRetrievedAll);
 
   // Component state setup
   const [showCriteria, setShowCriteria] = useState(false);
@@ -42,6 +48,7 @@ const Form = (props: { setSearching: Function }) => {
   const [searchedCourses] = useState<Map<String, SearchMapEl>>(
     new Map<String, SearchMapEl>()
   );
+  const [initialQueryLength, setInitialQueryLength] = useState<number>(0);
 
   // On opening search, set the term filter to match semester you're adding to.
   useEffect(() => {
@@ -72,6 +79,7 @@ const Form = (props: { setSearching: Function }) => {
   const minLength = 3;
   useEffect(() => {
     searchedCourses.clear();
+    setInitialQueryLength(searchTerm.length);
     props.setSearching(false);
     // Skip searching if no filters or queries are specified
     if (
@@ -111,130 +119,156 @@ const Form = (props: { setSearching: Function }) => {
 
   // Finds course based on the search conditions given in extras.
   // Finds all relevant courses by starting with all courses and filtering them out.
-  // TODO: Modularize this.
-  const find = (extras: SearchExtras): [SISRetrievedCourse[], number[]] => {
-    let courses: SISRetrievedCourse[] = [...allCourses];
-    if (extras.query.length > 0) {
-      courses = courses.filter((course) => {
-        if (
-          extras.query.includes(".") ||
-          !isNaN(parseInt(extras.query)) ||
-          extras.query.startsWith("EN.") ||
-          extras.query.startsWith("AS.")
-        ) {
-          return course.number
-            .toLowerCase()
-            .includes(extras.query.toLowerCase());
-        } else {
-          return course.title
-            .toLowerCase()
-            .includes(extras.query.toLowerCase());
-        }
-      });
-    }
-
-    let credits = extras.credits;
-    if (credits !== null) {
-      const creditsString = credits.toString();
-      courses = courses.filter((course) => {
-        let satisfied = false;
-        creditsString.split("").forEach((c: string) =>
-          course.versions.forEach((v) => {
-            if (v.credits.toString() === c) {
-              satisfied = true;
-            }
+  const find = (
+    extras: SearchExtras
+  ): Promise<[SISRetrievedCourse[], number[]]> => {
+    return new Promise((resolve) => {
+      let courses: SISRetrievedCourse[] = [...courseCache];
+      if (!retrievedAll) {
+        axios
+          .get("https://ucredit-dev.herokuapp.com/api/search", {
+            params: {
+              query: extras.query,
+              department: extras.department,
+              term: extras.term,
+              areas: extras.areas,
+              credits: extras.credits,
+              wi: extras.wi,
+              tags: extras.tags,
+            },
           })
-        );
-        return satisfied;
-      });
-    }
-
-    const areas = extras.areas;
-    if (areas !== null) {
-      courses = courses.filter((course) => {
-        let satisfied = false;
-        areas.split("").forEach((a: string) =>
-          course.versions.forEach((v) => {
-            if (v.areas.includes(a)) {
-              satisfied = true;
-            }
+          .then((retrieved) => {
+            let retrievedCourses: SISRetrievedCourse[] = retrieved.data.data;
+            dispatch(updateCourseCache([...retrievedCourses]));
+            let SISRetrieved: SISRetrievedCourse[] = retrieved.data.data;
+            return resolve([SISRetrieved, []]);
           })
-        );
-        return satisfied;
-      });
-    }
-
-    const departments = extras.department;
-    if (departments !== null) {
-      courses = courses.filter((course) => {
-        let satisfied = false;
-        departments.split("|").forEach((d: string) =>
-          course.versions.forEach((v) => {
-            if (v.department === d) {
-              satisfied = true;
-            }
-          })
-        );
-        return satisfied;
-      });
-    }
-
-    const tags = extras.tags;
-    if (tags !== null) {
-      courses = courses.filter((course) => {
-        let satisfied = false;
-        tags.split("|").forEach((t: string) =>
-          course.versions.forEach((v) => {
-            if (v.tags.includes(t)) {
-              satisfied = true;
-            }
-          })
-        );
-        return satisfied;
-      });
-    }
-
-    const levels = extras.levels;
-    if (levels !== null) {
-      courses = courses.filter((course) => {
-        let satisfied = false;
-        course.versions.forEach((v) => {
-          levels.split("|").forEach((level) => {
-            if (v.level === level) {
-              satisfied = true;
+          .catch(() => {
+            return [[], []];
+          });
+      } else {
+        if (extras.query.length > 0) {
+          courses = courses.filter((course) => {
+            if (
+              extras.query.includes(".") ||
+              !isNaN(parseInt(extras.query)) ||
+              extras.query.startsWith("EN.") ||
+              extras.query.startsWith("AS.")
+            ) {
+              return course.number
+                .toLowerCase()
+                .includes(extras.query.toLowerCase());
+            } else {
+              return course.title
+                .toLowerCase()
+                .includes(extras.query.toLowerCase());
             }
           });
-        });
-        return satisfied;
-      });
-    }
-
-    const wi = extras.wi;
-    if (wi !== null) {
-      courses = courses.filter((course) => {
-        let satisfied = false;
-        course.versions.forEach((v) => {
-          if (v.wi && wi) {
-            satisfied = true;
-          }
-        });
-        return satisfied;
-      });
-    }
-
-    const semester = extras.term + " " + extras.year;
-    let versions: number[] = [];
-    courses = courses.filter((course) => {
-      let toReturn = false;
-      course.terms.forEach((term) => {
-        if (term === semester) {
-          toReturn = true;
         }
-      });
-      return toReturn;
-    });
 
-    return [courses, versions];
+        let credits = extras.credits;
+        if (credits !== null) {
+          const creditsString = credits.toString();
+          courses = courses.filter((course) => {
+            let satisfied = false;
+            creditsString.split("").forEach((c: string) =>
+              course.versions.forEach((v) => {
+                if (v.credits.toString() === c) {
+                  satisfied = true;
+                }
+              })
+            );
+            return satisfied;
+          });
+        }
+
+        const areas = extras.areas;
+        if (areas !== null) {
+          courses = courses.filter((course) => {
+            let satisfied = false;
+            areas.split("").forEach((a: string) =>
+              course.versions.forEach((v) => {
+                if (v.areas.includes(a)) {
+                  satisfied = true;
+                }
+              })
+            );
+            return satisfied;
+          });
+        }
+
+        const departments = extras.department;
+        if (departments !== null) {
+          courses = courses.filter((course) => {
+            let satisfied = false;
+            departments.split("|").forEach((d: string) =>
+              course.versions.forEach((v) => {
+                if (v.department === d) {
+                  satisfied = true;
+                }
+              })
+            );
+            return satisfied;
+          });
+        }
+
+        const tags = extras.tags;
+        if (tags !== null) {
+          courses = courses.filter((course) => {
+            let satisfied = false;
+            tags.split("|").forEach((t: string) =>
+              course.versions.forEach((v) => {
+                if (v.tags.includes(t)) {
+                  satisfied = true;
+                }
+              })
+            );
+            return satisfied;
+          });
+        }
+
+        const levels = extras.levels;
+        if (levels !== null) {
+          courses = courses.filter((course) => {
+            let satisfied = false;
+            course.versions.forEach((v) => {
+              levels.split("|").forEach((level) => {
+                if (v.level === level) {
+                  satisfied = true;
+                }
+              });
+            });
+            return satisfied;
+          });
+        }
+
+        const wi = extras.wi;
+        if (wi !== null) {
+          courses = courses.filter((course) => {
+            let satisfied = false;
+            course.versions.forEach((v) => {
+              if (v.wi && wi) {
+                satisfied = true;
+              }
+            });
+            return satisfied;
+          });
+        }
+
+        const semester = extras.term + " " + extras.year;
+        let versions: number[] = [];
+        courses = courses.filter((course) => {
+          let toReturn = false;
+          course.terms.forEach((term) => {
+            if (term === semester) {
+              toReturn = true;
+            }
+          });
+          return toReturn;
+        });
+        return resolve([courses, versions]);
+      }
+    });
   };
 
   // Updates search results.
@@ -256,29 +290,34 @@ const Form = (props: { setSearching: Function }) => {
   ) {
     let courses: SISRetrievedCourse[] = [];
     let versions: number[] = [];
+    let total = 0;
+    let cum = 0;
+
     querySubstrs.forEach((subQuery) => {
-      const courseVersions = find({ ...extras, query: subQuery });
-      courses.push(...courseVersions[0]);
-      versions.push(...courseVersions[1]);
+      total++;
+      find({ ...extras, query: subQuery }).then((courseVersions) => {
+        cum++;
+        courses.push(...courseVersions[0]);
+        versions.push(...courseVersions[1]);
+        if (total === cum) {
+          courses.forEach((course: SISRetrievedCourse, index: number) => {
+            if (!searchedCourses.has(course.number)) {
+              searchedCourses.set(course.number, {
+                course: course,
+                version: versions[index],
+                priority: queryLength,
+              });
+            }
+          });
+          const newSearchList: [SISRetrievedCourse[], number[]] =
+            getNewSearchList();
+          updateSearchResults(newSearchList[0], newSearchList[1]);
+          if (queryLength > minLength && initialQueryLength - queryLength < 3) {
+            performSmartSearch(extras, queryLength - 1)();
+          }
+        }
+      });
     });
-
-    courses.forEach((course: SISRetrievedCourse, index: number) => {
-      if (!searchedCourses.has(course.number)) {
-        searchedCourses.set(course.number, {
-          course: course,
-          version: versions[index],
-          priority: queryLength,
-        });
-      }
-    });
-
-    if (queryLength > minLength) {
-      performSmartSearch(extras, queryLength - 1)();
-    } else {
-      const newSearchList: [SISRetrievedCourse[], number[]] =
-        getNewSearchList();
-      updateSearchResults(newSearchList[0], newSearchList[1]);
-    }
   }
 
   // Performs search call with filters to backend and updates redux with retrieved courses.
@@ -290,6 +329,7 @@ const Form = (props: { setSearching: Function }) => {
 
       if (
         queryLength >= minLength &&
+        initialQueryLength - queryLength < 3 &&
         !extras.query.startsWith("EN.") &&
         !extras.query.startsWith("AS.") &&
         !extras.query.includes(".") &&
@@ -302,8 +342,9 @@ const Form = (props: { setSearching: Function }) => {
         substringSearch(extras, queryLength, querySubstrs);
       } else {
         // Perform old search if search query is less than the minLength for a smart search.
-        let courses: [SISRetrievedCourse[], number[]] = find(extras);
-        updateSearchResults(courses[0], courses[1]);
+        find(extras).then((courses) => {
+          updateSearchResults(courses[0], courses[1]);
+        });
       }
     };
 

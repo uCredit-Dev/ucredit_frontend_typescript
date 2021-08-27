@@ -16,7 +16,7 @@ import {
   clearSearch,
 } from "../../slices/searchSlice";
 import {
-  selectAllCourses,
+  selectCourseCache,
   selectPlanList,
   selectUser,
   updatePlanList,
@@ -34,7 +34,7 @@ const CourseDisplayPopup = () => {
   // Redux Setup
   const dispatch = useDispatch();
   const courseToShow = useSelector(selectCourseToShow);
-  const allCourses = useSelector(selectAllCourses);
+  const courseCache = useSelector(selectCourseCache);
   const placeholder = useSelector(selectPlaceholder);
   const user = useSelector(selectUser);
   const version = useSelector(selectVersion);
@@ -45,13 +45,24 @@ const CourseDisplayPopup = () => {
     if (courseToShow !== null) {
       //const course:Course = {...courseToShow}
       let found = false;
-      allCourses.forEach((c) => {
+      courseCache.forEach((c) => {
         if (c.number === courseToShow.number) {
           dispatch(updateInspectedCourse(c));
           dispatch(updatePlaceholder(false));
           found = true;
         }
       });
+      // if (!found) {
+      //   courseCache.forEach((c) => {
+      //     if (c.number === courseToShow.number) {
+      //       let converted : SISRetrievedCourse = {
+      //       }
+      //       dispatch(updateInspectedCourse(c));
+      //       dispatch(updatePlaceholder(false));
+      //       found = true;
+      //     }
+      //   })
+      // }
       if (!found) {
         const placeholderCourse: Course = {
           title: courseToShow.title,

@@ -21,7 +21,7 @@ import {
   selectCurrentPlanCourses,
   selectPlan,
 } from "../../../../slices/currentPlanSlice";
-import { selectAllCourses } from "../../../../slices/userSlice";
+import { selectCourseCache } from "../../../../slices/userSlice";
 import { selectCourseToShow } from "../../../../slices/popupSlice";
 
 // Parsed prereq type
@@ -44,7 +44,7 @@ const PrereqDisplay = () => {
   const semester = useSelector(selectSemester);
   const year = useSelector(selectYear);
   const currentPlan = useSelector(selectPlan);
-  const allCourses = useSelector(selectAllCourses);
+  const courseCache = useSelector(selectCourseCache);
   const courseToShow = useSelector(selectCourseToShow);
 
   // Component states
@@ -55,8 +55,9 @@ const PrereqDisplay = () => {
   const [NNegativePreReqs, setNNegativePreReqs] = useState<any[]>();
 
   const display = (preReqs: any[]) => {
-    const prereqs = processPrereqs(preReqs, allCourses, currPlanCourses);
-    afterGathering(prereqs.numNameList, prereqs.numList, prereqs.expr);
+    processPrereqs(preReqs, courseCache, currPlanCourses).then((resolved) => {
+      afterGathering(resolved.numNameList, resolved.numList, resolved.expr);
+    })
   };
 
   // This useEffect performs prereq retrieval every time a new course is displayed.
@@ -69,7 +70,6 @@ const PrereqDisplay = () => {
     // First get all valid preReqs (isNegative = true)
     let preReqs = filterNNegatives(version);
     setNNegativePreReqs(preReqs);
-
     // If there exists preReqs, we need to process and display them.
     if (version !== "None" && preReqs.length > 0) {
       setHasPreReqs(true);
@@ -121,7 +121,7 @@ const PrereqDisplay = () => {
   // Function currying to produce a function that would update the store when clicking on prereqs
   // TODO: cross-check with title
   const updateInspected = (courseNumber: string) => () => {
-    allCourses.forEach((course) => {
+    courseCache.forEach((course) => {
       if (
         course.number === courseNumber &&
         inspected !== "None" &&
