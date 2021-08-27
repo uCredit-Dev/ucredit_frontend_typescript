@@ -1,18 +1,22 @@
 import React, { FC } from "react";
 import { ReactComponent as SemesterlySvg } from "../../resources/svg/Semesterly.svg";
+import "react-responsive-carousel/lib/styles/carousel.min.css"; // requires a loader
+import { Carousel } from 'react-responsive-carousel';
+import HeadlineImg from '../../resources/images/landing-page/headline.png';
+import JoinTeamImg from '../../resources/images/landing-page/joinTeam.png';
 
 const Banner: FC = () => {
   return (
     <>
-      <div className='w-full h-64 p-4 bg-gray-200'>
-        <div className='text-xl font-light'>
-          Your Academic Planning Made Simple
-        </div>
-        <div className='w-3/4 font-light'>
-          A student-centric application packed with features like prereq checks,
-          degree trackers, and beautiful UI that is easily shareable and
-          acessible.
-        </div>
+      <div className='w-full'>
+        <Carousel showThumbs={false} autoPlay interval={5000} infiniteLoop>
+          <div>
+            <img src={HeadlineImg} alt='' />
+          </div>
+          <div>
+            <img src={JoinTeamImg} alt='' />
+          </div>
+        </Carousel>
       </div>
       <div className='flex items-center justify-end mt-2 mr-2 text-gray-600'>
         Partnered with Semesterly
