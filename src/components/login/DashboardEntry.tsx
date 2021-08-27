@@ -26,14 +26,6 @@ const DashboardEntry = () => {
   let history = useHistory();
   let location = useLocation();
 
-  // Creates a cookie based on url.
-  const createCookie = (token: string) => {
-    if (!token.includes("dashboard")) {
-      setAuthCookie("connect.sid", token, { path: "/" });
-      history.push("/login");
-    }
-  };
-
   // Gets cookie token from url.
   const getToken = (): string => {
     const currentURL: string = window.location.href;
@@ -67,7 +59,11 @@ const DashboardEntry = () => {
         .then((resp) => resp.json())
         .then((retrievedUser) => {
           if (retrievedUser.errors === undefined) {
-            createCookie(token);
+            if (!token.includes("dashboard")) {
+              setAuthCookie("connect.sid", token, { path: "/" });
+              dispatch(updateUser(retrievedUser.data));
+              history.push("/dashboard");
+            }
           } else {
             history.push("/login");
           }
@@ -136,17 +132,17 @@ const DashboardEntry = () => {
           // backgroundColor: "black",
           backgroundBlendMode: "lighten",
           filter: "blur(9px) hue-rotate(340deg)",
-          zIndex: 0,
+          zIndex: 45,
         }}
       ></div>
-      <div className="absolute flex w-full h-full">
+      <div className="absolute z-50 flex w-full h-full">
         <div className="flex flex-col mx-auto mx-auto my-auto p-14 text-white text-lg font-bold bg-gradient-to-b rounded shadow from-blue-500 to-green-400">
           <div className="flex flex-row items-center justify-center mt-auto pr-2 w-full text-3xl">
             <img src={logo} alt="logo" className="mr-2 h-16" />
             <div>uCredit</div>
           </div>
           <div className="mb-14 mt-8 mx-auto w-full text-center text-4xl">
-            Streamlined Degree Planning.
+            Quick accessible degree planning.
           </div>
           <a
             href="https://ucredit-api.herokuapp.com/api/login"
