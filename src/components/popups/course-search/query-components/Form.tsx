@@ -26,6 +26,7 @@ import {
   updateCourseCache,
 } from "../../../../slices/userSlice";
 import axios from "axios";
+import { api } from "../../../../resources/assets";
 
 /**
  * Search form, including the search query input and filters.
@@ -80,7 +81,6 @@ const Form = (props: { setSearching: Function }) => {
   useEffect(() => {
     searchedCourses.clear();
     setInitialQueryLength(searchTerm.length);
-    props.setSearching(false);
     // Skip searching if no filters or queries are specified
     if (
       searchTerm.length === 0 &&
@@ -92,6 +92,7 @@ const Form = (props: { setSearching: Function }) => {
     ) {
       dispatch(updateRetrievedCourses([]));
       dispatch(updateRetrievedVersions([]));
+      props.setSearching(false);
       return;
     }
 
@@ -107,6 +108,8 @@ const Form = (props: { setSearching: Function }) => {
       tags: searchFilters.tags,
       levels: searchFilters.levels,
     };
+
+    props.setSearching(true);
 
     // Search with half second debounce.
     const search = setTimeout(
@@ -126,7 +129,7 @@ const Form = (props: { setSearching: Function }) => {
       let courses: SISRetrievedCourse[] = [...courseCache];
       if (!retrievedAll) {
         axios
-          .get("https://ucredit-dev.herokuapp.com/api/search", {
+          .get(api + "/search", {
             params: {
               query: extras.query,
               department: extras.department,
@@ -141,6 +144,13 @@ const Form = (props: { setSearching: Function }) => {
             let retrievedCourses: SISRetrievedCourse[] = retrieved.data.data;
             dispatch(updateCourseCache([...retrievedCourses]));
             let SISRetrieved: SISRetrievedCourse[] = retrieved.data.data;
+            console.log(searchTerm.length - extras.query.length);
+            if (
+              extras.query.length <= minLength ||
+              searchTerm.length - extras.query.length >= 2
+            ) {
+              props.setSearching(false);
+            }
             return resolve([SISRetrieved, []]);
           })
           .catch(() => {
@@ -325,8 +335,6 @@ const Form = (props: { setSearching: Function }) => {
   const performSmartSearch =
     (extras: SearchExtras, queryLength: number) => () => {
       const querySubstrs: string[] = [];
-      props.setSearching(true);
-
       if (
         queryLength >= minLength &&
         initialQueryLength - queryLength < 3 &&
