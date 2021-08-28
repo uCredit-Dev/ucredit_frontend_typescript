@@ -9,7 +9,7 @@ import Promo from "./Promo";
  */
 const LandingPage = () => {
   return (
-    <div className='w-full h-full pb-4 bg-white'>
+    <div className="w-full h-full bg-white">
       <Header />
       <Banner />
       <Promo />

@@ -2,7 +2,7 @@ import React, { FC } from "react";
 
 const Footer: FC = () => {
   return (
-    <div className='text-sm text-center text-gray-600'>
+    <div className="py-3 text-center text-gray-600 text-sm bg-gray-100">
       <p>uCredit © {new Date().getFullYear()}</p>
       <p>
         Made with <span>❤️&nbsp;</span> in Baltimore
