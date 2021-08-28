@@ -34,7 +34,7 @@ const Banner: FC = () => {
           {/* Actual popup */}
           <div
             className={
-              " bg-gradient-to-r shadow from-blue-500 to-green-400 z-50 fixed flex flex-col select-none rounded z-20 w-1/2 top-1/3 left-1/2 transform -translate-x-1/2 -translate-y-1/3 min-w-planAdd shadow"
+              "  shadow bg-primary z-50 fixed flex flex-col select-none rounded z-20 w-1/2 top-1/3 left-1/2 transform -translate-x-1/2 -translate-y-1/3 min-w-planAdd shadow"
             }
           >
             <div className="px-4 py-2 text-white text-coursecard font-semibold select-none">
