@@ -145,6 +145,7 @@ function CourseList() {
       year_id: "",
       preReq: [],
       isPlaceholder: false,
+      version: "",
     };
     currentPlanCourses.forEach((c: UserCourse) => {
       if (c._id === id) {

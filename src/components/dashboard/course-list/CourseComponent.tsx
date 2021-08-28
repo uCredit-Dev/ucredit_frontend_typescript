@@ -71,10 +71,10 @@ function CourseComponent({
         course.number,
         year,
         semester,
-        courseCache, 
+        courseCache
       ).then((satisfied) => {
         setSatisfied(satisfied);
-      })
+      });
     }
   };
 

@@ -48,7 +48,7 @@ const FineDistribution = ({
   };
 
   useEffect(() => {
-    var temp = dis.fulfilled_credits;
+    let temp = dis.fulfilled_credits;
     currPlanCourses.forEach((course) => {
       getCourse(course.number, courseCache, currPlanCourses).then((courseObj) => {
         if (

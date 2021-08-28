@@ -1,99 +1,120 @@
-import React, { useState } from 'react';
-import { requirements, checkRequirementSatisfied, splitRequirements } from './distributionFunctions';
-import { useSelector } from 'react-redux';
-import { selectCurrentPlanCourses, } from "../../../slices/currentPlanSlice";
-import { selectCourseCache } from "../../../slices/userSlice";
-import { getCourse } from '../../../resources/assets';
-import { UserCourse } from '../../../resources/commonTypes';
+import React, { useState } from "react";
+import {
+  requirements,
+  // checkRequirementSatisfied,
+  // splitRequirements,
+} from "./distributionFunctions";
+// import { useSelector } from "react-redux";
+// import { selectCurrentPlanCourses } from "../../../slices/currentPlanSlice";
+// import { selectCourseCache } from "../../../slices/userSlice";
+// import { getCourse } from "../../../resources/assets";
+// import { UserCourse } from "../../../resources/commonTypes";
 
-import { ReactComponent as Plus } from "../../../resources/svg/Add.svg";
-import { ReactComponent as Minus } from "../../../resources/svg/Close.svg";
-
+// import { ReactComponent as Plus } from "../../../resources/svg/Add.svg";
+// import { ReactComponent as Minus } from "../../../resources/svg/Close.svg";
 
 type DistributionPopupType = {
   distribution: requirements;
   cleanup: () => void;
   save: (s: string[]) => void;
   flipped: string[];
-}
+};
 
 function DistributionPopup({
   distribution,
   cleanup,
   save,
-  flipped
-} : DistributionPopupType) {
-  const courseCache = useSelector(selectCourseCache);
-  const currPlanCourses = useSelector(selectCurrentPlanCourses);
-  const courses = useSelector(selectCurrentPlanCourses);
+  flipped,
+}: DistributionPopupType) {
+  // const courseCache = useSelector(selectCourseCache);
+  // const currPlanCourses = useSelector(selectCurrentPlanCourses);
+  // const courses = useSelector(selectCurrentPlanCourses);
 
   const [flippedArr, setFlippedArr] = useState(flipped);
 
-  const satisfies = (course: UserCourse):Promise<boolean> => {
-    return new Promise(() => {
-      getCourse(course.number, courseCache, currPlanCourses).then((courseObj) => {
-        if (
-          courseObj != null && checkRequirementSatisfied(
-            splitRequirements(distribution.expr),
-            courseObj
-          )
-        ) {
-          return !flippedArr.includes(course.number);
-        }
-        return flippedArr.includes(course.number);
-      })
-    })
-  }
+  // const satisfies = (course: UserCourse): Promise<boolean> => {
+  //   return new Promise(() => {
+  //     getCourse(course.number, courseCache, currPlanCourses).then(
+  //       (courseObj) => {
+  //         if (
+  //           courseObj != null &&
+  //           checkRequirementSatisfied(
+  //             splitRequirements(distribution.expr),
+  //             courseObj
+  //           )
+  //         ) {
+  //           return !flippedArr.includes(course.number);
+  //         }
+  //         return flippedArr.includes(course.number);
+  //       }
+  //     );
+  //   });
+  // };
 
-  const flip = (course: UserCourse) => {
-    var flippedSlice = flippedArr.slice();
-    if (flippedSlice.includes(course.number)) {
-      flippedSlice.splice(flippedSlice.indexOf(course.number), 1);
-    } else {
-      flippedSlice.push(course.number);
-    }
-    setFlippedArr(flippedSlice);
-  }
+  // const flip = (course: UserCourse) => {
+  //   let flippedSlice = flippedArr.slice();
+  //   if (flippedSlice.includes(course.number)) {
+  //     flippedSlice.splice(flippedSlice.indexOf(course.number), 1);
+  //   } else {
+  //     flippedSlice.push(course.number);
+  //   }
+  //   setFlippedArr(flippedSlice);
+  // };
 
   const onSaveClick = (flipped: string[]) => {
     save(flipped);
     cleanup();
-  }
+  };
 
   const onResetClick = () => {
     setFlippedArr([]);
-  }
+  };
 
   return (
-  <div className="fixed inset-1/2 w-96 h-80 overflow-auto transform -translate-x-2/4 -translate-y-1/2">
-    <div className="text-center font-bold bg-gray-50 shadow rounded-t-lg p-3">
-      <h1 >{distribution.name}</h1>
-    </div>
-    {courses.map((course) => {
-      return (
-        <div className="flex block h-7 bg-gray-50 pl-3">
-          {satisfies(course) ? 
-            <Minus className="transform hover:scale-150 transition duration-200 ease-in" onClick={() => flip(course)}/> 
-            : <Plus className="transform hover:scale-150 transition duration-200 ease-in"onClick={() => flip(course)} />
-          }
-          <div className="text-lg">
-            {course.title}
+    <div className="fixed inset-1/2 w-96 h-80 overflow-auto transform -translate-x-2/4 -translate-y-1/2">
+      <div className="p-3 text-center font-bold bg-gray-50 rounded-t-lg shadow">
+        <h1>{distribution.name}</h1>
+      </div>
+      {/* {courses.map((course) => {
+        return (
+          <div className="block flex pl-3 h-7 bg-gray-50">
+            {satisfies(course) ? (
+              <Minus
+                className="transform hover:scale-150 transition duration-200 ease-in"
+                onClick={() => flip(course)}
+              />
+            ) : (
+              <Plus
+                className="transform hover:scale-150 transition duration-200 ease-in"
+                onClick={() => flip(course)}
+              />
+            )}
+            <div className="text-lg">{course.title}</div>
           </div>
+        );
+      })} */}
+      <div className="flex justify-evenly p-2 pb-3 pt-5 bg-gray-50 rounded-b-lg shadow-md">
+        <div
+          className="p-2 bg-red-500 rounded-lg transform hover:scale-105 transition duration-200 ease-in"
+          onClick={() => onResetClick()}
+        >
+          Reset
         </div>
-      )
-    })}
-    <div className="flex justify-evenly bg-gray-50 p-2 shadow-md rounded-b-lg pt-5 pb-3">
-      <div className="bg-red-500 p-2 transform hover:scale-105 transition duration-200 ease-in rounded-lg" onClick={() => onResetClick()}>
-        Reset
-      </div>
-      <div className="bg-red-300 p-2 transform hover:scale-105 transition duration-200 ease-in rounded-lg" onClick={cleanup}>
-        Cancel
-      </div>
-      <div className="bg-green-300 p-2 transform hover:scale-105 transition duration-200 ease-in rounded-lg" onClick={() => onSaveClick(flippedArr)}>
-        Save
+        <div
+          className="p-2 bg-red-300 rounded-lg transform hover:scale-105 transition duration-200 ease-in"
+          onClick={cleanup}
+        >
+          Cancel
+        </div>
+        <div
+          className="p-2 bg-green-300 rounded-lg transform hover:scale-105 transition duration-200 ease-in"
+          onClick={() => onSaveClick(flippedArr)}
+        >
+          Save
+        </div>
       </div>
     </div>
-  </div>)
+  );
 }
 
 export default DistributionPopup;
