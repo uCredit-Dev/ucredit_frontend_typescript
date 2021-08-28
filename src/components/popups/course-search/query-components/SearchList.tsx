@@ -14,6 +14,7 @@ import { ReactComponent as PlaceholderEmptySvg } from "../../../../resources/svg
 import { ReactComponent as Question } from "../../../../resources/svg/Question.svg";
 import { Course } from "../../../../resources/commonTypes";
 import ReactTooltip from "react-tooltip";
+import loading from "../../../../resources/images/loading.gif";
 
 /* 
   List of searched courses.
@@ -168,14 +169,10 @@ const SearchList = (props: { searching: boolean }) => {
             ) : (
               <div className="flex flex-col items-center justify-center mt-24 w-full">
                 {props.searching ? (
-                  <>
-                    <div>😢</div>
-                    Sorry, no course found...
-                  </>
+                  <img src={loading} alt="Searching..." className="h-10"></img>
                 ) : (
                   <div className="text-center text-gray-400 text-lg">
-                    Type something in the search box or use the filters to start
-                    searching!
+                    No current search results.
                   </div>
                 )}
               </div>
