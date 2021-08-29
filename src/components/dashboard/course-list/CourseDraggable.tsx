@@ -10,6 +10,13 @@ type CourseDraggableProps = {
   semesterName: SemesterType;
 };
 
+/**
+ * This is a draggable CourseComponent container used for course DnD.
+ * @prop course - the course displayed by the course component
+ * @prop index - the position of the course within its parent semester
+ * @prop semesterYear - the year the parent semester is part of
+ * @prop semesterName - the parent semester's name
+ */
 const CourseDraggable = ({
   course,
   index,

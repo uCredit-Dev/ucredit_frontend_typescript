@@ -20,6 +20,9 @@ type DistributionPopupType = {
   flipped: string[];
 };
 
+/**
+ * TODO: FEATURE TO OVERRIDE DISTRIBUTIONS ON PAUSE. MAY BE DEPRECATED IN THE FUTURE.
+ */
 function DistributionPopup({
   distribution,
   cleanup,

@@ -126,9 +126,6 @@ export const searchSlice = createSlice({
     ) => {
       state.retrievedCourses = [...action.payload];
     },
-    updateRetrievedVersions: (state: any, action: PayloadAction<number[]>) => {
-      state.retrievedVerions = [...action.payload];
-    },
     updatePlaceholder: (state: any, action: PayloadAction<boolean>) => {
       state.placeholder = action.payload;
     },
@@ -185,7 +182,6 @@ export const {
   updateSearchFilters,
   updateInspectedCourse,
   updateRetrievedCourses,
-  updateRetrievedVersions,
   updatePlaceholder,
   updateSearchStack,
   updateInspectedVersion,
@@ -204,8 +200,6 @@ export const selectSearchStatus = (state: RootState) => state.search.searching;
 export const selectSearchFilters = (state: RootState) => state.search.filters;
 export const selectRetrievedCourses = (state: RootState) =>
   state.search.retrievedCourses;
-export const selectRetrievedVersions = (state: RootState) =>
-  state.search.retrievedVerions;
 export const selectInspectedCourse = (state: RootState) =>
   state.search.inspectedCourse;
 export const selectPlaceholder = (state: RootState) => state.search.placeholder;

@@ -31,14 +31,22 @@ export const newYearTemplate: Year = {
   user_id: "New Year",
 };
 
+type SemSelected = {
+  fall: boolean;
+  spring: boolean;
+  intersession: boolean;
+  summer: boolean;
+};
+
 /**
  * A component displaying all the courses in a specific semester.
- * TODO: Add popups confirmind delete!
+ * TODO: Modularize!!!
  *
- * @param id - id of year
- * @param customStyle - style object for year
- * @param year - the year designator
- * @param courses - courses that belong to this year
+ * @prop id - id of year
+ * @prop customStyle - style object for year
+ * @prop year - the year designator
+ * @prop courses - courses that belong to this year
+ * @prop setDraggable - avtivates/deactivates draggability of year component
  */
 function YearComponent({
   id,
@@ -57,9 +65,14 @@ function YearComponent({
   const [yearName, setYearName] = useState<string>(year.name);
   const [semSelect, setSemSelect] = useState<boolean>(false);
   const [onHover, setOnHover] = useState<boolean>(false);
-  // Determines whether we're editing the name.
   const [editedName, setEditedName] = useState<boolean>(false);
   const [edittingName, setEdittingName] = useState<boolean>(false);
+  const [toShow, setToShow] = useState<SemSelected>({
+    fall: true,
+    spring: true,
+    summer: true,
+    intersession: false,
+  });
 
   // Setting up redux
   const currentPlan = useSelector(selectPlan);
@@ -90,11 +103,13 @@ function YearComponent({
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [courses, currentPlan, currentPlan.name]);
 
-  // Updates temporary year name and notifies useffect on state change to update db plan name with debounce.
-  const handleYearNameChange = (event: any) => {
-    setYearName(event.target.value);
-    setEditedName(true);
-  };
+  // Focuses on year name after clicking edit name option.
+  useEffect(() => {
+    if (edittingName) {
+      document.getElementById(year._id + "input")?.focus();
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [edittingName]);
 
   // Only edits name if editName is true. If true, calls debounce update function
   useEffect(() => {
@@ -105,7 +120,9 @@ function YearComponent({
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [yearName]);
 
-  // update the name of the year
+  /**
+   * Update the name of the year
+   */
   const updateName = () => {
     const body = {
       year_id: year._id,
@@ -130,45 +147,36 @@ function YearComponent({
       .catch((err) => console.log(err));
   };
 
+  /**
+   * Updates temporary year name and notifies useffect on state change to update db plan name with debounce.
+   * @param event - produced from changes to dropdown
+   */
+  const handleYearNameChange = (event: any) => {
+    setYearName(event.target.value);
+    setEditedName(true);
+  };
+
+  /**
+   * Activates delete year popup.
+   */
   const activateDeleteYearPopup = () => {
     dispatch(updateYearToDelete(year));
     dispatch(updateDeleteYearStatus(true));
   };
 
-  useEffect(() => {
-    if (edittingName) {
-      document.getElementById(year._id + "input")?.focus();
-    }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [edittingName]);
-
-  type SemSelected = {
-    fall: boolean;
-    spring: boolean;
-    intersession: boolean;
-    summer: boolean;
-  };
-
-  const [toShow, setToShow] = useState<SemSelected>({
-    fall: true,
-    spring: true,
-    summer: true,
-    intersession: false,
-  });
-
   const modifyFall = () => {
     setToShow({ ...toShow, fall: !toShow.fall });
   };
 
-  const modifySpring = (event: any) => {
+  const modifySpring = () => {
     setToShow({ ...toShow, spring: !toShow.spring });
   };
 
-  const modifySummer = (event: any) => {
+  const modifySummer = () => {
     setToShow({ ...toShow, summer: !toShow.summer });
   };
 
-  const modifyIntersession = (event: any) => {
+  const modifyIntersession = () => {
     setToShow({ ...toShow, intersession: !toShow.intersession });
   };
 

@@ -30,9 +30,14 @@ const PlanChoose = () => {
   // Component state setup
   const [dropdown, setDropdown] = useState<boolean>(false);
 
-  const openSelectDropdown = () => {
-    setDropdown(!dropdown);
-  };
+  // Adds a new plan every time a new guest user is created and they don't have a a plan.
+  useEffect(() => {
+    if (user.plan_ids.length === 0 && user._id === "guestUser") {
+      // Post req body for a new plan
+      dispatch(updateAddingPlanStatus(true));
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [user._id]);
 
   // Gets all users's plans and updates state everytime a new user is chosen.
   useEffect(() => {
@@ -144,15 +149,6 @@ const PlanChoose = () => {
     }
   };
 
-  // Adds a new plan every time a new guest user is created and they don't have a a plan.
-  useEffect(() => {
-    if (user.plan_ids.length === 0 && user._id === "guestUser") {
-      // Post req body for a new plan
-      dispatch(updateAddingPlanStatus(true));
-    }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [user._id]);
-
   return (
     <>
       {/* dummy component to generate new plans */}
@@ -164,7 +160,7 @@ const PlanChoose = () => {
       <div className="relative flex flex-col">
         <button
           className="ml-auto mr-4 px-2 py-1 text-black bg-white rounded focus:outline-none shadow select-none transform hover:scale-105 transition duration-200 ease-in"
-          onClick={openSelectDropdown}
+          onClick={() => setDropdown(!dropdown)}
         >
           Select Plan
         </button>

@@ -41,9 +41,9 @@ type SisCourseProps = {
 /**
  * Displays a sis course when searching.
  *
- * @param inspectedArea - the area to add the course to
- * @param setInspectedArea - sets the area to add the course to
- * @param addCourse - adds course to plan.
+ * @prop inspectedArea - the area to add the course to
+ * @prop setInspectedArea - sets the area to add the course to
+ * @prop addCourse - adds course to plan.
  */
 const SisCourse = (props: SisCourseProps) => {
   // Redux Setup
@@ -94,11 +94,6 @@ const SisCourse = (props: SisCourseProps) => {
     );
   };
 
-  // Clears inspected course.
-  // const clearInspected = (): void => {
-  //   dispatch(updateInspectedCourse("None"));
-  // };
-
   // Handles switching displayed term.
   const handleTermSwitch = (event: any): void => {
     if (inspected !== "None") {
@@ -115,12 +110,18 @@ const SisCourse = (props: SisCourseProps) => {
     }
   };
 
+  /**
+   * Cleanup and opens adding prereqs
+   */
   const addPrereq = () => {
     dispatch(updateCourseToShow(null));
     dispatch(updateShowCourseInfo(false));
     dispatch(updateAddingPrereq(true));
   };
 
+  /**
+   * Updates course by deleting old course and adding new.
+   */
   const updateCourse = (): void => {
     if (courseToShow !== null) {
       fetch(api + "/courses/" + courseToShow._id, {

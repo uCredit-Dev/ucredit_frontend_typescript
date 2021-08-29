@@ -5,7 +5,6 @@ import {
   selectPlanList,
   updatePlanList,
 } from "../../../slices/userSlice";
-// import PlanChoose from "./PlanChoose";
 import { ReactComponent as RemoveSvg } from "../../../resources/svg/Remove.svg";
 import "react-toastify/dist/ReactToastify.css";
 import {
@@ -36,12 +35,6 @@ const InfoCards = () => {
   // shareable URL
   const [shareableURL, setShareableURL] = useState<string>("");
 
-  // Updates temporary plan name and notifies useffect on state change to update db plan name with debounce.
-  const handlePlanNameChange = (event: any) => {
-    setPlanName(event.target.value);
-    setEditName(true);
-  };
-
   // Only edits name if editName is true. If true, calls debounce update function
   useEffect(() => {
     if (editName) {
@@ -51,7 +44,21 @@ const InfoCards = () => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [planName]);
 
-  const updateName = () => {
+  /**
+   * Updates temporary plan name and notifies useffect on state change to update db plan name with debounce.
+   * @param event
+   */
+  const handlePlanNameChange = (event: any): void => {
+    setPlanName(event.target.value);
+    setEditName(true);
+  };
+
+  // Updates current plan every time current plan changes
+  useEffect((): void => {
+    setPlanName(currentPlan.name);
+  }, [currentPlan]);
+
+  const updateName = (): void => {
     const body = {
       plan_id: currentPlan._id,
       majors: currentPlan.majors,
@@ -80,18 +87,16 @@ const InfoCards = () => {
       .catch((err) => console.log(err));
   };
 
-  // Updates current plan every time current plan changes
-  useEffect(() => {
-    setPlanName(currentPlan.name);
-  }, [currentPlan]);
-
   // Activates delete plan popup.
-  const activateDeletePlan = () => {
+  const activateDeletePlan = (): void => {
     dispatch(updateDeletePlanStatus(true));
   };
 
-  const onShareClick = () => {
-    if (shareableURL !== '') {
+  /**
+   * Handles when button for shareable link is clicked.
+   */
+  const onShareClick = (): void => {
+    if (shareableURL !== "") {
       setShareableURL("");
       return;
     }
@@ -128,7 +133,9 @@ const InfoCards = () => {
           Share
         </button>
         <div>
-          {shareableURL === "" ? null: <ShareLinksPopup link={shareableURL} setURL={onShareClick}/>}
+          {shareableURL === "" ? null : (
+            <ShareLinksPopup link={shareableURL} setURL={onShareClick} />
+          )}
         </div>
       </div>
     </div>

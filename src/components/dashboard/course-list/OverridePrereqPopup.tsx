@@ -6,12 +6,20 @@ type PopupType = {
   save: () => void;
 };
 
+/**
+ * Popup for when user presses button to override prereq.
+ * @prop courseName - name of the course you are overriding prereqs for
+ * @prop cleanup - state resets and cleanups after updating prereq overrides
+ * @prop save - saves the prereq overrides
+ */
 function OverridePrereqpopup({ courseName, cleanup, save }: PopupType) {
+  /**
+   * Saves overriding prereqs, then cleans up state changes.
+   */
   const onSaveClick = () => {
     save();
     cleanup();
   };
-
   return (
     <div className="fixed z-40 inset-1/2 w-96 h-80 overflow-auto transform -translate-x-2/4 -translate-y-1/2">
       <div className="p-3 text-center font-bold bg-gray-50 rounded-t-lg shadow">

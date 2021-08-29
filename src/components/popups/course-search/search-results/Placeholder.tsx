@@ -27,7 +27,7 @@ const tagFilters = ["none", ...course_tags];
 
 /**
  * Page for adding a placeholder
- * @param addCourse - a function that adds the placeholder to the plan.
+ * @prop addCourse - a function that adds the placeholder to the plan.
  */
 const Placeholder = (props: { addCourse: Function }) => {
   // Redux Setup
@@ -48,6 +48,10 @@ const Placeholder = (props: { addCourse: Function }) => {
   const [placeholderDepartment, setPlaceholderDepartment] =
     useState<string>("none");
   const [placeholderTag, setPlaceholderTag] = useState<string>("none");
+
+  useEffect(() => {
+    ReactTooltip.rebuild();
+  });
 
   // Updates placeholder information everytime inspected course changes.
   useEffect(() => {
@@ -77,7 +81,6 @@ const Placeholder = (props: { addCourse: Function }) => {
     setPlaceholderArea(area);
     if (inspectedVersion !== "None") {
       const inspectedCourseCopy: Course = { ...inspectedVersion, areas: area };
-      console.log(inspectedCourseCopy);
       dispatch(updateInspectedVersion(inspectedCourseCopy));
     }
   };
@@ -131,6 +134,9 @@ const Placeholder = (props: { addCourse: Function }) => {
     dispatch(updateInspectedCourse("None"));
   };
 
+  /**
+   * Updates course by deleting old version and posting new.
+   */
   const updateCourse = (): void => {
     if (courseToShow !== null) {
       fetch(api + "/courses/" + courseToShow._id, {
@@ -171,10 +177,6 @@ const Placeholder = (props: { addCourse: Function }) => {
       });
     }
   };
-
-  useEffect(() => {
-    ReactTooltip.rebuild();
-  });
 
   return (
     <div className="flex flex-col pl-8 py-4 h-full font-medium bg-gray-100">

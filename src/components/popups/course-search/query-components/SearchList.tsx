@@ -43,7 +43,10 @@ const SearchList = (props: { searching: boolean }) => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [courses]);
 
-  // Generates a list of 10 retrieved course matching the search queries and page number.
+  /**
+   * Generates a list of 10 retrieved course matching the search queries and page number.
+   * @returns a list of searched course cards
+   */
   const courseList = () => {
     let toDisplay: any = [];
     let startingIndex = pageNum * coursesPerPage;
@@ -70,12 +73,17 @@ const SearchList = (props: { searching: boolean }) => {
     return toDisplay;
   };
 
-  // Sets page number when clicking on a page in the pagination component.
+  /**
+   * Sets page number when clicking on a page in the pagination component.
+   * @param event event raised on changing search result page
+   */
   const handlePageClick = (event: any) => {
     setPageNum(event.selected);
   };
 
-  // Activates placeholder adding.
+  /**
+   * Activates placeholder adding.
+   */
   const onPlaceholderClick = () => {
     if (placeholder) {
       dispatch(updatePlaceholder(false));

@@ -23,10 +23,10 @@ type courseBarProps = {
 
 /**
  * A distribution bar.
- * @param distribution - the distribution the bar refers to
- * @param general - if this is a general distribution
- * @param description - this is the description of the distribution
- * @param total - whether this is a course bar tracking the total amount of credits
+ * @prop distribution - the distribution the bar refers to
+ * @prop general - if this is a general distribution
+ * @prop description - this is the description of the distribution
+ * @prop total - whether this is a course bar tracking the total amount of credits
  */
 function CourseBar({
   distribution,
@@ -48,6 +48,7 @@ function CourseBar({
   const remainingCredits =
     plannedCredits <= maxCredits ? maxCredits - plannedCredits : 0;
 
+  // Decides how filled the credit bar is.
   useEffect(() => {
     let temp = distribution.fulfilled_credits;
     currPlanCourses.forEach((course) => {

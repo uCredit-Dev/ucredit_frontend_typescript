@@ -6,11 +6,11 @@ import { ReactComponent as CheckMark } from "../../../../resources/svg/CheckMark
 
 /**
  * This is one of the open-close prereq dropdowns.
- * @param text - the raw text of the dropdown
- * @param satisfied - whether the dropdown is satisfied
- * @param element - the parsed version of the raw text
- * @param getNonStringPrereq - function called to get a parsed prereq object
- * @param or - whether this dropdown is an or or and dropdown.
+ * @prop text - the raw text of the dropdown
+ * @prop satisfied - whether the dropdown is satisfied
+ * @prop element - the parsed version of the raw text
+ * @prop getNonStringPrereq - function called to get a parsed prereq object
+ * @prop or - whether this dropdown is an or or and dropdown.
  */
 const PrereqDropdown = (props: {
   text: string;
@@ -30,6 +30,9 @@ const PrereqDropdown = (props: {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
+  /**
+   * Gets child branches and leaves of prereq
+   */
   const getChildPrereqs = () => {
     let orAndSatisfied = false;
     const alreadyDisplayed: React.Key[] = [];

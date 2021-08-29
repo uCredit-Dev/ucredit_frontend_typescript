@@ -4,9 +4,14 @@ import { ReactComponent as Copy } from "../../../resources/svg/Copy.svg";
 
 type ShareProps = {
   link: string;
-  setURL: () => void;
+  setURL: Function;
 };
 
+/**
+ * Shareable link popup.
+ * @prop link - link is composed of origin + plan id
+ * @prop setURL - sets url of shareable link
+ */
 function ShareLinksPopup({ link, setURL }: ShareProps) {
   const copyToClipBoard = () => {
     navigator.clipboard.writeText(link).then(() => {
@@ -23,7 +28,7 @@ function ShareLinksPopup({ link, setURL }: ShareProps) {
     <div>
       <div
         className="fixed z-30 left-0 top-0 w-screen h-screen"
-        onClick={setURL}
+        onClick={() => setURL()}
       />
       <div className="absolute z-40 flex items-center w-80 h-6 bg-gray-50 rounded-md rounded-t-lg shadow overflow-auto transform -translate-x-2/4 -translate-y-1/2">
         <div className="flex-grow flex-shrink">

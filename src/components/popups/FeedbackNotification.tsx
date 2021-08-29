@@ -1,6 +1,11 @@
 import React from "react";
 import { ReactComponent as CloseSVG } from "../../resources/svg/Close.svg";
 
+/**
+ * Feedback notification banner in dashboard
+ * @prop actionHandler - handles notification action (ie. clicking on link)
+ * @prop notifHandler - handles opening and closing notification popup
+ */
 const FeedbackNotification = ({
   actionHandler,
   notifHandler,

@@ -449,6 +449,13 @@ export const getCourses = (
   });
 };
 
+/**
+ *
+ * @param courseNumber
+ * @param courseCache
+ * @param allPlanCourses
+ * @returns
+ */
 export const getCourse = async (
   courseNumber: string,
   courseCache: SISRetrievedCourse[],

@@ -32,10 +32,10 @@ type courseProps = {
 
 /**
  * This is a course card displayed in the course list under each semester.
- * @param setDraggable: to determine if we can drag this item.
- * @param course: course it's displaying
- * @param year: year the course is part of
- * @param semester: semester this course is part of
+ * @prop setDraggable: to determine if we can drag this item.
+ * @prop course: course it's displaying
+ * @prop year: year the course is part of
+ * @prop semester: semester this course is part of
  */
 function CourseComponent({
   setDraggable,
@@ -56,12 +56,8 @@ function CourseComponent({
   const currPlanCourses = useSelector(selectCurrentPlanCourses);
   const courseCache = useSelector(selectCourseCache);
 
+  // Checks whether course is satisfied every time plan courses gets updated.
   useEffect(() => {
-    isSatisfied();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [currPlanCourses]);
-
-  const isSatisfied = () => {
     if (course.isPlaceholder) {
       setSatisfied(true);
     } else {
@@ -76,31 +72,40 @@ function CourseComponent({
         setSatisfied(satisfied);
       });
     }
-  };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [currPlanCourses]);
 
-  // Sets or resets the course displayed in popout after user clicks it in course list.
+  /**
+   * Sets or resets the course displayed in popout after user clicks it in course list.
+   */
   const displayCourses = () => {
     dispatch(updateCourseToShow(course));
     dispatch(updateShowCourseInfo(true));
   };
 
-  // Deletes a course on click of the delete button. Updates currently displayed plan with changes.
+  /**
+   * Deletes a course on click of the delete button. Updates currently displayed plan with changes.
+   */
   const deleteCourse = () => {
     dispatch(updateCourseToDelete({ course: course, year: year }));
     dispatch(updateDeleteCourseStatus(true));
   };
 
+  /**
+   * Activates the course component button menu and grab icon.
+   */
   const activate = () => {
     setActivated(true);
     setTimeout(() => setHovered(true), 100);
   };
 
+  /**
+   * Deactivates the course component button menu and grab icon.
+   */
   const deactivate = () => {
     setActivated(false);
     setHovered(false);
   };
-
-  const tooltip = `<div>Prereqs not yet satisfied</div>`;
 
   return (
     <>
@@ -183,7 +188,7 @@ function CourseComponent({
                 {!satisfied && !overridden ? (
                   <>
                     <WarningSvg
-                      data-tip={tooltip}
+                      data-tip="<div>Prereqs not yet satisfied</div>"
                       data-for="godTip"
                       className="relative z-20 flex flex-row items-center justify-center p-0.5 w-6 h-6 text-white bg-secondary rounded-md outline-none stroke-2 cursor-pointer transform hover:scale-110 transition duration-150 ease-in"
                       onClick={() => setDisplayPopup(true)}

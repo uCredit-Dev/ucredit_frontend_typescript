@@ -24,7 +24,6 @@ import LandingPage from "./landing-page";
 
 /**
  * Root app component, where it all begins...
- * @returns
  */
 function App() {
   const dispatch = useDispatch();

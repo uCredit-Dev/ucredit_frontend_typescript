@@ -1,5 +1,9 @@
 import React from "react";
 
+/**
+ * Feedback form popup.
+ * @prop setFormPopup - opens or closes feed back form popup
+ */
 const FeedbackPopup = ({ setFormPopup }: { setFormPopup: Function }) => {
   return (
     <div>

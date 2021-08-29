@@ -30,7 +30,7 @@ type generateNewPlanProps = {
 
 /**
  * Reusable component that generates a new empty plan.
- * @param _id - id of component
+ * @prop _id - id of component
  */
 const GenerateNewPlan = (props: generateNewPlanProps) => {
   // Redux setup

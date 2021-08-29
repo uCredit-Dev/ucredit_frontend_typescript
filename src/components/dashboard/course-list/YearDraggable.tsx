@@ -5,10 +5,10 @@ import YearComponent from "./YearComponent";
 
 /**
  * The year draggable for shifting around year ordering.
- * @param id - The index of the year among the other years.
- * @param year - The year contained in the draggable.
- * @param yearIndex - The index of the year among the other years.
- * @param yearCourses - The courses contained in the year.
+ * @prop id - The index of the year among the other years.
+ * @prop year - The year contained in the draggable.
+ * @prop yearIndex - The index of the year among the other years.
+ * @prop yearCourses - The courses contained in the year.
  */
 const YearDraggable = (props: {
   id: number;
