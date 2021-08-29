@@ -6,8 +6,9 @@ import { updateUser, selectUser } from "../../slices/userSlice";
 import { useCookies } from "react-cookie";
 import samplePlan from "../../resources/images/samplePlan.png";
 import logo from "../../resources/images/logoDarker.png";
-const prod = "https://ucredit.me/login";
-const dev = "http://localhost:3000/login";
+
+const PROD_ORIGIN = "https://ucredit.me/login/";
+const DEV_ORIGIN = "http://localhost:3000/login/";
 
 /**
  * The login page, designed after the Spotify login page..
@@ -30,10 +31,10 @@ const DashboardEntry = () => {
     const currentURL: string = window.location.href;
     if (currentURL.length > 43) {
       let token: string;
-      if (window.location.href.includes("ucredit.me")) {
-        token = currentURL.substr(prod.length - 20, 20);
+      if (!window.location.href.includes("localhost")) {
+        token = currentURL.substr(PROD_ORIGIN.length, 20);
       } else {
-        token = currentURL.substr(dev.length - 20, 20);
+        token = currentURL.substr(DEV_ORIGIN.length, 20);
       }
       fetch(api + "/retrieveUser/" + token, {
         mode: "cors",
@@ -50,7 +51,6 @@ const DashboardEntry = () => {
             retrievedUser.errors === undefined &&
             !token.includes("dashboard")
           ) {
-            console.log(new Date(Date.now() + 20000000000000).toString());
             document.cookie =
               "connect.sid=" +
               token +
