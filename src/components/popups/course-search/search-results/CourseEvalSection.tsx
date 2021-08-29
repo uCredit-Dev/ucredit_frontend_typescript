@@ -41,8 +41,11 @@ const CourseEvalSection = () => {
     }
   };
 
-  // Updates the evaluations to a certain course evaluation.
-  const updateEvals = (revIndex: number) => {
+  /**
+   * Updates the evaluations to a certain course evaluation.
+   * @param revIndex - index of course evaluation amongst other evaluations
+   */
+  const updateEvals = (revIndex: number): void => {
     // remove if already selected
     if (revIndex === selectedCourseEval) {
       setSelectedCourseEval(-1);
@@ -69,7 +72,10 @@ const CourseEvalSection = () => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [courseReviews]);
 
-  // Display component function.
+  /**
+   * Display component function.
+   * @returns jsx components based on course reviews.
+   */
   const displayEvals = () => {
     if (courseReviews.length === 0)
       return (

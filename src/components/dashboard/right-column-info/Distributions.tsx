@@ -18,6 +18,9 @@ import {
 } from "./distributionFunctions";
 import FineDistribution from "./FineDistribution";
 
+/**
+ * Area in the right hand plan information that shows various elements of degree progression.
+ */
 const Distributions = () => {
   const currentPlan = useSelector(selectPlan);
   const courseCache = useSelector(selectCourseCache);
@@ -49,12 +52,16 @@ const Distributions = () => {
     ReactTooltip.rebuild();
   }, [displayGeneral, distributions]);
 
-  const getDistributions = () => {
-    let major = currentPlan.majors[0];
+  /**
+   * Gets all distributions associated with current plan
+   * @returns an array of pairs for distributions and their requirements if distributions exist and null if they don't
+   */
+  const getDistributions = (): [string, requirements[]][] | null => {
+    let major: string | undefined = currentPlan.majors[0];
     if (major === undefined) {
       return null;
     }
-    let majorObj = getMajor(major);
+    let majorObj: Major | undefined = getMajor(major);
     if (majorObj === undefined) {
       return null;
     }
@@ -64,6 +71,10 @@ const Distributions = () => {
     return distr;
   };
 
+  /**
+   * Changes whether fine distributions are hidden
+   * @param i - the distribution's index amongst other distributions
+   */
   const changeDistributionVisibility = (i: number) => {
     let showDistributionsCopy = showDistributions.slice();
     showDistributionsCopy[i] = !showDistributions[i];

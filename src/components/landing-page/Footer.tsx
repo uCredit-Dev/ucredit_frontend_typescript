@@ -1,5 +1,8 @@
 import React, { FC } from "react";
 
+/**
+ * Footer of landing page.
+ */
 const Footer: FC = () => {
   return (
     <div className="py-3 text-center text-gray-600 text-sm bg-gray-100">

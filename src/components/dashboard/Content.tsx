@@ -63,6 +63,8 @@ function Content() {
           </div>
         ) : null}
       </div>
+
+      {/* Global popups */}
       {searchStatus ? <Search /> : null}
       {deletePlanStatus ? <DeletePlanPopup /> : null}
       {addPlanStatus && !importingStatus ? <PlanAdd /> : null}

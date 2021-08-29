@@ -7,6 +7,9 @@ import JoinTeamImg from "../../resources/images/landing-page/joinTeam.png";
 import { useHistory } from "react-router";
 import ApplicationFormPopup from "../popups/ApplicationFormPopup";
 
+/**
+ * Banner carousel that alternates between Getting Started and Recruitment banners.
+ */
 const Banner: FC = () => {
   const [activateEmailPopup, setActivateEmailPopup] = useState<boolean>(false);
   const history = useHistory();

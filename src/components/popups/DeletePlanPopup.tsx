@@ -24,7 +24,7 @@ const DeletePlanPopup = () => {
   const planList = useSelector(selectPlanList);
 
   /**
-   * Popup for deleting current plan.
+   * Deletes current plan.
    */
   const deleteCurrentPlan = () => {
     // delete plan from db

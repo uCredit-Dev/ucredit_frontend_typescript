@@ -1,6 +1,9 @@
 import React, { FC } from "react";
 import data from "./promoData";
 
+/**
+ * Contains features and values that our app embraces.
+ */
 const Promo: FC = () => {
   return (
     <div className="flex flex-col items-center my-8 pb-8 px-16">

@@ -26,7 +26,14 @@ const Filters = ({ showCriteria }: filterProps) => {
   const dispatch = useDispatch();
   const searchFilters = useSelector(selectSearchFilters);
 
-  // Update searching for certain amounts of credits
+  useEffect(() => {
+    ReactTooltip.rebuild();
+  });
+
+  /**
+   * Update searching filter state for credits.
+   * @param event - the event sent when handling credit dropdown
+   */
   const handleCreditFilterChange = (event: any): void => {
     let credits = "";
     event.forEach((c: { label: string; value: string }) => {
@@ -39,7 +46,10 @@ const Filters = ({ showCriteria }: filterProps) => {
     dispatch(updateSearchFilters(params));
   };
 
-  // Update searching for a certain distribution.
+  /**
+   * Update searching filter state for distributions.
+   * @param event - the event sent when handling distribution dropdown
+   */
   const handleDistributionFilterChange = (event: any): void => {
     let areas: string = "";
     event.forEach((a: { label: string; value: string }) => {
@@ -52,7 +62,10 @@ const Filters = ({ showCriteria }: filterProps) => {
     dispatch(updateSearchFilters(params));
   };
 
-  // Update searching for a writing intensives or not..
+  /**
+   * Update searching filter state for written intensives.
+   * @param event - the event sent when handling WI dropdown
+   */
   const handleWIFilterChange = (event: any): void => {
     const params: { filter: FilterType; value: any } = {
       filter: "wi",
@@ -61,7 +74,10 @@ const Filters = ({ showCriteria }: filterProps) => {
     dispatch(updateSearchFilters(params));
   };
 
-  // Update searching for a certain department.
+  /**
+   * Update searching filter state for department.
+   * @param event - the event sent when handling department dropdown
+   */
   const handleDepartmentFilterChange = (event: any): void => {
     let departments = "";
     event.forEach((dep: { label: string; value: string }, i: number) => {
@@ -77,7 +93,10 @@ const Filters = ({ showCriteria }: filterProps) => {
     dispatch(updateSearchFilters(params));
   };
 
-  // Update searching for a certain tag
+  /**
+   * Update searching filter state for tags.
+   * @param event - the event sent when handling tag dropdown
+   */
   const handleTagsFilterChange = (event: any): void => {
     let tags = "";
     event.forEach((tag: { label: string; value: string }, i: number) => {
@@ -93,7 +112,10 @@ const Filters = ({ showCriteria }: filterProps) => {
     dispatch(updateSearchFilters(params));
   };
 
-  // Update searching for a certain level
+  /**
+   * Update searching filter state for level.
+   * @param event - the event sent when handling upper/lower level dropdown
+   */
   const handleLevelFilterChange = (event: any): void => {
     let levels = "";
     event.forEach((level: { label: string; value: string }, i: number) => {
@@ -109,6 +131,10 @@ const Filters = ({ showCriteria }: filterProps) => {
     dispatch(updateSearchFilters(params));
   };
 
+  /**
+   * Update searching filter state for year.
+   * @param event - the event sent when handling year dropdown
+   */
   const handleYearFilterChange = (event: any): void => {
     const params: { filter: FilterType; value: any } = {
       filter: "year",
@@ -117,11 +143,11 @@ const Filters = ({ showCriteria }: filterProps) => {
     dispatch(updateSearchFilters(params));
   };
 
-  useEffect(() => {
-    ReactTooltip.rebuild();
-  });
-
-  const getDepString = () => {
+  /**
+   * Gets search filter department as a string.
+   * @returns a department string
+   */
+  const getDepString = (): string => {
     return (
       "Selected " +
       (searchFilters.department !== null
@@ -130,6 +156,10 @@ const Filters = ({ showCriteria }: filterProps) => {
     );
   };
 
+  /**
+   * Gets search filter tag as a string
+   * @returns a tag string
+   */
   const getTagString = () => {
     return (
       "Selected " +
@@ -139,7 +169,11 @@ const Filters = ({ showCriteria }: filterProps) => {
     );
   };
 
-  const getLevelString = () => {
+  /**
+   * Gets search filter level as a string
+   * @returns a level string (either upper or lower level undergraduate)
+   */
+  const getLevelString = (): string => {
     return (
       "Selected " +
       (searchFilters.levels !== null

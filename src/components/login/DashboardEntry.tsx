@@ -7,45 +7,26 @@ import { useCookies } from "react-cookie";
 import samplePlan from "../../resources/images/samplePlan.png";
 import logo from "../../resources/images/logoDarker.png";
 
-const deploy = "https://ucredit.herokuapp.com/login/";
-const dev = "http://localhost:3000/login/";
-
 /**
  * The login page, designed after the Spotify login page..
- * @param cookies contains the various resources provided by the wrapper component of react-cookie
+ * @prop cookies contains the various resources provided by the wrapper component of react-cookie
  */
 const DashboardEntry = () => {
   // Redux setup.
   const dispatch = useDispatch();
   const user = useSelector(selectUser);
-
-  const [authCookies, setAuthCookie] = useCookies(["connect.sid"]);
   const [cookies] = useCookies(["connect.sid"]);
 
   // React router state setup.
   let history = useHistory();
   let location = useLocation();
 
-  // Gets cookie token from url.
-  const getToken = (): string => {
-    const currentURL: string = window.location.href;
-    let token: string = "";
-    if (!currentURL.includes("localhost")) {
-      token = currentURL.substr(
-        deploy.length,
-        currentURL.length - deploy.length
-      );
-    } else {
-      token = currentURL.substr(dev.length, currentURL.length - dev.length);
-    }
-    return token;
-  };
-
   // Useffect runs once on page load, calling to https://ucredit-api.herokuapp.com/api/retrieveUser to retrieve user data.
   // On successful retrieve, update redux with retrieved user
   // On fail, guest user is used.
   useEffect(() => {
-    const token: string = getToken();
+    const currentURL: string = window.location.href;
+    const token: string = currentURL.substr(currentURL.length - 20, 20);
     if (token.length > 0) {
       fetch(api + "/retrieveUser/" + token, {
         mode: "cors",
@@ -58,61 +39,61 @@ const DashboardEntry = () => {
       })
         .then((resp) => resp.json())
         .then((retrievedUser) => {
-          if (retrievedUser.errors === undefined) {
-            if (!token.includes("dashboard")) {
-              setAuthCookie("connect.sid", token, { path: "/" });
-              dispatch(updateUser(retrievedUser.data));
-              history.push("/dashboard");
-            }
-          } else {
-            history.push("/login");
-          }
-        })
-        .catch(() => {
-          history.push("/login");
-        });
-    }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [location.pathname]);
-
-  // Useffect runs once on page load, calling to https://ucredit-api.herokuapp.com/api/retrieveUser to retrieve user data.
-  // On successful retrieve, update redux with retrieved user,
-  // NOTE: Currently, the user is set to the testUser object found in @src/testObjs.tsx, with a JHED of mliu78 (Matthew Liu)
-  //            redux isn't being updated with retrieved user data, as login has issues.
-  useEffect(() => {
-    let cookieVal = "";
-    if (user._id === "noUser") {
-      // Retrieves user if user ID is "noUser", the initial user id state for userSlice.tsx.
-      // Make call for backend
-      Object.entries(cookies).forEach((cookie: any) => {
-        if (cookie[0] === "_hjid" || cookie[0] === "connect.sid")
-          cookieVal = cookie[1];
-      });
-      fetch(api + "/retrieveUser/" + cookieVal, {
-        mode: "cors",
-        method: "GET",
-        credentials: "include",
-        headers: {
-          Accept: "application/json",
-          "Content-Type": "application/json",
-        },
-      })
-        .then((resp) => resp.json())
-        .then((retrievedUser) => {
-          if (retrievedUser.errors === undefined) {
+          if (
+            retrievedUser.errors === undefined &&
+            !token.includes("dashboard")
+          ) {
+            console.log(new Date(Date.now() + 20000000000000).toString());
+            document.cookie =
+              "connect.sid=" +
+              token +
+              "; expires=" +
+              new Date(Date.now() + 200000000000000).toString() +
+              "; path=/";
             dispatch(updateUser(retrievedUser.data));
             history.push("/dashboard");
           }
         })
-        .catch((err) => {
-          console.log("ERROR IS: ", err);
+        .catch(() => {
+          console.log("ERROR: couldn't log in with token " + token);
         });
+    } else {
+      let cookieVal = "";
+      if (user._id === "noUser") {
+        // Retrieves user if user ID is "noUser", the initial user id state for userSlice.tsx.
+        // Make call for backend
+        Object.entries(cookies).forEach((cookie: any) => {
+          if (cookie[0] === "_hjid" || cookie[0] === "connect.sid")
+            cookieVal = cookie[1];
+        });
+        fetch(api + "/retrieveUser/" + cookieVal, {
+          mode: "cors",
+          method: "GET",
+          credentials: "include",
+          headers: {
+            Accept: "application/json",
+            "Content-Type": "application/json",
+          },
+        })
+          .then((resp) => resp.json())
+          .then((retrievedUser) => {
+            if (retrievedUser.errors === undefined) {
+              dispatch(updateUser(retrievedUser.data));
+              history.push("/dashboard");
+            }
+          })
+          .catch((err) => {
+            console.log("ERROR IS: ", err);
+          });
+      }
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [authCookies]);
+  }, [location.pathname, document.cookie]);
 
-  // Handles if the user is invalid.
-  const handleGuest = () => {
+  /**
+   * Handles if the user is invalid.
+   */
+  const handleGuest = (): void => {
     dispatch(updateUser(guestUser));
     history.push("/dashboard");
   };

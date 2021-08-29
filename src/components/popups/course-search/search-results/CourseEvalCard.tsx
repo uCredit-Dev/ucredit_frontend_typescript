@@ -7,7 +7,7 @@ const ratingStars = Array(5).fill(0);
 
 /**
  * A course evaluation card display component.
- * @param props - rating: the evaluation rating, summary: the evaluation summary
+ * @prop props - rating: the evaluation rating, summary: the evaluation summary
  */
 const CourseEvalCard = (props: { rating: string; summary: string }) => {
   const ratingNum = Math.trunc(parseInt(props.rating)) - 1;

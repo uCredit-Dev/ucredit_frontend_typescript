@@ -3,6 +3,10 @@ import { toast } from "react-toastify";
 import emailjs from "emailjs-com";
 emailjs.init("user_7Cn3A3FQW9PTxExf6Npel");
 
+/**
+ * This is the recruitment application popup from the landing page
+ * @prop setActivateEmailPopup - determines whether to display this popup
+ */
 const ApplicationFormPopup = ({
   setActivateEmailPopup,
 }: {
@@ -14,7 +18,7 @@ const ApplicationFormPopup = ({
   const [selfPitch, setSelfPitch] = useState<string>("");
   const [fromEmail, setFromEmail] = useState<string>("");
   const [fromName, setFromName] = useState<string>("");
-  const [technologies, setTechnologies] = useState<string>("");
+  const [resume, setResume] = useState<string>("");
   const [activateError, setActivateError] = useState<boolean>(false);
   return (
     <div className="absolute top-0">
@@ -100,8 +104,8 @@ const ApplicationFormPopup = ({
                   </div>
                   <input
                     className="p-1 rounded"
-                    value={technologies}
-                    onChange={(event) => setTechnologies(event.target.value)}
+                    value={resume}
+                    onChange={(event) => setResume(event.target.value)}
                   />
                 </div>
               </div>
@@ -118,7 +122,7 @@ const ApplicationFormPopup = ({
                     position.length > 0 &&
                     year.length > 0 &&
                     reason.length > 0 &&
-                    technologies.length > 0
+                    resume.length > 0
                   ) {
                     emailjs.send("service_czbc7ct", "template_cxuebne", {
                       from_name: fromName,
@@ -128,7 +132,7 @@ const ApplicationFormPopup = ({
                       position: position,
                       year: year,
                       reason: reason,
-                      technologies: technologies,
+                      resume: resume,
                     });
                     setActivateError(false);
                     setActivateEmailPopup(false);

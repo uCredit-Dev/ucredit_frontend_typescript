@@ -36,6 +36,9 @@ import { toast } from "react-toastify";
 import { api } from "../../resources/assets";
 import SisCourse from "./course-search/search-results/SisCourse";
 
+/**
+ * Course info popup that opens when user preses info button on course components
+ */
 const CourseDisplayPopup = () => {
   // Redux Setup
   const dispatch = useDispatch();

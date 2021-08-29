@@ -2,6 +2,9 @@ import React, { FC } from "react";
 import { useHistory } from "react-router-dom";
 import Logo from "../../resources/images/logoDarker.png";
 
+/**
+ * Header of landing page.
+ */
 const Header: FC = () => {
   const history = useHistory();
   return (

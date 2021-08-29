@@ -126,6 +126,11 @@ function CourseList() {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [currentPlan, currentPlan._id, searching, placeholder]);
 
+  /**
+   * Gets course based on id. If course isn't found, returns empty course
+   * @param id - course id
+   * @returns user course that corresponds to the course id
+   */
   const getUserCourse = (id: string): UserCourse => {
     let course: UserCourse = {
       _id: "invalid_course",
@@ -156,7 +161,10 @@ function CourseList() {
     return course;
   };
 
-  // add a new year, if preUni is true, add to the start of the plan, otherwise add to the end
+  /**
+   * Adds a new year, if preUni is true, add to the start of the plan, otherwise add to the end
+   * @param preUniversity - whether the new year is a pre uni year
+   */
   const addNewYear = (preUniversity: boolean) => {
     if (currentPlan.years.length < 8) {
       const body = {
@@ -217,7 +225,11 @@ function CourseList() {
     }
   };
 
-  // Swaps year from source droppable to destination droppable.
+  /**
+   * Swaps year from source droppable to destination droppable.
+   * @param sourceIndex - source year index
+   * @param destIndex - destination year index
+   */
   const swapYear = (sourceIndex: number, destIndex: number): void => {
     const yearArr: Year[] = [...currentPlan.years];
     const temp: Year = yearArr[sourceIndex];
@@ -244,7 +256,12 @@ function CourseList() {
       .catch((err) => console.log(err));
   };
 
-  // Swaps course from source droppable to destination droppable.
+  /**
+   * Swaps course from source droppable to destination droppable.
+   * @param source - source semester droppable
+   * @param destination - destination semester droppable
+   * @param sourceIndex - index of course in source droppable
+   */
   const swapCourse = (
     source: DroppableType,
     destination: DroppableType,
@@ -319,6 +336,12 @@ function CourseList() {
     }
   };
 
+  /**
+   * Checks if droppable destination is valid
+   * @param courseId - course id of course you are dragging
+   * @param dest - destination droppable
+   * @returns true if valid destination, false if not
+   */
   const checkDestValid = (courseId: string, dest: DroppableType): boolean => {
     const userCourse: UserCourse = getUserCourse(courseId);
     const sisVer: SISRetrievedCourse | null = getSISCourse(userCourse);
@@ -333,6 +356,11 @@ function CourseList() {
     return valid;
   };
 
+  /**
+   * Gets corresponding SIS course from the user course version.
+   * @param userCourse - the user course for which you want to get its SIS version of
+   * @returns a corresponding SISRetrievedCourse version of the user course if found, null if not
+   */
   const getSISCourse = (userCourse: UserCourse): SISRetrievedCourse | null => {
     let out: SISRetrievedCourse | null = null;
     courseCache.forEach((course) => {
@@ -343,6 +371,12 @@ function CourseList() {
     return out;
   };
 
+  /**
+   * Updates plan after handling DnD
+   * @param destYear - destination year
+   * @param term - the term droppable you are dragging to
+   * @param courseId - course id of course you're draggin
+   */
   const updatePlanCourses = (
     destYear: Year,
     term: SemesterType,
@@ -364,6 +398,11 @@ function CourseList() {
     });
   };
 
+  /**
+   * Gets year from id.
+   * @param id - year id
+   * @returns a pair with the year object and index of their corresponding year id.
+   */
   const getYear = (id: string): { year: Year | null; index: number } => {
     let found: Year | null = null;
     let index = -1;

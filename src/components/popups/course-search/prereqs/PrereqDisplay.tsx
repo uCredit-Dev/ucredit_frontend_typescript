@@ -54,12 +54,6 @@ const PrereqDisplay = () => {
   const [hasPreReqs, setHasPreReqs] = useState<boolean>(false);
   const [NNegativePreReqs, setNNegativePreReqs] = useState<any[]>();
 
-  const display = (preReqs: any[]) => {
-    processPrereqs(preReqs, courseCache, currPlanCourses).then((resolved) => {
-      afterGathering(resolved.numNameList, resolved.numList, resolved.expr);
-    })
-  };
-
   // This useEffect performs prereq retrieval every time a new course is displayed.
   useEffect(() => {
     // Reset state whenever new inspected course
@@ -78,11 +72,25 @@ const PrereqDisplay = () => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [version]);
 
-  // This is that one open expression calculator leetcode problem.
-  // We're basically modifying it and adapting it to parse through prereqs
-  // Input param is the prereq expression to parse (ie. AS.110.202 AND (EN.550.310 OR EN.553.211 OR EN.553.310 OR EN.553.311 OR ((EN.550.420 OR EN.553.420) AND (EN.550.430 OR EN.553.430 OR EN.553.431)) OR EN.560.348) AND (AS.110.201 OR AS.110.212 OR EN.553.291) AND (EN.500.112 OR EN.500.113 OR EN.500.114 OR (EN.601.220 OR EN.600.120) OR AS.250.205 OR EN.580.200 OR (EN.600.107 OR EN.601.107)))
-  // Output is an array of prereqs, which could be a single course number, an array of course numbers, or the word "OR". Any course not seperated by an "OR" is another prereq to fullfill.
-  // This output can then be redisplayed as a nice bullet list.
+  /**
+   * Processes then displays prereqs.
+   * @param preReqs an array of prereqs
+   */
+  const display = (preReqs: any[]):void => {
+    processPrereqs(preReqs, courseCache, currPlanCourses).then((resolved) => {
+      afterGathering(resolved.numNameList, resolved.numList, resolved.expr);
+    })
+  };
+
+  /**
+   * This is that one open expression calculator leetcode problem.
+   * We're basically modifying it and adapting it to parse through prereqs
+   * Input param is the prereq expression to parse (ie. AS.110.202 AND (EN.550.310 OR EN.553.211 OR EN.553.310 OR EN.553.311 OR ((EN.550.420 OR EN.553.420) AND (EN.550.430 OR EN.553.430 OR EN.553.431)) OR EN.560.348) AND (AS.110.201 OR AS.110.212 OR EN.553.291) AND (EN.500.112 OR EN.500.113 OR EN.500.114 OR (EN.601.220 OR EN.600.120) OR AS.250.205 OR EN.580.200 OR (EN.600.107 OR EN.601.107)))
+   * Output is an array of prereqs, which could be a single course number, an array of course numbers, or the word "OR". Any course not seperated by an "OR" is another prereq to fullfill.
+   * This output can then be redisplayed as a nice bullet list.
+   * @param input - prereq array
+   * @returns an parsed array of prereqs
+   */
   const createPrereqBulletList = (input: string[]): any[] => {
     const courseArr: any[] = [];
     for (let i = 0; i < input.length; i++) {
@@ -118,8 +126,11 @@ const PrereqDisplay = () => {
     return courseArr;
   };
 
-  // Function currying to produce a function that would update the store when clicking on prereqs
-  // TODO: cross-check with title
+  /**
+   * Function currying to produce a function that would update the store when clicking on prereqs
+   * @param courseNumber - course number you are updating inspected course to
+   * @returns an function that caches and updates search stack when called
+   */
   const updateInspected = (courseNumber: string) => () => {
     courseCache.forEach((course) => {
       if (
@@ -134,7 +145,11 @@ const PrereqDisplay = () => {
     });
   };
 
-  // Outputs the prereqs as components
+  /**
+   * Outputs the prereqs as components
+   * @param inputs - parsed prereq array
+   * @returns an array of jsx elements based on parsed prereqs
+   */
   const preReqsToComponents = (inputs: any): JSX.Element[] => {
     let out: any[] = [];
     const orParsed = parsePrereqsOr(inputs, 0);
@@ -143,7 +158,11 @@ const PrereqDisplay = () => {
     return out;
   };
 
-  // Parses arrays into clickable prereq number links
+  /**
+   * Parses arrays into clickable prereq number links
+   * @param input - prereq array
+   * @returns an array of parsed prereqs
+   */
   const getNonStringPrereq = (input: any): parsedPrereqs => {
     const element = input;
     if (typeof element === "string") {
@@ -247,6 +266,12 @@ const PrereqDisplay = () => {
     }
   };
 
+  /**
+   * Determines whether a certain prereq branch/leaf is satisfied
+   * @prop element - an array of prereqs
+   * @prop or - whether the prereq relationship is an OR or AND situation
+   * @return true if satisfied false if not
+   */
   const isSatisfied = (element: [], or: boolean): boolean => {
     let orAndSatisfied = false;
 
@@ -273,7 +298,12 @@ const PrereqDisplay = () => {
     return orAndSatisfied;
   };
 
-  // Takes parsed prereq array and then parses this array again to make OR sequences
+  /**
+   * Takes parsed prereq array and then parses this array again to make OR sequences
+   * @param input - an array of prereqs
+   * @param depth - how deep into the prereq branch you are
+   * @returns a parsed version of the prereqs
+   */
   const parsePrereqsOr = (input: any, depth: number): any => {
     const orParsed: any[] = [];
 
@@ -351,6 +381,11 @@ const PrereqDisplay = () => {
     setLoaded(true);
   };
 
+  /**
+   * Toggles between prereq display mode.
+   * @param mode - display mode
+   * @returns a function reference for display mode handlerer
+   */
   const handlePrereqDisplayModeChange = (mode: number) => () => {
     setPrereqDisplayMode(mode);
   };
