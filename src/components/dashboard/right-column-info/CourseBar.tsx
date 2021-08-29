@@ -12,20 +12,28 @@ import {
 
 import { ReactComponent as CheckSvg } from "../../../resources/svg/Check.svg";
 import DistributionPopup from "./DistributionPopup";
+import { Course } from "../../../resources/commonTypes";
 
 type courseBarProps = {
   distribution: requirements;
   general: boolean;
   description: string;
+  total: boolean;
 };
 
 /**
  * A distribution bar.
  * @param distribution - the distribution the bar refers to
  * @param general - if this is a general distribution
- * @param description - this is the description of the distribution.
+ * @param description - this is the description of the distribution
+ * @param total - whether this is a course bar tracking the total amount of credits
  */
-function CourseBar({ distribution, general, description }: courseBarProps) {
+function CourseBar({
+  distribution,
+  general,
+  description,
+  total,
+}: courseBarProps) {
   const [displayAdd, setDisplayAdd] = useState(false);
   const [flipped, setFlipped] = useState<string[]>([]);
   const [plannedCredits, setPlannedCredits] = useState(
@@ -41,29 +49,48 @@ function CourseBar({ distribution, general, description }: courseBarProps) {
     plannedCredits <= maxCredits ? maxCredits - plannedCredits : 0;
 
   useEffect(() => {
-    var temp = distribution.fulfilled_credits;
+    let temp = distribution.fulfilled_credits;
     currPlanCourses.forEach((course) => {
-      getCourse(course.number, courseCache, currPlanCourses).then(
-        (courseObj) => {
-          if (
-            courseObj != null &&
-            checkRequirementSatisfied(
-              splitRequirements(distribution.expr),
-              courseObj
-            )
-          ) {
-            if (flipped.includes(course.number)) {
+      if (total) {
+        temp += course.credits;
+        setPlannedCredits(temp);
+      } else {
+        getCourse(course.number, courseCache, currPlanCourses).then(
+          (courseObj) => {
+            if (
+              courseObj != null &&
+              checkRequirementSatisfied(
+                splitRequirements(distribution.expr),
+                courseObj
+              ) &&
+              flipped.includes(course.number)
+            ) {
               temp -= course.credits;
+            } else {
+              const convertedCourse: Course = {
+                ...course,
+                areas: course.area,
+                school: "",
+                bio: "",
+                restrictions: [],
+                level: "",
+                credits: course.credits.toString(),
+              };
+              if (
+                flipped.includes(course.number) ||
+                checkRequirementSatisfied(
+                  splitRequirements(distribution.expr),
+                  convertedCourse
+                )
+              ) {
+                temp += course.credits;
+              }
             }
-          } else {
-            if (flipped.includes(course.number)) {
-              temp += course.credits;
-            }
+            setPlannedCredits(temp);
           }
-        }
-      );
+        );
+      }
     });
-    setPlannedCredits(temp);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [
     currPlanCourses,

@@ -144,7 +144,6 @@ const Form = (props: { setSearching: Function }) => {
             let retrievedCourses: SISRetrievedCourse[] = retrieved.data.data;
             dispatch(updateCourseCache([...retrievedCourses]));
             let SISRetrieved: SISRetrievedCourse[] = retrieved.data.data;
-            console.log(searchTerm.length - extras.query.length);
             if (
               extras.query.length <= minLength ||
               searchTerm.length - extras.query.length >= 2
@@ -322,7 +321,7 @@ const Form = (props: { setSearching: Function }) => {
           const newSearchList: [SISRetrievedCourse[], number[]] =
             getNewSearchList();
           updateSearchResults(newSearchList[0], newSearchList[1]);
-          if (queryLength > minLength && initialQueryLength - queryLength < 3) {
+          if (queryLength > minLength && initialQueryLength - queryLength < 9) {
             performSmartSearch(extras, queryLength - 1)();
           }
         }
@@ -337,7 +336,6 @@ const Form = (props: { setSearching: Function }) => {
       const querySubstrs: string[] = [];
       if (
         queryLength >= minLength &&
-        initialQueryLength - queryLength < 3 &&
         !extras.query.startsWith("EN.") &&
         !extras.query.startsWith("AS.") &&
         !extras.query.includes(".") &&
@@ -348,11 +346,6 @@ const Form = (props: { setSearching: Function }) => {
           querySubstrs.push(searchTerm.substring(i, i + queryLength));
         }
         substringSearch(extras, queryLength, querySubstrs);
-      } else {
-        // Perform old search if search query is less than the minLength for a smart search.
-        find(extras).then((courses) => {
-          updateSearchResults(courses[0], courses[1]);
-        });
       }
     };
 

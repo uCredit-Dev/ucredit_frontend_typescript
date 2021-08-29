@@ -53,5 +53,11 @@
       To begin the development, run `npm start` or `yarn start`.
       To create a production bundle, use `npm run build` or `yarn build`.
     -->
+    <script src="https://cdn.jsdelivr.net/npm/emailjs-com@2.3.2/dist/email.min.js"></script>
+    <script>
+      (function () {
+        emailjs.init("user_7Cn3A3FQW9PTxExf6Npel"); // Obtain your user ID at the dashboard https://dashboard.emailjs.com/integration
+      })();
+    </script>
   </body>
 </html>

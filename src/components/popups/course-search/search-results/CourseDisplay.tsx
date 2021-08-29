@@ -86,9 +86,10 @@ const CourseDisplay = () => {
         distribution_ids: currentPlan.distribution_ids,
         isPlaceholder: placeholder,
         number: version.number,
-        area: inspectedArea,
+        area: version.areas,
         preReq: version.preReq,
         wi: version.wi,
+        version: version.term,
         expireAt:
           user._id === "guestUser"
             ? Date.now() + 60 * 60 * 24 * 1000

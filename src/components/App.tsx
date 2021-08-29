@@ -150,13 +150,13 @@ function App() {
         effect="solid"
       />
       {/* {welcomeScreen || importing ? (
-        <div className="fixed z-40 flex flex-col m-auto w-screen h-screen text-center text-center text-white bg-blue-900">
+        <div className="fixed z-40 flex flex-col w-screen h-screen m-auto text-center text-white bg-blue-900">
           <img
-            className="mt-auto mx-auto w-1/6"
+            className="w-1/6 mx-auto mt-auto"
             src={logoLine}
             alt={"logo line art"}
           ></img>
-          <div className="mb-auto mt-4 mx-auto w-full text-center text-5xl italic font-thin select-none">
+          <div className="w-full mx-auto mt-4 mb-auto text-5xl italic font-thin text-center select-none">
             uCredit
           </div>
         </div>

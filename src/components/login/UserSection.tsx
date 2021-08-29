@@ -208,7 +208,7 @@ function UserSection({ _id }: UserProps) {
   const login = (cookieVal: string) =>
     new Promise<void>((resolve) => {
       if (user._id === "noUser") {
-        var curUser: User;
+       let curUser: User;
         // Retrieves user if user ID is "noUser", the initial user id state for userSlice.tsx.
         // Make call for backend
         fetch(api + "/retrieveUser/" + cookieVal, {

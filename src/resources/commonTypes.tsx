@@ -24,6 +24,7 @@ export type Course = {
   tags: string[];
   preReq: string[];
   restrictions: Restriction[];
+  version?: string;
   level: string;
 };
 
@@ -75,6 +76,7 @@ export type UserCourse = {
   year_id: string;
   preReq: string[];
   isPlaceholder: boolean;
+  version: string;
 };
 
 export type Year = {
@@ -177,6 +179,7 @@ export type Major = {
   department: string;
   total_degree_credit: number;
   wi_credit: number;
+  url: string;
   distributions: DistributionObj[];
 };
 
