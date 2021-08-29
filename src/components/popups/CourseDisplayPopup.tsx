@@ -1,7 +1,13 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import Placeholder from "./course-search/search-results/Placeholder";
-import { Course, Plan, UserCourse, Year } from "../../resources/commonTypes";
+import {
+  Course,
+  Plan,
+  SISRetrievedCourse,
+  UserCourse,
+  Year,
+} from "../../resources/commonTypes";
 import {
   selectCourseToShow,
   updateCourseToShow,
@@ -21,7 +27,6 @@ import {
   selectUser,
   updatePlanList,
 } from "../../slices/userSlice";
-import CourseDisplay from "./course-search/search-results/CourseDisplay";
 import {
   selectCurrentPlanCourses,
   updateCurrentPlanCourses,
@@ -29,11 +34,15 @@ import {
 } from "../../slices/currentPlanSlice";
 import { toast } from "react-toastify";
 import { api } from "../../resources/assets";
+import SisCourse from "./course-search/search-results/SisCourse";
 
+/**
+ * Course info popup that opens when user preses info button on course components
+ */
 const CourseDisplayPopup = () => {
   // Redux Setup
   const dispatch = useDispatch();
-  const courseToShow = useSelector(selectCourseToShow);
+  const courseToShow: UserCourse | null = useSelector(selectCourseToShow);
   const courseCache = useSelector(selectCourseCache);
   const placeholder = useSelector(selectPlaceholder);
   const user = useSelector(selectUser);
@@ -41,28 +50,25 @@ const CourseDisplayPopup = () => {
   const planList = useSelector(selectPlanList);
   const currentCourses = useSelector(selectCurrentPlanCourses);
 
+  const [inspectedArea, setInspectedArea] = useState<string>("None");
+
   useEffect(() => {
     if (courseToShow !== null) {
       //const course:Course = {...courseToShow}
       let found = false;
-      courseCache.forEach((c) => {
+      courseCache.forEach((c: SISRetrievedCourse) => {
         if (c.number === courseToShow.number) {
+          const inspectedVersion: Course = {
+            title: c.title,
+            number: c.number,
+            ...c.versions[c.terms.indexOf(courseToShow.version.toString())],
+          };
           dispatch(updateInspectedCourse(c));
+          dispatch(updateInspectedVersion(inspectedVersion));
           dispatch(updatePlaceholder(false));
           found = true;
         }
       });
-      // if (!found) {
-      //   courseCache.forEach((c) => {
-      //     if (c.number === courseToShow.number) {
-      //       let converted : SISRetrievedCourse = {
-      //       }
-      //       dispatch(updateInspectedCourse(c));
-      //       dispatch(updatePlaceholder(false));
-      //       found = true;
-      //     }
-      //   })
-      // }
       if (!found) {
         const placeholderCourse: Course = {
           title: courseToShow.title,
@@ -78,6 +84,7 @@ const CourseDisplayPopup = () => {
           preReq: [],
           restrictions: [],
           level: "",
+          version: courseToShow.version,
         };
 
         dispatch(updatePlaceholder(true));
@@ -116,9 +123,10 @@ const CourseDisplayPopup = () => {
         distribution_ids: plan.distribution_ids,
         isPlaceholder: placeholder,
         number: version.number,
-        area: courseToShow.area,
+        area: placeholder ? version.areas : inspectedArea,
         preReq: version.preReq,
         wi: version.wi,
+        version: version.term,
         expireAt:
           user._id === "guestUser"
             ? Date.now() + 60 * 60 * 24 * 1000
@@ -190,7 +198,7 @@ const CourseDisplayPopup = () => {
       {/* Actual popup */}
       <div
         className={
-          " z-50 fixed flex flex-col bg-red-500 select-none bg-gradient-to-r shadow from-blue-500 to-green-400 rounded left-1/2 transform -translate-x-1/2 min-w-planAdd shadow h-3/4 translate-y-20 overflow-y-scroll"
+          " z-50 fixed flex flex-col bg-red-500 select-none bg-gradient-to-r shadow from-blue-500 to-green-400 rounded left-1/2 transform -translate-x-1/2 min-w-planAdd shadow h-3/4 overflow-y-scroll translate-y-12"
         }
       >
         <div className="px-4 py-2 text-white text-coursecard font-semibold select-none">
@@ -202,7 +210,13 @@ const CourseDisplayPopup = () => {
             <Placeholder addCourse={addCourse} />
           </div>
         ) : (
-          <CourseDisplay />
+          <div className="min-w-narrowest bg-gray-100 rounded">
+            <SisCourse
+              addCourse={addCourse}
+              setInspectedArea={setInspectedArea}
+              inspectedArea={inspectedArea}
+            />
+          </div>
         )}
       </div>
     </div>

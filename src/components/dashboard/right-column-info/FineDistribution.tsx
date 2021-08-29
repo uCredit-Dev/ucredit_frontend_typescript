@@ -22,7 +22,6 @@ type FineDistributionProps = {
 
 /**
  * Component that displays fine requirements of a specific distribution.
- *
  * @prop dis - general distribution fine distribution is for.
  * @prop distributionOpen - whether this distribution bar is open or not.
  */
@@ -47,26 +46,29 @@ const FineDistribution = ({
     setFlipped(s);
   };
 
+  // Updates fine distribution progress
   useEffect(() => {
-    var temp = dis.fulfilled_credits;
+    let temp = dis.fulfilled_credits;
     currPlanCourses.forEach((course) => {
-      getCourse(course.number, courseCache, currPlanCourses).then((courseObj) => {
-        if (
-          courseObj != null &&
-          checkRequirementSatisfied(splitRequirements(dis.expr), courseObj)
-        ) {
-          if (flipped.includes(course.number)) {
-            temp -= course.credits;
-          }
-        } else {
-          if (flipped.includes(course.number)) {
-            temp += course.credits;
+      getCourse(course.number, courseCache, currPlanCourses).then(
+        (courseObj) => {
+          if (
+            courseObj != null &&
+            checkRequirementSatisfied(splitRequirements(dis.expr), courseObj)
+          ) {
+            if (flipped.includes(course.number)) {
+              temp -= course.credits;
+            }
+          } else {
+            if (flipped.includes(course.number)) {
+              temp += course.credits;
+            }
           }
         }
-      })
+      );
     });
     setPlannedCredits(temp);
-  // eslint-disable-next-line react-hooks/exhaustive-deps
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [currPlanCourses, dis.expr, flipped, dis.fulfilled_credits]);
 
   return (

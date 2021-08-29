@@ -23,7 +23,7 @@ const majorOptions = [
 /**
  * Popup for adding a new plan.
  * TODO: Implement all commented code features
- * @param setGenerateNew - signals the generateNewPlan component to generate a new plan.
+ * @prop setGenerateNew - signals the generateNewPlan component to generate a new plan.
  * */
 const PlanAdd = () => {
   // Redux setup

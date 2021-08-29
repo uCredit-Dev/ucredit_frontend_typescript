@@ -38,11 +38,10 @@ function Content() {
   const addingPrereqStatus = useSelector(selectAddingPrereq);
 
   return (
-    // <div className="flex flex-row flex-wrap-reverse mt-content medium:px-48 h-full">
     <>
-      <div className="flex flex-row">
+      <div className="flex flex-row flex-grow h-full">
         <div className="flex flex-row thin:flex-wrap-reverse mt-content medium:px-10 px-5 w-full h-full">
-          <div className="flex flex-col flex-grow h-auto">
+          <div className="flex flex-col flex-grow h-full">
             <PlanChoose />
             <CourseList />
           </div>
@@ -64,6 +63,8 @@ function Content() {
           </div>
         ) : null}
       </div>
+
+      {/* Global popups */}
       {searchStatus ? <Search /> : null}
       {deletePlanStatus ? <DeletePlanPopup /> : null}
       {addPlanStatus && !importingStatus ? <PlanAdd /> : null}

@@ -14,6 +14,7 @@ import { ReactComponent as PlaceholderEmptySvg } from "../../../../resources/svg
 import { ReactComponent as Question } from "../../../../resources/svg/Question.svg";
 import { Course } from "../../../../resources/commonTypes";
 import ReactTooltip from "react-tooltip";
+import loading from "../../../../resources/images/loading.gif";
 
 /* 
   List of searched courses.
@@ -42,7 +43,10 @@ const SearchList = (props: { searching: boolean }) => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [courses]);
 
-  // Generates a list of 10 retrieved course matching the search queries and page number.
+  /**
+   * Generates a list of 10 retrieved course matching the search queries and page number.
+   * @returns a list of searched course cards
+   */
   const courseList = () => {
     let toDisplay: any = [];
     let startingIndex = pageNum * coursesPerPage;
@@ -69,12 +73,17 @@ const SearchList = (props: { searching: boolean }) => {
     return toDisplay;
   };
 
-  // Sets page number when clicking on a page in the pagination component.
+  /**
+   * Sets page number when clicking on a page in the pagination component.
+   * @param event event raised on changing search result page
+   */
   const handlePageClick = (event: any) => {
     setPageNum(event.selected);
   };
 
-  // Activates placeholder adding.
+  /**
+   * Activates placeholder adding.
+   */
   const onPlaceholderClick = () => {
     if (placeholder) {
       dispatch(updatePlaceholder(false));
@@ -168,14 +177,10 @@ const SearchList = (props: { searching: boolean }) => {
             ) : (
               <div className="flex flex-col items-center justify-center mt-24 w-full">
                 {props.searching ? (
-                  <>
-                    <div>😢</div>
-                    Sorry, no course found...
-                  </>
+                  <img src={loading} alt="Searching..." className="h-10"></img>
                 ) : (
                   <div className="text-center text-gray-400 text-lg">
-                    Type something in the search box or use the filters to start
-                    searching!
+                    No current search results.
                   </div>
                 )}
               </div>

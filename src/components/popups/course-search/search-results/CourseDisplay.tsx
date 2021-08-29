@@ -44,7 +44,9 @@ const CourseDisplay = () => {
   // component state setup
   const [inspectedArea, setInspectedArea] = useState<string>("None");
 
-  // Adds course
+  /**
+   * Adds course
+   */
   const addCourse = (): void => {
     // Adds course, updates user frontend distributions display, and clears search states.
     if (version !== "None") {
@@ -57,7 +59,10 @@ const CourseDisplay = () => {
     }
   };
 
-  // Gets current year name.
+  /**
+   * Gets current year.
+   * @returns current year object if found, null if not.
+   */
   const getYear = (): Year | null => {
     let out: Year | null = null;
     currentPlan.years.forEach((currPlanYear) => {
@@ -68,8 +73,10 @@ const CourseDisplay = () => {
     return out;
   };
 
-  // Updates distribution bars upon successfully adding a course.
-  // TODO: Move this to assets and modularize
+  /**
+   * Updates distribution bars upon successfully adding a course.
+   * TODO: Move this to assets and modularize
+   */
   const updateDistributions = (): void => {
     let newUserCourse: UserCourse;
     if (version !== "None") {
@@ -86,9 +93,10 @@ const CourseDisplay = () => {
         distribution_ids: currentPlan.distribution_ids,
         isPlaceholder: placeholder,
         number: version.number,
-        area: inspectedArea,
+        area: version.areas,
         preReq: version.preReq,
         wi: version.wi,
+        version: version.term,
         expireAt:
           user._id === "guestUser"
             ? Date.now() + 60 * 60 * 24 * 1000

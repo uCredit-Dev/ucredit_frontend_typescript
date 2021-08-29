@@ -27,9 +27,9 @@ const tagFilters = ["none", ...course_tags];
 
 /**
  * Page for adding a placeholder
- * @param addCourse - a function that adds the placeholder to the plan.
+ * @prop addCourse - a function that adds the placeholder to the plan.
  */
-const Placeholder = (props: { addCourse: any }) => {
+const Placeholder = (props: { addCourse: Function }) => {
   // Redux Setup
   const inspectedVersion = useSelector(selectVersion);
   const courseToShow = useSelector(selectCourseToShow);
@@ -48,6 +48,10 @@ const Placeholder = (props: { addCourse: any }) => {
   const [placeholderDepartment, setPlaceholderDepartment] =
     useState<string>("none");
   const [placeholderTag, setPlaceholderTag] = useState<string>("none");
+
+  useEffect(() => {
+    ReactTooltip.rebuild();
+  });
 
   // Updates placeholder information everytime inspected course changes.
   useEffect(() => {
@@ -116,8 +120,10 @@ const Placeholder = (props: { addCourse: any }) => {
     const tag = event.value;
     setPlaceholderTag(tag);
     if (inspectedVersion !== "None") {
-      const inspCopy: Course = { ...inspectedVersion };
-      inspCopy.tags.push(tag);
+      const inspCopy: Course = {
+        ...inspectedVersion,
+        tags: [...inspectedVersion.tags, tag],
+      };
       dispatch(updateInspectedVersion(inspCopy));
     }
   };
@@ -128,6 +134,9 @@ const Placeholder = (props: { addCourse: any }) => {
     dispatch(updateInspectedCourse("None"));
   };
 
+  /**
+   * Updates course by deleting old version and posting new.
+   */
   const updateCourse = (): void => {
     if (courseToShow !== null) {
       fetch(api + "/courses/" + courseToShow._id, {
@@ -169,12 +178,8 @@ const Placeholder = (props: { addCourse: any }) => {
     }
   };
 
-  useEffect(() => {
-    ReactTooltip.rebuild();
-  });
-
   return (
-    <div className="flex flex-col h-full font-medium">
+    <div className="flex flex-col pl-8 py-4 h-full font-medium bg-gray-100">
       <div className="flex flex-row items-center w-full">
         <div className="mr-auto text-2xl">Add a placeholder</div>
         <button
@@ -271,7 +276,7 @@ const Placeholder = (props: { addCourse: any }) => {
               "8",
             ].map((cred: any) => ({ label: cred, value: cred }))}
             className="mt-1"
-            defaultValue={{
+            value={{
               label: placeholderCredits,
               value: placeholderCredits,
             }}
@@ -297,14 +302,14 @@ const Placeholder = (props: { addCourse: any }) => {
             }))}
             className="mt-1 w-40 rounded outline-none"
             onChange={onPAChange}
-            defaultValue={{ label: placeholderArea, value: placeholderArea }}
+            value={{ label: placeholderArea, value: placeholderArea }}
           />
         </div>
       </div>
       {searchStatus ? (
         <button
           className="mr-0 p-2 w-28 text-white bg-blue-500 rounded focus:outline-none transform hover:scale-110 transition duration-200 ease-in"
-          onClick={props.addCourse}
+          onClick={() => props.addCourse()}
         >
           Add Course
         </button>

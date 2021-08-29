@@ -49,10 +49,10 @@ type semesterProps = {
 
 /**
  * A component displaying all the courses in a specific semester.
- * @param courses - all the courses in the semester
- * @param semesterYear - year this semester is part of
- * @param semesterName - name of the semester
- * @param customStyle - custom styling for the semester
+ * @prop courses - all the courses in the semester
+ * @prop semesterYear - year this semester is part of
+ * @prop semesterName - name of the semester
+ * @prop customStyle - custom styling for the semester
  */
 function Semester({
   customStyle,
@@ -77,9 +77,12 @@ function Semester({
   const [onHover, setOnHover] = useState<boolean>(false);
   const [inspectedArea, setInspectedArea] = useState<string>("None");
 
+  useEffect(() => {
+    ReactTooltip.rebuild();
+  }, [courses.length, totalCredits]);
+
   // Every time any courses within this semester changes, update total credit count and the list.
   useEffect(() => {
-    // TODO: replace None with null
     if (version !== "None") {
       setInspectedArea(version.areas.charAt(0));
     }
@@ -103,7 +106,9 @@ function Semester({
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [courses, courses.length, version]);
 
-  // Opens search popup to add new course.
+  /**
+   * Opens search popup to add new course.
+   */
   const addCourse = () => {
     dispatch(updateSearchStatus(true));
     dispatch(
@@ -114,7 +119,11 @@ function Semester({
     );
   };
 
-  const getDraggables = () => {
+  /**
+   * Gets a list of course components wrapped in a DnD draggable.
+   * @returns a list of draggable react components
+   */
+  const getDraggables = (): any => {
     return semesterCourses.map((course, index) => (
       <CourseDraggable
         course={course}
@@ -125,10 +134,10 @@ function Semester({
     ));
   };
 
-  useEffect(() => {
-    ReactTooltip.rebuild();
-  }, [courses.length, totalCredits]);
-
+  /**
+   * Gets a tool-tip that tells you how much credits are in your semester and a broad suggestion on its maneageability.
+   * @returns the credit string tooltip
+   */
   const getCreditString = (): string => {
     let string = `<div>${totalCredits} Credits</div>`;
     if (totalCredits < 12) string += "\nMore than 12 credits required!";
@@ -137,15 +146,17 @@ function Semester({
     return string;
   };
 
+  /**
+   * Posts to add course route and then updates distribution. Then clears state.
+   */
   const addPrereq = () => {
-    // Posts to add course route and then updates distribution.
     updateDistributions();
-
-    // Clears search state.
     dispatch(clearSearch());
   };
 
-  // Updates distribution bars upon successfully adding a course.
+  /**
+   * Updates distribution bars upon successfully adding a course.
+   */
   const updateDistributions = (): void => {
     let newUserCourse: UserCourse;
     if (version !== "None") {

@@ -10,7 +10,7 @@ import { ReactComponent as Question } from "../../../../resources/svg/Question.s
 
 /**
  * A component showing the specific version of the course at a particular semester/year
- * @param props - setInspected area is a function that sets the area to add this prospective course to.
+ * @prop props - setInspected area is a function that sets the area to add this prospective course to.
  */
 const CourseVersion = (props: { setInspectedArea: Function }) => {
   // Redux Setup
@@ -20,6 +20,10 @@ const CourseVersion = (props: { setInspectedArea: Function }) => {
   const bioElRef = useRef<HTMLParagraphElement>(null);
   const [showMore, setShowMore] = useState<number>(2);
   const [displayPreReqsView, setdisplayPreReqsView] = useState<Number>(1);
+
+  useEffect(() => {
+    ReactTooltip.rebuild();
+  }, [displayPreReqsView]);
 
   // UseEffect runs when a new course is version.
   // It automatically updates the current area in the add course area selection to the first area in the course areas string.
@@ -62,8 +66,11 @@ const CourseVersion = (props: { setInspectedArea: Function }) => {
     }
   }, [showMore, bioElRef, version]);
 
-  // Gets course restrictions
-  const getRestrictions = () => {
+  /**
+   * Gets course restrictions
+   * @returns an array of restribtions if found, otherwise returns "No Restribtions!"
+   */
+  const getRestrictions = (): string[] | string | undefined => {
     if (version !== "None") {
       const restrictions = version.restrictions.map(
         (restriction) => restriction.RestrictionName
@@ -76,6 +83,11 @@ const CourseVersion = (props: { setInspectedArea: Function }) => {
     }
   };
 
+  /**
+   * Gets name of passed areas.
+   * @param area - area to get name for
+   * @returns name for area
+   */
   const getAreaName = (area: string): string => {
     if (area === "N") {
       return "Natural Sciences";
@@ -91,10 +103,6 @@ const CourseVersion = (props: { setInspectedArea: Function }) => {
       return "None";
     }
   };
-
-  useEffect(() => {
-    ReactTooltip.rebuild();
-  }, [displayPreReqsView]);
 
   return (
     <>
@@ -186,7 +194,11 @@ const CourseVersion = (props: { setInspectedArea: Function }) => {
                         <>
                           {i !== 0 ? ", " : null}
                           <div
-                            data-tip={"Ask your advisor for more info about " + tag + " tag!"}
+                            data-tip={
+                              "Ask your advisor for more info about " +
+                              tag +
+                              " tag!"
+                            }
                             data-for="godTip"
                             className="mt-1 px-1 w-max text-white font-semibold bg-blue-500 rounded transform hover:scale-101 transition duration-200 ease-in"
                           >

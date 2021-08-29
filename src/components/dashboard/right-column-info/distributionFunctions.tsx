@@ -6,8 +6,23 @@ import {
 } from "../../../resources/commonTypes";
 import { getCourse } from "../../../resources/assets";
 
-// args: an array containing focus areas and their associated requirements, and all courses
-// updates the requirements obj so that the fulfilled credits accurately reflects the plan
+export type requirements = {
+  name: string;
+  expr: string;
+  required_credits: number;
+  fulfilled_credits: number;
+  description: string;
+  wi?: boolean;
+};
+
+/**
+ * args: an array containing focus areas and their associated requirements, and all courses
+ * updates the requirements obj so that the fulfilled credits accurately reflects the plan
+ * @param requirements - an array of requirement pairs
+ * @param courses
+ * @param courseCache - cached courses
+ * @param currPlanCourses - courses in current plan
+ */
 export const updateFulfilled = (
   requirements: [string, requirements[]][],
   courses: UserCourse[],
@@ -32,12 +47,16 @@ export const updateFulfilled = (
           }
         }
       }
-    })
+    });
   });
 };
 
-// args: array where every entry is a seperate parentheses, OR/AND, requirement, or type, name of a class, and all courses
-// returns: whether the class satisifies the requirement
+/**
+ * Checks if a course satisfies a distribution.
+ * @param splitArr - array where every entry is a seperate parentheses, OR/AND, requirement, or type, name of a class, and all courses
+ * @param course - course we're checking for prereq satisfaction
+ * @returns whether the class satisifies the requirement
+ */
 export const checkRequirementSatisfied = (
   splitArr: string[],
   course: Course
@@ -51,6 +70,12 @@ export const checkRequirementSatisfied = (
   }
 };
 
+/**
+ * Gets a boolean expression based on which courses in the prereq string are fulfilled.
+ * @param splitArr - an array of reqs for the distribution
+ * @param course - course we're checkinng for satisfaction
+ * @returns a boolean expression in a string that describes the satisfaction of the distribution
+ */
 export const getBoolExpr = (splitArr: string[], course: Course): string => {
   let boolExpr: string = "";
   let index: number = 0;
@@ -198,14 +223,6 @@ const getNextEntry = (expr: string, index: number): [string, number] => {
   return [out, index];
 };
 
-export type requirements = {
-  name: string;
-  expr: string;
-  required_credits: number;
-  fulfilled_credits: number;
-  description: string;
-  wi?: boolean;
-};
 // args: major
 // returns:
 //  An array where where each entry corresponds to a distribution (e.g. CS, Math, Science, Liberal Arts, WI)

@@ -1,11 +1,16 @@
-import React, { MouseEventHandler, useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 // import { ReactComponent as CloseSvg } from "../../../../resources/svg/Close.svg";
 import Select from "react-select";
 import CourseVersion from "./CourseVersion";
 import { ReactComponent as Question } from "../../../../resources/svg/Question.svg";
 import { ReactComponent as Arrow } from "../../../../resources/svg/ArrowDown.svg";
 import { useDispatch, useSelector } from "react-redux";
-import { selectPlan } from "../../../../slices/currentPlanSlice";
+import {
+  selectCurrentPlanCourses,
+  selectPlan,
+  updateCurrentPlanCourses,
+  updateSelectedPlan,
+} from "../../../../slices/currentPlanSlice";
 import {
   selectInspectedCourse,
   selectSemester,
@@ -16,27 +21,29 @@ import {
   updateInspectedVersion,
   updateSearchTime,
 } from "../../../../slices/searchSlice";
-import { Course } from "../../../../resources/commonTypes";
+import { Course, Plan, Year } from "../../../../resources/commonTypes";
 import ReactTooltip from "react-tooltip";
 import {
+  selectCourseToShow,
   selectShowCourseInfo,
   updateAddingPrereq,
   updateCourseToShow,
   updateShowCourseInfo,
 } from "../../../../slices/popupSlice";
+import { api } from "../../../../resources/assets";
 
 type SisCourseProps = {
   inspectedArea: string;
   setInspectedArea: Function;
-  addCourse: MouseEventHandler<HTMLButtonElement>;
+  addCourse: Function;
 };
 
 /**
  * Displays a sis course when searching.
  *
- * @param inspectedArea - the area to add the course to
- * @param setInspectedArea - sets the area to add the course to
- * @param addCourse - adds course to plan.
+ * @prop inspectedArea - the area to add the course to
+ * @prop setInspectedArea - sets the area to add the course to
+ * @prop addCourse - adds course to plan.
  */
 const SisCourse = (props: SisCourseProps) => {
   // Redux Setup
@@ -48,12 +55,15 @@ const SisCourse = (props: SisCourseProps) => {
   const searchSemester = useSelector(selectSemester);
   const searchStack = useSelector(selectSearchStack);
   const showCourseInfo = useSelector(selectShowCourseInfo);
+  const courseToShow = useSelector(selectCourseToShow);
+  const currentCourses = useSelector(selectCurrentPlanCourses);
 
-  const [versionIndex, updateVersionIndex] = useState(0);
+  const [versionIndex, updateVersionIndex] = useState<number>(0);
 
   useEffect(() => {
     if (inspected !== "None" && version !== "None") {
-      updateVersionIndex(inspected.terms.indexOf(version.term.toString()));
+      const index: number = inspected.terms.indexOf(version.term.toString());
+      updateVersionIndex(index);
     }
     ReactTooltip.rebuild();
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -84,11 +94,6 @@ const SisCourse = (props: SisCourseProps) => {
     );
   };
 
-  // Clears inspected course.
-  // const clearInspected = (): void => {
-  //   dispatch(updateInspectedCourse("None"));
-  // };
-
   // Handles switching displayed term.
   const handleTermSwitch = (event: any): void => {
     if (inspected !== "None") {
@@ -105,17 +110,64 @@ const SisCourse = (props: SisCourseProps) => {
     }
   };
 
+  /**
+   * Cleanup and opens adding prereqs
+   */
   const addPrereq = () => {
     dispatch(updateCourseToShow(null));
     dispatch(updateShowCourseInfo(false));
     dispatch(updateAddingPrereq(true));
   };
 
+  /**
+   * Updates course by deleting old course and adding new.
+   */
+  const updateCourse = (): void => {
+    if (courseToShow !== null) {
+      fetch(api + "/courses/" + courseToShow._id, {
+        method: "DELETE",
+        headers: {
+          "Content-Type": "application/json",
+        },
+      }).then((retrieved) => {
+        retrieved.json().then((data) => {
+          if (data.errors === undefined) {
+            const updated = currentCourses.filter((course) => {
+              if (course._id === courseToShow._id) {
+                return false;
+              } else {
+                return true;
+              }
+            });
+            dispatch(updateCurrentPlanCourses(updated));
+            const allYears: Year[] = [...currentPlan.years];
+            const newYears: Year[] = [];
+            allYears.forEach((y) => {
+              const yCourses = y.courses.filter((course) => {
+                if (course === courseToShow._id) {
+                  return false;
+                } else {
+                  return true;
+                }
+              });
+              newYears.push({ ...y, courses: yCourses });
+            });
+            const newPlan: Plan = { ...currentPlan, years: newYears };
+            dispatch(updateSelectedPlan(newPlan));
+            props.addCourse(newPlan);
+          } else {
+            console.log("ERROR: Failed to add", data.errors);
+          }
+        });
+      });
+    }
+  };
+
   return (
     <>
       {inspected !== "None" ? (
         <>
-          <div className="pb-5 pt-4 px-5 w-full h-full text-base bg-white rounded select-text overflow-y-auto">
+          <div className="pb-5 pt-4 px-5 w-full h-full text-base bg-white select-text overflow-y-auto">
             <div className="flex flex-row mb-1 w-full h-auto">
               {searchStack.length !== 0 ? (
                 <button
@@ -155,9 +207,20 @@ const SisCourse = (props: SisCourseProps) => {
               </div>
               <Select
                 className="ml-2 w-44"
-                options={inspected.terms.map((term) => {
-                  return { label: term, value: term };
-                })}
+                options={inspected.terms
+                  .filter(
+                    (term) =>
+                      term
+                        .toLowerCase()
+                        .includes(searchSemester.toLowerCase()) ||
+                      (courseToShow !== null &&
+                        term
+                          .toLowerCase()
+                          .includes(courseToShow.term.toLowerCase()))
+                  )
+                  .map((term) => {
+                    return { label: term, value: term };
+                  })}
                 value={{
                   label: inspected.terms[versionIndex],
                   value: inspected.terms[versionIndex],
@@ -167,64 +230,71 @@ const SisCourse = (props: SisCourseProps) => {
             </div>
             <CourseVersion setInspectedArea={props.setInspectedArea} />
           </div>
-          {!showCourseInfo ? (
-            <div className="flex flex-row flex-grow items-center mt-2">
-              <div className="flex flex-col flex-grow justify-center">
-                <div className="mb-1 font-medium">Selecting for</div>
-                <div className="flex tight:flex-col flex-row">
-                  <div className="flex flex-row items-center tight:ml-0 tight:mt-2 w-auto h-auto">
-                    Year
-                    <div className="flex-grow">
-                      <Question
-                        className="h-4"
-                        data-for="godTip"
-                        data-tip={`<p>This is the year you're selecting for.</p><p>The version you are viewing gives you a snapshot of the information of the course at a specific time to give you an understanding of the past and current states of the course. This is NOT to determine where on the plan you are adding the course.</p><p>NOTE: This could be different from the version of the course you are viewing.</p><p>(ie. Course Version "Spring, 2021" may not equal "Spring, Senior")</p>`}
-                      />
-                    </div>
-                    <select
-                      className="ml-2 text-black text-coursecard rounded focus:outline-none"
-                      onChange={handleYearChange}
-                      value={searchYear}
-                    >
-                      {currentPlan.years.map((currPlanYear) => (
-                        <option key={currPlanYear._id} value={currPlanYear._id}>
-                          {currPlanYear.name}
-                        </option>
-                      ))}
-                    </select>
+          <div className="relative bottom-0 flex flex-row flex-grow items-center px-4 py-2 w-full bg-gray-100">
+            <div className="flex flex-col flex-grow justify-center">
+              <div className="mb-1 font-medium">Selecting for</div>
+              <div className="flex tight:flex-col flex-row">
+                <div className="flex flex-row items-center tight:ml-0 tight:mt-2 w-auto h-auto">
+                  Year
+                  <div className="flex-grow">
+                    <Question
+                      className="h-4"
+                      data-for="godTip"
+                      data-tip={`<p>This is the year you're selecting for.</p><p>The version you are viewing gives you a snapshot of the information of the course at a specific time to give you an understanding of the past and current states of the course. This is NOT to determine where on the plan you are adding the course.</p><p>NOTE: This could be different from the version of the course you are viewing.</p><p>(ie. Course Version "Spring, 2021" may not equal "Spring, Senior")</p>`}
+                    />
                   </div>
-                  <div className="flex flex-row items-center tight:ml-0 ml-5 tight:mt-2 w-auto h-auto">
-                    Area
-                    <div className="flex-grow">
-                      <Question
-                        className="h-4"
-                        data-for="godTip"
-                        data-tip={
-                          "<p>Areas designate the specific subset a course belongs to. Each degree requires students to take a certain amount of credits or courses in a spcific area.</p><p>H - Humanities</p><p>S - Social Sciences</p><p>E - Engineering</p><p>N - Natural Sciences</p><p>Q - Quantitative</p>"
-                        }
-                      />
-                    </div>
-                    :
-                    <select
-                      className="ml-2 w-14 h-6 rounded outline-none"
-                      value={props.inspectedArea}
-                      onChange={(event) =>
-                        props.setInspectedArea(event.target.value)
+                  <select
+                    className="ml-2 text-black text-coursecard rounded focus:outline-none"
+                    onChange={handleYearChange}
+                    value={searchYear}
+                  >
+                    {currentPlan.years.map((currPlanYear) => (
+                      <option key={currPlanYear._id} value={currPlanYear._id}>
+                        {currPlanYear.name}
+                      </option>
+                    ))}
+                  </select>
+                </div>
+                <div className="flex flex-row items-center tight:ml-0 ml-5 tight:mt-2 w-auto h-auto">
+                  Area
+                  <div className="flex-grow">
+                    <Question
+                      className="h-4"
+                      data-for="godTip"
+                      data-tip={
+                        "<p>Areas designate the specific subset a course belongs to. Each degree requires students to take a certain amount of credits or courses in a spcific area.</p><p>H - Humanities</p><p>S - Social Sciences</p><p>E - Engineering</p><p>N - Natural Sciences</p><p>Q - Quantitative</p>"
                       }
-                    >
-                      {getInspectedAreas()}
-                    </select>
+                    />
                   </div>
+                  :
+                  <select
+                    className="ml-2 w-14 h-6 rounded outline-none"
+                    value={props.inspectedArea}
+                    onChange={(event) =>
+                      props.setInspectedArea(event.target.value)
+                    }
+                  >
+                    {getInspectedAreas()}
+                  </select>
                 </div>
               </div>
+            </div>
+            {!showCourseInfo ? (
               <button
                 className="mt-2 p-2 w-auto h-10 text-white bg-blue-500 rounded focus:outline-none transform hover:scale-110 transition duration-200 ease-in"
-                onClick={props.addCourse}
+                onClick={() => props.addCourse()}
               >
                 Add Course
               </button>
-            </div>
-          ) : null}
+            ) : (
+              <button
+                className="mt-2 p-2 w-auto h-10 text-white bg-blue-500 rounded focus:outline-none transform hover:scale-110 transition duration-200 ease-in"
+                onClick={updateCourse}
+              >
+                Update Course
+              </button>
+            )}
+          </div>
         </>
       ) : null}
     </>

@@ -3,7 +3,6 @@ import { useDispatch, useSelector } from "react-redux";
 import {
   updateSearchTerm,
   updateRetrievedCourses,
-  updateRetrievedVersions,
   updateSearchFilters,
   selectSearchterm,
   selectSearchFilters,
@@ -26,12 +25,13 @@ import {
   updateCourseCache,
 } from "../../../../slices/userSlice";
 import axios from "axios";
+import { api } from "../../../../resources/assets";
 
 /**
  * Search form, including the search query input and filters.
  * TODO: Multi select for various filters.
  *
- * @param setSearching - sets searching state
+ * @prop setSearching - sets searching state
  */
 const Form = (props: { setSearching: Function }) => {
   // Set up redux dispatch and variables.
@@ -80,7 +80,6 @@ const Form = (props: { setSearching: Function }) => {
   useEffect(() => {
     searchedCourses.clear();
     setInitialQueryLength(searchTerm.length);
-    props.setSearching(false);
     // Skip searching if no filters or queries are specified
     if (
       searchTerm.length === 0 &&
@@ -91,7 +90,7 @@ const Form = (props: { setSearching: Function }) => {
       searchFilters.tags === null
     ) {
       dispatch(updateRetrievedCourses([]));
-      dispatch(updateRetrievedVersions([]));
+      props.setSearching(false);
       return;
     }
 
@@ -108,6 +107,8 @@ const Form = (props: { setSearching: Function }) => {
       levels: searchFilters.levels,
     };
 
+    props.setSearching(true);
+
     // Search with half second debounce.
     const search = setTimeout(
       performSmartSearch(extras, searchTerm.length),
@@ -117,8 +118,12 @@ const Form = (props: { setSearching: Function }) => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [searchTerm, searchFilters, showAllResults]);
 
-  // Finds course based on the search conditions given in extras.
-  // Finds all relevant courses by starting with all courses and filtering them out.
+  /**
+   * Finds course based on the search conditions given in extras.
+   * Finds all relevant courses by starting with all courses and filtering them out.
+   * @param extras - search params
+   * @returns a promise that resolves when searching is concluded
+   */
   const find = (
     extras: SearchExtras
   ): Promise<[SISRetrievedCourse[], number[]]> => {
@@ -126,7 +131,7 @@ const Form = (props: { setSearching: Function }) => {
       let courses: SISRetrievedCourse[] = [...courseCache];
       if (!retrievedAll) {
         axios
-          .get("https://ucredit-dev.herokuapp.com/api/search", {
+          .get(api + "/search", {
             params: {
               query: extras.query,
               department: extras.department,
@@ -141,6 +146,12 @@ const Form = (props: { setSearching: Function }) => {
             let retrievedCourses: SISRetrievedCourse[] = retrieved.data.data;
             dispatch(updateCourseCache([...retrievedCourses]));
             let SISRetrieved: SISRetrievedCourse[] = retrieved.data.data;
+            if (
+              extras.query.length <= minLength ||
+              searchTerm.length - extras.query.length >= 2
+            ) {
+              props.setSearching(false);
+            }
             return resolve([SISRetrieved, []]);
           })
           .catch(() => {
@@ -271,18 +282,22 @@ const Form = (props: { setSearching: Function }) => {
     });
   };
 
-  // Updates search results.
-  const updateSearchResults = (
-    results: SISRetrievedCourse[],
-    versions: number[]
-  ) => {
+  /**
+   * Updates search results
+   * @param results - an array of found search results
+   */
+  const updateSearchResults = (results: SISRetrievedCourse[]) => {
     dispatch(updateRetrievedCourses(results));
-    dispatch(updateRetrievedVersions(versions));
   };
 
-  // Searches for all subquery combinations for the specific substring length, queryLength.
-  // Calls performSmartSearch again if the queryLength is still greater than the
-  // minimum query length. Otherwise, displays results.
+  /**
+   * Searches for all subquery combinations for the specific substring length, queryLength.
+   * Calls performSmartSearch again if the queryLength is still greater than the
+   * minimum query length. Otherwise, displays results.
+   * @param extras - search params
+   * @param queryLength - length of search query
+   * @param querySubstrs - an array of different substring combinations of search query
+   */
   function substringSearch(
     extras: SearchExtras,
     queryLength: number,
@@ -309,10 +324,9 @@ const Form = (props: { setSearching: Function }) => {
               });
             }
           });
-          const newSearchList: [SISRetrievedCourse[], number[]] =
-            getNewSearchList();
-          updateSearchResults(newSearchList[0], newSearchList[1]);
-          if (queryLength > minLength && initialQueryLength - queryLength < 3) {
+          const newSearchList: SISRetrievedCourse[] = getNewSearchList();
+          updateSearchResults(newSearchList);
+          if (queryLength > minLength && initialQueryLength - queryLength < 9) {
             performSmartSearch(extras, queryLength - 1)();
           }
         }
@@ -320,16 +334,18 @@ const Form = (props: { setSearching: Function }) => {
     });
   }
 
-  // Performs search call with filters to backend and updates redux with retrieved courses.
-  // Smart search: performs search with all possible substring combinations of lengths 3 and above based on search query.
+  /**
+   * Performs search call with filters to backend and updates redux with retrieved courses.
+   * Smart search: performs search with all possible substring combinations of lengths 3 and above based on search query.
+   * @param extras - search params
+   * @param queryLength - length of search query
+   * @returns reference to a function that conducts smart search
+   */
   const performSmartSearch =
     (extras: SearchExtras, queryLength: number) => () => {
       const querySubstrs: string[] = [];
-      props.setSearching(true);
-
       if (
         queryLength >= minLength &&
-        initialQueryLength - queryLength < 3 &&
         !extras.query.startsWith("EN.") &&
         !extras.query.startsWith("AS.") &&
         !extras.query.includes(".") &&
@@ -340,18 +356,15 @@ const Form = (props: { setSearching: Function }) => {
           querySubstrs.push(searchTerm.substring(i, i + queryLength));
         }
         substringSearch(extras, queryLength, querySubstrs);
-      } else {
-        // Perform old search if search query is less than the minLength for a smart search.
-        find(extras).then((courses) => {
-          updateSearchResults(courses[0], courses[1]);
-        });
       }
     };
 
-  // Gets new list of searched courses.
-  const getNewSearchList = (): [SISRetrievedCourse[], number[]] => {
+  /**
+   * Gets new list of searched courses.
+   * @returns an array of retrieved courses
+   */
+  const getNewSearchList = (): SISRetrievedCourse[] => {
     let searchList: SISRetrievedCourse[] = [];
-    let versions: number[] = [];
     // sorts searchedCourses map by priority.
     searchedCourses[Symbol.iterator] = function* () {
       yield* [...this.entries()]
@@ -362,13 +375,12 @@ const Form = (props: { setSearching: Function }) => {
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
     for (let [key, value] of searchedCourses) {
       searchList.push(value.course);
-      versions.push(value.version);
     }
 
     if (!showAllResults) {
       searchList = searchList.slice(0, 10);
     }
-    return [searchList, versions];
+    return searchList;
   };
 
   // Update search term

@@ -16,16 +16,16 @@ type cardProps = {
 
 /**
  * A course card in the search list.
- * @param course - the course being displayed.
+ * @prop course - the course being displayed.
  */
 const CourseCard = (props: cardProps) => {
-  // If the course displayed by this card is the selected one, style it special.
-  const selectedCourse = useSelector(selectVersion);
-
   // Setup Redux
   const dispatch = useDispatch();
+  const selectedCourse = useSelector(selectVersion);
 
-  // User selects a course to look at.
+  /**
+   * User selects a course to look at.
+   */
   const handleCourseClick = () => {
     dispatch(updateInspectedCourse(props.course));
     dispatch(updatePlaceholder(false));

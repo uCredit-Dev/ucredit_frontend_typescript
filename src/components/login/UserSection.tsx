@@ -8,7 +8,6 @@ import {
   selectPlanList,
   updateCourseCache,
 } from "../../slices/userSlice";
-// import { ReactComponent as UserSvg } from "../../resources/svg/User.svg";
 import { useHistory } from "react-router-dom";
 import {
   resetCurrentPlan,
@@ -57,6 +56,7 @@ function UserSection({ _id }: UserProps) {
   const [cookies] = useCookies(["connect.sid"]);
   let history = useHistory();
 
+  // Imports or creates new plan.
   useEffect(() => {
     if (
       shouldAdd &&
@@ -79,19 +79,21 @@ function UserSection({ _id }: UserProps) {
     generatePlanAddStatus,
   ]);
 
+  /**
+   * Caches all courses in plans
+   * @param years - an array of years of the plan
+   */
   const cache = (years: Year[]) => {
     let total = 0;
     let cum = 0;
     years.forEach((y) => {
       y.courses.forEach((c) => {
         total++;
-        console.log("b");
         axios
           .get("https://ucredit-dev.herokuapp.com/api/search", {
             params: { query: c },
           })
           .then((retrieved) => {
-            console.log("B");
             dispatch(updateCourseCache([retrieved.data.data]));
             cum++;
             if (cum === total) {
@@ -102,6 +104,9 @@ function UserSection({ _id }: UserProps) {
     });
   };
 
+  /**
+   * Deep copies sharer's plan into your own.
+   */
   const addCourses = async () => {
     let added: UserCourse[] = [];
     let total = 0;
@@ -124,15 +129,12 @@ function UserSection({ _id }: UserProps) {
               for (let y of newYears) {
                 if (cur.year_id === y._id) {
                   nextYears.push({ ...y, courses: [...y.courses, cur._id] });
-                  //const yCourses = [...y.courses, cur._id];
-                  //newYears.push({ ...y, courses: yCourses });
                 } else {
                   nextYears.push(y);
                 }
               }
               newYears = nextYears;
             }
-            //const newYears: Year[] = allYears;
             let newPlan: Plan = { ...curPlan, years: newYears };
             const newPlanList = [...planList];
             for (let i = 0; i < planList.length; i++) {
@@ -159,6 +161,12 @@ function UserSection({ _id }: UserProps) {
     }
   };
 
+  /**
+   * Overloaded function that adds courses from plan from shareable link.
+   * @param id - plan id of sharer's plan
+   * @param yearIndex - position of year in plan
+   * @returns a promise that resolves on successful deep copy of plan
+   */
   const addCourse = async (
     id: string,
     yearIndex: number
@@ -205,10 +213,15 @@ function UserSection({ _id }: UserProps) {
     });
   };
 
+  /**
+   * Attempts to log in user
+   * @param cookieVal - value of stored login session hash
+   * @returns a promises that resolves on success or failure in logging in
+   */
   const login = (cookieVal: string) =>
     new Promise<void>((resolve) => {
       if (user._id === "noUser") {
-        var curUser: User;
+        let curUser: User;
         // Retrieves user if user ID is "noUser", the initial user id state for userSlice.tsx.
         // Make call for backend
         fetch(api + "/retrieveUser/" + cookieVal, {
@@ -228,16 +241,25 @@ function UserSection({ _id }: UserProps) {
               getPlans(curUser).then(() => {
                 resolve();
               });
+            } else {
+              console.log("ERROR: Couldn't log in with " + cookieVal);
+              history.push("/login");
             }
           })
           .catch((err) => {
-            console.log("ERROR IS: ", err);
+            console.log("ERROR with cookieVal " + cookieVal + " is ", err);
+            history.push("/login");
           });
       } else {
         resolve();
       }
     });
 
+  /**
+   * Gets all plans from current user.
+   * @param curUser - current user
+   * @returns a promise that resolves once plans are finished fetching
+   */
   const getPlans = (curUser: User) =>
     new Promise<void>((resolve) =>
       axios.get(api + "/plansByUser/" + curUser._id).then((retrieved) => {

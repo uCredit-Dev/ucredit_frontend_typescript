@@ -1,22 +1,60 @@
-import React, { FC } from "react";
+import React, { FC, useState } from "react";
 import { ReactComponent as SemesterlySvg } from "../../resources/svg/Semesterly.svg";
+import "react-responsive-carousel/lib/styles/carousel.min.css"; // requires a loader
+import { Carousel } from "react-responsive-carousel";
+import HeadlineImg from "../../resources/images/landing-page/headline.png";
+import JoinTeamImg from "../../resources/images/landing-page/joinTeam.png";
+import { useHistory } from "react-router";
+import ApplicationFormPopup from "../popups/ApplicationFormPopup";
 
+/**
+ * Banner carousel that alternates between Getting Started and Recruitment banners.
+ */
 const Banner: FC = () => {
+  const [activateEmailPopup, setActivateEmailPopup] = useState<boolean>(false);
+  const history = useHistory();
   return (
     <>
-      <div className='w-full h-64 p-4 bg-gray-200'>
-        <div className='text-xl font-light'>
-          Your Academic Planning Made Simple
-        </div>
-        <div className='w-3/4 font-light'>
-          A student-centric application packed with features like prereq checks,
-          degree trackers, and beautiful UI that is easily shareable and
-          acessible.
-        </div>
+      {activateEmailPopup ? (
+        <ApplicationFormPopup setActivateEmailPopup={setActivateEmailPopup} />
+      ) : null}
+      <div className="w-full h-4/6">
+        <Carousel showThumbs={false} autoPlay interval={5000} infiniteLoop>
+          <div>
+            <div className="absolute flex mt-80 w-full">
+              <button
+                onClick={() => history.push("/login")}
+                className="mt-4 mx-auto w-72 h-16 text-white text-3xl font-thin bg-primary rounded-full shadow-xl transform hover:scale-105 transition duration-200 ease-in"
+              >
+                Get Started
+              </button>
+            </div>
+            <img src={HeadlineImg} alt="" />
+          </div>
+          <div>
+            <div className="absolute flex mt-80 w-full">
+              <button
+                onClick={() => setActivateEmailPopup(true)}
+                className="mt-4 mx-auto w-72 h-16 text-white text-3xl font-thin bg-secondary rounded-full shadow-xl transform hover:scale-105 transition duration-200 ease-in"
+              >
+                Contact Us
+              </button>
+            </div>
+            <img src={JoinTeamImg} alt="" />
+          </div>
+        </Carousel>
       </div>
-      <div className='flex items-center justify-end mt-2 mr-2 text-gray-600'>
+      <div className="flex items-center justify-end mr-2 mt-2 text-gray-600 select-none">
         Partnered with Semesterly
-        <SemesterlySvg className='w-8 h-8 ml-1' />
+        <SemesterlySvg className="ml-1 w-8 h-8" />
+      </div>
+      <div
+        className="w-full cursor-pointer"
+        onClick={() => window.scrollTo(0, 575)}
+      >
+        <div className="mb-6 mx-auto w-36 text-center font-serif text-lg font-semibold border-b border-theme">
+          Why uCredit?
+        </div>
       </div>
     </>
   );
