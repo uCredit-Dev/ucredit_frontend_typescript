@@ -279,8 +279,13 @@ export const course_tags = [
   "WRIT-POET",
 ];
 
-// Parse preReq array to determine which are prereqs and which are coreq and other info. Actual Prereqs are denoted by isNegative = "N"
-// Returns non isNegative prereqs
+/** 
+ * Parse preReq array to determine which are prereqs and which are coreq and other info. 
+ * Actual Prereqs are denoted by isNegative = "N"
+ * @param inspected - the course
+ * @returns array with valid prereqs
+ */
+
 export const filterNNegatives = (inspected: Course | "None"): any[] => {
   let preReqs: any[] = [];
   if (inspected !== "None" && inspected !== undefined) {
@@ -291,12 +296,14 @@ export const filterNNegatives = (inspected: Course | "None"): any[] => {
   return preReqs;
 };
 
-// Takes in a unparsed array of preReqs.
-// Processes by checking if they're satisfied and turning them into jsx elements.
-// Returns an object containg the course numbers
-// as well as the names associated with each course number
-// expr is the input expression for the prereqs, regex is the regex to parse
-// numList is a list of the numbers in the expr
+/**
+ * Takes in a unparsed array of preReqs.
+ * Processes by checking if they're satisfied and turning them into jsx elements.
+ * @param preReqs - the unparsed preReqs
+ * @param courseCache - the course Cache
+ * @param planCourses - the courses in the user's plan
+ * @returns an Object containing the course numbers and names associated with each course number
+ */
 export const processPrereqs = async (
   preReqs: any[],
   courseCache: SISRetrievedCourse[],
@@ -367,11 +374,14 @@ export interface prereqCourses {
   expr: String;
 }
 
-// Returns an object containg the course numbers
-// as well as the names associated with each course number
-// expr is the input expression for the prereqs, regex is the regex to parse
-// numList is a list of the numbers in the expr
-// numNameList is the list of the numbers and associated course names
+/**
+ * parses the prereq expr to get the course numbers and names of them
+ * @param expr - prereq expression
+ * @param regex - regex for course numbers
+ * @param courseCache - course cache
+ * @param planCourses - user's plan's courses
+ * @returns an object containing the course numbers and names associated with each course number
+ */
 export const getCourses = (
   expr: string,
   regex: RegExp,
@@ -450,10 +460,12 @@ export const getCourses = (
 };
 
 /**
- *
- * @param courseNumber
- * @param courseCache
- * @param allPlanCourses
+ * returns a 'Course' object with info.
+ * If the course is in the course cache, returns it
+ * else fetches the course info from the backend
+ * @param courseNumber - course number
+ * @param courseCache - course cache
+ * @param allPlanCourses - courses from user's plan
  * @returns
  */
 export const getCourse = async (
@@ -522,8 +534,12 @@ export const getCourse = async (
   });
 };
 
-// Checks the prereqs for a given course is satisifed
-
+/**
+ * replaces the prereq expression with the course names
+ * and splits it
+ * @param input - the array of numbers, course names, and prereq expr
+ * @returns an array with the names split
+ */
 const process = (input: prereqCourses) => {
   let numList = input.numList;
   let numNameList = input.numNameList;
@@ -548,6 +564,15 @@ const process = (input: prereqCourses) => {
   return out;
 };
 
+/**
+ * parses input so that we can check whether the prereq is satisfied 
+ * @param currPlanCourses - courses in the user's plan
+ * @param plan - user's plan
+ * @param input - the input prereq, either a string, number, or object
+ * @param year - the year of the course
+ * @param semester - the semseter of the course
+ * @returns whether the prereq is satisfied
+ */
 const getNonStringPrereq = (
   currPlanCourses: UserCourse[],
   plan: Plan,
@@ -609,6 +634,16 @@ const getNonStringPrereq = (
   }
 };
 
+/**
+ * returns whether a prereq statement is satifies
+ * @param element - array of prereqs
+ * @param plan - user's plan
+ * @param or - whether the statement is an or or and
+ * @param currPlanCourses - courses in user's plan
+ * @param year - year of course
+ * @param semester - semeseter of course
+ * @returns whether the prereq statement is satified
+ */
 const isSatisfied = (
   element: [],
   plan: Plan,
@@ -644,6 +679,12 @@ const isSatisfied = (
   });
   return orAndSatisfied;
 };
+
+/**
+ * separates input into nested array
+ * @param input - the prereqs with parentheses as depth designators
+ * @returns a nested array with prereqs
+ */
 
 const createPrereqBulletList = (input: string[]): string[] => {
   const courseArr: any[] = [];
@@ -728,10 +769,16 @@ const parsePrereqsOr = (input: any, depth: number): any => {
   return orParsed;
 };
 
-// Checks if a prereq is satisfied by plan
-// plan is the user's plan
-// number is the course number of a prereq
-// year, semseter are the year and semester of the prereq
+
+/**
+ * Checks if a prereq is satisfied by plan
+ * @param courses - user's courses
+ * @param plan - user's plan
+ * @param preReqNumber - prereq number
+ * @param year - year of course
+ * @param semester -semseter of course
+ * @returns whether the prereq is satisfied by the plan
+ */
 export const checkPrereq = (
   courses: UserCourse[],
   plan: Plan,
@@ -753,6 +800,13 @@ export const checkPrereq = (
   return satisfied;
 };
 
+
+/**
+ * returns a year type from year id
+ * @param id - year id
+ * @param plan - user's plan
+ * @returns the year type
+ */
 const getYearFromId = (id: string, plan: Plan): Year | null => {
   let year: Year | null = null;
 
@@ -767,6 +821,12 @@ const getYearFromId = (id: string, plan: Plan): Year | null => {
 
 const semesters: String[] = ["fall", "intersession", "spring", "summer"];
 
+/**
+ * returns index of year from year type
+ * @param year the year type
+ * @param plan user's plan
+ * @returns the index of year
+ */
 const getYearIndex = (year: Year, plan: Plan): number => {
   let index: number = 0;
   plan.years.forEach((y: Year, i: number) => {
@@ -777,6 +837,14 @@ const getYearIndex = (year: Year, plan: Plan): number => {
   return index;
 };
 
+/**
+ * Check's whether prereq is satisfied by the course in the past
+ * @param course - the course
+ * @param year - the year of the course we are checking (not course)
+ * @param semester - semester of the course we are checking (not course)
+ * @param plan - user's plan
+ * @returns - whether the course is in the past
+ */
 const prereqInPast = (
   course: UserCourse,
   year: number,
@@ -801,6 +869,11 @@ const prereqInPast = (
   }
 };
 
+/**
+ * @param plan the user's plan
+ * @param course the course we are interested in
+ * @returns the year of the course
+ */
 function getCourseYear(plan: Plan, course: UserCourse): Year | null {
   let year: Year | null = null;
   plan.years.forEach((currPlanYear) => {
@@ -811,6 +884,15 @@ function getCourseYear(plan: Plan, course: UserCourse): Year | null {
   return year;
 }
 
+/**
+ * @param currCourses - user's courses
+ * @param plan - user's plan
+ * @param number - number of the course we are checking the prereqs
+ * @param year - year of the course
+ * @param semester -semester of the course
+ * @param courseCache - course cache
+ * @returns - whether the prereqs are all staisfied 
+ */
 export const checkAllPrereqs = (
   currCourses: UserCourse[],
   plan: Plan,
@@ -852,6 +934,10 @@ export const checkAllPrereqs = (
   });
 };
 
+/**
+ * @param major - major name
+ * @returns the major object from the name
+ */
 export const getMajor = (major: string) => {
   for (let i = 0; i < allMajors.length; i++) {
     if (allMajors[i].degree_name === major) {
