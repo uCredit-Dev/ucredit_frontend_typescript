@@ -21,10 +21,10 @@ const Banner: FC = () => {
       <div className="w-full h-4/6">
         <Carousel showThumbs={false} autoPlay interval={5000} infiniteLoop>
           <div>
-            <div className="absolute flex mt-80 w-full">
+            <div className="mt-5/6 absolute flex w-full" style={{ top: "70%" }}>
               <button
                 onClick={() => history.push("/login")}
-                className="mt-4 mx-auto w-72 h-16 text-white text-3xl font-thin bg-primary rounded-full shadow-xl transform hover:scale-105 transition duration-200 ease-in"
+                className="mx-auto w-72 h-16 text-white text-3xl font-thin bg-primary rounded-full shadow-xl transform hover:scale-105 transition duration-200 ease-in"
               >
                 Get Started
               </button>
@@ -32,7 +32,7 @@ const Banner: FC = () => {
             <img src={HeadlineImg} alt="" />
           </div>
           <div>
-            <div className="absolute flex mt-80 w-full">
+            <div className="absolute flex w-full" style={{ top: "70%" }}>
               <button
                 onClick={() => setActivateEmailPopup(true)}
                 className="mt-4 mx-auto w-72 h-16 text-white text-3xl font-thin bg-secondary rounded-full shadow-xl transform hover:scale-105 transition duration-200 ease-in"

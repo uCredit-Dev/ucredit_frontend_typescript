@@ -99,9 +99,7 @@ const ApplicationFormPopup = ({
                   />
                 </div>
                 <div className="flex flex-row my-2">
-                  <div className="flex-grow mr-1">
-                    Languages and Frameworks:{" "}
-                  </div>
+                  <div className="flex-grow mr-1">Resume Link: </div>
                   <input
                     className="p-1 rounded"
                     value={resume}
