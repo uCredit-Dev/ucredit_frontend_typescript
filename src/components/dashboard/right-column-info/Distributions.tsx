@@ -105,7 +105,7 @@ const Distributions = () => {
       {disclaimer ? (
         <div>
           <b> This feature is still being refined. </b> Degree criteria on
-          uCredit iscurrently implemented by hand to match as closely to
+          uCredit is currently implemented by hand to match as closely to
           university requirements as possible. However, there may be some
           inconsistencies. Please use the
           <a
