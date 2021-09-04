@@ -66,7 +66,7 @@ function CourseBar({
               ) &&
               flipped.includes(course.number)
             ) {
-              temp -= course.credits;
+              //temp -= course.credits;
             } else {
               const convertedCourse: Course = {
                 ...course,
@@ -84,7 +84,7 @@ function CourseBar({
                   convertedCourse
                 )
               ) {
-                temp += course.credits;
+                //temp += course.credits;
               }
             }
             setPlannedCredits(temp);

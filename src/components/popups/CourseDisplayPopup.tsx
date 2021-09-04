@@ -58,10 +58,12 @@ const CourseDisplayPopup = () => {
       let found = false;
       courseCache.forEach((c: SISRetrievedCourse) => {
         if (c.number === courseToShow.number) {
+          console.log(c, courseToShow)
           const inspectedVersion: Course = {
             title: c.title,
             number: c.number,
-            ...c.versions[c.terms.indexOf(courseToShow.version.toString())],
+            //...c.versions[c.terms.indexOf(courseToShow.version.toString())],
+            ...c.versions[0],
           };
           dispatch(updateInspectedCourse(c));
           dispatch(updateInspectedVersion(inspectedVersion));
