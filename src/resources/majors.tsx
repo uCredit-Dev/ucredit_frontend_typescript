@@ -1239,15 +1239,15 @@ const bsCS_Old: Major = {
           description:
             "<b>Lower Level Undergraduate:</b><p>500.112/113/114 Gateway Computing or AP Comp Sci A or " +
             "equivalent<p>601.220 Intermediate Programming</p><p>601.226 Data Structures</p><p>601.229 " +
-            "Computer System Fundamentals</p><p>600.231/271 Automata and Computation Theory</p><p>601.433 Algorithms</p>",
+            "Computer System Fundamentals</p><p>601.231/271 Automata and Computation Theory</p><p>601.433 Algorithms</p>",
           required_credits: 20,
           criteria:
             "EN.500.112[C]^OR^EN.500.113[C]^OR^EN.500.114[C]^OR^EN.601.220[C]^OR^EN.601.226[C]" +
-            "^OR^EN.601.229[C]^OR^EN.600.231[C]^OR^EN.600.271[C]^OR^EN.601.443[C]",
+            "^OR^EN.601.229[C]^OR^EN.601.231[C]^OR^EN.601.271[C]^OR^EN.601.443[C]",
         },
         {
           description:
-            "<b>Upper Level Undergraduate: </b><p>13 upper level CS credits in addition to the required Algorithms course</p>",
+            "<b>Upper Level Undergraduate: </b><p>12 upper level CS credits in addition to the required Algorithms course</p>",
           required_credits: 13,
           criteria: "EN Computer Science[D]^AND^Upper Level Undergraduate[L]",
         },
@@ -1370,7 +1370,7 @@ const bsCS_New: Major = {
           description:
             "<b>Lower Level Undergraduate:</b><p>500.112/113/114 Gateway Computing or AP Comp Sci A or " +
             "equivalent<p>601.220 Intermediate Programming</p><p>601.226 Data Structures</p><p>601.229 " +
-            "Computer System Fundamentals</p><p>600.230 Mathematical Foundations for Computer Science, or 600.231 Automata for those grandfathered into the old major</p><p>601.433 Algorithms</p>",
+            "Computer System Fundamentals</p><p>601.230 Mathematical Foundations for Computer Science, or 601.231 Automata for those grandfathered into the old major</p><p>601.433 Algorithms</p>",
           required_credits: 21,
           criteria:
             "EN.500.112[C]^OR^EN.500.113[C]^OR^EN.500.114[C]^OR^EN.601.220[C]^OR^EN.601.226[C]" +
@@ -1378,7 +1378,7 @@ const bsCS_New: Major = {
         },
         {
           description:
-            "<b>Upper Level Undergraduate: </b><p>13 upper level CS credits in addition to the required Algorithms course</p>",
+            "<b>Upper Level Undergraduate: </b><p>12 upper level CS credits in addition to the required Algorithms course</p>",
 
           required_credits: 12,
           criteria:
