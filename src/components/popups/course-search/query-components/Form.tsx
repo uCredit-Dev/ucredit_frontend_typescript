@@ -48,6 +48,9 @@ const Form = (props: { setSearching: Function }) => {
   const [searchedCourses] = useState<Map<String, SearchMapEl>>(
     new Map<String, SearchMapEl>()
   );
+  const [searchedCoursesFrequency] = useState<Map<String, number>>(
+    new Map<String, number>()
+  );
   const [initialQueryLength, setInitialQueryLength] = useState<number>(0);
 
   // On opening search, set the term filter to match semester you're adding to.
@@ -76,7 +79,7 @@ const Form = (props: { setSearching: Function }) => {
   };
 
   // Search with debouncing of 2/4s of a second.
-  const minLength = 3;
+  const minLength = 4;
   useEffect(() => {
     searchedCourses.clear();
     setInitialQueryLength(searchTerm.length);
@@ -307,7 +310,6 @@ const Form = (props: { setSearching: Function }) => {
     let versions: number[] = [];
     let total = 0;
     let cum = 0;
-
     querySubstrs.forEach((subQuery) => {
       total++;
       find({ ...extras, query: subQuery }).then((courseVersions) => {
@@ -316,12 +318,31 @@ const Form = (props: { setSearching: Function }) => {
         versions.push(...courseVersions[1]);
         if (total === cum) {
           courses.forEach((course: SISRetrievedCourse, index: number) => {
-            if (!searchedCourses.has(course.number)) {
-              searchedCourses.set(course.number, {
+            if (!searchedCourses.has(course.number + '0')) {
+              searchedCourses.set(course.number + '0', {
                 course: course,
                 version: versions[index],
                 priority: queryLength,
               });
+              searchedCoursesFrequency.set(course.number, 1);
+            } else {
+              var frequency = searchedCoursesFrequency.get(course.number)
+              let flag = false;
+              if (frequency !== undefined) {
+                for (let i = 0; i < frequency; i++) {
+                  if (searchedCourses.get(course.number + i)?.course.title === course.title) {
+                    flag = true;
+                  }
+                }
+                if (!flag) {
+                  searchedCourses.set(course.number + frequency, {
+                    course: course,
+                    version: versions[index],
+                    priority: queryLength,
+                  })
+                  searchedCoursesFrequency.set(course.number, frequency + 1)
+                }
+              }
             }
           });
           const newSearchList: SISRetrievedCourse[] = getNewSearchList();
@@ -345,11 +366,7 @@ const Form = (props: { setSearching: Function }) => {
     (extras: SearchExtras, queryLength: number) => () => {
       const querySubstrs: string[] = [];
       if (
-        queryLength >= minLength &&
-        !extras.query.startsWith("EN.") &&
-        !extras.query.startsWith("AS.") &&
-        !extras.query.includes(".") &&
-        isNaN(parseInt(extras.query))
+        queryLength >= minLength
       ) {
         // Finds all substring combinations and searches.
         for (let i = 0; i < searchTerm.length - queryLength + 1; i++) {

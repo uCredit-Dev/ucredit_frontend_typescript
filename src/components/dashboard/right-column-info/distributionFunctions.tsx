@@ -63,6 +63,9 @@ export const checkRequirementSatisfied = (
 ): boolean => {
   const boolExpr: string | void = getBoolExpr(splitArr, course);
   if (boolExpr.length !== 0) {
+    // if (boolExpr !== null) {
+    //   console.log(splitArr, boolExpr, eval(boolExpr))
+    // }
     // eslint-disable-next-line no-eval
     return eval(boolExpr);
   } else {
