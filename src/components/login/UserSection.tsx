@@ -58,6 +58,7 @@ function UserSection({ _id }: UserProps) {
 
   // Imports or creates new plan.
   useEffect(() => {
+    console.log(shouldAdd, user._id, curPlan._id, cached, !generatePlanAddStatus)
     if (
       shouldAdd &&
       user._id !== "noUser" &&
@@ -248,7 +249,9 @@ function UserSection({ _id }: UserProps) {
           })
           .catch((err) => {
             console.log("ERROR with cookieVal " + cookieVal + " is ", err);
-            history.push("/login");
+            if (_id === null) {
+              history.push("/login");
+            }
           });
       } else {
         resolve();
@@ -314,7 +317,9 @@ function UserSection({ _id }: UserProps) {
                 if (cookie[0] === "_hjid" || cookie[0] === "connect.sid")
                   cookieVal = cookie[1];
               });
-              if (cookieVal === undefined) {
+              //console.log(cookieVal === undefined)
+              if (cookieVal === "") {
+                console.log("Poggers");
                 // if not, create a user first, then add
                 dispatch(updateUser({ ...guestUser }));
                 dispatch(updateToAddName("Imported Plan"));

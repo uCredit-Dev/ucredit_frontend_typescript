@@ -103,7 +103,7 @@ const InfoCards = () => {
     setShareableURL(
       (window.location.href.includes("localhost")
         ? "localhost:3000"
-        : "https://ucredit.herokuapp.com") +
+        : "https://ucredit.me") +
         "/share?_id=" +
         currentPlan._id
     );
