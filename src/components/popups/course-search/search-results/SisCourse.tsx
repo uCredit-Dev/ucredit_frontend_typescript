@@ -281,14 +281,14 @@ const SisCourse = (props: SisCourseProps) => {
             </div>
             {!showCourseInfo ? (
               <button
-                className="mt-2 p-2 w-auto h-10 text-white bg-blue-500 rounded focus:outline-none transform hover:scale-110 transition duration-200 ease-in"
+                className="mt-2 p-2 w-auto h-10 text-white hover:bg-blue-400 bg-green-400 rounded focus:outline-none transform hover:scale-105 transition duration-200 ease-in"
                 onClick={() => props.addCourse()}
               >
                 Add Course
               </button>
             ) : (
               <button
-                className="mt-2 p-2 w-auto h-10 text-white bg-blue-500 rounded focus:outline-none transform hover:scale-110 transition duration-200 ease-in"
+                className="mt-2 p-2 w-auto h-10 text-white bg-blue-500 rounded focus:outline-none transform hover:scale-105 transition duration-200 ease-in"
                 onClick={updateCourse}
               >
                 Update Course

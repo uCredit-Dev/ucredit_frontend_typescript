@@ -401,7 +401,7 @@ function UserSection({ _id }: UserProps) {
         {user._id === "guestUser" ? (
           <a
             href="https://ucredit-api.herokuapp.com/api/login"
-            className="flex flex-row items-center justify-center mr-3 w-24 h-9 bg-white rounded cursor-pointer select-none transform hover:scale-110 transition duration-200 ease-in"
+            className="flex flex-row items-center justify-center mr-3 w-24 h-9 hover:text-white hover:bg-blue-400 bg-white rounded cursor-pointer select-none transform hover:scale-105 transition duration-200 ease-in"
           >
             Log In
           </a>

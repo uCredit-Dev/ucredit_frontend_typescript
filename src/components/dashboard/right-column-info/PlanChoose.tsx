@@ -159,7 +159,7 @@ const PlanChoose = () => {
       > */}
       <div className="relative flex flex-col">
         <button
-          className="ml-auto mr-4 px-2 py-1 text-black bg-white rounded focus:outline-none shadow select-none transform hover:scale-105 transition duration-200 ease-in"
+          className="ml-auto mr-4 px-2 py-1 text-white hover:bg-blue-400 bg-green-400 rounded focus:outline-none shadow select-none transform hover:scale-105 transition duration-200 ease-in"
           onClick={() => setDropdown(!dropdown)}
         >
           Select Plan

@@ -183,7 +183,7 @@ const PrereqDisplay = () => {
           <p className="w-full" key={noCBracketsNum}>
             <button
               className={clsx(
-                "flex flex-wrap mb-1 max-w-md text-left text-sm font-medium focus:outline-none transform hover:scale-101 transition duration-200 ease-in"
+                "flex flex-wrap mb-1 max-w-md text-left text-sm font-medium focus:outline-none"
               )}
               onClick={() => {
                 updateInspected(noCBracketsNum)();

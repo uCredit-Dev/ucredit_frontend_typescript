@@ -305,10 +305,10 @@ function Semester({
             </div>
             {!addingPrereqStatus ? (
               <div
-                className="group flex flex-row items-center justify-center text-secondary hover:text-white bg-gray-100 hover:bg-white rounded-md cursor-pointer"
+                className="group flex flex-row items-center justify-center text-white hover:bg-blue-400 bg-gray-100 bg-green-400 rounded-md cursor-pointer transform hover:scale-105 transition duration-150 ease-in"
                 onClick={addCourse}
               >
-                <AddSvg className="w-6 h-6 group-hover:text-primary stroke-2" />
+                <AddSvg className="w-6 h-6 group-hover:text-white stroke-2" />
               </div>
             ) : (
               <button
