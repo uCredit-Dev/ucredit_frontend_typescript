@@ -70,16 +70,16 @@ const PrereqDisplay = () => {
       display(preReqs);
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [version]);
+  }, [version, courseCache]);
 
   /**
    * Processes then displays prereqs.
    * @param preReqs an array of prereqs
    */
-  const display = (preReqs: any[]):void => {
+  const display = (preReqs: any[]): void => {
     processPrereqs(preReqs, courseCache, currPlanCourses).then((resolved) => {
       afterGathering(resolved.numNameList, resolved.numList, resolved.expr);
-    })
+    });
   };
 
   /**
