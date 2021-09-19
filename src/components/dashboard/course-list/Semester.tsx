@@ -307,7 +307,7 @@ function Semester({
               </div>
             ) : (
               <button
-                className="w-20 text-xs bg-blue-300 rounded focus:outline-none"
+                className="py-1 w-24 text-white text-xs hover:bg-blue-400 bg-green-400 rounded focus:outline-none transform hover:scale-101 transition duration-150 ease-in"
                 onClick={addPrereq}
               >
                 Add Here
