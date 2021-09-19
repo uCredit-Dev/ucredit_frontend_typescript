@@ -3,6 +3,7 @@ import React, { useState, useEffect } from "react";
 import { useSelector } from "react-redux";
 import { ReactComponent as Check } from "../../../resources/svg/CheckMark.svg";
 import { ReactComponent as X } from "../../../resources/svg/Close.svg";
+import parse from "html-react-parser";
 import {
   requirements,
   checkRequirementSatisfied,
@@ -12,7 +13,6 @@ import { selectCurrentPlanCourses } from "../../../slices/currentPlanSlice";
 import { selectCourseCache } from "../../../slices/userSlice";
 import { getCourse } from "../../../resources/assets";
 import DistributionPopup from "./DistributionPopup";
-import ReactHtmlParser from "react-html-parser";
 
 type FineDistributionProps = {
   dis: requirements;
@@ -96,7 +96,7 @@ const FineDistribution = ({
             "overflow-y-hidden h-6 select-text": !showDistrDesc,
           })}
         >
-          {ReactHtmlParser(dis.name)}
+          {parse(dis.name)}
         </p>
       </button>
       <p className="font-bold">

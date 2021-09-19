@@ -20,9 +20,10 @@
     "resolveJsonModule": true,
     "isolatedModules": true,
     "noEmit": true,
-    "jsx": "react"
+    "jsx": "react-jsx"
   },
   "include": [
-    "src"
-, "tailwind.config.js"  ]
+    "src",
+    "tailwind.config.js"
+  ]
 }
