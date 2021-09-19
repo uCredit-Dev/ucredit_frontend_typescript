@@ -200,9 +200,10 @@ function YearComponent({
           <div className="flex flex-row justify-between px-0.5 w-full bg-white">
             <div
               className={clsx(
-                "mt-1 h-5 rounded transform duration-150 ease-in",
+                "mt-0.5 h-6 rounded-full transform duration-150 ease-in",
                 {
-                  "mr-1 h-5 bg-blue-400": onHover,
+                  "mr-1 h-6 text-white hover:bg-blue-400 bg-green-400 transform hover:scale-110 transition duration-200 ease-in":
+                    onHover,
                 }
               )}
               onMouseEnter={() => setDraggable(false)}
@@ -212,7 +213,7 @@ function YearComponent({
                 className={clsx(
                   "py-auto m-auto h-0 text-white transform duration-150 ease-in",
                   {
-                    "h-5": onHover,
+                    "h-6": onHover,
                   }
                 )}
               />

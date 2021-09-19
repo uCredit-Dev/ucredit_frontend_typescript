@@ -166,17 +166,19 @@ const PlanAdd = () => {
             </div> */}
             <div className="flex flex-row justify-end">
               <button
-                className="z-30 mr-4 p-2 w-16 h-10 text-white bg-blue-500 rounded focus:outline-none transform hover:scale-105 transition duration-200 ease-in"
+                className="z-30 p-2 w-16 h-10 text-white hover:bg-blue-400 bg-green-400 rounded focus:outline-none transform hover:scale-105 transition duration-200 ease-in"
                 onClick={createNewPlan}
               >
                 Add
               </button>
-              <button
-                className="z-30 p-2 w-16 h-10 text-black bg-white border border-solid border-secondary rounded focus:outline-none transform hover:scale-105 transition duration-200 ease-in"
-                onClick={handleCancel}
-              >
-                Cancel
-              </button>
+              {planList.length > 0 ? (
+                <button
+                  className="z-30 ml-4 p-2 w-16 h-10 text-black bg-white border border-solid border-secondary rounded focus:outline-none transform hover:scale-105 transition duration-200 ease-in"
+                  onClick={handleCancel}
+                >
+                  Cancel
+                </button>
+              ) : null}
             </div>
           </div>
         </div>

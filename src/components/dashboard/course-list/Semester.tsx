@@ -240,21 +240,16 @@ function Semester({
         <div className="flex flex-col h-yearheading font-medium">
           <div className="flex flex-row items-center justify-between px-0.5 py-1 h-yearheading1 bg-white">
             <div
-              className={clsx(
-                "mt-1 h-5 rounded transform duration-150 ease-in",
-                {
-                  "mr-1 h-5 bg-blue-400": onHover,
-                }
-              )}
+              className={clsx("mt-0.5 rounded transform duration-150 ease-in")}
               onMouseEnter={() => setOnHover(true)}
               onMouseLeave={() => setOnHover(false)}
             >
               {display ? (
                 <ArrowDown
                   className={clsx(
-                    "py-auto m-auto h-0 text-white cursor-pointer transform duration-150 ease-in",
+                    "py-auto m-auto h-0 text-white hover:bg-blue-400 bg-green-400 rounded-full cursor-pointer transform duration-150 ease-in",
                     {
-                      "h-5": onHover,
+                      "h-5 mr-1": onHover,
                     }
                   )}
                   onClick={() => setDisplay(false)}
@@ -262,9 +257,9 @@ function Semester({
               ) : (
                 <ArrowUp
                   className={clsx(
-                    "py-auto m-auto h-0 text-white cursor-pointer transform duration-150 ease-in",
+                    "py-auto m-auto h-0 text-white hover:bg-blue-400 bg-green-400 rounded-full cursor-pointer transform duration-150 ease-in",
                     {
-                      "h-5": onHover,
+                      "h-5 mr-1": onHover,
                     }
                   )}
                   onClick={() => setDisplay(true)}

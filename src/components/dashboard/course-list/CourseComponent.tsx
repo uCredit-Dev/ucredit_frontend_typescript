@@ -164,7 +164,7 @@ function CourseComponent({
                 <div className="absolute left-0 top-0 w-full h-full bg-white bg-opacity-80 rounded" />
                 <div
                   className={clsx(
-                    "absolute z-20 left-0 w-0 h-full bg-blue-400 bg-opacity-80 rounded transform duration-150 ease-in",
+                    "absolute z-20 left-0 w-0 h-full text-white hover:bg-blue-400 bg-green-400 bg-opacity-80 rounded transform duration-150 ease-in",
                     {
                       "w-1/4": hovered,
                     }
@@ -175,12 +175,12 @@ function CourseComponent({
                   <GrabSvg className="p-auto py-auto z-20 m-auto w-6 h-full text-white" />
                 </div>
                 <DetailsSvg
-                  className="relative z-20 flex flex-row items-center justify-center ml-12 mr-5 p-0.5 w-6 h-6 text-white bg-secondary rounded-md outline-none stroke-2 cursor-pointer transform hover:scale-110 transition duration-150 ease-in"
+                  className="relative z-20 flex flex-row items-center justify-center ml-12 mr-5 p-0.5 w-6 h-6 text-white hover:bg-blue-400 bg-green-300 rounded-md outline-none stroke-2 cursor-pointer transform hover:scale-110 transition duration-150 ease-in"
                   onClick={displayCourses}
                 />
                 <RemoveSvg
                   className={clsx(
-                    "relative z-20 flex flex-row items-center justify-center p-0.5 w-6 h-6 text-white bg-secondary rounded-md outline-none stroke-2 cursor-pointer transform hover:scale-110 transition duration-150 ease-in",
+                    "relative z-20 flex flex-row items-center justify-center p-0.5 w-6 h-6 text-white bg-red-300 hover:bg-red-600 rounded-md outline-none stroke-2 cursor-pointer transform hover:scale-110 transition duration-150 ease-in",
                     { "mr-5": !satisfied }
                   )}
                   onClick={deleteCourse}
@@ -188,9 +188,9 @@ function CourseComponent({
                 {!satisfied && !overridden ? (
                   <>
                     <WarningSvg
-                      data-tip="<div>Prereqs not yet satisfied</div>"
+                      data-tip="<p>Prereqs not yet satisfied</p><p>Press here to override.</p>"
                       data-for="godTip"
-                      className="relative z-20 flex flex-row items-center justify-center p-0.5 w-6 h-6 text-white bg-secondary rounded-md outline-none stroke-2 cursor-pointer transform hover:scale-110 transition duration-150 ease-in"
+                      className="relative z-20 flex flex-row items-center justify-center p-0.5 w-6 h-6 text-white hover:bg-blue-400 bg-green-300 rounded-md outline-none stroke-2 cursor-pointer transform hover:scale-110 transition duration-150 ease-in"
                       onClick={() => setDisplayPopup(true)}
                     />
                   </>
