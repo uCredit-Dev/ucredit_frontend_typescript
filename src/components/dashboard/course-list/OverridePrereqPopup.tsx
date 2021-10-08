@@ -5,7 +5,6 @@ type PopupType = {
   cleanup: () => void;
   save: () => void;
 };
-
 /**
  * Popup for when user presses button to override prereq.
  * @prop courseName - name of the course you are overriding prereqs for

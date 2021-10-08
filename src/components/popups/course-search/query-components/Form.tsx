@@ -9,14 +9,11 @@ import {
   selectSemester,
 } from "../../../../slices/searchSlice";
 import {
-  AreaType,
-  DepartmentType,
-  SemesterType,
+  SearchExtras,
   SISRetrievedCourse,
-  TagType,
 } from "../../../../resources/commonTypes";
-import { ReactComponent as ArrowUp } from "../../../../resources/svg/ArrowUp.svg";
-import { ReactComponent as ArrowDown } from "../../../../resources/svg/ArrowDown.svg";
+import { ReactComponent as FilterFilled } from "../../../../resources/svg/FilterFilled.svg";
+import { ReactComponent as FilterNonFilled } from "../../../../resources/svg/FilterNonFilled.svg";
 import "react-toastify/dist/ReactToastify.css";
 import Filters from "./Filters";
 import {
@@ -26,6 +23,13 @@ import {
 } from "../../../../slices/userSlice";
 import axios from "axios";
 import { api } from "../../../../resources/assets";
+import { filterCourses } from "./formUtils";
+
+type SearchMapEl = {
+  course: SISRetrievedCourse;
+  version: number;
+  priority: number;
+};
 
 /**
  * Search form, including the search query input and filters.
@@ -44,7 +48,6 @@ const Form = (props: { setSearching: Function }) => {
 
   // Component state setup
   const [showCriteria, setShowCriteria] = useState(false);
-  const [showAllResults, setShowAllResults] = useState<boolean>(false);
   const [searchedCourses] = useState<Map<String, SearchMapEl>>(
     new Map<String, SearchMapEl>()
   );
@@ -58,25 +61,6 @@ const Form = (props: { setSearching: Function }) => {
     dispatch(updateSearchFilters({ filter: "term", value: semester }));
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
-
-  type SearchMapEl = {
-    course: SISRetrievedCourse;
-    version: number;
-    priority: number;
-  };
-
-  // TODO: A lot of redundancies with FilterType. Please look into modularization.
-  type SearchExtras = {
-    query: string;
-    credits: string | null;
-    areas: AreaType | null;
-    tags: TagType | null;
-    term: SemesterType;
-    year: number;
-    department: DepartmentType | null;
-    wi: boolean | null;
-    levels: string | null;
-  };
 
   // Search with debouncing of 2/4s of a second.
   const minLength = 4;
@@ -119,7 +103,7 @@ const Form = (props: { setSearching: Function }) => {
     );
     return () => clearTimeout(search);
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [searchTerm, searchFilters, showAllResults]);
+  }, [searchTerm, searchFilters]);
 
   /**
    * Finds course based on the search conditions given in extras.
@@ -135,15 +119,7 @@ const Form = (props: { setSearching: Function }) => {
       if (!retrievedAll) {
         axios
           .get(api + "/search", {
-            params: {
-              query: extras.query,
-              department: extras.department,
-              term: extras.term,
-              areas: extras.areas,
-              credits: extras.credits,
-              wi: extras.wi,
-              tags: extras.tags,
-            },
+            params: getParams(extras),
           })
           .then((retrieved) => {
             let retrievedCourses: SISRetrievedCourse[] = retrieved.data.data;
@@ -161,136 +137,11 @@ const Form = (props: { setSearching: Function }) => {
             return [[], []];
           });
       } else {
-        if (extras.query.length > 0) {
-          courses = courses.filter((course) => {
-            if (
-              extras.query.includes(".") ||
-              !isNaN(parseInt(extras.query)) ||
-              extras.query.startsWith("EN.") ||
-              extras.query.startsWith("AS.")
-            ) {
-              return course.number
-                .toLowerCase()
-                .includes(extras.query.toLowerCase());
-            } else {
-              return course.title
-                .toLowerCase()
-                .includes(extras.query.toLowerCase());
-            }
-          });
-        }
-
-        let credits = extras.credits;
-        if (credits !== null) {
-          const creditsString = credits.toString();
-          courses = courses.filter((course) => {
-            let satisfied = false;
-            creditsString.split("").forEach((c: string) =>
-              course.versions.forEach((v) => {
-                if (v.credits.toString() === c) {
-                  satisfied = true;
-                }
-              })
-            );
-            return satisfied;
-          });
-        }
-
-        const areas = extras.areas;
-        if (areas !== null) {
-          courses = courses.filter((course) => {
-            let satisfied = false;
-            areas.split("").forEach((a: string) =>
-              course.versions.forEach((v) => {
-                if (v.areas.includes(a)) {
-                  satisfied = true;
-                }
-              })
-            );
-            return satisfied;
-          });
-        }
-
-        const departments = extras.department;
-        if (departments !== null) {
-          courses = courses.filter((course) => {
-            let satisfied = false;
-            departments.split("|").forEach((d: string) =>
-              course.versions.forEach((v) => {
-                if (v.department === d) {
-                  satisfied = true;
-                }
-              })
-            );
-            return satisfied;
-          });
-        }
-
-        const tags = extras.tags;
-        if (tags !== null) {
-          courses = courses.filter((course) => {
-            let satisfied = false;
-            tags.split("|").forEach((t: string) =>
-              course.versions.forEach((v) => {
-                if (v.tags.includes(t)) {
-                  satisfied = true;
-                }
-              })
-            );
-            return satisfied;
-          });
-        }
-
-        const levels = extras.levels;
-        if (levels !== null) {
-          courses = courses.filter((course) => {
-            let satisfied = false;
-            course.versions.forEach((v) => {
-              levels.split("|").forEach((level) => {
-                if (v.level === level) {
-                  satisfied = true;
-                }
-              });
-            });
-            return satisfied;
-          });
-        }
-
-        const wi = extras.wi;
-        if (wi !== null) {
-          courses = courses.filter((course) => {
-            let satisfied = false;
-            course.versions.forEach((v) => {
-              if (v.wi && wi) {
-                satisfied = true;
-              }
-            });
-            return satisfied;
-          });
-        }
-
-        const semester = extras.term + " " + extras.year;
-        let versions: number[] = [];
-        courses = courses.filter((course) => {
-          let toReturn = false;
-          course.terms.forEach((term) => {
-            if (term === semester) {
-              toReturn = true;
-            }
-          });
-          return toReturn;
-        });
-        return resolve([courses, versions]);
+        const filterProcessing = filterCourses(extras, courses);
+        if (filterProcessing) return filterProcessing;
+        return resolve([courses, []]);
       }
     });
-  };
-
-  /**
-   * Updates search results
-   * @param results - an array of found search results
-   */
-  const updateSearchResults = (results: SISRetrievedCourse[]) => {
-    dispatch(updateRetrievedCourses(results));
   };
 
   /**
@@ -318,19 +169,22 @@ const Form = (props: { setSearching: Function }) => {
         versions.push(...courseVersions[1]);
         if (total === cum) {
           courses.forEach((course: SISRetrievedCourse, index: number) => {
-            if (!searchedCourses.has(course.number + '0')) {
-              searchedCourses.set(course.number + '0', {
+            if (!searchedCourses.has(course.number + "0")) {
+              searchedCourses.set(course.number + "0", {
                 course: course,
                 version: versions[index],
                 priority: queryLength,
               });
               searchedCoursesFrequency.set(course.number, 1);
             } else {
-              var frequency = searchedCoursesFrequency.get(course.number)
+              var frequency = searchedCoursesFrequency.get(course.number);
               let flag = false;
               if (frequency !== undefined) {
                 for (let i = 0; i < frequency; i++) {
-                  if (searchedCourses.get(course.number + i)?.course.title === course.title) {
+                  if (
+                    searchedCourses.get(course.number + i)?.course.title ===
+                    course.title
+                  ) {
                     flag = true;
                   }
                 }
@@ -339,14 +193,14 @@ const Form = (props: { setSearching: Function }) => {
                     course: course,
                     version: versions[index],
                     priority: queryLength,
-                  })
-                  searchedCoursesFrequency.set(course.number, frequency + 1)
+                  });
+                  searchedCoursesFrequency.set(course.number, frequency + 1);
                 }
               }
             }
           });
           const newSearchList: SISRetrievedCourse[] = getNewSearchList();
-          updateSearchResults(newSearchList);
+          dispatch(updateRetrievedCourses(newSearchList));
           if (queryLength > minLength && initialQueryLength - queryLength < 9) {
             performSmartSearch(extras, queryLength - 1)();
           }
@@ -365,14 +219,31 @@ const Form = (props: { setSearching: Function }) => {
   const performSmartSearch =
     (extras: SearchExtras, queryLength: number) => () => {
       const querySubstrs: string[] = [];
-      if (
-        queryLength >= minLength
-      ) {
+      if (queryLength >= minLength) {
         // Finds all substring combinations and searches.
         for (let i = 0; i < searchTerm.length - queryLength + 1; i++) {
           querySubstrs.push(searchTerm.substring(i, i + queryLength));
         }
         substringSearch(extras, queryLength, querySubstrs);
+      } else if (queryLength > 0 && queryLength < minLength) {
+        // Perform normal search if query length is between 1 and minLength
+        axios
+          .get(api + "/search", {
+            params: getParams(extras),
+          })
+          .then((retrieved) => {
+            console.log(retrieved);
+            let retrievedCourses: SISRetrievedCourse[] = retrieved.data.data;
+            dispatch(updateCourseCache([...retrievedCourses]));
+            let SISRetrieved: SISRetrievedCourse[] = retrieved.data.data;
+            dispatch(updateRetrievedCourses(SISRetrieved));
+            props.setSearching(false);
+          })
+          .catch(() => {
+            props.setSearching(false);
+          });
+      } else {
+        props.setSearching(false);
       }
     };
 
@@ -393,10 +264,6 @@ const Form = (props: { setSearching: Function }) => {
     for (let [key, value] of searchedCourses) {
       searchList.push(value.course);
     }
-
-    if (!showAllResults) {
-      searchList = searchList.slice(0, 10);
-    }
     return searchList;
   };
 
@@ -405,15 +272,16 @@ const Form = (props: { setSearching: Function }) => {
     dispatch(updateSearchTerm(event.target.value));
   };
 
-  // Shows all results.
-  const showAll = () => {
-    setShowAllResults(true);
-  };
-
-  // Only shows first page of results.
-  const dontShowAll = () => {
-    setShowAllResults(false);
-  };
+  // Returns search fetch params
+  const getParams = (extras: SearchExtras) => ({
+    query: extras.query,
+    department: extras.department,
+    term: extras.term,
+    areas: extras.areas,
+    credits: extras.credits,
+    wi: extras.wi,
+    tags: extras.tags,
+  });
 
   return (
     <div className="pt-3 px-5 w-full h-auto text-coursecard border-b border-gray-400 select-none">
@@ -436,22 +304,11 @@ const Form = (props: { setSearching: Function }) => {
           data-for="godTip"
         >
           {!showCriteria ? (
-            <ArrowUp className="w-4 h-4 transform" />
+            <FilterNonFilled className="w-4 h-4 transform" />
           ) : (
-            <ArrowDown className="w-4 h-4 transform" />
+            <FilterFilled className="w-4 h-4 transform" />
           )}
         </div>
-      </div>
-      <div className="mb-2">
-        {showAllResults ? (
-          <button onClick={dontShowAll} className="focus:outline-none">
-            <u>Show Top 10 Results</u>
-          </button>
-        ) : (
-          <button onClick={showAll} className="focus:outline-none">
-            <u>Don't see your class? Show all results</u>
-          </button>
-        )}
       </div>
       <Filters showCriteria={showCriteria} />
     </div>

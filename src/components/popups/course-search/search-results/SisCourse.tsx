@@ -1,5 +1,4 @@
 import React, { useEffect, useState } from "react";
-// import { ReactComponent as CloseSvg } from "../../../../resources/svg/Close.svg";
 import Select from "react-select";
 import CourseVersion from "./CourseVersion";
 import { ReactComponent as Question } from "../../../../resources/svg/Question.svg";
