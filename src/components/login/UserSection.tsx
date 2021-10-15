@@ -202,7 +202,7 @@ function UserSection({ _id }: UserProps) {
         }).then((retrieved) => {
           retrieved.json().then((data) => {
             if (data.errors === undefined) {
-              var newUserCourse: UserCourse = { ...data.data };
+              let newUserCourse: UserCourse = { ...data.data };
               return resolve(newUserCourse);
             } else {
               console.log("Failed to add", data.errors);

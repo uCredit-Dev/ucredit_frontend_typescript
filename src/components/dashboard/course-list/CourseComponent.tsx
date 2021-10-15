@@ -6,7 +6,6 @@ import { useDispatch, useSelector } from "react-redux";
 import { ReactComponent as RemoveSvg } from "../../../resources/svg/Remove.svg";
 import { ReactComponent as DetailsSvg } from "../../../resources/svg/Details.svg";
 import { ReactComponent as WarningSvg } from "../../../resources/svg/Warning.svg";
-import { ReactComponent as GrabSvg } from "../../../resources/svg/Grab.svg";
 import { Transition } from "@tailwindui/react";
 import clsx from "clsx";
 import "react-toastify/dist/ReactToastify.css";
@@ -164,7 +163,7 @@ function CourseComponent({
                 <div className="absolute left-0 top-0 w-full h-full bg-white bg-opacity-80 rounded" />
                 <div
                   className={clsx(
-                    "absolute z-20 left-0 w-0 h-full text-white hover:bg-blue-400 bg-green-400 bg-opacity-80 rounded transform duration-150 ease-in",
+                    "absolute z-20 left-0 w-0 h-full text-white hover:bg-blue-400 bg-green-400 bg-opacity-80 rounded cursor-move transform duration-150 ease-in",
                     {
                       "w-1/4": hovered,
                     }
@@ -172,7 +171,9 @@ function CourseComponent({
                   onMouseEnter={() => setDraggable(false)}
                   onMouseLeave={() => setDraggable(true)}
                 >
-                  <GrabSvg className="p-auto py-auto z-20 m-auto w-6 h-full text-white" />
+                  <div className="h-min mt-2 mx-auto w-min text-2xl font-thin">
+                    ✥
+                  </div>
                 </div>
                 <DetailsSvg
                   className="relative z-20 flex flex-row items-center justify-center ml-12 mr-5 p-0.5 w-6 h-6 text-white hover:bg-blue-400 bg-green-300 rounded-md outline-none stroke-2 cursor-pointer transform hover:scale-110 transition duration-150 ease-in"

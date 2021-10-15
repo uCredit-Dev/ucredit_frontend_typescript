@@ -58,7 +58,7 @@ const CourseDisplayPopup = () => {
       let found = false;
       courseCache.forEach((c: SISRetrievedCourse) => {
         if (c.number === courseToShow.number) {
-          console.log(c, courseToShow)
+          console.log(c, courseToShow);
           const inspectedVersion: Course = {
             title: c.title,
             number: c.number,
@@ -198,11 +198,7 @@ const CourseDisplayPopup = () => {
       ></div>
 
       {/* Actual popup */}
-      <div
-        className={
-          " z-50 fixed flex flex-col bg-red-500 select-none bg-gradient-to-r shadow from-blue-500 to-green-400 rounded left-1/2 transform -translate-x-1/2 min-w-planAdd shadow h-3/4 overflow-y-scroll translate-y-12"
-        }
-      >
+      <div className="fixed z-50 left-1/2 flex flex-col min-w-planAdd h-3/4 bg-red-500 bg-gradient-to-r rounded shadow shadow from-blue-500 to-green-400 select-none transform -translate-x-1/2 translate-y-12">
         <div className="px-4 py-2 text-white text-coursecard font-semibold select-none">
           Inspecting{" "}
           {courseToShow === null ? "Invalid course" : courseToShow.title}
@@ -212,7 +208,7 @@ const CourseDisplayPopup = () => {
             <Placeholder addCourse={addCourse} />
           </div>
         ) : (
-          <div className="min-w-narrowest bg-gray-100 rounded">
+          <div className="min-w-narrowest h-full bg-gray-100 rounded">
             <SisCourse
               addCourse={addCourse}
               setInspectedArea={setInspectedArea}

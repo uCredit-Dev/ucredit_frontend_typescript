@@ -181,7 +181,7 @@ const CourseList: FC = () => {
         .post(api + "/years", body)
         .then((response: any) => {
           const newYear: Year = { ...response.data.data };
-          const newYearArray: Year[] = [...currentPlan.years, newYear]; // NOT THE CORRECT ID?? // Agreed. TODO: insert new year in chronological location.
+          const newYearArray: Year[] = [...currentPlan.years, newYear];
           const newUpdatedPlan: Plan = { ...currentPlan, years: newYearArray };
           const updatedPlanList: Plan[] = [...planList];
           updatedPlanList[0] = newUpdatedPlan;
