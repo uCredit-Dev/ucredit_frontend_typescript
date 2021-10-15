@@ -181,9 +181,7 @@ function CourseList() {
         .post(api + "/years", body)
         .then((response: any) => {
           const newYear: Year = { ...response.data.data };
-          const newYearArray = preUniversity
-            ? [newYear, ...currentPlan.years]
-            : [...currentPlan.years, newYear]; // NOT THE CORRECT ID?? // Agreed. TODO: insert new year in chronological location.
+          const newYearArray = [...currentPlan.years, newYear]; // NOT THE CORRECT ID?? // Agreed. TODO: insert new year in chronological location.
           const newUpdatedPlan = { ...currentPlan, years: newYearArray };
           dispatch(updateSelectedPlan(newUpdatedPlan));
           toast.success("New Year added!");
@@ -428,31 +426,6 @@ function CourseList() {
                 className="flex-grow flex-wrap rounded"
                 style={getListStyle(snapshot.isDraggingOver)}
               >
-                {currentPlan._id !== "noPlan" ? (
-                  <Draggable
-                    index={0}
-                    key="addButtonFront"
-                    draggableId={"addButtonFront"}
-                    isDragDisabled={true}
-                  >
-                    {(provided, snapshot) => {
-                      return (
-                        <div
-                          ref={provided.innerRef}
-                          {...provided.draggableProps}
-                          {...provided.dragHandleProps}
-                        >
-                          <AddSvg
-                            onClick={() => addNewYear(true)}
-                            className="-mt-1 mb-4 ml-5 mr-5 w-14 h-auto max-h-48 min-h-addSVG border-2 border-gray-300 rounded focus:outline-none cursor-pointer select-none transform hover:scale-105 transition duration-200 ease-in"
-                            data-tip={`Add an additional year before!`}
-                            data-for="godTip"
-                          />
-                        </div>
-                      );
-                    }}
-                  </Draggable>
-                ) : null}
                 {elements}
                 {currentPlan._id !== "noPlan" ? (
                   <Draggable
