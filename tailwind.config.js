@@ -4,7 +4,7 @@ module.exports = {
   theme: {
     extend: {
       minWidth: {
-        yearMin: "200px",
+        yearMin: "250px",
         narrowest: "710px",
         planAdd: "360px",
       },

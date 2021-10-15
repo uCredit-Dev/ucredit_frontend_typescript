@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { FC, useState } from "react";
 import Distributions from "./right-column-info/Distributions";
 import InfoCards from "./right-column-info/InfoCards";
 
@@ -6,7 +6,7 @@ import InfoCards from "./right-column-info/InfoCards";
  * Info menu shows degree plan and degree information.
  * Hidden on default.
  */
-const InfoMenu = () => {
+const InfoMenu: FC = () => {
   const [infoOpen, setInfoOpen] = useState(false);
   return (
     <div

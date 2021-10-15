@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, FC } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import {
   DroppableType,
@@ -39,7 +39,7 @@ import YearDraggable from "./YearDraggable";
  * Container component that holds all the years, semesters, and courses of the current plan.
  * TODO: Cleanup and modularize
  */
-function CourseList() {
+const CourseList: FC = () => {
   // Setting up redux
   const dispatch = useDispatch();
   const currentPlan = useSelector(selectPlan);
@@ -165,7 +165,7 @@ function CourseList() {
    * Adds a new year, if preUni is true, add to the start of the plan, otherwise add to the end
    * @param preUniversity - whether the new year is a pre uni year
    */
-  const addNewYear = (preUniversity: boolean) => {
+  const addNewYear = (preUniversity: boolean): void => {
     if (currentPlan.years.length < 8) {
       const body = {
         name: newYearTemplate.name,
@@ -181,8 +181,11 @@ function CourseList() {
         .post(api + "/years", body)
         .then((response: any) => {
           const newYear: Year = { ...response.data.data };
-          const newYearArray = [...currentPlan.years, newYear]; // NOT THE CORRECT ID?? // Agreed. TODO: insert new year in chronological location.
-          const newUpdatedPlan = { ...currentPlan, years: newYearArray };
+          const newYearArray: Year[] = [...currentPlan.years, newYear]; // NOT THE CORRECT ID?? // Agreed. TODO: insert new year in chronological location.
+          const newUpdatedPlan: Plan = { ...currentPlan, years: newYearArray };
+          const updatedPlanList: Plan[] = [...planList];
+          updatedPlanList[0] = newUpdatedPlan;
+          dispatch(updatePlanList(updatedPlanList));
           dispatch(updateSelectedPlan(newUpdatedPlan));
           toast.success("New Year added!");
         })
@@ -418,12 +421,12 @@ function CourseList() {
   return (
     <>
       <DragDropContext onDragEnd={onDragEnd}>
-        <div className="flex flex-row flex-wrap justify-between thin:justify-center mt-4 w-full h-auto">
+        <div className="flex flex-row justify-between thin:justify-center mt-4 w-full h-auto">
           <Droppable droppableId={"years"} type="YEAR" direction="horizontal">
             {(provided, snapshot) => (
               <div
                 ref={provided.innerRef}
-                className="flex-grow flex-wrap rounded"
+                className="flex-wrap"
                 style={getListStyle(snapshot.isDraggingOver)}
               >
                 {elements}
@@ -460,13 +463,10 @@ function CourseList() {
       </DragDropContext>
     </>
   );
-}
+};
 
 const getListStyle = (isDraggingOver: any) => ({
-  //background: isDraggingOver ? "lightblue" : "lightgrey",
   display: "flex",
-  //padding: "grid",
-  //overflow: "auto",
   margin: "0rem",
   padding: "0rem",
 });

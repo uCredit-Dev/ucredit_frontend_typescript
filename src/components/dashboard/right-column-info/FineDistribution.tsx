@@ -1,5 +1,5 @@
 import clsx from "clsx";
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, FC } from "react";
 import { useSelector } from "react-redux";
 import { ReactComponent as Check } from "../../../resources/svg/CheckMark.svg";
 import { ReactComponent as X } from "../../../resources/svg/Close.svg";
@@ -14,22 +14,16 @@ import { selectCourseCache } from "../../../slices/userSlice";
 import { getCourse } from "../../../resources/assets";
 import DistributionPopup from "./DistributionPopup";
 
-type FineDistributionProps = {
-  dis: requirements;
-  distributionOpen: Boolean;
-  hidden: Boolean;
-};
-
 /**
  * Component that displays fine requirements of a specific distribution.
  * @prop dis - general distribution fine distribution is for.
  * @prop distributionOpen - whether this distribution bar is open or not.
  */
-const FineDistribution = ({
-  dis,
-  distributionOpen,
-  hidden,
-}: FineDistributionProps) => {
+const FineDistribution: FC<{
+  dis: requirements;
+  distributionOpen: Boolean;
+  hidden: Boolean;
+}> = ({ dis, distributionOpen, hidden }) => {
   const [showDistrDesc, setShowDistrDesc] = useState<boolean>(false);
   const [displayAdd, setDisplayAdd] = useState(false);
   const [flipped, setFlipped] = useState<string[]>([]);

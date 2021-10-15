@@ -1,5 +1,5 @@
 import clsx from "clsx";
-import React, { useEffect, useState } from "react";
+import React, { FC, useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 import ReactTooltip from "react-tooltip";
 import { getMajor } from "../../../resources/assets";
@@ -21,7 +21,7 @@ import FineDistribution from "./FineDistribution";
 /**
  * Area in the right hand plan information that shows various elements of degree progression.
  */
-const Distributions = () => {
+const Distributions: FC = () => {
   const currentPlan = useSelector(selectPlan);
   const courseCache = useSelector(selectCourseCache);
   const currPlanCourses = useSelector(selectCurrentPlanCourses);

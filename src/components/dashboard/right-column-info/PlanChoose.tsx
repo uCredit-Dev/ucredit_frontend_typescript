@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, FC } from "react";
 import axios from "axios";
 import { Plan } from "../../../resources/commonTypes";
 import { useDispatch, useSelector } from "react-redux";
@@ -20,7 +20,7 @@ import { updateAddingPlanStatus } from "../../../slices/popupSlice";
 /**
  * Dropdown for choosing a plan to display.
  */
-const PlanChoose = () => {
+const PlanChoose: FC = () => {
   // Redux setup
   const dispatch = useDispatch();
   const user = useSelector(selectUser);

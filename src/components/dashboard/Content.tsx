@@ -1,4 +1,4 @@
-import React from "react";
+import React, { FC } from "react";
 import CourseList from "./course-list/CourseList";
 import Search from "../popups/course-search/Search";
 import { selectSearchStatus } from "../../slices/searchSlice";
@@ -26,7 +26,7 @@ import AddingPrereqPopup from "../popups/AddingPrereqPopup";
 /**
  * Holds all dashboard components.
  */
-function Content() {
+const Content: FC = () => {
   // Redux setup.
   const searchStatus = useSelector(selectSearchStatus);
   const deletePlanStatus = useSelector(selectDeletePlanStatus);
@@ -74,6 +74,6 @@ function Content() {
       {addingPrereqStatus ? <AddingPrereqPopup /> : null}
     </>
   );
-}
+};
 
 export default Content;
