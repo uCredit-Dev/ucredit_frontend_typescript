@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import Placeholder from "./course-search/search-results/Placeholder";
 import {
@@ -58,7 +58,6 @@ const CourseDisplayPopup = () => {
       let found = false;
       courseCache.forEach((c: SISRetrievedCourse) => {
         if (c.number === courseToShow.number) {
-          console.log(c, courseToShow);
           const inspectedVersion: Course = {
             title: c.title,
             number: c.number,
