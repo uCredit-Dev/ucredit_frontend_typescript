@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, FC } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import {
   selectUser,
@@ -19,7 +19,7 @@ import ShareLinksPopup from "./ShareLinksPopup";
 /**
  * User/Current plan information area.
  */
-const InfoCards = () => {
+const InfoCards: FC = () => {
   // Redux Setup
   const dispatch = useDispatch();
   const user = useSelector(selectUser);

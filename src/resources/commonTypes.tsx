@@ -117,6 +117,18 @@ export type Filter = {
   exception?: Filter;
 };
 
+export type SearchExtras = {
+  query: string;
+  credits: string | null;
+  areas: AreaType | null;
+  tags: TagType | null;
+  term: SemesterType;
+  year: number;
+  department: DepartmentType | null;
+  wi: boolean | null;
+  levels: string | null;
+};
+
 // Info for distribution bar.
 export type Distribution = {
   _id: string;

@@ -1,18 +1,16 @@
-import React from "react";
+import React, { FC } from "react";
 import { toast } from "react-toastify";
 import { ReactComponent as Copy } from "../../../resources/svg/Copy.svg";
-
-type ShareProps = {
-  link: string;
-  setURL: Function;
-};
 
 /**
  * Shareable link popup.
  * @prop link - link is composed of origin + plan id
  * @prop setURL - sets url of shareable link
  */
-function ShareLinksPopup({ link, setURL }: ShareProps) {
+const ShareLinksPopup: FC<{
+  link: string;
+  setURL: Function;
+}> = ({ link, setURL }) => {
   const copyToClipBoard = () => {
     navigator.clipboard.writeText(link).then(() => {
       navigator.clipboard.writeText(link).then(() => {
@@ -46,6 +44,6 @@ function ShareLinksPopup({ link, setURL }: ShareProps) {
       </div>
     </div>
   );
-}
+};
 
 export default ShareLinksPopup;

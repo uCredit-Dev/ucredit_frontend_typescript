@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import { FC, useState } from "react";
 import { Draggable } from "react-beautiful-dnd";
 import { UserCourse, Year } from "../../../resources/commonTypes";
 import YearComponent from "./YearComponent";
@@ -10,12 +10,12 @@ import YearComponent from "./YearComponent";
  * @prop yearIndex - The index of the year among the other years.
  * @prop yearCourses - The courses contained in the year.
  */
-const YearDraggable = (props: {
+const YearDraggable: FC<{
   id: number;
   year: Year;
   yearIndex: number;
   yearCourses: UserCourse[];
-}) => {
+}> = (props) => {
   const [draggable, setDraggable] = useState<boolean>(true);
   return (
     <Draggable
@@ -58,11 +58,7 @@ const getItemStyle = (isDragging: any, draggableStyle: any) => ({
   ...draggableStyle,
 
   padding: "0rem",
-  marginLeft: "auto",
-  marginRight: "auto",
-  width: "20%",
-  minWidth: "205px",
-  maxWIdth: "255px",
+  marginRight: "1rem",
 });
 
 export default YearDraggable;

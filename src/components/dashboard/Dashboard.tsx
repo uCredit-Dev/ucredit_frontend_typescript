@@ -1,17 +1,13 @@
-import React, { useState } from "react";
+import React, { FC, useState } from "react";
 import Content from "./Content";
 import UserSection from "../login/UserSection";
 import FeedbackPopup from "../popups/FeedbackPopup";
 import FeedbackNotification from "../popups/FeedbackNotification";
 
-type DashboardProps = {
-  _id: string | null;
-};
-
 /**
  * The dashboard that displays the user's plan.
  */
-const Dashboard = ({ _id }: DashboardProps) => {
+const Dashboard: FC<{ _id: string | null }> = ({ _id }) => {
   const [showNotif, setShowNotif] = useState<boolean>(true);
   const [formPopup, setFormPopup] = useState<boolean>(false);
   return (

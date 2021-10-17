@@ -2,14 +2,12 @@ import React, { useState, useEffect } from "react";
 import Semester from "./Semester";
 import { UserCourse, Year } from "../../../resources/commonTypes";
 import { ReactComponent as MoreSvg } from "../../../resources/svg/More.svg";
-import { ReactComponent as GrabSvg } from "../../../resources/svg/Grab.svg";
 import { useSelector, useDispatch } from "react-redux";
 import {
   selectPlan,
   updateSelectedPlan,
 } from "../../../slices/currentPlanSlice";
 import { api } from "../../../resources/assets";
-import clsx from "clsx";
 import {
   updateYearToDelete,
   updateDeleteYearStatus,
@@ -64,7 +62,6 @@ function YearComponent({
   const [hide, setHide] = useState<boolean>(false);
   const [yearName, setYearName] = useState<string>(year.name);
   const [semSelect, setSemSelect] = useState<boolean>(false);
-  const [onHover, setOnHover] = useState<boolean>(false);
   const [editedName, setEditedName] = useState<boolean>(false);
   const [edittingName, setEdittingName] = useState<boolean>(false);
   const [toShow, setToShow] = useState<SemSelected>({
@@ -183,151 +180,132 @@ function YearComponent({
   return (
     <div
       id={id.toString()}
-      className={`${customStyle} rounded mb-4 w-yearheading min-w-yearMin max-w-yearheading mx-auto`}
+      className={
+        customStyle + "cursor-move p-2 rounded mb-4 bg-blue-400 rounded"
+      }
+      onMouseLeave={() => {
+        setSemSelect(false);
+        setDraggable(true);
+        setDisplay(false);
+      }}
+      onMouseEnter={() => {
+        setDraggable(false);
+      }}
     >
-      <div className="p-2 bg-white rounded shadow">
-        <div
-          className="flex flex-col mt-1 h-yearheading font-medium"
-          onMouseLeave={() => {
-            setDisplay(false);
-            setSemSelect(false);
-            setOnHover(false);
-          }}
-          onMouseEnter={() => {
-            if (!edittingName) setOnHover(true);
-          }}
-        >
-          <div className="flex flex-row justify-between px-0.5 w-full bg-white">
-            <div
-              className={clsx(
-                "mt-0.5 h-6 rounded-full transform duration-150 ease-in",
-                {
-                  "mr-1 h-6 text-white hover:bg-blue-400 bg-green-400 transform hover:scale-110 transition duration-200 ease-in":
-                    onHover,
-                }
-              )}
-              onMouseEnter={() => setDraggable(false)}
-              onMouseLeave={() => setDraggable(true)}
-            >
-              <GrabSvg
-                className={clsx(
-                  "py-auto m-auto h-0 text-white transform duration-150 ease-in",
-                  {
-                    "h-6": onHover,
-                  }
-                )}
-              />
-            </div>
+      <div className="flex flex-col mt-1 w-full min-w-yearMin h-yearheading font-medium">
+        <div className="flex flex-row w-full text-white drop-shadow-lg">
+          <div className="mr-1 text-xl font-thin">✥</div>
+          {edittingName ? (
             <input
               id={year._id + "input"}
               value={yearName}
-              className={clsx(
-                "flex-shrink mt-auto w-full text-lg font-semibold bg-white border-b focus:border-gray-400 border-transparent focus:outline-none select-none"
-              )}
+              className="flex-shrink mt-auto w-full text-lg font-semibold bg-transparent border-b focus:border-gray-400 border-transparent focus:outline-none cursor-move select-none"
               onChange={handleYearNameChange}
-              disabled={!edittingName}
               onBlur={() => {
                 setEdittingName(false);
               }}
             />
-            {/* <RemoveSvg
-            className="w-6 stroke-2 cursor-pointer select-none transform hover:scale-110 transition duration-200 ease-in"
-            onClick={activateDeleteYearPopup}
-          /> */}
-            <div className="relative">
-              <MoreSvg
-                onClick={() => {
-                  setDisplay(true);
-                }}
-                className="w-6 stroke-2 cursor-pointer"
-              />
-              {display ? (
-                // <div className="flex flex-col mx-auto w-planselect text-white bg-secondary rounded">
-                <div className="absolute z-50 right-1 flex flex-col w-40 text-black bg-gray-100 rounded shadow">
-                  <button
-                    onClick={() => {
-                      setEdittingName(true);
-                      setDisplay(false);
-                      setOnHover(false);
-                    }}
-                    className="hover:bg-gray-300 focus:outline-none"
-                  >
-                    Rename
-                  </button>
-                  <button
-                    onClick={activateDeleteYearPopup}
-                    className="hover:bg-gray-300 border-t border-gray-300 focus:outline-none"
-                  >
-                    Remove
-                  </button>
-                  <button
-                    className="hover:bg-gray-300 border-t border-gray-300 focus:outline-none"
-                    onClick={() => {
-                      setSemSelect(!semSelect);
-                    }}
-                  >
-                    Select Terms
-                  </button>
-                  {semSelect ? (
-                    <>
-                      <div className="z-50 flex flex-col">
-                        <label>
-                          <input
-                            type="checkbox"
-                            name="Fall"
-                            className="ml-6 mr-2"
-                            onChange={modifyFall}
-                            checked={toShow.fall}
-                          />
-                          Fall
-                        </label>
-                        <label>
-                          <input
-                            type="checkbox"
-                            name="Spring"
-                            className="ml-6 mr-2"
-                            onChange={modifySpring}
-                            checked={toShow.spring}
-                          />
-                          Spring
-                        </label>
-                        <label>
-                          <input
-                            type="checkbox"
-                            name="Summer"
-                            className="ml-6 mr-2"
-                            onChange={modifySummer}
-                            checked={toShow.summer}
-                          />
-                          Summer
-                        </label>
-                        <label>
-                          <input
-                            type="checkbox"
-                            name="Intersession"
-                            className="ml-6 mr-2"
-                            onChange={modifyIntersession}
-                            checked={toShow.intersession}
-                          />
-                          Intersession
-                        </label>
-                      </div>
-                    </>
-                  ) : null}
-                  <button
-                    onClick={() => {
-                      setHide(!hide);
-                    }}
-                    className="hover:bg-gray-300 border-t border-gray-300 focus:outline-none"
-                  >
-                    {!hide ? "Hide Courses" : "Show Courses"}
-                  </button>
-                </div>
-              ) : null}
+          ) : (
+            <div className="flex-shrink mt-auto w-full text-lg font-semibold bg-transparent border-b focus:border-gray-400 border-transparent focus:outline-none cursor-move select-none">
+              {yearName}
             </div>
+          )}
+          <div className="relative">
+            <MoreSvg
+              onClick={() => {
+                setDisplay(true);
+              }}
+              className="mt-0.5 w-6 stroke-2 cursor-pointer"
+            />
+            {display ? (
+              <div className="absolute z-50 right-1 flex flex-col w-40 text-black bg-gray-100 rounded shadow">
+                <button
+                  onClick={() => {
+                    setEdittingName(true);
+                    setDisplay(false);
+                  }}
+                  className="hover:bg-gray-300 focus:outline-none"
+                >
+                  Rename
+                </button>
+                <button
+                  onClick={activateDeleteYearPopup}
+                  className="hover:bg-gray-300 border-t border-gray-300 focus:outline-none"
+                >
+                  Remove
+                </button>
+                <button
+                  className="hover:bg-gray-300 border-t border-gray-300 focus:outline-none"
+                  onClick={() => {
+                    setSemSelect(!semSelect);
+                  }}
+                >
+                  Select Terms
+                </button>
+                {semSelect ? (
+                  <>
+                    <div className="z-50 flex flex-col">
+                      <label>
+                        <input
+                          type="checkbox"
+                          name="Fall"
+                          className="ml-6 mr-2"
+                          onChange={modifyFall}
+                          checked={toShow.fall}
+                        />
+                        Fall
+                      </label>
+                      <label>
+                        <input
+                          type="checkbox"
+                          name="Spring"
+                          className="ml-6 mr-2"
+                          onChange={modifySpring}
+                          checked={toShow.spring}
+                        />
+                        Spring
+                      </label>
+                      <label>
+                        <input
+                          type="checkbox"
+                          name="Summer"
+                          className="ml-6 mr-2"
+                          onChange={modifySummer}
+                          checked={toShow.summer}
+                        />
+                        Summer
+                      </label>
+                      <label>
+                        <input
+                          type="checkbox"
+                          name="Intersession"
+                          className="ml-6 mr-2"
+                          onChange={modifyIntersession}
+                          checked={toShow.intersession}
+                        />
+                        Intersession
+                      </label>
+                    </div>
+                  </>
+                ) : null}
+                <button
+                  onClick={() => {
+                    setHide(!hide);
+                  }}
+                  className="hover:bg-gray-300 border-t border-gray-300 focus:outline-none"
+                >
+                  {!hide ? "Hide Courses" : "Show Courses"}
+                </button>
+              </div>
+            ) : null}
           </div>
-          <div className="w-full h-px bg-gradient-to-r from-blue-500 to-green-400"></div>
         </div>
+      </div>
+      <div
+        className="p-2 bg-white rounded shadow cursor-default"
+        onMouseLeave={() => setDraggable(false)}
+        onMouseEnter={() => setDraggable(true)}
+      >
         {!hide ? (
           <div className="flex flex-col items-center">
             {toShow.fall ? (

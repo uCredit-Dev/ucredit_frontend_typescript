@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { FC, useState } from "react";
 import {
   requirements,
   // checkRequirementSatisfied,
@@ -13,22 +13,15 @@ import {
 // import { ReactComponent as Plus } from "../../../resources/svg/Add.svg";
 // import { ReactComponent as Minus } from "../../../resources/svg/Close.svg";
 
-type DistributionPopupType = {
+/**
+ * TODO: FEATURE TO OVERRIDE DISTRIBUTIONS ON PAUSE. MAY BE DEPRECATED IN THE FUTURE.
+ */
+const DistributionPopup: FC<{
   distribution: requirements;
   cleanup: () => void;
   save: (s: string[]) => void;
   flipped: string[];
-};
-
-/**
- * TODO: FEATURE TO OVERRIDE DISTRIBUTIONS ON PAUSE. MAY BE DEPRECATED IN THE FUTURE.
- */
-function DistributionPopup({
-  distribution,
-  cleanup,
-  save,
-  flipped,
-}: DistributionPopupType) {
+}> = ({ distribution, cleanup, save, flipped }) => {
   // const courseCache = useSelector(selectCourseCache);
   // const currPlanCourses = useSelector(selectCurrentPlanCourses);
   // const courses = useSelector(selectCurrentPlanCourses);
@@ -118,6 +111,6 @@ function DistributionPopup({
       </div>
     </div>
   );
-}
+};
 
 export default DistributionPopup;

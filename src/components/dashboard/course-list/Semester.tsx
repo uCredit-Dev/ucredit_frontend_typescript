@@ -15,8 +15,6 @@ import {
   updateSearchTime,
 } from "../../../slices/searchSlice";
 import { ReactComponent as AddSvg } from "../../../resources/svg/Add.svg";
-import { ReactComponent as ArrowUp } from "../../../resources/svg/ArrowUp.svg";
-import { ReactComponent as ArrowDown } from "../../../resources/svg/ArrowDown.svg";
 import { Droppable } from "react-beautiful-dnd";
 import {
   selectCurrentPlanCourses,
@@ -71,10 +69,8 @@ function Semester({
   const currentCourses = useSelector(selectCurrentPlanCourses);
 
   // State used to control whether dropdown is opened or closed
-  const [display, setDisplay] = useState<boolean>(true);
   const [totalCredits, setTotalCredits] = useState<number>(0);
   const [semesterCourses, setSemesterCourses] = useState<UserCourse[]>([]);
-  const [onHover, setOnHover] = useState<boolean>(false);
   const [inspectedArea, setInspectedArea] = useState<string>("None");
 
   useEffect(() => {
@@ -239,38 +235,7 @@ function Semester({
       >
         <div className="flex flex-col h-yearheading font-medium">
           <div className="flex flex-row items-center justify-between px-0.5 py-1 h-yearheading1 bg-white">
-            <div
-              className={clsx("mt-0.5 rounded transform duration-150 ease-in")}
-              onMouseEnter={() => setOnHover(true)}
-              onMouseLeave={() => setOnHover(false)}
-            >
-              {display ? (
-                <ArrowDown
-                  className={clsx(
-                    "py-auto m-auto h-0 text-white hover:bg-blue-400 bg-green-400 rounded-full cursor-pointer transform duration-150 ease-in",
-                    {
-                      "h-5 mr-1": onHover,
-                    }
-                  )}
-                  onClick={() => setDisplay(false)}
-                />
-              ) : (
-                <ArrowUp
-                  className={clsx(
-                    "py-auto m-auto h-0 text-white hover:bg-blue-400 bg-green-400 rounded-full cursor-pointer transform duration-150 ease-in",
-                    {
-                      "h-5 mr-1": onHover,
-                    }
-                  )}
-                  onClick={() => setDisplay(true)}
-                />
-              )}
-            </div>
-            <div
-              className="flex flex-row items-center w-full h-auto font-normal select-none"
-              onMouseLeave={() => setOnHover(false)}
-              onMouseEnter={() => setOnHover(true)}
-            >
+            <div className="flex flex-row items-center w-full h-auto font-normal select-none">
               {semesterName === "Fall"
                 ? "Fall"
                 : semesterName === "Intersession"
@@ -327,7 +292,7 @@ function Semester({
                 style={getListStyle(snapshot.isDraggingOver)}
                 className="rounded"
               >
-                {display ? <>{getDraggables()}</> : null}
+                {getDraggables()}
                 {provided.placeholder}
               </div>
             )}

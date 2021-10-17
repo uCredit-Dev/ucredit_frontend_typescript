@@ -1,5 +1,5 @@
 import clsx from "clsx";
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, FC } from "react";
 import { useSelector } from "react-redux";
 import { selectCurrentPlanCourses } from "../../../slices/currentPlanSlice";
 import { selectCourseCache } from "../../../slices/userSlice";
@@ -14,13 +14,6 @@ import { ReactComponent as CheckSvg } from "../../../resources/svg/Check.svg";
 import DistributionPopup from "./DistributionPopup";
 import { Course } from "../../../resources/commonTypes";
 
-type courseBarProps = {
-  distribution: requirements;
-  general: boolean;
-  description: string;
-  total: boolean;
-};
-
 /**
  * A distribution bar.
  * @prop distribution - the distribution the bar refers to
@@ -28,12 +21,12 @@ type courseBarProps = {
  * @prop description - this is the description of the distribution
  * @prop total - whether this is a course bar tracking the total amount of credits
  */
-function CourseBar({
-  distribution,
-  general,
-  description,
-  total,
-}: courseBarProps) {
+const CourseBar: FC<{
+  distribution: requirements;
+  general: boolean;
+  description: string;
+  total: boolean;
+}> = ({ distribution, general, description, total }) => {
   const [displayAdd, setDisplayAdd] = useState(false);
   const [flipped, setFlipped] = useState<string[]>([]);
   const [plannedCredits, setPlannedCredits] = useState(
@@ -170,6 +163,6 @@ function CourseBar({
       </div>
     </>
   );
-}
+};
 
 export default CourseBar;

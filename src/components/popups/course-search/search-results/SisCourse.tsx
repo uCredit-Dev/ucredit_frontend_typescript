@@ -1,5 +1,4 @@
 import React, { useEffect, useState } from "react";
-// import { ReactComponent as CloseSvg } from "../../../../resources/svg/Close.svg";
 import Select from "react-select";
 import CourseVersion from "./CourseVersion";
 import { ReactComponent as Question } from "../../../../resources/svg/Question.svg";
@@ -164,10 +163,10 @@ const SisCourse = (props: SisCourseProps) => {
   };
 
   return (
-    <>
+    <div className="flex flex-col h-full bg-green-100">
       {inspected !== "None" ? (
         <>
-          <div className="pb-5 pt-4 px-5 w-full h-full text-base bg-white select-text overflow-y-auto">
+          <div className="pb-5 pt-4 px-5 w-full h-full text-base bg-white rounded-t select-text overflow-y-auto">
             <div className="flex flex-row mb-1 w-full h-auto">
               {searchStack.length !== 0 ? (
                 <button
@@ -231,7 +230,7 @@ const SisCourse = (props: SisCourseProps) => {
             <CourseVersion setInspectedArea={props.setInspectedArea} />
           </div>
           {(showCourseInfo && searchStack.length === 0) || !showCourseInfo ? (
-            <div className="relative bottom-0 flex flex-row flex-grow items-center px-4 py-2 w-full bg-gray-100">
+            <div className="relative bottom-0 flex flex-row items-center px-4 py-2 w-full h-20 bg-gray-100 rounded-b">
               <div className="flex flex-col flex-grow justify-center">
                 <div className="mb-1 font-medium">Selecting for</div>
                 <div className="flex tight:flex-col flex-row">
@@ -299,7 +298,7 @@ const SisCourse = (props: SisCourseProps) => {
           ) : null}
         </>
       ) : null}
-    </>
+    </div>
   );
 };
 
