@@ -163,7 +163,7 @@ const SisCourse = (props: SisCourseProps) => {
   };
 
   return (
-    <div className="flex flex-col h-full bg-green-100">
+    <div className="flex flex-col h-full">
       {inspected !== "None" ? (
         <>
           <div className="pb-5 pt-4 px-5 w-full h-full text-base bg-white rounded-t select-text overflow-y-auto">

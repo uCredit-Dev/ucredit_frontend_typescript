@@ -109,9 +109,7 @@ function CourseComponent({
   return (
     <>
       <div
-        className={clsx(
-          "relative flex items-center justify-between mt-2 p-2 bg-gray-100 rounded shadow transform hover:scale-105 transition duration-200 ease-in"
-        )}
+        className="relative flex items-center justify-between mt-2 p-2 max-w-yearheading bg-gray-100 rounded shadow transform hover:scale-105 transition duration-200 ease-in"
         onMouseEnter={activate}
         onMouseLeave={deactivate}
         onMouseOver={() => {
