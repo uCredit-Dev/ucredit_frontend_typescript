@@ -13,7 +13,6 @@ import {
   selectCurrentPlanCourses,
   selectDroppables,
   selectPlan,
-  selectTotalCredits,
   updateCurrentPlanCourses,
   updateSelectedPlan,
   updateTotalCredits,
@@ -127,7 +126,6 @@ const CourseList: FC = () => {
       }
       // Handle empty courses
       if (yearIndex === currentPlan.years.length - 1 && noCourses) {
-        console.log("no courses");
         dispatch(updateCurrentPlanCourses(totCourses));
         dispatch(updateTotalCredits(totalCredits));
       }

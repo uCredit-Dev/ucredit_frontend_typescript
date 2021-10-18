@@ -38,14 +38,25 @@ const Distributions: FC = () => {
   );
   const [major, setMajor] = useState<Major | null>(null);
   const [disclaimer, setDisclaimer] = useState<boolean>(false);
+  const [updated, setUpdated] = useState<boolean>(false);
 
   // Gets distribution everytime a plan changes.
   useEffect(() => {
-    const distr = getDistributions();
-    if (distr !== null) {
-      console.log("getting");
-      updateFulfilled(distr, currPlanCourses, courseCache, currPlanCourses);
+    if (distributions.length > 0) {
+      updateFulfilled(
+        distributions,
+        currPlanCourses,
+        courseCache,
+        currPlanCourses
+      );
+      setUpdated(true);
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [distributions]);
+
+  useEffect(() => {
+    getDistributions();
+    setUpdated(false);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [currPlanCourses]);
 
@@ -57,19 +68,18 @@ const Distributions: FC = () => {
    * Gets all distributions associated with current plan
    * @returns an array of pairs for distributions and their requirements if distributions exist and null if they don't
    */
-  const getDistributions = (): [string, requirements[]][] | null => {
+  const getDistributions = (): void => {
     let major: string | undefined = currentPlan.majors[0];
     if (major === undefined) {
-      return null;
+      return;
     }
     let majorObj: Major | undefined = getMajor(major);
     if (majorObj === undefined) {
-      return null;
+      return;
     }
     setMajor(majorObj);
     let distr = getRequirements(majorObj);
     setDistributions(distr);
-    return distr;
   };
 
   /**
@@ -142,62 +152,50 @@ const Distributions: FC = () => {
                 major.degree_name
               : "",
         }}
-        total={true}
         general={true}
-        description={
-          major !== null
-            ? "This is the total amount of credits that is required for " +
-              major.degree_name +
-              "."
-            : ""
-        }
       />
-      {distributions.map((pair, i) => {
-        return (
-          <div>
-            {pair[1].map((dis, index) => {
-              if (index === 0) {
-                return (
-                  <div
-                    key={dis.name}
-                    className={clsx({ hidden: !distributionOpen })}
-                  >
-                    <CourseBar
-                      total={false}
-                      distribution={dis}
-                      general={true}
-                      description={dis.description}
+      {updated &&
+        distributions.map((pair, i) => {
+          return (
+            <div>
+              {pair[1].map((dis, index) => {
+                if (index === 0) {
+                  return (
+                    <div
+                      key={dis.name}
+                      className={clsx({ hidden: !distributionOpen })}
+                    >
+                      <CourseBar distribution={dis} general={true} />
+                    </div>
+                  );
+                } else {
+                  return (
+                    <FineDistribution
+                      dis={dis}
+                      distributionOpen={distributionOpen}
+                      hidden={showDistributions[i] !== true}
                     />
-                  </div>
-                );
-              } else {
-                return (
-                  <FineDistribution
-                    dis={dis}
-                    distributionOpen={distributionOpen}
-                    hidden={showDistributions[i] !== true}
-                  />
-                );
-              }
-            })}
-            {pair[1].length > 1 ? (
-              <button
-                onClick={() => {
-                  changeDistributionVisibility(i);
-                }}
-                className={clsx(
-                  "mb-2 underline text-sm focus:outline-none transform hover:scale-101 transition duration-200 ease-in",
-                  { hidden: !distributionOpen }
-                )}
-              >
-                {showDistributions[i] === true
-                  ? "Hide Fine Requirements"
-                  : "Show Fine Requirements"}
-              </button>
-            ) : null}
-          </div>
-        );
-      })}
+                  );
+                }
+              })}
+              {pair[1].length > 1 ? (
+                <button
+                  onClick={() => {
+                    changeDistributionVisibility(i);
+                  }}
+                  className={clsx(
+                    "mb-2 underline text-sm focus:outline-none transform hover:scale-101 transition duration-200 ease-in",
+                    { hidden: !distributionOpen }
+                  )}
+                >
+                  {showDistributions[i] === true
+                    ? "Hide Fine Requirements"
+                    : "Show Fine Requirements"}
+                </button>
+              ) : null}
+            </div>
+          );
+        })}
     </div>
   );
 };

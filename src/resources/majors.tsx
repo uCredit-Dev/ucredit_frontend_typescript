@@ -1413,7 +1413,7 @@ const bsCS_New: Major = {
         "remaining courses must be 200-level or above. The BS math courses must include coverage " +
         "of both probability and statistics, which can be satisfied in many ways, including " +
         "taking any of the 553.3xx combined Probability & Statistics courses.",
-      criteria: "AS Mathematics[D]^OR^EN Applied Math and Statistics[D]",
+      criteria: "AS Mathematics[D]^OR^EN Applied Mathematics & Statistics[D]",
       exception: "EN.553.171[C]",
       fine_requirements: [
         {

@@ -16,9 +16,7 @@ import DistributionPopup from "./DistributionPopup";
 const CourseBar: FC<{
   distribution: requirements;
   general: boolean;
-  description: string;
-  total: boolean;
-}> = ({ distribution, general, description, total }) => {
+}> = ({ distribution, general }) => {
   const [displayAdd, setDisplayAdd] = useState(false);
   const [flipped, setFlipped] = useState<string[]>([]);
   const [plannedCredits, setPlannedCredits] = useState(
@@ -37,16 +35,11 @@ const CourseBar: FC<{
     let temp = distribution.fulfilled_credits;
     setPlannedCredits(temp);
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [
-    currPlanCourses,
-    distribution.expr,
-    flipped,
-    distribution.fulfilled_credits,
-  ]);
+  }, [currPlanCourses, flipped, distribution.fulfilled_credits]);
 
   const tooltip =
     `<div style="overflow: wrap; margin-bottom: 1rem;">${section}</div>` +
-    `<div style="margin-bottom: 1rem;">${description}</div>` +
+    `<div style="margin-bottom: 1rem;">${distribution.description}</div>` +
     `<div style='width: 90px; height: auto;'><div style='width: 100%; display: flex; flex-direction: row; justify-content: space-between;'>` +
     `<div>Planned</div><div>${plannedCredits}</div></div><div style='display: flex; flex-direction: row; justify-content: space-between;'>${
       remainingCredits !== 0
