@@ -72,8 +72,6 @@ const DistributionBars: FC<{
     ReactTooltip.rebuild();
   }, [displayGeneral, props.major]);
 
-  useEffect(() => console.log(props.major), [props.major]);
-
   return (
     <div>
       <CourseBar

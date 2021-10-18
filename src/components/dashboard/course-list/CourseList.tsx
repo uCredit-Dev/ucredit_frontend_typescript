@@ -68,7 +68,6 @@ const CourseList: FC = () => {
           // We simply update courses
           year.courses.forEach((course: string) => {
             const courseObj: UserCourse = getUserCourse(course);
-            console.log(course, courseObj);
             if (courseObj._id === "invalid_course") return;
             totalCredits += courseObj.credits;
             totCourses.push(courseObj);

@@ -16,8 +16,6 @@ import {
 import { toast, ToastContainer } from "react-toastify";
 import ReactTooltip from "react-tooltip";
 import { SISRetrievedCourse, UserCourse, Year } from "../resources/commonTypes";
-// import bird from "./../resources/images/birdTempGif.gif";
-// import logoLine from "../resources/images/line-art/logo_line_lighter.png";
 import { selectPlan } from "../slices/currentPlanSlice";
 import LandingPage from "./landing-page";
 
@@ -56,21 +54,6 @@ function App() {
         console.log("err is ", err.message);
       });
   };
-
-  // const retrieveAllCourses = () => {
-  //   axios
-  //     .get(api + "/search/all", {
-  //       params: {},
-  //     })
-  //     .then((courses: any) => {
-  //       const retrieved = courses.data.data;
-  //       dispatch(updateAllCoursesCached(retrieved));
-  //       dispatch(updateRetrievedAll(true));
-  //     })
-  //     .catch((err) => {
-  //       console.log(err);
-  //     });
-  // };
 
   useEffect(() => {
     if (user._id === "noUser") {

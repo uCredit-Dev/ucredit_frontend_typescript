@@ -370,7 +370,6 @@ function UserSection({ _id }: UserProps) {
       })
         .then((resp) => resp.json())
         .then((retrievedUser) => {
-          console.log(retrievedUser);
           if (retrievedUser.errors === undefined) {
             dispatch(updateUser(retrievedUser.data));
             setLoginId(cookieVal);
