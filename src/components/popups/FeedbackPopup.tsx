@@ -1,10 +1,10 @@
-import React from "react";
+import { FC } from "react";
 
 /**
  * Feedback form popup.
  * @prop setFormPopup - opens or closes feed back form popup
  */
-const FeedbackPopup = ({ setFormPopup }: { setFormPopup: Function }) => {
+const FeedbackPopup: FC<{ setFormPopup: Function }> = ({ setFormPopup }) => {
   return (
     <div>
       {/* Background Grey */}

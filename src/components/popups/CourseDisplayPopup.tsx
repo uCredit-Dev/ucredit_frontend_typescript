@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { FC, useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import Placeholder from "./course-search/search-results/Placeholder";
 import {
@@ -39,7 +39,7 @@ import SisCourse from "./course-search/search-results/SisCourse";
 /**
  * Course info popup that opens when user preses info button on course components
  */
-const CourseDisplayPopup = () => {
+const CourseDisplayPopup: FC = () => {
   // Redux Setup
   const dispatch = useDispatch();
   const courseToShow: UserCourse | null = useSelector(selectCourseToShow);

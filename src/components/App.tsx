@@ -1,5 +1,5 @@
 import axios from "axios";
-import { useEffect } from "react";
+import { FC, useEffect } from "react";
 import { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Switch, Route, useLocation } from "react-router-dom";
@@ -22,7 +22,7 @@ import LandingPage from "./landing-page";
 /**
  * Root app component, where it all begins...
  */
-function App() {
+const App: FC = () => {
   const dispatch = useDispatch();
   // const importing = useSelector(selectImportingStatus);
   const user = useSelector(selectUser);
@@ -169,6 +169,6 @@ function App() {
       />
     </>
   );
-}
+};
 
 export default App;

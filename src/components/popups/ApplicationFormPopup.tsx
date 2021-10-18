@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import { FC, useState } from "react";
 import { toast } from "react-toastify";
 import emailjs from "emailjs-com";
 emailjs.init("user_7Cn3A3FQW9PTxExf6Npel");
@@ -7,11 +7,9 @@ emailjs.init("user_7Cn3A3FQW9PTxExf6Npel");
  * This is the recruitment application popup from the landing page
  * @prop setActivateEmailPopup - determines whether to display this popup
  */
-const ApplicationFormPopup = ({
-  setActivateEmailPopup,
-}: {
+const ApplicationFormPopup: FC<{
   setActivateEmailPopup: Function;
-}) => {
+}> = ({ setActivateEmailPopup }) => {
   const [year, setYear] = useState<string>("");
   const [reason, setReason] = useState<string>("");
   const [position, setPosition] = useState<string>("");

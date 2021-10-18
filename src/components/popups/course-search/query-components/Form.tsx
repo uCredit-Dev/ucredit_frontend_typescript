@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import { FC, useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import {
   updateSearchTerm,
@@ -37,7 +37,7 @@ type SearchMapEl = {
  *
  * @prop setSearching - sets searching state
  */
-const Form = (props: { setSearching: Function }) => {
+const Form: FC<{ setSearching: Function }> = (props) => {
   // Set up redux dispatch and variables.
   const dispatch = useDispatch();
   const searchTerm = useSelector(selectSearchterm);
@@ -96,12 +96,17 @@ const Form = (props: { setSearching: Function }) => {
 
     props.setSearching(true);
 
-    // Search with half second debounce.
-    const search = setTimeout(
-      performSmartSearch(extras, searchTerm.length),
-      500
-    );
-    return () => clearTimeout(search);
+    if (searchTerm.length > 0) {
+      // Search with half second debounce.
+      const search = setTimeout(
+        performSmartSearch(extras, searchTerm.length),
+        500
+      );
+      return () => clearTimeout(search);
+    } else {
+      console.log("Finding", extras);
+      find(extras).then((found) => dispatch(updateRetrievedCourses(found[0])));
+    }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [searchTerm, searchFilters]);
 
@@ -131,6 +136,7 @@ const Form = (props: { setSearching: Function }) => {
             ) {
               props.setSearching(false);
             }
+            console.log(SISRetrieved);
             return resolve([SISRetrieved, []]);
           })
           .catch(() => {

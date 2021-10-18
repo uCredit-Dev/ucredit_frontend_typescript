@@ -1,4 +1,4 @@
-import React from "react";
+import { FC } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import {
   selectPlanList,
@@ -21,7 +21,7 @@ import {
  * This is the confirmation popup that appears when users press the button to delete a course.
  * It actually performs the deletion or cancels it.
  */
-const DeleteCoursePopup = () => {
+const DeleteCoursePopup: FC = () => {
   // Redux Setup
   const dispatch = useDispatch();
   const user = useSelector(selectUser);

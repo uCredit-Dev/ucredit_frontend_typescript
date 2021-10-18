@@ -1,4 +1,4 @@
-import React from "react";
+import { FC } from "react";
 import { useDispatch } from "react-redux";
 import { updateAddingPrereq } from "../../slices/popupSlice";
 
@@ -6,7 +6,7 @@ import { updateAddingPrereq } from "../../slices/popupSlice";
  * This is the confirmation popup that appears when users press the button to delete a plan.
  * It actually performs the deletion or cancels it.
  */
-const AddingPrereqPopup = () => {
+const AddingPrereqPopup: FC = () => {
   const dispatch = useDispatch();
   return (
     <div className="absolute top-0">

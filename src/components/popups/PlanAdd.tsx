@@ -1,4 +1,4 @@
-import React from "react";
+import { FC } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { toast } from "react-toastify";
 import { selectPlanList } from "../../slices/userSlice";
@@ -25,7 +25,7 @@ const majorOptions = [
  * TODO: Implement all commented code features
  * @prop setGenerateNew - signals the generateNewPlan component to generate a new plan.
  * */
-const PlanAdd = () => {
+const PlanAdd: FC = () => {
   // Redux setup
   const dispatch = useDispatch();
   const toAddName = useSelector(selectToAddName);

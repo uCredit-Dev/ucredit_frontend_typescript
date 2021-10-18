@@ -1,4 +1,4 @@
-import React from "react";
+import { FC } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import {
   selectUser,
@@ -16,7 +16,7 @@ import { updateDeletePlanStatus } from "../../slices/popupSlice";
  * This is the confirmation popup that appears when users press the button to delete a plan.
  * It actually performs the deletion or cancels it.
  */
-const DeletePlanPopup = () => {
+const DeletePlanPopup: FC = () => {
   // Redux Setup
   const dispatch = useDispatch();
   const user = useSelector(selectUser);

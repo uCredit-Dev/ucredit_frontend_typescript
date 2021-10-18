@@ -1,4 +1,4 @@
-import React from "react";
+import { FC } from "react";
 import { ReactComponent as CloseSVG } from "../../resources/svg/Close.svg";
 
 /**
@@ -6,13 +6,10 @@ import { ReactComponent as CloseSVG } from "../../resources/svg/Close.svg";
  * @prop actionHandler - handles notification action (ie. clicking on link)
  * @prop notifHandler - handles opening and closing notification popup
  */
-const FeedbackNotification = ({
-  actionHandler,
-  notifHandler,
-}: {
+const FeedbackNotification: FC<{
   actionHandler: Function;
   notifHandler: Function;
-}) => {
+}> = ({ actionHandler, notifHandler }) => {
   return (
     <div className="fixed z-40 bottom-0 flex flex-row pl-16 py-2 w-full font-bold bg-green-400 select-none">
       <div className="flex flex-row flex-grow">
