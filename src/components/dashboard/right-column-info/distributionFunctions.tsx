@@ -27,26 +27,30 @@ export const updateFulfilled = (
   requirements: [string, requirements[]][],
   courses: UserCourse[],
   courseCache: SISRetrievedCourse[],
-  currPlanCourses: UserCourse[]
+  setPing: Function,
+  ping: boolean,
+  setDistributions
 ) => {
+  setDistributions(requirements);
   courses.forEach((course) => {
-    getCourse(course.number, courseCache, currPlanCourses).then((courseObj) => {
-      if (courseObj === null || courseObj === undefined) {
-        return;
-      }
-      for (let i = 0; i < requirements.length; i++) {
-        for (let j = 0; j < requirements[i][1].length; j++) {
-          let requirement = requirements[i][1][j];
+    let count = 0;
+    setDistributions(requirements);
+    getCourse(course.number, courseCache, courses).then((courseObj) => {
+      requirements.forEach((reqGroup) => {
+        reqGroup[1].forEach((req) => {
+          count++;
           if (
-            checkRequirementSatisfied(
-              splitRequirements(requirement.expr),
-              courseObj
-            )
+            courseObj !== null &&
+            checkRequirementSatisfied(splitRequirements(req.expr), courseObj)
           ) {
-            requirement.fulfilled_credits += parseFloat(courseObj.credits);
+            req.fulfilled_credits += parseFloat(courseObj.credits);
           }
-        }
-      }
+          if (count === courses.length) {
+            setDistributions(requirements);
+            setPing(!ping);
+          }
+        });
+      });
     });
   });
 };

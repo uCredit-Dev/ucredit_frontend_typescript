@@ -63,6 +63,7 @@ const CourseList: FC = () => {
     currentPlan.years.forEach((year: Year, yearIndex: number) => {
       const yearCourses: UserCourse[] = [];
       if (year.courses !== undefined) {
+        if (year.courses.length > 0) noCourses = false;
         setCurrentPlanId(currentPlan._id);
         if (year.courses.length === 0 || currentPlanId === currentPlan._id) {
           // We simply update courses
@@ -90,7 +91,6 @@ const CourseList: FC = () => {
           }
         } else if (currentPlanId !== currentPlan._id) {
           setCurrentPlanId(currentPlan._id);
-          noCourses = false;
           year.courses.forEach((courseId: string) => {
             axios
               .get(api + "/courses/" + courseId)

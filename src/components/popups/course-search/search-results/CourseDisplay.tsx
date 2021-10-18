@@ -20,8 +20,10 @@ import "react-toastify/dist/ReactToastify.css";
 import {
   selectCurrentPlanCourses,
   selectPlan,
+  selectTotalCredits,
   updateCurrentPlanCourses,
   updateSelectedPlan,
+  updateTotalCredits,
 } from "../../../../slices/currentPlanSlice";
 import { api } from "../../../../resources/assets";
 import SisCourse from "./SisCourse";
@@ -40,6 +42,7 @@ const CourseDisplay = () => {
   const planList = useSelector(selectPlanList);
   const placeholder = useSelector(selectPlaceholder);
   const currentCourses = useSelector(selectCurrentPlanCourses);
+  const totalCredits = useSelector(selectTotalCredits);
 
   // component state setup
   const [inspectedArea, setInspectedArea] = useState<string>("None");
@@ -135,6 +138,7 @@ const CourseDisplay = () => {
               }
             }
             dispatch(updatePlanList(newPlanList));
+            dispatch(updateTotalCredits(totalCredits + newUserCourse.credits));
             toast.success(version.title + " added!", {
               position: "top-right",
               autoClose: 5000,

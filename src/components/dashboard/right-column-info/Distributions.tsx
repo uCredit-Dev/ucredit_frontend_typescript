@@ -1,95 +1,77 @@
-import clsx from "clsx";
 import { FC, useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 import ReactTooltip from "react-tooltip";
 import { getMajor } from "../../../resources/assets";
 import { Major } from "../../../resources/commonTypes";
 import {
-  selectPlan,
   selectCurrentPlanCourses,
+  selectPlan,
   selectTotalCredits,
 } from "../../../slices/currentPlanSlice";
 import { selectCourseCache } from "../../../slices/userSlice";
 import CourseBar from "./CourseBar";
+import DegreeReqs from "./DegreeReqs";
 import {
-  requirements,
   updateFulfilled,
+  requirements,
   getRequirements,
 } from "./distributionFunctions";
-import FineDistribution from "./FineDistribution";
 
 /**
  * Area in the right hand plan information that shows various elements of degree progression.
  */
 const Distributions: FC = () => {
-  const currentPlan = useSelector(selectPlan);
+  const totalCredits = useSelector(selectTotalCredits);
   const courseCache = useSelector(selectCourseCache);
   const currPlanCourses = useSelector(selectCurrentPlanCourses);
-  const totalCredits = useSelector(selectTotalCredits);
+  const currentPlan = useSelector(selectPlan);
 
   // Component state setup.
+  const [distributionOpen, setDistributionOpen] = useState<boolean>(true);
+  const [displayGeneral] = useState<boolean>(true); // Sets all distributions for distribution bars.
+  const [disclaimer, setDisclaimer] = useState<boolean>(false);
+  const [major, setMajor] = useState<Major | null>(null);
+  const [ping, setPing] = useState<boolean>(false);
   const [distributions, setDistributions] = useState<
     [string, requirements[]][]
   >([]);
-  const [distributionOpen, setDistributionOpen] = useState<boolean>(true);
-  const [displayGeneral] = useState<boolean>(true); // Sets all distributions for distribution bars.
-  const [showDistributions, setShowDistributions] = useState<boolean[]>(
-    new Array(distributions.length)
-  );
-  const [major, setMajor] = useState<Major | null>(null);
-  const [disclaimer, setDisclaimer] = useState<boolean>(false);
-  const [updated, setUpdated] = useState<boolean>(false);
-
-  // Gets distribution everytime a plan changes.
-  useEffect(() => {
-    if (distributions.length > 0) {
-      updateFulfilled(
-        distributions,
-        currPlanCourses,
-        courseCache,
-        currPlanCourses
-      );
-      setUpdated(true);
-    }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [distributions]);
-
-  useEffect(() => {
-    getDistributions();
-    setUpdated(false);
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [currPlanCourses]);
 
   useEffect(() => {
     ReactTooltip.rebuild();
-  }, [displayGeneral, distributions]);
+  }, [displayGeneral]);
+
+  // Gets distribution everytime a plan changes.
+  useEffect(() => {
+    const distr = getDistributions();
+    if (distr && distr.length > 0) {
+      updateFulfilled(
+        distr,
+        currPlanCourses,
+        courseCache,
+        setPing,
+        ping,
+        setDistributions
+      );
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [major, currPlanCourses]);
 
   /**
    * Gets all distributions associated with current plan
    * @returns an array of pairs for distributions and their requirements if distributions exist and null if they don't
    */
-  const getDistributions = (): void => {
+  const getDistributions = (): [string, requirements[]][] | null => {
     let major: string | undefined = currentPlan.majors[0];
     if (major === undefined) {
-      return;
+      return null;
     }
     let majorObj: Major | undefined = getMajor(major);
     if (majorObj === undefined) {
-      return;
+      return null;
     }
     setMajor(majorObj);
     let distr = getRequirements(majorObj);
-    setDistributions(distr);
-  };
-
-  /**
-   * Changes whether fine distributions are hidden
-   * @param i - the distribution's index amongst other distributions
-   */
-  const changeDistributionVisibility = (i: number) => {
-    let showDistributionsCopy = showDistributions.slice();
-    showDistributionsCopy[i] = !showDistributions[i];
-    setShowDistributions(showDistributionsCopy);
+    return distr;
   };
 
   return (
@@ -153,49 +135,13 @@ const Distributions: FC = () => {
               : "",
         }}
         general={true}
+        pong={ping}
       />
-      {updated &&
-        distributions.map((pair, i) => {
-          return (
-            <div>
-              {pair[1].map((dis, index) => {
-                if (index === 0) {
-                  return (
-                    <div
-                      key={dis.name}
-                      className={clsx({ hidden: !distributionOpen })}
-                    >
-                      <CourseBar distribution={dis} general={true} />
-                    </div>
-                  );
-                } else {
-                  return (
-                    <FineDistribution
-                      dis={dis}
-                      distributionOpen={distributionOpen}
-                      hidden={showDistributions[i] !== true}
-                    />
-                  );
-                }
-              })}
-              {pair[1].length > 1 ? (
-                <button
-                  onClick={() => {
-                    changeDistributionVisibility(i);
-                  }}
-                  className={clsx(
-                    "mb-2 underline text-sm focus:outline-none transform hover:scale-101 transition duration-200 ease-in",
-                    { hidden: !distributionOpen }
-                  )}
-                >
-                  {showDistributions[i] === true
-                    ? "Hide Fine Requirements"
-                    : "Show Fine Requirements"}
-                </button>
-              ) : null}
-            </div>
-          );
-        })}
+      <DegreeReqs
+        distributionOpen={distributionOpen}
+        pong={ping}
+        distributions={distributions}
+      />
     </div>
   );
 };
