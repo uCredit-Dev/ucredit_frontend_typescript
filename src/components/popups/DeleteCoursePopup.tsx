@@ -1,6 +1,10 @@
 import React from "react";
 import { useSelector, useDispatch } from "react-redux";
-import { selectUser } from "../../slices/userSlice";
+import {
+  selectPlanList,
+  selectUser,
+  updatePlanList,
+} from "../../slices/userSlice";
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import GenerateNewPlan from "../../resources/GenerateNewPlan";
@@ -23,6 +27,7 @@ const DeleteCoursePopup = () => {
   const user = useSelector(selectUser);
   const currentPlan = useSelector(selectPlan);
   const courseInfo = useSelector(selectCourseToDelete);
+  const planList = useSelector(selectPlanList);
 
   /**
    * Popup for deleting current selected course.
@@ -54,6 +59,15 @@ const DeleteCoursePopup = () => {
           progress: 0,
         });
         dispatch(updateSelectedPlan(newPlan));
+        dispatch(
+          updatePlanList(
+            planList.map((plan) => {
+              if (plan._id === newPlan._id) {
+                return newPlan;
+              } else return plan;
+            })
+          )
+        );
         dispatch(updateDeleteCourseStatus(false));
         dispatch(updateCourseToDelete(null));
       });

@@ -27,32 +27,45 @@ export const updateFulfilled = (
   requirements: [string, requirements[]][],
   courses: UserCourse[],
   courseCache: SISRetrievedCourse[],
-  setPing: Function,
-  ping: boolean,
-  setDistributions
+  setDistributions: Function
 ) => {
   setDistributions(requirements);
+  let reqCopy: [string, requirements[]][] = copyReqs(requirements);
+  let count = 0;
   courses.forEach((course) => {
-    let count = 0;
-    setDistributions(requirements);
     getCourse(course.number, courseCache, courses).then((courseObj) => {
-      requirements.forEach((reqGroup) => {
-        reqGroup[1].forEach((req) => {
-          count++;
-          if (
-            courseObj !== null &&
-            checkRequirementSatisfied(splitRequirements(req.expr), courseObj)
-          ) {
-            req.fulfilled_credits += parseFloat(courseObj.credits);
-          }
-          if (count === courses.length) {
-            setDistributions(requirements);
-            setPing(!ping);
-          }
-        });
-      });
+      const localReqCopy = copyReqs(reqCopy);
+      updateReqs(localReqCopy, courseObj);
+      reqCopy = localReqCopy;
+      count++;
+      if (count === courses.length) {
+        setDistributions(reqCopy);
+      }
     });
   });
+};
+
+const updateReqs = (requirements, courseObj) => {
+  requirements.forEach((reqGroup, i) => {
+    reqGroup[1].forEach((req, j) => {
+      if (
+        courseObj !== null &&
+        checkRequirementSatisfied(splitRequirements(req.expr), courseObj)
+      ) {
+        requirements[i][1][j].fulfilled_credits += parseInt(courseObj.credits);
+      }
+    });
+  });
+};
+
+const copyReqs = (requirements) => {
+  const reqCopy: [string, requirements[]][] = [];
+  requirements.forEach((reqGroup) => {
+    const reqGroupCopy: any = [];
+    reqGroup[1].forEach((req) => reqGroupCopy.push({ ...req }));
+    reqCopy.push([reqGroup[0], reqGroupCopy]);
+  });
+  return reqCopy;
 };
 
 /**

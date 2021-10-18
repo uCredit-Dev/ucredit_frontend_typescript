@@ -1,7 +1,10 @@
 import clsx from "clsx";
 import { useState, useEffect, FC } from "react";
 import { useSelector } from "react-redux";
-import { selectCurrentPlanCourses } from "../../../slices/currentPlanSlice";
+import {
+  selectCurrentPlanCourses,
+  selectDistributions,
+} from "../../../slices/currentPlanSlice";
 import { requirements } from "./distributionFunctions";
 import { ReactComponent as CheckSvg } from "../../../resources/svg/Check.svg";
 import DistributionPopup from "./DistributionPopup";
@@ -16,8 +19,7 @@ import DistributionPopup from "./DistributionPopup";
 const CourseBar: FC<{
   distribution: requirements;
   general: boolean;
-  pong: boolean;
-}> = ({ distribution, general, pong }) => {
+}> = ({ distribution, general }) => {
   const [displayAdd, setDisplayAdd] = useState(false);
   const [flipped, setFlipped] = useState<string[]>([]);
   const [plannedCredits, setPlannedCredits] = useState(
@@ -27,6 +29,7 @@ const CourseBar: FC<{
   const currPlanCourses = useSelector(selectCurrentPlanCourses);
   const maxCredits = distribution.required_credits;
   const section = distribution.name;
+  const distributions = useSelector(selectDistributions);
 
   const remainingCredits =
     plannedCredits <= maxCredits ? maxCredits - plannedCredits : 0;
@@ -36,7 +39,13 @@ const CourseBar: FC<{
     let temp = distribution.fulfilled_credits;
     setPlannedCredits(temp);
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [currPlanCourses, flipped, distribution.fulfilled_credits, pong]);
+  }, [
+    currPlanCourses,
+    flipped,
+    distribution.fulfilled_credits,
+    distribution,
+    distributions,
+  ]);
 
   const tooltip =
     `<div style="overflow: wrap; margin-bottom: 1rem;">${section}</div>` +

@@ -1,78 +1,35 @@
 import { FC, useEffect, useState } from "react";
 import { useSelector } from "react-redux";
-import ReactTooltip from "react-tooltip";
 import { getMajor } from "../../../resources/assets";
 import { Major } from "../../../resources/commonTypes";
 import {
   selectCurrentPlanCourses,
   selectPlan,
-  selectTotalCredits,
 } from "../../../slices/currentPlanSlice";
-import { selectCourseCache } from "../../../slices/userSlice";
-import CourseBar from "./CourseBar";
-import DegreeReqs from "./DegreeReqs";
-import {
-  updateFulfilled,
-  requirements,
-  getRequirements,
-} from "./distributionFunctions";
+import DistributionBars from "./DistributionBars";
 
 /**
  * Area in the right hand plan information that shows various elements of degree progression.
  */
 const Distributions: FC = () => {
-  const totalCredits = useSelector(selectTotalCredits);
-  const courseCache = useSelector(selectCourseCache);
-  const currPlanCourses = useSelector(selectCurrentPlanCourses);
   const currentPlan = useSelector(selectPlan);
+  const currPlanCourses = useSelector(selectCurrentPlanCourses);
 
   // Component state setup.
   const [distributionOpen, setDistributionOpen] = useState<boolean>(true);
-  const [displayGeneral] = useState<boolean>(true); // Sets all distributions for distribution bars.
   const [disclaimer, setDisclaimer] = useState<boolean>(false);
   const [major, setMajor] = useState<Major | null>(null);
-  const [ping, setPing] = useState<boolean>(false);
-  const [distributions, setDistributions] = useState<
-    [string, requirements[]][]
-  >([]);
 
   useEffect(() => {
-    ReactTooltip.rebuild();
-  }, [displayGeneral]);
-
-  // Gets distribution everytime a plan changes.
-  useEffect(() => {
-    const distr = getDistributions();
-    if (distr && distr.length > 0) {
-      updateFulfilled(
-        distr,
-        currPlanCourses,
-        courseCache,
-        setPing,
-        ping,
-        setDistributions
-      );
-    }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [major, currPlanCourses]);
-
-  /**
-   * Gets all distributions associated with current plan
-   * @returns an array of pairs for distributions and their requirements if distributions exist and null if they don't
-   */
-  const getDistributions = (): [string, requirements[]][] | null => {
     let major: string | undefined = currentPlan.majors[0];
     if (major === undefined) {
-      return null;
+      return;
     }
     let majorObj: Major | undefined = getMajor(major);
-    if (majorObj === undefined) {
-      return null;
+    if (majorObj !== undefined) {
+      setMajor(majorObj);
     }
-    setMajor(majorObj);
-    let distr = getRequirements(majorObj);
-    return distr;
-  };
+  }, [currentPlan._id, currentPlan, currentPlan.majors, currPlanCourses]);
 
   return (
     <div className="flex-none mx-4 p-6 w-96 h-auto bg-white rounded shadow">
@@ -122,26 +79,7 @@ const Distributions: FC = () => {
           report any issues in the feedback form.
         </div>
       ) : null}
-      <CourseBar
-        distribution={{
-          name: "Total Credits",
-          expr: "",
-          required_credits: major !== null ? major.total_degree_credit : 0,
-          fulfilled_credits: totalCredits,
-          description:
-            major !== null
-              ? "This is the total amount of credits that is required for " +
-                major.degree_name
-              : "",
-        }}
-        general={true}
-        pong={ping}
-      />
-      <DegreeReqs
-        distributionOpen={distributionOpen}
-        pong={ping}
-        distributions={distributions}
-      />
+      <DistributionBars major={major} distributionOpen={distributionOpen} />
     </div>
   );
 };

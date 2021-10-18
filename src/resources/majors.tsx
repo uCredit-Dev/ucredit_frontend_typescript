@@ -1358,7 +1358,8 @@ const bsCS_New: Major = {
       description:
         "For more information please visit the <a href='https://www.cs.jhu.edu/2021undergraduate-advising-manual/'>" +
         "major degree requirement</a> section on the department website.",
-      criteria: "EN Computer Science[D]^OR^CSCI-OTHER[T]",
+      criteria:
+        "EN Computer Science[D]^OR^CSCI-OTHER[T]^OR^Gateway Computing[N]",
       fine_requirements: [
         {
           description:

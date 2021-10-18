@@ -59,17 +59,18 @@ const CourseList: FC = () => {
     const jsx: JSX.Element[] = [];
     const totCourses: UserCourse[] = [];
     let totalCredits: number = 0;
-    let noCourses: boolean = true;
+    let updateNonFetch: boolean = true;
     currentPlan.years.forEach((year: Year, yearIndex: number) => {
       const yearCourses: UserCourse[] = [];
       if (year.courses !== undefined) {
-        if (year.courses.length > 0) noCourses = false;
         setCurrentPlanId(currentPlan._id);
         if (year.courses.length === 0 || currentPlanId === currentPlan._id) {
           // We simply update courses
           year.courses.forEach((course: string) => {
             const courseObj: UserCourse = getUserCourse(course);
+            console.log(course, courseObj);
             if (courseObj._id === "invalid_course") return;
+            totalCredits += courseObj.credits;
             totCourses.push(courseObj);
             yearCourses.push(courseObj);
           });
@@ -90,6 +91,7 @@ const CourseList: FC = () => {
             setElements(jsx);
           }
         } else if (currentPlanId !== currentPlan._id) {
+          updateNonFetch = false;
           setCurrentPlanId(currentPlan._id);
           year.courses.forEach((courseId: string) => {
             axios
@@ -124,8 +126,8 @@ const CourseList: FC = () => {
           });
         }
       }
-      // Handle empty courses
-      if (yearIndex === currentPlan.years.length - 1 && noCourses) {
+      // Handle non-fetch scenerios
+      if (yearIndex === currentPlan.years.length - 1 && updateNonFetch) {
         dispatch(updateCurrentPlanCourses(totCourses));
         dispatch(updateTotalCredits(totalCredits));
       }

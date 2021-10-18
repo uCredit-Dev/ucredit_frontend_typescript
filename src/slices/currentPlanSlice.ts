@@ -1,15 +1,15 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { RootState } from "../appStore/store";
 import {
-  Distribution,
   DroppableType,
   Plan,
   UserCourse,
 } from "../components/../resources/commonTypes";
+import { requirements } from "../components/dashboard/right-column-info/distributionFunctions";
 
 type CurrentPlanSlice = {
   plan: Plan;
-  distributions: Distribution[];
+  distributions: [string, requirements[]][];
   currentPlanCourses: UserCourse[];
   totalCredits: number;
   droppables: DroppableType[];
@@ -42,7 +42,7 @@ export const currentPlanSlice = createSlice({
     },
     updateDistributions: (
       state: any,
-      action: PayloadAction<Distribution[]>
+      action: PayloadAction<[string, requirements[]][]>
     ) => {
       state.distributions = [...action.payload];
     },
