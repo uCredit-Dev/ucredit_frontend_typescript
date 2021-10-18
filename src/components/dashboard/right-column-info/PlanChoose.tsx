@@ -1,4 +1,4 @@
-import React, { useState, useEffect, FC } from "react";
+import { useState, useEffect, FC } from "react";
 import axios from "axios";
 import { Plan } from "../../../resources/commonTypes";
 import { useDispatch, useSelector } from "react-redux";
@@ -153,10 +153,6 @@ const PlanChoose: FC = () => {
     <>
       {/* dummy component to generate new plans */}
       <GenerateNewPlan />
-      {/* <button
-        className="mx-auto w-planselect text-white bg-primary rounded focus:outline-none transform hover:scale-105 transition duration-200 ease-in"
-        onClick={openSelectDropdown}
-      > */}
       <div className="relative flex flex-col">
         <button
           className="ml-auto mr-4 px-2 py-1 text-white hover:bg-blue-400 bg-green-400 rounded focus:outline-none shadow select-none transform hover:scale-105 transition duration-200 ease-in"

@@ -232,7 +232,6 @@ const Form = (props: { setSearching: Function }) => {
             params: getParams(extras),
           })
           .then((retrieved) => {
-            console.log(retrieved);
             let retrievedCourses: SISRetrievedCourse[] = retrieved.data.data;
             dispatch(updateCourseCache([...retrievedCourses]));
             let SISRetrieved: SISRetrievedCourse[] = retrieved.data.data;

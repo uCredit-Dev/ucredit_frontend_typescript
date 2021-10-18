@@ -1,5 +1,5 @@
 import clsx from "clsx";
-import React, { FC, useEffect, useState } from "react";
+import { FC, useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 import ReactTooltip from "react-tooltip";
 import { getMajor } from "../../../resources/assets";
@@ -43,6 +43,7 @@ const Distributions: FC = () => {
   useEffect(() => {
     const distr = getDistributions();
     if (distr !== null) {
+      console.log("getting");
       updateFulfilled(distr, currPlanCourses, courseCache, currPlanCourses);
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps

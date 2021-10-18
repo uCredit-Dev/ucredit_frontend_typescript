@@ -1,4 +1,4 @@
-import React, { useState, useEffect, FC } from "react";
+import { useState, useEffect, FC } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import {
   DroppableType,
@@ -46,7 +46,6 @@ const CourseList: FC = () => {
   const user = useSelector(selectUser);
   const searching = useSelector(selectSearchStatus);
   const placeholder = useSelector(selectPlaceholder);
-  const totalCredits = useSelector(selectTotalCredits);
   const droppables = useSelector(selectDroppables);
   const currentPlanCourses = useSelector(selectCurrentPlanCourses);
   const planList = useSelector(selectPlanList);
@@ -60,6 +59,8 @@ const CourseList: FC = () => {
   useEffect(() => {
     const jsx: JSX.Element[] = [];
     const totCourses: UserCourse[] = [];
+    let totalCredits: number = 0;
+    let noCourses: boolean = true;
     currentPlan.years.forEach((year: Year, yearIndex: number) => {
       const yearCourses: UserCourse[] = [];
       if (year.courses !== undefined) {
@@ -90,14 +91,15 @@ const CourseList: FC = () => {
           }
         } else if (currentPlanId !== currentPlan._id) {
           setCurrentPlanId(currentPlan._id);
-          year.courses.forEach((courseId: string, courseIndex: number) => {
+          noCourses = false;
+          year.courses.forEach((courseId: string) => {
             axios
               .get(api + "/courses/" + courseId)
               .then((resp) => {
                 const course: UserCourse = resp.data.data;
                 yearCourses.push(course);
-                dispatch(updateTotalCredits(totalCredits + course.credits));
                 totCourses.push(course);
+                totalCredits += course.credits;
                 if (yearCourses.length === year.courses.length) {
                   // make all the updates here
                   jsx.push(
@@ -114,6 +116,7 @@ const CourseList: FC = () => {
                         el1.props.id - el2.props.id
                     );
                     dispatch(updateCurrentPlanCourses(totCourses));
+                    dispatch(updateTotalCredits(totalCredits));
                     setElements(jsx);
                   }
                 }
@@ -121,6 +124,12 @@ const CourseList: FC = () => {
               .catch((err) => console.log(err));
           });
         }
+      }
+      // Handle empty courses
+      if (yearIndex === currentPlan.years.length - 1 && noCourses) {
+        console.log("no courses");
+        dispatch(updateCurrentPlanCourses(totCourses));
+        dispatch(updateTotalCredits(totalCredits));
       }
     });
     // eslint-disable-next-line react-hooks/exhaustive-deps

@@ -1,18 +1,10 @@
 import clsx from "clsx";
-import React, { useState, useEffect, FC } from "react";
+import { useState, useEffect, FC } from "react";
 import { useSelector } from "react-redux";
 import { selectCurrentPlanCourses } from "../../../slices/currentPlanSlice";
-import { selectCourseCache } from "../../../slices/userSlice";
-import { getCourse } from "../../../resources/assets";
-import {
-  requirements,
-  checkRequirementSatisfied,
-  splitRequirements,
-} from "./distributionFunctions";
-
+import { requirements } from "./distributionFunctions";
 import { ReactComponent as CheckSvg } from "../../../resources/svg/Check.svg";
 import DistributionPopup from "./DistributionPopup";
-import { Course } from "../../../resources/commonTypes";
 
 /**
  * A distribution bar.
@@ -34,7 +26,6 @@ const CourseBar: FC<{
   );
 
   const currPlanCourses = useSelector(selectCurrentPlanCourses);
-  const courseCache = useSelector(selectCourseCache);
   const maxCredits = distribution.required_credits;
   const section = distribution.name;
 
@@ -44,47 +35,7 @@ const CourseBar: FC<{
   // Decides how filled the credit bar is.
   useEffect(() => {
     let temp = distribution.fulfilled_credits;
-    currPlanCourses.forEach((course) => {
-      if (total) {
-        temp += course.credits;
-        setPlannedCredits(temp);
-      } else {
-        getCourse(course.number, courseCache, currPlanCourses).then(
-          (courseObj) => {
-            if (
-              courseObj != null &&
-              checkRequirementSatisfied(
-                splitRequirements(distribution.expr),
-                courseObj
-              ) &&
-              flipped.includes(course.number)
-            ) {
-              //temp -= course.credits;
-            } else {
-              const convertedCourse: Course = {
-                ...course,
-                areas: course.area,
-                school: "",
-                bio: "",
-                restrictions: [],
-                level: "",
-                credits: course.credits.toString(),
-              };
-              if (
-                flipped.includes(course.number) ||
-                checkRequirementSatisfied(
-                  splitRequirements(distribution.expr),
-                  convertedCourse
-                )
-              ) {
-                //temp += course.credits;
-              }
-            }
-            setPlannedCredits(temp);
-          }
-        );
-      }
-    });
+    setPlannedCredits(temp);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [
     currPlanCourses,

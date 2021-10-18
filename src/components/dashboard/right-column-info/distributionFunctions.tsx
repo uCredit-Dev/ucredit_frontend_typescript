@@ -63,9 +63,6 @@ export const checkRequirementSatisfied = (
 ): boolean => {
   const boolExpr: string | void = getBoolExpr(splitArr, course);
   if (boolExpr.length !== 0) {
-    // if (boolExpr !== null && eval(boolExpr)) {
-    //   console.log(splitArr, boolExpr, course.number)
-    // }
     //eslint-disable-next-line no-eval
     return eval(boolExpr);
   } else {
@@ -128,7 +125,10 @@ export const getBoolExpr = (splitArr: string[], course: Course): string => {
           concat = "false";
           break;
         case "A": // Area
-          if (course.areas !== "None" && course.areas.includes(splitArr[index])) {
+          if (
+            course.areas !== "None" &&
+            course.areas.includes(splitArr[index])
+          ) {
             concat = "true";
           } else {
             concat = "false";

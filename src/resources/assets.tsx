@@ -279,8 +279,8 @@ export const course_tags = [
   "WRIT-POET",
 ];
 
-/** 
- * Parse preReq array to determine which are prereqs and which are coreq and other info. 
+/**
+ * Parse preReq array to determine which are prereqs and which are coreq and other info.
  * Actual Prereqs are denoted by isNegative = "N"
  * @param inspected - the course
  * @returns array with valid prereqs
@@ -518,7 +518,6 @@ export const getCourse = async (
               versionIndex = index;
             }
           });
-          //console.log(retrieved);
           store.dispatch(updateCourseCache([retrieved]));
           out = {
             ...retrieved,
@@ -565,7 +564,7 @@ const process = (input: prereqCourses) => {
 };
 
 /**
- * parses input so that we can check whether the prereq is satisfied 
+ * parses input so that we can check whether the prereq is satisfied
  * @param currPlanCourses - courses in the user's plan
  * @param plan - user's plan
  * @param input - the input prereq, either a string, number, or object
@@ -769,7 +768,6 @@ const parsePrereqsOr = (input: any, depth: number): any => {
   return orParsed;
 };
 
-
 /**
  * Checks if a prereq is satisfied by plan
  * @param courses - user's courses
@@ -799,7 +797,6 @@ export const checkPrereq = (
   });
   return satisfied;
 };
-
 
 /**
  * returns a year type from year id
@@ -891,7 +888,7 @@ function getCourseYear(plan: Plan, course: UserCourse): Year | null {
  * @param year - year of the course
  * @param semester -semester of the course
  * @param courseCache - course cache
- * @returns - whether the prereqs are all staisfied 
+ * @returns - whether the prereqs are all staisfied
  */
 export const checkAllPrereqs = (
   currCourses: UserCourse[],
