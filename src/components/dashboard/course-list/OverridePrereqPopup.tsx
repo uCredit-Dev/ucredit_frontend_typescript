@@ -1,17 +1,16 @@
-import React from "react";
+import { FC } from "react";
 
-type PopupType = {
-  courseName: string;
-  cleanup: () => void;
-  save: () => void;
-};
 /**
  * Popup for when user presses button to override prereq.
  * @prop courseName - name of the course you are overriding prereqs for
  * @prop cleanup - state resets and cleanups after updating prereq overrides
  * @prop save - saves the prereq overrides
  */
-function OverridePrereqpopup({ courseName, cleanup, save }: PopupType) {
+const OverridePrereqpopup: FC<{
+  courseName: string;
+  cleanup: () => void;
+  save: () => void;
+}> = ({ courseName, cleanup, save }) => {
   /**
    * Saves overriding prereqs, then cleans up state changes.
    */
@@ -43,6 +42,6 @@ function OverridePrereqpopup({ courseName, cleanup, save }: PopupType) {
       </div>
     </div>
   );
-}
+};
 
 export default OverridePrereqpopup;

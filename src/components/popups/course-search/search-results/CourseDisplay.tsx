@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { FC, useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { Plan, UserCourse, Year } from "../../../../resources/commonTypes";
 import {
@@ -31,7 +31,7 @@ import SisCourse from "./SisCourse";
 /**
  * Displays course information once a user selects a course in the search list
  */
-const CourseDisplay = () => {
+const CourseDisplay: FC = () => {
   // Redux Setup
   const dispatch = useDispatch();
   const version = useSelector(selectVersion);

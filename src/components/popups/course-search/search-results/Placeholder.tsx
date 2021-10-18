@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import { useState, useEffect, FC } from "react";
 import { Course, Plan, Year } from "../../../../resources/commonTypes";
 import { useSelector, useDispatch } from "react-redux";
 import { ReactComponent as CloseSvg } from "../../../../resources/svg/Close.svg";
@@ -29,7 +29,7 @@ const tagFilters = ["none", ...course_tags];
  * Page for adding a placeholder
  * @prop addCourse - a function that adds the placeholder to the plan.
  */
-const Placeholder = (props: { addCourse: Function }) => {
+const Placeholder: FC<{ addCourse: Function }> = (props) => {
   // Redux Setup
   const inspectedVersion = useSelector(selectVersion);
   const courseToShow = useSelector(selectCourseToShow);

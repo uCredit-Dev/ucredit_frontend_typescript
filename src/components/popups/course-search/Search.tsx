@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import { FC, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import {
   selectYear,
@@ -16,7 +16,7 @@ import { Year } from "../../../resources/commonTypes";
 /**
  * Search component for when someone clicks a search action.
  */
-const Search = () => {
+const Search: FC = () => {
   // Component states
   const [searchOpacity, setSearchOpacity] = useState<number>(100);
   const [searching, setSearching] = useState<boolean>(false);

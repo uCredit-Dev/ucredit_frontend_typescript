@@ -1,14 +1,7 @@
-import React, { useState } from "react";
+import { FC, useState } from "react";
 import { Draggable } from "react-beautiful-dnd";
 import { SemesterType, UserCourse, Year } from "../../../resources/commonTypes";
 import CourseComponent from "./CourseComponent";
-
-type CourseDraggableProps = {
-  course: UserCourse;
-  index: number;
-  semesterYear: Year;
-  semesterName: SemesterType;
-};
 
 /**
  * This is a draggable CourseComponent container used for course DnD.
@@ -17,12 +10,12 @@ type CourseDraggableProps = {
  * @prop semesterYear - the year the parent semester is part of
  * @prop semesterName - the parent semester's name
  */
-const CourseDraggable = ({
-  course,
-  index,
-  semesterYear,
-  semesterName,
-}: CourseDraggableProps) => {
+const CourseDraggable: FC<{
+  course: UserCourse;
+  index: number;
+  semesterYear: Year;
+  semesterName: SemesterType;
+}> = ({ course, index, semesterYear, semesterName }) => {
   const [draggable, setDraggable] = useState<boolean>(true);
   return (
     <Draggable

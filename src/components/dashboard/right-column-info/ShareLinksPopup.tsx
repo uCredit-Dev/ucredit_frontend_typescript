@@ -1,4 +1,4 @@
-import React, { FC } from "react";
+import { FC } from "react";
 import { toast } from "react-toastify";
 import { ReactComponent as Copy } from "../../../resources/svg/Copy.svg";
 

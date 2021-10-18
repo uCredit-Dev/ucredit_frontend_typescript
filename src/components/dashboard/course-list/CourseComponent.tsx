@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import { useState, useEffect, FC } from "react";
 import ReactTooltip from "react-tooltip";
 import { UserCourse, SemesterType, Year } from "../../../resources/commonTypes";
 import { checkAllPrereqs, getColors } from "../../../resources/assets";
@@ -22,13 +22,6 @@ import {
   updateShowCourseInfo,
 } from "../../../slices/popupSlice";
 
-type courseProps = {
-  setDraggable: Function;
-  course: UserCourse;
-  year: Year;
-  semester: SemesterType;
-};
-
 /**
  * This is a course card displayed in the course list under each semester.
  * @prop setDraggable: to determine if we can drag this item.
@@ -36,12 +29,12 @@ type courseProps = {
  * @prop year: year the course is part of
  * @prop semester: semester this course is part of
  */
-function CourseComponent({
-  setDraggable,
-  year,
-  course,
-  semester,
-}: courseProps) {
+const CourseComponent: FC<{
+  setDraggable: Function;
+  course: UserCourse;
+  year: Year;
+  semester: SemesterType;
+}> = ({ setDraggable, year, course, semester }) => {
   // React setup
   const [activated, setActivated] = useState<boolean>(false);
   const [satisfied, setSatisfied] = useState<boolean>(false);
@@ -208,6 +201,6 @@ function CourseComponent({
       </div>
     </>
   );
-}
+};
 
 export default CourseComponent;

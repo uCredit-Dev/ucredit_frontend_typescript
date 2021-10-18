@@ -1,4 +1,4 @@
-import React, { FC, useState } from "react";
+import { FC, useState } from "react";
 import Distributions from "./right-column-info/Distributions";
 import InfoCards from "./right-column-info/InfoCards";
 

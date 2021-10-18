@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import { FC, useEffect } from "react";
 import { useHistory, useLocation } from "react-router-dom";
 import { api, guestUser } from "../../resources/assets";
 import { useDispatch, useSelector } from "react-redux";
@@ -14,7 +14,7 @@ const DEV_ORIGIN = "http://localhost:3000/login/";
  * The login page, designed after the Spotify login page..
  * @prop cookies contains the various resources provided by the wrapper component of react-cookie
  */
-const DashboardEntry = () => {
+const DashboardEntry: FC = () => {
   // Redux setup.
   const dispatch = useDispatch();
   const user = useSelector(selectUser);

@@ -1,4 +1,4 @@
-import React from "react";
+import { FC } from "react";
 import { SISRetrievedCourse, Course } from "../../../../resources/commonTypes";
 import { useDispatch, useSelector } from "react-redux";
 import {
@@ -9,16 +9,14 @@ import {
 } from "../../../../slices/searchSlice";
 import clsx from "clsx";
 
-type cardProps = {
-  course: SISRetrievedCourse;
-  version: number;
-};
-
 /**
  * A course card in the search list.
  * @prop course - the course being displayed.
  */
-const CourseCard = (props: cardProps) => {
+const CourseCard: FC<{
+  course: SISRetrievedCourse;
+  version: number;
+}> = (props) => {
   // Setup Redux
   const dispatch = useDispatch();
   const selectedCourse = useSelector(selectVersion);

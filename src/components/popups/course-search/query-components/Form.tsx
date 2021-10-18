@@ -104,7 +104,6 @@ const Form: FC<{ setSearching: Function }> = (props) => {
       );
       return () => clearTimeout(search);
     } else {
-      console.log("Finding", extras);
       find(extras).then((found) => dispatch(updateRetrievedCourses(found[0])));
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps

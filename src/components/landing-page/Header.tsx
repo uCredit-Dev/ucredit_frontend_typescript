@@ -1,4 +1,4 @@
-import React, { FC } from "react";
+import { FC } from "react";
 import { useHistory } from "react-router-dom";
 import Logo from "../../resources/images/logoDarker.png";
 

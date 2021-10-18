@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import { FC, useEffect } from "react";
 import { ReactComponent as StarSvg } from "../../../../resources/svg/Star.svg";
 import clsx from "clsx";
 import ReactTooltip from "react-tooltip";
@@ -9,7 +9,7 @@ const ratingStars = Array(5).fill(0);
  * A course evaluation card display component.
  * @prop props - rating: the evaluation rating, summary: the evaluation summary
  */
-const CourseEvalCard = (props: { rating: string; summary: string }) => {
+const CourseEvalCard: FC<{ rating: string; summary: string }> = (props) => {
   const ratingNum = Math.trunc(parseInt(props.rating)) - 1;
 
   useEffect(() => {

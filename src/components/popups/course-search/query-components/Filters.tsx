@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import { FC, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import Select from "react-select";
 import ReactTooltip from "react-tooltip";
@@ -14,14 +14,13 @@ const creditFilters = ["Any", 0, 1, 2, 3, 4];
 const distributionFilters = ["N", "S", "H", "Q", "E"];
 const yearFilters = [2021, 2020, 2019, 2018, 2017];
 const wiFilters = ["Any", "Yes", "No"];
-type filterProps = {
-  showCriteria: boolean;
-};
 
 /**
  * The component containing all search filters.
  */
-const Filters = ({ showCriteria }: filterProps) => {
+const Filters: FC<{
+  showCriteria: boolean;
+}> = (props) => {
   // Set up redux dispatch and variables.
   const dispatch = useDispatch();
   const searchFilters = useSelector(selectSearchFilters);
@@ -209,7 +208,7 @@ const Filters = ({ showCriteria }: filterProps) => {
           }}
         />
       </div>
-      {showCriteria ? (
+      {props.showCriteria ? (
         <div>
           <div
             className="flex flex-row items-center justify-between mb-2 w-full h-auto"

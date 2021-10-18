@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import { FC, useEffect, useState } from "react";
 import Select from "react-select";
 import CourseVersion from "./CourseVersion";
 import { ReactComponent as Question } from "../../../../resources/svg/Question.svg";
@@ -31,12 +31,6 @@ import {
 } from "../../../../slices/popupSlice";
 import { api } from "../../../../resources/assets";
 
-type SisCourseProps = {
-  inspectedArea: string;
-  setInspectedArea: Function;
-  addCourse: Function;
-};
-
 /**
  * Displays a sis course when searching.
  *
@@ -44,7 +38,11 @@ type SisCourseProps = {
  * @prop setInspectedArea - sets the area to add the course to
  * @prop addCourse - adds course to plan.
  */
-const SisCourse = (props: SisCourseProps) => {
+const SisCourse: FC<{
+  inspectedArea: string;
+  setInspectedArea: Function;
+  addCourse: Function;
+}> = (props) => {
   // Redux Setup
   const dispatch = useDispatch();
   const inspected = useSelector(selectInspectedCourse);

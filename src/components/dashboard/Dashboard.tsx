@@ -1,4 +1,4 @@
-import React, { FC, useState } from "react";
+import { FC, useState } from "react";
 import Content from "./Content";
 import UserSection from "../login/UserSection";
 import FeedbackPopup from "../popups/FeedbackPopup";

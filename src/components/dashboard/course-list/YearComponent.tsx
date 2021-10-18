@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import { useState, useEffect, FC } from "react";
 import Semester from "./Semester";
 import { UserCourse, Year } from "../../../resources/commonTypes";
 import { ReactComponent as MoreSvg } from "../../../resources/svg/More.svg";
@@ -12,14 +12,6 @@ import {
   updateYearToDelete,
   updateDeleteYearStatus,
 } from "../../../slices/popupSlice";
-
-type yearProps = {
-  id: number;
-  customStyle: string;
-  year: Year;
-  courses: UserCourse[];
-  setDraggable: Function;
-};
 
 export const newYearTemplate: Year = {
   _id: "New Year",
@@ -46,13 +38,13 @@ type SemSelected = {
  * @prop courses - courses that belong to this year
  * @prop setDraggable - avtivates/deactivates draggability of year component
  */
-function YearComponent({
-  id,
-  customStyle,
-  year,
-  courses,
-  setDraggable,
-}: yearProps) {
+const YearComponent: FC<{
+  id: number;
+  customStyle: string;
+  year: Year;
+  courses: UserCourse[];
+  setDraggable: Function;
+}> = ({ id, customStyle, year, courses, setDraggable }) => {
   // Component state setup.
   const [fallCourses, setFallCourses] = useState<UserCourse[]>([]);
   const [springCourses, setSpringCourses] = useState<UserCourse[]>([]);
@@ -345,6 +337,6 @@ function YearComponent({
       </div>
     </div>
   );
-}
+};
 
 export default YearComponent;

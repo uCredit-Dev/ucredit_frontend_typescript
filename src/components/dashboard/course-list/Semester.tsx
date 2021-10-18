@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import { useState, useEffect, FC } from "react";
 import {
   DroppableType,
   Plan,
@@ -38,13 +38,6 @@ import {
   updatePlanList,
 } from "../../../slices/userSlice";
 
-type semesterProps = {
-  customStyle: string;
-  semesterName: SemesterType;
-  semesterYear: Year;
-  courses: UserCourse[];
-};
-
 /**
  * A component displaying all the courses in a specific semester.
  * @prop courses - all the courses in the semester
@@ -52,12 +45,12 @@ type semesterProps = {
  * @prop semesterName - name of the semester
  * @prop customStyle - custom styling for the semester
  */
-function Semester({
-  customStyle,
-  semesterName,
-  semesterYear,
-  courses,
-}: semesterProps) {
+const Semester: FC<{
+  customStyle: string;
+  semesterName: SemesterType;
+  semesterYear: Year;
+  courses: UserCourse[];
+}> = ({ customStyle, semesterName, semesterYear, courses }) => {
   // Redux setup
   const dispatch = useDispatch();
   const addingPrereqStatus = useSelector(selectAddingPrereq);
@@ -301,7 +294,7 @@ function Semester({
       </div>
     </>
   );
-}
+};
 
 const getListStyle = (isDraggingOver: any) => ({
   background: isDraggingOver ? "skyblue" : "lightblue",

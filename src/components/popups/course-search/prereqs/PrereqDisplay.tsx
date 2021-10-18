@@ -1,5 +1,5 @@
 import clsx from "clsx";
-import React, { useState, useEffect } from "react";
+import { useState, useEffect, FC } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import {
   selectSemester,
@@ -35,7 +35,7 @@ type parsedPrereqs = {
 /**
  * This is the bullet-list display of the prereqs for each course.
  */
-const PrereqDisplay = () => {
+const PrereqDisplay: FC = () => {
   // Redux Setup
   const dispatch = useDispatch();
   const version = useSelector(selectVersion);

@@ -1,5 +1,5 @@
 import clsx from "clsx";
-import React, { useState, useEffect, FC } from "react";
+import { useState, useEffect, FC } from "react";
 import { useSelector } from "react-redux";
 import { ReactComponent as Check } from "../../../resources/svg/CheckMark.svg";
 import { ReactComponent as X } from "../../../resources/svg/Close.svg";

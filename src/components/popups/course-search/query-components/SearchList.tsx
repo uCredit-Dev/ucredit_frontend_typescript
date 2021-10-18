@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import { useState, useEffect, FC } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import {
   selectPlaceholder,
@@ -19,7 +19,7 @@ import loading from "../../../../resources/images/loading.gif";
 /* 
   List of searched courses.
 */
-const SearchList = (props: { searching: boolean }) => {
+const SearchList: FC<{ searching: boolean }> = (props) => {
   // Component state setup.
   const [pageNum, setPageNum] = useState<number>(0);
   const [pageCount, setPageCount] = useState<number>(0);

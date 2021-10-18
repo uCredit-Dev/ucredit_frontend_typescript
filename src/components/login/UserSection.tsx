@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import { FC, useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import {
   updateUser,
@@ -32,14 +32,12 @@ import {
 } from "../../slices/popupSlice";
 import { useCookies } from "react-cookie";
 
-type UserProps = {
-  _id: string | null;
-};
-
 /**
  * User login/logout buttons.
  */
-function UserSection({ _id }: UserProps) {
+const UserSection: FC<{
+  _id: string | null;
+}> = ({ _id }) => {
   // Redux setup
   const dispatch = useDispatch();
   const user = useSelector(selectUser);
@@ -433,6 +431,6 @@ function UserSection({ _id }: UserProps) {
       </div>
     </div>
   );
-}
+};
 
 export default UserSection;

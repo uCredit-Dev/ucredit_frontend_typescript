@@ -1,5 +1,5 @@
 import clsx from "clsx";
-import React, { useState, useRef, useEffect } from "react";
+import { useState, useRef, useEffect, FC } from "react";
 import { useSelector } from "react-redux";
 import ReactTooltip from "react-tooltip";
 import { getColors } from "../../../../resources/assets";
@@ -12,7 +12,7 @@ import { ReactComponent as Question } from "../../../../resources/svg/Question.s
  * A component showing the specific version of the course at a particular semester/year
  * @prop props - setInspected area is a function that sets the area to add this prospective course to.
  */
-const CourseVersion = (props: { setInspectedArea: Function }) => {
+const CourseVersion: FC<{ setInspectedArea: Function }> = (props) => {
   // Redux Setup
   const version = useSelector(selectVersion);
 

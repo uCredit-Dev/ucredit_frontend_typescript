@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import clsx from "clsx";
 import { ReactComponent as ChevronRight } from "../../../../resources/svg/ChevronRight.svg";
 import { ReactComponent as ChevronDown } from "../../../../resources/svg/ChevronDown.svg";

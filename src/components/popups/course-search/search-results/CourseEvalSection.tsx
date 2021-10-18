@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import { useState, useEffect, FC } from "react";
 import { CourseEvals } from "../../../../resources/commonTypes";
 import axios from "axios";
 import { useSelector } from "react-redux";
@@ -10,7 +10,7 @@ import { api } from "../../../../resources/assets";
 /**
  * Displays course Evaluations based on inspected course
  */
-const CourseEvalSection = () => {
+const CourseEvalSection: FC = () => {
   let initialCourseEval: CourseEvals = {
     prof: "",
     number: "",
