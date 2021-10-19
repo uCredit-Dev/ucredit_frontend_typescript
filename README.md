@@ -13,9 +13,6 @@ Deployment: https://ucredit.herokuapp.com/
 3. "npm build" -> "npm start" to run an unlistened production-build server.
 4. The development branch has the newest development code. Master may not have the most updated code.
 5. All components asset files, redux files, etc. can be found in @src/components
-6. App is split into two components folders:
-   (1) Header, which contains all components in the colored bar at the top of the screen.
-   (2) Body, which contains all components in the central area, including course columns, distribution bars, and plan/user data.
 
 ## Issues
 
