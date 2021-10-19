@@ -25,7 +25,7 @@ const InfoMenu: FC = () => {
         </button>
       </div>
       {infoOpen ? (
-        <div className="absolute right-14 top-20 ml-5 p-4 px-0 w-max max-h-full bg-white bg-opacity-90 rounded shadow overflow-y-scroll">
+        <div className="absolute right-14 top-8 ml-5 p-4 px-0 w-max max-h-full bg-white bg-opacity-90 rounded shadow overflow-y-scroll">
           <InfoCards />
           <Distributions />
         </div>

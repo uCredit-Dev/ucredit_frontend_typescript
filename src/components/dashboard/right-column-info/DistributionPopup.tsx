@@ -1,17 +1,5 @@
 import { FC, useState } from "react";
-import {
-  requirements,
-  // checkRequirementSatisfied,
-  // splitRequirements,
-} from "./distributionFunctions";
-// import { useSelector } from "react-redux";
-// import { selectCurrentPlanCourses } from "../../../slices/currentPlanSlice";
-// import { selectCourseCache } from "../../../slices/userSlice";
-// import { getCourse } from "../../../resources/assets";
-// import { UserCourse } from "../../../resources/commonTypes";
-
-// import { ReactComponent as Plus } from "../../../resources/svg/Add.svg";
-// import { ReactComponent as Minus } from "../../../resources/svg/Close.svg";
+import { requirements } from "./distributionFunctions";
 
 /**
  * TODO: FEATURE TO OVERRIDE DISTRIBUTIONS ON PAUSE. MAY BE DEPRECATED IN THE FUTURE.
