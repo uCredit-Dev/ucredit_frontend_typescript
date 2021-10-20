@@ -318,7 +318,7 @@ const UserSection: FC<{
               if (cookieVal === "") {
                 // if not, create a user first, then add
                 dispatch(updateUser({ ...guestUser }));
-                dispatch(updateToAddName("Imported Plan"));
+                dispatch(updateToAddName(plan.name));
                 dispatch(
                   updateToAddMajor(getMajorFromCommonName(plan.majors[0]))
                 );
@@ -328,7 +328,7 @@ const UserSection: FC<{
               } else {
                 // if so, login first, then add
                 login(cookieVal).then(() => {
-                  dispatch(updateToAddName("Imported Plan"));
+                  dispatch(updateToAddName(plan.name));
                   dispatch(
                     updateToAddMajor(getMajorFromCommonName(plan.majors[0]))
                   );
