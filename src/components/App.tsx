@@ -24,7 +24,6 @@ import LandingPage from "./landing-page";
  */
 const App: FC = () => {
   const dispatch = useDispatch();
-  // const importing = useSelector(selectImportingStatus);
   const user = useSelector(selectUser);
   const curPlan = useSelector(selectPlan);
   const courseCache = useSelector(selectCourseCache);

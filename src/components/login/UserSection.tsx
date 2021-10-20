@@ -144,6 +144,7 @@ const UserSection: FC<{
             dispatch(updateCurrentPlanCourses(added));
             dispatch(updateSelectedPlan(newPlan));
             dispatch(updateImportingStatus(false));
+            toast.dismiss();
             toast.success("Plan Imported!", {
               autoClose: 5000,
               closeOnClick: false,
@@ -343,10 +344,14 @@ const UserSection: FC<{
         })
         .catch((e) => {
           dispatch(updateImportingStatus(false));
-          toast.error("Failed to Import", {
-            autoClose: 5000,
-            closeOnClick: false,
-          });
+          toast.dismiss();
+          toast.error(
+            "Failed to Import. Please log in and try again... If that doesn't work. This is an issue on our end! Please report it in the feedback form and we will get to it asap!",
+            {
+              closeOnClick: false,
+              autoClose: false,
+            }
+          );
           history.push("/login");
         });
     } else if (user._id === "noUser") {
