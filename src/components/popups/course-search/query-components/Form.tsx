@@ -135,7 +135,6 @@ const Form: FC<{ setSearching: Function }> = (props) => {
             ) {
               props.setSearching(false);
             }
-            console.log(SISRetrieved);
             return resolve([SISRetrieved, []]);
           })
           .catch(() => {
