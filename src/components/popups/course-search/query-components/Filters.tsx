@@ -3,7 +3,7 @@ import { useDispatch, useSelector } from "react-redux";
 import Select from "react-select";
 import ReactTooltip from "react-tooltip";
 import { ReactComponent as Question } from "../../../../resources/svg/Question.svg";
-import { all_deps, course_tags } from "../../../../resources/assets";
+import { all_deps, course_tags, getYears } from "../../../../resources/assets";
 import { FilterType } from "../../../../resources/commonTypes";
 import {
   selectSearchFilters,
@@ -12,9 +12,6 @@ import {
 
 const creditFilters = ["Any", 0, 1, 2, 3, 4];
 const distributionFilters = ["N", "S", "H", "Q", "E"];
-const date: Date = new Date();
-const year: number = date.getFullYear();
-const month: number = date.getMonth();
 const wiFilters = ["Any", "Yes", "No"];
 
 /**
@@ -181,21 +178,6 @@ const Filters: FC<{
         ? searchFilters.levels.split("|").map((level) => " " + level)
         : "nothing")
     );
-  };
-
-  /**
-   * Gets array of years to display in the filters
-   * @returns an array of options for the year select.
-   */
-  const getYears = (): { value: number; label: number }[] => {
-    const years =
-      month >= 9
-        ? [year + 1, year, year - 1, year - 2, year - 3]
-        : [year, year - 1, year - 2, year - 3];
-    return years.map((y: any) => ({
-      value: y,
-      label: y,
-    }));
   };
 
   // TODO: We can probably modularize distribution bars.

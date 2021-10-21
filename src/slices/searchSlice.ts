@@ -9,6 +9,7 @@ import {
   AreaType,
   SISRetrievedCourse,
 } from "../components/../resources/commonTypes";
+import { getYears } from "../resources/assets";
 
 // Contains the year and semester that we are currently adding courses to.
 type TimeBundle = {
@@ -62,7 +63,7 @@ const initialState: searchStates = {
     distribution: null,
     tags: null,
     term: "Fall",
-    year: 2021,
+    year: getYears()[0].value,
     wi: null,
     department: null,
     levels: null,
