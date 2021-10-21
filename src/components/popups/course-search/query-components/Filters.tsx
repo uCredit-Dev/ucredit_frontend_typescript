@@ -12,7 +12,9 @@ import {
 
 const creditFilters = ["Any", 0, 1, 2, 3, 4];
 const distributionFilters = ["N", "S", "H", "Q", "E"];
-const yearFilters = [2021, 2020, 2019, 2018, 2017];
+const date: Date = new Date();
+const year: number = date.getFullYear();
+const month: number = date.getMonth();
 const wiFilters = ["Any", "Yes", "No"];
 
 /**
@@ -181,6 +183,21 @@ const Filters: FC<{
     );
   };
 
+  /**
+   * Gets array of years to display in the filters
+   * @returns an array of options for the year select.
+   */
+  const getYears = (): { value: number; label: number }[] => {
+    const years =
+      month >= 9
+        ? [year + 1, year, year - 1, year - 2, year - 3]
+        : [year, year - 1, year - 2, year - 3];
+    return years.map((y: any) => ({
+      value: y,
+      label: y,
+    }));
+  };
+
   // TODO: We can probably modularize distribution bars.
   return (
     <>
@@ -194,12 +211,7 @@ const Filters: FC<{
           />
         </div>{" "}
         <Select
-          options={[
-            ...yearFilters.map((year: any) => ({
-              value: year,
-              label: year,
-            })),
-          ]}
+          options={getYears()}
           className="mx-1 w-40 rounded outline-none"
           onChange={handleYearFilterChange}
           value={{
