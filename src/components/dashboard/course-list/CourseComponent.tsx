@@ -102,7 +102,7 @@ const CourseComponent: FC<{
   return (
     <>
       <div
-        className="relative flex items-center justify-between mt-2 p-2 max-w-yearheading bg-gray-100 rounded shadow transform hover:scale-105 transition duration-200 ease-in"
+        className="relative flex items-center justify-between mt-2 p-2 max-w-yearheading bg-gray-100 rounded shadow"
         onMouseEnter={activate}
         onMouseLeave={deactivate}
         onMouseOver={() => {

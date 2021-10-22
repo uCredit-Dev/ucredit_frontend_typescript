@@ -173,7 +173,7 @@ const YearComponent: FC<{
     <div
       id={id.toString()}
       className={
-        customStyle + "cursor-move p-2 rounded mb-4 bg-blue-400 rounded"
+        customStyle + "cursor-move p-2 rounded mb-4 bg-blue-400 rounded shadow"
       }
       onMouseLeave={() => {
         setSemSelect(false);
@@ -202,15 +202,15 @@ const YearComponent: FC<{
               {yearName}
             </div>
           )}
-          <div className="relative">
-            <MoreSvg
-              onClick={() => {
-                setDisplay(true);
-              }}
-              className="mt-0.5 w-6 stroke-2 cursor-pointer"
-            />
+          <MoreSvg
+            onClick={() => {
+              setDisplay(true);
+            }}
+            className="mt-0.5 w-8 stroke-2 cursor-pointer"
+          />
+          <div>
             {display ? (
-              <div className="absolute z-50 right-1 flex flex-col w-40 text-black bg-gray-100 rounded shadow">
+              <div className="relative z-50 right-1 flex flex-col w-40 text-black bg-gray-100 rounded shadow">
                 <button
                   onClick={() => {
                     setEdittingName(true);

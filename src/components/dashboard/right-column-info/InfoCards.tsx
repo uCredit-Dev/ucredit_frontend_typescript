@@ -1,11 +1,11 @@
 import { useState, useEffect, FC } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import {
-  selectUser,
+  // selectUser,
   selectPlanList,
   updatePlanList,
 } from "../../../slices/userSlice";
-import { ReactComponent as RemoveSvg } from "../../../resources/svg/Remove.svg";
+// import { ReactComponent as RemoveSvg } from "../../../resources/svg/Remove.svg";
 import "react-toastify/dist/ReactToastify.css";
 import {
   selectPlan,
@@ -13,8 +13,8 @@ import {
 } from "../../../slices/currentPlanSlice";
 import { api } from "../../../resources/assets";
 import { toast } from "react-toastify";
-import { updateDeletePlanStatus } from "../../../slices/popupSlice";
-import ShareLinksPopup from "./ShareLinksPopup";
+// import { updateDeletePlanStatus } from "../../../slices/popupSlice";
+// import ShareLinksPopup from "./ShareLinksPopup";
 
 /**
  * User/Current plan information area.
@@ -22,7 +22,7 @@ import ShareLinksPopup from "./ShareLinksPopup";
 const InfoCards: FC = () => {
   // Redux Setup
   const dispatch = useDispatch();
-  const user = useSelector(selectUser);
+  // const user = useSelector(selectUser);
   const currentPlan = useSelector(selectPlan);
   const planList = useSelector(selectPlanList);
 
@@ -33,7 +33,7 @@ const InfoCards: FC = () => {
   const [editName, setEditName] = useState<boolean>(false);
 
   // shareable URL
-  const [shareableURL, setShareableURL] = useState<string>("");
+  // const [shareableURL, setShareableURL] = useState<string>("");
 
   // Only edits name if editName is true. If true, calls debounce update function
   useEffect(() => {
@@ -48,10 +48,10 @@ const InfoCards: FC = () => {
    * Updates temporary plan name and notifies useffect on state change to update db plan name with debounce.
    * @param event
    */
-  const handlePlanNameChange = (event: any): void => {
-    setPlanName(event.target.value);
-    setEditName(true);
-  };
+  // const handlePlanNameChange = (event: any): void => {
+  //   setPlanName(event.target.value);
+  //   setEditName(true);
+  // };
 
   // Updates current plan every time current plan changes
   useEffect((): void => {
@@ -88,30 +88,30 @@ const InfoCards: FC = () => {
   };
 
   // Activates delete plan popup.
-  const activateDeletePlan = (): void => {
-    dispatch(updateDeletePlanStatus(true));
-  };
+  // const activateDeletePlan = (): void => {
+  //   dispatch(updateDeletePlanStatus(true));
+  // };
 
   /**
    * Handles when button for shareable link is clicked.
    */
-  const onShareClick = (): void => {
-    if (shareableURL !== "") {
-      setShareableURL("");
-      return;
-    }
-    setShareableURL(
-      (window.location.href.includes("localhost")
-        ? "localhost:3000"
-        : "https://ucredit.me") +
-        "/share?_id=" +
-        currentPlan._id
-    );
-  };
+  // const onShareClick = (): void => {
+  //   if (shareableURL !== "") {
+  //     setShareableURL("");
+  //     return;
+  //   }
+  //   setShareableURL(
+  //     (window.location.href.includes("localhost")
+  //       ? "localhost:3000"
+  //       : "https://ucredit.me") +
+  //       "/share?_id=" +
+  //       currentPlan._id
+  //   );
+  // };
 
   return (
     <div className="tight:items-center mb-4 mx-4 p-6 h-auto bg-white rounded shadow">
-      <div className="flex flex-col mb-2 w-auto h-auto">
+      {/* <div className="flex flex-col mb-2 w-auto h-auto">
         <div className="flex flex-row items-end justify-center mb-2 w-full">
           <input
             value={planName}
@@ -123,20 +123,20 @@ const InfoCards: FC = () => {
             onClick={activateDeletePlan}
           />
         </div>
-      </div>
+      </div> */}
       <div className="flex flex-col items-center min-w-min">
-        <div className="w-auto h-auto text-center">{user.name}</div>
+        {/* <div className="w-auto h-auto text-center">{user.name}</div> */}
         <div className="w-auto h-auto text-center font-light stroke-2">
           {currentPlan.majors}
         </div>
-        <button className="m-auto hover:underline" onClick={onShareClick}>
+        {/* <button className="m-auto hover:underline" onClick={onShareClick}>
           Share
         </button>
         <div>
           {shareableURL === "" ? null : (
             <ShareLinksPopup link={shareableURL} setURL={onShareClick} />
           )}
-        </div>
+        </div> */}
       </div>
     </div>
   );

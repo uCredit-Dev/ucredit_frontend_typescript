@@ -19,7 +19,7 @@ const Header: FC = () => {
         </div>
       </div>
       <button
-        className="px-2 py-0.5 hover:text-white hover:bg-black border border-gray-600 rounded-lg transition duration-100 ease-in"
+        className="px-2 py-0.5 hover:text-white hover:bg-black border border-gray-600 rounded-lg shadow transition duration-100 ease-in"
         onClick={() => history.push("/login")}
       >
         Log in
