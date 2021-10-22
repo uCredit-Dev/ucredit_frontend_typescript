@@ -15,21 +15,6 @@ const date: Date = new Date();
 const year: number = date.getFullYear();
 const month: number = date.getMonth();
 
-/**
- * Gets array of years to display in the filters
- * @returns an array of options for the year select.
- */
-export const getYears = (): { value: number; label: number }[] => {
-  const years =
-    month >= 9
-      ? [year + 1, year, year - 1, year - 2, year - 3]
-      : [year, year - 1, year - 2, year - 3];
-  return years.map((y: any) => ({
-    value: y,
-    label: y,
-  }));
-};
-
 // Contains the year and semester that we are currently adding courses to.
 type TimeBundle = {
   searchYear: string;
@@ -82,7 +67,7 @@ const initialState: searchStates = {
     distribution: null,
     tags: null,
     term: "Fall",
-    year: getYears()[0].value,
+    year: month >= 9 ? year + 1 : year,
     wi: null,
     department: null,
     levels: null,
