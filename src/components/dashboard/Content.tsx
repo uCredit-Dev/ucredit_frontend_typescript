@@ -41,7 +41,7 @@ const Content: FC = () => {
     <>
       <div className="flex flex-row flex-grow h-full">
         <div className="flex flex-row thin:flex-wrap-reverse mt-content medium:px-10 px-5 w-full h-full">
-          <div className="flex flex-col flex-grow h-full">
+          <div className="flex flex-col flex-grow w-4/5 h-full">
             <PlanChoose />
             <CourseList />
           </div>

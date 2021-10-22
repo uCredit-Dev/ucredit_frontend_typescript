@@ -429,13 +429,13 @@ const CourseList: FC = () => {
   return (
     <>
       <DragDropContext onDragEnd={onDragEnd}>
-        <div className="flex flex-row justify-between thin:justify-center mt-4 w-full h-auto">
+        <div className="flex flex-row justify-between thin:justify-center mt-4 pb-2 w-full h-auto overflow-x-auto transform rotate-180">
           <Droppable droppableId={"years"} type="YEAR" direction="horizontal">
             {(provided, snapshot) => (
               <div
                 ref={provided.innerRef}
-                className="flex-wrap"
                 style={getListStyle(snapshot.isDraggingOver)}
+                className="transform rotate-180"
               >
                 {elements}
                 {currentPlan._id !== "noPlan" ? (
@@ -454,7 +454,7 @@ const CourseList: FC = () => {
                         >
                           <AddSvg
                             onClick={() => addNewYear(false)}
-                            className="-mt-1 mb-4 ml-5 mr-5 w-14 h-auto max-h-48 min-h-addSVG border-2 border-gray-300 rounded focus:outline-none cursor-pointer select-none transform hover:scale-105 transition duration-200 ease-in"
+                            className="mb-4 ml-5 mr-5 w-14 h-auto max-h-48 min-h-addSVG border-2 border-gray-300 rounded focus:outline-none cursor-pointer select-none transform hover:scale-105 transition duration-200 ease-in"
                             data-tip={`Add an additional year after!`}
                             data-for="godTip"
                           />
