@@ -4,6 +4,7 @@
   "private": true,
   "dependencies": {
     "@craco/craco": "^6.3.0",
+    "@n8tb1t/use-scroll-position": "^2.0.3",
     "@reduxjs/toolkit": "^1.6.1",
     "@tailwindcss/postcss7-compat": "^2.2.14",
     "@tailwindui/react": "^0.1.1",

@@ -1,6 +1,6 @@
 import { FC, useState } from "react";
 import Distributions from "./right-column-info/Distributions";
-import InfoCards from "./right-column-info/InfoCards";
+// import InfoCards from "./right-column-info/InfoCards";
 
 /**
  * Info menu shows degree plan and degree information.
@@ -26,7 +26,7 @@ const InfoMenu: FC = () => {
       </div>
       {infoOpen ? (
         <div className="absolute right-14 top-8 ml-5 p-4 px-0 w-max max-h-full bg-white bg-opacity-90 rounded shadow overflow-y-scroll">
-          <InfoCards />
+          {/* <InfoCards /> */}
           <Distributions />
         </div>
       ) : null}

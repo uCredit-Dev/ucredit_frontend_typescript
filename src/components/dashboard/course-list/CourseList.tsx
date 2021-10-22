@@ -429,12 +429,12 @@ const CourseList: FC = () => {
   return (
     <>
       <DragDropContext onDragEnd={onDragEnd}>
-        <div className="flex flex-row justify-between thin:justify-center mt-4 w-full h-auto">
+        <div className="flex flex-row justify-between thin:justify-center mt-16 w-full h-auto">
           <Droppable droppableId={"years"} type="YEAR" direction="horizontal">
             {(provided, snapshot) => (
               <div
                 ref={provided.innerRef}
-                className="flex-wrap"
+                // className="flex-wrap"
                 style={getListStyle(snapshot.isDraggingOver)}
               >
                 {elements}

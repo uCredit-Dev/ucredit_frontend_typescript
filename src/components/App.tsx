@@ -129,18 +129,6 @@ const App: FC = () => {
         place="top"
         effect="solid"
       />
-      {/* {welcomeScreen || importing ? (
-        <div className="fixed z-40 flex flex-col w-screen h-screen m-auto text-center text-white bg-blue-900">
-          <img
-            className="w-1/6 mx-auto mt-auto"
-            src={logoLine}
-            alt={"logo line art"}
-          ></img>
-          <div className="w-full mx-auto mt-4 mb-auto text-5xl italic font-thin text-center select-none">
-            uCredit
-          </div>
-        </div>
-      ) : null} */}
       <Switch>
         <Route path="/dashboard">
           <Dashboard _id={null} />

@@ -246,7 +246,7 @@ const Semester: FC<{
                         "bg-green-200":
                           totalCredits <= 18 && totalCredits >= 12,
                       },
-                      "flex flex-row items-center justify-center ml-1 px-1 w-auto text-black text-xs bg-white rounded transform hover:scale-125 transition duration-200 ease-in"
+                      " flex flex-row items-center justify-center ml-1 px-1 w-auto text-black text-xs bg-white rounded"
                     )}
                     data-tip={getCreditString()}
                     data-for="godTip"
@@ -258,7 +258,7 @@ const Semester: FC<{
             </div>
             {!addingPrereqStatus ? (
               <div
-                className="group flex flex-row items-center justify-center text-white hover:bg-blue-400 bg-gray-100 bg-green-400 rounded-md cursor-pointer transform hover:scale-105 transition duration-150 ease-in"
+                className="group flex flex-row items-center justify-center text-white hover:bg-blue-400 bg-gray-100 bg-green-400 rounded-md cursor-pointer"
                 onClick={addCourse}
               >
                 <AddSvg className="w-6 h-6 group-hover:text-white stroke-2" />
@@ -297,7 +297,7 @@ const Semester: FC<{
 };
 
 const getListStyle = (isDraggingOver: any) => ({
-  background: isDraggingOver ? "skyblue" : "lightblue",
+  background: isDraggingOver ? "skyblue" : "transparent",
 });
 
 export default Semester;
