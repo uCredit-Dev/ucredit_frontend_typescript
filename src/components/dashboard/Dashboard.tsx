@@ -50,7 +50,6 @@ const Dashboard: FC<{ _id: string | null }> = ({ _id }) => {
   const [showMoveUp, setMoveUp] = useState<boolean>(false);
 
   useScrollPosition(({ prevPos, currPos }) => {
-    console.log(currPos.y);
     if (currPos.y > -14) {
       setMoveUp(false);
       setShowActionBar(true);

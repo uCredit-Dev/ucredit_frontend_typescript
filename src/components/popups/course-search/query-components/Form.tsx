@@ -74,7 +74,6 @@ const Form: FC<{ setSearching: Function }> = (props) => {
     dispatch(updateSearchFilters({ filter: "term", value: semester }));
     const date = new Date();
     const yearVal = getYearVal();
-    console.log(yearVal, searchFilters.year, date.getFullYear());
     if (yearVal >= date.getFullYear()) {
       // If the current year is the same as the year of the semester or later,
       // we need to check Fall, Spring, Intersession, and Summer to see if we need to increase year value.
@@ -85,10 +84,17 @@ const Form: FC<{ setSearching: Function }> = (props) => {
           date.getMonth() >= 2 &&
           yearVal !== date.getFullYear())
       )
-        dispatch(updateSearchFilters({ filter: "year", value: yearVal + 1 }));
+        dispatch(
+          updateSearchFilters({ filter: "year", value: date.getFullYear() + 1 })
+        );
       else if (semester === "Fall" && date.getMonth() < 5) {
-        dispatch(updateSearchFilters({ filter: "year", value: yearVal - 1 }));
-      } else dispatch(updateSearchFilters({ filter: "year", value: yearVal }));
+        dispatch(
+          updateSearchFilters({ filter: "year", value: date.getFullYear() - 1 })
+        );
+      } else
+        dispatch(
+          updateSearchFilters({ filter: "year", value: date.getFullYear() })
+        );
     } else if (yearVal === date.getFullYear() - 1) {
       // If the year of the semester is one less than current year,
       // we need to check if Summer is valid.

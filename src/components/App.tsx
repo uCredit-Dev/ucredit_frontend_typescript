@@ -87,26 +87,34 @@ const App: FC = () => {
       let cum = 0;
       let SISCourses: SISRetrievedCourse[] = [];
       setNeedsToLoad(true);
-      axios.get(api + "/coursesByPlan/" + curPlan._id).then((response) => {
-        response.data.data.forEach((c: UserCourse) => {
-          total++;
-          axios
-            .get("https://ucredit-dev.herokuapp.com/api/search", {
-              params: { query: c.number },
-              // eslint-disable-next-line no-loop-func
-            })
-            .then((retrieved) => {
-              let SISRetrieved: SISRetrievedCourse = retrieved.data.data[0];
+      axios
+        .get(api + "/coursesByPlan/" + curPlan._id)
+        .then((response) => {
+          response.data.data.forEach((c: UserCourse) => {
+            total++;
+            axios
+              .get("https://ucredit-dev.herokuapp.com/api/search", {
+                params: { query: c.number },
+                // eslint-disable-next-line no-loop-func
+              })
+              .then((retrieved) => {
+                let SISRetrieved: SISRetrievedCourse = retrieved.data.data[0];
 
-              SISCourses.push(SISRetrieved);
-              cum++;
-              if (cum === total) {
-                dispatch(updateCourseCache([...SISCourses]));
-                setNeedsToLoad(false);
-              }
-            });
+                SISCourses.push(SISRetrieved);
+                cum++;
+                if (cum === total) {
+                  dispatch(updateCourseCache([...SISCourses]));
+                  setNeedsToLoad(false);
+                }
+              })
+              .catch((err) => {
+                console.log(err);
+              });
+          });
+        })
+        .catch((err) => {
+          console.log(err);
         });
-      });
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [curPlan]);

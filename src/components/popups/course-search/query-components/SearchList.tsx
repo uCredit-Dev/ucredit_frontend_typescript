@@ -12,7 +12,7 @@ import ReactPaginate from "react-paginate";
 import { ReactComponent as PlaceholderFilledSvg } from "../../../../resources/svg/PlaceholderFilled.svg";
 import { ReactComponent as PlaceholderEmptySvg } from "../../../../resources/svg/PlaceholderEmpty.svg";
 import { ReactComponent as Question } from "../../../../resources/svg/Question.svg";
-import { Course } from "../../../../resources/commonTypes";
+import { Course, SISRetrievedCourse } from "../../../../resources/commonTypes";
 import ReactTooltip from "react-tooltip";
 import loading from "../../../../resources/images/loading.gif";
 
@@ -24,6 +24,9 @@ const SearchList: FC<{ searching: boolean }> = (props) => {
   const [pageNum, setPageNum] = useState<number>(0);
   const [pageCount, setPageCount] = useState<number>(0);
   const [hideResults, setHideResults] = useState<boolean>(false);
+  const [filteredCourses, setFilteredCourses] = useState<SISRetrievedCourse[]>(
+    []
+  );
 
   // Redux setup
   const courses = useSelector(selectRetrievedCourses);
@@ -35,11 +38,23 @@ const SearchList: FC<{ searching: boolean }> = (props) => {
 
   // Updates pagination every time the searched courses change.
   useEffect(() => {
+    const filteredCourses: SISRetrievedCourse[] = courses.filter(
+      (course: SISRetrievedCourse) => {
+        let valid = false;
+        course.versions.forEach((version) => {
+          if (version.term === searchFilters.term + " " + searchFilters.year) {
+            valid = true;
+          }
+        });
+        return valid;
+      }
+    );
     // If coursesPerPage doesn't divide perfectly into total courses, we need one more page.
-    const division = Math.floor(courses.length / coursesPerPage);
+    const division = Math.floor(filteredCourses.length / coursesPerPage);
     const pages =
-      courses.length % coursesPerPage === 0 ? division : division + 1;
+      filteredCourses.length % coursesPerPage === 0 ? division : division + 1;
     setPageCount(pages);
+    setFilteredCourses(filteredCourses);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [courses]);
 
@@ -49,13 +64,14 @@ const SearchList: FC<{ searching: boolean }> = (props) => {
    */
   const courseList = () => {
     let toDisplay: any = [];
+
     let startingIndex = pageNum * coursesPerPage;
     let endingIndex =
-      startingIndex + coursesPerPage > courses.length
-        ? courses.length - 1
+      startingIndex + coursesPerPage > filteredCourses.length
+        ? filteredCourses.length - 1
         : startingIndex + coursesPerPage - 1;
     for (let i = startingIndex; i <= endingIndex; i++) {
-      const inspecting = { ...courses[i] };
+      const inspecting = { ...filteredCourses[i] };
       inspecting.versions.forEach((v: any, i: number) => {
         if (v.term === searchFilters.term + " " + searchFilters.year) {
           toDisplay.push(
