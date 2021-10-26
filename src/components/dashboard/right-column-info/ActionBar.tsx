@@ -12,6 +12,9 @@ import PlanChoose from "./PlanChoose";
 import { ReactComponent as RemoveSvg } from "../../../resources/svg/Remove.svg";
 import ShareLinksPopup from "./ShareLinksPopup";
 
+/**
+ * @description ActionBar component
+ */
 const ActionBar: FC = () => {
   // Redux Setup
   const dispatch = useDispatch();
@@ -103,10 +106,10 @@ const ActionBar: FC = () => {
   return (
     <div className="flex flex-row px-2 py-1 bg-white rounded shadow drop-shadow-xl">
       <PlanChoose />
-      <div className="flex flex-row items-end -mt-0.5 ml-2 my-auto h-10 rounded drop-shadow-xl">
+      <div className="flex flex-row items-end ml-2 my-auto h-10 border border-gray-300 rounded rounded shadow drop-shadow-xl">
         <input
           value={planName}
-          className="ml-2 mt-0.5 my-auto px-1 w-auto text-gray-800 text-2xl font-semibold border border-gray-300 rounded outline-none shadow"
+          className="ml-2 my-auto px-1 w-auto text-gray-800 text-2xl font-semibold outline-none"
           onChange={handlePlanNameChange}
           style={{ height: "2.4rem" }}
         />

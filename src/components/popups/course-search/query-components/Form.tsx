@@ -7,6 +7,7 @@ import {
   selectSearchterm,
   selectSearchFilters,
   selectSemester,
+  selectYear,
 } from "../../../../slices/searchSlice";
 import {
   SearchExtras,
@@ -24,6 +25,7 @@ import {
 import axios from "axios";
 import { api } from "../../../../resources/assets";
 import { filterCourses } from "./formUtils";
+import { selectPlan } from "../../../../slices/currentPlanSlice";
 
 type SearchMapEl = {
   course: SISRetrievedCourse;
@@ -45,6 +47,8 @@ const Form: FC<{ setSearching: Function }> = (props) => {
   const semester = useSelector(selectSemester);
   const courseCache = useSelector(selectCourseCache);
   const retrievedAll = useSelector(selectRetrievedAll);
+  const currentPlan = useSelector(selectPlan);
+  const searchYear = useSelector(selectYear);
 
   // Component state setup
   const [showCriteria, setShowCriteria] = useState(false);
@@ -56,9 +60,58 @@ const Form: FC<{ setSearching: Function }> = (props) => {
   );
   const [initialQueryLength, setInitialQueryLength] = useState<number>(0);
 
+  const getYearVal = (): number => {
+    let year: number = new Date().getFullYear();
+    currentPlan.years.forEach((yearObj) => {
+      if (yearObj._id === searchYear) year = yearObj.year;
+    });
+    return year;
+  };
+
   // On opening search, set the term filter to match semester you're adding to.
+  // TODO: update registration times for each semester
   useEffect(() => {
     dispatch(updateSearchFilters({ filter: "term", value: semester }));
+    const date = new Date();
+    const yearVal = getYearVal();
+    if (yearVal >= date.getFullYear()) {
+      // If the current year is the same as the year of the semester or later,
+      // we need to check Fall, Spring, Intersession, and Summer to see if we need to increase year value.
+      if (
+        (semester === "Spring" && date.getMonth() >= 9) ||
+        (semester === "Intersession" && date.getMonth() === 11) ||
+        (semester === "Summer" &&
+          date.getMonth() >= 2 &&
+          yearVal !== date.getFullYear())
+      )
+        dispatch(
+          updateSearchFilters({ filter: "year", value: date.getFullYear() + 1 })
+        );
+      else if (semester === "Fall" && date.getMonth() < 5) {
+        dispatch(
+          updateSearchFilters({ filter: "year", value: date.getFullYear() - 1 })
+        );
+      } else
+        dispatch(
+          updateSearchFilters({ filter: "year", value: date.getFullYear() })
+        );
+    } else if (yearVal === date.getFullYear() - 1) {
+      // If the year of the semester is one less than current year,
+      // we need to check if Summer is valid.
+      if (
+        (semester === "Summer" && date.getMonth() < 2) ||
+        semester === "Fall"
+      ) {
+        dispatch(updateSearchFilters({ filter: "year", value: yearVal }));
+      } else
+        dispatch(updateSearchFilters({ filter: "year", value: yearVal + 1 }));
+    } else {
+      if (semester === "Fall") {
+        dispatch(updateSearchFilters({ filter: "year", value: yearVal }));
+      } else {
+        dispatch(updateSearchFilters({ filter: "year", value: yearVal + 1 }));
+      }
+    }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 

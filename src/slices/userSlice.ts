@@ -20,8 +20,8 @@ const initialState: UserSlice = {
     _id: "noUser",
     name: "",
     email: "",
-    affiliation: "",
-    grade: "",
+    affiliation: "STUDENT",
+    grade: "AE UG Freshman",
     school: "",
     plan_ids: ["no plan"],
   },
@@ -70,10 +70,7 @@ export const userSlice = createSlice({
         }
       }
     },
-    updateUnfoundNumbers: (
-      state: any,
-      action: PayloadAction<String>
-    ) => {
+    updateUnfoundNumbers: (state: any, action: PayloadAction<String>) => {
       if (!state.unfoundNumbers.includes(action.payload)) {
         state.unfoundNumbers = [...state.unfoundNumbers, action.payload];
       }
@@ -86,10 +83,7 @@ export const userSlice = createSlice({
         state.courseCache = [...action.payload];
       }
     },
-    updateRetrievedAll: (
-      state: any,
-      action: PayloadAction<Boolean>
-    ) => {
+    updateRetrievedAll: (state: any, action: PayloadAction<Boolean>) => {
       state.retrievedAll = action.payload;
     },
     resetUser: (state: any) => {
@@ -125,6 +119,7 @@ export const selectUser = (state: RootState) => state.user.currentUser;
 export const selectPlanList = (state: RootState) => state.user.planList;
 export const selectCourseCache = (state: RootState) => state.user.courseCache;
 export const selectRetrievedAll = (state: RootState) => state.user.retrievedAll;
-export const selectUnfoundNumbers = (state: RootState) => state.user.unfoundNumbers;
+export const selectUnfoundNumbers = (state: RootState) =>
+  state.user.unfoundNumbers;
 
 export default userSlice.reducer;
