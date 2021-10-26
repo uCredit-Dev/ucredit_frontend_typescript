@@ -13,7 +13,6 @@ import {
 
 const date: Date = new Date();
 const year: number = date.getFullYear();
-const month: number = date.getMonth();
 
 // Contains the year and semester that we are currently adding courses to.
 type TimeBundle = {
@@ -67,7 +66,7 @@ const initialState: searchStates = {
     distribution: null,
     tags: null,
     term: "Fall",
-    year: month >= 9 ? year + 1 : year,
+    year: year,
     wi: null,
     department: null,
     levels: null,
