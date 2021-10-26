@@ -211,14 +211,15 @@ const Pagination: React.FC<PaginationProps> = ({
       previousClassName={"m-2"}
       nextClassName={"m-2"}
       breakLabel={"..."}
-      breakClassName={""}
+      breakClassName={"justify-items-end h-6 mt-1"}
       pageCount={pageCount}
       marginPagesDisplayed={2}
       pageRangeDisplayed={3}
       onPageChange={handlePageClick}
       containerClassName={"flex"}
-      activeClassName={"bg-gray-200"}
-      pageClassName={"m-2"}
+      activeClassName={"bg-gray-400"}
+      activeLinkClassName="rounded p-1 py-2 h-10"
+      pageClassName={"w-6 h-6 bg-gray-100 m-1 p-1 rounded text-center"}
     />
   );
 };

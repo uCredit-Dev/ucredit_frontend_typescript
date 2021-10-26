@@ -13,14 +13,6 @@ import {
   updateDeleteYearStatus,
 } from "../../../slices/popupSlice";
 
-export const newYearTemplate: Year = {
-  _id: "New Year",
-  name: "New Year",
-  courses: ["New Year"],
-  plan_id: "",
-  user_id: "New Year",
-};
-
 type SemSelected = {
   fall: boolean;
   spring: boolean;
@@ -60,7 +52,7 @@ const YearComponent: FC<{
     fall: true,
     spring: true,
     summer: true,
-    intersession: false,
+    intersession: true,
   });
 
   // Setting up redux
@@ -117,7 +109,7 @@ const YearComponent: FC<{
       year_id: year._id,
       name: yearName,
     };
-    fetch(api + "/years/update", {
+    fetch(api + "/years/updateName", {
       method: "PATCH",
       headers: {
         "Content-Type": "application/json",
@@ -187,6 +179,7 @@ const YearComponent: FC<{
       <div className="flex flex-col mt-1 w-full min-w-yearMin max-w-yearheading h-yearheading font-medium">
         <div className="flex flex-row w-full text-white drop-shadow-lg">
           <div className="mr-1 text-xl font-thin">✥</div>
+          <div>{year.year}</div>
           {edittingName ? (
             <input
               id={year._id + "input"}
