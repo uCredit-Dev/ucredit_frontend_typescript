@@ -95,8 +95,11 @@ const HandleUserEntryDummy: FC<{ setLoginId: Function; _id: string | null }> =
                     const initialYearVal: number = getStartYear(user.grade);
                     const processedYears: Year[] = years.map(
                       (year: Year, i: number) => {
-                        if (year.year < 100) {
-                          year.year = initialYearVal + i;
+                        if (year.year === undefined || year.year < 100) {
+                          return {
+                            ...year,
+                            year: initialYearVal + i,
+                          };
                         }
                         return year;
                       }

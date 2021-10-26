@@ -84,7 +84,6 @@ const YearSettingsDropdown: FC<{
           year: selectedYear.value,
         })
         .then((res) => {
-          console.log(res);
           const newYear: Year = res.data.data;
           const newPlan: Plan = {
             ...currPlan,
