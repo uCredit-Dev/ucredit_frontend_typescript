@@ -90,7 +90,19 @@ const HandleUserEntryDummy: FC<{ setLoginId: Function; _id: string | null }> =
                 axios
                   .get(api + "/years/" + plan._id)
                   .then((resp) => {
-                    totPlans.push({ ...plan, years: resp.data.data });
+                    // Update Years if they are part of old plan schemas.
+                    const years: Year[] = resp.data.data;
+                    const initialYearVal: number = getStartYear(user.grade);
+                    const processedYears: Year[] = years.map(
+                      (year: Year, i: number) => {
+                        if (year.year < 100) {
+                          year.year = initialYearVal + i;
+                        }
+                        return year;
+                      }
+                    );
+
+                    totPlans.push({ ...plan, years: processedYears });
                     if (totPlans.length === retrievedPlans.length) {
                       // Initial load, there is no current plan, so we set the current to be the first plan in the array.
                       dispatch(updatePlanList(totPlans));
@@ -137,6 +149,20 @@ const HandleUserEntryDummy: FC<{ setLoginId: Function; _id: string | null }> =
       }
       // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [user._id]);
+
+    const getStartYear = (year: string): number => {
+      if (year.includes("Sophomore")) {
+        return new Date().getFullYear() - 1;
+      } else if (year.includes("Junior")) {
+        return new Date().getFullYear() - 2;
+      } else if (year.includes("Senior")) {
+        return new Date().getFullYear() - 3;
+      } else if (year.includes("Fifth year")) {
+        return new Date().getFullYear() - 4;
+      } else {
+        return new Date().getFullYear();
+      }
+    };
 
     // Imports or creates new plan.
     useEffect(() => {

@@ -50,6 +50,7 @@ const GenerateNewPlan = (props: generateNewPlanProps) => {
       name: "Unnamed Plan",
       user_id: user._id,
       majors: [toAddMajor.degree_name],
+      year: user.grade,
       expireAt:
         user._id === "guestUser" ? Date.now() + 60 * 60 * 24 * 1000 : undefined,
     };

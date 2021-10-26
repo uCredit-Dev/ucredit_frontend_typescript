@@ -23,6 +23,7 @@ import {
 } from "../../../../slices/currentPlanSlice";
 import { selectCourseCache } from "../../../../slices/userSlice";
 import { selectCourseToShow } from "../../../../slices/popupSlice";
+import { UserCourse, Year } from "../../../../resources/commonTypes";
 
 // Parsed prereq type
 // satisfied: a boolean that tells whether the prereq should be marked with green (satisfied) or red (unsatisfied)
@@ -159,6 +160,21 @@ const PrereqDisplay: FC = () => {
   };
 
   /**
+   * Parses through the currentPlan years and returns year object corresponding to the year of the prereq or the current year if not found
+   * @param courseToShow - course to find year of
+   *  @returns year object
+   */
+  const getYearById = (courseToShow: UserCourse | null): Year => {
+    const yearToGet: string = courseToShow ? courseToShow.year_id : year;
+    for (const yearObj of currentPlan.years) {
+      if (yearObj._id === yearToGet) {
+        return yearObj;
+      }
+    }
+    return currentPlan.years[currentPlan.years.length - 1];
+  };
+
+  /**
    * Parses arrays into clickable prereq number links
    * @param input - prereq array
    * @returns an array of parsed prereqs
@@ -169,7 +185,7 @@ const PrereqDisplay: FC = () => {
       // If the element is a number
       const noCBrackets: string = element.substr(0, element.length - 3);
       const noCBracketsNum: string = element.substr(0, 10);
-      const yearToCheck = courseToShow !== null ? courseToShow.year_id : year;
+      const yearToCheck = getYearById(courseToShow);
       let satisfied: boolean = checkPrereq(
         currPlanCourses,
         currentPlan,

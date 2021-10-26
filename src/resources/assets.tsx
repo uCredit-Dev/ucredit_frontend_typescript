@@ -20,9 +20,9 @@ export const guestUser: User = {
   _id: "guestUser",
   name: "Guest User",
   email: "none",
-  affiliation: "none",
+  affiliation: "STUDENT",
   school: "none",
-  grade: "none",
+  grade: "AE UG Freshman",
   plan_ids: [],
 };
 
@@ -576,7 +576,7 @@ const getNonStringPrereq = (
   currPlanCourses: UserCourse[],
   plan: Plan,
   input: any,
-  year: number,
+  year: Year,
   semester: SemesterType
 ): boolean => {
   const element = input;
@@ -584,18 +584,14 @@ const getNonStringPrereq = (
     // If the element is a number
     // const noCBrackets: string = element.substr(0, element.length - 3);
     const noCBracketsNum: string = element.substr(0, 10);
-    if (plan.years[year]) {
-      const satisfied: boolean = checkPrereq(
-        currPlanCourses,
-        plan,
-        noCBracketsNum,
-        plan.years[year]._id,
-        semester
-      );
-      return satisfied;
-    } else {
-      return false;
-    }
+    const satisfied: boolean = checkPrereq(
+      currPlanCourses,
+      plan,
+      noCBracketsNum,
+      year,
+      semester
+    );
+    return satisfied;
   } else if (typeof element[0] === "number") {
     // If the element is a OR sequence (denoted by the depth number in the first index)
     const parsedSat: boolean = isSatisfied(
@@ -648,7 +644,7 @@ const isSatisfied = (
   plan: Plan,
   or: boolean,
   currPlanCourses: UserCourse[],
-  year: number,
+  year: Year,
   semester: SemesterType
 ): boolean => {
   let orAndSatisfied = false;
@@ -781,16 +777,14 @@ export const checkPrereq = (
   courses: UserCourse[],
   plan: Plan,
   preReqNumber: string,
-  year: string,
+  year: Year,
   semester: SemesterType
 ): boolean => {
   let satisfied: boolean = false;
-  const yearObj = getYearFromId(year, plan);
   courses.forEach((course) => {
     if (
       course.number === preReqNumber &&
-      yearObj !== null &&
-      prereqInPast(course, getYearIndex(yearObj, plan), semester, plan)
+      prereqInPast(course, year, semester, plan)
     ) {
       satisfied = true;
     }
@@ -798,41 +792,7 @@ export const checkPrereq = (
   return satisfied;
 };
 
-/**
- * returns a year type from year id
- * @param id - year id
- * @param plan - user's plan
- * @returns the year type
- */
-const getYearFromId = (id: string, plan: Plan): Year | null => {
-  let year: Year | null = null;
-
-  plan.years.forEach((y: Year, i: number) => {
-    if (id === y._id) {
-      year = y;
-    }
-  });
-
-  return year;
-};
-
 const semesters: String[] = ["fall", "intersession", "spring", "summer"];
-
-/**
- * returns index of year from year type
- * @param year the year type
- * @param plan user's plan
- * @returns the index of year
- */
-const getYearIndex = (year: Year, plan: Plan): number => {
-  let index: number = 0;
-  plan.years.forEach((y: Year, i: number) => {
-    if (y._id === year._id) {
-      index = i;
-    }
-  });
-  return index;
-};
 
 /**
  * Check's whether prereq is satisfied by the course in the past
@@ -844,16 +804,15 @@ const getYearIndex = (year: Year, plan: Plan): number => {
  */
 const prereqInPast = (
   course: UserCourse,
-  year: number,
+  year: Year,
   semester: SemesterType,
   plan: Plan
 ): boolean => {
   const retrievedYear = getCourseYear(plan, course);
   if (retrievedYear !== null) {
-    const courseYearRank: number = getYearIndex(retrievedYear, plan);
-    if (courseYearRank < year) {
+    if (retrievedYear.year < year.year) {
       return true;
-    } else if (courseYearRank > year) {
+    } else if (retrievedYear.year > year.year) {
       return false;
     } else {
       return (
@@ -917,7 +876,7 @@ export const checkAllPrereqs = (
                 currCourses,
                 plan,
                 orParsed,
-                getYearIndex(year, plan),
+                year,
                 semester
               );
               return resolve(bool);

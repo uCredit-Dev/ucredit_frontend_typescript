@@ -21,7 +21,6 @@ import {
   selectPlaceholder,
   selectSearchStatus,
 } from "../../../slices/searchSlice";
-import { newYearTemplate } from "./YearComponent";
 import { ReactComponent as AddSvg } from "../../../resources/svg/Add.svg";
 import { toast } from "react-toastify";
 import {
@@ -175,11 +174,18 @@ const CourseList: FC = () => {
    */
   const addNewYear = (preUniversity: boolean): void => {
     if (currentPlan.years.length < 8) {
-      const body = {
-        name: newYearTemplate.name,
+      const newYear: Year = {
+        name: "New Year",
+        _id: "",
         plan_id: currentPlan._id,
-        preUniversity: preUniversity,
         user_id: user._id,
+        courses: [],
+        year: currentPlan.years[currentPlan.years.length - 1].year + 1,
+      };
+
+      const body = {
+        ...newYear,
+        preUniversity: preUniversity,
         expireAt:
           user._id === "guestUser"
             ? Date.now() + 60 * 60 * 24 * 1000

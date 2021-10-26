@@ -85,6 +85,7 @@ export type Year = {
   courses: string[];
   plan_id: any;
   user_id: string;
+  year: number;
 };
 
 export type Plan = {
@@ -97,13 +98,23 @@ export type Plan = {
   years: Year[];
 };
 
+type Affiliation = "STUDENT" | "FACULTY" | "STAFF";
+type Grade =
+  | "AE UG Freshman"
+  | "AE UG Sophomore"
+  | "AE UG Junior"
+  | "AE UG Senior"
+  | "Research Program Coordinator"
+  | "LECTURER"
+  | "Student Success Advisor";
+
 export type User = {
   _id: string; //JHED ID
   name: string;
   email: string;
-  affiliation: string; //STUDENT, FACULTY or STAFF
+  affiliation: Affiliation; //STUDENT, FACULTY or STAFF
   school: string;
-  grade: string;
+  grade: Grade;
   plan_ids: string[];
 };
 
