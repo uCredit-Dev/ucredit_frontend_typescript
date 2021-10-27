@@ -18,7 +18,7 @@ const UserSection: FC<{
   let history = useHistory();
 
   return (
-    <div className="fixed z-20 p-3 px-6 w-full h-header bg-gradient-to-r shadow from-blue-500 to-green-400 select-none">
+    <div className="z-20 p-3 px-6 w-full h-20 bg-gradient-to-r shadow from-blue-500 to-green-400 select-none">
       <div className="flex flex-row items-center justify-end w-full h-full">
         {/* <div className="flex flex-row items-center justify-center mr-3 w-11 h-11 bg-white rounded-full"> */}
         {/* <UserSvg className="w-6 h-6 stroke-2" /> */}

@@ -35,7 +35,8 @@ const YearSettingsDropdown: FC<{
   setEdittingName: Function;
   setDisplay: Function;
   toShow: SemSelected;
-}> = ({ setToShow, year, setEdittingName, setDisplay, toShow }) => {
+  id: number;
+}> = ({ setToShow, year, setEdittingName, setDisplay, toShow, id }) => {
   const dispatch = useDispatch();
   const currPlan = useSelector(selectPlan);
   const planList = useSelector(selectPlanList);
@@ -116,96 +117,102 @@ const YearSettingsDropdown: FC<{
     }
   };
   return (
-    <div className="relative z-50 right-1 flex flex-col w-40 text-black bg-gray-100 rounded shadow">
-      <button
-        onClick={() => {
-          setEdittingName(true);
-          setDisplay(false);
-        }}
-        className="hover:bg-gray-300 focus:outline-none"
-      >
-        Rename
-      </button>
+    <div className="relative right-36 top-6">
+      <div className="absolute z-50 flex flex-col w-40 text-black bg-gray-100 rounded shadow">
+        <button
+          onClick={() => {
+            setEdittingName(true);
+            setDisplay(false);
+          }}
+          className="hover:bg-gray-300 focus:outline-none"
+        >
+          Rename
+        </button>
 
-      <button
-        className="hover:bg-gray-300 border-t border-gray-300 focus:outline-none"
-        onClick={() => {
-          setYearSelect(!semSelect);
-        }}
-      >
-        Change Year
-      </button>
-      {yearSelect ? (
-        <>
-          <Select
-            options={yearOptions}
-            className="w-40 rounded outline-none"
-            onChange={handleYearChange}
-            value={{ label: year.year, value: year.year }}
-          />
-        </>
-      ) : null}
-      <button
-        className="hover:bg-gray-300 border-t border-gray-300 focus:outline-none"
-        onClick={() => {
-          setSemSelect(!semSelect);
-        }}
-      >
-        Select Terms
-      </button>
-      {semSelect ? (
-        <>
-          <div className="z-50 flex flex-col">
-            <label>
-              <input
-                type="checkbox"
-                name="Fall"
-                className="ml-6 mr-2"
-                onChange={modifyFall}
-                checked={toShow.fall}
-              />
-              Fall
-            </label>
-            <label>
-              <input
-                type="checkbox"
-                name="Spring"
-                className="ml-6 mr-2"
-                onChange={modifySpring}
-                checked={toShow.spring}
-              />
-              Spring
-            </label>
-            <label>
-              <input
-                type="checkbox"
-                name="Summer"
-                className="ml-6 mr-2"
-                onChange={modifySummer}
-                checked={toShow.summer}
-              />
-              Summer
-            </label>
-            <label>
-              <input
-                type="checkbox"
-                name="Intersession"
-                className="ml-6 mr-2"
-                onChange={modifyIntersession}
-                checked={toShow.intersession}
-              />
-              Intersession
-            </label>
-          </div>
-        </>
-      ) : null}
+        <button
+          className="hover:bg-gray-300 border-t border-gray-300 focus:outline-none"
+          onClick={() => {
+            setYearSelect(!semSelect);
+          }}
+        >
+          Change Year
+        </button>
+        {yearSelect ? (
+          <>
+            <Select
+              options={yearOptions}
+              className="w-40 rounded outline-none"
+              onChange={handleYearChange}
+              value={{ label: year.year, value: year.year }}
+            />
+          </>
+        ) : null}
+        {id !== 0 ? (
+          <>
+            <button
+              className="hover:bg-gray-300 border-t border-gray-300 focus:outline-none"
+              onClick={() => {
+                setSemSelect(!semSelect);
+              }}
+            >
+              Select Terms
+            </button>
+            {semSelect ? (
+              <>
+                <div className="z-50 flex flex-col">
+                  <label>
+                    <input
+                      type="checkbox"
+                      name="Fall"
+                      className="ml-6 mr-2"
+                      onChange={modifyFall}
+                      checked={toShow.fall}
+                    />
+                    Fall
+                  </label>
+                  <label>
+                    <input
+                      type="checkbox"
+                      name="Spring"
+                      className="ml-6 mr-2"
+                      onChange={modifySpring}
+                      checked={toShow.spring}
+                    />
+                    Spring
+                  </label>
+                  <label>
+                    <input
+                      type="checkbox"
+                      name="Summer"
+                      className="ml-6 mr-2"
+                      onChange={modifySummer}
+                      checked={toShow.summer}
+                    />
+                    Summer
+                  </label>
+                  <label>
+                    <input
+                      type="checkbox"
+                      name="Intersession"
+                      className="ml-6 mr-2"
+                      onChange={modifyIntersession}
+                      checked={toShow.intersession}
+                    />
+                    Intersession
+                  </label>
+                </div>
+              </>
+            ) : null}
 
-      <button
-        onClick={activateDeleteYearPopup}
-        className="bg-red-100 hover:bg-red-300 border-t border-gray-300 focus:outline-none"
-      >
-        Remove
-      </button>
+            <button
+              onClick={activateDeleteYearPopup}
+              className="bg-red-100 hover:bg-red-300 border-t border-gray-300 focus:outline-none"
+            >
+              Remove
+            </button>
+          </>
+        ) : null}
+      </div>
     </div>
   );
 };

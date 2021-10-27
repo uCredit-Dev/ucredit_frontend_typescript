@@ -21,16 +21,14 @@ import {
   selectPlaceholder,
   selectSearchStatus,
 } from "../../../slices/searchSlice";
-import { ReactComponent as AddSvg } from "../../../resources/svg/Add.svg";
 import { toast } from "react-toastify";
 import {
   selectCourseCache,
   selectPlanList,
-  selectUser,
   updatePlanList,
 } from "../../../slices/userSlice";
 import { api } from "../../../resources/assets";
-import { DragDropContext, Draggable, Droppable } from "react-beautiful-dnd";
+import { DragDropContext, Droppable } from "react-beautiful-dnd";
 import YearDraggable from "./YearDraggable";
 
 /**
@@ -41,7 +39,6 @@ const CourseList: FC = () => {
   // Setting up redux
   const dispatch = useDispatch();
   const currentPlan = useSelector(selectPlan);
-  const user = useSelector(selectUser);
   const searching = useSelector(selectSearchStatus);
   const placeholder = useSelector(selectPlaceholder);
   const droppables = useSelector(selectDroppables);
@@ -168,47 +165,6 @@ const CourseList: FC = () => {
     return course;
   };
 
-  /**
-   * Adds a new year, if preUni is true, add to the start of the plan, otherwise add to the end
-   * @param preUniversity - whether the new year is a pre uni year
-   */
-  const addNewYear = (preUniversity: boolean): void => {
-    if (currentPlan.years.length < 8) {
-      const newYear: Year = {
-        name: "New Year",
-        _id: "",
-        plan_id: currentPlan._id,
-        user_id: user._id,
-        courses: [],
-        year: currentPlan.years[currentPlan.years.length - 1].year + 1,
-      };
-
-      const body = {
-        ...newYear,
-        preUniversity: preUniversity,
-        expireAt:
-          user._id === "guestUser"
-            ? Date.now() + 60 * 60 * 24 * 1000
-            : undefined,
-      }; // add to end by default
-      axios
-        .post(api + "/years", body)
-        .then((response: any) => {
-          const newYear: Year = { ...response.data.data };
-          const newYearArray: Year[] = [...currentPlan.years, newYear];
-          const newUpdatedPlan: Plan = { ...currentPlan, years: newYearArray };
-          const updatedPlanList: Plan[] = [...planList];
-          updatedPlanList[0] = newUpdatedPlan;
-          dispatch(updatePlanList(updatedPlanList));
-          dispatch(updateSelectedPlan(newUpdatedPlan));
-          toast.success("New Year added!");
-        })
-        .catch((err) => console.log(err));
-    } else {
-      toast.error("Can't add more than 8 years!");
-    }
-  };
-
   // Handles all drag n drop logic within the drag n drop context.
   const onDragEnd = (result: any) => {
     const { source, destination } = result;
@@ -248,6 +204,10 @@ const CourseList: FC = () => {
    * @param destIndex - destination year index
    */
   const swapYear = (sourceIndex: number, destIndex: number): void => {
+    if (sourceIndex === 0 || destIndex === 0) {
+      toast.error("Can't swap with AP Equivalent section!");
+      return;
+    }
     const yearArr: Year[] = [...currentPlan.years];
     const temp: Year = yearArr[sourceIndex];
     yearArr.splice(sourceIndex, 1);
@@ -435,7 +395,7 @@ const CourseList: FC = () => {
   return (
     <>
       <DragDropContext onDragEnd={onDragEnd}>
-        <div className="flex flex-row justify-between thin:justify-center mt-16 w-full h-auto">
+        <div className="flex flex-row justify-between thin:justify-center mt-7 w-full h-auto">
           <Droppable droppableId={"years"} type="YEAR" direction="horizontal">
             {(provided, snapshot) => (
               <div
@@ -444,31 +404,6 @@ const CourseList: FC = () => {
                 style={getListStyle(snapshot.isDraggingOver)}
               >
                 {elements}
-                {currentPlan._id !== "noPlan" ? (
-                  <Draggable
-                    index={currentPlan.years.length}
-                    key="addButton"
-                    draggableId={"addButton"}
-                    isDragDisabled={true}
-                  >
-                    {(provided, snapshot) => {
-                      return (
-                        <div
-                          ref={provided.innerRef}
-                          {...provided.draggableProps}
-                          {...provided.dragHandleProps}
-                        >
-                          <AddSvg
-                            onClick={() => addNewYear(false)}
-                            className="-mt-1 mb-4 ml-5 mr-5 w-14 h-auto max-h-48 min-h-addSVG border-2 border-gray-300 rounded focus:outline-none cursor-pointer select-none transform hover:scale-105 transition duration-200 ease-in"
-                            data-tip={`Add an additional year after!`}
-                            data-for="godTip"
-                          />
-                        </div>
-                      );
-                    }}
-                  </Draggable>
-                ) : null}
                 {provided.placeholder}
               </div>
             )}

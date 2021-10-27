@@ -37,6 +37,7 @@ import {
   selectPlanList,
   updatePlanList,
 } from "../../../slices/userSlice";
+import { ReactComponent as Question } from "../../../resources/svg/Question.svg";
 
 /**
  * A component displaying all the courses in a specific semester.
@@ -50,7 +51,8 @@ const Semester: FC<{
   semesterName: SemesterType;
   semesterYear: Year;
   courses: UserCourse[];
-}> = ({ customStyle, semesterName, semesterYear, courses }) => {
+  apEquivalent: boolean;
+}> = ({ customStyle, semesterName, semesterYear, courses, apEquivalent }) => {
   // Redux setup
   const dispatch = useDispatch();
   const addingPrereqStatus = useSelector(selectAddingPrereq);
@@ -65,6 +67,7 @@ const Semester: FC<{
   const [totalCredits, setTotalCredits] = useState<number>(0);
   const [semesterCourses, setSemesterCourses] = useState<UserCourse[]>([]);
   const [inspectedArea, setInspectedArea] = useState<string>("None");
+  const [openAPInfoBox, setOpenAPInfoBox] = useState<boolean>(false);
 
   useEffect(() => {
     ReactTooltip.rebuild();
@@ -225,30 +228,53 @@ const Semester: FC<{
         className={clsx(`${customStyle} mb-3 w-full h-auto pr-1 rounded`, {
           "z-50": addingPrereqStatus,
         })}
+        onMouseLeave={() => setOpenAPInfoBox(false)}
       >
         <div className="flex flex-col h-yearheading font-medium">
           <div className="flex flex-row items-center justify-between px-0.5 py-1 h-yearheading1 bg-white">
-            <div className="flex flex-row items-center w-full h-auto font-normal select-none">
-              {semesterName === "Fall" ? (
-                <div className="flex flex-row text-gray-600 font-semibold">
-                  Fall
-                  <div className="ml-1 font-light">{semesterYear.year}</div>
-                </div>
-              ) : semesterName === "Intersession" ? (
-                <div className="flex flex-row text-gray-600 font-semibold">
-                  Intersession
-                  <div className="ml-1 font-light">{semesterYear.year + 1}</div>
-                </div>
-              ) : semesterName === "Spring" ? (
-                <div className="flex flex-row text-gray-600 font-semibold">
-                  Spring
-                  <div className="ml-1 font-light">{semesterYear.year + 1}</div>
-                </div>
+            <div className="flex flex-row items-center w-full h-auto font-normal">
+              {apEquivalent ? (
+                <>
+                  <Question
+                    className="h-4 fill-gray"
+                    onClick={() => setOpenAPInfoBox(!openAPInfoBox)}
+                  />
+                  <div className="flex flex-row text-gray-600 font-semibold">
+                    Equivalents
+                    <div className="ml-1">{"≤"}</div>
+                    <div className="font-light">{semesterYear.year}</div>
+                  </div>
+                </>
               ) : (
-                <div className="flex flex-row text-gray-600 font-semibold">
-                  Summer
-                  <div className="ml-1 font-light">{semesterYear.year + 1}</div>
-                </div>
+                <>
+                  {semesterName === "Fall" ? (
+                    <div className="flex flex-row text-gray-600 font-semibold">
+                      Fall
+                      <div className="ml-1 font-light">{semesterYear.year}</div>
+                    </div>
+                  ) : semesterName === "Intersession" ? (
+                    <div className="flex flex-row text-gray-600 font-semibold">
+                      Intersession
+                      <div className="ml-1 font-light">
+                        {semesterYear.year + 1}
+                      </div>
+                    </div>
+                  ) : semesterName === "Spring" ? (
+                    <div className="flex flex-row text-gray-600 font-semibold">
+                      Spring
+                      <div className="ml-1 font-light">
+                        {semesterYear.year + 1}
+                      </div>
+                    </div>
+                  ) : (
+                    <div className="flex flex-row text-gray-600 font-semibold">
+                      Summer
+                      <div className="ml-1 font-light">
+                        {semesterYear.year + 1}
+                      </div>
+                    </div>
+                  )}
+                </>
               )}{" "}
               {courses.length !== 0 && totalCredits !== 0 ? (
                 <>
@@ -304,6 +330,21 @@ const Semester: FC<{
               </div>
             )}
           </Droppable>
+          {openAPInfoBox ? (
+            <div className="absolute -ml-6 -mt-48 p-2 w-72 bg-gray-100 rounded shadow select-text">
+              These are courses transferred over from AP tests that you've
+              taken! Find out equivalent courses your scores cover for{" "}
+              <a
+                className="text-blue-400 underline font-bold"
+                target="_blank"
+                rel="noreferrer"
+                href="https://e-catalogue.jhu.edu/arts-sciences/full-time-residential-programs/undergraduate-policies/academic-policies/external-credit/#examcredittext"
+              >
+                here
+              </a>
+              .
+            </div>
+          ) : null}
         </div>
       </div>
     </>

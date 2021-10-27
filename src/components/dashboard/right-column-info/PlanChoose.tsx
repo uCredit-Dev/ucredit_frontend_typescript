@@ -65,7 +65,7 @@ const PlanChoose: FC = () => {
     <>
       {/* dummy component to generate new plans */}
       <GenerateNewPlan />
-      <div className="flex flex-col items-center">
+      <div className="flex flex-col items-center mr-2 my-1">
         <button
           className="flex flex-row my-auto w-60 h-10 text-xl font-light border border-gray-300 rounded outline-none shadow"
           onClick={() => setDropdown(!dropdown)}

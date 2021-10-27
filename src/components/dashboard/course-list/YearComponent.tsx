@@ -166,7 +166,7 @@ const YearComponent: FC<{
           )}
           <MoreSvg
             onClick={() => {
-              setDisplay(true);
+              setDisplay(!display);
             }}
             className="mt-0.5 w-8 stroke-2 cursor-pointer"
           />
@@ -178,6 +178,7 @@ const YearComponent: FC<{
                 setDisplay={setDisplay}
                 toShow={toShow}
                 setEdittingName={setEdittingName}
+                id={id}
               />
             ) : null}
           </div>
@@ -188,40 +189,54 @@ const YearComponent: FC<{
         onMouseLeave={() => setDraggable(false)}
         onMouseEnter={() => setDraggable(true)}
       >
-        <div className="flex flex-col items-center">
-          {toShow.fall ? (
-            <Semester
-              customStyle=""
-              semesterName="Fall"
-              semesterYear={year}
-              courses={fallCourses}
-            />
-          ) : null}{" "}
-          {toShow.intersession ? (
-            <Semester
-              customStyle=""
-              semesterName="Intersession"
-              semesterYear={year}
-              courses={winterCourses}
-            />
-          ) : null}{" "}
-          {toShow.spring ? (
-            <Semester
-              customStyle=""
-              semesterName="Spring"
-              semesterYear={year}
-              courses={springCourses}
-            />
-          ) : null}{" "}
-          {toShow.summer ? (
-            <Semester
-              customStyle=""
-              semesterName="Summer"
-              semesterYear={year}
-              courses={summerCourses}
-            />
-          ) : null}
-        </div>
+        {id !== 0 ? (
+          <div className="flex flex-col items-center">
+            {toShow.fall ? (
+              <Semester
+                customStyle=""
+                semesterName="Fall"
+                semesterYear={year}
+                courses={fallCourses}
+                apEquivalent={false}
+              />
+            ) : null}{" "}
+            {toShow.intersession ? (
+              <Semester
+                customStyle=""
+                semesterName="Intersession"
+                semesterYear={year}
+                courses={winterCourses}
+                apEquivalent={false}
+              />
+            ) : null}{" "}
+            {toShow.spring ? (
+              <Semester
+                customStyle=""
+                semesterName="Spring"
+                semesterYear={year}
+                courses={springCourses}
+                apEquivalent={false}
+              />
+            ) : null}{" "}
+            {toShow.summer ? (
+              <Semester
+                customStyle=""
+                semesterName="Summer"
+                semesterYear={year}
+                courses={summerCourses}
+                apEquivalent={false}
+              />
+            ) : null}
+          </div>
+        ) : (
+          <Semester
+            customStyle=""
+            semesterName="Fall"
+            semesterYear={year}
+            courses={fallCourses}
+            apEquivalent={true}
+          />
+        )}
       </div>
     </div>
   );

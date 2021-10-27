@@ -22,7 +22,7 @@ const YearDraggable: FC<{
       key={props.year._id}
       index={props.yearIndex}
       draggableId={props.year._id}
-      isDragDisabled={draggable}
+      isDragDisabled={draggable || props.id === 0}
     >
       {(provided, snapshot) => {
         return (

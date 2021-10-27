@@ -7,10 +7,18 @@ import {
   updateSelectedPlan,
 } from "../../../slices/currentPlanSlice";
 import { updateDeletePlanStatus } from "../../../slices/popupSlice";
-import { selectPlanList, updatePlanList } from "../../../slices/userSlice";
+import {
+  selectPlanList,
+  selectUser,
+  updatePlanList,
+} from "../../../slices/userSlice";
 import PlanChoose from "./PlanChoose";
 import { ReactComponent as RemoveSvg } from "../../../resources/svg/Remove.svg";
 import ShareLinksPopup from "./ShareLinksPopup";
+import { ReactComponent as AddSvg } from "../../../resources/svg/Add.svg";
+import axios from "axios";
+import { Year, Plan } from "../../../resources/commonTypes";
+import ReactTooltip from "react-tooltip";
 
 /**
  * @description ActionBar component
@@ -20,6 +28,7 @@ const ActionBar: FC = () => {
   const dispatch = useDispatch();
   const currentPlan = useSelector(selectPlan);
   const planList = useSelector(selectPlanList);
+  const user = useSelector(selectUser);
 
   // Holds temporary plan name.
   const [planName, setPlanName] = useState<string>(currentPlan.name);
@@ -103,29 +112,73 @@ const ActionBar: FC = () => {
         currentPlan._id
     );
   };
+
+  /**
+   * Adds a new year, if preUni is true, add to the start of the plan, otherwise add to the end
+   * @param preUniversity - whether the new year is a pre uni year
+   */
+  const addNewYear = (preUniversity: boolean): void => {
+    if (currentPlan.years.length < 8) {
+      const newYear: Year = {
+        name: "New Year",
+        _id: "",
+        plan_id: currentPlan._id,
+        user_id: user._id,
+        courses: [],
+        year: currentPlan.years[currentPlan.years.length - 1].year + 1,
+      };
+
+      const body = {
+        ...newYear,
+        preUniversity: preUniversity,
+        expireAt:
+          user._id === "guestUser"
+            ? Date.now() + 60 * 60 * 24 * 1000
+            : undefined,
+      }; // add to end by default
+      axios
+        .post(api + "/years", body)
+        .then((response: any) => {
+          const newYear: Year = { ...response.data.data };
+          const newYearArray: Year[] = [...currentPlan.years, newYear];
+          const newUpdatedPlan: Plan = { ...currentPlan, years: newYearArray };
+          const updatedPlanList: Plan[] = [...planList];
+          updatedPlanList[0] = newUpdatedPlan;
+          dispatch(updatePlanList(updatedPlanList));
+          dispatch(updateSelectedPlan(newUpdatedPlan));
+          toast.success("New Year added!");
+        })
+        .catch((err) => console.log(err));
+    } else {
+      toast.error("Can't add more than 8 years!");
+    }
+  };
+
+  useEffect(() => {
+    ReactTooltip.rebuild();
+  });
   return (
-    <div className="flex flex-row px-2 py-1 bg-white rounded shadow drop-shadow-xl">
+    <div className="flex flex-row flex-wrap px-2 py-1 bg-white rounded shadow drop-shadow-xl">
       <PlanChoose />
-      <div className="flex flex-row items-end ml-2 my-auto h-10 border border-gray-300 rounded rounded shadow drop-shadow-xl">
+      <div className="flex flex-row items-end mr-2 my-1 h-10 border border-gray-300 rounded rounded shadow drop-shadow-xl">
         <input
           value={planName}
-          className="ml-2 my-auto px-1 w-auto text-gray-800 text-2xl font-semibold outline-none"
+          className="ml-2 my-1 px-1 w-auto h-8 text-gray-800 text-2xl font-semibold outline-none"
           onChange={handlePlanNameChange}
-          style={{ height: "2.4rem" }}
         />
       </div>
-      <div className="flex ml-2 my-auto px-2 w-auto h-10 text-xl font-light border border-gray-300 rounded stroke-2 shadow">
-        <div className="py-1">{currentPlan.majors}</div>
+      <div className="flex mr-2 my-1 px-2 h-10 text-xl font-light border border-gray-300 rounded stroke-2 shadow">
+        <div className="py-1 w-max">{currentPlan.majors}</div>
       </div>
       <button
-        className="flex flex-row items-center ml-1 ml-2 my-auto px-2 h-10 hover:underline hover:bg-red-300 border border-gray-300 rounded shadow transition duration-200 ease-in"
+        className="flex flex-row items-center ml-1 mr-2 my-1 px-2 h-10 hover:underline hover:bg-red-300 border border-gray-300 rounded shadow transition duration-200 ease-in"
         onClick={activateDeletePlan}
       >
         <RemoveSvg className="my-auto w-5 stroke-2 cursor-pointer select-none transform hover:scale-110 transition duration-200 ease-in" />{" "}
         <div className="ml-1">Delete</div>
       </button>
       <button
-        className="flex flex-row items-center ml-1 ml-2 my-auto px-2 h-10 hover:underline hover:bg-green-300 border border-gray-300 rounded shadow transition duration-200 ease-in"
+        className="flex flex-row items-center ml-1 mr-2 my-1 px-2 h-10 hover:underline hover:bg-green-300 border border-gray-300 rounded shadow transition duration-200 ease-in"
         onClick={onShareClick}
       >
         <svg
@@ -148,6 +201,14 @@ const ActionBar: FC = () => {
         {shareableURL === "" ? null : (
           <ShareLinksPopup link={shareableURL} setURL={onShareClick} />
         )}
+      </div>
+      <div className="flex flex-row items-center ml-2 my-1 w-10 h-10 hover:underline hover:bg-green-300 border border-gray-300 rounded focus:outline-none shadow cursor-pointer transition duration-200 ease-in">
+        <AddSvg
+          onClick={() => addNewYear(false)}
+          data-tip={`Add a new year!`}
+          data-for="godTip"
+          className="w-full h-full"
+        />
       </div>
     </div>
   );
