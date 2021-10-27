@@ -149,9 +149,6 @@ const YearComponent: FC<{
       <div className="flex flex-col mt-1 w-full min-w-yearMin max-w-yearheading h-yearheading font-medium">
         <div className="flex flex-row w-full text-white drop-shadow-lg">
           <div className="mr-1 text-xl font-thin">✥</div>
-          <div className="mr-1 px-1 h-6 bg-green-400 rounded shadow">
-            {year.year}
-          </div>
           {edittingName ? (
             <input
               id={year._id + "input"}

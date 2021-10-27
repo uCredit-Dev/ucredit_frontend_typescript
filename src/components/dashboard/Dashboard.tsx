@@ -30,7 +30,7 @@ import { useScrollPosition } from "@n8tb1t/use-scroll-position";
 /**
  * The dashboard that displays the user's plan.
  */
-const Dashboard: FC<{ _id: string | null }> = ({ _id }) => {
+const Dashboard: FC<{ id: string | null }> = ({ id }) => {
   // Redux setup.
   const searchStatus = useSelector(selectSearchStatus);
   const deletePlanStatus = useSelector(selectDeletePlanStatus);
@@ -62,7 +62,7 @@ const Dashboard: FC<{ _id: string | null }> = ({ _id }) => {
   });
   return (
     <div className="flex flex-col w-full h-full min-h-screen">
-      <HandleUserEntryDummy setLoginId={setLoginId} _id={_id} />
+      <HandleUserEntryDummy setLoginId={setLoginId} id={id} />
       {formPopup ? <FeedbackPopup setFormPopup={setFormPopup} /> : null}
       {showNotif ? (
         <FeedbackNotification

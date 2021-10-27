@@ -229,13 +229,27 @@ const Semester: FC<{
         <div className="flex flex-col h-yearheading font-medium">
           <div className="flex flex-row items-center justify-between px-0.5 py-1 h-yearheading1 bg-white">
             <div className="flex flex-row items-center w-full h-auto font-normal select-none">
-              {semesterName === "Fall"
-                ? "Fall"
-                : semesterName === "Intersession"
-                ? "Intersession"
-                : semesterName === "Spring"
-                ? "Spring"
-                : "Summer"}{" "}
+              {semesterName === "Fall" ? (
+                <div className="flex flex-row text-gray-600 font-semibold">
+                  Fall
+                  <div className="ml-1 font-light">{semesterYear.year}</div>
+                </div>
+              ) : semesterName === "Intersession" ? (
+                <div className="flex flex-row text-gray-600 font-semibold">
+                  Intersession
+                  <div className="ml-1 font-light">{semesterYear.year + 1}</div>
+                </div>
+              ) : semesterName === "Spring" ? (
+                <div className="flex flex-row text-gray-600 font-semibold">
+                  Spring
+                  <div className="ml-1 font-light">{semesterYear.year + 1}</div>
+                </div>
+              ) : (
+                <div className="flex flex-row text-gray-600 font-semibold">
+                  Summer
+                  <div className="ml-1 font-light">{semesterYear.year + 1}</div>
+                </div>
+              )}{" "}
               {courses.length !== 0 && totalCredits !== 0 ? (
                 <>
                   <div

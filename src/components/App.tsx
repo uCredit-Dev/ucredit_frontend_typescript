@@ -123,7 +123,7 @@ const App: FC = () => {
     return new URLSearchParams(useLocation().search);
   };
 
-  const _id = useQuery().get("_id");
+  const id = useQuery().get("_id");
 
   useEffect(() => {
     ReactTooltip.rebuild();
@@ -139,13 +139,13 @@ const App: FC = () => {
       />
       <Switch>
         <Route path="/dashboard">
-          <Dashboard _id={null} />
+          <Dashboard id={null} />
         </Route>
         <Route path="/login">
           <DashboardEntry />
         </Route>
         <Route path="/share">
-          <Dashboard _id={_id} />
+          <Dashboard id={id} />
         </Route>
         <Route path="/">
           <LandingPage />
