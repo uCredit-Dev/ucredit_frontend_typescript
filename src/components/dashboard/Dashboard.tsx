@@ -24,6 +24,8 @@ import PlanAdd from "../popups/PlanAdd";
 import CourseList from "./course-list/CourseList";
 import InfoMenu from "./InfoMenu";
 import ActionBar from "./right-column-info/ActionBar";
+import { useScrollPosition } from "@n8tb1t/use-scroll-position";
+import clsx from "clsx";
 
 /**
  * The dashboard that displays the user's plan.
@@ -43,6 +45,23 @@ const Dashboard: FC<{ id: string | null }> = ({ id }) => {
   const [showNotif, setShowNotif] = useState<boolean>(true);
   const [formPopup, setFormPopup] = useState<boolean>(false);
   const [loginId, setLoginId] = useState<string>(document.cookie.split("=")[1]);
+  const [showHeader, setShowHeader] = useState<boolean>(true);
+  const [showActionBar, setShowActionBar] = useState<boolean>(true);
+  const [showMoveUp, setMoveUp] = useState<boolean>(false);
+
+  useScrollPosition(({ prevPos, currPos }) => {
+    if (currPos.y > -14) {
+      setMoveUp(false);
+      setShowActionBar(true);
+      setShowHeader(true);
+    } else if (currPos.y > -120) {
+      console.log("in here");
+      setShowHeader(false);
+      setShowActionBar(true);
+      setMoveUp(true);
+    } else setShowActionBar(false);
+  });
+
   return (
     <div className="flex flex-col w-full h-full min-h-screen">
       <HandleUserEntryDummy setLoginId={setLoginId} id={id} />
@@ -53,12 +72,20 @@ const Dashboard: FC<{ id: string | null }> = ({ id }) => {
           notifHandler={setShowNotif}
         />
       ) : null}
+      {showHeader ? <UserSection loginId={loginId} /> : null}
       <div className="flex-grow">
-        <div className="flex flex-col flex-grow h-full">
-          <UserSection loginId={loginId} />
-          <div className="flex flex-row thin:flex-wrap-reverse mt-5 medium:px-10 px-5 w-full h-full">
-            <div className="flex flex-col w-full h-full">
-              <ActionBar />
+        <div className="flex flex-col">
+          <div className="flex flex-row thin:flex-wrap-reverse mt-content w-max h-full">
+            <div className="flex flex-col h-full">
+              {showActionBar ? (
+                <div
+                  className={clsx("fixed mt-4 medium:px-10 px-5 w-screen", {
+                    "-mt-20": showMoveUp,
+                  })}
+                >
+                  <ActionBar />
+                </div>
+              ) : null}
               <CourseList />
             </div>
           </div>

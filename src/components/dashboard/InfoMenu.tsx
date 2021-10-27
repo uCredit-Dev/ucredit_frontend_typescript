@@ -10,7 +10,7 @@ const InfoMenu: FC = () => {
   const [infoOpen, setInfoOpen] = useState(false);
   return (
     <div
-      className="fixed z-50 right-0 flex flex-col justify-between w-10"
+      className="fixed z-50 right-0 flex flex-col justify-between mt-20 w-10"
       style={{ height: "76vh" }}
     >
       <div className="my-auto transform -rotate-90">

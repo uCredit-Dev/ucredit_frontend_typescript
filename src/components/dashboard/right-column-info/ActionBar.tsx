@@ -158,7 +158,7 @@ const ActionBar: FC = () => {
     ReactTooltip.rebuild();
   });
   return (
-    <div className="flex flex-row flex-wrap px-2 py-1 bg-white rounded shadow drop-shadow-xl">
+    <div className="flex flex-row px-2 py-1 bg-white rounded shadow overflow-x-auto drop-shadow-xl">
       <PlanChoose />
       <div className="flex flex-row items-end mr-2 my-1 h-10 border border-gray-300 rounded rounded shadow drop-shadow-xl">
         <input
@@ -207,7 +207,7 @@ const ActionBar: FC = () => {
           onClick={() => addNewYear(false)}
           data-tip={`Add a new year!`}
           data-for="godTip"
-          className="w-full h-full"
+          className="w-10 h-10 focus:outline-none"
         />
       </div>
     </div>

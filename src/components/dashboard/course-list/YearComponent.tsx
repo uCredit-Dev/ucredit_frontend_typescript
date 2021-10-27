@@ -136,8 +136,10 @@ const YearComponent: FC<{
     <div
       id={id.toString()}
       className={
-        customStyle + "cursor-move p-2 rounded mb-4 bg-blue-400 rounded shadow"
+        customStyle +
+        "cursor-move p-2 max-w-year-heading w-max rounded mb-4 bg-blue-400 rounded shadow"
       }
+      style={{ minWidth: "13rem" }}
       onMouseLeave={() => {
         setDraggable(true);
         setDisplay(false);
@@ -146,7 +148,7 @@ const YearComponent: FC<{
         setDraggable(false);
       }}
     >
-      <div className="flex flex-col mt-1 w-full min-w-yearMin max-w-yearheading h-yearheading font-medium">
+      <div className="flex flex-col mt-1 w-full max-w-yearheading h-yearheading font-medium">
         <div className="flex flex-row w-full text-white drop-shadow-lg">
           <div className="mr-1 text-xl font-thin">✥</div>
           {edittingName ? (

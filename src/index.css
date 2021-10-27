@@ -36,7 +36,7 @@ code {
 
 /* Handle */
 ::-webkit-scrollbar-thumb {
-  border-radius: 0.1rem;
+  border-radius: 0.2rem;
   background: #83b9ff;
   fill-opacity: 1;
 }

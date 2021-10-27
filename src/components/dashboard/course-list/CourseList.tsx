@@ -30,6 +30,7 @@ import {
 import { api } from "../../../resources/assets";
 import { DragDropContext, Droppable } from "react-beautiful-dnd";
 import YearDraggable from "./YearDraggable";
+import React from "react";
 
 /**
  * Container component that holds all the years, semesters, and courses of the current plan.
@@ -395,12 +396,11 @@ const CourseList: FC = () => {
   return (
     <>
       <DragDropContext onDragEnd={onDragEnd}>
-        <div className="flex flex-row justify-between thin:justify-center mt-7 w-full h-auto">
+        <div className="flex flex-row justify-between thin:justify-center mt-24 h-full">
           <Droppable droppableId={"years"} type="YEAR" direction="horizontal">
             {(provided, snapshot) => (
               <div
                 ref={provided.innerRef}
-                // className="flex-wrap"
                 style={getListStyle(snapshot.isDraggingOver)}
               >
                 {elements}
