@@ -55,7 +55,6 @@ const Dashboard: FC<{ id: string | null }> = ({ id }) => {
       setShowActionBar(true);
       setShowHeader(true);
     } else if (currPos.y > -120) {
-      console.log("in here");
       setShowHeader(false);
       setShowActionBar(true);
       setMoveUp(true);
@@ -73,10 +72,10 @@ const Dashboard: FC<{ id: string | null }> = ({ id }) => {
         />
       ) : null}
       {showHeader ? <UserSection loginId={loginId} /> : null}
-      <div className="flex-grow">
-        <div className="flex flex-col">
-          <div className="flex flex-row thin:flex-wrap-reverse mt-content w-max h-full">
-            <div className="flex flex-col h-full">
+      <div className="flex-grow w-full">
+        <div className="flex flex-col w-full">
+          <div className="flex flex-row thin:flex-wrap-reverse mt-content w-full h-full">
+            <div className="flex flex-col w-full">
               {showActionBar ? (
                 <div
                   className={clsx("fixed mt-4 medium:px-10 px-5 w-screen", {
@@ -86,7 +85,9 @@ const Dashboard: FC<{ id: string | null }> = ({ id }) => {
                   <ActionBar />
                 </div>
               ) : null}
-              <CourseList />
+              <div className="mx-auto">
+                <CourseList />
+              </div>
             </div>
           </div>
           <InfoMenu />

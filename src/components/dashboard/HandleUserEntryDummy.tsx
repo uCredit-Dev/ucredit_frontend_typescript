@@ -347,9 +347,7 @@ const HandleUserEntryDummy: FC<{ setLoginId: Function; id: string | null }> = ({
     return new Promise((resolve) => {
       axios.get(api + "/courses/" + id).then((response) => {
         let course: UserCourse = response.data.data;
-        console.log("Adding course", course.title);
         const addingYear: Year = plan.years[yearIndex];
-        console.log("Adding year", addingYear);
 
         const body = {
           user_id: user._id,

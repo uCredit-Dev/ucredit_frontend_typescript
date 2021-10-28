@@ -420,7 +420,7 @@ const CourseList: FC = () => {
   return (
     <>
       <DragDropContext onDragEnd={onDragEnd}>
-        <div className="flex flex-row justify-between thin:justify-center mt-24 h-full">
+        <div className="flex flex-row justify-between thin:justify-center mr-10 mt-24 h-full">
           <Droppable droppableId={"years"} type="YEAR" direction="horizontal">
             {(provided, snapshot) => (
               <div

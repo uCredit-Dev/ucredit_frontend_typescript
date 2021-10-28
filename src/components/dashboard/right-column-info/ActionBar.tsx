@@ -202,7 +202,7 @@ const ActionBar: FC = () => {
           <ShareLinksPopup link={shareableURL} setURL={onShareClick} />
         )}
       </div>
-      <div className="flex flex-row items-center ml-2 my-1 w-10 h-10 hover:underline hover:bg-green-300 border border-gray-300 rounded focus:outline-none shadow cursor-pointer transition duration-200 ease-in">
+      <div className="flex flex-row items-center my-1 w-10 h-10 hover:underline hover:bg-green-300 border border-gray-300 rounded focus:outline-none shadow cursor-pointer transition duration-200 ease-in">
         <AddSvg
           onClick={() => addNewYear(false)}
           data-tip={`Add a new year!`}
