@@ -70,7 +70,9 @@ const PlanChoose: FC = () => {
           className="flex flex-row my-auto w-60 h-10 text-xl font-light border border-gray-300 rounded outline-none shadow"
           onClick={() => setDropdown(!dropdown)}
         >
-          <div className="flex-grow my-auto">{currentPlan.name}</div>
+          <div className="flex-grow my-auto px-1 w-full overflow-ellipsis truncate">
+            {currentPlan.name}
+          </div>
           <div className="mr-1 my-auto">
             {dropdown ? <ArrowUp /> : <ArrowDown />}
           </div>
@@ -82,7 +84,7 @@ const PlanChoose: FC = () => {
                 key={index}
                 value={plan._id}
                 onClick={handlePlanChange}
-                className="py-1 h-9 hover:bg-gray-200 border-t focus:outline-none transform"
+                className="px-1 py-1 h-9 hover:bg-gray-200 border-t focus:outline-none transform overflow-ellipsis truncate"
               >
                 {plan.name}
               </button>
