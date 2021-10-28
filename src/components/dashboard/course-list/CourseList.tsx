@@ -261,56 +261,80 @@ const CourseList: FC = () => {
           course2._id.localeCompare(course1._id)
       )[sourceIndex]._id;
       const courseYearIndex: number = sourceYear.courses.indexOf(courseId);
+      let courseObj: undefined | UserCourse;
+      currentPlanCourses.forEach((course: UserCourse) => {
+        if (course._id === courseId) {
+          courseObj = course;
+        }
+      });
 
-      if (!checkDestValid(courseId, destination)) {
-        toast.error("Course isn't usually held this semester!");
-        return;
+      if (courseObj !== undefined) {
+        axios
+          .get(api + "/search", {
+            params: { query: courseObj.number },
+          })
+          .then((retrieved) => {
+            let retrievedCourses: SISRetrievedCourse[] = retrieved.data.data;
+            if (
+              retrievedCourses.length !== 0 &&
+              !checkDestValid(courseId, destination)
+            ) {
+              toast.error("Course isn't usually held this semester!");
+              return;
+            } else {
+              const sourceCourseArr = [...sourceYear.courses];
+              const destCourseArr = [...destYear.courses];
+              sourceCourseArr.splice(courseYearIndex, 1);
+              if (destCourseArr.indexOf(courseId) === -1) {
+                destCourseArr.push(courseId);
+              }
+              const currPlanYears = [...currentPlan.years];
+              currPlanYears[sourceObj.index] = {
+                ...sourceYear,
+                courses: sourceCourseArr,
+              };
+              currPlanYears[destObj.index] = {
+                ...destYear,
+                courses: destCourseArr,
+              };
+
+              const body = {
+                newYear: destYear._id,
+                oldYear: sourceYear._id,
+                courseId: courseId,
+                newTerm: destination.semester,
+              };
+
+              fetch(api + "/courses/dragged", {
+                method: "PATCH",
+                headers: {
+                  "Content-Type": "application/json",
+                },
+                body: JSON.stringify(body),
+              })
+                .then((res) => {
+                  if (!res.ok) {
+                    console.log("ERROR:", res);
+                  } else {
+                    toast.success("Successfully moved course!");
+                  }
+                })
+                .catch((err) => console.log("error is", err.message));
+              const newCurrentPlan: Plan = {
+                ...currentPlan,
+                years: currPlanYears,
+              };
+              const planListClone = [...planList];
+              planListClone[0] = newCurrentPlan;
+              updatePlanCourses(destYear, destination.semester, courseId);
+              dispatch(updatePlanList(planListClone));
+              dispatch(updateSelectedPlan(newCurrentPlan));
+            }
+          })
+          .catch((err) => {
+            console.log(err);
+          });
       }
-
-      const sourceCourseArr = [...sourceYear.courses];
-      const destCourseArr = [...destYear.courses];
-      sourceCourseArr.splice(courseYearIndex, 1);
-      if (destCourseArr.indexOf(courseId) === -1) {
-        destCourseArr.push(courseId);
-      }
-      const currPlanYears = [...currentPlan.years];
-      currPlanYears[sourceObj.index] = {
-        ...sourceYear,
-        courses: sourceCourseArr,
-      };
-      currPlanYears[destObj.index] = {
-        ...destYear,
-        courses: destCourseArr,
-      };
-
-      const body = {
-        newYear: destYear._id,
-        oldYear: sourceYear._id,
-        courseId: courseId,
-        newTerm: destination.semester,
-      };
-
-      fetch(api + "/courses/dragged", {
-        method: "PATCH",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(body),
-      })
-        .then((res) => {
-          if (!res.ok) {
-            console.log("ERROR:", res);
-          } else {
-            toast.success("Successfully moved course!");
-          }
-        })
-        .catch((err) => console.log("error is", err.message));
-      const newCurrentPlan: Plan = { ...currentPlan, years: currPlanYears };
-      dispatch(updateSelectedPlan(newCurrentPlan));
-      const planListClone = [...planList];
-      planListClone[0] = newCurrentPlan;
-      dispatch(updatePlanList(planListClone));
-      updatePlanCourses(destYear, destination.semester, courseId);
     }
   };
 

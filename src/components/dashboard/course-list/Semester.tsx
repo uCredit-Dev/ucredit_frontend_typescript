@@ -51,8 +51,7 @@ const Semester: FC<{
   semesterName: SemesterType;
   semesterYear: Year;
   courses: UserCourse[];
-  apEquivalent: boolean;
-}> = ({ customStyle, semesterName, semesterYear, courses, apEquivalent }) => {
+}> = ({ customStyle, semesterName, semesterYear, courses }) => {
   // Redux setup
   const dispatch = useDispatch();
   const addingPrereqStatus = useSelector(selectAddingPrereq);
@@ -157,7 +156,7 @@ const Semester: FC<{
         year_id: semesterYear._id,
         plan_id: currentPlan._id,
         title: version.title,
-        term: semesterName.toLowerCase(),
+        term: semesterName === "All" ? "fall" : semesterName.toLowerCase(),
         year: semesterYear._id,
         credits: version.credits === "" ? 0 : version.credits,
         distribution_ids: currentPlan.distribution_ids,
@@ -233,7 +232,7 @@ const Semester: FC<{
         <div className="flex flex-col h-yearheading font-medium">
           <div className="flex flex-row items-center justify-between px-0.5 py-1 h-yearheading1 bg-white">
             <div className="flex flex-row items-center w-full h-auto font-normal">
-              {apEquivalent ? (
+              {semesterName === "All" ? (
                 <>
                   <Question
                     className="h-4 fill-gray"

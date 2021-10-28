@@ -42,7 +42,11 @@ const SearchList: FC<{ searching: boolean }> = (props) => {
       (course: SISRetrievedCourse) => {
         let valid = false;
         course.versions.forEach((version) => {
-          if (version.term === searchFilters.term + " " + searchFilters.year) {
+          if (
+            version.term === searchFilters.term + " " + searchFilters.year ||
+            (searchFilters.term === "All" &&
+              version.term.includes(searchFilters.year.toString()))
+          ) {
             valid = true;
           }
         });
@@ -73,7 +77,11 @@ const SearchList: FC<{ searching: boolean }> = (props) => {
     for (let i = startingIndex; i <= endingIndex; i++) {
       const inspecting = { ...filteredCourses[i] };
       inspecting.versions.forEach((v: any, i: number) => {
-        if (v.term === searchFilters.term + " " + searchFilters.year) {
+        if (
+          v.term === searchFilters.term + " " + searchFilters.year ||
+          (searchFilters.term === "All" &&
+            v.term.includes(searchFilters.year.toString()))
+        ) {
           toDisplay.push(
             <div
               key={inspecting.number}

@@ -332,7 +332,7 @@ const Form: FC<{ setSearching: Function }> = (props) => {
   const getParams = (extras: SearchExtras) => ({
     query: extras.query,
     department: extras.department,
-    term: extras.term,
+    term: extras.term === "All" ? null : extras.term,
     areas: extras.areas,
     credits: extras.credits,
     wi: extras.wi,

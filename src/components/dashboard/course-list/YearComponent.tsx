@@ -139,7 +139,7 @@ const YearComponent: FC<{
         customStyle +
         "cursor-move p-2 max-w-year-heading w-max rounded mb-4 bg-blue-400 rounded shadow"
       }
-      style={{ minWidth: "13rem" }}
+      style={{ minWidth: "14rem" }}
       onMouseLeave={() => {
         setDraggable(true);
         setDisplay(false);
@@ -199,7 +199,6 @@ const YearComponent: FC<{
                 semesterName="Fall"
                 semesterYear={year}
                 courses={fallCourses}
-                apEquivalent={false}
               />
             ) : null}{" "}
             {toShow.intersession ? (
@@ -208,7 +207,6 @@ const YearComponent: FC<{
                 semesterName="Intersession"
                 semesterYear={year}
                 courses={winterCourses}
-                apEquivalent={false}
               />
             ) : null}{" "}
             {toShow.spring ? (
@@ -217,7 +215,6 @@ const YearComponent: FC<{
                 semesterName="Spring"
                 semesterYear={year}
                 courses={springCourses}
-                apEquivalent={false}
               />
             ) : null}{" "}
             {toShow.summer ? (
@@ -226,17 +223,15 @@ const YearComponent: FC<{
                 semesterName="Summer"
                 semesterYear={year}
                 courses={summerCourses}
-                apEquivalent={false}
               />
             ) : null}
           </div>
         ) : (
           <Semester
             customStyle=""
-            semesterName="Fall"
+            semesterName="All"
             semesterYear={year}
             courses={fallCourses}
-            apEquivalent={true}
           />
         )}
       </div>

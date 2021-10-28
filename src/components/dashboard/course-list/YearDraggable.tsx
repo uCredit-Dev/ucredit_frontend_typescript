@@ -58,7 +58,7 @@ const getItemStyle = (isDragging: any, draggableStyle: any) => ({
   ...draggableStyle,
 
   padding: "0rem",
-  marginLeft: "2rem",
+  marginLeft: "1rem",
 });
 
 export default YearDraggable;

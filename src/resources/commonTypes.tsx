@@ -160,7 +160,12 @@ export type Distribution = {
 
 // export type YearType = "Freshman" | "Sophomore" | "Junior" | "Senior";
 
-export type SemesterType = "Fall" | "Spring" | "Summer" | "Intersession";
+export type SemesterType =
+  | "Fall"
+  | "Spring"
+  | "Summer"
+  | "Intersession"
+  | "All";
 
 // https://stackoverflow.com/questions/52085454/typescript-define-a-union-type-from-an-array-of-strings
 export type DepartmentType = typeof all_deps[number];

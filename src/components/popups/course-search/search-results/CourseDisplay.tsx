@@ -90,7 +90,7 @@ const CourseDisplay: FC = () => {
         year_id: addingYear !== null ? addingYear._id : "",
         plan_id: currentPlan._id,
         title: version.title,
-        term: semester.toLowerCase(),
+        term: semester === "All" ? "fall" : semester.toLowerCase(),
         year: addingYear !== null ? addingYear.name : "",
         credits: version.credits === "" ? 0 : version.credits,
         distribution_ids: currentPlan.distribution_ids,

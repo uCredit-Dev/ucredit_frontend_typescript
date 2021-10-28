@@ -76,7 +76,7 @@ const PlanChoose: FC = () => {
           </div>
         </button>
         {dropdown ? (
-          <div className="absolute z-40 top-36 flex flex-col mt-2 w-60 text-black bg-white rounded shadow">
+          <div className="absolute z-40 flex flex-col mt-10 w-60 text-black bg-white rounded shadow">
             {planList.map((plan, index) => (
               <button
                 key={index}
