@@ -1,4 +1,5 @@
 import { Major } from "./commonTypes";
+import { Minor } from "./commonTypes";
 
 // All Major Requirements can be found at the links below
 // https://e-catalogue.jhu.edu/arts-sciences/full-time-residential-programs/degree-programs/
@@ -1314,7 +1315,7 @@ const bsCS_Old: Major = {
             "<p>1. Two semesters of chemistry with associated lab:</p><p>030.101 Chemistry I and 030.105 Chemistry Lab I or AP equivalent</p>030.102 Chemistry II and 030.106 Chemistry Lab II or AP equivalent</p>" +
             "<p>2. Two semesters of physics with associated lab:</p><p>171.101/103 Physics I and 173.111 Physics Lab I or AP equivalent</p>171.102/104 Physics II and 173.112 Phyusics Lab II or AP equivalent</p>",
           required_credits: 10, //Issue: Chemistry path is 8 credit, Physics Path is 10 credit
-          criteria:
+          criteria: //TODO: Fix this update number for 0/10
             "(AS.030.101[C]^AND^AS.030.105[C]^AND^AS.030.102[C]^AND^AS.030.106[C])^OR^((AS.171.101[C]^OR^AS.171.103[C])^AND^AS.173.11[C]^AND^(AS.171.102[C]^OR^AS.171.104[C])^AND^AS.173.112[C])",
         },
       ],
@@ -1614,6 +1615,46 @@ const baCS_New: Major = {
   ],
 };
 
+// https://www.cs.jhu.edu/undergraduate-studies/academics/cs-minor/
+const CS_Minor_New: Minor = {
+  degree_name: "Minor Computer Science (NEW - 2021 & after)",
+  department: "EN Computer Science",
+  total_degree_credit: 21,
+  wi_credit: 0,
+  url: "https://www.cs.jhu.edu/2021undergraduate-advising-manual/",
+  distributions: [
+    {
+      name: "Computer Science",
+      required_credits: 21,
+      min_credits_per_course: 1,
+      description:
+        "For more information please visit the <a href=' https://www.cs.jhu.edu/undergraduate-studies/academics/cs-minor/'>" +
+        "minor degree requirement</a> section on the department website.",
+      criteria:
+        "EN Computer Science[D]^OR^CSCI-OTHER[T]^OR^Gateway Computing[N]",
+      fine_requirements: [
+        {
+          description:
+            "<b>Lower Level Undergraduate:</b><p>500.112/113/114 Gateway Computing or AP Comp Sci A or " +
+            "equivalent<p>601.220 Intermediate Programming</p><p>601.226 Data Structures</p><p> " +
+            "any CS course >= 601.200 that is at least 3 credits. ",
+          required_credits: 14,
+          criteria:
+            "EN.500.112[C]^OR^EN.500.113[C]^OR^EN.500.114[C]^OR^EN.601.220[C]^OR^EN.601.226[C]^OR^(EN Computer Science[D]^AND^(Lower Level Undergraduate[L]^OR^Upper Level Undergraduate[L]))",
+        },
+        {
+          description:
+            "<b>Upper Level Undergraduate: </b><p>12 upper level CS credits that form a cohesive program of study. One way is to choose all three courses within one or two area classifications</p>",
+
+          required_credits: 12,
+          criteria:
+            "EN Computer Science[D]^AND^Upper Level Undergraduate[L]",
+        },
+      ],
+    },
+  ],
+};
+
 export function getMajorFromCommonName(name: string) {
   let out: Major | null = null;
   allMajors.forEach((major) => {
@@ -1632,6 +1673,7 @@ export const allMajors: Major[] = [
   bsCS_Old,
   bsCS_New,
   baCS_New,
+  CS_Minor_New,
   // bsAMS,
   // baIS,
   // baPH,
