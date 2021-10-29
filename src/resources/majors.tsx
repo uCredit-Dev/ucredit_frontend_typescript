@@ -1307,6 +1307,17 @@ const bsCS_Old: Major = {
       description:
         "At least two semesters of physics or two semesters of chemistry, with the associated laboratories, must be included.",
       criteria: "N[A]",
+      fine_requirements: [
+        {
+          description:
+            "<b>Required Courses:</b><p>Two paths:</p>" +
+            "<p>1. Two semesters of chemistry with associated lab:</p><p>030.101 Chemistry I and 030.105 Chemistry Lab I or AP equivalent</p>030.102 Chemistry II and 030.106 Chemistry Lab II or AP equivalent</p>" +
+            "<p>2. Two semesters of physics with associated lab:</p><p>171.101/103 Physics I and 173.111 Physics Lab I or AP equivalent</p>171.102/104 Physics II and 173.112 Phyusics Lab II or AP equivalent</p>",
+          required_credits: 10, //Issue: Chemistry path is 8 credit, Physics Path is 10 credit
+          criteria:
+            "(AS.030.101[C]^AND^AS.030.105[C]^AND^AS.030.102[C]^AND^AS.030.106[C])^OR^((AS.171.101[C]^OR^AS.171.103[C])^AND^AS.173.11[C]^AND^(AS.171.102[C]^OR^AS.171.104[C])^AND^AS.173.112[C])",
+        },
+      ],
     },
     {
       name: "Liberal Arts",
