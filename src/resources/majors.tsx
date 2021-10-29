@@ -1296,7 +1296,7 @@ const bsCS_Old: Major = {
             "<b>Probability and Statistics:</b><p>Two paths:</p><p>1. Any of the three courses below:</p><p>EN.553.211</p><p>EN.553.310</p><p>EN.553.311</p><p>2. Both Intro to Probability and Intro to Statistics</p><p>En.553.420</p><p>EN.553.430</p> ",
           required_credits: 4,
           criteria:
-            "(EN.553.211^OR^EN.553.310^OR^EN.553.311)^OR^(EN.553.420^AND^EN.553.430)",
+            "(EN.553.211[C]^OR^EN.553.310[C]^OR^EN.553.311[C])^OR^(EN.553.420[C]^AND^EN.553.430[C])",
         },
       ],
     },
@@ -1493,7 +1493,7 @@ export function getMajorFromCommonName(name: string) {
 
 // TODO: Separate code for BA and BS into separate sections
 export const allMajors: Major[] = [
-  // bsCS_Old,
+  bsCS_Old,
   bsCS_New,
   // bsAMS,
   // baIS,
