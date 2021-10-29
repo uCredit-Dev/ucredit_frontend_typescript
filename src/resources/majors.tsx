@@ -1489,6 +1489,131 @@ const bsCS_New: Major = {
   ],
 };
 
+// https://www.cs.jhu.edu/undergraduate-studies/academics/ugrad-advising-manual/
+const baCS_New: Major = {
+  degree_name: "B.A. Computer Science (NEW - 2021 & after)",
+  department: "EN Computer Science",
+  total_degree_credit: 120,
+  wi_credit: 12,
+  url: "https://www.cs.jhu.edu/2021undergraduate-advising-manual/",
+  distributions: [
+    {
+      name: "Computer Science",
+      required_credits: 33,
+      min_credits_per_course: 1,
+      description:
+        "For more information please visit the <a href='https://www.cs.jhu.edu/2021undergraduate-advising-manual/'>" +
+        "major degree requirement</a> section on the department website.",
+      criteria:
+        "EN Computer Science[D]^OR^CSCI-OTHER[T]^OR^Gateway Computing[N]",
+      fine_requirements: [
+        {
+          description:
+            "<b>Computer Ethics(601.104).</b><p>Practical Ethics for Future Leaders (660.400/406) may be used as a substitute for the computer ethics requirement for the BS program, but does not count towards the CS total credits at all.</p>",
+          required_credits: 1,
+          criteria: "EN.600.104[C]^OR^EN.601.104[C]^OR^EN.660.400[C]",
+        },
+        {
+          description:
+            "<b>Lower Level Undergraduate:</b><p>500.112/113/114 Gateway Computing or AP Comp Sci A or " +
+            "equivalent<p>601.220 Intermediate Programming</p><p>601.226 Data Structures</p><p>601.229 " +
+            "Computer System Fundamentals</p><p>601.230 Mathematical Foundations for Computer Science, or 601.231 Automata for those grandfathered into the old major</p><p>601.433 Algorithms</p>",
+          required_credits: 21,
+          criteria:
+            "EN.500.112[C]^OR^EN.500.113[C]^OR^EN.500.114[C]^OR^EN.601.220[C]^OR^EN.601.226[C]" +
+            "^OR^EN.601.229[C]^OR^EN.601.230[C]^OR^EN.601.433[C]^OR^EN.601.231",
+        },
+        {
+          description:
+            "<b>Upper Level Undergraduate: </b><p>12 upper level CS credits in addition to the required Algorithms course</p>",
+
+          required_credits: 12,
+          criteria:
+            "EN Computer Science[D]^AND^Upper Level Undergraduate[L]^NOT^EN.601.433[C]^NOT^EN.601.633[C]",
+        },
+      ],
+    },
+    {
+      name: "Math",
+      required_credits: 16,
+      min_credits_per_course: 3,
+      description:
+        "All courses in this category must be from one of the two math departments on " +
+        "campus: Mathematics or Applied Math and Statistics. However, 553.171 Discrete Mathematics " +
+        "may not count towards these math requirements. At least one course must be 200-level or above",
+      criteria: "AS Mathematics[D]^OR^EN Applied Mathematics & Statistics[D]",
+      exception: "EN.553.171[C]",
+      fine_requirements: [
+        {
+          description:
+            "<b>Required Courses:</b><p>110.108 Calculus I or AP equivalent</p>110.109 Calculus II or AP equivalent</p>" +
+            "<p>550.171/553.171 Discrete Mathematics if grandfathered into old major</p>",
+          required_credits: 8,
+          criteria: "AS.110.108[C]^OR^AS.110.109[C]",
+        },
+      ],
+    },
+    {
+      name: "Science",
+      required_credits: 8,
+      min_credits_per_course: 1,
+      description:
+        "Students must take two semesters of core science courses (any combination of Physics, " +
+        "Chemistry, Biology), with their associated labs. AP credit is an acceptable substitute for these courses and labs.",
+      criteria: "N[A]",
+    },
+    {
+      name: "Liberal Arts",
+      required_credits: 18,
+      min_credits_per_course: 3,
+      description:
+        "These courses must have either an ‘H’ or ‘S’ area designator on them, but can be " +
+        "from any department. At least two of these courses must be at the 300-level or above, and all must be taken for a grade." +
+        "Students are required to demonstrate proficiency at the intermediate level or take at least 6 credits in one foreign language," +
+        "in addition to the six H/S required courses. Students must still have at least six (>=3)-credit courses to fulfill the H/S requirement.",
+      criteria:
+        "AS Center for Language Education[D]^OR^AS Modern Languages and Literatures[D]^OR^H[A]^OR^S[A]",
+      fine_requirements: [
+        {
+          description:
+            "<b>300-level</b><p>Two Courses at 300 Level</p>",
+          required_credits: 6,
+          criteria:
+            "(H[A]^OR^S[A])^AND^(Upper Level Undergraduate[L])", 
+        },
+        {
+          description:
+            "<b>Foreign Language</b><p>At least 6 credit in one foreign language or proficiency at intermediate level</p>",
+          required_credits: 6,
+          criteria:
+            "AS Center for Language Education[D]^OR^AS Modern Languages and Literatures[D]", //TODO: Not sure if this does one specific foreign language
+        },
+      ],
+    },
+    {
+      name: "Writing Intensive",
+      required_credits: 12,
+      min_credits_per_course: 3,
+      double_count: true,
+      description:
+        "Students are required to fulfill the university’s requirement of four writing intensive courses, " +
+        "each at least 3 credits. Students must receive at least a C- grade or better in these writing courses. ",
+      criteria: "Written Intensive[W]",
+      fine_requirements: [
+        {
+          description:
+            "<b>Writing-focused WI</b><p>At least one course must be explicitly focused on writing skills in English (eg, courses in professional, " +
+            "fiction or expository writing). These courses may overlap with other requirements.</p><p>Any of the courses below would be satisfactory:</p><p>AS.060.100</p><p>AS.060.113</p><p>AS.060.114</p><p>AS.180.248</p><p>AS.220.105</p><p>AS.220.106</p><p>AS.220.108</p><p>AS.290.303</p><p>AS.360.133</p><p>EN.661.110</p><p>EN.661.111</p><p>EN.661.250</p><p>EN.661.251</p><p>EN.661.315</p>",
+
+          required_credits: 3,
+          criteria:
+            "AS.060.100[C]^OR^AS.060.113[C]^OR^AS.060.114[C]^OR^AS.180.248[C]^OR^AS.220.105[C]^OR^AS.220.106[C]^OR^AS.220.108[C]^OR^AS.290.303[C]^OR^AS.360.133[C]^OR^EN.661.110[C]^OR^EN.661.111[C]^OR^EN.661.250[C]^OR^EN.661.251[C]^OR^EN.661.315[C]",
+        },
+      ],
+    },
+  ],
+};
+
 export function getMajorFromCommonName(name: string) {
   let out: Major | null = null;
   allMajors.forEach((major) => {
@@ -1506,6 +1631,7 @@ export function getMajorFromCommonName(name: string) {
 export const allMajors: Major[] = [
   bsCS_Old,
   bsCS_New,
+  baCS_New,
   // bsAMS,
   // baIS,
   // baPH,
