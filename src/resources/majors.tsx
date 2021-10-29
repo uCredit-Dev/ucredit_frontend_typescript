@@ -1316,7 +1316,7 @@ const bsCS_Old: Major = {
             "<p>2. Two semesters of physics with associated lab:</p><p>171.101/103 Physics I and 173.111 Physics Lab I or AP equivalent</p>171.102/104 Physics II and 173.112 Phyusics Lab II or AP equivalent</p>",
           required_credits: 10, //Issue: Chemistry path is 8 credit, Physics Path is 10 credit
           criteria: //TODO: Fix this update number for 0/10
-            "(AS.030.101[C]^AND^AS.030.105[C]^AND^AS.030.102[C]^AND^AS.030.106[C])^OR^((AS.171.101[C]^OR^AS.171.103[C])^AND^AS.173.11[C]^AND^(AS.171.102[C]^OR^AS.171.104[C])^AND^AS.173.112[C])",
+            "(AS.030.101[C]^OR^AS.030.105[C]^OR^AS.030.102[C]^OR^AS.030.106[C])^OR^((AS.171.101[C]^OR^AS.171.103[C])^OR^AS.173.11[C]^OR^(AS.171.102[C]^OR^AS.171.104[C])^OR^AS.173.112[C])",
         },
       ],
     },
