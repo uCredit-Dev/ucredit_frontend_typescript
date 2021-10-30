@@ -14,7 +14,7 @@ import {
   selectPlan,
 } from "../../../slices/currentPlanSlice";
 import { selectCourseCache } from "../../../slices/userSlice";
-import OverridePrereqpopup from "./OverridePrereqPopup";
+import OverridePrereqPopup from "./OverridePrereqPopup";
 import {
   updateCourseToDelete,
   updateCourseToShow,
@@ -97,6 +97,7 @@ const CourseComponent: FC<{
   const deactivate = () => {
     setActivated(false);
     setHovered(false);
+    setDisplayPopup(false);
   };
 
   return (
@@ -166,34 +167,40 @@ const CourseComponent: FC<{
                     ✥
                   </div>
                 </div>
-                <DetailsSvg
-                  className="relative z-20 flex flex-row items-center justify-center ml-12 mr-5 p-0.5 w-6 h-6 text-white hover:bg-blue-400 bg-green-300 rounded-md outline-none stroke-2 cursor-pointer transform hover:scale-110 transition duration-150 ease-in"
-                  onClick={displayCourses}
-                />
-                <RemoveSvg
-                  className={clsx(
-                    "relative z-20 flex flex-row items-center justify-center p-0.5 w-6 h-6 text-white bg-red-300 hover:bg-red-600 rounded-md outline-none stroke-2 cursor-pointer transform hover:scale-110 transition duration-150 ease-in",
-                    { "mr-5": !satisfied }
-                  )}
-                  onClick={deleteCourse}
-                />
-                {!satisfied && !overridden ? (
-                  <>
-                    <WarningSvg
-                      data-tip="<p>Prereqs not yet satisfied</p><p>Press here to override.</p>"
-                      data-for="godTip"
-                      className="relative z-20 flex flex-row items-center justify-center p-0.5 w-6 h-6 text-white hover:bg-blue-400 bg-green-300 rounded-md outline-none stroke-2 cursor-pointer transform hover:scale-110 transition duration-150 ease-in"
-                      onClick={() => setDisplayPopup(true)}
+                <div className="flex flex-col">
+                  <div className="flex flex-row">
+                    <DetailsSvg
+                      className="relative z-20 flex flex-row items-center justify-center ml-12 mr-5 p-0.5 w-6 h-6 text-white hover:bg-blue-400 bg-green-300 rounded-md outline-none stroke-2 cursor-pointer transform hover:scale-110 transition duration-150 ease-in"
+                      onClick={displayCourses}
                     />
-                  </>
-                ) : null}
-                {displayPopup ? (
-                  <OverridePrereqpopup
-                    courseName={course.number}
-                    cleanup={() => setDisplayPopup(false)}
-                    save={() => setOverridden(true)}
-                  />
-                ) : null}
+                    <RemoveSvg
+                      className={clsx(
+                        "relative z-20 flex flex-row items-center justify-center p-0.5 w-6 h-6 text-white bg-red-300 hover:bg-red-600 rounded-md outline-none stroke-2 cursor-pointer transform hover:scale-110 transition duration-150 ease-in",
+                        { "mr-5": !satisfied }
+                      )}
+                      onClick={deleteCourse}
+                    />
+                    {!satisfied && !overridden ? (
+                      <>
+                        <WarningSvg
+                          data-tip="<p>Prereqs not yet satisfied</p><p>Press here to override.</p>"
+                          data-for="godTip"
+                          className="relative z-20 flex flex-row items-center justify-center p-0.5 w-6 h-6 text-white hover:bg-blue-400 bg-green-300 rounded-md outline-none stroke-2 cursor-pointer transform hover:scale-110 transition duration-150 ease-in"
+                          onClick={() => setDisplayPopup(true)}
+                        />
+                      </>
+                    ) : null}
+                  </div>
+                  <div>
+                    {displayPopup ? (
+                      <OverridePrereqPopup
+                        courseName={course.number}
+                        cleanup={() => setDisplayPopup(false)}
+                        save={() => setOverridden(true)}
+                      />
+                    ) : null}
+                  </div>
+                </div>
               </div>
             )}
           </Transition>

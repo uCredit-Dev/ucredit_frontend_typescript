@@ -6,7 +6,7 @@ import { FC } from "react";
  * @prop cleanup - state resets and cleanups after updating prereq overrides
  * @prop save - saves the prereq overrides
  */
-const OverridePrereqpopup: FC<{
+const OverridePrereqPopup: FC<{
   courseName: string;
   cleanup: () => void;
   save: () => void;
@@ -19,16 +19,16 @@ const OverridePrereqpopup: FC<{
     cleanup();
   };
   return (
-    <div className="fixed z-40 inset-1/2 w-96 h-80 overflow-auto transform -translate-x-2/4 -translate-y-1/2">
-      <div className="p-3 text-center font-bold bg-gray-50 rounded-t-lg shadow">
+    <div className="absolute z-40 top-14 h-auto transform">
+      <div className="p-3 w-full text-center font-bold bg-gray-50 rounded shadow">
         <h1>
           Override warning that prerequisites for {courseName} is not satisfied?
         </h1>
         <h1>Warning: cannot be undone.</h1>
       </div>
-      <div className="flex justify-evenly p-2 pb-3 pt-5 bg-gray-50 rounded-b-lg shadow-md">
+      <div className="flex justify-evenly p-2 pb-3 pt-5 w-96 bg-gray-50 rounded-b-lg shadow-md">
         <div
-          className="p-2 bg-red-300 rounded-lg transform hover:scale-105 transition duration-200 ease-in"
+          className="mr-2 p-2 bg-red-300 rounded-lg transform hover:scale-105 transition duration-200 ease-in"
           onClick={cleanup}
         >
           Cancel
@@ -44,4 +44,4 @@ const OverridePrereqpopup: FC<{
   );
 };
 
-export default OverridePrereqpopup;
+export default OverridePrereqPopup;
