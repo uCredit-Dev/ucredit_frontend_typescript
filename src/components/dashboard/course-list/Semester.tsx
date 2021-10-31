@@ -116,12 +116,14 @@ const Semester: FC<{
    */
   const getDraggables = (): any => {
     return semesterCourses.map((course, index) => (
-      <CourseDraggable
-        course={course}
-        index={index}
-        semesterName={semesterName}
-        semesterYear={semesterYear}
-      />
+      <div key={course._id}>
+        <CourseDraggable
+          course={course}
+          index={index}
+          semesterName={semesterName}
+          semesterYear={semesterYear}
+        />
+      </div>
     ));
   };
 

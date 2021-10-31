@@ -28,7 +28,7 @@ const ShareLinksPopup: FC<{
         className="fixed z-30 left-0 top-0 w-screen h-screen"
         onClick={() => setURL()}
       />
-      <div className="absolute z-40 flex items-center w-80 h-6 bg-gray-50 rounded-md rounded-t-lg shadow overflow-auto transform -translate-x-2/4 -translate-y-1/2">
+      <div className="absolute z-40 flex items-center w-80 h-6 bg-gray-50 rounded-md rounded-t-lg shadow overflow-auto transform -translate-x-3/4 -translate-y-1/2">
         <div className="flex-grow flex-shrink">
           <form>
             <input

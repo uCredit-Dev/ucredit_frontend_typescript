@@ -30,7 +30,6 @@ import {
 import { api } from "../../../resources/assets";
 import { DragDropContext, Droppable } from "react-beautiful-dnd";
 import YearDraggable from "./YearDraggable";
-import React from "react";
 
 /**
  * Container component that holds all the years, semesters, and courses of the current plan.
@@ -71,12 +70,14 @@ const CourseList: FC = () => {
             yearCourses.push(courseObj);
           });
           jsx.push(
-            <YearDraggable
-              id={yearIndex}
-              year={year}
-              yearIndex={yearIndex}
-              yearCourses={yearCourses}
-            />
+            <div key={year._id}>
+              <YearDraggable
+                id={yearIndex}
+                year={year}
+                yearIndex={yearIndex}
+                yearCourses={yearCourses}
+              />
+            </div>
           );
           if (jsx.length === currentPlan.years.length) {
             jsx.sort(
@@ -100,12 +101,14 @@ const CourseList: FC = () => {
                 if (yearCourses.length === year.courses.length) {
                   // make all the updates here
                   jsx.push(
-                    <YearDraggable
-                      id={yearIndex}
-                      year={year}
-                      yearIndex={yearIndex}
-                      yearCourses={yearCourses}
-                    />
+                    <div key={year._id}>
+                      <YearDraggable
+                        id={yearIndex}
+                        year={year}
+                        yearIndex={yearIndex}
+                        yearCourses={yearCourses}
+                      />
+                    </div>
                   );
                   if (jsx.length === currentPlan.years.length) {
                     jsx.sort(

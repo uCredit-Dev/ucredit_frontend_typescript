@@ -85,17 +85,17 @@ const FineDistribution: FC<{
             <X stroke="red" />
           )}
         </div>
-        <p
+        <div
           className={clsx("pr-2", {
             "overflow-y-hidden h-6 select-text": !showDistrDesc,
           })}
         >
           {parse(dis.name)}
-        </p>
+        </div>
       </button>
-      <p className="font-bold">
+      <div className="font-bold">
         {plannedCredits}/{dis.required_credits}
-      </p>
+      </div>
       {/* <Add
         className="h-6 transform hover:scale-150 transition duration-200 ease-in"
         onClick={addToDistribution}

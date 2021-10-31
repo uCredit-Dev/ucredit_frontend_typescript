@@ -129,7 +129,7 @@ const App: FC = () => {
     ReactTooltip.rebuild();
   });
   return (
-    <>
+    <div>
       <ReactTooltip
         id="godTip"
         html={true}
@@ -162,7 +162,7 @@ const App: FC = () => {
         draggable
         pauseOnHover
       />
-    </>
+    </div>
   );
 };
 

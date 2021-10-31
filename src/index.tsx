@@ -7,8 +7,9 @@ import { Provider } from "react-redux";
 import * as serviceWorker from "./serviceWorker";
 import { CookiesProvider } from "react-cookie";
 import { BrowserRouter as Router } from "react-router-dom";
+const renderMethod = module.hot ? ReactDOM.render : ReactDOM.hydrate;
 
-ReactDOM.hydrate(
+renderMethod(
   <React.StrictMode>
     <CookiesProvider>
       <Provider store={store}>

@@ -80,6 +80,7 @@
     "@types/react-router-dom": "^5.1.9",
     "@types/react-select": "^5.0.1",
     "@types/redux-logger": "^3.0.9",
+    "@types/webpack-env": "^1.16.3",
     "prettier": "^2.4.1",
     "prettier-plugin-tailwind": "^2.2.12"
   }

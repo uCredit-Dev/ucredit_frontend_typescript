@@ -13,7 +13,7 @@ const Promo: FC = () => {
       >
         {data.map((d) => {
           return !d.order ? (
-            <>
+            <div key={d.title}>
               <div>
                 <div className="text-lg font-bold">{d.title}</div>
                 <div>{d.desc}</div>
@@ -21,9 +21,9 @@ const Promo: FC = () => {
               <div className="flex justify-center bg-gray-200 rounded-md">
                 <img alt="" src={d.img} />
               </div>
-            </>
+            </div>
           ) : (
-            <>
+            <div key={d.title}>
               <div className="flex justify-center bg-gray-200 rounded-md">
                 <img alt="" src={d.img} />
               </div>
@@ -31,7 +31,7 @@ const Promo: FC = () => {
                 <div className="text-lg font-bold">{d.title}</div>
                 <div>{d.desc}</div>
               </div>
-            </>
+            </div>
           );
         })}
       </div>

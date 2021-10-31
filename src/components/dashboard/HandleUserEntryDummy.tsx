@@ -147,7 +147,7 @@ const HandleUserEntryDummy: FC<{ setLoginId: Function; id: string | null }> = ({
               "In guest user! This is expected as there are no users with this id."
             );
           } else {
-            console.log("here", err);
+            console.log("ERROR:", err);
           }
         });
     }
@@ -226,7 +226,6 @@ const HandleUserEntryDummy: FC<{ setLoginId: Function; id: string | null }> = ({
 
     // Check for extraneous years
     toAdd.forEach((year, i) => {
-      console.log(year);
       const yearBody: Year = {
         name: year.name,
         _id: "",
@@ -246,12 +245,10 @@ const HandleUserEntryDummy: FC<{ setLoginId: Function; id: string | null }> = ({
       }; // add to end by default
       axios.post(api + "/years", body).then((response: any) => {
         const newYear: Year = { ...response.data.data };
-        console.log("okw aht this", newYear);
         allYears = [...allYears, newYear];
         let newUpdatedPlan: Plan = {
           ...currentPlan,
         };
-        console.log(allYears);
         if (allYears.length === toAdd.length) {
           const sortedYears = allYears.sort((y1, y2) => {
             return y1.year - y2.year;
@@ -265,7 +262,6 @@ const HandleUserEntryDummy: FC<{ setLoginId: Function; id: string | null }> = ({
             })
             .then((resp) => {
               newUpdatedPlan = { ...resp.data.data, years: sortedYears };
-              console.log(newUpdatedPlan);
               dispatch(updateSelectedPlan(newUpdatedPlan));
               let total = 0;
               for (const year of toAdd) {
@@ -497,7 +493,6 @@ const HandleUserEntryDummy: FC<{ setLoginId: Function; id: string | null }> = ({
             .get(api + "/years/" + id)
             .then((yearsResponse) => {
               let years = yearsResponse.data.data;
-              console.log(years);
               cache(years);
               // check whether the user is logged in (whether a cookie exists)
               let cookieVal = "";
@@ -506,7 +501,6 @@ const HandleUserEntryDummy: FC<{ setLoginId: Function; id: string | null }> = ({
                   cookieVal = cookie[1];
               });
               if (cookieVal === "") {
-                console.log("here");
                 // if not, create a user first, then add
                 dispatch(updateToAddName(plan.name));
                 dispatch(

@@ -96,7 +96,7 @@ const DistributionBars: FC<{
               if (index === 0) {
                 return (
                   <div
-                    key={dis.name}
+                    key={dis.name + index}
                     className={clsx({ hidden: !props.distributionOpen })}
                   >
                     <CourseBar distribution={dis} general={true} />
@@ -104,11 +104,13 @@ const DistributionBars: FC<{
                 );
               } else {
                 return (
-                  <FineDistribution
-                    dis={dis}
-                    distributionOpen={props.distributionOpen}
-                    hidden={showDistributions[i] !== true}
-                  />
+                  <div key={dis.name + index}>
+                    <FineDistribution
+                      dis={dis}
+                      distributionOpen={props.distributionOpen}
+                      hidden={showDistributions[i] !== true}
+                    />
+                  </div>
                 );
               }
             })}

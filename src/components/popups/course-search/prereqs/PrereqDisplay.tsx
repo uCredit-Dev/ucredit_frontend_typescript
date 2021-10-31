@@ -196,7 +196,7 @@ const PrereqDisplay: FC = () => {
       return {
         satisfied: satisfied,
         jsx: (
-          <p className="w-full" key={noCBracketsNum}>
+          <p className="w-full" key={noCBracketsNum + semester + yearToCheck}>
             <button
               className={clsx(
                 "flex flex-wrap mb-1 max-w-md text-left text-sm font-medium focus:outline-none"
@@ -262,15 +262,13 @@ const PrereqDisplay: FC = () => {
         return {
           satisfied: parsedSat,
           jsx: (
-            <>
-              <PrereqDropdown
-                satisfied={parsedSat}
-                text={"All courses below"}
-                element={element}
-                getNonStringPrereq={getNonStringPrereq}
-                or={false}
-              />
-            </>
+            <PrereqDropdown
+              satisfied={parsedSat}
+              text={"All courses below"}
+              element={element}
+              getNonStringPrereq={getNonStringPrereq}
+              or={false}
+            />
           ),
         };
       }

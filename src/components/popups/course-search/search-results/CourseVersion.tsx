@@ -143,10 +143,10 @@ const CourseVersion: FC<{ setInspectedArea: Function }> = (props) => {
                   :
                 </div>
                 {version.areas !== "None" ? (
-                  version.areas.split("").map((area) => (
+                  version.areas.split("").map((area: string, i: number) => (
                     <div
                       className="flex flex-row items-center transform hover:scale-110 transition duration-200 ease-in"
-                      key={area + version.number}
+                      key={area + version.number + i}
                     >
                       <div
                         className="flex items-center px-1 w-auto text-white font-semibold rounded select-none"
@@ -194,6 +194,7 @@ const CourseVersion: FC<{ setInspectedArea: Function }> = (props) => {
                         <>
                           {i !== 0 ? ", " : null}
                           <div
+                            key={"" + tag + version.number + i}
                             data-tip={
                               "Ask your advisor for more info about " +
                               tag +

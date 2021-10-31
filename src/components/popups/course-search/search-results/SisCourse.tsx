@@ -69,15 +69,25 @@ const SisCourse: FC<{
   // Returns an array of select options for the distribution area users want to add the course to.
   const getInspectedAreas = () => {
     if (version !== "None" && version.areas !== "None") {
-      const areaOptions = version.areas.split("").map((area) => (
-        <option key={version.number + area} value={area}>
-          {area}
+      const areaOptions = version.areas
+        .split("")
+        .map((area: string, i: number) => (
+          <option key={version.number + area + i} value={area}>
+            {area}
+          </option>
+        ));
+      areaOptions.push(
+        <option key="none" value={"None"}>
+          None
         </option>
-      ));
-      areaOptions.push(<option value={"None"}>None</option>);
+      );
       return areaOptions;
     } else {
-      return <option value={"None"}>None</option>;
+      return (
+        <option key="none" value={"None"}>
+          None
+        </option>
+      );
     }
   };
 
