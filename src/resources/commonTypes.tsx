@@ -211,6 +211,15 @@ export type Major = {
   distributions: DistributionObj[];
 };
 
+export type Minor = {
+  degree_name: string;
+  department: string;
+  total_degree_credit: number;
+  wi_credit: number;
+  url: string;
+  distributions: DistributionObj[];
+}
+
 export type DroppableType = {
   year: string;
   semester: SemesterType;
