@@ -1,6 +1,5 @@
 import axios from "axios";
-import { FC, useEffect } from "react";
-import { useState } from "react";
+import { FC, useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Switch, Route, useLocation } from "react-router-dom";
 import { api } from "./../resources/assets";

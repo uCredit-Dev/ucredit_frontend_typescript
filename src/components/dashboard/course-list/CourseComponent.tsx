@@ -60,8 +60,8 @@ const CourseComponent: FC<{
         year,
         semester,
         courseCache
-      ).then((satisfied) => {
-        setSatisfied(satisfied);
+      ).then((satisfiedResponse) => {
+        setSatisfied(satisfiedResponse);
       });
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps

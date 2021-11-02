@@ -216,3 +216,12 @@ export type DroppableType = {
   semester: SemesterType;
   courses: UserCourse[];
 };
+
+export type Minor = {
+  degree_name: string;
+  department: string;
+  total_degree_credit: number;
+  wi_credit: number;
+  url: string;
+  distributions: DistributionObj[];
+};
