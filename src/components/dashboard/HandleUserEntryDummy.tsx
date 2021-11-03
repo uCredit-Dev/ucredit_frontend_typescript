@@ -412,7 +412,7 @@ const HandleUserEntryDummy: FC<{ setLoginId: Function; id: string | null }> = ({
     });
   };
 
-  const afterPromise = (plan, years) => {
+  const afterPromise = (plan: Plan, years: Year[]) => {
     dispatch(updateToAddName(plan.name));
     dispatch(updateToAddMajor(getMajorFromCommonName(plan.majors[0])));
     dispatch(updateGeneratePlanAddStatus(true));

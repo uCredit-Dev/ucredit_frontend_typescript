@@ -96,9 +96,9 @@ export const checkRequirementSatisfied = (
 export const getBoolExpr = (splitArr: string[], course: Course): string => {
   let boolExpr: string = "";
   let index: number = 0;
-  let concat: string;
+  let concat: string = "";
   if (course === null) {
-    return "";
+    return concat;
   }
   while (index < splitArr.length) {
     if (splitArr[index] === "(") {
@@ -112,87 +112,80 @@ export const getBoolExpr = (splitArr: string[], course: Course): string => {
     } else if (splitArr[index] === "NOT") {
       concat = "&&!";
     } else {
-      switch (splitArr[index + 1]) {
-        case "C": // Course Number
-          if (splitArr[index] === course.number) {
-            concat = "true";
-          } else {
-            concat = "false";
-          }
-          break;
-        case "T": // Tag
-          if (
-            course?.tags !== undefined &&
-            course.tags.includes(splitArr[index])
-          ) {
-            concat = "true";
-          } else {
-            concat = "false";
-          }
-          break;
-        case "D": // Department
-          if (course.department === splitArr[index]) {
-            concat = "true";
-          } else {
-            concat = "false";
-          }
-          break;
-        case "Y": // Year
-          //TODO: implement for year.
-          concat = "false";
-          break;
-        case "A": // Area
-          if (
-            course.areas !== "None" &&
-            course.areas.includes(splitArr[index])
-          ) {
-            concat = "true";
-          } else {
-            concat = "false";
-          }
-          break;
-        case "N": // Name
-          if (course.title.includes(splitArr[index])) {
-            concat = "true";
-          } else {
-            concat = "false";
-          }
-          break;
-        case "W": //Written intensive
-          if (course.wi) {
-            concat = "true";
-          } else {
-            concat = "false";
-          }
-          break;
-        case "L": // Level
-          if (splitArr[index].includes("Upper")) {
-            if (course.number[7] >= "3") {
-              concat = "true";
-            } else {
-              concat = "false";
-            }
-          } else if (splitArr[index].includes("Lower")) {
-            if (course.number[7] <= "2") {
-              concat = "false";
-            } else {
-              concat = "true";
-            }
-          } else if (course.number[7] === splitArr[index][0]) {
-            // For solely 100, 200, etc. levels
-            concat = "true";
-          } else {
-            concat = "false";
-          }
-          break;
-        default:
-          concat = "false";
-      }
+      concat = handleTagType(splitArr, index, course);
     }
-    concat.length > 3 ? (index = index + 2) : index++;
+    if (concat.length > 3) {
+      index = index + 2;
+    } else index++;
     boolExpr = boolExpr.concat(concat); // Causing issues with biology major.
   }
   return boolExpr;
+};
+
+const handleTagType = (
+  splitArr: string[],
+  index: number,
+  course: Course
+): string => {
+  let updatedConcat: string;
+  switch (splitArr[index + 1]) {
+    case "C": // Course Number
+      updatedConcat = (course.number === splitArr[index]).toString();
+      break;
+    case "T": // Tag
+      updatedConcat = (
+        course?.tags !== undefined && course.tags.includes(splitArr[index])
+      ).toString();
+      break;
+    case "D": // Department
+      updatedConcat = (course.department === splitArr[index]).toString();
+      break;
+    case "Y": // Year
+      //TODO: implement for year.
+      updatedConcat = "false";
+      break;
+    case "A": // Area
+      updatedConcat = (
+        course.areas !== "None" && course.areas.includes(splitArr[index])
+      ).toString();
+      break;
+    case "N": // Name
+      updatedConcat = course.title.includes(splitArr[index]).toString();
+      break;
+    case "W": //Written intensive
+      updatedConcat = course.wi.toString();
+      break;
+    case "L": // Level
+      updatedConcat = handleLCase(splitArr, index, course);
+      break;
+    default:
+      updatedConcat = "false";
+  }
+  return updatedConcat;
+};
+
+// Handles the L case in the getBoolExpr function
+const handleLCase = (splitArr, index, course): string => {
+  let updatedConcat: string = "";
+  if (splitArr[index].includes("Upper")) {
+    if (course.number[7] >= "3") {
+      updatedConcat = "true";
+    } else {
+      updatedConcat = "false";
+    }
+  } else if (splitArr[index].includes("Lower")) {
+    if (course.number[7] <= "2") {
+      updatedConcat = "false";
+    } else {
+      updatedConcat = "true";
+    }
+  } else if (course.number[7] === splitArr[index][0]) {
+    // For solely 100, 200, etc. levels
+    updatedConcat = "true";
+  } else {
+    updatedConcat = "false";
+  }
+  return updatedConcat;
 };
 
 // args: expression for requirments

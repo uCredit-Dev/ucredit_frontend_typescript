@@ -72,29 +72,10 @@ const Form: FC<{ setSearching: Function }> = (props) => {
   // TODO: update registration times for each semester
   useEffect(() => {
     dispatch(updateSearchFilters({ filter: "term", value: semester }));
-    const date = new Date();
-    const yearVal = getYearVal();
+    const date: Date = new Date();
+    const yearVal: number = getYearVal();
     if (yearVal >= date.getFullYear()) {
-      // If the current year is the same as the year of the semester or later,
-      // we need to check Fall, Spring, Intersession, and Summer to see if we need to increase year value.
-      if (
-        (semester === "Spring" && date.getMonth() >= 9) ||
-        (semester === "Intersession" && date.getMonth() === 11) ||
-        (semester === "Summer" &&
-          date.getMonth() >= 2 &&
-          yearVal !== date.getFullYear())
-      )
-        dispatch(
-          updateSearchFilters({ filter: "year", value: date.getFullYear() + 1 })
-        );
-      else if (semester === "Fall" && date.getMonth() < 5) {
-        dispatch(
-          updateSearchFilters({ filter: "year", value: date.getFullYear() - 1 })
-        );
-      } else
-        dispatch(
-          updateSearchFilters({ filter: "year", value: date.getFullYear() })
-        );
+      handleFutureYear(date, yearVal);
     } else if (yearVal === date.getFullYear() - 1) {
       // If the year of the semester is one less than current year,
       // we need to check if Summer is valid.
@@ -114,6 +95,29 @@ const Form: FC<{ setSearching: Function }> = (props) => {
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
+
+  const handleFutureYear = (date: Date, yearVal: number): void => {
+    // If the current year is the same as the year of the semester or later,
+    // we need to check Fall, Spring, Intersession, and Summer to see if we need to increase year value.
+    if (
+      (semester === "Spring" && date.getMonth() >= 9) ||
+      (semester === "Intersession" && date.getMonth() === 11) ||
+      (semester === "Summer" &&
+        date.getMonth() >= 2 &&
+        yearVal !== date.getFullYear())
+    )
+      dispatch(
+        updateSearchFilters({ filter: "year", value: date.getFullYear() + 1 })
+      );
+    else if (semester === "Fall" && date.getMonth() < 5) {
+      dispatch(
+        updateSearchFilters({ filter: "year", value: date.getFullYear() - 1 })
+      );
+    } else
+      dispatch(
+        updateSearchFilters({ filter: "year", value: date.getFullYear() })
+      );
+  };
 
   // Search with debouncing of 2/4s of a second.
   const minLength = 4;
@@ -209,62 +213,80 @@ const Form: FC<{ setSearching: Function }> = (props) => {
    * @param queryLength - length of search query
    * @param querySubstrs - an array of different substring combinations of search query
    */
-  function substringSearch(
+  const substringSearch = async (
     extras: SearchExtras,
     queryLength: number,
     querySubstrs: string[]
-  ) {
+  ): Promise<void> => {
     let courses: SISRetrievedCourse[] = [];
     let versions: number[] = [];
     let total = 0;
     let cum = 0;
-    querySubstrs.forEach((subQuery) => {
+    querySubstrs.forEach(async (subQuery) => {
       total++;
-      find({ ...extras, query: subQuery }).then((courseVersions) => {
-        cum++;
-        courses.push(...courseVersions[0]);
-        versions.push(...courseVersions[1]);
-        if (total === cum) {
-          courses.forEach((course: SISRetrievedCourse, index: number) => {
-            if (!searchedCourses.has(course.number + "0")) {
-              searchedCourses.set(course.number + "0", {
-                course: course,
-                version: versions[index],
-                priority: queryLength,
-              });
-              searchedCoursesFrequency.set(course.number, 1);
-            } else {
-              var frequency = searchedCoursesFrequency.get(course.number);
-              let flag = false;
-              if (frequency !== undefined) {
-                for (let i = 0; i < frequency; i++) {
-                  if (
-                    searchedCourses.get(course.number + i)?.course.title ===
-                    course.title
-                  ) {
-                    flag = true;
-                  }
-                }
-                if (!flag) {
-                  searchedCourses.set(course.number + frequency, {
-                    course: course,
-                    version: versions[index],
-                    priority: queryLength,
-                  });
-                  searchedCoursesFrequency.set(course.number, frequency + 1);
-                }
-              }
-            }
-          });
-          const newSearchList: SISRetrievedCourse[] = getNewSearchList();
-          dispatch(updateRetrievedCourses(newSearchList));
-          if (queryLength > minLength && initialQueryLength - queryLength < 9) {
-            performSmartSearch(extras, queryLength - 1)();
-          }
-        }
-      });
+      const courseVersions = await find({ ...extras, query: subQuery });
+      cum++;
+      courses.push(...courseVersions[0]);
+      versions.push(...courseVersions[1]);
+      if (total === cum) {
+        handleFinishFinding(courses, versions, queryLength, extras);
+      }
     });
-  }
+  };
+
+  // Handles the finishing of finding courses.
+  const handleFinishFinding = (
+    courses: SISRetrievedCourse[],
+    versions: number[],
+    queryLength: number,
+    extras: SearchExtras
+  ) => {
+    courses.forEach((course: SISRetrievedCourse, index: number) => {
+      if (!searchedCourses.has(course.number + "0")) {
+        searchedCourses.set(course.number + "0", {
+          course: course,
+          version: versions[index],
+          priority: queryLength,
+        });
+        searchedCoursesFrequency.set(course.number, 1);
+      } else {
+        handleFrequency(course, versions, queryLength, index);
+      }
+    });
+    const newSearchList: SISRetrievedCourse[] = getNewSearchList();
+    dispatch(updateRetrievedCourses(newSearchList));
+    if (queryLength > minLength && initialQueryLength - queryLength < 9) {
+      performSmartSearch(extras, queryLength - 1)();
+    }
+  };
+
+  // Handles the frequency of a course.
+  const handleFrequency = (
+    course: SISRetrievedCourse,
+    versions,
+    queryLength: number,
+    index: number
+  ) => {
+    let frequency = searchedCoursesFrequency.get(course.number);
+    let flag = false;
+    if (frequency !== undefined) {
+      for (let i = 0; i < frequency; i++) {
+        if (
+          searchedCourses.get(course.number + i)?.course.title === course.title
+        ) {
+          flag = true;
+        }
+      }
+      if (!flag) {
+        searchedCourses.set(course.number + frequency, {
+          course: course,
+          version: versions[index],
+          priority: queryLength,
+        });
+        searchedCoursesFrequency.set(course.number, frequency + 1);
+      }
+    }
+  };
 
   /**
    * Performs search call with filters to backend and updates redux with retrieved courses.
@@ -274,7 +296,8 @@ const Form: FC<{ setSearching: Function }> = (props) => {
    * @returns reference to a function that conducts smart search
    */
   const performSmartSearch =
-    (extras: SearchExtras, queryLength: number) => () => {
+    (extras: SearchExtras, queryLength: number): Function =>
+    (): void => {
       const querySubstrs: string[] = [];
       if (queryLength >= minLength) {
         // Finds all substring combinations and searches.
@@ -315,9 +338,7 @@ const Form: FC<{ setSearching: Function }> = (props) => {
         .sort((a, b) => a[1].course.title.length - b[1].course.title.length)
         .sort((a, b) => b[1].priority - a[1].priority);
     };
-
-    // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    for (let [key, value] of searchedCourses) {
+    for (let [, value] of searchedCourses) {
       searchList.push(value.course);
     }
     return searchList;

@@ -18,6 +18,11 @@ import clsx from "clsx";
 import FineDistribution from "./FineDistribution";
 import ReactTooltip from "react-tooltip";
 
+/**
+ * Distribution Bars in Components
+ * @param major - major to display
+ * @param distributionOpen - boolean to open or close distribution
+ */
 const DistributionBars: FC<{
   major: Major | null;
   distributionOpen: boolean;
@@ -72,6 +77,11 @@ const DistributionBars: FC<{
     ReactTooltip.rebuild();
   }, [displayGeneral, props.major]);
 
+  const getDistributionText = (index: number): string =>
+    showDistributions[index] === true
+      ? "Hide Fine Requirements"
+      : "Show Fine Requirements";
+
   return (
     <div>
       <CourseBar
@@ -124,9 +134,7 @@ const DistributionBars: FC<{
                   { hidden: !props.distributionOpen }
                 )}
               >
-                {showDistributions[i] === true
-                  ? "Hide Fine Requirements"
-                  : "Show Fine Requirements"}
+                {getDistributionText(i)}
               </button>
             ) : null}
           </div>
