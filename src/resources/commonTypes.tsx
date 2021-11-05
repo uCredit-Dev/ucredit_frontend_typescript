@@ -218,7 +218,7 @@ export type Minor = {
   wi_credit: number;
   url: string;
   distributions: DistributionObj[];
-}
+};
 
 export type DroppableType = {
   year: string;

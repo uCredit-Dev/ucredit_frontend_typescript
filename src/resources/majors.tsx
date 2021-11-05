@@ -1,5 +1,4 @@
-import { Major } from "./commonTypes";
-import { Minor } from "./commonTypes";
+import { Major, Minor } from "./commonTypes";
 
 // All Major Requirements can be found at the links below
 // https://e-catalogue.jhu.edu/arts-sciences/full-time-residential-programs/degree-programs/
@@ -1314,8 +1313,8 @@ const bsCS_Old: Major = {
             "<b>Required Courses:</b><p>Two paths:</p>" +
             "<p>1. Two semesters of chemistry with associated lab:</p><p>030.101 Chemistry I and 030.105 Chemistry Lab I or AP equivalent</p>030.102 Chemistry II and 030.106 Chemistry Lab II or AP equivalent</p>" +
             "<p>2. Two semesters of physics with associated lab:</p><p>171.101/103 Physics I and 173.111 Physics Lab I or AP equivalent</p>171.102/104 Physics II and 173.112 Phyusics Lab II or AP equivalent</p>",
-          required_credits: 10, 
-          criteria: 
+          required_credits: 10,
+          criteria:
             "(AS.030.101[C]^AND^AS.030.105[C]^AND^AS.030.102[C]^AND^AS.030.106[C])^OR^((AS.171.101[C]^AND^AS.171.103[C])^AND^AS.173.11[C]^AND^(AS.171.102[C]^AND^AS.171.104[C])^AND^AS.173.112[C])",
         },
       ],
@@ -1576,11 +1575,9 @@ const baCS_New: Major = {
         "AS Center for Language Education[D]^OR^AS Modern Languages and Literatures[D]^OR^H[A]^OR^S[A]",
       fine_requirements: [
         {
-          description:
-            "<b>300-level</b><p>Two Courses at 300 Level</p>",
+          description: "<b>300-level</b><p>Two Courses at 300 Level</p>",
           required_credits: 6,
-          criteria:
-            "(H[A]^OR^S[A])^AND^(Upper Level Undergraduate[L])", 
+          criteria: "(H[A]^OR^S[A])^AND^(Upper Level Undergraduate[L])",
         },
         {
           description:
@@ -1644,11 +1641,9 @@ const CS_Minor_New: Minor = {
         },
         {
           description:
-            "<b>Upper Level Undergraduate: </b><p>12 upper level CS credits that form a cohesive program of study. One way is to choose all three courses within one or two area classifications</p>",
-
+            "<b>Upper Level Undergraduate: </b><p>12 upper level CS credits that form a cohesive program of study. One way is to choose all three courses within one or two area tag classifications (CSCI-APPL, CSCI-SOFT, CSCI-THRY, CSCI-RSNG, CSCI-SYST)</p>",
           required_credits: 12,
-          criteria:
-            "EN Computer Science[D]^AND^Upper Level Undergraduate[L]",
+          criteria: "EN Computer Science[D]^AND^Upper Level Undergraduate[L]",
         },
       ],
     },

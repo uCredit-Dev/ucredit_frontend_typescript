@@ -8,6 +8,7 @@ import {
 import { requirements } from "./distributionFunctions";
 import { ReactComponent as CheckSvg } from "../../../resources/svg/Check.svg";
 import DistributionPopup from "./DistributionPopup";
+import ReactTooltip from "react-tooltip";
 
 /**
  * A distribution bar.
@@ -53,11 +54,11 @@ const CourseBar: FC<{
     `<div style='width: 90px; height: auto;'><div style='width: 100%; display: flex; flex-direction: row; justify-content: space-between;'>` +
     `<div>Planned</div><div>${plannedCredits}</div>
     </div>
-    <div style='display: flex; flex-direction: row; justify-content: space-between;'>${
+    <div style='display: flex; flex-direction: row; justify-content: space-between;'>`+(
       remainingCredits !== 0
         ? `<div>Remaining</div><div>${remainingCredits}</div>`
         : `<div style="width: 100%; height: auto; display: flex; flex-direction: row; justify-content: center">Completed!</div>`
-    }</div>`;
+    )+`</div>`;
 
   const closePopup = () => {
     setDisplayAdd(false);
@@ -92,6 +93,9 @@ const CourseBar: FC<{
         className="relative flex flex-row w-full h-6 bg-gray-200 rounded transform hover:scale-101 transition duration-200 ease-in"
         data-tip={tooltip}
         data-for="godTip"
+        onMouseOver={() => {
+          ReactTooltip.rebuild();
+        }}
       >
         <div
           className="relative flex flex-row mb-2 w-full h-6 bg-gray-200 rounded transform hover:scale-105 transition duration-200 ease-in"

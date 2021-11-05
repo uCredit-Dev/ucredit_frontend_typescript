@@ -31,6 +31,7 @@ import { getMajorFromCommonName } from "../../resources/majors";
 
 /**
  * Handles dashboard user entry and login logic.
+ * TODO: Gracefully handle axios error cases (what happens when axios fails?), clean up extra years that are not being trash collected right now on import, and modularize this component!
  */
 const HandleUserEntryDummy: FC<{ setLoginId: Function; id: string | null }> = ({
   setLoginId,
@@ -66,80 +67,7 @@ const HandleUserEntryDummy: FC<{ setLoginId: Function; id: string | null }> = ({
       axios
         .get(api + "/plansByUser/" + user._id)
         .then((retrieved) => {
-          const retrievedPlans: Plan[] = retrieved.data.data;
-          if (retrievedPlans.length > 0) {
-            // sort plans by ids if there is more than one plan
-            retrievedPlans.sort((plan1: Plan, plan2: Plan) =>
-              plan1._id.localeCompare(plan2._id)
-            );
-          }
-
-          if (currentPlan._id !== "noPlan") {
-            // Swap first plan in the list with the current plan.
-            retrievedPlans.forEach((plan: Plan, index) => {
-              if (plan._id === currentPlan._id) {
-                const temp = retrievedPlans[0];
-                retrievedPlans[0] = currentPlan;
-                retrievedPlans[index] = temp;
-              }
-            });
-          }
-
-          if (retrievedPlans.length > 0 && currentPlan._id === "noPlan") {
-            const totPlans: Plan[] = [];
-            retrievedPlans.forEach((plan) => {
-              axios
-                .get(api + "/years/" + plan._id)
-                .then((resp) => {
-                  // Update Years if they are part of old plan schemas.
-                  const years: Year[] = resp.data.data;
-                  const initialYearVal: number = getStartYear(user.grade);
-                  const processedYears: Year[] = years.map(
-                    (year: Year, i: number) => {
-                      if (year.year === undefined || year.year < 100) {
-                        return {
-                          ...year,
-                          year: initialYearVal + i,
-                        };
-                      }
-                      return year;
-                    }
-                  );
-
-                  totPlans.push({ ...plan, years: processedYears });
-                  if (totPlans.length === retrievedPlans.length) {
-                    // Initial load, there is no current plan, so we set the current to be the first plan in the array.
-                    dispatch(updatePlanList(totPlans));
-                    dispatch(updateSelectedPlan(totPlans[0]));
-                  }
-                })
-                .catch((err) => console.log(err));
-            });
-
-            toast("Retrieved " + retrievedPlans.length + " plans!");
-          } else if (
-            retrievedPlans.length === 0 &&
-            user._id !== "noUser" &&
-            user._id !== "guestUser"
-          ) {
-            // If no plans, automatically generate a new plan
-            dispatch(updateAddingPlanStatus(true));
-          } else {
-            // If there is already a current plan, simply update the plan list.
-            const totPlans: Plan[] = [];
-            retrievedPlans.forEach((plan) => {
-              axios
-                .get(api + "/years/" + plan._id)
-                .then((resp) => {
-                  totPlans.push({ ...plan, years: resp.data.data });
-                  if (totPlans.length === retrievedPlans.length) {
-                    // Initial load, there is no current plan, so we set the current to be the first plan in the array.
-                    dispatch(updatePlanList(retrievedPlans));
-                  }
-                })
-                .catch((err) => console.log(err));
-            });
-          }
+          processRetrievedPlans(retrieved.data.data);
         })
         .catch((err) => {
           if (user._id === "guestUser") {
@@ -154,6 +82,88 @@ const HandleUserEntryDummy: FC<{ setLoginId: Function; id: string | null }> = ({
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [user._id]);
 
+  const processRetrievedPlans = async (retrievedData: any): Promise<void> => {
+    const retrievedPlans: Plan[] = retrievedData;
+    if (retrievedPlans.length > 0) {
+      // sort plans by ids if there is more than one plan
+      retrievedPlans.sort((plan1: Plan, plan2: Plan) =>
+        plan1._id.localeCompare(plan2._id)
+      );
+    }
+
+    if (currentPlan._id !== "noPlan") {
+      // Swap first plan in the list with the current plan.
+      retrievedPlans.forEach((plan: Plan, index) => {
+        if (plan._id === currentPlan._id) {
+          const temp = retrievedPlans[0];
+          retrievedPlans[0] = currentPlan;
+          retrievedPlans[index] = temp;
+        }
+      });
+    }
+
+    if (retrievedPlans.length > 0 && currentPlan._id === "noPlan") {
+      let totPlans: Plan[] = [];
+      retrievedPlans.forEach(async (plan) => {
+        totPlans = await processYears(plan, totPlans, retrievedPlans);
+      });
+      toast("Retrieved " + retrievedPlans.length + " plans!");
+    } else if (
+      retrievedPlans.length === 0 &&
+      user._id !== "noUser" &&
+      user._id !== "guestUser"
+    ) {
+      // If no plans, automatically generate a new plan
+      dispatch(updateAddingPlanStatus(true));
+    } else {
+      // If there is already a current plan, simply update the plan list.
+      let totPlans: Plan[] = [];
+      retrievedPlans.forEach(async (plan) => {
+        const resp: any = axios
+          .get(api + "/years/" + plan._id)
+          .catch((err) => console.log(err));
+        totPlans.push({ ...plan, years: resp.data.data });
+        if (totPlans.length === retrievedPlans.length) {
+          // Initial load, there is no current plan, so we set the current to be the first plan in the array.
+          dispatch(updatePlanList(retrievedPlans));
+        }
+      });
+    }
+  };
+
+  // Processes the years of a plan and adds them to the total plans array.
+  const processYears = async (
+    plan: Plan,
+    totPlans: Plan[],
+    retrievedPlans
+  ): Promise<Plan[]> => {
+    const resp: any = await axios
+      .get(api + "/years/" + plan._id)
+      .catch((err) => console.log(err));
+
+    // Update Years if they are part of old plan schemas.
+    const years: Year[] = resp.data.data;
+    const initialYearVal: number = getStartYear(user.grade);
+    const processedYears: Year[] = years.map((year: Year, i: number) => {
+      if (year.year === undefined || year.year < 100) {
+        return {
+          ...year,
+          year: initialYearVal + i,
+        };
+      }
+      return year;
+    });
+
+    totPlans.push({ ...plan, years: processedYears });
+    if (totPlans.length === retrievedPlans.length) {
+      // Initial load, there is no current plan, so we set the current to be the first plan in the array.
+      dispatch(updatePlanList(totPlans));
+      dispatch(updateSelectedPlan(totPlans[0]));
+    }
+    return Promise.resolve(totPlans);
+  };
+
+  // Gets the start year of the user's grade.
   const getStartYear = (year: string): number => {
     if (year.includes("Sophomore")) {
       return new Date().getFullYear() - 1;
@@ -219,13 +229,12 @@ const HandleUserEntryDummy: FC<{ setLoginId: Function; id: string | null }> = ({
   /**
    * Deep copies sharer's plan into your own.
    */
-  const addCourses = async () => {
-    let added: UserCourse[] = [];
+  const addCourses = async (): Promise<void> => {
     let empty = true;
     let allYears: Year[] = [];
 
     // Check for extraneous years
-    toAdd.forEach((year, i) => {
+    toAdd.forEach(async (year, i) => {
       const yearBody: Year = {
         name: year.name,
         _id: "",
@@ -243,88 +252,108 @@ const HandleUserEntryDummy: FC<{ setLoginId: Function; id: string | null }> = ({
             ? Date.now() + 60 * 60 * 24 * 1000
             : undefined,
       }; // add to end by default
-      axios.post(api + "/years", body).then((response: any) => {
-        const newYear: Year = { ...response.data.data };
-        allYears = [...allYears, newYear];
-        let newUpdatedPlan: Plan = {
-          ...currentPlan,
-        };
-        if (allYears.length === toAdd.length) {
-          const sortedYears = allYears.sort((y1, y2) => {
-            return y1.year - y2.year;
-          });
+      const postYearResp: any = await axios
+        .post(api + "/years", body)
+        .catch((err) => console.log(err));
+      const newYear: Year = { ...postYearResp.data.data };
+      allYears = [...allYears, newYear];
+      let newUpdatedPlan: Plan = {
+        ...currentPlan,
+      };
+      if (allYears.length === toAdd.length) {
+        allYears.sort((y1, y2) => y1.year - y2.year);
 
-          // TODO: Clean up all auto-generated years. This is not being done right now since we are simply replacing them with sortedYears!
-          axios
-            .patch(api + "/years/changeOrder", {
-              plan_id: currentPlan._id,
-              year_ids: sortedYears,
-            })
-            .then((resp) => {
-              newUpdatedPlan = { ...resp.data.data, years: sortedYears };
-              dispatch(updateSelectedPlan(newUpdatedPlan));
-              let total = 0;
-              for (const year of toAdd) {
-                for (const course of year.courses) {
-                  total++;
-                  empty = false;
-                  // eslint-disable-next-line no-loop-func
-                  addCourse(course, toAdd.indexOf(year), newUpdatedPlan).then(
-                    // eslint-disable-next-line no-loop-func
-                    (course) => {
-                      added.push(course);
-                      if (added.length === total) {
-                        let allYears: Year[] = [...newUpdatedPlan.years];
-                        let newYears: Year[] = [];
-                        for (let y of allYears) {
-                          newYears.push({ ...y });
-                        }
-                        for (let cur of added) {
-                          const nextYears: Year[] = [];
-                          for (let y of newYears) {
-                            if (cur.year_id === y._id) {
-                              nextYears.push({
-                                ...y,
-                                courses: [...y.courses, cur._id],
-                              });
-                            } else {
-                              nextYears.push(y);
-                            }
-                          }
-                          newYears = nextYears;
-                        }
-                        let newPlan: Plan = {
-                          ...newUpdatedPlan,
-                          years: newYears,
-                        };
-                        const newPlanList = [...planList];
-                        for (let i = 0; i < planList.length; i++) {
-                          if (planList[i]._id === newPlan._id) {
-                            newPlanList[i] = newPlan;
-                          }
-                        }
-                        dispatch(updatePlanList(newPlanList));
-                        dispatch(updateCurrentPlanCourses(added));
-                        dispatch(updateSelectedPlan(newPlan));
-                        dispatch(updateImportingStatus(false));
-                        toast.dismiss();
-                        toast.success("Plan Imported!", {
-                          autoClose: 5000,
-                          closeOnClick: false,
-                        });
-                        dispatch(updateAddingPlanStatus(false));
-                      }
-                    }
-                  );
-                }
-              }
-            });
-        }
-      });
+        // TODO: Clean up all auto-generated years. This is not being done right now since we are simply replacing them with sortedYears!
+        const changeYearOrderResp: any = await axios
+          .patch(api + "/years/changeOrder", {
+            plan_id: currentPlan._id,
+            year_ids: allYears,
+          })
+          .catch((err) => console.log(err));
+        newUpdatedPlan = { ...changeYearOrderResp.data.data, years: allYears };
+        dispatch(updateSelectedPlan(newUpdatedPlan));
+        await addImportedCourses(empty, newUpdatedPlan);
+      }
     });
 
     if (empty) {
       dispatch(updateImportingStatus(false));
+      dispatch(updateAddingPlanStatus(false));
+    }
+  };
+
+  // Adds courses from imported plan.
+  const addImportedCourses = async (
+    empty: boolean,
+    newUpdatedPlan: Plan
+  ): Promise<boolean> => {
+    let added: UserCourse[] = [];
+    let total: number = 0;
+    let emptyClone: boolean = empty;
+    toAdd.forEach((year: Year) => {
+      total += year.courses.length;
+    });
+
+    for (const yearIt of toAdd) {
+      for (const course of yearIt.courses) {
+        emptyClone = false;
+        const courseResponse = await addCourse(
+          course,
+          toAdd.indexOf(yearIt),
+          newUpdatedPlan
+        );
+        added = [...added, courseResponse];
+        handleFinishAdding(newUpdatedPlan, added, total);
+      }
+    }
+    return emptyClone;
+  };
+
+  // Handles updating plan when imported courses are finished adding.
+  const handleFinishAdding = (
+    newUpdatedPlan: Plan,
+    added: UserCourse[],
+    total: number
+  ) => {
+    let allYearsClone: Year[] = [...newUpdatedPlan.years];
+    let newYears: Year[] = [];
+    for (let y of allYearsClone) {
+      newYears.push({ ...y });
+    }
+    for (let cur of added) {
+      const nextYears: Year[] = [];
+      for (let y of newYears) {
+        if (cur.year_id === y._id) {
+          nextYears.push({
+            ...y,
+            courses: [...y.courses, cur._id],
+          });
+        } else {
+          nextYears.push(y);
+        }
+      }
+      newYears = nextYears;
+    }
+    let newPlan: Plan = {
+      ...newUpdatedPlan,
+      years: newYears,
+    };
+    const newPlanList = [...planList];
+    for (let it = 0; it < planList.length; it++) {
+      if (planList[it]._id === newPlan._id) {
+        newPlanList[it] = newPlan;
+      }
+    }
+    dispatch(updatePlanList(newPlanList));
+    dispatch(updateCurrentPlanCourses(added));
+    dispatch(updateSelectedPlan(newPlan));
+    if (total === added.length) {
+      dispatch(updateImportingStatus(false));
+      toast.dismiss();
+      toast.success("Plan Imported!", {
+        autoClose: 5000,
+        closeOnClick: false,
+      });
       dispatch(updateAddingPlanStatus(false));
     }
   };
@@ -336,12 +365,12 @@ const HandleUserEntryDummy: FC<{ setLoginId: Function; id: string | null }> = ({
    * @returns a promise that resolves on successful deep copy of plan
    */
   const addCourse = async (
-    id: string,
+    courseId: string,
     yearIndex: number,
     plan: Plan
   ): Promise<UserCourse> => {
     return new Promise((resolve) => {
-      axios.get(api + "/courses/" + id).then((response) => {
+      axios.get(api + "/courses/" + courseId).then((response) => {
         let course: UserCourse = response.data.data;
         const addingYear: Year = plan.years[yearIndex];
 
@@ -383,7 +412,7 @@ const HandleUserEntryDummy: FC<{ setLoginId: Function; id: string | null }> = ({
     });
   };
 
-  const afterPromise = (plan, years) => {
+  const afterPromise = (plan: Plan, years: Year[]) => {
     dispatch(updateToAddName(plan.name));
     dispatch(updateToAddMajor(getMajorFromCommonName(plan.majors[0])));
     dispatch(updateGeneratePlanAddStatus(true));
@@ -470,67 +499,18 @@ const HandleUserEntryDummy: FC<{ setLoginId: Function; id: string | null }> = ({
 
   // Useffect runs once on page load, calling to https://ucredit-api.herokuapp.com/api/retrieveUser to retrieve user data.
   // On successful retrieve, update redux with retrieved user,
-  // TODO: Maybe update to guest?
   useEffect(() => {
     if (id !== null) {
       toast.info("Importing Plan...", {
         autoClose: false,
         closeOnClick: false,
       });
-      // dispatch(updateUser(guestUser));
       dispatch(updateImportingStatus(true));
       // means that the user entered a sharable link
       // first login with guest, then populate the plan with the information from the id
       history.push("/dashboard");
-      let plan: Plan;
       // Get the plan that we are importing, stored in plan
-      axios
-        .get(api + "/plans/" + id)
-        .then((planResponse) => {
-          plan = planResponse.data.data;
-          // get the years of that plan, stored in years
-          axios
-            .get(api + "/years/" + id)
-            .then((yearsResponse) => {
-              let years = yearsResponse.data.data;
-              cache(years);
-              // check whether the user is logged in (whether a cookie exists)
-              let cookieVal = "";
-              Object.entries(cookies).forEach((cookie: any) => {
-                if (cookie[0] === "_hjid" || cookie[0] === "connect.sid")
-                  cookieVal = cookie[1];
-              });
-              if (cookieVal === "") {
-                // if not, create a user first, then add
-                dispatch(updateToAddName(plan.name));
-                dispatch(
-                  updateToAddMajor(getMajorFromCommonName(plan.majors[0]))
-                );
-                setToAdd(years);
-                dispatch(updateUser({ ...guestUser }));
-                dispatch(updateGeneratePlanAddStatus(true));
-                setShouldAdd(true);
-              } else {
-                // if so, login first, then add
-                login(cookieVal, plan, years);
-              }
-            })
-            .catch((e) => {
-              console.log("ERROR: ", e);
-            });
-        })
-        .catch((e) => {
-          dispatch(updateImportingStatus(false));
-          toast.dismiss();
-          toast.error(
-            "Failed to Import. Please log in and try again... If that doesn't work. This is an issue on our end! Please report it in the feedback form and we will get to it asap!",
-            {
-              closeOnClick: false,
-              autoClose: false,
-            }
-          );
-          history.push("/login");
-        });
+      handleExistingUser();
     } else if (user._id === "noUser") {
       // Retrieves user if user ID is "noUser", the initial user id state for userSlice.tsx.
       // Make call for backend const cookieVals = document.cookie.split("=");
@@ -539,28 +519,72 @@ const HandleUserEntryDummy: FC<{ setLoginId: Function; id: string | null }> = ({
         if (cookie[0] === "_hjid" || cookie[0] === "connect.sid")
           cookieVal = cookie[1];
       });
-      fetch(api + "/retrieveUser/" + cookieVal, {
-        mode: "cors",
-        method: "GET",
-        credentials: "include",
-        headers: {
-          Accept: "application/json",
-          "Content-Type": "application/json",
-        },
-      })
-        .then((resp) => resp.json())
+      axios
+        .get(api + "/retrieveUser/" + cookieVal, {
+          method: "GET",
+          headers: {
+            Accept: "application/json",
+            "Content-Type": "application/json",
+          },
+        })
         .then((retrievedUser) => {
-          if (retrievedUser.errors === undefined) {
-            dispatch(updateUser(retrievedUser.data));
-            setLoginId(cookieVal);
-          } else {
-            console.log("ERROR: ", retrievedUser.errors);
-            history.push("/login");
-          }
+          dispatch(updateUser(retrievedUser.data));
+          setLoginId(cookieVal);
+        })
+        .catch((err) => {
+          console.log("ERROR: ", err);
+          history.push("/login");
         });
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [document.cookie]);
+
+  // Handle the case where the user is already exists
+  const handleExistingUser = async (): Promise<void> => {
+    const planResponse: any = await axios
+      .get(api + "/plans/" + id)
+      .catch((e) => {
+        dispatch(updateImportingStatus(false));
+        toast.dismiss();
+        toast.error(
+          "Failed to Import. Please log in and try again... If that doesn't work. This is an issue on our end! Please report it in the feedback form and we will get to it asap!",
+          {
+            closeOnClick: false,
+            autoClose: false,
+          }
+        );
+        history.push("/login");
+      });
+
+    let plan: Plan = planResponse.data.data;
+    // get the years of that plan, stored in years
+    const yearsResponse: any = await axios
+      .get(api + "/years/" + id)
+      .catch((e) => {
+        console.log("ERROR: ", e);
+      });
+    let years = yearsResponse.data.data;
+    cache(years);
+    // check whether the user is logged in (whether a cookie exists)
+    let cookieVal = "";
+    Object.entries(cookies).forEach((cookie: any) => {
+      if (cookie[0] === "_hjid" || cookie[0] === "connect.sid")
+        cookieVal = cookie[1];
+    });
+    if (cookieVal === "") {
+      // if not, create a user first, then add
+      dispatch(updateToAddName(plan.name));
+      dispatch(updateToAddMajor(getMajorFromCommonName(plan.majors[0])));
+      setToAdd(years);
+      dispatch(updateUser({ ...guestUser }));
+      dispatch(updateGeneratePlanAddStatus(true));
+      setShouldAdd(true);
+    } else {
+      // if so, login first, then add
+      login(cookieVal, plan, years);
+    }
+  };
+
   return <></>;
 };
 

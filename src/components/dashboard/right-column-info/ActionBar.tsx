@@ -139,13 +139,13 @@ const ActionBar: FC = () => {
       axios
         .post(api + "/years", body)
         .then((response: any) => {
-          const newYear: Year = { ...response.data.data };
-          const newYearArray: Year[] = [...currentPlan.years, newYear];
-          const newUpdatedPlan: Plan = { ...currentPlan, years: newYearArray };
           const updatedPlanList: Plan[] = [...planList];
-          updatedPlanList[0] = newUpdatedPlan;
+          updatedPlanList[0] = {
+            ...currentPlan,
+            years: [...currentPlan.years, { ...response.data.data }],
+          };
+          dispatch(updateSelectedPlan(updatedPlanList[0]));
           dispatch(updatePlanList(updatedPlanList));
-          dispatch(updateSelectedPlan(newUpdatedPlan));
           toast.success("New Year added!");
         })
         .catch((err) => console.log(err));

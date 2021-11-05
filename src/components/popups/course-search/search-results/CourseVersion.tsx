@@ -104,6 +104,90 @@ const CourseVersion: FC<{ setInspectedArea: Function }> = (props) => {
     }
   };
 
+  const getAreaEls = () => {
+    if (version !== "None" && version.areas !== "None")
+      return version.areas.split("").map((area: string, i: number) => (
+        <div
+          className="flex flex-row items-center transform hover:scale-110 transition duration-200 ease-in"
+          key={area + version.number + i}
+        >
+          <div
+            className="flex items-center px-1 w-auto text-white font-semibold rounded select-none"
+            style={{ backgroundColor: getColors(area)[0] }}
+            data-tip={getAreaName(area)}
+            data-for="godTip"
+          >
+            {area}
+          </div>
+        </div>
+      ));
+    else if (version !== "None")
+      return (
+        <div
+          className="flex items-center px-1 w-auto text-white font-semibold rounded select-none"
+          style={{ backgroundColor: getColors(version.areas)[0] }}
+          key="noneVersion"
+        >
+          None
+        </div>
+      );
+    else return null;
+  };
+
+  const getTagEls = () => {
+    if (version !== "None") {
+      if (version.tags.length === 0)
+        return <div className="select-none">No tags!</div>;
+      else
+        return version.tags.map((tag, i) => (
+          <>
+            {i !== 0 ? ", " : null}
+            <div
+              key={"" + tag + version.number + i}
+              data-tip={"Ask your advisor for more info about " + tag + " tag!"}
+              data-for="godTip"
+              className="mt-1 px-1 w-max text-white font-semibold bg-blue-500 rounded transform hover:scale-101 transition duration-200 ease-in"
+            >
+              {tag}
+            </div>
+          </>
+        ));
+    } else {
+      return null;
+    }
+  };
+
+  const getShowMoreText = () => {
+    if (showMore === 0)
+      return (
+        <button
+          className="underline focus:outline-none transform"
+          onClick={() => {
+            setShowMore(1);
+          }}
+        >
+          Show more...
+        </button>
+      );
+    else if (showMore === 1)
+      return (
+        <button
+          className="underline focus:outline-none transform"
+          onClick={() => {
+            setShowMore(0);
+          }}
+        >
+          Show less...
+        </button>
+      );
+    else return null;
+  };
+
+  const getPrereqDisplayMode = () =>
+    displayPreReqsView === 1 ? <PrereqDisplay /> : <CourseEvalSection />;
+
+  const getWIText = () => (version !== "None" && version.wi ? "Yes" : "No");
+
   return (
     <>
       {version !== "None" ? (
@@ -142,30 +226,7 @@ const CourseVersion: FC<{ setInspectedArea: Function }> = (props) => {
                   </div>
                   :
                 </div>
-                {version.areas !== "None" ? (
-                  version.areas.split("").map((area: string, i: number) => (
-                    <div
-                      className="flex flex-row items-center transform hover:scale-110 transition duration-200 ease-in"
-                      key={area + version.number + i}
-                    >
-                      <div
-                        className="flex items-center px-1 w-auto text-white font-semibold rounded select-none"
-                        style={{ backgroundColor: getColors(area)[0] }}
-                        data-tip={getAreaName(area)}
-                        data-for="godTip"
-                      >
-                        {area}
-                      </div>
-                    </div>
-                  ))
-                ) : (
-                  <div
-                    className="flex items-center px-1 w-auto text-white font-semibold rounded select-none"
-                    style={{ backgroundColor: getColors(version.areas)[0] }}
-                  >
-                    None
-                  </div>
-                )}
+                {getAreaEls()}
               </div>
               <div>
                 <span className="font-semibold">Department: </span>
@@ -186,29 +247,7 @@ const CourseVersion: FC<{ setInspectedArea: Function }> = (props) => {
                   :{" "}
                 </span>
                 <div className="flex flex-row flex-wrap ml-1">
-                  {version.tags.length === 0 ? (
-                    <div className="select-none">No tags!</div>
-                  ) : (
-                    <>
-                      {version.tags.map((tag, i) => (
-                        <>
-                          {i !== 0 ? ", " : null}
-                          <div
-                            key={"" + tag + version.number + i}
-                            data-tip={
-                              "Ask your advisor for more info about " +
-                              tag +
-                              " tag!"
-                            }
-                            data-for="godTip"
-                            className="mt-1 px-1 w-max text-white font-semibold bg-blue-500 rounded transform hover:scale-101 transition duration-200 ease-in"
-                          >
-                            {tag}
-                          </div>
-                        </>
-                      ))}
-                    </>
-                  )}
+                  {getTagEls()}
                 </div>
               </div>
             </div>
@@ -226,7 +265,7 @@ const CourseVersion: FC<{ setInspectedArea: Function }> = (props) => {
               <div className="w-auto h-auto">
                 <div>
                   <span className="font-semibold">Writing Intensive: </span>
-                  {version.wi ? "Yes" : "No"}
+                  {getWIText()}
                 </div>
               </div>
             </div>
@@ -240,26 +279,7 @@ const CourseVersion: FC<{ setInspectedArea: Function }> = (props) => {
             >
               {version.bio}
             </p>
-
-            {showMore === 0 ? (
-              <button
-                className="underline focus:outline-none transform"
-                onClick={() => {
-                  setShowMore(1);
-                }}
-              >
-                Show more...
-              </button>
-            ) : showMore === 1 ? (
-              <button
-                className="underline focus:outline-none transform"
-                onClick={() => {
-                  setShowMore(0);
-                }}
-              >
-                Show less...
-              </button>
-            ) : null}
+            {getShowMoreText()}
           </div>
           <div className="flex flex-row border-b-2">
             <button
@@ -291,7 +311,7 @@ const CourseVersion: FC<{ setInspectedArea: Function }> = (props) => {
               Course Evaluation
             </button>{" "}
           </div>
-          {displayPreReqsView === 1 ? <PrereqDisplay /> : <CourseEvalSection />}
+          {getPrereqDisplayMode()}
         </>
       ) : null}
     </>
