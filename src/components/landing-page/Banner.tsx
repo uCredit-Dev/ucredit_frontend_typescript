@@ -4,7 +4,7 @@ import "react-responsive-carousel/lib/styles/carousel.min.css"; // requires a lo
 import { Carousel } from "react-responsive-carousel";
 import HeadlineImg from "../../resources/images/landing-page/headline.png";
 import JoinTeamImg from "../../resources/images/landing-page/joinTeam.png";
-import { useHistory } from "react-router";
+import { useNavigate } from "react-router";
 import ApplicationFormPopup from "../popups/ApplicationFormPopup";
 
 /**
@@ -12,7 +12,7 @@ import ApplicationFormPopup from "../popups/ApplicationFormPopup";
  */
 const Banner: FC = () => {
   const [activateEmailPopup, setActivateEmailPopup] = useState<boolean>(false);
-  const history = useHistory();
+  const navigate = useNavigate();
   return (
     <>
       {activateEmailPopup ? (
@@ -23,7 +23,7 @@ const Banner: FC = () => {
           <div>
             <div className="mt-5/6 absolute flex w-full" style={{ top: "70%" }}>
               <button
-                onClick={() => history.push("/login")}
+                onClick={() => navigate("/login")}
                 className="mx-auto w-72 h-16 text-white text-3xl font-thin bg-primary rounded-full shadow-xl transform hover:scale-105 transition duration-200 ease-in"
               >
                 Get Started

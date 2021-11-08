@@ -1,7 +1,7 @@
 import axios from "axios";
 import { FC, useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { Switch, Route, useLocation } from "react-router-dom";
+import { Route, Routes, useSearchParams } from "react-router-dom";
 import { api } from "./../resources/assets";
 import Dashboard from "./dashboard/Dashboard";
 import DashboardEntry from "./login/DashboardEntry";
@@ -30,6 +30,8 @@ const App: FC = () => {
   // Component state setup.
   const [welcomeScreen, setWelcomeScreen] = useState<boolean>(false);
   const [needsToLoad, setNeedsToLoad] = useState<boolean>(false);
+
+  const [searchParams] = useSearchParams();
 
   const retrieveData = (counter: number, retrieved: SISRetrievedCourse[]) => {
     setNeedsToLoad(true);
@@ -118,15 +120,10 @@ const App: FC = () => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [curPlan]);
 
-  const useQuery = () => {
-    return new URLSearchParams(useLocation().search);
-  };
-
-  const id = useQuery().get("_id");
-
   useEffect(() => {
     ReactTooltip.rebuild();
   });
+
   return (
     <div>
       <ReactTooltip
@@ -136,20 +133,15 @@ const App: FC = () => {
         place="top"
         effect="solid"
       />
-      <Switch>
-        <Route path="/dashboard">
-          <Dashboard id={null} />
-        </Route>
-        <Route path="/login">
-          <DashboardEntry />
-        </Route>
-        <Route path="/share">
-          <Dashboard id={id} />
-        </Route>
-        <Route path="/">
-          <LandingPage />
-        </Route>
-      </Switch>
+      <Routes>
+        <Route path="/" element={<LandingPage />} />
+        <Route path="dashboard" element={<Dashboard id={null} />} />
+        <Route path="login" element={<DashboardEntry />} />
+        <Route
+          path="share"
+          element={<Dashboard id={searchParams.get("_id")} />}
+        />
+      </Routes>
       <ToastContainer
         position="bottom-left"
         autoClose={4000}

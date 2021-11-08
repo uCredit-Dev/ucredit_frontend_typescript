@@ -26,7 +26,7 @@ import {
   updateToAddName,
 } from "../../slices/popupSlice";
 import { useCookies } from "react-cookie";
-import { useHistory } from "react-router";
+import { useNavigate } from "react-router";
 import { getMajorFromCommonName } from "../../resources/majors";
 
 /**
@@ -50,7 +50,7 @@ const HandleUserEntryDummy: FC<{ setLoginId: Function; id: string | null }> = ({
   const [shouldAdd, setShouldAdd] = useState<boolean>(false);
   const [cached, setCached] = useState<boolean>(false);
   const [cookies] = useCookies(["connect.sid"]);
-  let history = useHistory();
+  let navigate = useNavigate();
 
   // Adds a new plan every time a new guest user is created and they don't have a a plan.
   useEffect(() => {
@@ -449,7 +449,7 @@ const HandleUserEntryDummy: FC<{ setLoginId: Function; id: string | null }> = ({
             });
           } else if (id === null) {
             console.log("ERROR: Couldn't log in with " + cookieVal);
-            history.push("/login");
+            navigate("/login");
           } else {
             console.log("ERROR: Couldn't log in with " + cookieVal);
             dispatch(updateUser(guestUser));
@@ -460,7 +460,7 @@ const HandleUserEntryDummy: FC<{ setLoginId: Function; id: string | null }> = ({
           console.log("ERROR with cookieVal " + cookieVal + " is ", err);
           afterPromise(plan, years);
           if (id === null) {
-            history.push("/login");
+            navigate("/login");
           }
         });
     } else {
@@ -508,7 +508,7 @@ const HandleUserEntryDummy: FC<{ setLoginId: Function; id: string | null }> = ({
       dispatch(updateImportingStatus(true));
       // means that the user entered a sharable link
       // first login with guest, then populate the plan with the information from the id
-      history.push("/dashboard");
+      navigate("/dashboard");
       // Get the plan that we are importing, stored in plan
       handleExistingUser();
     } else if (user._id === "noUser") {
@@ -533,7 +533,7 @@ const HandleUserEntryDummy: FC<{ setLoginId: Function; id: string | null }> = ({
         })
         .catch((err) => {
           console.log("ERROR: ", err);
-          history.push("/login");
+          navigate("/login");
         });
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -553,7 +553,7 @@ const HandleUserEntryDummy: FC<{ setLoginId: Function; id: string | null }> = ({
             autoClose: false,
           }
         );
-        history.push("/login");
+        navigate("/login");
       });
 
     let plan: Plan = planResponse.data.data;

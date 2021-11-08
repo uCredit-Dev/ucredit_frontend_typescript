@@ -1,5 +1,5 @@
 import { FC, useEffect } from "react";
-import { useHistory, useLocation } from "react-router-dom";
+import { useNavigate, useLocation } from "react-router-dom";
 import { api, guestUser } from "../../resources/assets";
 import { useDispatch, useSelector } from "react-redux";
 import { updateUser, selectUser } from "../../slices/userSlice";
@@ -21,7 +21,7 @@ const DashboardEntry: FC = () => {
   const [cookies] = useCookies(["connect.sid"]);
 
   // React router state setup.
-  let history = useHistory();
+  let navigate = useNavigate();
   let location = useLocation();
 
   // Useffect runs once on page load, calling to https://ucredit-api.herokuapp.com/api/retrieveUser to retrieve user data.
@@ -58,7 +58,7 @@ const DashboardEntry: FC = () => {
               new Date(Date.now() + 200000000000000).toString() +
               "; path=/";
             dispatch(updateUser(retrievedUser.data));
-            history.push("/dashboard");
+            navigate("/dashboard");
           }
         })
         .catch(() => {
@@ -86,7 +86,7 @@ const DashboardEntry: FC = () => {
           .then((retrievedUser) => {
             if (retrievedUser.errors === undefined) {
               dispatch(updateUser(retrievedUser.data));
-              history.push("/dashboard");
+              navigate("/dashboard");
             }
           })
           .catch((err) => {
@@ -102,7 +102,7 @@ const DashboardEntry: FC = () => {
    */
   const handleGuest = (): void => {
     dispatch(updateUser(guestUser));
-    history.push("/dashboard");
+    navigate("/dashboard");
   };
 
   return (

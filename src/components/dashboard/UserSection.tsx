@@ -1,7 +1,7 @@
 import { FC } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { selectUser, resetUser } from "../../slices/userSlice";
-import { useHistory } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { resetCurrentPlan } from "../../slices/currentPlanSlice";
 import { api } from "../../resources/assets";
 import bird from "../../resources/images/logoDarker.png";
@@ -15,7 +15,7 @@ const UserSection: FC<{
   // Redux setup
   const dispatch = useDispatch();
   const user = useSelector(selectUser);
-  let history = useHistory();
+  const navigate = useNavigate();
 
   return (
     <div className="fixed z-20 p-3 px-6 w-screen h-20 bg-gradient-to-r shadow from-blue-500 to-green-400 select-none">
@@ -54,7 +54,7 @@ const UserSection: FC<{
                 .then(() => {
                   dispatch(resetUser());
                   dispatch(resetCurrentPlan());
-                  history.push("/login");
+                  navigate("/login");
                 })
                 .catch((err) => {
                   console.log(err);
