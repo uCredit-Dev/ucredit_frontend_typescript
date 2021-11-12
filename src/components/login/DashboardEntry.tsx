@@ -36,66 +36,76 @@ const DashboardEntry: FC = () => {
       } else {
         token = currentURL.substr(DEV_ORIGIN.length, 20);
       }
-      fetch(api + "/retrieveUser/" + token, {
-        mode: "cors",
-        method: "GET",
-        credentials: "include",
-        headers: {
-          Accept: "application/json",
-          "Content-Type": "application/json",
-        },
-      })
-        .then((resp) => resp.json())
-        .then((retrievedUser) => {
-          if (
-            retrievedUser.errors === undefined &&
-            !token.includes("dashboard")
-          ) {
-            document.cookie =
-              "connect.sid=" +
-              token +
-              "; expires=" +
-              new Date(Date.now() + 200000000000000).toString() +
-              "; path=/";
-            dispatch(updateUser(retrievedUser.data));
-            navigate("/dashboard");
-          }
-        })
-        .catch(() => {
-          console.log("ERROR: couldn't log in with token " + token);
-        });
+      fetchUser(token);
     } else {
-      let cookieVal = "";
       if (user._id === "noUser") {
-        // Retrieves user if user ID is "noUser", the initial user id state for userSlice.tsx.
-        // Make call for backend
-        Object.entries(cookies).forEach((cookie: any) => {
-          if (cookie[0] === "_hjid" || cookie[0] === "connect.sid")
-            cookieVal = cookie[1];
-        });
-        fetch(api + "/retrieveUser/" + cookieVal, {
-          mode: "cors",
-          method: "GET",
-          credentials: "include",
-          headers: {
-            Accept: "application/json",
-            "Content-Type": "application/json",
-          },
-        })
-          .then((resp) => resp.json())
-          .then((retrievedUser) => {
-            if (retrievedUser.errors === undefined) {
-              dispatch(updateUser(retrievedUser.data));
-              navigate("/dashboard");
-            }
-          })
-          .catch((err) => {
-            console.log("ERROR IS: ", err);
-          });
+        initialLogin();
       }
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [location.pathname, document.cookie]);
+  }, [location, document.cookie]);
+
+  // Initial login for when the user is the initial state, no_user.
+  const initialLogin = (): void => {
+    let cookieVal = "";
+    // Retrieves user if user ID is "noUser", the initial user id state for userSlice.tsx.
+    // Make call for backend
+    Object.entries(cookies).forEach((cookie: any) => {
+      if (cookie[0] === "_hjid" || cookie[0] === "connect.sid")
+        cookieVal = cookie[1];
+    });
+    fetch(api + "/retrieveUser/" + cookieVal, {
+      mode: "cors",
+      method: "GET",
+      credentials: "include",
+      headers: {
+        Accept: "application/json",
+        "Content-Type": "application/json",
+      },
+    })
+      .then((resp) => resp.json())
+      .then((retrievedUser) => {
+        if (retrievedUser.errors === undefined) {
+          dispatch(updateUser(retrievedUser.data));
+          navigate("/dashboard");
+        }
+      })
+      .catch((err) => {
+        console.log("ERROR IS: ", err);
+      });
+  };
+
+  // Fetches user based on url token.
+  const fetchUser = (token: string): void => {
+    fetch(api + "/retrieveUser/" + token, {
+      mode: "cors",
+      method: "GET",
+      credentials: "include",
+      headers: {
+        Accept: "application/json",
+        "Content-Type": "application/json",
+      },
+    })
+      .then((resp) => resp.json())
+      .then((retrievedUser) => {
+        if (
+          retrievedUser.errors === undefined &&
+          !token.includes("dashboard")
+        ) {
+          document.cookie =
+            "connect.sid=" +
+            token +
+            "; expires=" +
+            new Date(Date.now() + 200000000000000).toString() +
+            "; path=/";
+          dispatch(updateUser(retrievedUser.data));
+          navigate("/dashboard");
+        }
+      })
+      .catch(() => {
+        console.log("ERROR: couldn't log in with token " + token);
+      });
+  };
 
   /**
    * Handles if the user is invalid.

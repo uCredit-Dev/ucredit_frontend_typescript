@@ -10,15 +10,15 @@ import { BrowserRouter as Router } from "react-router-dom";
 const renderMethod = module.hot ? ReactDOM.render : ReactDOM.hydrate;
 
 renderMethod(
-  <React.StrictMode>
-    <CookiesProvider>
-      <Provider store={store}>
-        <Router>
+  <Router>
+    <React.StrictMode>
+      <CookiesProvider>
+        <Provider store={store}>
           <App />
-        </Router>
-      </Provider>
-    </CookiesProvider>
-  </React.StrictMode>,
+        </Provider>
+      </CookiesProvider>
+    </React.StrictMode>
+  </Router>,
   document.getElementById("root")
 );
 

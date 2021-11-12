@@ -54,7 +54,8 @@ const HandleUserEntryDummy: FC<{ setLoginId: Function; id: string | null }> = ({
 
   // Adds a new plan every time a new guest user is created and they don't have a a plan.
   useEffect(() => {
-    if (user.plan_ids.length === 0 && user._id === "guestUser") {
+    console.log(user);
+    if (user && user.plan_ids.length === 0 && user._id === "guestUser") {
       // Post req body for a new plan
       dispatch(updateAddingPlanStatus(true));
     }
@@ -528,7 +529,7 @@ const HandleUserEntryDummy: FC<{ setLoginId: Function; id: string | null }> = ({
           },
         })
         .then((retrievedUser) => {
-          dispatch(updateUser(retrievedUser.data));
+          dispatch(updateUser(retrievedUser.data.data));
           setLoginId(cookieVal);
         })
         .catch((err) => {

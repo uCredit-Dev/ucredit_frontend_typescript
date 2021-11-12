@@ -3,7 +3,7 @@ import { FC, useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Route, Routes, useSearchParams } from "react-router-dom";
 import { api } from "./../resources/assets";
-import Dashboard from "./dashboard/Dashboard";
+import Dashboard from "./dashboard";
 import DashboardEntry from "./login/DashboardEntry";
 import {
   selectCourseCache,
@@ -135,8 +135,8 @@ const App: FC = () => {
       />
       <Routes>
         <Route path="/" element={<LandingPage />} />
-        <Route path="dashboard" element={<Dashboard id={null} />} />
-        <Route path="login" element={<DashboardEntry />} />
+        <Route path="dashboard/*" element={<Dashboard id={null} />} />
+        <Route path="login/*" element={<DashboardEntry />} />
         <Route
           path="share"
           element={<Dashboard id={searchParams.get("_id")} />}

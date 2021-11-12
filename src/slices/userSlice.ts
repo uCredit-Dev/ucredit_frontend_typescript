@@ -1,5 +1,5 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
-import { AppThunk, RootState } from "../appStore/store";
+import { RootState } from "../appStore/store";
 import {
   Plan,
   SISRetrievedCourse,
@@ -103,15 +103,6 @@ export const {
   updateUnfoundNumbers,
   resetUser,
 } = userSlice.actions;
-
-// Asynch login with thunk.
-export const loginAsync =
-  (user: Promise<User>): AppThunk =>
-  (dispatch) => {
-    user.then((retrieved: User) => {
-      dispatch(updateUser(retrieved));
-    });
-  };
 
 // The function below is called a selector and allows us to select a value from
 // the state. Please make a selector for each state :)
