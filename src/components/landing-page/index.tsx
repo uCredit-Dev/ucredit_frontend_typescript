@@ -9,7 +9,7 @@ import Promo from "./Promo";
  */
 const LandingPage: FC = () => {
   return (
-    <div className="w-full h-full bg-white">
+    <div className="flex flex-col w-full h-full bg-white">
       <Header />
       <Banner />
       <Promo />
