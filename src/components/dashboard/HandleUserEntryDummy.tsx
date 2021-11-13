@@ -417,7 +417,6 @@ const HandleUserEntryDummy: FC<{
     });
   };
 
-  // TODO: Investigate if we're performing importing actions on the deep copy of the plan or some remnant of the original plan.
   const afterPromise = (plan: Plan, years: Year[]) => {
     dispatch(updateToAddName(plan.name));
     dispatch(updateToAddMajor(getMajorFromCommonName(plan.majors[0])));

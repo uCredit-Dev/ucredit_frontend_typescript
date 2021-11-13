@@ -1235,7 +1235,6 @@ const bsCS_Old: Major = {
           criteria: "EN.600.104[C]^OR^EN.601.104[C]^OR^EN.660.400[C]",
         },
         {
-          // TODO: show criteria rather than description
           description:
             "<b>Lower Level Undergraduate:</b><p>500.112/113/114 Gateway Computing or AP Comp Sci A or " +
             "equivalent<p>601.220 Intermediate Programming</p><p>601.226 Data Structures</p><p>601.229 " +
@@ -1663,7 +1662,6 @@ export function getMajorFromCommonName(name: string) {
   return out;
 }
 
-// TODO: Separate code for BA and BS into separate sections
 export const allMajors: Major[] = [
   bsCS_Old,
   bsCS_New,
