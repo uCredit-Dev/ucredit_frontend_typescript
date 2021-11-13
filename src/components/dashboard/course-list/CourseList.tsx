@@ -113,7 +113,8 @@ const CourseList: FC = () => {
                   if (jsx.length === currentPlan.years.length) {
                     jsx.sort(
                       (el1: JSX.Element, el2: JSX.Element) =>
-                        el1.props.id - el2.props.id
+                        el1.props.children.props.id -
+                        el2.props.children.props.id
                     );
                     dispatch(updateCurrentPlanCourses(totCourses));
                     dispatch(updateTotalCredits(totalCredits));
@@ -204,6 +205,7 @@ const CourseList: FC = () => {
 
   /**
    * Swaps year from source droppable to destination droppable.
+   * TODO: Update year value in frontend and backend on swap.
    * @param sourceIndex - source year index
    * @param destIndex - destination year index
    */
