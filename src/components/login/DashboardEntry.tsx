@@ -6,6 +6,7 @@ import { updateUser, selectUser } from "../../slices/userSlice";
 import { useCookies } from "react-cookie";
 import samplePlan from "../../resources/images/samplePlan.png";
 import logo from "../../resources/images/logoDarker.png";
+import { toast } from "react-toastify";
 
 const PROD_ORIGIN = "https://ucredit.me/login/";
 const DEV_ORIGIN = "http://localhost:3000/login/";
@@ -155,7 +156,15 @@ const DashboardEntry: FC = () => {
           </a>
           <button
             className="flex flex-row items-center justify-center mb-auto mt-5 mx-auto w-64 h-12 font-semibold tracking-widest bg-primary rounded-full focus:outline-none shadow cursor-pointer select-none transform hover:scale-105 transition duration-200 ease-in"
-            onClick={finishedLoginCheck ? handleGuest : () => {}}
+            onClick={
+              finishedLoginCheck
+                ? handleGuest
+                : () => {
+                    toast.info(
+                      "Please wait while we check if you're logged in..."
+                    );
+                  }
+            }
           >
             Continue as guest
           </button>
