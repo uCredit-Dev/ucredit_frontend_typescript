@@ -69,8 +69,7 @@ const InfoMenu: FC = () => {
    */
   const getDistributions = (): [string, requirements[]][] | null => {
     if (major) {
-      let distr = getRequirements(major);
-      return distr;
+      return getRequirements(major);
     }
     return null;
   };
@@ -122,7 +121,7 @@ const InfoMenu: FC = () => {
     );
     dispatch(updateDistributionBarJSX(distributionJSX));
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [distributions]);
+  }, [distributions, distributionOpen, showDistributions]);
 
   /**
    * Changes whether fine distributions are hidden
