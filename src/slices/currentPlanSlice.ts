@@ -14,7 +14,6 @@ type CurrentPlanSlice = {
   totalCredits: number;
   droppables: DroppableType[];
   importing: boolean;
-  distributionBarJSX: JSX.Element[];
 };
 
 const initialState: CurrentPlanSlice = {
@@ -32,7 +31,6 @@ const initialState: CurrentPlanSlice = {
   totalCredits: 0,
   droppables: [],
   importing: false,
-  distributionBarJSX: [],
 };
 
 export const currentPlanSlice = createSlice({
@@ -80,12 +78,6 @@ export const currentPlanSlice = createSlice({
     updateImportingStatus: (state: any, action: PayloadAction<boolean>) => {
       state.importing = action.payload;
     },
-    updateDistributionBarJSX: (
-      state: any,
-      action: PayloadAction<JSX.Element[]>
-    ) => {
-      state.distributionBarJSX = action.payload;
-    },
   },
 });
 
@@ -97,7 +89,6 @@ export const {
   updateDroppables,
   resetCurrentPlan,
   updateImportingStatus,
-  updateDistributionBarJSX,
 } = currentPlanSlice.actions;
 
 // The function below is called a selector and allows us to select a value from
@@ -113,7 +104,5 @@ export const selectDroppables = (state: RootState) =>
   state.currentPlan.droppables;
 export const selectImportingStatus = (state: RootState) =>
   state.currentPlan.importing;
-export const selectDistributionBarJSX = (state: RootState) =>
-  state.currentPlan.distributionBarJSX;
 
 export default currentPlanSlice.reducer;

@@ -13,7 +13,6 @@ import {
   selectCurrentPlanCourses,
   selectDistributions,
   selectPlan,
-  updateDistributionBarJSX,
   updateDistributions,
 } from "../../slices/currentPlanSlice";
 import { selectCourseCache } from "../../slices/userSlice";
@@ -37,6 +36,9 @@ const InfoMenu: FC = () => {
   );
   const [distributionOpen, setDistributionOpen] = useState<boolean>(true);
   const [major, setMajor] = useState<Major | null>(null);
+  const [distributionBarsJSX, setDistributionBarsJSX] = useState<JSX.Element[]>(
+    []
+  );
 
   // Update major when plan changes
   useEffect(() => {
@@ -119,7 +121,7 @@ const InfoMenu: FC = () => {
         );
       }
     );
-    dispatch(updateDistributionBarJSX(distributionJSX));
+    setDistributionBarsJSX(distributionJSX);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [distributions, distributionOpen, showDistributions]);
 
@@ -157,9 +159,9 @@ const InfoMenu: FC = () => {
           {/* <InfoCards /> */}
           <Distributions
             major={major}
-            setMajor={setMajor}
             distributionOpen={distributionOpen}
             setDistributionOpen={setDistributionOpen}
+            distributionBarsJSX={distributionBarsJSX}
           />
         </div>
       ) : null}

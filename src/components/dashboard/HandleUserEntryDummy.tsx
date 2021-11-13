@@ -119,7 +119,7 @@ const HandleUserEntryDummy: FC<{
       // If there is already a current plan, simply update the plan list.
       let totPlans: Plan[] = [];
       retrievedPlans.forEach(async (plan) => {
-        const resp: any = axios
+        const resp: any = await axios
           .get(api + "/years/" + plan._id)
           .catch((err) => console.log(err));
         totPlans.push({ ...plan, years: resp.data.data });

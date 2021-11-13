@@ -1,6 +1,8 @@
 import { FC, useState } from "react";
+import { useSelector } from "react-redux";
 import { Major } from "../../../resources/commonTypes";
-import DistributionBars from "./DistributionBars";
+import { selectTotalCredits } from "../../../slices/currentPlanSlice";
+import CourseBar from "./CourseBar";
 
 /**
  * Area in the right hand plan information that shows various elements of degree progression.
@@ -9,9 +11,15 @@ const Distributions: FC<{
   distributionOpen: boolean;
   setDistributionOpen: (open: boolean) => void;
   major: Major | null;
-  setMajor: (major: Major | null) => void;
-}> = ({ distributionOpen, setDistributionOpen, major, setMajor }) => {
+  distributionBarsJSX: JSX.Element[];
+}> = ({
+  distributionOpen,
+  setDistributionOpen,
+  major,
+  distributionBarsJSX,
+}) => {
   // Component state setup.
+  const totalCredits = useSelector(selectTotalCredits);
   const [disclaimer, setDisclaimer] = useState<boolean>(false);
   const getHref = (): string => {
     return major !== null ? major.url : "";
@@ -65,7 +73,21 @@ const Distributions: FC<{
           report any issues in the feedback form.
         </div>
       ) : null}
-      <DistributionBars major={major} distributionOpen={distributionOpen} />
+      <CourseBar
+        distribution={{
+          name: "Total Credits",
+          expr: "",
+          required_credits: major !== null ? major.total_degree_credit : 0,
+          fulfilled_credits: totalCredits,
+          description:
+            major !== null
+              ? "This is the total amount of credits that is required for " +
+                major.degree_name
+              : "",
+        }}
+        general={true}
+      />{" "}
+      {distributionBarsJSX}
     </div>
   );
 };
