@@ -1,4 +1,4 @@
-import { FC, useEffect } from "react";
+import { FC, useEffect, useState } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
 import { api, guestUser } from "../../resources/assets";
 import { useDispatch, useSelector } from "react-redux";
@@ -19,6 +19,7 @@ const DashboardEntry: FC = () => {
   const dispatch = useDispatch();
   const user = useSelector(selectUser);
   const [cookies] = useCookies(["connect.sid"]);
+  const [finishedLoginCheck, setFinishedLoginCheck] = useState(false);
 
   // React router state setup.
   let navigate = useNavigate();
@@ -68,6 +69,8 @@ const DashboardEntry: FC = () => {
         if (retrievedUser.errors === undefined) {
           dispatch(updateUser(retrievedUser.data));
           navigate("/dashboard");
+        } else {
+          setFinishedLoginCheck(true);
         }
       })
       .catch((err) => {
@@ -100,6 +103,8 @@ const DashboardEntry: FC = () => {
             "; path=/";
           dispatch(updateUser(retrievedUser.data));
           navigate("/dashboard");
+        } else {
+          setFinishedLoginCheck(true);
         }
       })
       .catch(() => {
@@ -150,7 +155,7 @@ const DashboardEntry: FC = () => {
           </a>
           <button
             className="flex flex-row items-center justify-center mb-auto mt-5 mx-auto w-64 h-12 font-semibold tracking-widest bg-primary rounded-full focus:outline-none shadow cursor-pointer select-none transform hover:scale-105 transition duration-200 ease-in"
-            onClick={handleGuest}
+            onClick={finishedLoginCheck ? handleGuest : () => {}}
           >
             Continue as guest
           </button>
