@@ -8,7 +8,7 @@ emailjs.init("user_7Cn3A3FQW9PTxExf6Npel");
  * @prop setActivateEmailPopup - determines whether to display this popup
  */
 const ApplicationFormPopup: FC<{
-  setActivateEmailPopup: Function;
+  setActivateEmailPopup: (activate: boolean) => void;
 }> = ({ setActivateEmailPopup }) => {
   const [year, setYear] = useState<string>("");
   const [reason, setReason] = useState<string>("");

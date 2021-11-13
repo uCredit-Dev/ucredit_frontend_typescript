@@ -33,10 +33,10 @@ import { getMajorFromCommonName } from "../../resources/majors";
  * Handles dashboard user entry and login logic.
  * TODO: Gracefully handle axios error cases (what happens when axios fails?), clean up extra years that are not being trash collected right now on import, and modularize this component!
  */
-const HandleUserEntryDummy: FC<{ setLoginId: Function; id: string | null }> = ({
-  setLoginId,
-  id,
-}) => {
+const HandleUserEntryDummy: FC<{
+  setLoginId: (id: string) => void;
+  id: string | null;
+}> = ({ setLoginId, id }) => {
   // Redux setup
   const dispatch = useDispatch();
   const user = useSelector(selectUser);
@@ -54,7 +54,6 @@ const HandleUserEntryDummy: FC<{ setLoginId: Function; id: string | null }> = ({
 
   // Adds a new plan every time a new guest user is created and they don't have a a plan.
   useEffect(() => {
-    console.log(user);
     if (user && user.plan_ids.length === 0 && user._id === "guestUser") {
       // Post req body for a new plan
       dispatch(updateAddingPlanStatus(true));

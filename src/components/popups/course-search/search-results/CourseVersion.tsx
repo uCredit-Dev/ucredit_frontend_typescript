@@ -12,14 +12,16 @@ import { ReactComponent as Question } from "../../../../resources/svg/Question.s
  * A component showing the specific version of the course at a particular semester/year
  * @prop props - setInspected area is a function that sets the area to add this prospective course to.
  */
-const CourseVersion: FC<{ setInspectedArea: Function }> = (props) => {
+const CourseVersion: FC<{ setInspectedArea: (area: string) => void }> = ({
+  setInspectedArea,
+}) => {
   // Redux Setup
   const version = useSelector(selectVersion);
 
   // component state setup
   const bioElRef = useRef<HTMLParagraphElement>(null);
   const [showMore, setShowMore] = useState<number>(2);
-  const [displayPreReqsView, setdisplayPreReqsView] = useState<Number>(1);
+  const [displayPreReqsView, setdisplayPreReqsView] = useState<number>(1);
 
   useEffect(() => {
     ReactTooltip.rebuild();
@@ -44,10 +46,10 @@ const CourseVersion: FC<{ setInspectedArea: Function }> = (props) => {
         firstArea === "Q" ||
         firstArea === "E"
       ) {
-        props.setInspectedArea(firstArea);
+        setInspectedArea(firstArea);
       }
     } else {
-      props.setInspectedArea("None");
+      setInspectedArea("None");
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [version]);
@@ -109,7 +111,7 @@ const CourseVersion: FC<{ setInspectedArea: Function }> = (props) => {
       return version.areas.split("").map((area: string, i: number) => (
         <div
           className="flex flex-row items-center transform hover:scale-110 transition duration-200 ease-in"
-          key={area + version.number + i}
+          key={area + version.number + i + version.term}
         >
           <div
             className="flex items-center px-1 w-auto text-white font-semibold rounded select-none"
@@ -126,7 +128,7 @@ const CourseVersion: FC<{ setInspectedArea: Function }> = (props) => {
         <div
           className="flex items-center px-1 w-auto text-white font-semibold rounded select-none"
           style={{ backgroundColor: getColors(version.areas)[0] }}
-          key="noneVersion"
+          key={"noneVersion" + version.term}
         >
           None
         </div>
@@ -140,17 +142,17 @@ const CourseVersion: FC<{ setInspectedArea: Function }> = (props) => {
         return <div className="select-none">No tags!</div>;
       else
         return version.tags.map((tag, i) => (
-          <>
-            {i !== 0 ? ", " : null}
+          <div
+            key={"" + tag + version.number + i + version.term}
+            className="mt-1 mx-1 px-1 w-max text-white font-semibold bg-blue-500 rounded transform hover:scale-101 transition duration-200 ease-in"
+          >
             <div
-              key={"" + tag + version.number + i}
               data-tip={"Ask your advisor for more info about " + tag + " tag!"}
               data-for="godTip"
-              className="mt-1 px-1 w-max text-white font-semibold bg-blue-500 rounded transform hover:scale-101 transition duration-200 ease-in"
             >
               {tag}
             </div>
-          </>
+          </div>
         ));
     } else {
       return null;

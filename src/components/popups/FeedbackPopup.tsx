@@ -4,7 +4,9 @@ import { FC } from "react";
  * Feedback form popup.
  * @prop setFormPopup - opens or closes feed back form popup
  */
-const FeedbackPopup: FC<{ setFormPopup: Function }> = ({ setFormPopup }) => {
+const FeedbackPopup: FC<{ setFormPopup: (value: boolean) => void }> = ({
+  setFormPopup,
+}) => {
   return (
     <div>
       {/* Background Grey */}

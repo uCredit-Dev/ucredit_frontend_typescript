@@ -30,13 +30,13 @@ for (let i: number = date.getFullYear() - 4; i < date.getFullYear() + 9; i++) {
 }
 
 const YearSettingsDropdown: FC<{
-  setToShow: Function;
+  setToShow: (value: SemSelected) => void;
+  setEdittingName: (value: boolean) => void;
+  setDisplay: (value: boolean) => void;
   year: Year;
-  setEdittingName: Function;
-  setDisplay: Function;
   toShow: SemSelected;
   id: number;
-}> = ({ setToShow, year, setEdittingName, setDisplay, toShow, id }) => {
+}> = ({ setToShow, setEdittingName, setDisplay, year, toShow, id }) => {
   const dispatch = useDispatch();
   const currPlan = useSelector(selectPlan);
   const planList = useSelector(selectPlanList);
@@ -116,6 +116,57 @@ const YearSettingsDropdown: FC<{
       toast.error("Year already exists");
     }
   };
+
+  // Gets which semesters to display.
+  const getSemesters = (): JSX.Element => {
+    if (semSelect)
+      return (
+        <div className="z-50 flex flex-col">
+          <label>
+            <input
+              type="checkbox"
+              name="Fall"
+              className="ml-6 mr-2"
+              onChange={modifyFall}
+              checked={toShow.fall}
+            />
+            Fall
+          </label>
+          <label>
+            <input
+              type="checkbox"
+              name="Spring"
+              className="ml-6 mr-2"
+              onChange={modifySpring}
+              checked={toShow.spring}
+            />
+            Spring
+          </label>
+          <label>
+            <input
+              type="checkbox"
+              name="Summer"
+              className="ml-6 mr-2"
+              onChange={modifySummer}
+              checked={toShow.summer}
+            />
+            Summer
+          </label>
+          <label>
+            <input
+              type="checkbox"
+              name="Intersession"
+              className="ml-6 mr-2"
+              onChange={modifyIntersession}
+              checked={toShow.intersession}
+            />
+            Intersession
+          </label>
+        </div>
+      );
+    else return <></>;
+  };
+
   return (
     <div className="relative right-36 top-6">
       <div className="absolute z-50 flex flex-col w-40 text-black bg-gray-100 rounded shadow">
@@ -157,52 +208,7 @@ const YearSettingsDropdown: FC<{
             >
               Select Terms
             </button>
-            {semSelect ? (
-              <>
-                <div className="z-50 flex flex-col">
-                  <label>
-                    <input
-                      type="checkbox"
-                      name="Fall"
-                      className="ml-6 mr-2"
-                      onChange={modifyFall}
-                      checked={toShow.fall}
-                    />
-                    Fall
-                  </label>
-                  <label>
-                    <input
-                      type="checkbox"
-                      name="Spring"
-                      className="ml-6 mr-2"
-                      onChange={modifySpring}
-                      checked={toShow.spring}
-                    />
-                    Spring
-                  </label>
-                  <label>
-                    <input
-                      type="checkbox"
-                      name="Summer"
-                      className="ml-6 mr-2"
-                      onChange={modifySummer}
-                      checked={toShow.summer}
-                    />
-                    Summer
-                  </label>
-                  <label>
-                    <input
-                      type="checkbox"
-                      name="Intersession"
-                      className="ml-6 mr-2"
-                      onChange={modifyIntersession}
-                      checked={toShow.intersession}
-                    />
-                    Intersession
-                  </label>
-                </div>
-              </>
-            ) : null}
+            {getSemesters()}
 
             <button
               onClick={activateDeleteYearPopup}

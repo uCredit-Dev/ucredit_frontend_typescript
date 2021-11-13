@@ -29,7 +29,7 @@ const tagFilters = ["none", ...course_tags];
  * Page for adding a placeholder
  * @prop addCourse - a function that adds the placeholder to the plan.
  */
-const Placeholder: FC<{ addCourse: Function }> = (props) => {
+const Placeholder: FC<{ addCourse: (plan?: Plan) => void }> = (props) => {
   // Redux Setup
   const inspectedVersion = useSelector(selectVersion);
   const courseToShow = useSelector(selectCourseToShow);
@@ -145,36 +145,38 @@ const Placeholder: FC<{ addCourse: Function }> = (props) => {
           "Content-Type": "application/json",
         },
       }).then((retrieved) => {
-        retrieved.json().then((data) => {
-          if (data.errors === undefined) {
-            const updated = currentCourses.filter((course) => {
-              if (course._id === courseToShow._id) {
-                return false;
-              } else {
-                return true;
-              }
-            });
-            dispatch(updateCurrentPlanCourses(updated));
-            const allYears: Year[] = [...currentPlan.years];
-            const newYears: Year[] = [];
-            allYears.forEach((y) => {
-              const yCourses = y.courses.filter((course) => {
-                if (course === courseToShow._id) {
-                  return false;
-                } else {
-                  return true;
-                }
-              });
-              newYears.push({ ...y, courses: yCourses });
-            });
-            const newPlan: Plan = { ...currentPlan, years: newYears };
-            dispatch(updateSelectedPlan(newPlan));
-            props.addCourse(newPlan);
+        retrieved.json().then(handleUpdateResponse);
+      });
+    }
+  };
+
+  const handleUpdateResponse = (data: any): void => {
+    if (data.errors === undefined && courseToShow !== null) {
+      const updated = currentCourses.filter((course) => {
+        if (course._id === courseToShow._id) {
+          return false;
+        } else {
+          return true;
+        }
+      });
+      dispatch(updateCurrentPlanCourses(updated));
+      const allYears: Year[] = [...currentPlan.years];
+      const newYears: Year[] = [];
+      allYears.forEach((y) => {
+        const yCourses = y.courses.filter((course) => {
+          if (course === courseToShow._id) {
+            return false;
           } else {
-            console.log("ERROR: Failed to add", data.errors);
+            return true;
           }
         });
+        newYears.push({ ...y, courses: yCourses });
       });
+      const newPlan: Plan = { ...currentPlan, years: newYears };
+      dispatch(updateSelectedPlan(newPlan));
+      props.addCourse(newPlan);
+    } else {
+      console.log("ERROR: Failed to add", data.errors);
     }
   };
 

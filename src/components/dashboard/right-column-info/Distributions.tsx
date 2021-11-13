@@ -1,38 +1,24 @@
-import { FC, useEffect, useState } from "react";
-import { useSelector } from "react-redux";
-import { getMajor } from "../../../resources/assets";
+import { FC, useState } from "react";
 import { Major } from "../../../resources/commonTypes";
-import {
-  selectCurrentPlanCourses,
-  selectPlan,
-} from "../../../slices/currentPlanSlice";
 import DistributionBars from "./DistributionBars";
 
 /**
  * Area in the right hand plan information that shows various elements of degree progression.
  */
-const Distributions: FC = () => {
-  const currentPlan = useSelector(selectPlan);
-  const currPlanCourses = useSelector(selectCurrentPlanCourses);
-
+const Distributions: FC<{
+  distributionOpen: boolean;
+  setDistributionOpen: (open: boolean) => void;
+  major: Major | null;
+  setMajor: (major: Major | null) => void;
+}> = ({ distributionOpen, setDistributionOpen, major, setMajor }) => {
   // Component state setup.
-  const [distributionOpen, setDistributionOpen] = useState<boolean>(true);
   const [disclaimer, setDisclaimer] = useState<boolean>(false);
-  const [major, setMajor] = useState<Major | null>(null);
-
-  useEffect(() => {
-    let major: string | undefined = currentPlan.majors[0];
-    if (major === undefined) {
-      return;
-    }
-    let majorObj: Major | undefined = getMajor(major);
-    if (majorObj !== undefined) {
-      setMajor(majorObj);
-    }
-  }, [currentPlan._id, currentPlan, currentPlan.majors, currPlanCourses]);
+  const getHref = (): string => {
+    return major !== null ? major.url : "";
+  };
 
   return (
-    <div className="flex-none mx-4 p-6 w-96 h-auto bg-white rounded shadow">
+    <div className="z-50 flex-none mx-4 p-6 w-96 h-auto bg-white rounded shadow">
       <div className="flex flex-row mb-3 w-full">
         <div className="self-start text-2xl font-medium">Degree Progress</div>
         <button
@@ -59,7 +45,7 @@ const Distributions: FC = () => {
           university requirements as possible. However, there may be some
           inconsistencies. Please use the
           <a
-            href={major !== null ? major.url : ""}
+            href={getHref()}
             className="mx-1 text-blue-400"
             target="_blank"
             rel="noreferrer"

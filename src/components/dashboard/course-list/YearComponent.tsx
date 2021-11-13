@@ -9,6 +9,8 @@ import {
 } from "../../../slices/currentPlanSlice";
 import { api } from "../../../resources/assets";
 import YearSettingsDropdown from "./YearSettingsDropdown";
+import clsx from "clsx";
+import { selectAddingPrereq } from "../../../slices/popupSlice";
 
 type SemSelected = {
   fall: boolean;
@@ -32,7 +34,7 @@ const YearComponent: FC<{
   customStyle: string;
   year: Year;
   courses: UserCourse[];
-  setDraggable: Function;
+  setDraggable: (draggable: boolean) => void;
 }> = ({ id, customStyle, year, courses, setDraggable }) => {
   // Component state setup.
   const [fallCourses, setFallCourses] = useState<UserCourse[]>([]);
@@ -49,6 +51,7 @@ const YearComponent: FC<{
     summer: true,
     intersession: true,
   });
+  const addingPrereqStatus = useSelector(selectAddingPrereq);
 
   // Setting up redux
   const currentPlan = useSelector(selectPlan);
@@ -132,6 +135,76 @@ const YearComponent: FC<{
     setEditedName(true);
   };
 
+  const getDisplayedSemesters = (): JSX.Element[] => {
+    const semesters: JSX.Element[] = [];
+
+    if (toShow.fall)
+      semesters.push(
+        <div
+          key={"Fall" + year._id}
+          className={clsx(`${customStyle} mb-3 w-full h-auto pr-1 rounded`, {
+            "z-50": addingPrereqStatus,
+          })}
+        >
+          <Semester
+            customStyle=""
+            semesterName="Fall"
+            semesterYear={year}
+            courses={fallCourses}
+          />
+        </div>
+      );
+    if (toShow.intersession)
+      semesters.push(
+        <div
+          key={"Winter" + year._id}
+          className={clsx(`${customStyle} mb-3 w-full h-auto pr-1 rounded`, {
+            "z-50": addingPrereqStatus,
+          })}
+        >
+          <Semester
+            customStyle=""
+            semesterName="Intersession"
+            semesterYear={year}
+            courses={winterCourses}
+          />
+        </div>
+      );
+    if (toShow.spring)
+      semesters.push(
+        <div
+          key={"Spring" + year._id}
+          className={clsx(`${customStyle} mb-3 w-full h-auto pr-1 rounded`, {
+            "z-50": addingPrereqStatus,
+          })}
+        >
+          <Semester
+            customStyle=""
+            semesterName="Spring"
+            semesterYear={year}
+            courses={springCourses}
+          />
+        </div>
+      );
+    if (toShow.summer)
+      semesters.push(
+        <div
+          key={"Summer" + year._id}
+          className={clsx(`${customStyle} mb-3 w-full h-auto pr-1 rounded`, {
+            "z-50": addingPrereqStatus,
+          })}
+        >
+          <Semester
+            customStyle=""
+            semesterName="Summer"
+            semesterYear={year}
+            courses={summerCourses}
+          />
+        </div>
+      );
+    return semesters;
+  };
+
   return (
     <div
       id={id.toString()}
@@ -193,38 +266,7 @@ const YearComponent: FC<{
       >
         {id !== 0 ? (
           <div className="flex flex-col items-center">
-            {toShow.fall ? (
-              <Semester
-                customStyle=""
-                semesterName="Fall"
-                semesterYear={year}
-                courses={fallCourses}
-              />
-            ) : null}{" "}
-            {toShow.intersession ? (
-              <Semester
-                customStyle=""
-                semesterName="Intersession"
-                semesterYear={year}
-                courses={winterCourses}
-              />
-            ) : null}{" "}
-            {toShow.spring ? (
-              <Semester
-                customStyle=""
-                semesterName="Spring"
-                semesterYear={year}
-                courses={springCourses}
-              />
-            ) : null}{" "}
-            {toShow.summer ? (
-              <Semester
-                customStyle=""
-                semesterName="Summer"
-                semesterYear={year}
-                courses={summerCourses}
-              />
-            ) : null}
+            {getDisplayedSemesters()}
           </div>
         ) : (
           <Semester

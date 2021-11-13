@@ -23,7 +23,11 @@ import {
 } from "../../../../slices/currentPlanSlice";
 import { selectCourseCache } from "../../../../slices/userSlice";
 import { selectCourseToShow } from "../../../../slices/popupSlice";
-import { UserCourse, Year } from "../../../../resources/commonTypes";
+import {
+  SISRetrievedCourse,
+  UserCourse,
+  Year,
+} from "../../../../resources/commonTypes";
 
 // Parsed prereq type
 // satisfied: a boolean that tells whether the prereq should be marked with green (satisfied) or red (unsatisfied)
@@ -93,38 +97,50 @@ const PrereqDisplay: FC = () => {
    * @returns an parsed array of prereqs
    */
   const createPrereqBulletList = (input: string[]): any[] => {
-    const courseArr: any[] = [];
+    let courseArr: any[] = [];
+    let skipCount = 0;
     for (let i = 0; i < input.length; i++) {
-      if (input[i] === "AND") {
-        // skip
-      } else if (input[i] === "(") {
-        // Adds in everything between this level's open and close parentheses
-
-        // Keeps track of whether we have closed the original open parentheses
-        const parenthesesStack = [input[i]];
-        const subCourseArr: string[] = [];
-        while (parenthesesStack.length > 0) {
-          i++;
-          if (input[i] === ")") {
-            // If close, pop one from parentheses stack
-            parenthesesStack.pop();
-          } else if (input[i] === "(") {
-            // if open, push open parentheses in
-            parenthesesStack.push("(");
-          }
-          // If we're still in original parentheses, push it into sthe subArray
-          if (parenthesesStack.length > 0) {
-            subCourseArr.push(input[i]);
-          }
+      if (skipCount <= 0) {
+        if (input[i] === "AND") {
+          // skip
+        } else if (input[i] === "(") {
+          [skipCount, courseArr] = handleOpenParenthesis(input, i, courseArr);
+        } else {
+          courseArr.push(input[i]);
         }
-
-        // Recursively calls function on string inside of parentheses.
-        courseArr.push(createPrereqBulletList(subCourseArr));
-      } else {
-        courseArr.push(input[i]);
-      }
+      } else skipCount--;
     }
     return courseArr;
+  };
+
+  // Helper method handling the open parenthesis case when creating the prereq bullet list
+  const handleOpenParenthesis = (
+    input: string[],
+    i: number,
+    courseArr: any[]
+  ): any[] => {
+    // Adds in everything between this level's open and close parentheses
+    // Keeps track of whether we have closed the original open parentheses
+    const parenthesesStack = [input[i]];
+    const subCourseArr: string[] = [];
+    let skipCount: number = 0;
+    while (parenthesesStack.length > 0) {
+      skipCount++;
+      if (input[i + skipCount] === ")") {
+        // If close, pop one from parentheses stack
+        parenthesesStack.pop();
+      } else if (input[i + skipCount] === "(") {
+        // if open, push open parentheses in
+        parenthesesStack.push("(");
+      }
+      // If we're still in original parentheses, push it into sthe subArray
+      if (parenthesesStack.length > 0) {
+        subCourseArr.push(input[i + skipCount]);
+      }
+    }
+
+    // Recursively calls function on string inside of parentheses.
+    return [skipCount, [...courseArr, createPrereqBulletList(subCourseArr)]];
   };
 
   /**
@@ -132,19 +148,21 @@ const PrereqDisplay: FC = () => {
    * @param courseNumber - course number you are updating inspected course to
    * @returns an function that caches and updates search stack when called
    */
-  const updateInspected = (courseNumber: string) => () => {
-    courseCache.forEach((course) => {
-      if (
-        course.number === courseNumber &&
-        inspected !== "None" &&
-        version !== "None"
-      ) {
-        dispatch(
-          updateSearchStack({ new: course, oldSIS: inspected, oldV: version })
-        );
-      }
-    });
-  };
+  const updateInspected =
+    (courseNumber: string): (() => void) =>
+    (): void => {
+      courseCache.forEach((course: SISRetrievedCourse) => {
+        if (
+          course.number === courseNumber &&
+          inspected !== "None" &&
+          version !== "None"
+        ) {
+          dispatch(
+            updateSearchStack({ new: course, oldSIS: inspected, oldV: version })
+          );
+        }
+      });
+    };
 
   /**
    * Outputs the prereqs as components
@@ -161,11 +179,11 @@ const PrereqDisplay: FC = () => {
 
   /**
    * Parses through the currentPlan years and returns year object corresponding to the year of the prereq or the current year if not found
-   * @param courseToShow - course to find year of
+   * @param toShow - course to find year of
    *  @returns year object
    */
-  const getYearById = (courseToShow: UserCourse | null): Year => {
-    const yearToGet: string = courseToShow ? courseToShow.year_id : year;
+  const getYearById = (toShow: UserCourse | null): Year => {
+    const yearToGet: string = toShow ? toShow.year_id : year;
     for (const yearObj of currentPlan.years) {
       if (yearObj._id === yearToGet) {
         return yearObj;
@@ -196,7 +214,10 @@ const PrereqDisplay: FC = () => {
       return {
         satisfied: satisfied,
         jsx: (
-          <p className="w-full" key={noCBracketsNum + semester + yearToCheck}>
+          <p
+            className="w-full"
+            key={noCBracketsNum + semester + yearToCheck._id}
+          >
             <button
               className={clsx(
                 "flex flex-wrap mb-1 max-w-md text-left text-sm font-medium focus:outline-none"
@@ -238,7 +259,7 @@ const PrereqDisplay: FC = () => {
       return {
         satisfied: parsedSat,
         jsx: (
-          <>
+          <div key={element + parsedSat}>
             <PrereqDropdown
               satisfied={parsedSat}
               text={"Any one course below"}
@@ -246,7 +267,7 @@ const PrereqDisplay: FC = () => {
               getNonStringPrereq={getNonStringPrereq}
               or={true}
             />
-          </>
+          </div>
         ),
       };
     } else if (typeof element === "object") {
@@ -262,13 +283,15 @@ const PrereqDisplay: FC = () => {
         return {
           satisfied: parsedSat,
           jsx: (
-            <PrereqDropdown
-              satisfied={parsedSat}
-              text={"All courses below"}
-              element={element}
-              getNonStringPrereq={getNonStringPrereq}
-              or={false}
-            />
+            <div key={"drop" + element}>
+              <PrereqDropdown
+                satisfied={parsedSat}
+                text={"All courses below"}
+                element={element}
+                getNonStringPrereq={getNonStringPrereq}
+                or={false}
+              />
+            </div>
           ),
         };
       }
@@ -318,52 +341,66 @@ const PrereqDisplay: FC = () => {
    * @param depth - how deep into the prereq branch you are
    * @returns a parsed version of the prereqs
    */
-  const parsePrereqsOr = (input: any, depth: number): any => {
-    const orParsed: any[] = [];
+  const parsePrereqsOr = (input: any, depth: number): any[] => {
+    let orParsed: any[] = [];
+    let skip = false;
 
     // Group by ORs: Put elements connected by ORs as arrays starting with depth number (as an identifier). All other elements are treated as ands.
     // if OR, pop last element from orParsed. If it's a string, make a new array. If array, push the next element into this array. Put the array back into orParsed.
     // if not OR, push element into orParsed
     for (let i = 0; i < input.length; i++) {
-      if (input[i] === "OR") {
-        let el = orParsed.pop();
-        let toAdd;
-        // If the course or array of courses after the OR is a string, it must be a course number. Otherwise, it's a course array.
-        if (typeof input[i + 1] === "string") {
-          toAdd = input[i + 1];
-        } else {
-          toAdd = parsePrereqsOr(input[i + 1], depth);
-        }
-
-        // First element
-        if (el === null) {
-          orParsed.push(0);
-          orParsed.push(toAdd);
-        } else if (typeof el === "object" && typeof el[0] === "number") {
-          // If past element was an array and we are in an or chain
-          // The last element was an or sequence
-          el.push(toAdd);
-          orParsed.push(el);
-        } else if (typeof el === "object" && typeof el[0] !== "number") {
-          // The last element was a parentheses sequence
-          // We need to parse the sequence and put that element back into our array
-          el = parsePrereqsOr(input[i], depth);
-          orParsed.push([el, toAdd]);
-        } else {
-          // Last element wasn't any type of sequence. Thus, a new OR sequence is made and pushed in.
-          const orArray = [depth, el, toAdd];
-          orParsed.push(orArray);
-        }
-        i++;
-      } else if (typeof input[i] === "string") {
-        // If number, just push in
-        orParsed.push(input[i]);
-      } else {
-        // If not OR or a course number, must be a parentheses sequence. We will recursively call this function in this case.
-        orParsed.push(...parsePrereqsOr(input[i], depth));
-      }
+      if (!skip) {
+        [skip, orParsed] = handleParsePrereqLoop(orParsed, input, i, depth);
+      } else skip = false;
     }
     return orParsed;
+  };
+
+  const handleParsePrereqLoop = (
+    orParsed: any[],
+    input: any,
+    i: number,
+    depth: number
+  ): any[] => {
+    let skipOne: boolean = false;
+    if (input[i] === "OR") {
+      let el = orParsed.pop();
+      let toAdd;
+      // If the course or array of courses after the OR is a string, it must be a course number. Otherwise, it's a course array.
+      if (typeof input[i + 1] === "string") {
+        toAdd = input[i + 1];
+      } else {
+        toAdd = parsePrereqsOr(input[i + 1], depth);
+      }
+
+      // First element
+      if (el === null) {
+        orParsed.push(0);
+        orParsed.push(toAdd);
+      } else if (typeof el === "object" && typeof el[0] === "number") {
+        // If past element was an array and we are in an or chain
+        // The last element was an or sequence
+        el.push(toAdd);
+        orParsed.push(el);
+      } else if (typeof el === "object" && typeof el[0] !== "number") {
+        // The last element was a parentheses sequence
+        // We need to parse the sequence and put that element back into our array
+        el = parsePrereqsOr(input[i], depth);
+        orParsed.push([el, toAdd]);
+      } else {
+        // Last element wasn't any type of sequence. Thus, a new OR sequence is made and pushed in.
+        const orArray = [depth, el, toAdd];
+        orParsed.push(orArray);
+      }
+      skipOne = true;
+    } else if (typeof input[i] === "string") {
+      // If number, just push in
+      orParsed.push(input[i]);
+    } else {
+      // If not OR or a course number, must be a parentheses sequence. We will recursively call this function in this case.
+      orParsed.push(...parsePrereqsOr(input[i], depth));
+    }
+    return [skipOne, [...orParsed]];
   };
 
   // Check if it's time to update the prereq section with components.
@@ -402,6 +439,23 @@ const PrereqDisplay: FC = () => {
    */
   const handlePrereqDisplayModeChange = (mode: number) => () => {
     setPrereqDisplayMode(mode);
+  };
+
+  // Gets the correct prereq display UI
+  const getPrereqDisplay = (): JSX.Element => {
+    if (prereqDisplayMode === 1)
+      return (
+        <>
+          {NNegativePreReqs !== undefined && NNegativePreReqs.length > 0 ? (
+            <div className="font-normal">{NNegativePreReqs[0].Description}</div>
+          ) : (
+            <div>Loading description...</div>
+          )}
+        </>
+      );
+    else if (!loaded)
+      return <>{"Loading Prereqs Status: loaded is " + loaded.toString()}</>;
+    else return <p className="p-2 overflow-y-auto">{preReqDisplay}</p>;
   };
 
   return (
@@ -444,18 +498,8 @@ const PrereqDisplay: FC = () => {
         <div className="flex flex-col items-center justify-center w-full h-full font-normal">
           No Prerequisites!
         </div>
-      ) : prereqDisplayMode === 1 ? (
-        <>
-          {NNegativePreReqs !== undefined && NNegativePreReqs.length > 0 ? (
-            <div className="font-normal">{NNegativePreReqs[0].Description}</div>
-          ) : (
-            <div>Loading description...</div>
-          )}
-        </>
-      ) : !loaded ? (
-        "Loading Prereqs Status: loaded is " + loaded.toString()
       ) : (
-        <p className="p-2 overflow-y-auto">{preReqDisplay}</p>
+        getPrereqDisplay()
       )}
     </>
   );

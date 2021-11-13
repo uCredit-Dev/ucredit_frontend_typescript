@@ -7,8 +7,8 @@ import { ReactComponent as CloseSVG } from "../../resources/svg/Close.svg";
  * @prop notifHandler - handles opening and closing notification popup
  */
 const FeedbackNotification: FC<{
-  actionHandler: Function;
-  notifHandler: Function;
+  actionHandler: (handle: boolean) => void;
+  notifHandler: (handle: boolean) => void;
 }> = ({ actionHandler, notifHandler }) => {
   return (
     <div className="fixed z-40 bottom-0 flex flex-row pl-16 py-2 w-full font-bold bg-green-400 select-none">

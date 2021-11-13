@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { FC, useEffect, useState } from "react";
 import clsx from "clsx";
 import { ReactComponent as ChevronRight } from "../../../../resources/svg/ChevronRight.svg";
 import { ReactComponent as ChevronDown } from "../../../../resources/svg/ChevronDown.svg";
@@ -12,19 +12,21 @@ import { ReactComponent as CheckMark } from "../../../../resources/svg/CheckMark
  * @prop getNonStringPrereq - function called to get a parsed prereq object
  * @prop or - whether this dropdown is an or or and dropdown.
  */
-const PrereqDropdown = (props: {
+const PrereqDropdown: FC<{
   text: string;
   satisfied: boolean;
   element: string[];
-  getNonStringPrereq: Function;
+  getNonStringPrereq: (element: any) => {
+    satisfied: boolean;
+    jsx: JSX.Element;
+  };
   or: boolean;
-}) => {
+}> = ({ text, satisfied, element, getNonStringPrereq, or }) => {
   const [open, setOpen] = useState<boolean>(true);
-  const [trulySatisfied, setTrulySatisfied] = useState<boolean>(false);
   const [rootHovered, setRootHovered] = useState<boolean>(false);
 
   useEffect(() => {
-    if (props.satisfied) {
+    if (satisfied) {
       setOpen(false);
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -34,55 +36,39 @@ const PrereqDropdown = (props: {
    * Gets child branches and leaves of prereq
    */
   const getChildPrereqs = () => {
-    let orAndSatisfied = false;
-    const alreadyDisplayed: React.Key[] = [];
-
     // eslint-disable-next-line array-callback-return
-    return props.element.map((el: any, index) => {
+    return element.map((el: any, index: number): JSX.Element => {
       if (typeof el !== "number") {
-        const parsed: {
-          satisfied: boolean;
-          jsx: JSX.Element;
-        } = props.getNonStringPrereq(el);
-
-        // If we already put this course in our prereqs, skip displaying it.
-        if (
-          parsed.jsx.key !== null &&
-          alreadyDisplayed.includes(parsed.jsx.key)
-        ) {
-          // eslint-disable-next-line array-callback-return
-          return;
-        } else if (parsed.jsx.key !== null) {
-          alreadyDisplayed.push(parsed.jsx.key);
-        }
-
-        // If it's not an or statement, the first course must be satisfied.
-        if (index === 0) {
-          orAndSatisfied = parsed.satisfied;
-        }
-
-        // If it's an or statement, only one course would need to be satisfied. Otherwise, every course would need to be satisfied.
-        if (props.or && parsed.satisfied) {
-          orAndSatisfied = true;
-        } else if (!props.or && !parsed.satisfied) {
-          orAndSatisfied = false;
-        }
-
-        // Updates satisfied condition if recursive depth first search prereq processing produces true.
-        if (
-          index === props.element.length - 1 &&
-          orAndSatisfied &&
-          !trulySatisfied
-        ) {
-          setTrulySatisfied(true);
-        }
-        return (
-          <p className="ml-2" key={el}>
-            {parsed.jsx}
-          </p>
-        );
-      }
+        return processPrereqs(el, index);
+      } else return <></>;
     });
+  };
+
+  // Helper function that helps process course element prereqs
+  const processPrereqs = (el: number, index: number): JSX.Element => {
+    const alreadyDisplayed: React.Key[] = [];
+    const parsed: {
+      satisfied: boolean;
+      jsx: JSX.Element;
+    } = getNonStringPrereq(el);
+
+    // If we already put this course in our prereqs, skip displaying it.
+    if (parsed.jsx.key !== null && alreadyDisplayed.includes(parsed.jsx.key)) {
+      // eslint-disable-next-line array-callback-return
+      return <></>;
+    } else if (parsed.jsx.key !== null) {
+      alreadyDisplayed.push(parsed.jsx.key);
+    }
+    return (
+      <p className="ml-2" key={el + index}>
+        {parsed.jsx}
+      </p>
+    );
+  };
+
+  const getChevron = (): JSX.Element => {
+    if (open) return <ChevronDown className="w-5 h-5" />;
+    else return <ChevronRight className="w-5 h-5" />;
   };
 
   return (
@@ -102,38 +88,32 @@ const PrereqDropdown = (props: {
         className={clsx(
           "focus:outline-none transform hover:scale-105 transition transition duration-100 duration-200 ease-in ease-in",
           {
-            "text-green-700 hover:text-green-900": props.satisfied,
-            "text-red-700 hover:text-red-900": !props.satisfied,
+            "text-green-700 hover:text-green-900": satisfied,
+            "text-red-700 hover:text-red-900": !satisfied,
           }
         )}
       >
         <div className="flex flex-row w-auto h-auto font-medium">
-          {props.satisfied ? (
+          {satisfied ? (
             <CheckMark
               className={clsx("mr-1 w-5 h-5", {
-                "text-green-700 group-hover:text-red-900": !props.satisfied,
-                "text-green-700 group-hover:text-green-900": props.satisfied,
+                "text-green-700 group-hover:text-red-900": !satisfied,
+                "text-green-700 group-hover:text-green-900": satisfied,
               })}
             />
           ) : (
-            <>
-              {open ? (
-                <ChevronDown className="w-5 h-5" />
-              ) : (
-                <ChevronRight className="w-5 h-5" />
-              )}
-            </>
+            <>{getChevron()}</>
           )}
 
-          <div className="text-sm">{props.text}</div>
+          <div className="text-sm">{text}</div>
         </div>
       </button>
       <div
         className={clsx("ml-2 border-l-2 border-opacity-50", {
-          "border-green-200": props.satisfied && !rootHovered,
-          "border-green-900": props.satisfied && rootHovered,
-          "border-red-200 ": !props.satisfied && !rootHovered,
-          "border-red-900 ": !props.satisfied && rootHovered,
+          "border-green-200": satisfied && !rootHovered,
+          "border-green-900": satisfied && rootHovered,
+          "border-red-200 ": !satisfied && !rootHovered,
+          "border-red-900 ": !satisfied && rootHovered,
         })}
       >
         {open ? getChildPrereqs() : null}

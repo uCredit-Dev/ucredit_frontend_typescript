@@ -30,7 +30,7 @@ import {
  * @prop semester: semester this course is part of
  */
 const CourseComponent: FC<{
-  setDraggable: Function;
+  setDraggable: (draggable: boolean) => void;
   course: UserCourse;
   year: Year;
   semester: SemesterType;

@@ -77,11 +77,10 @@ const Semester: FC<{
     if (version !== "None") {
       setInspectedArea(version.areas.charAt(0));
     }
-    const sortedCourses: UserCourse[] = [
-      ...courses.sort((course1: UserCourse, course2: UserCourse) =>
-        course2._id.localeCompare(course1._id)
-      ),
-    ];
+    const sortedCourses: UserCourse[] = [...courses];
+    sortedCourses.sort((course1: UserCourse, course2: UserCourse) =>
+      course2._id.localeCompare(course1._id)
+    );
     const newDrop: DroppableType = {
       year: semesterYear._id,
       courses: sortedCourses,
@@ -151,7 +150,6 @@ const Semester: FC<{
    * Updates distribution bars upon successfully adding a course.
    */
   const updateDistributions = (): void => {
-    let newUserCourse: UserCourse;
     if (version !== "None") {
       const body = {
         user_id: user._id,
@@ -178,59 +176,86 @@ const Semester: FC<{
           "Content-Type": "application/json",
         },
         body: JSON.stringify(body),
-      }).then((retrieved) => {
-        retrieved.json().then((data) => {
-          if (data.errors === undefined) {
-            newUserCourse = { ...data.data };
-            dispatch(
-              updateCurrentPlanCourses([...currentCourses, newUserCourse])
-            );
-            const allYears: Year[] = [...currentPlan.years];
-            const newYears: Year[] = [];
-            allYears.forEach((y) => {
-              if (y._id === semesterYear._id) {
-                const yCourses = [...y.courses, newUserCourse._id];
-                newYears.push({ ...y, courses: yCourses });
-              } else {
-                newYears.push(y);
-              }
-            });
-            const newPlan: Plan = { ...currentPlan, years: newYears };
-            dispatch(updateSelectedPlan(newPlan));
-            const newPlanList = [...planList];
-            for (let i = 0; i < planList.length; i++) {
-              if (planList[i]._id === newPlan._id) {
-                newPlanList[i] = newPlan;
-              }
-            }
-            dispatch(updatePlanList(newPlanList));
-            dispatch(updateAddingPrereq(false));
-            dispatch(clearSearch());
-            toast.success(version.title + " added!", {
-              position: "top-right",
-              autoClose: 5000,
-              hideProgressBar: true,
-              closeOnClick: true,
-              pauseOnHover: true,
-              draggable: true,
-              progress: 0,
-            });
-          } else {
-            console.log("Failed to add", data.errors);
-          }
-        });
-      });
+      })
+        .then((retrieved) => retrieved.json())
+        .then(handlePostResponse);
     }
+  };
+
+  const handlePostResponse = (data) => {
+    if (data.errors === undefined && version !== "None") {
+      let newUserCourse: UserCourse;
+      newUserCourse = { ...data.data };
+      dispatch(updateCurrentPlanCourses([...currentCourses, newUserCourse]));
+      const allYears: Year[] = [...currentPlan.years];
+      const newYears: Year[] = [];
+      allYears.forEach((y) => {
+        if (y._id === semesterYear._id) {
+          const yCourses = [...y.courses, newUserCourse._id];
+          newYears.push({ ...y, courses: yCourses });
+        } else {
+          newYears.push(y);
+        }
+      });
+      const newPlan: Plan = { ...currentPlan, years: newYears };
+      dispatch(updateSelectedPlan(newPlan));
+      const newPlanList = [...planList];
+      for (let i = 0; i < planList.length; i++) {
+        if (planList[i]._id === newPlan._id) {
+          newPlanList[i] = newPlan;
+        }
+      }
+      dispatch(updatePlanList(newPlanList));
+      dispatch(updateAddingPrereq(false));
+      dispatch(clearSearch());
+      toast.success(version.title + " added!", {
+        position: "top-right",
+        autoClose: 5000,
+        hideProgressBar: true,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: 0,
+      });
+    } else {
+      console.log("Failed to add", data.errors);
+    }
+  };
+
+  const getSemesterName = (): JSX.Element => {
+    if (semesterName === "Fall")
+      return (
+        <div className="flex flex-row text-gray-600 font-semibold">
+          Fall
+          <div className="ml-1 font-light">{semesterYear.year}</div>
+        </div>
+      );
+    else if (semesterName === "Intersession")
+      return (
+        <div className="flex flex-row text-gray-600 font-semibold">
+          Intersession
+          <div className="ml-1 font-light">{semesterYear.year + 1}</div>
+        </div>
+      );
+    else if (semesterName === "Spring")
+      return (
+        <div className="flex flex-row text-gray-600 font-semibold">
+          Spring
+          <div className="ml-1 font-light">{semesterYear.year + 1}</div>
+        </div>
+      );
+    else
+      return (
+        <div className="flex flex-row text-gray-600 font-semibold">
+          Summer
+          <div className="ml-1 font-light">{semesterYear.year + 1}</div>
+        </div>
+      );
   };
 
   return (
     <>
-      <div
-        className={clsx(`${customStyle} mb-3 w-full h-auto pr-1 rounded`, {
-          "z-50": addingPrereqStatus,
-        })}
-        onMouseLeave={() => setOpenAPInfoBox(false)}
-      >
+      <div onMouseLeave={() => setOpenAPInfoBox(false)}>
         <div className="flex flex-col h-yearheading font-medium">
           <div className="flex flex-row items-center justify-between px-0.5 py-1 h-yearheading1 bg-white">
             <div className="flex flex-row items-center w-full h-auto font-normal">
@@ -247,35 +272,7 @@ const Semester: FC<{
                   </div>
                 </>
               ) : (
-                <>
-                  {semesterName === "Fall" ? (
-                    <div className="flex flex-row text-gray-600 font-semibold">
-                      Fall
-                      <div className="ml-1 font-light">{semesterYear.year}</div>
-                    </div>
-                  ) : semesterName === "Intersession" ? (
-                    <div className="flex flex-row text-gray-600 font-semibold">
-                      Intersession
-                      <div className="ml-1 font-light">
-                        {semesterYear.year + 1}
-                      </div>
-                    </div>
-                  ) : semesterName === "Spring" ? (
-                    <div className="flex flex-row text-gray-600 font-semibold">
-                      Spring
-                      <div className="ml-1 font-light">
-                        {semesterYear.year + 1}
-                      </div>
-                    </div>
-                  ) : (
-                    <div className="flex flex-row text-gray-600 font-semibold">
-                      Summer
-                      <div className="ml-1 font-light">
-                        {semesterYear.year + 1}
-                      </div>
-                    </div>
-                  )}
-                </>
+                <>{getSemesterName()}</>
               )}{" "}
               {courses.length !== 0 && totalCredits !== 0 ? (
                 <>

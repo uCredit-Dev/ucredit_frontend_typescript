@@ -54,14 +54,12 @@ const CourseDisplayPopup: FC = () => {
 
   useEffect(() => {
     if (courseToShow !== null) {
-      //const course:Course = {...courseToShow}
       let found = false;
       courseCache.forEach((c: SISRetrievedCourse) => {
         if (c.number === courseToShow.number) {
           const inspectedVersion: Course = {
             title: c.title,
             number: c.number,
-            //...c.versions[c.terms.indexOf(courseToShow.version.toString())],
             ...c.versions[0],
           };
           dispatch(updateInspectedCourse(c));
@@ -109,9 +107,8 @@ const CourseDisplayPopup: FC = () => {
   };
 
   // Updates distribution bars upon successfully adding a course.
-  const addCourse = (plan: Plan): void => {
-    let newUserCourse: UserCourse;
-    if (version !== "None" && courseToShow !== null) {
+  const addCourse = (plan?: Plan): void => {
+    if (version !== "None" && courseToShow !== null && plan !== undefined) {
       const addingYear: Year | null = getYear(plan);
       const body = {
         user_id: user._id,
@@ -139,52 +136,62 @@ const CourseDisplayPopup: FC = () => {
           "Content-Type": "application/json",
         },
         body: JSON.stringify(body),
-      }).then((retrieved) => {
-        retrieved.json().then((data) => {
-          if (data.errors === undefined) {
-            newUserCourse = { ...data.data };
-            dispatch(
-              updateCurrentPlanCourses([...currentCourses, newUserCourse])
-            );
-            const allYears: Year[] = [...plan.years];
-            const newYears: Year[] = [];
-            allYears.forEach((y) => {
-              if (y._id === courseToShow.year_id) {
-                const yCourses = [...y.courses, newUserCourse._id];
-                newYears.push({ ...y, courses: yCourses });
-              } else {
-                newYears.push(y);
-              }
-            });
-            const newPlan: Plan = { ...plan, years: newYears };
-            dispatch(updateSelectedPlan(newPlan));
-            const newPlanList = [...planList];
-            for (let i = 0; i < planList.length; i++) {
-              if (planList[i]._id === newPlan._id) {
-                newPlanList[i] = newPlan;
-              }
-            }
-            dispatch(updatePlanList(newPlanList));
-            dispatch(updateCourseToShow(null));
-            dispatch(updateShowCourseInfo(false));
-            dispatch(clearSearch());
-            dispatch(updatePlaceholder(false));
-            toast.success("Course updated!", {
-              position: "top-right",
-              autoClose: 5000,
-              hideProgressBar: true,
-              closeOnClick: true,
-              pauseOnHover: true,
-              draggable: true,
-              progress: 0,
-            });
-          } else {
-            console.log("Failed to add", data.errors);
-          }
-        });
-      });
+      })
+        .then((retrieved) => retrieved.json())
+        .then(handlePostAddCourse(plan));
     }
   };
+
+  // Handles post add course post response
+  const handlePostAddCourse =
+    (plan: Plan) =>
+    (data): void => {
+      let newUserCourse: UserCourse;
+      if (data.errors === undefined && courseToShow !== null) {
+        newUserCourse = { ...data.data };
+        dispatch(updateCurrentPlanCourses([...currentCourses, newUserCourse]));
+        const allYears: Year[] = [...plan.years];
+        const newYears: Year[] = [];
+        allYears.forEach(updateYears(newYears, newUserCourse));
+        const newPlan: Plan = { ...plan, years: newYears };
+        dispatch(updateSelectedPlan(newPlan));
+        const newPlanList = [...planList];
+        for (let i = 0; i < planList.length; i++) {
+          if (planList[i]._id === newPlan._id) {
+            newPlanList[i] = newPlan;
+          }
+        }
+        dispatch(updatePlanList(newPlanList));
+        dispatch(updateCourseToShow(null));
+        dispatch(updateShowCourseInfo(false));
+        dispatch(clearSearch());
+        dispatch(updatePlaceholder(false));
+        toast.success("Course updated!", {
+          position: "top-right",
+          autoClose: 5000,
+          hideProgressBar: true,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: 0,
+        });
+      } else {
+        console.log("Failed to add", data.errors);
+      }
+    };
+
+  // Helper method that updates the years array in the plan after adding course.
+  const updateYears =
+    (newYears: Year[], newUserCourse: UserCourse) =>
+    (year: Year): void => {
+      if (courseToShow !== null && year._id === courseToShow.year_id) {
+        const yCourses = [...year.courses, newUserCourse._id];
+        newYears.push({ ...year, courses: yCourses });
+      } else {
+        newYears.push(year);
+      }
+    };
+
   return (
     <div className="absolute top-0">
       {/* Background Grey */}
@@ -197,7 +204,7 @@ const CourseDisplayPopup: FC = () => {
       ></div>
 
       {/* Actual popup */}
-      <div className="fixed z-50 left-1/2 flex flex-col min-w-planAdd h-3/4 bg-red-500 bg-gradient-to-r rounded shadow shadow from-blue-500 to-green-400 select-none transform -translate-x-1/2 translate-y-12">
+      <div className="fixed z-40 left-1/2 flex flex-col min-w-planAdd h-3/4 bg-red-500 bg-gradient-to-r rounded shadow shadow from-blue-500 to-green-400 select-none transform -translate-x-1/2 translate-y-12">
         <div className="px-4 py-2 text-white text-coursecard font-semibold select-none">
           Inspecting{" "}
           {courseToShow === null ? "Invalid course" : courseToShow.title}

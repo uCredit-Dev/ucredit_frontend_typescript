@@ -9,7 +9,7 @@ import { ReactComponent as Copy } from "../../../resources/svg/Copy.svg";
  */
 const ShareLinksPopup: FC<{
   link: string;
-  setURL: Function;
+  setURL: () => void;
 }> = ({ link, setURL }) => {
   const copyToClipBoard = () => {
     navigator.clipboard.writeText(link).then(() => {

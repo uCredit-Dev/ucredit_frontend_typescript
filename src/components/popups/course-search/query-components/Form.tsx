@@ -39,7 +39,7 @@ type SearchMapEl = {
  *
  * @prop setSearching - sets searching state
  */
-const Form: FC<{ setSearching: Function }> = (props) => {
+const Form: FC<{ setSearching: (searching: boolean) => void }> = (props) => {
   // Set up redux dispatch and variables.
   const dispatch = useDispatch();
   const searchTerm = useSelector(selectSearchterm);
@@ -296,7 +296,7 @@ const Form: FC<{ setSearching: Function }> = (props) => {
    * @returns reference to a function that conducts smart search
    */
   const performSmartSearch =
-    (extras: SearchExtras, queryLength: number): Function =>
+    (extras: SearchExtras, queryLength: number): (() => void) =>
     (): void => {
       const querySubstrs: string[] = [];
       if (queryLength >= minLength) {

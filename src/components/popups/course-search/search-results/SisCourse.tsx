@@ -33,6 +33,7 @@ import { api } from "../../../../resources/assets";
 
 /**
  * Displays a sis course when searching.
+ * TODO: Split UI into finer components
  *
  * @prop inspectedArea - the area to add the course to
  * @prop setInspectedArea - sets the area to add the course to
@@ -40,8 +41,8 @@ import { api } from "../../../../resources/assets";
  */
 const SisCourse: FC<{
   inspectedArea: string;
-  setInspectedArea: Function;
-  addCourse: Function;
+  setInspectedArea: (area: string) => void;
+  addCourse: (plan?: Plan) => void;
 }> = (props) => {
   // Redux Setup
   const dispatch = useDispatch();
@@ -136,39 +137,143 @@ const SisCourse: FC<{
         headers: {
           "Content-Type": "application/json",
         },
-      }).then((retrieved) => {
-        retrieved.json().then((data) => {
-          if (data.errors === undefined) {
-            const updated = currentCourses.filter((course) => {
-              if (course._id === courseToShow._id) {
-                return false;
-              } else {
-                return true;
-              }
-            });
-            dispatch(updateCurrentPlanCourses(updated));
-            const allYears: Year[] = [...currentPlan.years];
-            const newYears: Year[] = [];
-            allYears.forEach((y) => {
-              const yCourses = y.courses.filter((course) => {
-                if (course === courseToShow._id) {
-                  return false;
-                } else {
-                  return true;
-                }
-              });
-              newYears.push({ ...y, courses: yCourses });
-            });
-            const newPlan: Plan = { ...currentPlan, years: newYears };
-            dispatch(updateSelectedPlan(newPlan));
-            props.addCourse(newPlan);
-          } else {
-            console.log("ERROR: Failed to add", data.errors);
-          }
-        });
-      });
+      })
+        .then((retrieved) => retrieved.json())
+        .then(handleUpdate);
     }
   };
+
+  const handleUpdate = (data) => {
+    if (data.errors === undefined && courseToShow !== null) {
+      const updated = currentCourses.filter((course) => {
+        if (course._id === courseToShow._id) {
+          return false;
+        } else {
+          return true;
+        }
+      });
+      dispatch(updateCurrentPlanCourses(updated));
+      const allYears: Year[] = [...currentPlan.years];
+      const newYears: Year[] = [];
+      allYears.forEach((y) => {
+        const yCourses = y.courses.filter((course) => {
+          if (course === courseToShow._id) {
+            return false;
+          } else {
+            return true;
+          }
+        });
+        newYears.push({ ...y, courses: yCourses });
+      });
+      const newPlan: Plan = { ...currentPlan, years: newYears };
+      dispatch(updateSelectedPlan(newPlan));
+      props.addCourse(newPlan);
+    } else {
+      console.log("ERROR: Failed to add", data.errors);
+    }
+  };
+
+  // Handles displaying the back button to see previously clicked course
+  const getPrevCourseButton = (): JSX.Element =>
+    searchStack.length !== 0 ? (
+      <button
+        className="mt-1 focus:outline-none transform rotate-90 hover:scale-125 transition duration-200 ease-in"
+        onClick={() => {
+          dispatch(popSearchStack());
+        }}
+      >
+        <Arrow />
+      </button>
+    ) : (
+      <></>
+    );
+
+  // Handles displaying the add prereq button
+  const getAddPrereqButton = (): JSX.Element =>
+    searchStack.length !== 0 && showCourseInfo ? (
+      <button
+        className="-mt-1 ml-auto p-1 px-2 text-white text-xl hover:bg-blue-400 bg-green-400 rounded focus:outline-none transform hover:scale-105 transition duration-200 ease-in"
+        onClick={addPrereq}
+      >
+        Add Prereq
+      </button>
+    ) : (
+      <></>
+    );
+
+  // Handles displaying the add course UI
+  const getAddCourseUI = (): JSX.Element =>
+    (showCourseInfo && searchStack.length === 0) || !showCourseInfo ? (
+      <div className="relative bottom-0 flex flex-row items-center px-4 py-2 w-full h-20 bg-gray-100 rounded-b">
+        <div className="flex flex-col flex-grow justify-center">
+          <div className="mb-1 font-medium">Selecting for</div>
+          <div className="flex tight:flex-col flex-row">
+            <div className="flex flex-row items-center tight:ml-0 tight:mt-2 w-auto h-auto">
+              Year
+              <div className="flex-grow">
+                <Question
+                  className="h-4"
+                  data-for="godTip"
+                  data-tip={`<p>This is the year you're selecting for.</p><p>The version you are viewing gives you a snapshot of the information of the course at a specific time to give you an understanding of the past and current states of the course. This is NOT to determine where on the plan you are adding the course.</p><p>NOTE: This could be different from the version of the course you are viewing.</p><p>(ie. Course Version "Spring, 2021" may not equal "Spring, Senior")</p>`}
+                />
+              </div>
+              <select
+                className="ml-2 text-black text-coursecard rounded focus:outline-none"
+                onChange={handleYearChange}
+                value={searchYear}
+              >
+                {currentPlan.years.map((currPlanYear) => (
+                  <option key={currPlanYear._id} value={currPlanYear._id}>
+                    {currPlanYear.name}
+                  </option>
+                ))}
+              </select>
+            </div>
+            <div className="flex flex-row items-center tight:ml-0 ml-5 tight:mt-2 w-auto h-auto">
+              Area
+              <div className="flex-grow">
+                <Question
+                  className="h-4"
+                  data-for="godTip"
+                  data-tip={
+                    "<p>Areas designate the specific subset a course belongs to. Each degree requires students to take a certain amount of credits or courses in a spcific area.</p><p>H - Humanities</p><p>S - Social Sciences</p><p>E - Engineering</p><p>N - Natural Sciences</p><p>Q - Quantitative</p>"
+                  }
+                />
+              </div>
+              :
+              <select
+                className="ml-2 w-14 h-6 rounded outline-none"
+                value={props.inspectedArea}
+                onChange={(event) => props.setInspectedArea(event.target.value)}
+              >
+                {getInspectedAreas()}
+              </select>
+            </div>
+          </div>
+        </div>
+        {getAddCourseButton()}
+      </div>
+    ) : (
+      <></>
+    );
+
+  // Handles Add Course Button
+  const getAddCourseButton = (): JSX.Element =>
+    !showCourseInfo ? (
+      <button
+        className="mt-2 p-2 w-auto h-10 text-white hover:bg-blue-400 bg-green-400 rounded focus:outline-none transform hover:scale-105 transition duration-200 ease-in"
+        onClick={() => props.addCourse()}
+      >
+        Add Course
+      </button>
+    ) : (
+      <button
+        className="mt-2 p-2 w-auto h-10 text-white hover:bg-blue-400 bg-green-400 rounded focus:outline-none transform hover:scale-105 transition duration-200 ease-in"
+        onClick={updateCourse}
+      >
+        Update Course
+      </button>
+    );
 
   return (
     <div className="flex flex-col h-full">
@@ -176,29 +281,13 @@ const SisCourse: FC<{
         <>
           <div className="pb-5 pt-4 px-5 w-full h-full text-base bg-white rounded-t select-text overflow-y-auto">
             <div className="flex flex-row mb-1 w-full h-auto">
-              {searchStack.length !== 0 ? (
-                <button
-                  className="mt-1 focus:outline-none transform rotate-90 hover:scale-125 transition duration-200 ease-in"
-                  onClick={() => {
-                    dispatch(popSearchStack());
-                  }}
-                >
-                  <Arrow />
-                </button>
-              ) : null}
+              {getPrevCourseButton()}
               <h1 className="flex flex-row w-auto h-auto transform hover:scale-105 transition duration-200 ease-in">
                 <div className="w-full h-auto text-2xl font-bold">
                   {inspected.title}
                 </div>
               </h1>
-              {searchStack.length !== 0 && showCourseInfo ? (
-                <button
-                  className="-mt-1 ml-auto p-1 px-2 text-white text-xl hover:bg-blue-400 bg-green-400 rounded focus:outline-none transform hover:scale-105 transition duration-200 ease-in"
-                  onClick={addPrereq}
-                >
-                  Add Prereq
-                </button>
-              ) : null}
+              {getAddPrereqButton()}
             </div>
             <div className="flex flex-row items-center font-semibold">
               <div className="flex flex-row">
@@ -237,73 +326,7 @@ const SisCourse: FC<{
             </div>
             <CourseVersion setInspectedArea={props.setInspectedArea} />
           </div>
-          {(showCourseInfo && searchStack.length === 0) || !showCourseInfo ? (
-            <div className="relative bottom-0 flex flex-row items-center px-4 py-2 w-full h-20 bg-gray-100 rounded-b">
-              <div className="flex flex-col flex-grow justify-center">
-                <div className="mb-1 font-medium">Selecting for</div>
-                <div className="flex tight:flex-col flex-row">
-                  <div className="flex flex-row items-center tight:ml-0 tight:mt-2 w-auto h-auto">
-                    Year
-                    <div className="flex-grow">
-                      <Question
-                        className="h-4"
-                        data-for="godTip"
-                        data-tip={`<p>This is the year you're selecting for.</p><p>The version you are viewing gives you a snapshot of the information of the course at a specific time to give you an understanding of the past and current states of the course. This is NOT to determine where on the plan you are adding the course.</p><p>NOTE: This could be different from the version of the course you are viewing.</p><p>(ie. Course Version "Spring, 2021" may not equal "Spring, Senior")</p>`}
-                      />
-                    </div>
-                    <select
-                      className="ml-2 text-black text-coursecard rounded focus:outline-none"
-                      onChange={handleYearChange}
-                      value={searchYear}
-                    >
-                      {currentPlan.years.map((currPlanYear) => (
-                        <option key={currPlanYear._id} value={currPlanYear._id}>
-                          {currPlanYear.name}
-                        </option>
-                      ))}
-                    </select>
-                  </div>
-                  <div className="flex flex-row items-center tight:ml-0 ml-5 tight:mt-2 w-auto h-auto">
-                    Area
-                    <div className="flex-grow">
-                      <Question
-                        className="h-4"
-                        data-for="godTip"
-                        data-tip={
-                          "<p>Areas designate the specific subset a course belongs to. Each degree requires students to take a certain amount of credits or courses in a spcific area.</p><p>H - Humanities</p><p>S - Social Sciences</p><p>E - Engineering</p><p>N - Natural Sciences</p><p>Q - Quantitative</p>"
-                        }
-                      />
-                    </div>
-                    :
-                    <select
-                      className="ml-2 w-14 h-6 rounded outline-none"
-                      value={props.inspectedArea}
-                      onChange={(event) =>
-                        props.setInspectedArea(event.target.value)
-                      }
-                    >
-                      {getInspectedAreas()}
-                    </select>
-                  </div>
-                </div>
-              </div>
-              {!showCourseInfo ? (
-                <button
-                  className="mt-2 p-2 w-auto h-10 text-white hover:bg-blue-400 bg-green-400 rounded focus:outline-none transform hover:scale-105 transition duration-200 ease-in"
-                  onClick={() => props.addCourse()}
-                >
-                  Add Course
-                </button>
-              ) : (
-                <button
-                  className="mt-2 p-2 w-auto h-10 text-white hover:bg-blue-400 bg-green-400 rounded focus:outline-none transform hover:scale-105 transition duration-200 ease-in"
-                  onClick={updateCourse}
-                >
-                  Update Course
-                </button>
-              )}
-            </div>
-          ) : null}
+          {getAddCourseUI()}
         </>
       ) : null}
     </div>

@@ -27,7 +27,7 @@ export const updateFulfilled = (
   requirements: [string, requirements[]][],
   courses: UserCourse[],
   courseCache: SISRetrievedCourse[],
-  setDistributions: Function
+  setDistributions: (distributions: [string, requirements[]][]) => void
 ) => {
   setDistributions(requirements);
   let reqCopy: [string, requirements[]][] = copyReqs(requirements);
