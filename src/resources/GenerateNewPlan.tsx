@@ -45,7 +45,6 @@ const GenerateNewPlan = (props: generateNewPlanProps) => {
   // UseEffect that generates a new plan everytime generateNew is true.
   useEffect(() => {
     if (generatePlanAddStatus === false || toAddMajor === null) return;
-
     const planBody = {
       name: "Unnamed Plan",
       user_id: user._id,
