@@ -76,6 +76,7 @@ const DashboardEntry: FC = () => {
       })
       .catch((err) => {
         console.log("ERROR IS: ", err);
+        setFinishedLoginCheck(true);
       });
   };
 
