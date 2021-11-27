@@ -311,9 +311,9 @@ const bsBME: Major = {
   wi_credit: 6,
   url: "https://www.bme.jhu.edu/academics/undergraduate/undergraduate-degree-requirements/",
   distributions: [
-    {
+    /*{
       name: "Biomedical Core",
-      required_credits: 33,
+      required_credits: 34,
       min_credits_per_course: 1,
       description:
         "For more information please visit the " +
@@ -331,8 +331,8 @@ const bsBME: Major = {
             "580.485 Computational Medicine: Cardiology\n\t580.487 Computational Medicine: Cardiology Laboratory\n\t",
           required_credits: 28,
           criteria:
-            "EN.580.111[C]^OR^EN.580.151[C]^OR^EN.580.153[C]^OR^EN.580.221[C]^OR^EN.580.241[C]^OR^EN.580.242[C]^OR^EN.580.243[C]" +
-            "EN.580.244[C]^OR^EN.580.246[C]^OR^EN.580.248[C]^OR^EN.580.475[C]^OR^EN.580.477[C]^OR^EN.580.485[C]^OR^EN.580.487[C]",
+            "(EN.580.111[C])^AND^(EN.580.151[C])^AND^EN.580.153[C]^AND^EN.580.221[C]^AND^EN.580.241[C]^AND^EN.580.242[C]^AND^EN.580.243[C]" +
+            "EN.580.244[C]^AND^EN.580.246[C]^AND^EN.580.248[C]^AND^EN.580.475[C]^OR^EN.580.477[C]^OR^EN.580.485[C]^OR^EN.580.487[C]",
         },
         {
           description:
@@ -434,33 +434,33 @@ const bsBME: Major = {
           criteria: "",
         },
       ],
-    },
+    },*/
     {
       name: "Computer Programming",
       required_credits: 3,
       min_credits_per_course: 3,
       description:
-        "Must complete at least one of the courses in Computer Science.",
-      criteria: "EN Computer Science[D]",
+        "Choose one of these courses to satisfy the programming requirement.",
+      criteria: "EN.500.112[C]^OR^EN.500.113[C]^OR^EN.500.114[C]",
       fine_requirements: [
         {
           description:
-            "Select one of the following:\n\tEN.500.112 Gateway Computing: JAVA\n\tEN.500.113 Gateway Computing: Python\n\t" +
-            "EN.500.114 Gateway Computing: Matlab",
+            "<b>Select one of the following:</b> <br /> EN.500.112 Gateway Computing: JAVA <br /> <i>OR</i> <br /> EN.500.113 Gateway Computing: Python <br />" +
+            "<i>OR</i> <br /> EN.500.114 Gateway Computing: Matlab",
           required_credits: 3,
           criteria: "EN.500.112[C]^OR^EN.500.113[C]^OR^EN.500.114[C]",
         },
       ],
     },
-    {
+    /*{
       name: "Humanities and Social Sciences",
       required_credits: 18,
       min_credits_per_course: 3,
       description:
         "Select courses to form a coherent program, relevant to the student’s goals. One course in which ethical and social " +
         "issues related to technology or medicine is recommended. and at least two semesters of writing-intensive courses.",
-      criteria: "H[S]^OR^S[A]",
-    },
+      criteria: "H[A]^OR^S[A]",
+    },*/
     {
       name: "Basic Sciences",
       required_credits: 18,
@@ -470,10 +470,29 @@ const bsBME: Major = {
         "This will reduce the required number of credits for Basic Sciences by 1 or 2 credits. Students are still required " +
         "to complete at least 129 total credits for the degree.",
       criteria:
-        "AS.171.101[C]^OR^AS.171.107[C]^OR^AS.171.102[C]^OR^AS.171.108[C]^OR^AS.171.111[C]^OR^AS.173.112[C]" +
+        "AS.171.101[C]^OR^AS.171.107[C]^OR^AS.171.102[C]^OR^AS.171.108[C]^OR^AS.173.111[C]^OR^AS.173.112[C]" +
         "^OR^AS.030.101[C]^OR^AS.030.102[C]^OR^AS.030.105[C]^OR^AS.030.106[C]",
+      fine_requirements: [
+        {
+          description:
+            "<b>Physics (Physical Science Majors):</b> <br /> AS.171.101 General Physics I <br /> <i>OR</i> <br /> AS.171.107 General Physics I (AL)" + 
+            "<br /> AS.173.111 General Physics Lab I <br /> AS.171.102 General Physics II <br /> <i>OR</i> <br /> AS.171.108 General Physics II (AL)" +
+            "<br /> AS.173.112 General Physics Lab II",
+          required_credits: 10,
+          criteria:
+            "AS.171.101[C]^OR^AS.171.107[C]^OR^AS.171.102[C]^OR^AS.171.108[C]^OR^AS.173.111[C]^OR^AS.173.112[C]",
+        },
+        {
+          description:
+            "<b>Chemistry:</b> <br /> AS.030.101 Introductory Chemistry I <br /> AS.030.105 Introductory Chemistry Lab I" + 
+            "<br /> AS.030.102 Introductory Chemistry II <br /> AS.030.106 Introductory Chemistry Lab II",
+          required_credits: 8,
+          criteria:
+            "AS.030.101[C]^OR^AS.030.102[C]^OR^AS.030.105[C]^OR^AS.030.106[C]",
+        }
+      ]
     },
-    {
+    /*{
       name: "Mathematics",
       required_credits: 19,
       min_credits_per_course: 3,
@@ -501,7 +520,7 @@ const bsBME: Major = {
             "EN.553.311[C]^OR^EN.553.310[C]^OR^EN.553.413[C]^OR^EN.553.430[C]^OR^EN.553.433[C]^OR^EN.560.348[C]",
         },
       ],
-    },
+    },*/
   ],
 };
 
