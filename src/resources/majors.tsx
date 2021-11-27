@@ -458,7 +458,7 @@ const bsBME: Major = {
       min_credits_per_course: 3,
       description:
         "Select courses to form a coherent program, relevant to the student’s goals. One course in which ethical and social " +
-        "issues related to technology or medicine is recommended. and at least two semesters of writing-intensive courses.",
+        "issues related to technology or medicine is recommended.",
       criteria: "H[A]^OR^S[A]",
     },*/
     {
