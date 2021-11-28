@@ -311,47 +311,47 @@ const bsBME: Major = {
   wi_credit: 6,
   url: "https://www.bme.jhu.edu/academics/undergraduate/undergraduate-degree-requirements/",
   distributions: [
-    /*{
+    {
       name: "Biomedical Core",
       required_credits: 34,
       min_credits_per_course: 1,
       description:
-        "For more information please visit the " +
+        "Each student must complete a set of core courses which will serve as foundational knowledge in the discipline of Biomedical Engineering. For more information please visit the " +
         "<a href='https://e-catalogue.jhu.edu/engineering/full-time-residential-programs/degree-programs/biomedical-engineering/biomedical-engineering-bachelor-science/#requirementstext'>" +
         "major degree requirement</a> section on the department website.",
-      criteria: "EN Biomedical Engineering[D]",
+      criteria: 
+        "EN.580.111[C]^OR^EN.580.151[C]^OR^EN.580.153[C]^OR^EN.580.221[C]^OR^EN.580.241[C]^OR^EN.580.242[C]^OR^EN.580.243[C]^OR^" +
+        "EN.580.244[C]^OR^EN.580.246[C]^OR^EN.580.248[C]^OR^EN.580.475[C]^OR^EN.580.477[C]^OR^EN.580.485[C]^OR^EN.580.487[C]^OR^" +
+        "EN.580.424[C]^OR^EN.580.427[C]^OR^EN.580.452[C]^OR^EN.580.453[C]^OR^EN.580.454[C]^OR^EN.580.494[C]",
       fine_requirements: [
         {
           description:
-            "Required Courses: \n\t580.111 Biomedical Engineering and Design\n\tEN.580.151 Structural Biology of Cells\n\t" +
-            "580.153 Structural Biology of Cells Laboratory\n\t580.221 Biochemistry and Molecular Engineering\n\t" +
-            "580.241 Statistical Physics\n\t580.242 Biological Models and Simulations\n\t580.243 Linear Signals and Systems\n\t" +
-            "580.244 Nonlinear Dynamics of Biological Systems\n\t580.246 Systems and Controls\n\t" +
-            "580.248 Systems Biology of the Cell\n\t580.475 Biomedical Data Science\n\t580.477 Biomedical Data Science Laboratory\n\t" +
-            "580.485 Computational Medicine: Cardiology\n\t580.487 Computational Medicine: Cardiology Laboratory\n\t",
+            "<b>Required Courses:</b> <br /> EN.580.111 Biomedical Engineering and Design <br /> EN.580.151 Structural Biology of Cells <br />" +
+            "EN.580.153 Structural Biology of Cells Laboratory <br /> EN.580.221 Biochemistry and Molecular Engineering <br />" +
+            "EN.580.241 Statistical Physics <br /> EN.580.242 Biological Models and Simulations <br /> EN.580.243 Linear Signals and Systems <br />" +
+            "EN.580.244 Nonlinear Dynamics of Biological Systems <br /> EN.580.246 Systems and Controls <br />" +
+            "EN.580.248 Systems Biology of the Cell <br /> EN.580.475 Biomedical Data Science <br /> EN.580.477 Biomedical Data Science Laboratory <br />" +
+            "EN.580.485 Computational Medicine: Cardiology <br /> EN.580.487 Computational Medicine: Cardiology Laboratory",
           required_credits: 28,
           criteria:
-            "(EN.580.111[C])^AND^(EN.580.151[C])^AND^EN.580.153[C]^AND^EN.580.221[C]^AND^EN.580.241[C]^AND^EN.580.242[C]^AND^EN.580.243[C]" +
-            "EN.580.244[C]^AND^EN.580.246[C]^AND^EN.580.248[C]^AND^EN.580.475[C]^OR^EN.580.477[C]^OR^EN.580.485[C]^OR^EN.580.487[C]",
-        },
-        {
-          description:
-            "Select two of the following core electives (Note: These courses cannot be double-counted toward the 21-credit focus area " +
-            "requirement. Courses taken in excess of the 6 credit core elective requirement can be counted in a relevant focus area):" +
-            "\n\t580.424 Neuroengineering Lab\n\t580.451 Cell and Tissue Engineering Lab\n\t" +
-            "580.452 Cell and Tissue Engineering Lab\n\t580.454 Methods in Nucleic Acid Sequencing Lab\n\t" +
-            "580.494 Build an Imager\n\t580.242 Biological Models and Simulations\n\t580.243 Linear Signals and Systems\n\t" +
-            "580.244 Nonlinear Dynamics of Biological Systems\n\t580.246 Systems and Controls\n\t",
-          required_credits: 6,
-          criteria:
-            "EN.580.424[C]^OR^EN.580.451[C]^OR^EN.580.452[C]^OR^EN.580.454[C]^OR^EN.580.494[C]^OR^EN.580.242[C]^OR^EN.580.243[C]^OR^" +
+            "EN.580.111[C]^OR^EN.580.151[C]^OR^EN.580.153[C]^OR^EN.580.221[C]^OR^EN.580.241[C]^OR^EN.580.242[C]^OR^EN.580.243[C]^OR^" +
             "EN.580.244[C]^OR^EN.580.246[C]^OR^EN.580.248[C]^OR^EN.580.475[C]^OR^EN.580.477[C]^OR^EN.580.485[C]^OR^EN.580.487[C]",
         },
         {
           description:
-            "Career Exploration in BME is a 0-credit self-identified set of career related events (lectures, panels, journal clubs, etc.) " +
+            "<b>Select two of the following core electives (Note: These courses cannot be double-counted toward the 21-credit focus area " +
+            "requirement. Courses taken in excess of the 6 credit core elective requirement can be counted in a relevant focus area):</b>" +
+            "<br /> EN.580.424 Neuroengineering and Lab <br /> EN.580.427 Microphysiological Systems and Lab <br />" +
+            "EN.580.452 Cell and Tissue Engineering Lab <br /> EN.580.453 Immunoengineering Principles and Applications <br />" + 
+            "EN.580.454 Methods in Nucleic Acid Sequencing Lab <br /> EN.580.494 Build an Imager",
+          required_credits: 6,
+          criteria: "EN.580.424[C]^OR^EN.580.427[C]^OR^EN.580.452[C]^OR^EN.580.453[C]^OR^EN.580.454[C]^OR^EN.580.494[C]",
+        },
+        {
+          description:
+            "<b>Career Exploration in BME is a 0-credit self-identified set of career related events (lectures, panels, journal clubs, etc.) " +
             "beginning in the spring semester of year one and continuing until graduation. Career Exploration is administered through a " +
-            "Community Blackboard site; students will be enrolled by the department.",
+            "Community Blackboard site; students will be enrolled by the department.</b>",
           required_credits: 0,
           criteria: "EN Career Exploration[D]",
         },
@@ -363,7 +363,7 @@ const bsBME: Major = {
       min_credits_per_course: 3,
       description:
         "Must complete one of the several design sequences. Each 2-semester sequence must be taken in its entirety.",
-      criteria: "EN Design[D]",
+      criteria: "(EN.580.311[C]^AND^EN.580.312[C])",
       exception: "",
       fine_requirements: [
         {
@@ -391,7 +391,7 @@ const bsBME: Major = {
         },
       ],
     },
-    {
+    /*{
       name: "Focus Area",
       required_credits: 21,
       min_credits_per_course: 1,
@@ -452,7 +452,7 @@ const bsBME: Major = {
         },
       ],
     },
-    /*{
+    {
       name: "Humanities and Social Sciences",
       required_credits: 18,
       min_credits_per_course: 3,
@@ -460,7 +460,7 @@ const bsBME: Major = {
         "Select courses to form a coherent program, relevant to the student’s goals. One course in which ethical and social " +
         "issues related to technology or medicine is recommended.",
       criteria: "H[A]^OR^S[A]",
-    },*/
+    },
     {
       name: "Basic Sciences",
       required_credits: 18,
@@ -475,8 +475,8 @@ const bsBME: Major = {
       fine_requirements: [
         {
           description:
-            "<b>Physics (Physical Science Majors):</b> <br /> AS.171.101 General Physics I <br /> <i>OR</i> <br /> AS.171.107 General Physics I (AL)" + 
-            "<br /> AS.173.111 General Physics Lab I <br /> AS.171.102 General Physics II <br /> <i>OR</i> <br /> AS.171.108 General Physics II (AL)" +
+            "<b>Physics (Physical Science Majors):</b> <br /> (AS.171.101 General Physics I <br /> <i>OR</i> <br /> AS.171.107 General Physics I (AL))" + 
+            "<br /> AS.173.111 General Physics Lab I <br /> (AS.171.102 General Physics II <br /> <i>OR</i> <br /> AS.171.108 General Physics II (AL))" +
             "<br /> AS.173.112 General Physics Lab II",
           required_credits: 10,
           criteria:
@@ -492,35 +492,37 @@ const bsBME: Major = {
         }
       ]
     },
-    /*{
+    {
       name: "Mathematics",
       required_credits: 19,
       min_credits_per_course: 3,
       description:
         "Students who take an approved math course and receive 3 credits will have a total of 19 credits. Students are " +
         "still required to complete at least 129 total credits for the degree.",
-      criteria: "AS Mathematics[N]",
+      criteria: 
+        "AS.110.108[C]^OR^AS.110.109[C]^OR^AS.110.202[C]^OR^AS.110.211[C]^OR^EN.553.291[C]" + 
+        "^OR^EN.553.310[C]^OR^EN.553.311[C]^OR^EN.553.413[C]^OR^EN.553.430[C]^OR^EN.553.433[C]^OR^EN.560.348[C]",
       fine_requirements: [
         {
           description:
-            "Required Courses:\n\t110.108 Calculus I (Physical Sciences & Engineering)\n\t" +
-            "110.109 Calculus II (Physical Sciences & Engineering)\n\t(110.202 Calculus III\n\tOR 110.211 Honors Multivariable Calculus)" +
-            "\n\t553.291 Linear Algebra and Differential Equations",
-          required_credits: 4,
+            "<b>Required Courses:</b> <br /> AS.110.108 Calculus I (Physical Sciences & Engineering) <br />" +
+            "AS.110.109 Calculus II (Physical Sciences & Engineering) <br /> (AS.110.202 Calculus III <br /> <i>OR</i> <br /> AS.110.211 Honors Multivariable Calculus)" +
+            "<br /> EN.553.291 Linear Algebra and Differential Equations",
+          required_credits: 16,
           criteria:
-            "AS.110.108[C]^OR^AS.110.109[C]^OR^AS.110.202^OR^AS.110.211^OR^EN.553.291",
+            "AS.110.108[C]^OR^AS.110.109[C]^OR^AS.110.202[C]^OR^AS.110.211[C]^OR^EN.553.291[C]",
         },
         {
           description:
-            "Select one of the following:\n\t553.311 Probability and Statistics for the Biological Sciences and Engineering\n\t" +
-            "553.310 Probability & Statistics for the Physical Sciences & Engineering\n\t553.413 Applied Statistics and Data Analysis\n\t" +
-            "553.430 Introduction to Statistics\n\t553.433 Monte Carlo Methods\n\t560.348 Probability & Statistics in Civil Engineering",
+            "<b>Select one of the following:</b> <br /> EN.553.310 Probability and Statistics for the Physical Sciences and Engineering <br />" +
+            "EN.553.311 Probability and Statistics for the Biological Sciences & Engineering <br /> EN.553.413 Applied Statistics and Data Analysis <br />" +
+            "EN.553.430 Introduction to Statistics <br /> EN.553.433 Monte Carlo Methods <br /> EN.560.348 Probability & Statistics in Civil Engineering",
           required_credits: 3,
           criteria:
-            "EN.553.311[C]^OR^EN.553.310[C]^OR^EN.553.413[C]^OR^EN.553.430[C]^OR^EN.553.433[C]^OR^EN.560.348[C]",
+            "EN.553.310[C]^OR^EN.553.311[C]^OR^EN.553.413[C]^OR^EN.553.430[C]^OR^EN.553.433[C]^OR^EN.560.348[C]",
         },
       ],
-    },*/
+    },
   ],
 };
 
