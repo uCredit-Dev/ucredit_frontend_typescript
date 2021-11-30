@@ -58,82 +58,102 @@ const CourseList: FC = () => {
     let updateNonFetch: boolean = true;
     currentPlan.years.forEach((year: Year, yearIndex: number) => {
       const yearCourses: UserCourse[] = [];
-      if (year.courses !== undefined) {
+      setCurrentPlanId(currentPlan._id);
+      if (year.courses.length === 0 || currentPlanId === currentPlan._id) {
+        // We simply update courses
+        year.courses.forEach((course: string) => {
+          const courseObj: UserCourse = getUserCourse(course);
+          if (courseObj._id === "invalid_course") return;
+          totalCredits += courseObj.credits;
+          totCourses.push(courseObj);
+          yearCourses.push(courseObj);
+        });
+        makeUpdates(jsx, totCourses, year, yearIndex, yearCourses);
+      } else if (currentPlanId !== currentPlan._id) {
+        updateNonFetch = false;
         setCurrentPlanId(currentPlan._id);
-        if (year.courses.length === 0 || currentPlanId === currentPlan._id) {
-          // We simply update courses
-          year.courses.forEach((course: string) => {
-            const courseObj: UserCourse = getUserCourse(course);
-            if (courseObj._id === "invalid_course") return;
-            totalCredits += courseObj.credits;
-            totCourses.push(courseObj);
-            yearCourses.push(courseObj);
-          });
-          jsx.push(
-            <div key={year._id}>
-              <YearDraggable
-                id={yearIndex}
-                year={year}
-                yearIndex={yearIndex}
-                yearCourses={yearCourses}
-              />
-            </div>
-          );
-          if (jsx.length === currentPlan.years.length) {
-            jsx.sort(
-              (el1: JSX.Element, el2: JSX.Element) =>
-                el1.props.id - el2.props.id
-            );
-            dispatch(updateCurrentPlanCourses(totCourses));
-            setElements(jsx);
-          }
-        } else if (currentPlanId !== currentPlan._id) {
-          updateNonFetch = false;
-          setCurrentPlanId(currentPlan._id);
-          year.courses.forEach((courseId: string) => {
-            axios
-              .get(api + "/courses/" + courseId)
-              .then((resp) => {
-                const course: UserCourse = resp.data.data;
-                yearCourses.push(course);
-                totCourses.push(course);
-                totalCredits += course.credits;
-                if (yearCourses.length === year.courses.length) {
-                  // make all the updates here
-                  jsx.push(
-                    <div key={year._id}>
-                      <YearDraggable
-                        id={yearIndex}
-                        year={year}
-                        yearIndex={yearIndex}
-                        yearCourses={yearCourses}
-                      />
-                    </div>
-                  );
-                  if (jsx.length === currentPlan.years.length) {
-                    jsx.sort(
-                      (el1: JSX.Element, el2: JSX.Element) =>
-                        el1.props.children.props.id -
-                        el2.props.children.props.id
-                    );
-                    dispatch(updateCurrentPlanCourses(totCourses));
-                    dispatch(updateTotalCredits(totalCredits));
-                    setElements(jsx);
-                  }
-                }
-              })
-              .catch((err) => console.log(err));
-          });
-        }
+        year.courses.forEach(async (courseId: string) => {
+          try {
+            const resp = await axios.get(api + "/courses/" + courseId)
+            const course: UserCourse = resp.data.data;
+            yearCourses.push(course);
+            totCourses.push(course);
+            totalCredits += course.credits;
+            makeUpdates(jsx, totCourses, year, yearIndex, yearCourses, totalCredits);
+          } catch (err) { console.log(err); }
+        }) 
       }
-      // Handle non-fetch scenerios
+      handleNonFetch(yearIndex, updateNonFetch, totCourses, totalCredits);
+    });
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [currentPlan, currentPlan._id, searching, placeholder]);
+
+  /**
+   * Helper function to handle non-fetch scenarios
+   * @param yearIndex 
+   * @param updateNonFetch 
+   * @param totCourses 
+   * @param totalCredits 
+   */
+  const handleNonFetch = (
+    yearIndex: number,
+    updateNonFetch: boolean,
+    totCourses: UserCourse[],
+    totalCredits: number
+  ): void => {
       if (yearIndex === currentPlan.years.length - 1 && updateNonFetch) {
         dispatch(updateCurrentPlanCourses(totCourses));
         dispatch(updateTotalCredits(totalCredits));
       }
-    });
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [currentPlan, currentPlan._id, searching, placeholder]);
+  }
+
+  /**
+   * Helper Function for above useEffect call
+   * @param jsx 
+   * @param totCourses 
+   * @param year 
+   * @param yearIndex 
+   * @param yearCourses 
+   * @param totalCredits 
+   */
+  const makeUpdates = (
+    jsx: JSX.Element[],
+    totCourses: UserCourse[], 
+    year: Year,
+    yearIndex: number,
+    yearCourses: UserCourse[],
+    totalCredits = -1
+  ): void => {
+    // condition in fetch scenario only
+    if (totalCredits >= 0 && yearCourses.length !== year.courses.length) return;
+    jsx.push(
+      <div key={year._id}>
+        <YearDraggable
+          id={yearIndex}
+          year={year}
+          yearIndex={yearIndex}
+          yearCourses={yearCourses}
+        />
+      </div>
+    );
+    if (jsx.length === currentPlan.years.length) {
+      if (totalCredits >= 0) {
+        jsx.sort(
+          (el1: JSX.Element, el2: JSX.Element) =>
+            el1.props.children.props.id -
+            el2.props.children.props.id
+        );
+      } else {
+        jsx.sort(
+          (el1: JSX.Element, el2: JSX.Element) =>
+            el1.props.id - el2.props.id
+        );
+      }
+      dispatch(updateCurrentPlanCourses(totCourses));
+      if (totalCredits >= 0) dispatch(updateTotalCredits(totalCredits));
+      setElements(jsx);
+    }
+  }
 
   /**
    * Gets course based on id. If course isn't found, returns empty course
@@ -164,7 +184,6 @@ const CourseList: FC = () => {
     currentPlanCourses.forEach((c: UserCourse) => {
       if (c._id === id) {
         course = c;
-        return;
       }
     });
     return course;
@@ -238,18 +257,17 @@ const CourseList: FC = () => {
       })
       .catch((err) => console.log(err));
   };
-
   /**
    * Swaps course from source droppable to destination droppable.
    * @param source - source semester droppable
    * @param destination - destination semester droppable
    * @param sourceIndex - index of course in source droppable
    */
-  const swapCourse = (
+  const swapCourse = async (
     source: DroppableType,
     destination: DroppableType,
     sourceIndex: number
-  ): void => {
+  ) => {
     const sourceObj: { year: Year | null; index: number } = getYear(
       source.year
     );
@@ -258,89 +276,85 @@ const CourseList: FC = () => {
     );
 
     // TODO: CLEANUP!!!!!
-    if (sourceObj.year !== null && destObj.year !== null) {
-      const sourceYear: Year = sourceObj.year;
-      const destYear: Year = destObj.year;
-      const courseId: string = [...source.courses].sort(
-        (course1: UserCourse, course2: UserCourse) =>
-          course2._id.localeCompare(course1._id)
-      )[sourceIndex]._id;
-      const courseYearIndex: number = sourceYear.courses.indexOf(courseId);
-      let courseObj: undefined | UserCourse;
-      currentPlanCourses.forEach((course: UserCourse) => {
-        if (course._id === courseId) {
-          courseObj = course;
-        }
-      });
+    if (sourceObj.year === null || destObj.year === null) return;
 
-      if (courseObj !== undefined) {
-        axios
-          .get(api + "/search", {
-            params: { query: courseObj.number },
-          })
-          .then((retrieved) => {
-            let retrievedCourses: SISRetrievedCourse[] = retrieved.data.data;
-            if (
-              retrievedCourses.length !== 0 &&
-              !checkDestValid(courseId, destination)
-            ) {
-              toast.error("Course isn't usually held this semester!");
-              return;
-            } else {
-              const sourceCourseArr = [...sourceYear.courses];
-              const destCourseArr = [...destYear.courses];
-              sourceCourseArr.splice(courseYearIndex, 1);
-              if (destCourseArr.indexOf(courseId) === -1) {
-                destCourseArr.push(courseId);
-              }
-              const currPlanYears = [...currentPlan.years];
-              currPlanYears[sourceObj.index] = {
-                ...sourceYear,
-                courses: sourceCourseArr,
-              };
-              currPlanYears[destObj.index] = {
-                ...destYear,
-                courses: destCourseArr,
-              };
+    // Defining relevant variables
+    const sourceYear: Year = sourceObj.year;
+    const destYear: Year = destObj.year;
+    const courseId: string = [...source.courses].sort(
+      (course1: UserCourse, course2: UserCourse) =>
+        course2._id.localeCompare(course1._id)
+    )[sourceIndex]._id;
+    const courseYearIndex: number = sourceYear.courses.indexOf(courseId);
+    let courseObj: undefined | UserCourse;
 
-              const body = {
-                newYear: destYear._id,
-                oldYear: sourceYear._id,
-                courseId: courseId,
-                newTerm: destination.semester,
-              };
-
-              fetch(api + "/courses/dragged", {
-                method: "PATCH",
-                headers: {
-                  "Content-Type": "application/json",
-                },
-                body: JSON.stringify(body),
-              })
-                .then((res) => {
-                  if (!res.ok) {
-                    console.log("ERROR:", res);
-                  } else {
-                    toast.success("Successfully moved course!");
-                  }
-                })
-                .catch((err) => console.log("error is", err.message));
-              const newCurrentPlan: Plan = {
-                ...currentPlan,
-                years: currPlanYears,
-              };
-              const planListClone = [...planList];
-              planListClone[0] = newCurrentPlan;
-              updatePlanCourses(destYear, destination.semester, courseId);
-              dispatch(updatePlanList(planListClone));
-              dispatch(updateSelectedPlan(newCurrentPlan));
-            }
-          })
-          .catch((err) => {
-            console.log(err);
-          });
+    currentPlanCourses.forEach((course: UserCourse) => {
+      if (course._id === courseId) {
+        courseObj = course;
       }
-    }
+    });
+
+    if (courseObj === undefined) return;
+    try {
+      const resp = await axios.get(api + "/search", {
+        params: { query: courseObj.number },
+      })
+      let retrievedCourses: SISRetrievedCourse[] = resp.data.data;
+    
+      if (
+        retrievedCourses.length !== 0 &&
+        !checkDestValid(courseId, destination)
+      ) {
+        toast.error("Course isn't usually held this semester!");
+      } else {
+        const sourceCourseArr = [...sourceYear.courses];
+        const destCourseArr = [...destYear.courses];
+        sourceCourseArr.splice(courseYearIndex, 1);
+        if (destCourseArr.indexOf(courseId) === -1) {
+          destCourseArr.push(courseId);
+        }
+        const currPlanYears = [...currentPlan.years];
+        currPlanYears[sourceObj.index] = {
+          ...sourceYear,
+          courses: sourceCourseArr,
+        };
+        currPlanYears[destObj.index] = {
+          ...destYear,
+          courses: destCourseArr,
+        };
+
+        const body = {
+          newYear: destYear._id,
+          oldYear: sourceYear._id,
+          courseId: courseId,
+          newTerm: destination.semester,
+        };
+
+        let res = await fetch(api + "/courses/dragged", {
+          method: "PATCH",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(body),
+        })
+
+        if (!res.ok) {
+          console.log("ERROR:", res);
+        } else {
+          toast.success("Successfully moved course!");
+        }
+
+        const newCurrentPlan: Plan = {
+          ...currentPlan,
+          years: currPlanYears,
+        };
+        const planListClone = [...planList];
+        planListClone[0] = newCurrentPlan;
+        updatePlanCourses(destYear, destination.semester, courseId);
+        dispatch(updatePlanList(planListClone));
+        dispatch(updateSelectedPlan(newCurrentPlan));
+      }
+    } catch (err) { console.log("error is: " + err); }
   };
 
   /**
@@ -399,8 +413,6 @@ const CourseList: FC = () => {
         const planCourseCopy = [...currentPlanCourses];
         planCourseCopy[index] = newCourse;
         dispatch(updateCurrentPlanCourses(planCourseCopy));
-
-        return;
       }
     });
   };
