@@ -363,78 +363,88 @@ const bsBME: Major = {
       min_credits_per_course: 3,
       description:
         "Must complete one of the several design sequences. Each 2-semester sequence must be taken in its entirety.",
-      criteria: "(EN.580.311[C]^AND^EN.580.312[C])",
+      criteria: 
+        "(EN.510.433[C]^OR^EN.510.434[C])^OR^(EN.520.462[C]^OR^EN.520.463[C])^OR^" +
+        "(EN.520.498[C]^OR^EN.520.499[C])^OR^(EN.540.400[C]^OR^EN.540.421[C])^OR^" +
+        "(EN.580.311[C]^OR^EN.580.312[C])^OR^(EN.580.411[C]^OR^EN.580.412[C])^OR^" +
+        "(EN.580.456[C]^OR^EN.580.457[C])^OR^(EN.580.471[C]^OR^EN.580.571[C])^OR^" +
+        "(EN.580.480[C]^OR^EN.580.481[C])^OR^(EN.580.580[C]^OR^EN.580.581[C])^OR^" +
+        "(EN.601.455[C]^OR^EN.601.456[C])^OR^(EN.580.437[C]^OR^EN.580.438[C])",
       exception: "",
       fine_requirements: [
         {
           description:
-            "Select at least one of the following design sequences:\n\t510.433 Senior Design Research AND\n\t510.434 Senior Design/Research II " +
-            "(This option must be approved by the Materials Science & Engineering Department)\n\tOR" +
-            "520.462 Leading Innovation Design Team AND\n\t520.463 Leading Innovation Design Team II\n\tOR " +
-            "\n\t520.498 Senior Design Project AND\n\t520.499 Senior Design Project II\n\tOR" +
-            "540.400 Project in Design: Pharmacokinetics AND\n\t540.421 Project in Design: Pharmacodynamics\n\tOR" +
-            "580.411 BME Design Group AND\n\t580.412 BME Design Group II\n\tOR" +
-            "\n\tE580.437 Neuro Data Design I AND\n\t580.438 Neuro Data Design II" +
-            "580.456 Introduction to Rehabilitation Engineering AND\n\t580.457 Introduction to Rehabilitation Engineering: Design Lab\n\tOR " +
-            "\n\t580.471 Principles of Design of BME Instrumentation\n\tOR 580.480 Precision Care Medicine I " +
-            "AND\n\t580.481 Precision Care Medicine II\n\tOR 580.580 Senior Design Project I AND" +
-            "\n\t580.581 Senior Design Project II\n\tOR 601.455 Computer Integrated Surgery I\n\tAND " +
-            "601.456 Computer Integrated Surgery II",
+            "<b>Select at least one of the following design sequences:</b> <br /> (EN.500.308 Multidisciplinary Engineering Design I <br />" + 
+            "<i>AND</i> <br /> EN.500.309 Advanced Multidisciplinary Design) <br /> (EN.510.433 Senior Design Research <br /> <i>AND</i> <br /> EN.510.434 Senior Design/Research II)" +
+            "(This option must be approved by the Materials Science & Engineering Department) <br />" +
+            "(EN.520.462 Leading Innovation Design Team <br /> <i>AND</i> <br /> EN.520.463 Leading Innovation Design Team II) <br />" +
+            "(EN.520.498 Senior Design Project <br /> <i>AND</i> <br /> EN.520.499 Senior Design Project II) <br />" +
+            "(EN.540.400 Project in Design: Pharmacokinetics <br /> <i>AND</i> <br /> EN.540.421 Project in Design: Pharmacodynamics) <br />" +
+            "(EN.580.311 Design Team Health Tech Project I <br /> <i>AND</i> <br /> EN.580.312 Design Team Health Tech Project II) <br />" + 
+            "(EN.580.411 Design Team Health Tech Project I <br /> <i>AND</i> <br /> EN.580.412 Design Team Health Tech Project II) <br />" +
+            "(EN.580.437 Neuro Data Design I <br /> <i>AND</i> <br /> EN.580.438 Neuro Data Design II) <br />" +
+            "(EN.580.456 Introduction to Rehabilitation Engineering <br /> <i>AND</i> <br /> EN.580.457 Introduction to Rehabilitation Engineering: Design Lab) <br />" +
+            "EN.580.471 Principles of Design of BME Instrumentation <br /> (EN.580.480 Precision Care Medicine I <br />" +
+            "<i>AND</i> <br /> EN.580.481 Precision Care Medicine II) <br /> (EN.580.580 Senior Design Project I <br /> <i>AND</i> <br />" +
+            "EN.580.581 Senior Design Project II) <br /> (EN.601.455 Computer Integrated Surgery I <br /> <i>AND</i> <br />" +
+            "EN.601.456 Computer Integrated Surgery II)",
           required_credits: 6,
           criteria:
-            "(EN.510.433[C]^AND^EN.510.434[C])^OR^(EN.520.462[C]^AND^EN.520.463[C])^OR^" +
-            "(EN.520.498[C]^AND^EN.520.499[C])^OR^(EN.540.400[C]^AND^EN.540.421[C])^OR^" +
-            "(EN.580.311[C]^AND^EN.580.312[C])^OR^(EN.580.411[C]^AND^EN.580.412[C])^OR^" +
-            "(EN.580.456[C]^AND^EN.580.457[C])^OR^(EN.580.471[C]^AND^EN.580.571[C])^OR^" +
-            "(EN.580.480[C]^AND^EN.580.481[C])^OR^(EN.580.580[C]^AND^EN.580.581[C])^OR^" +
-            "(EN.601.455[C]^AND^EN.601.456[C])^OR^(EN.580.437[C]^AND^EN.580.438[C])",
+            "(EN.510.433[C]^OR^EN.510.434[C])^OR^(EN.520.462[C]^OR^EN.520.463[C])^OR^" +
+            "(EN.520.498[C]^OR^EN.520.499[C])^OR^(EN.540.400[C]^OR^EN.540.421[C])^OR^" +
+            "(EN.580.311[C]^OR^EN.580.312[C])^OR^(EN.580.411[C]^OR^EN.580.412[C])^OR^" +
+            "(EN.580.456[C]^OR^EN.580.457[C])^OR^(EN.580.471[C]^OR^EN.580.571[C])^OR^" +
+            "(EN.580.480[C]^OR^EN.580.481[C])^OR^(EN.580.580[C]^OR^EN.580.581[C])^OR^" +
+            "(EN.601.455[C]^OR^EN.601.456[C])^OR^(EN.580.437[C]^OR^EN.580.438[C])",
         },
       ],
     },
-    /*{
+    {
       name: "Focus Area",
       required_credits: 21,
       min_credits_per_course: 1,
-      description: "Select one of the following: ",
-      criteria: "Focus Area[N]",
+      description: 
+        "<b>The student must select at least 21 credits from the approved list of courses for a specific focus area. Coordinate with your advisor to" + 
+        " determine the best combination of classes for you:</b>" ,
+      criteria: "BMED-BDS[T]^OR^BMED-CM[T]^OR^BMED-GSB[T]^OR^BMED-IMD[T]^OR^BMED-IMMU[T]^OR^BMED-NE[T]^OR^BMED-TCTE[T]",
       fine_requirements: [
         {
           description: "Biomedical Data Science",
           required_credits: 0,
-          criteria: "",
+          criteria: "BMED-BDS[T]",
         },
         {
           description: "Computational Medicine",
           required_credits: 0,
-          criteria: "",
+          criteria: "BMED-CM[T]",
         },
         {
           description: "Genomics and Systems Biology",
           required_credits: 0,
-          criteria: "",
+          criteria: "BMED-GSB[T]",
         },
         {
           description: "Imaging and Medical Devices",
           required_credits: 0,
-          criteria: "",
+          criteria: "BMED-IMD[T]",
         },
         {
           description: "Imunoengineering",
           required_credits: 0,
-          criteria: "",
+          criteria: "BMED-IMMU[T]",
         },
         {
           description: "Neuroengineering",
           required_credits: 0,
-          criteria: "",
+          criteria: "BMED-NE[T]",
         },
         {
           description: "Translational Cell and Tissue Engineering",
           required_credits: 0,
-          criteria: "",
+          criteria: "BMED-TCTE[T]",
         },
       ],
-    },*/
+    },
     {
       name: "Computer Programming",
       required_credits: 3,
@@ -460,6 +470,28 @@ const bsBME: Major = {
         "Select courses to form a coherent program, relevant to the student’s goals. One course in which ethical and social " +
         "issues related to technology or medicine is recommended.",
       criteria: "H[A]^OR^S[A]",
+      fine_requirements: [
+        {
+          description: "<b>At least one course must be at the 300 level or above</b>",
+          required_credits: 3,
+          criteria: "(H[A]^OR^S[A])^AND^(Upper Level[L])",
+        },
+        {
+          description: "<b>At least 15 more credits in the H/S areas are required</b>",
+          required_credits: 15,
+          criteria: "H[A]^OR^S[A]"
+        }
+      ]
+    },
+    {
+      name: "Writing Intensive",
+      required_credits: 6,
+      min_credits_per_course: 3,
+      double_count: true,
+      description:
+        "Students are required to fulfill the university’s requirement of two writing intensive courses, " +
+        "each at least 3 credits. Students must receive at least a C- grade or better in these writing courses.",
+      criteria: "Written Intensive[W]",
     },
     {
       name: "Basic Sciences",
