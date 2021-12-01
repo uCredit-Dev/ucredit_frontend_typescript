@@ -1136,134 +1136,138 @@ const bsBME: Major = {
 //   ],
 // };
 
-// // https://e-catalogue.jhu.edu/engineering/full-time-residential-programs/degree-programs/applied-mathematics-statistics/applied-mathematics-statistics-bs/#requirementstext
-// const bsAMS: Major = {
-//   degree_name: "B.S. Applied Mathematics & Statistics",
-//   department: "EN Applied Mathematics & Statistics",
-//   total_degree_credit: 120,
-//   wi_credit: 6,
-//   distributions: [
-//     {
-//       name: "Math",
-//       required_credits: 39,
-//       min_credits_per_course: 3,
-//       description: "",
-//       criteria: "AS Mathematics[D]^OR^EN Applied Math and Statistics[D]",
-//       fine_requirements: [
-//         {
-//           description: "Calculus I, II, and III",
-//           required_credits: 12,
-//           criteria:
-//             "AS.110.108[C]^OR^AS.110.109[C]^OR^AS.110.113[C]^OR^AS.110.202[C]^OR^AS.110.211[C]",
-//         },
-//         {
-//           description: "Linear Algebra",
-//           required_credits: 4,
-//           criteria: "AS.110.201[C]^OR^AS.110.212[C]^OR^EN.553.291[C]",
-//         },
-//         {
-//           description: "Differential Equations",
-//           required_credits: 3,
-//           criteria: "AS.110.302[C]^OR^EN.553.391[C]^OR^EN.553.473[C]",
-//         },
-//         {
-//           description: "Numerical Linear Algebra",
-//           required_credits: 4,
-//           criteria: "EN.553.385[C]",
-//         },
-//         {
-//           description: "Discrete Mathematics",
-//           required_credits: 4,
-//           criteria:
-//             "EN.553.171[C]^OR^EN.553.172[C]^OR^EN.553.371[C]^OR^EN.553.471[C]^OR^EN.553.472[C]",
-//         },
-//         {
-//           description: "Probability and Statistics",
-//           required_credits: 8,
-//           criteria: "EN.553.420[C]^OR^EN.553.430[C]^OR^EN.553.431[C]",
-//         },
-//         {
-//           description: "Optimization",
-//           required_credits: 4,
-//           criteria: "EN.553.361[C]",
-//         },
-//       ],
-//     },
-//     {
-//       name: "Computer Languages and Programming",
-//       required_credits: 3,
-//       min_credits_per_course: 1,
-//       description:
-//         "Select one of the following: " +
-//         "EN.500.112 Gateway Computing: JAVA\n\tEN.500.113 Gateway Computing: Python\n\tEN.500.114Gateway Computing: Matlab\n\t" +
-//         "AS.250.205 Introduction to Computing\n\tEN.553.281 Introduction to Mathematical Computing\n\tEN.580.242 & EN.580.244" +
-//         "Biological Models and Simulations and Nonlinear Dynamics of Biological Systems\n\tEN.601.220 Intermediate Programming" +
-//         ". NOTE: Students are strongly encouraged to fulfill this element of the requirement by taking EN.500.113 Gateway Computing: Python, and to do this in their first semester at Johns Hopkins University.",
-//       criteria:
-//         "EN.500.112[C]^OR^EN.500.113[C]^OR^EN.500.114[C]^OR^AS.250.205[C]^OR^EN.553.281[C]^OR^EN.580.242[C]^OR^EN.580.244[C]^OR^" +
-//         "EN.601.220",
-//     },
-//     {
-//       name: "Area of Focus",
-//       required_credits: 12,
-//       min_credits_per_course: 3,
-//       description:
-//         "Two courses within a coherent field of interest. For more detail please visit " +
-//         "https://e-catalogue.jhu.edu/engineering/full-time-residential-programs/degree-programs/applied-mathematics-statistics/applied-mathematics-statistics-bs/#requirementstext",
-//       criteria: "",
-//       user_select: true,
-//     },
-//     {
-//       name: "Natural Sciences",
-//       required_credits: 12,
-//       min_credits_per_course: 1,
-//       description:
-//         "Courses coded Natural Sciences. Laboratory courses that accompany Natural Science courses may" +
-//         " be used in reaching this total. (Courses used to meet the requirements above may be counted toward this total.)",
-//       criteria: "AS Natural Science[N]",
-//     },
-//     {
-//       name: "Quantitative Studies",
-//       required_credits: 40,
-//       min_credits_per_course: 1,
-//       description:
-//         "Courses coded Quantitative Studies totaling 40 credits of which at least 18 credits must be in courses " +
-//         "numbered 300 or higher. (Courses used to meet the requirements above may be counted toward this total.)",
-//       criteria: "AS Natural Science[N]",
-//     },
-//     {
-//       name: "Liberal Arts",
-//       required_credits: 18,
-//       min_credits_per_course: 3,
-//       description:
-//         "These courses must have either an ‘H’ or ‘S’ area designator on them, but can be " +
-//         "from any department. At most 2 of these courses may be taken S/U (if not counted towards " +
-//         "the writing requirement). Foreign language courses can be counted as well, even if " +
-//         "they don’t carry an ‘H’ or ‘S’ designator.",
-//       criteria:
-//         "AS Center for Language Education[D]^OR^AS Modern Languages and Literatures[D]^OR^H[A]^OR^S[A]",
-//     },
-//     {
-//       name: "Writing Intensive",
-//       required_credits: 6,
-//       min_credits_per_course: 3,
-//       double_count: true,
-//       description:
-//         "Students are required to fulfill the university’s requirement of two writing intensive courses, " +
-//         "each at least 3 credits. Students must receive at least a C- grade or better in these writing courses. ",
-//       criteria: "",
-//       fine_requirements: [
-//         {
-//           description:
-//             "At least one course must be explicitly focused on writing skills in English (eg, courses in professional, " +
-//             "fiction or expository writing). These courses may overlap with other requirements.",
-//           required_credits: 3,
-//           criteria: "N[A]",
-//         },
-//       ],
-//     },
-//   ],
-// };
+// https://e-catalogue.jhu.edu/engineering/full-time-residential-programs/degree-programs/applied-mathematics-statistics/applied-mathematics-statistics-bs/#requirementstext
+const bsAMS: Major = {
+  degree_name: "B.S. Applied Mathematics & Statistics",
+  department: "EN Applied Mathematics & Statistics",
+  total_degree_credit: 120,
+  wi_credit: 6,
+  url: "https://e-catalogue.jhu.edu/engineering/full-time-residential-programs/degree-programs/applied-mathematics-statistics/applied-mathematics-statistics-bs/#requirementstext",
+  distributions: [
+    {
+      name: "Math",
+      required_credits: 39,
+      min_credits_per_course: 3,
+      description: "All courses used to meet the following departmental requirements must be taken for a letter grade and passed with a grade of C- or higher.",
+      criteria: "AS Mathematics[D]^OR^EN Applied Math and Statistics[D]",
+      fine_requirements: [
+        {
+          description: 
+            "<b>Calculus I, II, and III</b> <br /> AS.110.108 Calculus I (Physical Sciences & Engineering) <br /> " + 
+            "AS.110.109 Calculus II (Physical Sciences & Engineering) <br /> <i>OR</i> <br /> AS.110.113 Honors Single Variable Calculus <br />" + 
+            "AS.110.202 Calculus III <br /> <i>OR</i> <br /> AS.110.211 Honors Multivariable Calculus",
+          required_credits: 12,
+          criteria:
+            "AS.110.108[C]^OR^AS.110.109[C]^OR^AS.110.113[C]^OR^AS.110.202[C]^OR^AS.110.211[C]",
+        },
+        {
+          description: "Linear Algebra",
+          required_credits: 4,
+          criteria: "AS.110.201[C]^OR^AS.110.212[C]^OR^EN.553.291[C]",
+        },
+        {
+          description: "Differential Equations",
+          required_credits: 3,
+          criteria: "AS.110.302[C]^OR^EN.553.391[C]^OR^EN.540.468[C]",
+        },
+        {
+          description: "Numerical Linear Algebra",
+          required_credits: 4,
+          criteria: "EN.553.385[C]",
+        },
+        {
+          description: "Discrete Mathematics",
+          required_credits: 4,
+          criteria:
+            "EN.553.171[C]^OR^EN.553.172[C]^OR^EN.553.371[C]^OR^EN.553.471[C]^OR^EN.553.472[C]",
+        },
+        {
+          description: "Probability and Statistics",
+          required_credits: 8,
+          criteria: "EN.553.420[C]^OR^EN.553.430[C]^OR^EN.553.431[C]",
+        },
+        {
+          description: "Optimization",
+          required_credits: 4,
+          criteria: "EN.553.361[C]",
+        },
+      ],
+    },
+    {
+      name: "Computer Languages and Programming",
+      required_credits: 3,
+      min_credits_per_course: 1,
+      description:
+        "Select one of the following: " +
+        "EN.500.112 Gateway Computing: JAVA\n\tEN.500.113 Gateway Computing: Python\n\tEN.500.114Gateway Computing: Matlab\n\t" +
+        "AS.250.205 Introduction to Computing\n\tEN.553.281 Introduction to Mathematical Computing\n\tEN.580.242 & EN.580.244" +
+        "Biological Models and Simulations and Nonlinear Dynamics of Biological Systems\n\tEN.601.220 Intermediate Programming" +
+        ". NOTE: Students are strongly encouraged to fulfill this element of the requirement by taking EN.500.113 Gateway Computing: Python, and to do this in their first semester at Johns Hopkins University.",
+      criteria:
+        "EN.500.112[C]^OR^EN.500.113[C]^OR^EN.500.114[C]^OR^AS.250.205[C]^OR^EN.553.281[C]^OR^EN.580.242[C]^OR^EN.580.244[C]^OR^" +
+        "EN.601.220",
+    },
+    {
+      name: "Area of Focus",
+      required_credits: 12,
+      min_credits_per_course: 3,
+      description:
+        "Two courses within a coherent field of interest. For more detail please visit " +
+        "https://e-catalogue.jhu.edu/engineering/full-time-residential-programs/degree-programs/applied-mathematics-statistics/applied-mathematics-statistics-bs/#requirementstext",
+      criteria: "",
+      user_select: true,
+    },
+    {
+      name: "Natural Sciences",
+      required_credits: 12,
+      min_credits_per_course: 1,
+      description:
+        "Courses coded Natural Sciences. Laboratory courses that accompany Natural Science courses may" +
+        " be used in reaching this total. (Courses used to meet the requirements above may be counted toward this total.)",
+      criteria: "AS Natural Science[N]",
+    },
+    {
+      name: "Quantitative Studies",
+      required_credits: 40,
+      min_credits_per_course: 1,
+      description:
+        "Courses coded Quantitative Studies totaling 40 credits of which at least 18 credits must be in courses " +
+        "numbered 300 or higher. (Courses used to meet the requirements above may be counted toward this total.)",
+      criteria: "AS Natural Science[N]",
+    },
+    {
+      name: "Liberal Arts",
+      required_credits: 18,
+      min_credits_per_course: 3,
+      description:
+        "These courses must have either an ‘H’ or ‘S’ area designator on them, but can be " +
+        "from any department. At most 2 of these courses may be taken S/U (if not counted towards " +
+        "the writing requirement). Foreign language courses can be counted as well, even if " +
+        "they don’t carry an ‘H’ or ‘S’ designator.",
+      criteria:
+        "AS Center for Language Education[D]^OR^AS Modern Languages and Literatures[D]^OR^H[A]^OR^S[A]",
+    },
+    {
+      name: "Writing Intensive",
+      required_credits: 6,
+      min_credits_per_course: 3,
+      double_count: true,
+      description:
+        "Students are required to fulfill the university’s requirement of two writing intensive courses, " +
+        "each at least 3 credits. Students must receive at least a C- grade or better in these writing courses. ",
+      criteria: "Written Intensive[W]",
+      fine_requirements: [
+        {
+          description:
+            "At least one course must be explicitly focused on writing skills in English (eg, courses in professional, " +
+            "fiction or expository writing). These courses may overlap with other requirements.",
+          required_credits: 3,
+          criteria: "AS.060.100[C]^OR^AS.060.113[C]^OR^AS.060.114[C]^OR^AS.180.248[C]^OR^AS.220.105[C]^OR^AS.220.106[C]^OR^AS.220.108[C]^OR^AS.290.303[C]^OR^AS.360.133[C]^OR^EN.661.110[C]^OR^EN.661.111[C]^OR^EN.661.250[C]^OR^EN.661.251[C]^OR^EN.661.315[C]",
+        },
+      ],
+    },
+  ],
+};
 
 // https://www.cs.jhu.edu/undergraduate-studies/academics/ugrad-advising-manual/
 const bsCS_Old: Major = {
@@ -1721,7 +1725,7 @@ export const allMajors: Major[] = [
   bsCS_New,
   baCS_New,
   CS_Minor_New,
-  // bsAMS,
+  bsAMS,
   // baIS,
   // baPH,
   bsBME,
@@ -1730,7 +1734,6 @@ export const allMajors: Major[] = [
   // bsCBE,
 
   // baEcon,
-  // bsAMS,
   // baPsych,
   // baMolCell,
   // baNeuro,
