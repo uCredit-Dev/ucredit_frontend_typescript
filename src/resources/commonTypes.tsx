@@ -200,6 +200,7 @@ export type DistributionObj = {
   user_select?: boolean;
   double_count?: boolean;
   exception?: string;
+  exclusive?: boolean;
 };
 
 export type Major = {

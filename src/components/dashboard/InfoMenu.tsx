@@ -17,7 +17,7 @@ import {
 } from "../../slices/currentPlanSlice";
 import { selectCourseCache } from "../../slices/userSlice";
 import { getMajor } from "../../resources/assets";
-import { Major } from "../../resources/commonTypes";
+import { Major, Plan } from "../../resources/commonTypes";
 
 /**
  * Info menu shows degree plan and degree information.
@@ -26,7 +26,7 @@ import { Major } from "../../resources/commonTypes";
 const InfoMenu: FC = () => {
   const dispatch = useDispatch();
   const distributions = useSelector(selectDistributions);
-  const currentPlan = useSelector(selectPlan);
+  const currentPlan: Plan = useSelector(selectPlan);
   const courseCache = useSelector(selectCourseCache);
   const currPlanCourses = useSelector(selectCurrentPlanCourses);
 
@@ -56,10 +56,19 @@ const InfoMenu: FC = () => {
   useEffect(() => {
     const distr = getDistributions();
     if (distr && distr.length > 0) {
-      updateFulfilled(distr, currPlanCourses, courseCache, setDistributions);
+      let tot = 0;
+      currentPlan.years.forEach((year) => {
+        tot += year.courses.length;
+      });
+      updateFulfilled(
+        distr,
+        tot === currPlanCourses.length ? currPlanCourses : [],
+        courseCache,
+        setDistributions
+      );
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [major, currPlanCourses]);
+  }, [major, courseCache, currPlanCourses]);
 
   const setDistributions = (distr: [string, requirements[]][]) => {
     dispatch(updateDistributions(distr));
