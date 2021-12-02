@@ -70,10 +70,18 @@ const Filters: FC<{
   const handleWIFilterChange = (event: any): void => {
     const params: { filter: FilterType; value: any } = {
       filter: "wi",
-      value: event.value === "Yes" ? true : event.value === "No" ? false : null,
+      value: assignValue(event.value)
     };
     dispatch(updateSearchFilters(params));
   };
+
+  const assignValue = (eventValue: any): boolean | null => {
+    if (eventValue === "Yes") {
+      return true;
+    } else if (eventValue === "No") {
+      return false;
+    } else return null;
+  }
 
   /**
    * Update searching filter state for department.
@@ -240,11 +248,13 @@ const Filters: FC<{
                 className="w-40 rounded outline-none"
                 onChange={handleDepartmentFilterChange}
                 value={
-                  searchFilters.department !== null
-                    ? searchFilters.department
-                        .split("|")
-                        .map((dep) => ({ label: dep, value: dep }))
-                    : []
+                  (() => {
+                    if (searchFilters.department !== null) {
+                      return (
+                        searchFilters.department.split("|").map((dep) => ({ label: dep, value: dep }))
+                      );
+                    } else return [];
+                  })()
                 }
               />
             </div>
@@ -265,11 +275,13 @@ const Filters: FC<{
                 })),
               ]}
               value={
-                searchFilters.credits !== null
-                  ? searchFilters.credits
-                      .split("")
-                      .map((c) => ({ label: c, value: c }))
-                  : []
+                (() => {
+                  if (searchFilters.credits !== null) {
+                    return (
+                      searchFilters.credits.split("").map((c) => ({ label: c, value: c}))
+                    );
+                  } else return [];
+                })()
               }
               className="w-40 rounded outline-none"
             />
@@ -302,11 +314,13 @@ const Filters: FC<{
               className="w-40 rounded outline-none"
               onChange={handleDistributionFilterChange}
               value={
-                searchFilters.distribution !== null
-                  ? searchFilters.distribution
-                      .split("")
-                      .map((distr) => ({ label: distr, value: distr }))
-                  : []
+                (() => {
+                  if (searchFilters.distribution !== null) {
+                    return (
+                      searchFilters.distribution.split("").map((distr) => ({ label: distr, value: distr}))
+                    );
+                  } else return [];
+                })()
               }
             />
           </div>
@@ -321,12 +335,13 @@ const Filters: FC<{
               ]}
               value={{
                 value: searchFilters.wi,
-                label:
-                  searchFilters.wi === null
-                    ? "Any"
-                    : searchFilters.wi
-                    ? "True"
-                    : "False",
+                label: (() => {
+                  if (searchFilters.wi === null) {
+                    return "Any";
+                  } else if (searchFilters.wi) {
+                    return "True";
+                  } else return "False";
+                })()
               }}
               className="w-40 rounded outline-none"
               onChange={handleWIFilterChange}
@@ -354,11 +369,13 @@ const Filters: FC<{
                 className="w-40 rounded outline-none"
                 onChange={handleTagsFilterChange}
                 value={
-                  searchFilters.tags !== null
-                    ? searchFilters.tags
-                        .split("|")
-                        .map((tag) => ({ label: tag, value: tag }))
-                    : []
+                  (() => {
+                    if (searchFilters.tags !== null) {
+                      return (
+                        searchFilters.tags.split("|").map((tag) => ({ label: tag, value: tag}))
+                      );
+                    } else return [];
+                  })()
                 }
                 isMulti
               />
@@ -384,11 +401,13 @@ const Filters: FC<{
                 className="w-40 rounded outline-none"
                 onChange={handleLevelFilterChange}
                 value={
-                  searchFilters.levels !== null
-                    ? searchFilters.levels
-                        .split("|")
-                        .map((level) => ({ label: level, value: level }))
-                    : []
+                  (() => {
+                    if (searchFilters.levels !== null) {
+                      return (
+                        searchFilters.levels.split("|").map((level) => ({ label: level, value: level}))
+                      );
+                    } else return [];
+                  })()
                 }
                 isMulti
               />
