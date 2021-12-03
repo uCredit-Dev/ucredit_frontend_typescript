@@ -38,7 +38,7 @@ const SearchList: FC<{ searching: boolean }> = (props) => {
 
   // Updates pagination every time the searched courses change.
   useEffect(() => {
-    const filteredCourses: SISRetrievedCourse[] = courses.filter(
+    const SISFilteredCourses: SISRetrievedCourse[] = courses.filter(
       (course: SISRetrievedCourse) => {
         let valid = false;
         course.versions.forEach((version) => {
@@ -54,11 +54,11 @@ const SearchList: FC<{ searching: boolean }> = (props) => {
       }
     );
     // If coursesPerPage doesn't divide perfectly into total courses, we need one more page.
-    const division = Math.floor(filteredCourses.length / coursesPerPage);
+    const division = Math.floor(SISFilteredCourses.length / coursesPerPage);
     const pages =
-      filteredCourses.length % coursesPerPage === 0 ? division : division + 1;
+      SISFilteredCourses.length % coursesPerPage === 0 ? division : division + 1;
     setPageCount(pages);
-    setFilteredCourses(filteredCourses);
+    setFilteredCourses(SISFilteredCourses);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [courses]);
 
@@ -76,7 +76,7 @@ const SearchList: FC<{ searching: boolean }> = (props) => {
         : startingIndex + coursesPerPage - 1;
     for (let i = startingIndex; i <= endingIndex; i++) {
       const inspecting = { ...filteredCourses[i] };
-      inspecting.versions.forEach((v: any, i: number) => {
+      inspecting.versions.forEach((v: any, versionNum: number) => {
         if (
           v.term === searchFilters.term + " " + searchFilters.year ||
           (searchFilters.term === "All" &&
@@ -88,7 +88,7 @@ const SearchList: FC<{ searching: boolean }> = (props) => {
               className="transform hover:scale-105 transition duration-200 ease-in"
               onClick={() => setHideResults(true)}
             >
-              <CourseCard course={inspecting} version={i} />
+              <CourseCard course={inspecting} version={versionNum} />
             </div>
           );
         }
@@ -149,7 +149,10 @@ const SearchList: FC<{ searching: boolean }> = (props) => {
                 setHideResults(!hideResults);
               }}
             >
-              {!hideResults ? "Hide Results" : "Show Results"}
+              {() => {
+                if (!hideResults) { return "Hide Results"; }
+                else { return "Show Results";}
+              }}
             </button>
           ) : null}
         </div>
@@ -184,31 +187,37 @@ const SearchList: FC<{ searching: boolean }> = (props) => {
       {!hideResults || window.innerWidth > 700 ? (
         <div className="py px-5 w-full bg-gray-200 select-none">
           <div className="w-full h-full">
-            {courses.length > 0 ? (
-              <>
-                <div className="y-full flex flex-col w-full">
-                  {courseList()}
+            { (() =>
+              courses.length > 0 ? (
+                <>
+                  <div className="y-full flex flex-col w-full">
+                    {courseList()}
+                  </div>
+                  { (() =>
+                    pageCount > 1 ? (
+                      <div className="flex flex-row justify-center w-full h-auto">
+                        <Pagination
+                          pageCount={pageCount}
+                          handlePageClick={handlePageClick}
+                        />
+                      </div>
+                    ) : null
+                  )()}
+                </>
+              ) : (
+                <div className="flex flex-col items-center justify-center mt-24 w-full">
+                  { (() =>
+                    props.searching ? (
+                      <img src={loading} alt="Searching..." className="h-10"></img>
+                    ) : (
+                      <div className="text-center text-gray-400 text-lg">
+                        No current search results.
+                      </div>
+                    )
+                  )()}
                 </div>
-                {pageCount > 1 ? (
-                  <div className="flex flex-row justify-center w-full h-auto">
-                    <Pagination
-                      pageCount={pageCount}
-                      handlePageClick={handlePageClick}
-                    />
-                  </div>
-                ) : null}
-              </>
-            ) : (
-              <div className="flex flex-col items-center justify-center mt-24 w-full">
-                {props.searching ? (
-                  <img src={loading} alt="Searching..." className="h-10"></img>
-                ) : (
-                  <div className="text-center text-gray-400 text-lg">
-                    No current search results.
-                  </div>
-                )}
-              </div>
-            )}
+              )
+            )()}
           </div>
         </div>
       ) : null}
