@@ -70,17 +70,32 @@ const Filters: FC<{
   const handleWIFilterChange = (event: any): void => {
     const params: { filter: FilterType; value: any } = {
       filter: "wi",
-      value: assignValue(event.value)
+      value: getValue(event.value)
     };
     dispatch(updateSearchFilters(params));
   };
 
-  const assignValue = (eventValue: any): boolean | null => {
+  /**
+   * Helper function for assigning value in handleWIFilterChange
+   * @param eventValue - event.value
+   * @returns boolean value or null depending on event.value
+   */
+  const getValue = (eventValue: any): boolean | null => {
     if (eventValue === "Yes") {
       return true;
     } else if (eventValue === "No") {
       return false;
     } else return null;
+  }
+
+  const getLabel = (searchFiltersWI: null | boolean): string => {
+      if (searchFiltersWI === null) {
+        return "Any"
+      } else if (searchFiltersWI) {
+        return "Yes"
+      } else {
+        return "No"
+      }
   }
 
   /**
@@ -247,15 +262,13 @@ const Filters: FC<{
                 isMulti
                 className="w-40 rounded outline-none"
                 onChange={handleDepartmentFilterChange}
-                value={
-                  (() => {
-                    if (searchFilters.department !== null) {
-                      return (
-                        searchFilters.department.split("|").map((dep) => ({ label: dep, value: dep }))
-                      );
-                    } else return [];
-                  })()
-                }
+                value={ (() =>
+                  searchFilters.department !== null
+                    ? searchFilters.department
+                        .split("|")
+                        .map((dep) => ({ label: dep, value: dep }))
+                    : []
+                )()}
               />
             </div>
           </div>
@@ -274,15 +287,13 @@ const Filters: FC<{
                   label: credits,
                 })),
               ]}
-              value={
-                (() => {
-                  if (searchFilters.credits !== null) {
-                    return (
-                      searchFilters.credits.split("").map((c) => ({ label: c, value: c}))
-                    );
-                  } else return [];
-                })()
-              }
+              value={(() =>
+                searchFilters.credits !== null
+                  ? searchFilters.credits
+                      .split("")
+                      .map((c) => ({ label: c, value: c }))
+                  : []
+              )()}
               className="w-40 rounded outline-none"
             />
           </div>
@@ -313,15 +324,13 @@ const Filters: FC<{
               ]}
               className="w-40 rounded outline-none"
               onChange={handleDistributionFilterChange}
-              value={
-                (() => {
-                  if (searchFilters.distribution !== null) {
-                    return (
-                      searchFilters.distribution.split("").map((distr) => ({ label: distr, value: distr}))
-                    );
-                  } else return [];
-                })()
-              }
+              value={ (() =>
+                searchFilters.distribution !== null
+                  ? searchFilters.distribution
+                      .split("")
+                      .map((distr) => ({ label: distr, value: distr }))
+                  : []
+              )()}
             />
           </div>
           <div className="flex flex-row items-center justify-between mb-2 w-full h-auto">
@@ -335,13 +344,7 @@ const Filters: FC<{
               ]}
               value={{
                 value: searchFilters.wi,
-                label: (() => {
-                  if (searchFilters.wi === null) {
-                    return "Any";
-                  } else if (searchFilters.wi) {
-                    return "True";
-                  } else return "False";
-                })()
+                label: getLabel(searchFilters.wi)
               }}
               className="w-40 rounded outline-none"
               onChange={handleWIFilterChange}
@@ -368,15 +371,13 @@ const Filters: FC<{
                 ]}
                 className="w-40 rounded outline-none"
                 onChange={handleTagsFilterChange}
-                value={
-                  (() => {
-                    if (searchFilters.tags !== null) {
-                      return (
-                        searchFilters.tags.split("|").map((tag) => ({ label: tag, value: tag}))
-                      );
-                    } else return [];
-                  })()
-                }
+                value={ (() =>
+                  searchFilters.tags !== null
+                    ? searchFilters.tags
+                        .split("|")
+                        .map((tag) => ({ label: tag, value: tag }))
+                    : []
+                )()}
                 isMulti
               />
             </div>
@@ -400,15 +401,13 @@ const Filters: FC<{
                 ]}
                 className="w-40 rounded outline-none"
                 onChange={handleLevelFilterChange}
-                value={
-                  (() => {
-                    if (searchFilters.levels !== null) {
-                      return (
-                        searchFilters.levels.split("|").map((level) => ({ label: level, value: level}))
-                      );
-                    } else return [];
-                  })()
-                }
+                value={ (() =>
+                  searchFilters.levels !== null
+                    ? searchFilters.levels
+                        .split("|")
+                        .map((level) => ({ label: level, value: level }))
+                    : []
+                )()}
                 isMulti
               />
             </div>
