@@ -21,8 +21,8 @@ import DistributionPopup from "./DistributionPopup";
  */
 const FineDistribution: FC<{
   dis: requirements;
-  distributionOpen: Boolean;
-  hidden: Boolean;
+  distributionOpen: boolean;
+  hidden: boolean;
 }> = ({ dis, distributionOpen, hidden }) => {
   const [showDistrDesc, setShowDistrDesc] = useState<boolean>(false);
   const [displayAdd, setDisplayAdd] = useState(false);
