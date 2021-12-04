@@ -80,98 +80,106 @@ const CourseDisplay: FC = () => {
    * Updates distribution bars upon successfully adding a course.
    * TODO: Move this to assets and modularize
    */
-  const updateDistributions = (): void => {
+  const updateDistributions = async () => {
     let newUserCourse: UserCourse;
-    if (version !== "None") {
-      const addingYear: Year | null = getYear();
+    if (version === "None") return;
+    const addingYear: Year | null = getYear();
 
-      const body = {
-        user_id: user._id,
-        year_id: addingYear !== null ? addingYear._id : "",
-        plan_id: currentPlan._id,
-        title: version.title,
-        term: semester === "All" ? "fall" : semester.toLowerCase(),
-        year: addingYear !== null ? addingYear.name : "",
-        credits: version.credits === "" ? 0 : version.credits,
-        distribution_ids: currentPlan.distribution_ids,
-        isPlaceholder: placeholder,
-        number: version.number,
-        area: version.areas,
-        preReq: version.preReq,
-        wi: version.wi,
-        version: version.term,
-        expireAt:
-          user._id === "guestUser"
-            ? Date.now() + 60 * 60 * 24 * 1000
-            : undefined,
-      };
+    const body = {
+      user_id: user._id,
+      year_id: addingYear !== null ? addingYear._id : "",
+      plan_id: currentPlan._id,
+      title: version.title,
+      term: semester === "All" ? "fall" : semester.toLowerCase(),
+      year: addingYear !== null ? addingYear.name : "",
+      credits: version.credits === "" ? 0 : version.credits,
+      distribution_ids: currentPlan.distribution_ids,
+      isPlaceholder: placeholder,
+      number: version.number,
+      area: version.areas,
+      preReq: version.preReq,
+      wi: version.wi,
+      version: version.term,
+      expireAt:
+        user._id === "guestUser"
+          ? Date.now() + 60 * 60 * 24 * 1000
+          : undefined,
+    };
 
-      fetch(api + "/courses", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(body),
-      }).then((retrieved) => {
-        retrieved.json().then((data) => {
-          if (data.errors === undefined) {
-            newUserCourse = { ...data.data };
-            dispatch(
-              updateCurrentPlanCourses([...currentCourses, newUserCourse])
-            );
-            const allYears: Year[] = [...currentPlan.years];
-            const newYears: Year[] = [];
-            allYears.forEach((y) => {
-              if (y._id === year) {
-                const yCourses = [...y.courses, newUserCourse._id];
-                newYears.push({ ...y, courses: yCourses });
-              } else {
-                newYears.push(y);
-              }
-            });
-            const newPlan: Plan = { ...currentPlan, years: newYears };
-            dispatch(updateSelectedPlan(newPlan));
-            const newPlanList = [...planList];
-            for (let i = 0; i < planList.length; i++) {
-              if (planList[i]._id === newPlan._id) {
-                newPlanList[i] = newPlan;
-              }
-            }
-            dispatch(updatePlanList(newPlanList));
-            dispatch(updateTotalCredits(totalCredits + newUserCourse.credits));
-            toast.success(version.title + " added!", {
-              position: "top-right",
-              autoClose: 5000,
-              hideProgressBar: true,
-              closeOnClick: true,
-              pauseOnHover: true,
-              draggable: true,
-              progress: 0,
-            });
-          } else {
-            console.log("Failed to add", data.errors);
-          }
-        });
-      });
+    let retrieved = await fetch(api + "/courses", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(body),
+    });
+
+    let data = await retrieved.json();
+
+    if (data.errors !== undefined) {
+      console.log("Failed to add", data.errors);
+      return;
     }
+
+    newUserCourse = { ...data.data };
+    dispatch(
+      updateCurrentPlanCourses([...currentCourses, newUserCourse])
+    );
+    const allYears: Year[] = [...currentPlan.years];
+    const newYears: Year[] = [];
+    allYears.forEach((y) => {
+      if (y._id === year) {
+        const yCourses = [...y.courses, newUserCourse._id];
+        newYears.push({ ...y, courses: yCourses });
+      } else {
+        newYears.push(y);
+      }
+    });
+    const newPlan: Plan = { ...currentPlan, years: newYears };
+    dispatch(updateSelectedPlan(newPlan));
+    const newPlanList = [...planList];
+    for (let i = 0; i < planList.length; i++) {
+      if (planList[i]._id === newPlan._id) {
+        newPlanList[i] = newPlan;
+      }
+    }
+    dispatch(updatePlanList(newPlanList));
+    dispatch(updateTotalCredits(totalCredits + newUserCourse.credits));
+    toast.success(version.title + " added!", {
+      position: "top-right",
+      autoClose: 5000,
+      hideProgressBar: true,
+      closeOnClick: true,
+      pauseOnHover: true,
+      draggable: true,
+      progress: 0,
+    });
   };
-  return (
-    <div className="flex flex-col p-5 w-full bg-gray-200 rounded-r overflow-y-auto">
-      {version === "None" ? (
+
+  if (version === "None") {
+    return (
+      <div className="flex flex-col p-5 w-full bg-gray-200 rounded-r overflow-y-auto">
         <div className="flex flex-col items-center justify-center w-full h-full font-normal">
           No selected course!
         </div>
-      ) : placeholder ? (
+      </div>
+    );
+  } else if (placeholder) {
+    return (
+      <div className="flex flex-col p-5 w-full bg-gray-200 rounded-r overflow-y-auto">
         <Placeholder addCourse={addCourse} />
-      ) : (
+      </div>
+    );
+  } else {
+    return (
+      <div className="flex flex-col p-5 w-full bg-gray-200 rounded-r overflow-y-auto">
         <SisCourse
           inspectedArea={inspectedArea}
           setInspectedArea={setInspectedArea}
           addCourse={addCourse}
         />
-      )}
-    </div>
-  );
+      </div>
+    );
+  }
 };
-
 export default CourseDisplay;
