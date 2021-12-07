@@ -23,7 +23,7 @@ import DeleteYearPopup from "../popups/DeleteYearPopup";
 import PlanAdd from "../popups/PlanAdd";
 import CourseList from "./course-list/CourseList";
 import InfoMenu from "./InfoMenu";
-import ActionBar from "./right-column-info/ActionBar";
+import ActionBar from "./degree-info/ActionBar";
 import { useScrollPosition } from "@n8tb1t/use-scroll-position";
 import clsx from "clsx";
 

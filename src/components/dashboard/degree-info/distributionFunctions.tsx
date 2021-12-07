@@ -1,10 +1,4 @@
-import {
-  Course,
-  Major,
-  UserCourse,
-  SISRetrievedCourse,
-} from "../../../resources/commonTypes";
-import { getCourse } from "../../../resources/assets";
+import { Course, Major } from "../../../resources/commonTypes";
 
 export type requirements = {
   name: string;
@@ -14,83 +8,6 @@ export type requirements = {
   description: string;
   exclusive?: boolean;
   wi?: boolean;
-};
-
-/**
- * args: an array containing focus areas and their associated requirements, and all courses
- * updates the requirements obj so that the fulfilled credits accurately reflects the plan
- * @param requirements - an array of requirement pairs
- * @param courses
- * @param courseCache - cached courses
- * @param currPlanCourses - courses in current plan
- */
-export const updateFulfilled = (
-  requirements: [string, requirements[]][],
-  courses: UserCourse[],
-  courseCache: SISRetrievedCourse[],
-  setDistributions: (distributions: [string, requirements[]][]) => void
-) => {
-  setDistributions(requirements);
-  let reqCopy: [string, requirements[]][] = copyReqs(requirements);
-  let count: number = 0;
-  const checked: Course[] = [];
-  courses.forEach((course) => {
-    getCourse(course.number, courseCache, courses).then((courseObj) => {
-      let counted: boolean = false;
-      if (courseObj !== null) {
-        checked.forEach((c) => {
-          if (c.number === courseObj.number) counted = true;
-        });
-        checked.push(courseObj);
-      }
-      const localReqCopy: [string, requirements[]][] = copyReqs(reqCopy);
-      if (!counted) updateReqs(localReqCopy, courseObj);
-      reqCopy = localReqCopy;
-      count++;
-      if (count === courses.length) {
-        setDistributions(reqCopy);
-      }
-    });
-  });
-};
-
-const updateReqs = (requirements: [string, requirements[]][], courseObj) => {
-  let inExclusive: boolean = false;
-  // Exclusive check
-  requirements.forEach((reqGroup, i) =>
-    reqGroup[1].forEach((req: requirements, j: number) => {
-      if (
-        courseObj !== null &&
-        checkRequirementSatisfied(req, courseObj) &&
-        req.exclusive &&
-        req.fulfilled_credits < req.required_credits
-      ) {
-        requirements[i][1][j].fulfilled_credits += parseInt(courseObj.credits);
-        inExclusive = true;
-      }
-    })
-  );
-  requirements.forEach((reqGroup, i) =>
-    reqGroup[1].forEach((req: requirements, j: number) => {
-      if (
-        courseObj !== null &&
-        checkRequirementSatisfied(req, courseObj) &&
-        (req.exclusive === undefined || !req.exclusive) &&
-        (!inExclusive || j === 0)
-      )
-        requirements[i][1][j].fulfilled_credits += parseInt(courseObj.credits);
-    })
-  );
-};
-
-const copyReqs = (requirements) => {
-  const reqCopy: [string, requirements[]][] = [];
-  requirements.forEach((reqGroup) => {
-    const reqGroupCopy: any = [];
-    reqGroup[1].forEach((req) => reqGroupCopy.push({ ...req }));
-    reqCopy.push([reqGroup[0], reqGroupCopy]);
-  });
-  return reqCopy;
 };
 
 /**

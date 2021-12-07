@@ -5,7 +5,7 @@ import {
   Plan,
   UserCourse,
 } from "../components/../resources/commonTypes";
-import { requirements } from "../components/dashboard/right-column-info/distributionFunctions";
+import { requirements } from "../components/dashboard/degree-info/distributionFunctions";
 
 type CurrentPlanSlice = {
   plan: Plan;

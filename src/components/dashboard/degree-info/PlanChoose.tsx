@@ -11,6 +11,7 @@ import "react-toastify/dist/ReactToastify.css";
 import GenerateNewPlan from "../../../resources/GenerateNewPlan";
 import {
   selectPlan,
+  updateCurrentPlanCourses,
   updateSelectedPlan,
 } from "../../../slices/currentPlanSlice";
 import { updateAddingPlanStatus } from "../../../slices/popupSlice";
@@ -57,6 +58,7 @@ const PlanChoose: FC = () => {
         progress: 0,
       });
       dispatch(updateSelectedPlan(newSelected));
+      dispatch(updateCurrentPlanCourses([]));
       dispatch(updatePlanList(planListClone));
     }
   };
