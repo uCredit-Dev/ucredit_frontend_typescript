@@ -9,7 +9,6 @@ import {
   AreaType,
   SISRetrievedCourse,
 } from "../components/../resources/commonTypes";
-// import { getYears } from "../resources/assets";
 
 const date: Date = new Date();
 const year: number = date.getFullYear();

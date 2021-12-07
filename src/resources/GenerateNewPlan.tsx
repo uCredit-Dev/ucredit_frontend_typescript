@@ -25,7 +25,7 @@ import {
 } from "../slices/popupSlice";
 
 type generateNewPlanProps = {
-  _id?: String;
+  _id?: string;
 };
 
 /**
@@ -54,75 +54,69 @@ const GenerateNewPlan = (props: generateNewPlanProps) => {
         user._id === "guestUser" ? Date.now() + 60 * 60 * 24 * 1000 : undefined,
     };
 
-    if (toAddName !== planBody.name) {
-      planBody.name = toAddName;
-    }
+    planBody.name = toAddName === planBody.name ? planBody.name : toAddName;
 
     let newPlan: Plan;
-    axios
-      .post(api + "/plans", planBody)
-      .then((response: any) => {
-        const newPlanResponse = response.data.data;
-        axios.get(api + "/years/" + newPlanResponse._id).then((resp) => {
-          newPlan = { ...newPlanResponse, years: resp.data.data };
-          dispatch(
-            updateSearchTime({
-              searchSemester: "Fall",
-              searchYear: newPlan.years[0]._id,
-            })
-          );
-          // Make a new distribution for each distribution of the major of the plan.
-          toAddMajor.distributions.forEach(
-            (distr: DistributionObj, index: number) => {
-              const distributionBody = {
-                name: distr.name,
-                required: true,
-                user_id: user._id,
-                plan_id: newPlan._id,
-                filter: "",
-                expireAt:
-                  user._id === "guestUser"
-                    ? Date.now() + 60 * 60 * 24 * 1000
-                    : undefined,
-              };
-              axios
-                .post(api + "/distributions", distributionBody)
-                .then((newDistr: any) => {
-                  newPlan = {
-                    ...newPlan,
-                    distribution_ids: [
-                      ...newPlan.distribution_ids,
-                      newDistr.data.data._id,
-                    ],
-                  };
-                })
-                .then(() => {
-                  // After making our last distribution, we update our redux stores.
-                  if (index === toAddMajor.distributions.length - 1) {
-                    dispatch(updateSelectedPlan(newPlan));
-                    dispatch(updatePlanList([newPlan, ...planList]));
-                    if (!importing) {
-                      toast.success(newPlan.name + " created!");
-                    }
-                    if (user._id === "guestUser") {
-                      const planIdArray = [newPlan._id];
-                      dispatch(updateGuestPlanIds(planIdArray));
-                    }
-                    dispatch(clearToAdd());
-                    dispatch(updateGeneratePlanAddStatus(false));
-                  }
-                });
-            }
-          );
-        });
+    const getData = async () => {
+      let response = await axios.post(api + "/plans", planBody)
+      const newPlanResponse = response.data.data;
+      let resp = await axios.get(api + "/years/" + newPlanResponse._id);
+      newPlan = { ...newPlanResponse, years: resp.data.data };
+      dispatch(
+        updateSearchTime({
+          searchSemester: "Fall",
+          searchYear: newPlan.years[0]._id,
+        })
+      );
+      // Make a new distribution for each distribution of the major of the plan.
+      toAddMajor.distributions.forEach(
+        async (distr: DistributionObj, index: number) => {
+          const distributionBody = getDistributionBody(distr.name, user._id, newPlan._id);
+          let newDistr = await axios.post(api + "/distributions", distributionBody);
+          newPlan = {
+            ...newPlan,
+            distribution_ids: [
+              ...newPlan.distribution_ids,
+              newDistr.data.data._id,
+            ],
+          };
+        // After making our last distribution, we update our redux stores.
+        if (index === toAddMajor.distributions.length - 1) {
+          dispatch(updateSelectedPlan(newPlan));
+          dispatch(updatePlanList([newPlan, ...planList]));
+          if (!importing) {
+            toast.success(newPlan.name + " created!");
+          }
+          if (user._id === "guestUser") {
+            const planIdArray = [newPlan._id];
+            dispatch(updateGuestPlanIds(planIdArray));
+          }
+          dispatch(clearToAdd());
+          dispatch(updateGeneratePlanAddStatus(false));
+        }
       })
-      .catch((e) => {
-        console.log("ERROR: ", e);
-      });
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [generatePlanAddStatus]);
-
+    } 
+    getData().catch(console.error);
+  }, [dispatch, generatePlanAddStatus, importing, planList, toAddMajor, toAddName, user._id, user.grade]); // formerly [generatePlanAddStatus]
   return <div></div>;
 };
+
+const getDistributionBody = (
+  distrName: string,
+  userID: string,
+  planID: string
+): object => {
+  return ({
+    name: distrName,
+    required: true,
+    user_id: userID,
+    plan_id: planID,
+    filter: "",
+    expireAt:
+      userID === "guestUser"
+      ? Date.now() + 60 * 60 * 24 * 1000
+      : undefined,
+  });
+}
 
 export default GenerateNewPlan;
