@@ -35,6 +35,7 @@ const InfoMenu: FC = () => {
     new Array(distributions.length)
   );
   const [distributionOpen, setDistributionOpen] = useState<boolean>(true);
+  const [calculated, setCalculated] = useState<boolean>(false);
   const [major, setMajor] = useState<Major | null>(null);
   const [distributionBarsJSX, setDistributionBarsJSX] = useState<JSX.Element[]>(
     []
@@ -71,10 +72,11 @@ const InfoMenu: FC = () => {
       );
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [major, courseCache, currPlanCourses]);
+  }, [major, currPlanCourses]);
 
   useEffect(() => {
     if (currentPlan._id === retrievedDistributions.plan._id) {
+      setCalculated(true);
       dispatch(updateDistributions(retrievedDistributions.distr));
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -158,6 +160,7 @@ const InfoMenu: FC = () => {
     let count: number = 0;
     const checked: Course[] = [];
     for (let course of courses) {
+      setCalculated(false);
       const courseObj = await getCourse(course.number, courseCache, courses);
       let counted: boolean = false;
       if (courseObj !== null) {
@@ -231,8 +234,8 @@ const InfoMenu: FC = () => {
       : "Show Fine Requirements";
   return (
     <div
-      className="fixed z-50 right-0 flex flex-col justify-between mt-20 w-10"
-      style={{ height: "76vh" }}
+      className="fixed z-50 right-0 flex flex-col justify-between mt-4 w-10"
+      style={{ height: "90vh" }}
     >
       <div className="my-auto transform -rotate-90">
         <button
@@ -247,12 +250,19 @@ const InfoMenu: FC = () => {
       {infoOpen ? (
         <div className="absolute z-50 right-14 top-8 ml-5 p-4 px-0 w-max max-h-full bg-white bg-opacity-90 rounded shadow overflow-y-scroll">
           {/* <InfoCards /> */}
-          <Distributions
-            major={major}
-            distributionOpen={distributionOpen}
-            setDistributionOpen={setDistributionOpen}
-            distributionBarsJSX={distributionBarsJSX}
-          />
+          {(() => {
+            if (calculated) {
+              return (
+                <Distributions
+                  major={major}
+                  distributionOpen={distributionOpen}
+                  setDistributionOpen={setDistributionOpen}
+                  distributionBarsJSX={distributionBarsJSX}
+                />
+              );
+            } else
+              return <b className="m-10 h-80">Loading degree progress...</b>;
+          })()}
         </div>
       ) : null}
     </div>
