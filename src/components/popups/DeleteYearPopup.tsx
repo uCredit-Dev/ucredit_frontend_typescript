@@ -1,6 +1,5 @@
 import { FC } from "react";
 import { useSelector, useDispatch } from "react-redux";
-import { selectUser } from "../../slices/userSlice";
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import GenerateNewPlan from "../../resources/GenerateNewPlan";
@@ -19,7 +18,6 @@ import {
 const DeleteYearPopup: FC = () => {
   // Redux Setup
   const dispatch = useDispatch();
-  const user = useSelector(selectUser);
   const currentPlan = useSelector(selectPlan);
   const year = useSelector(selectYearToDelete);
 
@@ -58,7 +56,7 @@ const DeleteYearPopup: FC = () => {
 
   return (
     <>
-      <GenerateNewPlan _id={user._id} />
+      <GenerateNewPlan />
       <div className="absolute top-0">
         {/* Background Grey */}
         <div className="fixed z-40 left-0 top-0 m-0 w-full h-screen bg-black opacity-50"></div>

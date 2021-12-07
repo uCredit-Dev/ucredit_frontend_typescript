@@ -71,7 +71,7 @@ const DeletePlanPopup: FC = () => {
 
   return (
     <>
-      <GenerateNewPlan _id={user._id} />
+      <GenerateNewPlan />
       <div className="absolute top-0">
         {/* Background Grey */}
         <div className="fixed z-50 left-0 top-0 m-0 w-full h-screen bg-black opacity-50"></div>

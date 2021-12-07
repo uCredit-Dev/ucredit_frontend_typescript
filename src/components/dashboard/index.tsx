@@ -76,6 +76,9 @@ const Dashboard: FC<{ id: string | null }> = ({ id }) => {
         <div className="flex flex-col w-full">
           <div className="flex flex-row thin:flex-wrap-reverse mt-content w-full h-full">
             <div className="flex flex-col w-full">
+              <div className="mx-auto">
+                <CourseList />
+              </div>
               {showActionBar ? (
                 <div
                   className={clsx("fixed mt-4 medium:px-10 px-5 w-screen", {
@@ -85,9 +88,6 @@ const Dashboard: FC<{ id: string | null }> = ({ id }) => {
                   <ActionBar />
                 </div>
               ) : null}
-              <div className="mx-auto">
-                <CourseList />
-              </div>
             </div>
           </div>
           <InfoMenu />

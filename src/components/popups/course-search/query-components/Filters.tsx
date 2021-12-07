@@ -36,13 +36,15 @@ const Filters: FC<{
    * @param event - the event sent when handling credit dropdown
    */
   const handleCreditFilterChange = (event: any): void => {
-    let credits = "";
-    event.forEach((c: { label: string; value: string }) => {
-      credits = credits.concat(c.label);
-    });
+    // let credits = "";
+    // event.forEach((c: { label: string; value: string }) => {
+    //   credits = credits.concat(c.label);
+    // });
+    let credits = event.value;
     const params: { filter: FilterType; value: any } = {
       filter: "credits",
-      value: credits.length === 0 || credits.includes("Any") ? null : credits,
+      value: credits,
+      // value: credits.length === 0 ? null : credits.toString(),
     };
     dispatch(updateSearchFilters(params));
   };
@@ -53,12 +55,14 @@ const Filters: FC<{
    */
   const handleDistributionFilterChange = (event: any): void => {
     let areas: string = "";
-    event.forEach((a: { label: string; value: string }) => {
-      areas = areas.concat(a.label);
-    });
+    // event.forEach((a: { label: string; value: string }) => {
+    //   areas = areas.concat(a.label);
+    // });
+    areas = event.value;
     const params: { filter: FilterType; value: any } = {
       filter: "distribution",
-      value: areas.length === 0 ? null : areas,
+      value: areas,
+      // value: areas.length === 0 ? null : areas,
     };
     dispatch(updateSearchFilters(params));
   };
@@ -70,7 +74,7 @@ const Filters: FC<{
   const handleWIFilterChange = (event: any): void => {
     const params: { filter: FilterType; value: any } = {
       filter: "wi",
-      value: getValue(event.value)
+      value: getValue(event.value),
     };
     dispatch(updateSearchFilters(params));
   };
@@ -86,17 +90,17 @@ const Filters: FC<{
     } else if (eventValue === "No") {
       return false;
     } else return null;
-  }
+  };
 
   const getLabel = (searchFiltersWI: null | boolean): string => {
-      if (searchFiltersWI === null) {
-        return "Any"
-      } else if (searchFiltersWI) {
-        return "Yes"
-      } else {
-        return "No"
-      }
-  }
+    if (searchFiltersWI === null) {
+      return "Any";
+    } else if (searchFiltersWI) {
+      return "Yes";
+    } else {
+      return "No";
+    }
+  };
 
   /**
    * Update searching filter state for department.
@@ -122,16 +126,18 @@ const Filters: FC<{
    * @param event - the event sent when handling tag dropdown
    */
   const handleTagsFilterChange = (event: any): void => {
-    let tags = "";
-    event.forEach((tag: { label: string; value: string }, i: number) => {
-      tags = tags.concat(tag.label);
-      if (i < event.length - 1) {
-        tags = tags.concat("|");
-      }
-    });
+    // let tags = "";
+    // event.forEach((tag: { label: string; value: string }, i: number) => {
+    //   tags = tags.concat(tag.label);
+    //   if (i < event.length - 1) {
+    //     tags = tags.concat("|");
+    //   }
+    // });
+    let tags = event.value.toString();
     const params: { filter: FilterType; value: any } = {
       filter: "tags",
-      value: tags.length === 0 ? null : tags,
+      // value: tags.length === 0 ? null : tags,
+      value: tags,
     };
     dispatch(updateSearchFilters(params));
   };
@@ -140,20 +146,20 @@ const Filters: FC<{
    * Update searching filter state for level.
    * @param event - the event sent when handling upper/lower level dropdown
    */
-  const handleLevelFilterChange = (event: any): void => {
-    let levels = "";
-    event.forEach((level: { label: string; value: string }, i: number) => {
-      levels = levels.concat(level.label);
-      if (i < event.length - 1) {
-        levels = levels.concat("|");
-      }
-    });
-    const params: { filter: FilterType; value: any } = {
-      filter: "levels",
-      value: levels.length === 0 ? null : levels,
-    };
-    dispatch(updateSearchFilters(params));
-  };
+  // const handleLevelFilterChange = (event: any): void => {
+  //   let levels = "";
+  //   event.forEach((level: { label: string; value: string }, i: number) => {
+  //     levels = levels.concat(level.label);
+  //     if (i < event.length - 1) {
+  //       levels = levels.concat("|");
+  //     }
+  //   });
+  //   const params: { filter: FilterType; value: any } = {
+  //     filter: "levels",
+  //     value: levels.length === 0 ? null : levels,
+  //   };
+  //   dispatch(updateSearchFilters(params));
+  // };
 
   /**
    * Update searching filter state for year.
@@ -197,14 +203,14 @@ const Filters: FC<{
    * Gets search filter level as a string
    * @returns a level string (either upper or lower level undergraduate)
    */
-  const getLevelString = (): string => {
-    return (
-      "Selected " +
-      (searchFilters.levels !== null
-        ? searchFilters.levels.split("|").map((level) => " " + level)
-        : "nothing")
-    );
-  };
+  // const getLevelString = (): string => {
+  //   return (
+  //     "Selected " +
+  //     (searchFilters.levels !== null
+  //       ? searchFilters.levels.split("|").map((level) => " " + level)
+  //       : "nothing")
+  //   );
+  // };
 
   /**
    * Gets array of years to display in the filters
@@ -262,13 +268,12 @@ const Filters: FC<{
                 isMulti
                 className="w-40 rounded outline-none"
                 onChange={handleDepartmentFilterChange}
-                value={ (() =>
+                value={(() =>
                   searchFilters.department !== null
                     ? searchFilters.department
                         .split("|")
                         .map((dep) => ({ label: dep, value: dep }))
-                    : []
-                )()}
+                    : [])()}
               />
             </div>
           </div>
@@ -280,20 +285,28 @@ const Filters: FC<{
             Credits
             <Select
               onChange={handleCreditFilterChange}
-              isMulti
+              // isMulti
               options={[
                 ...creditFilters.map((credits: any) => ({
                   value: credits,
                   label: credits,
                 })),
               ]}
-              value={(() =>
-                searchFilters.credits !== null
-                  ? searchFilters.credits
-                      .split("")
-                      .map((c) => ({ label: c, value: c }))
-                  : []
-              )()}
+              // value={(() =>
+              //   searchFilters.credits !== null
+              //     ? searchFilters.credits
+              //         .split("")
+              //         .map((c) => ({ label: c, value: c }))
+              //     : []
+              // )()}
+              value={{
+                value:
+                  searchFilters.credits === null ? null : searchFilters.credits,
+                label:
+                  searchFilters.credits === null
+                    ? "Any"
+                    : searchFilters.credits,
+              }}
               className="w-40 rounded outline-none"
             />
           </div>
@@ -315,8 +328,9 @@ const Filters: FC<{
               />
             </div>
             <Select
-              isMulti
+              // isMulti
               options={[
+                { label: "Any", value: null },
                 ...distributionFilters.map((distribution: any) => ({
                   value: distribution,
                   label: distribution,
@@ -324,13 +338,19 @@ const Filters: FC<{
               ]}
               className="w-40 rounded outline-none"
               onChange={handleDistributionFilterChange}
-              value={ (() =>
-                searchFilters.distribution !== null
-                  ? searchFilters.distribution
-                      .split("")
-                      .map((distr) => ({ label: distr, value: distr }))
-                  : []
-              )()}
+              // value={(() =>
+              //   searchFilters.distribution !== null
+              //     ? searchFilters.distribution
+              //         .split("")
+              //         .map((distr) => ({ label: distr, value: distr }))
+              //     : [])()}
+              value={{
+                value: searchFilters.distribution,
+                label:
+                  searchFilters.distribution === null
+                    ? "Any"
+                    : searchFilters.distribution,
+              }}
             />
           </div>
           <div className="flex flex-row items-center justify-between mb-2 w-full h-auto">
@@ -344,7 +364,7 @@ const Filters: FC<{
               ]}
               value={{
                 value: searchFilters.wi,
-                label: getLabel(searchFilters.wi)
+                label: getLabel(searchFilters.wi),
               }}
               className="w-40 rounded outline-none"
               onChange={handleWIFilterChange}
@@ -364,6 +384,7 @@ const Filters: FC<{
             <div data-tip={getTagString()} data-for="godTip">
               <Select
                 options={[
+                  { value: null, label: "Any" },
                   ...course_tags.map((tag: any) => ({
                     value: tag,
                     label: tag,
@@ -371,18 +392,22 @@ const Filters: FC<{
                 ]}
                 className="w-40 rounded outline-none"
                 onChange={handleTagsFilterChange}
-                value={ (() =>
-                  searchFilters.tags !== null
-                    ? searchFilters.tags
-                        .split("|")
-                        .map((tag) => ({ label: tag, value: tag }))
-                    : []
-                )()}
-                isMulti
+                // value={(() =>
+                //   searchFilters.tags !== null
+                //     ? searchFilters.tags
+                //         .split("|")
+                //         .map((tag) => ({ label: tag, value: tag }))
+                //     : [])()}
+                // isMulti
+                value={{
+                  label:
+                    searchFilters.tags === null ? "Any" : searchFilters.tags,
+                  value: searchFilters.tags,
+                }}
               />
             </div>
           </div>{" "}
-          <div
+          {/* <div
             className="flex flex-row items-center justify-between mb-2 w-full h-auto"
             data-tip={"course level of the searched courses, eg Upper Level"}
             data-for="godTip"
@@ -401,17 +426,16 @@ const Filters: FC<{
                 ]}
                 className="w-40 rounded outline-none"
                 onChange={handleLevelFilterChange}
-                value={ (() =>
+                value={(() =>
                   searchFilters.levels !== null
                     ? searchFilters.levels
                         .split("|")
                         .map((level) => ({ label: level, value: level }))
-                    : []
-                )()}
+                    : [])()}
                 isMulti
               />
             </div>
-          </div>
+          </div> */}
         </div>
       ) : null}
     </>

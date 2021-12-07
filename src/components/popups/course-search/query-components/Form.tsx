@@ -358,6 +358,7 @@ const Form: FC<{ setSearching: (searching: boolean) => void }> = (props) => {
     credits: extras.credits,
     wi: extras.wi,
     tags: extras.tags,
+    level: extras.levels,
   });
 
   return (
