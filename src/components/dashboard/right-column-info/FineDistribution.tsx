@@ -7,7 +7,6 @@ import parse from "html-react-parser";
 import {
   requirements,
   checkRequirementSatisfied,
-  splitRequirements,
 } from "./distributionFunctions";
 import { selectCurrentPlanCourses } from "../../../slices/currentPlanSlice";
 import { selectCourseCache } from "../../../slices/userSlice";
@@ -46,10 +45,7 @@ const FineDistribution: FC<{
     currPlanCourses.forEach((course) => {
       getCourse(course.number, courseCache, currPlanCourses).then(
         (courseObj) => {
-          if (
-            courseObj != null &&
-            checkRequirementSatisfied(splitRequirements(dis.expr), courseObj)
-          ) {
+          if (courseObj != null && checkRequirementSatisfied(dis, courseObj)) {
             if (flipped.includes(course.number)) {
               temp -= course.credits;
             }
