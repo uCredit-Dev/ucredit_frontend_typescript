@@ -12,9 +12,11 @@ import {
 import { allMajors } from "./majors";
 import { store } from "../appStore/store";
 
-export const api = window.location.href.includes("local")
-  ? "https://ucredit-dev.herokuapp.com/api"
-  : "https://ucredit-api.herokuapp.com/api";
+// export const api = window.location.href.includes("local")
+//   ? "https://ucredit-dev.herokuapp.com/api"
+//   : "https://ucredit-api.herokuapp.com/api";
+
+export const api = "https://ucredit-dev.herokuapp.com/api";
 
 export const guestUser: User = {
   _id: "guestUser",
