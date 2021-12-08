@@ -10,10 +10,7 @@ import {
 } from "../slices/userSlice";
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-import {
-  selectImportingStatus,
-  updateSelectedPlan,
-} from "../slices/currentPlanSlice";
+import { updateSelectedPlan } from "../slices/currentPlanSlice";
 import { api } from "./assets";
 import { updateSearchTime } from "../slices/searchSlice";
 import {
@@ -35,11 +32,10 @@ const GenerateNewPlan: FC = () => {
   const toAddName = useSelector(selectToAddName);
   const toAddMajor = useSelector(selectToAddMajor);
   const generatePlanAddStatus = useSelector(selectGeneratePlanAddStatus);
-  const importing = useSelector(selectImportingStatus);
 
   // UseEffect that generates a new plan everytime generateNew is true.
   useEffect(() => {
-    if (generatePlanAddStatus === false || toAddMajor === null) return;
+    if (!generatePlanAddStatus || toAddMajor === null) return;
     const planBody = {
       name: "Unnamed Plan",
       user_id: user._id,
@@ -49,7 +45,8 @@ const GenerateNewPlan: FC = () => {
         user._id === "guestUser" ? Date.now() + 60 * 60 * 24 * 1000 : undefined,
     };
 
-    planBody.name = toAddName === planBody.name ? planBody.name : toAddName;
+    planBody.name =
+      toAddName === planBody.name ? planBody.name : "Imported " + toAddName;
 
     let newPlan: Plan;
     const getData = async () => {
@@ -86,9 +83,7 @@ const GenerateNewPlan: FC = () => {
           if (index === toAddMajor.distributions.length - 1) {
             dispatch(updateSelectedPlan(newPlan));
             dispatch(updatePlanList([newPlan, ...planList]));
-            if (!importing) {
-              toast.success(newPlan.name + " created!");
-            }
+            toast.success(newPlan.name + " created!");
             if (user._id === "guestUser") {
               const planIdArray = [newPlan._id];
               dispatch(updateGuestPlanIds(planIdArray));

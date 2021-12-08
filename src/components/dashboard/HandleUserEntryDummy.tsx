@@ -516,16 +516,49 @@ const HandleUserEntryDummy: FC<{
   // On successful retrieve, update redux with retrieved user,
   useEffect(() => {
     if (id !== null) {
-      toast.info("Importing Plan...", {
-        autoClose: false,
-        closeOnClick: false,
+      // Retrieves user if user ID is "noUser", the initial user id state for userSlice.tsx.
+      // Make call for backend const cookieVals = document.cookie.split("=");
+      let cookieVal = "";
+      Object.entries(cookies).forEach((cookie: any) => {
+        if (cookie[0] === "_hjid" || cookie[0] === "connect.sid")
+          cookieVal = cookie[1];
       });
-      dispatch(updateImportingStatus(true));
-      // means that the user entered a sharable link
-      // first login with guest, then populate the plan with the information from the id
-      navigate("/dashboard");
-      // Get the plan that we are importing, stored in plan
-      handleExistingUser();
+      axios
+        .get(api + "/retrieveUser/" + cookieVal, {
+          method: "GET",
+          headers: {
+            Accept: "application/json",
+            "Content-Type": "application/json",
+          },
+        })
+        .then((retrievedUser) => {
+          toast.info("Importing Plan...", {
+            autoClose: false,
+            closeOnClick: false,
+          });
+          dispatch(updateUser(retrievedUser.data.data));
+          setLoginId(cookieVal);
+
+          // // means that the user entered a sharable link
+          // // first login with guest, then populate the plan with the information from the id
+          navigate("/dashboard");
+          dispatch(updateImportingStatus(true));
+          // Get the plan that we are importing, stored in plan
+          handleExistingUser();
+        })
+        .catch((err) => {
+          toast.info("Importing Plan...", {
+            autoClose: false,
+            closeOnClick: false,
+          });
+          dispatch(updateUser(guestUser));
+          dispatch(updateImportingStatus(true));
+          // means that the user entered a sharable link
+          // first login with guest, then populate the plan with the information from the id
+          navigate("/dashboard");
+          // Get the plan that we are importing, stored in plan
+          handleExistingUser();
+        });
     } else if (user._id === "noUser") {
       // Retrieves user if user ID is "noUser", the initial user id state for userSlice.tsx.
       // Make call for backend const cookieVals = document.cookie.split("=");
@@ -591,7 +624,7 @@ const HandleUserEntryDummy: FC<{
       dispatch(updateToAddName(plan.name));
       dispatch(updateToAddMajor(getMajorFromCommonName(plan.majors[0])));
       setToAdd(years);
-      dispatch(updateUser({ ...guestUser }));
+      dispatch(updateUser(guestUser));
       dispatch(updateGeneratePlanAddStatus(true));
       setShouldAdd(true);
     } else {
