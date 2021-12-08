@@ -412,15 +412,21 @@ export const getCourses = (
           numNameList[n] = num + num + " " + retrievedCourse.title;
           // num is added twice to distinquish which was the base course (refer to the case of EN.600 below) in the case that departments change numbers (600 to 601)
         }
-        if (num.match("EN.600") !== null) {
-          num = num.replace("EN.600", "EN.601");
+        if (num.match("EN.600") !== null || num.match("EN.550") !== null) {
+          if (num.match("EN.600") !== null)
+            num = num.replace("EN.600", "EN.601");
+          else if (num.match("EN.550") !== null)
+            num = num.replace("EN.550", "EN.553");
           getCourse(num, courseCache, planCourses).then(
-            (retrievedCourse601) => {
-              if (retrievedCourse601 !== null) {
+            (retrievedCourseDepChange) => {
+              if (retrievedCourseDepChange !== null) {
                 retrieved++;
                 // Append original num to front for later sorting
                 numNameList[n] =
-                  numList[n] + num + " " + retrievedCourse601.title;
+                  retrievedCourseDepChange.number +
+                  numList[n] +
+                  " " +
+                  retrievedCourseDepChange.title;
               }
               if (numNameList[n] == null) {
                 retrieved++;
@@ -785,13 +791,34 @@ export const checkPrereq = (
   let satisfied: boolean = false;
   courses.forEach((course) => {
     if (
-      course.number === preReqNumber &&
+      (course.number === preReqNumber ||
+        checkOldPrereqNumbers(course.number, preReqNumber)) &&
       prereqInPast(course, year, semester, plan)
     ) {
       satisfied = true;
     }
   });
   return satisfied;
+};
+
+const checkOldPrereqNumbers = (
+  courseNumber: string,
+  preReqNumber: string
+): boolean => {
+  const courseNumberArray = courseNumber.split(".");
+  const preReqNumberArray = preReqNumber.split(".");
+  if (
+    (courseNumberArray.length === 3 &&
+      preReqNumberArray.length === 3 &&
+      courseNumberArray[0] === preReqNumberArray[0] &&
+      (preReqNumberArray[1] === "553" || preReqNumberArray[1] === "550") &&
+      (courseNumberArray[1] === "553" || courseNumberArray[1] === "550")) ||
+    ((preReqNumberArray[1] === "600" || preReqNumberArray[1] === "601") &&
+      (courseNumberArray[1] === "600" || courseNumberArray[1] === "601"))
+  ) {
+    return courseNumberArray[2] === preReqNumberArray[2];
+  }
+  return false;
 };
 
 const semesters: String[] = ["fall", "intersession", "spring", "summer"];
