@@ -201,7 +201,8 @@ const InfoMenu: FC = () => {
         if (
           courseObj !== null &&
           checkRequirementSatisfied(req, courseObj) &&
-          (req.exclusive === undefined || !req.exclusive)
+          (req.exclusive === undefined || !req.exclusive) &&
+          req.fulfilled_credits < req.required_credits
         ) {
           reqs[i][1][j].fulfilled_credits += parseInt(courseObj.credits);
           if (j !== 0) inNonExclusive = true;
