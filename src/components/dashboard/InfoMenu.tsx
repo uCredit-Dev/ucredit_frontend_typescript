@@ -75,8 +75,8 @@ const InfoMenu: FC = () => {
   }, [major, currPlanCourses]);
 
   useEffect(() => {
+    setCalculated(true);
     if (currentPlan._id === retrievedDistributions.plan._id) {
-      setCalculated(true);
       dispatch(updateDistributions(retrievedDistributions.distr));
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -159,7 +159,21 @@ const InfoMenu: FC = () => {
     let reqCopy: [string, requirements[]][] = copyReqs(reqs);
     let count: number = 0;
     const checked: Course[] = [];
-    for (let course of courses) {
+    const coursesCopy = [...courses];
+    coursesCopy.sort((c1: UserCourse, c2: UserCourse) => {
+      const c1Split = c1.number.split(".");
+      const c2Split = c2.number.split(".");
+      const c1LastNum = c1Split[c1Split.length - 1];
+      const c2LastNum = c2Split[c2Split.length - 1];
+      if (c1LastNum === "" && c1Split.length === 1) {
+        return -1;
+      } else if (c2LastNum === "" && c2Split.length === 1) {
+        return 1;
+      } else {
+        return parseInt(c1LastNum) - parseInt(c2LastNum);
+      }
+    });
+    for (let course of coursesCopy) {
       setCalculated(false);
       const courseObj = await getCourse(course.number, courseCache, courses);
       let counted: boolean = false;
@@ -180,18 +194,17 @@ const InfoMenu: FC = () => {
   };
 
   const updateReqs = (reqs: [string, requirements[]][], courseObj) => {
-    let inExclusive: boolean = false;
+    let inNonExclusive: boolean = false;
     // Exclusive check
     reqs.forEach((reqGroup, i) =>
       reqGroup[1].forEach((req: requirements, j: number) => {
         if (
           courseObj !== null &&
           checkRequirementSatisfied(req, courseObj) &&
-          req.exclusive &&
-          req.fulfilled_credits < req.required_credits
+          (req.exclusive === undefined || !req.exclusive)
         ) {
           reqs[i][1][j].fulfilled_credits += parseInt(courseObj.credits);
-          inExclusive = true;
+          if (j !== 0) inNonExclusive = true;
         }
       })
     );
@@ -200,10 +213,12 @@ const InfoMenu: FC = () => {
         if (
           courseObj !== null &&
           checkRequirementSatisfied(req, courseObj) &&
-          (req.exclusive === undefined || !req.exclusive) &&
-          (!inExclusive || j === 0)
-        )
+          req.exclusive &&
+          req.fulfilled_credits < req.required_credits &&
+          !inNonExclusive
+        ) {
           reqs[i][1][j].fulfilled_credits += parseInt(courseObj.credits);
+        }
       })
     );
   };
