@@ -409,16 +409,6 @@ const PrereqDisplay: FC = () => {
     numList: string[],
     expr: any
   ) => {
-    numList = numList.sort((first: any, second: any) => {
-      const sub1 = first.substr(0, 10);
-      const sub2 = second.substr(0, 10);
-      return sub1.localeCompare(sub2);
-    });
-    numNameList = numNameList.sort((a: any, b: any): any => {
-      const sub1 = a.substr(0, 10);
-      const sub2 = b.substr(0, 10);
-      return sub1.localeCompare(sub2);
-    });
     for (let i = 0; i < numList.length; i++) {
       expr = expr.replaceAll(
         numList[i],

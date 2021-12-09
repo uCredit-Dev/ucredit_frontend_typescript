@@ -43,9 +43,12 @@ const FineDistribution: FC<{
   useEffect(() => {
     let temp = dis.fulfilled_credits;
     currPlanCourses.forEach((course) => {
-      getCourse(course.number, courseCache, currPlanCourses).then(
+      getCourse(course.number, courseCache, currPlanCourses, -1).then(
         (courseObj) => {
-          if (courseObj != null && checkRequirementSatisfied(dis, courseObj)) {
+          if (
+            courseObj.resp != null &&
+            checkRequirementSatisfied(dis, courseObj.resp)
+          ) {
             if (flipped.includes(course.number)) {
               temp -= course.credits;
             }

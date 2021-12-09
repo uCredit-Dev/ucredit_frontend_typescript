@@ -406,51 +406,57 @@ export const getCourses = (
     for (let n = 0; n < numList.length; n++) {
       let num = numList[n];
       // eslint-disable-next-line no-loop-func
-      getCourse(num, courseCache, planCourses).then((retrievedCourse) => {
-        if (retrievedCourse !== null) {
+      getCourse(num, courseCache, planCourses, n).then((retrievedCourse) => {
+        const outIndex = retrievedCourse.index;
+        let outNum = numList[outIndex];
+        if (retrievedCourse.resp !== null) {
           retrieved++;
-          numNameList[n] = num + num + " " + retrievedCourse.title;
+          numNameList[outIndex] =
+            outNum + outNum + " " + retrievedCourse.resp.title;
           // num is added twice to distinquish which was the base course (refer to the case of EN.600 below) in the case that departments change numbers (600 to 601)
         }
-        if (num.match("EN.600") !== null || num.match("EN.550") !== null) {
-          if (num.match("EN.600") !== null)
-            num = num.replace("EN.600", "EN.601");
-          else if (num.match("EN.550") !== null)
-            num = num.replace("EN.550", "EN.553");
-          getCourse(num, courseCache, planCourses).then(
-            (retrievedCourseDepChange) => {
-              if (retrievedCourseDepChange !== null) {
-                retrieved++;
-                // Append original num to front for later sorting
-                numNameList[n] =
-                  retrievedCourseDepChange.number +
-                  numList[n] +
-                  " " +
-                  retrievedCourseDepChange.title;
-              }
-              if (numNameList[n] == null) {
-                retrieved++;
-                numNameList[n] =
-                  numList[n] +
-                  numList[n] +
-                  " Has not been offered in the past 4 years or listed on SIS. Please click on the Prerequisites Description tab for full description.";
-              }
-              if (retrieved === numList.length) {
-                let out = {
-                  numNameList: numNameList,
-                  numList: numList,
-                  expr: expr,
-                };
-                return resolve(out);
-              }
+        if (
+          retrievedCourse.resp === null &&
+          (outNum.match("EN.600") !== null || outNum.match("EN.550") !== null)
+        ) {
+          if (outNum.match("EN.600") !== null)
+            outNum = outNum.replace("EN.600", "EN.601");
+          else if (outNum.match("EN.550") !== null)
+            outNum = outNum.replace("EN.550", "EN.553");
+          getCourse(
+            outNum,
+            courseCache,
+            planCourses,
+            retrievedCourse.index
+          ).then((retrievedCourseDepChange) => {
+            const inIndex = retrievedCourseDepChange.index;
+            if (retrievedCourseDepChange.resp !== null) {
+              retrieved++;
+              // Append original num to front for later sorting
+              numNameList[inIndex] =
+                outNum + outNum + " " + retrievedCourseDepChange.resp.title;
+            } else if (numNameList[inIndex] == null) {
+              retrieved++;
+              numNameList[inIndex] =
+                numList[inIndex] +
+                numList[inIndex] +
+                " Has not been offered in the past 4 years or listed on SIS. Please click on the Prerequisites Description tab for full description.";
             }
-          );
+            if (retrieved === numList.length) {
+              let out = {
+                numNameList: numNameList,
+                numList: numList,
+                expr: expr,
+              };
+              return resolve(out);
+            }
+          });
         } else {
-          if (numNameList[n] == null) {
+          if (numNameList[outIndex] == null) {
             retrieved++;
-            numNameList[n] =
-              numList[n] +
-              numList[n] +
+            numNameList[outIndex] =
+              numList[outIndex] +
+              numList[outIndex] +
               " Has not been offered in the past 4 years or listed on SIS. Please click on the Prerequisites Description tab for full description.";
           }
           if (retrieved === numList.length) {
@@ -479,8 +485,9 @@ export const getCourses = (
 export const getCourse = async (
   courseNumber: string,
   courseCache: SISRetrievedCourse[],
-  allPlanCourses: UserCourse[]
-): Promise<Course | null> => {
+  allPlanCourses: UserCourse[],
+  indexNum: number
+): Promise<{ index: number; resp: Course | null }> => {
   return new Promise((resolve) => {
     let out: Course | null = null;
     let userC: UserCourse | null = null;
@@ -498,13 +505,13 @@ export const getCourse = async (
           ...element,
           ...element.versions[0],
         };
-        return resolve(out);
+        return resolve({ index: indexNum, resp: out });
       }
     }
 
     if (out === null) {
       if (store.getState().user.unfoundNumbers.includes(courseNumber)) {
-        return resolve(null);
+        return resolve({ index: indexNum, resp: null });
       }
     }
     // Then pull from db.
@@ -517,7 +524,7 @@ export const getCourse = async (
           let retrieved: SISRetrievedCourse = courses.data.data[0];
           if (retrieved === undefined) {
             store.dispatch(updateUnfoundNumbers(courseNumber));
-            return resolve(null);
+            return resolve({ index: indexNum, resp: null });
           }
           let versionIndex = 0;
           retrieved.versions.forEach((element, index) => {
@@ -532,7 +539,7 @@ export const getCourse = async (
             ...retrieved.versions[versionIndex],
           };
           if (out !== null) {
-            return resolve(out);
+            return resolve({ index: indexNum, resp: out });
           }
         })
         .catch((err) => console.log(err));
@@ -551,16 +558,6 @@ const process = (input: prereqCourses) => {
   let numList = input.numList;
   let numNameList = input.numNameList;
   let expr: any = input.expr;
-  numList = numList.sort((first: any, second: any) => {
-    const sub1 = first.substr(0, 10);
-    const sub2 = second.substr(0, 10);
-    return sub1.localeCompare(sub2);
-  });
-  numNameList = numNameList.sort((a: any, b: any): any => {
-    const sub1 = a.substr(0, 10);
-    const sub2 = b.substr(0, 10);
-    return sub1.localeCompare(sub2);
-  });
   for (let i = 0; i < numList.length; i++) {
     expr = expr.replaceAll(
       numList[i],
@@ -887,9 +884,9 @@ export const checkAllPrereqs = (
   courseCache: SISRetrievedCourse[]
 ): Promise<boolean> => {
   return new Promise((resolve) => {
-    getCourse(number, courseCache, currCourses).then((course) => {
-      if (course !== null) {
-        let filtered = filterNNegatives(course);
+    getCourse(number, courseCache, currCourses, -1).then((course) => {
+      if (course.resp !== null) {
+        let filtered = filterNNegatives(course.resp);
         if (filtered.length === 0) {
           return resolve(true);
         } else {

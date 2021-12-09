@@ -175,16 +175,22 @@ const InfoMenu: FC = () => {
     });
     for (let course of coursesCopy) {
       setCalculated(false);
-      const courseObj = await getCourse(course.number, courseCache, courses);
+      const courseObj = await getCourse(
+        course.number,
+        courseCache,
+        courses,
+        -1
+      );
       let counted: boolean = false;
-      if (courseObj !== null) {
+      if (courseObj.resp !== null) {
         checked.forEach((c) => {
-          if (c.number === courseObj.number) counted = true;
+          if (courseObj.resp !== null && c.number === courseObj.resp.number)
+            counted = true;
         });
-        checked.push(courseObj);
+        checked.push(courseObj.resp);
       }
       const localReqCopy: [string, requirements[]][] = copyReqs(reqCopy);
-      if (!counted) updateReqs(localReqCopy, courseObj);
+      if (!counted) updateReqs(localReqCopy, courseObj.resp);
       reqCopy = localReqCopy;
       count++;
       if (count === courses.length) {
