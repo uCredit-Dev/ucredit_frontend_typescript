@@ -3,19 +3,20 @@ import { useDispatch, useSelector } from "react-redux";
 import { selectUser, resetUser } from "../../slices/userSlice";
 import { useNavigate } from "react-router-dom";
 import { resetCurrentPlan } from "../../slices/currentPlanSlice";
-import { api } from "../../resources/assets";
+import { api, getLoginCookieVal } from "../../resources/assets";
 import bird from "../../resources/images/logoDarker.png";
+import { useCookies } from "react-cookie";
+import axios from "axios";
 
 /**
  * User login/logout buttons.
  */
-const UserSection: FC<{
-  loginId: string;
-}> = ({ loginId }) => {
+const UserSection: FC = () => {
   // Redux setup
   const dispatch = useDispatch();
   const user = useSelector(selectUser);
   const navigate = useNavigate();
+  const [cookies, , removeCookie] = useCookies(["connect.sid"]);
 
   return (
     <div className="fixed z-20 p-3 px-6 w-screen h-20 bg-gradient-to-r shadow from-blue-500 to-green-400 select-none">
@@ -42,22 +43,17 @@ const UserSection: FC<{
         ) : (
           <button
             onClick={() => {
-              fetch(api + "/retrieveUser/" + loginId, {
-                mode: "cors",
-                method: "DELETE",
-                credentials: "include",
-                headers: {
-                  Accept: "application/json",
-                  "Content-Type": "application/json",
-                },
-              })
+              const loginId = getLoginCookieVal(cookies);
+              axios
+                .delete(api + "/retrieveUser/" + loginId)
                 .then(() => {
+                  removeCookie("connect.sid", { path: "/" });
                   dispatch(resetUser());
                   dispatch(resetCurrentPlan());
                   navigate("/login");
                 })
                 .catch((err) => {
-                  console.log(err);
+                  console.log("error logging out", err);
                 });
             }}
             className="flex flex-row items-center justify-center w-24 h-9 bg-white rounded focus:outline-none cursor-pointer select-none transform hover:scale-110 transition duration-200 ease-in"

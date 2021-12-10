@@ -44,7 +44,6 @@ const Dashboard: FC<{ id: string | null }> = ({ id }) => {
   // State Setup
   const [showNotif, setShowNotif] = useState<boolean>(true);
   const [formPopup, setFormPopup] = useState<boolean>(false);
-  const [loginId, setLoginId] = useState<string>(document.cookie.split("=")[1]);
   const [showHeader, setShowHeader] = useState<boolean>(true);
   const [showActionBar, setShowActionBar] = useState<boolean>(true);
   const [showMoveUp, setMoveUp] = useState<boolean>(false);
@@ -63,7 +62,7 @@ const Dashboard: FC<{ id: string | null }> = ({ id }) => {
 
   return (
     <div className="flex flex-col w-full h-full min-h-screen">
-      <HandleUserEntryDummy setLoginId={setLoginId} id={id} />
+      <HandleUserEntryDummy id={id} />
       {formPopup ? <FeedbackPopup setFormPopup={setFormPopup} /> : null}
       {showNotif ? (
         <FeedbackNotification
@@ -71,7 +70,7 @@ const Dashboard: FC<{ id: string | null }> = ({ id }) => {
           notifHandler={setShowNotif}
         />
       ) : null}
-      {showHeader ? <UserSection loginId={loginId} /> : null}
+      {showHeader ? <UserSection /> : null}
       <div className="flex-grow w-full">
         <div className="flex flex-col w-full">
           <div className="flex flex-row thin:flex-wrap-reverse mt-content w-full h-full">

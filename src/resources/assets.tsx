@@ -285,7 +285,6 @@ export const course_tags = [
  * @param inspected - the course
  * @returns array with valid prereqs
  */
-
 export const filterNNegatives = (inspected: Course | "None"): any[] => {
   let preReqs: any[] = [];
   if (inspected !== "None" && inspected !== undefined) {
@@ -294,6 +293,22 @@ export const filterNNegatives = (inspected: Course | "None"): any[] => {
     });
   }
   return preReqs;
+};
+
+/**
+ * Gets the login cookie value.
+ * @param cookies - the cookies in the site currently
+ * @returns cookieVal - the value of the login cookie
+ */
+export const getLoginCookieVal = (cookies: { [x: string]: any }): string => {
+  let cookieVal = "";
+  // Retrieves user if user ID is "noUser", the initial user id state for userSlice.tsx.
+  // Make call for backend
+  Object.entries(cookies).forEach((cookie: any) => {
+    if (cookie[0] === "_hjid" || cookie[0] === "connect.sid")
+      cookieVal = cookie[1];
+  });
+  return cookieVal;
 };
 
 /**

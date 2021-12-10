@@ -1,6 +1,6 @@
 import { FC, useEffect, useState } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
-import { api, guestUser } from "../../resources/assets";
+import { api, getLoginCookieVal, guestUser } from "../../resources/assets";
 import { useDispatch, useSelector } from "react-redux";
 import { updateUser, selectUser } from "../../slices/userSlice";
 import { useCookies } from "react-cookie";
@@ -19,7 +19,7 @@ const DashboardEntry: FC = () => {
   // Redux setup.
   const dispatch = useDispatch();
   const user = useSelector(selectUser);
-  const [cookies] = useCookies(["connect.sid"]);
+  const [cookies] = useCookies();
   const [finishedLoginCheck, setFinishedLoginCheck] = useState(false);
 
   // React router state setup.
@@ -45,18 +45,12 @@ const DashboardEntry: FC = () => {
       }
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [location, document.cookie]);
+  }, [location]);
 
   // Initial login for when the user is the initial state, no_user.
   const initialLogin = (): void => {
-    let cookieVal = "";
-    // Retrieves user if user ID is "noUser", the initial user id state for userSlice.tsx.
-    // Make call for backend
-    Object.entries(cookies).forEach((cookie: any) => {
-      if (cookie[0] === "_hjid" || cookie[0] === "connect.sid")
-        cookieVal = cookie[1];
-    });
-    fetch(api + "/retrieveUser/" + cookieVal, {
+    const loginId = getLoginCookieVal(cookies);
+    fetch(api + "/retrieveUser/" + loginId, {
       mode: "cors",
       method: "GET",
       credentials: "include",

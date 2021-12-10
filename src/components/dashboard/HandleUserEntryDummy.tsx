@@ -34,9 +34,8 @@ import { getMajorFromCommonName } from "../../resources/majors";
  * TODO: Gracefully handle axios error cases (what happens when axios fails?), clean up extra years that are not being trash collected right now on import, and modularize this component!
  */
 const HandleUserEntryDummy: FC<{
-  setLoginId: (id: string) => void;
   id: string | null;
-}> = ({ setLoginId, id }) => {
+}> = ({ id }) => {
   // Redux setup
   const dispatch = useDispatch();
   const user = useSelector(selectUser);
@@ -537,7 +536,6 @@ const HandleUserEntryDummy: FC<{
             closeOnClick: false,
           });
           dispatch(updateUser(retrievedUser.data.data));
-          setLoginId(cookieVal);
 
           // // means that the user entered a sharable link
           // // first login with guest, then populate the plan with the information from the id
@@ -577,7 +575,6 @@ const HandleUserEntryDummy: FC<{
         })
         .then((retrievedUser) => {
           dispatch(updateUser(retrievedUser.data.data));
-          setLoginId(cookieVal);
         })
         .catch((err) => {
           console.log("ERROR: ", err);
