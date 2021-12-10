@@ -12,11 +12,9 @@ import {
 import { allMajors } from "./majors";
 import { store } from "../appStore/store";
 
-// export const api = window.location.href.includes("local")
-//   ? "https://ucredit-dev.herokuapp.com/api"
-//   : "https://ucredit-api.herokuapp.com/api";
-
-export const api = "https://ucredit-dev.herokuapp.com/api";
+export const api = window.location.href.includes("local")
+  ? "https://ucredit-dev.herokuapp.com/api"
+  : "https://ucredit-api.herokuapp.com/api";
 
 export const guestUser: User = {
   _id: "guestUser",
@@ -432,7 +430,7 @@ export const getCourses = (
             const inIndex = retrievedCourseDepChange.index;
             if (retrievedCourseDepChange.resp !== null) {
               retrieved++;
-              // Append original num to front for later sorting
+              // Append original num to front for later sorting // TODO: We don't need this. Please look to removing this extraneous complexity in the code logic.
               numNameList[inIndex] =
                 outNum + outNum + " " + retrievedCourseDepChange.resp.title;
             } else if (numNameList[inIndex] == null) {
@@ -517,7 +515,7 @@ export const getCourse = async (
     // Then pull from db.
     if (out === null) {
       axios
-        .get("https://ucredit-dev.herokuapp.com/api/search", {
+        .get(api + "/search", {
           params: { query: courseNumber },
         })
         .then((courses) => {
