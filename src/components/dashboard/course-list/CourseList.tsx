@@ -74,14 +74,23 @@ const CourseList: FC = () => {
         setCurrentPlanId(currentPlan._id);
         year.courses.forEach(async (courseId: string) => {
           try {
-            const resp = await axios.get(api + "/courses/" + courseId)
+            const resp = await axios.get(api + "/courses/" + courseId);
             const course: UserCourse = resp.data.data;
             yearCourses.push(course);
             totCourses.push(course);
             totalCredits += course.credits;
-            makeUpdates(jsx, totCourses, year, yearIndex, yearCourses, totalCredits);
-          } catch (err) { console.log(err); }
-        }) 
+            makeUpdates(
+              jsx,
+              totCourses,
+              year,
+              yearIndex,
+              yearCourses,
+              totalCredits
+            );
+          } catch (err) {
+            console.log(err);
+          }
+        });
       }
       handleNonFetch(yearIndex, updateNonFetch, totCourses, totalCredits);
     });
@@ -90,10 +99,10 @@ const CourseList: FC = () => {
 
   /**
    * Helper function to handle non-fetch scenarios
-   * @param yearIndex 
-   * @param updateNonFetch 
-   * @param totCourses 
-   * @param totalCredits 
+   * @param yearIndex
+   * @param updateNonFetch
+   * @param totCourses
+   * @param totalCredits
    */
   const handleNonFetch = (
     yearIndex: number,
@@ -101,24 +110,24 @@ const CourseList: FC = () => {
     totCourses: UserCourse[],
     totalCredits: number
   ): void => {
-      if (yearIndex === currentPlan.years.length - 1 && updateNonFetch) {
-        dispatch(updateCurrentPlanCourses(totCourses));
-        dispatch(updateTotalCredits(totalCredits));
-      }
-  }
+    if (yearIndex === currentPlan.years.length - 1 && updateNonFetch) {
+      dispatch(updateCurrentPlanCourses(totCourses));
+      dispatch(updateTotalCredits(totalCredits));
+    }
+  };
 
   /**
    * Helper Function for above useEffect call
-   * @param jsx 
-   * @param totCourses 
-   * @param year 
-   * @param yearIndex 
-   * @param yearCourses 
-   * @param totalCredits 
+   * @param jsx
+   * @param totCourses
+   * @param year
+   * @param yearIndex
+   * @param yearCourses
+   * @param totalCredits
    */
   const makeUpdates = (
     jsx: JSX.Element[],
-    totCourses: UserCourse[], 
+    totCourses: UserCourse[],
     year: Year,
     yearIndex: number,
     yearCourses: UserCourse[],
@@ -140,20 +149,18 @@ const CourseList: FC = () => {
       if (totalCredits >= 0) {
         jsx.sort(
           (el1: JSX.Element, el2: JSX.Element) =>
-            el1.props.children.props.id -
-            el2.props.children.props.id
+            el1.props.children.props.id - el2.props.children.props.id
         );
       } else {
         jsx.sort(
-          (el1: JSX.Element, el2: JSX.Element) =>
-            el1.props.id - el2.props.id
+          (el1: JSX.Element, el2: JSX.Element) => el1.props.id - el2.props.id
         );
       }
       dispatch(updateCurrentPlanCourses(totCourses));
       if (totalCredits >= 0) dispatch(updateTotalCredits(totalCredits));
       setElements(jsx);
     }
-  }
+  };
 
   /**
    * Gets course based on id. If course isn't found, returns empty course
@@ -298,9 +305,9 @@ const CourseList: FC = () => {
     try {
       const resp = await axios.get(api + "/search", {
         params: { query: courseObj.number },
-      })
+      });
       let retrievedCourses: SISRetrievedCourse[] = resp.data.data;
-    
+
       if (
         retrievedCourses.length !== 0 &&
         !checkDestValid(courseId, destination)
@@ -336,7 +343,7 @@ const CourseList: FC = () => {
             "Content-Type": "application/json",
           },
           body: JSON.stringify(body),
-        })
+        });
 
         if (!res.ok) {
           console.log("ERROR:", res);
@@ -354,7 +361,9 @@ const CourseList: FC = () => {
         dispatch(updatePlanList(planListClone));
         dispatch(updateSelectedPlan(newCurrentPlan));
       }
-    } catch (err) { console.log("error is: " + err); }
+    } catch (err) {
+      console.log("error is: " + err);
+    }
   };
 
   /**
@@ -437,7 +446,7 @@ const CourseList: FC = () => {
   return (
     <>
       <DragDropContext onDragEnd={onDragEnd}>
-        <div className="flex flex-row justify-between thin:justify-center mr-10 mt-24 h-full">
+        <div className="flex flex-row justify-between thin:justify-center mr-10 mt-5 h-full">
           <Droppable droppableId={"years"} type="YEAR" direction="horizontal">
             {(provided, snapshot) => (
               <div

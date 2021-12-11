@@ -205,13 +205,10 @@ const Form: FC<{ setSearching: (searching: boolean) => void }> = (props) => {
           .catch(() => {
             return [[], []];
           });
-        let SISRetrieved: SISRetrievedCourse[] = retrieved.data.data;
-        if (
-          extras.query.length <= minLength ||
-          searchTerm.length - extras.query.length >= 2
-        ) {
-          props.setSearching(false);
-        }
+        let SISRetrieved: SISRetrievedCourse[] = processedRetrievedData(
+          retrieved.data.data,
+          extras
+        );
         return resolve([SISRetrieved, []]);
       } else {
         const filterProcessing = filterCourses(extras, courses);
@@ -219,6 +216,34 @@ const Form: FC<{ setSearching: (searching: boolean) => void }> = (props) => {
         return resolve([courses, []]);
       }
     });
+  };
+
+  /**
+   * Processes retrieved data after searching
+   * @param data - retrieved data
+   * @param extras - search params
+   * @returns SISRetrieved - processed data
+   */
+  const processedRetrievedData = (
+    data: SISRetrievedCourse[],
+    extras: SearchExtras
+  ): SISRetrievedCourse[] => {
+    let SISRetrieved: SISRetrievedCourse[] = data;
+    if (extras.areas === "N")
+      // TODO: backend searches for courses with "None" area. Fix this.
+      SISRetrieved = SISRetrieved.filter((course) => {
+        for (let version of course.versions) {
+          if (version.areas === "N") return true;
+        }
+        return false;
+      });
+    if (
+      extras.query.length <= minLength ||
+      searchTerm.length - extras.query.length >= 2
+    ) {
+      props.setSearching(false);
+    }
+    return SISRetrieved;
   };
 
   /**

@@ -59,12 +59,12 @@ const DeleteYearPopup: FC = () => {
       <GenerateNewPlan />
       <div className="absolute top-0">
         {/* Background Grey */}
-        <div className="fixed z-40 left-0 top-0 m-0 w-full h-screen bg-black opacity-50"></div>
+        <div className="fixed z-30 left-0 top-0 m-0 w-full h-screen bg-black opacity-50"></div>
 
         {/* Actual popup */}
         <div
           className={
-            "z-50 fixed flex flex-col bg-red-500 select-none rounded z-20 w-3/12 top-1/3 left-1/2 transform -translate-x-1/2 -translate-y-1/3 min-w-planAdd shadow"
+            "z-40 fixed flex flex-col bg-red-500 select-none rounded z-20 w-3/12 top-1/3 left-1/2 transform -translate-x-1/2 -translate-y-1/3 min-w-planAdd shadow"
           }
         >
           <div className="px-4 py-2 text-white text-coursecard font-semibold select-none">

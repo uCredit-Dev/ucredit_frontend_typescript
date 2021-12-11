@@ -256,12 +256,12 @@ const InfoMenu: FC = () => {
       : "Show Fine Requirements";
   return (
     <div
-      className="fixed z-50 right-0 flex flex-col justify-between mt-4 w-10"
+      className="fixed z-30 right-0 flex flex-col justify-between mt-4 w-10"
       style={{ height: "90vh" }}
     >
       <div className="my-auto transform -rotate-90">
         <button
-          className="w-32 h-10 text-center text-white font-bold hover:bg-blue-400 bg-green-400 bg-white rounded focus:outline-none shadow hover:scale-105 transition duration-200 ease-in"
+          className="w-32 h-10 text-center text-white font-bold hover:bg-blue-400 bg-green-400 rounded focus:outline-none shadow hover:scale-105 transition duration-200 ease-in drop-shadow-xl"
           onClick={() => {
             setInfoOpen(!infoOpen);
           }}

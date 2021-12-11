@@ -19,12 +19,12 @@ const UserSection: FC = () => {
   const [cookies, , removeCookie] = useCookies(["connect.sid"]);
 
   return (
-    <div className="fixed z-20 p-3 px-6 w-screen h-20 bg-gradient-to-r shadow from-blue-500 to-green-400 select-none">
+    <div className="fixed z-20 p-3 px-6 w-screen h-16 bg-gradient-to-r shadow from-blue-500 to-green-400 select-none">
       <div className="flex flex-row items-center justify-end w-full h-full">
         {/* <div className="flex flex-row items-center justify-center mr-3 w-11 h-11 bg-white rounded-full"> */}
         {/* <UserSvg className="w-6 h-6 stroke-2" /> */}
         {/* </div> */}
-        <div className="flex flex-row flex-grow items-center ml-5 text-white text-4xl italic font-bold">
+        <div className="flex flex-row flex-grow items-center ml-5 text-white text-3xl italic font-bold">
           <img src={bird} alt="logo" className="mr-3 h-9"></img>
           <div>uCredit</div>
         </div>
@@ -56,7 +56,7 @@ const UserSection: FC = () => {
                   console.log("error logging out", err);
                 });
             }}
-            className="flex flex-row items-center justify-center w-24 h-9 bg-white rounded focus:outline-none cursor-pointer select-none transform hover:scale-110 transition duration-200 ease-in"
+            className="flex flex-row items-center justify-center w-24 h-9 bg-white rounded focus:outline-none cursor-pointer select-none transform hover:scale-110 transition duration-200 ease-in drop-shadow-xl"
           >
             Log Out
           </button>

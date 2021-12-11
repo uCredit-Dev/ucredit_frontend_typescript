@@ -103,7 +103,7 @@ const CourseComponent: FC<{
   return (
     <>
       <div
-        className="relative flex items-center justify-between mt-2 p-2 w-1/5 max-w-yearheading bg-gray-100 rounded shadow md:w-48"
+        className="relative flex items-center justify-between text-xs mt-2 pl-2 p-0.5 w-1/5 max-w-yearheading bg-gray-100 rounded shadow md:w-48"
         onMouseEnter={activate}
         onMouseLeave={deactivate}
         onMouseOver={() => {
@@ -111,9 +111,9 @@ const CourseComponent: FC<{
         }}
         key={course.number}
       >
-        <div className="flex flex-col gap-1 w-full h-full">
-          <div className="w-full text-coursecard truncate">{course.title}</div>
-          <div className="flex flex-row gap-1 items-center text-center text-coursecard">
+        <div className="flex flex-col w-full h-full">
+          <div className="w-full truncate">{course.title}</div>
+          <div className="flex flex-row gap-0.5 items-center text-center">
             <div>{course.number}</div>
             <div className="flex items-center px-1 text-white font-semibold bg-secondary rounded select-none">
               {course.credits}
@@ -163,14 +163,14 @@ const CourseComponent: FC<{
                   onMouseEnter={() => setDraggable(false)}
                   onMouseLeave={() => setDraggable(true)}
                 >
-                  <div className="h-min mt-2 mx-auto w-min text-2xl font-thin">
+                  <div className="h-min mt-1 mx-auto w-min text-lg font-thin">
                     ✥
                   </div>
                 </div>
                 <div className="flex flex-col">
                   <div className="flex flex-row">
                     <DetailsSvg
-                      className="relative z-20 flex flex-row items-center justify-center ml-12 mr-5 p-0.5 w-6 h-6 text-white hover:bg-blue-400 bg-green-300 rounded-md outline-none stroke-2 cursor-pointer transform hover:scale-110 transition duration-150 ease-in"
+                      className="relative z-20 flex flex-row items-center justify-center ml-12 mr-5 p-0.5 w-6 h-6 text-white hover:bg-blue-400 bg-green-400 rounded-md outline-none stroke-2 cursor-pointer transform hover:scale-110 transition duration-150 ease-in"
                       onClick={displayCourses}
                     />
                     <RemoveSvg

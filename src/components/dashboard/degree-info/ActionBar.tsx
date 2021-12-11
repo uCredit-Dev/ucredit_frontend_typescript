@@ -23,7 +23,10 @@ import ReactTooltip from "react-tooltip";
 /**
  * @description ActionBar component
  */
-const ActionBar: FC = () => {
+const ActionBar: FC<{ dropdown: boolean; setDropdown: Function }> = ({
+  dropdown,
+  setDropdown,
+}) => {
   // Redux Setup
   const dispatch = useDispatch();
   const currentPlan = useSelector(selectPlan);
@@ -158,12 +161,13 @@ const ActionBar: FC = () => {
     ReactTooltip.rebuild();
   });
   return (
-    <div className="flex flex-row px-2 py-1 bg-white rounded shadow overflow-x-auto drop-shadow-xl">
-      <PlanChoose />
-      <div className="flex flex-row items-end mr-2 my-1 h-10 border border-gray-300 rounded rounded shadow drop-shadow-xl">
+    <div className="flex flex-row px-2 py-1 bg-white rounded shadow overflow-x-auto drop-shadow-md sticky top-0 z-20">
+      <PlanChoose dropdown={dropdown} setDropdown={setDropdown} />
+      <div className="flex flex-row items-end mr-2 my-1 h-10 border bg-white border-gray-300 rounded rounded shadow">
+        <div className="text-xl m-auto ml-2 mr-0">✎</div>
         <input
           value={planName}
-          className="ml-2 my-1 px-1 w-auto h-8 text-gray-800 text-2xl font-semibold outline-none"
+          className=" my-0.5 px-1 w-80 h-8 text-gray-800 text-lg outline-none"
           onChange={handlePlanNameChange}
         />
       </div>
