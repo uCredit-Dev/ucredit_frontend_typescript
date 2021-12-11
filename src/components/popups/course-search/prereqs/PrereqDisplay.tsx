@@ -199,13 +199,16 @@ const PrereqDisplay: FC = () => {
    */
   const getNonStringPrereq = (input: any): parsedPrereqs => {
     const element = input;
-    if (typeof element === "string" && courseToShow !== null) {
+    if (typeof element === "string") {
       // If the element is a number
       const noCBrackets: string = element.substr(0, element.length - 3);
       const noCBracketsNum: string = element.substr(0, 10);
       const yearToCheck: Year = getYearById(courseToShow);
       const semesterToCheck: string =
-        courseToShow.term.charAt(0).toUpperCase() + courseToShow.term.slice(1);
+        courseToShow !== null
+          ? courseToShow.term.charAt(0).toUpperCase() +
+            courseToShow.term.slice(1)
+          : semester;
       let satisfied: boolean = checkPrereq(
         currPlanCourses,
         currentPlan,
