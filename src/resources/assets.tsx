@@ -798,17 +798,15 @@ export const checkPrereq = (
   year: Year,
   semester: SemesterType
 ): boolean => {
-  let satisfied: boolean = false;
-  courses.forEach((course) => {
+  for (let course of courses) {
     if (
       (course.number === preReqNumber ||
         checkOldPrereqNumbers(course.number, preReqNumber)) &&
       prereqInPast(course, year, semester, plan)
-    ) {
-      satisfied = true;
-    }
-  });
-  return satisfied;
+    )
+      return true;
+  }
+  return false;
 };
 
 const checkOldPrereqNumbers = (
@@ -849,7 +847,10 @@ const prereqInPast = (
 ): boolean => {
   const retrievedYear = getCourseYear(plan, course);
   if (retrievedYear !== null) {
-    if (retrievedYear.year < year.year) {
+    if (
+      retrievedYear.year < year.year ||
+      (year.year === retrievedYear.year && checkSemester(semester, course.term))
+    ) {
       return true;
     } else if (retrievedYear.year > year.year) {
       return false;
@@ -862,6 +863,39 @@ const prereqInPast = (
   } else {
     return false;
   }
+};
+
+/**
+ * @param semester - semester to check against
+ * @param courseSemester - semester of course
+ */
+const checkSemester = (
+  semester: SemesterType,
+  courseSemester: SemesterType
+): boolean => {
+  const uppercaseConverted =
+    courseSemester.charAt(0).toUpperCase() + courseSemester.slice(1);
+  if (
+    uppercaseConverted === "Fall" ||
+    uppercaseConverted === "Spring" ||
+    uppercaseConverted === "Summer" ||
+    uppercaseConverted === "Intersession"
+  ) {
+    courseSemester = uppercaseConverted;
+  }
+
+  if (courseSemester === "Fall") {
+    return semester !== "Fall";
+  } else if (courseSemester === "Spring") {
+    return semester !== "Spring" && semester !== "Fall";
+  } else if (courseSemester === "Intersession") {
+    return (
+      semester !== "Intersession" &&
+      semester !== "Spring" &&
+      semester !== "Fall"
+    );
+  }
+  return false;
 };
 
 /**

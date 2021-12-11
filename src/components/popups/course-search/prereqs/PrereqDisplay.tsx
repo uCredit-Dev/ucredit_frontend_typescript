@@ -199,17 +199,24 @@ const PrereqDisplay: FC = () => {
    */
   const getNonStringPrereq = (input: any): parsedPrereqs => {
     const element = input;
-    if (typeof element === "string") {
+    if (typeof element === "string" && courseToShow !== null) {
       // If the element is a number
       const noCBrackets: string = element.substr(0, element.length - 3);
       const noCBracketsNum: string = element.substr(0, 10);
-      const yearToCheck = getYearById(courseToShow);
+      const yearToCheck: Year = getYearById(courseToShow);
+      const semesterToCheck: string =
+        courseToShow.term.charAt(0).toUpperCase() + courseToShow.term.slice(1);
       let satisfied: boolean = checkPrereq(
         currPlanCourses,
         currentPlan,
         noCBracketsNum,
         yearToCheck,
-        semester
+        semesterToCheck === "Fall" ||
+          semesterToCheck === "Spring" ||
+          semesterToCheck === "Summer" ||
+          semesterToCheck === "Intersession"
+          ? semesterToCheck
+          : semester
       );
       return {
         satisfied: satisfied,
@@ -276,7 +283,7 @@ const PrereqDisplay: FC = () => {
         const parsed: parsedPrereqs = getNonStringPrereq(element[0]);
         return {
           satisfied: parsed.satisfied,
-          jsx: <p>{parsed.jsx}</p>,
+          jsx: <p key={"drop" + element}>{parsed.jsx}</p>,
         };
       } else {
         const parsedSat: boolean = isSatisfied(element, false);
@@ -445,7 +452,12 @@ const PrereqDisplay: FC = () => {
       );
     else if (!loaded)
       return <>{"Loading Prereqs Status: loaded is " + loaded.toString()}</>;
-    else return <p className="p-2 overflow-y-auto">{preReqDisplay}</p>;
+    else
+      return (
+        <p key={"drop" + preReqDisplay} className="p-2 overflow-y-auto">
+          {preReqDisplay}
+        </p>
+      );
   };
 
   return (
