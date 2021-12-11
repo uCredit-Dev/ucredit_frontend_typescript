@@ -210,7 +210,7 @@ const YearComponent: FC<{
       id={id.toString()}
       className={
         customStyle +
-        "cursor-move p-2 max-w-year-heading w-max rounded mb-4 bg-blue-400 rounded drop-shadow-xl" +
+        "cursor-move p-2 max-w-year-heading w-max rounded mb-4 bg-blue-400 rounded shadow" +
         (addingPrereqStatus ? "z-30" : "")
       }
       style={{ minWidth: "14rem" }}

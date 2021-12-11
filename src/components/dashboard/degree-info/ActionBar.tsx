@@ -1,4 +1,4 @@
-import { FC, useEffect, useState } from "react";
+import { FC, MouseEventHandler, useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { toast } from "react-toastify";
 import { api } from "../../../resources/assets";
@@ -14,7 +14,6 @@ import {
 } from "../../../slices/userSlice";
 import PlanChoose from "./PlanChoose";
 import { ReactComponent as RemoveSvg } from "../../../resources/svg/Remove.svg";
-import ShareLinksPopup from "./ShareLinksPopup";
 import { ReactComponent as AddSvg } from "../../../resources/svg/Add.svg";
 import axios from "axios";
 import { Year, Plan } from "../../../resources/commonTypes";
@@ -23,10 +22,11 @@ import ReactTooltip from "react-tooltip";
 /**
  * @description ActionBar component
  */
-const ActionBar: FC<{ dropdown: boolean; setDropdown: Function }> = ({
-  dropdown,
-  setDropdown,
-}) => {
+const ActionBar: FC<{
+  dropdown: boolean;
+  setDropdown: Function;
+  onShareClick: MouseEventHandler<HTMLButtonElement>;
+}> = ({ dropdown, setDropdown, onShareClick }) => {
   // Redux Setup
   const dispatch = useDispatch();
   const currentPlan = useSelector(selectPlan);
@@ -38,9 +38,6 @@ const ActionBar: FC<{ dropdown: boolean; setDropdown: Function }> = ({
 
   // Determines whether we're editing the name.
   const [editName, setEditName] = useState<boolean>(false);
-
-  // shareable URL
-  const [shareableURL, setShareableURL] = useState<string>("");
 
   // Only edits name if editName is true. If true, calls debounce update function
   useEffect(() => {
@@ -97,23 +94,6 @@ const ActionBar: FC<{ dropdown: boolean; setDropdown: Function }> = ({
   // Activates delete plan popup.
   const activateDeletePlan = (): void => {
     dispatch(updateDeletePlanStatus(true));
-  };
-
-  /**
-   * Handles when button for shareable link is clicked.
-   */
-  const onShareClick = (): void => {
-    if (shareableURL !== "") {
-      setShareableURL("");
-      return;
-    }
-    setShareableURL(
-      (window.location.href.includes("localhost")
-        ? "localhost:3000"
-        : "https://ucredit.me") +
-        "/share?_id=" +
-        currentPlan._id
-    );
   };
 
   /**
@@ -206,11 +186,6 @@ const ActionBar: FC<{ dropdown: boolean; setDropdown: Function }> = ({
         </svg>
         <div className="ml-1">Share</div>
       </button>
-      <div>
-        {shareableURL === "" ? null : (
-          <ShareLinksPopup link={shareableURL} setURL={onShareClick} />
-        )}
-      </div>
       <div className="flex flex-row items-center my-1 w-10 h-10 hover:underline hover:bg-green-300 border border-gray-300 rounded focus:outline-none shadow cursor-pointer transition duration-200 ease-in">
         <AddSvg
           onClick={() => addNewYear(false)}

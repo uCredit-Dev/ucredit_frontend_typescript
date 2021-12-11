@@ -38,6 +38,7 @@ import {
   selectPlanList,
   updatePlanList,
 } from "../../slices/userSlice";
+import ShareLinksPopup from "./degree-info/ShareLinksPopup";
 
 /**
  * The dashboard that displays the user's plan.
@@ -62,6 +63,7 @@ const Dashboard: FC<{ id: string | null }> = ({ id }) => {
   const [formPopup, setFormPopup] = useState<boolean>(false);
   const [showHeader, setShowHeader] = useState<boolean>(true);
   const [dropdown, setDropdown] = useState<boolean>(false);
+  const [shareableURL, setShareableURL] = useState<string>("");
 
   // Handles plan change event.
   const handlePlanChange = (event: any) => {
@@ -103,6 +105,23 @@ const Dashboard: FC<{ id: string | null }> = ({ id }) => {
     }
   });
 
+  /**
+   * Handles when button for shareable link is clicked.
+   */
+  const onShareClick = (): void => {
+    if (shareableURL !== "") {
+      setShareableURL("");
+      return;
+    }
+    setShareableURL(
+      (window.location.href.includes("localhost")
+        ? "localhost:3000"
+        : "https://ucredit.me") +
+        "/share?_id=" +
+        currentPlan._id
+    );
+  };
+
   return (
     <div className="flex flex-col w-full h-full min-h-screen">
       <HandleUserEntryDummy id={id} />
@@ -119,7 +138,19 @@ const Dashboard: FC<{ id: string | null }> = ({ id }) => {
           <div className="flex flex-row thin:flex-wrap-reverse mt-content w-full h-full">
             <div className="flex flex-col w-full">
               <div className="mx-auto">
-                <ActionBar dropdown={dropdown} setDropdown={setDropdown} />
+                {shareableURL === "" ? null : (
+                  <div className="absolute right-24">
+                    <ShareLinksPopup
+                      link={shareableURL}
+                      setURL={onShareClick}
+                    />
+                  </div>
+                )}
+                <ActionBar
+                  dropdown={dropdown}
+                  setDropdown={setDropdown}
+                  onShareClick={onShareClick}
+                />
                 {dropdown ? (
                   <div className="absolute z-40 flex flex-col -mt-2 ml-2 w-60 text-black bg-white rounded shadow">
                     {planList.map((plan, index) => (
@@ -141,6 +172,7 @@ const Dashboard: FC<{ id: string | null }> = ({ id }) => {
                     </button>
                   </div>
                 ) : null}
+
                 <CourseList />
               </div>
             </div>

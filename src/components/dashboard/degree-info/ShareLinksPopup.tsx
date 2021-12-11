@@ -23,9 +23,9 @@ const ShareLinksPopup: FC<{
   };
 
   return (
-    <div>
+    <>
       <div
-        className="fixed z-30 left-0 top-0 w-screen h-screen"
+        className="absolute z-30 left-32 top-0 w-screen h-screen"
         onClick={() => setURL()}
       />
       <div className="absolute z-40 flex items-center w-80 h-6 bg-gray-50 rounded-md rounded-t-lg shadow overflow-auto transform -translate-x-full -translate-y-1/2">
@@ -42,7 +42,7 @@ const ShareLinksPopup: FC<{
         </div>
         <Copy className="w-4 h-4 cursor-pointer" onClick={copyToClipBoard} />
       </div>
-    </div>
+    </>
   );
 };
 
