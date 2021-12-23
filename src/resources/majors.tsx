@@ -1658,9 +1658,8 @@ const bsMolCell: Major = {
       required_credits: 18,
       min_credits_per_course: 1,
       description:
-        "For more information please visit the" +
-        "<a href='https://e-catalogue.jhu.edu/arts-sciences/full-time-residential-programs/degree-programs/biology/molecular-cellular-biology-bachelor-science/'>" +
-        "major degree requirement</a> section on the department website.",
+        "These are the core biology courses." +
+        "<br>For more information please visit the major degree requirement section on the department website.",
       criteria: "AS Biology[D]",
       fine_requirements: [
         {
@@ -1713,7 +1712,7 @@ const bsMolCell: Major = {
       name: "Chemistry",
       required_credits: 19,
       min_credits_per_course: 1, // labs are 1 credit
-      description: "Must complete General Chemistry (or AP equivalent) + lab and Organic Chemistry + lab.",
+      description: "Must complete General Chemistry (or AP equivalent) and Organic Chemistry in addition to their respective labs.",
       criteria: "AS Chemistry[D]",
       exception: "",
       fine_requirements: [
@@ -1761,7 +1760,7 @@ const bsMolCell: Major = {
       name: "Physics",
       required_credits: 10,
       min_credits_per_course: 1,
-      description: "Must complete all Physics courses.",
+      description: "Must complete Physics I and II (or AP equivalent) in addition to their respective labs.",
       criteria: "AS Physics & Astronomy[D]",
       fine_requirements: [
         {
@@ -1796,7 +1795,7 @@ const bsMolCell: Major = {
       name: "Mathematics",
       required_credits: 8,
       min_credits_per_course: 4,
-      description: "Must complete all Mathematics Course.",
+      description: "Must complete Calculus I and II",
       criteria: "AS Mathematics[D]",
       fine_requirements: [
         {
@@ -1824,8 +1823,8 @@ const bsMolCell: Major = {
       min_credits_per_course: 2,
       description:
         "4 courses and 12 credits required. One 2 or 3 credit elective must be taken in the Biology Department (AS.020.xxx). " +
-        "See POS-Tag BIOL-UL on SIS for the courses approved by the Director of Undergraduate Studies. " +
-        "Students may use 2 credits of Build-a-Genome (AS.020.420 or AS.020.451) toward the upper level Biology elective requirement.",
+        "<br>See POS-Tag BIOL-UL on SIS for the courses approved by the Director of Undergraduate Studies. " +
+        "<br>Students may use 2 credits of Build-a-Genome (AS.020.420 or AS.020.451) toward the upper level Biology elective requirement.",
       criteria: "AS Biology[D]",
       fine_requirements: [
         {
@@ -1841,7 +1840,7 @@ const bsMolCell: Major = {
       min_credits_per_course: 1,
       description:
         "Students may use AS.020.420 and/or AS.020.451 to fulfill 3 credits (each) of the Research Requirement. " +
-        "The major emphasis of the BS degree in molecular and cellular biology is the participation of the students in an original research project.",
+        "<br>The major emphasis of the BS degree in molecular and cellular biology is the participation of the students in an original research project.",
       criteria:
         "AS.020.135[C]^OR^AS.020.136[C]^OR^AS.020.420[C]^OR^AS.020.451[C]^OR^AS.020.503[C]^OR^AS.020.504[C]^OR^AS.020.513[C]^OR^AS.020.514[C]^OR^" +
         "AS.020.572[C]^OR^AS.020.597[C]^OR^AS.030.501[C]^OR^AS.030.502[C]^OR^AS.030.503[C]^OR^AS.030.504[C]^OR^AS.030.505[C]^OR^AS.030.506[C]^OR^" +
@@ -1854,7 +1853,7 @@ const bsMolCell: Major = {
       min_credits_per_course: 3,
       double_count: true,
       description: "Students are required to fulfill the university’s requirement of four writing intensive courses, " +
-      "each at least 3 credits. Students must receive at least a C- grade or better in these writing courses. ",
+      "each at least 3 credits. <br>Students must receive at least a C- grade or better in these writing courses. ",
       criteria: "Written Intensive[W]",
     },
     {
@@ -1862,9 +1861,9 @@ const bsMolCell: Major = {
       required_credits: 9,
       min_credits_per_course: 1,
       description: "Students must earn at least 9 credits in humanities. " +
-        "In Arts and Sciences, courses taken for the distribution requirement may be taken for a letter grade or for Satisfactory/Unsatisfactory credit. " +
-        "Courses passed with a letter grade of D or better, or passed with a Satisfactory grade, will fulfill the distribution requirement. " +
-        "Students who entered JHU prior to Fall 2014 should view the appropriate archived catalogue.",
+        "<br>In Arts and Sciences, courses taken for the distribution requirement may be taken for a letter grade or for Satisfactory/Unsatisfactory credit. " +
+        "<br>Courses passed with a letter grade of D or better, or passed with a Satisfactory grade, will fulfill the distribution requirement. " +
+        "<br>Students who entered JHU prior to Fall 2014 should view the appropriate archived catalogue.",
       criteria: "H[A]",
       exclusive: true
     },
@@ -1873,9 +1872,9 @@ const bsMolCell: Major = {
       required_credits: 9,
       min_credits_per_course: 1,
       description: "Students must earn at least 9 credits in social sciences. " +
-        "In Arts and Sciences, courses taken for the distribution requirement may be taken for a letter grade or for Satisfactory/Unsatisfactory credit. " +
-        "Courses passed with a letter grade of D or better, or passed with a Satisfactory grade, will fulfill the distribution requirement. " +
-        "Students who entered JHU prior to Fall 2014 should view the appropriate archived catalogue.",
+        "<br>In Arts and Sciences, courses taken for the distribution requirement may be taken for a letter grade or for Satisfactory/Unsatisfactory credit. " +
+        "<br>Courses passed with a letter grade of D or better, or passed with a Satisfactory grade, will fulfill the distribution requirement. " +
+        "<br>Students who entered JHU prior to Fall 2014 should view the appropriate archived catalogue.",
       criteria: "S[A]",
       exclusive: true
     },
@@ -1887,7 +1886,7 @@ const bsMolCell: Major = {
         "Students earning either a BA in biology or BS in cellular and molecular biology are eligible to receive their degree with honors. " +
         "The following requirements are in addition to the regular requirements for the degrees. " + 
         "<br>- GPA of 3.5 or higher in N and Q courses. " +
-        "<br>- 6 credits of registered independent research (note that this is already a requirement for the BS degree). " +
+        "<br>- r6 credits of registered independent research (note that this is already a requirement for the BS degree). " +
         "<br>- A letter of support from your research supervisor (the PI of the lab)" +
         "<br>- Presentation of your independent research as a seminar or poster presentation", 
       criteria: ""
