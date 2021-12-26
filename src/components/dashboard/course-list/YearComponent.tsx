@@ -247,6 +247,16 @@ const YearComponent: FC<{
             className="mt-0.5 w-8 stroke-2 cursor-pointer"
           />
         </div>
+        {display ? (
+          <YearSettingsDropdown
+            year={year}
+            setToShow={setToShow}
+            setDisplay={setDisplay}
+            toShow={toShow}
+            setEdittingName={setEdittingName}
+            id={id}
+          />
+        ) : null}
       </div>
       <div
         className="p-2 bg-white rounded shadow cursor-default"
@@ -265,18 +275,6 @@ const YearComponent: FC<{
             courses={fallCourses}
           />
         )}
-      </div>
-      <div>
-        {display ? (
-          <YearSettingsDropdown
-            year={year}
-            setToShow={setToShow}
-            setDisplay={setDisplay}
-            toShow={toShow}
-            setEdittingName={setEdittingName}
-            id={id}
-          />
-        ) : null}
       </div>
     </div>
   );
