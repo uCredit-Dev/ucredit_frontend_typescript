@@ -14,7 +14,8 @@ jobs:
     steps:
     - uses: actions/checkout@v2
     - name: Install Dependencies
-      run: npm install
-      run: npm install -g eslint
+      run: |
+        npm install
+        npm install -g eslint
     - name: Run ESLint
       run: eslint . --ext .js,.jsx,.ts,.tsx
