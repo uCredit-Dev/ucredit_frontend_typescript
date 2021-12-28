@@ -1141,7 +1141,7 @@ const bsAMS: Major = {
       required_credits: 39,
       min_credits_per_course: 3,
       description: "All courses used to meet the following departmental requirements must be taken for a letter grade and passed with a grade of C- or higher.",
-      criteria: "AS Mathematics[D]^OR^EN Applied Math and Statistics[D]",
+      criteria: "EN Applied Mathematics and Statistics[D]^OR^AS Mathematics[D]",
       fine_requirements: [
         {
           description: 
@@ -1153,33 +1153,37 @@ const bsAMS: Major = {
             "AS.110.108[C]^OR^AS.110.109[C]^OR^AS.110.113[C]^OR^AS.110.202[C]^OR^AS.110.211[C]",
         },
         {
-          description: "Linear Algebra",
+          description: "<b>Linear Algebra</b> <br /> AS.110.201 Linear Algebra <br /> <i>OR</i> <br /> AS.110.212 Honors Linear Algebra <br /> <i>OR</i> <br /> EN.553.291 Linear Algebra and Differential Equations",
           required_credits: 4,
           criteria: "AS.110.201[C]^OR^AS.110.212[C]^OR^EN.553.291[C]",
         },
         {
-          description: "Differential Equations",
+          description: "<b>Differential Equations</b> <br /> AS.110.302 Differential Equations and Applications <br /> <i>OR</i> <br /> EN.553.391 Dynamical Systems <br /> <i>OR</i> <br /> EN.540.468 Introduction to Nonlinear Dynamics and Chaos",
           required_credits: 3,
           criteria: "AS.110.302[C]^OR^EN.553.391[C]^OR^EN.540.468[C]",
         },
         {
-          description: "Numerical Linear Algebra",
+          description: "<b>Numerical Linear Algebra</b> <br /> EN.553.385 Numerical Linear Algebra",
           required_credits: 4,
           criteria: "EN.553.385[C]",
         },
         {
-          description: "Discrete Mathematics",
+          description: 
+            "<b>Discrete Mathematics</b> <br /> EN.553.171 Discrete Mathematics <br /> <i>OR</i> <br /> EN.553.172 Honors Discrete Mathematics <br /> <i>OR</i> <br /> EN.553.371 " +
+            "Cryptology and Coding <br /> <i>OR</i> <br /> EN.553.471 Combinatorial Analysis <br /> <i>OR</i> <br /> EN.553.472 Graph Theory",
           required_credits: 4,
           criteria:
             "EN.553.171[C]^OR^EN.553.172[C]^OR^EN.553.371[C]^OR^EN.553.471[C]^OR^EN.553.472[C]",
         },
         {
-          description: "Probability and Statistics",
+          description: 
+            "<b>Probability and Statistics</b> <br /> EN.553.420 Introduction to Probability <br /> EN.553.430 Introduction to Statistics <br /> <i>OR</i> <br />" + 
+            "EN.553.431 Honors Introduction to Statistics",
           required_credits: 8,
           criteria: "EN.553.420[C]^OR^EN.553.430[C]^OR^EN.553.431[C]",
         },
         {
-          description: "Optimization",
+          description: "<b>Optimization</b> <br /> EN.553.361 Introduction to Optimization",
           required_credits: 4,
           criteria: "EN.553.361[C]",
         },
@@ -1190,14 +1194,14 @@ const bsAMS: Major = {
       required_credits: 3,
       min_credits_per_course: 1,
       description:
-        "Select one of the following: " +
-        "EN.500.112 Gateway Computing: JAVA\n\tEN.500.113 Gateway Computing: Python\n\tEN.500.114Gateway Computing: Matlab\n\t" +
-        "AS.250.205 Introduction to Computing\n\tEN.553.281 Introduction to Mathematical Computing\n\tEN.580.242 & EN.580.244" +
-        "Biological Models and Simulations and Nonlinear Dynamics of Biological Systems\n\tEN.601.220 Intermediate Programming" +
-        ". NOTE: Students are strongly encouraged to fulfill this element of the requirement by taking EN.500.113 Gateway Computing: Python, and to do this in their first semester at Johns Hopkins University.",
+        "Select one of the following: <br />" +
+        "EN.500.112 Gateway Computing: JAVA <br /> EN.500.113 Gateway Computing: Python <br /> EN.500.114 Gateway Computing: Matlab <br />" +
+        "AS.250.205 Introduction to Computing <br /> EN.553.281 Introduction to Mathematical Computing <br /> EN.580.242 & EN.580.244 " +
+        "Biological Models and Simulations and Nonlinear Dynamics of Biological Systems <br /> EN.601.220 Intermediate Programming" +
+        ". <br /> NOTE: Students are strongly encouraged to fulfill this element of the requirement by taking EN.500.113 Gateway Computing: Python, and to do this in their first semester at Johns Hopkins University.",
       criteria:
         "EN.500.112[C]^OR^EN.500.113[C]^OR^EN.500.114[C]^OR^AS.250.205[C]^OR^EN.553.281[C]^OR^EN.580.242[C]^OR^EN.580.244[C]^OR^" +
-        "EN.601.220",
+        "EN.601.220[C]",
     },
     {
       name: "Area of Focus",
@@ -1216,7 +1220,7 @@ const bsAMS: Major = {
       description:
         "Courses coded Natural Sciences. Laboratory courses that accompany Natural Science courses may" +
         " be used in reaching this total. (Courses used to meet the requirements above may be counted toward this total.)",
-      criteria: "AS Natural Science[N]",
+      criteria: "N[A]",
     },
     {
       name: "Quantitative Studies",
@@ -1225,7 +1229,14 @@ const bsAMS: Major = {
       description:
         "Courses coded Quantitative Studies totaling 40 credits of which at least 18 credits must be in courses " +
         "numbered 300 or higher. (Courses used to meet the requirements above may be counted toward this total.)",
-      criteria: "AS Natural Science[N]",
+      criteria: "Q[A]",
+      fine_requirements: [
+        {
+          description: "<b>Upper Level Requirement</b> <br /> At least 18 credits must be in courses numbered 300 or higher.",
+          required_credits: 18,
+          criteria: "Upper Level[L]"
+        }
+      ]
     },
     {
       name: "Liberal Arts",
@@ -1251,7 +1262,7 @@ const bsAMS: Major = {
       fine_requirements: [
         {
           description:
-            "At least one course must be explicitly focused on writing skills in English (eg, courses in professional, " +
+            "<b>Writing Skills in English</b> <br /> At least one course must be explicitly focused on writing skills in English (eg, courses in professional, " +
             "fiction or expository writing). These courses may overlap with other requirements.",
           required_credits: 3,
           criteria: "AS.060.100[C]^OR^AS.060.113[C]^OR^AS.060.114[C]^OR^AS.180.248[C]^OR^AS.220.105[C]^OR^AS.220.106[C]^OR^AS.220.108[C]^OR^AS.290.303[C]^OR^AS.360.133[C]^OR^EN.661.110[C]^OR^EN.661.111[C]^OR^EN.661.250[C]^OR^EN.661.251[C]^OR^EN.661.315[C]",
