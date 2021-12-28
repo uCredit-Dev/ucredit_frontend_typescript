@@ -1141,7 +1141,7 @@ const bsAMS: Major = {
       required_credits: 39,
       min_credits_per_course: 3,
       description: "All courses used to meet the following departmental requirements must be taken for a letter grade and passed with a grade of C- or higher.",
-      criteria: "EN Applied Mathematics and Statistics[D]^OR^AS Mathematics[D]",
+      criteria: "EN Applied Mathematics & Statistics[D]^OR^AS Mathematics[D]",
       fine_requirements: [
         {
           description: 
