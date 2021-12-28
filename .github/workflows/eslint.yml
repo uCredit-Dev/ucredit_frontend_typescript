@@ -5,8 +5,7 @@ on:
     branches:
       - '**'
   pull_request:
-    branches: 
-      - '**'
+    branches: ["master", "development"]
 
 jobs:
   lint:
@@ -15,5 +14,6 @@ jobs:
     - uses: actions/checkout@v2
     - name: Install Dependencies
       run: npm install
+      run: npm install -g eslint
     - name: Run ESLint
       run: eslint . --ext .js,.jsx,.ts,.tsx
