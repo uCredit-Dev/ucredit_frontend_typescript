@@ -1,10 +1,10 @@
 import {
-  Course,
+  // Course,
   User,
-  Distribution,
-  Plan,
-  UserCourse,
-  Major,
+  // Distribution,
+  // Plan,
+  // UserCourse,
+  // Major,
   SISRetrievedCourse,
 } from "./commonTypes";
 
