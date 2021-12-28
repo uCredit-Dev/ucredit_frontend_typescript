@@ -1,10 +1,4 @@
-import {
-  Course,
-  Major,
-  UserCourse,
-  SISRetrievedCourse,
-} from "../../../resources/commonTypes";
-import { getCourse } from "../../../resources/assets";
+import { Course, Major } from "../../../resources/commonTypes";
 
 export type requirements = {
   name: string;
@@ -12,73 +6,21 @@ export type requirements = {
   required_credits: number;
   fulfilled_credits: number;
   description: string;
+  exclusive?: boolean;
   wi?: boolean;
 };
 
 /**
- * args: an array containing focus areas and their associated requirements, and all courses
- * updates the requirements obj so that the fulfilled credits accurately reflects the plan
- * @param requirements - an array of requirement pairs
- * @param courses
- * @param courseCache - cached courses
- * @param currPlanCourses - courses in current plan
- */
-export const updateFulfilled = (
-  requirements: [string, requirements[]][],
-  courses: UserCourse[],
-  courseCache: SISRetrievedCourse[],
-  setDistributions: (distributions: [string, requirements[]][]) => void
-) => {
-  setDistributions(requirements);
-  let reqCopy: [string, requirements[]][] = copyReqs(requirements);
-  let count = 0;
-  courses.forEach((course) => {
-    getCourse(course.number, courseCache, courses).then((courseObj) => {
-      const localReqCopy = copyReqs(reqCopy);
-      updateReqs(localReqCopy, courseObj);
-      reqCopy = localReqCopy;
-      count++;
-      if (count === courses.length) {
-        setDistributions(reqCopy);
-      }
-    });
-  });
-};
-
-const updateReqs = (requirements, courseObj) => {
-  requirements.forEach((reqGroup, i) => {
-    reqGroup[1].forEach((req, j) => {
-      if (
-        courseObj !== null &&
-        checkRequirementSatisfied(splitRequirements(req.expr), courseObj)
-      ) {
-        requirements[i][1][j].fulfilled_credits += parseInt(courseObj.credits);
-      }
-    });
-  });
-};
-
-const copyReqs = (requirements) => {
-  const reqCopy: [string, requirements[]][] = [];
-  requirements.forEach((reqGroup) => {
-    const reqGroupCopy: any = [];
-    reqGroup[1].forEach((req) => reqGroupCopy.push({ ...req }));
-    reqCopy.push([reqGroup[0], reqGroupCopy]);
-  });
-  return reqCopy;
-};
-
-/**
  * Checks if a course satisfies a distribution.
- * @param splitArr - array where every entry is a seperate parentheses, OR/AND, requirement, or type, name of a class, and all courses
+ * @param distribution - the distribution requirement for the major containing an expression, an array where every entry is a seperate parentheses, OR/AND, requirement, or type, name of a class, and all courses
  * @param course - course we're checking for prereq satisfaction
  * @returns whether the class satisifies the requirement
  */
 export const checkRequirementSatisfied = (
-  splitArr: string[],
+  distribution: requirements,
   course: Course
 ): boolean => {
-  const boolExpr: string | void = getBoolExpr(splitArr, course);
+  const boolExpr: string | void = getBoolExpr(distribution, course);
   if (boolExpr.length !== 0) {
     //eslint-disable-next-line no-eval
     return eval(boolExpr);
@@ -89,14 +31,18 @@ export const checkRequirementSatisfied = (
 
 /**
  * Gets a boolean expression based on which courses in the prereq string are fulfilled.
- * @param splitArr - an array of reqs for the distribution
+ * @param distribution - the distribution of the major to be satisfied containing expr, an array of reqs for the distribution
  * @param course - course we're checkinng for satisfaction
  * @returns a boolean expression in a string that describes the satisfaction of the distribution
  */
-export const getBoolExpr = (splitArr: string[], course: Course): string => {
+export const getBoolExpr = (
+  distribution: requirements,
+  course: Course
+): string => {
   let boolExpr: string = "";
   let index: number = 0;
   let concat: string = "";
+  const splitArr: string[] = splitRequirements(distribution.expr);
   if (course === null) {
     return concat;
   }
@@ -130,7 +76,7 @@ const handleTagType = (
   let updatedConcat: string;
   switch (splitArr[index + 1]) {
     case "C": // Course Number
-      updatedConcat = (course.number === splitArr[index]).toString();
+      updatedConcat = course.number.includes(splitArr[index]).toString();
       break;
     case "T": // Tag
       updatedConcat = (
@@ -245,7 +191,6 @@ export const getRequirements = (major: Major) => {
   major.distributions.forEach((element) => {
     let allReq: requirements[] = [];
     let general: requirements = {
-      //name: "General " + element.name.toString(),
       name: element.name.toString(),
       expr: element.criteria.toString(),
       required_credits: element.required_credits,
@@ -263,6 +208,7 @@ export const getRequirements = (major: Major) => {
             required_credits: fine.required_credits,
             fulfilled_credits: 0,
             description: "",
+            exclusive: fine.exclusive,
           },
         ];
       });

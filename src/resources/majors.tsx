@@ -194,14 +194,6 @@ import { Major, Minor } from "./commonTypes";
 //   distributions: [],
 // };
 
-// // https://bio.jhu.edu/undergraduate/bs-requirements/
-// const baMolCell: Major = {
-//   degree_name: "B.A. Molecular & Cellular Biology",
-//   department: "AS Biology",
-//   total_degree_credit: 120,
-//   wi_credit: 6,
-//   distributions: [],
-// };
 
 // // https://pbs.jhu.edu/undergraduate/requirements/
 // const baPsych: Major = {
@@ -1707,6 +1699,325 @@ const CS_Minor_New: Minor = {
   ],
 };
 
+// https://www.cs.jhu.edu/undergraduate-studies/academics/cs-minor/
+const CS_Minor_Old: Minor = {
+  degree_name: "Minor Computer Science (OLD - 2020 & before)",
+  department: "EN Computer Science",
+  total_degree_credit: 23,
+  wi_credit: 0,
+  url: "https://www.cs.jhu.edu/2021undergraduate-advising-manual/",
+  distributions: [
+    {
+      name: "Computer Science",
+      required_credits: 23,
+      min_credits_per_course: 1,
+      description:
+        "For more information please visit the <a href=' https://www.cs.jhu.edu/undergraduate-studies/academics/cs-minor/'>" +
+        "minor degree requirement</a> section on the department website.",
+      criteria:
+        "EN Computer Science[D]^OR^CSCI-OTHER[T]^OR^Gateway Computing[N]",
+      fine_requirements: [
+        {
+          description: "<b>Core Courses:",
+          required_credits: 14,
+          criteria:
+            "EN.500.112[C]^OR^EN.500.113[C]^OR^EN.500.114[C]^OR^EN.601.220[C]^OR^EN.601.226[C]^OR^(EN Computer Science[D]^AND^(Lower Level Undergraduate[L]^OR^Upper Level Undergraduate[L]))",
+        },
+        {
+          description:
+            "<b>500.112/113/114 Gateway Computing or AP Comp Sci A or " +
+            "equivalent</b>",
+          required_credits: 3,
+          criteria: "EN.500.112[C]^OR^EN.500.113[C]^OR^EN.500.114[C]",
+        },
+        {
+          description: "<b>601.220 Intermediate Programming</b>",
+          required_credits: 4,
+          criteria: "EN.601.220[C]",
+        },
+        {
+          description: "<b>601.226 Data Structures</b>",
+          required_credits: 4,
+          criteria: "EN.601.226[C]",
+        },
+        {
+          description:
+            "<b>600.233/601.229 Computer System Fundamentals OR 600.271/601.231 Automata and Computation Theory</b><p>600.120/601.220 is pre-req, this course is a pre-req for some systems upper level courses</p><p>550.171/553.171 is a pre-req, this course is a pre-req for some analysis upper level courses</p>",
+          required_credits: 3,
+          criteria:
+            "EN.600.233[C]^OR^EN.601.229[C]^OR^EN.600.271[C]^OR^EN.601.231[C]",
+        },
+        {
+          description:
+            "<b>Discrete Math:</b> Although not explicitly required, EN.553.171 Discrete Math is also strongly recommended for CS minors but does not count towards the minor requirements",
+          required_credits: 0,
+          criteria: "EN.553.171[C]",
+        },
+        {
+          description:
+            "<b>Upper Level Undergraduate: </b><p>9 upper level CS credits that form a cohesive program of study and <b>must be approved by the computer science minor advisor</b>. One way is to choose all three courses within one or two area tag classifications (CSCI-APPL, CSCI-SOFT, CSCI-THRY, CSCI-RSNG, CSCI-SYST)</p>",
+          required_credits: 9,
+          criteria: "EN Computer Science[D]^AND^Upper Level Undergraduate[L]",
+          exclusive: true,
+        },
+      ],
+    },
+  ],
+};
+
+/*
+  TODO:
+  1. Some of the search features don't work properly (i.e. research courses, General Physics II for bio majors)
+  3. Potentially formatting updates
+*/
+const bsMolCell: Major = {
+  degree_name: "B.S. Molecular and Cellular Biology",
+  department: "AS Biology",
+  total_degree_credit: 120,
+  wi_credit: 12,
+  url: "https://e-catalogue.jhu.edu/arts-sciences/full-time-residential-programs/degree-programs/biology/molecular-cellular-biology-bachelor-science/",
+  distributions: [
+    {
+      name: "Biology Core", // 18-19 depending on biochemistry lab
+      required_credits: 18,
+      min_credits_per_course: 1,
+      description:
+        "These are the core biology courses." +
+        "<br>For more information please visit the major degree requirement section on the department website.",
+      criteria: "AS Biology[D]",
+      fine_requirements: [
+        {
+          description: "<p>020.303 Genetics</p>",
+          required_credits: 3,
+          criteria: "AS.020.303[C]"
+        },
+        {
+          description: "<p>020.304 Molecular Biology</p>",
+          required_credits: 3,
+          criteria: "AS.020.304[C]"
+        },
+        {
+          description: "<p>020.305 Biochemistry</p>",
+          required_credits: 3,
+          criteria: "AS.020.305[C]"
+        },
+        {
+          description: "<p>020.306 Cell Biology</p>",
+          required_credits: 3,
+          criteria: "AS.020.306[C]"
+        },
+        {
+          description: "<p>020.316 Cell Biology Lab</p>",
+          required_credits: 1,
+          criteria: "AS.020.316[C]"
+        },
+        {
+          description: "<p>020.340 Developmental Genetics Lab</p>",
+          required_credits: 2,
+          criteria: "AS.020.340[C]"
+        },
+        {
+          description: "<p>020.363 Developmental Biology",
+          required_credits: 3,
+          criteria: "AS.020.363[C]"
+        },
+        {
+          description:
+            "<b>Biochemistry Lab</b>" +
+            "<p>020.315 Biochemistry Project Lab</p>" +
+            "<p>250.253 Protein Engineering and Biochemistry Lab</p>" +
+            "<p>250.254 Protein Biochemistry and Engineering Lab</p>",
+          required_credits: 1, // website says 2-3 but biochem project lab is only 1 and satisfies this req
+          criteria: "AS.020.315[C]^OR^AS.250.253[C]^OR^AS.250.254[C]"
+        }
+      ],
+    },
+    {
+      name: "Chemistry",
+      required_credits: 19,
+      min_credits_per_course: 1, // labs are 1 credit
+      description: "Must complete General Chemistry (or AP equivalent) and Organic Chemistry in addition to their respective labs.",
+      criteria: "AS Chemistry[D]",
+      exception: "",
+      fine_requirements: [
+        {
+          description: "<p>030.101 Introductory Chemistry I</p>",
+          required_credits: 3,
+          criteria: "AS.030.101[C]"
+        },
+        {
+          description: "<p>030.105 Chemistry I Lab</p>",
+          required_credits: 1,
+          criteria: "AS.030.105[C]"
+        },
+        {
+          description: "<p>030.102 Chemistry II</p>",
+          required_credits: 3,
+          criteria: "AS.030.102[C]"
+        },
+        {
+          description: "<p>030.106 Chemistry II Lab</p>",
+          required_credits: 1,
+          criteria: "AS.030.106[C]"
+        },
+        {
+          description: "<p>030.205 Introductory Organic Chemistry I</p>",
+          required_credits: 4,
+          criteria: "AS.030.205[C]"
+        },
+        {
+          description: "<p>030.206 Organic Chemistry II or 030.212 Honors Organic Chemistry II</p>",
+          required_credits: 4,
+          criteria: "AS.030.206[C]^OR^AS.030.212[C]"
+        },
+        {
+          description:
+            "<p>Organic Chemistry Lab</p>" +
+            "<p>030.225 Intro Organic Chemistry Lab</p>" +
+            "<p>030.227 Chemical Chirality: An Introduction to Organic Chemistry Lab Techniques</p>",
+          required_credits: 3,
+          criteria: "AS.030.225[C]^OR^AS.030.227[C]"
+        }
+      ],
+    },
+    {
+      name: "Physics",
+      required_credits: 10,
+      min_credits_per_course: 1,
+      description: "Must complete Physics I and II (or AP equivalent) in addition to their respective labs.",
+      criteria: "AS Physics & Astronomy[D]",
+      fine_requirements: [
+        {
+          description:
+            "<b>General Physics I</b>" +
+            "<p>171.101 General Physics: Physical Science Majors I</p>" +
+            "<p>171.103 General Physics: Biological Science Majors I</p>",
+          required_credits: 4,
+          criteria: "AS.171.101[C]^OR^AS.171.103[C]"
+        },
+        {
+          description:
+            "<b>General Physics II</b>" +
+            "<p>171.102 General Physics: Physical Science Majors II</p>" +
+            "<p>171.104 General Physics: Biological Science Majors II</p>",
+          required_credits: 4,
+          criteria: "AS.171.102[C]^OR^AS.171.104[C]"
+        },
+        {
+          description: "<p>173.111 General Physics Lab I",
+          required_credits: 1,
+          criteria: "AS.173.111[C]"
+        },
+        {
+          description: "<p>173.112 General Physics Lab II",
+          required_credits: 1,
+          criteria: "AS.173.112[C]"
+        }
+      ],
+    },
+    {
+      name: "Mathematics",
+      required_credits: 8,
+      min_credits_per_course: 4,
+      description: "Must complete Calculus I and II",
+      criteria: "AS Mathematics[D]",
+      fine_requirements: [
+        {
+          description:
+            "<b>Calculus I</b>" +
+            "<p>110.106 Calculus I (Biology and Social Sciences)</p>" +
+            "<p>110.108 Calculus I (Physical Sciences and Engineering)</p>",
+          required_credits: 4,
+          criteria: "AS.110.106[C]^OR^AS.110.108[C]",
+        },
+        {
+          description:
+            "<b>Calculus II</b>" +
+            "<p>110.107 Calculus II (Biology and Social Sciences)</p>" +
+            "<p>110.109 Calculus II (Physical Sciences and Engineering)</p>" +
+            "<p>110.113 Honors Single Variable Calculus</p>",
+          required_credits: 4,
+          criteria: "AS.110.107[C]^OR^AS.110.109[C]^OR^AS.110.113[C]",
+        },
+      ],
+    },
+    {
+      name: "Upper Level Electives",
+      required_credits: 12,
+      min_credits_per_course: 2,
+      description:
+        "4 courses and 12 credits required. One 2 or 3 credit elective must be taken in the Biology Department (AS.020.xxx). " +
+        "<br>See POS-Tag BIOL-UL on SIS for the courses approved by the Director of Undergraduate Studies. " +
+        "<br>Students may use 2 credits of Build-a-Genome (AS.020.420 or AS.020.451) toward the upper level Biology elective requirement.",
+      criteria: "AS Biology[D]",
+      fine_requirements: [
+        {
+          description: "<b>Biology Department Upper Level</b>",
+          required_credits: 2, // 2 or 3
+          criteria: "AS Biology[D]^AND^Upper Level Undergraduate[L]"
+        },
+      ],
+    },
+    {
+      name: "Biology Research Requirement",
+      required_credits: 6,
+      min_credits_per_course: 1,
+      description:
+        "Students may use AS.020.420 and/or AS.020.451 to fulfill 3 credits (each) of the Research Requirement. " +
+        "<br>The major emphasis of the BS degree in molecular and cellular biology is the participation of the students in an original research project.",
+      criteria:
+        "AS.020.135[C]^OR^AS.020.136[C]^OR^AS.020.420[C]^OR^AS.020.451[C]^OR^AS.020.503[C]^OR^AS.020.504[C]^OR^AS.020.513[C]^OR^AS.020.514[C]^OR^" +
+        "AS.020.572[C]^OR^AS.020.597[C]^OR^AS.030.501[C]^OR^AS.030.502[C]^OR^AS.030.503[C]^OR^AS.030.504[C]^OR^AS.030.505[C]^OR^AS.030.506[C]^OR^" +
+        "AS.030.507[C]^OR^AS.030.509[C]^OR^AS.030.510[C]^OR^AS.030.521[C]^OR^AS.030.522[C]^OR^AS.030.523[C]^OR^AS.030.524[C]^OR^AS.030.525[C]^OR^" +
+        "AS.030.526[C]^OR^AS.030.570[C]^OR^AS.030.597[C]^OR^AS.250.521[C]^OR^AS.250.522[C]^OR^AS.250.574[C]^OR^AS.250.597[C]"
+    },
+    {
+      name: "Writing Intensive",
+      required_credits: 12,
+      min_credits_per_course: 3,
+      double_count: true,
+      description: "Students are required to fulfill the university’s requirement of four writing intensive courses, " +
+      "each at least 3 credits. <br>Students must receive at least a C- grade or better in these writing courses. ",
+      criteria: "Written Intensive[W]",
+    },
+    {
+      name: "Humanities Distribution Requirement",
+      required_credits: 9,
+      min_credits_per_course: 1,
+      description: "Students must earn at least 9 credits in humanities. " +
+        "<br>In Arts and Sciences, courses taken for the distribution requirement may be taken for a letter grade or for Satisfactory/Unsatisfactory credit. " +
+        "<br>Courses passed with a letter grade of D or better, or passed with a Satisfactory grade, will fulfill the distribution requirement. " +
+        "<br>Students who entered JHU prior to Fall 2014 should view the appropriate archived catalogue.",
+      criteria: "H[A]",
+      exclusive: true
+    },
+    {
+      name: "Social Science Distribution Requirement",
+      required_credits: 9,
+      min_credits_per_course: 1,
+      description: "Students must earn at least 9 credits in social sciences. " +
+        "<br>In Arts and Sciences, courses taken for the distribution requirement may be taken for a letter grade or for Satisfactory/Unsatisfactory credit. " +
+        "<br>Courses passed with a letter grade of D or better, or passed with a Satisfactory grade, will fulfill the distribution requirement. " +
+        "<br>Students who entered JHU prior to Fall 2014 should view the appropriate archived catalogue.",
+      criteria: "S[A]",
+      exclusive: true
+    },
+    {
+      name: "Honors",
+      required_credits: 0,
+      min_credits_per_course: 0,
+      description:
+        "Students earning either a BA in biology or BS in cellular and molecular biology are eligible to receive their degree with honors. " +
+        "The following requirements are in addition to the regular requirements for the degrees. " + 
+        "<br>- GPA of 3.5 or higher in N and Q courses. " +
+        "<br>- r6 credits of registered independent research (note that this is already a requirement for the BS degree). " +
+        "<br>- A letter of support from your research supervisor (the PI of the lab)" +
+        "<br>- Presentation of your independent research as a seminar or poster presentation", 
+      criteria: ""
+    },
+  ],
+ };
+
 export function getMajorFromCommonName(name: string) {
   let out: Major | null = null;
   allMajors.forEach((major) => {
@@ -1720,11 +2031,14 @@ export function getMajorFromCommonName(name: string) {
   return out;
 }
 
+
 export const allMajors: Major[] = [
   bsCS_Old,
   bsCS_New,
   baCS_New,
   CS_Minor_New,
+  CS_Minor_Old,
+  bsMolCell,
   bsAMS,
   // baIS,
   // baPH,

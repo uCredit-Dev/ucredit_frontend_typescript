@@ -41,7 +41,8 @@ const CourseCard: FC<{
         {
           "bg-secondary bg-opacity-25":
             selectedCourse !== "None" &&
-            selectedCourse.number === props.course.number,
+            selectedCourse.number === props.course.number &&
+            selectedCourse.term === props.course.terms[props.version],
         },
         "mb-2 p-2 w-full h-14 bg-white rounded hover:shadow cursor-pointer transition duration-200 ease-in-out"
       )}

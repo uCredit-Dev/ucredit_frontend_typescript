@@ -121,7 +121,7 @@ const YearSettingsDropdown: FC<{
   const getSemesters = (): JSX.Element => {
     if (semSelect)
       return (
-        <div className="z-50 flex flex-col">
+        <div className="z-40 flex flex-col">
           <label>
             <input
               type="checkbox"
@@ -168,8 +168,8 @@ const YearSettingsDropdown: FC<{
   };
 
   return (
-    <div className="relative right-36 top-6">
-      <div className="absolute z-50 flex flex-col w-40 text-black bg-gray-100 rounded shadow">
+    <div className="relative -right-12 z-40">
+      <div className="absolute z-40 flex flex-col w-40 text-black bg-gray-100 rounded shadow">
         <button
           onClick={() => {
             setEdittingName(true);

@@ -210,7 +210,8 @@ const YearComponent: FC<{
       id={id.toString()}
       className={
         customStyle +
-        "cursor-move p-2 max-w-year-heading w-max rounded mb-4 bg-blue-400 rounded shadow"
+        "cursor-move p-2 max-w-year-heading w-max rounded mb-4 bg-blue-400 rounded shadow" +
+        (addingPrereqStatus ? "z-30" : "")
       }
       style={{ minWidth: "14rem" }}
       onMouseLeave={() => {
@@ -223,19 +224,19 @@ const YearComponent: FC<{
     >
       <div className="flex flex-col mt-1 w-full max-w-yearheading h-yearheading font-medium">
         <div className="flex flex-row w-full text-white drop-shadow-lg">
-          <div className="mr-1 text-xl font-thin">✥</div>
+          <div className="mr-1 text-lg font-thin">✥</div>
           {edittingName ? (
             <input
               id={year._id + "input"}
               value={yearName}
-              className="flex-shrink mt-auto w-full text-lg font-semibold bg-transparent border-b focus:border-gray-400 border-transparent focus:outline-none cursor-move select-none"
+              className="flex-shrink mt-auto w-full text-md font-semibold bg-transparent border-b focus:border-gray-400 border-transparent focus:outline-none cursor-move select-none"
               onChange={handleYearNameChange}
               onBlur={() => {
                 setEdittingName(false);
               }}
             />
           ) : (
-            <div className="flex-shrink mt-auto w-full text-lg font-semibold bg-transparent border-b focus:border-gray-400 border-transparent focus:outline-none cursor-move select-none">
+            <div className="flex-shrink mt-auto w-full text-md font-semibold bg-transparent border-b focus:border-gray-400 border-transparent focus:outline-none cursor-move select-none">
               {yearName}
             </div>
           )}
@@ -245,19 +246,17 @@ const YearComponent: FC<{
             }}
             className="mt-0.5 w-8 stroke-2 cursor-pointer"
           />
-          <div>
-            {display ? (
-              <YearSettingsDropdown
-                year={year}
-                setToShow={setToShow}
-                setDisplay={setDisplay}
-                toShow={toShow}
-                setEdittingName={setEdittingName}
-                id={id}
-              />
-            ) : null}
-          </div>
         </div>
+        {display ? (
+          <YearSettingsDropdown
+            year={year}
+            setToShow={setToShow}
+            setDisplay={setDisplay}
+            toShow={toShow}
+            setEdittingName={setEdittingName}
+            id={id}
+          />
+        ) : null}
       </div>
       <div
         className="p-2 bg-white rounded shadow cursor-default"

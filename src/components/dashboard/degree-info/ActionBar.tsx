@@ -1,4 +1,4 @@
-import { FC, useEffect, useState } from "react";
+import { FC, MouseEventHandler, useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { toast } from "react-toastify";
 import { api } from "../../../resources/assets";
@@ -14,7 +14,6 @@ import {
 } from "../../../slices/userSlice";
 import PlanChoose from "./PlanChoose";
 import { ReactComponent as RemoveSvg } from "../../../resources/svg/Remove.svg";
-import ShareLinksPopup from "./ShareLinksPopup";
 import { ReactComponent as AddSvg } from "../../../resources/svg/Add.svg";
 import axios from "axios";
 import { Year, Plan } from "../../../resources/commonTypes";
@@ -23,7 +22,11 @@ import ReactTooltip from "react-tooltip";
 /**
  * @description ActionBar component
  */
-const ActionBar: FC = () => {
+const ActionBar: FC<{
+  dropdown: boolean;
+  setDropdown: Function;
+  onShareClick: MouseEventHandler<HTMLButtonElement>;
+}> = ({ dropdown, setDropdown, onShareClick }) => {
   // Redux Setup
   const dispatch = useDispatch();
   const currentPlan = useSelector(selectPlan);
@@ -35,9 +38,6 @@ const ActionBar: FC = () => {
 
   // Determines whether we're editing the name.
   const [editName, setEditName] = useState<boolean>(false);
-
-  // shareable URL
-  const [shareableURL, setShareableURL] = useState<string>("");
 
   // Only edits name if editName is true. If true, calls debounce update function
   useEffect(() => {
@@ -97,23 +97,6 @@ const ActionBar: FC = () => {
   };
 
   /**
-   * Handles when button for shareable link is clicked.
-   */
-  const onShareClick = (): void => {
-    if (shareableURL !== "") {
-      setShareableURL("");
-      return;
-    }
-    setShareableURL(
-      (window.location.href.includes("localhost")
-        ? "localhost:3000"
-        : "https://ucredit.me") +
-        "/share?_id=" +
-        currentPlan._id
-    );
-  };
-
-  /**
    * Adds a new year, if preUni is true, add to the start of the plan, otherwise add to the end
    * @param preUniversity - whether the new year is a pre uni year
    */
@@ -158,12 +141,13 @@ const ActionBar: FC = () => {
     ReactTooltip.rebuild();
   });
   return (
-    <div className="flex flex-row px-2 py-1 bg-white rounded shadow overflow-x-auto drop-shadow-xl">
-      <PlanChoose />
-      <div className="flex flex-row items-end mr-2 my-1 h-10 border border-gray-300 rounded rounded shadow drop-shadow-xl">
+    <div className="flex flex-row px-2 py-1 bg-white rounded shadow overflow-x-auto drop-shadow-md sticky top-0 z-20">
+      <PlanChoose dropdown={dropdown} setDropdown={setDropdown} />
+      <div className="flex flex-row items-end mr-2 my-1 h-10 border bg-white border-gray-300 rounded rounded shadow">
+        <div className="text-xl m-auto ml-2 mr-0">✎</div>
         <input
           value={planName}
-          className="ml-2 my-1 px-1 w-auto h-8 text-gray-800 text-2xl font-semibold outline-none"
+          className=" my-0.5 px-1 w-80 h-8 text-gray-800 text-lg outline-none"
           onChange={handlePlanNameChange}
         />
       </div>
@@ -202,11 +186,6 @@ const ActionBar: FC = () => {
         </svg>
         <div className="ml-1">Share</div>
       </button>
-      <div>
-        {shareableURL === "" ? null : (
-          <ShareLinksPopup link={shareableURL} setURL={onShareClick} />
-        )}
-      </div>
       <div className="flex flex-row items-center my-1 w-10 h-10 hover:underline hover:bg-green-300 border border-gray-300 rounded focus:outline-none shadow cursor-pointer transition duration-200 ease-in">
         <AddSvg
           onClick={() => addNewYear(false)}

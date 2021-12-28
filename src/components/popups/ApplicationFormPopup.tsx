@@ -22,14 +22,14 @@ const ApplicationFormPopup: FC<{
     <div className="absolute top-0">
       {/* Background Grey */}
       <div
-        className="fixed z-50 left-0 top-0 m-0 w-full h-screen bg-black opacity-50"
+        className="fixed z-30 left-0 top-0 m-0 w-full h-screen bg-black opacity-50"
         onClick={() => setActivateEmailPopup(false)}
       ></div>
 
       {/* Actual popup */}
       <div
         className={
-          "  shadow bg-primary z-50 fixed flex flex-col select-none rounded z-20 w-1/2 top-1/3 left-1/2 transform -translate-x-1/2 -translate-y-1/3 min-w-planAdd shadow"
+          "shadow bg-primary z-40 fixed flex flex-col select-none rounded w-1/2 top-1/3 left-1/2 transform -translate-x-1/2 -translate-y-1/3 min-w-planAdd shadow"
         }
       >
         <div className="px-4 py-2 text-white text-coursecard font-semibold select-none">

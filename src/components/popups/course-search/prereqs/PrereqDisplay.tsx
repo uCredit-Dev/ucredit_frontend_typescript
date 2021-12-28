@@ -203,13 +203,23 @@ const PrereqDisplay: FC = () => {
       // If the element is a number
       const noCBrackets: string = element.substr(0, element.length - 3);
       const noCBracketsNum: string = element.substr(0, 10);
-      const yearToCheck = getYearById(courseToShow);
+      const yearToCheck: Year = getYearById(courseToShow);
+      const semesterToCheck: string =
+        courseToShow !== null
+          ? courseToShow.term.charAt(0).toUpperCase() +
+            courseToShow.term.slice(1)
+          : semester;
       let satisfied: boolean = checkPrereq(
         currPlanCourses,
         currentPlan,
         noCBracketsNum,
         yearToCheck,
-        semester
+        semesterToCheck === "Fall" ||
+          semesterToCheck === "Spring" ||
+          semesterToCheck === "Summer" ||
+          semesterToCheck === "Intersession"
+          ? semesterToCheck
+          : semester
       );
       return {
         satisfied: satisfied,
@@ -276,7 +286,7 @@ const PrereqDisplay: FC = () => {
         const parsed: parsedPrereqs = getNonStringPrereq(element[0]);
         return {
           satisfied: parsed.satisfied,
-          jsx: <p>{parsed.jsx}</p>,
+          jsx: <p key={"drop" + element}>{parsed.jsx}</p>,
         };
       } else {
         const parsedSat: boolean = isSatisfied(element, false);
@@ -409,16 +419,6 @@ const PrereqDisplay: FC = () => {
     numList: string[],
     expr: any
   ) => {
-    numList = numList.sort((first: any, second: any) => {
-      const sub1 = first.substr(0, 10);
-      const sub2 = second.substr(0, 10);
-      return sub1.localeCompare(sub2);
-    });
-    numNameList = numNameList.sort((a: any, b: any): any => {
-      const sub1 = a.substr(0, 10);
-      const sub2 = b.substr(0, 10);
-      return sub1.localeCompare(sub2);
-    });
     for (let i = 0; i < numList.length; i++) {
       expr = expr.replaceAll(
         numList[i],
@@ -455,7 +455,12 @@ const PrereqDisplay: FC = () => {
       );
     else if (!loaded)
       return <>{"Loading Prereqs Status: loaded is " + loaded.toString()}</>;
-    else return <p className="p-2 overflow-y-auto">{preReqDisplay}</p>;
+    else
+      return (
+        <p key={"drop" + preReqDisplay} className="p-2 overflow-y-auto">
+          {preReqDisplay}
+        </p>
+      );
   };
 
   return (

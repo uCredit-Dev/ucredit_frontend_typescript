@@ -285,7 +285,6 @@ export const course_tags = [
  * @param inspected - the course
  * @returns array with valid prereqs
  */
-
 export const filterNNegatives = (inspected: Course | "None"): any[] => {
   let preReqs: any[] = [];
   if (inspected !== "None" && inspected !== undefined) {
@@ -294,6 +293,22 @@ export const filterNNegatives = (inspected: Course | "None"): any[] => {
     });
   }
   return preReqs;
+};
+
+/**
+ * Gets the login cookie value.
+ * @param cookies - the cookies in the site currently
+ * @returns cookieVal - the value of the login cookie
+ */
+export const getLoginCookieVal = (cookies: { [x: string]: any }): string => {
+  let cookieVal = "";
+  // Retrieves user if user ID is "noUser", the initial user id state for userSlice.tsx.
+  // Make call for backend
+  Object.entries(cookies).forEach((cookie: any) => {
+    if (cookie[0] === "_hjid" || cookie[0] === "connect.sid")
+      cookieVal = cookie[1];
+  });
+  return cookieVal;
 };
 
 /**
@@ -404,45 +419,57 @@ export const getCourses = (
     for (let n = 0; n < numList.length; n++) {
       let num = numList[n];
       // eslint-disable-next-line no-loop-func
-      getCourse(num, courseCache, planCourses).then((retrievedCourse) => {
-        if (retrievedCourse !== null) {
+      getCourse(num, courseCache, planCourses, n).then((retrievedCourse) => {
+        const outIndex = retrievedCourse.index;
+        let outNum = numList[outIndex];
+        if (retrievedCourse.resp !== null) {
           retrieved++;
-          numNameList[n] = num + num + " " + retrievedCourse.title;
+          numNameList[outIndex] =
+            outNum + outNum + " " + retrievedCourse.resp.title;
           // num is added twice to distinquish which was the base course (refer to the case of EN.600 below) in the case that departments change numbers (600 to 601)
         }
-        if (num.match("EN.600") !== null) {
-          num = num.replace("EN.600", "EN.601");
-          getCourse(num, courseCache, planCourses).then(
-            (retrievedCourse601) => {
-              if (retrievedCourse601 !== null) {
-                retrieved++;
-                // Append original num to front for later sorting
-                numNameList[n] =
-                  numList[n] + num + " " + retrievedCourse601.title;
-              }
-              if (numNameList[n] == null) {
-                retrieved++;
-                numNameList[n] =
-                  numList[n] +
-                  numList[n] +
-                  " Has not been offered in the past 4 years or listed on SIS. Please click on the Prerequisites Description tab for full description.";
-              }
-              if (retrieved === numList.length) {
-                let out = {
-                  numNameList: numNameList,
-                  numList: numList,
-                  expr: expr,
-                };
-                return resolve(out);
-              }
+        if (
+          retrievedCourse.resp === null &&
+          (outNum.match("EN.600") !== null || outNum.match("EN.550") !== null)
+        ) {
+          if (outNum.match("EN.600") !== null)
+            outNum = outNum.replace("EN.600", "EN.601");
+          else if (outNum.match("EN.550") !== null)
+            outNum = outNum.replace("EN.550", "EN.553");
+          getCourse(
+            outNum,
+            courseCache,
+            planCourses,
+            retrievedCourse.index
+          ).then((retrievedCourseDepChange) => {
+            const inIndex = retrievedCourseDepChange.index;
+            if (retrievedCourseDepChange.resp !== null) {
+              retrieved++;
+              // Append original num to front for later sorting // TODO: We don't need this. Please look to removing this extraneous complexity in the code logic.
+              numNameList[inIndex] =
+                outNum + outNum + " " + retrievedCourseDepChange.resp.title;
+            } else if (numNameList[inIndex] == null) {
+              retrieved++;
+              numNameList[inIndex] =
+                numList[inIndex] +
+                numList[inIndex] +
+                " Has not been offered in the past 4 years or listed on SIS. Please click on the Prerequisites Description tab for full description.";
             }
-          );
+            if (retrieved === numList.length) {
+              let out = {
+                numNameList: numNameList,
+                numList: numList,
+                expr: expr,
+              };
+              return resolve(out);
+            }
+          });
         } else {
-          if (numNameList[n] == null) {
+          if (numNameList[outIndex] == null) {
             retrieved++;
-            numNameList[n] =
-              numList[n] +
-              numList[n] +
+            numNameList[outIndex] =
+              numList[outIndex] +
+              numList[outIndex] +
               " Has not been offered in the past 4 years or listed on SIS. Please click on the Prerequisites Description tab for full description.";
           }
           if (retrieved === numList.length) {
@@ -471,8 +498,9 @@ export const getCourses = (
 export const getCourse = async (
   courseNumber: string,
   courseCache: SISRetrievedCourse[],
-  allPlanCourses: UserCourse[]
-): Promise<Course | null> => {
+  allPlanCourses: UserCourse[],
+  indexNum: number
+): Promise<{ index: number; resp: Course | null }> => {
   return new Promise((resolve) => {
     let out: Course | null = null;
     let userC: UserCourse | null = null;
@@ -490,26 +518,26 @@ export const getCourse = async (
           ...element,
           ...element.versions[0],
         };
-        return resolve(out);
+        return resolve({ index: indexNum, resp: out });
       }
     }
 
     if (out === null) {
       if (store.getState().user.unfoundNumbers.includes(courseNumber)) {
-        return resolve(null);
+        return resolve({ index: indexNum, resp: null });
       }
     }
     // Then pull from db.
     if (out === null) {
       axios
-        .get("https://ucredit-dev.herokuapp.com/api/search", {
+        .get(api + "/search", {
           params: { query: courseNumber },
         })
         .then((courses) => {
           let retrieved: SISRetrievedCourse = courses.data.data[0];
           if (retrieved === undefined) {
             store.dispatch(updateUnfoundNumbers(courseNumber));
-            return resolve(null);
+            return resolve({ index: indexNum, resp: null });
           }
           let versionIndex = 0;
           retrieved.versions.forEach((element, index) => {
@@ -524,7 +552,7 @@ export const getCourse = async (
             ...retrieved.versions[versionIndex],
           };
           if (out !== null) {
-            return resolve(out);
+            return resolve({ index: indexNum, resp: out });
           }
         })
         .catch((err) => console.log(err));
@@ -543,16 +571,6 @@ const process = (input: prereqCourses) => {
   let numList = input.numList;
   let numNameList = input.numNameList;
   let expr: any = input.expr;
-  numList = numList.sort((first: any, second: any) => {
-    const sub1 = first.substr(0, 10);
-    const sub2 = second.substr(0, 10);
-    return sub1.localeCompare(sub2);
-  });
-  numNameList = numNameList.sort((a: any, b: any): any => {
-    const sub1 = a.substr(0, 10);
-    const sub2 = b.substr(0, 10);
-    return sub1.localeCompare(sub2);
-  });
   for (let i = 0; i < numList.length; i++) {
     expr = expr.replaceAll(
       numList[i],
@@ -780,16 +798,35 @@ export const checkPrereq = (
   year: Year,
   semester: SemesterType
 ): boolean => {
-  let satisfied: boolean = false;
-  courses.forEach((course) => {
+  for (let course of courses) {
     if (
-      course.number === preReqNumber &&
+      (course.number === preReqNumber ||
+        checkOldPrereqNumbers(course.number, preReqNumber)) &&
       prereqInPast(course, year, semester, plan)
-    ) {
-      satisfied = true;
-    }
-  });
-  return satisfied;
+    )
+      return true;
+  }
+  return false;
+};
+
+const checkOldPrereqNumbers = (
+  courseNumber: string,
+  preReqNumber: string
+): boolean => {
+  const courseNumberArray = courseNumber.split(".");
+  const preReqNumberArray = preReqNumber.split(".");
+  if (
+    (courseNumberArray.length === 3 &&
+      preReqNumberArray.length === 3 &&
+      courseNumberArray[0] === preReqNumberArray[0] &&
+      (preReqNumberArray[1] === "553" || preReqNumberArray[1] === "550") &&
+      (courseNumberArray[1] === "553" || courseNumberArray[1] === "550")) ||
+    ((preReqNumberArray[1] === "600" || preReqNumberArray[1] === "601") &&
+      (courseNumberArray[1] === "600" || courseNumberArray[1] === "601"))
+  ) {
+    return courseNumberArray[2] === preReqNumberArray[2];
+  }
+  return false;
 };
 
 const semesters: String[] = ["fall", "intersession", "spring", "summer"];
@@ -810,7 +847,10 @@ const prereqInPast = (
 ): boolean => {
   const retrievedYear = getCourseYear(plan, course);
   if (retrievedYear !== null) {
-    if (retrievedYear.year < year.year) {
+    if (
+      retrievedYear.year < year.year ||
+      (year.year === retrievedYear.year && checkSemester(semester, course.term))
+    ) {
       return true;
     } else if (retrievedYear.year > year.year) {
       return false;
@@ -823,6 +863,39 @@ const prereqInPast = (
   } else {
     return false;
   }
+};
+
+/**
+ * @param semester - semester to check against
+ * @param courseSemester - semester of course
+ */
+const checkSemester = (
+  semester: SemesterType,
+  courseSemester: SemesterType
+): boolean => {
+  const uppercaseConverted =
+    courseSemester.charAt(0).toUpperCase() + courseSemester.slice(1);
+  if (
+    uppercaseConverted === "Fall" ||
+    uppercaseConverted === "Spring" ||
+    uppercaseConverted === "Summer" ||
+    uppercaseConverted === "Intersession"
+  ) {
+    courseSemester = uppercaseConverted;
+  }
+
+  if (courseSemester === "Fall") {
+    return semester !== "Fall";
+  } else if (courseSemester === "Spring") {
+    return semester !== "Spring" && semester !== "Fall";
+  } else if (courseSemester === "Intersession") {
+    return (
+      semester !== "Intersession" &&
+      semester !== "Spring" &&
+      semester !== "Fall"
+    );
+  }
+  return false;
 };
 
 /**
@@ -858,9 +931,9 @@ export const checkAllPrereqs = (
   courseCache: SISRetrievedCourse[]
 ): Promise<boolean> => {
   return new Promise((resolve) => {
-    getCourse(number, courseCache, currCourses).then((course) => {
-      if (course !== null) {
-        let filtered = filterNNegatives(course);
+    getCourse(number, courseCache, currCourses, -1).then((course) => {
+      if (course.resp !== null) {
+        let filtered = filterNNegatives(course.resp);
         if (filtered.length === 0) {
           return resolve(true);
         } else {

@@ -9,13 +9,13 @@ import { updateAddingPrereq } from "../../slices/popupSlice";
 const AddingPrereqPopup: FC = () => {
   const dispatch = useDispatch();
   return (
-    <div className="absolute top-0">
+    <>
       {/* Background Grey */}
       <div
-        className="fixed z-40 left-0 top-0 m-0 w-full h-screen bg-black opacity-50"
+        className="fixed left-0 top-0 m-0 w-full h-screen bg-black opacity-50 z-20"
         onClick={() => dispatch(updateAddingPrereq(false))}
       ></div>
-    </div>
+    </>
   );
 };
 

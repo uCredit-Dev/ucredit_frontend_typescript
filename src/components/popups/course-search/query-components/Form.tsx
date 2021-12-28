@@ -59,6 +59,26 @@ const Form: FC<{ setSearching: (searching: boolean) => void }> = (props) => {
     new Map<String, number>()
   );
   const [initialQueryLength, setInitialQueryLength] = useState<number>(0);
+  const [searchedQuery, setSearchedQuery] = useState<any | null>(null);
+
+  // In order to make sure our search results correctly match our search term due to the asynchronous nature of finds.
+  // We use this hook to make sure that the search results are updated when the search term matches the term used for the search result.
+  useEffect(() => {
+    if (searchedQuery !== null) {
+      if (
+        searchedQuery.total === searchedQuery.cum &&
+        searchedQuery.originalQuery === searchTerm
+      ) {
+        handleFinishFinding(
+          searchedQuery.courses,
+          searchedQuery.versions,
+          searchedQuery.queryLength,
+          searchedQuery.extras
+        );
+      }
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [searchedQuery]);
 
   const getYearVal = (): number => {
     let year: number = new Date().getFullYear();
@@ -156,7 +176,7 @@ const Form: FC<{ setSearching: (searching: boolean) => void }> = (props) => {
     if (searchTerm.length > 0) {
       // Search with half second debounce.
       const search = setTimeout(
-        performSmartSearch(extras, searchTerm.length),
+        performSmartSearch(searchTerm, extras, searchTerm.length),
         500
       );
       return () => clearTimeout(search);
@@ -175,34 +195,55 @@ const Form: FC<{ setSearching: (searching: boolean) => void }> = (props) => {
   const find = (
     extras: SearchExtras
   ): Promise<[SISRetrievedCourse[], number[]]> => {
-    return new Promise((resolve) => {
+    return new Promise(async (resolve) => {
       let courses: SISRetrievedCourse[] = [...courseCache];
       if (!retrievedAll) {
-        axios
+        const retrieved: any = await axios
           .get(api + "/search", {
             params: getParams(extras),
-          })
-          .then((retrieved) => {
-            let retrievedCourses: SISRetrievedCourse[] = retrieved.data.data;
-            dispatch(updateCourseCache([...retrievedCourses]));
-            let SISRetrieved: SISRetrievedCourse[] = retrieved.data.data;
-            if (
-              extras.query.length <= minLength ||
-              searchTerm.length - extras.query.length >= 2
-            ) {
-              props.setSearching(false);
-            }
-            return resolve([SISRetrieved, []]);
           })
           .catch(() => {
             return [[], []];
           });
+        let SISRetrieved: SISRetrievedCourse[] = processedRetrievedData(
+          retrieved.data.data,
+          extras
+        );
+        return resolve([SISRetrieved, []]);
       } else {
         const filterProcessing = filterCourses(extras, courses);
         if (filterProcessing) return filterProcessing;
         return resolve([courses, []]);
       }
     });
+  };
+
+  /**
+   * Processes retrieved data after searching
+   * @param data - retrieved data
+   * @param extras - search params
+   * @returns SISRetrieved - processed data
+   */
+  const processedRetrievedData = (
+    data: SISRetrievedCourse[],
+    extras: SearchExtras
+  ): SISRetrievedCourse[] => {
+    let SISRetrieved: SISRetrievedCourse[] = data;
+    if (extras.areas === "N")
+      // TODO: backend searches for courses with "None" area. Fix this.
+      SISRetrieved = SISRetrieved.filter((course) => {
+        for (let version of course.versions) {
+          if (version.areas === "N") return true;
+        }
+        return false;
+      });
+    if (
+      extras.query.length <= minLength ||
+      searchTerm.length - extras.query.length >= 2
+    ) {
+      props.setSearching(false);
+    }
+    return SISRetrieved;
   };
 
   /**
@@ -214,6 +255,7 @@ const Form: FC<{ setSearching: (searching: boolean) => void }> = (props) => {
    * @param querySubstrs - an array of different substring combinations of search query
    */
   const substringSearch = async (
+    originalQuery: string,
     extras: SearchExtras,
     queryLength: number,
     querySubstrs: string[]
@@ -224,13 +266,22 @@ const Form: FC<{ setSearching: (searching: boolean) => void }> = (props) => {
     let cum = 0;
     querySubstrs.forEach(async (subQuery) => {
       total++;
-      const courseVersions = await find({ ...extras, query: subQuery });
+      const courseVersions = await find({
+        ...extras,
+        query: subQuery,
+      });
       cum++;
       courses.push(...courseVersions[0]);
       versions.push(...courseVersions[1]);
-      if (total === cum) {
-        handleFinishFinding(courses, versions, queryLength, extras);
-      }
+      setSearchedQuery({
+        total,
+        cum,
+        originalQuery,
+        courses,
+        versions,
+        queryLength,
+        extras,
+      });
     });
   };
 
@@ -256,7 +307,7 @@ const Form: FC<{ setSearching: (searching: boolean) => void }> = (props) => {
     const newSearchList: SISRetrievedCourse[] = getNewSearchList();
     dispatch(updateRetrievedCourses(newSearchList));
     if (queryLength > minLength && initialQueryLength - queryLength < 9) {
-      performSmartSearch(extras, queryLength - 1)();
+      performSmartSearch(extras.query, extras, queryLength - 1)();
     }
   };
 
@@ -296,7 +347,11 @@ const Form: FC<{ setSearching: (searching: boolean) => void }> = (props) => {
    * @returns reference to a function that conducts smart search
    */
   const performSmartSearch =
-    (extras: SearchExtras, queryLength: number): (() => void) =>
+    (
+      originalQuery: string,
+      extras: SearchExtras,
+      queryLength: number
+    ): (() => void) =>
     (): void => {
       const querySubstrs: string[] = [];
       if (queryLength >= minLength) {
@@ -304,7 +359,7 @@ const Form: FC<{ setSearching: (searching: boolean) => void }> = (props) => {
         for (let i = 0; i < searchTerm.length - queryLength + 1; i++) {
           querySubstrs.push(searchTerm.substring(i, i + queryLength));
         }
-        substringSearch(extras, queryLength, querySubstrs);
+        substringSearch(originalQuery, extras, queryLength, querySubstrs);
       } else if (queryLength > 0 && queryLength < minLength) {
         // Perform normal search if query length is between 1 and minLength
         axios
@@ -358,6 +413,7 @@ const Form: FC<{ setSearching: (searching: boolean) => void }> = (props) => {
     credits: extras.credits,
     wi: extras.wi,
     tags: extras.tags,
+    level: extras.levels,
   });
 
   return (

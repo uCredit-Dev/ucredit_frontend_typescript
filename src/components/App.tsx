@@ -94,7 +94,7 @@ const App: FC = () => {
           response.data.data.forEach((c: UserCourse) => {
             total++;
             axios
-              .get("https://ucredit-dev.herokuapp.com/api/search", {
+              .get(api + "/search", {
                 params: { query: c.number },
                 // eslint-disable-next-line no-loop-func
               })

@@ -7,7 +7,6 @@ import parse from "html-react-parser";
 import {
   requirements,
   checkRequirementSatisfied,
-  splitRequirements,
 } from "./distributionFunctions";
 import { selectCurrentPlanCourses } from "../../../slices/currentPlanSlice";
 import { selectCourseCache } from "../../../slices/userSlice";
@@ -21,8 +20,8 @@ import DistributionPopup from "./DistributionPopup";
  */
 const FineDistribution: FC<{
   dis: requirements;
-  distributionOpen: Boolean;
-  hidden: Boolean;
+  distributionOpen: boolean;
+  hidden: boolean;
 }> = ({ dis, distributionOpen, hidden }) => {
   const [showDistrDesc, setShowDistrDesc] = useState<boolean>(false);
   const [displayAdd, setDisplayAdd] = useState(false);
@@ -44,11 +43,11 @@ const FineDistribution: FC<{
   useEffect(() => {
     let temp = dis.fulfilled_credits;
     currPlanCourses.forEach((course) => {
-      getCourse(course.number, courseCache, currPlanCourses).then(
+      getCourse(course.number, courseCache, currPlanCourses, -1).then(
         (courseObj) => {
           if (
-            courseObj != null &&
-            checkRequirementSatisfied(splitRequirements(dis.expr), courseObj)
+            courseObj.resp != null &&
+            checkRequirementSatisfied(dis, courseObj.resp)
           ) {
             if (flipped.includes(course.number)) {
               temp -= course.credits;

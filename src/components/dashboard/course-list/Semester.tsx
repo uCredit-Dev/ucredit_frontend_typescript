@@ -265,14 +265,14 @@ const Semester: FC<{
                     className="h-4 fill-gray"
                     onClick={() => setOpenAPInfoBox(!openAPInfoBox)}
                   />
-                  <div className="flex flex-row text-gray-600 font-semibold">
+                  <div className="flex flex-row text-gray-600 font-semibold text-sm">
                     Equivalents
                     <div className="ml-1">{"≤"}</div>
                     <div className="font-light">{semesterYear.year}</div>
                   </div>
                 </>
               ) : (
-                <>{getSemesterName()}</>
+                <div className="text-sm">{getSemesterName()}</div>
               )}{" "}
               {courses.length !== 0 && totalCredits !== 0 ? (
                 <>
@@ -296,14 +296,14 @@ const Semester: FC<{
             </div>
             {!addingPrereqStatus ? (
               <div
-                className="group flex flex-row items-center justify-center text-white hover:bg-blue-400 bg-gray-100 bg-green-400 rounded-md cursor-pointer"
+                className="group flex flex-row items-center justify-center text-white hover:bg-blue-400 bg-green-400 rounded-md cursor-pointer"
                 onClick={addCourse}
               >
                 <AddSvg className="w-6 h-6 group-hover:text-white stroke-2" />
               </div>
             ) : (
               <button
-                className="py-1 w-24 text-white text-xs hover:bg-blue-400 bg-green-400 rounded focus:outline-none transform hover:scale-101 transition duration-150 ease-in"
+                className="py-1 z-40 w-24 text-white text-xs hover:bg-blue-400 bg-green-400 rounded focus:outline-none transform hover:scale-101 transition duration-150 ease-in"
                 onClick={addPrereq}
               >
                 Add Here
