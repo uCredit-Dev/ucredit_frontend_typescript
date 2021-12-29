@@ -12,6 +12,7 @@ import {
   selectCourseToDelete,
   selectShowCourseInfo,
   selectAddingPrereq,
+  selectShowingCart,
 } from "../../slices/popupSlice";
 import { selectSearchStatus } from "../../slices/searchSlice";
 import AddingPrereqPopup from "../popups/AddingPrereqPopup";
@@ -26,6 +27,7 @@ import InfoMenu from "./InfoMenu";
 import ActionBar from "./right-column-info/ActionBar";
 import { useScrollPosition } from "@n8tb1t/use-scroll-position";
 import clsx from "clsx";
+import Cart from "../popups/course-search/Cart";
 
 /**
  * The dashboard that displays the user's plan.
@@ -40,6 +42,7 @@ const Dashboard: FC<{ id: string | null }> = ({ id }) => {
   const importingStatus = useSelector(selectImportingStatus);
   const courseInfoStatus = useSelector(selectShowCourseInfo);
   const addingPrereqStatus = useSelector(selectAddingPrereq);
+  const cartStatus = useSelector(selectShowingCart);
 
   // State Setup
   const [showNotif, setShowNotif] = useState<boolean>(true);
@@ -101,6 +104,7 @@ const Dashboard: FC<{ id: string | null }> = ({ id }) => {
         {deleteCourseStatus ? <DeleteCoursePopup /> : null}
         {courseInfoStatus ? <CourseDisplayPopup /> : null}
         {addingPrereqStatus ? <AddingPrereqPopup /> : null}
+        {cartStatus ? <Cart /> : null}
       </div>
     </div>
   );

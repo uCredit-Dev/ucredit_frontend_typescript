@@ -7,7 +7,6 @@ import {
   updateInspectedVersion,
   updatePlaceholder,
 } from "../../../../slices/searchSlice";
-import CourseCard from "./CourseCard";
 import ReactPaginate from "react-paginate";
 import { ReactComponent as PlaceholderFilledSvg } from "../../../../resources/svg/PlaceholderFilled.svg";
 import { ReactComponent as PlaceholderEmptySvg } from "../../../../resources/svg/PlaceholderEmpty.svg";
@@ -16,10 +15,18 @@ import { Course, SISRetrievedCourse } from "../../../../resources/commonTypes";
 import ReactTooltip from "react-tooltip";
 import loading from "../../../../resources/images/loading.gif";
 
+// TODO: remove this import, for dummy courses
+import testCourses from './subset.json';
+import CartCourseListItem from "./CartCourseListItem";
+
 /* 
   List of searched courses.
 */
-const SearchList: FC<{ searching: boolean }> = (props) => {
+export interface DummyFilter { // for testing filtering
+  text: string;
+}
+
+const CartCourseList: FC<{ searching: boolean, dummyFilters: DummyFilter }> = (props) => {
   // Component state setup.
   const [pageNum, setPageNum] = useState<number>(0);
   const [pageCount, setPageCount] = useState<number>(0);
@@ -28,13 +35,31 @@ const SearchList: FC<{ searching: boolean }> = (props) => {
     []
   );
 
+  // FOR TESTING PURPOSES, courses will be read in from json.
+  const [courses, setCourses] = useState<SISRetrievedCourse[]>([]); // TODO : get from redux store
+  const [rawCourses, setRawCourses] = useState<SISRetrievedCourse[]>([]);
+  useEffect(() => {
+    setCourses(testCourses as unknown as SISRetrievedCourse[]);
+    setRawCourses(testCourses as unknown as SISRetrievedCourse[]);
+  }, []);
+
   // Redux setup
-  const courses = useSelector(selectRetrievedCourses);
+  // const courses = useSelector(selectRetrievedCourses); will be from redux
   const placeholder = useSelector(selectPlaceholder);
   const searchFilters = useSelector(selectSearchFilters);
   const dispatch = useDispatch();
 
   let coursesPerPage = 10;
+
+  // updates courses from raw courses based on filters from dummy filters
+  useEffect(() => {
+    let dummyFilteredCourses = rawCourses.filter(course => {
+      return course.title.includes(props.dummyFilters.text);
+    });
+    setCourses(dummyFilteredCourses);
+    setPageNum(0);
+    console.log(props.dummyFilters.text);
+  }, [props.dummyFilters]);
 
   // Updates pagination every time the searched courses change.
   useEffect(() => {
@@ -88,7 +113,8 @@ const SearchList: FC<{ searching: boolean }> = (props) => {
               className="transform hover:scale-105 transition duration-200 ease-in"
               onClick={() => setHideResults(true)}
             >
-              <CourseCard course={inspecting} version={i} />
+              {/* <CourseCard course={inspecting} version={i} /> */}
+              <CartCourseListItem course={inspecting} version={i} />
             </div>
           );
         }
@@ -249,4 +275,4 @@ const Pagination: React.FC<PaginationProps> = ({
   );
 };
 
-export default SearchList;
+export default CartCourseList;
