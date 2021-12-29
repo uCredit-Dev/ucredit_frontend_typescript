@@ -24,22 +24,34 @@ export const filterCourses = (
   }
 
   let credits = extras.credits;
-  if (credits !== null) { courses = processCredits(credits, courses); }
+  if (credits !== null) {
+    courses = processCredits(credits, courses);
+  }
 
   const areas = extras.areas;
-  if (areas !== null) { courses = processAreas(areas, courses); }
+  if (areas !== null) {
+    courses = processAreas(areas, courses);
+  }
 
   const departments = extras.department;
-  if (departments !== null) { courses = processDepartments(departments, courses); }
+  if (departments !== null) {
+    courses = processDepartments(departments, courses);
+  }
 
   const tags = extras.tags;
-  if (tags !== null) { courses = processTags(tags, courses); }
+  if (tags !== null) {
+    courses = processTags(tags, courses);
+  }
 
   const levels = extras.levels;
-  if (levels !== null) { courses = processLevels(levels, courses); }
+  if (levels !== null) {
+    courses = processLevels(levels, courses);
+  }
 
   const wi = extras.wi;
-  if (wi !== null) { courses = processWI(wi, courses); }
+  if (wi !== null) {
+    courses = processWI(wi, courses);
+  }
 
   const semester = extras.term + " " + extras.year;
   courses = courses.filter((course) => {
@@ -55,96 +67,103 @@ export const filterCourses = (
   return null;
 };
 
-const processCredits = (credits: string, courses: SISRetrievedCourse[]): SISRetrievedCourse[] => {
+const processCredits = (
+  credits: string,
+  courses: SISRetrievedCourse[]
+): SISRetrievedCourse[] => {
   const creditsString = credits.toString();
-  return (  courses.filter((course) => {
-      let satisfied = false;
-      creditsString.split("").forEach((c: string) =>
-        course.versions.forEach((v) => {
-          if (v.credits.toString() === c) {
-            satisfied = true;
-          }
-        })
-      );
-      return satisfied;
-    })
-  );
-}
-
-const processAreas = (areas: AreaType, courses: SISRetrievedCourse[]): SISRetrievedCourse[] => {
-  return (
-    courses.filter((course) => {
-      let satisfied = false;
-      areas.split("").forEach((a: string) =>
-        course.versions.forEach((v) => {
-          if (v.areas.includes(a)) {
-            satisfied = true;
-          }
-        })
-      );
-      return satisfied;
-    })
-  );
-}
-
-const processDepartments = (departments: string, courses: SISRetrievedCourse[]): SISRetrievedCourse[] => {
-  return (
-      courses.filter((course) => {
-      let satisfied = false;
-      departments.split("|").forEach((d: string) =>
-        course.versions.forEach((v) => {
-          if (v.department === d) {
-            satisfied = true;
-          }
-        })
-      );
-      return satisfied;
-    })
-  );
-}
-
-const processTags = (tags: string, courses: SISRetrievedCourse[]): SISRetrievedCourse[] => {
-  return (
-    courses.filter((course) => {
-      let satisfied = false;
-      tags.split("|").forEach((t: string) =>
-        course.versions.forEach((v) => {
-          if (v.tags.includes(t)) {
-            satisfied = true;
-          }
-        })
-      );
-      return satisfied;
-    })
-  );
-}
-
-const processLevels = (levels: string, courses: SISRetrievedCourse[]): SISRetrievedCourse[] => {
-  return (
-    courses.filter((course) => {
-      let satisfied = false;
+  return courses.filter((course) => {
+    let satisfied = false;
+    creditsString.split("").forEach((c: string) =>
       course.versions.forEach((v) => {
-        levels.split("|").forEach((level) => {
-          if (v.level === level) {
-            satisfied = true;
-          }
-        });
-      });
-      return satisfied;
-    })
-  );
-}
+        if (v.credits.toString() === c) {
+          satisfied = true;
+        }
+      })
+    );
+    return satisfied;
+  });
+};
 
-const processWI = (wi: boolean, courses: SISRetrievedCourse[]): SISRetrievedCourse[] => {
-  return (
-    courses.filter((course) => {
-      let satisfied = false;
+const processAreas = (
+  areas: AreaType,
+  courses: SISRetrievedCourse[]
+): SISRetrievedCourse[] => {
+  return courses.filter((course) => {
+    let satisfied = false;
+    areas.split("").forEach((a: string) =>
       course.versions.forEach((v) => {
-        if (v.wi && wi) {
+        if (v.areas.includes(a)) {
+          satisfied = true;
+        }
+      })
+    );
+    return satisfied;
+  });
+};
+
+const processDepartments = (
+  departments: string,
+  courses: SISRetrievedCourse[]
+): SISRetrievedCourse[] => {
+  return courses.filter((course) => {
+    let satisfied = false;
+    departments.split("|").forEach((d: string) =>
+      course.versions.forEach((v) => {
+        if (v.department === d) {
+          satisfied = true;
+        }
+      })
+    );
+    return satisfied;
+  });
+};
+
+const processTags = (
+  tags: string,
+  courses: SISRetrievedCourse[]
+): SISRetrievedCourse[] => {
+  return courses.filter((course) => {
+    let satisfied = false;
+    tags.split("|").forEach((t: string) =>
+      course.versions.forEach((v) => {
+        if (v.tags.includes(t)) {
+          satisfied = true;
+        }
+      })
+    );
+    return satisfied;
+  });
+};
+
+const processLevels = (
+  levels: string,
+  courses: SISRetrievedCourse[]
+): SISRetrievedCourse[] => {
+  return courses.filter((course) => {
+    let satisfied = false;
+    course.versions.forEach((v) => {
+      levels.split("|").forEach((level) => {
+        if (v.level === level) {
           satisfied = true;
         }
       });
-      return satisfied;
-    })
-  );
-}
+    });
+    return satisfied;
+  });
+};
+
+const processWI = (
+  wi: boolean,
+  courses: SISRetrievedCourse[]
+): SISRetrievedCourse[] => {
+  return courses.filter((course) => {
+    let satisfied = false;
+    course.versions.forEach((v) => {
+      if (v.wi && wi) {
+        satisfied = true;
+      }
+    });
+    return satisfied;
+  });
+};
