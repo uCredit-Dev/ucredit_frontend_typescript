@@ -101,9 +101,7 @@ const CourseDisplay: FC = () => {
       wi: version.wi,
       version: version.term,
       expireAt:
-        user._id === "guestUser"
-          ? Date.now() + 60 * 60 * 24 * 1000
-          : undefined,
+        user._id === "guestUser" ? Date.now() + 60 * 60 * 24 * 1000 : undefined,
     };
 
     let retrieved = await fetch(api + "/courses", {
@@ -122,9 +120,7 @@ const CourseDisplay: FC = () => {
     }
 
     newUserCourse = { ...data.data };
-    dispatch(
-      updateCurrentPlanCourses([...currentCourses, newUserCourse])
-    );
+    dispatch(updateCurrentPlanCourses([...currentCourses, newUserCourse]));
     const allYears: Year[] = [...currentPlan.years];
     const newYears: Year[] = [];
     allYears.forEach((y) => {
