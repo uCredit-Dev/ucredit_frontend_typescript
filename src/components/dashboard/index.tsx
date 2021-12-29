@@ -18,6 +18,7 @@ import {
   selectShowCourseInfo,
   selectAddingPrereq,
   updateAddingPlanStatus,
+  selectShowingCart,
 } from "../../slices/popupSlice";
 import { selectSearchStatus } from "../../slices/searchSlice";
 import AddingPrereqPopup from "../popups/AddingPrereqPopup";
@@ -39,6 +40,8 @@ import {
   updatePlanList,
 } from "../../slices/userSlice";
 import ShareLinksPopup from "./degree-info/ShareLinksPopup";
+import clsx from "clsx";
+import Cart from "../popups/course-search/Cart";
 
 /**
  * The dashboard that displays the user's plan.
@@ -57,6 +60,7 @@ const Dashboard: FC<{ id: string | null }> = ({ id }) => {
   const importingStatus = useSelector(selectImportingStatus);
   const courseInfoStatus = useSelector(selectShowCourseInfo);
   const addingPrereqStatus = useSelector(selectAddingPrereq);
+  const cartStatus = useSelector(selectShowingCart);
 
   // State Setup
   const [showNotif, setShowNotif] = useState<boolean>(true);
@@ -188,6 +192,8 @@ const Dashboard: FC<{ id: string | null }> = ({ id }) => {
         {deleteYearStatus ? <DeleteYearPopup /> : null}
         {deleteCourseStatus ? <DeleteCoursePopup /> : null}
         {courseInfoStatus ? <CourseDisplayPopup /> : null}
+        {addingPrereqStatus ? <AddingPrereqPopup /> : null}
+        {cartStatus ? <Cart /> : null}
       </div>
     </div>
   );

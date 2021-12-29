@@ -6,7 +6,7 @@ import {
   selectPlan,
   updateSelectedPlan,
 } from "../../../slices/currentPlanSlice";
-import { updateDeletePlanStatus } from "../../../slices/popupSlice";
+import { updateDeletePlanStatus, updateShowingCart } from "../../../slices/popupSlice";
 import {
   selectPlanList,
   selectUser,
@@ -97,6 +97,23 @@ const ActionBar: FC<{
   };
 
   /**
+   * Handles when button for shareable link is clicked.
+   */
+  const onShareClick = (): void => {
+    if (shareableURL !== "") {
+      setShareableURL("");
+      return;
+    }
+    setShareableURL(
+      (window.location.href.includes("localhost")
+        ? "localhost:3000"
+        : "https://ucredit.me") +
+      "/share?_id=" +
+      currentPlan._id
+    );
+  };
+
+  /**
    * Adds a new year, if preUni is true, add to the start of the plan, otherwise add to the end
    * @param preUniversity - whether the new year is a pre uni year
    */
@@ -136,6 +153,11 @@ const ActionBar: FC<{
       toast.error("Can't add more than 8 years!");
     }
   };
+
+  // temp wayof display cart feature:
+  const displayCart = () => {
+    dispatch(updateShowingCart(true));
+  }
 
   useEffect(() => {
     ReactTooltip.rebuild();
@@ -193,6 +215,17 @@ const ActionBar: FC<{
           data-for="godTip"
           className="w-10 h-10 focus:outline-none"
         />
+      </div>
+
+      {/* Fortesting only, TODO: remove in production */}
+      <div className="flex flex-row items-center my-1 w-20 h-10 hover:underline hover:bg-green-300 border border-gray-300 rounded focus:outline-none shadow cursor-pointer transition duration-200 ease-in"
+        onClick={() => displayCart()}>
+        <AddSvg
+          data-tip={`Toggle cart poppup`}
+          data-for="godTip"
+          className="w-10 h-10 focus:outline-none"
+        />
+        <p> Display da cart </p>
       </div>
     </div>
   );

@@ -38,7 +38,7 @@ type searchStates = {
   searchTime: TimeBundle;
   filters: FilterObj;
   retrievedCourses: SISRetrievedCourse[];
-  retrievedVerions: number[];
+  retrievedVerions: number[]; // pretty sure this is a typo
   inspectedVersion: Course | "None";
   inspectedCourse: SISRetrievedCourse | "None";
   placeholder: boolean;
@@ -104,7 +104,7 @@ export const searchSlice = createSlice({
         };
         state.inspectedVersion = initCourseVer;
       } else {
-        state.inspectedVersion = "None";
+        state.inspectedVersion = "None";  
       }
       state.inspectedCourse = action.payload;
     },

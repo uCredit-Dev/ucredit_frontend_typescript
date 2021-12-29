@@ -7,7 +7,6 @@ import {
   updateInspectedVersion,
   updatePlaceholder,
 } from "../../../../slices/searchSlice";
-import CourseCard from "./CourseCard";
 import ReactPaginate from "react-paginate";
 import { ReactComponent as PlaceholderFilledSvg } from "../../../../resources/svg/PlaceholderFilled.svg";
 import { ReactComponent as PlaceholderEmptySvg } from "../../../../resources/svg/PlaceholderEmpty.svg";
@@ -16,10 +15,18 @@ import { Course, SISRetrievedCourse } from "../../../../resources/commonTypes";
 import ReactTooltip from "react-tooltip";
 import loading from "../../../../resources/images/loading.gif";
 
+// TODO: remove this import, for dummy courses
+import testCourses from './subset.json';
+import CartCourseListItem from "./CartCourseListItem";
+
 /* 
   List of searched courses.
 */
-const SearchList: FC<{ searching: boolean }> = (props) => {
+export interface DummyFilter { // for testing filtering
+  text: string;
+}
+
+const CartCourseList: FC<{ searching: boolean, dummyFilters: DummyFilter }> = (props) => {
   // Component state setup.
   const [pageNum, setPageNum] = useState<number>(0);
   const [pageCount, setPageCount] = useState<number>(0);
@@ -28,17 +35,35 @@ const SearchList: FC<{ searching: boolean }> = (props) => {
     []
   );
 
+  // FOR TESTING PURPOSES, courses will be read in from json.
+  const [courses, setCourses] = useState<SISRetrievedCourse[]>([]); // TODO : get from redux store
+  const [rawCourses, setRawCourses] = useState<SISRetrievedCourse[]>([]);
+  useEffect(() => {
+    setCourses(testCourses as unknown as SISRetrievedCourse[]);
+    setRawCourses(testCourses as unknown as SISRetrievedCourse[]);
+  }, []);
+
   // Redux setup
-  const courses = useSelector(selectRetrievedCourses);
+  // const courses = useSelector(selectRetrievedCourses); will be from redux
   const placeholder = useSelector(selectPlaceholder);
   const searchFilters = useSelector(selectSearchFilters);
   const dispatch = useDispatch();
 
   let coursesPerPage = 10;
 
+  // updates courses from raw courses based on filters from dummy filters
+  useEffect(() => {
+    let dummyFilteredCourses = rawCourses.filter(course => {
+      return course.title.includes(props.dummyFilters.text);
+    });
+    setCourses(dummyFilteredCourses);
+    setPageNum(0);
+    console.log(props.dummyFilters.text);
+  }, [props.dummyFilters]);
+
   // Updates pagination every time the searched courses change.
   useEffect(() => {
-    const SISFilteredCourses: SISRetrievedCourse[] = courses.filter(
+    const filteredCourses: SISRetrievedCourse[] = courses.filter(
       (course: SISRetrievedCourse) => {
         let valid = false;
         course.versions.forEach((version) => {
@@ -54,13 +79,11 @@ const SearchList: FC<{ searching: boolean }> = (props) => {
       }
     );
     // If coursesPerPage doesn't divide perfectly into total courses, we need one more page.
-    const division = Math.floor(SISFilteredCourses.length / coursesPerPage);
+    const division = Math.floor(filteredCourses.length / coursesPerPage);
     const pages =
-      SISFilteredCourses.length % coursesPerPage === 0
-        ? division
-        : division + 1;
+      filteredCourses.length % coursesPerPage === 0 ? division : division + 1;
     setPageCount(pages);
-    setFilteredCourses(SISFilteredCourses);
+    setFilteredCourses(filteredCourses);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [courses]);
 
@@ -70,6 +93,7 @@ const SearchList: FC<{ searching: boolean }> = (props) => {
    */
   const courseList = () => {
     let toDisplay: any = [];
+
     let startingIndex = pageNum * coursesPerPage;
     let endingIndex =
       startingIndex + coursesPerPage > filteredCourses.length
@@ -77,7 +101,7 @@ const SearchList: FC<{ searching: boolean }> = (props) => {
         : startingIndex + coursesPerPage - 1;
     for (let i = startingIndex; i <= endingIndex; i++) {
       const inspecting = { ...filteredCourses[i] };
-      inspecting.versions.forEach((v: any, versionNum: number) => {
+      inspecting.versions.forEach((v: any, i: number) => {
         if (
           v.term === searchFilters.term + " " + searchFilters.year ||
           (searchFilters.term === "All" &&
@@ -89,7 +113,8 @@ const SearchList: FC<{ searching: boolean }> = (props) => {
               className="transform hover:scale-105 transition duration-200 ease-in"
               onClick={() => setHideResults(true)}
             >
-              <CourseCard course={inspecting} version={versionNum} />
+              {/* <CourseCard course={inspecting} version={i} /> */}
+              <CartCourseListItem course={inspecting} version={i} />
             </div>
           );
         }
@@ -151,13 +176,7 @@ const SearchList: FC<{ searching: boolean }> = (props) => {
                 setHideResults(!hideResults);
               }}
             >
-              {() => {
-                if (!hideResults) {
-                  return "Hide Results";
-                } else {
-                  return "Show Results";
-                }
-              }}
+              {!hideResults ? "Hide Results" : "Show Results"}
             </button>
           ) : null}
         </div>
@@ -192,38 +211,31 @@ const SearchList: FC<{ searching: boolean }> = (props) => {
       {!hideResults || window.innerWidth > 700 ? (
         <div className="py px-5 w-full bg-gray-200 select-none">
           <div className="w-full h-full">
-            {(() =>
-              courses.length > 0 ? (
-                <>
-                  <div className="y-full flex flex-col w-full">
-                    {courseList()}
-                  </div>
-                  {(() =>
-                    pageCount > 1 ? (
-                      <div className="flex flex-row justify-center w-full h-auto">
-                        <Pagination
-                          pageCount={pageCount}
-                          handlePageClick={handlePageClick}
-                        />
-                      </div>
-                    ) : null)()}
-                </>
-              ) : (
-                <div className="flex flex-col items-center justify-center mt-24 w-full">
-                  {(() =>
-                    props.searching ? (
-                      <img
-                        src={loading}
-                        alt="Searching..."
-                        className="h-10"
-                      ></img>
-                    ) : (
-                      <div className="text-center text-gray-400 text-lg">
-                        No current search results.
-                      </div>
-                    ))()}
+            {courses.length > 0 ? (
+              <>
+                <div className="y-full flex flex-col w-full">
+                  {courseList()}
                 </div>
-              ))()}
+                {pageCount > 1 ? (
+                  <div className="flex flex-row justify-center w-full h-auto">
+                    <Pagination
+                      pageCount={pageCount}
+                      handlePageClick={handlePageClick}
+                    />
+                  </div>
+                ) : null}
+              </>
+            ) : (
+              <div className="flex flex-col items-center justify-center mt-24 w-full">
+                {props.searching ? (
+                  <img src={loading} alt="Searching..." className="h-10"></img>
+                ) : (
+                  <div className="text-center text-gray-400 text-lg">
+                    No current search results.
+                  </div>
+                )}
+              </div>
+            )}
           </div>
         </div>
       ) : null}
@@ -263,4 +275,4 @@ const Pagination: React.FC<PaginationProps> = ({
   );
 };
 
-export default SearchList;
+export default CartCourseList;
