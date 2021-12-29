@@ -14,15 +14,8 @@ jobs:
   lint:
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout
-        uses: actions/checkout@v2
-        with:
-          ref: ${{github.head_ref}}
-
-      - name: Prettify code
-        uses: creyD/prettier_action@v4.1.1
-        with:
-          prettier_options: --check
-          branch: "${{github.head_ref}}"
-          dry: True
-          file_pattern: "."
+      - uses: actions/checkout@v2
+      - name: Install Dependencies
+        run: npm install -g prettier
+      - name: Run Prettier
+        run: npx prettier . --check 
