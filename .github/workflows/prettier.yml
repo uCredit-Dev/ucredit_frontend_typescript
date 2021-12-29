@@ -23,4 +23,6 @@ jobs:
         uses: creyD/prettier_action@v4.1.1
         with:
           prettier_options: --check
+          branch: "${{github.head_ref}}"
           dry: True
+          file_pattern: "."
