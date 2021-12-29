@@ -18,4 +18,4 @@ jobs:
       - name: Install Dependencies
         run: npm install -g prettier
       - name: Run Prettier
-        run: npx prettier . --check 
+        run: npx prettier "**/*.{js,ts}" --check 
