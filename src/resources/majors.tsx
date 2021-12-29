@@ -204,96 +204,98 @@ import { Major, Minor } from "./commonTypes";
 //   distributions: [],
 // };
 
-// // https://econ.jhu.edu/undergraduate/major-requirements/
-// const baEcon: Major = {
-//   degree_name: "B.A. Economics",
-//   department: "AS Economics",
-//   total_degree_credit: 120,
-//   wi_credit: 6,
-//   distributions: [
-//     // {
-//     //   name: "Economics CORE",
-//     //   required_credits: 40,
-//     //   min_credits_per_course: 1,
-//     //   description:
-//     //     "For more information please visit the" +
-//     //     "<a href='https://econ.jhu.edu/undergraduate/major-requirements/'>" +
-//     //     "major degree requirement</a> section on the department website.",
-//     //   criteria: "EN Chemical & Biomedical Engineering[D]^OR^ChemBE[T]",
-//     //   fine_requirements: [
-//     //     {
-//     //       description:
-//     //         "Required Courses: \n\t500.113 Gateway Computing/Python\n\t540.101 Chemical Engineering Today\n\t" +
-//     //         "540.202 Intro to Chemical and Biological Process Analysis\n\t540.203 Engineering Thermodynamics\n\t" +
-//     //         "540.301 Kinetic Processes\n\t",
-//     //       required_credits: 3,
-//     //       criteria: "EN.500.113[C]",
-//     //     },
-//     //   ],
-//     // },
-//     // {
-//     //   name: "Math",
-//     //   required_credits: 16,
-//     //   min_credits_per_course: 3,
-//     //   description:
-//     //     "All courses in this category must be from one of the two math departments on " +
-//     //     "campus: Mathematics or Applied Math and Statistics. However, 553.171 Discrete Mathematics " +
-//     //     "may not count towards these math requirements. Other than Calculus I and II, all the " +
-//     //     "remaining courses must be 200-level or above. The BS math courses must include coverage " +
-//     //     "of both probability and statistics, which can be satisfied in many ways, including " +
-//     //     "taking any of the 553.3xx combined Probability & Statistics courses.",
-//     //   criteria: "AS Mathematics[D]^OR^EN Applied Math and Statistics[D]",
-//     //   exception: "EN.553.171[C]",
-//     //   fine_requirements: [
-//     //     {
-//     //       description:
-//     //         "Required Courses:\n\t110.108 Calculus I or AP equivalent\n\t110.109 Calculus II or AP equivalent",
-//     //       required_credits: 8,
-//     //       criteria: "AS.110.108[C]^OR^AS.110.109[C]",
-//     //     },
-//     //   ],
-//     // },
-//     // {
-//     //   name: "Science",
-//     //   required_credits: 8,
-//     //   min_credits_per_course: 1,
-//     //   description:
-//     //     "Students must take two semesters of core science courses (any combination of Physics, " +
-//     //       "Chemistry, Biology), with their associated labs. AP credit is an acceptable substitute " +
-//     //       "for these courses and labs.",
-//     //   criteria:
-//     //     "General Physics[N]^OR^General Biology[N]^OR^Introductory Chemistry[N]",
-//     // },
-//     // {
-//     //   name: "Liberal Arts",
-//     //   required_credits: 18,
-//     //   min_credits_per_course: 3,
-//     //   double_count: true,
-//     //   description:
-//     //     "These courses must have either an ‘H’ or ‘S’ area designator on them, but can be " +
-//     //     "from any department. At most 2 of these courses may be taken S/U (if not counted towards " +
-//     //     "the writing requirement). Foreign language courses can be counted as well, even if " +
-//     //     "they don’t carry an ‘H’ or ‘S’ designator.",
-//     //   criteria:
-//     //     "AS Center for Language Education[D]^OR^AS Modern Languages and Literatures[D]^OR^H[A]^OR^S[A]",
-//     // },
-//     // {
-//     //   name: "English Focused Writing Intensive",
-//     //   required_credits: 3,
-//     //   min_credits_per_course: 3,
-//     //   double_count: true,
-//     //   description:
-//     //     "At least one course with a primary focus on writing in English must be chosen. " +
-//     //     "Courses that satisfy this requirement are: EN.661.110, EN.661.111, EN.661.250, EN.661.251, " +
-//     //     "EN.661.315, AS.060.100, AS.060.113, AS.220.105, AS.180.248, AS.290.303, AS.360.133.",
-//     //   criteria:
-//     //     "EN.661.110[C]^OR^EN.661.111[C]^OR^EN.661.250[C]^OR^EN.661.251[C]^OR^EN.661.315[C]" +
-//     //     "^OR^AS.060.100[C]^OR^AS.060.113[C]^OR^AS.220.105[C]^OR^AS.180.248[C]^OR^AS.290.303[C]^OR^AS.360.133",
-//     // },
-//   ],
-// };
-
-// /* COMPLETED */
+// https://e-catalogue.jhu.edu/arts-sciences/full-time-residential-programs/degree-programs/economics/economics-bachelor-arts/
+const baEcon: Major = {
+  degree_name: "B.A. Economics",
+  department: "AS Economics",
+  total_degree_credit: 41,
+  wi_credit: 12,
+  url: "https://e-catalogue.jhu.edu/arts-sciences/full-time-residential-programs/degree-programs/economics/economics-bachelor-arts/",
+  distributions: [
+    {
+      name: "Economics Core",
+      required_credits: 18,
+      min_credits_per_course: 1,
+      description:
+        "For more information please visit the" +
+        "<a href='https://econ.jhu.edu/undergraduate/major-requirements/'>" +
+        "major degree requirement</a> section on the department website.",
+      criteria: "",
+      fine_requirements: [
+        {
+          description:
+            "<b>Elements of Macroeconomics</b>",
+          required_credits: 3,
+          criteria: "AS.180.101[C]",
+        },
+        {
+          description:
+            "<b>Elements of Microeconomics</b>",
+          required_credits: 3,
+          criteria: "AS.180.102[C]",
+        },
+        {
+          description:
+            "<b>Microeconomic Theory</b> <br /> AS.180.301 Microeconomic Theory <br /> <i>OR</i> <br /> AS.108.401 Advanced Microeconomic Theory",
+          required_credits: 4.5,
+          criteria: "AS.180.301[C]^OR^AS.108.401[C]",
+        },
+        {
+          description:
+            "<b>Macroeconomic Theory</b>",
+          required_credits: 4.5,
+      criteria: "AS.180.302[C]",
+        },
+        {
+          description:
+            "<b>Econometrics</b> <br /> AS.180.334 Econometrics <br /> <i>OR</i> <br /> AS.108.434 Advanced Econometrics",
+          required_credits: 3,
+          criteria: "AS.180.334[C]^OR^AS.108.434[C]",
+        },
+      ],
+    },
+    {
+      name: "Economics Electives",
+      required_credits: 15,
+      min_credits_per_course: 3,
+      description:
+        "All courses in this category must be offered by the Economics Department. Three courses must be taken at the 200 level, " +
+        "and two must be taken at the 300 level.",
+      criteria: "AS Economics[D]",
+      fine_requirements: [
+        {
+          description: "<b>Lower Level Classes</b>",
+          required_credits: 9,
+          criteria: "Lower Level[L]"
+        },
+        {
+          description: "<b>Upper Level Classes</b>",
+          required_credits: 6,
+          criteria: "Upper Level[L]"
+        }
+      ]
+    },
+    {
+      name: "Mathematics",
+      required_credits: 4,
+      min_credits_per_course: 3,
+      description:
+        "Students must complete the math requirement for the major by taking Calculus I.",
+      criteria: "AS.110.106[C]^OR^AS.110.108[C]",
+    },
+    {
+      name: "Statistics",
+      required_credits: 4,
+      min_credits_per_course: 3,
+      description:
+        "Students must complete one course from the approved list of statistics courses: <br /> EN.553.111 Statistical Analysis I <br /> " +
+        "EN.553.112 Statistical Analysis II <br /> EN.553.211 Probability and Statistics for the Life Sciences <br /> EN.553.310 Probability & Statistics for the Physical Sciences & Engineering <br /> " +
+        "EN.553.311 Probability and Statistics for the Biological Sciences and Engineering <br />  EN.553.420 Introduction to Probability <br />  EN.553.430 Introduction to Statistics <br /> " + 
+        "AS.280.345 Public Health Biostatistics",
+      criteria: "EN.553.111[C]^OR^EN.553.112[C]^OR^EN.553.211[C]^OR^EN.553.310[C]^OR^EN.553.311[C]^OR^EN.553.420[C]^OR^EN.553.430[C]^OR^AS.280.345[C]",
+    },
+  ],
+};
 
 // https://www.bme.jhu.edu/academics/undergraduate/undergraduate-degree-requirements/
 const bsBME: Major = {
@@ -986,147 +988,148 @@ const bsBME: Major = {
 //   ],
 // };
 
-// // https://krieger.jhu.edu/internationalstudies/undergraduate/requirements/
-// const baIS: Major = {
-//   degree_name: "B.A. International Studies",
-//   department: "AS International Studies",
-//   total_degree_credit: 120,
-//   wi_credit: 12,
-//   distributions: [
-//     {
-//       name: "Political Science",
-//       required_credits: 18,
-//       min_credits_per_course: 3,
-//       description:
-//         "International studies students must complete 18 credits in political science, including:\n\t" +
-//         "One course in international relations (IR)\n\tTwo courses in comparative politics (CP)\n\tOne " +
-//         "course in American politics (AP)\n\tOne course in political theory (PT)\n\tOne gateway course",
-//       criteria: "AS Political Science[D]",
-//       fine_requirements: [
-//         {
-//           required_credits: 3,
-//           description: "One course in international relations (IR)",
-//           criteria: "INST-IR[T]",
-//         },
-//         {
-//           required_credits: 6,
-//           description: "Two courses in comparative politics (CP)",
-//           criteria: "INST-CP[T]",
-//         },
-//         {
-//           required_credits: 3,
-//           description: "One course in American politics (AP)",
-//           criteria: "INST-AP[T]",
-//         },
-//         {
-//           required_credits: 3,
-//           description: "One course in political theory (PT)",
-//           criteria: "INST-PT[T]",
-//         },
-//         {
-//           required_credits: 3,
-//           description:
-//             "One of the following gateway courses: \n\tConflict and Security in a Global World " +
-//             "(070.295)\n\tContemporary International Politics (190.108)\n\tIntroduction to Global " +
-//             "Studies (190.111)\n\tIssues in International Development (230.150)*\n\t*Applies to " +
-//             "students who entered fall 2019 and earlier only.",
-//           criteria:
-//             "AS.070.295[C]^OR^AS.190.108[C]^OR^AS.190.111[C]^OR^(AS.230.150[C]^AND^Fall 2019[Y])",
-//         },
-//       ],
-//     },
-//     {
-//       name: "Economics",
-//       required_credits: 12,
-//       min_credits_per_course: 3,
-//       description:
-//         "Note: both Elements of Macroeconomics and Elements of Microeconomics must be " +
-//         "completed by the end of the sophomore year.",
-//       criteria: "AS Economics[D]",
-//       fine_requirements: [
-//         {
-//           required_credits: 3,
-//           description: "Elements of Macroeconomics (180.101)",
-//           criteria: "AS.180.101[C]",
-//         },
-//         {
-//           required_credits: 3,
-//           description: "Elements of Microeconomics (180.102)",
-//           criteria: "AS.180.102[C]",
-//         },
-//         {
-//           required_credits: 3,
-//           description:
-//             "One approved international economics course designated INST-ECON in " +
-//             "the course description; this course may sometimes be fulfilled via study " +
-//             "abroad, with permission",
-//           criteria: "INST-ECON[T]",
-//         },
-//         {
-//           required_credits: 3,
-//           description:
-//             "One course (student’s choice) taken in the JHU Department of Economics (e.g., AS.180.xxx).",
-//           criteria: "AS Economics[D]",
-//         },
-//       ],
-//     },
-//     {
-//       name: "Foreign Language",
-//       required_credits: 6,
-//       min_credits_per_course: 3,
-//       description:
-//         "International studies majors must demonstrate proficiency in at least one" +
-//         "foreign language. Proficiency through the second semester of the advanced/third-year " +
-//         "level is required. If students have proficiency above the advanced/third-year level, " +
-//         "they must take either: Option (A), two semesters of an upper level literature or culture " +
-//         "course offered by the language departments and taught in the language of proficiency, or " +
-//         "Option (B), take two semesters of another language.\n\nWaivers indicating advanced " +
-//         "level/third-year language proficiency must be documented in the student’s official " +
-//         "academic record in order for a student to be eligible to complete Option A or B. " +
-//         "To receive these waivers, students must contact the Center for Language Education or " +
-//         "the Department of Modern Languages & Literatures to complete a proficiency exam on " +
-//         "campus.\n\nNote: Students cannot count their foreign language courses toward the 5 " +
-//         "course advanced coursework requirement.",
-//       criteria:
-//         "AS Center for Language Education[D]^OR^AS Modern Languages and Literatures[D]",
-//     },
-//     {
-//       name: "Focus Area",
-//       required_credits: 12,
-//       min_credits_per_course: 3,
-//       description:
-//         "Four courses within a coherent field of interest. For more detail please visit " +
-//         "https://krieger.jhu.edu/internationalstudies/undergraduate/requirements/",
-//       criteria: "",
-//       user_select: true,
-//     },
-//     {
-//       name: "History",
-//       required_credits: 15,
-//       min_credits_per_course: 3,
-//       description:
-//         "International Studies students must complete 15 credits in history, including:\n\t" +
-//         "One introductory course at the 100-level in the JHU History Department " +
-//         "(e.g., AS.100.1xx).\n\tFour courses designated INST-GLOBAL in the course description.",
-//       criteria:
-//         "(AS History[D]^AND^Lower Level Undergraduate[L])^OR^INST-GLOBAL[T]",
-//       fine_requirements: [
-//         {
-//           required_credits: 3,
-//           description:
-//             "One introductory course at the 100-level in the JHU History Department (e.g., AS.100.1xx)",
-//           criteria: "AS History[D]^AND^Lower Level Undergraduate[L]",
-//         },
-//         {
-//           required_credits: 12,
-//           description:
-//             "Four courses designated INST-GLOBAL in the course description",
-//           criteria: "INST-GLOBAL[T]",
-//         },
-//       ],
-//     },
-//   ],
-// };
+// https://krieger.jhu.edu/internationalstudies/undergraduate/requirements/
+const baIS: Major = {
+  degree_name: "B.A. International Studies",
+  department: "AS International Studies",
+  total_degree_credit: 120,
+  wi_credit: 12,
+  url: "https://krieger.jhu.edu/internationalstudies/undergraduate/requirements/",
+  distributions: [
+    {
+      name: "Political Science",
+      required_credits: 18,
+      min_credits_per_course: 3,
+      description:
+        "International studies students must complete 18 credits in political science, including: <br />" +
+        "One course in international relations (IR) <br /> Two courses in comparative politics (CP) <br /> One " +
+        "course in American politics (AP) <br /> One course in political theory (PT) <br /> One gateway course",
+      criteria: "INST-IR[T]^OR^INST-CP[T]^OR^INST-AP[T]^OR^INST-PT[T]^OR^AS.070.295[C]^OR^AS.190.108[C]^OR^AS.190.111[C]^OR^(AS.230.150[C]^AND^Fall 2019[Y])",
+      fine_requirements: [
+        {
+          required_credits: 3,
+          description: "<b>One course in international relations (IR)</b>",
+          criteria: "INST-IR[T]",
+        },
+        {
+          required_credits: 6,
+          description: "<b>Two courses in comparative politics (CP)</b>",
+          criteria: "INST-CP[T]",
+        },
+        {
+          required_credits: 3,
+          description: "<b>One course in American politics (AP)</b>",
+          criteria: "INST-AP[T]",
+        },
+        {
+          required_credits: 3,
+          description: "<b>One course in political theory (PT)</b>",
+          criteria: "INST-PT[T]",
+        },
+        {
+          required_credits: 3,
+          description:
+            "<b>One of the following gateway courses</b> <br /> Conflict and Security in a Global World " +
+            "(070.295) <br /> Contemporary International Politics (190.108) <br /> Introduction to Global " +
+            "Studies (190.111) <br /> Issues in International Development (230.150)* <br /> <br /> *Applies to " +
+            "students who entered fall 2019 and earlier only.",
+          criteria:
+            "AS.070.295[C]^OR^AS.190.108[C]^OR^AS.190.111[C]^OR^(AS.230.150[C]^AND^Fall 2019[Y])",
+        },
+      ],
+    },
+    {
+      name: "Economics",
+      required_credits: 12,
+      min_credits_per_course: 3,
+      description:
+        "Note: both Elements of Macroeconomics and Elements of Microeconomics must be " +
+        "completed by the end of the sophomore year.",
+      criteria: "INST-ECON[T]^OR^AS Economics[D]",
+      fine_requirements: [
+        {
+          required_credits: 3,
+          description: "<b>Elements of Macroeconomics (180.101)</b>",
+          criteria: "AS.180.101[C]",
+        },
+        {
+          required_credits: 3,
+          description: "<b>Elements of Microeconomics (180.102)</b>",
+          criteria: "AS.180.102[C]",
+        },
+        {
+          required_credits: 3,
+          description:
+            "<b>One INST-ECON course</b> <br /> One approved international economics course designated INST-ECON in " +
+            "the course description; this course may sometimes be fulfilled via study " +
+            "abroad, with permission",
+          criteria: "INST-ECON[T]",
+        },
+        {
+          required_credits: 3,
+          description:
+            "<b>One other Economics Course</b> <br /> One course (student’s choice) taken in the JHU Department of Economics (e.g., AS.180.xxx).",
+          criteria: "AS Economics[D]",
+        },
+      ],
+    },
+    {
+      name: "Foreign Language",
+      required_credits: 6,
+      min_credits_per_course: 3,
+      description:
+        "International studies majors must demonstrate proficiency in at least one" +
+        "foreign language. Proficiency through the second semester of the advanced/third-year " +
+        "level is required. If students have proficiency above the advanced/third-year level, " +
+        "they must take either: Option (A), two semesters of an upper level literature or culture " +
+        "course offered by the language departments and taught in the language of proficiency, or " +
+        "Option (B), take two semesters of another language. <br /> <br /> Waivers indicating advanced " +
+        "level/third-year language proficiency must be documented in the student’s official " +
+        "academic record in order for a student to be eligible to complete Option A or B. " +
+        "To receive these waivers, students must contact the Center for Language Education or " +
+        "the Department of Modern Languages & Literatures to complete a proficiency exam on " +
+        "campus. <br /> <br /> Note: Students cannot count their foreign language courses toward the 5 " +
+        "course advanced coursework requirement.",
+      criteria:
+        "AS Center for Language Education[D]^OR^AS Modern Languages and Literatures[D]",
+    },
+    {
+      name: "Focus Area",
+      required_credits: 12,
+      min_credits_per_course: 3,
+      description:
+        "Four courses within a coherent field of interest. For more detail please visit " +
+        "https://krieger.jhu.edu/internationalstudies/undergraduate/requirements/",
+      criteria: "",
+      user_select: true,
+    },
+    {
+      name: "History",
+      required_credits: 15,
+      min_credits_per_course: 3,
+      description:
+        "International Studies students must complete 15 credits in history, including:\n\t" +
+        "One introductory course at the 100-level in the JHU History Department " +
+        "(e.g., AS.100.1xx).\n\tFour courses designated INST-GLOBAL in the course description.",
+      criteria:
+        "(AS History[D]^AND^Lower Level Undergraduate[L])^OR^INST-GLOBAL[T]",
+      fine_requirements: [
+        {
+          required_credits: 3,
+          description:
+            "<b>Introductory History Course</b> One introductory course at the 100-level in the JHU History Department (e.g., AS.100.1xx)",
+          criteria: "AS History[D]^AND^Lower Level Undergraduate[L]",
+        },
+        {
+          required_credits: 12,
+          description:
+            "<b>Four INST-GLOBAL courses</b> <br /> Four courses designated INST-GLOBAL in the course description",
+          criteria: "INST-GLOBAL[T]",
+        },
+      ],
+    },
+  ],
+};
 
 // https://e-catalogue.jhu.edu/engineering/full-time-residential-programs/degree-programs/applied-mathematics-statistics/applied-mathematics-statistics-bs/#requirementstext
 const bsAMS: Major = {
@@ -1205,13 +1208,70 @@ const bsAMS: Major = {
     },
     {
       name: "Area of Focus",
-      required_credits: 12,
+      required_credits: 6,
       min_credits_per_course: 3,
       description:
         "Two courses within a coherent field of interest. For more detail please visit " +
         "https://e-catalogue.jhu.edu/engineering/full-time-residential-programs/degree-programs/applied-mathematics-statistics/applied-mathematics-statistics-bs/#requirementstext",
-      criteria: "",
-      user_select: true,
+      criteria: 
+        "AS.110.405[C]^OR^AS.110.445[C]^OR^EN.553.426[C]^OR^EN.553.427[C]^OR^EN.553.433[C]^OR^EN.553.492[C]^OR^" +
+        "EN.553.400[C]^OR^EN.553.413[C]^OR^EN.553.414[C]^OR^EN.553.432[C]^OR^EN.553.436[C]^OR^EN.553.439[C]^OR^EN.553.450[C]^OR^" +
+        "EN.553.362[C]^OR^EN.553.453[C]^OR^EN.553.463[C]^OR^EN.553.465[C]^OR^EN.553.467[C]^OR^" +
+        "AS.110.401[C]^OR^EN.553.371[C]^OR^EN.553.471[C]^OR^EN.553.472[C]^OR^" +
+        "EN.553.428[C]^OR^EN.553.441[C]^OR^EN.553.442[C]^OR^EN.553.444[C]^OR^EN.553.445[C]^OR^EN.553.447[C]^OR^EN.553.448[C]^OR^EN.553.449[C]^OR^EN.553.488[C]^OR^" +
+        "EN.553.481[C]^OR^EN.553.493[C]",
+      fine_requirements: [
+        {
+          required_credits: 6,
+          description: "<b>Probability and Stochastic Processes</b>",
+          criteria: "AS.110.405[C]^OR^AS.110.445[C]^OR^EN.553.426[C]^OR^EN.553.427[C]^OR^EN.553.433[C]^OR^EN.553.492[C]"
+        },
+        {
+          required_credits: 6,
+          description: "<b>Statistics and Statistical Learning</b>",
+          criteria: 
+            "AS.110.445[C]^OR^EN.553.400[C]^OR^EN.553.413[C]^OR^EN.553.414[C]^OR^EN.553.432[C]^OR^EN.553.433[C]" +
+            "^OR^EN.553.436[C]^OR^EN.553.439[C]^OR^EN.553.450[C]"
+        },
+        {
+          required_credits: 6,
+          description: "<b>Optimization and Operations Research</b>",
+          criteria: "EN.553.362[C]^OR^EN.553.400[C]^OR^EN.553.453[C]^OR^EN.553.463[C]^OR^EN.553.465[C]^OR^EN.553.467[C]"
+        },
+        {
+          required_credits: 6,
+          description: "<b>Discrete Mathematics</b>",
+          criteria: "AS.110.401[C]^OR^EN.553.371[C]^OR^EN.553.463[C]^OR^EN.553.471[C]^OR^EN.553.472[C]"
+        },
+        {
+          required_credits: 6,
+          description: "<b>Financial Mathematics</b>",
+          criteria: 
+            "EN.553.427[C]^OR^EN.553.428[C]^OR^EN.553.441[C]^OR^EN.553.442[C]^OR^EN.553.444[C]^OR^EN.553.445[C]" +
+            "^OR^EN.553.447[C]^OR^EN.553.448[C]^OR^EN.553.449[C]^OR^EN.553.488[C]"
+        },
+        {
+          required_credits: 6,
+          description: "<b>Computational Mathematics</b>",
+          criteria: "EN.553.481[C]^OR^AS.110.445[C]^OR^EN.553.433[C]^OR^EN.553.467[C]^OR^EN.553.493[C]"
+        }
+      ]
+    },
+    {
+      name: "Scientific Computing",
+      required_credits: 3,
+      min_credits_per_course: 3,
+      description:
+        "<b>Select one of the following:</b> <br /> AS.110.445 Mathematical and Computational Foundations of Data Science <br /> EN.553.400 Mathematical Modeling and Consulting" +
+        "<br /> EN.553.413 Applied Statistics and Data Analysis <br /> EN.553.432 Bayesian Statistics <br /> EN.553.433 Monte Carlo Methods <br />" +
+        "EN.553.436 Introduction to Data Science <br /> EN.553.450 Computational Molecular Medicine <br /> EN.553.463 Network Models in Operations Research <br />" +
+        "EN.553.467 Deep Learning in Discrete Optimization <br /> EN.553.481 Numerical Analysis <br /> EN.553.488 Computing for Applied Mathematics <br />" +
+        "EN.553.493 Mathematical Image Analysis <br /> EN.553.494 Applied and Computational Multilinear Algebra <br /> EN.601.433 Intro Algorithms <br />" +
+        "EN.601.475 Machine Learning <br /> EN.601.482 Machine Learning: Deep Learning",
+      criteria: 
+        "AS.110.445[C]^OR^EN.553.400[C]^OR^EN.553.413[C]^OR^EN.553.432[C]^OR^EN.553.433[C]^OR^EN.553.436[C]" +
+        "^OR^EN.553.450[C]^OR^EN.553.463[C]^OR^EN.553.467[C]^OR^EN.553.481[C]^OR^EN.553.488[C]^OR^EN.553.493[C]" +
+        "^OR^EN.553.494[C]^OR^EN.601.433[C]^OR^EN.601.475[C]^OR^EN.601.482[C]"
     },
     {
       name: "Natural Sciences",
@@ -2051,14 +2111,14 @@ export const allMajors: Major[] = [
   CS_Minor_Old,
   bsMolCell,
   bsAMS,
-  // baIS,
+  baIS,
   // baPH,
   bsBME,
   // baHistory,
   // baBiology,
   // bsCBE,
 
-  // baEcon,
+  baEcon,
   // baPsych,
   // baMolCell,
   // baNeuro,
