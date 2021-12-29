@@ -18,4 +18,5 @@ jobs:
       - name: Prettify code
         uses: creyD/prettier_action@v4.1.1
         with:
-          prettier_options: --dry
+          - prettier_options: --check
+          - dry: True
