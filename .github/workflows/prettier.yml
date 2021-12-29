@@ -1,0 +1,21 @@
+name: Prettier
+
+# This action works with pull requests and pushes
+on:
+  push:
+    branches:
+      - "**"
+  pull_request:
+    branches:
+      - "**"
+    types: [opened, reopened]
+
+jobs:
+  lint:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - name: Prettify code
+        uses: creyD/prettier_action@v4.1.1
+        with:
+          prettier_options: --dry
