@@ -14,7 +14,8 @@ import ReactTooltip from "react-tooltip";
 import { Year } from "../../../resources/commonTypes";
 import { updateShowingCart } from "../../../slices/popupSlice";
 import FineRequirementsList from "./cart/FineRequirementsList";
-import CartCourseList, { DummyFilter } from "./cart/CartCourseList";
+import CartCourseList from "./cart/CartCourseList";
+import { emptyRequirement, requirement } from "./cart/dummies";
 
 /**
  * Search component for when someone clicks a search action.
@@ -25,7 +26,7 @@ const Cart: FC = () => {
   const [searching, setSearching] = useState<boolean>(false);
 
   // FOR DUMMY FILTER TESTING TODO REMOVE
-  const [dummyFilters, setDummyFilters] = useState<DummyFilter>({text: ''});
+  const [selectedRequirement, setSelectedRequirement] = useState<requirement>(emptyRequirement);
 
   // Redux selectors and dispatch
   const dispatch = useDispatch();
@@ -33,8 +34,8 @@ const Cart: FC = () => {
   const searchSemester = useSelector(selectSemester);
   const currentPlan = useSelector(selectPlan);
 
-  const updateDummyFilterText = (text: string) => {
-    setDummyFilters({text});
+  const updateSelectedRequirement = (newRequirement: requirement) => {
+    setSelectedRequirement(newRequirement);
   }
 
   return (
@@ -75,7 +76,7 @@ const Cart: FC = () => {
               <SearchList searching={searching} /> */}
               <CartCourseList
                 searching={false}
-                dummyFilters={dummyFilters}
+                selectedRequirement={selectedRequirement}
               />
             </div>
 
@@ -100,7 +101,7 @@ const Cart: FC = () => {
           >
             <div className="h-full overflow-y-auto">
               {/* This is where the courses would */}
-              <FineRequirementsList searching={false} updateDummyFilterText={updateDummyFilterText} />
+              <FineRequirementsList searching={false} updateDummyFilterText={updateSelectedRequirement} />
             </div>
           </div>
         </div>

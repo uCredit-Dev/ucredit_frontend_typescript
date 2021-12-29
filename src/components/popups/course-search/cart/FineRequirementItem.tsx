@@ -8,20 +8,12 @@ import {
   updateInspectedVersion,
 } from "../../../../slices/searchSlice";
 import clsx from "clsx";
+import { requirement } from "./dummies";
 
 /**
  * A course card in the search list.
  * @prop course - the course being displayed.
  */
-
- interface requirement {
-  title: string,
-  progress: number,
-  total: number,
-  fulfilled: boolean,
-  description: string,
-  text: string,
-}
 
 const FineRequirementListItem: FC<{
   itemRequirement: requirement,
@@ -32,7 +24,7 @@ const FineRequirementListItem: FC<{
   const selectedCourse = useSelector(selectVersion);
 
   const handleCourseClick = () => {
-    props.onClick(props.itemRequirement.text);
+    props.onClick(props.itemRequirement);
   };
 
   return (

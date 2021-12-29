@@ -16,6 +16,7 @@ import { Course, SISRetrievedCourse } from "../../../../resources/commonTypes";
 import ReactTooltip from "react-tooltip";
 import loading from "../../../../resources/images/loading.gif";
 import FineRequirementListItem from "./FineRequirementItem";
+import { testRequirements } from "./dummies";
 
 /* 
   List of searched courses.
@@ -35,52 +36,9 @@ const FineRequirementsList: FC<{ searching: boolean, updateDummyFilterText: Func
   const searchFilters = useSelector(selectSearchFilters);
   const dispatch = useDispatch();
 
-  // currently loads in dummy requirements. In the future will make a fetch request to get the correct requirements
-  interface requirement {
-    title: string,
-    progress: number,
-    total: number,
-    fulfilled: boolean,
-    description: string,
-    text: string,
-  }
-
   const getRequirements = () => {
     // dummy requirements. Figure outthe structure of actual distributions later
-    let requirements: requirement[] = [
-      {
-        title: "All",
-        progress: 5,
-        total: 6,
-        fulfilled: true,
-        description: "Should show all",
-        text: ""
-      },
-      {
-        title: "My Requirement 1",
-        progress: 5,
-        total: 6,
-        fulfilled: true,
-        description: "This is a demo requirement",
-        text: "f"
-      },
-      {
-        title: "My Requirement 2",
-        progress: 2,
-        total: 6,
-        fulfilled: true,
-        description: "This is a demo requirement",
-        text: "t"
-      },
-      {
-        title: "My Requirement 3",
-        progress: 1,
-        total: 4,
-        fulfilled: true,
-        description: "This is a demo requirement",
-        text: "l"
-      },
-    ]
+    let requirements = testRequirements; // static import
     return requirements.map((requirement) => {
       return <FineRequirementListItem itemRequirement={requirement} onClick={props.updateDummyFilterText}/>
     });

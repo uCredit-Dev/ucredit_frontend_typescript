@@ -18,15 +18,13 @@ import loading from "../../../../resources/images/loading.gif";
 // TODO: remove this import, for dummy courses
 import testCourses from './subset.json';
 import CartCourseListItem from "./CartCourseListItem";
+import { requirement } from "./dummies";
 
 /* 
   List of searched courses.
 */
-export interface DummyFilter { // for testing filtering
-  text: string;
-}
 
-const CartCourseList: FC<{ searching: boolean, dummyFilters: DummyFilter }> = (props) => {
+const CartCourseList: FC<{ searching: boolean, selectedRequirement: requirement }> = (props) => {
   // Component state setup.
   const [pageNum, setPageNum] = useState<number>(0);
   const [pageCount, setPageCount] = useState<number>(0);
@@ -51,15 +49,16 @@ const CartCourseList: FC<{ searching: boolean, dummyFilters: DummyFilter }> = (p
 
   let coursesPerPage = 10;
 
+  // FOR FILTERS
   // updates courses from raw courses based on filters from dummy filters
   useEffect(() => {
     let dummyFilteredCourses = rawCourses.filter(course => {
-      return course.title.includes(props.dummyFilters.text);
+      return course.title.includes(props.selectedRequirement.text);
     });
     setCourses(dummyFilteredCourses);
     setPageNum(0);
-    console.log(props.dummyFilters.text);
-  }, [props.dummyFilters]);
+    console.log(props.selectedRequirement);
+  }, [props.selectedRequirement]);
 
   // Updates pagination every time the searched courses change.
   useEffect(() => {
