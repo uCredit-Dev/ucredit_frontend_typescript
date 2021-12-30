@@ -397,6 +397,7 @@ const bsBME: Major = {
       name: "Focus Area",
       required_credits: 21,
       min_credits_per_course: 1,
+      pathing: true,
       description: 
         "<b>The student must select at least 21 credits from the approved list of courses for a specific focus area. Coordinate with your advisor to" + 
         " determine the best combination of classes for you:</b>" ,
@@ -867,126 +868,127 @@ const bsBME: Major = {
 //   ],
 // };
 
-// // https://engineering.jhu.edu/chembe/undergraduate-studies/undergraduate-degree-program/
-// const bsCBE: Major = {
-//   degree_name: "B.S. Chemical & Biomolecular Engineering",
-//   department: "EN Chemical & Biomolecular Engineering",
-//   total_degree_credit: 128,
-//   wi_credit: 6,
-//   distributions: [
-//     {
-//       name: "Core ChemBE",
-//       required_credits: 48,
-//       min_credits_per_course: 3,
-//       description:
-//         "For more information please visit the" +
-//         "<a href='https://engineering.jhu.edu/chembe/undergraduate-studies/undergraduate-degree-program/'>" +
-//         "major degree requirement</a> section on the department website.",
-//       criteria: "EN Chemical & Biomedical Engineering[D]^OR^ChemBE[T]",
-//       fine_requirements: [
-//         {
-//           description:
-//             "Required Courses: \n\t500.113 Gateway Computing/Python\n\t540.101 Chemical Engineering Today\n\t" +
-//             "540.202 Intro to Chemical and Biological Process Analysis\n\t540.203 Engineering Thermodynamics\n\t" +
-//             "540.301 Kinetic Processes\n\t540.303 Transport Phenomena I\n\t540.304 Transport Phenomena II\n\t" +
-//             "540.306 Chemical and Biological Separations\n\t540.315 Process Design with ASPEN\n\t" +
-//             "540.409 Modeling Dynamics and Control for Chemical and Biological Systems\n\t" +
-//             "540.490 Chemical and Biomolecular Lab Safety and Ethics",
-//           required_credits: 33,
-//           criteria:
-//             "EN.500.113[C]^AND^EN.540.101[C]^AND^EN.540.202[C]^AND^EN.540.203[C]^AND^EN.540.301[C]^AND^" +
-//             "EN.540.304[C]^AND^EN.540.306[C]^AND^EN.540.315[C]^AND^EN.540.409[C]^AND^EN.540.409[C]",
-//         },
-//         {
-//           description:
-//             "Take one of the following courses for Senior Lab: 540.311 Projects in Chemical " +
-//             "Engineering Unit Operations\n\t540.313 Projects in Chemical and Biomolecular " +
-//             "Engineering Unit Operations\n\tChemical Engineering Laboratory at DTU " +
-//             "(Technical University of Denmark)",
-//           required_credits: 4,
-//           criteria: "EN.540.311[C]^OR^EN.540.313[C]",
-//         },
-//         {
-//           description:
-//             "Take one of the following course options for Product Design (3 to 6 credits): " +
-//             "\n\tOption 1: One-semester design (Spring) - 540.314 ChemBE Product Design\n\t" +
-//             "Option 2: Two-semester design (two consecutive semesters) - 540.309 Product Design Part 1\n\t" +
-//             "540.310 Product Design Part 2 (Must take both courses to receive credit. 540.309 counts towards " +
-//             "core credits; 540.310 counts toward engineering electives)\n\tOption 3: WSE one-semester design - " +
-//             "500.308 Multidisciplinary Design",
-//           required_credits: 3,
-//           criteria:
-//             "(EN.540.314[C])^OR^(EN.540.309[C]^OR^EN.540.310[C])^OR^(EN.500.308[C])",
-//         },
-//       ],
-//     },
-//     {
-//       name: "Math",
-//       required_credits: 16,
-//       min_credits_per_course: 4,
-//       description:
-//         "All courses in this category must be from one of the two math departments on " +
-//         "campus: Mathematics or Applied Math and Statistics.",
-//       criteria: "AS Mathematics[D]^OR^EN Applied Math and Statistics[D]",
-//       exception: "",
-//       fine_requirements: [
-//         {
-//           description:
-//             "Required Courses:\n\t110.108 Calculus I or AP equivalent\n\t110.109 Calculus II or AP equivalent\n\t" +
-//             "110.202 Calculus III or AP equivalent\n\t110.302 Differential Equations with Applications",
-//           required_credits: 16,
-//           criteria:
-//             "AS.110.108[C]^OR^AS.110.109[C]^OR^AS.110.202[C]^OR^AS.110.302[C]",
-//         },
-//       ],
-//     },
-//     {
-//       name: "Science",
-//       required_credits: 14,
-//       min_credits_per_course: 1,
-//       description:
-//         "Students must take two semesters of core science courses (any combination of Physics, " +
-//         "Chemistry, Biology), with their associated labs. AP credit is an acceptable substitute " +
-//         "for these courses and labs.",
-//       criteria:
-//         "General Physics[N]^OR^General Biology[N]^OR^Introductory Chemistry[N]",
-//     },
-//     {
-//       name: "Liberal Arts",
-//       required_credits: 18,
-//       min_credits_per_course: 3,
-//       double_count: true,
-//       description:
-//         "These courses must have either an ‘H’ or ‘S’ area designator on them, but can be " +
-//         "from any department. At most 2 of these courses may be taken S/U (if not counted towards " +
-//         "the writing requirement). Foreign language courses can be counted as well, even if " +
-//         "they don’t carry an ‘H’ or ‘S’ designator. The course below will also count towards 3 of the 6 required Writing Intensive credits",
-//       criteria:
-//         "AS Center for Language Education[D]^OR^AS Modern Languages and Literatures[D]^OR^H[A]^OR^S[A]",
-//       fine_requirements: [
-//         {
-//           description:
-//             "Required Course: 661.315 Culture of the Engineering Profession",
-//           required_credits: 3,
-//           criteria: "AS.661.315[C]",
-//         },
-//       ],
-//     },
-//     // {
-//     //   name: "English Focused Writing Intensive",
-//     //   required_credits: 3,
-//     //   min_credits_per_course: 3,
-//     //   double_count: true,
-//     //   description:
-//     //     "At least one course with a primary focus on writing in English must be chosen. " +
-//     //     "Courses that satisfy this requirement are: EN.661.110, EN.661.111, EN.661.250, EN.661.251, " +
-//     //     "EN.661.315, AS.060.100, AS.060.113, AS.220.105, AS.180.248, AS.290.303, AS.360.133.",
-//     //   criteria:
-//     //     "EN.661.110[C]^OR^EN.661.111[C]^OR^EN.661.250[C]^OR^EN.661.251[C]^OR^EN.661.315[C]" +
-//     //     "^OR^AS.060.100[C]^OR^AS.060.113[C]^OR^AS.220.105[C]^OR^AS.180.248[C]^OR^AS.290.303[C]^OR^AS.360.133",
-//     // },
-//   ],
-// };
+// https://engineering.jhu.edu/chembe/undergraduate-studies/undergraduate-degree-program/
+const bsCBE: Major = {
+  degree_name: "B.S. Chemical & Biomolecular Engineering",
+  department: "EN Chemical & Biomolecular Engineering",
+  total_degree_credit: 128,
+  wi_credit: 6,
+  url: "https://engineering.jhu.edu/chembe/undergraduate-studies/undergraduate-degree-program/",
+  distributions: [
+    {
+      name: "Core ChemBE",
+      required_credits: 48,
+      min_credits_per_course: 3,
+      description:
+        "For more information please visit the" +
+        "<a href='https://engineering.jhu.edu/chembe/undergraduate-studies/undergraduate-degree-program/'>" +
+        "major degree requirement</a> section on the department website.",
+      criteria: "EN Chemical & Biomedical Engineering[D]^OR^ChemBE[T]",
+      fine_requirements: [
+        {
+          description:
+            "Required Courses: \n\t500.113 Gateway Computing/Python\n\t540.101 Chemical Engineering Today\n\t" +
+            "540.202 Intro to Chemical and Biological Process Analysis\n\t540.203 Engineering Thermodynamics\n\t" +
+            "540.301 Kinetic Processes\n\t540.303 Transport Phenomena I\n\t540.304 Transport Phenomena II\n\t" +
+            "540.306 Chemical and Biological Separations\n\t540.315 Process Design with ASPEN\n\t" +
+            "540.409 Modeling Dynamics and Control for Chemical and Biological Systems\n\t" +
+            "540.490 Chemical and Biomolecular Lab Safety and Ethics",
+          required_credits: 33,
+          criteria:
+            "EN.500.113[C]^AND^EN.540.101[C]^AND^EN.540.202[C]^AND^EN.540.203[C]^AND^EN.540.301[C]^AND^" +
+            "EN.540.304[C]^AND^EN.540.306[C]^AND^EN.540.315[C]^AND^EN.540.409[C]^AND^EN.540.409[C]",
+        },
+        {
+          description:
+            "Take one of the following courses for Senior Lab: 540.311 Projects in Chemical " +
+            "Engineering Unit Operations\n\t540.313 Projects in Chemical and Biomolecular " +
+            "Engineering Unit Operations\n\tChemical Engineering Laboratory at DTU " +
+            "(Technical University of Denmark)",
+          required_credits: 4,
+          criteria: "EN.540.311[C]^OR^EN.540.313[C]",
+        },
+        {
+          description:
+            "Take one of the following course options for Product Design (3 to 6 credits): " +
+            "\n\tOption 1: One-semester design (Spring) - 540.314 ChemBE Product Design\n\t" +
+            "Option 2: Two-semester design (two consecutive semesters) - 540.309 Product Design Part 1\n\t" +
+            "540.310 Product Design Part 2 (Must take both courses to receive credit. 540.309 counts towards " +
+            "core credits; 540.310 counts toward engineering electives)\n\tOption 3: WSE one-semester design - " +
+            "500.308 Multidisciplinary Design",
+          required_credits: 3,
+          criteria:
+            "(EN.540.314[C])^OR^(EN.540.309[C]^OR^EN.540.310[C])^OR^(EN.500.308[C])",
+        },
+      ],
+    },
+    {
+      name: "Math",
+      required_credits: 16,
+      min_credits_per_course: 4,
+      description:
+        "All courses in this category must be from one of the two math departments on " +
+        "campus: Mathematics or Applied Math and Statistics.",
+      criteria: "AS Mathematics[D]^OR^EN Applied Math and Statistics[D]",
+      exception: "",
+      fine_requirements: [
+        {
+          description:
+            "Required Courses:\n\t110.108 Calculus I or AP equivalent\n\t110.109 Calculus II or AP equivalent\n\t" +
+            "110.202 Calculus III or AP equivalent\n\t110.302 Differential Equations with Applications",
+          required_credits: 16,
+          criteria:
+            "AS.110.108[C]^OR^AS.110.109[C]^OR^AS.110.202[C]^OR^AS.110.302[C]",
+        },
+      ],
+    },
+    {
+      name: "Science",
+      required_credits: 14,
+      min_credits_per_course: 1,
+      description:
+        "Students must take two semesters of core science courses (any combination of Physics, " +
+        "Chemistry, Biology), with their associated labs. AP credit is an acceptable substitute " +
+        "for these courses and labs.",
+      criteria:
+        "General Physics[N]^OR^General Biology[N]^OR^Introductory Chemistry[N]",
+    },
+    {
+      name: "Liberal Arts",
+      required_credits: 18,
+      min_credits_per_course: 3,
+      double_count: true,
+      description:
+        "These courses must have either an ‘H’ or ‘S’ area designator on them, but can be " +
+        "from any department. At most 2 of these courses may be taken S/U (if not counted towards " +
+        "the writing requirement). Foreign language courses can be counted as well, even if " +
+        "they don’t carry an ‘H’ or ‘S’ designator. The course below will also count towards 3 of the 6 required Writing Intensive credits",
+      criteria:
+        "AS Center for Language Education[D]^OR^AS Modern Languages and Literatures[D]^OR^H[A]^OR^S[A]",
+      fine_requirements: [
+        {
+          description:
+            "Required Course: 661.315 Culture of the Engineering Profession",
+          required_credits: 3,
+          criteria: "AS.661.315[C]",
+        },
+      ],
+    },
+    {
+      name: "English Focused Writing Intensive",
+      required_credits: 3,
+      min_credits_per_course: 3,
+      double_count: true,
+      description:
+        "At least one course with a primary focus on writing in English must be chosen. " +
+        "Courses that satisfy this requirement are: EN.661.110, EN.661.111, EN.661.250, EN.661.251, " +
+        "EN.661.315, AS.060.100, AS.060.113, AS.220.105, AS.180.248, AS.290.303, AS.360.133.",
+      criteria:
+        "EN.661.110[C]^OR^EN.661.111[C]^OR^EN.661.250[C]^OR^EN.661.251[C]^OR^EN.661.315[C]" +
+        "^OR^AS.060.100[C]^OR^AS.060.113[C]^OR^AS.220.105[C]^OR^AS.180.248[C]^OR^AS.290.303[C]^OR^AS.360.133",
+    },
+  ],
+};
 
 // https://krieger.jhu.edu/internationalstudies/undergraduate/requirements/
 const baIS: Major = {
@@ -2116,7 +2118,7 @@ export const allMajors: Major[] = [
   bsBME,
   // baHistory,
   // baBiology,
-  // bsCBE,
+  bsCBE,
 
   baEcon,
   // baPsych,

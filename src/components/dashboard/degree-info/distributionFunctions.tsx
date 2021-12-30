@@ -7,6 +7,7 @@ export type requirements = {
   fulfilled_credits: number;
   description: string;
   exclusive?: boolean;
+  pathing?: boolean;
   wi?: boolean;
 };
 
@@ -196,6 +197,7 @@ export const getRequirements = (major: Major) => {
       required_credits: element.required_credits,
       fulfilled_credits: 0,
       description: element.description,
+      pathing: element.pathing,
     };
     allReq.push(general);
     if (element.fine_requirements !== undefined) {
