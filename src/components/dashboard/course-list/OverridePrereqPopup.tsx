@@ -1,4 +1,4 @@
-import { FC } from "react";
+import { FC } from 'react';
 
 /**
  * Popup for when user presses button to override prereq.

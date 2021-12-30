@@ -1,4 +1,4 @@
-import { Course, Major } from "../../../resources/commonTypes";
+import { Course, Major } from '../../../resources/commonTypes';
 
 export type requirements = {
   name: string;
@@ -18,7 +18,7 @@ export type requirements = {
  */
 export const checkRequirementSatisfied = (
   distribution: requirements,
-  course: Course
+  course: Course,
 ): boolean => {
   const boolExpr: string | void = getBoolExpr(distribution, course);
   if (boolExpr.length !== 0) {
@@ -37,26 +37,26 @@ export const checkRequirementSatisfied = (
  */
 export const getBoolExpr = (
   distribution: requirements,
-  course: Course
+  course: Course,
 ): string => {
-  let boolExpr: string = "";
+  let boolExpr: string = '';
   let index: number = 0;
-  let concat: string = "";
+  let concat: string = '';
   const splitArr: string[] = splitRequirements(distribution.expr);
   if (course === null) {
     return concat;
   }
   while (index < splitArr.length) {
-    if (splitArr[index] === "(") {
-      concat = "(";
-    } else if (splitArr[index] === ")") {
-      concat = ")";
-    } else if (splitArr[index] === "OR") {
-      concat = "||";
-    } else if (splitArr[index] === "AND") {
-      concat = "&&";
-    } else if (splitArr[index] === "NOT") {
-      concat = "&&!";
+    if (splitArr[index] === '(') {
+      concat = '(';
+    } else if (splitArr[index] === ')') {
+      concat = ')';
+    } else if (splitArr[index] === 'OR') {
+      concat = '||';
+    } else if (splitArr[index] === 'AND') {
+      concat = '&&';
+    } else if (splitArr[index] === 'NOT') {
+      concat = '&&!';
     } else {
       concat = handleTagType(splitArr, index, course);
     }
@@ -71,65 +71,65 @@ export const getBoolExpr = (
 const handleTagType = (
   splitArr: string[],
   index: number,
-  course: Course
+  course: Course,
 ): string => {
   let updatedConcat: string;
   switch (splitArr[index + 1]) {
-    case "C": // Course Number
+    case 'C': // Course Number
       updatedConcat = course.number.includes(splitArr[index]).toString();
       break;
-    case "T": // Tag
+    case 'T': // Tag
       updatedConcat = (
         course?.tags !== undefined && course.tags.includes(splitArr[index])
       ).toString();
       break;
-    case "D": // Department
+    case 'D': // Department
       updatedConcat = (course.department === splitArr[index]).toString();
       break;
-    case "Y": // Year
+    case 'Y': // Year
       //TODO: implement for year.
-      updatedConcat = "false";
+      updatedConcat = 'false';
       break;
-    case "A": // Area
+    case 'A': // Area
       updatedConcat = (
-        course.areas !== "None" && course.areas.includes(splitArr[index])
+        course.areas !== 'None' && course.areas.includes(splitArr[index])
       ).toString();
       break;
-    case "N": // Name
+    case 'N': // Name
       updatedConcat = course.title.includes(splitArr[index]).toString();
       break;
-    case "W": //Written intensive
+    case 'W': //Written intensive
       updatedConcat = course.wi.toString();
       break;
-    case "L": // Level
+    case 'L': // Level
       updatedConcat = handleLCase(splitArr, index, course);
       break;
     default:
-      updatedConcat = "false";
+      updatedConcat = 'false';
   }
   return updatedConcat;
 };
 
 // Handles the L case in the getBoolExpr function
 const handleLCase = (splitArr, index, course): string => {
-  let updatedConcat: string = "";
-  if (splitArr[index].includes("Upper")) {
-    if (course.number[7] >= "3") {
-      updatedConcat = "true";
+  let updatedConcat: string = '';
+  if (splitArr[index].includes('Upper')) {
+    if (course.number[7] >= '3') {
+      updatedConcat = 'true';
     } else {
-      updatedConcat = "false";
+      updatedConcat = 'false';
     }
-  } else if (splitArr[index].includes("Lower")) {
-    if (course.number[7] <= "2") {
-      updatedConcat = "false";
+  } else if (splitArr[index].includes('Lower')) {
+    if (course.number[7] <= '2') {
+      updatedConcat = 'false';
     } else {
-      updatedConcat = "true";
+      updatedConcat = 'true';
     }
   } else if (course.number[7] === splitArr[index][0]) {
     // For solely 100, 200, etc. levels
-    updatedConcat = "true";
+    updatedConcat = 'true';
   } else {
-    updatedConcat = "false";
+    updatedConcat = 'false';
   }
   return updatedConcat;
 };
@@ -150,29 +150,29 @@ export const splitRequirements = (expr: string): string[] => {
 // args: expr to parse, index that we are currently on
 // returns: the next piece, along with the index of start of the next next piece
 const getNextEntry = (expr: string, index: number): [string, number] => {
-  if (expr[index] === "(") {
-    return ["(", index + 1];
-  } else if (expr[index] === ")") {
-    return [")", index + 1];
-  } else if (expr[index] === "[") {
+  if (expr[index] === '(') {
+    return ['(', index + 1];
+  } else if (expr[index] === ')') {
+    return [')', index + 1];
+  } else if (expr[index] === '[') {
     return [expr[index + 1], index + 3];
-  } else if (expr[index] === "^") {
-    if (expr[index + 1] === "O") {
-      return ["OR", index + 4];
-    } else if (expr[index + 1] === "A") {
-      return ["AND", index + 5];
+  } else if (expr[index] === '^') {
+    if (expr[index + 1] === 'O') {
+      return ['OR', index + 4];
+    } else if (expr[index + 1] === 'A') {
+      return ['AND', index + 5];
     } else {
-      return ["NOT", index + 5];
+      return ['NOT', index + 5];
     }
   }
   let out = expr[index];
   index++;
   while (index < expr.length) {
     if (
-      expr[index] === "(" ||
-      expr[index] === ")" ||
-      expr[index] === "[" ||
-      expr[index] === "^"
+      expr[index] === '(' ||
+      expr[index] === ')' ||
+      expr[index] === '[' ||
+      expr[index] === '^'
     ) {
       return [out, index];
     }
@@ -207,7 +207,7 @@ export const getRequirements = (major: Major) => {
             expr: fine.criteria.toString(),
             required_credits: fine.required_credits,
             fulfilled_credits: 0,
-            description: "",
+            description: '',
             exclusive: fine.exclusive,
           },
         ];

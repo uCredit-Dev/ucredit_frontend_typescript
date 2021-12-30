@@ -1,11 +1,11 @@
-import { createSlice, PayloadAction } from "@reduxjs/toolkit";
-import { RootState } from "../appStore/store";
+import { createSlice, PayloadAction } from '@reduxjs/toolkit';
+import { RootState } from '../appStore/store';
 import {
   DroppableType,
   Plan,
   UserCourse,
-} from "../components/../resources/commonTypes";
-import { requirements } from "../components/dashboard/degree-info/distributionFunctions";
+} from '../components/../resources/commonTypes';
+import { requirements } from '../components/dashboard/degree-info/distributionFunctions';
 
 type CurrentPlanSlice = {
   plan: Plan;
@@ -18,11 +18,11 @@ type CurrentPlanSlice = {
 
 const initialState: CurrentPlanSlice = {
   plan: {
-    _id: "noPlan",
-    name: "",
+    _id: 'noPlan',
+    name: '',
     majors: [],
     distribution_ids: [],
-    user_id: "",
+    user_id: '',
     years: [],
     numYears: 0,
   },
@@ -34,7 +34,7 @@ const initialState: CurrentPlanSlice = {
 };
 
 export const currentPlanSlice = createSlice({
-  name: "currentPlan",
+  name: 'currentPlan',
   initialState,
   reducers: {
     updateSelectedPlan: (state: any, action: PayloadAction<Plan>) => {
@@ -42,13 +42,13 @@ export const currentPlanSlice = createSlice({
     },
     updateDistributions: (
       state: any,
-      action: PayloadAction<[string, requirements[]][]>
+      action: PayloadAction<[string, requirements[]][]>,
     ) => {
       state.distributions = [...action.payload];
     },
     updateCurrentPlanCourses: (
       state: any,
-      action: PayloadAction<UserCourse[]>
+      action: PayloadAction<UserCourse[]>,
     ) => {
       state.currentPlanCourses = action.payload;
     },

@@ -1,16 +1,16 @@
-import { useState, useEffect, FC } from "react";
-import Semester from "./Semester";
-import { UserCourse, Year } from "../../../resources/commonTypes";
-import { ReactComponent as MoreSvg } from "../../../resources/svg/More.svg";
-import { useSelector, useDispatch } from "react-redux";
+import { useState, useEffect, FC } from 'react';
+import Semester from './Semester';
+import { UserCourse, Year } from '../../../resources/commonTypes';
+import { ReactComponent as MoreSvg } from '../../../resources/svg/More.svg';
+import { useSelector, useDispatch } from 'react-redux';
 import {
   selectPlan,
   updateSelectedPlan,
-} from "../../../slices/currentPlanSlice";
-import { api } from "../../../resources/assets";
-import YearSettingsDropdown from "./YearSettingsDropdown";
-import clsx from "clsx";
-import { selectAddingPrereq } from "../../../slices/popupSlice";
+} from '../../../slices/currentPlanSlice';
+import { api } from '../../../resources/assets';
+import YearSettingsDropdown from './YearSettingsDropdown';
+import clsx from 'clsx';
+import { selectAddingPrereq } from '../../../slices/popupSlice';
 
 type SemSelected = {
   fall: boolean;
@@ -65,13 +65,13 @@ const YearComponent: FC<{
     const parsedIntersessionCourses: UserCourse[] = [];
     const parsedSummerCourses: UserCourse[] = [];
     courses.forEach((course) => {
-      if (course.term.toLowerCase() === "fall") {
+      if (course.term.toLowerCase() === 'fall') {
         parsedFallCourses.push(course);
-      } else if (course.term.toLowerCase() === "spring") {
+      } else if (course.term.toLowerCase() === 'spring') {
         parsedSpringCourses.push(course);
-      } else if (course.term.toLowerCase() === "summer") {
+      } else if (course.term.toLowerCase() === 'summer') {
         parsedSummerCourses.push(course);
-      } else if (course.term.toLowerCase() === "intersession") {
+      } else if (course.term.toLowerCase() === 'intersession') {
         parsedIntersessionCourses.push(course);
       }
     });
@@ -85,7 +85,7 @@ const YearComponent: FC<{
   // Focuses on year name after clicking edit name option.
   useEffect(() => {
     if (edittingName) {
-      document.getElementById(year._id + "input")?.focus();
+      document.getElementById(year._id + 'input')?.focus();
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [edittingName]);
@@ -107,17 +107,17 @@ const YearComponent: FC<{
       year_id: year._id,
       name: yearName,
     };
-    fetch(api + "/years/updateName", {
-      method: "PATCH",
+    fetch(api + '/years/updateName', {
+      method: 'PATCH',
       headers: {
-        "Content-Type": "application/json",
+        'Content-Type': 'application/json',
       },
       body: JSON.stringify(body),
     })
       .then(() => {
         const newUpdatedYear = { ...year, name: yearName };
         const newYearArray = [...currentPlan.years].map((yr) =>
-          yr._id === year._id ? newUpdatedYear : yr
+          yr._id === year._id ? newUpdatedYear : yr,
         );
         const newUpdatedPlan = { ...currentPlan, years: newYearArray };
         dispatch(updateSelectedPlan(newUpdatedPlan));
@@ -141,9 +141,9 @@ const YearComponent: FC<{
     if (toShow.fall)
       semesters.push(
         <div
-          key={"Fall" + year._id}
+          key={'Fall' + year._id}
           className={clsx(`${customStyle} mb-3 w-full h-auto pr-1 rounded`, {
-            "z-50": addingPrereqStatus,
+            'z-50': addingPrereqStatus,
           })}
         >
           <Semester
@@ -152,14 +152,14 @@ const YearComponent: FC<{
             semesterYear={year}
             courses={fallCourses}
           />
-        </div>
+        </div>,
       );
     if (toShow.intersession)
       semesters.push(
         <div
-          key={"Winter" + year._id}
+          key={'Winter' + year._id}
           className={clsx(`${customStyle} mb-3 w-full h-auto pr-1 rounded`, {
-            "z-50": addingPrereqStatus,
+            'z-50': addingPrereqStatus,
           })}
         >
           <Semester
@@ -168,14 +168,14 @@ const YearComponent: FC<{
             semesterYear={year}
             courses={winterCourses}
           />
-        </div>
+        </div>,
       );
     if (toShow.spring)
       semesters.push(
         <div
-          key={"Spring" + year._id}
+          key={'Spring' + year._id}
           className={clsx(`${customStyle} mb-3 w-full h-auto pr-1 rounded`, {
-            "z-50": addingPrereqStatus,
+            'z-50': addingPrereqStatus,
           })}
         >
           <Semester
@@ -184,14 +184,14 @@ const YearComponent: FC<{
             semesterYear={year}
             courses={springCourses}
           />
-        </div>
+        </div>,
       );
     if (toShow.summer)
       semesters.push(
         <div
-          key={"Summer" + year._id}
+          key={'Summer' + year._id}
           className={clsx(`${customStyle} mb-3 w-full h-auto pr-1 rounded`, {
-            "z-50": addingPrereqStatus,
+            'z-50': addingPrereqStatus,
           })}
         >
           <Semester
@@ -200,7 +200,7 @@ const YearComponent: FC<{
             semesterYear={year}
             courses={summerCourses}
           />
-        </div>
+        </div>,
       );
     return semesters;
   };
@@ -210,10 +210,10 @@ const YearComponent: FC<{
       id={id.toString()}
       className={
         customStyle +
-        "cursor-move p-2 max-w-year-heading w-max rounded mb-4 bg-blue-400 rounded shadow" +
-        (addingPrereqStatus ? "z-30" : "")
+        'cursor-move p-2 max-w-year-heading w-max rounded mb-4 bg-blue-400 rounded shadow' +
+        (addingPrereqStatus ? 'z-30' : '')
       }
-      style={{ minWidth: "14rem" }}
+      style={{ minWidth: '14rem' }}
       onMouseLeave={() => {
         setDraggable(true);
         setDisplay(false);
@@ -227,7 +227,7 @@ const YearComponent: FC<{
           <div className="mr-1 text-lg font-thin">✥</div>
           {edittingName ? (
             <input
-              id={year._id + "input"}
+              id={year._id + 'input'}
               value={yearName}
               className="flex-shrink mt-auto w-full text-md font-semibold bg-transparent border-b focus:border-gray-400 border-transparent focus:outline-none cursor-move select-none"
               onChange={handleYearNameChange}

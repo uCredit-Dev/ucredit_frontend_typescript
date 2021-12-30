@@ -1,5 +1,5 @@
-import { createSlice, PayloadAction } from "@reduxjs/toolkit";
-import { RootState } from "../appStore/store";
+import { createSlice, PayloadAction } from '@reduxjs/toolkit';
+import { RootState } from '../appStore/store';
 import {
   SemesterType,
   Course,
@@ -8,7 +8,7 @@ import {
   DepartmentType,
   AreaType,
   SISRetrievedCourse,
-} from "../components/../resources/commonTypes";
+} from '../components/../resources/commonTypes';
 
 const date: Date = new Date();
 const year: number = date.getFullYear();
@@ -39,8 +39,8 @@ type searchStates = {
   filters: FilterObj;
   retrievedCourses: SISRetrievedCourse[];
   retrievedVerions: number[];
-  inspectedVersion: Course | "None";
-  inspectedCourse: SISRetrievedCourse | "None";
+  inspectedVersion: Course | 'None';
+  inspectedCourse: SISRetrievedCourse | 'None';
   placeholder: boolean;
   searchStack: { sis: SISRetrievedCourse; ver: Course }[];
 };
@@ -53,10 +53,10 @@ type searchStackUpdate = {
 
 const initialState: searchStates = {
   searching: false,
-  searchTerm: "",
+  searchTerm: '',
   searchTime: {
-    searchYear: "",
-    searchSemester: "Fall",
+    searchYear: '',
+    searchSemester: 'Fall',
   },
   retrievedCourses: [], // test courses for now
   retrievedVerions: [],
@@ -64,20 +64,20 @@ const initialState: searchStates = {
     credits: null,
     distribution: null,
     tags: null,
-    term: "Fall",
+    term: 'Fall',
     year: year,
     wi: null,
     department: null,
     levels: null,
   },
-  inspectedCourse: "None",
-  inspectedVersion: "None",
+  inspectedCourse: 'None',
+  inspectedVersion: 'None',
   placeholder: false,
   searchStack: [],
 };
 
 export const searchSlice = createSlice({
-  name: "search",
+  name: 'search',
   initialState,
   reducers: {
     updateSearchTime: (state: any, action: PayloadAction<TimeBundle>) => {
@@ -93,10 +93,10 @@ export const searchSlice = createSlice({
     },
     updateInspectedCourse: (
       state: any,
-      action: PayloadAction<SISRetrievedCourse | "None">
+      action: PayloadAction<SISRetrievedCourse | 'None'>,
     ) => {
       const course = action.payload;
-      if (course !== "None") {
+      if (course !== 'None') {
         const initCourseVer: Course = {
           title: course.title,
           number: course.number,
@@ -104,28 +104,28 @@ export const searchSlice = createSlice({
         };
         state.inspectedVersion = initCourseVer;
       } else {
-        state.inspectedVersion = "None";
+        state.inspectedVersion = 'None';
       }
       state.inspectedCourse = action.payload;
     },
     updateInspectedVersion: (
       state: any,
-      action: PayloadAction<Course | "None">
+      action: PayloadAction<Course | 'None'>,
     ) => {
       state.inspectedVersion = action.payload;
     },
     clearSearch: (state: any) => {
       state.filters = initialState.filters;
-      state.searchTerm = "";
-      state.searchTime = { searchSemester: "", searchYear: "" };
+      state.searchTerm = '';
+      state.searchTime = { searchSemester: '', searchYear: '' };
       state.searching = false;
-      state.inspectedCourse = "None";
+      state.inspectedCourse = 'None';
       state.retrievedCourses = [];
       state.searchStack = [];
     },
     updateRetrievedCourses: (
       state: any,
-      action: PayloadAction<SISRetrievedCourse[]>
+      action: PayloadAction<SISRetrievedCourse[]>,
     ) => {
       state.retrievedCourses = [...action.payload];
     },
@@ -134,29 +134,29 @@ export const searchSlice = createSlice({
     },
     updateSearchFilters: (
       state: any,
-      action: PayloadAction<{ filter: FilterType; value: any }>
+      action: PayloadAction<{ filter: FilterType; value: any }>,
     ) => {
-      if (action.payload.filter === "credits") {
+      if (action.payload.filter === 'credits') {
         state.filters.credits = action.payload.value;
-      } else if (action.payload.filter === "distribution") {
+      } else if (action.payload.filter === 'distribution') {
         state.filters.distribution = action.payload.value;
-      } else if (action.payload.filter === "department") {
+      } else if (action.payload.filter === 'department') {
         state.filters.department = action.payload.value;
-      } else if (action.payload.filter === "tags") {
+      } else if (action.payload.filter === 'tags') {
         state.filters.tags = action.payload.value;
-      } else if (action.payload.filter === "term") {
+      } else if (action.payload.filter === 'term') {
         state.filters.term = action.payload.value;
-      } else if (action.payload.filter === "year") {
+      } else if (action.payload.filter === 'year') {
         state.filters.year = action.payload.value;
-      } else if (action.payload.filter === "wi") {
+      } else if (action.payload.filter === 'wi') {
         state.filters.wi = action.payload.value;
-      } else if (action.payload.filter === "levels") {
+      } else if (action.payload.filter === 'levels') {
         state.filters.levels = action.payload.value;
       }
     },
     updateSearchStack: (
       state: any,
-      action: PayloadAction<searchStackUpdate>
+      action: PayloadAction<searchStackUpdate>,
     ) => {
       const newCourse = action.payload.new;
       state.searchStack.push({

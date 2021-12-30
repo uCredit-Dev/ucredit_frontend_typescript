@@ -1,9 +1,9 @@
-import { FC } from "react";
-import { useDispatch, useSelector } from "react-redux";
-import { toast } from "react-toastify";
-import { selectPlanList } from "../../slices/userSlice";
-import { allMajors } from "../../resources/majors";
-import Select from "react-select";
+import { FC } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import { toast } from 'react-toastify';
+import { selectPlanList } from '../../slices/userSlice';
+import { allMajors } from '../../resources/majors';
+import Select from 'react-select';
 import {
   selectToAddName,
   selectToAddMajor,
@@ -11,7 +11,7 @@ import {
   updateGeneratePlanAddStatus,
   updateToAddName,
   updateToAddMajor,
-} from "../../slices/popupSlice";
+} from '../../slices/popupSlice';
 
 const majorOptions = [
   ...allMajors.map((major, index) => ({
@@ -37,8 +37,8 @@ const PlanAdd: FC = () => {
    */
   const createNewPlan = () => {
     if (toAddMajor === null) {
-      toast.error("Please choose a valid major!", {
-        position: "top-right",
+      toast.error('Please choose a valid major!', {
+        position: 'top-right',
         autoClose: 5000,
         hideProgressBar: true,
         closeOnClick: true,
@@ -60,8 +60,8 @@ const PlanAdd: FC = () => {
   // Handles user's intention to cancel creating a new plan.
   const handleCancel = () => {
     if (planList.length === 0) {
-      toast.error("Please create at least one plan to continue!", {
-        position: "top-right",
+      toast.error('Please create at least one plan to continue!', {
+        position: 'top-right',
         autoClose: 5000,
         hideProgressBar: true,
         closeOnClick: true,
@@ -99,7 +99,7 @@ const PlanAdd: FC = () => {
       {/* Popup */}
       <div
         className={
-          "z-40 fixed flex flex-col bg-gradient-to-r shadow from-blue-500 to-green-400 select-none rounded h-auto w-3/12 top-1/3 left-1/2 transform -translate-x-1/2 -translate-y-1/3 min-w-planAdd"
+          'z-40 fixed flex flex-col bg-gradient-to-r shadow from-blue-500 to-green-400 select-none rounded h-auto w-3/12 top-1/3 left-1/2 transform -translate-x-1/2 -translate-y-1/3 min-w-planAdd'
         }
       >
         <div className="px-4 py-2 text-white text-coursecard select-none">

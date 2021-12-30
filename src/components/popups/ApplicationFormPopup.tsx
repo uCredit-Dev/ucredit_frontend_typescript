@@ -1,7 +1,7 @@
-import { FC, useState } from "react";
-import { toast } from "react-toastify";
-import emailjs from "emailjs-com";
-emailjs.init("user_7Cn3A3FQW9PTxExf6Npel");
+import { FC, useState } from 'react';
+import { toast } from 'react-toastify';
+import emailjs from 'emailjs-com';
+emailjs.init('user_7Cn3A3FQW9PTxExf6Npel');
 
 /**
  * This is the recruitment application popup from the landing page
@@ -10,13 +10,13 @@ emailjs.init("user_7Cn3A3FQW9PTxExf6Npel");
 const ApplicationFormPopup: FC<{
   setActivateEmailPopup: (activate: boolean) => void;
 }> = ({ setActivateEmailPopup }) => {
-  const [year, setYear] = useState<string>("");
-  const [reason, setReason] = useState<string>("");
-  const [position, setPosition] = useState<string>("");
-  const [selfPitch, setSelfPitch] = useState<string>("");
-  const [fromEmail, setFromEmail] = useState<string>("");
-  const [fromName, setFromName] = useState<string>("");
-  const [resume, setResume] = useState<string>("");
+  const [year, setYear] = useState<string>('');
+  const [reason, setReason] = useState<string>('');
+  const [position, setPosition] = useState<string>('');
+  const [selfPitch, setSelfPitch] = useState<string>('');
+  const [fromEmail, setFromEmail] = useState<string>('');
+  const [fromName, setFromName] = useState<string>('');
+  const [resume, setResume] = useState<string>('');
   const [activateError, setActivateError] = useState<boolean>(false);
   return (
     <div className="absolute top-0">
@@ -29,7 +29,7 @@ const ApplicationFormPopup: FC<{
       {/* Actual popup */}
       <div
         className={
-          "shadow bg-primary z-40 fixed flex flex-col select-none rounded w-1/2 top-1/3 left-1/2 transform -translate-x-1/2 -translate-y-1/3 min-w-planAdd shadow"
+          'shadow bg-primary z-40 fixed flex flex-col select-none rounded w-1/2 top-1/3 left-1/2 transform -translate-x-1/2 -translate-y-1/3 min-w-planAdd shadow'
         }
       >
         <div className="px-4 py-2 text-white text-coursecard font-semibold select-none">
@@ -120,10 +120,10 @@ const ApplicationFormPopup: FC<{
                     reason.length > 0 &&
                     resume.length > 0
                   ) {
-                    emailjs.send("service_czbc7ct", "template_cxuebne", {
+                    emailjs.send('service_czbc7ct', 'template_cxuebne', {
                       from_name: fromName,
                       from_email: fromEmail,
-                      to_email: "mliu78@jh.edu",
+                      to_email: 'mliu78@jh.edu',
                       self_pitch: selfPitch,
                       position: position,
                       year: year,
@@ -132,7 +132,7 @@ const ApplicationFormPopup: FC<{
                     });
                     setActivateError(false);
                     setActivateEmailPopup(false);
-                    toast.success("Application sent!");
+                    toast.success('Application sent!');
                   } else {
                     setActivateError(true);
                   }
@@ -146,7 +146,7 @@ const ApplicationFormPopup: FC<{
       </div>
       <div
         className={
-          "fixed flex flex-col bg-gray-100 rounded z-20 top-1/3 left-1/2 transform -translate-x-1/2 p-5"
+          'fixed flex flex-col bg-gray-100 rounded z-20 top-1/3 left-1/2 transform -translate-x-1/2 p-5'
         }
       ></div>
     </div>
