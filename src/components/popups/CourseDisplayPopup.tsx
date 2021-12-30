@@ -1,18 +1,18 @@
-import { FC, useEffect, useState } from "react";
-import { useDispatch, useSelector } from "react-redux";
-import Placeholder from "./course-search/search-results/Placeholder";
+import { FC, useEffect, useState } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import Placeholder from './course-search/search-results/Placeholder';
 import {
   Course,
   Plan,
   SISRetrievedCourse,
   UserCourse,
   Year,
-} from "../../resources/commonTypes";
+} from '../../resources/commonTypes';
 import {
   selectCourseToShow,
   updateCourseToShow,
   updateShowCourseInfo,
-} from "../../slices/popupSlice";
+} from '../../slices/popupSlice';
 import {
   updateInspectedCourse,
   updatePlaceholder,
@@ -20,21 +20,21 @@ import {
   selectPlaceholder,
   selectVersion,
   clearSearch,
-} from "../../slices/searchSlice";
+} from '../../slices/searchSlice';
 import {
   selectCourseCache,
   selectPlanList,
   selectUser,
   updatePlanList,
-} from "../../slices/userSlice";
+} from '../../slices/userSlice';
 import {
   selectCurrentPlanCourses,
   updateCurrentPlanCourses,
   updateSelectedPlan,
-} from "../../slices/currentPlanSlice";
-import { toast } from "react-toastify";
-import { api } from "../../resources/assets";
-import SisCourse from "./course-search/search-results/SisCourse";
+} from '../../slices/currentPlanSlice';
+import { toast } from 'react-toastify';
+import { api } from '../../resources/assets';
+import SisCourse from './course-search/search-results/SisCourse';
 
 /**
  * Course info popup that opens when user preses info button on course components
@@ -50,7 +50,7 @@ const CourseDisplayPopup: FC = () => {
   const planList = useSelector(selectPlanList);
   const currentCourses = useSelector(selectCurrentPlanCourses);
 
-  const [inspectedArea, setInspectedArea] = useState<string>("None");
+  const [inspectedArea, setInspectedArea] = useState<string>('None');
 
   useEffect(() => {
     if (courseToShow !== null) {
@@ -74,15 +74,15 @@ const CourseDisplayPopup: FC = () => {
           number: courseToShow.number,
           areas: courseToShow.area,
           term: courseToShow.term,
-          school: "none",
-          department: "none",
+          school: 'none',
+          department: 'none',
           credits: courseToShow.credits.toString(),
           wi: false,
-          bio: "This is a placeholder course",
+          bio: 'This is a placeholder course',
           tags: [],
           preReq: [],
           restrictions: [],
-          level: "",
+          level: '',
           version: courseToShow.version,
         };
 
@@ -108,16 +108,16 @@ const CourseDisplayPopup: FC = () => {
 
   // Updates distribution bars upon successfully adding a course.
   const addCourse = (plan?: Plan): void => {
-    if (version !== "None" && courseToShow !== null && plan !== undefined) {
+    if (version !== 'None' && courseToShow !== null && plan !== undefined) {
       const addingYear: Year | null = getYear(plan);
       const body = {
         user_id: user._id,
-        year_id: courseToShow.year_id !== null ? courseToShow.year_id : "",
+        year_id: courseToShow.year_id !== null ? courseToShow.year_id : '',
         plan_id: plan._id,
         title: version.title,
-        year: addingYear !== null ? addingYear.name : "",
+        year: addingYear !== null ? addingYear.name : '',
         term: courseToShow.term,
-        credits: version.credits === "" ? 0 : version.credits,
+        credits: version.credits === '' ? 0 : version.credits,
         distribution_ids: plan.distribution_ids,
         isPlaceholder: placeholder,
         number: version.number,
@@ -126,14 +126,14 @@ const CourseDisplayPopup: FC = () => {
         wi: version.wi,
         version: version.term,
         expireAt:
-          user._id === "guestUser"
+          user._id === 'guestUser'
             ? Date.now() + 60 * 60 * 24 * 1000
             : undefined,
       };
-      fetch(api + "/courses", {
-        method: "POST",
+      fetch(api + '/courses', {
+        method: 'POST',
         headers: {
-          "Content-Type": "application/json",
+          'Content-Type': 'application/json',
         },
         body: JSON.stringify(body),
       })
@@ -166,8 +166,8 @@ const CourseDisplayPopup: FC = () => {
         dispatch(updateShowCourseInfo(false));
         dispatch(clearSearch());
         dispatch(updatePlaceholder(false));
-        toast.success("Course updated!", {
-          position: "top-right",
+        toast.success('Course updated!', {
+          position: 'top-right',
           autoClose: 5000,
           hideProgressBar: true,
           closeOnClick: true,
@@ -176,7 +176,7 @@ const CourseDisplayPopup: FC = () => {
           progress: 0,
         });
       } else {
-        console.log("Failed to add", data.errors);
+        console.log('Failed to add', data.errors);
       }
     };
 
@@ -206,8 +206,8 @@ const CourseDisplayPopup: FC = () => {
       {/* Actual popup */}
       <div className="fixed z-40 left-1/2 flex flex-col min-w-planAdd h-3/4 bg-red-500 bg-gradient-to-r rounded shadow shadow from-blue-500 to-green-400 select-none transform -translate-x-1/2 translate-y-12">
         <div className="px-4 py-2 text-white text-coursecard font-semibold select-none">
-          Inspecting{" "}
-          {courseToShow === null ? "Invalid course" : courseToShow.title}
+          Inspecting{' '}
+          {courseToShow === null ? 'Invalid course' : courseToShow.title}
         </div>
         {placeholder ? (
           <div className="p-4 min-w-narrowest bg-gray-100 rounded">

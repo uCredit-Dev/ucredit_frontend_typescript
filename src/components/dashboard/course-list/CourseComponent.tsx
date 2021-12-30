@@ -1,26 +1,26 @@
-import { useState, useEffect, FC } from "react";
-import ReactTooltip from "react-tooltip";
-import { UserCourse, SemesterType, Year } from "../../../resources/commonTypes";
-import { checkAllPrereqs, getColors } from "../../../resources/assets";
-import { useDispatch, useSelector } from "react-redux";
-import { ReactComponent as RemoveSvg } from "../../../resources/svg/Remove.svg";
-import { ReactComponent as DetailsSvg } from "../../../resources/svg/Details.svg";
-import { ReactComponent as WarningSvg } from "../../../resources/svg/Warning.svg";
-import { Transition } from "@tailwindui/react";
-import clsx from "clsx";
-import "react-toastify/dist/ReactToastify.css";
+import { useState, useEffect, FC } from 'react';
+import ReactTooltip from 'react-tooltip';
+import { UserCourse, SemesterType, Year } from '../../../resources/commonTypes';
+import { checkAllPrereqs, getColors } from '../../../resources/assets';
+import { useDispatch, useSelector } from 'react-redux';
+import { ReactComponent as RemoveSvg } from '../../../resources/svg/Remove.svg';
+import { ReactComponent as DetailsSvg } from '../../../resources/svg/Details.svg';
+import { ReactComponent as WarningSvg } from '../../../resources/svg/Warning.svg';
+import { Transition } from '@tailwindui/react';
+import clsx from 'clsx';
+import 'react-toastify/dist/ReactToastify.css';
 import {
   selectCurrentPlanCourses,
   selectPlan,
-} from "../../../slices/currentPlanSlice";
-import { selectCourseCache } from "../../../slices/userSlice";
-import OverridePrereqPopup from "./OverridePrereqPopup";
+} from '../../../slices/currentPlanSlice';
+import { selectCourseCache } from '../../../slices/userSlice';
+import OverridePrereqPopup from './OverridePrereqPopup';
 import {
   updateCourseToDelete,
   updateCourseToShow,
   updateDeleteCourseStatus,
   updateShowCourseInfo,
-} from "../../../slices/popupSlice";
+} from '../../../slices/popupSlice';
 
 /**
  * This is a course card displayed in the course list under each semester.
@@ -59,7 +59,7 @@ const CourseComponent: FC<{
         course.number,
         year,
         semester,
-        courseCache
+        courseCache,
       ).then((satisfiedResponse) => {
         setSatisfied(satisfiedResponse);
       });
@@ -118,14 +118,14 @@ const CourseComponent: FC<{
             <div className="flex items-center px-1 text-white font-semibold bg-secondary rounded select-none">
               {course.credits}
             </div>
-            {course.area !== "None" ? (
+            {course.area !== 'None' ? (
               <div
                 className="flex items-center px-1 text-white font-semibold rounded select-none"
                 style={{ backgroundColor: getColors(course.area)[0] }}
               >
                 {course.area}
               </div>
-            ) : null}{" "}
+            ) : null}{' '}
             {!satisfied && !overridden ? (
               <WarningSvg className="flex items-center w-5 h-5 text-white font-semibold rounded select-none" />
             ) : null}
@@ -146,19 +146,19 @@ const CourseComponent: FC<{
               <div
                 ref={ref}
                 className={clsx(
-                  "absolute z-10 inset-0 flex flex-row items-center justify-center w-full h-full rounded",
+                  'absolute z-10 inset-0 flex flex-row items-center justify-center w-full h-full rounded',
                   {
-                    "pointer-events-none": !activated,
-                  }
+                    'pointer-events-none': !activated,
+                  },
                 )}
               >
                 <div className="absolute left-0 top-0 w-full h-full bg-white bg-opacity-80 rounded" />
                 <div
                   className={clsx(
-                    "absolute z-20 left-0 w-0 h-full text-white hover:bg-blue-400 bg-green-400 bg-opacity-80 rounded cursor-move transform duration-150 ease-in",
+                    'absolute z-20 left-0 w-0 h-full text-white hover:bg-blue-400 bg-green-400 bg-opacity-80 rounded cursor-move transform duration-150 ease-in',
                     {
-                      "w-1/4": hovered,
-                    }
+                      'w-1/4': hovered,
+                    },
                   )}
                   onMouseEnter={() => setDraggable(false)}
                   onMouseLeave={() => setDraggable(true)}
@@ -175,8 +175,8 @@ const CourseComponent: FC<{
                     />
                     <RemoveSvg
                       className={clsx(
-                        "relative z-20 flex flex-row items-center justify-center p-0.5 w-6 h-6 text-white bg-red-300 hover:bg-red-600 rounded-md outline-none stroke-2 cursor-pointer transform hover:scale-110 transition duration-150 ease-in",
-                        { "mr-5": !satisfied }
+                        'relative z-20 flex flex-row items-center justify-center p-0.5 w-6 h-6 text-white bg-red-300 hover:bg-red-600 rounded-md outline-none stroke-2 cursor-pointer transform hover:scale-110 transition duration-150 ease-in',
+                        { 'mr-5': !satisfied },
                       )}
                       onClick={deleteCourse}
                     />

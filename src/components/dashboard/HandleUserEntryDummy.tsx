@@ -1,33 +1,33 @@
-import { useEffect, FC, useState } from "react";
-import axios from "axios";
-import { useDispatch, useSelector } from "react-redux";
-import { toast } from "react-toastify";
-import { Plan, User, UserCourse, Year } from "../../resources/commonTypes";
+import { useEffect, FC, useState } from 'react';
+import axios from 'axios';
+import { useDispatch, useSelector } from 'react-redux';
+import { toast } from 'react-toastify';
+import { Plan, User, UserCourse, Year } from '../../resources/commonTypes';
 import {
   selectCurrentPlanCourses,
   selectPlan,
   updateCurrentPlanCourses,
   updateImportingStatus,
   updateSelectedPlan,
-} from "../../slices/currentPlanSlice";
+} from '../../slices/currentPlanSlice';
 import {
   selectPlanList,
   selectUser,
   updateCourseCache,
   updatePlanList,
   updateUser,
-} from "../../slices/userSlice";
-import { api, guestUser } from "../../resources/assets";
+} from '../../slices/userSlice';
+import { api, guestUser } from '../../resources/assets';
 import {
   selectGeneratePlanAddStatus,
   updateAddingPlanStatus,
   updateGeneratePlanAddStatus,
   updateToAddMajor,
   updateToAddName,
-} from "../../slices/popupSlice";
-import { useCookies } from "react-cookie";
-import { useNavigate } from "react-router";
-import { getMajorFromCommonName } from "../../resources/majors";
+} from '../../slices/popupSlice';
+import { useCookies } from 'react-cookie';
+import { useNavigate } from 'react-router';
+import { getMajorFromCommonName } from '../../resources/majors';
 
 /**
  * Handles dashboard user entry and login logic.
@@ -48,12 +48,12 @@ const HandleUserEntryDummy: FC<{
   const [toAdd, setToAdd] = useState<Year[]>([]);
   const [shouldAdd, setShouldAdd] = useState<boolean>(false);
   const [cached, setCached] = useState<boolean>(false);
-  const [cookies] = useCookies(["connect.sid"]);
+  const [cookies] = useCookies(['connect.sid']);
   let navigate = useNavigate();
 
   // Adds a new plan every time a new guest user is created and they don't have a a plan.
   useEffect(() => {
-    if (user && user.plan_ids.length === 0 && user._id === "guestUser") {
+    if (user && user.plan_ids.length === 0 && user._id === 'guestUser') {
       // Post req body for a new plan
       dispatch(updateAddingPlanStatus(true));
     }
@@ -62,19 +62,19 @@ const HandleUserEntryDummy: FC<{
 
   // Gets all users's plans and updates state everytime a new user is chosen.
   useEffect(() => {
-    if (user._id !== "noUser" && user._id !== "guestUser") {
+    if (user._id !== 'noUser' && user._id !== 'guestUser') {
       axios
-        .get(api + "/plansByUser/" + user._id)
+        .get(api + '/plansByUser/' + user._id)
         .then((retrieved) => {
           processRetrievedPlans(retrieved.data.data);
         })
         .catch((err) => {
-          if (user._id === "guestUser") {
+          if (user._id === 'guestUser') {
             console.log(
-              "In guest user! This is expected as there are no users with this id."
+              'In guest user! This is expected as there are no users with this id.',
             );
           } else {
-            console.log("ERROR:", err);
+            console.log('ERROR:', err);
           }
         });
     }
@@ -86,11 +86,11 @@ const HandleUserEntryDummy: FC<{
     if (retrievedPlans.length > 0) {
       // sort plans by ids if there is more than one plan
       retrievedPlans.sort((plan1: Plan, plan2: Plan) =>
-        plan1._id.localeCompare(plan2._id)
+        plan1._id.localeCompare(plan2._id),
       );
     }
 
-    if (currentPlan._id !== "noPlan") {
+    if (currentPlan._id !== 'noPlan') {
       // Swap first plan in the list with the current plan.
       retrievedPlans.forEach((plan: Plan, index) => {
         if (plan._id === currentPlan._id) {
@@ -101,16 +101,16 @@ const HandleUserEntryDummy: FC<{
       });
     }
 
-    if (retrievedPlans.length > 0 && currentPlan._id === "noPlan") {
+    if (retrievedPlans.length > 0 && currentPlan._id === 'noPlan') {
       let totPlans: Plan[] = [];
       retrievedPlans.forEach(async (plan) => {
         totPlans = await processYears(plan, totPlans, retrievedPlans);
       });
-      toast("Retrieved " + retrievedPlans.length + " plans!");
+      toast('Retrieved ' + retrievedPlans.length + ' plans!');
     } else if (
       retrievedPlans.length === 0 &&
-      user._id !== "noUser" &&
-      user._id !== "guestUser"
+      user._id !== 'noUser' &&
+      user._id !== 'guestUser'
     ) {
       // If no plans, automatically generate a new plan
       dispatch(updateAddingPlanStatus(true));
@@ -119,11 +119,11 @@ const HandleUserEntryDummy: FC<{
       let totPlans: Plan[] = [];
       retrievedPlans.forEach(async (plan) => {
         const resp: any = await axios
-          .get(api + "/years/" + plan._id)
+          .get(api + '/years/' + plan._id)
           .catch((err) => console.log(err));
         totPlans.push({ ...plan, years: resp.data.data });
         totPlans.sort((plan1: Plan, plan2: Plan) =>
-          plan1._id.localeCompare(plan2._id)
+          plan1._id.localeCompare(plan2._id),
         );
         if (totPlans.length === retrievedPlans.length) {
           // Initial load, there is no current plan, so we set the current to be the first plan in the array.
@@ -137,10 +137,10 @@ const HandleUserEntryDummy: FC<{
   const processYears = async (
     plan: Plan,
     totPlans: Plan[],
-    retrievedPlans
+    retrievedPlans,
   ): Promise<Plan[]> => {
     const resp: any = await axios
-      .get(api + "/years/" + plan._id)
+      .get(api + '/years/' + plan._id)
       .catch((err) => console.log(err));
 
     // Update Years if they are part of old plan schemas.
@@ -160,7 +160,7 @@ const HandleUserEntryDummy: FC<{
     if (totPlans.length === retrievedPlans.length) {
       // Initial load, there is no current plan, so we set the current to be the first plan in the array.
       totPlans.sort((plan1: Plan, plan2: Plan) =>
-        plan1._id.localeCompare(plan2._id)
+        plan1._id.localeCompare(plan2._id),
       );
       dispatch(updatePlanList(totPlans));
       dispatch(updateSelectedPlan(totPlans[0]));
@@ -170,13 +170,13 @@ const HandleUserEntryDummy: FC<{
 
   // Gets the start year of the user's grade.
   const getStartYear = (year: string): number => {
-    if (year.includes("Sophomore")) {
+    if (year.includes('Sophomore')) {
       return new Date().getFullYear() - 1;
-    } else if (year.includes("Junior")) {
+    } else if (year.includes('Junior')) {
       return new Date().getFullYear() - 2;
-    } else if (year.includes("Senior")) {
+    } else if (year.includes('Senior')) {
       return new Date().getFullYear() - 3;
-    } else if (year.includes("Fifth year")) {
+    } else if (year.includes('Fifth year')) {
       return new Date().getFullYear() - 4;
     } else {
       return new Date().getFullYear();
@@ -187,8 +187,8 @@ const HandleUserEntryDummy: FC<{
   useEffect(() => {
     if (
       shouldAdd &&
-      user._id !== "noUser" &&
-      currentPlan._id !== "noPlan" &&
+      user._id !== 'noUser' &&
+      currentPlan._id !== 'noPlan' &&
       cached &&
       !generatePlanAddStatus
     ) {
@@ -217,7 +217,7 @@ const HandleUserEntryDummy: FC<{
       y.courses.forEach((c) => {
         total++;
         axios
-          .get("https://ucredit-dev.herokuapp.com/api/search", {
+          .get('https://ucredit-dev.herokuapp.com/api/search', {
             params: { query: c },
           })
           .then((retrieved) => {
@@ -242,7 +242,7 @@ const HandleUserEntryDummy: FC<{
     toAdd.forEach(async (year, i) => {
       const yearBody: Year = {
         name: year.name,
-        _id: "",
+        _id: '',
         plan_id: currentPlan._id,
         user_id: user._id,
         courses: [],
@@ -253,12 +253,12 @@ const HandleUserEntryDummy: FC<{
         ...yearBody,
         preUniversity: false,
         expireAt:
-          user._id === "guestUser"
+          user._id === 'guestUser'
             ? Date.now() + 60 * 60 * 24 * 1000
             : undefined,
       }; // add to end by default
       const postYearResp: any = await axios
-        .post(api + "/years", body)
+        .post(api + '/years', body)
         .catch((err) => console.log(err));
       const newYear: Year = { ...postYearResp.data.data };
       allYears = [...allYears, newYear];
@@ -270,12 +270,12 @@ const HandleUserEntryDummy: FC<{
 
         // Deletes unused autogenerated years
         for (let y of currentPlan.years) {
-          await axios.delete(api + "/years/" + y._id);
+          await axios.delete(api + '/years/' + y._id);
         }
 
         // Update plan with new years
         const changeYearOrderResp: any = await axios
-          .patch(api + "/years/changeOrder", {
+          .patch(api + '/years/changeOrder', {
             plan_id: currentPlan._id,
             year_ids: [...allYears.map((y) => y._id)],
           })
@@ -295,7 +295,7 @@ const HandleUserEntryDummy: FC<{
   // Adds courses from imported plan.
   const addImportedCourses = async (
     empty: boolean,
-    newUpdatedPlan: Plan
+    newUpdatedPlan: Plan,
   ): Promise<boolean> => {
     let added: UserCourse[] = [];
     let total: number = 0;
@@ -310,7 +310,7 @@ const HandleUserEntryDummy: FC<{
         const courseResponse = await addCourse(
           course,
           toAdd.indexOf(yearIt),
-          newUpdatedPlan
+          newUpdatedPlan,
         );
         added = [...added, courseResponse];
         handleFinishAdding(newUpdatedPlan, added, total);
@@ -323,7 +323,7 @@ const HandleUserEntryDummy: FC<{
   const handleFinishAdding = (
     newUpdatedPlan: Plan,
     added: UserCourse[],
-    total: number
+    total: number,
   ) => {
     let allYearsClone: Year[] = [...newUpdatedPlan.years];
     let newYears: Year[] = [];
@@ -361,7 +361,7 @@ const HandleUserEntryDummy: FC<{
     if (total === added.length) {
       dispatch(updateImportingStatus(false));
       toast.dismiss();
-      toast.success("Plan Imported!", {
+      toast.success('Plan Imported!', {
         autoClose: 5000,
         closeOnClick: false,
       });
@@ -378,10 +378,10 @@ const HandleUserEntryDummy: FC<{
   const addCourse = async (
     courseId: string,
     yearIndex: number,
-    plan: Plan
+    plan: Plan,
   ): Promise<UserCourse> => {
     return new Promise((resolve) => {
-      axios.get(api + "/courses/" + courseId).then((response) => {
+      axios.get(api + '/courses/' + courseId).then((response) => {
         let course: UserCourse = response.data.data;
         const addingYear: Year = plan.years[yearIndex];
 
@@ -399,14 +399,14 @@ const HandleUserEntryDummy: FC<{
           area: course.area,
           preReq: course.preReq,
           expireAt:
-            user._id === "guestUser"
+            user._id === 'guestUser'
               ? Date.now() + 60 * 60 * 24 * 1000
               : undefined,
         };
-        fetch(api + "/courses", {
-          method: "POST",
+        fetch(api + '/courses', {
+          method: 'POST',
           headers: {
-            "Content-Type": "application/json",
+            'Content-Type': 'application/json',
           },
           body: JSON.stringify(body),
         })
@@ -416,7 +416,7 @@ const HandleUserEntryDummy: FC<{
               let newUserCourse: UserCourse = { ...data.data };
               return resolve(newUserCourse);
             } else {
-              console.log("Failed to add", data.errors);
+              console.log('Failed to add', data.errors);
             }
           });
       });
@@ -437,17 +437,17 @@ const HandleUserEntryDummy: FC<{
    * @returns a promises that resolves on success or failure in logging in
    */
   const login = (cookieVal: string, plan, years) => {
-    if (user._id === "noUser") {
+    if (user._id === 'noUser') {
       let curUser: User;
       // Retrieves user if user ID is "noUser", the initial user id state for userSlice.tsx.
       // Make call for backend
-      fetch(api + "/retrieveUser/" + cookieVal, {
-        mode: "cors",
-        method: "GET",
-        credentials: "include",
+      fetch(api + '/retrieveUser/' + cookieVal, {
+        mode: 'cors',
+        method: 'GET',
+        credentials: 'include',
         headers: {
-          Accept: "application/json",
-          "Content-Type": "application/json",
+          Accept: 'application/json',
+          'Content-Type': 'application/json',
         },
       })
         .then((resp) => resp.json())
@@ -460,7 +460,7 @@ const HandleUserEntryDummy: FC<{
             });
           } else if (id === null) {
             console.log("ERROR: Couldn't log in with " + cookieVal);
-            navigate("/login");
+            navigate('/login');
           } else {
             console.log("ERROR: Couldn't log in with " + cookieVal);
             dispatch(updateUser(guestUser));
@@ -468,10 +468,10 @@ const HandleUserEntryDummy: FC<{
           }
         })
         .catch((err) => {
-          console.log("ERROR with cookieVal " + cookieVal + " is ", err);
+          console.log('ERROR with cookieVal ' + cookieVal + ' is ', err);
           afterPromise(plan, years);
           if (id === null) {
-            navigate("/login");
+            navigate('/login');
           }
         });
     } else {
@@ -486,19 +486,19 @@ const HandleUserEntryDummy: FC<{
    */
   const getPlans = (curUser: User) =>
     new Promise<void>((resolve) =>
-      axios.get(api + "/plansByUser/" + curUser._id).then((retrieved) => {
+      axios.get(api + '/plansByUser/' + curUser._id).then((retrieved) => {
         const retrievedPlans: Plan[] = retrieved.data.data;
         if (retrievedPlans.length > 0) {
           const totPlans: Plan[] = [];
           retrievedPlans.forEach((plan) => {
             axios
-              .get(api + "/years/" + plan._id)
+              .get(api + '/years/' + plan._id)
               .then((resp) => {
                 totPlans.push({ ...plan, years: resp.data.data });
                 if (totPlans.length === retrievedPlans.length) {
                   // Initial load, there is no current plan, so we set the current to be the first plan in the array.
                   totPlans.sort((p1: Plan, p2: Plan) =>
-                    p1._id.localeCompare(p2._id)
+                    p1._id.localeCompare(p2._id),
                   );
                   dispatch(updatePlanList(totPlans));
                   dispatch(updateSelectedPlan(totPlans[0]));
@@ -508,7 +508,7 @@ const HandleUserEntryDummy: FC<{
               .catch((err) => console.log(err));
           });
         }
-      })
+      }),
     );
 
   // Useffect runs once on page load, calling to https://ucredit-api.herokuapp.com/api/retrieveUser to retrieve user data.
@@ -517,21 +517,21 @@ const HandleUserEntryDummy: FC<{
     if (id !== null) {
       // Retrieves user if user ID is "noUser", the initial user id state for userSlice.tsx.
       // Make call for backend const cookieVals = document.cookie.split("=");
-      let cookieVal = "";
+      let cookieVal = '';
       Object.entries(cookies).forEach((cookie: any) => {
-        if (cookie[0] === "_hjid" || cookie[0] === "connect.sid")
+        if (cookie[0] === '_hjid' || cookie[0] === 'connect.sid')
           cookieVal = cookie[1];
       });
       axios
-        .get(api + "/retrieveUser/" + cookieVal, {
-          method: "GET",
+        .get(api + '/retrieveUser/' + cookieVal, {
+          method: 'GET',
           headers: {
-            Accept: "application/json",
-            "Content-Type": "application/json",
+            Accept: 'application/json',
+            'Content-Type': 'application/json',
           },
         })
         .then((retrievedUser) => {
-          toast.info("Importing Plan...", {
+          toast.info('Importing Plan...', {
             autoClose: false,
             closeOnClick: false,
           });
@@ -539,13 +539,13 @@ const HandleUserEntryDummy: FC<{
 
           // // means that the user entered a sharable link
           // // first login with guest, then populate the plan with the information from the id
-          navigate("/dashboard");
+          navigate('/dashboard');
           dispatch(updateImportingStatus(true));
           // Get the plan that we are importing, stored in plan
           handleExistingUser();
         })
         .catch((err) => {
-          toast.info("Importing Plan...", {
+          toast.info('Importing Plan...', {
             autoClose: false,
             closeOnClick: false,
           });
@@ -553,32 +553,32 @@ const HandleUserEntryDummy: FC<{
           dispatch(updateImportingStatus(true));
           // means that the user entered a sharable link
           // first login with guest, then populate the plan with the information from the id
-          navigate("/dashboard");
+          navigate('/dashboard');
           // Get the plan that we are importing, stored in plan
           handleExistingUser();
         });
-    } else if (user._id === "noUser") {
+    } else if (user._id === 'noUser') {
       // Retrieves user if user ID is "noUser", the initial user id state for userSlice.tsx.
       // Make call for backend const cookieVals = document.cookie.split("=");
-      let cookieVal = "";
+      let cookieVal = '';
       Object.entries(cookies).forEach((cookie: any) => {
-        if (cookie[0] === "_hjid" || cookie[0] === "connect.sid")
+        if (cookie[0] === '_hjid' || cookie[0] === 'connect.sid')
           cookieVal = cookie[1];
       });
       axios
-        .get(api + "/retrieveUser/" + cookieVal, {
-          method: "GET",
+        .get(api + '/retrieveUser/' + cookieVal, {
+          method: 'GET',
           headers: {
-            Accept: "application/json",
-            "Content-Type": "application/json",
+            Accept: 'application/json',
+            'Content-Type': 'application/json',
           },
         })
         .then((retrievedUser) => {
           dispatch(updateUser(retrievedUser.data.data));
         })
         .catch((err) => {
-          console.log("ERROR: ", err);
-          navigate("/login");
+          console.log('ERROR: ', err);
+          navigate('/login');
         });
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -587,7 +587,7 @@ const HandleUserEntryDummy: FC<{
   // Handle the case where the user is already exists
   const handleExistingUser = async (): Promise<void> => {
     const planResponse: any = await axios
-      .get(api + "/plans/" + id)
+      .get(api + '/plans/' + id)
       .catch((e) => {
         dispatch(updateImportingStatus(false));
         toast.dismiss();
@@ -596,27 +596,27 @@ const HandleUserEntryDummy: FC<{
           {
             closeOnClick: false,
             autoClose: false,
-          }
+          },
         );
-        navigate("/login");
+        navigate('/login');
       });
 
     let plan: Plan = planResponse.data.data;
     // get the years of that plan, stored in years
     const yearsResponse: any = await axios
-      .get(api + "/years/" + id)
+      .get(api + '/years/' + id)
       .catch((e) => {
-        console.log("ERROR: ", e);
+        console.log('ERROR: ', e);
       });
     let years = yearsResponse.data.data;
     cache(years);
     // check whether the user is logged in (whether a cookie exists)
-    let cookieVal = "";
+    let cookieVal = '';
     Object.entries(cookies).forEach((cookie: any) => {
-      if (cookie[0] === "_hjid" || cookie[0] === "connect.sid")
+      if (cookie[0] === '_hjid' || cookie[0] === 'connect.sid')
         cookieVal = cookie[1];
     });
-    if (cookieVal === "") {
+    if (cookieVal === '') {
       // if not, create a user first, then add
       dispatch(updateToAddName(plan.name));
       dispatch(updateToAddMajor(getMajorFromCommonName(plan.majors[0])));

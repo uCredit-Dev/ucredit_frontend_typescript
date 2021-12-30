@@ -1,7 +1,7 @@
-import { FC, useEffect } from "react";
-import { ReactComponent as StarSvg } from "../../../../resources/svg/Star.svg";
-import clsx from "clsx";
-import ReactTooltip from "react-tooltip";
+import { FC, useEffect } from 'react';
+import { ReactComponent as StarSvg } from '../../../../resources/svg/Star.svg';
+import clsx from 'clsx';
+import ReactTooltip from 'react-tooltip';
 
 const ratingStars = Array(5).fill(0);
 
@@ -29,10 +29,10 @@ const CourseEvalCard: FC<{ rating: string; summary: string }> = (props) => {
             {ratingStars.map((_, i) => (
               <StarSvg
                 className={clsx(
-                  "w-6 h-6 transform hover:scale-125 transition duration-200 ease-in",
+                  'w-6 h-6 transform hover:scale-125 transition duration-200 ease-in',
                   {
-                    "fill-gold": i <= ratingNum,
-                  }
+                    'fill-gold': i <= ratingNum,
+                  },
                 )}
               />
             ))}

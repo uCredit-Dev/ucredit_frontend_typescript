@@ -1,17 +1,17 @@
-import { FC, useState } from "react";
-import { useDispatch, useSelector } from "react-redux";
+import { FC, useState } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
 import {
   selectYear,
   selectSemester,
   updateSearchStatus,
-} from "../../../slices/searchSlice";
-import CourseDisplay from "./search-results/CourseDisplay";
-import Form from "./query-components/Form";
-import SearchList from "./query-components/SearchList";
-import { ReactComponent as HideSvg } from "../../../resources/svg/Hide.svg";
-import { selectPlan } from "../../../slices/currentPlanSlice";
-import ReactTooltip from "react-tooltip";
-import { Year } from "../../../resources/commonTypes";
+} from '../../../slices/searchSlice';
+import CourseDisplay from './search-results/CourseDisplay';
+import Form from './query-components/Form';
+import SearchList from './query-components/SearchList';
+import { ReactComponent as HideSvg } from '../../../resources/svg/Hide.svg';
+import { selectPlan } from '../../../slices/currentPlanSlice';
+import ReactTooltip from 'react-tooltip';
+import { Year } from '../../../resources/commonTypes';
 
 /**
  * Search component for when someone clicks a search action.
@@ -32,7 +32,7 @@ const Search: FC = () => {
    * @returns the year's name
    */
   const getYearName = (): string => {
-    let name = "";
+    let name = '';
     currentPlan.years.forEach((year: Year, index: number) => {
       if (year._id === searchYear) {
         name = year.name;
@@ -57,20 +57,20 @@ const Search: FC = () => {
       {/* Search area */}
       <div
         className={
-          "fixed flex flex-col bg-gradient-to-r shadow from-blue-500 to-green-400 select-none rounded z-20 w-9/12 tight:overflow-y-none h-5/6 top-1/3 left-1/2 transform -translate-x-1/2 -translate-y-1/3 tight:h-auto"
+          'fixed flex flex-col bg-gradient-to-r shadow from-blue-500 to-green-400 select-none rounded z-20 w-9/12 tight:overflow-y-none h-5/6 top-1/3 left-1/2 transform -translate-x-1/2 -translate-y-1/3 tight:h-auto'
         }
         style={{ opacity: searchOpacity === 100 ? 1 : 0.1 }}
       >
         <div className="px-4 py-2 text-white text-coursecard font-normal select-none">
-          Currently selecting for{" "}
-          <span className="text-emphasis font-bold">{getYearName()}</span> year,{" "}
-          <span className="text-emphasis font-bold">{searchSemester}</span>{" "}
+          Currently selecting for{' '}
+          <span className="text-emphasis font-bold">{getYearName()}</span> year,{' '}
+          <span className="text-emphasis font-bold">{searchSemester}</span>{' '}
           semester
         </div>
         <div className="flex tight:flex-col flex-row w-full tight:h-auto h-full tight:max-h-mobileSearch text-coursecard tight:overflow-y-scroll">
           <div
             className={
-              "flex flex-col rounded-l bg-gray-200 flex-none border-r-2 tight:border-0 border-gray-300 tight:w-auto w-80"
+              'flex flex-col rounded-l bg-gray-200 flex-none border-r-2 tight:border-0 border-gray-300 tight:w-auto w-80'
             }
           >
             <div className="h-full overflow-y-auto">

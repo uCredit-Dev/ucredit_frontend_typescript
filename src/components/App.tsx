@@ -1,22 +1,22 @@
-import axios from "axios";
-import { FC, useEffect, useState } from "react";
-import { useDispatch, useSelector } from "react-redux";
-import { Route, Routes, useSearchParams } from "react-router-dom";
-import { api } from "./../resources/assets";
-import Dashboard from "./dashboard";
-import DashboardEntry from "./login/DashboardEntry";
+import axios from 'axios';
+import { FC, useEffect, useState } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import { Route, Routes, useSearchParams } from 'react-router-dom';
+import { api } from './../resources/assets';
+import Dashboard from './dashboard';
+import DashboardEntry from './login/DashboardEntry';
 import {
   selectCourseCache,
   selectUser,
   updateAllCoursesCached,
   updateCourseCache,
   updateRetrievedAll,
-} from "../slices/userSlice";
-import { toast, ToastContainer } from "react-toastify";
-import ReactTooltip from "react-tooltip";
-import { SISRetrievedCourse, UserCourse, Year } from "../resources/commonTypes";
-import { selectPlan } from "../slices/currentPlanSlice";
-import LandingPage from "./landing-page";
+} from '../slices/userSlice';
+import { toast, ToastContainer } from 'react-toastify';
+import ReactTooltip from 'react-tooltip';
+import { SISRetrievedCourse, UserCourse, Year } from '../resources/commonTypes';
+import { selectPlan } from '../slices/currentPlanSlice';
+import LandingPage from './landing-page';
 
 /**
  * Root app component, where it all begins...
@@ -30,19 +30,18 @@ const App: FC = () => {
   // Component state setup.
   const [welcomeScreen, setWelcomeScreen] = useState<boolean>(false);
   const [needsToLoad, setNeedsToLoad] = useState<boolean>(false);
-
   const [searchParams] = useSearchParams();
 
   const retrieveData = (counter: number, retrieved: SISRetrievedCourse[]) => {
     setNeedsToLoad(true);
     axios
-      .get(api + "/search/skip/" + counter + "?mod=" + 450)
+      .get(api + '/search/skip/' + counter + '?mod=' + 450)
       .then((courses: any) => {
         if (courses.data.data.length > 0) {
           retrieveData(counter + 1, [...retrieved, ...courses.data.data]);
         } else {
           toast.dismiss();
-          toast.success("SIS Courses Cached!");
+          toast.success('SIS Courses Cached!');
           setWelcomeScreen(false);
           dispatch(updateAllCoursesCached(retrieved));
           dispatch(updateRetrievedAll(true));
@@ -51,15 +50,15 @@ const App: FC = () => {
       .catch((err) => {
         // eslint-disable-next-line @typescript-eslint/no-unused-vars
         retrieveData(counter, retrieved);
-        console.log("err is ", err.message);
+        console.log('err is ', err.message);
       });
   };
 
   useEffect(() => {
-    if (user._id === "noUser") {
+    if (user._id === 'noUser') {
       setWelcomeScreen(true);
       setNeedsToLoad(true);
-    } else if (user._id !== "noUser" && !needsToLoad && welcomeScreen) {
+    } else if (user._id !== 'noUser' && !needsToLoad && welcomeScreen) {
       setTimeout(() => setWelcomeScreen(false), 1000);
     } else if (needsToLoad) {
       setWelcomeScreen(true);
@@ -81,7 +80,7 @@ const App: FC = () => {
     const planHasCourses: boolean = courseCheck();
     if (
       courseCache.length === 0 &&
-      curPlan._id !== "noPlan" &&
+      curPlan._id !== 'noPlan' &&
       planHasCourses
     ) {
       let total = 0;
@@ -89,12 +88,12 @@ const App: FC = () => {
       let SISCourses: SISRetrievedCourse[] = [];
       setNeedsToLoad(true);
       axios
-        .get(api + "/coursesByPlan/" + curPlan._id)
+        .get(api + '/coursesByPlan/' + curPlan._id)
         .then((response) => {
           response.data.data.forEach((c: UserCourse) => {
             total++;
             axios
-              .get(api + "/search", {
+              .get(api + '/search', {
                 params: { query: c.number },
                 // eslint-disable-next-line no-loop-func
               })
@@ -139,7 +138,7 @@ const App: FC = () => {
         <Route path="login/*" element={<DashboardEntry />} />
         <Route
           path="share"
-          element={<Dashboard id={searchParams.get("_id")} />}
+          element={<Dashboard id={searchParams.get('_id')} />}
         />
       </Routes>
       <ToastContainer

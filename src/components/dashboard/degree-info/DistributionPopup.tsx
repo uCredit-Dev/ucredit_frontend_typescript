@@ -1,5 +1,5 @@
-import { FC, useState } from "react";
-import { requirements } from "./distributionFunctions";
+import { FC, useState } from 'react';
+import { requirements } from './distributionFunctions';
 
 /**
  * TODO: FEATURE TO OVERRIDE DISTRIBUTIONS ON PAUSE. MAY BE DEPRECATED IN THE FUTURE.

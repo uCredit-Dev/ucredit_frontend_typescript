@@ -1,18 +1,18 @@
-import { FC, useEffect } from "react";
-import { useDispatch, useSelector } from "react-redux";
-import Select from "react-select";
-import ReactTooltip from "react-tooltip";
-import { ReactComponent as Question } from "../../../../resources/svg/Question.svg";
-import { all_deps, course_tags } from "../../../../resources/assets";
-import { FilterType } from "../../../../resources/commonTypes";
+import { FC, useEffect } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import Select from 'react-select';
+import ReactTooltip from 'react-tooltip';
+import { ReactComponent as Question } from '../../../../resources/svg/Question.svg';
+import { all_deps, course_tags } from '../../../../resources/assets';
+import { FilterType } from '../../../../resources/commonTypes';
 import {
   selectSearchFilters,
   updateSearchFilters,
-} from "../../../../slices/searchSlice";
+} from '../../../../slices/searchSlice';
 
-const creditFilters = ["Any", 0, 1, 2, 3, 4];
-const distributionFilters = ["N", "S", "H", "Q", "E"];
-const wiFilters = ["Any", "Yes", "No"];
+const creditFilters = ['Any', 0, 1, 2, 3, 4];
+const distributionFilters = ['N', 'S', 'H', 'Q', 'E'];
+const wiFilters = ['Any', 'Yes', 'No'];
 const date: Date = new Date();
 const year: number = date.getFullYear();
 const month: number = date.getMonth();
@@ -42,7 +42,7 @@ const Filters: FC<{
     // });
     let credits = event.value;
     const params: { filter: FilterType; value: any } = {
-      filter: "credits",
+      filter: 'credits',
       value: credits,
       // value: credits.length === 0 ? null : credits.toString(),
     };
@@ -54,13 +54,13 @@ const Filters: FC<{
    * @param event - the event sent when handling distribution dropdown
    */
   const handleDistributionFilterChange = (event: any): void => {
-    let areas: string = "";
+    let areas: string = '';
     // event.forEach((a: { label: string; value: string }) => {
     //   areas = areas.concat(a.label);
     // });
     areas = event.value;
     const params: { filter: FilterType; value: any } = {
-      filter: "distribution",
+      filter: 'distribution',
       value: areas,
       // value: areas.length === 0 ? null : areas,
     };
@@ -73,7 +73,7 @@ const Filters: FC<{
    */
   const handleWIFilterChange = (event: any): void => {
     const params: { filter: FilterType; value: any } = {
-      filter: "wi",
+      filter: 'wi',
       value: getValue(event.value),
     };
     dispatch(updateSearchFilters(params));
@@ -85,20 +85,20 @@ const Filters: FC<{
    * @returns boolean value or null depending on event.value
    */
   const getValue = (eventValue: any): boolean | null => {
-    if (eventValue === "Yes") {
+    if (eventValue === 'Yes') {
       return true;
-    } else if (eventValue === "No") {
+    } else if (eventValue === 'No') {
       return false;
     } else return null;
   };
 
   const getLabel = (searchFiltersWI: null | boolean): string => {
     if (searchFiltersWI === null) {
-      return "Any";
+      return 'Any';
     } else if (searchFiltersWI) {
-      return "Yes";
+      return 'Yes';
     } else {
-      return "No";
+      return 'No';
     }
   };
 
@@ -107,15 +107,15 @@ const Filters: FC<{
    * @param event - the event sent when handling department dropdown
    */
   const handleDepartmentFilterChange = (event: any): void => {
-    let departments = "";
+    let departments = '';
     event.forEach((dep: { label: string; value: string }, i: number) => {
       departments = departments.concat(dep.label);
       if (i < event.length - 1) {
-        departments = departments.concat("|");
+        departments = departments.concat('|');
       }
     });
     const params: { filter: FilterType; value: any } = {
-      filter: "department",
+      filter: 'department',
       value: departments.length === 0 ? null : departments,
     };
     dispatch(updateSearchFilters(params));
@@ -135,7 +135,7 @@ const Filters: FC<{
     // });
     let tags = event.value.toString();
     const params: { filter: FilterType; value: any } = {
-      filter: "tags",
+      filter: 'tags',
       // value: tags.length === 0 ? null : tags,
       value: tags,
     };
@@ -167,7 +167,7 @@ const Filters: FC<{
    */
   const handleYearFilterChange = (event: any): void => {
     const params: { filter: FilterType; value: any } = {
-      filter: "year",
+      filter: 'year',
       value: event.value,
     };
     dispatch(updateSearchFilters(params));
@@ -179,10 +179,10 @@ const Filters: FC<{
    */
   const getDepString = (): string => {
     return (
-      "Selected " +
+      'Selected ' +
       (searchFilters.department !== null
-        ? searchFilters.department.split("|").map((dep) => " " + dep)
-        : "nothing")
+        ? searchFilters.department.split('|').map((dep) => ' ' + dep)
+        : 'nothing')
     );
   };
 
@@ -192,10 +192,10 @@ const Filters: FC<{
    */
   const getTagString = () => {
     return (
-      "Selected " +
+      'Selected ' +
       (searchFilters.tags !== null
-        ? searchFilters.tags.split("|").map((tag) => " " + tag)
-        : "nothing")
+        ? searchFilters.tags.split('|').map((tag) => ' ' + tag)
+        : 'nothing')
     );
   };
 
@@ -238,7 +238,7 @@ const Filters: FC<{
             data-for="godTip"
             data-tip={`<p>This is to search for a specific snapshot of course information at a specific time in the past or present.</p><p>NOTE: This is NOT to determine where on the plan you are adding the course.</p><p>(ie. Course Version "Spring, 2021" may not equal "Spring, Senior")</p>`}
           />
-        </div>{" "}
+        </div>{' '}
         <Select
           options={getYears()}
           className="mx-1 w-40 rounded outline-none"
@@ -253,7 +253,7 @@ const Filters: FC<{
         <div>
           <div
             className="flex flex-row items-center justify-between mb-2 w-full h-auto"
-            data-tip={"Department of the searched courses"}
+            data-tip={'Department of the searched courses'}
             data-for="godTip"
           >
             Department
@@ -271,7 +271,7 @@ const Filters: FC<{
                 value={(() =>
                   searchFilters.department !== null
                     ? searchFilters.department
-                        .split("|")
+                        .split('|')
                         .map((dep) => ({ label: dep, value: dep }))
                     : [])()}
               />
@@ -279,7 +279,7 @@ const Filters: FC<{
           </div>
           <div
             className="flex flex-row items-center justify-between mb-2 w-full h-auto"
-            data-tip={"Number of credits provided by the searched courses"}
+            data-tip={'Number of credits provided by the searched courses'}
             data-for="godTip"
           >
             Credits
@@ -304,7 +304,7 @@ const Filters: FC<{
                   searchFilters.credits === null ? null : searchFilters.credits,
                 label:
                   searchFilters.credits === null
-                    ? "Any"
+                    ? 'Any'
                     : searchFilters.credits,
               }}
               className="w-40 rounded outline-none"
@@ -313,7 +313,7 @@ const Filters: FC<{
           <div
             className="flex flex-row items-center justify-between mb-2 w-full h-auto"
             data-tip={
-              "Areas of study for the searched courses, please refer to your advisor for more info about the tags that you need to fulfill your major."
+              'Areas of study for the searched courses, please refer to your advisor for more info about the tags that you need to fulfill your major.'
             }
             data-for="godTip"
           >
@@ -323,14 +323,14 @@ const Filters: FC<{
                 className="h-4"
                 data-for="godTip"
                 data-tip={
-                  "<p>Areas designate the specific subset a course belongs to. Each degree requires students to take a certain amount of credits or courses in a spcific area.</p><p>H - Humanities</p><p>S - Social Sciences</p><p>E - Engineering</p><p>N - Natural Sciences</p><p>Q - Quantitative</p>"
+                  '<p>Areas designate the specific subset a course belongs to. Each degree requires students to take a certain amount of credits or courses in a spcific area.</p><p>H - Humanities</p><p>S - Social Sciences</p><p>E - Engineering</p><p>N - Natural Sciences</p><p>Q - Quantitative</p>'
                 }
               />
             </div>
             <Select
               // isMulti
               options={[
-                { label: "Any", value: null },
+                { label: 'Any', value: null },
                 ...distributionFilters.map((distribution: any) => ({
                   value: distribution,
                   label: distribution,
@@ -348,7 +348,7 @@ const Filters: FC<{
                 value: searchFilters.distribution,
                 label:
                   searchFilters.distribution === null
-                    ? "Any"
+                    ? 'Any'
                     : searchFilters.distribution,
               }}
             />
@@ -371,20 +371,20 @@ const Filters: FC<{
             />
           </div>
           <div className="flex flex-row items-center justify-between mb-2 w-full h-auto">
-            Tag{" "}
+            Tag{' '}
             <div className="flex-grow">
               <Question
                 className="h-4"
                 data-for="godTip"
                 data-tip={
-                  "<p>Many degree and a few courses require students to complete a specific amount of courses under a certain tag.</p><p>These usually come in the form of 3-4 letters designating department (ie. CSC = Computer Science) followed by 2+ letters signalling the specific subgroup designation within the department (ie. SOFT = Software).</p>"
+                  '<p>Many degree and a few courses require students to complete a specific amount of courses under a certain tag.</p><p>These usually come in the form of 3-4 letters designating department (ie. CSC = Computer Science) followed by 2+ letters signalling the specific subgroup designation within the department (ie. SOFT = Software).</p>'
                 }
               />
             </div>
             <div data-tip={getTagString()} data-for="godTip">
               <Select
                 options={[
-                  { value: null, label: "Any" },
+                  { value: null, label: 'Any' },
                   ...course_tags.map((tag: any) => ({
                     value: tag,
                     label: tag,
@@ -401,12 +401,12 @@ const Filters: FC<{
                 // isMulti
                 value={{
                   label:
-                    searchFilters.tags === null ? "Any" : searchFilters.tags,
+                    searchFilters.tags === null ? 'Any' : searchFilters.tags,
                   value: searchFilters.tags,
                 }}
               />
             </div>
-          </div>{" "}
+          </div>{' '}
           {/* <div
             className="flex flex-row items-center justify-between mb-2 w-full h-auto"
             data-tip={"course level of the searched courses, eg Upper Level"}
