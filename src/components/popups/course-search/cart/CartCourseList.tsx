@@ -19,6 +19,7 @@ import loading from "../../../../resources/images/loading.gif";
 import testCourses from './courseSubset.json';
 import CartCourseListItem from "./CartCourseListItem";
 import { requirements } from "../../../dashboard/degree-info/distributionFunctions";
+import { filterBasedOnReq } from "./dummies";
 
 /* 
   List of searched courses.
@@ -52,9 +53,12 @@ const CartCourseList: FC<{ searching: boolean, selectedRequirement: requirements
   // FOR FILTERS
   // updates courses from raw courses based on filters from dummy filters
   useEffect(() => {
+    let filterFunction = filterBasedOnReq(props.selectedRequirement);
     let dummyFilteredCourses = rawCourses.filter(course => {
       // return course.title.includes(props.selectedRequirement.text);
-      return true;
+      // this results in A LOT OF REPEATED CSALLS. TODO: REFACTOR THIS UP HIGHER!
+      return filterFunction(course); 
+      
     });
     setCourses(dummyFilteredCourses);
     setPageNum(0);

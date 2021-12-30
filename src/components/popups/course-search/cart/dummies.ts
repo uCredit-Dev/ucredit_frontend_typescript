@@ -1,4 +1,5 @@
-import { requirements } from "../../../dashboard/degree-info/distributionFunctions";
+import { Course, SISRetrievedCourse } from "../../../../resources/commonTypes";
+import { checkRequirementSatisfied, requirements } from "../../../dashboard/degree-info/distributionFunctions";
 
 export const emptyRequirements: requirements = {
   name: "",
@@ -7,6 +8,22 @@ export const emptyRequirements: requirements = {
   fulfilled_credits: 0,
   description: "",
 };
+
+export const filterBasedOnReq = (req: requirements) => {
+  // factory function, takes a requirement, returns a callback to filter acceptable courses.
+  return (sisCourse: SISRetrievedCourse) => {
+    let versions = sisCourse.versions;
+    for (let i = 0; i < versions.length; i++) {
+      const newCourse: Course = { // does this conversion work??
+        title: sisCourse.title,
+        number: sisCourse.number,
+        ...sisCourse.versions[0], // WHERE IS THE VERSION READ FROM AGAIN??? ARUHGHGHGHHHHHHHHHHHHHHHHHHHH
+      }
+      if (checkRequirementSatisfied(req, newCourse)) return true;
+    }
+    return false;
+  }
+}
 
 // export const testRequirements: requirement[] = [
 //   {
