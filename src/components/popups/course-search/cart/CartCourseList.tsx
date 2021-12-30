@@ -16,15 +16,15 @@ import ReactTooltip from "react-tooltip";
 import loading from "../../../../resources/images/loading.gif";
 
 // TODO: remove this import, for dummy courses
-import testCourses from './subset.json';
+import testCourses from './courseSubset.json';
 import CartCourseListItem from "./CartCourseListItem";
-import { requirement } from "./dummies";
+import { requirements } from "../../../dashboard/degree-info/distributionFunctions";
 
 /* 
   List of searched courses.
 */
 
-const CartCourseList: FC<{ searching: boolean, selectedRequirement: requirement }> = (props) => {
+const CartCourseList: FC<{ searching: boolean, selectedRequirement: requirements }> = (props) => {
   // Component state setup.
   const [pageNum, setPageNum] = useState<number>(0);
   const [pageCount, setPageCount] = useState<number>(0);
@@ -53,7 +53,8 @@ const CartCourseList: FC<{ searching: boolean, selectedRequirement: requirement 
   // updates courses from raw courses based on filters from dummy filters
   useEffect(() => {
     let dummyFilteredCourses = rawCourses.filter(course => {
-      return course.title.includes(props.selectedRequirement.text);
+      // return course.title.includes(props.selectedRequirement.text);
+      return true;
     });
     setCourses(dummyFilteredCourses);
     setPageNum(0);

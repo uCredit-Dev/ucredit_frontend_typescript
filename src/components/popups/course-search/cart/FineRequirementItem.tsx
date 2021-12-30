@@ -8,7 +8,7 @@ import {
   updateInspectedVersion,
 } from "../../../../slices/searchSlice";
 import clsx from "clsx";
-import { requirement } from "./dummies";
+import { requirements } from "../../../dashboard/degree-info/distributionFunctions";
 
 /**
  * A course card in the search list.
@@ -16,7 +16,7 @@ import { requirement } from "./dummies";
  */
 
 const FineRequirementListItem: FC<{
-  itemRequirement: requirement,
+  itemRequirement: requirements,
   onClick: Function,
 }> = (props) => {
   // Setup Redux
@@ -25,22 +25,23 @@ const FineRequirementListItem: FC<{
 
   const handleCourseClick = () => {
     props.onClick(props.itemRequirement);
+    console.log(props.itemRequirement);
   };
 
   return (
     <div
       className={clsx(
         {
-          
+          // removed selection logic for now. readd later?
         },
         "mb-2 p-2 w-full h-14 bg-white rounded hover:shadow cursor-pointer transition duration-200 ease-in-out"
       )}
       onClick={handleCourseClick}
     >
       <div className="flex flex-col justify-center w-full h-full">
-        <div className="truncate">{props.itemRequirement.title}</div>
+        <div className="truncate">{props.itemRequirement.expr}</div>
         <div>
-          {props.itemRequirement.description}
+          {props.itemRequirement.fulfilled_credits} / {props.itemRequirement.required_credits}
         </div>
       </div>
     </div>

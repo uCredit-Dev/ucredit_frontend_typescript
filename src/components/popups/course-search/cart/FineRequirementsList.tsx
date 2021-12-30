@@ -16,12 +16,12 @@ import { Course, SISRetrievedCourse } from "../../../../resources/commonTypes";
 import ReactTooltip from "react-tooltip";
 import loading from "../../../../resources/images/loading.gif";
 import FineRequirementListItem from "./FineRequirementItem";
-import { testRequirements } from "./dummies";
+import { requirements } from "../../../dashboard/degree-info/distributionFunctions";
 
 /* 
   List of searched courses.
 */
-const FineRequirementsList: FC<{ searching: boolean, updateDummyFilterText: Function }> = (props) => {
+const FineRequirementsList: FC<{ searching: boolean, selectRequirement: Function, selectedDistribution: [string, requirements[]] }> = (props) => {
   // Component state setup.
   const [pageNum, setPageNum] = useState<number>(0);
   const [pageCount, setPageCount] = useState<number>(0);
@@ -38,9 +38,9 @@ const FineRequirementsList: FC<{ searching: boolean, updateDummyFilterText: Func
 
   const getRequirements = () => {
     // dummy requirements. Figure outthe structure of actual distributions later
-    let requirements = testRequirements; // static import
-    return requirements.map((requirement) => {
-      return <FineRequirementListItem itemRequirement={requirement} onClick={props.updateDummyFilterText}/>
+    console.log(props.selectedDistribution);
+    return props.selectedDistribution[1].map((requirement) => {
+      return <FineRequirementListItem itemRequirement={requirement} onClick={props.selectRequirement}/>
     });
   }
 

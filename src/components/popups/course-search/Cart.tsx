@@ -15,7 +15,8 @@ import { Year } from "../../../resources/commonTypes";
 import { updateShowingCart } from "../../../slices/popupSlice";
 import FineRequirementsList from "./cart/FineRequirementsList";
 import CartCourseList from "./cart/CartCourseList";
-import { emptyRequirement, requirement } from "./cart/dummies";
+import { distrs, emptyRequirements } from "./cart/dummies";
+import { requirements } from "../../dashboard/degree-info/distributionFunctions";
 
 /**
  * Search component for when someone clicks a search action.
@@ -23,10 +24,11 @@ import { emptyRequirement, requirement } from "./cart/dummies";
 const Cart: FC = () => {
   // Component states
   const [searchOpacity, setSearchOpacity] = useState<number>(100);
-  const [searching, setSearching] = useState<boolean>(false);
+  const [searching, setSearching] = useState<boolean>(false); // repurpose to filter list?
 
   // FOR DUMMY FILTER TESTING TODO REMOVE
-  const [selectedRequirement, setSelectedRequirement] = useState<requirement>(emptyRequirement);
+  const [selectedDistribution, setSelectedDistribution] = useState<[string, requirements[]]>(distrs[0]) // not sure about the type here
+  const [selectedRequirement, setSelectedRequirement] = useState<requirements>(emptyRequirements);
 
   // Redux selectors and dispatch
   const dispatch = useDispatch();
@@ -34,8 +36,8 @@ const Cart: FC = () => {
   const searchSemester = useSelector(selectSemester);
   const currentPlan = useSelector(selectPlan);
 
-  const updateSelectedRequirement = (newRequirement: requirement) => {
-    setSelectedRequirement(newRequirement);
+  const updateSelectedRequirement = (newRequirement: requirements) => {
+    setSelectedRequirement(emptyRequirements);
   }
 
   return (
@@ -101,7 +103,11 @@ const Cart: FC = () => {
           >
             <div className="h-full overflow-y-auto">
               {/* This is where the courses would */}
-              <FineRequirementsList searching={false} updateDummyFilterText={updateSelectedRequirement} />
+              <FineRequirementsList
+                searching={false}
+                selectRequirement={updateSelectedRequirement}
+                selectedDistribution={selectedDistribution}
+              />
             </div>
           </div>
         </div>
