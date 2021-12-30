@@ -39,7 +39,7 @@ const FineRequirementListItem: FC<{
       onClick={handleCourseClick}
     >
       <div className="flex flex-col justify-center w-full h-full">
-        <div className="truncate">{props.itemRequirement.expr}</div>
+        <div className="truncate">{props.itemRequirement.expr}</div> {/* ALL A BIG TODO: WIll have to format this later */}
         <div>
           {props.itemRequirement.fulfilled_credits} / {props.itemRequirement.required_credits}
         </div>

@@ -12,10 +12,10 @@ import { ReactComponent as HideSvg } from "../../../resources/svg/Hide.svg";
 import { selectPlan } from "../../../slices/currentPlanSlice";
 import ReactTooltip from "react-tooltip";
 import { Year } from "../../../resources/commonTypes";
-import { updateShowingCart } from "../../../slices/popupSlice";
+import { selectSelectedDistribution, updateShowingCart } from "../../../slices/popupSlice";
 import FineRequirementsList from "./cart/FineRequirementsList";
 import CartCourseList from "./cart/CartCourseList";
-import { distrs, emptyRequirements } from "./cart/dummies";
+import { emptyRequirements } from "./cart/dummies";
 import { requirements } from "../../dashboard/degree-info/distributionFunctions";
 
 /**
@@ -27,8 +27,11 @@ const Cart: FC = () => {
   const [searching, setSearching] = useState<boolean>(false); // repurpose to filter list?
 
   // FOR DUMMY FILTER TESTING TODO REMOVE
-  const [selectedDistribution, setSelectedDistribution] = useState<[string, requirements[]]>(distrs[0]) // not sure about the type here
+  // TODO : double check the initial state on this hook. do i even need this if stored in redux?
+  // const [selectedDistribution, setSelectedDistribution] = useState<[string, requirements[]]>(["", []]); // not sure about the type here
   const [selectedRequirement, setSelectedRequirement] = useState<requirements>(emptyRequirements);
+
+  const distrs = useSelector(selectSelectedDistribution);
 
   // Redux selectors and dispatch
   const dispatch = useDispatch();
@@ -37,7 +40,7 @@ const Cart: FC = () => {
   const currentPlan = useSelector(selectPlan);
 
   const updateSelectedRequirement = (newRequirement: requirements) => {
-    setSelectedRequirement(emptyRequirements);
+    setSelectedRequirement(newRequirement);
   }
 
   return (
@@ -106,7 +109,7 @@ const Cart: FC = () => {
               <FineRequirementsList
                 searching={false}
                 selectRequirement={updateSelectedRequirement}
-                selectedDistribution={selectedDistribution}
+                selectedDistribution={distrs}
               />
             </div>
           </div>
