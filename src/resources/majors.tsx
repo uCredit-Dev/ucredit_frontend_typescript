@@ -194,7 +194,6 @@ import { Major, Minor } from "./commonTypes";
 //   distributions: [],
 // };
 
-
 // // https://pbs.jhu.edu/undergraduate/requirements/
 // const baPsych: Major = {
 //   degree_name: "B.S. Psychology",
@@ -1862,37 +1861,37 @@ const bsMolCell: Major = {
         {
           description: "<p>020.303 Genetics</p>",
           required_credits: 3,
-          criteria: "AS.020.303[C]"
+          criteria: "AS.020.303[C]",
         },
         {
           description: "<p>020.304 Molecular Biology</p>",
           required_credits: 3,
-          criteria: "AS.020.304[C]"
+          criteria: "AS.020.304[C]",
         },
         {
           description: "<p>020.305 Biochemistry</p>",
           required_credits: 3,
-          criteria: "AS.020.305[C]"
+          criteria: "AS.020.305[C]",
         },
         {
           description: "<p>020.306 Cell Biology</p>",
           required_credits: 3,
-          criteria: "AS.020.306[C]"
+          criteria: "AS.020.306[C]",
         },
         {
           description: "<p>020.316 Cell Biology Lab</p>",
           required_credits: 1,
-          criteria: "AS.020.316[C]"
+          criteria: "AS.020.316[C]",
         },
         {
           description: "<p>020.340 Developmental Genetics Lab</p>",
           required_credits: 2,
-          criteria: "AS.020.340[C]"
+          criteria: "AS.020.340[C]",
         },
         {
           description: "<p>020.363 Developmental Biology",
           required_credits: 3,
-          criteria: "AS.020.363[C]"
+          criteria: "AS.020.363[C]",
         },
         {
           description:
@@ -1901,47 +1900,49 @@ const bsMolCell: Major = {
             "<p>250.253 Protein Engineering and Biochemistry Lab</p>" +
             "<p>250.254 Protein Biochemistry and Engineering Lab</p>",
           required_credits: 1, // website says 2-3 but biochem project lab is only 1 and satisfies this req
-          criteria: "AS.020.315[C]^OR^AS.250.253[C]^OR^AS.250.254[C]"
-        }
+          criteria: "AS.020.315[C]^OR^AS.250.253[C]^OR^AS.250.254[C]",
+        },
       ],
     },
     {
       name: "Chemistry",
       required_credits: 19,
       min_credits_per_course: 1, // labs are 1 credit
-      description: "Must complete General Chemistry (or AP equivalent) and Organic Chemistry in addition to their respective labs.",
+      description:
+        "Must complete General Chemistry (or AP equivalent) and Organic Chemistry in addition to their respective labs.",
       criteria: "AS Chemistry[D]",
       exception: "",
       fine_requirements: [
         {
           description: "<p>030.101 Introductory Chemistry I</p>",
           required_credits: 3,
-          criteria: "AS.030.101[C]"
+          criteria: "AS.030.101[C]",
         },
         {
           description: "<p>030.105 Chemistry I Lab</p>",
           required_credits: 1,
-          criteria: "AS.030.105[C]"
+          criteria: "AS.030.105[C]",
         },
         {
           description: "<p>030.102 Chemistry II</p>",
           required_credits: 3,
-          criteria: "AS.030.102[C]"
+          criteria: "AS.030.102[C]",
         },
         {
           description: "<p>030.106 Chemistry II Lab</p>",
           required_credits: 1,
-          criteria: "AS.030.106[C]"
+          criteria: "AS.030.106[C]",
         },
         {
           description: "<p>030.205 Introductory Organic Chemistry I</p>",
           required_credits: 4,
-          criteria: "AS.030.205[C]"
+          criteria: "AS.030.205[C]",
         },
         {
-          description: "<p>030.206 Organic Chemistry II or 030.212 Honors Organic Chemistry II</p>",
+          description:
+            "<p>030.206 Organic Chemistry II or 030.212 Honors Organic Chemistry II</p>",
           required_credits: 4,
-          criteria: "AS.030.206[C]^OR^AS.030.212[C]"
+          criteria: "AS.030.206[C]^OR^AS.030.212[C]",
         },
         {
           description:
@@ -1949,15 +1950,16 @@ const bsMolCell: Major = {
             "<p>030.225 Intro Organic Chemistry Lab</p>" +
             "<p>030.227 Chemical Chirality: An Introduction to Organic Chemistry Lab Techniques</p>",
           required_credits: 3,
-          criteria: "AS.030.225[C]^OR^AS.030.227[C]"
-        }
+          criteria: "AS.030.225[C]^OR^AS.030.227[C]",
+        },
       ],
     },
     {
       name: "Physics",
       required_credits: 10,
       min_credits_per_course: 1,
-      description: "Must complete Physics I and II (or AP equivalent) in addition to their respective labs.",
+      description:
+        "Must complete Physics I and II (or AP equivalent) in addition to their respective labs.",
       criteria: "AS Physics & Astronomy[D]",
       fine_requirements: [
         {
@@ -1966,7 +1968,7 @@ const bsMolCell: Major = {
             "<p>171.101 General Physics: Physical Science Majors I</p>" +
             "<p>171.103 General Physics: Biological Science Majors I</p>",
           required_credits: 4,
-          criteria: "AS.171.101[C]^OR^AS.171.103[C]"
+          criteria: "AS.171.101[C]^OR^AS.171.103[C]",
         },
         {
           description:
@@ -1974,18 +1976,18 @@ const bsMolCell: Major = {
             "<p>171.102 General Physics: Physical Science Majors II</p>" +
             "<p>171.104 General Physics: Biological Science Majors II</p>",
           required_credits: 4,
-          criteria: "AS.171.102[C]^OR^AS.171.104[C]"
+          criteria: "AS.171.102[C]^OR^AS.171.104[C]",
         },
         {
           description: "<p>173.111 General Physics Lab I",
           required_credits: 1,
-          criteria: "AS.173.111[C]"
+          criteria: "AS.173.111[C]",
         },
         {
           description: "<p>173.112 General Physics Lab II",
           required_credits: 1,
-          criteria: "AS.173.112[C]"
-        }
+          criteria: "AS.173.112[C]",
+        },
       ],
     },
     {
@@ -2027,7 +2029,7 @@ const bsMolCell: Major = {
         {
           description: "<b>Biology Department Upper Level</b>",
           required_credits: 2, // 2 or 3
-          criteria: "AS Biology[D]^AND^Upper Level Undergraduate[L]"
+          criteria: "AS Biology[D]^AND^Upper Level Undergraduate[L]",
         },
       ],
     },
@@ -2042,38 +2044,41 @@ const bsMolCell: Major = {
         "AS.020.135[C]^OR^AS.020.136[C]^OR^AS.020.420[C]^OR^AS.020.451[C]^OR^AS.020.503[C]^OR^AS.020.504[C]^OR^AS.020.513[C]^OR^AS.020.514[C]^OR^" +
         "AS.020.572[C]^OR^AS.020.597[C]^OR^AS.030.501[C]^OR^AS.030.502[C]^OR^AS.030.503[C]^OR^AS.030.504[C]^OR^AS.030.505[C]^OR^AS.030.506[C]^OR^" +
         "AS.030.507[C]^OR^AS.030.509[C]^OR^AS.030.510[C]^OR^AS.030.521[C]^OR^AS.030.522[C]^OR^AS.030.523[C]^OR^AS.030.524[C]^OR^AS.030.525[C]^OR^" +
-        "AS.030.526[C]^OR^AS.030.570[C]^OR^AS.030.597[C]^OR^AS.250.521[C]^OR^AS.250.522[C]^OR^AS.250.574[C]^OR^AS.250.597[C]"
+        "AS.030.526[C]^OR^AS.030.570[C]^OR^AS.030.597[C]^OR^AS.250.521[C]^OR^AS.250.522[C]^OR^AS.250.574[C]^OR^AS.250.597[C]",
     },
     {
       name: "Writing Intensive",
       required_credits: 12,
       min_credits_per_course: 3,
       double_count: true,
-      description: "Students are required to fulfill the university’s requirement of four writing intensive courses, " +
-      "each at least 3 credits. <br>Students must receive at least a C- grade or better in these writing courses. ",
+      description:
+        "Students are required to fulfill the university’s requirement of four writing intensive courses, " +
+        "each at least 3 credits. <br>Students must receive at least a C- grade or better in these writing courses. ",
       criteria: "Written Intensive[W]",
     },
     {
       name: "Humanities Distribution Requirement",
       required_credits: 9,
       min_credits_per_course: 1,
-      description: "Students must earn at least 9 credits in humanities. " +
+      description:
+        "Students must earn at least 9 credits in humanities. " +
         "<br>In Arts and Sciences, courses taken for the distribution requirement may be taken for a letter grade or for Satisfactory/Unsatisfactory credit. " +
         "<br>Courses passed with a letter grade of D or better, or passed with a Satisfactory grade, will fulfill the distribution requirement. " +
         "<br>Students who entered JHU prior to Fall 2014 should view the appropriate archived catalogue.",
       criteria: "H[A]",
-      exclusive: true
+      exclusive: true,
     },
     {
       name: "Social Science Distribution Requirement",
       required_credits: 9,
       min_credits_per_course: 1,
-      description: "Students must earn at least 9 credits in social sciences. " +
+      description:
+        "Students must earn at least 9 credits in social sciences. " +
         "<br>In Arts and Sciences, courses taken for the distribution requirement may be taken for a letter grade or for Satisfactory/Unsatisfactory credit. " +
         "<br>Courses passed with a letter grade of D or better, or passed with a Satisfactory grade, will fulfill the distribution requirement. " +
         "<br>Students who entered JHU prior to Fall 2014 should view the appropriate archived catalogue.",
       criteria: "S[A]",
-      exclusive: true
+      exclusive: true,
     },
     {
       name: "Honors",
@@ -2081,15 +2086,15 @@ const bsMolCell: Major = {
       min_credits_per_course: 0,
       description:
         "Students earning either a BA in biology or BS in cellular and molecular biology are eligible to receive their degree with honors. " +
-        "The following requirements are in addition to the regular requirements for the degrees. " + 
+        "The following requirements are in addition to the regular requirements for the degrees. " +
         "<br>- GPA of 3.5 or higher in N and Q courses. " +
         "<br>- r6 credits of registered independent research (note that this is already a requirement for the BS degree). " +
         "<br>- A letter of support from your research supervisor (the PI of the lab)" +
-        "<br>- Presentation of your independent research as a seminar or poster presentation", 
-      criteria: ""
+        "<br>- Presentation of your independent research as a seminar or poster presentation",
+      criteria: "",
     },
   ],
- };
+};
 
 export function getMajorFromCommonName(name: string) {
   let out: Major | null = null;
@@ -2103,7 +2108,6 @@ export function getMajorFromCommonName(name: string) {
   }
   return out;
 }
-
 
 export const allMajors: Major[] = [
   bsCS_Old,
