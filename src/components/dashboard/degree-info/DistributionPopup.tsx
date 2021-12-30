@@ -45,8 +45,8 @@ const DistributionPopup: FC<{
   //   setFlippedArr(flippedSlice);
   // };
 
-  const onSaveClick = (flipped: string[]) => {
-    save(flipped);
+  const onSaveClick = (flippedUpdated: string[]) => {
+    save(flippedUpdated);
     cleanup();
   };
 

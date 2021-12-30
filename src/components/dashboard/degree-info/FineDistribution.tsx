@@ -1,17 +1,17 @@
-import clsx from 'clsx'
-import { useState, useEffect, FC } from 'react'
-import { useSelector } from 'react-redux'
-import { ReactComponent as Check } from '../../../resources/svg/CheckMark.svg'
-import { ReactComponent as X } from '../../../resources/svg/Close.svg'
-import parse from 'html-react-parser'
+import clsx from 'clsx';
+import { useState, useEffect, FC } from 'react';
+import { useSelector } from 'react-redux';
+import { ReactComponent as Check } from '../../../resources/svg/CheckMark.svg';
+import { ReactComponent as X } from '../../../resources/svg/Close.svg';
+import parse from 'html-react-parser';
 import {
   requirements,
   checkRequirementSatisfied,
-} from './distributionFunctions'
-import { selectCurrentPlanCourses } from '../../../slices/currentPlanSlice'
-import { selectCourseCache } from '../../../slices/userSlice'
-import { getCourse } from '../../../resources/assets'
-import DistributionPopup from './DistributionPopup'
+} from './distributionFunctions';
+import { selectCurrentPlanCourses } from '../../../slices/currentPlanSlice';
+import { selectCourseCache } from '../../../slices/userSlice';
+import { getCourse } from '../../../resources/assets';
+import DistributionPopup from './DistributionPopup';
 
 /**
  * Component that displays fine requirements of a specific distribution.
@@ -19,29 +19,29 @@ import DistributionPopup from './DistributionPopup'
  * @prop distributionOpen - whether this distribution bar is open or not.
  */
 const FineDistribution: FC<{
-  dis: requirements
-  distributionOpen: boolean
-  hidden: boolean
+  dis: requirements;
+  distributionOpen: boolean;
+  hidden: boolean;
 }> = ({ dis, distributionOpen, hidden }) => {
-  const [showDistrDesc, setShowDistrDesc] = useState<boolean>(false)
-  const [displayAdd, setDisplayAdd] = useState(false)
-  const [flipped, setFlipped] = useState<string[]>([])
-  const [plannedCredits, setPlannedCredits] = useState(dis.fulfilled_credits)
+  const [showDistrDesc, setShowDistrDesc] = useState<boolean>(false);
+  const [displayAdd, setDisplayAdd] = useState(false);
+  const [flipped, setFlipped] = useState<string[]>([]);
+  const [plannedCredits, setPlannedCredits] = useState(dis.fulfilled_credits);
 
-  const courseCache = useSelector(selectCourseCache)
-  const currPlanCourses = useSelector(selectCurrentPlanCourses)
+  const courseCache = useSelector(selectCourseCache);
+  const currPlanCourses = useSelector(selectCurrentPlanCourses);
 
   const closePopup = () => {
-    setDisplayAdd(false)
-  }
+    setDisplayAdd(false);
+  };
 
   const onSave = (s: string[]) => {
-    setFlipped(s)
-  }
+    setFlipped(s);
+  };
 
   // Updates fine distribution progress
   useEffect(() => {
-    let temp = dis.fulfilled_credits
+    let temp = dis.fulfilled_credits;
     currPlanCourses.forEach((course) => {
       getCourse(course.number, courseCache, currPlanCourses, -1).then(
         (courseObj) => {
@@ -50,19 +50,19 @@ const FineDistribution: FC<{
             checkRequirementSatisfied(dis, courseObj.resp)
           ) {
             if (flipped.includes(course.number)) {
-              temp -= course.credits
+              temp -= course.credits;
             }
           } else {
             if (flipped.includes(course.number)) {
-              temp += course.credits
+              temp += course.credits;
             }
           }
         },
-      )
-    })
-    setPlannedCredits(temp)
+      );
+    });
+    setPlannedCredits(temp);
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [currPlanCourses, dis.expr, flipped, dis.fulfilled_credits])
+  }, [currPlanCourses, dis.expr, flipped, dis.fulfilled_credits]);
 
   return (
     <div
@@ -73,7 +73,7 @@ const FineDistribution: FC<{
     >
       <button
         onClick={() => {
-          setShowDistrDesc(!showDistrDesc)
+          setShowDistrDesc(!showDistrDesc);
         }}
         className="flex mb-1 pr-2 w-full h-auto text-left focus:outline-none overflow-hidden transform hover:scale-101 transition duration-200 ease-in overflow-ellipsis"
       >
@@ -108,7 +108,7 @@ const FineDistribution: FC<{
         />
       ) : null}
     </div>
-  )
-}
+  );
+};
 
-export default FineDistribution
+export default FineDistribution;
