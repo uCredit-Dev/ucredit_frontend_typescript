@@ -15,6 +15,7 @@ import {
 import PlanChoose from './PlanChoose';
 import { ReactComponent as RemoveSvg } from '../../../resources/svg/Remove.svg';
 import { ReactComponent as AddSvg } from '../../../resources/svg/Add.svg';
+import { ReactComponent as BeakerSvg } from '../../../resources/svg/Beaker.svg';
 import axios from 'axios';
 import { Year, Plan } from '../../../resources/commonTypes';
 import ReactTooltip from 'react-tooltip';
@@ -190,6 +191,14 @@ const ActionBar: FC<{
         <AddSvg
           onClick={() => addNewYear(false)}
           data-tip={`Add a new year!`}
+          data-for="godTip"
+          className="w-10 h-10 focus:outline-none"
+        />
+      </div>
+      <div className="flex flex-row items-center ml-2 my-1 w-10 h-10 hover:underline hover:bg-green-300 border border-gray-300 rounded focus:outline-none shadow cursor-pointer transition duration-200 ease-in">
+        <BeakerSvg
+          onClick={() => console.log("test!")}
+          data-tip={`View/Toggle Experiments!`}
           data-for="godTip"
           className="w-10 h-10 focus:outline-none"
         />
