@@ -24,6 +24,7 @@ const ApplicationFormPopup: FC<{
       <div
         className="fixed z-30 left-0 top-0 m-0 w-full h-screen bg-black opacity-50"
         onClick={() => setActivateEmailPopup(false)}
+        data-testid='close-application'
       ></div>
 
       {/* Actual popup */}
