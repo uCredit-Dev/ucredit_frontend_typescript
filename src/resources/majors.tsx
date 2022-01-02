@@ -404,37 +404,37 @@ const bsBME: Major = {
       fine_requirements: [
         {
           description: "Biomedical Data Science",
-          required_credits: 0,
+          required_credits: 21,
           criteria: "BMED-BDS[T]",
         },
         {
           description: "Computational Medicine",
-          required_credits: 0,
+          required_credits: 21,
           criteria: "BMED-CM[T]",
         },
         {
           description: "Genomics and Systems Biology",
-          required_credits: 0,
+          required_credits: 21,
           criteria: "BMED-GSB[T]",
         },
         {
           description: "Imaging and Medical Devices",
-          required_credits: 0,
+          required_credits: 21,
           criteria: "BMED-IMD[T]",
         },
         {
           description: "Imunoengineering",
-          required_credits: 0,
+          required_credits: 21,
           criteria: "BMED-IMMU[T]",
         },
         {
           description: "Neuroengineering",
-          required_credits: 0,
+          required_credits: 21,
           criteria: "BMED-NE[T]",
         },
         {
           description: "Translational Cell and Tissue Engineering",
-          required_credits: 0,
+          required_credits: 21,
           criteria: "BMED-TCTE[T]",
         },
       ],
