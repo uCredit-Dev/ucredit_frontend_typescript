@@ -1,8 +1,8 @@
-import { FC, useState } from "react";
-import { useSelector } from "react-redux";
-import { Major } from "../../../resources/commonTypes";
-import { selectTotalCredits } from "../../../slices/currentPlanSlice";
-import CourseBar from "./CourseBar";
+import { FC, useState } from 'react';
+import { useSelector } from 'react-redux';
+import { Major } from '../../../resources/commonTypes';
+import { selectTotalCredits } from '../../../slices/currentPlanSlice';
+import CourseBar from './CourseBar';
 
 /**
  * Area in the right hand plan information that shows various elements of degree progression.
@@ -22,7 +22,7 @@ const Distributions: FC<{
   const totalCredits = useSelector(selectTotalCredits);
   const [disclaimer, setDisclaimer] = useState<boolean>(false);
   const getHref = (): string => {
-    return major !== null ? major.url : "";
+    return major !== null ? major.url : '';
   };
 
   return (
@@ -42,7 +42,7 @@ const Distributions: FC<{
               setDistributionOpen(!distributionOpen);
             }}
           >
-            {distributionOpen ? "Hide" : "Show"}
+            {distributionOpen ? 'Hide' : 'Show'}
           </button>
         </div>
       </div>
@@ -60,7 +60,7 @@ const Distributions: FC<{
           >
             official undergraduate advising manual
           </a>
-          and the{" "}
+          and the{' '}
           <a
             href="https://sis.jhu.edu/sswf/"
             className="text-blue-400"
@@ -68,25 +68,25 @@ const Distributions: FC<{
             rel="noreferrer"
           >
             SIS degree audit
-          </a>{" "}
+          </a>{' '}
           to double check that your degree is being correctly tracked. Please
           report any issues in the feedback form.
         </div>
       ) : null}
       <CourseBar
         distribution={{
-          name: "Total Credits",
-          expr: "",
+          name: 'Total Credits',
+          expr: '',
           required_credits: major !== null ? major.total_degree_credit : 0,
           fulfilled_credits: totalCredits,
           description:
             major !== null
-              ? "This is the total amount of credits that is required for " +
+              ? 'This is the total amount of credits that is required for ' +
                 major.degree_name
-              : "",
+              : '',
         }}
         general={true}
-      />{" "}
+      />{' '}
       {distributionBarsJSX}
     </div>
   );

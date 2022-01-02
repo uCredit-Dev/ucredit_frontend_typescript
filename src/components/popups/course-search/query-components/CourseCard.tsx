@@ -1,13 +1,13 @@
-import { FC } from "react";
-import { SISRetrievedCourse, Course } from "../../../../resources/commonTypes";
-import { useDispatch, useSelector } from "react-redux";
+import { FC } from 'react';
+import { SISRetrievedCourse, Course } from '../../../../resources/commonTypes';
+import { useDispatch, useSelector } from 'react-redux';
 import {
   updatePlaceholder,
   selectVersion,
   updateInspectedCourse,
   updateInspectedVersion,
-} from "../../../../slices/searchSlice";
-import clsx from "clsx";
+} from '../../../../slices/searchSlice';
+import clsx from 'clsx';
 
 /**
  * A course card in the search list.
@@ -39,12 +39,12 @@ const CourseCard: FC<{
     <div
       className={clsx(
         {
-          "bg-secondary bg-opacity-25":
-            selectedCourse !== "None" &&
+          'bg-secondary bg-opacity-25':
+            selectedCourse !== 'None' &&
             selectedCourse.number === props.course.number &&
             selectedCourse.term === props.course.terms[props.version],
         },
-        "mb-2 p-2 w-full h-14 bg-white rounded hover:shadow cursor-pointer transition duration-200 ease-in-out"
+        'mb-2 p-2 w-full h-14 bg-white rounded hover:shadow cursor-pointer transition duration-200 ease-in-out',
       )}
       onClick={handleCourseClick}
     >

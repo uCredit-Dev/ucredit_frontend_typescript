@@ -1,7 +1,7 @@
-import { FC, useState } from "react";
-import { Draggable } from "react-beautiful-dnd";
-import { UserCourse, Year } from "../../../resources/commonTypes";
-import YearComponent from "./YearComponent";
+import { FC, useState } from 'react';
+import { Draggable } from 'react-beautiful-dnd';
+import { UserCourse, Year } from '../../../resources/commonTypes';
+import YearComponent from './YearComponent';
 
 /**
  * The year draggable for shifting around year ordering.
@@ -32,7 +32,7 @@ const YearDraggable: FC<{
             {...provided.dragHandleProps}
             style={getItemStyle(
               snapshot.isDragging,
-              provided.draggableProps.style
+              provided.draggableProps.style,
             )}
           >
             <YearComponent
@@ -52,13 +52,13 @@ const YearDraggable: FC<{
 
 const getItemStyle = (isDragging: any, draggableStyle: any) => ({
   // some basic styles to make the items look a bit nicer
-  userSelect: "none",
+  userSelect: 'none',
 
   // styles we need to apply on draggables
   ...draggableStyle,
 
-  padding: "0rem",
-  marginLeft: "1rem",
+  padding: '0rem',
+  marginLeft: '1rem',
 });
 
 export default YearDraggable;

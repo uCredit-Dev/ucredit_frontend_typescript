@@ -1,9 +1,9 @@
-import { configureStore, ThunkAction, Action } from "@reduxjs/toolkit";
-import counterReducer from "../components/../resources/redux_sample/counterSlice";
-import userReducer from "../slices/userSlice";
-import searchReducer from "../slices/searchSlice";
-import currentPlanReducer from "../slices/currentPlanSlice";
-import popupReducer from "../slices/popupSlice";
+import { configureStore, ThunkAction, Action } from '@reduxjs/toolkit';
+import counterReducer from '../components/../resources/redux_sample/counterSlice';
+import userReducer from '../slices/userSlice';
+import searchReducer from '../slices/searchSlice';
+import currentPlanReducer from '../slices/currentPlanSlice';
+import popupReducer from '../slices/popupSlice';
 
 export const store = configureStore({
   reducer: {

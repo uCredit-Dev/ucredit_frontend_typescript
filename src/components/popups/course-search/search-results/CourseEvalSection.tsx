@@ -1,22 +1,22 @@
-import { useState, useEffect, FC } from "react";
-import { CourseEvals } from "../../../../resources/commonTypes";
-import axios from "axios";
-import { useSelector } from "react-redux";
-import { selectInspectedCourse } from "../../../../slices/searchSlice";
-import CourseEvalCard from "./CourseEvalCard";
-import clsx from "clsx";
-import { api } from "../../../../resources/assets";
+import { useState, useEffect, FC } from 'react';
+import { CourseEvals } from '../../../../resources/commonTypes';
+import axios from 'axios';
+import { useSelector } from 'react-redux';
+import { selectInspectedCourse } from '../../../../slices/searchSlice';
+import CourseEvalCard from './CourseEvalCard';
+import clsx from 'clsx';
+import { api } from '../../../../resources/assets';
 
 /**
  * Displays course Evaluations based on inspected course
  */
 const CourseEvalSection: FC = () => {
   let initialCourseEval: CourseEvals = {
-    prof: "",
-    number: "",
-    rating: "",
-    summary: "",
-    term: "",
+    prof: '',
+    number: '',
+    rating: '',
+    summary: '',
+    term: '',
   };
 
   const inspected = useSelector(selectInspectedCourse);
@@ -31,13 +31,13 @@ const CourseEvalSection: FC = () => {
     setSelectedCourseEval(-1);
     setReviews([]);
 
-    if (inspected !== "None" && inspected !== undefined) {
+    if (inspected !== 'None' && inspected !== undefined) {
       axios
-        .get(api + "/evals/" + inspected.number)
+        .get(api + '/evals/' + inspected.number)
         .then((retrievedData) => {
           setReviews(retrievedData.data.data.rev);
         })
-        .catch((err) => console.log(err, " - course likely does not exist"));
+        .catch((err) => console.log(err, ' - course likely does not exist'));
     }
   };
 
@@ -55,10 +55,10 @@ const CourseEvalSection: FC = () => {
     if (courseReviews.length !== 0) {
       const chosenRev = courseReviews[revIndex];
       let courseEval: CourseEvals = { ...initialCourseEval };
-      courseEval.prof = chosenRev["i"];
-      courseEval.rating = chosenRev["g"]; // random one
-      courseEval.term = chosenRev["s"];
-      courseEval.summary = chosenRev["c"];
+      courseEval.prof = chosenRev['i'];
+      courseEval.rating = chosenRev['g']; // random one
+      courseEval.term = chosenRev['s'];
+      courseEval.summary = chosenRev['c'];
       setEval(courseEval);
     }
   };
@@ -90,10 +90,10 @@ const CourseEvalSection: FC = () => {
             <div>
               <button
                 className={clsx(
-                  "mb-2 border-b border-solid hover:border-black border-gray-300 focus:outline-none transform hover:scale-105 transition duration-200 ease-in",
+                  'mb-2 border-b border-solid hover:border-black border-gray-300 focus:outline-none transform hover:scale-105 transition duration-200 ease-in',
                   {
-                    "border-gray-900": selectedCourseEval === index,
-                  }
+                    'border-gray-900': selectedCourseEval === index,
+                  },
                 )}
                 onClick={() => {
                   updateEvals(index);

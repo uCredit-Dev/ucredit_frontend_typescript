@@ -1,5 +1,5 @@
-import { FC } from "react";
-import data from "./promoData";
+import { FC } from 'react';
+import data from './promoData';
 
 /**
  * Contains features and values that our app embraces.

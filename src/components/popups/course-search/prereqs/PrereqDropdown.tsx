@@ -1,8 +1,8 @@
-import { FC, useEffect, useState } from "react";
-import clsx from "clsx";
-import { ReactComponent as ChevronRight } from "../../../../resources/svg/ChevronRight.svg";
-import { ReactComponent as ChevronDown } from "../../../../resources/svg/ChevronDown.svg";
-import { ReactComponent as CheckMark } from "../../../../resources/svg/CheckMark.svg";
+import { FC, useEffect, useState } from 'react';
+import clsx from 'clsx';
+import { ReactComponent as ChevronRight } from '../../../../resources/svg/ChevronRight.svg';
+import { ReactComponent as ChevronDown } from '../../../../resources/svg/ChevronDown.svg';
+import { ReactComponent as CheckMark } from '../../../../resources/svg/CheckMark.svg';
 
 /**
  * This is one of the open-close prereq dropdowns.
@@ -38,7 +38,7 @@ const PrereqDropdown: FC<{
   const getChildPrereqs = () => {
     // eslint-disable-next-line array-callback-return
     return element.map((el: any, index: number): JSX.Element => {
-      if (typeof el !== "number") {
+      if (typeof el !== 'number') {
         return processPrereqs(el, index);
       } else return <></>;
     });
@@ -86,19 +86,19 @@ const PrereqDropdown: FC<{
           setOpen(!open);
         }}
         className={clsx(
-          "focus:outline-none transform hover:scale-105 transition transition duration-100 duration-200 ease-in ease-in",
+          'focus:outline-none transform hover:scale-105 transition transition duration-100 duration-200 ease-in ease-in',
           {
-            "text-green-700 hover:text-green-900": satisfied,
-            "text-red-700 hover:text-red-900": !satisfied,
-          }
+            'text-green-700 hover:text-green-900': satisfied,
+            'text-red-700 hover:text-red-900': !satisfied,
+          },
         )}
       >
         <div className="flex flex-row w-auto h-auto font-medium">
           {satisfied ? (
             <CheckMark
-              className={clsx("mr-1 w-5 h-5", {
-                "text-green-700 group-hover:text-red-900": !satisfied,
-                "text-green-700 group-hover:text-green-900": satisfied,
+              className={clsx('mr-1 w-5 h-5', {
+                'text-green-700 group-hover:text-red-900': !satisfied,
+                'text-green-700 group-hover:text-green-900': satisfied,
               })}
             />
           ) : (
@@ -109,11 +109,11 @@ const PrereqDropdown: FC<{
         </div>
       </button>
       <div
-        className={clsx("ml-2 border-l-2 border-opacity-50", {
-          "border-green-200": satisfied && !rootHovered,
-          "border-green-900": satisfied && rootHovered,
-          "border-red-200 ": !satisfied && !rootHovered,
-          "border-red-900 ": !satisfied && rootHovered,
+        className={clsx('ml-2 border-l-2 border-opacity-50', {
+          'border-green-200': satisfied && !rootHovered,
+          'border-green-900': satisfied && rootHovered,
+          'border-red-200 ': !satisfied && !rootHovered,
+          'border-red-900 ': !satisfied && rootHovered,
         })}
       >
         {open ? getChildPrereqs() : null}

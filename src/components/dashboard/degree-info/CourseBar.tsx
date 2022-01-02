@@ -1,14 +1,14 @@
-import clsx from "clsx";
-import { useState, useEffect, FC } from "react";
-import { useSelector } from "react-redux";
+import clsx from 'clsx';
+import { useState, useEffect, FC } from 'react';
+import { useSelector } from 'react-redux';
 import {
   selectCurrentPlanCourses,
   selectDistributions,
-} from "../../../slices/currentPlanSlice";
-import { requirements } from "./distributionFunctions";
-import { ReactComponent as CheckSvg } from "../../../resources/svg/Check.svg";
-import DistributionPopup from "./DistributionPopup";
-import ReactTooltip from "react-tooltip";
+} from '../../../slices/currentPlanSlice';
+import { requirements } from './distributionFunctions';
+import { ReactComponent as CheckSvg } from '../../../resources/svg/Check.svg';
+import DistributionPopup from './DistributionPopup';
+import ReactTooltip from 'react-tooltip';
 
 /**
  * A distribution bar.
@@ -24,7 +24,7 @@ const CourseBar: FC<{
   const [displayAdd, setDisplayAdd] = useState(false);
   const [flipped, setFlipped] = useState<string[]>([]);
   const [plannedCredits, setPlannedCredits] = useState(
-    distribution.fulfilled_credits
+    distribution.fulfilled_credits,
   );
 
   const currPlanCourses = useSelector(selectCurrentPlanCourses);
@@ -54,11 +54,11 @@ const CourseBar: FC<{
     `<div style='width: 90px; height: auto;'><div style='width: 100%; display: flex; flex-direction: row; justify-content: space-between;'>` +
     `<div>Planned</div><div>${plannedCredits}</div>
     </div>
-    <div style='display: flex; flex-direction: row; justify-content: space-between;'>`+(
-      remainingCredits !== 0
-        ? `<div>Remaining</div><div>${remainingCredits}</div>`
-        : `<div style="width: 100%; height: auto; display: flex; flex-direction: row; justify-content: center">Completed!</div>`
-    )+`</div>`;
+    <div style='display: flex; flex-direction: row; justify-content: space-between;'>` +
+    (remainingCredits !== 0
+      ? `<div>Remaining</div><div>${remainingCredits}</div>`
+      : `<div style="width: 100%; height: auto; display: flex; flex-direction: row; justify-content: center">Completed!</div>`) +
+    `</div>`;
 
   const closePopup = () => {
     setDisplayAdd(false);
@@ -80,10 +80,10 @@ const CourseBar: FC<{
       ) : null}
       <div
         className={clsx(
-          "text mb-1 whitespace-nowrap overflow-hidden overflow-ellipsis",
+          'text mb-1 whitespace-nowrap overflow-hidden overflow-ellipsis',
           {
-            "font-bold": general,
-          }
+            'font-bold': general,
+          },
         )}
         key={section}
       >
@@ -107,8 +107,8 @@ const CourseBar: FC<{
             style={{
               width: `${
                 plannedCredits <= maxCredits
-                  ? (plannedCredits / maxCredits) * 100 + "%"
-                  : "100%"
+                  ? (plannedCredits / maxCredits) * 100 + '%'
+                  : '100%'
               }`,
             }}
           />

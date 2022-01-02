@@ -1,12 +1,12 @@
 import {
-  Course,
+  // Course,
   User,
-  Distribution,
-  Plan,
-  UserCourse,
-  Major,
+  // Distribution,
+  // Plan,
+  // UserCourse,
+  // Major,
   SISRetrievedCourse,
-} from "./commonTypes";
+} from './commonTypes';
 
 // IMPORTANT: All test objs may be inaccurate with new types
 
@@ -193,13 +193,13 @@ import {
 // };
 
 export const testUser: User = {
-  _id: "mliu78",
-  name: "Matthew Liu",
-  email: "mliu78@jhu.edu",
-  affiliation: "STUDENT",
-  grade: "AE UG Sophomore",
-  school: "Whiting School of Engineering",
-  plan_ids: ["na"],
+  _id: 'mliu78',
+  name: 'Matthew Liu',
+  email: 'mliu78@jhu.edu',
+  affiliation: 'STUDENT',
+  grade: 'AE UG Sophomore',
+  school: 'Whiting School of Engineering',
+  plan_ids: ['na'],
 };
 
 // export const testMajorDistributions = [
@@ -227,16 +227,16 @@ export const testUser: User = {
 // };
 
 export const testMajorCSNew = {
-  name: "B.S. Computer Science",
-  department: "EN Computer Science",
+  name: 'B.S. Computer Science',
+  department: 'EN Computer Science',
   distributions: [
     {
-      name: "Total",
+      name: 'Total',
       required: 120,
       filter: {},
     },
     {
-      name: "Computer Science",
+      name: 'Computer Science',
       required: 40,
       filter: {
         number:
@@ -244,7 +244,7 @@ export const testMajorCSNew = {
       },
     },
     {
-      name: "Math",
+      name: 'Math',
       required: 16,
       filter: {
         department:
@@ -255,30 +255,30 @@ export const testMajorCSNew = {
       },
     },
     {
-      name: "Liberal Arts",
+      name: 'Liberal Arts',
       required: 18,
       filter: {
         area: /H|S/g.toString(),
       },
     },
     {
-      name: "Electives",
+      name: 'Electives',
       required: 120 - 40 - 16 - 8 - 18,
       filter: {},
     },
     {
-      name: "Basic Science",
+      name: 'Basic Science',
       required: 16,
       filter: {
         area: /N/g.toString(), //"General Physics", "General Biology", "Introductory Chemistry"]
       },
       description:
-        "Students must take two semesters of core science courses (any combination of Physics, Chemistry, Biology), with their associated labs, totaling at least 8 credits. These courses should be taken for a grade. However, AP credit is an acceptable substitute for these courses and labs.",
+        'Students must take two semesters of core science courses (any combination of Physics, Chemistry, Biology), with their associated labs, totaling at least 8 credits. These courses should be taken for a grade. However, AP credit is an acceptable substitute for these courses and labs.',
     },
   ],
   requirements: [
     {
-      name: "Computer Science Upper",
+      name: 'Computer Science Upper',
       required: 16,
       byCredit: true,
       filter: {
@@ -286,7 +286,7 @@ export const testMajorCSNew = {
       },
     },
     {
-      name: "Computer Science Core",
+      name: 'Computer Science Core',
       required: 6,
       byCredit: false,
       filter: {
@@ -295,7 +295,7 @@ export const testMajorCSNew = {
       },
     },
     {
-      name: "Lab Sciences",
+      name: 'Lab Sciences',
       required: 8,
       byCredit: false,
       filter: {
@@ -303,10 +303,10 @@ export const testMajorCSNew = {
           /General Physics|General Biology|Introductory Chemistry/g.toString(), //"General Physics", "General Biology", "Introductory Chemistry"]
       },
       description:
-        "Students must take two semesters of core science courses (any combination of Physics, Chemistry, Biology), with their associated labs, totaling at least 8 credits. These courses should be taken for a grade. However, AP credit is an acceptable substitute for these courses and labs.",
+        'Students must take two semesters of core science courses (any combination of Physics, Chemistry, Biology), with their associated labs, totaling at least 8 credits. These courses should be taken for a grade. However, AP credit is an acceptable substitute for these courses and labs.',
     },
     {
-      name: "Math Requirement",
+      name: 'Math Requirement',
       required: 3,
       byCredit: false,
       filter: {
@@ -314,7 +314,7 @@ export const testMajorCSNew = {
       },
     },
     {
-      name: "Writing Intensive",
+      name: 'Writing Intensive',
       required: 2,
       byCredit: false,
       filter: {
@@ -322,27 +322,27 @@ export const testMajorCSNew = {
       },
     },
     {
-      name: "Team",
+      name: 'Team',
       required: 1,
       byCredit: false,
       filter: {
-        tags: ["CSCI-TEAM"],
+        tags: ['CSCI-TEAM'],
       },
     },
     {
-      name: "Areas",
+      name: 'Areas',
       required: 2,
       byCredit: false,
       filter: {
-        tags: ["CSCI-SYST", "CSCI-SOFT", "CSCI-APPL", "CSCI-RSNG"], //need refinement
+        tags: ['CSCI-SYST', 'CSCI-SOFT', 'CSCI-APPL', 'CSCI-RSNG'], //need refinement
       },
     },
     {
-      name: "Ethics",
+      name: 'Ethics',
       required: 1,
       byCredit: false,
       filter: {
-        tags: ["CSCI-ETHS"],
+        tags: ['CSCI-ETHS'],
         number: /EN\.601\.104|EN\.660\.400|EN\.660\.406/g.toString(), //"601.104" or "660.400" or "660.406"
       },
     },
@@ -367,48 +367,48 @@ export const testMajorArray = [testMajorCSNew, testMajorCSNew, testMajorCSNew];
 // };
 
 export const testSISRetrievedCourse: SISRetrievedCourse = {
-  title: "test",
-  number: "testCourse",
-  terms: ["Fall 2019, Fall 2020, Fall 2021"],
+  title: 'test',
+  number: 'testCourse',
+  terms: ['Fall 2019, Fall 2020, Fall 2021'],
   versions: [
     {
-      areas: "NS",
-      term: "Fall 2019",
-      school: "Test school",
-      department: "EN CS",
-      credits: "3",
+      areas: 'NS',
+      term: 'Fall 2019',
+      school: 'Test school',
+      department: 'EN CS',
+      credits: '3',
       wi: false,
-      bio: "This is a test course",
-      level: "lower",
-      tags: ["CSCI-SOFT"],
+      bio: 'This is a test course',
+      level: 'lower',
+      tags: ['CSCI-SOFT'],
       preReq: [],
       coReq: [],
       restrictions: [],
     },
     {
-      areas: "E",
-      term: "Fall 2020",
-      school: "Test school",
-      department: "EN CS",
-      credits: "3",
+      areas: 'E',
+      term: 'Fall 2020',
+      school: 'Test school',
+      department: 'EN CS',
+      credits: '3',
       wi: false,
-      bio: "This is a test course",
-      level: "lower",
-      tags: ["CSCI-SOFT"],
+      bio: 'This is a test course',
+      level: 'lower',
+      tags: ['CSCI-SOFT'],
       preReq: [],
       coReq: [],
       restrictions: [],
     },
     {
-      areas: "H",
-      term: "Fall 2021",
-      school: "Test school",
-      department: "EN CS",
-      credits: "3",
+      areas: 'H',
+      term: 'Fall 2021',
+      school: 'Test school',
+      department: 'EN CS',
+      credits: '3',
       wi: false,
-      bio: "This is a test course",
-      level: "lower",
-      tags: ["CSCI-SOFT"],
+      bio: 'This is a test course',
+      level: 'lower',
+      tags: ['CSCI-SOFT'],
       preReq: [],
       coReq: [],
       restrictions: [],

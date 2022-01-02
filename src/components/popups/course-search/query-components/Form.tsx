@@ -1,5 +1,5 @@
-import { FC, useEffect, useState } from "react";
-import { useDispatch, useSelector } from "react-redux";
+import { FC, useEffect, useState } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
 import {
   updateSearchTerm,
   updateRetrievedCourses,
@@ -8,24 +8,24 @@ import {
   selectSearchFilters,
   selectSemester,
   selectYear,
-} from "../../../../slices/searchSlice";
+} from '../../../../slices/searchSlice';
 import {
   SearchExtras,
   SISRetrievedCourse,
-} from "../../../../resources/commonTypes";
-import { ReactComponent as FilterFilled } from "../../../../resources/svg/FilterFilled.svg";
-import { ReactComponent as FilterNonFilled } from "../../../../resources/svg/FilterNonFilled.svg";
-import "react-toastify/dist/ReactToastify.css";
-import Filters from "./Filters";
+} from '../../../../resources/commonTypes';
+import { ReactComponent as FilterFilled } from '../../../../resources/svg/FilterFilled.svg';
+import { ReactComponent as FilterNonFilled } from '../../../../resources/svg/FilterNonFilled.svg';
+import 'react-toastify/dist/ReactToastify.css';
+import Filters from './Filters';
 import {
   selectCourseCache,
   selectRetrievedAll,
   updateCourseCache,
-} from "../../../../slices/userSlice";
-import axios from "axios";
-import { api } from "../../../../resources/assets";
-import { filterCourses } from "./formUtils";
-import { selectPlan } from "../../../../slices/currentPlanSlice";
+} from '../../../../slices/userSlice';
+import axios from 'axios';
+import { api } from '../../../../resources/assets';
+import { filterCourses } from './formUtils';
+import { selectPlan } from '../../../../slices/currentPlanSlice';
 
 type SearchMapEl = {
   course: SISRetrievedCourse;
@@ -53,10 +53,10 @@ const Form: FC<{ setSearching: (searching: boolean) => void }> = (props) => {
   // Component state setup
   const [showCriteria, setShowCriteria] = useState(false);
   const [searchedCourses] = useState<Map<String, SearchMapEl>>(
-    new Map<String, SearchMapEl>()
+    new Map<String, SearchMapEl>(),
   );
   const [searchedCoursesFrequency] = useState<Map<String, number>>(
-    new Map<String, number>()
+    new Map<String, number>(),
   );
   const [initialQueryLength, setInitialQueryLength] = useState<number>(0);
   const [searchedQuery, setSearchedQuery] = useState<any | null>(null);
@@ -73,7 +73,7 @@ const Form: FC<{ setSearching: (searching: boolean) => void }> = (props) => {
           searchedQuery.courses,
           searchedQuery.versions,
           searchedQuery.queryLength,
-          searchedQuery.extras
+          searchedQuery.extras,
         );
       }
     }
@@ -91,7 +91,7 @@ const Form: FC<{ setSearching: (searching: boolean) => void }> = (props) => {
   // On opening search, set the term filter to match semester you're adding to.
   // TODO: update registration times for each semester
   useEffect(() => {
-    dispatch(updateSearchFilters({ filter: "term", value: semester }));
+    dispatch(updateSearchFilters({ filter: 'term', value: semester }));
     const date: Date = new Date();
     const yearVal: number = getYearVal();
     if (yearVal >= date.getFullYear()) {
@@ -100,17 +100,17 @@ const Form: FC<{ setSearching: (searching: boolean) => void }> = (props) => {
       // If the year of the semester is one less than current year,
       // we need to check if Summer is valid.
       if (
-        (semester === "Summer" && date.getMonth() < 2) ||
-        semester === "Fall"
+        (semester === 'Summer' && date.getMonth() < 2) ||
+        semester === 'Fall'
       ) {
-        dispatch(updateSearchFilters({ filter: "year", value: yearVal }));
+        dispatch(updateSearchFilters({ filter: 'year', value: yearVal }));
       } else
-        dispatch(updateSearchFilters({ filter: "year", value: yearVal + 1 }));
+        dispatch(updateSearchFilters({ filter: 'year', value: yearVal + 1 }));
     } else {
-      if (semester === "Fall") {
-        dispatch(updateSearchFilters({ filter: "year", value: yearVal }));
+      if (semester === 'Fall') {
+        dispatch(updateSearchFilters({ filter: 'year', value: yearVal }));
       } else {
-        dispatch(updateSearchFilters({ filter: "year", value: yearVal + 1 }));
+        dispatch(updateSearchFilters({ filter: 'year', value: yearVal + 1 }));
       }
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -120,22 +120,22 @@ const Form: FC<{ setSearching: (searching: boolean) => void }> = (props) => {
     // If the current year is the same as the year of the semester or later,
     // we need to check Fall, Spring, Intersession, and Summer to see if we need to increase year value.
     if (
-      (semester === "Spring" && date.getMonth() >= 9) ||
-      (semester === "Intersession" && date.getMonth() === 11) ||
-      (semester === "Summer" &&
+      (semester === 'Spring' && date.getMonth() >= 9) ||
+      (semester === 'Intersession' && date.getMonth() === 11) ||
+      (semester === 'Summer' &&
         date.getMonth() >= 2 &&
         yearVal !== date.getFullYear())
     )
       dispatch(
-        updateSearchFilters({ filter: "year", value: date.getFullYear() + 1 })
+        updateSearchFilters({ filter: 'year', value: date.getFullYear() + 1 }),
       );
-    else if (semester === "Fall" && date.getMonth() < 5) {
+    else if (semester === 'Fall' && date.getMonth() < 5) {
       dispatch(
-        updateSearchFilters({ filter: "year", value: date.getFullYear() - 1 })
+        updateSearchFilters({ filter: 'year', value: date.getFullYear() - 1 }),
       );
     } else
       dispatch(
-        updateSearchFilters({ filter: "year", value: date.getFullYear() })
+        updateSearchFilters({ filter: 'year', value: date.getFullYear() }),
       );
   };
 
@@ -177,7 +177,7 @@ const Form: FC<{ setSearching: (searching: boolean) => void }> = (props) => {
       // Search with half second debounce.
       const search = setTimeout(
         performSmartSearch(searchTerm, extras, searchTerm.length),
-        500
+        500,
       );
       return () => clearTimeout(search);
     } else {
@@ -193,13 +193,13 @@ const Form: FC<{ setSearching: (searching: boolean) => void }> = (props) => {
    * @returns a promise that resolves when searching is concluded
    */
   const find = (
-    extras: SearchExtras
+    extras: SearchExtras,
   ): Promise<[SISRetrievedCourse[], number[]]> => {
     return new Promise(async (resolve) => {
       let courses: SISRetrievedCourse[] = [...courseCache];
       if (!retrievedAll) {
         const retrieved: any = await axios
-          .get(api + "/search", {
+          .get(api + '/search', {
             params: getParams(extras),
           })
           .catch(() => {
@@ -207,7 +207,7 @@ const Form: FC<{ setSearching: (searching: boolean) => void }> = (props) => {
           });
         let SISRetrieved: SISRetrievedCourse[] = processedRetrievedData(
           retrieved.data.data,
-          extras
+          extras,
         );
         return resolve([SISRetrieved, []]);
       } else {
@@ -226,14 +226,14 @@ const Form: FC<{ setSearching: (searching: boolean) => void }> = (props) => {
    */
   const processedRetrievedData = (
     data: SISRetrievedCourse[],
-    extras: SearchExtras
+    extras: SearchExtras,
   ): SISRetrievedCourse[] => {
     let SISRetrieved: SISRetrievedCourse[] = data;
-    if (extras.areas === "N")
+    if (extras.areas === 'N')
       // TODO: backend searches for courses with "None" area. Fix this.
       SISRetrieved = SISRetrieved.filter((course) => {
         for (let version of course.versions) {
-          if (version.areas === "N") return true;
+          if (version.areas === 'N') return true;
         }
         return false;
       });
@@ -258,7 +258,7 @@ const Form: FC<{ setSearching: (searching: boolean) => void }> = (props) => {
     originalQuery: string,
     extras: SearchExtras,
     queryLength: number,
-    querySubstrs: string[]
+    querySubstrs: string[],
   ): Promise<void> => {
     let courses: SISRetrievedCourse[] = [];
     let versions: number[] = [];
@@ -290,11 +290,11 @@ const Form: FC<{ setSearching: (searching: boolean) => void }> = (props) => {
     courses: SISRetrievedCourse[],
     versions: number[],
     queryLength: number,
-    extras: SearchExtras
+    extras: SearchExtras,
   ) => {
     courses.forEach((course: SISRetrievedCourse, index: number) => {
-      if (!searchedCourses.has(course.number + "0")) {
-        searchedCourses.set(course.number + "0", {
+      if (!searchedCourses.has(course.number + '0')) {
+        searchedCourses.set(course.number + '0', {
           course: course,
           version: versions[index],
           priority: queryLength,
@@ -316,7 +316,7 @@ const Form: FC<{ setSearching: (searching: boolean) => void }> = (props) => {
     course: SISRetrievedCourse,
     versions,
     queryLength: number,
-    index: number
+    index: number,
   ) => {
     let frequency = searchedCoursesFrequency.get(course.number);
     let flag = false;
@@ -350,7 +350,7 @@ const Form: FC<{ setSearching: (searching: boolean) => void }> = (props) => {
     (
       originalQuery: string,
       extras: SearchExtras,
-      queryLength: number
+      queryLength: number,
     ): (() => void) =>
     (): void => {
       const querySubstrs: string[] = [];
@@ -363,7 +363,7 @@ const Form: FC<{ setSearching: (searching: boolean) => void }> = (props) => {
       } else if (queryLength > 0 && queryLength < minLength) {
         // Perform normal search if query length is between 1 and minLength
         axios
-          .get(api + "/search", {
+          .get(api + '/search', {
             params: getParams(extras),
           })
           .then((retrieved) => {
@@ -408,7 +408,7 @@ const Form: FC<{ setSearching: (searching: boolean) => void }> = (props) => {
   const getParams = (extras: SearchExtras) => ({
     query: extras.query,
     department: extras.department,
-    term: extras.term === "All" ? null : extras.term,
+    term: extras.term === 'All' ? null : extras.term,
     areas: extras.areas,
     credits: extras.credits,
     wi: extras.wi,
@@ -423,8 +423,8 @@ const Form: FC<{ setSearching: (searching: boolean) => void }> = (props) => {
           autoFocus
           className="mb-2 mr-2 px-1 w-full h-6 rounded outline-none"
           type="text"
-          placeholder={"Course title or number"}
-          style={{ width: "100%" }}
+          placeholder={'Course title or number'}
+          style={{ width: '100%' }}
           defaultValue={searchTerm}
           onChange={handleSearchTerm}
         />
@@ -432,7 +432,7 @@ const Form: FC<{ setSearching: (searching: boolean) => void }> = (props) => {
           className="flex flex-none flex-row items-center justify-center w-6 h-6 bg-white rounded-full shadow cursor-pointer transform hover:scale-110 transition duration-200 ease-in"
           onClick={() => setShowCriteria(!showCriteria)}
           data-tip={
-            showCriteria ? "Hide search criteria" : "Show search criteria"
+            showCriteria ? 'Hide search criteria' : 'Show search criteria'
           }
           data-for="godTip"
         >
