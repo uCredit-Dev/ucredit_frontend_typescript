@@ -234,7 +234,7 @@ const InfoMenu: FC = () => {
         if (req.pathing) {
           let [requirement,...focus_areas] = reqGroup[1];
           for (let focus_area of focus_areas) {
-            if (focus_area.fulfilled_credits === focus_area.required_credits) {
+            if (focus_area.fulfilled_credits >= focus_area.required_credits) {
               reqGroup[1] = [requirement, focus_area];
             }
           }
