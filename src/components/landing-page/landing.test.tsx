@@ -11,7 +11,6 @@ import LandingPage from './';
 import { Router } from 'react-router-dom';
 import { createMemoryHistory } from 'history';
 
-// beforeEach(() => render(<BrowserRouter><LandingPage /></BrowserRouter>))
 let history = createMemoryHistory();
 beforeEach(() => {
   history = createMemoryHistory();
@@ -67,6 +66,6 @@ test('Empty application is not submitted', async () => {
 test('Get started redirects', async () => {
   let buttons = screen.getAllByText('Get Started');
   fireEvent.click(buttons[0]);
-
+  
   expect(history.location.pathname).toBe('/login');
 });
