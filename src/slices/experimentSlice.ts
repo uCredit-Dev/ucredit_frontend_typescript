@@ -1,48 +1,49 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { RootState } from '../appStore/store';
 
-type ExperimentSlice = {
+export type experiment = {
   name: string,
   active: boolean
 }
 
+type ExperimentSlice = {
+  red_button: experiment,
+  green_button: experiment,
+  blue_button: experiment,
+}
+
 const initialState: ExperimentSlice = {
-  name: "", 
-  active: false
+  red_button:   { name: "Red Button", active: false },
+  green_button: { name: "Green Button", active: false},
+  blue_button:  { name: "Blue Button", active: false},
 }
 
 export const experimentSlice = createSlice({
   name: "experiments",
   initialState,
   reducers: {
-    updateExperimentName: (state: any, action: PayloadAction<string>) => {
-      state.name = action.payload;
-    }, // the following reducers all do similar things, will cut down which ones to use when further implemented
-    enableExperiment: (state: any) => {
-      state.active = true;
+    setRedButton: (state: any, action: PayloadAction<boolean>) => {
+      state.red_button.active = action.payload;
     },
-    disableExperiment: (state: any) => {
-      state.active = false;
+    setGreenButton: (state: any, action: PayloadAction<boolean>) => {
+      state.green_button.active = action.payload;
     },
-    toggleExperiment: (state: any) => {
-      state.active = !state.active;
+    setBlueButton: (state: any, action: PayloadAction<boolean>) => {
+      state.blue_button.active = action.payload;
     },
-    setExperimentActivity: (state: any, action: PayloadAction<boolean>) => {
-      state.active = action.payload;
-    }
   }
 });
 
 export const {
-  updateExperimentName,
-  enableExperiment,
-  disableExperiment,
-  toggleExperiment,
-  setExperimentActivity,
+  setRedButton,
+  setGreenButton,
+  setBlueButton,
 } = experimentSlice.actions;
 
 // Selector Functions
-export const selectExperimentName = (state: RootState) => state.experiment.name;
-export const selectExperimentActivity = (state: RootState) => state.experiment.active;
+export const selectExperiments = (state: RootState) => state.experiment;
+export const selectRedButton = (state: RootState) => state.experiment.red_button;
+export const selectGreenButton = (state: RootState) => state.experiment.green_button;
+export const selectBlueButton = (state: RootState) => state.experiment.blue_button;
 
 export default experimentSlice.reducer;
