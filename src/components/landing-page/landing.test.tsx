@@ -66,6 +66,6 @@ test('Empty application is not submitted', async () => {
 test('Get started redirects', async () => {
   let buttons = screen.getAllByText('Get Started');
   fireEvent.click(buttons[0]);
-  
+
   expect(history.location.pathname).toBe('/login');
 });
