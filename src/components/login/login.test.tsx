@@ -11,6 +11,24 @@ import { createMemoryHistory } from 'history';
 import DashboardEntry from './DashboardEntry';
 import { Provider } from 'react-redux';
 import { store } from '../../appStore/store';
+import { rest } from 'msw';
+import { setupServer } from 'msw/node';
+
+const server = setupServer(
+  // capture "GET /greeting" requests
+  rest.get('/retrieveUser', (req, res, ctx) => {
+    // respond using a mocked JSON body
+    const { userid } = req.body;
+    return res(
+      // Send a valid HTTP status code
+      ctx.status(404),
+      // And a response body, if necessary
+      ctx.json({
+        errorMessage: `User '${userid}' not found`,
+      }),
+    );
+  }),
+);
 
 let history = createMemoryHistory({ initialEntries: ['/login'] });
 beforeEach(() => {
@@ -40,6 +58,7 @@ test('SSO login has correct redirect', async () => {
 });
 
 test('Guest login continues', async () => {
+  server.use();
   await waitFor(() => expect(history.location.pathname).toBe('/login'));
   fireEvent.click(screen.getByText('Continue as guest'));
 
