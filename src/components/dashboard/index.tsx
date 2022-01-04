@@ -63,6 +63,7 @@ const Dashboard: FC<{ id: string | null }> = ({ id }) => {
   const [formPopup, setFormPopup] = useState<boolean>(false);
   const [showHeader, setShowHeader] = useState<boolean>(true);
   const [dropdown, setDropdown] = useState<boolean>(false);
+  const [experimentPopup, setExperimentPopup] = useState<boolean>(false);
   const [shareableURL, setShareableURL] = useState<string>('');
 
   // Handles plan change event.
@@ -149,6 +150,8 @@ const Dashboard: FC<{ id: string | null }> = ({ id }) => {
                 <ActionBar
                   dropdown={dropdown}
                   setDropdown={setDropdown}
+                  experimentPopup={experimentPopup}
+                  setExperimentPopup={setExperimentPopup}
                   onShareClick={onShareClick}
                 />
                 {dropdown ? (

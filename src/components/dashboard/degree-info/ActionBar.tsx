@@ -13,6 +13,7 @@ import {
   updatePlanList,
 } from '../../../slices/userSlice';
 import PlanChoose from './PlanChoose';
+import ExperimentPopup from '../experiments/ExperimentPopup';
 import { ReactComponent as RemoveSvg } from '../../../resources/svg/Remove.svg';
 import { ReactComponent as AddSvg } from '../../../resources/svg/Add.svg';
 import { ReactComponent as BeakerSvg } from '../../../resources/svg/Beaker.svg';
@@ -26,8 +27,10 @@ import ReactTooltip from 'react-tooltip';
 const ActionBar: FC<{
   dropdown: boolean;
   setDropdown: Function;
+  experimentPopup: boolean;
+  setExperimentPopup: Function;
   onShareClick: MouseEventHandler<HTMLButtonElement>;
-}> = ({ dropdown, setDropdown, onShareClick }) => {
+}> = ({ dropdown, setDropdown, experimentPopup, setExperimentPopup, onShareClick }) => {
   // Redux Setup
   const dispatch = useDispatch();
   const currentPlan = useSelector(selectPlan);
@@ -142,68 +145,74 @@ const ActionBar: FC<{
     ReactTooltip.rebuild();
   });
   return (
-    <div className="flex flex-row px-2 py-1 bg-white rounded shadow overflow-x-auto drop-shadow-md sticky top-0 z-20">
-      <PlanChoose dropdown={dropdown} setDropdown={setDropdown} />
-      <div className="flex flex-row items-end mr-2 my-1 h-10 border bg-white border-gray-300 rounded rounded shadow">
-        <div className="text-xl m-auto ml-2 mr-0">✎</div>
-        <input
-          value={planName}
-          className=" my-0.5 px-1 w-80 h-8 text-gray-800 text-lg outline-none"
-          onChange={handlePlanNameChange}
-        />
-      </div>
-      <div className="flex mr-2 my-1 px-2 h-10 text-xl font-light border border-gray-300 rounded stroke-2 shadow">
-        <div
-          className="py-1 w-max overflow-ellipsis truncate"
-          style={{ maxWidth: '24rem' }}
+    <>
+      <div className="flex flex-row px-2 py-1 bg-white rounded shadow overflow-x-auto drop-shadow-md sticky top-0 z-20">
+        <PlanChoose dropdown={dropdown} setDropdown={setDropdown} />
+        <div className="flex flex-row items-end mr-2 my-1 h-10 border bg-white border-gray-300 rounded rounded shadow">
+          <div className="text-xl m-auto ml-2 mr-0">✎</div>
+          <input
+            value={planName}
+            className=" my-0.5 px-1 w-80 h-8 text-gray-800 text-lg outline-none"
+            onChange={handlePlanNameChange}
+          />
+        </div>
+        <div className="flex mr-2 my-1 px-2 h-10 text-xl font-light border border-gray-300 rounded stroke-2 shadow">
+          <div
+            className="py-1 w-max overflow-ellipsis truncate"
+            style={{ maxWidth: '24rem' }}
+          >
+            {currentPlan.majors}
+          </div>
+        </div>
+        <button
+          className="flex flex-row items-center ml-1 mr-2 my-1 px-2 h-10 hover:underline hover:bg-red-300 border border-gray-300 rounded shadow transition duration-200 ease-in"
+          onClick={activateDeletePlan}
         >
-          {currentPlan.majors}
+          <RemoveSvg className="my-auto w-5 stroke-2 cursor-pointer select-none transform hover:scale-110 transition duration-200 ease-in" />{' '}
+          <div className="ml-1">Delete</div>
+        </button>
+        <button
+          className="flex flex-row items-center ml-1 mr-2 my-1 px-2 h-10 hover:underline hover:bg-green-300 border border-gray-300 rounded shadow transition duration-200 ease-in"
+          onClick={onShareClick}
+        >
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            className="w-6 h-6 transform hover:scale-110 transition duration-200 ease-in"
+            fill="none"
+            viewBox="0 0 24 24"
+            stroke="currentColor"
+          >
+            <path
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              strokeWidth={2}
+              d="M8.684 13.342C8.886 12.938 9 12.482 9 12c0-.482-.114-.938-.316-1.342m0 2.684a3 3 0 110-2.684m0 2.684l6.632 3.316m-6.632-6l6.632-3.316m0 0a3 3 0 105.367-2.684 3 3 0 00-5.367 2.684zm0 9.316a3 3 0 105.368 2.684 3 3 0 00-5.368-2.684z"
+            />
+          </svg>
+          <div className="ml-1">Share</div>
+        </button>
+        <div className="flex flex-row items-center my-1 w-10 h-10 hover:underline hover:bg-green-300 border border-gray-300 rounded focus:outline-none shadow cursor-pointer transition duration-200 ease-in">
+          <AddSvg
+            onClick={() => addNewYear(false)}
+            data-tip={`Add a new year!`}
+            data-for="godTip"
+            className="w-10 h-10 focus:outline-none"
+          />
+        </div>
+        <div className="flex flex-row items-center ml-2 my-1 w-10 h-10 hover:underline hover:bg-green-300 border border-gray-300 rounded focus:outline-none shadow cursor-pointer transition duration-200 ease-in">
+          <BeakerSvg
+            onClick={() => setExperimentPopup(!experimentPopup)}
+            data-tip={`View/Toggle Experiments!`}
+            data-for="godTip"
+            className="w-10 h-10 focus:outline-none"
+          />
         </div>
       </div>
-      <button
-        className="flex flex-row items-center ml-1 mr-2 my-1 px-2 h-10 hover:underline hover:bg-red-300 border border-gray-300 rounded shadow transition duration-200 ease-in"
-        onClick={activateDeletePlan}
-      >
-        <RemoveSvg className="my-auto w-5 stroke-2 cursor-pointer select-none transform hover:scale-110 transition duration-200 ease-in" />{' '}
-        <div className="ml-1">Delete</div>
-      </button>
-      <button
-        className="flex flex-row items-center ml-1 mr-2 my-1 px-2 h-10 hover:underline hover:bg-green-300 border border-gray-300 rounded shadow transition duration-200 ease-in"
-        onClick={onShareClick}
-      >
-        <svg
-          xmlns="http://www.w3.org/2000/svg"
-          className="w-6 h-6 transform hover:scale-110 transition duration-200 ease-in"
-          fill="none"
-          viewBox="0 0 24 24"
-          stroke="currentColor"
-        >
-          <path
-            strokeLinecap="round"
-            strokeLinejoin="round"
-            strokeWidth={2}
-            d="M8.684 13.342C8.886 12.938 9 12.482 9 12c0-.482-.114-.938-.316-1.342m0 2.684a3 3 0 110-2.684m0 2.684l6.632 3.316m-6.632-6l6.632-3.316m0 0a3 3 0 105.367-2.684 3 3 0 00-5.367 2.684zm0 9.316a3 3 0 105.368 2.684 3 3 0 00-5.368-2.684z"
-          />
-        </svg>
-        <div className="ml-1">Share</div>
-      </button>
-      <div className="flex flex-row items-center my-1 w-10 h-10 hover:underline hover:bg-green-300 border border-gray-300 rounded focus:outline-none shadow cursor-pointer transition duration-200 ease-in">
-        <AddSvg
-          onClick={() => addNewYear(false)}
-          data-tip={`Add a new year!`}
-          data-for="godTip"
-          className="w-10 h-10 focus:outline-none"
-        />
+      <div
+      > 
+        <ExperimentPopup experimentPopup={experimentPopup}/>
       </div>
-      <div className="flex flex-row items-center ml-2 my-1 w-10 h-10 hover:underline hover:bg-green-300 border border-gray-300 rounded focus:outline-none shadow cursor-pointer transition duration-200 ease-in">
-        <BeakerSvg
-          onClick={() => console.log("test!")}
-          data-tip={`View/Toggle Experiments!`}
-          data-for="godTip"
-          className="w-10 h-10 focus:outline-none"
-        />
-      </div>
-    </div>
+    </>
   );
 };
 
