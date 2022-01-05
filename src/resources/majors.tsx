@@ -207,7 +207,7 @@ import { Major, Minor } from "./commonTypes";
 const baEcon: Major = {
   degree_name: "B.A. Economics",
   department: "AS Economics",
-  total_degree_credit: 41,
+  total_degree_credit: 120,
   wi_credit: 12,
   url: "https://e-catalogue.jhu.edu/arts-sciences/full-time-residential-programs/degree-programs/economics/economics-bachelor-arts/",
   distributions: [
@@ -219,17 +219,17 @@ const baEcon: Major = {
         "For more information please visit the" +
         "<a href='https://econ.jhu.edu/undergraduate/major-requirements/'>" +
         "major degree requirement</a> section on the department website.",
-      criteria: "",
+      criteria: "AS.180.101[C]^OR^AS.180.102[C]^OR^AS.180.301[C]^OR^AS.108.401[C]^OR^AS.180.302[C]",
       fine_requirements: [
         {
           description:
-            "<b>Elements of Macroeconomics</b>",
+            "<b>Elements of Macroeconomics</b> <br /> AS.180.101 Elements of Macroeconomics",
           required_credits: 3,
           criteria: "AS.180.101[C]",
         },
         {
           description:
-            "<b>Elements of Microeconomics</b>",
+            "<b>Elements of Microeconomics</b> <br /> AS.180.102 Elements of Microeconomics",
           required_credits: 3,
           criteria: "AS.180.102[C]",
         },
@@ -241,7 +241,7 @@ const baEcon: Major = {
         },
         {
           description:
-            "<b>Macroeconomic Theory</b>",
+            "<b>Macroeconomic Theory</b> <br /> AS.180.302 Macroeconomic Theory",
           required_credits: 4.5,
       criteria: "AS.180.302[C]",
         },
@@ -279,7 +279,7 @@ const baEcon: Major = {
       required_credits: 4,
       min_credits_per_course: 3,
       description:
-        "Students must complete the math requirement for the major by taking Calculus I.",
+        "Students must complete the math requirement for the major by taking Calculus I (AS.110.106 OR AS.110.108).",
       criteria: "AS.110.106[C]^OR^AS.110.108[C]",
     },
     {
@@ -292,6 +292,47 @@ const baEcon: Major = {
         "EN.553.311 Probability and Statistics for the Biological Sciences and Engineering <br />  EN.553.420 Introduction to Probability <br />  EN.553.430 Introduction to Statistics <br /> " + 
         "AS.280.345 Public Health Biostatistics",
       criteria: "EN.553.111[C]^OR^EN.553.112[C]^OR^EN.553.211[C]^OR^EN.553.310[C]^OR^EN.553.311[C]^OR^EN.553.420[C]^OR^EN.553.430[C]^OR^AS.280.345[C]",
+    },
+    {
+      name: "Humanities (H) Distribution",
+      required_credits: 9,
+      min_credits_per_course: 3,
+      description:
+        "The distribution requirement stipulates that students must earn a minimum number of credits in academic areas outside of their primary major. " +
+        "The student must complete at least 9 credits in the Humanities (H) area. " +
+        "These credits fulfilling the distribution requirement may overlap with major or minor requirements and the writing-intensive requirement.",
+      criteria: "H[A]",
+    },
+    {
+      name: "Social Science (S) Distribution",
+      required_credits: 9,
+      min_credits_per_course: 3,
+      description:
+        "The distribution requirement stipulates that students must earn a minimum number of credits in academic areas outside of their primary major. " +
+        "The student must complete at least 9 credits in the Social Science (S) area. " +
+        "These credits fulfilling the distribution requirement may overlap with major or minor requirements and the writing-intensive requirement.",
+      criteria: "S[A]",
+    },
+    {
+      name: "Other (N/E/Q) Distribution",
+      required_credits: 9,
+      min_credits_per_course: 3,
+      description:
+        "The distribution requirement stipulates that students must earn a minimum number of credits in academic areas outside of their primary major. " +
+        "The student must complete at least 9 credits in any of the other areas: Natural Sciences (N), Engineering (E) and/or Quantitative (Q). " +
+        "These credits fulfilling the distribution requirement may overlap with major or minor requirements and the writing-intensive requirement.",
+      criteria: "N[A]^OR^E[A]^OR^Q[A]",
+    },
+    {
+      name: "Writing Intensive",
+      required_credits: 12,
+      min_credits_per_course: 3,
+      description:
+        "To encourage excellence in writing, across disciplines, the university requires all undergraduates to take a number of writing-intensive courses. " +
+        "All students earning a degree from the School of Arts and Sciences must complete at least 12 credits in writing-intensive courses. " +
+        "Writing-intensive courses taken to satisfy major, minor, or distribution requirements may also count toward the writing requirement.",
+      criteria: "Written Intensive[W]",
+      double_count: true,
     },
   ],
 };
@@ -318,22 +359,79 @@ const bsBME: Major = {
         "EN.580.424[C]^OR^EN.580.427[C]^OR^EN.580.452[C]^OR^EN.580.453[C]^OR^EN.580.454[C]^OR^EN.580.494[C]",
       fine_requirements: [
         {
-          description:
-            "<b>Required Courses:</b> <br /> EN.580.111 Biomedical Engineering and Design <br /> EN.580.151 Structural Biology of Cells <br />" +
-            "EN.580.153 Structural Biology of Cells Laboratory <br /> EN.580.221 Biochemistry and Molecular Engineering <br />" +
-            "EN.580.241 Statistical Physics <br /> EN.580.242 Biological Models and Simulations <br /> EN.580.243 Linear Signals and Systems <br />" +
-            "EN.580.244 Nonlinear Dynamics of Biological Systems <br /> EN.580.246 Systems and Controls <br />" +
-            "EN.580.248 Systems Biology of the Cell <br /> EN.580.475 Biomedical Data Science <br /> EN.580.477 Biomedical Data Science Laboratory <br />" +
-            "EN.580.485 Computational Medicine: Cardiology <br /> EN.580.487 Computational Medicine: Cardiology Laboratory",
-          required_credits: 28,
-          criteria:
-            "EN.580.111[C]^OR^EN.580.151[C]^OR^EN.580.153[C]^OR^EN.580.221[C]^OR^EN.580.241[C]^OR^EN.580.242[C]^OR^EN.580.243[C]^OR^" +
-            "EN.580.244[C]^OR^EN.580.246[C]^OR^EN.580.248[C]^OR^EN.580.475[C]^OR^EN.580.477[C]^OR^EN.580.485[C]^OR^EN.580.487[C]",
+          description: "<b>Biomedical Engineering and Design</b> <br /> EN.580.111 Biomedical Engineering and Design",
+          required_credits: 2,
+          criteria: "EN.580.111[C]",
+        },
+        {
+          description: "<b>Structural Biology of Cells</b> <br /> EN.580.151 Structural Biology of Cells",
+          required_credits: 3,
+          criteria: "EN.580.151[C]",
+        },
+        {
+          description: "<b>Structural Biology of Cells Laboratory</b> <br /> EN.580.153 Structural Biology of Cells Laboratory",
+          required_credits: 1,
+          criteria: "EN.580.153[C]",
+        },
+        {
+          description: "<b>Biochemistry and Molecular Engineering</b> <br /> EN.580.221 Biochemistry and Molecular Engineering",
+          required_credits: 4,
+          criteria: "EN.580.221[C]",
+        },
+        {
+          description: "<b>Statistical Physics</b> <br /> EN.580.241 Statistical Physics",
+          required_credits: 2,
+          criteria: "EN.580.241[C]",
+        },
+        {
+          description: "<b>Biological Models and Simulations</b> <br /> EN.580.242 Biological Models and Simulations",
+          required_credits: 2,
+          criteria: "EN.580.242[C]",
+        },
+        {
+          description: "<b>Linear Signals and Systems</b> <br /> EN.580.243 Linear Signals and Systems",
+          required_credits: 2,
+          criteria: "EN.580.243[C]",
+        },
+        {
+          description: "<b>Nonlinear Dynamics of Biological Systems</b> <br /> EN.580.244 Nonlinear Dynamics of Biological Systems",
+          required_credits: 2,
+          criteria: "EN.580.244[C]",
+        },
+        {
+          description: "<b>Systems and Controls</b> <br /> EN.580.246 Systems and Controls",
+          required_credits: 2,
+          criteria: "EN.580.246[C]",
+        },
+        {
+          description: "<b>Systems Biology of the Cell</b> <br /> EN.580.248 Systems Biology of the Cell",
+          required_credits: 2,
+          criteria: "EN.580.248[C]",
+        },
+        {
+          description: "<b>Biomedical Data Science</b> <br /> EN.580.475 Biomedical Data Science",
+          required_credits: 2,
+          criteria: "EN.580.475[C]",
+        },
+        {
+          description: "<b>Biomedical Data Science Laboratory</b> <br /> EN.580.477 Biomedical Data Science Laboratory",
+          required_credits: 1,
+          criteria: "EN.580.477[C]",
+        },
+        {
+          description: "<b>Computational Medicine: Cardiology</b> <br /> EN.580.485 Computational Medicine: Cardiology",
+          required_credits: 2,
+          criteria: "EN.580.485[C]",
+        },
+        {
+          description: "<b>Computational Medicine: Cardiology Laboratory</b> <br /> EN.580.487 Computational Medicine: Cardiology Laboratory",
+          required_credits: 1,
+          criteria: "EN.580.487[C]",
         },
         {
           description:
-            "<b>Select two of the following core electives (Note: These courses cannot be double-counted toward the 21-credit focus area " +
-            "requirement. Courses taken in excess of the 6 credit core elective requirement can be counted in a relevant focus area):</b>" +
+            "<b>Core Electives</b> <br /> Select two of the following core electives (Note: These courses cannot be double-counted toward the 21-credit focus area " +
+            "requirement. Courses taken in excess of the 6 credit core elective requirement can be counted in a relevant focus area):" +
             "<br /> EN.580.424 Neuroengineering and Lab <br /> EN.580.427 Microphysiological Systems and Lab <br />" +
             "EN.580.452 Cell and Tissue Engineering Lab <br /> EN.580.453 Immunoengineering Principles and Applications <br />" + 
             "EN.580.454 Methods in Nucleic Acid Sequencing Lab <br /> EN.580.494 Build an Imager",
@@ -342,150 +440,13 @@ const bsBME: Major = {
         },
         {
           description:
-            "<b>Career Exploration in BME is a 0-credit self-identified set of career related events (lectures, panels, journal clubs, etc.) " +
+            "<b>Career Exploration</b> <br /> Career Exploration in BME is a 0-credit self-identified set of career related events (lectures, panels, journal clubs, etc.) " +
             "beginning in the spring semester of year one and continuing until graduation. Career Exploration is administered through a " +
-            "Community Blackboard site; students will be enrolled by the department.</b>",
+            "Community Blackboard site; students will be enrolled by the department.",
           required_credits: 0,
           criteria: "EN Career Exploration[D]",
         },
       ],
-    },
-    {
-      name: "Design",
-      required_credits: 6,
-      min_credits_per_course: 3,
-      description:
-        "Must complete one of the several design sequences. Each 2-semester sequence must be taken in its entirety.",
-      criteria: 
-        "(EN.510.433[C]^OR^EN.510.434[C])^OR^(EN.520.462[C]^OR^EN.520.463[C])^OR^" +
-        "(EN.520.498[C]^OR^EN.520.499[C])^OR^(EN.540.400[C]^OR^EN.540.421[C])^OR^" +
-        "(EN.580.311[C]^OR^EN.580.312[C])^OR^(EN.580.411[C]^OR^EN.580.412[C])^OR^" +
-        "(EN.580.456[C]^OR^EN.580.457[C])^OR^(EN.580.471[C]^OR^EN.580.571[C])^OR^" +
-        "(EN.580.480[C]^OR^EN.580.481[C])^OR^(EN.580.580[C]^OR^EN.580.581[C])^OR^" +
-        "(EN.601.455[C]^OR^EN.601.456[C])^OR^(EN.580.437[C]^OR^EN.580.438[C])",
-      exception: "",
-      fine_requirements: [
-        {
-          description:
-            "<b>Select at least one of the following design sequences:</b> <br /> (EN.500.308 Multidisciplinary Engineering Design I <br />" + 
-            "<i>AND</i> <br /> EN.500.309 Advanced Multidisciplinary Design) <br /> (EN.510.433 Senior Design Research <br /> <i>AND</i> <br /> EN.510.434 Senior Design/Research II)" +
-            "(This option must be approved by the Materials Science & Engineering Department) <br />" +
-            "(EN.520.462 Leading Innovation Design Team <br /> <i>AND</i> <br /> EN.520.463 Leading Innovation Design Team II) <br />" +
-            "(EN.520.498 Senior Design Project <br /> <i>AND</i> <br /> EN.520.499 Senior Design Project II) <br />" +
-            "(EN.540.400 Project in Design: Pharmacokinetics <br /> <i>AND</i> <br /> EN.540.421 Project in Design: Pharmacodynamics) <br />" +
-            "(EN.580.311 Design Team Health Tech Project I <br /> <i>AND</i> <br /> EN.580.312 Design Team Health Tech Project II) <br />" + 
-            "(EN.580.411 Design Team Health Tech Project I <br /> <i>AND</i> <br /> EN.580.412 Design Team Health Tech Project II) <br />" +
-            "(EN.580.437 Neuro Data Design I <br /> <i>AND</i> <br /> EN.580.438 Neuro Data Design II) <br />" +
-            "(EN.580.456 Introduction to Rehabilitation Engineering <br /> <i>AND</i> <br /> EN.580.457 Introduction to Rehabilitation Engineering: Design Lab) <br />" +
-            "EN.580.471 Principles of Design of BME Instrumentation <br /> (EN.580.480 Precision Care Medicine I <br />" +
-            "<i>AND</i> <br /> EN.580.481 Precision Care Medicine II) <br /> (EN.580.580 Senior Design Project I <br /> <i>AND</i> <br />" +
-            "EN.580.581 Senior Design Project II) <br /> (EN.601.455 Computer Integrated Surgery I <br /> <i>AND</i> <br />" +
-            "EN.601.456 Computer Integrated Surgery II)",
-          required_credits: 6,
-          criteria:
-            "(EN.510.433[C]^OR^EN.510.434[C])^OR^(EN.520.462[C]^OR^EN.520.463[C])^OR^" +
-            "(EN.520.498[C]^OR^EN.520.499[C])^OR^(EN.540.400[C]^OR^EN.540.421[C])^OR^" +
-            "(EN.580.311[C]^OR^EN.580.312[C])^OR^(EN.580.411[C]^OR^EN.580.412[C])^OR^" +
-            "(EN.580.456[C]^OR^EN.580.457[C])^OR^(EN.580.471[C]^OR^EN.580.571[C])^OR^" +
-            "(EN.580.480[C]^OR^EN.580.481[C])^OR^(EN.580.580[C]^OR^EN.580.581[C])^OR^" +
-            "(EN.601.455[C]^OR^EN.601.456[C])^OR^(EN.580.437[C]^OR^EN.580.438[C])",
-        },
-      ],
-    },
-    {
-      name: "Focus Area",
-      required_credits: 21,
-      min_credits_per_course: 1,
-      pathing: true,
-      description: 
-        "<b>The student must select at least 21 credits from the approved list of courses for a specific focus area. Coordinate with your advisor to" + 
-        " determine the best combination of classes for you:</b>" ,
-      criteria: "BMED-BDS[T]^OR^BMED-CM[T]^OR^BMED-GSB[T]^OR^BMED-IMD[T]^OR^BMED-IMMU[T]^OR^BMED-NE[T]^OR^BMED-TCTE[T]",
-      fine_requirements: [
-        {
-          description: "Biomedical Data Science",
-          required_credits: 21,
-          criteria: "BMED-BDS[T]",
-        },
-        {
-          description: "Computational Medicine",
-          required_credits: 21,
-          criteria: "BMED-CM[T]",
-        },
-        {
-          description: "Genomics and Systems Biology",
-          required_credits: 21,
-          criteria: "BMED-GSB[T]",
-        },
-        {
-          description: "Imaging and Medical Devices",
-          required_credits: 21,
-          criteria: "BMED-IMD[T]",
-        },
-        {
-          description: "Imunoengineering",
-          required_credits: 21,
-          criteria: "BMED-IMMU[T]",
-        },
-        {
-          description: "Neuroengineering",
-          required_credits: 21,
-          criteria: "BMED-NE[T]",
-        },
-        {
-          description: "Translational Cell and Tissue Engineering",
-          required_credits: 21,
-          criteria: "BMED-TCTE[T]",
-        },
-      ],
-    },
-    {
-      name: "Computer Programming",
-      required_credits: 3,
-      min_credits_per_course: 3,
-      description:
-        "Choose one of these courses to satisfy the programming requirement.",
-      criteria: "EN.500.112[C]^OR^EN.500.113[C]^OR^EN.500.114[C]",
-      fine_requirements: [
-        {
-          description:
-            "<b>Select one of the following:</b> <br /> EN.500.112 Gateway Computing: JAVA <br /> <i>OR</i> <br /> EN.500.113 Gateway Computing: Python <br />" +
-            "<i>OR</i> <br /> EN.500.114 Gateway Computing: Matlab",
-          required_credits: 3,
-          criteria: "EN.500.112[C]^OR^EN.500.113[C]^OR^EN.500.114[C]",
-        },
-      ],
-    },
-    {
-      name: "Humanities and Social Sciences",
-      required_credits: 18,
-      min_credits_per_course: 3,
-      description:
-        "Select courses to form a coherent program, relevant to the student’s goals. One course in which ethical and social " +
-        "issues related to technology or medicine is recommended.",
-      criteria: "H[A]^OR^S[A]",
-      fine_requirements: [
-        {
-          description: "<b>At least one course must be at the 300 level or above</b>",
-          required_credits: 3,
-          criteria: "(H[A]^OR^S[A])^AND^(Upper Level[L])",
-        },
-        {
-          description: "<b>At least 15 more credits in the H/S areas are required</b>",
-          required_credits: 15,
-          criteria: "H[A]^OR^S[A]"
-        }
-      ]
-    },
-    {
-      name: "Writing Intensive",
-      required_credits: 6,
-      min_credits_per_course: 3,
-      double_count: true,
-      description:
-        "Students are required to fulfill the university’s requirement of two writing intensive courses, " +
-        "each at least 3 credits. Students must receive at least a C- grade or better in these writing courses.",
-      criteria: "Written Intensive[W]",
     },
     {
       name: "Basic Sciences",
@@ -500,22 +461,45 @@ const bsBME: Major = {
         "^OR^AS.030.101[C]^OR^AS.030.102[C]^OR^AS.030.105[C]^OR^AS.030.106[C]",
       fine_requirements: [
         {
-          description:
-            "<b>Physics (Physical Science Majors):</b> <br /> (AS.171.101 General Physics I <br /> <i>OR</i> <br /> AS.171.107 General Physics I (AL))" + 
-            "<br /> AS.173.111 General Physics Lab I <br /> (AS.171.102 General Physics II <br /> <i>OR</i> <br /> AS.171.108 General Physics II (AL))" +
-            "<br /> AS.173.112 General Physics Lab II",
-          required_credits: 10,
-          criteria:
-            "AS.171.101[C]^OR^AS.171.107[C]^OR^AS.171.102[C]^OR^AS.171.108[C]^OR^AS.173.111[C]^OR^AS.173.112[C]",
+          description: "<b>General Physics I</b> <br /> AS.171.101 General Physics: Physical Science Majors I <br /> <i>OR</i> <br /> AS.171.107 General Physics for Physical Sciences Majors I (AL)",
+          required_credits: 4,
+          criteria: "AS.171.101[C]^OR^AS.171.107[C]",
         },
         {
-          description:
-            "<b>Chemistry:</b> <br /> AS.030.101 Introductory Chemistry I <br /> AS.030.105 Introductory Chemistry Lab I" + 
-            "<br /> AS.030.102 Introductory Chemistry II <br /> AS.030.106 Introductory Chemistry Lab II",
-          required_credits: 8,
-          criteria:
-            "AS.030.101[C]^OR^AS.030.102[C]^OR^AS.030.105[C]^OR^AS.030.106[C]",
-        }
+          description: "<b>General Physics II</b> <br /> AS.171.102 General Physics: Physical Science Majors II <br /> <i>OR</i> <br /> AS.171.108 General Physics for Physical Sciences Majors II (AL)",
+          required_credits: 4,
+          criteria: "AS.171.102[C]^OR^AS.171.108[C]",
+        },
+        {
+          description: "<b>General Physics Laboratory I</b> <br /> AS.173.111 General Physics Laboratory I",
+          required_credits: 1,
+          criteria: "AS.173.111[C]",
+        },
+        {
+          description: "<b>General Physics Laboratory II</b> <br /> AS.173.112 General Physics Laboratory II",
+          required_credits: 1,
+          criteria: "AS.173.112[C]",
+        },
+        {
+          description: "<b>Introductory Chemistry I</b> <br /> AS.030.101 Introductory Chemistry I",
+          required_credits: 3,
+          criteria: "AS.030.101[C]",
+        },
+        {
+          description: "<b>Introductory Chemistry II</b> <br /> AS.030.102 Introductory Chemistry II",
+          required_credits: 3,
+          criteria: "AS.030.102[C]",
+        },
+        {
+          description: "<b>Introductory Chemistry Laboratory I</b> <br /> AS.030.105 Introductory Chemistry Laboratory I",
+          required_credits: 1,
+          criteria: "AS.030.105[C]",
+        },
+        {
+          description: "<b>Introductory Chemistry Laboratory II</b> <br /> AS.030.106 Introductory Chemistry Laboratory II",
+          required_credits: 1,
+          criteria: "AS.030.106[C]",
+        },
       ]
     },
     {
@@ -548,6 +532,115 @@ const bsBME: Major = {
             "EN.553.310[C]^OR^EN.553.311[C]^OR^EN.553.413[C]^OR^EN.553.430[C]^OR^EN.553.433[C]^OR^EN.560.348[C]",
         },
       ],
+    },
+    {
+      name: "Computer Programming",
+      required_credits: 3,
+      min_credits_per_course: 3,
+      description:
+        "Choose one of these courses to satisfy the programming requirement: <br /> EN.500.112 Gateway Computing: JAVA <br /> EN.500.113 Gateway Computing: Python <br />" +
+        "EN.500.114 Gateway Computing: MATLAB",
+      criteria: "EN.500.112[C]^OR^EN.500.113[C]^OR^EN.500.114[C]",
+    },
+    {
+      name: "Focus Area",
+      required_credits: 21,
+      min_credits_per_course: 1,
+      pathing: true,
+      description: 
+        "<b>The student must select at least 21 credits from the approved list of courses for a specific focus area. Coordinate with your advisor to" + 
+        " determine the best combination of classes for you:</b>" ,
+      criteria: "BMED-BDS[T]^OR^BMED-CM[T]^OR^BMED-GSB[T]^OR^BMED-IMD[T]^OR^BMED-IMMU[T]^OR^BMED-NE[T]^OR^BMED-TCTE[T]",
+      fine_requirements: [
+        {
+          description: "<b>Biomedical Data Science</b>",
+          required_credits: 21,
+          criteria: "BMED-BDS[T]",
+        },
+        {
+          description: "<b>Computational Medicine</b>",
+          required_credits: 21,
+          criteria: "BMED-CM[T]",
+        },
+        {
+          description: "<b>Genomics and Systems Biology</b>",
+          required_credits: 21,
+          criteria: "BMED-GSB[T]",
+        },
+        {
+          description: "<b>Imaging and Medical Devices</b>",
+          required_credits: 21,
+          criteria: "BMED-IMD[T]",
+        },
+        {
+          description: "<b>Imunoengineering</b>",
+          required_credits: 21,
+          criteria: "BMED-IMMU[T]",
+        },
+        {
+          description: "<b>Neuroengineering</b>",
+          required_credits: 21,
+          criteria: "BMED-NE[T]",
+        },
+        {
+          description: "<b>Translational Cell and Tissue Engineering</b>",
+          required_credits: 21,
+          criteria: "BMED-TCTE[T]",
+        },
+      ],
+    },
+    {
+      name: "Design",
+      required_credits: 6,
+      min_credits_per_course: 3,
+      description:
+        "Select at least one of the following design sequences: <br /> (EN.500.308 Multidisciplinary Engineering Design I <br />" + 
+        "<i>AND</i> <br /> EN.500.309 Advanced Multidisciplinary Design) <br /> (EN.510.433 Senior Design Research <br /> <i>AND</i> <br /> EN.510.434 Senior Design/Research II)" +
+        "(This option must be approved by the Materials Science & Engineering Department) <br />" +
+        "(EN.520.462 Leading Innovation Design Team <br /> <i>AND</i> <br /> EN.520.463 Leading Innovation Design Team II) <br />" +
+        "(EN.520.498 Senior Design Project <br /> <i>AND</i> <br /> EN.520.499 Senior Design Project II) <br />" +
+        "(EN.540.400 Project in Design: Pharmacokinetics <br /> <i>AND</i> <br /> EN.540.421 Project in Design: Pharmacodynamics) <br />" +
+        "(EN.580.311 Design Team Health Tech Project I <br /> <i>AND</i> <br /> EN.580.312 Design Team Health Tech Project II) <br />" + 
+        "(EN.580.411 Design Team Health Tech Project I <br /> <i>AND</i> <br /> EN.580.412 Design Team Health Tech Project II) <br />" +
+        "(EN.580.437 Neuro Data Design I <br /> <i>AND</i> <br /> EN.580.438 Neuro Data Design II) <br />" +
+        "(EN.580.456 Introduction to Rehabilitation Engineering <br /> <i>AND</i> <br /> EN.580.457 Introduction to Rehabilitation Engineering: Design Lab) <br />" +
+        "EN.580.471 Principles of Design of BME Instrumentation <br /> (EN.580.480 Precision Care Medicine I <br />" +
+        "<i>AND</i> <br /> EN.580.481 Precision Care Medicine II) <br /> (EN.580.580 Senior Design Project I <br /> <i>AND</i> <br />" +
+        "EN.580.581 Senior Design Project II) <br /> (EN.601.455 Computer Integrated Surgery I <br /> <i>AND</i> <br />" +
+        "EN.601.456 Computer Integrated Surgery II)",
+      criteria: 
+        "(EN.510.433[C]^OR^EN.510.434[C])^OR^(EN.520.462[C]^OR^EN.520.463[C])^OR^" +
+        "(EN.520.498[C]^OR^EN.520.499[C])^OR^(EN.540.400[C]^OR^EN.540.421[C])^OR^" +
+        "(EN.580.311[C]^OR^EN.580.312[C])^OR^(EN.580.411[C]^OR^EN.580.412[C])^OR^" +
+        "(EN.580.456[C]^OR^EN.580.457[C])^OR^(EN.580.471[C]^OR^EN.580.571[C])^OR^" +
+        "(EN.580.480[C]^OR^EN.580.481[C])^OR^(EN.580.580[C]^OR^EN.580.581[C])^OR^" +
+        "(EN.601.455[C]^OR^EN.601.456[C])^OR^(EN.580.437[C]^OR^EN.580.438[C])",
+    },
+    {
+      name: "Humanities and Social Sciences",
+      required_credits: 18,
+      min_credits_per_course: 3,
+      description:
+        "Select courses to form a coherent program, relevant to the student’s goals. One course in which ethical and social " +
+        "issues related to technology or medicine is recommended.",
+      criteria: "H[A]^OR^S[A]",
+      fine_requirements: [
+        {
+          description: "<b>One Upper Level class</b>",
+          required_credits: 3,
+          criteria: "(H[A]^OR^S[A])^AND^(Upper Level[L])",
+        },
+      ]
+    },
+    {
+      name: "Writing Intensive",
+      required_credits: 6,
+      min_credits_per_course: 3,
+      double_count: true,
+      description:
+        "Students are required to fulfill the university’s requirement of two writing intensive courses, " +
+        "each at least 3 credits. Students must receive at least a C- grade or better in these writing courses.",
+      criteria: "Written Intensive[W]",
     },
   ],
 };
@@ -1211,6 +1304,7 @@ const bsAMS: Major = {
       name: "Area of Focus",
       required_credits: 6,
       min_credits_per_course: 3,
+      pathing: true,
       description:
         "Two courses within a coherent field of interest. For more detail please visit " +
         "https://e-catalogue.jhu.edu/engineering/full-time-residential-programs/degree-programs/applied-mathematics-statistics/applied-mathematics-statistics-bs/#requirementstext",
