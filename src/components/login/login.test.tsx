@@ -4,6 +4,7 @@ import {
   screen,
   waitFor,
   cleanup,
+  act,
 } from '@testing-library/react';
 import '@testing-library/jest-dom';
 import { Router } from 'react-router-dom';
@@ -13,18 +14,15 @@ import { Provider } from 'react-redux';
 import { store } from '../../appStore/store';
 import { rest } from 'msw';
 import { setupServer } from 'msw/node';
+import { api } from '../../resources/assets';
+
 
 const server = setupServer(
-  // capture "GET /greeting" requests
-  rest.get('/retrieveUser', (req, res, ctx) => {
-    // respond using a mocked JSON body
-    const { userid } = req.body;
+  rest.get(api + '/retrieveUser/', (req, res, ctx) => {
     return res(
-      // Send a valid HTTP status code
-      ctx.status(404),
-      // And a response body, if necessary
+      ctx.status(403),
       ctx.json({
-        errorMessage: `User '${userid}' not found`,
+        errorMessage: `User not found`,
       }),
     );
   }),
@@ -33,16 +31,22 @@ const server = setupServer(
 let history = createMemoryHistory({ initialEntries: ['/login'] });
 beforeEach(() => {
   history = createMemoryHistory({ initialEntries: ['/login'] });
-  render(
+  act(() => {render(
     <Provider store={store}>
       <Router location={history.location} navigator={history}>
         <DashboardEntry />
       </Router>
     </Provider>,
-  );
+  )});
+  server.listen();
 });
 
-afterEach(cleanup);
+afterEach(() => {
+  cleanup();
+  server.resetHandlers();
+});
+
+afterAll(() => server.close())
 
 test('SSO login and guest login exist', async () => {
   expect(screen.getByText('JHU SSO Login')).toBeInTheDocument();
@@ -59,8 +63,9 @@ test('SSO login has correct redirect', async () => {
 
 test('Guest login continues', async () => {
   server.use();
-  await waitFor(() => expect(history.location.pathname).toBe('/login'));
-  fireEvent.click(screen.getByText('Continue as guest'));
-
-  await waitFor(() => expect(history.location.pathname).toBe('/dashboard'));
+  
+  await waitFor(() => {
+    fireEvent.click(screen.getByText('Continue as guest'));
+    expect(history.location.pathname).toBe('/dashboard');
+  })
 });
