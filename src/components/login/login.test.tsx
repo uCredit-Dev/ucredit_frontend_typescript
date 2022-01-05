@@ -16,7 +16,6 @@ import { rest } from 'msw';
 import { setupServer } from 'msw/node';
 import { api } from '../../resources/assets';
 
-
 const server = setupServer(
   rest.get(api + '/retrieveUser/', (req, res, ctx) => {
     return res(
@@ -31,13 +30,15 @@ const server = setupServer(
 let history = createMemoryHistory({ initialEntries: ['/login'] });
 beforeEach(() => {
   history = createMemoryHistory({ initialEntries: ['/login'] });
-  act(() => {render(
-    <Provider store={store}>
-      <Router location={history.location} navigator={history}>
-        <DashboardEntry />
-      </Router>
-    </Provider>,
-  )});
+  act(() => {
+    render(
+      <Provider store={store}>
+        <Router location={history.location} navigator={history}>
+          <DashboardEntry />
+        </Router>
+      </Provider>,
+    );
+  });
   server.listen();
 });
 
@@ -46,7 +47,7 @@ afterEach(() => {
   server.resetHandlers();
 });
 
-afterAll(() => server.close())
+afterAll(() => server.close());
 
 test('SSO login and guest login exist', async () => {
   expect(screen.getByText('JHU SSO Login')).toBeInTheDocument();
@@ -63,9 +64,9 @@ test('SSO login has correct redirect', async () => {
 
 test('Guest login continues', async () => {
   server.use();
-  
+
   await waitFor(() => {
     fireEvent.click(screen.getByText('Continue as guest'));
     expect(history.location.pathname).toBe('/dashboard');
-  })
+  });
 });
