@@ -1,8 +1,8 @@
 import axios from 'axios';
 import { FC } from 'react';
-import { selectBlueButton } from '../../../slices/experimentSlice';
+//import { selectBlueButton } from '../../../slices/experimentSlice';
 import { useSelector } from 'react-redux';
-import { experiment, selectExperiments } from '../../../slices/experimentSlice';
+//import { experiment, selectExperiments } from '../../../slices/experimentSlice';
 import { ReactComponent as Beaker } from '../../../resources/svg/Beaker.svg'
 
 // import { toast } from 'react-toastify';
@@ -19,27 +19,13 @@ const ExperimentPopup: FC<{ experimentPopup: boolean}> = ({
           </div>
 
   */
-  const api = "https://ucredit-experiments-api.herokuapp.com/api/experiments/";
-  const jhed_id = "mtiavis1";
   
-  axios
-    .get(`${api}` + `${jhed_id}`)
-    .then(function (response) {
-      // handle success
-      //don't just print response, do response.data for the return value
-      console.log(response.data);
-    })
-    .catch(function (error) {
-      // handle error
-      console.log(error);
-    });
-    // z-50 flex-none mx-4 p-6 w-96 h-auto bg-white rounded shadow
-    // "absolute flex justify-end translate-x-full bg-white h-32 w-32 box-content h-100 w-100 p-2 border-4" 
   return (
     <>
+      <Beaker/>
       { experimentPopup ? 
         <div
-          className="absolute flex flex-col justify-between place-items-end translate-x-full bg-white h-32 w-32 box-content h-100 w-100 p-2 border-4"
+          className="z-50 absolute flex flex-col justify-between place-items-end translate-x-full bg-white h-32 w-32 box-content h-100 w-100 p-2 border-4"
         >
           <label className="custom-label flex mt-2 ml-3">
             <span className="select-none">Experiment1  </span>
@@ -64,7 +50,7 @@ const ExperimentPopup: FC<{ experimentPopup: boolean}> = ({
           </label>
         </div>
         : null
-    }
+      }
     </>
   );
 };

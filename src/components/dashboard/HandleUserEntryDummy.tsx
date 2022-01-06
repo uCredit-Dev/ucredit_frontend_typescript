@@ -28,6 +28,7 @@ import {
 import { useCookies } from 'react-cookie';
 import { useNavigate } from 'react-router';
 import { getMajorFromCommonName } from '../../resources/majors';
+import { selectExperimentList, setExperimentStatus } from '../../slices/experimentSlice'
 
 /**
  * Handles dashboard user entry and login logic.
@@ -43,6 +44,7 @@ const HandleUserEntryDummy: FC<{
   const generatePlanAddStatus = useSelector(selectGeneratePlanAddStatus);
   const currentCourses = useSelector(selectCurrentPlanCourses);
   const planList = useSelector(selectPlanList);
+  const experimentList = useSelector(selectExperimentList);
 
   // Component state setup
   const [toAdd, setToAdd] = useState<Year[]>([]);
@@ -355,6 +357,7 @@ const HandleUserEntryDummy: FC<{
       }
     }
     newPlanList.sort((p1: Plan, p2: Plan) => p1._id.localeCompare(p2._id));
+    console.log(`hello from 359${id}`)
     dispatch(updatePlanList(newPlanList));
     dispatch(updateCurrentPlanCourses(added));
     dispatch(updateSelectedPlan(newPlan));
@@ -511,9 +514,33 @@ const HandleUserEntryDummy: FC<{
       }),
     );
 
+  const updateExperimentsForUser = (jhed: string | null) => {
+    // use api from assets.tsx, move experiments and make a new route instead
+    const experimentAPI = "https://ucredit-experiments-api.herokuapp.com/api/experiments/";
+    axios
+    .get(`${experimentAPI}${jhed}`)
+    .then(function (response) {
+      const resp = response.data.data;
+      console.log("resp: ")
+      console.log(resp)
+      experimentList.forEach((experiment, index) => dispatch(setExperimentStatus([index, resp.includes(experiment.name)])));
+      
+      console.log("in function: ")
+      console.log(experimentList);
+    })
+    .catch(function (error) {
+      console.log(error);
+    });
+  }
+
   // Useffect runs once on page load, calling to https://ucredit-api.herokuapp.com/api/retrieveUser to retrieve user data.
   // On successful retrieve, update redux with retrieved user,
   useEffect(() => {
+    updateExperimentsForUser(user._id); //Handles updating redux for the experiments that a user is participating in.
+    /*
+    console.log("hello: ");
+    console.log(experimentList) 
+    */
     if (id !== null) {
       // Retrieves user if user ID is "noUser", the initial user id state for userSlice.tsx.
       // Make call for backend const cookieVals = document.cookie.split("=");
@@ -536,7 +563,7 @@ const HandleUserEntryDummy: FC<{
             closeOnClick: false,
           });
           dispatch(updateUser(retrievedUser.data.data));
-
+          updateExperimentsForUser(user._id); //I think need another call here in case the account is new on Ucredit
           // // means that the user entered a sharable link
           // // first login with guest, then populate the plan with the information from the id
           navigate('/dashboard');
@@ -576,11 +603,15 @@ const HandleUserEntryDummy: FC<{
         .then((retrievedUser) => {
           dispatch(updateUser(retrievedUser.data.data));
         })
+        .then((tmp) => {
+          console.log("then: " + user._id)
+        })
         .catch((err) => {
           console.log('ERROR: ', err);
           navigate('/login');
         });
     }
+
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [document.cookie]);
 
@@ -600,7 +631,6 @@ const HandleUserEntryDummy: FC<{
         );
         navigate('/login');
       });
-
     let plan: Plan = planResponse.data.data;
     // get the years of that plan, stored in years
     const yearsResponse: any = await axios

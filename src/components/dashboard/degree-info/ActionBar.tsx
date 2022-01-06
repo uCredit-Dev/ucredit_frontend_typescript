@@ -208,10 +208,6 @@ const ActionBar: FC<{
           />
         </div>
       </div>
-      <div
-      > 
-        <ExperimentPopup experimentPopup={experimentPopup}/>
-      </div>
     </>
   );
 };

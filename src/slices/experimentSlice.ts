@@ -7,43 +7,40 @@ export type experiment = {
 }
 
 type ExperimentSlice = {
-  red_button: experiment,
-  green_button: experiment,
-  blue_button: experiment,
+  experimentList: experiment[],
 }
 
 const initialState: ExperimentSlice = {
-  red_button:   { name: "Red Button", active: false },
-  green_button: { name: "Green Button", active: false},
-  blue_button:  { name: "Blue Button", active: false},
+  experimentList: [
+    { name: "Red Button", active: false },
+    { name: "Green Button", active: false},
+    { name: "Blue Button", active: false},
+  ],
 }
 
 export const experimentSlice = createSlice({
   name: "experiments",
   initialState,
   reducers: {
-    setRedButton: (state: any, action: PayloadAction<boolean>) => {
-      state.red_button.active = action.payload;
+    setExperimentStatus: (state: any, action: PayloadAction<[number, boolean]>) => {
+      let tmp = [...state.experimentList];
+      tmp[action.payload[0]].active = action.payload[1];
+      state.experimentList = tmp;
+      // console.log(action.payload)
     },
-    setGreenButton: (state: any, action: PayloadAction<boolean>) => {
-      state.green_button.active = action.payload;
-    },
-    setBlueButton: (state: any, action: PayloadAction<boolean>) => {
-      state.blue_button.active = action.payload;
-    },
+    toggleExperimentStatus: (state: any, action: PayloadAction<number>) => {
+      let tmp = [...state.experimentList]
+      tmp[action.payload].active = !tmp[action.payload].active;
+      state.experimentList = tmp;
+    }
   }
 });
 
 export const {
-  setRedButton,
-  setGreenButton,
-  setBlueButton,
+  setExperimentStatus,
+  toggleExperimentStatus
 } = experimentSlice.actions;
 
 // Selector Functions
-export const selectExperiments = (state: RootState) => state.experiment;
-export const selectRedButton = (state: RootState) => state.experiment.red_button;
-export const selectGreenButton = (state: RootState) => state.experiment.green_button;
-export const selectBlueButton = (state: RootState) => state.experiment.blue_button;
-
+export const selectExperimentList = (state: RootState) => state.experiment.experimentList;
 export default experimentSlice.reducer;
