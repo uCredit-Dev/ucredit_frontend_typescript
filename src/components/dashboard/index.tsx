@@ -27,6 +27,7 @@ import CourseDisplayPopup from '../popups/CourseDisplayPopup';
 import DeleteCoursePopup from '../popups/DeleteCoursePopup';
 import DeletePlanPopup from '../popups/DeletePlanPopup';
 import DeleteYearPopup from '../popups/DeleteYearPopup';
+import ExperimentDevBoardPopup from '../popups/ExperimentDevBoardPopup';
 import PlanAdd from '../popups/PlanAdd';
 import CourseList from './course-list/CourseList';
 import InfoMenu from './InfoMenu';
@@ -67,6 +68,7 @@ const Dashboard: FC<{ id: string | null }> = ({ id }) => {
   const [showHeader, setShowHeader] = useState<boolean>(true);
   const [dropdown, setDropdown] = useState<boolean>(false);
   const [experimentPopup, setExperimentPopup] = useState<boolean>(false);
+  const [experimentDevBoardPopup, setExperimentDevBoardPopup] = useState<boolean>(false);
   const [shareableURL, setShareableURL] = useState<string>('');
 
   // Handles plan change event.
@@ -163,6 +165,8 @@ const Dashboard: FC<{ id: string | null }> = ({ id }) => {
                   setDropdown={setDropdown}
                   experimentPopup={experimentPopup}
                   setExperimentPopup={setExperimentPopup}
+                  experimentDevBoardPopup={experimentDevBoardPopup}
+                  setExperimentDevBoardPopup={setExperimentDevBoardPopup}
                   onShareClick={onShareClick}
                 />
                 {dropdown ? (
@@ -224,6 +228,7 @@ const Dashboard: FC<{ id: string | null }> = ({ id }) => {
         {deleteYearStatus ? <DeleteYearPopup /> : null}
         {deleteCourseStatus ? <DeleteCoursePopup /> : null}
         {courseInfoStatus ? <CourseDisplayPopup /> : null}
+        {experimentDevBoardPopup ? <ExperimentDevBoardPopup /> : null}
       </div>
     </div>
   );

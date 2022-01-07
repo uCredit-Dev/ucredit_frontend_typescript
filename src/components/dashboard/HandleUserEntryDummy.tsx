@@ -28,7 +28,11 @@ import {
 import { useCookies } from 'react-cookie';
 import { useNavigate } from 'react-router';
 import { getMajorFromCommonName } from '../../resources/majors';
-import { selectExperimentList, setExperimentStatus } from '../../slices/experimentSlice'
+import {
+  selectExperimentList,
+  setExperimentStatus,
+  setWhiteListStatus,
+} from '../../slices/experimentSlice';
 
 /**
  * Handles dashboard user entry and login logic.
@@ -357,7 +361,7 @@ const HandleUserEntryDummy: FC<{
       }
     }
     newPlanList.sort((p1: Plan, p2: Plan) => p1._id.localeCompare(p2._id));
-    console.log(`hello from 359${id}`)
+    console.log(`hello from 359${id}`);
     dispatch(updatePlanList(newPlanList));
     dispatch(updateCurrentPlanCourses(added));
     dispatch(updateSelectedPlan(newPlan));
@@ -516,22 +520,33 @@ const HandleUserEntryDummy: FC<{
 
   const updateExperimentsForUser = (jhed: string | null) => {
     // use api from assets.tsx, move experiments and make a new route instead
-    const experimentAPI = "https://ucredit-experiments-api.herokuapp.com/api/experiments/";
+    const experimentAPI =
+      'https://ucredit-experiments-api.herokuapp.com/api/experiments/';
     axios
-    .get(`${experimentAPI}${jhed}`)
-    .then(function (response) {
-      const resp = response.data.data;
-      console.log("resp: ")
-      console.log(resp)
-      experimentList.forEach((experiment, index) => dispatch(setExperimentStatus([index, resp.includes(experiment.name)])));
-      
-      console.log("in function: ")
-      console.log(experimentList);
-    })
-    .catch(function (error) {
-      console.log(error);
-    });
-  }
+      .get(`${experimentAPI}${jhed}`)
+      .then(function (response) {
+        const resp = response.data.data;
+        console.log('resp: ');
+        console.log(resp);
+        experimentList.forEach((experiment, index) => {
+          if (experiment.name === 'White List') {
+            dispatch(
+              setWhiteListStatus(true),
+            );
+          } else {
+            dispatch(
+              setExperimentStatus([index, resp.includes(experiment.name)]),
+            );
+          }
+        });
+
+        console.log('in function: ');
+        console.log(experimentList);
+      })
+      .catch(function (error) {
+        console.log(error);
+      });
+  };
 
   // Useffect runs once on page load, calling to https://ucredit-api.herokuapp.com/api/retrieveUser to retrieve user data.
   // On successful retrieve, update redux with retrieved user,
@@ -602,9 +617,7 @@ const HandleUserEntryDummy: FC<{
         })
         .then((retrievedUser) => {
           dispatch(updateUser(retrievedUser.data.data));
-        })
-        .then((tmp) => {
-          console.log("then: " + user._id)
+          updateExperimentsForUser(retrievedUser.data.data._id); //Update experiments on refresh
         })
         .catch((err) => {
           console.log('ERROR: ', err);
