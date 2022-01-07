@@ -514,17 +514,28 @@ const bsBME: Major = {
         "^OR^EN.553.310[C]^OR^EN.553.311[C]^OR^EN.553.413[C]^OR^EN.553.430[C]^OR^EN.553.433[C]^OR^EN.560.348[C]",
       fine_requirements: [
         {
-          description:
-            "<b>Required Courses:</b> <br /> AS.110.108 Calculus I (Physical Sciences & Engineering) <br />" +
-            "AS.110.109 Calculus II (Physical Sciences & Engineering) <br /> (AS.110.202 Calculus III <br /> <i>OR</i> <br /> AS.110.211 Honors Multivariable Calculus)" +
-            "<br /> EN.553.291 Linear Algebra and Differential Equations",
-          required_credits: 16,
-          criteria:
-            "AS.110.108[C]^OR^AS.110.109[C]^OR^AS.110.202[C]^OR^AS.110.211[C]^OR^EN.553.291[C]",
+          description: "<b>Calculus I</b> <br /> AS.110.108 Calculus I (Physical Sciences & Engineering)",
+          required_credits: 4,
+          criteria: "AS.110.108[C]",
+        },
+        {
+          description: "<b>Calculus II</b> <br /> AS.110.109 Calculus II (Physical Sciences & Engineering)",
+          required_credits: 4,
+          criteria: "AS.110.109[C]",
+        },
+        {
+          description: "<b>Calculus III</b> <br /> AS.110.202 Calculus III <br /> <i>OR</i> <br /> AS.110.211 Honors Multivariable Calculus",
+          required_credits: 4,
+          criteria: "AS.110.202[C]^OR^AS.110.211[C]",
+        },
+        {
+          description: "<b>Linear Algebra and Differential Equations</b> <br /> EN.553.291 Linear Algebra and Differential Equations",
+          required_credits: 4,
+          criteria: "EN.553.291[C]",
         },
         {
           description:
-            "<b>Select one of the following:</b> <br /> EN.553.310 Probability and Statistics for the Physical Sciences and Engineering <br />" +
+            "<b>Probability and Statistics</b> <br /> Select one of the following: <br /> EN.553.310 Probability and Statistics for the Physical Sciences and Engineering <br />" +
             "EN.553.311 Probability and Statistics for the Biological Sciences & Engineering <br /> EN.553.413 Applied Statistics and Data Analysis <br />" +
             "EN.553.430 Introduction to Statistics <br /> EN.553.433 Monte Carlo Methods <br /> EN.560.348 Probability & Statistics in Civil Engineering",
           required_credits: 3,
@@ -548,8 +559,8 @@ const bsBME: Major = {
       min_credits_per_course: 1,
       pathing: true,
       description: 
-        "<b>The student must select at least 21 credits from the approved list of courses for a specific focus area. Coordinate with your advisor to" + 
-        " determine the best combination of classes for you:</b>" ,
+        "The student must select at least 21 credits from the approved list of courses for a specific focus area. Coordinate with your advisor to" + 
+        " determine the best combination of classes for you:" ,
       criteria: "BMED-BDS[T]^OR^BMED-CM[T]^OR^BMED-GSB[T]^OR^BMED-IMD[T]^OR^BMED-IMMU[T]^OR^BMED-NE[T]^OR^BMED-TCTE[T]",
       fine_requirements: [
         {
@@ -594,20 +605,7 @@ const bsBME: Major = {
       required_credits: 6,
       min_credits_per_course: 3,
       description:
-        "Select at least one of the following design sequences: <br /> (EN.500.308 Multidisciplinary Engineering Design I <br />" + 
-        "<i>AND</i> <br /> EN.500.309 Advanced Multidisciplinary Design) <br /> (EN.510.433 Senior Design Research <br /> <i>AND</i> <br /> EN.510.434 Senior Design/Research II)" +
-        "(This option must be approved by the Materials Science & Engineering Department) <br />" +
-        "(EN.520.462 Leading Innovation Design Team <br /> <i>AND</i> <br /> EN.520.463 Leading Innovation Design Team II) <br />" +
-        "(EN.520.498 Senior Design Project <br /> <i>AND</i> <br /> EN.520.499 Senior Design Project II) <br />" +
-        "(EN.540.400 Project in Design: Pharmacokinetics <br /> <i>AND</i> <br /> EN.540.421 Project in Design: Pharmacodynamics) <br />" +
-        "(EN.580.311 Design Team Health Tech Project I <br /> <i>AND</i> <br /> EN.580.312 Design Team Health Tech Project II) <br />" + 
-        "(EN.580.411 Design Team Health Tech Project I <br /> <i>AND</i> <br /> EN.580.412 Design Team Health Tech Project II) <br />" +
-        "(EN.580.437 Neuro Data Design I <br /> <i>AND</i> <br /> EN.580.438 Neuro Data Design II) <br />" +
-        "(EN.580.456 Introduction to Rehabilitation Engineering <br /> <i>AND</i> <br /> EN.580.457 Introduction to Rehabilitation Engineering: Design Lab) <br />" +
-        "EN.580.471 Principles of Design of BME Instrumentation <br /> (EN.580.480 Precision Care Medicine I <br />" +
-        "<i>AND</i> <br /> EN.580.481 Precision Care Medicine II) <br /> (EN.580.580 Senior Design Project I <br /> <i>AND</i> <br />" +
-        "EN.580.581 Senior Design Project II) <br /> (EN.601.455 Computer Integrated Surgery I <br /> <i>AND</i> <br />" +
-        "EN.601.456 Computer Integrated Surgery II)",
+        "Select at least one of the following design sequences",
       criteria: 
         "(EN.510.433[C]^OR^EN.510.434[C])^OR^(EN.520.462[C]^OR^EN.520.463[C])^OR^" +
         "(EN.520.498[C]^OR^EN.520.499[C])^OR^(EN.540.400[C]^OR^EN.540.421[C])^OR^" +
@@ -615,6 +613,84 @@ const bsBME: Major = {
         "(EN.580.456[C]^OR^EN.580.457[C])^OR^(EN.580.471[C]^OR^EN.580.571[C])^OR^" +
         "(EN.580.480[C]^OR^EN.580.481[C])^OR^(EN.580.580[C]^OR^EN.580.581[C])^OR^" +
         "(EN.601.455[C]^OR^EN.601.456[C])^OR^(EN.580.437[C]^OR^EN.580.438[C])",
+      pathing: true,
+      fine_requirements: [
+        {
+          description: "<b>EN.500.308 and EN.500.309</b> <br /> EN.500.308 Multidisciplinary Engineering Design I <br /> EN.500.309 Advanced Multidisciplinary Design",
+          required_credits: 6,
+          criteria: "EN.500.308[C]^OR^EN.500.309[C]",
+        },
+        {
+          description: 
+            "<b>EN.510.433 and EN.510.434</b> <br /> EN.510.433 Senior Design Research <br /> EN.510.434 Senior Design/Research II <br />" +
+            "(This option must be approved by the Materials Science & Engineering Department)",
+          required_credits: 6,
+          criteria: "EN.510.433[C]^OR^EN.510.434[C]",
+        },
+        {
+          description: "<b>EN.520.462 and EN.520.463</b> <br /> EN.520.462 Leading Innovation Design Team <br /> EN.520.463 Leading Innovation Design Team II",
+          required_credits: 6,
+          criteria: "EN.520.462[C]^OR^EN.520.463[C]",
+        },
+        {
+          description: "<b>EN.520.498 and EN.520.499</b> <br /> EN.520.498 Senior Design Project <br /> EN.520.499 Senior Design Project II",
+          required_credits: 6,
+          criteria: "EN.520.498[C]^OR^EN.520.499[C]",
+        },
+        {
+          description: "<b>EN.540.400 and EN.540.421</b> <br /> EN.540.400 Project in Design: Pharmacokinetics <br /> EN.540.421 Project in Design: Pharmacodynamics",
+          required_credits: 6,
+          criteria: "EN.540.400[C]^OR^EN.540.421[C]",
+        },
+        {
+          description: "<b>EN.580.311 and EN.580.312</b> <br /> EN.580.311 Design Team Health Tech Project I <br /> EN.580.312 Design Team Health Tech Project II",
+          required_credits: 6,
+          criteria: "EN.580.311[C]^OR^EN.580.312[C]",
+        },
+        {
+          description: "<b>EN.580.411 and EN.580.412</b> <br /> EN.580.411 Design Team Health Tech Project I <br /> EN.580.412 Design Team Health Tech Project II",
+          required_credits: 6,
+          criteria: "EN.580.411[C]^OR^EN.580.412[C]",
+        },
+        {
+          description: "<b>EN.580.437 and EN.580.438</b> <br /> EN.580.437 Neuro Data Design I <br /> EN.580.438 Neuro Data Design II",
+          required_credits: 6,
+          criteria: "EN.580.437[C]^OR^EN.580.438[C]",
+        },
+        {
+          description: "<b>EN.580.456 and EN.580.457</b> <br /> EN.580.456 Introduction to Rehabilitation Engineering <br /> EN.580.457 Introduction to Rehabilitation Engineering: Design Lab",
+          required_credits: 6,
+          criteria: "EN.580.456[C]^OR^EN.580.457[C]",
+        },
+        {
+          description: "<b>EN.580.471 and EN.580.571</b> <br /> EN.580.471 Principles of Design of BME Instrumentation <br /> EN.580.571 Honors Instrumentation",
+          required_credits: 6,
+          criteria: "EN.580.471[C]^OR^EN.580.571[C]",
+        },
+        {
+          description: "<b>EN.580.480 and EN.580.481</b> <br /> EN.580.480 Precision Care Medicine I <br /> EN.580.481 Precision Care Medicine II",
+          required_credits: 6,
+          criteria: "EN.580.480[C]^OR^EN.580.481[C]",
+        },
+        {
+          description: "<b>EN.580.580 and EN.580.581</b> <br /> EN.580.580 Senior Design Project I <br /> EN.580.581 Senior Design Project II",
+          required_credits: 6,
+          criteria: "EN.580.580[C]^OR^EN.580.581[C]",
+        },
+        {
+          description: "<b>EN.601.455 and EN.601.456</b> <br /> EN.601.455 Computer Integrated Surgery I <br /> EN.601.456 Computer Integrated Surgery II",
+          required_credits: 6,
+          criteria: "EN.601.455[C]^OR^EN.601.456[C]",
+        },
+      ]
+    },
+    {
+      name: "Other Electives",
+      required_credits: 9,
+      min_credits_per_course: 1,
+      description: "Select 9 credits from any area.",
+      criteria: "",
+      user_select: true,
     },
     {
       name: "Humanities and Social Sciences",
