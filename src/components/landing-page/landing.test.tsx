@@ -69,3 +69,66 @@ test('Get started redirects', async () => {
 
   expect(history.location.pathname).toBe('/login');
 });
+
+test('Carousel navigation exists', async () => {
+  expect(screen.getByLabelText('previous slide / item')).toBeVisible();
+  expect(screen.getByLabelText('next slide / item')).toBeVisible();
+  expect(screen.getByLabelText('slide item 1')).toBeVisible();
+  expect(screen.getByLabelText('slide item 2')).toBeVisible();
+})
+
+test('Navigation arrows works', async () => {
+  let first = screen.getByLabelText('slide item 1');
+  let second = screen.getByLabelText('slide item 2');
+
+  expect(first.classList.contains('selected')).toBe(true);
+  expect(second.classList.contains('selected')).toBe(false);
+
+  fireEvent.click(screen.getByLabelText('next slide / item'));
+
+  expect(first.classList.contains('selected')).toBe(false);
+  expect(second.classList.contains('selected')).toBe(true);
+
+  fireEvent.click(screen.getByLabelText('next slide / item'));
+
+  expect(first.classList.contains('selected')).toBe(true);
+  expect(second.classList.contains('selected')).toBe(false);
+
+  fireEvent.click(screen.getByLabelText('previous slide / item'));
+
+  expect(first.classList.contains('selected')).toBe(false);
+  expect(second.classList.contains('selected')).toBe(true);
+
+  fireEvent.click(screen.getByLabelText('previous slide / item'));
+
+  expect(first.classList.contains('selected')).toBe(true);
+  expect(second.classList.contains('selected')).toBe(false);
+})
+
+test('Navigation circles work', async () => {
+  let first = screen.getByLabelText('slide item 1');
+  let second = screen.getByLabelText('slide item 2');
+
+  expect(first.classList.contains('selected')).toBe(true);
+  expect(second.classList.contains('selected')).toBe(false);
+
+  fireEvent.click(second);
+
+  expect(first.classList.contains('selected')).toBe(false);
+  expect(second.classList.contains('selected')).toBe(true);
+
+  fireEvent.click(second);
+
+  expect(first.classList.contains('selected')).toBe(false);
+  expect(second.classList.contains('selected')).toBe(true);
+
+  fireEvent.click(first);
+
+  expect(first.classList.contains('selected')).toBe(true);
+  expect(second.classList.contains('selected')).toBe(false);
+
+  fireEvent.click(first);
+
+  expect(first.classList.contains('selected')).toBe(true);
+  expect(second.classList.contains('selected')).toBe(false);
+})

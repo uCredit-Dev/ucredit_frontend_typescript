@@ -63,6 +63,8 @@ test('SSO login has correct redirect', async () => {
 });
 
 test('Guest login continues', async () => {
+  jest.spyOn(console, 'log').mockImplementation(() => {});
+  jest.spyOn(console, 'error').mockImplementation(() => {});
   server.use();
 
   await waitFor(() => {
