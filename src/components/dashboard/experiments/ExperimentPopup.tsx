@@ -10,7 +10,8 @@ import { ReactComponent as Beaker } from '../../../resources/svg/Beaker.svg'
 const ExperimentPopup: FC<{ experimentPopup: boolean}> = ({
   experimentPopup,
 }) => {
-  // const experiments = useSelector(selectExperiments);
+  const experiments = useSelector(selectExperiments);
+  console.log(experiments)
   // z-40 fixed flex flex-col shadow rounded z-20 h-4/5 top-1/3 left-1/2 transform -translate-x-1/2 -translate-y-1/3"
   /*
         <div className="relative h-32 w-32 box-content h-100 w-100 p-2 border-4"> 
@@ -19,20 +20,6 @@ const ExperimentPopup: FC<{ experimentPopup: boolean}> = ({
           </div>
 
   */
-  const api = "https://ucredit-experiments-api.herokuapp.com/api/experiments/";
-  const jhed_id = "mtiavis1";
-  
-  axios
-    .get(`${api}` + `${jhed_id}`)
-    .then(function (response) {
-      // handle success
-      //don't just print response, do response.data for the return value
-      console.log(response.data);
-    })
-    .catch(function (error) {
-      // handle error
-      console.log(error);
-    });
     // z-50 flex-none mx-4 p-6 w-96 h-auto bg-white rounded shadow
     // "absolute flex justify-end translate-x-full bg-white h-32 w-32 box-content h-100 w-100 p-2 border-4" 
   return (

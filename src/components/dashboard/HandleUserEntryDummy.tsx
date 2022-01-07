@@ -28,6 +28,7 @@ import {
 import { useCookies } from 'react-cookie';
 import { useNavigate } from 'react-router';
 import { getMajorFromCommonName } from '../../resources/majors';
+import { setRedButton, setBlueButton, setGreenButton, setWhiteList } from '../../slices/experimentSlice';
 
 /**
  * Handles dashboard user entry and login logic.
@@ -511,9 +512,35 @@ const HandleUserEntryDummy: FC<{
       }),
     );
 
+  const getExperiments = (jhed: string) => {
+    const apiExperiemnt =
+      'https://ucredit-experiments-api.herokuapp.com/api/experiments/';
+
+    axios
+      .get(`${apiExperiemnt}${jhed}`)
+      .then(function (response) {
+        const listOfExperiments = response.data.data;
+        for(const experiment of listOfExperiments) {
+          if (experiment === "Red Button") {
+            dispatch(setRedButton(true));
+          } else if (experiment === "Blue Button") {
+            dispatch(setBlueButton(true));
+          } else if (experiment === "Green Button") {
+            dispatch(setGreenButton(true));
+          } else if (experiment === "White List") {
+            dispatch(setWhiteList(true))
+          }
+        }
+      })
+      .catch(function (error) {
+        console.log(error);
+      });
+  };
+
   // Useffect runs once on page load, calling to https://ucredit-api.herokuapp.com/api/retrieveUser to retrieve user data.
   // On successful retrieve, update redux with retrieved user,
   useEffect(() => {
+    getExperiments(user._id); //On first login, update redux experiments for a user
     if (id !== null) {
       // Retrieves user if user ID is "noUser", the initial user id state for userSlice.tsx.
       // Make call for backend const cookieVals = document.cookie.split("=");
@@ -536,7 +563,6 @@ const HandleUserEntryDummy: FC<{
             closeOnClick: false,
           });
           dispatch(updateUser(retrievedUser.data.data));
-
           // // means that the user entered a sharable link
           // // first login with guest, then populate the plan with the information from the id
           navigate('/dashboard');
@@ -575,6 +601,7 @@ const HandleUserEntryDummy: FC<{
         })
         .then((retrievedUser) => {
           dispatch(updateUser(retrievedUser.data.data));
+          getExperiments(retrievedUser.data.data._id); //When refresh, update redux experiments for a user
         })
         .catch((err) => {
           console.log('ERROR: ', err);
