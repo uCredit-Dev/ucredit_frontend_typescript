@@ -75,7 +75,7 @@ test('Carousel navigation exists', async () => {
   expect(screen.getByLabelText('next slide / item')).toBeVisible();
   expect(screen.getByLabelText('slide item 1')).toBeVisible();
   expect(screen.getByLabelText('slide item 2')).toBeVisible();
-})
+});
 
 test('Navigation arrows works', async () => {
   let first = screen.getByLabelText('slide item 1');
@@ -103,7 +103,7 @@ test('Navigation arrows works', async () => {
 
   expect(first.classList.contains('selected')).toBe(true);
   expect(second.classList.contains('selected')).toBe(false);
-})
+});
 
 test('Navigation circles work', async () => {
   let first = screen.getByLabelText('slide item 1');
@@ -131,4 +131,4 @@ test('Navigation circles work', async () => {
 
   expect(first.classList.contains('selected')).toBe(true);
   expect(second.classList.contains('selected')).toBe(false);
-})
+});
