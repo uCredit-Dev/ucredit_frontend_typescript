@@ -23,7 +23,7 @@ const FineDistribution: FC<{
   distributionOpen: boolean;
   hidden: boolean;
 }> = ({ dis, distributionOpen, hidden }) => {
-  const [showDistrDesc, setShowDistrDesc] = useState<boolean>(false);
+  const [showDistrDesc, setShowDistrDesc] = useState<boolean>(true);
   const [displayAdd, setDisplayAdd] = useState(false);
   const [flipped, setFlipped] = useState<string[]>([]);
   const [plannedCredits, setPlannedCredits] = useState(dis.fulfilled_credits);
