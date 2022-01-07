@@ -20,7 +20,7 @@ const DashboardEntry: FC = () => {
   const dispatch = useDispatch();
   const user = useSelector(selectUser);
   const [cookies] = useCookies();
-  const [finishedLoginCheck, setFinishedLoginCheck] = useState(false);
+  const [finishedLoginCheck, setFinishedLoginCheck] = useState(true);
 
   // React router state setup.
   let navigate = useNavigate();
@@ -49,6 +49,7 @@ const DashboardEntry: FC = () => {
 
   // Initial login for when the user is the initial state, no_user.
   const initialLogin = (): void => {
+    setFinishedLoginCheck(false);
     const loginId = getLoginCookieVal(cookies);
     fetch(api + '/retrieveUser/' + loginId, {
       mode: 'cors',

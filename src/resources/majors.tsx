@@ -1622,17 +1622,39 @@ const CS_Minor_New: Minor = {
       fine_requirements: [
         {
           description:
-            '<b>Lower Level Undergraduate:</b><p>500.112/113/114 Gateway Computing or AP Comp Sci A or ' +
-            'equivalent<p>601.220 Intermediate Programming</p><p>601.226 Data Structures</p><p> ' +
-            'any CS course >= 601.200 that is at least 3 credits. ',
-          required_credits: 14,
-          criteria:
-            'EN.500.112[C]^OR^EN.500.113[C]^OR^EN.500.114[C]^OR^EN.601.220[C]^OR^EN.601.226[C]^OR^(EN Computer Science[D]^AND^(Lower Level Undergraduate[L]^OR^Upper Level Undergraduate[L]))',
+            '<b>500.112/113/114 Gateway Computing or AP Comp Sci A or ' +
+            'equivalent</b>',
+          required_credits: 3,
+          criteria: 'EN.500.112[C]^OR^EN.500.113[C]^OR^EN.500.114[C]',
+        },
+        {
+          description: '<b>601.220 Intermediate Programming</b>',
+          required_credits: 4,
+          criteria: 'EN.601.220[C]',
+        },
+        {
+          description: '<b>601.226 Data Structures</b>',
+          required_credits: 4,
+          criteria: 'EN.601.226[C]',
         },
         {
           description:
-            '<b>Upper Level Undergraduate: </b><p>12 upper level CS credits that form a cohesive program of study. One way is to choose all three courses within one or two area tag classifications (CSCI-APPL, CSCI-SOFT, CSCI-THRY, CSCI-RSNG, CSCI-SYST)</p>',
-          required_credits: 12,
+            '<b>Elective Course. Any CS course >= 601.200 that is at least three credits</b>',
+          required_credits: 3,
+          criteria:
+            'EN.601.2[C]^OR^EN.600.2[C]^OR^EN.601.3[C]^OR^EN.600.3[C]^OR^EN.601.4[C]^OR^EN.600.4[C]^OR^EN.601.5[C]^OR^EN.600.5[C]^OR^EN.601.6[C]^OR^EN.600.6[C]^OR^EN.601.7[C]^OR^EN.600.7[C]',
+          exclusive: true,
+        },
+        {
+          description:
+            '<b>Discrete Math:</b> Although not explicitly required, EN.553.171 Discrete Math is also strongly recommended for CS minors but does not count towards the minor requirements',
+          required_credits: 0,
+          criteria: 'EN.553.171[C]',
+        },
+        {
+          description:
+            '<b>Upper Level Undergraduate: </b><p>9 upper level CS credits that form a cohesive program of study and <b>must be approved by the computer science minor advisor</b>. One way is to choose all three courses within one or two area tag classifications (CSCI-APPL, CSCI-SOFT, CSCI-THRY, CSCI-RSNG, CSCI-SYST)</p>',
+          required_credits: 9,
           criteria: 'EN Computer Science[D]^AND^Upper Level Undergraduate[L]',
         },
       ],
@@ -1658,12 +1680,6 @@ const CS_Minor_Old: Minor = {
       criteria:
         'EN Computer Science[D]^OR^CSCI-OTHER[T]^OR^Gateway Computing[N]',
       fine_requirements: [
-        {
-          description: '<b>Core Courses:',
-          required_credits: 14,
-          criteria:
-            'EN.500.112[C]^OR^EN.500.113[C]^OR^EN.500.114[C]^OR^EN.601.220[C]^OR^EN.601.226[C]^OR^(EN Computer Science[D]^AND^(Lower Level Undergraduate[L]^OR^Upper Level Undergraduate[L]))',
-        },
         {
           description:
             '<b>500.112/113/114 Gateway Computing or AP Comp Sci A or ' +
