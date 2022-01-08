@@ -19,6 +19,7 @@ import {
   selectAddingPrereq,
   updateAddingPlanStatus,
 } from '../../slices/popupSlice';
+import { selectExperimentList, setExperimentStatus, toggleExperimentStatus } from '../../slices/experimentSlice';
 import { selectSearchStatus } from '../../slices/searchSlice';
 import AddingPrereqPopup from '../popups/AddingPrereqPopup';
 import Search from '../popups/course-search/Search';
@@ -26,6 +27,7 @@ import CourseDisplayPopup from '../popups/CourseDisplayPopup';
 import DeleteCoursePopup from '../popups/DeleteCoursePopup';
 import DeletePlanPopup from '../popups/DeletePlanPopup';
 import DeleteYearPopup from '../popups/DeleteYearPopup';
+import ExperimentDevBoardPopup from '../popups/ExperimentDevBoardPopup';
 import PlanAdd from '../popups/PlanAdd';
 import CourseList from './course-list/CourseList';
 import InfoMenu from './InfoMenu';
@@ -39,6 +41,7 @@ import {
   updatePlanList,
 } from '../../slices/userSlice';
 import ShareLinksPopup from './degree-info/ShareLinksPopup';
+import clsx from 'clsx';
 
 /**
  * The dashboard that displays the user's plan.
@@ -48,6 +51,7 @@ const Dashboard: FC<{ id: string | null }> = ({ id }) => {
   const dispatch = useDispatch();
   const user = useSelector(selectUser);
   const planList = useSelector(selectPlanList);
+  const experimentList = useSelector(selectExperimentList);
   const currentPlan = useSelector(selectPlan);
   const searchStatus = useSelector(selectSearchStatus);
   const deletePlanStatus = useSelector(selectDeletePlanStatus);
@@ -64,6 +68,7 @@ const Dashboard: FC<{ id: string | null }> = ({ id }) => {
   const [showHeader, setShowHeader] = useState<boolean>(true);
   const [dropdown, setDropdown] = useState<boolean>(false);
   const [experimentPopup, setExperimentPopup] = useState<boolean>(false);
+  const [experimentDevBoardPopup, setExperimentDevBoardPopup] = useState<boolean>(false);
   const [shareableURL, setShareableURL] = useState<string>('');
 
   // Handles plan change event.
@@ -105,6 +110,14 @@ const Dashboard: FC<{ id: string | null }> = ({ id }) => {
       setShowHeader(false);
     }
   });
+
+  // Handles experiment toggle
+  const handleExperimentToggle = (event: any) => {
+    // dispatch(setExperimentStatus([event.target.value, !experimentList[event.target.value].active]))
+    // debounce, useEffect cleanup
+    dispatch(toggleExperimentStatus(event.target.value));
+    console.log(event.target.value, experimentList) 
+  }
 
   /**
    * Handles when button for shareable link is clicked.
@@ -152,6 +165,8 @@ const Dashboard: FC<{ id: string | null }> = ({ id }) => {
                   setDropdown={setDropdown}
                   experimentPopup={experimentPopup}
                   setExperimentPopup={setExperimentPopup}
+                  experimentDevBoardPopup={experimentDevBoardPopup}
+                  setExperimentDevBoardPopup={setExperimentDevBoardPopup}
                   onShareClick={onShareClick}
                 />
                 {dropdown ? (
@@ -175,7 +190,29 @@ const Dashboard: FC<{ id: string | null }> = ({ id }) => {
                     </button>
                   </div>
                 ) : null}
-
+                {experimentPopup ? (
+                    <div
+                      className="relative z-50 flex flex-col right-0 justify-between place-items-start translate-x-full bg-white h-32 w-40 box-content h-100 w-100 p-2 border-4"
+                    >
+                      Experiments
+                      {experimentList.map((experiment, index) => {
+                        console.log(experiment)
+                        return (
+                        <button
+                          key={index}
+                          value={index}
+                          onClick={handleExperimentToggle}
+                          className={clsx(
+                            "relative flex hover:bg-gray-400 border border-gray-300 rounded focus:outline-none shadow cursor-pointer transition duration-200 ease-in",
+                            {
+                              'bg-white': !experiment.active,
+                              'bg-green-100': experiment.active,
+                            },
+                          )}
+                        >{"  " + experiment.name + "  "}</button>
+                      )})}
+                    </div>
+                  ) : null}
                 <CourseList />
               </div>
             </div>
@@ -191,6 +228,7 @@ const Dashboard: FC<{ id: string | null }> = ({ id }) => {
         {deleteYearStatus ? <DeleteYearPopup /> : null}
         {deleteCourseStatus ? <DeleteCoursePopup /> : null}
         {courseInfoStatus ? <CourseDisplayPopup /> : null}
+        {experimentDevBoardPopup ? <ExperimentDevBoardPopup /> : null}
       </div>
     </div>
   );

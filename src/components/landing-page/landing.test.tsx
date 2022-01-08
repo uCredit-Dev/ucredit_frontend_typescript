@@ -11,7 +11,6 @@ import LandingPage from './';
 import { Router } from 'react-router-dom';
 import { createMemoryHistory } from 'history';
 
-// beforeEach(() => render(<BrowserRouter><LandingPage /></BrowserRouter>))
 let history = createMemoryHistory();
 beforeEach(() => {
   history = createMemoryHistory();

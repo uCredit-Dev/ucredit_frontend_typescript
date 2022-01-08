@@ -1,8 +1,8 @@
 import axios from 'axios';
 import { FC } from 'react';
-import { selectBlueButton } from '../../../slices/experimentSlice';
+import { selectExperimentList } from '../../../slices/experimentSlice';
 import { useSelector } from 'react-redux';
-import { experiment, selectExperiments } from '../../../slices/experimentSlice';
+//import { experiment, selectExperiments } from '../../../slices/experimentSlice';
 import { ReactComponent as Beaker } from '../../../resources/svg/Beaker.svg'
 
 // import { toast } from 'react-toastify';
@@ -10,7 +10,7 @@ import { ReactComponent as Beaker } from '../../../resources/svg/Beaker.svg'
 const ExperimentPopup: FC<{ experimentPopup: boolean}> = ({
   experimentPopup,
 }) => {
-  const experiments = useSelector(selectExperiments);
+  const experiments = useSelector(selectExperimentList);
   console.log(experiments)
   // z-40 fixed flex flex-col shadow rounded z-20 h-4/5 top-1/3 left-1/2 transform -translate-x-1/2 -translate-y-1/3"
   /*
@@ -24,9 +24,10 @@ const ExperimentPopup: FC<{ experimentPopup: boolean}> = ({
     // "absolute flex justify-end translate-x-full bg-white h-32 w-32 box-content h-100 w-100 p-2 border-4" 
   return (
     <>
+      <Beaker/>
       { experimentPopup ? 
         <div
-          className="absolute flex flex-col justify-between place-items-end translate-x-full bg-white h-32 w-32 box-content h-100 w-100 p-2 border-4"
+          className="z-50 absolute flex flex-col justify-between place-items-end translate-x-full bg-white h-32 w-32 box-content h-100 w-100 p-2 border-4"
         >
           <label className="custom-label flex mt-2 ml-3">
             <span className="select-none">Experiment1  </span>
@@ -51,7 +52,7 @@ const ExperimentPopup: FC<{ experimentPopup: boolean}> = ({
           </label>
         </div>
         : null
-    }
+      }
     </>
   );
 };
