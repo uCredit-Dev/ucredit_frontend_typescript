@@ -1,4 +1,4 @@
-import { FC, useState } from "react";
+import { FC, useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import {
   selectYear,
@@ -11,7 +11,7 @@ import SearchList from "./query-components/SearchList";
 import { ReactComponent as HideSvg } from "../../../resources/svg/Hide.svg";
 import { selectPlan } from "../../../slices/currentPlanSlice";
 import ReactTooltip from "react-tooltip";
-import { Year } from "../../../resources/commonTypes";
+import { SISRetrievedCourse, Year } from "../../../resources/commonTypes";
 import { selectSelectedDistribution, updateShowingCart } from "../../../slices/popupSlice";
 import FineRequirementsList from "./cart/FineRequirementsList";
 import CartCourseList from "./cart/CartCourseList";
@@ -21,7 +21,7 @@ import { requirements } from "../../dashboard/degree-info/distributionFunctions"
 /**
  * Search component for when someone clicks a search action.
  */
-const Cart: FC = () => {
+const Cart: FC<{allCourses: SISRetrievedCourse[]}> = (props) => {
   // Component states
   const [searchOpacity, setSearchOpacity] = useState<number>(100);
   const [searching, setSearching] = useState<boolean>(false); // repurpose to filter list?
@@ -51,8 +51,10 @@ const Cart: FC = () => {
         style={{
           opacity: searchOpacity === 100 ? 0.5 : 0,
         }}
-        onClick={() => {
+        onClick={() => { // clicking off, should reset all things
+          // TODO: make sure proper things rae reset
           dispatch(updateShowingCart(false));
+
         }}
       ></div>
 
@@ -80,6 +82,7 @@ const Cart: FC = () => {
               {/* <Form setSearching={setSearching} />
               <SearchList searching={searching} /> */}
               <CartCourseList
+                allCourses={props.allCourses} //remove this later
                 searching={false}
                 selectedRequirement={selectedRequirement}
               />

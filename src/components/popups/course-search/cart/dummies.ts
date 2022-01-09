@@ -1,3 +1,64 @@
+/*
+
+1/8/2022:
+added things 
+
+1/5/2022
+RIGHT NOW:
+1. Fetch all courses for filtering
+    - should try to undrestand how versioning works. .. eventually
+2.
+
+idea: convert expression in search extras to make api call
+
+
+So, todo:
+
+currently,, retrieves all through a single fetch when the cart is opened. see useEfefct.
+There should be a mroe efficient way to do this
+
+The selectedRequirement and Bar 
+
+Things to remove:
+all courses props pass throguh index tsx, cart, to cart course list to set raw courses
+
+Features TBI:
+the degree bars should be clickable (changes cursor)
+names for the requirements
+
+Ideas:
+maybe have course requirements for majors be pre computed? or computer server side after migration?
+
+Known bugs:
+delete year popupdoesn't work for some reason?
+feedback popup isn't overlayed correctly
+clicking total credit bar breaks the app
+versioning is still tricky: how to determine what year to search for
+close cart after adding course
+
+
+random ideas:
+wireframe while dashboard loads?
+
+k
+0. Features that still need to be implemented
+    - need a way better way to name distribution reuqirements
+    - split up distifbution requirements more specifically? i.e. classes?
+1. Cleaning up/Squashing out bugs with the course popup
+    - decoupling the Redux store from the search slice/heandling interactions iwith other popups
+    - determining how to handle versioning for cart courses, since they're supposed to represent generically the ability for future courses
+    - exploring solution to translate distribution requirements to search filter objects to work with existing search API
+2. Planning out credit validation logic to the backend
+    - possibly precompute buckets?
+
+Fixing search jank
+    - Pagination is a little wonky, shifting the search box around overlps
+    - only numbers are clickable
+    - Jittering wen new courses are populated, consider wireframe while results load?
+
+*/
+
+
 import { Course, SISRetrievedCourse } from "../../../../resources/commonTypes";
 import { checkRequirementSatisfied, requirements } from "../../../dashboard/degree-info/distributionFunctions";
 
@@ -9,15 +70,17 @@ export const emptyRequirements: requirements = {
   description: "",
 };
 
+// filter function....?
 export const filterBasedOnReq = (req: requirements) => {
   // factory function, takes a requirement, returns a callback to filter acceptable courses.
   return (sisCourse: SISRetrievedCourse) => {
     let versions = sisCourse.versions;
-    for (let i = 0; i < versions.length; i++) {
-      const newCourse: Course = { // does this conversion work??
+    for (let i = 0; i < versions.length; i++) { // logic of this: goes through EVERY version of the coruse to find out ifit should displayitor not
+        // actual course
+      const newCourse: Course = { // does this conversion work?? (SISCourse to Course)
         title: sisCourse.title,
         number: sisCourse.number,
-        ...sisCourse.versions[0], // WHERE IS THE VERSION READ FROM AGAIN??? ARUHGHGHGHHHHHHHHHHHHHHHHHHHH
+        ...sisCourse.versions[i], // WHERE IS THE VERSION READ FROM AGAIN??? ARUHGHGHGHHHHHHHHHHHHHHHHHHHH
       }
       if (checkRequirementSatisfied(req, newCourse)) return true;
     }

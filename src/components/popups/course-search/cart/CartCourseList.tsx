@@ -6,6 +6,7 @@ import {
   selectSearchFilters,
   updateInspectedVersion,
   updatePlaceholder,
+  updateSearchTime,
 } from "../../../../slices/searchSlice";
 import ReactPaginate from "react-paginate";
 import { ReactComponent as PlaceholderFilledSvg } from "../../../../resources/svg/PlaceholderFilled.svg";
@@ -16,16 +17,18 @@ import ReactTooltip from "react-tooltip";
 import loading from "../../../../resources/images/loading.gif";
 
 // TODO: remove this import, for dummy courses
-import testCourses from './courseSubset.json';
+import testCourses from './sisCoursesSubset.json';
 import CartCourseListItem from "./CartCourseListItem";
 import { requirements } from "../../../dashboard/degree-info/distributionFunctions";
 import { filterBasedOnReq } from "./dummies";
+import { api } from "../../../../resources/assets";
+import axios from "axios";
 
 /* 
   List of searched courses.
 */
 
-const CartCourseList: FC<{ searching: boolean, selectedRequirement: requirements }> = (props) => {
+const CartCourseList: FC<{ searching: boolean, selectedRequirement: requirements, allCourses: SISRetrievedCourse[] }> = (props) => {
   // Component state setup.
   const [pageNum, setPageNum] = useState<number>(0);
   const [pageCount, setPageCount] = useState<number>(0);
@@ -34,13 +37,15 @@ const CartCourseList: FC<{ searching: boolean, selectedRequirement: requirements
     []
   );
 
-  // FOR TESTING PURPOSES, courses will be read in from json.
+  const retrievedCourses = useSelector(selectRetrievedCourses);
+
+  // Two states, courses and rawCourses. Three if u count filtered
+  // rawCourses - the collection representing all the courses to filter from. it's factored out seperrately so we can test with
+  // different ways to retrieve all the SISCourses to filter from
+  // courses - the courses post filtering based on requirement, parsed to display list items/paginated
+  // filteredCourses - the courses to display on the current page of courses
   const [courses, setCourses] = useState<SISRetrievedCourse[]>([]); // TODO : get from redux store
   const [rawCourses, setRawCourses] = useState<SISRetrievedCourse[]>([]);
-  useEffect(() => {
-    setCourses(testCourses as unknown as SISRetrievedCourse[]);
-    setRawCourses(testCourses as unknown as SISRetrievedCourse[]);
-  }, []);
 
   // Redux setup
   // const courses = useSelector(selectRetrievedCourses); will be from redux
@@ -48,17 +53,47 @@ const CartCourseList: FC<{ searching: boolean, selectedRequirement: requirements
   const searchFilters = useSelector(selectSearchFilters);
   const dispatch = useDispatch();
 
-  let coursesPerPage = 10;
+  let coursesPerPage = 10; // should this be a const?
+
+  // THIS HAS BEENM OVED TO DASHBOARD!
+  // // INITIAL SET FOR THE RAW COURSES
+  useEffect(() => {
+    // here's the messy fetch. TODO: add some visual feedback for searching.
+    let courseSubset: SISRetrievedCourse[] = [];
+    // console.log("fetching... for CartCourseList");
+    // axios // THIS IS A PROMSE. TODO: WHATS THE ERROR HERE IF the COMPONENT UNMOUNTS BEFORE THIS IS RESOLVED?
+    //   .get(api + "/search/all")
+    //   .then((retrieved) => {
+    //     let retrievedCourses: SISRetrievedCourse[] = retrieved.data.data;
+    //     courseSubset = retrievedCourses;
+    //     setCourses(courseSubset as unknown as SISRetrievedCourse[]); // fix this type casting
+    //     setRawCourses(courseSubset as unknown as SISRetrievedCourse[]);
+    //     console.log(retrievedCourses);
+    //   })
+    //   .catch(() => {
+    //     console.log("There was an error in the fetching of all courses for the cart course popup!");
+    //   });
+
+    // courseSubset = testCourses; // imported from subset
+    // let courseSubset = retrievedCourses; // imported from retrieved from search, but incomplete
+    courseSubset = props.allCourses;
+    setCourses(courseSubset as unknown as SISRetrievedCourse[]); // fix this type casting
+    setRawCourses(courseSubset as unknown as SISRetrievedCourse[]);
+  //   dispatch(updateSearchTime({
+  //     "searchSemester": "Spring",
+  //     "searchYear": "61da3e31a8381200048fd944"
+  // }));
+  }, [props.allCourses]);
 
   // FOR FILTERS
   // updates courses from raw courses based on filters from dummy filters
   useEffect(() => {
+    console.log(rawCourses);
     let filterFunction = filterBasedOnReq(props.selectedRequirement);
-    let dummyFilteredCourses = rawCourses.filter(course => {
+    let dummyFilteredCourses = rawCourses.filter((course, i) => {
       // return course.title.includes(props.selectedRequirement.text);
       // this results in A LOT OF REPEATED CSALLS. TODO: REFACTOR THIS UP HIGHER!
-      return filterFunction(course); 
-      
+      return filterFunction(course);
     });
     setCourses(dummyFilteredCourses);
     setPageNum(0);

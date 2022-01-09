@@ -1,4 +1,4 @@
-import { FC, useState } from "react";
+import { FC, useEffect, useState } from "react";
 import UserSection from "./UserSection";
 import FeedbackPopup from "../popups/FeedbackPopup";
 import FeedbackNotification from "../popups/FeedbackNotification";
@@ -33,7 +33,7 @@ import InfoMenu from "./InfoMenu";
 import ActionBar from "./degree-info/ActionBar";
 import { useScrollPosition } from "@n8tb1t/use-scroll-position";
 import { toast } from "react-toastify";
-import { Plan } from "../../resources/commonTypes";
+import { Plan, SISRetrievedCourse } from "../../resources/commonTypes";
 import {
   selectUser,
   selectPlanList,
@@ -42,6 +42,8 @@ import {
 import ShareLinksPopup from "./degree-info/ShareLinksPopup";
 import clsx from "clsx";
 import Cart from "../popups/course-search/Cart";
+import axios from "axios";
+import { api } from "../../resources/assets";
 
 /**
  * The dashboard that displays the user's plan.
@@ -68,6 +70,25 @@ const Dashboard: FC<{ id: string | null }> = ({ id }) => {
   const [showHeader, setShowHeader] = useState<boolean>(true);
   const [dropdown, setDropdown] = useState<boolean>(false);
   const [shareableURL, setShareableURL] = useState<string>("");
+
+
+  // for all courses: TODO: Revme and all imports
+  const [courses, setCourses] = useState<SISRetrievedCourse[]>([]);
+  useEffect(() => {
+    // here's the messy fetch. TODO: add some visual feedback for searching.
+    let courseSubset: SISRetrievedCourse[] = [];
+    console.log("fetching... for CartCourseList");
+    axios // THIS IS A PROMSE. TODO: WHATS THE ERROR HERE IF the COMPONENT UNMOUNTS BEFORE THIS IS RESOLVED?
+      .get(api + "/search/all")
+      .then((retrieved) => {
+        let retrievedCourses: SISRetrievedCourse[] = retrieved.data.data;
+        courseSubset = retrievedCourses;
+        setCourses(courseSubset as unknown as SISRetrievedCourse[]); // fix this type casting
+      })
+      .catch(() => {
+        console.log("There was an error in the fetching of all courses for the cart course popup!");
+      });
+  }, []);
 
   // Handles plan change event.
   const handlePlanChange = (event: any) => {
@@ -121,8 +142,8 @@ const Dashboard: FC<{ id: string | null }> = ({ id }) => {
       (window.location.href.includes("localhost")
         ? "localhost:3000"
         : "https://ucredit.me") +
-        "/share?_id=" +
-        currentPlan._id
+      "/share?_id=" +
+      currentPlan._id
     );
   };
 
@@ -193,7 +214,7 @@ const Dashboard: FC<{ id: string | null }> = ({ id }) => {
         {deleteCourseStatus ? <DeleteCoursePopup /> : null}
         {courseInfoStatus ? <CourseDisplayPopup /> : null}
         {addingPrereqStatus ? <AddingPrereqPopup /> : null}
-        {cartStatus ? <Cart /> : null}
+        {cartStatus ? <Cart allCourses={courses}/> : null}
       </div>
     </div>
   );
