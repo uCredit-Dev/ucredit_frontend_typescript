@@ -23,6 +23,7 @@ import userReducer from '../../slices/userSlice';
 import searchReducer from '../../slices/searchSlice';
 import currentPlanReducer from '../../slices/currentPlanSlice';
 import popupReducer from '../../slices/popupSlice';
+import { ToastContainer } from 'react-toastify';
 
 let history = createMemoryHistory({ initialEntries: ['/login'] });
 beforeEach(() => {
@@ -45,13 +46,31 @@ beforeEach(() => {
     render(
       <Provider store={mockStore}>
         <Router location={history.location} navigator={history}>
-          <Dashboard id={null} />
+          <div>
+            <ToastContainer />
+            <Dashboard id={null} />
+          </div>
         </Router>
       </Provider>,
     );
   });
 });
 
-test('SSO login and guest login exist', async () => {
+test('Correctly logs in as guest user and adding a new plan starts', async () => {
   expect(screen.getByText('Logged in as Guest User!')).toBeInTheDocument();
+  await waitFor(() => {
+    expect(screen.getByText('Adding a new plan!')).toBeInTheDocument();
+  });
+});
+
+test('Unable to login without choosing a major', async () => {
+  await waitFor(() => {
+    expect(screen.getByText('Adding a new plan!')).toBeInTheDocument();
+  });
+  fireEvent.click(screen.getByText('Add'));
+  await waitFor(() => {
+    expect(
+      screen.getByText('Please choose a valid major!'),
+    ).toBeInTheDocument();
+  });
 });
