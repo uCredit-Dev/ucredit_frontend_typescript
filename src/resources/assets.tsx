@@ -712,17 +712,7 @@ const createPrereqBulletList = (input: string[]): string[] => {
       const subCourseArr: string[] = [];
       while (parenthesesStack.length > 0) {
         i++;
-        if (input[i] === ')') {
-          // If close, pop one from parentheses stack
-          parenthesesStack.pop();
-        } else if (input[i] === '(') {
-          // if open, push open parentheses in
-          parenthesesStack.push('(');
-        }
-        // If we're still in original parentheses, push it into sthe subArray
-        if (parenthesesStack.length > 0) {
-          subCourseArr.push(input[i]);
-        }
+        processParenthesisStack(input, i, parenthesesStack, subCourseArr);
       }
 
       // Recursively calls function on string inside of parentheses.
@@ -734,6 +724,32 @@ const createPrereqBulletList = (input: string[]): string[] => {
   return courseArr;
 };
 
+/**
+ * Helper method to process parentheses stack
+ * @param input - prereq input array
+ * @param i - index of input array
+ * @param parenthesesStack  - stack of parentheses we are in
+ * @param subCourseArr - array of courses in the current level of the prereq
+ */
+const processParenthesisStack = (
+  input: string[],
+  i: number,
+  parenthesesStack: string[],
+  subCourseArr: string[]
+) => {
+  if (input[i] === ")") {
+    // If close, pop one from parentheses stack
+    parenthesesStack.pop();
+  } else if (input[i] === "(") {
+    // if open, push open parentheses in
+    parenthesesStack.push("(");
+  }
+  // If we're still in original parentheses, push it into sthe subArray
+  if (parenthesesStack.length > 0) {
+    subCourseArr.push(input[i]);
+  }
+};
+
 // Takes parsed prereq array and then parses this array again to make OR sequences
 const parsePrereqsOr = (input: any, depth: number): any => {
   const orParsed: any[] = [];
@@ -741,35 +757,8 @@ const parsePrereqsOr = (input: any, depth: number): any => {
   // if OR, pop last element from orParsed. If it's a string, make a new array. If array, push the next element into this array. Put the array back into orParsed.
   // if not OR, push element into orParsed
   for (let i = 0; i < input.length; i++) {
-    if (input[i] === 'OR') {
-      let el = orParsed.pop();
-      let toAdd;
-      // If the course or array of courses after the OR is a string, it must be a course number. Otherwise, it's a course array.
-      if (typeof input[i + 1] === 'string') {
-        toAdd = input[i + 1];
-      } else {
-        toAdd = parsePrereqsOr(input[i + 1], depth);
-      }
-
-      // First element
-      if (el === null) {
-        orParsed.push(0);
-        orParsed.push(toAdd);
-      } else if (typeof el === 'object' && typeof el[0] === 'number') {
-        // If past element was an array and we are in an or chain
-        // The last element was an or sequence
-        el.push(toAdd);
-        orParsed.push(el);
-      } else if (typeof el === 'object' && typeof el[0] !== 'number') {
-        // The last element was a parentheses sequence
-        // We need to parse the sequence and put that element back into our array
-        el = parsePrereqsOr(input[i], depth);
-        orParsed.push([el, toAdd]);
-      } else {
-        // Last element wasn't any type of sequence. Thus, a new OR sequence is made and pushed in.
-        const orArray = [depth, el, toAdd];
-        orParsed.push(orArray);
-      }
+    if (input[i] === "OR") {
+      processOrCase(orParsed, input, depth, i);
       i++;
     } else if (typeof input[i] === 'string') {
       // If number, just push in
@@ -780,6 +769,49 @@ const parsePrereqsOr = (input: any, depth: number): any => {
     }
   }
   return orParsed;
+};
+
+/**
+ * Helper method to process OR case
+ * @param orParsed - parsed or criteria array
+ * @param input - input array
+ * @param depth - depth of parentheses we are in
+ * @param i - index of input array
+ */
+const processOrCase = (
+  orParsed: any[],
+  input: any[],
+  depth: number,
+  i: number
+) => {
+  let el = orParsed.pop();
+  let toAdd;
+  // If the course or array of courses after the OR is a string, it must be a course number. Otherwise, it's a course array.
+  if (typeof input[i + 1] === "string") {
+    toAdd = input[i + 1];
+  } else {
+    toAdd = parsePrereqsOr(input[i + 1], depth);
+  }
+
+  // First element
+  if (el === null) {
+    orParsed.push(0);
+    orParsed.push(toAdd);
+  } else if (typeof el === "object" && typeof el[0] === "number") {
+    // If past element was an array and we are in an or chain
+    // The last element was an or sequence
+    el.push(toAdd);
+    orParsed.push(el);
+  } else if (typeof el === "object" && typeof el[0] !== "number") {
+    // The last element was a parentheses sequence
+    // We need to parse the sequence and put that element back into our array
+    el = parsePrereqsOr(input[i], depth);
+    orParsed.push([el, toAdd]);
+  } else {
+    // Last element wasn't any type of sequence. Thus, a new OR sequence is made and pushed in.
+    const orArray = [depth, el, toAdd];
+    orParsed.push(orArray);
+  }
 };
 
 /**
