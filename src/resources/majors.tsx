@@ -548,10 +548,17 @@ const bsBME: Major = {
       name: "Computer Programming",
       required_credits: 3,
       min_credits_per_course: 3,
-      description:
-        "Choose one of these courses to satisfy the programming requirement: <br /> EN.500.112 Gateway Computing: JAVA <br /> EN.500.113 Gateway Computing: Python <br />" +
-        "EN.500.114 Gateway Computing: MATLAB",
+      description: "Students are required to take at least one semester of programming from a select set of gateway computing courses.",
       criteria: "EN.500.112[C]^OR^EN.500.113[C]^OR^EN.500.114[C]",
+      fine_requirements: [
+        {
+          description: 
+            "<b>Computer Programming</b> <br /> Select one of the following: <br /> EN.500.112 Gateway Computing: JAVA <br /> EN.500.113 Gateway Computing: Python <br />" +
+            "EN.500.114 Gateway Computing: MATLAB",
+          required_credits: 3,
+          criteria: "EN.500.112[C]^OR^EN.500.113[C]^OR^EN.500.114[C]",
+        }
+      ]
     },
     {
       name: "Focus Area",
@@ -689,8 +696,7 @@ const bsBME: Major = {
       required_credits: 9,
       min_credits_per_course: 1,
       description: "Select 9 credits from any area.",
-      criteria: "",
-      user_select: true,
+      criteria: "H[A]^OR^S[A]^OR^Q[A]^OR^N[A]^OR^E[A]",
     },
     {
       name: "Humanities and Social Sciences",
