@@ -421,10 +421,9 @@ const Form: FC<{ setSearching: (searching: boolean) => void }> = (props) => {
       <div className="flex-full flex flex-row h-auto">
         <input
           autoFocus
-          className="mb-2 mr-2 px-1 w-full h-6 rounded outline-none"
+          className="mb-2 mr-2 px-1 w-full h-6 rounded outline-none width-[100%]"
           type="text"
           placeholder={"Course title or number"}
-          style={{ width: "100%" }}
           defaultValue={searchTerm}
           onChange={handleSearchTerm}
         />

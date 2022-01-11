@@ -21,8 +21,13 @@ export const checkRequirementSatisfied = (
   distribution: requirements,
   course: Course
 ): boolean => {
+  if (distribution.expr.length === 0) {
+    // Return true if there is no expression.
+    return true;
+  }
   const boolExpr: string | void = getBoolExpr(distribution, course);
   if (boolExpr.length !== 0) {
+    // evaluate the expression if it exists,
     //eslint-disable-next-line no-eval
     return eval(boolExpr);
   } else {
@@ -49,6 +54,7 @@ export const getBoolExpr = (
   }
   while (index < splitArr.length) {
     if (splitArr[index] === "(") {
+      // TODO: Could be optimized in splitRequirements?
       concat = "(";
     } else if (splitArr[index] === ")") {
       concat = ")";

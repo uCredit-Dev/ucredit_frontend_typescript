@@ -152,10 +152,7 @@ const ActionBar: FC<{
         />
       </div>
       <div className="flex mr-2 my-1 px-2 h-10 text-xl font-light border border-gray-300 rounded stroke-2 shadow">
-        <div
-          className="py-1 w-max overflow-ellipsis truncate"
-          style={{ maxWidth: "24rem" }}
-        >
+        <div className="py-1 w-max overflow-ellipsis truncate max-w-[24rem]">
           {currentPlan.majors}
         </div>
       </div>

@@ -2140,7 +2140,7 @@ const baCS_New: Major = {
 const CS_Minor_New: Minor = {
   degree_name: "Minor Computer Science (NEW - 2021 & after)",
   department: "EN Computer Science",
-  total_degree_credit: 21,
+  total_degree_credit: 23,
   wi_credit: 0,
   url: "https://www.cs.jhu.edu/2021undergraduate-advising-manual/",
   distributions: [

@@ -24,18 +24,16 @@ type SemSelected = {
  * TODO: Modularize!!!
  *
  * @prop id - id of year
- * @prop customStyle - style object for year
  * @prop year - the year designator
  * @prop courses - courses that belong to this year
  * @prop setDraggable - avtivates/deactivates draggability of year component
  */
 const YearComponent: FC<{
   id: number;
-  customStyle: string;
   year: Year;
   courses: UserCourse[];
   setDraggable: (draggable: boolean) => void;
-}> = ({ id, customStyle, year, courses, setDraggable }) => {
+}> = ({ id, year, courses, setDraggable }) => {
   // Component state setup.
   const [fallCourses, setFallCourses] = useState<UserCourse[]>([]);
   const [springCourses, setSpringCourses] = useState<UserCourse[]>([]);
@@ -142,12 +140,11 @@ const YearComponent: FC<{
       semesters.push(
         <div
           key={"Fall" + year._id}
-          className={clsx(`${customStyle} mb-3 w-full h-auto pr-1 rounded`, {
+          className={clsx(`mb-3 w-full h-auto pr-1 rounded`, {
             "z-50": addingPrereqStatus,
           })}
         >
           <Semester
-            customStyle=""
             semesterName="Fall"
             semesterYear={year}
             courses={fallCourses}
@@ -158,12 +155,11 @@ const YearComponent: FC<{
       semesters.push(
         <div
           key={"Winter" + year._id}
-          className={clsx(`${customStyle} mb-3 w-full h-auto pr-1 rounded`, {
+          className={clsx(`mb-3 w-full h-auto pr-1 rounded`, {
             "z-50": addingPrereqStatus,
           })}
         >
           <Semester
-            customStyle=""
             semesterName="Intersession"
             semesterYear={year}
             courses={winterCourses}
@@ -174,12 +170,11 @@ const YearComponent: FC<{
       semesters.push(
         <div
           key={"Spring" + year._id}
-          className={clsx(`${customStyle} mb-3 w-full h-auto pr-1 rounded`, {
+          className={clsx(`mb-3 w-full h-auto pr-1 rounded`, {
             "z-50": addingPrereqStatus,
           })}
         >
           <Semester
-            customStyle=""
             semesterName="Spring"
             semesterYear={year}
             courses={springCourses}
@@ -190,12 +185,11 @@ const YearComponent: FC<{
       semesters.push(
         <div
           key={"Summer" + year._id}
-          className={clsx(`${customStyle} mb-3 w-full h-auto pr-1 rounded`, {
+          className={clsx(` mb-3 w-full h-auto pr-1 rounded`, {
             "z-50": addingPrereqStatus,
           })}
         >
           <Semester
-            customStyle=""
             semesterName="Summer"
             semesterYear={year}
             courses={summerCourses}
@@ -209,11 +203,9 @@ const YearComponent: FC<{
     <div
       id={id.toString()}
       className={
-        customStyle +
-        "cursor-move p-2 max-w-year-heading w-max rounded mb-4 bg-blue-400 rounded shadow" +
+        "cursor-move p-2 max-w-year-heading w-max rounded mb-4 bg-blue-400 rounded shadow min-w-[14rem]" +
         (addingPrereqStatus ? "z-30" : "")
       }
-      style={{ minWidth: "14rem" }}
       onMouseLeave={() => {
         setDraggable(true);
         setDisplay(false);
@@ -269,7 +261,6 @@ const YearComponent: FC<{
           </div>
         ) : (
           <Semester
-            customStyle=""
             semesterName="All"
             semesterYear={year}
             courses={fallCourses}

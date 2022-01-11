@@ -45,7 +45,7 @@ const Search: FC = () => {
     <div className="absolute top-0">
       {/* Background Grey */}
       <div
-        className="fixed z-20 left-0 top-0 m-0 w-full h-screen bg-black transform transition duration-700 ease-in"
+        className="fixed z-30 left-0 top-0 m-0 w-full h-screen bg-black transform transition duration-700 ease-in"
         style={{
           opacity: searchOpacity === 100 ? 0.5 : 0,
         }}
@@ -57,7 +57,7 @@ const Search: FC = () => {
       {/* Search area */}
       <div
         className={
-          "fixed flex flex-col bg-gradient-to-r shadow from-blue-500 to-green-400 select-none rounded z-20 w-9/12 tight:overflow-y-none h-5/6 top-1/3 left-1/2 transform -translate-x-1/2 -translate-y-1/3 tight:h-auto"
+          "fixed flex flex-col bg-gradient-to-r shadow from-blue-500 to-green-400 select-none rounded z-30 w-9/12 tight:overflow-y-none h-5/6 top-1/3 left-1/2 transform -translate-x-1/2 -translate-y-1/3 tight:h-auto"
         }
         style={{ opacity: searchOpacity === 100 ? 1 : 0.1 }}
       >

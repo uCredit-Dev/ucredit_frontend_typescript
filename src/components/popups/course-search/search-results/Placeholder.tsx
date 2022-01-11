@@ -191,10 +191,7 @@ const Placeholder: FC<{ addCourse: (plan?: Plan) => void }> = (props) => {
           <CloseSvg className="w-7 h-7 stroke-2" />
         </button>
       </div>
-      <div
-        className="flex flex-col flex-wrap pb-5"
-        style={{ maxHeight: "70%" }}
-      >
+      <div className="flex flex-col flex-wrap pb-5 max-h-[70%]">
         <div className="flex flex-col mt-3 w-2/6">
           Title
           <input
