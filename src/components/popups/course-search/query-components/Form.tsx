@@ -52,11 +52,11 @@ const Form: FC<{ setSearching: (searching: boolean) => void }> = (props) => {
 
   // Component state setup
   const [showCriteria, setShowCriteria] = useState(false);
-  const [searchedCourses] = useState<Map<String, SearchMapEl>>(
-    new Map<String, SearchMapEl>(),
+  const [searchedCourses] = useState<Map<string, SearchMapEl>>(
+    new Map<string, SearchMapEl>(),
   );
-  const [searchedCoursesFrequency] = useState<Map<String, number>>(
-    new Map<String, number>(),
+  const [searchedCoursesFrequency] = useState<Map<string, number>>(
+    new Map<string, number>(),
   );
   const [initialQueryLength, setInitialQueryLength] = useState<number>(0);
   const [searchedQuery, setSearchedQuery] = useState<any | null>(null);
@@ -423,7 +423,7 @@ const Form: FC<{ setSearching: (searching: boolean) => void }> = (props) => {
           autoFocus
           className="mb-2 mr-2 px-1 w-full h-6 rounded outline-none width-[100%]"
           type="text"
-          placeholder={"Course title or number"}
+          placeholder={'Course title or number'}
           defaultValue={searchTerm}
           onChange={handleSearchTerm}
         />
