@@ -183,7 +183,10 @@ const ActionBar: FC<{
           onChange={handlePlanNameChange}
         />
       </div>
-      <div className="flex mr-2 my-1 px-2 font-light text-lg">
+      <div
+        className="flex mr-2 my-1 px-2 font-light text-lg w-80"
+        style={{ width: '25rem' }}
+      >
         <Select
           isMulti
           isClearable={false}
