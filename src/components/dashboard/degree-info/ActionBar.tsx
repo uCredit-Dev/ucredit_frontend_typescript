@@ -1,6 +1,7 @@
 import { FC, MouseEventHandler, useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { toast } from 'react-toastify';
+import Select from 'react-select';
 import { api } from '../../../resources/assets';
 import {
   selectPlan,
@@ -18,6 +19,12 @@ import { ReactComponent as AddSvg } from '../../../resources/svg/Add.svg';
 import axios from 'axios';
 import { Year, Plan } from '../../../resources/commonTypes';
 import ReactTooltip from 'react-tooltip';
+import { allMajors } from '../../../resources/majors';
+
+const majorOptions = allMajors.map((major, index) => ({
+  value: index,
+  label: major.degree_name,
+}));
 
 /**
  * @description ActionBar component
@@ -60,6 +67,31 @@ const ActionBar: FC<{
   const handlePlanNameChange = (event: any): void => {
     setPlanName(event.target.value);
     setEditName(true);
+  };
+
+  const handleMajorChange = (event: any) => {
+    if (event.length === 0) {
+      toast.error('You must have at least one major!');
+      return;
+    }
+    const body = {
+      plan_id: currentPlan._id,
+      majors: event.map((option) => option.label),
+    };
+    axios
+      .patch(api + '/plans/update', body)
+      .then(({ data }) => {
+        const newUpdatedPlan = { ...currentPlan, majors: data.data.majors };
+        dispatch(updateSelectedPlan(newUpdatedPlan));
+        let newPlanList = [...planList];
+        for (let i = 0; i < planList.length; i++) {
+          if (newPlanList[i]._id === currentPlan._id) {
+            newPlanList[i] = { ...newUpdatedPlan };
+          }
+        }
+        dispatch(updatePlanList(newPlanList));
+      })
+      .catch((err) => console.log(err));
   };
 
   const updateName = (): void => {
@@ -141,7 +173,7 @@ const ActionBar: FC<{
     ReactTooltip.rebuild();
   });
   return (
-    <div className="flex flex-row px-2 py-1 bg-white rounded shadow overflow-x-auto drop-shadow-md sticky top-0 z-20">
+    <div className="flex flex-row px-2 py-1 bg-white rounded shadow drop-shadow-md sticky top-0 z-20">
       <PlanChoose dropdown={dropdown} setDropdown={setDropdown} />
       <div className="flex flex-row items-end mr-2 my-1 h-10 border bg-white border-gray-300 rounded rounded shadow">
         <div className="text-xl m-auto ml-2 mr-0">✎</div>
@@ -151,13 +183,18 @@ const ActionBar: FC<{
           onChange={handlePlanNameChange}
         />
       </div>
-      <div className="flex mr-2 my-1 px-2 h-10 text-xl font-light border border-gray-300 rounded stroke-2 shadow">
-        <div
-          className="py-1 w-max overflow-ellipsis truncate"
-          style={{ maxWidth: '24rem' }}
-        >
-          {currentPlan.majors}
-        </div>
+      <div className="flex mr-2 my-1 px-2 h-10 text-xl font-light">
+        <Select
+          isMulti
+          isClearable={false}
+          options={majorOptions}
+          value={majorOptions.filter((major) =>
+            currentPlan.majors.includes(major.label),
+          )}
+          onChange={handleMajorChange}
+          placeholder="Select Majors"
+          className="z-50 w-full"
+        />
       </div>
       <button
         className="flex flex-row items-center ml-1 mr-2 my-1 px-2 h-10 hover:underline hover:bg-red-300 border border-gray-300 rounded shadow transition duration-200 ease-in"
