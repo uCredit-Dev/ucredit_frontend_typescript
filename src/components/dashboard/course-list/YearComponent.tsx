@@ -139,9 +139,9 @@ const YearComponent: FC<{
     if (toShow.fall)
       semesters.push(
         <div
-          key={"Fall" + year._id}
+          key={'Fall' + year._id}
           className={clsx(`mb-3 w-full h-auto pr-1 rounded`, {
-            "z-50": addingPrereqStatus,
+            'z-50': addingPrereqStatus,
           })}
         >
           <Semester
@@ -154,10 +154,9 @@ const YearComponent: FC<{
     if (toShow.intersession)
       semesters.push(
         <div
-          key={"Winter" + year._id}
+          key={'Winter' + year._id}
           className={clsx(`mb-3 w-full h-auto pr-1 rounded`, {
-            "z-50": addingPrereqStatus,
-
+            'z-50': addingPrereqStatus,
           })}
         >
           <Semester
@@ -170,10 +169,9 @@ const YearComponent: FC<{
     if (toShow.spring)
       semesters.push(
         <div
-          key={"Spring" + year._id}
+          key={'Spring' + year._id}
           className={clsx(`mb-3 w-full h-auto pr-1 rounded`, {
-            "z-50": addingPrereqStatus,
-
+            'z-50': addingPrereqStatus,
           })}
         >
           <Semester
@@ -186,10 +184,9 @@ const YearComponent: FC<{
     if (toShow.summer)
       semesters.push(
         <div
-          key={"Summer" + year._id}
+          key={'Summer' + year._id}
           className={clsx(`mb-3 w-full h-auto pr-1 rounded`, {
-            "z-50": addingPrereqStatus,
-
+            'z-50': addingPrereqStatus,
           })}
         >
           <Semester
@@ -206,8 +203,8 @@ const YearComponent: FC<{
     <div
       id={id.toString()}
       className={
-        "cursor-move p-2 max-w-year-heading w-max rounded mb-4 bg-blue-400 rounded shadow min-w-[14rem]" +
-        (addingPrereqStatus ? "z-30" : "")
+        'cursor-move p-2 max-w-year-heading w-max rounded mb-4 bg-blue-400 rounded shadow min-w-[14rem]' +
+        (addingPrereqStatus ? 'z-30' : '')
       }
       onMouseLeave={() => {
         setDraggable(true);

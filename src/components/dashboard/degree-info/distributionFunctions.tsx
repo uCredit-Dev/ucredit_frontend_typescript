@@ -53,17 +53,17 @@ export const getBoolExpr = (
     return concat;
   }
   while (index < splitArr.length) {
-    if (splitArr[index] === "(") {
+    if (splitArr[index] === '(') {
       // TODO: Could be optimized in splitRequirements?
-      concat = "(";
-    } else if (splitArr[index] === ")") {
-      concat = ")";
-    } else if (splitArr[index] === "OR") {
-      concat = "||";
-    } else if (splitArr[index] === "AND") {
-      concat = "&&";
-    } else if (splitArr[index] === "NOT") {
-      concat = "&&!";
+      concat = '(';
+    } else if (splitArr[index] === ')') {
+      concat = ')';
+    } else if (splitArr[index] === 'OR') {
+      concat = '||';
+    } else if (splitArr[index] === 'AND') {
+      concat = '&&';
+    } else if (splitArr[index] === 'NOT') {
+      concat = '&&!';
     } else {
       concat = handleTagType(splitArr, index, course);
     }
