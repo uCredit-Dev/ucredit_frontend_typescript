@@ -1,6 +1,6 @@
-import { FC } from "react";
-import { toast } from "react-toastify";
-import { ReactComponent as Copy } from "../../../resources/svg/Copy.svg";
+import { FC } from 'react';
+import { toast } from 'react-toastify';
+import { ReactComponent as Copy } from '../../../resources/svg/Copy.svg';
 
 /**
  * Shareable link popup.
@@ -14,7 +14,7 @@ const ShareLinksPopup: FC<{
   const copyToClipBoard = () => {
     navigator.clipboard.writeText(link).then(() => {
       navigator.clipboard.writeText(link).then(() => {
-        toast.info("Copied to Clipboard!", {
+        toast.info('Copied to Clipboard!', {
           autoClose: 5000,
           closeOnClick: false,
         });

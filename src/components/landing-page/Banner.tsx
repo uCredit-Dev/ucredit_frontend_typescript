@@ -1,11 +1,11 @@
-import { FC, useState } from "react";
-import { ReactComponent as SemesterlySvg } from "../../resources/svg/Semesterly.svg";
-import "react-responsive-carousel/lib/styles/carousel.min.css"; // requires a loader
-import { Carousel } from "react-responsive-carousel";
-import HeadlineImg from "../../resources/images/landing-page/headline.png";
-import JoinTeamImg from "../../resources/images/landing-page/joinTeam.png";
-import { useNavigate } from "react-router";
-import ApplicationFormPopup from "../popups/ApplicationFormPopup";
+import { FC, useState } from 'react';
+import { ReactComponent as SemesterlySvg } from '../../resources/svg/Semesterly.svg';
+import 'react-responsive-carousel/lib/styles/carousel.min.css'; // requires a loader
+import { Carousel } from 'react-responsive-carousel';
+import HeadlineImg from '../../resources/images/landing-page/headline.png';
+import JoinTeamImg from '../../resources/images/landing-page/joinTeam.png';
+import { useNavigate } from 'react-router';
+import ApplicationFormPopup from '../popups/ApplicationFormPopup';
 
 /**
  * Banner carousel that alternates between Getting Started and Recruitment banners.
@@ -23,7 +23,7 @@ const Banner: FC = () => {
           <div>
             <div className="mt-5/6 absolute flex w-full top-[70%]">
               <button
-                onClick={() => navigate("/login")}
+                onClick={() => navigate('/login')}
                 className="mx-auto w-72 h-16 text-white text-3xl font-thin bg-primary rounded-full shadow-xl transform hover:scale-105 transition duration-200 ease-in"
               >
                 Get Started

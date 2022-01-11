@@ -1,23 +1,23 @@
-import { FC, useEffect, useState } from "react";
-import Distributions from "./degree-info/Distributions";
-import clsx from "clsx";
-import FineDistribution from "./degree-info/FineDistribution";
-import CourseBar from "./degree-info/CourseBar";
+import { FC, useEffect, useState } from 'react';
+import Distributions from './degree-info/Distributions';
+import clsx from 'clsx';
+import FineDistribution from './degree-info/FineDistribution';
+import CourseBar from './degree-info/CourseBar';
 import {
   checkRequirementSatisfied,
   getRequirements,
   requirements,
-} from "./degree-info/distributionFunctions";
-import { useDispatch, useSelector } from "react-redux";
+} from './degree-info/distributionFunctions';
+import { useDispatch, useSelector } from 'react-redux';
 import {
   selectCurrentPlanCourses,
   selectDistributions,
   selectPlan,
   updateDistributions,
-} from "../../slices/currentPlanSlice";
-import { selectCourseCache } from "../../slices/userSlice";
-import { getCourse, getMajor } from "../../resources/assets";
-import { Course, Major, Plan, UserCourse } from "../../resources/commonTypes";
+} from '../../slices/currentPlanSlice';
+import { selectCourseCache } from '../../slices/userSlice';
+import { getCourse, getMajor } from '../../resources/assets';
+import { Course, Major, Plan, UserCourse } from '../../resources/commonTypes';
 
 /**
  * Info menu shows degree plan and degree information.
@@ -32,13 +32,13 @@ const InfoMenu: FC = () => {
 
   const [infoOpen, setInfoOpen] = useState(false);
   const [showDistributions, setShowDistributions] = useState<boolean[]>(
-    new Array(distributions.length)
+    new Array(distributions.length),
   );
   const [distributionOpen, setDistributionOpen] = useState<boolean>(true);
   const [calculated, setCalculated] = useState<boolean>(false);
   const [major, setMajor] = useState<Major | null>(null);
   const [distributionBarsJSX, setDistributionBarsJSX] = useState<JSX.Element[]>(
-    []
+    [],
   );
   const [retrievedDistributions, setDistributions] = useState<{
     plan: Plan;
@@ -68,7 +68,7 @@ const InfoMenu: FC = () => {
       updateFulfilled(
         currentPlan,
         distr,
-        tot === currPlanCourses.length ? currPlanCourses : []
+        tot === currPlanCourses.length ? currPlanCourses : [],
       );
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -127,8 +127,8 @@ const InfoMenu: FC = () => {
                   changeDistributionVisibility(i);
                 }}
                 className={clsx(
-                  "mb-2 underline text-sm focus:outline-none transform hover:scale-101 transition duration-200 ease-in",
-                  { hidden: !distributionOpen }
+                  'mb-2 underline text-sm focus:outline-none transform hover:scale-101 transition duration-200 ease-in',
+                  { hidden: !distributionOpen },
                 )}
               >
                 {getDistributionText(i)}
@@ -136,7 +136,7 @@ const InfoMenu: FC = () => {
             ) : null}
           </div>
         );
-      }
+      },
     );
     setDistributionBarsJSX(distributionJSX);
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -153,18 +153,18 @@ const InfoMenu: FC = () => {
   const updateFulfilled = (
     updatingPlan: Plan,
     reqs: [string, requirements[]][],
-    courses: UserCourse[]
+    courses: UserCourse[],
   ) => {
     setDistributions({ plan: updatingPlan, distr: reqs });
     const coursesCopy: UserCourse[] = [...courses];
     coursesCopy.sort((c1: UserCourse, c2: UserCourse) => {
-      const c1Split = c1.number.split(".");
-      const c2Split = c2.number.split(".");
+      const c1Split = c1.number.split('.');
+      const c2Split = c2.number.split('.');
       const c1LastNum = c1Split[c1Split.length - 1];
       const c2LastNum = c2Split[c2Split.length - 1];
-      if (c1LastNum === "" && c1Split.length === 1) {
+      if (c1LastNum === '' && c1Split.length === 1) {
         return -1;
-      } else if (c2LastNum === "" && c2Split.length === 1) {
+      } else if (c2LastNum === '' && c2Split.length === 1) {
         return 1;
       } else {
         return parseInt(c1LastNum) - parseInt(c2LastNum);
@@ -188,7 +188,7 @@ const InfoMenu: FC = () => {
         course.number,
         courseCache,
         courses,
-        -1
+        -1,
       );
       let counted: boolean = false;
       if (courseObj.resp !== null) {
@@ -224,7 +224,7 @@ const InfoMenu: FC = () => {
           reqs[i][1][j].fulfilled_credits += parseInt(courseObj.credits);
           if (j !== 0) inNonExclusive = true;
         }
-      })
+      }),
     );
     reqs.forEach((reqGroup, i) =>
       reqGroup[1].forEach((req: requirements, j: number) => {
@@ -237,7 +237,7 @@ const InfoMenu: FC = () => {
         ) {
           reqs[i][1][j].fulfilled_credits += parseInt(courseObj.credits);
         }
-      })
+      }),
     );
     // Pathing check
     reqs.forEach((reqGroup: [string, requirements[]]) =>
@@ -283,8 +283,8 @@ const InfoMenu: FC = () => {
 
   const getDistributionText = (index: number): string =>
     showDistributions[index] === true
-      ? "Hide Fine Requirements"
-      : "Show Fine Requirements";
+      ? 'Hide Fine Requirements'
+      : 'Show Fine Requirements';
   return (
     <div className="fixed z-40 right-0 flex flex-col justify-between mt-8 w-10 h-[72.5%] min-h-[40vh]">
       <div className="my-auto transform -rotate-90">

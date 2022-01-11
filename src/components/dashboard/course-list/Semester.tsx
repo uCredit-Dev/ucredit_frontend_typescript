@@ -1,43 +1,43 @@
-import { useState, useEffect, FC } from "react";
+import { useState, useEffect, FC } from 'react';
 import {
   DroppableType,
   Plan,
   SemesterType,
   UserCourse,
   Year,
-} from "../../../resources/commonTypes";
-import { useDispatch, useSelector } from "react-redux";
+} from '../../../resources/commonTypes';
+import { useDispatch, useSelector } from 'react-redux';
 import {
   clearSearch,
   selectPlaceholder,
   selectVersion,
   updateSearchStatus,
   updateSearchTime,
-} from "../../../slices/searchSlice";
-import { ReactComponent as AddSvg } from "../../../resources/svg/Add.svg";
-import { Droppable } from "react-beautiful-dnd";
+} from '../../../slices/searchSlice';
+import { ReactComponent as AddSvg } from '../../../resources/svg/Add.svg';
+import { Droppable } from 'react-beautiful-dnd';
 import {
   selectCurrentPlanCourses,
   selectPlan,
   updateCurrentPlanCourses,
   updateDroppables,
   updateSelectedPlan,
-} from "../../../slices/currentPlanSlice";
-import ReactTooltip from "react-tooltip";
-import clsx from "clsx";
-import CourseDraggable from "./CourseDraggable";
+} from '../../../slices/currentPlanSlice';
+import ReactTooltip from 'react-tooltip';
+import clsx from 'clsx';
+import CourseDraggable from './CourseDraggable';
 import {
   selectAddingPrereq,
   updateAddingPrereq,
-} from "../../../slices/popupSlice";
-import { toast } from "react-toastify";
-import { api } from "../../../resources/assets";
+} from '../../../slices/popupSlice';
+import { toast } from 'react-toastify';
+import { api } from '../../../resources/assets';
 import {
   selectUser,
   selectPlanList,
   updatePlanList,
-} from "../../../slices/userSlice";
-import { ReactComponent as Question } from "../../../resources/svg/Question.svg";
+} from '../../../slices/userSlice';
+import { ReactComponent as Question } from '../../../resources/svg/Question.svg';
 
 /**
  * A component displaying all the courses in a specific semester.
@@ -64,7 +64,7 @@ const Semester: FC<{
   // State used to control whether dropdown is opened or closed
   const [totalCredits, setTotalCredits] = useState<number>(0);
   const [semesterCourses, setSemesterCourses] = useState<UserCourse[]>([]);
-  const [inspectedArea, setInspectedArea] = useState<string>("None");
+  const [inspectedArea, setInspectedArea] = useState<string>('None');
   const [openAPInfoBox, setOpenAPInfoBox] = useState<boolean>(false);
 
   useEffect(() => {
@@ -73,12 +73,12 @@ const Semester: FC<{
 
   // Every time any courses within this semester changes, update total credit count and the list.
   useEffect(() => {
-    if (version !== "None") {
+    if (version !== 'None') {
       setInspectedArea(version.areas.charAt(0));
     }
     const sortedCourses: UserCourse[] = [...courses];
     sortedCourses.sort((course1: UserCourse, course2: UserCourse) =>
-      course2._id.localeCompare(course1._id)
+      course2._id.localeCompare(course1._id),
     );
     const newDrop: DroppableType = {
       year: semesterYear._id,
@@ -104,7 +104,7 @@ const Semester: FC<{
       updateSearchTime({
         searchSemester: semesterName,
         searchYear: semesterYear._id,
-      })
+      }),
     );
   };
 
@@ -131,9 +131,9 @@ const Semester: FC<{
    */
   const getCreditString = (): string => {
     let string = `<div>${totalCredits} Credits</div>`;
-    if (totalCredits < 12) string += "\nMore than 12 credits required!";
+    if (totalCredits < 12) string += '\nMore than 12 credits required!';
     else if (totalCredits > 18)
-      string += "\nCritical credit count reached! Check with your advisor!";
+      string += '\nCritical credit count reached! Check with your advisor!';
     return string;
   };
 
@@ -149,30 +149,30 @@ const Semester: FC<{
    * Updates distribution bars upon successfully adding a course.
    */
   const updateDistributions = (): void => {
-    if (version !== "None") {
+    if (version !== 'None') {
       const body = {
         user_id: user._id,
         year_id: semesterYear._id,
         plan_id: currentPlan._id,
         title: version.title,
-        term: semesterName === "All" ? "fall" : semesterName.toLowerCase(),
+        term: semesterName === 'All' ? 'fall' : semesterName.toLowerCase(),
         year: semesterYear._id,
-        credits: version.credits === "" ? 0 : version.credits,
+        credits: version.credits === '' ? 0 : version.credits,
         distribution_ids: currentPlan.distribution_ids,
         isPlaceholder: placeholder,
         number: version.number,
         area: inspectedArea,
         preReq: version.preReq,
         expireAt:
-          user._id === "guestUser"
+          user._id === 'guestUser'
             ? Date.now() + 60 * 60 * 24 * 1000
             : undefined,
       };
 
-      fetch(api + "/courses", {
-        method: "POST",
+      fetch(api + '/courses', {
+        method: 'POST',
         headers: {
-          "Content-Type": "application/json",
+          'Content-Type': 'application/json',
         },
         body: JSON.stringify(body),
       })
@@ -182,7 +182,7 @@ const Semester: FC<{
   };
 
   const handlePostResponse = (data) => {
-    if (data.errors === undefined && version !== "None") {
+    if (data.errors === undefined && version !== 'None') {
       let newUserCourse: UserCourse;
       newUserCourse = { ...data.data };
       dispatch(updateCurrentPlanCourses([...currentCourses, newUserCourse]));
@@ -207,8 +207,8 @@ const Semester: FC<{
       dispatch(updatePlanList(newPlanList));
       dispatch(updateAddingPrereq(false));
       dispatch(clearSearch());
-      toast.success(version.title + " added!", {
-        position: "top-right",
+      toast.success(version.title + ' added!', {
+        position: 'top-right',
         autoClose: 5000,
         hideProgressBar: true,
         closeOnClick: true,
@@ -217,26 +217,26 @@ const Semester: FC<{
         progress: 0,
       });
     } else {
-      console.log("Failed to add", data.errors);
+      console.log('Failed to add', data.errors);
     }
   };
 
   const getSemesterName = (): JSX.Element => {
-    if (semesterName === "Fall")
+    if (semesterName === 'Fall')
       return (
         <div className="flex flex-row text-gray-600 font-semibold">
           Fall
           <div className="ml-1 font-light">{semesterYear.year}</div>
         </div>
       );
-    else if (semesterName === "Intersession")
+    else if (semesterName === 'Intersession')
       return (
         <div className="flex flex-row text-gray-600 font-semibold">
           Intersession
           <div className="ml-1 font-light">{semesterYear.year + 1}</div>
         </div>
       );
-    else if (semesterName === "Spring")
+    else if (semesterName === 'Spring')
       return (
         <div className="flex flex-row text-gray-600 font-semibold">
           Spring
@@ -258,7 +258,7 @@ const Semester: FC<{
         <div className="flex flex-col h-yearheading font-medium">
           <div className="flex flex-row items-center justify-between px-0.5 py-1 h-yearheading1 bg-white">
             <div className="flex flex-row items-center w-full h-auto font-normal">
-              {semesterName === "All" ? (
+              {semesterName === 'All' ? (
                 <>
                   <Question
                     className="h-4 fill-gray"
@@ -266,24 +266,24 @@ const Semester: FC<{
                   />
                   <div className="flex flex-row text-gray-600 font-semibold text-sm">
                     Equivalents
-                    <div className="ml-1">{"≤"}</div>
+                    <div className="ml-1">{'≤'}</div>
                     <div className="font-light">{semesterYear.year}</div>
                   </div>
                 </>
               ) : (
                 <div className="text-sm">{getSemesterName()}</div>
-              )}{" "}
+              )}{' '}
               {courses.length !== 0 && totalCredits !== 0 ? (
                 <>
                   <div
                     className={clsx(
-                      { "bg-red-200": totalCredits < 12 },
-                      { "bg-yellow-200": totalCredits > 18 },
+                      { 'bg-red-200': totalCredits < 12 },
+                      { 'bg-yellow-200': totalCredits > 18 },
                       {
-                        "bg-green-200":
+                        'bg-green-200':
                           totalCredits <= 18 && totalCredits >= 12,
                       },
-                      " flex flex-row items-center justify-center ml-1 px-1 w-auto text-black text-xs bg-white rounded"
+                      ' flex flex-row items-center justify-center ml-1 px-1 w-auto text-black text-xs bg-white rounded',
                     )}
                     data-tip={getCreditString()}
                     data-for="godTip"
@@ -311,9 +311,9 @@ const Semester: FC<{
           </div>
           <div className="w-full h-px bg-gradient-to-r from-blue-500 to-green-400"></div>
         </div>
-        <div id={semesterName + "|" + semesterYear._id}>
+        <div id={semesterName + '|' + semesterYear._id}>
           <Droppable
-            droppableId={semesterName + "|" + semesterYear._id}
+            droppableId={semesterName + '|' + semesterYear._id}
             type="COURSE"
           >
             {(provided, snapshot) => (
@@ -330,7 +330,7 @@ const Semester: FC<{
           {openAPInfoBox ? (
             <div className="absolute -ml-6 -mt-48 p-2 w-72 bg-gray-100 rounded shadow select-text">
               These are courses transferred over from AP tests that you've
-              taken! Find out equivalent courses your scores cover for{" "}
+              taken! Find out equivalent courses your scores cover for{' '}
               <a
                 className="text-blue-400 underline font-bold"
                 target="_blank"
@@ -349,7 +349,7 @@ const Semester: FC<{
 };
 
 const getListStyle = (isDraggingOver: any) => ({
-  background: isDraggingOver ? "skyblue" : "transparent",
+  background: isDraggingOver ? 'skyblue' : 'transparent',
 });
 
 export default Semester;

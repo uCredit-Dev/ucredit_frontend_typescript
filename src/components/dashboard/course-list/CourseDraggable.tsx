@@ -1,7 +1,7 @@
-import { FC, useState } from "react";
-import { Draggable } from "react-beautiful-dnd";
-import { SemesterType, UserCourse, Year } from "../../../resources/commonTypes";
-import CourseComponent from "./CourseComponent";
+import { FC, useState } from 'react';
+import { Draggable } from 'react-beautiful-dnd';
+import { SemesterType, UserCourse, Year } from '../../../resources/commonTypes';
+import CourseComponent from './CourseComponent';
 
 /**
  * This is a draggable CourseComponent container used for course DnD.
@@ -32,7 +32,7 @@ const CourseDraggable: FC<{
             {...provided.dragHandleProps}
             style={getItemStyle(
               snapshot.isDragging,
-              provided.draggableProps.style
+              provided.draggableProps.style,
             )}
           >
             <CourseComponent
@@ -50,7 +50,7 @@ const CourseDraggable: FC<{
 
 const getItemStyle = (isDragging: any, draggableStyle: any) => ({
   // some basic styles to make the items look a bit nicer
-  userSelect: "none",
+  userSelect: 'none',
 
   // styles we need to apply on draggables
   ...draggableStyle,

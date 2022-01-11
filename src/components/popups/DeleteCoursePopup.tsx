@@ -1,17 +1,17 @@
-import { FC } from "react";
-import { useSelector, useDispatch } from "react-redux";
-import { selectPlanList, updatePlanList } from "../../slices/userSlice";
-import { toast } from "react-toastify";
-import "react-toastify/dist/ReactToastify.css";
-import GenerateNewPlan from "../../resources/GenerateNewPlan";
-import { selectPlan, updateSelectedPlan } from "../../slices/currentPlanSlice";
-import { api } from "../../resources/assets";
-import { Plan } from "../../resources/commonTypes";
+import { FC } from 'react';
+import { useSelector, useDispatch } from 'react-redux';
+import { selectPlanList, updatePlanList } from '../../slices/userSlice';
+import { toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
+import GenerateNewPlan from '../../resources/GenerateNewPlan';
+import { selectPlan, updateSelectedPlan } from '../../slices/currentPlanSlice';
+import { api } from '../../resources/assets';
+import { Plan } from '../../resources/commonTypes';
 import {
   selectCourseToDelete,
   updateDeleteCourseStatus,
   updateCourseToDelete,
-} from "../../slices/popupSlice";
+} from '../../slices/popupSlice';
 
 /**
  * This is the confirmation popup that appears when users press the button to delete a course.
@@ -29,23 +29,23 @@ const DeleteCoursePopup: FC = () => {
    */
   const activateDeleteCourse = () => {
     if (currentPlan.years.length > 1 && courseInfo !== null) {
-      fetch(api + "/courses/" + courseInfo.course._id, {
-        method: "DELETE",
+      fetch(api + '/courses/' + courseInfo.course._id, {
+        method: 'DELETE',
       }).then(() => {
         let newPlan: Plan;
         const years = [...currentPlan.years];
         currentPlan.years.forEach((planYear, index) => {
           if (planYear._id === courseInfo.course.year_id) {
             const courses = planYear.courses.filter(
-              (yearCourse) => yearCourse !== courseInfo.course._id
+              (yearCourse) => yearCourse !== courseInfo.course._id,
             );
             years[index] = { ...years[index], courses: courses };
           }
         });
         newPlan = { ...currentPlan, years: years };
 
-        toast.error(courseInfo.course.title + " deleted!", {
-          position: "top-right",
+        toast.error(courseInfo.course.title + ' deleted!', {
+          position: 'top-right',
           autoClose: 5000,
           hideProgressBar: true,
           closeOnClick: true,
@@ -60,14 +60,14 @@ const DeleteCoursePopup: FC = () => {
               if (plan._id === newPlan._id) {
                 return newPlan;
               } else return plan;
-            })
-          )
+            }),
+          ),
         );
         dispatch(updateDeleteCourseStatus(false));
         dispatch(updateCourseToDelete(null));
       });
     } else {
-      toast.error("Cannot delete last year!");
+      toast.error('Cannot delete last year!');
     }
   };
 
@@ -98,13 +98,13 @@ const DeleteCoursePopup: FC = () => {
             <div className="p-4 w-full h-auto bg-gray-200 rounded">
               <div className="flex flex-col items-center justify-center mb-4">
                 <b className="flex flex-row mt-4 text-center font-semibold">
-                  Are you sure you want to delete{" "}
+                  Are you sure you want to delete{' '}
                   {courseInfo !== null ? (
                     <div className="ml-1 text-red-600 font-bold">
                       {courseInfo.course.title}
                     </div>
                   ) : (
-                    " invalid course"
+                    ' invalid course'
                   )}
                   ?
                 </b>
