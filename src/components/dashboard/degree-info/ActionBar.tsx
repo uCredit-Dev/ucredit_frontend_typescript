@@ -175,7 +175,7 @@ const ActionBar: FC<{
   return (
     <div className="flex flex-row px-2 py-1 bg-white rounded shadow drop-shadow-md sticky top-0 z-20">
       <PlanChoose dropdown={dropdown} setDropdown={setDropdown} />
-      <div className="flex flex-row items-end mr-2 my-1 h-10 border bg-white border-gray-300 rounded rounded shadow">
+      <div className="flex flex-row items-end mr-2 my-1 h-10 border bg-white border-gray-300 rounded shadow">
         <div className="text-xl m-auto ml-2 mr-0">✎</div>
         <input
           value={planName}
@@ -183,7 +183,7 @@ const ActionBar: FC<{
           onChange={handlePlanNameChange}
         />
       </div>
-      <div className="flex mr-2 my-1 px-2 h-10 text-xl font-light">
+      <div className="flex mr-2 my-1 px-2 font-light text-lg">
         <Select
           isMulti
           isClearable={false}
