@@ -1,19 +1,19 @@
-import { FC, useState } from "react";
-import { useDispatch, useSelector } from "react-redux";
-import { Plan, Year } from "../../../resources/commonTypes";
+import { FC, useState } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import { Plan, Year } from '../../../resources/commonTypes';
 import {
   updateYearToDelete,
   updateDeleteYearStatus,
-} from "../../../slices/popupSlice";
-import Select from "react-select";
+} from '../../../slices/popupSlice';
+import Select from 'react-select';
 import {
   selectPlan,
   updateSelectedPlan,
-} from "../../../slices/currentPlanSlice";
-import axios from "axios";
-import { api } from "../../../resources/assets";
-import { selectPlanList, updatePlanList } from "../../../slices/userSlice";
-import { toast } from "react-toastify";
+} from '../../../slices/currentPlanSlice';
+import axios from 'axios';
+import { api } from '../../../resources/assets';
+import { selectPlanList, updatePlanList } from '../../../slices/userSlice';
+import { toast } from 'react-toastify';
 
 type SemSelected = {
   fall: boolean;
@@ -80,7 +80,7 @@ const YearSettingsDropdown: FC<{
     // Change year
     if (!exists) {
       axios
-        .patch(api + "/years/updateYear", {
+        .patch(api + '/years/updateYear', {
           year_id: year._id,
           year: selectedYear.value,
         })
@@ -105,15 +105,15 @@ const YearSettingsDropdown: FC<{
                 } else {
                   return p;
                 }
-              })
-            )
+              }),
+            ),
           );
         })
         .catch((err) => {
           console.log(err);
         });
     } else {
-      toast.error("Year already exists");
+      toast.error('Year already exists');
     }
   };
 

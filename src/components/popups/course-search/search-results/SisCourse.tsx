@@ -1,15 +1,15 @@
-import { FC, useEffect, useState } from "react";
-import Select from "react-select";
-import CourseVersion from "./CourseVersion";
-import { ReactComponent as Question } from "../../../../resources/svg/Question.svg";
-import { ReactComponent as Arrow } from "../../../../resources/svg/ArrowDown.svg";
-import { useDispatch, useSelector } from "react-redux";
+import { FC, useEffect, useState } from 'react';
+import Select from 'react-select';
+import CourseVersion from './CourseVersion';
+import { ReactComponent as Question } from '../../../../resources/svg/Question.svg';
+import { ReactComponent as Arrow } from '../../../../resources/svg/ArrowDown.svg';
+import { useDispatch, useSelector } from 'react-redux';
 import {
   selectCurrentPlanCourses,
   selectPlan,
   updateCurrentPlanCourses,
   updateSelectedPlan,
-} from "../../../../slices/currentPlanSlice";
+} from '../../../../slices/currentPlanSlice';
 import {
   selectInspectedCourse,
   selectSemester,
@@ -19,17 +19,17 @@ import {
   selectVersion,
   updateInspectedVersion,
   updateSearchTime,
-} from "../../../../slices/searchSlice";
-import { Course, Plan, Year } from "../../../../resources/commonTypes";
-import ReactTooltip from "react-tooltip";
+} from '../../../../slices/searchSlice';
+import { Course, Plan, Year } from '../../../../resources/commonTypes';
+import ReactTooltip from 'react-tooltip';
 import {
   selectCourseToShow,
   selectShowCourseInfo,
   updateAddingPrereq,
   updateCourseToShow,
   updateShowCourseInfo,
-} from "../../../../slices/popupSlice";
-import { api } from "../../../../resources/assets";
+} from '../../../../slices/popupSlice';
+import { api } from '../../../../resources/assets';
 
 /**
  * Displays a sis course when searching.
@@ -59,7 +59,7 @@ const SisCourse: FC<{
   const [versionIndex, updateVersionIndex] = useState<number>(0);
 
   useEffect(() => {
-    if (inspected !== "None" && version !== "None") {
+    if (inspected !== 'None' && version !== 'None') {
       const index: number = inspected.terms.indexOf(version.term.toString());
       updateVersionIndex(index);
     }
@@ -69,23 +69,23 @@ const SisCourse: FC<{
 
   // Returns an array of select options for the distribution area users want to add the course to.
   const getInspectedAreas = () => {
-    if (version !== "None" && version.areas !== "None") {
+    if (version !== 'None' && version.areas !== 'None') {
       const areaOptions = version.areas
-        .split("")
+        .split('')
         .map((area: string, i: number) => (
           <option key={version.number + area + i} value={area}>
             {area}
           </option>
         ));
       areaOptions.push(
-        <option key="none" value={"None"}>
+        <option key="none" value={'None'}>
           None
-        </option>
+        </option>,
       );
       return areaOptions;
     } else {
       return (
-        <option key="none" value={"None"}>
+        <option key="none" value={'None'}>
           None
         </option>
       );
@@ -98,13 +98,13 @@ const SisCourse: FC<{
       updateSearchTime({
         searchYear: event.target.value,
         searchSemester: searchSemester,
-      })
+      }),
     );
   };
 
   // Handles switching displayed term.
   const handleTermSwitch = (event: any): void => {
-    if (inspected !== "None") {
+    if (inspected !== 'None') {
       inspected.versions.forEach((ver) => {
         if (ver.term === event.value) {
           const newInspected: Course = {
@@ -132,10 +132,10 @@ const SisCourse: FC<{
    */
   const updateCourse = (): void => {
     if (courseToShow !== null) {
-      fetch(api + "/courses/" + courseToShow._id, {
-        method: "DELETE",
+      fetch(api + '/courses/' + courseToShow._id, {
+        method: 'DELETE',
         headers: {
-          "Content-Type": "application/json",
+          'Content-Type': 'application/json',
         },
       })
         .then((retrieved) => retrieved.json())
@@ -169,7 +169,7 @@ const SisCourse: FC<{
       dispatch(updateSelectedPlan(newPlan));
       props.addCourse(newPlan);
     } else {
-      console.log("ERROR: Failed to add", data.errors);
+      console.log('ERROR: Failed to add', data.errors);
     }
   };
 
@@ -236,7 +236,7 @@ const SisCourse: FC<{
                   className="h-4"
                   data-for="godTip"
                   data-tip={
-                    "<p>Areas designate the specific subset a course belongs to. Each degree requires students to take a certain amount of credits or courses in a spcific area.</p><p>H - Humanities</p><p>S - Social Sciences</p><p>E - Engineering</p><p>N - Natural Sciences</p><p>Q - Quantitative</p>"
+                    '<p>Areas designate the specific subset a course belongs to. Each degree requires students to take a certain amount of credits or courses in a spcific area.</p><p>H - Humanities</p><p>S - Social Sciences</p><p>E - Engineering</p><p>N - Natural Sciences</p><p>Q - Quantitative</p>'
                   }
                 />
               </div>
@@ -277,7 +277,7 @@ const SisCourse: FC<{
 
   return (
     <div className="flex flex-col h-full">
-      {inspected !== "None" ? (
+      {inspected !== 'None' ? (
         <>
           <div className="pb-5 pt-4 px-5 w-full h-full text-base bg-white rounded-t select-text overflow-y-auto">
             <div className="flex flex-row mb-1 w-full h-auto">
@@ -312,7 +312,7 @@ const SisCourse: FC<{
                       (courseToShow !== null &&
                         term
                           .toLowerCase()
-                          .includes(courseToShow.term.toLowerCase()))
+                          .includes(courseToShow.term.toLowerCase())),
                   )
                   .map((term) => {
                     return { label: term, value: term };

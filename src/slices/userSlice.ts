@@ -1,10 +1,10 @@
-import { createSlice, PayloadAction } from "@reduxjs/toolkit";
-import { RootState } from "../appStore/store";
+import { createSlice, PayloadAction } from '@reduxjs/toolkit';
+import { RootState } from '../appStore/store';
 import {
   Plan,
   SISRetrievedCourse,
   User,
-} from "../components/../resources/commonTypes";
+} from '../components/../resources/commonTypes';
 
 type UserSlice = {
   currentUser: User;
@@ -17,13 +17,13 @@ type UserSlice = {
 
 const initialState: UserSlice = {
   currentUser: {
-    _id: "noUser",
-    name: "",
-    email: "",
-    affiliation: "STUDENT",
-    grade: "AE UG Freshman",
-    school: "",
-    plan_ids: ["no plan"],
+    _id: 'noUser',
+    name: '',
+    email: '',
+    affiliation: 'STUDENT',
+    grade: 'AE UG Freshman',
+    school: '',
+    plan_ids: ['no plan'],
   },
   planList: [],
   courseCache: [],
@@ -47,7 +47,7 @@ function userUpdate(state: any, action: PayloadAction<User>) {
 // function addNewCourse(state: any, action: PayloadAction<NewCourse>) {}
 
 export const userSlice = createSlice({
-  name: "user",
+  name: 'user',
   initialState,
   reducers: {
     updateUser: userUpdate,
@@ -59,7 +59,7 @@ export const userSlice = createSlice({
     },
     updateCourseCache: (
       state: any,
-      action: PayloadAction<SISRetrievedCourse[]>
+      action: PayloadAction<SISRetrievedCourse[]>,
     ) => {
       if (!state.selectedAll) {
         for (let course of action.payload) {
@@ -77,7 +77,7 @@ export const userSlice = createSlice({
     },
     updateAllCoursesCached: (
       state: any,
-      action: PayloadAction<SISRetrievedCourse[]>
+      action: PayloadAction<SISRetrievedCourse[]>,
     ) => {
       if (!state.selectedAll) {
         state.courseCache = [...action.payload];

@@ -1,17 +1,17 @@
-import clsx from "clsx";
-import { useState, useEffect, FC } from "react";
-import { useSelector } from "react-redux";
-import { ReactComponent as Check } from "../../../resources/svg/CheckMark.svg";
-import { ReactComponent as X } from "../../../resources/svg/Close.svg";
-import parse from "html-react-parser";
+import clsx from 'clsx';
+import { useState, useEffect, FC } from 'react';
+import { useSelector } from 'react-redux';
+import { ReactComponent as Check } from '../../../resources/svg/CheckMark.svg';
+import { ReactComponent as X } from '../../../resources/svg/Close.svg';
+import parse from 'html-react-parser';
 import {
   requirements,
   checkRequirementSatisfied,
-} from "./distributionFunctions";
-import { selectCurrentPlanCourses } from "../../../slices/currentPlanSlice";
-import { selectCourseCache } from "../../../slices/userSlice";
-import { getCourse } from "../../../resources/assets";
-import DistributionPopup from "./DistributionPopup";
+} from './distributionFunctions';
+import { selectCurrentPlanCourses } from '../../../slices/currentPlanSlice';
+import { selectCourseCache } from '../../../slices/userSlice';
+import { getCourse } from '../../../resources/assets';
+import DistributionPopup from './DistributionPopup';
 
 /**
  * Component that displays fine requirements of a specific distribution.
@@ -23,7 +23,7 @@ const FineDistribution: FC<{
   distributionOpen: boolean;
   hidden: boolean;
 }> = ({ dis, distributionOpen, hidden }) => {
-  const [showDistrDesc, setShowDistrDesc] = useState<boolean>(false);
+  const [showDistrDesc, setShowDistrDesc] = useState<boolean>(true);
   const [displayAdd, setDisplayAdd] = useState(false);
   const [flipped, setFlipped] = useState<string[]>([]);
   const [plannedCredits, setPlannedCredits] = useState(dis.fulfilled_credits);
@@ -57,7 +57,7 @@ const FineDistribution: FC<{
               temp += course.credits;
             }
           }
-        }
+        },
       );
     });
     setPlannedCredits(temp);
@@ -67,7 +67,7 @@ const FineDistribution: FC<{
   return (
     <div
       key={dis.name}
-      className={clsx("flex justify-between w-full", {
+      className={clsx('flex justify-between w-full', {
         hidden: !distributionOpen || hidden,
       })}
     >
@@ -85,8 +85,8 @@ const FineDistribution: FC<{
           )}
         </div>
         <div
-          className={clsx("pr-2", {
-            "overflow-y-hidden h-6 select-text": !showDistrDesc,
+          className={clsx('pr-2', {
+            'overflow-y-hidden h-6 select-text': !showDistrDesc,
           })}
         >
           {parse(dis.name)}

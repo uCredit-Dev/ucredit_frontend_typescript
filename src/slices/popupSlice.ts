@@ -1,10 +1,10 @@
-import { createSlice, PayloadAction } from "@reduxjs/toolkit";
-import { RootState } from "../appStore/store";
+import { createSlice, PayloadAction } from '@reduxjs/toolkit';
+import { RootState } from '../appStore/store';
 import {
   Major,
   UserCourse,
   Year,
-} from "../components/../resources/commonTypes";
+} from '../components/../resources/commonTypes';
 
 type PopupSlice = {
   deletePlan: boolean;
@@ -27,7 +27,7 @@ const initialState: PopupSlice = {
   addPlan: false,
   generateAdd: false,
   deleteYear: false,
-  toAddName: "Unnamed Plan",
+  toAddName: 'Unnamed Plan',
   toAddMajor: null,
   deleteCourse: false,
   courseToDelete: null,
@@ -37,12 +37,12 @@ const initialState: PopupSlice = {
 };
 
 export const popupSlice = createSlice({
-  name: "currentPlan",
+  name: 'currentPlan',
   initialState,
   reducers: {
     updateGeneratePlanAddStatus: (
       state: any,
-      action: PayloadAction<boolean>
+      action: PayloadAction<boolean>,
     ) => {
       state.generateAdd = action.payload;
     },
@@ -73,7 +73,7 @@ export const popupSlice = createSlice({
     },
     updateCourseToDelete: (
       state: any,
-      action: PayloadAction<{ course: UserCourse; year: Year } | null>
+      action: PayloadAction<{ course: UserCourse; year: Year } | null>,
     ) => {
       state.courseToDelete = action.payload;
     },
@@ -82,7 +82,7 @@ export const popupSlice = createSlice({
     },
     updateCourseToShow: (
       state: any,
-      action: PayloadAction<UserCourse | null>
+      action: PayloadAction<UserCourse | null>,
     ) => {
       state.courseToShow = action.payload;
     },
