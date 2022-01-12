@@ -1400,28 +1400,32 @@ const baIS: Major = {
       fine_requirements: [
         {
           required_credits: 3,
-          description: "<b>One course in international relations (IR)</b>",
+          description:
+            "<b>One INST-IR course</b> <br /> One course in international relations (IR)",
           criteria: "INST-IR[T]",
         },
         {
           required_credits: 6,
-          description: "<b>Two courses in comparative politics (CP)</b>",
+          description:
+            "<b>Two INST-CP courses</b> <br /> Two courses in comparative politics (CP)",
           criteria: "INST-CP[T]",
         },
         {
           required_credits: 3,
-          description: "<b>One course in American politics (AP)</b>",
+          description:
+            "<b>One INST-AP course</b> <br /> One course in American politics (AP)",
           criteria: "INST-AP[T]",
         },
         {
           required_credits: 3,
-          description: "<b>One course in political theory (PT)</b>",
+          description:
+            "<b>One INST-PT course</b> <br /> One course in political theory (PT)",
           criteria: "INST-PT[T]",
         },
         {
           required_credits: 3,
           description:
-            "<b>One of the following gateway courses</b> <br /> Conflict and Security in a Global World " +
+            "<b>One Gateway Course</b> <br /> One of the following gateway courses: <br /> Conflict and Security in a Global World " +
             "(070.295) <br /> Contemporary International Politics (190.108) <br /> Introduction to Global " +
             "Studies (190.111) <br /> Issues in International Development (230.150)* <br /> <br /> *Applies to " +
             "students who entered fall 2019 and earlier only.",
@@ -1441,12 +1445,14 @@ const baIS: Major = {
       fine_requirements: [
         {
           required_credits: 3,
-          description: "<b>Elements of Macroeconomics (180.101)</b>",
+          description:
+            "<b>Elements of Macroeconomics</b> <br /> AS.180.101 Elements of Macroeconomics",
           criteria: "AS.180.101[C]",
         },
         {
           required_credits: 3,
-          description: "<b>Elements of Microeconomics (180.102)</b>",
+          description:
+            "<b>Elements of Microeconomics</b> <br /> AS.180.102 Elements of Microeconomics",
           criteria: "AS.180.102[C]",
         },
         {
@@ -1470,7 +1476,7 @@ const baIS: Major = {
       required_credits: 6,
       min_credits_per_course: 3,
       description:
-        "International studies majors must demonstrate proficiency in at least one" +
+        "International studies majors must demonstrate proficiency in at least one " +
         "foreign language. Proficiency through the second semester of the advanced/third-year " +
         "level is required. If students have proficiency above the advanced/third-year level, " +
         "they must take either: Option (A), two semesters of an upper level literature or culture " +
@@ -1519,6 +1525,47 @@ const baIS: Major = {
           criteria: "INST-GLOBAL[T]",
         },
       ],
+    },
+    {
+      name: "Humanities (H) Distribution",
+      required_credits: 9,
+      min_credits_per_course: 3,
+      description:
+        "The distribution requirement stipulates that students must earn a minimum number of credits in academic areas outside of their primary major. " +
+        "The student must complete at least 9 credits in the Humanities (H) area. " +
+        "These credits fulfilling the distribution requirement may overlap with major or minor requirements and the writing-intensive requirement.",
+      criteria: "H[A]",
+    },
+    {
+      name: "Social Science (S) Distribution",
+      required_credits: 9,
+      min_credits_per_course: 3,
+      description:
+        "The distribution requirement stipulates that students must earn a minimum number of credits in academic areas outside of their primary major. " +
+        "The student must complete at least 9 credits in the Social Science (S) area. " +
+        "These credits fulfilling the distribution requirement may overlap with major or minor requirements and the writing-intensive requirement.",
+      criteria: "S[A]",
+    },
+    {
+      name: "Other (N/E/Q) Distribution",
+      required_credits: 9,
+      min_credits_per_course: 3,
+      description:
+        "The distribution requirement stipulates that students must earn a minimum number of credits in academic areas outside of their primary major. " +
+        "The student must complete at least 9 credits in any of the other areas: Natural Sciences (N), Engineering (E) and/or Quantitative (Q). " +
+        "These credits fulfilling the distribution requirement may overlap with major or minor requirements and the writing-intensive requirement.",
+      criteria: "N[A]^OR^E[A]^OR^Q[A]",
+    },
+    {
+      name: "Writing Intensive",
+      required_credits: 12,
+      min_credits_per_course: 3,
+      double_count: true,
+      description:
+        "To encourage excellence in writing, across disciplines, the university requires all undergraduates to take a number of writing-intensive courses. " +
+        "All students earning a degree from the School of Arts and Sciences must complete at least 12 credits in writing-intensive courses. " +
+        "Writing-intensive courses taken to satisfy major, minor, or distribution requirements may also count toward the writing requirement.",
+      criteria: "Written Intensive[W]",
     },
   ],
 };
