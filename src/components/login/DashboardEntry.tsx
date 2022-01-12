@@ -136,7 +136,7 @@ const DashboardEntry: FC = () => {
         }}
       ></div>
       <div className="absolute z-50 flex w-full h-full">
-        <div className="flex flex-col mx-auto mx-auto my-auto p-14 text-white text-lg font-bold bg-gradient-to-b rounded shadow from-blue-500 to-green-400">
+        <div className="flex flex-col mx-auto mx-auto my-auto p-14 text-white text-lg font-bold rounded shadow bg-secondary">
           <div className="flex flex-row items-center justify-center mt-auto pr-2 w-full text-3xl">
             <img src={logo} alt="logo" className="mr-2 h-16" />
             <div>uCredit</div>

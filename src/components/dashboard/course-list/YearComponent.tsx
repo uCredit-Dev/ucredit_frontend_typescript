@@ -203,7 +203,7 @@ const YearComponent: FC<{
     <div
       id={id.toString()}
       className={
-        'cursor-move p-2 max-w-year-heading w-max rounded mb-4 bg-blue-400 rounded shadow min-w-[14rem]' +
+        'cursor-move p-2 max-w-year-heading w-max rounded mb-4 bg-primary rounded shadow min-w-[14rem]' +
         (addingPrereqStatus ? 'z-30' : '')
       }
       onMouseLeave={() => {

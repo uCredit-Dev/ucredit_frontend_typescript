@@ -115,13 +115,13 @@ const CourseComponent: FC<{
           <div className="w-full truncate">{course.title}</div>
           <div className="flex flex-row gap-0.5 items-center text-center">
             <div>{course.number}</div>
-            <div className="flex items-center px-1 text-white font-semibold bg-secondary rounded select-none">
+            <div className="flex items-center px-1 text-white font-semibold bg-primary rounded select-none">
               {course.credits}
             </div>
             {course.area !== 'None' ? (
               <div
-                className="flex items-center px-1 text-white font-semibold rounded select-none"
-                style={{ backgroundColor: getColors(course.area)[0] }}
+                className="flex items-center px-1 font-semibold rounded select-none font-normal"
+                style={{ backgroundColor: getColors(course.area, course.wi) }}
               >
                 {course.area}
               </div>
@@ -155,7 +155,7 @@ const CourseComponent: FC<{
                 <div className="absolute left-0 top-0 w-full h-full bg-white bg-opacity-80 rounded" />
                 <div
                   className={clsx(
-                    'absolute z-20 left-0 w-0 h-full text-white hover:bg-blue-400 bg-green-400 bg-opacity-80 rounded cursor-move transform duration-150 ease-in',
+                    'absolute z-20 left-0 w-0 h-full text-white hover:bg-secondary bg-primary bg-opacity-80 rounded cursor-move transform duration-150 ease-in',
                     {
                       'w-1/4': hovered,
                     },
@@ -170,7 +170,7 @@ const CourseComponent: FC<{
                 <div className="flex flex-col">
                   <div className="flex flex-row">
                     <DetailsSvg
-                      className="relative z-20 flex flex-row items-center justify-center ml-12 mr-5 p-0.5 w-6 h-6 text-white hover:bg-blue-400 bg-green-400 rounded-md outline-none stroke-2 cursor-pointer transform hover:scale-110 transition duration-150 ease-in"
+                      className="relative z-20 flex flex-row items-center justify-center ml-12 mr-5 p-0.5 w-6 h-6 text-white hover:bg-secondary bg-primary rounded-md outline-none stroke-2 cursor-pointer transform hover:scale-110 transition duration-150 ease-in"
                       onClick={displayCourses}
                     />
                     <RemoveSvg
@@ -185,7 +185,7 @@ const CourseComponent: FC<{
                         <WarningSvg
                           data-tip="<p>Prereqs not yet satisfied</p><p>Press here to override.</p>"
                           data-for="godTip"
-                          className="relative z-20 flex flex-row items-center justify-center p-0.5 w-6 h-6 text-white hover:bg-blue-400 bg-green-300 rounded-md outline-none stroke-2 cursor-pointer transform hover:scale-110 transition duration-150 ease-in"
+                          className="relative z-20 flex flex-row items-center justify-center p-0.5 w-6 h-6 text-white hover:bg-secondary bg-primary rounded-md outline-none stroke-2 cursor-pointer transform hover:scale-110 transition duration-150 ease-in"
                           onClick={() => setDisplayPopup(true)}
                         />
                       </>

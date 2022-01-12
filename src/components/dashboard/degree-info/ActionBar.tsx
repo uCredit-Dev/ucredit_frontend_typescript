@@ -164,7 +164,7 @@ const ActionBar: FC<{
         <div className="ml-1">Delete</div>
       </button>
       <button
-        className="flex flex-row items-center ml-1 mr-2 my-1 px-2 h-10 hover:underline hover:bg-green-300 border border-gray-300 rounded shadow transition duration-200 ease-in"
+        className="flex flex-row items-center ml-1 mr-2 my-1 px-2 h-10 hover:underline hover:bg-primary border border-gray-300 rounded shadow transition duration-200 ease-in"
         onClick={onShareClick}
       >
         <svg
@@ -183,7 +183,7 @@ const ActionBar: FC<{
         </svg>
         <div className="ml-1">Share</div>
       </button>
-      <div className="flex flex-row items-center my-1 w-10 h-10 hover:underline hover:bg-green-300 border border-gray-300 rounded focus:outline-none shadow cursor-pointer transition duration-200 ease-in">
+      <div className="flex flex-row items-center my-1 w-10 h-10 hover:underline hover:bg-primary border border-gray-300 rounded focus:outline-none shadow cursor-pointer transition duration-200 ease-in">
         <AddSvg
           onClick={() => addNewYear(false)}
           data-tip={`Add a new year!`}

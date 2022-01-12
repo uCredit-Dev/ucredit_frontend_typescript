@@ -295,21 +295,21 @@ const Semester: FC<{
             </div>
             {!addingPrereqStatus ? (
               <div
-                className="group flex flex-row items-center justify-center text-white hover:bg-blue-400 bg-green-400 rounded-md cursor-pointer"
+                className="group flex flex-row items-center justify-center text-white hover:bg-primary bg-secondary rounded-md cursor-pointer"
                 onClick={addCourse}
               >
                 <AddSvg className="w-6 h-6 group-hover:text-white stroke-2" />
               </div>
             ) : (
               <button
-                className="py-1 z-40 w-24 text-white text-xs hover:bg-blue-400 bg-green-400 rounded focus:outline-none transform hover:scale-101 transition duration-150 ease-in"
+                className="py-1 z-40 w-24 text-white text-xs hover:bg-secondary bg-primary rounded focus:outline-none transform hover:scale-101 transition duration-150 ease-in"
                 onClick={addPrereq}
               >
                 Add Here
               </button>
             )}
           </div>
-          <div className="w-full h-px bg-gradient-to-r from-blue-500 to-green-400"></div>
+          <div className="w-full h-px bg-primary"></div>
         </div>
         <div id={semesterName + '|' + semesterYear._id}>
           <Droppable

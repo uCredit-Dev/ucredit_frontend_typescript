@@ -103,7 +103,7 @@ const CourseBar: FC<{
           data-for="godTip"
         >
           <div
-            className="h-full bg-blue-300 rounded"
+            className="h-full bg-secondary rounded"
             style={{
               width: `${
                 plannedCredits <= maxCredits

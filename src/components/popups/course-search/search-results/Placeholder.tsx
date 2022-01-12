@@ -307,14 +307,14 @@ const Placeholder: FC<{ addCourse: (plan?: Plan) => void }> = (props) => {
       </div>
       {searchStatus ? (
         <button
-          className="mr-0 p-2 w-28 text-white hover:bg-blue-400 bg-green-400 rounded focus:outline-none transform hover:scale-105 transition duration-200 ease-in"
+          className="mr-0 p-2 w-28 text-white hover:bg-secondary bg-primary rounded focus:outline-none transform hover:scale-105 transition duration-200 ease-in"
           onClick={() => props.addCourse()}
         >
           Add Course
         </button>
       ) : (
         <button
-          className="mr-0 p-2 w-28 text-white bg-blue-500 rounded focus:outline-none transform hover:scale-105 transition duration-200 ease-in"
+          className="mr-0 p-2 w-28 text-white bg-secondary rounded focus:outline-none transform hover:scale-105 transition duration-200 ease-in"
           onClick={updateCourse}
         >
           Update Course

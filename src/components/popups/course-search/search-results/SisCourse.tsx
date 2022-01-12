@@ -192,7 +192,7 @@ const SisCourse: FC<{
   const getAddPrereqButton = (): JSX.Element =>
     searchStack.length !== 0 && showCourseInfo ? (
       <button
-        className="-mt-1 ml-auto p-1 px-2 text-white text-xl hover:bg-blue-400 bg-green-400 rounded focus:outline-none transform hover:scale-105 transition duration-200 ease-in"
+        className="-mt-1 ml-auto p-1 px-2 text-white text-xl hover:bg-secondary bg-primary rounded focus:outline-none transform hover:scale-105 transition duration-200 ease-in"
         onClick={addPrereq}
       >
         Add Prereq
@@ -261,14 +261,14 @@ const SisCourse: FC<{
   const getAddCourseButton = (): JSX.Element =>
     !showCourseInfo ? (
       <button
-        className="mt-2 p-2 w-auto h-10 text-white hover:bg-blue-400 bg-green-400 rounded focus:outline-none transform hover:scale-105 transition duration-200 ease-in"
+        className="mt-2 p-2 w-auto h-10 text-white hover:bg-secondary bg-primary rounded focus:outline-none transform hover:scale-105 transition duration-200 ease-in"
         onClick={() => props.addCourse()}
       >
         Add Course
       </button>
     ) : (
       <button
-        className="mt-2 p-2 w-auto h-10 text-white hover:bg-blue-400 bg-green-400 rounded focus:outline-none transform hover:scale-105 transition duration-200 ease-in"
+        className="mt-2 p-2 w-auto h-10 text-white hover:bg-secondary bg-primary rounded focus:outline-none transform hover:scale-105 transition duration-200 ease-in"
         onClick={updateCourse}
       >
         Update Course

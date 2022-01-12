@@ -110,7 +110,7 @@ const ApplicationFormPopup: FC<{
                 <div className="text-red-600">*Please fill in all inputs.*</div>
               ) : null}
               <button
-                className="mt-4 p-2 text-white bg-green-500 rounded"
+                className="mt-4 p-2 text-white bg-primary rounded"
                 onClick={() => {
                   if (
                     fromName.length > 0 &&

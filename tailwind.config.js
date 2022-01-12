@@ -49,9 +49,15 @@ module.exports = {
         blurrsm: '317px',
       },
       colors: {
-        primary: '#3168AF',
-        secondary: '#5D90D3',
-        background: '#f0f2f5',
+        primary: '#83B9FF',
+        secondary: '#5395D2',
+        H: '#FFDBDB',
+        N: '#FFE0CB',
+        S: '#FFF9A3',
+        Q: '#D1FFCD',
+        E: '#BFE8FF',
+        W: '#D0D0FF',
+        background: '#83B9FF',
         emphasis: '#fad4f5',
       },
       backgroundColor: {
