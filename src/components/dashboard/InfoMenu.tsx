@@ -177,7 +177,7 @@ const InfoMenu: FC = () => {
     courses: UserCourse[],
     coursesCopy: UserCourse[],
     reqs: [string, requirements[]][],
-    updatingPlan: Plan
+    updatingPlan: Plan,
   ) => {
     let reqCopy: [string, requirements[]][] = copyReqs(reqs);
     let count: number = 0;
@@ -243,13 +243,13 @@ const InfoMenu: FC = () => {
     reqs.forEach((reqGroup: [string, requirements[]]) =>
       reqGroup[1].forEach((req: requirements) => {
         processReq(req, reqGroup);
-      })
+      }),
     );
   };
 
   const processReq = (
     req: requirements,
-    reqGroup: [string, requirements[]]
+    reqGroup: [string, requirements[]],
   ) => {
     if (req.pathing) {
       let [requirement, ...focus_areas] = reqGroup[1];

@@ -735,14 +735,14 @@ const processParenthesisStack = (
   input: string[],
   i: number,
   parenthesesStack: string[],
-  subCourseArr: string[]
+  subCourseArr: string[],
 ) => {
-  if (input[i] === ")") {
+  if (input[i] === ')') {
     // If close, pop one from parentheses stack
     parenthesesStack.pop();
-  } else if (input[i] === "(") {
+  } else if (input[i] === '(') {
     // if open, push open parentheses in
-    parenthesesStack.push("(");
+    parenthesesStack.push('(');
   }
   // If we're still in original parentheses, push it into sthe subArray
   if (parenthesesStack.length > 0) {
@@ -757,7 +757,7 @@ const parsePrereqsOr = (input: any, depth: number): any => {
   // if OR, pop last element from orParsed. If it's a string, make a new array. If array, push the next element into this array. Put the array back into orParsed.
   // if not OR, push element into orParsed
   for (let i = 0; i < input.length; i++) {
-    if (input[i] === "OR") {
+    if (input[i] === 'OR') {
       processOrCase(orParsed, input, depth, i);
       i++;
     } else if (typeof input[i] === 'string') {
@@ -782,12 +782,12 @@ const processOrCase = (
   orParsed: any[],
   input: any[],
   depth: number,
-  i: number
+  i: number,
 ) => {
   let el = orParsed.pop();
   let toAdd;
   // If the course or array of courses after the OR is a string, it must be a course number. Otherwise, it's a course array.
-  if (typeof input[i + 1] === "string") {
+  if (typeof input[i + 1] === 'string') {
     toAdd = input[i + 1];
   } else {
     toAdd = parsePrereqsOr(input[i + 1], depth);
@@ -797,12 +797,12 @@ const processOrCase = (
   if (el === null) {
     orParsed.push(0);
     orParsed.push(toAdd);
-  } else if (typeof el === "object" && typeof el[0] === "number") {
+  } else if (typeof el === 'object' && typeof el[0] === 'number') {
     // If past element was an array and we are in an or chain
     // The last element was an or sequence
     el.push(toAdd);
     orParsed.push(el);
-  } else if (typeof el === "object" && typeof el[0] !== "number") {
+  } else if (typeof el === 'object' && typeof el[0] !== 'number') {
     // The last element was a parentheses sequence
     // We need to parse the sequence and put that element back into our array
     el = parsePrereqsOr(input[i], depth);
