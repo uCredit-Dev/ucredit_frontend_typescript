@@ -47,10 +47,11 @@ import { ReactComponent as Question } from '../../../resources/svg/Question.svg'
  * @prop customStyle - custom styling for the semester
  */
 const Semester: FC<{
+  customStyle: string;
   semesterName: SemesterType;
   semesterYear: Year;
   courses: UserCourse[];
-}> = ({ semesterName, semesterYear, courses }) => {
+}> = ({ customStyle, semesterName, semesterYear, courses }) => {
   // Redux setup
   const dispatch = useDispatch();
   const addingPrereqStatus = useSelector(selectAddingPrereq);

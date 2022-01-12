@@ -94,7 +94,7 @@ const PlanAdd: FC = () => {
   return (
     <div className="absolute top-0">
       {/* Background Grey */}
-      <div className="fixed z-40 left-0 top-0 m-0 w-full h-screen bg-black opacity-50"></div>
+      <div className="fixed z-30 left-0 top-0 m-0 w-full h-screen bg-black opacity-50"></div>
 
       {/* Popup */}
       <div

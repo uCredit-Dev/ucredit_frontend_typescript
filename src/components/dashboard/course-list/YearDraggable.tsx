@@ -38,6 +38,7 @@ const YearDraggable: FC<{
             <YearComponent
               key={props.year._id}
               id={props.yearIndex}
+              customStyle=""
               year={props.year}
               courses={props.yearCourses}
               setDraggable={setDraggable}

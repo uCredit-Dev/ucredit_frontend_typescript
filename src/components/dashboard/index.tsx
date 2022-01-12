@@ -152,7 +152,7 @@ const Dashboard: FC<{ id: string | null }> = ({ id }) => {
                   onShareClick={onShareClick}
                 />
                 {dropdown ? (
-                  <div className="absolute z-30 flex flex-col -mt-2 ml-2 w-60 text-black bg-white rounded shadow">
+                  <div className="absolute z-40 flex flex-col -mt-2 ml-2 w-60 text-black bg-white rounded shadow">
                     {planList.map((plan, index) => (
                       <button
                         key={index}
