@@ -1,4 +1,4 @@
-import { all_deps, course_tags } from "./assets";
+import { all_deps, course_tags } from './assets';
 
 /* 
   File containing all the common types we use throughout the app.
@@ -98,15 +98,15 @@ export type Plan = {
   years: Year[];
 };
 
-type Affiliation = "STUDENT" | "FACULTY" | "STAFF";
+type Affiliation = 'STUDENT' | 'FACULTY' | 'STAFF';
 type Grade =
-  | "AE UG Freshman"
-  | "AE UG Sophomore"
-  | "AE UG Junior"
-  | "AE UG Senior"
-  | "Research Program Coordinator"
-  | "LECTURER"
-  | "Student Success Advisor";
+  | 'AE UG Freshman'
+  | 'AE UG Sophomore'
+  | 'AE UG Junior'
+  | 'AE UG Senior'
+  | 'Research Program Coordinator'
+  | 'LECTURER'
+  | 'Student Success Advisor';
 
 export type User = {
   _id: string; //JHED ID
@@ -161,27 +161,27 @@ export type Distribution = {
 // export type YearType = "Freshman" | "Sophomore" | "Junior" | "Senior";
 
 export type SemesterType =
-  | "Fall"
-  | "Spring"
-  | "Summer"
-  | "Intersession"
-  | "All";
+  | 'Fall'
+  | 'Spring'
+  | 'Summer'
+  | 'Intersession'
+  | 'All';
 
 // https://stackoverflow.com/questions/52085454/typescript-define-a-union-type-from-an-array-of-strings
 export type DepartmentType = typeof all_deps[number];
 export type TagType = typeof course_tags[number];
 
 export type FilterType =
-  | "credits"
-  | "distribution"
-  | "tags"
-  | "term"
-  | "year"
-  | "department"
-  | "wi"
-  | "levels";
+  | 'credits'
+  | 'distribution'
+  | 'tags'
+  | 'term'
+  | 'year'
+  | 'department'
+  | 'wi'
+  | 'levels';
 
-export type AreaType = "N" | "S" | "H" | "W" | "E" | "Q";
+export type AreaType = 'N' | 'S' | 'H' | 'W' | 'E' | 'Q';
 
 export type FineReq = {
   required_credits: number;
@@ -201,6 +201,7 @@ export type DistributionObj = {
   double_count?: boolean;
   exception?: string;
   exclusive?: boolean;
+  pathing?: boolean;
 };
 
 export type Major = {

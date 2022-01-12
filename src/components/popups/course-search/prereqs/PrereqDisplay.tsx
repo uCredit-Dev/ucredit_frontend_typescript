@@ -1,33 +1,33 @@
-import clsx from "clsx";
-import { useState, useEffect, FC } from "react";
-import { useSelector, useDispatch } from "react-redux";
+import clsx from 'clsx';
+import { useState, useEffect, FC } from 'react';
+import { useSelector, useDispatch } from 'react-redux';
 import {
   selectSemester,
   selectYear,
   updateSearchStack,
   selectVersion,
   selectInspectedCourse,
-} from "../../../../slices/searchSlice";
+} from '../../../../slices/searchSlice';
 import {
   filterNNegatives,
   processPrereqs,
   checkPrereq,
-} from "../../../../resources/assets";
-import PrereqDropdown from "./PrereqDropdown";
-import { ReactComponent as CheckMark } from "../../../../resources/svg/CheckMark.svg";
-import { ReactComponent as DescriptionSvg } from "../../../../resources/svg/Description.svg";
-import { ReactComponent as MenuSvg } from "../../../../resources/svg/Menu.svg";
+} from '../../../../resources/assets';
+import PrereqDropdown from './PrereqDropdown';
+import { ReactComponent as CheckMark } from '../../../../resources/svg/CheckMark.svg';
+import { ReactComponent as DescriptionSvg } from '../../../../resources/svg/Description.svg';
+import { ReactComponent as MenuSvg } from '../../../../resources/svg/Menu.svg';
 import {
   selectCurrentPlanCourses,
   selectPlan,
-} from "../../../../slices/currentPlanSlice";
-import { selectCourseCache } from "../../../../slices/userSlice";
-import { selectCourseToShow } from "../../../../slices/popupSlice";
+} from '../../../../slices/currentPlanSlice';
+import { selectCourseCache } from '../../../../slices/userSlice';
+import { selectCourseToShow } from '../../../../slices/popupSlice';
 import {
   SISRetrievedCourse,
   UserCourse,
   Year,
-} from "../../../../resources/commonTypes";
+} from '../../../../resources/commonTypes';
 
 // Parsed prereq type
 // satisfied: a boolean that tells whether the prereq should be marked with green (satisfied) or red (unsatisfied)
@@ -70,7 +70,7 @@ const PrereqDisplay: FC = () => {
     let preReqs = filterNNegatives(version);
     setNNegativePreReqs(preReqs);
     // If there exists preReqs, we need to process and display them.
-    if (version !== "None" && preReqs.length > 0) {
+    if (version !== 'None' && preReqs.length > 0) {
       setHasPreReqs(true);
       display(preReqs);
     }
@@ -101,9 +101,9 @@ const PrereqDisplay: FC = () => {
     let skipCount = 0;
     for (let i = 0; i < input.length; i++) {
       if (skipCount <= 0) {
-        if (input[i] === "AND") {
+        if (input[i] === 'AND') {
           // skip
-        } else if (input[i] === "(") {
+        } else if (input[i] === '(') {
           [skipCount, courseArr] = handleOpenParenthesis(input, i, courseArr);
         } else {
           courseArr.push(input[i]);
@@ -117,7 +117,7 @@ const PrereqDisplay: FC = () => {
   const handleOpenParenthesis = (
     input: string[],
     i: number,
-    courseArr: any[]
+    courseArr: any[],
   ): any[] => {
     // Adds in everything between this level's open and close parentheses
     // Keeps track of whether we have closed the original open parentheses
@@ -126,12 +126,12 @@ const PrereqDisplay: FC = () => {
     let skipCount: number = 0;
     while (parenthesesStack.length > 0) {
       skipCount++;
-      if (input[i + skipCount] === ")") {
+      if (input[i + skipCount] === ')') {
         // If close, pop one from parentheses stack
         parenthesesStack.pop();
-      } else if (input[i + skipCount] === "(") {
+      } else if (input[i + skipCount] === '(') {
         // if open, push open parentheses in
-        parenthesesStack.push("(");
+        parenthesesStack.push('(');
       }
       // If we're still in original parentheses, push it into sthe subArray
       if (parenthesesStack.length > 0) {
@@ -154,11 +154,15 @@ const PrereqDisplay: FC = () => {
       courseCache.forEach((course: SISRetrievedCourse) => {
         if (
           course.number === courseNumber &&
-          inspected !== "None" &&
-          version !== "None"
+          inspected !== 'None' &&
+          version !== 'None'
         ) {
           dispatch(
-            updateSearchStack({ new: course, oldSIS: inspected, oldV: version })
+            updateSearchStack({
+              new: course,
+              oldSIS: inspected,
+              oldV: version,
+            }),
           );
         }
       });
@@ -199,7 +203,7 @@ const PrereqDisplay: FC = () => {
    */
   const getNonStringPrereq = (input: any): parsedPrereqs => {
     const element = input;
-    if (typeof element === "string") {
+    if (typeof element === 'string') {
       // If the element is a number
       const noCBrackets: string = element.substr(0, element.length - 3);
       const noCBracketsNum: string = element.substr(0, 10);
@@ -214,12 +218,12 @@ const PrereqDisplay: FC = () => {
         currentPlan,
         noCBracketsNum,
         yearToCheck,
-        semesterToCheck === "Fall" ||
-          semesterToCheck === "Spring" ||
-          semesterToCheck === "Summer" ||
-          semesterToCheck === "Intersession"
+        semesterToCheck === 'Fall' ||
+          semesterToCheck === 'Spring' ||
+          semesterToCheck === 'Summer' ||
+          semesterToCheck === 'Intersession'
           ? semesterToCheck
-          : semester
+          : semester,
       );
       return {
         satisfied: satisfied,
@@ -230,7 +234,7 @@ const PrereqDisplay: FC = () => {
           >
             <button
               className={clsx(
-                "flex flex-wrap mb-1 max-w-md text-left text-sm font-medium focus:outline-none"
+                'flex flex-wrap mb-1 max-w-md text-left text-sm font-medium focus:outline-none',
               )}
               onClick={() => {
                 updateInspected(noCBracketsNum)();
@@ -239,21 +243,21 @@ const PrereqDisplay: FC = () => {
               <div className="group flex flex-row w-auto h-auto transition duration-100 ease-in">
                 {satisfied ? (
                   <CheckMark
-                    className={clsx("mr-1 w-5 h-5", {
-                      "text-green-700 group-hover:text-red-900": !satisfied,
-                      "text-green-700 group-hover:text-green-900": satisfied,
+                    className={clsx('mr-1 w-5 h-5', {
+                      'text-green-700 group-hover:text-red-900': !satisfied,
+                      'text-green-700 group-hover:text-green-900': satisfied,
                     })}
                   />
                 ) : null}
                 <div
                   className={clsx(
-                    "border-b border-solid border-gray-300 transition duration-100 ease-in",
+                    'border-b border-solid border-gray-300 transition duration-100 ease-in',
                     {
-                      "text-green-700 hover:text-green-900 hover:border-green-900":
+                      'text-green-700 hover:text-green-900 hover:border-green-900':
                         satisfied,
-                      "hover:text-red-900 text-red-700 hover:border-red-900":
+                      'hover:text-red-900 text-red-700 hover:border-red-900':
                         !satisfied,
-                    }
+                    },
                   )}
                 >
                   {noCBrackets}
@@ -263,7 +267,7 @@ const PrereqDisplay: FC = () => {
           </p>
         ),
       };
-    } else if (typeof element[0] === "number") {
+    } else if (typeof element[0] === 'number') {
       // If the element is a OR sequence (denoted by the depth number in the first index)
       const parsedSat: boolean = isSatisfied(element, true);
       return {
@@ -272,7 +276,7 @@ const PrereqDisplay: FC = () => {
           <div key={element + parsedSat}>
             <PrereqDropdown
               satisfied={parsedSat}
-              text={"Any one course below"}
+              text={'Any one course below'}
               element={element}
               getNonStringPrereq={getNonStringPrereq}
               or={true}
@@ -280,23 +284,23 @@ const PrereqDisplay: FC = () => {
           </div>
         ),
       };
-    } else if (typeof element === "object") {
+    } else if (typeof element === 'object') {
       // If the element is a parentheses sequence
       if (element.length === 1) {
         const parsed: parsedPrereqs = getNonStringPrereq(element[0]);
         return {
           satisfied: parsed.satisfied,
-          jsx: <p key={"drop" + element}>{parsed.jsx}</p>,
+          jsx: <p key={'drop' + element}>{parsed.jsx}</p>,
         };
       } else {
         const parsedSat: boolean = isSatisfied(element, false);
         return {
           satisfied: parsedSat,
           jsx: (
-            <div key={"drop" + element}>
+            <div key={'drop' + element}>
               <PrereqDropdown
                 satisfied={parsedSat}
-                text={"All courses below"}
+                text={'All courses below'}
                 element={element}
                 getNonStringPrereq={getNonStringPrereq}
                 or={false}
@@ -323,7 +327,7 @@ const PrereqDisplay: FC = () => {
     let orAndSatisfied = false;
 
     element.forEach((el: any, index) => {
-      if (typeof el !== "number") {
+      if (typeof el !== 'number') {
         const parsed: {
           satisfied: boolean;
           jsx: JSX.Element;
@@ -370,14 +374,14 @@ const PrereqDisplay: FC = () => {
     orParsed: any[],
     input: any,
     i: number,
-    depth: number
+    depth: number,
   ): any[] => {
     let skipOne: boolean = false;
-    if (input[i] === "OR") {
+    if (input[i] === 'OR') {
       let el = orParsed.pop();
       let toAdd;
       // If the course or array of courses after the OR is a string, it must be a course number. Otherwise, it's a course array.
-      if (typeof input[i + 1] === "string") {
+      if (typeof input[i + 1] === 'string') {
         toAdd = input[i + 1];
       } else {
         toAdd = parsePrereqsOr(input[i + 1], depth);
@@ -387,12 +391,12 @@ const PrereqDisplay: FC = () => {
       if (el === null) {
         orParsed.push(0);
         orParsed.push(toAdd);
-      } else if (typeof el === "object" && typeof el[0] === "number") {
+      } else if (typeof el === 'object' && typeof el[0] === 'number') {
         // If past element was an array and we are in an or chain
         // The last element was an or sequence
         el.push(toAdd);
         orParsed.push(el);
-      } else if (typeof el === "object" && typeof el[0] !== "number") {
+      } else if (typeof el === 'object' && typeof el[0] !== 'number') {
         // The last element was a parentheses sequence
         // We need to parse the sequence and put that element back into our array
         el = parsePrereqsOr(input[i], depth);
@@ -403,7 +407,7 @@ const PrereqDisplay: FC = () => {
         orParsed.push(orArray);
       }
       skipOne = true;
-    } else if (typeof input[i] === "string") {
+    } else if (typeof input[i] === 'string') {
       // If number, just push in
       orParsed.push(input[i]);
     } else {
@@ -417,16 +421,16 @@ const PrereqDisplay: FC = () => {
   const afterGathering = (
     numNameList: string[],
     numList: string[],
-    expr: any
+    expr: any,
   ) => {
     for (let i = 0; i < numList.length; i++) {
       expr = expr.replaceAll(
         numList[i],
         numNameList[i].substr(0, 10) +
-          numNameList[i].substr(20, numNameList[i].length)
+          numNameList[i].substr(20, numNameList[i].length),
       );
     }
-    expr = expr.split("^");
+    expr = expr.split('^');
     const list = createPrereqBulletList(expr);
     setPreReqDisplay(preReqsToComponents(list));
     setLoaded(true);
@@ -454,10 +458,10 @@ const PrereqDisplay: FC = () => {
         </>
       );
     else if (!loaded)
-      return <>{"Loading Prereqs Status: loaded is " + loaded.toString()}</>;
+      return <>{'Loading Prereqs Status: loaded is ' + loaded.toString()}</>;
     else
       return (
-        <p key={"drop" + preReqDisplay} className="p-2 overflow-y-auto">
+        <p key={'drop' + preReqDisplay} className="p-2 overflow-y-auto">
           {preReqDisplay}
         </p>
       );
@@ -468,12 +472,12 @@ const PrereqDisplay: FC = () => {
       <div className="flex flex-row mt-2">
         <div
           className={clsx(
-            "flex flex-row items-center justify-center mr-1 p-1 w-7 h-7 rounded cursor-pointer transform hover:scale-110 transition duration-200 ease-in",
+            'flex flex-row items-center justify-center mr-1 p-1 w-7 h-7 rounded cursor-pointer transform hover:scale-110 transition duration-200 ease-in',
             {
-              "bg-gray-200": prereqDisplayMode !== 1,
-              "hover:bg-gray-200 transition duration-100 ease-in":
+              'bg-gray-200': prereqDisplayMode !== 1,
+              'hover:bg-gray-200 transition duration-100 ease-in':
                 prereqDisplayMode === 1,
-            }
+            },
           )}
           onClick={handlePrereqDisplayModeChange(2)}
           data-tip="bullet list"
@@ -483,12 +487,12 @@ const PrereqDisplay: FC = () => {
         </div>
         <div
           className={clsx(
-            "flex flex-row items-center justify-center p-1 w-7 h-7 rounded cursor-pointer transform hover:scale-110 transition duration-200 ease-in",
+            'flex flex-row items-center justify-center p-1 w-7 h-7 rounded cursor-pointer transform hover:scale-110 transition duration-200 ease-in',
             {
-              "bg-gray-200": prereqDisplayMode === 1,
-              "hover:bg-gray-200 transition duration-100 ease-in":
+              'bg-gray-200': prereqDisplayMode === 1,
+              'hover:bg-gray-200 transition duration-100 ease-in':
                 prereqDisplayMode !== 1,
-            }
+            },
           )}
           onClick={handlePrereqDisplayModeChange(1)}
           data-tip="description"

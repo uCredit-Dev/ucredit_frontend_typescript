@@ -1,15 +1,15 @@
-import { FC, useEffect, useState } from "react";
-import UserSection from "./UserSection";
-import FeedbackPopup from "../popups/FeedbackPopup";
-import FeedbackNotification from "../popups/FeedbackNotification";
-import HandleUserEntryDummy from "./HandleUserEntryDummy";
-import { useDispatch, useSelector } from "react-redux";
+import { FC, useEffect, useState } from 'react';
+import UserSection from './UserSection';
+import FeedbackPopup from '../popups/FeedbackPopup';
+import FeedbackNotification from '../popups/FeedbackNotification';
+import HandleUserEntryDummy from './HandleUserEntryDummy';
+import { useDispatch, useSelector } from 'react-redux';
 import {
   selectImportingStatus,
   selectPlan,
   updateCurrentPlanCourses,
   updateSelectedPlan,
-} from "../../slices/currentPlanSlice";
+} from '../../slices/currentPlanSlice';
 import {
   selectDeletePlanStatus,
   selectAddingPlanStatus,
@@ -19,31 +19,30 @@ import {
   selectAddingPrereq,
   updateAddingPlanStatus,
   selectShowingCart,
-} from "../../slices/popupSlice";
-import { selectSearchStatus } from "../../slices/searchSlice";
-import AddingPrereqPopup from "../popups/AddingPrereqPopup";
-import Search from "../popups/course-search/Search";
-import CourseDisplayPopup from "../popups/CourseDisplayPopup";
-import DeleteCoursePopup from "../popups/DeleteCoursePopup";
-import DeletePlanPopup from "../popups/DeletePlanPopup";
-import DeleteYearPopup from "../popups/DeleteYearPopup";
-import PlanAdd from "../popups/PlanAdd";
-import CourseList from "./course-list/CourseList";
-import InfoMenu from "./InfoMenu";
-import ActionBar from "./degree-info/ActionBar";
-import { useScrollPosition } from "@n8tb1t/use-scroll-position";
-import { toast } from "react-toastify";
-import { Plan, SISRetrievedCourse } from "../../resources/commonTypes";
+} from '../../slices/popupSlice';
+import { selectSearchStatus } from '../../slices/searchSlice';
+import AddingPrereqPopup from '../popups/AddingPrereqPopup';
+import Search from '../popups/course-search/Search';
+import CourseDisplayPopup from '../popups/CourseDisplayPopup';
+import DeleteCoursePopup from '../popups/DeleteCoursePopup';
+import DeletePlanPopup from '../popups/DeletePlanPopup';
+import DeleteYearPopup from '../popups/DeleteYearPopup';
+import PlanAdd from '../popups/PlanAdd';
+import CourseList from './course-list/CourseList';
+import InfoMenu from './InfoMenu';
+import ActionBar from './degree-info/ActionBar';
+import { useScrollPosition } from '@n8tb1t/use-scroll-position';
+import { toast } from 'react-toastify';
+import { Plan, SISRetrievedCourse } from '../../resources/commonTypes';
 import {
   selectUser,
   selectPlanList,
   updatePlanList,
-} from "../../slices/userSlice";
-import ShareLinksPopup from "./degree-info/ShareLinksPopup";
-import clsx from "clsx";
-import Cart from "../popups/course-search/Cart";
-import axios from "axios";
-import { api } from "../../resources/assets";
+} from '../../slices/userSlice';
+import Cart from '../popups/course-search/Cart';
+import axios from 'axios';
+import { api } from '../../resources/assets';
+import ShareLinksPopup from './degree-info/ShareLinksPopup';
 
 /**
  * The dashboard that displays the user's plan.
@@ -69,7 +68,7 @@ const Dashboard: FC<{ id: string | null }> = ({ id }) => {
   const [formPopup, setFormPopup] = useState<boolean>(false);
   const [showHeader, setShowHeader] = useState<boolean>(true);
   const [dropdown, setDropdown] = useState<boolean>(false);
-  const [shareableURL, setShareableURL] = useState<string>("");
+  const [shareableURL, setShareableURL] = useState<string>('');
 
 
   // for all courses: TODO: Revme and all imports
@@ -95,7 +94,7 @@ const Dashboard: FC<{ id: string | null }> = ({ id }) => {
     setDropdown(false);
     const selectedOption = event.target.value;
     const planListClone = [...planList];
-    if (selectedOption === "new plan" && user._id !== "noUser") {
+    if (selectedOption === 'new plan' && user._id !== 'noUser') {
       dispatch(updateAddingPlanStatus(true));
     } else {
       let newSelected: Plan = currentPlan;
@@ -107,8 +106,8 @@ const Dashboard: FC<{ id: string | null }> = ({ id }) => {
         }
       });
 
-      toast(newSelected.name + " selected!", {
-        position: "top-right",
+      toast(newSelected.name + ' selected!', {
+        position: 'top-right',
         autoClose: 5000,
         hideProgressBar: true,
         closeOnClick: true,
@@ -134,16 +133,16 @@ const Dashboard: FC<{ id: string | null }> = ({ id }) => {
    * Handles when button for shareable link is clicked.
    */
   const onShareClick = (): void => {
-    if (shareableURL !== "") {
-      setShareableURL("");
+    if (shareableURL !== '') {
+      setShareableURL('');
       return;
     }
     setShareableURL(
-      (window.location.href.includes("localhost")
-        ? "localhost:3000"
-        : "https://ucredit.me") +
-      "/share?_id=" +
-      currentPlan._id
+      (window.location.href.includes('localhost')
+        ? 'localhost:3000'
+        : 'https://ucredit.me') +
+        '/share?_id=' +
+        currentPlan._id,
     );
   };
 
@@ -163,7 +162,7 @@ const Dashboard: FC<{ id: string | null }> = ({ id }) => {
           <div className="flex flex-row thin:flex-wrap-reverse mt-content w-full h-full">
             <div className="flex flex-col w-full">
               <div className="mx-auto">
-                {shareableURL === "" ? null : (
+                {shareableURL === '' ? null : (
                   <div className="absolute right-24">
                     <ShareLinksPopup
                       link={shareableURL}
@@ -177,7 +176,7 @@ const Dashboard: FC<{ id: string | null }> = ({ id }) => {
                   onShareClick={onShareClick}
                 />
                 {dropdown ? (
-                  <div className="absolute z-40 flex flex-col -mt-2 ml-2 w-60 text-black bg-white rounded shadow">
+                  <div className="absolute z-30 flex flex-col -mt-2 ml-2 w-60 text-black bg-white rounded shadow">
                     {planList.map((plan, index) => (
                       <button
                         key={index}

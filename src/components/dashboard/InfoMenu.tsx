@@ -1,23 +1,23 @@
-import { FC, useEffect, useState } from "react";
-import Distributions from "./degree-info/Distributions";
-import clsx from "clsx";
-import FineDistribution from "./degree-info/FineDistribution";
-import CourseBar from "./degree-info/CourseBar";
+import { FC, useEffect, useState } from 'react';
+import Distributions from './degree-info/Distributions';
+import clsx from 'clsx';
+import FineDistribution from './degree-info/FineDistribution';
+import CourseBar from './degree-info/CourseBar';
 import {
   checkRequirementSatisfied,
   getRequirements,
   requirements,
-} from "./degree-info/distributionFunctions";
-import { useDispatch, useSelector } from "react-redux";
+} from './degree-info/distributionFunctions';
+import { useDispatch, useSelector } from 'react-redux';
 import {
   selectCurrentPlanCourses,
   selectDistributions,
   selectPlan,
   updateDistributions,
-} from "../../slices/currentPlanSlice";
-import { selectCourseCache } from "../../slices/userSlice";
-import { getCourse, getMajor } from "../../resources/assets";
-import { Course, Major, Plan, UserCourse } from "../../resources/commonTypes";
+} from '../../slices/currentPlanSlice';
+import { selectCourseCache } from '../../slices/userSlice';
+import { getCourse, getMajor } from '../../resources/assets';
+import { Course, Major, Plan, UserCourse } from '../../resources/commonTypes';
 
 /**
  * Info menu shows degree plan and degree information.
@@ -32,13 +32,13 @@ const InfoMenu: FC = () => {
 
   const [infoOpen, setInfoOpen] = useState(false);
   const [showDistributions, setShowDistributions] = useState<boolean[]>(
-    new Array(distributions.length)
+    new Array(distributions.length),
   );
   const [distributionOpen, setDistributionOpen] = useState<boolean>(true);
   const [calculated, setCalculated] = useState<boolean>(false);
   const [major, setMajor] = useState<Major | null>(null);
   const [distributionBarsJSX, setDistributionBarsJSX] = useState<JSX.Element[]>(
-    []
+    [],
   );
   const [retrievedDistributions, setDistributions] = useState<{
     plan: Plan;
@@ -68,7 +68,7 @@ const InfoMenu: FC = () => {
       updateFulfilled(
         currentPlan,
         distr,
-        tot === currPlanCourses.length ? currPlanCourses : []
+        tot === currPlanCourses.length ? currPlanCourses : [],
       );
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -127,8 +127,8 @@ const InfoMenu: FC = () => {
                   changeDistributionVisibility(i);
                 }}
                 className={clsx(
-                  "mb-2 underline text-sm focus:outline-none transform hover:scale-101 transition duration-200 ease-in",
-                  { hidden: !distributionOpen }
+                  'mb-2 underline text-sm focus:outline-none transform hover:scale-101 transition duration-200 ease-in',
+                  { hidden: !distributionOpen },
                 )}
               >
                 {getDistributionText(i)}
@@ -136,7 +136,7 @@ const InfoMenu: FC = () => {
             ) : null}
           </div>
         );
-      }
+      },
     );
     setDistributionBarsJSX(distributionJSX);
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -150,36 +150,45 @@ const InfoMenu: FC = () => {
    * @param courseCache - cached courses
    * @param currPlanCourses - courses in current plan
    */
-  const updateFulfilled = async (
+  const updateFulfilled = (
     updatingPlan: Plan,
     reqs: [string, requirements[]][],
-    courses: UserCourse[]
+    courses: UserCourse[],
   ) => {
     setDistributions({ plan: updatingPlan, distr: reqs });
-    let reqCopy: [string, requirements[]][] = copyReqs(reqs);
-    let count: number = 0;
-    const checked: Course[] = [];
-    const coursesCopy = [...courses];
+    const coursesCopy: UserCourse[] = [...courses];
     coursesCopy.sort((c1: UserCourse, c2: UserCourse) => {
-      const c1Split = c1.number.split(".");
-      const c2Split = c2.number.split(".");
+      const c1Split = c1.number.split('.');
+      const c2Split = c2.number.split('.');
       const c1LastNum = c1Split[c1Split.length - 1];
       const c2LastNum = c2Split[c2Split.length - 1];
-      if (c1LastNum === "" && c1Split.length === 1) {
+      if (c1LastNum === '' && c1Split.length === 1) {
         return -1;
-      } else if (c2LastNum === "" && c2Split.length === 1) {
+      } else if (c2LastNum === '' && c2Split.length === 1) {
         return 1;
       } else {
         return parseInt(c1LastNum) - parseInt(c2LastNum);
       }
     });
+    processCoursesCopy(courses, coursesCopy, reqs, updatingPlan);
+  };
+
+  const processCoursesCopy = async (
+    courses: UserCourse[],
+    coursesCopy: UserCourse[],
+    reqs: [string, requirements[]][],
+    updatingPlan: Plan,
+  ) => {
+    let reqCopy: [string, requirements[]][] = copyReqs(reqs);
+    let count: number = 0;
+    const checked: Course[] = [];
     for (let course of coursesCopy) {
       setCalculated(false);
       const courseObj = await getCourse(
         course.number,
         courseCache,
         courses,
-        -1
+        -1,
       );
       let counted: boolean = false;
       if (courseObj.resp !== null) {
@@ -201,7 +210,9 @@ const InfoMenu: FC = () => {
 
   const updateReqs = (reqs: [string, requirements[]][], courseObj) => {
     let inNonExclusive: boolean = false;
-    // Exclusive check
+    // Exclusive check:
+    // If the requirement is exclusive, this means that if a course fulfills the requirement,
+    // it cannot fulfill any other requirements. Alternatively, if a course fulfills any other requirement, it cannot fulfill this one.
     reqs.forEach((reqGroup, i) =>
       reqGroup[1].forEach((req: requirements, j: number) => {
         if (
@@ -213,7 +224,7 @@ const InfoMenu: FC = () => {
           reqs[i][1][j].fulfilled_credits += parseInt(courseObj.credits);
           if (j !== 0) inNonExclusive = true;
         }
-      })
+      }),
     );
     reqs.forEach((reqGroup, i) =>
       reqGroup[1].forEach((req: requirements, j: number) => {
@@ -226,8 +237,28 @@ const InfoMenu: FC = () => {
         ) {
           reqs[i][1][j].fulfilled_credits += parseInt(courseObj.credits);
         }
-      })
+      }),
     );
+    // Pathing check
+    reqs.forEach((reqGroup: [string, requirements[]]) =>
+      reqGroup[1].forEach((req: requirements) => {
+        processReq(req, reqGroup);
+      }),
+    );
+  };
+
+  const processReq = (
+    req: requirements,
+    reqGroup: [string, requirements[]],
+  ) => {
+    if (req.pathing) {
+      let [requirement, ...focus_areas] = reqGroup[1];
+      for (let focus_area of focus_areas) {
+        if (focus_area.fulfilled_credits >= focus_area.required_credits) {
+          reqGroup[1] = [requirement, focus_area];
+        }
+      }
+    }
   };
 
   const copyReqs = (reqs) => {
@@ -252,13 +283,10 @@ const InfoMenu: FC = () => {
 
   const getDistributionText = (index: number): string =>
     showDistributions[index] === true
-      ? "Hide Fine Requirements"
-      : "Show Fine Requirements";
+      ? 'Hide Fine Requirements'
+      : 'Show Fine Requirements';
   return (
-    <div
-      className="fixed z-30 right-0 flex flex-col justify-between mt-4 w-10"
-      style={{ height: "90vh" }}
-    >
+    <div className="fixed z-40 right-0 flex flex-col justify-between mt-8 w-10 h-[72.5%] min-h-[40vh]">
       <div className="my-auto transform -rotate-90">
         <button
           className="w-32 h-10 text-center text-white font-bold hover:bg-blue-400 bg-green-400 rounded focus:outline-none shadow hover:scale-105 transition duration-200 ease-in drop-shadow-xl"
@@ -270,7 +298,7 @@ const InfoMenu: FC = () => {
         </button>
       </div>
       {infoOpen ? (
-        <div className="absolute z-50 right-14 top-8 ml-5 p-4 px-0 w-max max-h-full bg-white bg-opacity-90 rounded shadow overflow-y-scroll">
+        <div className="absolute z-50 right-14 top-5 ml-5 p-4 px-0 w-max max-h-full bg-white bg-opacity-90 rounded shadow overflow-y-scroll">
           {/* <InfoCards /> */}
           {(() => {
             if (calculated) {

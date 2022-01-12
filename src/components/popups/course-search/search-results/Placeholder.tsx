@@ -1,7 +1,7 @@
-import { useState, useEffect, FC } from "react";
-import { Course, Plan, Year } from "../../../../resources/commonTypes";
-import { useSelector, useDispatch } from "react-redux";
-import { ReactComponent as CloseSvg } from "../../../../resources/svg/Close.svg";
+import { useState, useEffect, FC } from 'react';
+import { Course, Plan, Year } from '../../../../resources/commonTypes';
+import { useSelector, useDispatch } from 'react-redux';
+import { ReactComponent as CloseSvg } from '../../../../resources/svg/Close.svg';
 import {
   updateInspectedVersion,
   selectPlaceholder,
@@ -9,21 +9,21 @@ import {
   updateInspectedCourse,
   updatePlaceholder,
   selectSearchStatus,
-} from "../../../../slices/searchSlice";
-import { ReactComponent as Question } from "../../../../resources/svg/Question.svg";
-import Select from "react-select";
-import { all_deps, api, course_tags } from "../../../../resources/assets";
-import { selectCourseToShow } from "../../../../slices/popupSlice";
+} from '../../../../slices/searchSlice';
+import { ReactComponent as Question } from '../../../../resources/svg/Question.svg';
+import Select from 'react-select';
+import { all_deps, api, course_tags } from '../../../../resources/assets';
+import { selectCourseToShow } from '../../../../slices/popupSlice';
 import {
   selectCurrentPlanCourses,
   selectPlan,
   updateCurrentPlanCourses,
   updateSelectedPlan,
-} from "../../../../slices/currentPlanSlice";
-import ReactTooltip from "react-tooltip";
+} from '../../../../slices/currentPlanSlice';
+import ReactTooltip from 'react-tooltip';
 
-const departmentFilters = ["none", ...all_deps];
-const tagFilters = ["none", ...course_tags];
+const departmentFilters = ['none', ...all_deps];
+const tagFilters = ['none', ...course_tags];
 
 /**
  * Page for adding a placeholder
@@ -41,13 +41,13 @@ const Placeholder: FC<{ addCourse: (plan?: Plan) => void }> = (props) => {
 
   // Component state setup.
   const [placeholderTitle, setPlaceholderTitle] =
-    useState<string>("placeholder");
-  const [placeholderArea, setPlaceholderArea] = useState<string>("none");
-  const [placeholderCredits, setPlaceholderCredits] = useState<string>("0");
-  const [placeholderNumber, setPlaceholderNumber] = useState<string>("");
+    useState<string>('placeholder');
+  const [placeholderArea, setPlaceholderArea] = useState<string>('none');
+  const [placeholderCredits, setPlaceholderCredits] = useState<string>('0');
+  const [placeholderNumber, setPlaceholderNumber] = useState<string>('');
   const [placeholderDepartment, setPlaceholderDepartment] =
-    useState<string>("none");
-  const [placeholderTag, setPlaceholderTag] = useState<string>("none");
+    useState<string>('none');
+  const [placeholderTag, setPlaceholderTag] = useState<string>('none');
 
   useEffect(() => {
     ReactTooltip.rebuild();
@@ -55,7 +55,7 @@ const Placeholder: FC<{ addCourse: (plan?: Plan) => void }> = (props) => {
 
   // Updates placeholder information everytime inspected course changes.
   useEffect(() => {
-    if (placeholder && inspectedVersion !== "None") {
+    if (placeholder && inspectedVersion !== 'None') {
       setPlaceholderArea(inspectedVersion.areas);
       setPlaceholderTitle(inspectedVersion.title);
       setPlaceholderCredits(inspectedVersion.credits);
@@ -69,7 +69,7 @@ const Placeholder: FC<{ addCourse: (plan?: Plan) => void }> = (props) => {
   const onPTChange = (event: any) => {
     const title = event.target.value;
     setPlaceholderTitle(title);
-    if (inspectedVersion !== "None") {
+    if (inspectedVersion !== 'None') {
       const inspCopy: Course = { ...inspectedVersion, title: title };
       dispatch(updateInspectedVersion(inspCopy));
     }
@@ -79,7 +79,7 @@ const Placeholder: FC<{ addCourse: (plan?: Plan) => void }> = (props) => {
   const onPAChange = (event: any) => {
     const area = event.value;
     setPlaceholderArea(area);
-    if (inspectedVersion !== "None") {
+    if (inspectedVersion !== 'None') {
       const inspectedCourseCopy: Course = { ...inspectedVersion, areas: area };
       dispatch(updateInspectedVersion(inspectedCourseCopy));
     }
@@ -89,7 +89,7 @@ const Placeholder: FC<{ addCourse: (plan?: Plan) => void }> = (props) => {
   const onPCChange = (event: any) => {
     const cred = event.value;
     setPlaceholderCredits(cred);
-    if (inspectedVersion !== "None") {
+    if (inspectedVersion !== 'None') {
       const inspCopy: Course = { ...inspectedVersion, credits: cred };
       dispatch(updateInspectedVersion(inspCopy));
     }
@@ -99,7 +99,7 @@ const Placeholder: FC<{ addCourse: (plan?: Plan) => void }> = (props) => {
   const onPNChange = (event: any) => {
     const num = event.target.value;
     setPlaceholderNumber(num);
-    if (inspectedVersion !== "None") {
+    if (inspectedVersion !== 'None') {
       const inspCopy: Course = { ...inspectedVersion, number: num };
       dispatch(updateInspectedVersion(inspCopy));
     }
@@ -109,7 +109,7 @@ const Placeholder: FC<{ addCourse: (plan?: Plan) => void }> = (props) => {
   const onPDChange = (event: any) => {
     const dep = event.value;
     setPlaceholderDepartment(dep);
-    if (inspectedVersion !== "None") {
+    if (inspectedVersion !== 'None') {
       const inspCopy: Course = { ...inspectedVersion, department: dep };
       dispatch(updateInspectedVersion(inspCopy));
     }
@@ -119,7 +119,7 @@ const Placeholder: FC<{ addCourse: (plan?: Plan) => void }> = (props) => {
   const onPTagChange = (event: any) => {
     const tag = event.value;
     setPlaceholderTag(tag);
-    if (inspectedVersion !== "None") {
+    if (inspectedVersion !== 'None') {
       const inspCopy: Course = {
         ...inspectedVersion,
         tags: [...inspectedVersion.tags, tag],
@@ -131,7 +131,7 @@ const Placeholder: FC<{ addCourse: (plan?: Plan) => void }> = (props) => {
   // Clears inspected course.
   const clearInspected = (): void => {
     dispatch(updatePlaceholder(false));
-    dispatch(updateInspectedCourse("None"));
+    dispatch(updateInspectedCourse('None'));
   };
 
   /**
@@ -139,10 +139,10 @@ const Placeholder: FC<{ addCourse: (plan?: Plan) => void }> = (props) => {
    */
   const updateCourse = (): void => {
     if (courseToShow !== null) {
-      fetch(api + "/courses/" + courseToShow._id, {
-        method: "DELETE",
+      fetch(api + '/courses/' + courseToShow._id, {
+        method: 'DELETE',
         headers: {
-          "Content-Type": "application/json",
+          'Content-Type': 'application/json',
         },
       }).then((retrieved) => {
         retrieved.json().then(handleUpdateResponse);
@@ -176,7 +176,7 @@ const Placeholder: FC<{ addCourse: (plan?: Plan) => void }> = (props) => {
       dispatch(updateSelectedPlan(newPlan));
       props.addCourse(newPlan);
     } else {
-      console.log("ERROR: Failed to add", data.errors);
+      console.log('ERROR: Failed to add', data.errors);
     }
   };
 
@@ -191,10 +191,7 @@ const Placeholder: FC<{ addCourse: (plan?: Plan) => void }> = (props) => {
           <CloseSvg className="w-7 h-7 stroke-2" />
         </button>
       </div>
-      <div
-        className="flex flex-col flex-wrap pb-5"
-        style={{ maxHeight: "70%" }}
-      >
+      <div className="flex flex-col flex-wrap pb-5 max-h-[70%]">
         <div className="flex flex-col mt-3 w-2/6">
           Title
           <input
@@ -237,7 +234,7 @@ const Placeholder: FC<{ addCourse: (plan?: Plan) => void }> = (props) => {
                 className="h-4"
                 data-for="godTip"
                 data-tip={
-                  "<p>Many degree and a few courses require students to complete a specific amount of courses under a certain tag.</p><p>These usually come in the form of 3-4 letters designating department (ie. CSC = Computer Science) followed by 2+ letters signalling the specific subgroup designation within the department (ie. SOFT = Software).</p>"
+                  '<p>Many degree and a few courses require students to complete a specific amount of courses under a certain tag.</p><p>These usually come in the form of 3-4 letters designating department (ie. CSC = Computer Science) followed by 2+ letters signalling the specific subgroup designation within the department (ie. SOFT = Software).</p>'
                 }
               />
             </div>
@@ -259,23 +256,23 @@ const Placeholder: FC<{ addCourse: (plan?: Plan) => void }> = (props) => {
           <Select
             onChange={onPCChange}
             options={[
-              "0",
-              "0.5",
-              "1",
-              "1.5",
-              "2",
-              "2.5",
-              "3",
-              "3.5",
-              "4",
-              "4.5",
-              "5",
-              "5.5",
-              "6",
-              "6.5",
-              "7",
-              "7.5",
-              "8",
+              '0',
+              '0.5',
+              '1',
+              '1.5',
+              '2',
+              '2.5',
+              '3',
+              '3.5',
+              '4',
+              '4.5',
+              '5',
+              '5.5',
+              '6',
+              '6.5',
+              '7',
+              '7.5',
+              '8',
             ].map((cred: any) => ({ label: cred, value: cred }))}
             className="mt-1"
             value={{
@@ -292,13 +289,13 @@ const Placeholder: FC<{ addCourse: (plan?: Plan) => void }> = (props) => {
                 className="h-4"
                 data-for="godTip"
                 data-tip={
-                  "<p>Areas designate the specific subset a course belongs to. Each degree requires students to take a certain amount of credits or courses in a spcific area.</p><p>H - Humanities</p><p>S - Social Sciences</p><p>E - Engineering</p><p>N - Natural Sciences</p><p>Q - Quantitative</p>"
+                  '<p>Areas designate the specific subset a course belongs to. Each degree requires students to take a certain amount of credits or courses in a spcific area.</p><p>H - Humanities</p><p>S - Social Sciences</p><p>E - Engineering</p><p>N - Natural Sciences</p><p>Q - Quantitative</p>'
                 }
               />
             </div>
           </div>
           <Select
-            options={["none", "N", "S", "H", "E", "Q"].map((area: any) => ({
+            options={['none', 'N', 'S', 'H', 'E', 'Q'].map((area: any) => ({
               label: area,
               value: area,
             }))}

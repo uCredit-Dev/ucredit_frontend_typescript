@@ -1,10 +1,10 @@
-import { FC } from "react";
-import { useSelector } from "react-redux";
-import "react-toastify/dist/ReactToastify.css";
-import GenerateNewPlan from "../../../resources/GenerateNewPlan";
-import { selectPlan } from "../../../slices/currentPlanSlice";
-import { ReactComponent as ArrowUp } from "../../../resources/svg/ArrowUp.svg";
-import { ReactComponent as ArrowDown } from "../../../resources/svg/ArrowDown.svg";
+import { FC } from 'react';
+import { useSelector } from 'react-redux';
+import 'react-toastify/dist/ReactToastify.css';
+import GenerateNewPlan from '../../../resources/GenerateNewPlan';
+import { selectPlan } from '../../../slices/currentPlanSlice';
+import { ReactComponent as ArrowUp } from '../../../resources/svg/ArrowUp.svg';
+import { ReactComponent as ArrowDown } from '../../../resources/svg/ArrowDown.svg';
 
 /**
  * Dropdown for choosing a plan to display.

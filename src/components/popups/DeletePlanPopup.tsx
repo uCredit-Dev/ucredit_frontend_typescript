@@ -1,16 +1,16 @@
-import { FC } from "react";
-import { useSelector, useDispatch } from "react-redux";
+import { FC } from 'react';
+import { useSelector, useDispatch } from 'react-redux';
 import {
   selectUser,
   selectPlanList,
   updatePlanList,
-} from "../../slices/userSlice";
-import { toast } from "react-toastify";
-import "react-toastify/dist/ReactToastify.css";
-import GenerateNewPlan from "../../resources/GenerateNewPlan";
-import { selectPlan, updateSelectedPlan } from "../../slices/currentPlanSlice";
-import { api } from "../../resources/assets";
-import { updateDeletePlanStatus } from "../../slices/popupSlice";
+} from '../../slices/userSlice';
+import { toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
+import GenerateNewPlan from '../../resources/GenerateNewPlan';
+import { selectPlan, updateSelectedPlan } from '../../slices/currentPlanSlice';
+import { api } from '../../resources/assets';
+import { updateDeletePlanStatus } from '../../slices/popupSlice';
 
 /**
  * This is the confirmation popup that appears when users press the button to delete a plan.
@@ -30,13 +30,13 @@ const DeletePlanPopup: FC = () => {
     // delete plan from db
     // update plan array
     // If plan list has more than one plan, delete. Otherwise, don't.
-    if (planList.length > 1 && user._id !== "noUser") {
-      fetch(api + "/plans/" + currentPlan._id, {
-        method: "DELETE",
+    if (planList.length > 1 && user._id !== 'noUser') {
+      fetch(api + '/plans/' + currentPlan._id, {
+        method: 'DELETE',
       })
         .then(() => {
-          toast.error(currentPlan.name + " deleted!", {
-            position: "top-right",
+          toast.error(currentPlan.name + ' deleted!', {
+            position: 'top-right',
             autoClose: 5000,
             hideProgressBar: true,
             closeOnClick: true,
@@ -53,8 +53,8 @@ const DeletePlanPopup: FC = () => {
         })
         .catch((err) => console.log(err));
     } else {
-      toast.error("Cannot delete last plan!", {
-        position: "top-right",
+      toast.error('Cannot delete last plan!', {
+        position: 'top-right',
         autoClose: 5000,
         hideProgressBar: true,
         closeOnClick: true,
@@ -79,7 +79,7 @@ const DeletePlanPopup: FC = () => {
         {/* Actual popup */}
         <div
           className={
-            "z-40 fixed flex flex-col bg-red-500 select-none rounded z-20 w-3/12 top-1/3 left-1/2 transform -translate-x-1/2 -translate-y-1/3 min-w-planAdd shadow"
+            'z-40 fixed flex flex-col bg-red-500 select-none rounded z-20 w-3/12 top-1/3 left-1/2 transform -translate-x-1/2 -translate-y-1/3 min-w-planAdd shadow'
           }
         >
           <div className="px-4 py-2 text-white text-coursecard font-semibold select-none">
@@ -116,7 +116,7 @@ const DeletePlanPopup: FC = () => {
         </div>
         <div
           className={
-            "fixed flex flex-col bg-gray-100 rounded z-20 top-1/3 left-1/2 transform -translate-x-1/2 p-5"
+            'fixed flex flex-col bg-gray-100 rounded z-20 top-1/3 left-1/2 transform -translate-x-1/2 p-5'
           }
         ></div>
       </div>

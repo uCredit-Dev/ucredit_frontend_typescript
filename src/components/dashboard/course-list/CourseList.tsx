@@ -1,5 +1,5 @@
-import { useState, useEffect, FC } from "react";
-import { useSelector, useDispatch } from "react-redux";
+import { useState, useEffect, FC } from 'react';
+import { useSelector, useDispatch } from 'react-redux';
 import {
   DroppableType,
   Plan,
@@ -7,8 +7,8 @@ import {
   SISRetrievedCourse,
   UserCourse,
   Year,
-} from "../../../resources/commonTypes";
-import axios from "axios";
+} from '../../../resources/commonTypes';
+import axios from 'axios';
 import {
   selectCurrentPlanCourses,
   selectDroppables,
@@ -16,20 +16,20 @@ import {
   updateCurrentPlanCourses,
   updateSelectedPlan,
   updateTotalCredits,
-} from "../../../slices/currentPlanSlice";
+} from '../../../slices/currentPlanSlice';
 import {
   selectPlaceholder,
   selectSearchStatus,
-} from "../../../slices/searchSlice";
-import { toast } from "react-toastify";
+} from '../../../slices/searchSlice';
+import { toast } from 'react-toastify';
 import {
   selectCourseCache,
   selectPlanList,
   updatePlanList,
-} from "../../../slices/userSlice";
-import { api } from "../../../resources/assets";
-import { DragDropContext, Droppable } from "react-beautiful-dnd";
-import YearDraggable from "./YearDraggable";
+} from '../../../slices/userSlice';
+import { api } from '../../../resources/assets';
+import { DragDropContext, Droppable } from 'react-beautiful-dnd';
+import YearDraggable from './YearDraggable';
 
 /**
  * Container component that holds all the years, semesters, and courses of the current plan.
@@ -48,7 +48,7 @@ const CourseList: FC = () => {
 
   // Component State setup.
   const [elements, setElements] = useState<JSX.Element[]>([]);
-  const [currentPlanId, setCurrentPlanId] = useState<string>("");
+  const [currentPlanId, setCurrentPlanId] = useState<string>('');
 
   // Gets all courses for each year and generates year objects based on them.
   useEffect(() => {
@@ -63,7 +63,7 @@ const CourseList: FC = () => {
         // We simply update courses
         year.courses.forEach((course: string) => {
           const courseObj: UserCourse = getUserCourse(course);
-          if (courseObj._id === "invalid_course") return;
+          if (courseObj._id === 'invalid_course') return;
           totalCredits += courseObj.credits;
           totCourses.push(courseObj);
           yearCourses.push(courseObj);
@@ -74,7 +74,7 @@ const CourseList: FC = () => {
         setCurrentPlanId(currentPlan._id);
         year.courses.forEach(async (courseId: string) => {
           try {
-            const resp = await axios.get(api + "/courses/" + courseId);
+            const resp = await axios.get(api + '/courses/' + courseId);
             const course: UserCourse = resp.data.data;
             yearCourses.push(course);
             totCourses.push(course);
@@ -85,7 +85,7 @@ const CourseList: FC = () => {
               year,
               yearIndex,
               yearCourses,
-              totalCredits
+              totalCredits,
             );
           } catch (err) {
             console.log(err);
@@ -108,7 +108,7 @@ const CourseList: FC = () => {
     yearIndex: number,
     updateNonFetch: boolean,
     totCourses: UserCourse[],
-    totalCredits: number
+    totalCredits: number,
   ): void => {
     if (yearIndex === currentPlan.years.length - 1 && updateNonFetch) {
       dispatch(updateCurrentPlanCourses(totCourses));
@@ -131,7 +131,7 @@ const CourseList: FC = () => {
     year: Year,
     yearIndex: number,
     yearCourses: UserCourse[],
-    totalCredits = -1
+    totalCredits = -1,
   ): void => {
     // condition in fetch scenario only
     if (totalCredits >= 0 && yearCourses.length !== year.courses.length) return;
@@ -143,17 +143,17 @@ const CourseList: FC = () => {
           yearIndex={yearIndex}
           yearCourses={yearCourses}
         />
-      </div>
+      </div>,
     );
     if (jsx.length === currentPlan.years.length) {
       if (totalCredits >= 0) {
         jsx.sort(
           (el1: JSX.Element, el2: JSX.Element) =>
-            el1.props.children.props.id - el2.props.children.props.id
+            el1.props.children.props.id - el2.props.children.props.id,
         );
       } else {
         jsx.sort(
-          (el1: JSX.Element, el2: JSX.Element) => el1.props.id - el2.props.id
+          (el1: JSX.Element, el2: JSX.Element) => el1.props.id - el2.props.id,
         );
       }
       dispatch(updateCurrentPlanCourses(totCourses));
@@ -169,24 +169,24 @@ const CourseList: FC = () => {
    */
   const getUserCourse = (id: string): UserCourse => {
     let course: UserCourse = {
-      _id: "invalid_course",
-      title: "invalid course",
-      number: "please refresh page",
-      term: "Fall",
+      _id: 'invalid_course',
+      title: 'invalid course',
+      number: 'please refresh page',
+      term: 'Fall',
       credits: 0,
-      department: "invalid",
+      department: 'invalid',
       tags: [],
-      area: "",
+      area: '',
       wi: false,
       taken: false,
       ratings: [],
       distribution_ids: [],
-      plan_id: "",
-      user_id: "",
-      year_id: "",
+      plan_id: '',
+      user_id: '',
+      year_id: '',
       preReq: [],
       isPlaceholder: false,
-      version: "",
+      version: '',
     };
     currentPlanCourses.forEach((c: UserCourse) => {
       if (c._id === id) {
@@ -205,7 +205,7 @@ const CourseList: FC = () => {
       return;
     }
 
-    if (source.droppableId.includes("year")) {
+    if (source.droppableId.includes('year')) {
       // Swap years if we're raggin a year.
       swapYear(source.index, destination.index);
     } else if (source.droppableId !== destination.droppableId) {
@@ -214,11 +214,11 @@ const CourseList: FC = () => {
       let destDroppable: DroppableType | null = null;
       droppables.forEach((droppable: DroppableType) => {
         // Semester droppables
-        if (source.droppableId === droppable.semester + "|" + droppable.year) {
+        if (source.droppableId === droppable.semester + '|' + droppable.year) {
           sourceDroppable = droppable;
         } else if (
           destination.droppableId ===
-          droppable.semester + "|" + droppable.year
+          droppable.semester + '|' + droppable.year
         ) {
           destDroppable = droppable;
         }
@@ -250,16 +250,16 @@ const CourseList: FC = () => {
       plan_id: currentPlan._id,
       year_ids: yearIdArr,
     };
-    fetch(api + "/years/changeOrder", {
-      method: "PATCH",
+    fetch(api + '/years/changeOrder', {
+      method: 'PATCH',
       headers: {
-        "Content-Type": "application/json",
+        'Content-Type': 'application/json',
       },
       body: JSON.stringify(body),
     })
       .then((resp) => {
         if (!resp.ok) {
-          console.log("ERROR:", resp);
+          console.log('ERROR:', resp);
         }
       })
       .catch((err) => console.log(err));
@@ -273,13 +273,13 @@ const CourseList: FC = () => {
   const swapCourse = async (
     source: DroppableType,
     destination: DroppableType,
-    sourceIndex: number
+    sourceIndex: number,
   ) => {
     const sourceObj: { year: Year | null; index: number } = getYear(
-      source.year
+      source.year,
     );
     const destObj: { year: Year | null; index: number } = getYear(
-      destination.year
+      destination.year,
     );
 
     // TODO: CLEANUP!!!!!
@@ -290,7 +290,7 @@ const CourseList: FC = () => {
     const destYear: Year = destObj.year;
     const courseId: string = [...source.courses].sort(
       (course1: UserCourse, course2: UserCourse) =>
-        course2._id.localeCompare(course1._id)
+        course2._id.localeCompare(course1._id),
     )[sourceIndex]._id;
     const courseYearIndex: number = sourceYear.courses.indexOf(courseId);
     let courseObj: undefined | UserCourse;
@@ -303,7 +303,7 @@ const CourseList: FC = () => {
 
     if (courseObj === undefined) return;
     try {
-      const resp = await axios.get(api + "/search", {
+      const resp = await axios.get(api + '/search', {
         params: { query: courseObj.number },
       });
       let retrievedCourses: SISRetrievedCourse[] = resp.data.data;
@@ -337,18 +337,18 @@ const CourseList: FC = () => {
           newTerm: destination.semester,
         };
 
-        let res = await fetch(api + "/courses/dragged", {
-          method: "PATCH",
+        let res = await fetch(api + '/courses/dragged', {
+          method: 'PATCH',
           headers: {
-            "Content-Type": "application/json",
+            'Content-Type': 'application/json',
           },
           body: JSON.stringify(body),
         });
 
         if (!res.ok) {
-          console.log("ERROR:", res);
+          console.log('ERROR:', res);
         } else {
-          toast.success("Successfully moved course!");
+          toast.success('Successfully moved course!');
         }
 
         const newCurrentPlan: Plan = {
@@ -362,7 +362,7 @@ const CourseList: FC = () => {
         dispatch(updateSelectedPlan(newCurrentPlan));
       }
     } catch (err) {
-      console.log("error is: " + err);
+      console.log('error is: ' + err);
     }
   };
 
@@ -378,7 +378,7 @@ const CourseList: FC = () => {
     let valid = false;
     if (sisVer !== null) {
       sisVer.terms.forEach((term: string) => {
-        if (term.split(" ")[0] === dest.semester) {
+        if (term.split(' ')[0] === dest.semester) {
           valid = true;
         }
       });
@@ -410,7 +410,7 @@ const CourseList: FC = () => {
   const updatePlanCourses = (
     destYear: Year,
     term: SemesterType,
-    courseId: string
+    courseId: string,
   ) => {
     currentPlanCourses.forEach((c: UserCourse, index: number) => {
       if (c._id === courseId) {
@@ -447,7 +447,7 @@ const CourseList: FC = () => {
     <>
       <DragDropContext onDragEnd={onDragEnd}>
         <div className="flex flex-row justify-between thin:justify-center mr-10 mt-5 h-full">
-          <Droppable droppableId={"years"} type="YEAR" direction="horizontal">
+          <Droppable droppableId={'years'} type="YEAR" direction="horizontal">
             {(provided, snapshot) => (
               <div
                 ref={provided.innerRef}
@@ -465,9 +465,9 @@ const CourseList: FC = () => {
 };
 
 const getListStyle = (isDraggingOver: any) => ({
-  display: "flex",
-  margin: "0rem",
-  padding: "0rem",
+  display: 'flex',
+  margin: '0rem',
+  padding: '0rem',
 });
 
 export default CourseList;

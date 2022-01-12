@@ -1,20 +1,20 @@
-import { useState, useEffect, FC } from "react";
-import { useSelector, useDispatch } from "react-redux";
+import { useState, useEffect, FC } from 'react';
+import { useSelector, useDispatch } from 'react-redux';
 import {
   selectPlaceholder,
   selectRetrievedCourses,
   selectSearchFilters,
   updateInspectedVersion,
   updatePlaceholder,
-} from "../../../../slices/searchSlice";
-import CourseCard from "./CourseCard";
-import ReactPaginate from "react-paginate";
-import { ReactComponent as PlaceholderFilledSvg } from "../../../../resources/svg/PlaceholderFilled.svg";
-import { ReactComponent as PlaceholderEmptySvg } from "../../../../resources/svg/PlaceholderEmpty.svg";
-import { ReactComponent as Question } from "../../../../resources/svg/Question.svg";
-import { Course, SISRetrievedCourse } from "../../../../resources/commonTypes";
-import ReactTooltip from "react-tooltip";
-import loading from "../../../../resources/images/loading.gif";
+} from '../../../../slices/searchSlice';
+import CourseCard from './CourseCard';
+import ReactPaginate from 'react-paginate';
+import { ReactComponent as PlaceholderFilledSvg } from '../../../../resources/svg/PlaceholderFilled.svg';
+import { ReactComponent as PlaceholderEmptySvg } from '../../../../resources/svg/PlaceholderEmpty.svg';
+import { ReactComponent as Question } from '../../../../resources/svg/Question.svg';
+import { Course, SISRetrievedCourse } from '../../../../resources/commonTypes';
+import ReactTooltip from 'react-tooltip';
+import loading from '../../../../resources/images/loading.gif';
 
 /* 
   List of searched courses.
@@ -25,7 +25,7 @@ const SearchList: FC<{ searching: boolean }> = (props) => {
   const [pageCount, setPageCount] = useState<number>(0);
   const [hideResults, setHideResults] = useState<boolean>(false);
   const [filteredCourses, setFilteredCourses] = useState<SISRetrievedCourse[]>(
-    []
+    [],
   );
 
   // Redux setup
@@ -43,15 +43,15 @@ const SearchList: FC<{ searching: boolean }> = (props) => {
         let valid = false;
         course.versions.forEach((version) => {
           if (
-            version.term === searchFilters.term + " " + searchFilters.year ||
-            (searchFilters.term === "All" &&
+            version.term === searchFilters.term + ' ' + searchFilters.year ||
+            (searchFilters.term === 'All' &&
               version.term.includes(searchFilters.year.toString()))
           ) {
             valid = true;
           }
         });
         return valid;
-      }
+      },
     );
     // If coursesPerPage doesn't divide perfectly into total courses, we need one more page.
     const division = Math.floor(SISFilteredCourses.length / coursesPerPage);
@@ -79,8 +79,8 @@ const SearchList: FC<{ searching: boolean }> = (props) => {
       const inspecting = { ...filteredCourses[i] };
       inspecting.versions.forEach((v: any, versionNum: number) => {
         if (
-          v.term === searchFilters.term + " " + searchFilters.year ||
-          (searchFilters.term === "All" &&
+          v.term === searchFilters.term + ' ' + searchFilters.year ||
+          (searchFilters.term === 'All' &&
             v.term.includes(searchFilters.year.toString()))
         ) {
           toDisplay.push(
@@ -90,7 +90,7 @@ const SearchList: FC<{ searching: boolean }> = (props) => {
               onClick={() => setHideResults(true)}
             >
               <CourseCard course={inspecting} version={versionNum} />
-            </div>
+            </div>,
           );
         }
       });
@@ -116,19 +116,19 @@ const SearchList: FC<{ searching: boolean }> = (props) => {
       setHideResults(false);
     } else {
       const placeholderCourse: Course = {
-        title: "placeholder",
-        number: "placeholder",
-        areas: "",
-        term: "",
-        school: "none",
-        department: "none",
-        credits: "",
+        title: 'placeholder',
+        number: 'placeholder',
+        areas: '',
+        term: '',
+        school: 'none',
+        department: 'none',
+        credits: '',
         wi: false,
-        bio: "This is a placeholder course",
+        bio: 'This is a placeholder course',
         tags: [],
         preReq: [],
         restrictions: [],
-        level: "",
+        level: '',
       };
       dispatch(updatePlaceholder(true));
       dispatch(updateInspectedVersion(placeholderCourse));
@@ -143,7 +143,7 @@ const SearchList: FC<{ searching: boolean }> = (props) => {
         data-tip="Hide Search Results"
       >
         <div className="flex flex-row">
-          <div className="text-lg font-semibold">Search Results</div>{" "}
+          <div className="text-lg font-semibold">Search Results</div>{' '}
           {window.innerWidth < 800 ? (
             <button
               className="ml-2 focus:outline-none"
@@ -153,9 +153,9 @@ const SearchList: FC<{ searching: boolean }> = (props) => {
             >
               {() => {
                 if (!hideResults) {
-                  return "Hide Results";
+                  return 'Hide Results';
                 } else {
-                  return "Show Results";
+                  return 'Show Results';
                 }
               }}
             </button>
@@ -245,20 +245,20 @@ const Pagination: React.FC<PaginationProps> = ({
       Use it to add new classnames when styling and add new props for logic */
   return (
     <ReactPaginate
-      previousLabel={"<"}
-      nextLabel={">"}
-      previousClassName={"m-2"}
-      nextClassName={"m-2"}
-      breakLabel={"..."}
-      breakClassName={"justify-items-end h-6 mt-1"}
+      previousLabel={'<'}
+      nextLabel={'>'}
+      previousClassName={'m-2'}
+      nextClassName={'m-2'}
+      breakLabel={'...'}
+      breakClassName={'justify-items-end h-6 mt-1'}
       pageCount={pageCount}
       marginPagesDisplayed={2}
       pageRangeDisplayed={3}
       onPageChange={handlePageClick}
-      containerClassName={"flex"}
-      activeClassName={"bg-gray-400"}
+      containerClassName={'flex'}
+      activeClassName={'bg-gray-400'}
       activeLinkClassName="rounded p-1 py-2 h-10"
-      pageClassName={"w-6 h-6 bg-gray-100 m-1 p-1 rounded text-center"}
+      pageClassName={'w-6 h-6 bg-gray-100 m-1 p-1 rounded text-center'}
     />
   );
 };

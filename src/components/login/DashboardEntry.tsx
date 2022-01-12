@@ -1,15 +1,15 @@
-import { FC, useEffect, useState } from "react";
-import { useNavigate, useLocation } from "react-router-dom";
-import { api, getLoginCookieVal, guestUser } from "../../resources/assets";
-import { useDispatch, useSelector } from "react-redux";
-import { updateUser, selectUser } from "../../slices/userSlice";
-import { useCookies } from "react-cookie";
-import samplePlan from "../../resources/images/samplePlan.png";
-import logo from "../../resources/images/logoDarker.png";
-import { toast } from "react-toastify";
+import { FC, useEffect, useState } from 'react';
+import { useNavigate, useLocation } from 'react-router-dom';
+import { api, getLoginCookieVal, guestUser } from '../../resources/assets';
+import { useDispatch, useSelector } from 'react-redux';
+import { updateUser, selectUser } from '../../slices/userSlice';
+import { useCookies } from 'react-cookie';
+import samplePlan from '../../resources/images/samplePlan.png';
+import logo from '../../resources/images/logoDarker.png';
+import { toast } from 'react-toastify';
 
-const PROD_ORIGIN = "https://ucredit.me/login/";
-const DEV_ORIGIN = "http://localhost:3000/login/";
+const PROD_ORIGIN = 'https://ucredit.me/login/';
+const DEV_ORIGIN = 'http://localhost:3000/login/';
 
 /**
  * The login page, designed after the Spotify login page..
@@ -20,7 +20,7 @@ const DashboardEntry: FC = () => {
   const dispatch = useDispatch();
   const user = useSelector(selectUser);
   const [cookies] = useCookies();
-  const [finishedLoginCheck, setFinishedLoginCheck] = useState(false);
+  const [finishedLoginCheck, setFinishedLoginCheck] = useState(true);
 
   // React router state setup.
   let navigate = useNavigate();
@@ -33,14 +33,14 @@ const DashboardEntry: FC = () => {
     const currentURL: string = window.location.href;
     if (currentURL.length > 43) {
       let token: string;
-      if (!window.location.href.includes("localhost")) {
+      if (!window.location.href.includes('localhost')) {
         token = currentURL.substr(PROD_ORIGIN.length, 20);
       } else {
         token = currentURL.substr(DEV_ORIGIN.length, 20);
       }
       fetchUser(token);
     } else {
-      if (user._id === "noUser") {
+      if (user._id === 'noUser') {
         initialLogin();
       }
     }
@@ -49,56 +49,57 @@ const DashboardEntry: FC = () => {
 
   // Initial login for when the user is the initial state, no_user.
   const initialLogin = (): void => {
+    setFinishedLoginCheck(false);
     const loginId = getLoginCookieVal(cookies);
-    fetch(api + "/retrieveUser/" + loginId, {
-      mode: "cors",
-      method: "GET",
-      credentials: "include",
+    fetch(api + '/retrieveUser/' + loginId, {
+      mode: 'cors',
+      method: 'GET',
+      credentials: 'include',
       headers: {
-        Accept: "application/json",
-        "Content-Type": "application/json",
+        Accept: 'application/json',
+        'Content-Type': 'application/json',
       },
     })
       .then((resp) => resp.json())
       .then((retrievedUser) => {
         if (retrievedUser.errors === undefined) {
           dispatch(updateUser(retrievedUser.data));
-          navigate("/dashboard");
+          navigate('/dashboard');
         } else {
           setFinishedLoginCheck(true);
         }
       })
       .catch((err) => {
-        console.log("ERROR IS: ", err);
+        console.log('ERROR IS: ', err);
         setFinishedLoginCheck(true);
       });
   };
 
   // Fetches user based on url token.
   const fetchUser = (token: string): void => {
-    fetch(api + "/retrieveUser/" + token, {
-      mode: "cors",
-      method: "GET",
-      credentials: "include",
+    fetch(api + '/retrieveUser/' + token, {
+      mode: 'cors',
+      method: 'GET',
+      credentials: 'include',
       headers: {
-        Accept: "application/json",
-        "Content-Type": "application/json",
+        Accept: 'application/json',
+        'Content-Type': 'application/json',
       },
     })
       .then((resp) => resp.json())
       .then((retrievedUser) => {
         if (
           retrievedUser.errors === undefined &&
-          !token.includes("dashboard")
+          !token.includes('dashboard')
         ) {
           document.cookie =
-            "connect.sid=" +
+            'connect.sid=' +
             token +
-            "; expires=" +
+            '; expires=' +
             new Date(Date.now() + 200000000000000).toString() +
-            "; path=/";
+            '; path=/';
           dispatch(updateUser(retrievedUser.data));
-          navigate("/dashboard");
+          navigate('/dashboard');
         } else {
           setFinishedLoginCheck(true);
         }
@@ -113,7 +114,7 @@ const DashboardEntry: FC = () => {
    */
   const handleGuest = (): void => {
     dispatch(updateUser(guestUser));
-    navigate("/dashboard");
+    navigate('/dashboard');
   };
 
   return (
@@ -122,15 +123,15 @@ const DashboardEntry: FC = () => {
         className="absolute flex w-screen h-screen"
         style={{
           backgroundImage:
-            "url(" +
+            'url(' +
             samplePlan +
-            "), linear-gradient(205deg, rgba(52, 211, 153), rgba(59, 130, 246))",
-          backgroundRepeat: "no-repeat",
-          backgroundSize: "cover",
-          backgroundPosition: "center center",
+            '), linear-gradient(205deg, rgba(52, 211, 153), rgba(59, 130, 246))',
+          backgroundRepeat: 'no-repeat',
+          backgroundSize: 'cover',
+          backgroundPosition: 'center center',
           // backgroundColor: "black",
-          backgroundBlendMode: "lighten",
-          filter: "blur(9px) hue-rotate(340deg)",
+          backgroundBlendMode: 'lighten',
+          filter: 'blur(9px) hue-rotate(340deg)',
           zIndex: 45,
         }}
       ></div>
@@ -156,7 +157,7 @@ const DashboardEntry: FC = () => {
                 ? handleGuest
                 : () => {
                     toast.info(
-                      "Please wait while we check if you're logged in..."
+                      "Please wait while we check if you're logged in...",
                     );
                   }
             }

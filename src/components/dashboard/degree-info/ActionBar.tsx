@@ -1,23 +1,23 @@
-import { FC, MouseEventHandler, useEffect, useState } from "react";
-import { useDispatch, useSelector } from "react-redux";
-import { toast } from "react-toastify";
-import { api } from "../../../resources/assets";
+import { FC, MouseEventHandler, useEffect, useState } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import { toast } from 'react-toastify';
+import { api } from '../../../resources/assets';
 import {
   selectPlan,
   updateSelectedPlan,
-} from "../../../slices/currentPlanSlice";
-import { updateDeletePlanStatus, updateShowingCart } from "../../../slices/popupSlice";
+} from '../../../slices/currentPlanSlice';
+import { updateDeletePlanStatus, updateShowingCart } from '../../../slices/popupSlice';
 import {
   selectPlanList,
   selectUser,
   updatePlanList,
-} from "../../../slices/userSlice";
-import PlanChoose from "./PlanChoose";
-import { ReactComponent as RemoveSvg } from "../../../resources/svg/Remove.svg";
-import { ReactComponent as AddSvg } from "../../../resources/svg/Add.svg";
-import axios from "axios";
-import { Year, Plan } from "../../../resources/commonTypes";
-import ReactTooltip from "react-tooltip";
+} from '../../../slices/userSlice';
+import PlanChoose from './PlanChoose';
+import { ReactComponent as RemoveSvg } from '../../../resources/svg/Remove.svg';
+import { ReactComponent as AddSvg } from '../../../resources/svg/Add.svg';
+import axios from 'axios';
+import { Year, Plan } from '../../../resources/commonTypes';
+import ReactTooltip from 'react-tooltip';
 
 /**
  * @description ActionBar component
@@ -68,10 +68,10 @@ const ActionBar: FC<{
       majors: currentPlan.majors,
       name: planName,
     };
-    fetch(api + "/plans/update", {
-      method: "PATCH",
+    fetch(api + '/plans/update', {
+      method: 'PATCH',
       headers: {
-        "Content-Type": "application/json",
+        'Content-Type': 'application/json',
       },
       body: JSON.stringify(body),
     })
@@ -84,7 +84,7 @@ const ActionBar: FC<{
             newPlanList[i] = { ...newUpdatedPlan };
           }
         }
-        toast.success("Plan name changed to " + planName + "!");
+        toast.success('Plan name changed to ' + planName + '!');
         setEditName(false);
         dispatch(updatePlanList(newPlanList));
       })
@@ -120,8 +120,8 @@ const ActionBar: FC<{
   const addNewYear = (preUniversity: boolean): void => {
     if (currentPlan.years.length < 8) {
       const newYear: Year = {
-        name: "New Year",
-        _id: "",
+        name: 'New Year',
+        _id: '',
         plan_id: currentPlan._id,
         user_id: user._id,
         courses: [],
@@ -132,12 +132,12 @@ const ActionBar: FC<{
         ...newYear,
         preUniversity: preUniversity,
         expireAt:
-          user._id === "guestUser"
+          user._id === 'guestUser'
             ? Date.now() + 60 * 60 * 24 * 1000
             : undefined,
       }; // add to end by default
       axios
-        .post(api + "/years", body)
+        .post(api + '/years', body)
         .then((response: any) => {
           const updatedPlanList: Plan[] = [...planList];
           updatedPlanList[0] = {
@@ -146,7 +146,7 @@ const ActionBar: FC<{
           };
           dispatch(updateSelectedPlan(updatedPlanList[0]));
           dispatch(updatePlanList(updatedPlanList));
-          toast.success("New Year added!");
+          toast.success('New Year added!');
         })
         .catch((err) => console.log(err));
     } else {
@@ -174,10 +174,7 @@ const ActionBar: FC<{
         />
       </div>
       <div className="flex mr-2 my-1 px-2 h-10 text-xl font-light border border-gray-300 rounded stroke-2 shadow">
-        <div
-          className="py-1 w-max overflow-ellipsis truncate"
-          style={{ maxWidth: "24rem" }}
-        >
+        <div className="py-1 w-max overflow-ellipsis truncate max-w-[24rem]">
           {currentPlan.majors}
         </div>
       </div>
@@ -185,7 +182,7 @@ const ActionBar: FC<{
         className="flex flex-row items-center ml-1 mr-2 my-1 px-2 h-10 hover:underline hover:bg-red-300 border border-gray-300 rounded shadow transition duration-200 ease-in"
         onClick={activateDeletePlan}
       >
-        <RemoveSvg className="my-auto w-5 stroke-2 cursor-pointer select-none transform hover:scale-110 transition duration-200 ease-in" />{" "}
+        <RemoveSvg className="my-auto w-5 stroke-2 cursor-pointer select-none transform hover:scale-110 transition duration-200 ease-in" />{' '}
         <div className="ml-1">Delete</div>
       </button>
       <button
