@@ -1401,34 +1401,34 @@ const baIS: Major = {
         {
           required_credits: 3,
           description:
-            "<b>One INST-IR course</b> <br /> One course in international relations (IR)",
-          criteria: "INST-IR[T]",
+            '<b>One INST-IR course</b> <br /> One course in international relations (IR)',
+          criteria: 'INST-IR[T]',
         },
         {
           required_credits: 6,
           description:
-            "<b>Two INST-CP courses</b> <br /> Two courses in comparative politics (CP)",
-          criteria: "INST-CP[T]",
+            '<b>Two INST-CP courses</b> <br /> Two courses in comparative politics (CP)',
+          criteria: 'INST-CP[T]',
         },
         {
           required_credits: 3,
           description:
-            "<b>One INST-AP course</b> <br /> One course in American politics (AP)",
-          criteria: "INST-AP[T]",
+            '<b>One INST-AP course</b> <br /> One course in American politics (AP)',
+          criteria: 'INST-AP[T]',
         },
         {
           required_credits: 3,
           description:
-            "<b>One INST-PT course</b> <br /> One course in political theory (PT)",
-          criteria: "INST-PT[T]",
+            '<b>One INST-PT course</b> <br /> One course in political theory (PT)',
+          criteria: 'INST-PT[T]',
         },
         {
           required_credits: 3,
           description:
-            "<b>One Gateway Course</b> <br /> One of the following gateway courses: <br /> Conflict and Security in a Global World " +
-            "(070.295) <br /> Contemporary International Politics (190.108) <br /> Introduction to Global " +
-            "Studies (190.111) <br /> Issues in International Development (230.150)* <br /> <br /> *Applies to " +
-            "students who entered fall 2019 and earlier only.",
+            '<b>One Gateway Course</b> <br /> One of the following gateway courses: <br /> Conflict and Security in a Global World ' +
+            '(070.295) <br /> Contemporary International Politics (190.108) <br /> Introduction to Global ' +
+            'Studies (190.111) <br /> Issues in International Development (230.150)* <br /> <br /> *Applies to ' +
+            'students who entered fall 2019 and earlier only.',
           criteria:
             'AS.070.295[C]^OR^AS.190.108[C]^OR^AS.190.111[C]^OR^(AS.230.150[C]^AND^Fall 2019[Y])',
         },
@@ -1446,14 +1446,14 @@ const baIS: Major = {
         {
           required_credits: 3,
           description:
-            "<b>Elements of Macroeconomics</b> <br /> AS.180.101 Elements of Macroeconomics",
-          criteria: "AS.180.101[C]",
+            '<b>Elements of Macroeconomics</b> <br /> AS.180.101 Elements of Macroeconomics',
+          criteria: 'AS.180.101[C]',
         },
         {
           required_credits: 3,
           description:
-            "<b>Elements of Microeconomics</b> <br /> AS.180.102 Elements of Microeconomics",
-          criteria: "AS.180.102[C]",
+            '<b>Elements of Microeconomics</b> <br /> AS.180.102 Elements of Microeconomics',
+          criteria: 'AS.180.102[C]',
         },
         {
           required_credits: 3,
@@ -1476,18 +1476,18 @@ const baIS: Major = {
       required_credits: 6,
       min_credits_per_course: 3,
       description:
-        "International studies majors must demonstrate proficiency in at least one " +
-        "foreign language. Proficiency through the second semester of the advanced/third-year " +
-        "level is required. If students have proficiency above the advanced/third-year level, " +
-        "they must take either: Option (A), two semesters of an upper level literature or culture " +
-        "course offered by the language departments and taught in the language of proficiency, or " +
-        "Option (B), take two semesters of another language. <br /> <br /> Waivers indicating advanced " +
-        "level/third-year language proficiency must be documented in the student’s official " +
-        "academic record in order for a student to be eligible to complete Option A or B. " +
-        "To receive these waivers, students must contact the Center for Language Education or " +
-        "the Department of Modern Languages & Literatures to complete a proficiency exam on " +
-        "campus. <br /> <br /> Note: Students cannot count their foreign language courses toward the 5 " +
-        "course advanced coursework requirement.",
+        'International studies majors must demonstrate proficiency in at least one ' +
+        'foreign language. Proficiency through the second semester of the advanced/third-year ' +
+        'level is required. If students have proficiency above the advanced/third-year level, ' +
+        'they must take either: Option (A), two semesters of an upper level literature or culture ' +
+        'course offered by the language departments and taught in the language of proficiency, or ' +
+        'Option (B), take two semesters of another language. <br /> <br /> Waivers indicating advanced ' +
+        'level/third-year language proficiency must be documented in the student’s official ' +
+        'academic record in order for a student to be eligible to complete Option A or B. ' +
+        'To receive these waivers, students must contact the Center for Language Education or ' +
+        'the Department of Modern Languages & Literatures to complete a proficiency exam on ' +
+        'campus. <br /> <br /> Note: Students cannot count their foreign language courses toward the 5 ' +
+        'course advanced coursework requirement.',
       criteria:
         'AS Center for Language Education[D]^OR^AS Modern Languages and Literatures[D]',
     },
@@ -1527,45 +1527,45 @@ const baIS: Major = {
       ],
     },
     {
-      name: "Humanities (H) Distribution",
+      name: 'Humanities (H) Distribution',
       required_credits: 9,
       min_credits_per_course: 3,
       description:
-        "The distribution requirement stipulates that students must earn a minimum number of credits in academic areas outside of their primary major. " +
-        "The student must complete at least 9 credits in the Humanities (H) area. " +
-        "These credits fulfilling the distribution requirement may overlap with major or minor requirements and the writing-intensive requirement.",
-      criteria: "H[A]",
+        'The distribution requirement stipulates that students must earn a minimum number of credits in academic areas outside of their primary major. ' +
+        'The student must complete at least 9 credits in the Humanities (H) area. ' +
+        'These credits fulfilling the distribution requirement may overlap with major or minor requirements and the writing-intensive requirement.',
+      criteria: 'H[A]',
     },
     {
-      name: "Social Science (S) Distribution",
+      name: 'Social Science (S) Distribution',
       required_credits: 9,
       min_credits_per_course: 3,
       description:
-        "The distribution requirement stipulates that students must earn a minimum number of credits in academic areas outside of their primary major. " +
-        "The student must complete at least 9 credits in the Social Science (S) area. " +
-        "These credits fulfilling the distribution requirement may overlap with major or minor requirements and the writing-intensive requirement.",
-      criteria: "S[A]",
+        'The distribution requirement stipulates that students must earn a minimum number of credits in academic areas outside of their primary major. ' +
+        'The student must complete at least 9 credits in the Social Science (S) area. ' +
+        'These credits fulfilling the distribution requirement may overlap with major or minor requirements and the writing-intensive requirement.',
+      criteria: 'S[A]',
     },
     {
-      name: "Other (N/E/Q) Distribution",
+      name: 'Other (N/E/Q) Distribution',
       required_credits: 9,
       min_credits_per_course: 3,
       description:
-        "The distribution requirement stipulates that students must earn a minimum number of credits in academic areas outside of their primary major. " +
-        "The student must complete at least 9 credits in any of the other areas: Natural Sciences (N), Engineering (E) and/or Quantitative (Q). " +
-        "These credits fulfilling the distribution requirement may overlap with major or minor requirements and the writing-intensive requirement.",
-      criteria: "N[A]^OR^E[A]^OR^Q[A]",
+        'The distribution requirement stipulates that students must earn a minimum number of credits in academic areas outside of their primary major. ' +
+        'The student must complete at least 9 credits in any of the other areas: Natural Sciences (N), Engineering (E) and/or Quantitative (Q). ' +
+        'These credits fulfilling the distribution requirement may overlap with major or minor requirements and the writing-intensive requirement.',
+      criteria: 'N[A]^OR^E[A]^OR^Q[A]',
     },
     {
-      name: "Writing Intensive",
+      name: 'Writing Intensive',
       required_credits: 12,
       min_credits_per_course: 3,
       double_count: true,
       description:
-        "To encourage excellence in writing, across disciplines, the university requires all undergraduates to take a number of writing-intensive courses. " +
-        "All students earning a degree from the School of Arts and Sciences must complete at least 12 credits in writing-intensive courses. " +
-        "Writing-intensive courses taken to satisfy major, minor, or distribution requirements may also count toward the writing requirement.",
-      criteria: "Written Intensive[W]",
+        'To encourage excellence in writing, across disciplines, the university requires all undergraduates to take a number of writing-intensive courses. ' +
+        'All students earning a degree from the School of Arts and Sciences must complete at least 12 credits in writing-intensive courses. ' +
+        'Writing-intensive courses taken to satisfy major, minor, or distribution requirements may also count toward the writing requirement.',
+      criteria: 'Written Intensive[W]',
     },
   ],
 };
