@@ -1,5 +1,15 @@
 /*
 
+1/12:
+VISUAL DESIGN ELEMENST
+ - FILTER LIST:
+    * How to handle text that overflows? Expand box? Wrap text?
+    * How should filters be displayed?
+
+Whatever, doing right now:
+Pathing:
+ - seperate pathing component similar to FineRequirementItem with a dropdown menu to select the focus araea
+
 1/8/2022:
 added things 
 
@@ -35,6 +45,7 @@ feedback popup isn't overlayed correctly
 clicking total credit bar breaks the app
 versioning is still tricky: how to determine what year to search for
 close cart after adding course
+clear inspecting cart after adding course
 
 
 random ideas:

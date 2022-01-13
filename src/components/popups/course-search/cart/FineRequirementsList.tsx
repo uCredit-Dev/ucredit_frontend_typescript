@@ -23,12 +23,9 @@ import { requirements } from "../../../dashboard/degree-info/distributionFunctio
 */
 const FineRequirementsList: FC<{ searching: boolean, selectRequirement: Function, selectedDistribution: [string, requirements[]] }> = (props) => {
   // Component state setup.
-  const [pageNum, setPageNum] = useState<number>(0);
-  const [pageCount, setPageCount] = useState<number>(0);
   const [hideResults, setHideResults] = useState<boolean>(false);
-  const [filteredCourses, setFilteredCourses] = useState<SISRetrievedCourse[]>(
-    []
-  );
+
+  const [selectedListItem, setSelectedListItem] = useState<number>(-1);
 
   // Redux setup
   const courses = useSelector(selectRetrievedCourses);
@@ -36,11 +33,22 @@ const FineRequirementsList: FC<{ searching: boolean, selectRequirement: Function
   const searchFilters = useSelector(selectSearchFilters);
   const dispatch = useDispatch();
 
+  const selectRequirement = (requirement: requirements, i: number) => {
+    props.selectRequirement(requirement);
+    setSelectedListItem(i);
+    console.log(i);
+  }
+
   const getRequirements = () => {
     // dummy requirements. Figure outthe structure of actual distributions later
-    console.log(props.selectedDistribution);
-    return props.selectedDistribution[1].map((requirement) => {
-      return <FineRequirementListItem itemRequirement={requirement} onClick={props.selectRequirement}/>
+
+    // // if the distribution is pathing, show a dropdown menu rather than a single list?
+    // if (props.selectedDistribution[1][0].pathing) {
+    //   return <FineReuqi
+    // }
+    return props.selectedDistribution[1].map((requirement, i) => {
+      if (i == 0) return <></> // TODO : better key
+      return <FineRequirementListItem id={i} itemRequirement={requirement} onClick={selectRequirement} selected={i === selectedListItem} />
     });
   }
 
@@ -67,24 +75,10 @@ const FineRequirementsList: FC<{ searching: boolean, selectRequirement: Function
       {!hideResults || window.innerWidth > 700 ? (
         <div className="py px-5 w-full bg-gray-200 select-none">
           <div className="w-full h-full">
-            {true ? ( // fix this later, should be false when there are no results
-              <>
-                <div className="y-full flex flex-col w-full">
-                  {/* This is where list items go */}
-                  {getRequirements()}
-                </div>
-              </>
-            ) : (
-              <div className="flex flex-col items-center justify-center mt-24 w-full">
-                {props.searching ? (
-                  <img src={loading} alt="Searching..." className="h-10"></img>
-                ) : (
-                  <div className="text-center text-gray-400 text-lg">
-                    No requirements.
-                  </div>
-                )}
-              </div>
-            )}
+            <div className="y-full flex flex-col w-full">
+              {/* This is where list items go */}
+              {getRequirements()}
+            </div>
           </div>
         </div>
       ) : null}
