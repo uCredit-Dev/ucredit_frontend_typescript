@@ -2,32 +2,55 @@ import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { RootState } from '../appStore/store';
 
 export type experiment = {
-  name: string,
-  active: boolean,
-  percentParticipating: number,
-  blacklist: string[]
-}
+  name: string;
+  active: boolean;
+  percentParticipating: number;
+  blacklist: string[];
+};
 
 type ExperimentSlice = {
-  experimentList: experiment[],
-  whitelist: experiment
-}
+  experimentList: experiment[];
+  whitelist: experiment;
+};
 
 const initialState: ExperimentSlice = {
   experimentList: [
-    { name: "Red Button", active: false, percentParticipating: 0, blacklist: []},
-    { name: "Green Button", active: false, percentParticipating: 0, blacklist: []},
-    { name: "Blue Button", active: false, percentParticipating: 0, blacklist: []},
+    {
+      name: 'Red Button',
+      active: false,
+      percentParticipating: 0,
+      blacklist: [],
+    },
+    {
+      name: 'Green Button',
+      active: false,
+      percentParticipating: 0,
+      blacklist: [],
+    },
+    {
+      name: 'Blue Button',
+      active: false,
+      percentParticipating: 0,
+      blacklist: [],
+    },
   ],
-  whitelist: { name: "White List", active: false, percentParticipating: 0, blacklist: []},
-}
+  whitelist: {
+    name: 'White List',
+    active: false,
+    percentParticipating: 0,
+    blacklist: [],
+  },
+};
 
 export const experimentSlice = createSlice({
-  name: "experiments",
+  name: 'experiments',
   initialState,
   reducers: {
-    setExperimentStatus: (state: any, action: PayloadAction<[number, boolean]>) => {
-      let tmp = [...state.experimentList]; 
+    setExperimentStatus: (
+      state: any,
+      action: PayloadAction<[number, boolean]>,
+    ) => {
+      let tmp = [...state.experimentList];
       tmp[action.payload[0]].active = action.payload[1];
       state.experimentList = tmp;
     },
@@ -39,7 +62,10 @@ export const experimentSlice = createSlice({
     setWhitelistStatus: (state: any, action: PayloadAction<boolean>) => {
       state.whitelist.active = action.payload;
     },
-    setExperimentPercentage: (state: any, action: PayloadAction<[number, number]>) => {
+    setExperimentPercentage: (
+      state: any,
+      action: PayloadAction<[number, number]>,
+    ) => {
       let tmp = [...state.experimentList];
       tmp[action.payload[0]].percentParticipating = action.payload[1];
       state.experimentList = tmp;
@@ -47,7 +73,7 @@ export const experimentSlice = createSlice({
     setWhiteList: (state: any, action: PayloadAction<boolean>) => {
       state.white_list.active = action.payload;
     },
-  }
+  },
 });
 
 export const {
@@ -58,6 +84,7 @@ export const {
 } = experimentSlice.actions;
 
 // Selector Functions
-export const selectExperimentList = (state: RootState) => state.experiment.experimentList;
+export const selectExperimentList = (state: RootState) =>
+  state.experiment.experimentList;
 export const selectWhiteList = (state: RootState) => state.experiment.whitelist;
 export default experimentSlice.reducer;

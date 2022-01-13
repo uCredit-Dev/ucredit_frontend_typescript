@@ -107,14 +107,17 @@ const Dashboard: FC<{ id: string | null }> = ({ id }) => {
 
   useEffect(() => {
     if (!experimentPopup) {
-      const experimentAPI = 'https://ucredit-experiments-api.herokuapp.com/api/experiments/';
+      const experimentAPI =
+        'https://ucredit-experiments-api.herokuapp.com/api/experiments/';
       experimentList.forEach((experiment) => {
-        const command = experiment.active ? 'add/' : 'delete/'
+        const command = experiment.active ? 'add/' : 'delete/';
         axios
-          .put(`${experimentAPI}${command}${experiment.name}`, { user_id: user._id })
+          .put(`${experimentAPI}${command}${experiment.name}`, {
+            user_id: user._id,
+          })
           .catch(function (error) {
             console.log(error);
-          })
+          });
       });
     }
   }, [experimentList, experimentPopup, user._id]);
@@ -129,14 +132,17 @@ const Dashboard: FC<{ id: string | null }> = ({ id }) => {
 
   useEffect(() => {
     if (!experimentPopup) {
-      const experimentAPI = 'https://ucredit-experiments-api.herokuapp.com/api/experiments/';
+      const experimentAPI =
+        'https://ucredit-experiments-api.herokuapp.com/api/experiments/';
       experimentList.forEach((experiment) => {
-        const command = experiment.active ? 'add/' : 'delete/'
+        const command = experiment.active ? 'add/' : 'delete/';
         axios
-          .put(`${experimentAPI}${command}${experiment.name}`, { user_id: user._id })
+          .put(`${experimentAPI}${command}${experiment.name}`, {
+            user_id: user._id,
+          })
           .catch(function (error) {
             console.log(error);
-          })
+          });
       });
     }
   }, [experimentList, experimentPopup, user._id]);
@@ -210,10 +216,12 @@ const Dashboard: FC<{ id: string | null }> = ({ id }) => {
                     </button>
                   </div>
                 ) : null}
-                {<ExperimentPopup
-                  experimentPopup={experimentPopup}
-                  setExperimentPopup={setExperimentPopup}
-                />}
+                {
+                  <ExperimentPopup
+                    experimentPopup={experimentPopup}
+                    setExperimentPopup={setExperimentPopup}
+                  />
+                }
                 <CourseList />
               </div>
             </div>

@@ -3,10 +3,10 @@ name: Prettier
 on:
   push:
     branches:
-      - "**"
+      - '**'
   pull_request:
     branches:
-      - "**"
+      - '**'
     types: [opened, reopened]
 
 jobs:
@@ -17,4 +17,4 @@ jobs:
       - name: Install Dependencies
         run: npm install -g prettier
       - name: Run Prettier
-        run: npx prettier "**/*.{js,jsx,ts,tsx}" --check 
+        run: npx prettier "**/*.{js,jsx,ts,tsx}" --check

@@ -18,7 +18,7 @@ const ExperimentDevBoardPopup: FC<{
 
   //Create state of this component with percentages that user has changed
   const LEN: number = allExperiments.length;
-  const emptyPercentages: Array<string> = new Array(LEN).fill(""); //empty to represent that user did not change the input field
+  const emptyPercentages: Array<string> = new Array(LEN).fill(''); //empty to represent that user did not change the input field
   const [inputPercentage, setInputPercentage] = useState<Array<string>>([
     ...emptyPercentages,
   ]);
@@ -35,7 +35,11 @@ const ExperimentDevBoardPopup: FC<{
     const convertedPercentages: Array<number> = [];
     for (const userInput of inputPercentage) {
       const attemptConversion: number = Number(userInput);
-      if ((isNaN(attemptConversion) && userInput !== "") || attemptConversion < 0 || attemptConversion > 100) {
+      if (
+        (isNaN(attemptConversion) && userInput !== '') ||
+        attemptConversion < 0 ||
+        attemptConversion > 100
+      ) {
         toast.error(`"${userInput}" (and maybe others) is not valid number`, {
           autoClose: 5000,
           closeOnClick: false,
@@ -47,7 +51,10 @@ const ExperimentDevBoardPopup: FC<{
     }
 
     for (let i = 0; i < convertedPercentages.length; i++) {
-      if ((convertedPercentages[i] !== 0 || inputPercentage[i] !== "") && convertedPercentages[i] !== allExperiments[i].percentParticipating) {
+      if (
+        (convertedPercentages[i] !== 0 || inputPercentage[i] !== '') &&
+        convertedPercentages[i] !== allExperiments[i].percentParticipating
+      ) {
         console.log(`entered for ${allExperiments[i].name}`);
         dispatch(setExperimentPercentage([i, convertedPercentages[i]])); //Update redux too and backend
         axios

@@ -30,7 +30,13 @@ const ActionBar: FC<{
   experimentDevBoardPopup: boolean;
   setExperimentDevBoardPopup: Function;
   onShareClick: MouseEventHandler<HTMLButtonElement>;
-}> = ({ dropdown, setDropdown, setExperimentDevBoardPopup, experimentDevBoardPopup, onShareClick }) => {
+}> = ({
+  dropdown,
+  setDropdown,
+  setExperimentDevBoardPopup,
+  experimentDevBoardPopup,
+  onShareClick,
+}) => {
   // Redux Setup
   const dispatch = useDispatch();
   const currentPlan = useSelector(selectPlan);
