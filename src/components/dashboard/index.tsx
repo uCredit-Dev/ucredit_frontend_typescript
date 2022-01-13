@@ -107,18 +107,44 @@ const Dashboard: FC<{ id: string | null }> = ({ id }) => {
     if (!experimentPopup) {
       const experimentAPI =
         'https://ucredit-experiments-api.herokuapp.com/api/experiments/';
-      experimentList.forEach((experiment) => {
-        const command = experiment.active ? 'add/' : 'delete/';
-        axios
-          .put(`${experimentAPI}${command}${experiment.name}`, {
-            user_id: user._id,
-          })
-          .catch(function (error) {
-            console.log(error);
-          });
-      });
+
+      axios
+        .get(`${experimentAPI}${user._id}`)
+        .then(function (resp) {
+          const importedExperimentList = resp.data.data;
+          for (const experiment of experimentList) {
+            if (
+              (experiment.active && !importedExperimentList.includes(experiment.name))
+              || (!experiment.active && importedExperimentList.includes(experiment.name))
+            ) {
+              if (experiment.active) {
+                axios
+                  .put(`${experimentAPI}add/` + `${experiment.name}`, { user_id: user._id })
+                  .then(function (response) {
+                    console.log(response.data);
+                  })
+                  .catch(function (error) {
+                    console.log(error);
+                  });
+              } else {
+                //Removing a user from active and adding to blacklist
+                axios
+                  .put(`${experimentAPI}delete/` + `${experiment.name}`, { user_id: user._id })
+                  .then(function (response) {
+                    console.log(response.data);
+                  })
+                  .catch(function (error) {
+                    console.log(error);
+                });
+              }
+            } 
+          };
+        })
+        .catch(function (error) {
+          console.log(error);
+        })
     }
-  }, [experimentList, experimentPopup, user._id]);
+  }, [experimentPopup, user._id]);
 
   useScrollPosition(({ prevPos, currPos }) => {
     if (currPos.y > -14) {
