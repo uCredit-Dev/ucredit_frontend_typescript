@@ -27,7 +27,7 @@ import CourseDisplayPopup from '../popups/CourseDisplayPopup';
 import DeleteCoursePopup from '../popups/DeleteCoursePopup';
 import DeletePlanPopup from '../popups/DeletePlanPopup';
 import DeleteYearPopup from '../popups/DeleteYearPopup';
-import ExperimentPopup from './experiments/ExperimentPopup';
+import ExperimentPopup from '../popups/ExperimentPopup';
 import ExperimentDevBoardPopup from '../popups/ExperimentDevBoardPopup';
 import PlanAdd from '../popups/PlanAdd';
 import CourseList from './course-list/CourseList';
@@ -127,23 +127,6 @@ const Dashboard: FC<{ id: string | null }> = ({ id }) => {
       setShowHeader(false);
     }
   });
-
-  useEffect(() => {
-    if (!experimentPopup) {
-      const experimentAPI =
-        'https://ucredit-experiments-api.herokuapp.com/api/experiments/';
-      experimentList.forEach((experiment) => {
-        const command = experiment.active ? 'add/' : 'delete/';
-        axios
-          .put(`${experimentAPI}${command}${experiment.name}`, {
-            user_id: user._id,
-          })
-          .catch(function (error) {
-            console.log(error);
-          });
-      });
-    }
-  }, [experimentList, experimentPopup, user._id]);
 
   /**
    * Handles when button for shareable link is clicked.

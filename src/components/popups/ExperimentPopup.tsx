@@ -1,9 +1,9 @@
 import {
   selectExperimentList,
   toggleExperimentStatus,
-} from '../../../slices/experimentSlice';
+} from '../../slices/experimentSlice';
 import { useDispatch, useSelector } from 'react-redux';
-import { ReactComponent as BeakerSvg } from '../../../resources/svg/Beaker.svg';
+import { ReactComponent as BeakerSvg } from '../../resources/svg/Beaker.svg';
 import clsx from 'clsx';
 import { FC } from 'react';
 
@@ -17,6 +17,7 @@ const ExperimentPopup: FC<{
   const handleExperimentToggle = (event: any) => {
     // dispatch(setExperimentStatus([event.target.value, !experimentList[event.target.value].active]))
     // debounce, useEffect cleanup
+
     dispatch(toggleExperimentStatus(event.target.value));
   };
 
