@@ -44,6 +44,9 @@ export const experimentSlice = createSlice({
       tmp[action.payload[0]].percentParticipating = action.payload[1];
       state.experimentList = tmp;
     },
+    setWhiteList: (state: any, action: PayloadAction<boolean>) => {
+      state.white_list.active = action.payload;
+    },
   }
 });
 
