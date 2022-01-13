@@ -114,8 +114,8 @@ const Dashboard: FC<{ id: string | null }> = ({ id }) => {
           const importedExperimentList = resp.data.data;
           for (const experiment of experimentList) {
             if (
-              (experiment.active && !importedExperimentList.includes(experiment.name)) ||
-              (!experiment.active && importedExperimentList.includes(experiment.name))
+              (experiment.active && importedExperimentList.includes(experiment.name)) ||
+              (!experiment.active && !importedExperimentList.includes(experiment.name))
             ) { continue; }
 
             const command = experiment.active ? 'add/' : 'delete/'
