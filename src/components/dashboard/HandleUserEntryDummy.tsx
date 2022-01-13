@@ -31,7 +31,7 @@ import { getMajorFromCommonName } from '../../resources/majors';
 import {
   selectExperimentList,
   setExperimentStatus,
-  setWhiteListStatus,
+  setWhitelistStatus,
   setExperimentPercentage,
 } from '../../slices/experimentSlice';
 
@@ -530,7 +530,7 @@ const HandleUserEntryDummy: FC<{
         experimentList.forEach((experiment, index) => {
           if (experiment.name === 'White List') {
             dispatch(
-              setWhiteListStatus(true),
+              setWhitelistStatus(true),
             );
           } else {
             dispatch(
