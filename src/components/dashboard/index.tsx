@@ -114,30 +114,19 @@ const Dashboard: FC<{ id: string | null }> = ({ id }) => {
           const importedExperimentList = resp.data.data;
           for (const experiment of experimentList) {
             if (
-              (experiment.active && !importedExperimentList.includes(experiment.name))
-              || (!experiment.active && importedExperimentList.includes(experiment.name))
-            ) {
-              if (experiment.active) {
-                axios
-                  .put(`${experimentAPI}add/` + `${experiment.name}`, { user_id: user._id })
-                  .then(function (response) {
-                    console.log(response.data);
-                  })
-                  .catch(function (error) {
-                    console.log(error);
-                  });
-              } else {
-                //Removing a user from active and adding to blacklist
-                axios
-                  .put(`${experimentAPI}delete/` + `${experiment.name}`, { user_id: user._id })
-                  .then(function (response) {
-                    console.log(response.data);
-                  })
-                  .catch(function (error) {
-                    console.log(error);
-                });
-              }
-            } 
+              (experiment.active && !importedExperimentList.includes(experiment.name)) ||
+              (!experiment.active && importedExperimentList.includes(experiment.name))
+            ) { continue; }
+
+            const command = experiment.active ? 'add/' : 'delete/'
+            axios
+              .put(`${experimentAPI}${command}${experiment.name}`, { user_id: user._id})
+              .then(function (response) {
+                console.log(response.data)
+              })
+              .catch(function (error) {
+                console.log(error)
+              })
           };
         })
         .catch(function (error) {
