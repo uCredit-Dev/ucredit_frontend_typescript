@@ -39,6 +39,7 @@ const ExperimentPopup: FC<{
         <div className="relative z-50 flex flex-col right-0 justify-between place-items-start translate-x-full bg-white h-32 w-40 box-content h-100 w-100 p-2 border-4">
         Experiments
         {experimentList.map((experiment, index) => {
+          // console.log(experiment)
           return (
             <button
               key={index}

@@ -19,11 +19,7 @@ import {
   selectAddingPrereq,
   updateAddingPlanStatus,
 } from '../../slices/popupSlice';
-import {
-  selectExperimentList,
-  setExperimentStatus,
-  toggleExperimentStatus,
-} from '../../slices/experimentSlice';
+import { selectExperimentList } from '../../slices/experimentSlice';
 import { selectSearchStatus } from '../../slices/searchSlice';
 import AddingPrereqPopup from '../popups/AddingPrereqPopup';
 import Search from '../popups/course-search/Search';
@@ -31,6 +27,7 @@ import CourseDisplayPopup from '../popups/CourseDisplayPopup';
 import DeleteCoursePopup from '../popups/DeleteCoursePopup';
 import DeletePlanPopup from '../popups/DeletePlanPopup';
 import DeleteYearPopup from '../popups/DeleteYearPopup';
+import ExperimentPopup from './experiments/ExperimentPopup';
 import ExperimentDevBoardPopup from '../popups/ExperimentDevBoardPopup';
 import PlanAdd from '../popups/PlanAdd';
 import CourseList from './course-list/CourseList';
@@ -45,8 +42,6 @@ import {
   updatePlanList,
 } from '../../slices/userSlice';
 import ShareLinksPopup from './degree-info/ShareLinksPopup';
-import clsx from 'clsx';
-import ExperimentPopup from './experiments/ExperimentPopup';
 import axios from 'axios';
 
 /**
@@ -57,7 +52,6 @@ const Dashboard: FC<{ id: string | null }> = ({ id }) => {
   const dispatch = useDispatch();
   const user = useSelector(selectUser);
   const planList = useSelector(selectPlanList);
-  const experimentList = useSelector(selectExperimentList);
   const currentPlan = useSelector(selectPlan);
   const searchStatus = useSelector(selectSearchStatus);
   const deletePlanStatus = useSelector(selectDeletePlanStatus);
@@ -67,6 +61,7 @@ const Dashboard: FC<{ id: string | null }> = ({ id }) => {
   const importingStatus = useSelector(selectImportingStatus);
   const courseInfoStatus = useSelector(selectShowCourseInfo);
   const addingPrereqStatus = useSelector(selectAddingPrereq);
+  const experimentList = useSelector(selectExperimentList);
 
   // State Setup
   const [showNotif, setShowNotif] = useState<boolean>(true);
@@ -131,6 +126,20 @@ const Dashboard: FC<{ id: string | null }> = ({ id }) => {
       setShowHeader(false);
     }
   });
+
+  useEffect(() => {
+    if (!experimentPopup) {
+      const experimentAPI = 'https://ucredit-experiments-api.herokuapp.com/api/experiments/';
+      experimentList.forEach((experiment) => {
+        const command = experiment.active ? 'add/' : 'delete/'
+        axios
+          .put(`${experimentAPI}${command}${experiment.name}`, { user_id: user._id })
+          .catch(function (error) {
+            console.log(error);
+          })
+      });
+    }
+  }, [experimentList, experimentPopup, user._id]);
 
   /**
    * Handles when button for shareable link is clicked.
