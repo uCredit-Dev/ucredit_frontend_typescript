@@ -518,23 +518,27 @@ const HandleUserEntryDummy: FC<{
       }),
     );
 
-  const updateExperimentsForUser = (jhed: string | null) => {
+  const updateExperimentsForUser = async (jhed: string | null) => {
     // use api from assets.tsx, move experiments and make a new route instead
+    /*
     const experimentAPI =
       'https://ucredit-experiments-api.herokuapp.com/api/experiments/';
-    axios
+      */
+
+      const experimentAPI = `http://localhost:4567/api/experiments/`;
+    await axios
       .get(`${experimentAPI}${jhed}`)
       .then(function (response) {
         const resp = response.data.data;
         if (resp.includes('White List')) {
           dispatch(setWhitelistStatus(true));
         }
-        experimentList.forEach((experiment, index) => {
+        experimentList.forEach(async (experiment, index) => {
           dispatch(
             setExperimentStatus([index, resp.includes(experiment.name)]),
           );
           //Also retrieving experiment percentages
-          axios
+          await axios
             .get(`${experimentAPI}percent/${experiment.name}`)
             .then(function (responsePercent) {
               dispatch(setExperimentPercentage([index, responsePercent.data]));

@@ -17,7 +17,6 @@ const ExperimentDevBoardPopup: FC<{}> = () => {
   const allExperiments: Array<experiment> = useSelector(selectExperimentList);
   const whiteList = useSelector(selectWhiteList);
   const dispatch = useDispatch();
-  // console.log(whiteList);
 
   //Create state of this component with percentages that user has changed
   const LEN: number = allExperiments.length;
