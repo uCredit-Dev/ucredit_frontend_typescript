@@ -527,27 +527,22 @@ const HandleUserEntryDummy: FC<{
       .get(`${experimentAPI}${jhed}`)
       .then(function (response) {
         const resp = response.data.data;
+        if (resp.includes('White List')) {
+          dispatch(setWhiteListStatus(true));
+        }
         experimentList.forEach((experiment, index) => {
-          if (experiment.name === 'White List') {
-            dispatch(
-              setWhiteListStatus(true),
-            );
-          } else {
-            dispatch(
-              setExperimentStatus([index, resp.includes(experiment.name)]),
-            );
-            //Also retrieving experiment percentages
-            axios
+          dispatch(
+            setExperimentStatus([index, resp.includes(experiment.name)]),
+          );
+          //Also retrieving experiment percentages
+          axios
             .get(`${experimentAPI}percent/${experiment.name}`)
             .then(function (responsePercent) {
-              dispatch(
-                setExperimentPercentage([index, responsePercent.data]),
-              );
+              dispatch(setExperimentPercentage([index, responsePercent.data]));
             })
             .catch(function (error) {
               console.log(error);
             });
-          }
         });
       })
       .catch(function (error) {

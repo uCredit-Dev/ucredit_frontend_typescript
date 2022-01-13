@@ -13,7 +13,6 @@ import {
   updatePlanList,
 } from '../../../slices/userSlice';
 import PlanChoose from './PlanChoose';
-import ExperimentPopup from '../experiments/ExperimentPopup';
 import { ReactComponent as RemoveSvg } from '../../../resources/svg/Remove.svg';
 import { ReactComponent as AddSvg } from '../../../resources/svg/Add.svg';
 import { ReactComponent as BeakerSvg } from '../../../resources/svg/Beaker.svg';

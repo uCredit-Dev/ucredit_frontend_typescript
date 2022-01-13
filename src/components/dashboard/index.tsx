@@ -21,7 +21,6 @@ import {
 } from '../../slices/popupSlice';
 import {
   selectExperimentList,
-  setExperimentStatus,
   toggleExperimentStatus,
 } from '../../slices/experimentSlice';
 import { selectSearchStatus } from '../../slices/searchSlice';
