@@ -520,12 +520,10 @@ const HandleUserEntryDummy: FC<{
 
   const updateExperimentsForUser = async (jhed: string | null) => {
     // use api from assets.tsx, move experiments and make a new route instead
-    /*
+
     const experimentAPI =
       'https://ucredit-experiments-api.herokuapp.com/api/experiments/';
-      */
 
-      const experimentAPI = `http://localhost:4567/api/experiments/`;
     await axios
       .get(`${experimentAPI}${jhed}`)
       .then(function (response) {

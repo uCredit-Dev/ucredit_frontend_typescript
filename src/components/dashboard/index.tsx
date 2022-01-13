@@ -114,27 +114,33 @@ const Dashboard: FC<{ id: string | null }> = ({ id }) => {
           const importedExperimentList = resp.data.data;
           for (const experiment of experimentList) {
             if (
-              (experiment.active && importedExperimentList.includes(experiment.name)) ||
-              (!experiment.active && !importedExperimentList.includes(experiment.name))
-            ) { continue; }
+              (experiment.active &&
+                importedExperimentList.includes(experiment.name)) ||
+              (!experiment.active &&
+                !importedExperimentList.includes(experiment.name))
+            ) {
+              continue;
+            }
 
-            const command = experiment.active ? 'add/' : 'delete/'
+            const command = experiment.active ? 'add/' : 'delete/';
             axios
-              .put(`${experimentAPI}${command}${experiment.name}`, { user_id: user._id})
+              .put(`${experimentAPI}${command}${experiment.name}`, {
+                user_id: user._id,
+              })
               .then(function (response) {
-                console.log(response.data)
+                console.log(response.data);
               })
               .catch(function (error) {
-                console.log(error)
-              })
+                console.log(error);
+              });
           }
         })
         .catch(function (error) {
           console.log(error);
-        })
+        });
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [experimentPopup, user._id]);
+  }, [experimentPopup]);
 
   useScrollPosition(({ prevPos, currPos }) => {
     if (currPos.y > -14) {

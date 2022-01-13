@@ -3,10 +3,12 @@ import { useDispatch, useSelector } from 'react-redux';
 import axios from 'axios';
 import {
   selectExperimentList,
+  setExperimentStatus,
   setExperimentPercentage,
   selectWhiteList,
   experiment,
 } from '../../slices/experimentSlice';
+import { selectUser } from '../../slices/userSlice';
 import { ReactComponent as AdjustmentSvg } from '../../resources/svg/Adjustment.svg';
 import { toast } from 'react-toastify';
 
@@ -16,6 +18,7 @@ const ExperimentDevBoardPopup: FC<{}> = () => {
   //Retrieve all experiments from redux
   const allExperiments: Array<experiment> = useSelector(selectExperimentList);
   const whiteList = useSelector(selectWhiteList);
+  const user = useSelector(selectUser);
   const dispatch = useDispatch();
 
   //Create state of this component with percentages that user has changed
@@ -34,6 +37,7 @@ const ExperimentDevBoardPopup: FC<{}> = () => {
   const handleSubmit = async () => {
     const experimentAPI =
       'https://ucredit-experiments-api.herokuapp.com/api/experiments/';
+
     const convertedPercentages: Array<number> = [];
     for (const userInput of inputPercentage) {
       const attemptConversion: number = Number(userInput);
@@ -57,8 +61,7 @@ const ExperimentDevBoardPopup: FC<{}> = () => {
         (convertedPercentages[i] !== 0 || inputPercentage[i] !== '') &&
         convertedPercentages[i] !== allExperiments[i].percentParticipating
       ) {
-        dispatch(setExperimentPercentage([i, convertedPercentages[i]])); //Update redux too and backend
-        axios
+        await axios
           .post(`${experimentAPI}${allExperiments[i].name}`, {
             percent_participating: convertedPercentages[i],
           })
@@ -67,6 +70,27 @@ const ExperimentDevBoardPopup: FC<{}> = () => {
           });
       }
     }
+    await axios
+      .get(`${experimentAPI}${user._id}`)
+      .then(function (response) {
+        const resp = response.data.data;
+        allExperiments.forEach(async (experimentNew, index) => {
+          dispatch(
+            setExperimentStatus([index, resp.includes(experimentNew.name)]),
+          );
+          await axios
+            .get(`${experimentAPI}percent/${experimentNew.name}`)
+            .then(function (responsePercent) {
+              dispatch(setExperimentPercentage([index, responsePercent.data]));
+            })
+            .catch(function (error) {
+              console.log(error);
+            });
+        });
+      })
+      .catch(function (error) {
+        console.log(error);
+      });
     toast.success(`Updated Percentages`, {
       autoClose: 5000,
       closeOnClick: false,
