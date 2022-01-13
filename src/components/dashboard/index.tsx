@@ -69,8 +69,6 @@ const Dashboard: FC<{ id: string | null }> = ({ id }) => {
   const [showHeader, setShowHeader] = useState<boolean>(true);
   const [dropdown, setDropdown] = useState<boolean>(false);
   const [experimentPopup, setExperimentPopup] = useState<boolean>(false);
-  const [experimentDevBoardPopup, setExperimentDevBoardPopup] =
-    useState<boolean>(false);
   const [shareableURL, setShareableURL] = useState<string>('');
 
   // Handles plan change event.
@@ -191,8 +189,6 @@ const Dashboard: FC<{ id: string | null }> = ({ id }) => {
                 <ActionBar
                   dropdown={dropdown}
                   setDropdown={setDropdown}
-                  experimentDevBoardPopup={experimentDevBoardPopup}
-                  setExperimentDevBoardPopup={setExperimentDevBoardPopup}
                   onShareClick={onShareClick}
                 />
                 {dropdown ? (
@@ -217,10 +213,13 @@ const Dashboard: FC<{ id: string | null }> = ({ id }) => {
                   </div>
                 ) : null}
                 {
-                  <ExperimentPopup
-                    experimentPopup={experimentPopup}
-                    setExperimentPopup={setExperimentPopup}
-                  />
+                  <>
+                    <ExperimentPopup
+                      experimentPopup={experimentPopup}
+                      setExperimentPopup={setExperimentPopup}
+                    />
+                    <ExperimentDevBoardPopup />
+                  </>
                 }
                 <CourseList />
               </div>
@@ -237,12 +236,6 @@ const Dashboard: FC<{ id: string | null }> = ({ id }) => {
         {deleteYearStatus ? <DeleteYearPopup /> : null}
         {deleteCourseStatus ? <DeleteCoursePopup /> : null}
         {courseInfoStatus ? <CourseDisplayPopup /> : null}
-        {experimentDevBoardPopup ? (
-          <ExperimentDevBoardPopup
-            experimentDevBoardPopup={experimentDevBoardPopup}
-            setExperimentDevBoardPopup={setExperimentDevBoardPopup}
-          />
-        ) : null}
       </div>
     </div>
   );

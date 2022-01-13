@@ -15,11 +15,9 @@ import {
 import PlanChoose from './PlanChoose';
 import { ReactComponent as RemoveSvg } from '../../../resources/svg/Remove.svg';
 import { ReactComponent as AddSvg } from '../../../resources/svg/Add.svg';
-import { ReactComponent as AdjustmentSvg } from '../../../resources/svg/Adjustment.svg';
 import axios from 'axios';
 import { Year, Plan } from '../../../resources/commonTypes';
 import ReactTooltip from 'react-tooltip';
-import { selectWhiteList } from '../../../slices/experimentSlice';
 
 /**
  * @description ActionBar component
@@ -27,22 +25,13 @@ import { selectWhiteList } from '../../../slices/experimentSlice';
 const ActionBar: FC<{
   dropdown: boolean;
   setDropdown: Function;
-  experimentDevBoardPopup: boolean;
-  setExperimentDevBoardPopup: Function;
   onShareClick: MouseEventHandler<HTMLButtonElement>;
-}> = ({
-  dropdown,
-  setDropdown,
-  setExperimentDevBoardPopup,
-  experimentDevBoardPopup,
-  onShareClick,
-}) => {
+}> = ({ dropdown, setDropdown, onShareClick }) => {
   // Redux Setup
   const dispatch = useDispatch();
   const currentPlan = useSelector(selectPlan);
   const planList = useSelector(selectPlanList);
   const user = useSelector(selectUser);
-  const whiteList = useSelector(selectWhiteList);
 
   // Holds temporary plan name.
   const [planName, setPlanName] = useState<string>(currentPlan.name);
@@ -202,16 +191,6 @@ const ActionBar: FC<{
           className="w-10 h-10 focus:outline-none"
         />
       </div>
-      {whiteList.active ? (
-        <div className="flex flex-row items-center ml-2 my-1 w-10 h-10 hover:underline hover:bg-green-300 border border-gray-300 rounded focus:outline-none shadow cursor-pointer transition duration-200 ease-in">
-          <AdjustmentSvg
-            onClick={() => setExperimentDevBoardPopup(!experimentDevBoardPopup)}
-            data-tip={`Update Experiment Distributions!`}
-            data-for="godTip"
-            className="w-10 h-10 focus:outline-none"
-          />
-        </div>
-      ) : null}
     </div>
   );
 };
