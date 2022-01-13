@@ -31,7 +31,7 @@ import { getMajorFromCommonName } from '../../resources/majors';
 import {
   selectExperimentList,
   setExperimentStatus,
-  setWhiteListStatus,
+  setWhitelistStatus,
   setExperimentPercentage,
 } from '../../slices/experimentSlice';
 
@@ -362,7 +362,6 @@ const HandleUserEntryDummy: FC<{
       }
     }
     newPlanList.sort((p1: Plan, p2: Plan) => p1._id.localeCompare(p2._id));
-    console.log(`hello from 359${id}`);
     dispatch(updatePlanList(newPlanList));
     dispatch(updateCurrentPlanCourses(added));
     dispatch(updateSelectedPlan(newPlan));
@@ -528,7 +527,7 @@ const HandleUserEntryDummy: FC<{
       .then(function (response) {
         const resp = response.data.data;
         if (resp.includes('White List')) {
-          dispatch(setWhiteListStatus(true));
+          dispatch(setWhitelistStatus(true));
         }
         experimentList.forEach((experiment, index) => {
           dispatch(

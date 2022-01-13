@@ -1,4 +1,4 @@
-import { FC, useState } from 'react';
+import { FC, useEffect, useState } from 'react';
 import UserSection from './UserSection';
 import FeedbackPopup from '../popups/FeedbackPopup';
 import FeedbackNotification from '../popups/FeedbackNotification';
@@ -19,10 +19,7 @@ import {
   selectAddingPrereq,
   updateAddingPlanStatus,
 } from '../../slices/popupSlice';
-import {
-  selectExperimentList,
-  toggleExperimentStatus,
-} from '../../slices/experimentSlice';
+import { selectExperimentList } from '../../slices/experimentSlice';
 import { selectSearchStatus } from '../../slices/searchSlice';
 import AddingPrereqPopup from '../popups/AddingPrereqPopup';
 import Search from '../popups/course-search/Search';
@@ -30,6 +27,7 @@ import CourseDisplayPopup from '../popups/CourseDisplayPopup';
 import DeleteCoursePopup from '../popups/DeleteCoursePopup';
 import DeletePlanPopup from '../popups/DeletePlanPopup';
 import DeleteYearPopup from '../popups/DeleteYearPopup';
+import ExperimentPopup from './experiments/ExperimentPopup';
 import ExperimentDevBoardPopup from '../popups/ExperimentDevBoardPopup';
 import PlanAdd from '../popups/PlanAdd';
 import CourseList from './course-list/CourseList';
@@ -44,7 +42,7 @@ import {
   updatePlanList,
 } from '../../slices/userSlice';
 import ShareLinksPopup from './degree-info/ShareLinksPopup';
-import clsx from 'clsx';
+import axios from 'axios';
 
 /**
  * The dashboard that displays the user's plan.
@@ -54,7 +52,6 @@ const Dashboard: FC<{ id: string | null }> = ({ id }) => {
   const dispatch = useDispatch();
   const user = useSelector(selectUser);
   const planList = useSelector(selectPlanList);
-  const experimentList = useSelector(selectExperimentList);
   const currentPlan = useSelector(selectPlan);
   const searchStatus = useSelector(selectSearchStatus);
   const deletePlanStatus = useSelector(selectDeletePlanStatus);
@@ -64,6 +61,7 @@ const Dashboard: FC<{ id: string | null }> = ({ id }) => {
   const importingStatus = useSelector(selectImportingStatus);
   const courseInfoStatus = useSelector(selectShowCourseInfo);
   const addingPrereqStatus = useSelector(selectAddingPrereq);
+  const experimentList = useSelector(selectExperimentList);
 
   // State Setup
   const [showNotif, setShowNotif] = useState<boolean>(true);
@@ -107,6 +105,20 @@ const Dashboard: FC<{ id: string | null }> = ({ id }) => {
     }
   };
 
+  useEffect(() => {
+    if (!experimentPopup) {
+      const experimentAPI = 'https://ucredit-experiments-api.herokuapp.com/api/experiments/';
+      experimentList.forEach((experiment) => {
+        const command = experiment.active ? 'add/' : 'delete/'
+        axios
+          .put(`${experimentAPI}${command}${experiment.name}`, { user_id: user._id })
+          .catch(function (error) {
+            console.log(error);
+          })
+      });
+    }
+  }, [experimentList, experimentPopup, user._id]);
+
   useScrollPosition(({ prevPos, currPos }) => {
     if (currPos.y > -14) {
       setShowHeader(true);
@@ -115,13 +127,19 @@ const Dashboard: FC<{ id: string | null }> = ({ id }) => {
     }
   });
 
-  // Handles experiment toggle
-  const handleExperimentToggle = (event: any) => {
-    // dispatch(setExperimentStatus([event.target.value, !experimentList[event.target.value].active]))
-    // debounce, useEffect cleanup
-    dispatch(toggleExperimentStatus(event.target.value));
-    console.log(event.target.value, experimentList);
-  };
+  useEffect(() => {
+    if (!experimentPopup) {
+      const experimentAPI = 'https://ucredit-experiments-api.herokuapp.com/api/experiments/';
+      experimentList.forEach((experiment) => {
+        const command = experiment.active ? 'add/' : 'delete/'
+        axios
+          .put(`${experimentAPI}${command}${experiment.name}`, { user_id: user._id })
+          .catch(function (error) {
+            console.log(error);
+          })
+      });
+    }
+  }, [experimentList, experimentPopup, user._id]);
 
   /**
    * Handles when button for shareable link is clicked.
@@ -167,8 +185,6 @@ const Dashboard: FC<{ id: string | null }> = ({ id }) => {
                 <ActionBar
                   dropdown={dropdown}
                   setDropdown={setDropdown}
-                  experimentPopup={experimentPopup}
-                  setExperimentPopup={setExperimentPopup}
                   experimentDevBoardPopup={experimentDevBoardPopup}
                   setExperimentDevBoardPopup={setExperimentDevBoardPopup}
                   onShareClick={onShareClick}
@@ -194,30 +210,10 @@ const Dashboard: FC<{ id: string | null }> = ({ id }) => {
                     </button>
                   </div>
                 ) : null}
-                {experimentPopup ? (
-                  <div className="relative z-50 flex flex-col right-0 justify-between place-items-start translate-x-full bg-white h-32 w-40 box-content h-100 w-100 p-2 border-4">
-                    Experiments
-                    {experimentList.map((experiment, index) => {
-                      console.log(experiment);
-                      return (
-                        <button
-                          key={index}
-                          value={index}
-                          onClick={handleExperimentToggle}
-                          className={clsx(
-                            'relative flex hover:bg-gray-400 border border-gray-300 rounded focus:outline-none shadow cursor-pointer transition duration-200 ease-in',
-                            {
-                              'bg-white': !experiment.active,
-                              'bg-green-100': experiment.active,
-                            },
-                          )}
-                        >
-                          {'  ' + experiment.name + '  '}
-                        </button>
-                      );
-                    })}
-                  </div>
-                ) : null}
+                {<ExperimentPopup
+                  experimentPopup={experimentPopup}
+                  setExperimentPopup={setExperimentPopup}
+                />}
                 <CourseList />
               </div>
             </div>

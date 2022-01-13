@@ -1,57 +1,60 @@
-import axios from 'axios';
+import { selectExperimentList, toggleExperimentStatus } from '../../../slices/experimentSlice';
+import { useDispatch, useSelector } from 'react-redux';
+import { ReactComponent as BeakerSvg } from '../../../resources/svg/Beaker.svg';
+import clsx from 'clsx';
 import { FC } from 'react';
-import { selectExperimentList } from '../../../slices/experimentSlice';
-import { useSelector } from 'react-redux';
-//import { experiment, selectExperiments } from '../../../slices/experimentSlice';
-import { ReactComponent as Beaker } from '../../../resources/svg/Beaker.svg'
 
-// import { toast } from 'react-toastify';
+const ExperimentPopup: FC<{
+  experimentPopup: boolean,
+  setExperimentPopup: Function
+}> = ({experimentPopup, setExperimentPopup}) => {
+  const experimentList = useSelector(selectExperimentList);
+  const dispatch = useDispatch();
 
-const ExperimentPopup: FC<{ experimentPopup: boolean}> = ({
-  experimentPopup,
-}) => {
-  const experiments = useSelector(selectExperimentList);
-  console.log(experiments)
-  // z-40 fixed flex flex-col shadow rounded z-20 h-4/5 top-1/3 left-1/2 transform -translate-x-1/2 -translate-y-1/3"
-  /*
-        <div className="relative h-32 w-32 box-content h-100 w-100 p-2 border-4"> 
-          <div className="p-3 text-center font-bold bg-gray-50 rounded-t-lg shadow">
-            Hello
-          </div>
+  const handleExperimentToggle = (event: any) => {
+    // dispatch(setExperimentStatus([event.target.value, !experimentList[event.target.value].active]))
+    // debounce, useEffect cleanup
+    dispatch(toggleExperimentStatus(event.target.value));
+  }
 
-  */
-    // z-50 flex-none mx-4 p-6 w-96 h-auto bg-white rounded shadow
-    // "absolute flex justify-end translate-x-full bg-white h-32 w-32 box-content h-100 w-100 p-2 border-4" 
+  
   return (
     <>
-      <Beaker/>
-      { experimentPopup ? 
-        <div
-          className="z-50 absolute flex flex-col justify-between place-items-end translate-x-full bg-white h-32 w-32 box-content h-100 w-100 p-2 border-4"
-        >
-          <label className="custom-label flex mt-2 ml-3">
-            <span className="select-none">Experiment1  </span>
-            <div
-              className="relative flex justify-end w-6 h-6 bg-white hover:bg-gray-400 border border-gray-300 rounded focus:outline-none shadow cursor-pointer transition duration-200 ease-in"
-              onClick={() => console.log('1')}
-            />
-          </label>
-          <label className="custom-label flex mt-2 ml-3">
-            <span className="select-none">Experiment2  </span>
-            <div
-              className="relative flex justify-end w-6 h-6 bg-white hover:bg-gray-400 border border-gray-300 rounded focus:outline-none shadow cursor-pointer transition duration-200 ease-in"
-              onClick={() => console.log('2')}
-            />
-          </label>
-          <label className="custom-label flex mt-2 ml-3">
-            <span className="select-none">Experiment3  </span>
-            <div
-              className="relative flex justify-end w-6 h-6 bg-white hover:bg-gray-400 border border-gray-300 rounded focus:outline-none shadow cursor-pointer transition duration-200 ease-in"
-              onClick={() => console.log('3')}
-            />
-          </label>
-        </div>
-        : null
+      <div className={clsx(
+        "flex flex-row items-center ml-2 my-1 w-10 h-10 hover:underline hover:bg-green-300 border border-gray-300 rounded focus:outline-none shadow cursor-pointer transition duration-200 ease-in",
+        {
+          'bg-red-100' : experimentList[0].active,
+          'bg-green-100' : experimentList[1].active,
+          'bg-blue-100' : experimentList[2].active
+        },
+      )}>
+        <BeakerSvg
+          onClick={() => setExperimentPopup(!experimentPopup)}
+          data-tip={`View/Toggle Experiments!`}
+          data-for="godTip"
+          className="w-10 h-10 focus:outline-none"
+        />
+      </div>
+      {experimentPopup ? 
+        <div className="relative z-50 flex flex-col right-0 justify-between place-items-start translate-x-full bg-white h-32 w-40 box-content h-100 w-100 p-2 border-4">
+        Experiments
+        {experimentList.map((experiment, index) => {
+          // console.log(experiment)
+          return (
+            <button
+              key={index}
+              value={index}
+              onClick={handleExperimentToggle}
+              className={clsx(
+                "relative flex hover:bg-gray-400 border border-gray-300 rounded focus:outline-none shadow cursor-pointer transition duration-200 ease-in",
+                {
+                  'bg-white': !experiment.active,
+                  'bg-green-100': experiment.active,
+                },
+              )}
+            >{ experiment.name }</button>
+          )})}
+        </div> : null
       }
     </>
   );
