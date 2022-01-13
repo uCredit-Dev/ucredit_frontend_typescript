@@ -108,7 +108,7 @@ const ExperimentDevBoardPopup: FC<{}> = () => {
             </div>
 
             {/*Experiment inputs*/}
-            <div className="lex flex-col space-y-16 font-mono text-bg">
+            <div className="flex flex-col space-y-16 font-mono text-bg">
               {allExperiments.map((oneExperiment, index) => {
                 return (
                   <div key={index}>

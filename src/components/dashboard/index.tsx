@@ -214,11 +214,13 @@ const Dashboard: FC<{ id: string | null }> = ({ id }) => {
                 ) : null}
                 {
                   <>
-                    <ExperimentPopup
-                      experimentPopup={experimentPopup}
-                      setExperimentPopup={setExperimentPopup}
-                    />
-                    <ExperimentDevBoardPopup />
+                    <div className="flex flex-row">
+                      <ExperimentPopup
+                        experimentPopup={experimentPopup}
+                        setExperimentPopup={setExperimentPopup}
+                      />
+                      <ExperimentDevBoardPopup />
+                    </div>
                   </>
                 }
                 <CourseList />
