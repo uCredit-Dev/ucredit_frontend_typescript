@@ -19,7 +19,11 @@ import {
   selectAddingPrereq,
   updateAddingPlanStatus,
 } from '../../slices/popupSlice';
-import { selectExperimentList, setExperimentStatus, toggleExperimentStatus } from '../../slices/experimentSlice';
+import {
+  selectExperimentList,
+  setExperimentStatus,
+  toggleExperimentStatus,
+} from '../../slices/experimentSlice';
 import { selectSearchStatus } from '../../slices/searchSlice';
 import AddingPrereqPopup from '../popups/AddingPrereqPopup';
 import Search from '../popups/course-search/Search';
@@ -68,7 +72,8 @@ const Dashboard: FC<{ id: string | null }> = ({ id }) => {
   const [showHeader, setShowHeader] = useState<boolean>(true);
   const [dropdown, setDropdown] = useState<boolean>(false);
   const [experimentPopup, setExperimentPopup] = useState<boolean>(false);
-  const [experimentDevBoardPopup, setExperimentDevBoardPopup] = useState<boolean>(false);
+  const [experimentDevBoardPopup, setExperimentDevBoardPopup] =
+    useState<boolean>(false);
   const [shareableURL, setShareableURL] = useState<string>('');
 
   // Handles plan change event.
@@ -116,8 +121,8 @@ const Dashboard: FC<{ id: string | null }> = ({ id }) => {
     // dispatch(setExperimentStatus([event.target.value, !experimentList[event.target.value].active]))
     // debounce, useEffect cleanup
     dispatch(toggleExperimentStatus(event.target.value));
-    console.log(event.target.value, experimentList) 
-  }
+    console.log(event.target.value, experimentList);
+  };
 
   /**
    * Handles when button for shareable link is clicked.
@@ -191,28 +196,29 @@ const Dashboard: FC<{ id: string | null }> = ({ id }) => {
                   </div>
                 ) : null}
                 {experimentPopup ? (
-                    <div
-                      className="relative z-50 flex flex-col right-0 justify-between place-items-start translate-x-full bg-white h-32 w-40 box-content h-100 w-100 p-2 border-4"
-                    >
-                      Experiments
-                      {experimentList.map((experiment, index) => {
-                        console.log(experiment)
-                        return (
+                  <div className="relative z-50 flex flex-col right-0 justify-between place-items-start translate-x-full bg-white h-32 w-40 box-content h-100 w-100 p-2 border-4">
+                    Experiments
+                    {experimentList.map((experiment, index) => {
+                      console.log(experiment);
+                      return (
                         <button
                           key={index}
                           value={index}
                           onClick={handleExperimentToggle}
                           className={clsx(
-                            "relative flex hover:bg-gray-400 border border-gray-300 rounded focus:outline-none shadow cursor-pointer transition duration-200 ease-in",
+                            'relative flex hover:bg-gray-400 border border-gray-300 rounded focus:outline-none shadow cursor-pointer transition duration-200 ease-in',
                             {
                               'bg-white': !experiment.active,
                               'bg-green-100': experiment.active,
                             },
                           )}
-                        >{"  " + experiment.name + "  "}</button>
-                      )})}
-                    </div>
-                  ) : null}
+                        >
+                          {'  ' + experiment.name + '  '}
+                        </button>
+                      );
+                    })}
+                  </div>
+                ) : null}
                 <CourseList />
               </div>
             </div>
@@ -228,7 +234,12 @@ const Dashboard: FC<{ id: string | null }> = ({ id }) => {
         {deleteYearStatus ? <DeleteYearPopup /> : null}
         {deleteCourseStatus ? <DeleteCoursePopup /> : null}
         {courseInfoStatus ? <CourseDisplayPopup /> : null}
-        {experimentDevBoardPopup ? <ExperimentDevBoardPopup /> : null}
+        {experimentDevBoardPopup ? (
+          <ExperimentDevBoardPopup
+            experimentDevBoardPopup={experimentDevBoardPopup}
+            setExperimentDevBoardPopup={setExperimentDevBoardPopup}
+          />
+        ) : null}
       </div>
     </div>
   );

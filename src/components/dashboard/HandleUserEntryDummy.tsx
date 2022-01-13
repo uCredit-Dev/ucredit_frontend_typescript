@@ -32,6 +32,7 @@ import {
   selectExperimentList,
   setExperimentStatus,
   setWhiteListStatus,
+  setExperimentPercentage,
 } from '../../slices/experimentSlice';
 
 /**
@@ -526,8 +527,6 @@ const HandleUserEntryDummy: FC<{
       .get(`${experimentAPI}${jhed}`)
       .then(function (response) {
         const resp = response.data.data;
-        console.log('resp: ');
-        console.log(resp);
         experimentList.forEach((experiment, index) => {
           if (experiment.name === 'White List') {
             dispatch(
@@ -537,11 +536,19 @@ const HandleUserEntryDummy: FC<{
             dispatch(
               setExperimentStatus([index, resp.includes(experiment.name)]),
             );
+            //Also retrieving experiment percentages
+            axios
+            .get(`${experimentAPI}percent/${experiment.name}`)
+            .then(function (responsePercent) {
+              dispatch(
+                setExperimentPercentage([index, responsePercent.data]),
+              );
+            })
+            .catch(function (error) {
+              console.log(error);
+            });
           }
         });
-
-        console.log('in function: ');
-        console.log(experimentList);
       })
       .catch(function (error) {
         console.log(error);
@@ -552,10 +559,6 @@ const HandleUserEntryDummy: FC<{
   // On successful retrieve, update redux with retrieved user,
   useEffect(() => {
     updateExperimentsForUser(user._id); //Handles updating redux for the experiments that a user is participating in.
-    /*
-    console.log("hello: ");
-    console.log(experimentList) 
-    */
     if (id !== null) {
       // Retrieves user if user ID is "noUser", the initial user id state for userSlice.tsx.
       // Make call for backend const cookieVals = document.cookie.split("=");
