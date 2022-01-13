@@ -128,23 +128,6 @@ const Dashboard: FC<{ id: string | null }> = ({ id }) => {
     }
   });
 
-  useEffect(() => {
-    if (!experimentPopup) {
-      const experimentAPI =
-        'https://ucredit-experiments-api.herokuapp.com/api/experiments/';
-      experimentList.forEach((experiment) => {
-        const command = experiment.active ? 'add/' : 'delete/';
-        axios
-          .put(`${experimentAPI}${command}${experiment.name}`, {
-            user_id: user._id,
-          })
-          .catch(function (error) {
-            console.log(error);
-          });
-      });
-    }
-  }, [experimentList, experimentPopup, user._id]);
-
   /**
    * Handles when button for shareable link is clicked.
    */

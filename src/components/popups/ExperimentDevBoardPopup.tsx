@@ -58,7 +58,6 @@ const ExperimentDevBoardPopup: FC<{}> = () => {
         (convertedPercentages[i] !== 0 || inputPercentage[i] !== '') &&
         convertedPercentages[i] !== allExperiments[i].percentParticipating
       ) {
-        console.log(`entered for ${allExperiments[i].name}`);
         dispatch(setExperimentPercentage([i, convertedPercentages[i]])); //Update redux too and backend
         axios
           .post(`${experimentAPI}${allExperiments[i].name}`, {
