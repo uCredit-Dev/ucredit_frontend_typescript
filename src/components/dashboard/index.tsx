@@ -127,12 +127,13 @@ const Dashboard: FC<{ id: string | null }> = ({ id }) => {
               .catch(function (error) {
                 console.log(error)
               })
-          };
+          }
         })
         .catch(function (error) {
           console.log(error);
         })
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [experimentPopup, user._id]);
 
   useScrollPosition(({ prevPos, currPos }) => {
