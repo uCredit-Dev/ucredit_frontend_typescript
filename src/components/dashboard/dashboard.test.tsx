@@ -3,7 +3,6 @@ import {
   fireEvent,
   screen,
   waitFor,
-  cleanup,
   act,
 } from '@testing-library/react';
 import '@testing-library/jest-dom';
