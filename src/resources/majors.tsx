@@ -1642,7 +1642,7 @@ const CS_Minor_New: Minor = {
 
 // https://www.cs.jhu.edu/undergraduate-studies/academics/cs-minor/
 const CS_Minor_Old: Minor = {
-  degree_name: 'Minor Computer Science (OLD - 2020 & before)',
+  degree_name: 'Minor Computer Science (OLD - Pre-2021)',
   department: 'EN Computer Science',
   total_degree_credit: 23,
   wi_credit: 0,
