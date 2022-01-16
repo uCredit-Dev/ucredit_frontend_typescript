@@ -42,7 +42,7 @@
     "start": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",
-    "test:ci": "react-scripts test --testResultsProcessor ./node_modules/jest-sonar-reporter --collectCoverage --watchAll",
+    "test:ci": "react-scripts test --testResultsProcessor ./node_modules/jest-sonar-reporter --collectCoverage --watchAll=false",
     "eject": "react-scripts eject",
     "coverage": "npm run test -- --coverage ."
   },
