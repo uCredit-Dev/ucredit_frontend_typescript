@@ -115,51 +115,59 @@ const ExperimentDevBoardPopup: FC<{}> = () => {
           {/* Background Grey */}
           <div className="fixed z-30 left-0 top-0 m-0 w-full h-screen bg-black opacity-50"></div>
           {/*Actual Popup*/}
-          <div className="z-40 fixed flex flex-col select-none rounded w-3/6 top-1/3 left-1/2 transform -translate-x-1/2 -translate-y-1/3 min-w-planAdd shadow bg-blue-400 p-6">
+          <div className="z-40 fixed flex flex-col w-3/6 top-1/3 left-1/2 transform -translate-x-1/2 -translate-y-1/3 shadow bg-green-400 p-4">
             {/*Instructions*/}
-            <div className="font-mono text-black text-sm font-bold">
-              <div>
-                Disclaimer: Percents might change inaccurately because of the
-                limited number of users in uCredit.
+            <div className="border-solid border-4 bg-blue-400 p-6">
+              <div className="font-mono text-black text-bg p-2">
+                <div className="p-2">
+                  <p className="font-bold">Disclaimer:</p> Percents might change
+                  inaccurately because of the limited number of users in
+                  uCredit.
+                </div>
+                <div className="p-2">
+                  <p className="font-bold">Instructions:</p> Input Percentages
+                  from 0 to 100 for any experiments you want to change, leave
+                  blank want to keep original.
+                </div>
               </div>
-              <div>
-                Instructions: Input Percentages from 0 to 100 for any
-                experiments you want to change, leave blank want to keep
-                original.
-              </div>
-            </div>
 
-            {/*Experiment inputs*/}
-            <div className="flex flex-col space-y-16 font-mono text-bg">
-              {allExperiments.map((oneExperiment, index) => {
-                return (
-                  <div key={index}>
-                    <div>{`${oneExperiment.name} (Current Percentage is ${oneExperiment.percentParticipating}%)`}</div>
-                    <input
-                      className="bg-white placeholder-gray-500 border"
-                      placeholder={`${oneExperiment.percentParticipating}`}
-                      onChange={(event) => updatePercentageArray(index, event)}
-                    ></input>
-                    <span>%</span>
-                  </div>
-                );
-              })}
+              {/*Experiment inputs*/}
+              <div className="flex flex-col space-y-16 font-mono text-bg">
+                {allExperiments.map((oneExperiment, index) => {
+                  return (
+                    <div key={index}>
+                      <div>
+                        <span className="font-bold">{oneExperiment.name}</span>
+                        {` (Current Percentage is ${oneExperiment.percentParticipating}%)`}
+                      </div>
+                      <input
+                        className="bg-white placeholder-gray-500 border"
+                        placeholder={`${oneExperiment.percentParticipating}`}
+                        onChange={(event) =>
+                          updatePercentageArray(index, event)
+                        }
+                      ></input>
+                      <span>%</span>
+                    </div>
+                  );
+                })}
 
-              <div className="space-x-48">
-                <button
-                  className="w-1/3 text-white font-bold py-2 px-4 rounded bg-blue-500 hover:bg-blue-700"
-                  onClick={handleSubmit}
-                >
-                  Submit
-                </button>
-                <button
-                  className="w-1/3 text-white font-bold py-2 px-4 rounded bg-red-500 hover:bg-red-700"
-                  onClick={() => {
-                    setExperimentDevBoardPopup(!experimentDevBoardPopup);
-                  }}
-                >
-                  Cancel
-                </button>
+                <div className="space-x-48">
+                  <button
+                    className="w-1/3 text-white font-bold py-2 px-4 rounded bg-blue-500 hover:bg-blue-700"
+                    onClick={handleSubmit}
+                  >
+                    Submit
+                  </button>
+                  <button
+                    className="w-1/3 text-white font-bold py-2 px-4 rounded bg-red-500 hover:bg-red-700"
+                    onClick={() => {
+                      setExperimentDevBoardPopup(!experimentDevBoardPopup);
+                    }}
+                  >
+                    Cancel
+                  </button>
+                </div>
               </div>
             </div>
           </div>
