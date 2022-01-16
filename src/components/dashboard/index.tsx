@@ -3,12 +3,10 @@ import UserSection from './UserSection';
 import FeedbackPopup from '../popups/FeedbackPopup';
 import FeedbackNotification from '../popups/FeedbackNotification';
 import HandleUserEntryDummy from './HandleUserEntryDummy';
-import { useDispatch, useSelector } from 'react-redux';
+import { useSelector } from 'react-redux';
 import {
   selectImportingStatus,
   selectPlan,
-  updateCurrentPlanCourses,
-  updateSelectedPlan,
 } from '../../slices/currentPlanSlice';
 import {
   selectDeletePlanStatus,
@@ -17,7 +15,6 @@ import {
   selectCourseToDelete,
   selectShowCourseInfo,
   selectAddingPrereq,
-  updateAddingPlanStatus,
 } from '../../slices/popupSlice';
 import { selectExperimentList } from '../../slices/experimentSlice';
 import { selectSearchStatus } from '../../slices/searchSlice';
@@ -34,22 +31,16 @@ import CourseList from './course-list/CourseList';
 import InfoMenu from './InfoMenu';
 import ActionBar from './degree-info/ActionBar';
 import { useScrollPosition } from '@n8tb1t/use-scroll-position';
-import { toast } from 'react-toastify';
-import { Plan } from '../../resources/commonTypes';
-import {
-  selectUser,
-  selectPlanList,
-  updatePlanList,
-} from '../../slices/userSlice';
+import { selectUser, selectPlanList } from '../../slices/userSlice';
 import ShareLinksPopup from './degree-info/ShareLinksPopup';
 import axios from 'axios';
+import Dropdown from '../popups/Dropdown';
 
 /**
  * The dashboard that displays the user's plan.
  */
 const Dashboard: FC<{ id: string | null }> = ({ id }) => {
   // Redux setup.
-  const dispatch = useDispatch();
   const user = useSelector(selectUser);
   const planList = useSelector(selectPlanList);
   const currentPlan = useSelector(selectPlan);
@@ -70,38 +61,6 @@ const Dashboard: FC<{ id: string | null }> = ({ id }) => {
   const [dropdown, setDropdown] = useState<boolean>(false);
   const [experimentPopup, setExperimentPopup] = useState<boolean>(false);
   const [shareableURL, setShareableURL] = useState<string>('');
-
-  // Handles plan change event.
-  const handlePlanChange = (event: any) => {
-    setDropdown(false);
-    const selectedOption = event.target.value;
-    const planListClone = [...planList];
-    if (selectedOption === 'new plan' && user._id !== 'noUser') {
-      dispatch(updateAddingPlanStatus(true));
-    } else {
-      let newSelected: Plan = currentPlan;
-      planList.forEach((plan, index) => {
-        if (plan._id === selectedOption) {
-          newSelected = plan;
-          planListClone.splice(index, 1);
-          planListClone.splice(0, 0, newSelected);
-        }
-      });
-
-      toast(newSelected.name + ' selected!', {
-        position: 'top-right',
-        autoClose: 5000,
-        hideProgressBar: true,
-        closeOnClick: true,
-        pauseOnHover: true,
-        draggable: true,
-        progress: 0,
-      });
-      dispatch(updateSelectedPlan(newSelected));
-      dispatch(updateCurrentPlanCourses([]));
-      dispatch(updatePlanList(planListClone));
-    }
-  };
 
   useEffect(() => {
     if (!experimentPopup) {
@@ -205,27 +164,13 @@ const Dashboard: FC<{ id: string | null }> = ({ id }) => {
                   setDropdown={setDropdown}
                   onShareClick={onShareClick}
                 />
-                {dropdown ? (
-                  <div className="absolute z-30 flex flex-col -mt-2 ml-2 w-60 text-black bg-white rounded shadow">
-                    {planList.map((plan, index) => (
-                      <button
-                        key={index}
-                        value={plan._id}
-                        onClick={handlePlanChange}
-                        className="px-1 py-1 h-9 hover:bg-gray-200 border-t focus:outline-none transform overflow-ellipsis truncate"
-                      >
-                        {plan.name}
-                      </button>
-                    ))}
-                    <button
-                      value="new plan"
-                      onClick={handlePlanChange}
-                      className="py-1 hover:bg-gray-200 border-t focus:outline-none"
-                    >
-                      Create a plan +
-                    </button>
-                  </div>
-                ) : null}
+                <Dropdown
+                  dropdown={dropdown}
+                  planList={planList}
+                  setDropdown={setDropdown}
+                  user={user}
+                  currentPlan={currentPlan}
+                />
                 <CourseList />
               </div>
             </div>
