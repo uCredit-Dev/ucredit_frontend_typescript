@@ -92,7 +92,7 @@ test('Unable to login without choosing a major', async () => {
   });
 });
 
-test('Able to select major', async () => {
+test('Able to select old BS', async () => {
   await waitFor(() => {
     expect(screen.getByText('Adding a new plan!')).toBeInTheDocument();
   });
@@ -103,5 +103,19 @@ test('Able to select major', async () => {
 
   expect(
     screen.getByText('B.S. Computer Science (OLD - Pre-2021)'),
+  ).toBeInTheDocument();
+});
+
+test('Able to select new BS', async () => {
+  await waitFor(() => {
+    expect(screen.getByText('Adding a new plan!')).toBeInTheDocument();
+  });
+
+  fireEvent.change(screen.getByTestId('select'), {
+    target: { value: 'B.S. Computer Science (NEW - 2021 & after)' },
+  });
+
+  expect(
+    screen.getByText('B.S. Computer Science (NEW - 2021 & after)'),
   ).toBeInTheDocument();
 });
