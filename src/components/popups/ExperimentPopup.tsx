@@ -25,7 +25,7 @@ const ExperimentPopup: FC<{
     <>
       <div
         className={clsx(
-          'flex flex-row items-center ml-2 my-1 w-10 h-10 hover:underline hover:bg-green-300 border border-gray-300 rounded focus:outline-none shadow cursor-pointer transition duration-200 ease-in',
+          "flex flex-row items-center ml-2 my-1 w-10 h-10 hover:underline hover:bg-green-300 border border-gray-300 rounded focus:outline-none shadow cursor-pointer transition duration-200 ease-in",
           {
             'bg-red-100': experimentList[0].active,
             'bg-green-100': experimentList[1].active,
@@ -41,7 +41,7 @@ const ExperimentPopup: FC<{
         />
       </div>
       {experimentPopup ? (
-        <div className="relative z-50 flex flex-col right-0 justify-between place-items-start translate-x-full bg-white h-32 w-40 box-content h-100 w-100 p-2 border-4">
+        <div className="fixed z-50 bottom-24 right-3 justify-between place-items-start bg-white box-content p-2 border-4">
           Experiments
           {experimentList.map((experiment, index) => {
             // console.log(experiment)
