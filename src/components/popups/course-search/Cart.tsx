@@ -1,41 +1,31 @@
-import { FC, useEffect, useState } from "react";
-import { useDispatch, useSelector } from "react-redux";
-import {
-  selectYear,
-  selectSemester,
-  updateSearchStatus,
-} from "../../../slices/searchSlice";
-import CourseDisplay from "./search-results/CourseDisplay";
-import Form from "./query-components/Form";
-import SearchList from "./query-components/SearchList";
-import { ReactComponent as HideSvg } from "../../../resources/svg/Hide.svg";
-import { selectPlan } from "../../../slices/currentPlanSlice";
-import ReactTooltip from "react-tooltip";
-import { SISRetrievedCourse, Year } from "../../../resources/commonTypes";
-import { selectSelectedDistribution, updateShowingCart } from "../../../slices/popupSlice";
-import FineRequirementsList from "./cart/FineRequirementsList";
-import CartCourseList from "./cart/CartCourseList";
-import { emptyRequirements } from "./cart/dummies";
-import { requirements } from "../../dashboard/degree-info/distributionFunctions";
+import { FC, useState } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+
+import CourseDisplay from './search-results/CourseDisplay';
+import { ReactComponent as HideSvg } from '../../../resources/svg/Hide.svg';
+import ReactTooltip from 'react-tooltip';
+import { SISRetrievedCourse, Year } from '../../../resources/commonTypes';
+import { selectSelectedDistribution, updateShowingCart } from '../../../slices/popupSlice';
+import FineRequirementsList from './cart/FineRequirementsList';
+import CartCourseList from './cart/CartCourseList';
+import { emptyRequirements } from './cart/dummies';
+import { requirements } from '../../dashboard/degree-info/distributionFunctions';
 
 /**
  * Search component for when someone clicks a search action.
  */
 const Cart: FC<{allCourses: SISRetrievedCourse[]}> = (props) => {
-  // Component states
+  // Component states 
   const [searchOpacity, setSearchOpacity] = useState<number>(100);
-  const [searching, setSearching] = useState<boolean>(false); // repurpose to filter list?
 
   // FOR DUMMY FILTER TESTING TODO REMOVE
   // TODO : double check the initial state on this hook. do i even need this if stored in redux?
   // const [selectedDistribution, setSelectedDistribution] = useState<[string, requirements[]]>(["", []]); // not sure about the type here
   const [selectedRequirement, setSelectedRequirement] = useState<requirements>(emptyRequirements);
-
   const distrs = useSelector(selectSelectedDistribution);
 
   // Redux selectors and dispatch
   const dispatch = useDispatch();
-
   const updateSelectedRequirement = (newRequirement: requirements) => {
     setSelectedRequirement(newRequirement);
   }
@@ -51,7 +41,6 @@ const Cart: FC<{allCourses: SISRetrievedCourse[]}> = (props) => {
         onClick={() => { // clicking off, should reset all things
           // TODO: make sure proper things rae reset
           dispatch(updateShowingCart(false));
-
         }}
       ></div>
 
@@ -64,10 +53,7 @@ const Cart: FC<{allCourses: SISRetrievedCourse[]}> = (props) => {
       >
         <div className="px-4 py-2 text-white text-coursecard font-large select-none">
           {distrs[0]}
-          {/* Currently selecting for{" "}
-          <span className="text-emphasis font-bold">{getYearName()}</span> year,{" "}
-          <span className="text-emphasis font-bold">{searchSemester}</span>{" "}
-          semester */}
+          {/** This is the popup header. */}
         </div>
         <div className="flex tight:flex-col flex-row w-full tight:h-auto h-full tight:max-h-mobileSearch text-coursecard tight:overflow-y-scroll">
           <div
@@ -76,8 +62,6 @@ const Cart: FC<{allCourses: SISRetrievedCourse[]}> = (props) => {
             }
           >
             <div className="h-full overflow-y-auto">
-              {/* <Form setSearching={setSearching} />
-              <SearchList searching={searching} /> */}
               <CartCourseList
                 allCourses={props.allCourses} //remove this later
                 searching={false}
@@ -97,15 +81,14 @@ const Cart: FC<{allCourses: SISRetrievedCourse[]}> = (props) => {
             </div>
           </div>
           <CourseDisplay />
-
-          { /* right column for clickable requirements */}
+          {/** */}
           <div
             className={ // todo: check styles?
               "flex flex-col rounded-l bg-gray-200 flex-none border-l-2 tight:border-0 border-gray-300 tight:w-auto w-80"
             }
           >
             <div className="h-full overflow-y-auto">
-              {/* This is where the courses would */}
+              {/* This is where the courses would go (the left column) */}
               <FineRequirementsList
                 searching={false}
                 selectRequirement={updateSelectedRequirement}

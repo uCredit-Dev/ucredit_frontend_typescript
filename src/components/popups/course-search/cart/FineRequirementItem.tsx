@@ -1,13 +1,9 @@
-import { FC, useState } from "react";
-import { SISRetrievedCourse, Course } from "../../../../resources/commonTypes";
-import { useDispatch, useSelector } from "react-redux";
-import {
-  selectVersion,
-} from "../../../../slices/searchSlice";
+import { FC, useState } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
 import parse from 'html-react-parser';
-import clsx from "clsx";
-import { requirements } from "../../../dashboard/degree-info/distributionFunctions";
-import { emptyRequirements } from "./dummies";
+import clsx from 'clsx';
+import { requirements } from '../../../dashboard/degree-info/distributionFunctions';
+import { emptyRequirements } from './dummies';
 
 /**
  * A course card in the search list.
@@ -38,7 +34,6 @@ const FineRequirementListItem: FC<{
     >
       <div className="flex flex-col justify-center w-full h-full">
         <div className="break-normal">
-          {/* {props.itemRequirement.expr} */}
           {parse(props.itemRequirement.name)}
         </div> {/* ALL A BIG TODO: WIll have to format this later */}
         <div className="">
@@ -78,7 +73,6 @@ export const FineRequirementListFocusItem: FC<{ // TODO : fix exports from defau
           {/* {props.itemRequirement.expr} */}
           {parse(selectedFocusRequirement.name)}
         </div> {/* ALL A BIG TODO: WIll have to format this later */}
-       
 
         <div>
           {selectedFocusRequirement.fulfilled_credits} / {selectedFocusRequirement.required_credits}

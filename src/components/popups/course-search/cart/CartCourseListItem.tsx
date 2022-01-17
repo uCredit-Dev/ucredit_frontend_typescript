@@ -1,13 +1,13 @@
-import { FC } from "react";
-import { SISRetrievedCourse, Course } from "../../../../resources/commonTypes";
-import { useDispatch, useSelector } from "react-redux";
+import { FC } from 'react';
+import { SISRetrievedCourse, Course } from '../../../../resources/commonTypes';
+import { useDispatch, useSelector } from 'react-redux';
 import {
   updatePlaceholder,
   selectVersion,
   updateInspectedCourse,
   updateInspectedVersion,
-} from "../../../../slices/searchSlice";
-import clsx from "clsx";
+} from '../../../../slices/searchSlice';
+import clsx from 'clsx';
 
 /**
  * A course card in the search list.

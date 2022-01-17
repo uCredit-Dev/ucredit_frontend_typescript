@@ -1,22 +1,6 @@
-import { useState, useEffect, FC } from "react";
-import { useSelector, useDispatch } from "react-redux";
-import {
-  selectPlaceholder,
-  selectRetrievedCourses,
-  selectSearchFilters,
-  updateInspectedVersion,
-  updatePlaceholder,
-} from "../../../../slices/searchSlice";
-import CourseCard from "../query-components/CourseCard";
-import ReactPaginate from "react-paginate";
-import { ReactComponent as PlaceholderFilledSvg } from "../../../../resources/svg/PlaceholderFilled.svg";
-import { ReactComponent as PlaceholderEmptySvg } from "../../../../resources/svg/PlaceholderEmpty.svg";
-import { ReactComponent as Question } from "../../../../resources/svg/Question.svg";
-import { Course, SISRetrievedCourse } from "../../../../resources/commonTypes";
-import ReactTooltip from "react-tooltip";
-import loading from "../../../../resources/images/loading.gif";
-import FineRequirementListItem, { FineRequirementListFocusItem } from "./FineRequirementItem";
-import { requirements } from "../../../dashboard/degree-info/distributionFunctions";
+import { useState, FC } from 'react';
+import FineRequirementListItem from './FineRequirementItem';
+import { requirements } from '../../../dashboard/degree-info/distributionFunctions';
 
 /* 
   List of searched courses.
@@ -24,14 +8,7 @@ import { requirements } from "../../../dashboard/degree-info/distributionFunctio
 const FineRequirementsList: FC<{ searching: boolean, selectRequirement: Function, selectedDistribution: [string, requirements[]] }> = (props) => {
   // Component state setup.
   const [hideResults, setHideResults] = useState<boolean>(false);
-
   const [selectedListItem, setSelectedListItem] = useState<number>(-1);
-
-  // Redux setup
-  const courses = useSelector(selectRetrievedCourses);
-  const placeholder = useSelector(selectPlaceholder);
-  const searchFilters = useSelector(selectSearchFilters);
-  const dispatch = useDispatch();
 
   const selectRequirement = (requirement: requirements, i: number) => {
     props.selectRequirement(requirement);

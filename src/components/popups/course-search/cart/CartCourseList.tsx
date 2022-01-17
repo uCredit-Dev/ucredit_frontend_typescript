@@ -1,30 +1,25 @@
-import { useState, useEffect, FC } from "react";
-import { useSelector, useDispatch } from "react-redux";
+import { useState, useEffect, FC } from 'react';
+import { useSelector, useDispatch } from 'react-redux';
 import {
   selectPlaceholder,
-  selectRetrievedCourses,
   selectSearchFilters,
   updateInspectedVersion,
   updatePlaceholder,
-  updateSearchTime,
-} from "../../../../slices/searchSlice";
-import ReactPaginate from "react-paginate";
-import { ReactComponent as PlaceholderFilledSvg } from "../../../../resources/svg/PlaceholderFilled.svg";
-import { ReactComponent as PlaceholderEmptySvg } from "../../../../resources/svg/PlaceholderEmpty.svg";
-import { ReactComponent as Question } from "../../../../resources/svg/Question.svg";
-import { Course, SISRetrievedCourse } from "../../../../resources/commonTypes";
-import ReactTooltip from "react-tooltip";
-import loading from "../../../../resources/images/loading.gif";
+} from '../../../../slices/searchSlice';
+import ReactPaginate from 'react-paginate';
+import { ReactComponent as PlaceholderFilledSvg } from '../../../../resources/svg/PlaceholderFilled.svg';
+import { ReactComponent as PlaceholderEmptySvg } from '../../../../resources/svg/PlaceholderEmpty.svg';
+import { ReactComponent as Question } from '../../../../resources/svg/Question.svg';
+import { Course, SISRetrievedCourse } from '../../../../resources/commonTypes';
+import ReactTooltip from 'react-tooltip';
+import loading from '../../../../resources/images/loading.gif';
 
 // TODO: remove this import, for dummy courses
-import testCourses from './sisCoursesSubset.json';
-import CartCourseListItem from "./CartCourseListItem";
-import { requirements } from "../../../dashboard/degree-info/distributionFunctions";
-import { filterBasedOnReq } from "./dummies";
-import { api } from "../../../../resources/assets";
-import axios from "axios";
+import CartCourseListItem from './CartCourseListItem';
+import { requirements } from '../../../dashboard/degree-info/distributionFunctions';
+import { filterBasedOnReq } from './dummies';
 
-/* 
+/*
   List of searched courses.
 */
 
@@ -37,7 +32,6 @@ const CartCourseList: FC<{ searching: boolean, selectedRequirement: requirements
     []
   );
 
-  const retrievedCourses = useSelector(selectRetrievedCourses);
 
   // Two states, courses and rawCourses. Three if u count filtered
   // rawCourses - the collection representing all the courses to filter from. it's factored out seperrately so we can test with
@@ -56,33 +50,11 @@ const CartCourseList: FC<{ searching: boolean, selectedRequirement: requirements
   let coursesPerPage = 10; // should this be a const?
 
   // THIS HAS BEENM OVED TO DASHBOARD!
-  // // INITIAL SET FOR THE RAW COURSES
+  // // INITIAL SET FOR THE RAW COURSES for the list. these will
   useEffect(() => {
-    // here's the messy fetch. TODO: add some visual feedback for searching.
-    let courseSubset: SISRetrievedCourse[] = [];
-    // console.log("fetching... for CartCourseList");
-    // axios // THIS IS A PROMSE. TODO: WHATS THE ERROR HERE IF the COMPONENT UNMOUNTS BEFORE THIS IS RESOLVED?
-    //   .get(api + "/search/all")
-    //   .then((retrieved) => {
-    //     let retrievedCourses: SISRetrievedCourse[] = retrieved.data.data;
-    //     courseSubset = retrievedCourses;
-    //     setCourses(courseSubset as unknown as SISRetrievedCourse[]); // fix this type casting
-    //     setRawCourses(courseSubset as unknown as SISRetrievedCourse[]);
-    //     console.log(retrievedCourses);
-    //   })
-    //   .catch(() => {
-    //     console.log("There was an error in the fetching of all courses for the cart course popup!");
-    //   });
-
-    // courseSubset = testCourses; // imported from subset
-    // let courseSubset = retrievedCourses; // imported from retrieved from search, but incomplete
-    courseSubset = props.allCourses;
-    setCourses(courseSubset as unknown as SISRetrievedCourse[]); // fix this type casting
+    let courseSubset: SISRetrievedCourse[] = props.allCourses;
+    setCourses(courseSubset as unknown as SISRetrievedCourse[]); // TODO: fix this type casting
     setRawCourses(courseSubset as unknown as SISRetrievedCourse[]);
-  //   dispatch(updateSearchTime({
-  //     "searchSemester": "Spring",
-  //     "searchYear": "61da3e31a8381200048fd944"
-  // }));
   }, [props.allCourses]);
 
   // FOR FILTERS
