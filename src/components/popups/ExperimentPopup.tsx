@@ -27,8 +27,6 @@ const ExperimentPopup: FC<{
         className={clsx(
           'flex flex-row items-center ml-2 my-1 w-10 h-10 hover:underline hover:bg-green-300 border border-gray-300 rounded focus:outline-none shadow cursor-pointer transition duration-200 ease-in',
           {
-            'bg-red-100': experimentList[0].active,
-            'bg-green-100': experimentList[1].active,
             'bg-blue-100': experimentList[2].active,
           },
         )}

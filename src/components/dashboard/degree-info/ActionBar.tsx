@@ -18,6 +18,8 @@ import { ReactComponent as AddSvg } from '../../../resources/svg/Add.svg';
 import axios from 'axios';
 import { Year, Plan } from '../../../resources/commonTypes';
 import ReactTooltip from 'react-tooltip';
+import clsx from 'clsx';
+import { selectExperimentList } from '../../../slices/experimentSlice';
 
 /**
  * @description ActionBar component
@@ -38,6 +40,10 @@ const ActionBar: FC<{
 
   // Determines whether we're editing the name.
   const [editName, setEditName] = useState<boolean>(false);
+
+  // Gets Experiment List
+
+  const experimentList = useSelector(selectExperimentList);
 
   // Only edits name if editName is true. If true, calls debounce update function
   useEffect(() => {
@@ -141,7 +147,15 @@ const ActionBar: FC<{
     ReactTooltip.rebuild();
   });
   return (
-    <div className="flex flex-row px-2 py-1 bg-white rounded shadow overflow-x-auto drop-shadow-md sticky top-0 z-20">
+    <div
+      className={clsx(
+        'flex flex-row px-2 py-1 rounded shadow overflow-x-auto drop-shadow-md sticky top-0 z-20',
+        {
+          'bg-red-100': experimentList[0].active,
+          'bg-white': !experimentList[2].active,
+        },
+      )}
+    >
       <PlanChoose dropdown={dropdown} setDropdown={setDropdown} />
       <div className="flex flex-row items-end mr-2 my-1 h-10 border bg-white border-gray-300 rounded rounded shadow">
         <div className="text-xl m-auto ml-2 mr-0">✎</div>

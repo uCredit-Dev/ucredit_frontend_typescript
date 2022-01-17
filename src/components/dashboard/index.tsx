@@ -35,6 +35,7 @@ import { selectUser, selectPlanList } from '../../slices/userSlice';
 import ShareLinksPopup from './degree-info/ShareLinksPopup';
 import axios from 'axios';
 import Dropdown from '../popups/Dropdown';
+import ExperimentNumber from '../popups/ExperimentNumber';
 
 /**
  * The dashboard that displays the user's plan.
@@ -61,6 +62,13 @@ const Dashboard: FC<{ id: string | null }> = ({ id }) => {
   const [dropdown, setDropdown] = useState<boolean>(false);
   const [experimentPopup, setExperimentPopup] = useState<boolean>(false);
   const [shareableURL, setShareableURL] = useState<string>('');
+  const [displayedNumber, setDisplayedNumber] = useState<number>(3);
+  const [crement, setCrement] = useState<number>(0);
+
+  useEffect(() => {
+    setCrement(experimentList[1].active ? 1 : -1);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [experimentList[1]]);
 
   useEffect(() => {
     if (!experimentPopup) {
@@ -85,9 +93,6 @@ const Dashboard: FC<{ id: string | null }> = ({ id }) => {
             axios
               .put(`${experimentAPI}${command}${experiment.name}`, {
                 user_id: user._id,
-              })
-              .then(function (response) {
-                console.log(response.data);
               })
               .catch(function (error) {
                 console.log(error);
@@ -134,6 +139,12 @@ const Dashboard: FC<{ id: string | null }> = ({ id }) => {
           <ExperimentPopup
             experimentPopup={experimentPopup}
             setExperimentPopup={setExperimentPopup}
+          />
+          <ExperimentNumber
+            displayedNumber={displayedNumber}
+            setDisplayedNumber={setDisplayedNumber}
+            crement={crement}
+            setCrement={setCrement}
           />
         </div>
       }
