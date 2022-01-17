@@ -35,9 +35,6 @@ const Cart: FC<{allCourses: SISRetrievedCourse[]}> = (props) => {
 
   // Redux selectors and dispatch
   const dispatch = useDispatch();
-  const searchYear = useSelector(selectYear);
-  const searchSemester = useSelector(selectSemester);
-  const currentPlan = useSelector(selectPlan);
 
   const updateSelectedRequirement = (newRequirement: requirements) => {
     setSelectedRequirement(newRequirement);
@@ -66,7 +63,7 @@ const Cart: FC<{allCourses: SISRetrievedCourse[]}> = (props) => {
         style={{ opacity: searchOpacity === 100 ? 1 : 0.1 }}
       >
         <div className="px-4 py-2 text-white text-coursecard font-large select-none">
-          THIS IS THE CART!
+          {distrs[0]}
           {/* Currently selecting for{" "}
           <span className="text-emphasis font-bold">{getYearName()}</span> year,{" "}
           <span className="text-emphasis font-bold">{searchSemester}</span>{" "}

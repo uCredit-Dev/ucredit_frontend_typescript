@@ -15,7 +15,7 @@ import { ReactComponent as Question } from "../../../../resources/svg/Question.s
 import { Course, SISRetrievedCourse } from "../../../../resources/commonTypes";
 import ReactTooltip from "react-tooltip";
 import loading from "../../../../resources/images/loading.gif";
-import FineRequirementListItem from "./FineRequirementItem";
+import FineRequirementListItem, { FineRequirementListFocusItem } from "./FineRequirementItem";
 import { requirements } from "../../../dashboard/degree-info/distributionFunctions";
 
 /* 
@@ -40,11 +40,10 @@ const FineRequirementsList: FC<{ searching: boolean, selectRequirement: Function
   }
 
   const getRequirements = () => {
-    // dummy requirements. Figure outthe structure of actual distributions later
 
-    // // if the distribution is pathing, show a dropdown menu rather than a single list?
+    // if the distribution is pathing, show a dropdown menu rather than a single list?
     // if (props.selectedDistribution[1][0].pathing) {
-    //   return <FineReuqi
+    //   return <FineRequirementListFocusItem focusRequirements={props.selectedDistribution[1]} onClick={selectRequirement}/>
     // }
     return props.selectedDistribution[1].map((requirement, i) => {
       if (i == 0) return <></> // TODO : better key

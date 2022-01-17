@@ -213,17 +213,6 @@ const ActionBar: FC<{
           className="w-10 h-10 focus:outline-none"
         />
       </div>
-
-      {/* Fortesting only, TODO: remove in production */}
-      <div className="flex flex-row items-center my-1 w-20 h-10 hover:underline hover:bg-green-300 border border-gray-300 rounded focus:outline-none shadow cursor-pointer transition duration-200 ease-in"
-        onClick={() => displayCart()}>
-        <AddSvg
-          data-tip={`Toggle cart poppup`}
-          data-for="godTip"
-          className="w-10 h-10 focus:outline-none"
-        />
-        <p> Display da cart </p>
-      </div>
     </div>
   );
 };

@@ -41,7 +41,7 @@ const FineRequirementListItem: FC<{
           {/* {props.itemRequirement.expr} */}
           {parse(props.itemRequirement.name)}
         </div> {/* ALL A BIG TODO: WIll have to format this later */}
-        <div>
+        <div className="">
           {props.itemRequirement.fulfilled_credits} / {props.itemRequirement.required_credits}
         </div>
       </div>
@@ -51,7 +51,7 @@ const FineRequirementListItem: FC<{
 
 // For fine requirements with pathing options, provides a dropdown menu
 // TODO : not in use yet. Where should the dropdown menu be? Selectable from the coures bars?
-const FineRequirementListFocusItem: FC<{
+export const FineRequirementListFocusItem: FC<{ // TODO : fix exports from default to two files
   focusRequirements: requirements[],
   onClick: Function,
 }> = (props) => {
@@ -78,6 +78,8 @@ const FineRequirementListFocusItem: FC<{
           {/* {props.itemRequirement.expr} */}
           {parse(selectedFocusRequirement.name)}
         </div> {/* ALL A BIG TODO: WIll have to format this later */}
+       
+
         <div>
           {selectedFocusRequirement.fulfilled_credits} / {selectedFocusRequirement.required_credits}
         </div>
