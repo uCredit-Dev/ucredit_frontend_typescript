@@ -4,6 +4,7 @@ import {
   screen,
   waitFor,
   act,
+  cleanup,
 } from '@testing-library/react';
 import '@testing-library/jest-dom';
 import { Router } from 'react-router-dom';
@@ -16,26 +17,46 @@ import { configureStore } from '@reduxjs/toolkit';
 import counterReducer from '../../resources/redux_sample/counterSlice';
 import searchReducer from '../../slices/searchSlice';
 import currentPlanReducer from '../../slices/currentPlanSlice';
-import popupReducer from '../../slices/popupSlice';
+import popupReducer, {
+  updateToAddMajor as mockUpdateToAddMajor,
+} from '../../slices/popupSlice';
 import { ToastContainer } from 'react-toastify';
+import { allMajors as mockAllMajors } from '../../resources/majors';
 
 let history = createMemoryHistory({ initialEntries: ['/login'] });
+let mockStore = configureStore({
+  reducer: {
+    counter: counterReducer,
+    user: userReducer,
+    search: searchReducer,
+    currentPlan: currentPlanReducer,
+    popup: popupReducer,
+  },
+  middleware: (getDefaultMiddleware) =>
+    getDefaultMiddleware({
+      serializableCheck: false,
+    }),
+});
+
+jest.mock('react-select', () => ({ options, value, onChange }) => {
+  function handleChange(event) {
+    const option = options.find((op) => op.label === event.currentTarget.value);
+    mockStore.dispatch(mockUpdateToAddMajor(mockAllMajors[option.value]));
+  }
+  return (
+    <select data-testid="select" value={value} onChange={handleChange}>
+      {options.map(({ val, label }) => (
+        <option key={val} value={val}>
+          {label}
+        </option>
+      ))}
+    </select>
+  );
+});
+
 beforeEach(() => {
   history = createMemoryHistory({ initialEntries: ['/login'] });
   act(() => {
-    let mockStore = configureStore({
-      reducer: {
-        counter: counterReducer,
-        user: userReducer,
-        search: searchReducer,
-        currentPlan: currentPlanReducer,
-        popup: popupReducer,
-      },
-      middleware: (getDefaultMiddleware) =>
-        getDefaultMiddleware({
-          serializableCheck: false,
-        }),
-    });
     mockStore.dispatch(updateUser(guestUser));
     render(
       <Provider store={mockStore}>
@@ -49,6 +70,8 @@ beforeEach(() => {
     );
   });
 });
+
+afterAll(cleanup);
 
 test('Correctly logs in as guest user and adding a new plan starts', async () => {
   expect(screen.getByText('Logged in as Guest User!')).toBeInTheDocument();
@@ -67,4 +90,32 @@ test('Unable to login without choosing a major', async () => {
       screen.getByText('Please choose a valid major!'),
     ).toBeInTheDocument();
   });
+});
+
+test('Able to select old BS', async () => {
+  await waitFor(() => {
+    expect(screen.getByText('Adding a new plan!')).toBeInTheDocument();
+  });
+
+  fireEvent.change(screen.getByTestId('select'), {
+    target: { value: 'B.S. Computer Science (OLD - Pre-2021)' },
+  });
+
+  expect(
+    screen.getByText('B.S. Computer Science (OLD - Pre-2021)'),
+  ).toBeInTheDocument();
+});
+
+test('Able to select new BS', async () => {
+  await waitFor(() => {
+    expect(screen.getByText('Adding a new plan!')).toBeInTheDocument();
+  });
+
+  fireEvent.change(screen.getByTestId('select'), {
+    target: { value: 'B.S. Computer Science (NEW - 2021 & after)' },
+  });
+
+  expect(
+    screen.getByText('B.S. Computer Science (NEW - 2021 & after)'),
+  ).toBeInTheDocument();
 });
