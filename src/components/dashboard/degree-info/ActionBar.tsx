@@ -48,9 +48,10 @@ const ActionBar: FC<{
   const experimentList = useSelector(selectExperimentList);
   const experimentNames = useSelector(selectExperimentNames);
 
+  const redButtonIdx = experimentNames.indexOf('Red Button');
   const redButton =
-    experimentList.length > 0
-      ? experimentList[experimentNames.indexOf('Red Button')]
+    experimentList.length > 0 && redButtonIdx !== -1
+      ? experimentList[redButtonIdx]
       : null;
 
   // Only edits name if editName is true. If true, calls debounce update function

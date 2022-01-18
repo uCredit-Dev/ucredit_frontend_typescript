@@ -14,8 +14,9 @@ const ExperimentPopup: FC<{
 }> = ({ experimentPopup, setExperimentPopup }) => {
   const experimentList = useSelector(selectExperimentList);
   const experimentNames = useSelector(selectExperimentNames);
+  const greenButtonIdx = experimentNames.indexOf('Green Button');
   const greenButton =
-    experimentList.length > 0
+    experimentList.length > 0 && greenButtonIdx !== -1
       ? experimentList[experimentNames.indexOf('Green Button')]
       : null;
   const dispatch = useDispatch();

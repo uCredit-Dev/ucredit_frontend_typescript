@@ -72,8 +72,9 @@ const Dashboard: FC<{ id: string | null }> = ({ id }) => {
   const [displayedNumber, setDisplayedNumber] = useState<number>(3);
   const [crement, setCrement] = useState<number>(0);
 
+  const blueButtonIdx = experimentNames.indexOf('Blue Button');
   const blueButton =
-    experimentList.length > 0
+    experimentList.length > 0 && blueButtonIdx !== -1
       ? experimentList[experimentNames.indexOf('Blue Button')]
       : null;
 
