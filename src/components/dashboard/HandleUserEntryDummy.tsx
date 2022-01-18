@@ -31,6 +31,7 @@ import { getMajorFromCommonName } from '../../resources/majors';
 import {
   setExperiments,
   toggleExperimentStatus,
+  setWhitelistStatus,
 } from '../../slices/experimentSlice';
 
 /**
@@ -520,12 +521,18 @@ const HandleUserEntryDummy: FC<{
     // console.log("updating experiments")
 
     const experimentAPI =
-      'https://ucredit-experiments-api.herokuapp.com/api/experiments/allExperiments';
+      'https://ucredit-experiments-api.herokuapp.com/api/experiments';
 
     try {
-      const experimentListResponse = await axios.get(`${experimentAPI}`); // getting experiment list
+      const experimentListResponse = await axios.get(`${experimentAPI}/allExperiments`); // getting experiment list
       const experiments = experimentListResponse.data.data;
       dispatch(setExperiments(experiments));
+
+      const experimentListNamesActive = await axios.get(`${experimentAPI}/${userID}`);
+      const activeExperiments = experimentListNamesActive.data.data;
+      if (activeExperiments.includes('White List')) {
+        dispatch(setWhitelistStatus(true));
+      }
 
       for (const experiment of experiments) {
         if (experiment.active.includes(userID)) {
