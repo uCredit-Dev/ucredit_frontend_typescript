@@ -10,11 +10,19 @@ import {
 } from '../../slices/experimentSlice';
 import { selectUser } from '../../slices/userSlice';
 import { ReactComponent as AdjustmentSvg } from '../../resources/svg/Adjustment.svg';
+import { ReactComponent as DeleteExperimentSvg } from '../../resources/svg/DeleteExperiment.svg';
+import { ReactComponent as AddExperimentSvg } from '../../resources/svg/AddExperiment.svg';
 import { toast } from 'react-toastify';
 
 const ExperimentDevBoardPopup: FC<{}> = () => {
   const [experimentDevBoardPopup, setExperimentDevBoardPopup] =
     useState<boolean>(false);
+  const [deleteExperimentPopup, setDeleteExperimentPopup] =
+    useState<boolean>(false);
+  const [nameExperimentToDelete, setNameExperimentToDelete] = useState<
+    string | null
+  >(null);
+  const [addExperimentPopup, setAddExperimentPopup] = useState<boolean>(false);
   //Retrieve all experiments from redux
   const allExperiments: Array<experiment> = useSelector(selectExperimentList);
   const whiteList = useSelector(selectWhiteList);
@@ -23,10 +31,11 @@ const ExperimentDevBoardPopup: FC<{}> = () => {
 
   //Create state of this component with percentages that user has changed
   const LEN: number = allExperiments.length;
-  const emptyPercentages: Array<string> = new Array(LEN).fill(''); //empty to represent that user did not change the input field
+  const emptyArray: Array<string> = new Array(LEN).fill(''); //empty to represent that user did not change the input field
   const [inputPercentage, setInputPercentage] = useState<Array<string>>([
-    ...emptyPercentages,
+    ...emptyArray,
   ]);
+  const [inputName, setInputName] = useState<Array<string>>([...emptyArray]);
 
   const updatePercentageArray = (index, event) => {
     const percent = event.target.value;
@@ -34,11 +43,15 @@ const ExperimentDevBoardPopup: FC<{}> = () => {
     setInputPercentage([...inputPercentage]);
   };
 
-  const handleSubmit = async () => {
-    const experimentAPI =
-      'https://ucredit-experiments-api.herokuapp.com/api/experiments/';
+  const updateNameArray = (index, event) => {
+    const name = event.target.value;
+    inputName[index] = name;
+    setInputName([...inputName]);
+  };
 
+  const handlePercentageChange = async (experimentAPI) => {
     const convertedPercentages: Array<number> = [];
+    //Attempt to convert all percentages
     for (const userInput of inputPercentage) {
       const attemptConversion: number = Number(userInput);
       if (
@@ -56,6 +69,7 @@ const ExperimentDevBoardPopup: FC<{}> = () => {
       }
     }
 
+    //Make the post and update backend
     for (let i = 0; i < convertedPercentages.length; i++) {
       if (
         (convertedPercentages[i] !== 0 || inputPercentage[i] !== '') &&
@@ -70,6 +84,8 @@ const ExperimentDevBoardPopup: FC<{}> = () => {
           });
       }
     }
+
+    //Update redux with new experiments in case current user was changed
     await axios
       .get(`${experimentAPI}${user._id}`)
       .then(function (response) {
@@ -91,11 +107,46 @@ const ExperimentDevBoardPopup: FC<{}> = () => {
       .catch(function (error) {
         console.log(error);
       });
-    toast.success(`Updated Percentages`, {
+  };
+
+  const handleNameChange = async (experimentAPI) => {
+    console.log(inputName);
+    for (let i = 0; i < inputName.length; i++) {
+      if (inputName[i] !== '') {
+        await axios
+          .put(`${experimentAPI}changeName/${allExperiments[i].name}`, {
+            new_name: inputName[i],
+          })
+          .catch(function (error) {
+            console.log(error);
+          });
+      }
+    }
+  };
+
+  const handleSubmitForOldExperiments = async () => {
+    const experimentAPI =
+      'https://ucredit-experiments-api.herokuapp.com/api/experiments/';
+
+    await handlePercentageChange(experimentAPI);
+
+    await handleNameChange(experimentAPI);
+
+    toast.success(`Updated Experiments`, {
       autoClose: 5000,
       closeOnClick: false,
     });
     setExperimentDevBoardPopup(!experimentDevBoardPopup);
+  };
+
+  const handleSubmitForAddExperiment = async () => {
+    console.log("Added Experiment");
+    setAddExperimentPopup(!addExperimentPopup);
+  };
+
+  const handleSubmitForDeleteExperiment = async () => {
+    console.log("Deleted Experiment");
+    setDeleteExperimentPopup(!deleteExperimentPopup);
   };
 
   return (
@@ -113,11 +164,11 @@ const ExperimentDevBoardPopup: FC<{}> = () => {
       {experimentDevBoardPopup ? (
         <>
           {/* Background Grey */}
-          <div className="fixed z-30 left-0 top-0 m-0 w-full h-screen bg-black opacity-50"></div>
+          <div className="overflow-auto fixed z-30 left-0 top-0 m-0 w-full h-screen bg-black opacity-50"></div>
           {/*Actual Popup*/}
           <div className="z-40 fixed flex flex-col w-3/6 top-1/3 left-1/2 transform -translate-x-1/2 -translate-y-1/3 shadow bg-green-400 p-4">
             {/*Instructions*/}
-            <div className="border-solid border-4 bg-blue-400 p-6">
+            <div className="border-solid border-4 bg-blue-400 p-6 space-y-6">
               <div className="font-mono text-black text-bg p-2">
                 <div className="p-2">
                   <p className="font-bold">Disclaimer:</p> Percents might change
@@ -129,25 +180,64 @@ const ExperimentDevBoardPopup: FC<{}> = () => {
                   from 0 to 100 for any experiments you want to change, leave
                   blank want to keep original.
                 </div>
+                <div className="flex flex-row">
+                  <div className="translate-x-2 translate-y-1 font-bold">
+                    Add an Experiment:
+                  </div>
+                  <div className="translate-x-6 items-center hover:underline hover:bg-green-400 focus:outline-none shadow cursor-pointer transition duration-200 ease-in">
+                    <AddExperimentSvg
+                      onClick={() => {
+                        setAddExperimentPopup(!addExperimentPopup);
+                        setExperimentDevBoardPopup(!experimentDevBoardPopup);
+                      }}
+                      data-tip={`Add a New Experiment!`}
+                      data-for="godTip"
+                      className="w-8 h-8 focus:outline-none"
+                    />
+                  </div>
+                </div>
               </div>
 
               {/*Experiment inputs*/}
-              <div className="flex flex-col space-y-16 font-mono text-bg">
+              <div className="flex flex-col space-y-6 font-mono text-bg">
                 {allExperiments.map((oneExperiment, index) => {
                   return (
                     <div key={index}>
-                      <div>
+                      <div className="flex flex-row -translate-x-2">
+                        <div className="-translate-y-2 items-center hover:underline hover:bg-red-700 focus:outline-none shadow cursor-pointer transition duration-200 ease-in">
+                          <DeleteExperimentSvg
+                            onClick={() => {
+                              setNameExperimentToDelete(oneExperiment.name);
+                              setDeleteExperimentPopup(!deleteExperimentPopup);
+                              setExperimentDevBoardPopup(
+                                !experimentDevBoardPopup,
+                              );
+                            }}
+                            data-tip={`Delete This Experiment!`}
+                            data-for="godTip"
+                            className="w-10 h-10 focus:outline-none"
+                          />
+                        </div>
                         <span className="font-bold">{oneExperiment.name}</span>
                         {` (Current Percentage is ${oneExperiment.percentParticipating}%)`}
                       </div>
-                      <input
-                        className="bg-white placeholder-gray-500 border"
-                        placeholder={`${oneExperiment.percentParticipating}`}
-                        onChange={(event) =>
-                          updatePercentageArray(index, event)
-                        }
-                      ></input>
-                      <span>%</span>
+                      <div>
+                        <input
+                          className="bg-white placeholder-gray-500 border"
+                          placeholder={`${oneExperiment.name}`}
+                          onChange={(event) => updateNameArray(index, event)}
+                        ></input>
+                      </div>
+                      <div className="my-4">
+                        <input
+                          className="bg-white placeholder-gray-500 border"
+                          placeholder={`${oneExperiment.percentParticipating}`}
+                          onChange={(event) =>
+                            updatePercentageArray(index, event)
+                          }
+                        ></input>
+                        <span>%</span>
+                      </div>
                     </div>
                   );
                 })}
@@ -155,18 +245,114 @@ const ExperimentDevBoardPopup: FC<{}> = () => {
                 <div className="space-x-48">
                   <button
                     className="w-1/3 text-white font-bold py-2 px-4 rounded bg-blue-500 hover:bg-blue-700"
-                    onClick={handleSubmit}
+                    onClick={handleSubmitForOldExperiments}
                   >
                     Submit
                   </button>
                   <button
-                    className="w-1/3 text-white font-bold py-2 px-4 rounded bg-red-500 hover:bg-red-700"
+                    className="w-1/3 text-white font-bold py-2 px-4 rounded bg-red-500 hover:bg-red-700 translate-x-20"
                     onClick={() => {
                       setExperimentDevBoardPopup(!experimentDevBoardPopup);
                     }}
                   >
                     Cancel
                   </button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </>
+      ) : null}
+
+      {/*Add Popup */}
+      {addExperimentPopup ? (
+        <>
+          <div className="absolute top-0">
+            {/* Background Grey */}
+            <div className="fixed z-30 left-0 top-0 m-0 w-full h-screen bg-black opacity-50"></div>
+
+            {/* Actual popup */}
+            <div className="z-40 fixed flex flex-col w-3/6 top-1/3 left-1/2 transform -translate-x-1/2 -translate-y-1/3 shadow bg-green-400 p-4">
+              {/*Instructions*/}
+              <div className="border-solid border-4 bg-blue-400 p-6 space-y-6">
+                <div className="font-mono text-black text-bg p-2">
+                  <div className="p-2">
+                    <p className="font-bold">Disclaimer:</p> Percents might
+                    change inaccurately because of the limited number of users
+                    in uCredit.
+                  </div>
+                  <div className="p-2">
+                    <p className="font-bold">Instructions:</p> Input Percentages
+                    from 0 to 100 for any experiments you want to change, leave
+                    blank want to keep original.
+                  </div>
+                </div>
+                <div className="space-x-48">
+                  <button
+                    className="w-1/3 text-white font-bold py-2 px-4 rounded bg-blue-500 hover:bg-blue-700"
+                    onClick={handleSubmitForAddExperiment}
+                  >
+                    Submit
+                  </button>
+                  <button
+                    className="w-1/3 text-white font-bold py-2 px-4 rounded bg-red-500 hover:bg-red-700 translate-x-20"
+                    onClick={() => {
+                      setAddExperimentPopup(!addExperimentPopup);
+                    }}
+                  >
+                    Cancel
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </>
+      ) : null}
+
+      {/*Delete Popup*/}
+      {deleteExperimentPopup ? (
+        <>
+          <div className="absolute top-0">
+            {/* Background Grey */}
+            <div className="fixed z-30 left-0 top-0 m-0 w-full h-screen bg-black opacity-50"></div>
+
+            {/* Actual popup */}
+            <div
+              className={
+                'z-40 fixed flex flex-col bg-red-500 select-none rounded w-3/12 top-1/3 left-1/2 transform -translate-x-1/2 -translate-y-1/3 min-w-planAdd shadow'
+              }
+            >
+              <div className="px-4 py-2 text-white text-coursecard font-semibold select-none">
+                Deleting Experiment!
+              </div>
+              {/* Search area */}
+              <div className="w-full h-full text-coursecard">
+                <div className="p-4 w-full h-auto bg-gray-200 rounded">
+                  <div className="flex flex-col items-center justify-center mb-4">
+                    <b className="flex flex-row mt-4 text-center font-semibold">
+                      Are you sure you want to delete
+                      <div className="ml-1 text-red-600 font-bold">
+                        {nameExperimentToDelete}
+                      </div>
+                      ?
+                    </b>
+                    <div className="flex flex-row justify-center mb-4 mt-8 w-full">
+                      <button
+                        className="m-1 p-1 w-1/6 text-white bg-red-500 rounded focus:outline-none shadow transform hover:scale-110 transition duration-200 ease-in"
+                        onClick={handleSubmitForDeleteExperiment}
+                      >
+                        <b>Yes</b>
+                      </button>
+                      <button
+                        className="m-1 ml-20 p-1 w-1/6 text-white bg-secondary rounded focus:outline-none shadow transform hover:scale-110 transition duration-200 ease-in"
+                        onClick={() => {
+                          setDeleteExperimentPopup(!deleteExperimentPopup);
+                        }}
+                      >
+                        <b>No</b>
+                      </button>
+                    </div>
+                  </div>
                 </div>
               </div>
             </div>
