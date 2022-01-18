@@ -19,7 +19,10 @@ import axios from 'axios';
 import { Year, Plan } from '../../../resources/commonTypes';
 import ReactTooltip from 'react-tooltip';
 import clsx from 'clsx';
-import { selectExperimentList } from '../../../slices/experimentSlice';
+import {
+  selectExperimentList,
+  selectExperimentNames,
+} from '../../../slices/experimentSlice';
 
 /**
  * @description ActionBar component
@@ -41,9 +44,14 @@ const ActionBar: FC<{
   // Determines whether we're editing the name.
   const [editName, setEditName] = useState<boolean>(false);
 
-  // Gets Experiment List
-
+  // Gets Experiment List and Experiment Names
   const experimentList = useSelector(selectExperimentList);
+  const experimentNames = useSelector(selectExperimentNames);
+
+  const redButton =
+    experimentList.length > 0
+      ? experimentList[experimentNames.indexOf('Red Button')]
+      : null;
 
   // Only edits name if editName is true. If true, calls debounce update function
   useEffect(() => {
@@ -151,8 +159,8 @@ const ActionBar: FC<{
       className={clsx(
         'flex flex-row px-2 py-1 rounded shadow overflow-x-auto drop-shadow-md sticky top-0 z-20',
         {
-          'bg-red-100': experimentList[0].active,
-          'bg-white': !experimentList[2].active,
+          'bg-red-100': redButton !== null ? redButton.active : false,
+          'bg-white': redButton !== null ? !redButton.active : true,
         },
       )}
     >

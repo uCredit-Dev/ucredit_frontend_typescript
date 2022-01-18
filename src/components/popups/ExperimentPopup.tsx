@@ -1,5 +1,6 @@
 import {
   selectExperimentList,
+  selectExperimentNames,
   toggleExperimentStatus,
 } from '../../slices/experimentSlice';
 import { useDispatch, useSelector } from 'react-redux';
@@ -12,6 +13,11 @@ const ExperimentPopup: FC<{
   setExperimentPopup: Function;
 }> = ({ experimentPopup, setExperimentPopup }) => {
   const experimentList = useSelector(selectExperimentList);
+  const experimentNames = useSelector(selectExperimentNames);
+  const greenButton =
+    experimentList.length > 0
+      ? experimentList[experimentNames.indexOf('Green Button')]
+      : null;
   const dispatch = useDispatch();
 
   const handleExperimentToggle = (event: any) => {
@@ -27,7 +33,7 @@ const ExperimentPopup: FC<{
         className={clsx(
           'flex flex-row items-center ml-2 my-1 w-10 h-10 hover:underline hover:bg-green-300 border border-gray-300 rounded focus:outline-none shadow cursor-pointer transition duration-200 ease-in',
           {
-            'bg-blue-100': experimentList[2].active,
+            'bg-green-100': greenButton !== null ? greenButton.active : false,
           },
         )}
       >
@@ -42,11 +48,10 @@ const ExperimentPopup: FC<{
         <div className="fixed z-50 bottom-24 right-3 justify-between place-items-start bg-white box-content p-2 border-4">
           Experiments
           {experimentList.map((experiment, index) => {
-            // console.log(experiment)
             return (
               <button
                 key={index}
-                value={index}
+                value={experiment.name}
                 onClick={handleExperimentToggle}
                 className={clsx(
                   'relative flex hover:bg-gray-400 border border-gray-300 rounded focus:outline-none shadow cursor-pointer transition duration-200 ease-in',

@@ -29,10 +29,9 @@ import { useCookies } from 'react-cookie';
 import { useNavigate } from 'react-router';
 import { getMajorFromCommonName } from '../../resources/majors';
 import {
-  selectExperimentList,
+  setExperiments,
   setExperimentStatus,
-  setWhitelistStatus,
-  setExperimentPercentage,
+  toggleExperimentStatus,
 } from '../../slices/experimentSlice';
 
 /**
@@ -49,7 +48,6 @@ const HandleUserEntryDummy: FC<{
   const generatePlanAddStatus = useSelector(selectGeneratePlanAddStatus);
   const currentCourses = useSelector(selectCurrentPlanCourses);
   const planList = useSelector(selectPlanList);
-  const experimentList = useSelector(selectExperimentList);
 
   // Component state setup
   const [toAdd, setToAdd] = useState<Year[]>([]);
@@ -518,37 +516,26 @@ const HandleUserEntryDummy: FC<{
       }),
     );
 
-  const updateExperimentsForUser = async (jhed: string | null) => {
+  const updateExperimentsForUser = async (userID: string) => {
     // use api from assets.tsx, move experiments and make a new route instead
+    // console.log("updating experiments")
 
     const experimentAPI =
-      'https://ucredit-experiments-api.herokuapp.com/api/experiments/';
+      'https://ucredit-experiments-api.herokuapp.com/api/experiments/allExperiments';
 
-    await axios
-      .get(`${experimentAPI}${jhed}`)
-      .then(function (response) {
-        const resp = response.data.data;
-        if (resp.includes('White List')) {
-          dispatch(setWhitelistStatus(true));
+    try {
+      const experimentListResponse = await axios.get(`${experimentAPI}`); // getting experiment list
+      const experiments = experimentListResponse.data.data;
+      dispatch(setExperiments(experiments));
+
+      for (const experiment of experiments) {
+        if (experiment.active.includes(userID)) {
+          dispatch(toggleExperimentStatus(experiment.experimentName));
         }
-        experimentList.forEach(async (experiment, index) => {
-          dispatch(
-            setExperimentStatus([index, resp.includes(experiment.name)]),
-          );
-          //Also retrieving experiment percentages
-          await axios
-            .get(`${experimentAPI}percent/${experiment.name}`)
-            .then(function (responsePercent) {
-              dispatch(setExperimentPercentage([index, responsePercent.data]));
-            })
-            .catch(function (error) {
-              console.log(error);
-            });
-        });
-      })
-      .catch(function (error) {
-        console.log(error);
-      });
+      }
+    } catch (error) {
+      console.log(error);
+    }
   };
 
   // Useffect runs once on page load, calling to https://ucredit-api.herokuapp.com/api/retrieveUser to retrieve user data.

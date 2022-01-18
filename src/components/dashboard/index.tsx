@@ -3,7 +3,7 @@ import UserSection from './UserSection';
 import FeedbackPopup from '../popups/FeedbackPopup';
 import FeedbackNotification from '../popups/FeedbackNotification';
 import HandleUserEntryDummy from './HandleUserEntryDummy';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import {
   selectImportingStatus,
   selectPlan,
@@ -16,7 +16,12 @@ import {
   selectShowCourseInfo,
   selectAddingPrereq,
 } from '../../slices/popupSlice';
-import { selectExperimentList } from '../../slices/experimentSlice';
+import {
+  selectExperimentList,
+  selectExperimentNames,
+  setExperiments,
+  toggleExperimentStatus,
+} from '../../slices/experimentSlice';
 import { selectSearchStatus } from '../../slices/searchSlice';
 import AddingPrereqPopup from '../popups/AddingPrereqPopup';
 import Search from '../popups/course-search/Search';
@@ -54,6 +59,8 @@ const Dashboard: FC<{ id: string | null }> = ({ id }) => {
   const courseInfoStatus = useSelector(selectShowCourseInfo);
   const addingPrereqStatus = useSelector(selectAddingPrereq);
   const experimentList = useSelector(selectExperimentList);
+  const experimentNames = useSelector(selectExperimentNames);
+  const dispatch = useDispatch();
 
   // State Setup
   const [showNotif, setShowNotif] = useState<boolean>(true);
@@ -65,29 +72,36 @@ const Dashboard: FC<{ id: string | null }> = ({ id }) => {
   const [displayedNumber, setDisplayedNumber] = useState<number>(3);
   const [crement, setCrement] = useState<number>(0);
 
-  useEffect(() => {
-    setCrement(experimentList[1].active ? 1 : -1);
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [experimentList[1]]);
+  const blueButton =
+    experimentList.length > 0
+      ? experimentList[experimentNames.indexOf('Blue Button')]
+      : null;
 
   useEffect(() => {
-    if (!experimentPopup) {
+    if (blueButton !== null) {
+      setCrement(blueButton.active ? 1 : -1);
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [experimentList.length > 0 ? blueButton : null]);
+
+  useEffect(() => {
+    if (!experimentPopup && experimentList.length > 0) {
+      const allExperimentsAPI =
+        'https://ucredit-experiments-api.herokuapp.com/api/experiments/allExperiments';
       const experimentAPI =
         'https://ucredit-experiments-api.herokuapp.com/api/experiments/';
 
       axios
-        .get(`${experimentAPI}${user._id}`)
+        .get(`${allExperimentsAPI}`)
         .then(function (resp) {
           const importedExperimentList = resp.data.data;
           for (const experiment of experimentList) {
-            if (
-              (experiment.active &&
-                importedExperimentList.includes(experiment.name)) ||
-              (!experiment.active &&
-                !importedExperimentList.includes(experiment.name))
-            ) {
-              continue;
-            }
+            const currentActive = experiment.active;
+            const importedActive = importedExperimentList[
+              experimentNames.indexOf(experiment.name)
+            ].active.includes(user._id);
+
+            if (currentActive === importedActive) continue;
 
             const command = experiment.active ? 'add/' : 'delete/';
             axios
@@ -131,8 +145,34 @@ const Dashboard: FC<{ id: string | null }> = ({ id }) => {
     );
   };
 
+  const updateExperimentsForUser = async () => {
+    // use api from assets.tsx, move experiments and make a new route instead
+
+    const experimentAPI =
+      'https://ucredit-experiments-api.herokuapp.com/api/experiments/allExperiments';
+
+    try {
+      const experimentListResponse = await axios.get(`${experimentAPI}`); // getting experiment list
+      const experiments = experimentListResponse.data.data;
+      dispatch(setExperiments(experiments));
+
+      for (const experiment of experiments) {
+        if (experiment.active.includes(user._id)) {
+          dispatch(toggleExperimentStatus(experiment.experimentName));
+        }
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  if (experimentList.length === 0) {
+    updateExperimentsForUser();
+  }
+
   return (
     <div className="flex flex-col w-full h-full min-h-screen">
+      <HandleUserEntryDummy id={id} />
       {
         <div className="fixed flex flex-row z-40 bottom-11 right-2 flex flex-row select-none">
           <ExperimentDevBoardPopup />
@@ -148,7 +188,6 @@ const Dashboard: FC<{ id: string | null }> = ({ id }) => {
           />
         </div>
       }
-      <HandleUserEntryDummy id={id} />
       {formPopup ? <FeedbackPopup setFormPopup={setFormPopup} /> : null}
       {showNotif ? (
         <FeedbackNotification
