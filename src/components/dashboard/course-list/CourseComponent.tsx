@@ -111,23 +111,34 @@ const CourseComponent: FC<{
         }}
         key={course.number}
       >
-        <div className="flex flex-col w-full h-full">
-          <div className="w-full truncate">{course.title}</div>
-          <div className="flex flex-row gap-0.5 items-center text-center">
-            <div>{course.number}</div>
-            <div className="flex items-center px-1 text-white font-semibold bg-primary rounded select-none">
+        <div className="grid grid-flow-row-dense grid-cols-10 w-full h-full gap-x-1.5">
+          {course.area !== 'None' ? (
+            <div
+              className="col-span-1 px-1 h-3/4 place-self-center rounded-lg select-none"
+              style={{ backgroundColor: getColors(course.area, course.wi) }}
+            >
+            </div>
+          ) : null}{' '}
+          {!satisfied && !overridden ? (
+            <WarningSvg className="col-span-1 items-center w-5 h-5 rounded select-none" />
+          ) : null}
+          <div className="col-span-8">
+            <div className="truncate">{course.title}</div>
+            <div className="text-[10px]">{course.number}</div>
+          </div>
+          <div className="flex flex-col grid justify-items-start gap-0.5">
+            <div className="flex px-1 rounded select-none">
               {course.credits}
             </div>
             {course.area !== 'None' ? (
               <div
-                className="flex items-center px-1 font-semibold rounded select-none font-normal"
-                style={{ backgroundColor: getColors(course.area, course.wi) }}
+                className="text-[10px] flex px-1 font-semibold rounded select-none font-normal"
               >
                 {course.area}
               </div>
             ) : null}{' '}
             {!satisfied && !overridden ? (
-              <WarningSvg className="flex items-center w-5 h-5 text-white font-semibold rounded select-none" />
+              <WarningSvg className="text-[10px] flex items-center w-5 h-5 text-white font-semibold rounded select-none" />
             ) : null}
           </div>
         </div>
