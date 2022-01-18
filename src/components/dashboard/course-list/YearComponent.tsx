@@ -256,7 +256,7 @@ const YearComponent: FC<{
         onMouseEnter={() => setDraggable(true)}
       >
         {id !== 0 ? (
-          <div className="flex flex-col items-center">
+          <div className="flex flex-row">
             {getDisplayedSemesters()}
           </div>
         ) : (
