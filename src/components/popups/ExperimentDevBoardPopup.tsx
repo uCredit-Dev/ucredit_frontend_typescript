@@ -130,7 +130,7 @@ const ExperimentDevBoardPopup: FC<{}> = () => {
         `${experimentAPI}allExperiments`,
       ); // getting experiment list
       const experiments = experimentListResponse.data.data;
-      
+
       dispatch(setExperiments(experiments));
 
       for (const oneExperiment of experiments) {
@@ -138,7 +138,6 @@ const ExperimentDevBoardPopup: FC<{}> = () => {
           dispatch(toggleExperimentStatus(oneExperiment.experimentName));
         }
       }
-      
     } catch (error) {
       console.log(error);
     }

@@ -524,11 +524,15 @@ const HandleUserEntryDummy: FC<{
       'https://ucredit-experiments-api.herokuapp.com/api/experiments';
 
     try {
-      const experimentListResponse = await axios.get(`${experimentAPI}/allExperiments`); // getting experiment list
+      const experimentListResponse = await axios.get(
+        `${experimentAPI}/allExperiments`,
+      ); // getting experiment list
       const experiments = experimentListResponse.data.data;
       dispatch(setExperiments(experiments));
 
-      const experimentListNamesActive = await axios.get(`${experimentAPI}/${userID}`);
+      const experimentListNamesActive = await axios.get(
+        `${experimentAPI}/${userID}`,
+      );
       const activeExperiments = experimentListNamesActive.data.data;
       if (activeExperiments.includes('White List')) {
         dispatch(setWhitelistStatus(true));
