@@ -44,8 +44,9 @@ const Dropdown: FC<{
         draggable: true,
         progress: 0,
       });
+      if (currentPlan._id !== newSelected._id)
+        dispatch(updateCurrentPlanCourses([]));
       dispatch(updateSelectedPlan(newSelected));
-      dispatch(updateCurrentPlanCourses([]));
       dispatch(updatePlanList(planListClone));
     }
   };
