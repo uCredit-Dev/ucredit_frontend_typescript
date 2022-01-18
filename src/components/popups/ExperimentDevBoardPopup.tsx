@@ -140,12 +140,12 @@ const ExperimentDevBoardPopup: FC<{}> = () => {
   };
 
   const handleSubmitForAddExperiment = async () => {
-    console.log("Added Experiment");
+    console.log('Added Experiment');
     setAddExperimentPopup(!addExperimentPopup);
   };
 
   const handleSubmitForDeleteExperiment = async () => {
-    console.log("Deleted Experiment");
+    console.log('Deleted Experiment');
     setDeleteExperimentPopup(!deleteExperimentPopup);
   };
 
