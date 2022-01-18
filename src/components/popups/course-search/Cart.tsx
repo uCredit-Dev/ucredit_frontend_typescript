@@ -1,10 +1,10 @@
-import { FC, useState } from 'react';
+import React, { FC, SyntheticEvent, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 
 import CourseDisplay from './search-results/CourseDisplay';
 import { ReactComponent as HideSvg } from '../../../resources/svg/Hide.svg';
 import ReactTooltip from 'react-tooltip';
-import { SISRetrievedCourse, Year } from '../../../resources/commonTypes';
+import { SISRetrievedCourse } from '../../../resources/commonTypes';
 import { selectSelectedDistribution, updateShowingCart } from '../../../slices/popupSlice';
 import FineRequirementsList from './cart/FineRequirementsList';
 import CartCourseList from './cart/CartCourseList';
@@ -14,20 +14,23 @@ import { requirements } from '../../dashboard/degree-info/distributionFunctions'
 /**
  * Search component for when someone clicks a search action.
  */
-const Cart: FC<{allCourses: SISRetrievedCourse[]}> = (props) => {
-  // Component states 
+const Cart: FC<{ allCourses: SISRetrievedCourse[] }> = (props) => {
+  // Component states
   const [searchOpacity, setSearchOpacity] = useState<number>(100);
 
   // FOR DUMMY FILTER TESTING TODO REMOVE
   // TODO : double check the initial state on this hook. do i even need this if stored in redux?
-  // const [selectedDistribution, setSelectedDistribution] = useState<[string, requirements[]]>(["", []]); // not sure about the type here
   const [selectedRequirement, setSelectedRequirement] = useState<requirements>(emptyRequirements);
-  const distrs = useSelector(selectSelectedDistribution);
+  const [textFilterInputValue, setTextFilterInputValue] = useState<string>("");
 
   // Redux selectors and dispatch
   const dispatch = useDispatch();
-  const updateSelectedRequirement = (newRequirement: requirements) => {
+  const distrs = useSelector(selectSelectedDistribution);
+  const updateSelectedRequirement = (newRequirement: requirements) => { 
     setSelectedRequirement(newRequirement);
+  }
+  const updateTextFilterInputValue = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setTextFilterInputValue(e.target.value);
   }
 
   return (
@@ -62,10 +65,24 @@ const Cart: FC<{allCourses: SISRetrievedCourse[]}> = (props) => {
             }
           >
             <div className="h-full overflow-y-auto">
+              <div className="pt-3 px-5 w-full h-auto text-coursecard border-b border-gray-400 select-none">
+                <div className="flex-full flex flex-row h-auto">
+                  <input
+                    autoFocus
+                    className="mb-2 mr-2 px-1 w-full h-6 rounded outline-none width-[100%]"
+                    type="text"
+                    placeholder={'Filter courses by keyword'}
+                    defaultValue={textFilterInputValue}
+                    value={textFilterInputValue}
+                    onChange={updateTextFilterInputValue}
+                  />
+                </div>
+              </div>
               <CartCourseList
                 allCourses={props.allCourses} //remove this later
                 searching={false}
                 selectedRequirement={selectedRequirement}
+                textFilter={textFilterInputValue.toLowerCase()}
               />
             </div>
 

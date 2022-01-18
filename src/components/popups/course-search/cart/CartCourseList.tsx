@@ -23,7 +23,12 @@ import { filterBasedOnReq } from './dummies';
   List of searched courses.
 */
 
-const CartCourseList: FC<{ searching: boolean, selectedRequirement: requirements, allCourses: SISRetrievedCourse[] }> = (props) => {
+const CartCourseList: FC<{
+  searching: boolean,
+  selectedRequirement: requirements,
+  allCourses: SISRetrievedCourse[],
+  textFilter: string,
+}> = (props) => {
   // Component state setup.
   const [pageNum, setPageNum] = useState<number>(0);
   const [pageCount, setPageCount] = useState<number>(0);
@@ -31,7 +36,6 @@ const CartCourseList: FC<{ searching: boolean, selectedRequirement: requirements
   const [filteredCourses, setFilteredCourses] = useState<SISRetrievedCourse[]>(
     []
   );
-
 
   // Two states, courses and rawCourses. Three if u count filtered
   // rawCourses - the collection representing all the courses to filter from. it's factored out seperrately so we can test with
@@ -86,6 +90,8 @@ const CartCourseList: FC<{ searching: boolean, selectedRequirement: requirements
             valid = true;
           }
         });
+        console.log(course.title, props.textFilter, course.title.toLowerCase().includes(props.textFilter));
+        if (!course.title.toLowerCase().includes(props.textFilter)) return false;
         return valid;
       }
     );
@@ -96,7 +102,7 @@ const CartCourseList: FC<{ searching: boolean, selectedRequirement: requirements
     setPageCount(pages);
     setFilteredCourses(filteredCourses);
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [courses]);
+  }, [courses, props.textFilter]);
 
   /**
    * Generates a list of 10 retrieved course matching the search queries and page number.
@@ -124,7 +130,6 @@ const CartCourseList: FC<{ searching: boolean, selectedRequirement: requirements
               className="transform hover:scale-105 transition duration-200 ease-in"
               onClick={() => setHideResults(true)}
             >
-              {/* <CourseCard course={inspecting} version={i} /> */}
               <CartCourseListItem course={inspecting} version={i} />
             </div>
           );

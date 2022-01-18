@@ -1,4 +1,13 @@
 /*
+1/18:
+Result Filtering Logic:
+could make it similar to the substring search. TODO?
+Adding placeholder courses more accessible: maybe ad d ageneric element at the etop of the list?
+Feature implemented. some concerns
+ - Perhaps it should be debounced? Currently could cause a lot of state updates if spammed with typing
+ - no filter system. only search
+ - no smart substring search, only based on title
+ 
 
 1/12:
 VISUAL DESIGN ELEMENST
