@@ -226,7 +226,7 @@ const ExperimentDevBoardPopup: FC<{}> = () => {
           {/* Background Grey */}
           <div className="fixed z-30 left-0 top-0 m-0 w-full h-screen bg-black opacity-50"></div>
           {/*Actual Popup*/}
-          <div className="overflow-auto z-40 fixed flex flex-col w-3/6 top-1/3 left-1/2 transform -translate-x-1/2 -translate-y-1/3 shadow bg-green-400 p-4">
+          <div className="overflow-y-auto max-h-screen z-40 fixed flex flex-col w-3/6 top-1/3 left-1/2 -translate-x-1/2 -translate-y-1/3 shadow bg-green-400 p-4">
             {/*Instructions*/}
             <div className="border-solid border-4 bg-blue-400 p-6 space-y-6">
               <div className="font-mono text-black text-bg p-2">
