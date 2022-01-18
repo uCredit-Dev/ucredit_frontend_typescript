@@ -3,9 +3,10 @@ import { useDispatch, useSelector } from 'react-redux';
 import axios from 'axios';
 import {
   selectExperimentList,
-  setExperimentStatus,
-  setExperimentPercentage,
+  setExperiments,
+  toggleExperimentStatus,
   selectWhiteList,
+  selectExperimentNames,
   experiment,
 } from '../../slices/experimentSlice';
 import { selectUser } from '../../slices/userSlice';
@@ -15,44 +16,52 @@ import { ReactComponent as AddExperimentSvg } from '../../resources/svg/AddExper
 import { toast } from 'react-toastify';
 
 const ExperimentDevBoardPopup: FC<{}> = () => {
-  const [experimentDevBoardPopup, setExperimentDevBoardPopup] =
-    useState<boolean>(false);
-  const [deleteExperimentPopup, setDeleteExperimentPopup] =
-    useState<boolean>(false);
-  const [nameExperimentToDelete, setNameExperimentToDelete] = useState<
-    string | null
-  >(null);
-  const [addExperimentPopup, setAddExperimentPopup] = useState<boolean>(false);
   //Retrieve all experiments from redux
   const allExperiments: Array<experiment> = useSelector(selectExperimentList);
   const whiteList = useSelector(selectWhiteList);
+  const allExperimentNames = useSelector(selectExperimentNames);
   const user = useSelector(selectUser);
   const dispatch = useDispatch();
 
   //Create state of this component with percentages that user has changed
   const LEN: number = allExperiments.length;
   const emptyArray: Array<string> = new Array(LEN).fill(''); //empty to represent that user did not change the input field
-  const [inputPercentage, setInputPercentage] = useState<Array<string>>([
+  const [inputPercentages, setInputPercentages] = useState<Array<string>>([
     ...emptyArray,
   ]);
-  const [inputName, setInputName] = useState<Array<string>>([...emptyArray]);
+
+  const [experimentDevBoardPopup, setExperimentDevBoardPopup] =
+    useState<boolean>(false);
+  const [deleteExperimentPopup, setDeleteExperimentPopup] =
+    useState<boolean>(false);
+  const [addExperimentPopup, setAddExperimentPopup] = useState<boolean>(false);
+  //Used when changing name of old experiments
+  const [inputNames, setInputNames] = useState<Array<string>>([...emptyArray]);
+  //Used when making a new experiment
+  const [inputName, setInputName] = useState<string>('');
+  //Used to store the experiment to delete
+  const [nameExperimentToDelete, setNameExperimentToDelete] =
+    useState<string>('');
+
+  const experimentAPI =
+    'https://ucredit-experiments-api.herokuapp.com/api/experiments/';
 
   const updatePercentageArray = (index, event) => {
     const percent = event.target.value;
-    inputPercentage[index] = percent;
-    setInputPercentage([...inputPercentage]);
+    inputPercentages[index] = percent;
+    setInputPercentages([...inputPercentages]);
   };
 
   const updateNameArray = (index, event) => {
     const name = event.target.value;
-    inputName[index] = name;
-    setInputName([...inputName]);
+    inputNames[index] = name;
+    setInputNames([...inputNames]);
   };
 
-  const handlePercentageChange = async (experimentAPI) => {
+  const handlePercentageChange = async () => {
     const convertedPercentages: Array<number> = [];
     //Attempt to convert all percentages
-    for (const userInput of inputPercentage) {
+    for (const userInput of inputPercentages) {
       const attemptConversion: number = Number(userInput);
       if (
         (isNaN(attemptConversion) && userInput !== '') ||
@@ -63,7 +72,7 @@ const ExperimentDevBoardPopup: FC<{}> = () => {
           autoClose: 5000,
           closeOnClick: false,
         });
-        return;
+        return false;
       } else {
         convertedPercentages.push(attemptConversion);
       }
@@ -72,7 +81,7 @@ const ExperimentDevBoardPopup: FC<{}> = () => {
     //Make the post and update backend
     for (let i = 0; i < convertedPercentages.length; i++) {
       if (
-        (convertedPercentages[i] !== 0 || inputPercentage[i] !== '') &&
+        (convertedPercentages[i] !== 0 || inputPercentages[i] !== '') &&
         convertedPercentages[i] !== allExperiments[i].percentParticipating
       ) {
         await axios
@@ -84,68 +93,119 @@ const ExperimentDevBoardPopup: FC<{}> = () => {
           });
       }
     }
-
-    //Update redux with new experiments in case current user was changed
-    await axios
-      .get(`${experimentAPI}${user._id}`)
-      .then(function (response) {
-        const resp = response.data.data;
-        allExperiments.forEach(async (experimentNew, index) => {
-          dispatch(
-            setExperimentStatus([index, resp.includes(experimentNew.name)]),
-          );
-          await axios
-            .get(`${experimentAPI}percent/${experimentNew.name}`)
-            .then(function (responsePercent) {
-              dispatch(setExperimentPercentage([index, responsePercent.data]));
-            })
-            .catch(function (error) {
-              console.log(error);
-            });
-        });
-      })
-      .catch(function (error) {
-        console.log(error);
-      });
+    return true;
   };
 
-  const handleNameChange = async (experimentAPI) => {
-    console.log(inputName);
-    for (let i = 0; i < inputName.length; i++) {
-      if (inputName[i] !== '') {
+  const handleNameChange = async () => {
+    const lowerCasedNames = allExperimentNames.map((name) =>
+      name.toLowerCase(),
+    );
+    for (let i = 0; i < inputNames.length; i++) {
+      if (inputNames[i] !== '' && inputNames[i] !== undefined) {
+        if (lowerCasedNames.includes(inputNames[i].toLowerCase())) {
+          toast.error(
+            `"${inputNames[i]}" name is already in use (the check is not case sensitive)`,
+            {
+              autoClose: 5000,
+              closeOnClick: false,
+            },
+          );
+          return false;
+        }
         await axios
           .put(`${experimentAPI}changeName/${allExperiments[i].name}`, {
-            new_name: inputName[i],
+            new_name: inputNames[i],
           })
           .catch(function (error) {
             console.log(error);
           });
       }
     }
+    return true;
+  };
+
+  const updateExperimentRedux = async () => {
+    try {
+      const experimentListResponse = await axios.get(
+        `${experimentAPI}allExperiments`,
+      ); // getting experiment list
+      const experiments = experimentListResponse.data.data;
+      
+      dispatch(setExperiments(experiments));
+
+      for (const oneExperiment of experiments) {
+        if (oneExperiment.active.includes(user._id)) {
+          dispatch(toggleExperimentStatus(oneExperiment.experimentName));
+        }
+      }
+      
+    } catch (error) {
+      console.log(error);
+    }
   };
 
   const handleSubmitForOldExperiments = async () => {
-    const experimentAPI =
-      'https://ucredit-experiments-api.herokuapp.com/api/experiments/';
-
-    await handlePercentageChange(experimentAPI);
-
-    await handleNameChange(experimentAPI);
+    let success = await handlePercentageChange();
+    if (!success) {
+      return;
+    }
+    success = await handleNameChange();
+    if (!success) {
+      return;
+    }
+    await updateExperimentRedux();
 
     toast.success(`Updated Experiments`, {
       autoClose: 5000,
       closeOnClick: false,
     });
+    setInputPercentages([...emptyArray]);
+    setInputNames([...emptyArray]);
     setExperimentDevBoardPopup(!experimentDevBoardPopup);
   };
 
   const handleSubmitForAddExperiment = async () => {
-    console.log('Added Experiment');
+    const lowerCasedNames = allExperimentNames.map((name) =>
+      name.toLowerCase(),
+    );
+    if (lowerCasedNames.includes(inputName.toLowerCase())) {
+      toast.error(
+        `"${inputName}" name is already in use (the check is not case sensitive)`,
+        {
+          autoClose: 5000,
+          closeOnClick: false,
+        },
+      );
+      return;
+    }
+    await axios
+      .post(`${experimentAPI}${inputName}`, {
+        percent_participating: 0,
+      })
+      .catch(function (error) {
+        console.log(error);
+      });
+    await updateExperimentRedux();
+    toast.success(`Added Experiment ${inputName}`, {
+      autoClose: 5000,
+      closeOnClick: false,
+    });
+    setInputName('');
     setAddExperimentPopup(!addExperimentPopup);
   };
 
   const handleSubmitForDeleteExperiment = async () => {
-    console.log('Deleted Experiment');
+    await axios
+      .delete(`${experimentAPI}${nameExperimentToDelete}`)
+      .catch(function (error) {
+        console.log(error);
+      });
+    await updateExperimentRedux();
+    toast.success(`Deleted Experiment`, {
+      autoClose: 5000,
+      closeOnClick: false,
+    });
+    setNameExperimentToDelete('');
     setDeleteExperimentPopup(!deleteExperimentPopup);
   };
 
@@ -164,9 +224,9 @@ const ExperimentDevBoardPopup: FC<{}> = () => {
       {experimentDevBoardPopup ? (
         <>
           {/* Background Grey */}
-          <div className="overflow-auto fixed z-30 left-0 top-0 m-0 w-full h-screen bg-black opacity-50"></div>
+          <div className="fixed z-30 left-0 top-0 m-0 w-full h-screen bg-black opacity-50"></div>
           {/*Actual Popup*/}
-          <div className="z-40 fixed flex flex-col w-3/6 top-1/3 left-1/2 transform -translate-x-1/2 -translate-y-1/3 shadow bg-green-400 p-4">
+          <div className="overflow-auto z-40 fixed flex flex-col w-3/6 top-1/3 left-1/2 transform -translate-x-1/2 -translate-y-1/3 shadow bg-green-400 p-4">
             {/*Instructions*/}
             <div className="border-solid border-4 bg-blue-400 p-6 space-y-6">
               <div className="font-mono text-black text-bg p-2">
@@ -252,6 +312,8 @@ const ExperimentDevBoardPopup: FC<{}> = () => {
                   <button
                     className="w-1/3 text-white font-bold py-2 px-4 rounded bg-red-500 hover:bg-red-700 translate-x-20"
                     onClick={() => {
+                      setInputPercentages([...emptyArray]);
+                      setInputNames([...emptyArray]);
                       setExperimentDevBoardPopup(!experimentDevBoardPopup);
                     }}
                   >
@@ -277,15 +339,17 @@ const ExperimentDevBoardPopup: FC<{}> = () => {
               <div className="border-solid border-4 bg-blue-400 p-6 space-y-6">
                 <div className="font-mono text-black text-bg p-2">
                   <div className="p-2">
-                    <p className="font-bold">Disclaimer:</p> Percents might
-                    change inaccurately because of the limited number of users
-                    in uCredit.
+                    <p className="font-bold">Instructions:</p> Input the name of
+                    the new experiment
                   </div>
-                  <div className="p-2">
-                    <p className="font-bold">Instructions:</p> Input Percentages
-                    from 0 to 100 for any experiments you want to change, leave
-                    blank want to keep original.
-                  </div>
+                </div>
+                <div>
+                  <input
+                    className="bg-white placeholder-gray-500 border"
+                    onChange={(event) => {
+                      setInputName(event.target.value);
+                    }}
+                  ></input>
                 </div>
                 <div className="space-x-48">
                   <button
@@ -297,6 +361,7 @@ const ExperimentDevBoardPopup: FC<{}> = () => {
                   <button
                     className="w-1/3 text-white font-bold py-2 px-4 rounded bg-red-500 hover:bg-red-700 translate-x-20"
                     onClick={() => {
+                      setInputName('');
                       setAddExperimentPopup(!addExperimentPopup);
                     }}
                   >
