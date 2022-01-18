@@ -30,7 +30,6 @@ import { useNavigate } from 'react-router';
 import { getMajorFromCommonName } from '../../resources/majors';
 import {
   setExperiments,
-  setExperimentStatus,
   toggleExperimentStatus,
 } from '../../slices/experimentSlice';
 
