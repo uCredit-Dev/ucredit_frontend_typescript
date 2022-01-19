@@ -2334,105 +2334,105 @@ const bsMolCell: Major = {
   url: 'https://e-catalogue.jhu.edu/arts-sciences/full-time-residential-programs/degree-programs/biology/molecular-cellular-biology-bachelor-science/',
   distributions: [
     {
-      name: 'Biology Core', // 18-19 depending on biochemistry lab
-      required_credits: 18,
+      name: 'Biology Core',
+      required_credits: 19,
       min_credits_per_course: 1,
       description:
-        'These are the core biology courses.' +
-        '<br>For more information please visit the major degree requirement section on the department website.',
-      criteria: 'AS Biology[D]',
+        'These are the core biology courses required for the major.' +
+        '<br>For more information please visit the degree requirements section on the department website.',
+      criteria:
+        'AS.020.303[C]^OR^AS.020.340[C]^OR^AS.020.304[C]^OR^AS.020.306[C]^OR^AS.020.316[C]^OR^AS.020.305[C]' +
+        '^OR^AS.020.315[C]^OR^AS.250.253[C]^OR^AS.250.254[C]^OR^AS.020.363[C]',
       fine_requirements: [
         {
-          description: '<p>020.303 Genetics</p>',
+          description: '<b>Genetics</b> <br /> AS.020.303 Genetics',
           required_credits: 3,
           criteria: 'AS.020.303[C]',
         },
         {
-          description: '<p>020.304 Molecular Biology</p>',
-          required_credits: 3,
-          criteria: 'AS.020.304[C]',
-        },
-        {
-          description: '<p>020.305 Biochemistry</p>',
-          required_credits: 3,
-          criteria: 'AS.020.305[C]',
-        },
-        {
-          description: '<p>020.306 Cell Biology</p>',
-          required_credits: 3,
-          criteria: 'AS.020.306[C]',
-        },
-        {
-          description: '<p>020.316 Cell Biology Lab</p>',
-          required_credits: 1,
-          criteria: 'AS.020.316[C]',
-        },
-        {
-          description: '<p>020.340 Developmental Genetics Lab</p>',
+          description:
+            '<b>Developmental Genetics Lab</b> <br /> AS.020.340 Developmental Genetics Lab',
           required_credits: 2,
           criteria: 'AS.020.340[C]',
         },
         {
-          description: '<p>020.363 Developmental Biology',
+          description:
+            '<b>Molecular Biology</b> <br /> AS.020.304 Molecular Biology',
           required_credits: 3,
-          criteria: 'AS.020.363[C]',
+          criteria: 'AS.020.304[C]',
+        },
+        {
+          description: '<b>Cell Biology</b> <br /> AS.020.306 Cell Biology',
+          required_credits: 3,
+          criteria: 'AS.020.306[C]',
         },
         {
           description:
-            '<b>Biochemistry Lab</b>' +
-            '<p>020.315 Biochemistry Project Lab</p>' +
-            '<p>250.253 Protein Engineering and Biochemistry Lab</p>' +
-            '<p>250.254 Protein Biochemistry and Engineering Lab</p>',
-          required_credits: 1, // website says 2-3 but biochem project lab is only 1 and satisfies this req
+            '<b>Cell Biology Lab</b> <br /> AS.020.316 Cell Biology Lab',
+          required_credits: 1,
+          criteria: 'AS.020.316[C]',
+        },
+        {
+          description: '<b>Biochemistry</b> <br /> AS.020.305 Biochemistry',
+          required_credits: 3,
+          criteria: 'AS.020.305[C]',
+        },
+        {
+          description:
+            '<b>Biochemistry Lab</b> <br />' +
+            'Select one of the following: <br />' +
+            'AS.020.315 Biochemistry Project Lab <br />' +
+            'AS.250.253 Protein Engineering and Biochemistry Lab <br />' +
+            'AS.250.254 Protein Biochemistry and Engineering Lab',
+          required_credits: 1,
           criteria: 'AS.020.315[C]^OR^AS.250.253[C]^OR^AS.250.254[C]',
+        },
+        {
+          description:
+            '<b>Developmental Biology</b> <br /> AS.020.363 Developmental Biology',
+          required_credits: 3,
+          criteria: 'AS.020.363[C]',
         },
       ],
     },
     {
       name: 'Chemistry',
       required_credits: 19,
-      min_credits_per_course: 1, // labs are 1 credit
+      min_credits_per_course: 1,
       description:
         'Must complete General Chemistry (or AP equivalent) and Organic Chemistry in addition to their respective labs.',
       criteria: 'AS Chemistry[D]',
       exception: '',
       fine_requirements: [
         {
-          description: '<p>030.101 Introductory Chemistry I</p>',
-          required_credits: 3,
-          criteria: 'AS.030.101[C]',
+          description:
+            '<b>Chemistry I</b> <br /> AS.030.101 Introductory Chemistry I <br /> AS.030.105 Introductory Chemistry Laboratory I</b>',
+          required_credits: 4,
+          criteria: 'AS.030.101[C]^OR^AS.030.105[C]',
         },
         {
-          description: '<p>030.105 Chemistry I Lab</p>',
-          required_credits: 1,
-          criteria: 'AS.030.105[C]',
+          description:
+            '<b>Chemistry II</b> <br /> AS.030.102 Introductory Chemistry II <br /> AS.030.106 Introductory Chemistry Laboratory II <br /> <i>OR</i> <br /> AS.030.103 Applied Chemical Equilibrium and Reactivity w/ lab',
+          required_credits: 4,
+          criteria: 'AS.030.102[C]^OR^AS.030.106[C]^OR^AS.030.103[C]',
         },
         {
-          description: '<p>030.102 Chemistry II</p>',
-          required_credits: 3,
-          criteria: 'AS.030.102[C]',
-        },
-        {
-          description: '<p>030.106 Chemistry II Lab</p>',
-          required_credits: 1,
-          criteria: 'AS.030.106[C]',
-        },
-        {
-          description: '<p>030.205 Introductory Organic Chemistry I</p>',
+          description:
+            '<b>Introductory Organic Chemistry I</b> <br /> AS.030.205 Introductory Organic Chemistry I',
           required_credits: 4,
           criteria: 'AS.030.205[C]',
         },
         {
           description:
-            '<p>030.206 Organic Chemistry II or 030.212 Honors Organic Chemistry II</p>',
+            '<b>Organic Chemistry II</b> <br /> AS.030.206 Organic Chemistry II <br /> <i>OR</i> <br /> AS.030.212 Honors Organic Chemistry II with Applications in Biochemistry and Medicine',
           required_credits: 4,
           criteria: 'AS.030.206[C]^OR^AS.030.212[C]',
         },
         {
           description:
-            '<p>Organic Chemistry Lab</p>' +
-            '<p>030.225 Intro Organic Chemistry Lab</p>' +
-            '<p>030.227 Chemical Chirality: An Introduction to Organic Chemistry Lab Techniques</p>',
+            '<b>Organic Chemistry Lab</b> <br />' +
+            'AS.030.225 Introductory Organic Chemistry Laboratory <br /> <i>OR</i> </br>' +
+            'AS.030.227 Chemical Chirality: An Introduction in Organic Chem. Lab, Techniques',
           required_credits: 3,
           criteria: 'AS.030.225[C]^OR^AS.030.227[C]',
         },
@@ -2448,27 +2448,33 @@ const bsMolCell: Major = {
       fine_requirements: [
         {
           description:
-            '<b>General Physics I</b>' +
-            '<p>171.101 General Physics: Physical Science Majors I</p>' +
-            '<p>171.103 General Physics: Biological Science Majors I</p>',
+            '<b>General Physics I</b> <br />' +
+            'Select one of the following: <br />' +
+            'AS.171.101 General Physics: Physical Science Majors I <br />' +
+            'AS.171.103 General Physics: Biological Science Majors I <br />' +
+            'AS.171.107 General Physics for Physical Sciences Majors (AL)',
           required_credits: 4,
-          criteria: 'AS.171.101[C]^OR^AS.171.103[C]',
+          criteria: 'AS.171.101[C]^OR^AS.171.103[C]^OR^AS.171.107[C]',
         },
         {
           description:
-            '<b>General Physics II</b>' +
-            '<p>171.102 General Physics: Physical Science Majors II</p>' +
-            '<p>171.104 General Physics: Biological Science Majors II</p>',
+            '<b>General Physics II</b> <br />' +
+            'Select one of the following: <br />' +
+            'AS.171.102 General Physics: Physical Science Majors II <br />' +
+            'AS.171.104 General Physics/Biology Majors II <br />' +
+            'AS.171.108 General Physics for Physical Science Majors (AL)',
           required_credits: 4,
-          criteria: 'AS.171.102[C]^OR^AS.171.104[C]',
+          criteria: 'AS.171.102[C]^OR^AS.171.104[C]^OR^AS.171.108[C]',
         },
         {
-          description: '<p>173.111 General Physics Lab I',
+          description:
+            '<b>General Physics Laboratory I</b> <br /> AS.173.111 General Physics Laboratory I',
           required_credits: 1,
           criteria: 'AS.173.111[C]',
         },
         {
-          description: '<p>173.112 General Physics Lab II',
+          description:
+            '<b>General Physics Laboratory II</b> <br /> AS.173.112 General Physics Laboratory II',
           required_credits: 1,
           criteria: 'AS.173.112[C]',
         },
@@ -2479,41 +2485,43 @@ const bsMolCell: Major = {
       required_credits: 8,
       min_credits_per_course: 4,
       description: 'Must complete Calculus I and II',
-      criteria: 'AS Mathematics[D]',
+      criteria:
+        'AS.110.106[C]^OR^AS.110.108[C]^OR^AS.110.107[C]^OR^AS.110.109[C]^OR^AS.171.113[C]',
       fine_requirements: [
         {
           description:
-            '<b>Calculus I</b>' +
-            '<p>110.106 Calculus I (Biology and Social Sciences)</p>' +
-            '<p>110.108 Calculus I (Physical Sciences and Engineering)</p>',
+            '<b>Calculus I</b> <br />' +
+            'AS.110.106 Calculus I (Biology and Social Sciences)' +
+            '<br /> <i>OR</i> <br />' +
+            'AS.110.108 Calculus I (Physical Sciences and Engineering)',
           required_credits: 4,
           criteria: 'AS.110.106[C]^OR^AS.110.108[C]',
         },
         {
           description:
-            '<b>Calculus II</b>' +
-            '<p>110.107 Calculus II (Biology and Social Sciences)</p>' +
-            '<p>110.109 Calculus II (Physical Sciences and Engineering)</p>' +
-            '<p>110.113 Honors Single Variable Calculus</p>',
+            '<b>Calculus II</b> <br />' +
+            'Select one of the following: <br />' +
+            'AS.110.107 Calculus II (Biology and Social Sciences) <br />' +
+            'AS.110.109 Calculus II (Physical Sciences and Engineering) <br />' +
+            'AS.171.113 Subatomic World',
           required_credits: 4,
-          criteria: 'AS.110.107[C]^OR^AS.110.109[C]^OR^AS.110.113[C]',
+          criteria: 'AS.110.107[C]^OR^AS.110.109[C]^OR^AS.171.113[C]',
         },
       ],
     },
     {
-      name: 'Upper Level Electives',
+      name: 'Electives',
       required_credits: 12,
       min_credits_per_course: 2,
       description:
         '4 courses and 12 credits required. One 2 or 3 credit elective must be taken in the Biology Department (AS.020.xxx). ' +
-        '<br>See POS-Tag BIOL-UL on SIS for the courses approved by the Director of Undergraduate Studies. ' +
-        '<br>Students may use 2 credits of Build-a-Genome (AS.020.420 or AS.020.451) toward the upper level Biology elective requirement.',
-      criteria: 'AS Biology[D]',
+        'See POS-Tag BIOL-UL on SIS for the courses approved by the Director of Undergraduate Studies.',
+      criteria: 'BIOL-UL[T]',
       fine_requirements: [
         {
-          description: '<b>Biology Department Upper Level</b>',
-          required_credits: 2, // 2 or 3
-          criteria: 'AS Biology[D]^AND^Upper Level Undergraduate[L]',
+          description: '<b>Biology Department Course</b>',
+          required_credits: 2,
+          criteria: 'AS Biology[D]',
         },
       ],
     },
@@ -2531,38 +2539,45 @@ const bsMolCell: Major = {
         'AS.030.526[C]^OR^AS.030.570[C]^OR^AS.030.597[C]^OR^AS.250.521[C]^OR^AS.250.522[C]^OR^AS.250.574[C]^OR^AS.250.597[C]',
     },
     {
+      name: 'Humanities (H) Distribution',
+      required_credits: 9,
+      min_credits_per_course: 3,
+      description:
+        'The distribution requirement stipulates that students must earn a minimum number of credits in academic areas outside of their primary major. ' +
+        'The student must complete at least 9 credits in the Humanities (H) area. ' +
+        'These credits fulfilling the distribution requirement may overlap with major or minor requirements and the writing-intensive requirement.',
+      criteria: 'H[A]',
+    },
+    {
+      name: 'Social Science (S) Distribution',
+      required_credits: 9,
+      min_credits_per_course: 3,
+      description:
+        'The distribution requirement stipulates that students must earn a minimum number of credits in academic areas outside of their primary major. ' +
+        'The student must complete at least 9 credits in the Social Science (S) area. ' +
+        'These credits fulfilling the distribution requirement may overlap with major or minor requirements and the writing-intensive requirement.',
+      criteria: 'S[A]',
+    },
+    {
+      name: 'Other (N/E/Q) Distribution',
+      required_credits: 9,
+      min_credits_per_course: 3,
+      description:
+        'The distribution requirement stipulates that students must earn a minimum number of credits in academic areas outside of their primary major. ' +
+        'The student must complete at least 9 credits in any of the other areas: Natural Sciences (N), Engineering (E) and/or Quantitative (Q). ' +
+        'These credits fulfilling the distribution requirement may overlap with major or minor requirements and the writing-intensive requirement.',
+      criteria: 'N[A]^OR^E[A]^OR^Q[A]',
+    },
+    {
       name: 'Writing Intensive',
       required_credits: 12,
       min_credits_per_course: 3,
       double_count: true,
       description:
-        'Students are required to fulfill the university’s requirement of four writing intensive courses, ' +
-        'each at least 3 credits. <br>Students must receive at least a C- grade or better in these writing courses. ',
+        'To encourage excellence in writing, across disciplines, the university requires all undergraduates to take a number of writing-intensive courses. ' +
+        'All students earning a degree from the School of Arts and Sciences must complete at least 12 credits in writing-intensive courses. ' +
+        'Writing-intensive courses taken to satisfy major, minor, or distribution requirements may also count toward the writing requirement.',
       criteria: 'Written Intensive[W]',
-    },
-    {
-      name: 'Humanities Distribution Requirement',
-      required_credits: 9,
-      min_credits_per_course: 1,
-      description:
-        'Students must earn at least 9 credits in humanities. ' +
-        '<br>In Arts and Sciences, courses taken for the distribution requirement may be taken for a letter grade or for Satisfactory/Unsatisfactory credit. ' +
-        '<br>Courses passed with a letter grade of D or better, or passed with a Satisfactory grade, will fulfill the distribution requirement. ' +
-        '<br>Students who entered JHU prior to Fall 2014 should view the appropriate archived catalogue.',
-      criteria: 'H[A]',
-      exclusive: true,
-    },
-    {
-      name: 'Social Science Distribution Requirement',
-      required_credits: 9,
-      min_credits_per_course: 1,
-      description:
-        'Students must earn at least 9 credits in social sciences. ' +
-        '<br>In Arts and Sciences, courses taken for the distribution requirement may be taken for a letter grade or for Satisfactory/Unsatisfactory credit. ' +
-        '<br>Courses passed with a letter grade of D or better, or passed with a Satisfactory grade, will fulfill the distribution requirement. ' +
-        '<br>Students who entered JHU prior to Fall 2014 should view the appropriate archived catalogue.',
-      criteria: 'S[A]',
-      exclusive: true,
     },
     {
       name: 'Honors',
