@@ -103,7 +103,7 @@ const CourseComponent: FC<{
   return (
     <>
       <div
-        className="relative flex items-center justify-between text-xs mt-2 pl-2 p-0.5 w-1/5 max-w-yearheading bg-gray-100 rounded shadow md:w-48"
+        className="relative flex items-center justify-between text-xs mt-2 pl-1 p-0.5 w-1/5 max-w-yearheading rounded hover:shadow md:w-48"
         onMouseEnter={activate}
         onMouseLeave={deactivate}
         onMouseOver={() => {
@@ -122,7 +122,12 @@ const CourseComponent: FC<{
 
           <div className="col-span-8">
             <div className="truncate">{course.title}</div>
-            <div className="text-[10px]">{course.number}</div>
+            <div className="flex flex-row gap-0.5">
+              <div className="text-[10px]">{course.number}</div>
+              {!satisfied && !overridden ? (
+                <WarningSvg className="flex items-center w-4 h-4 text-white font-semibold rounded select-none" />
+              ) : null}
+            </div>
           </div>
           <div className="flex flex-col grid justify-items-start gap-0.5">
             <div className="flex px-1 rounded select-none">
@@ -135,9 +140,6 @@ const CourseComponent: FC<{
                 {course.area}
               </div>
             ) : null}{' '}
-            {!satisfied && !overridden ? (
-              <WarningSvg className="text-[10px] flex items-center w-5 h-5 text-white font-semibold rounded select-none" />
-            ) : null}
           </div>
         </div>
 
