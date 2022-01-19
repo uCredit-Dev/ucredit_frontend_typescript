@@ -1584,26 +1584,38 @@ const bsAMS: Major = {
       min_credits_per_course: 3,
       description:
         'All courses used to meet the following departmental requirements must be taken for a letter grade and passed with a grade of C- or higher.',
-      criteria: 'EN Applied Mathematics & Statistics[D]^OR^AS Mathematics[D]',
+      criteria:
+        'AS.110.108[C]^OR^AS.110.109[C]^OR^AS.110.113[C]^OR^AS.110.202[C]^OR^AS.110.211[C]^OR^AS.110.201[C]^OR^AS.110.212[C]^OR^EN.553.291[C]^OR^' +
+        'AS.110.302[C]^OR^EN.553.391[C]^OR^EN.540.468[C]^OR^EN.553.385[C]^OR^EN.553.171[C]^OR^EN.553.172[C]^OR^EN.553.371[C]^OR^EN.553.471[C]^OR^EN.553.472[C]^OR^' +
+        'EN.553.420[C]^OR^EN.553.430[C]^OR^EN.553.431[C]^OR^EN.553.361[C]',
       fine_requirements: [
         {
           description:
-            '<b>Calculus I, II, and III</b> <br /> AS.110.108 Calculus I (Physical Sciences & Engineering) <br /> ' +
-            'AS.110.109 Calculus II (Physical Sciences & Engineering) <br /> <i>OR</i> <br /> AS.110.113 Honors Single Variable Calculus <br />' +
-            'AS.110.202 Calculus III <br /> <i>OR</i> <br /> AS.110.211 Honors Multivariable Calculus',
-          required_credits: 12,
-          criteria:
-            'AS.110.108[C]^OR^AS.110.109[C]^OR^AS.110.113[C]^OR^AS.110.202[C]^OR^AS.110.211[C]',
+            '<b>Calculus I</b> <br /> AS.110.108 Calculus I (Physical Sciences & Engineering) <br /> <i>OR</i> <br /> AS.110.113 Honors Single Variable Calculus <br />',
+          required_credits: 4,
+          criteria: 'AS.110.108[C]',
         },
         {
           description:
-            '<b>Linear Algebra</b> <br /> AS.110.201 Linear Algebra <br /> <i>OR</i> <br /> AS.110.212 Honors Linear Algebra <br /> <i>OR</i> <br /> EN.553.291 Linear Algebra and Differential Equations',
+            '<b>Calculus II</b> <br /> AS.110.109 Calculus II (Physical Sciences & Engineering) <br /> <i>OR</i> <br /> AS.110.113 Honors Single Variable Calculus',
+          required_credits: 4,
+          criteria: 'AS.110.109[C]^OR^AS.110.113[C]',
+        },
+        {
+          description:
+            '<b>Calculus III</b> <br /> AS.110.202 Calculus III <br /> <i>OR</i> <br /> AS.110.211 Honors Multivariable Calculus',
+          required_credits: 4,
+          criteria: 'AS.110.202[C]^OR^AS.110.211[C]',
+        },
+        {
+          description:
+            '<b>Linear Algebra</b> <br /> Select one of the following: <br /> AS.110.201 Linear Algebra <br /> AS.110.212 Honors Linear Algebra <br /> EN.553.291 Linear Algebra and Differential Equations',
           required_credits: 4,
           criteria: 'AS.110.201[C]^OR^AS.110.212[C]^OR^EN.553.291[C]',
         },
         {
           description:
-            '<b>Differential Equations</b> <br /> AS.110.302 Differential Equations and Applications <br /> <i>OR</i> <br /> EN.553.391 Dynamical Systems <br /> <i>OR</i> <br /> EN.540.468 Introduction to Nonlinear Dynamics and Chaos',
+            '<b>Differential Equations</b> <br /> Select one of the following: <br /> AS.110.302 Differential Equations and Applications <br /> EN.553.391 Dynamical Systems <br /> EN.540.468 Introduction to Nonlinear Dynamics and Chaos',
           required_credits: 3,
           criteria: 'AS.110.302[C]^OR^EN.553.391[C]^OR^EN.540.468[C]',
         },
@@ -1615,18 +1627,24 @@ const bsAMS: Major = {
         },
         {
           description:
-            '<b>Discrete Mathematics</b> <br /> EN.553.171 Discrete Mathematics <br /> <i>OR</i> <br /> EN.553.172 Honors Discrete Mathematics <br /> <i>OR</i> <br /> EN.553.371 ' +
-            'Cryptology and Coding <br /> <i>OR</i> <br /> EN.553.471 Combinatorial Analysis <br /> <i>OR</i> <br /> EN.553.472 Graph Theory',
+            '<b>Discrete Mathematics</b> <br /> Select one of the following: <br /> EN.553.171 Discrete Mathematics <br /> EN.553.172 Honors Discrete Mathematics <br /> EN.553.371 ' +
+            'Cryptology and Coding <br /> EN.553.471 Combinatorial Analysis <br /> EN.553.472 Graph Theory',
           required_credits: 4,
           criteria:
             'EN.553.171[C]^OR^EN.553.172[C]^OR^EN.553.371[C]^OR^EN.553.471[C]^OR^EN.553.472[C]',
         },
         {
           description:
-            '<b>Probability and Statistics</b> <br /> EN.553.420 Introduction to Probability <br /> EN.553.430 Introduction to Statistics <br /> <i>OR</i> <br />' +
+            '<b>Probability</b> <br /> EN.553.420 Introduction to Probability',
+          required_credits: 4,
+          criteria: 'EN.553.420[C]',
+        },
+        {
+          description:
+            '<b>Statistics</b> <br /> EN.553.430 Introduction to Statistics <br /> <i>OR</i> <br />' +
             'EN.553.431 Honors Introduction to Statistics',
-          required_credits: 8,
-          criteria: 'EN.553.420[C]^OR^EN.553.430[C]^OR^EN.553.431[C]',
+          required_credits: 4,
+          criteria: 'EN.553.430[C]^OR^EN.553.431[C]',
         },
         {
           description:
@@ -1656,7 +1674,7 @@ const bsAMS: Major = {
       min_credits_per_course: 3,
       pathing: true,
       description:
-        'Two courses within a coherent field of interest. For more detail please visit ' +
+        'Two courses must be taken within a coherent field of interest. For more detail please visit ' +
         'https://e-catalogue.jhu.edu/engineering/full-time-residential-programs/degree-programs/applied-mathematics-statistics/applied-mathematics-statistics-bs/#requirementstext',
       criteria:
         'AS.110.405[C]^OR^AS.110.445[C]^OR^EN.553.426[C]^OR^EN.553.427[C]^OR^EN.553.433[C]^OR^EN.553.492[C]^OR^' +
