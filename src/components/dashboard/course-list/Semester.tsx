@@ -295,10 +295,10 @@ const Semester: FC<{
             </div>
             {!addingPrereqStatus ? (
               <div
-                className="group flex flex-row items-center justify-center text-white hover:bg-primary bg-secondary rounded-md cursor-pointer"
+                className="group flex flex-row items-center justify-center rounded-md cursor-pointer"
                 onClick={addCourse}
               >
-                <AddSvg className="w-6 h-6 group-hover:text-white stroke-2" />
+                <AddSvg className="w-4 h-4 group-hover:text-sky-700 stroke-2" />
               </div>
             ) : (
               <button
