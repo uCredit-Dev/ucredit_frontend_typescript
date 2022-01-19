@@ -114,14 +114,12 @@ const CourseComponent: FC<{
         <div className="grid grid-flow-row-dense grid-cols-10 w-full h-full gap-x-1.5">
           {course.area !== 'None' ? (
             <div
-              className="col-span-1 px-1 h-3/4 place-self-center rounded-lg select-none"
+              className="col-span-1 px-1.5 h-3/4 place-self-center rounded-lg select-none"
               style={{ backgroundColor: getColors(course.area, course.wi) }}
             >
             </div>
-          ) : null}{' '}
-          {!satisfied && !overridden ? (
-            <WarningSvg className="col-span-1 items-center w-5 h-5 rounded select-none" />
-          ) : null}
+          ) : <div className="col-span-1"></div>}{' '}
+
           <div className="col-span-8">
             <div className="truncate">{course.title}</div>
             <div className="text-[10px]">{course.number}</div>
