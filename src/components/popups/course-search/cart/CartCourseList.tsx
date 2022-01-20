@@ -50,10 +50,10 @@ const CartCourseList: FC<{
   const dispatch = useDispatch();
 
   const coursesPerPage = 10;
-  const defaultYearForCart = "";
+  const defaultYearForCart = "2021";
 
-  // THIS HAS BEENM OVED TO DASHBOARD!
-  // // INITIAL SET FOR THE RAW COURSES for the list. these will
+  // reads in the dummy data fetched in dashboard.
+  // This and the below useEffect will be replaced by the cart endpoints Erica is working on.
   useEffect(() => {
     let courseSubset: SISRetrievedCourse[] = props.allCourses;
     setCourses(courseSubset as unknown as SISRetrievedCourse[]); // TODO: fix this type casting
@@ -140,7 +140,6 @@ const CartCourseList: FC<{
    */
   const handlePageClick = (event: any) => {
     setPageNum(event.selected);
-    console.log(filteredCourses);
   };
 
   /**

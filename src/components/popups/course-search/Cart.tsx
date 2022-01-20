@@ -10,6 +10,7 @@ import FineRequirementsList from './cart/FineRequirementsList';
 import CartCourseList from './cart/CartCourseList';
 import { emptyRequirements } from './cart/dummies';
 import { requirements } from '../../dashboard/degree-info/distributionFunctions';
+import { clearSearch } from '../../../slices/searchSlice';
 
 /**
  * Search component for when someone clicks a search action.
@@ -26,7 +27,7 @@ const Cart: FC<{ allCourses: SISRetrievedCourse[] }> = (props) => {
   // Redux selectors and dispatch
   const dispatch = useDispatch();
   const distrs = useSelector(selectSelectedDistribution);
-  const updateSelectedRequirement = (newRequirement: requirements) => { 
+  const updateSelectedRequirement = (newRequirement: requirements) => {
     setSelectedRequirement(newRequirement);
   }
   const updateTextFilterInputValue = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -43,6 +44,7 @@ const Cart: FC<{ allCourses: SISRetrievedCourse[] }> = (props) => {
         }}
         onClick={() => { // clicking off, should reset all things
           dispatch(updateShowingCart(false));
+          dispatch(clearSearch());
         }}
       ></div>
 

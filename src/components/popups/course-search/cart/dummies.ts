@@ -18,6 +18,12 @@ Making sure the versions for courses are correct:
     - double check highlihghting logic/versioning for displaying multiple courses with the same name??
     - example: statistics couress with multiple options
 
+Cleaning upclose popup logic
+ - Original plan was to make a seperate CourseDisplay component for Cart, but considering
+   how many nested components there are, We'll continue to reuse the existing one.
+ - Currently, make sure that the search popup open logic closes the cart, and veice versa.
+    - ISSUE: the info menu shows up behind the cart popup. Maybe it would be helpful to add?
+
 Make bars more clearly clickable, with info
 Make switching filters clear ssearched course and inspected course
 Make cart popup header give information

@@ -10,6 +10,7 @@ import { ReactComponent as CheckSvg } from '../../../resources/svg/Check.svg';
 import DistributionPopup from './DistributionPopup';
 import ReactTooltip from 'react-tooltip';
 import { updateSelectedDistribution, updateShowingCart } from '../../../slices/popupSlice';
+import { clearSearch, updatePlaceholder } from '../../../slices/searchSlice';
 
 /**
  * A distribution bar.
@@ -61,6 +62,10 @@ const CourseBar: FC<{
       // TODO : investigate if fine reqs are available at this level already?
       dispatch(updateSelectedDistribution(distrs));
       dispatch(updateShowingCart(true));
+      
+      // closes the search popup (if its showing)
+      dispatch(clearSearch());
+      dispatch(updatePlaceholder(false));
     }
   }
 
