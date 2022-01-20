@@ -6,12 +6,13 @@ import { allMajors } from '../../resources/majors';
 import Select from 'react-select';
 import {
   selectToAddName,
-  selectToAddMajor,
+  selectToAddMajors,
   updateAddingPlanStatus,
   updateGeneratePlanAddStatus,
   updateToAddName,
-  updateToAddMajor,
+  updateToAddMajors,
 } from '../../slices/popupSlice';
+import { Major } from '../../resources/commonTypes';
 
 const majorOptions = [
   ...allMajors.map((major, index) => ({
@@ -29,14 +30,14 @@ const PlanAdd: FC = () => {
   // Redux setup
   const dispatch = useDispatch();
   const toAddName = useSelector(selectToAddName);
-  const toAddMajor = useSelector(selectToAddMajor);
+  const toAddMajors = useSelector(selectToAddMajors);
   const planList = useSelector(selectPlanList);
 
   /**
    * Handles the user's intention to create a new plan.
    */
   const createNewPlan = () => {
-    if (toAddMajor === null) {
+    if (toAddMajors.length === 0) {
       toast.error('Please choose a valid major!', {
         position: 'top-right',
         autoClose: 5000,
@@ -75,9 +76,11 @@ const PlanAdd: FC = () => {
 
   // Handles changing the major of the new plan.
   const handleMajorChange = (event: any) => {
-    if (event.value >= 0) {
-      dispatch(updateToAddMajor(allMajors[event.value]));
-    }
+    const selectedMajors: Major[] = [];
+    event.forEach(({ value }) => {
+      selectedMajors.push(allMajors[value]);
+    });
+    dispatch(updateToAddMajors(selectedMajors));
   };
 
   // const placeholderOptions = [
@@ -129,9 +132,10 @@ const PlanAdd: FC = () => {
             </div>
             <div className="z-40 flex flex-row justify-between mb-4">
               <Select
+                isMulti
                 options={majorOptions}
                 onChange={handleMajorChange}
-                placeholder="Primary Major"
+                placeholder="Select Majors"
                 className="z-50 w-full"
               />
               {/* <Select
