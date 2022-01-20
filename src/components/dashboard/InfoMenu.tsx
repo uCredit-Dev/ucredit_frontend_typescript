@@ -18,6 +18,7 @@ import {
 import { selectCourseCache } from '../../slices/userSlice';
 import { getCourse, getMajor } from '../../resources/assets';
 import { Course, Major, Plan, UserCourse } from '../../resources/commonTypes';
+import { allMajors } from '../../resources/majors';
 
 /**
  * Info menu shows degree plan and degree information.
@@ -92,6 +93,16 @@ const InfoMenu: FC = () => {
     }
     return null;
   };
+
+  /**
+   * Callback used to change the major of degree progress when user has multiple majors
+   * @param selected selected value from dropdown
+   * @returns
+   */
+  const changeDisplayMajor = (selected: string) =>
+    setMajor(
+      allMajors.find((majorObj) => majorObj.degree_name === selected) || null,
+    );
 
   // Update displayed JSX every time distributions get updated.
   useEffect(() => {
@@ -277,6 +288,8 @@ const InfoMenu: FC = () => {
               return (
                 <Distributions
                   major={major}
+                  userMajors={currentPlan.majors}
+                  changeDisplayMajor={changeDisplayMajor}
                   distributionOpen={distributionOpen}
                   setDistributionOpen={setDistributionOpen}
                   distributionBarsJSX={distributionBarsJSX}
