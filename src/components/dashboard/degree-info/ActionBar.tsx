@@ -21,7 +21,7 @@ import ReactTooltip from 'react-tooltip';
 import clsx from 'clsx';
 import {
   selectExperimentList,
-  selectExperimentNames,
+  selectExperimentIDs,
 } from '../../../slices/experimentSlice';
 
 /**
@@ -46,9 +46,10 @@ const ActionBar: FC<{
 
   // Gets Experiment List and Experiment Names
   const experimentList = useSelector(selectExperimentList);
-  const experimentNames = useSelector(selectExperimentNames);
+  const experimentIDs = useSelector(selectExperimentIDs);
 
-  const redButtonIdx = experimentNames.indexOf('Red Button');
+  const redButtonID = '61e606029d072ea10d4a92c0';
+  const redButtonIdx = experimentIDs.indexOf(redButtonID);
   const redButton =
     experimentList.length > 0 && redButtonIdx !== -1
       ? experimentList[redButtonIdx]

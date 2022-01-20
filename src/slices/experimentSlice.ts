@@ -2,6 +2,7 @@ import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { RootState } from '../appStore/store';
 
 export type experiment = {
+  _id: string;
   name: string;
   active: boolean;
   percentParticipating: number;
@@ -10,14 +11,15 @@ export type experiment = {
 
 type ExperimentSlice = {
   experimentList: experiment[];
-  experimentNames: string[];
+  experimentIDs: string[];
   whitelist: experiment;
 };
 
 const initialState: ExperimentSlice = {
   experimentList: [],
-  experimentNames: [],
+  experimentIDs: [],
   whitelist: {
+    _id: 'No ID',
     name: 'White List',
     active: false,
     percentParticipating: 0,
@@ -40,7 +42,7 @@ export const experimentSlice = createSlice({
     toggleExperimentStatus: (state: any, action: PayloadAction<string>) => {
       if (state.experimentList.length > 0) {
         let tmp = [...state.experimentList];
-        const idx = state.experimentNames.indexOf(action.payload);
+        const idx = state.experimentIDs.indexOf(action.payload);
         tmp[idx].active = !tmp[idx].active;
         state.experimentList = tmp;
       }
@@ -58,19 +60,20 @@ export const experimentSlice = createSlice({
     },
     setExperiments: (state: any, action: PayloadAction<any[]>) => {
       let newExperimentList: experiment[] = [];
-      let newExperimentNames: string[] = [];
+      let newExperimentIDs: string[] = [];
       for (const exp of action.payload) {
         const currExperiment: experiment = {
+          _id: exp._id,
           name: exp.experimentName,
           active: false,
           percentParticipating: exp.percent_participating,
           blacklist: exp.blacklist,
         };
         newExperimentList = [...newExperimentList, currExperiment];
-        newExperimentNames = [...newExperimentNames, exp.experimentName];
+        newExperimentIDs = [...newExperimentIDs, exp._id];
       }
       state.experimentList = newExperimentList;
-      state.experimentNames = newExperimentNames;
+      state.experimentIDs = newExperimentIDs;
     },
   },
 });
@@ -86,7 +89,7 @@ export const {
 // Selector Functions
 export const selectExperimentList = (state: RootState) =>
   state.experiment.experimentList;
-export const selectExperimentNames = (state: RootState) =>
-  state.experiment.experimentNames;
+export const selectExperimentIDs = (state: RootState) =>
+  state.experiment.experimentIDs;
 export const selectWhiteList = (state: RootState) => state.experiment.whitelist;
 export default experimentSlice.reducer;

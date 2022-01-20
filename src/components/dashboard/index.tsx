@@ -18,7 +18,7 @@ import {
 } from '../../slices/popupSlice';
 import {
   selectExperimentList,
-  selectExperimentNames,
+  selectExperimentIDs,
   setExperiments,
   toggleExperimentStatus,
 } from '../../slices/experimentSlice';
@@ -59,7 +59,7 @@ const Dashboard: FC<{ id: string | null }> = ({ id }) => {
   const courseInfoStatus = useSelector(selectShowCourseInfo);
   const addingPrereqStatus = useSelector(selectAddingPrereq);
   const experimentList = useSelector(selectExperimentList);
-  const experimentNames = useSelector(selectExperimentNames);
+  const experimentIDs = useSelector(selectExperimentIDs);
   const dispatch = useDispatch();
 
   // State Setup
@@ -72,10 +72,11 @@ const Dashboard: FC<{ id: string | null }> = ({ id }) => {
   const [displayedNumber, setDisplayedNumber] = useState<number>(3);
   const [crement, setCrement] = useState<number>(0);
 
-  const blueButtonIdx = experimentNames.indexOf('Blue Button');
+  const blueButtonID = '61e606029d072ea10d4a92c2';
+  const blueButtonIdx = experimentIDs.indexOf(blueButtonID);
   const blueButton =
     experimentList.length > 0 && blueButtonIdx !== -1
-      ? experimentList[experimentNames.indexOf('Blue Button')]
+      ? experimentList[experimentIDs.indexOf(blueButtonID)]
       : null;
 
   useEffect(() => {
@@ -99,7 +100,7 @@ const Dashboard: FC<{ id: string | null }> = ({ id }) => {
           for (const experiment of experimentList) {
             const currentActive = experiment.active;
             const importedActive = importedExperimentList[
-              experimentNames.indexOf(experiment.name)
+              experimentIDs.indexOf(experiment.name)
             ].active.includes(user._id);
 
             if (currentActive === importedActive) continue;
@@ -159,7 +160,7 @@ const Dashboard: FC<{ id: string | null }> = ({ id }) => {
 
       for (const experiment of experiments) {
         if (experiment.active.includes(user._id)) {
-          dispatch(toggleExperimentStatus(experiment.experimentName));
+          dispatch(toggleExperimentStatus(experiment._id));
         }
       }
     } catch (error) {

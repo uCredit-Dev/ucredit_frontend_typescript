@@ -6,7 +6,7 @@ import {
   setExperiments,
   toggleExperimentStatus,
   selectWhiteList,
-  selectExperimentNames,
+  selectExperimentIDs,
   experiment,
 } from '../../slices/experimentSlice';
 import { selectUser } from '../../slices/userSlice';
@@ -19,7 +19,7 @@ const ExperimentDevBoardPopup: FC<{}> = () => {
   //Retrieve all experiments from redux
   const allExperiments: Array<experiment> = useSelector(selectExperimentList);
   const whiteList = useSelector(selectWhiteList);
-  const allExperimentNames = useSelector(selectExperimentNames);
+  const allExperimentIDs = useSelector(selectExperimentIDs);
   const user = useSelector(selectUser);
   const dispatch = useDispatch();
 
@@ -97,9 +97,7 @@ const ExperimentDevBoardPopup: FC<{}> = () => {
   };
 
   const handleNameChange = async () => {
-    const lowerCasedNames = allExperimentNames.map((name) =>
-      name.toLowerCase(),
-    );
+    const lowerCasedNames = allExperimentIDs.map((name) => name.toLowerCase());
     for (let i = 0; i < inputNames.length; i++) {
       if (inputNames[i] !== '' && inputNames[i] !== undefined) {
         if (lowerCasedNames.includes(inputNames[i].toLowerCase())) {
@@ -135,7 +133,7 @@ const ExperimentDevBoardPopup: FC<{}> = () => {
 
       for (const oneExperiment of experiments) {
         if (oneExperiment.active.includes(user._id)) {
-          dispatch(toggleExperimentStatus(oneExperiment.experimentName));
+          dispatch(toggleExperimentStatus(oneExperiment._id));
         }
       }
     } catch (error) {
@@ -164,9 +162,7 @@ const ExperimentDevBoardPopup: FC<{}> = () => {
   };
 
   const handleSubmitForAddExperiment = async () => {
-    const lowerCasedNames = allExperimentNames.map((name) =>
-      name.toLowerCase(),
-    );
+    const lowerCasedNames = allExperimentIDs.map((name) => name.toLowerCase());
     if (lowerCasedNames.includes(inputName.toLowerCase())) {
       toast.error(
         `"${inputName}" name is already in use (the check is not case sensitive)`,

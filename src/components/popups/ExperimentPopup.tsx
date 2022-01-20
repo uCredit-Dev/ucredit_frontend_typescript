@@ -1,6 +1,6 @@
 import {
   selectExperimentList,
-  selectExperimentNames,
+  selectExperimentIDs,
   toggleExperimentStatus,
 } from '../../slices/experimentSlice';
 import { useDispatch, useSelector } from 'react-redux';
@@ -13,19 +13,20 @@ const ExperimentPopup: FC<{
   setExperimentPopup: Function;
 }> = ({ experimentPopup, setExperimentPopup }) => {
   const experimentList = useSelector(selectExperimentList);
-  const experimentNames = useSelector(selectExperimentNames);
-  const greenButtonIdx = experimentNames.indexOf('Green Button');
+  const experimentIDs = useSelector(selectExperimentIDs);
+  const greenButtonID = '61e606029d072ea10d4a92c4';
+  const greenButtonIdx = experimentIDs.indexOf(greenButtonID);
   const greenButton =
     experimentList.length > 0 && greenButtonIdx !== -1
-      ? experimentList[experimentNames.indexOf('Green Button')]
+      ? experimentList[experimentIDs.indexOf(greenButtonID)]
       : null;
   const dispatch = useDispatch();
 
-  const handleExperimentToggle = (event: any) => {
+  const handleExperimentToggle = (experimentID: string) => {
     // dispatch(setExperimentStatus([event.target.value, !experimentList[event.target.value].active]))
     // debounce, useEffect cleanup
 
-    dispatch(toggleExperimentStatus(event.target.value));
+    dispatch(toggleExperimentStatus(experimentID));
   };
 
   return (
@@ -53,7 +54,9 @@ const ExperimentPopup: FC<{
               <button
                 key={index}
                 value={experiment.name}
-                onClick={handleExperimentToggle}
+                onClick={() => {
+                  handleExperimentToggle(experiment._id);
+                }}
                 className={clsx(
                   'relative flex hover:bg-gray-400 border border-gray-300 rounded focus:outline-none shadow cursor-pointer transition duration-200 ease-in',
                   {

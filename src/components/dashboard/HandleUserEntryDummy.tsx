@@ -540,7 +540,7 @@ const HandleUserEntryDummy: FC<{
 
       for (const experiment of experiments) {
         if (experiment.active.includes(userID)) {
-          dispatch(toggleExperimentStatus(experiment.experimentName));
+          dispatch(toggleExperimentStatus(experiment._id));
         }
       }
     } catch (error) {
