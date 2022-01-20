@@ -206,6 +206,7 @@ export type DistributionObj = {
 
 export type Major = {
   degree_name: string;
+  abbrev: string;
   department: string;
   total_degree_credit: number;
   wi_credit: number;
@@ -215,6 +216,7 @@ export type Major = {
 
 export type Minor = {
   degree_name: string;
+  abbrev: string;
   department: string;
   total_degree_credit: number;
   wi_credit: number;

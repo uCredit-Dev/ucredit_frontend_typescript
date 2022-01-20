@@ -10,7 +10,7 @@ type PopupSlice = {
   deletePlan: boolean;
   addPlan: boolean;
   toAddName: string;
-  toAddMajor: Major | null;
+  toAddMajors: Major[];
   generateAdd: boolean;
   deleteYear: boolean;
   yearToDelete: Year | null;
@@ -28,7 +28,7 @@ const initialState: PopupSlice = {
   generateAdd: false,
   deleteYear: false,
   toAddName: 'Unnamed Plan',
-  toAddMajor: null,
+  toAddMajors: [],
   deleteCourse: false,
   courseToDelete: null,
   showCourseInfo: false,
@@ -52,9 +52,9 @@ export const popupSlice = createSlice({
     updateYearToDelete: (state: any, action: PayloadAction<Year | null>) => {
       state.yearToDelete = action.payload;
     },
-    clearToAdd: (state: any) => {
+    clearToAdd: (state) => {
       state.toAddName = initialState.toAddName;
-      state.toAddMajor = initialState.toAddMajor;
+      state.toAddMajors = initialState.toAddMajors;
     },
     updateAddingPlanStatus: (state: any, action: PayloadAction<boolean>) => {
       state.addPlan = action.payload;
@@ -62,8 +62,8 @@ export const popupSlice = createSlice({
     updateToAddName: (state: any, action: PayloadAction<string>) => {
       state.toAddName = action.payload;
     },
-    updateToAddMajor: (state: any, action: PayloadAction<Major>) => {
-      state.toAddMajor = action.payload;
+    updateToAddMajors: (state, action: PayloadAction<Major[]>) => {
+      state.toAddMajors = action.payload;
     },
     updateDeletePlanStatus: (state: any, action: PayloadAction<boolean>) => {
       state.deletePlan = action.payload;
@@ -95,7 +95,7 @@ export const popupSlice = createSlice({
 export const {
   updateAddingPlanStatus,
   updateToAddName,
-  updateToAddMajor,
+  updateToAddMajors,
   updateGeneratePlanAddStatus,
   updateYearToDelete,
   updateDeleteYearStatus,
@@ -120,7 +120,7 @@ export const selectDeletePlanStatus = (state: RootState) =>
   state.popup.deletePlan;
 export const selectAddingPlanStatus = (state: RootState) => state.popup.addPlan;
 export const selectToAddName = (state: RootState) => state.popup.toAddName;
-export const selectToAddMajor = (state: RootState) => state.popup.toAddMajor;
+export const selectToAddMajors = (state: RootState) => state.popup.toAddMajors;
 export const selectCourseToDelete = (state: RootState) =>
   state.popup.courseToDelete;
 export const selectDeleteCourseStatus = (state: RootState) =>

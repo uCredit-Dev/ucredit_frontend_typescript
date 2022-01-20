@@ -22,7 +22,7 @@ import {
   selectGeneratePlanAddStatus,
   updateAddingPlanStatus,
   updateGeneratePlanAddStatus,
-  updateToAddMajor,
+  updateToAddMajors,
   updateToAddName,
 } from '../../slices/popupSlice';
 import { useCookies } from 'react-cookie';
@@ -430,7 +430,11 @@ const HandleUserEntryDummy: FC<{
 
   const afterPromise = (plan: Plan, years: Year[]) => {
     dispatch(updateToAddName(plan.name));
-    dispatch(updateToAddMajor(getMajorFromCommonName(plan.majors[0])));
+    dispatch(
+      updateToAddMajors(
+        plan.majors.map((major) => getMajorFromCommonName(major)),
+      ),
+    );
     dispatch(updateGeneratePlanAddStatus(true));
     setToAdd(years);
     setShouldAdd(true);
@@ -658,7 +662,11 @@ const HandleUserEntryDummy: FC<{
     if (cookieVal === '') {
       // if not, create a user first, then add
       dispatch(updateToAddName(plan.name));
-      dispatch(updateToAddMajor(getMajorFromCommonName(plan.majors[0])));
+      dispatch(
+        updateToAddMajors(
+          plan.majors.map((major) => getMajorFromCommonName(major)),
+        ),
+      );
       setToAdd(years);
       dispatch(updateUser(guestUser));
       dispatch(updateGeneratePlanAddStatus(true));

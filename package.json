@@ -41,7 +41,9 @@
     "start": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",
-    "eject": "react-scripts eject"
+    "test:ci": "react-scripts test --testResultsProcessor ./node_modules/jest-sonar-reporter --collectCoverage --watchAll=false",
+    "eject": "react-scripts eject",
+    "coverage": "npm run test -- --coverage ."
   },
   "eslintConfig": {
     "extends": "react-app"
@@ -80,6 +82,7 @@
     "autoprefixer": "^10.4.0",
     "mini-css-extract-plugin": "2.4.5",
     "msw": "^0.36.3",
+    "jest-sonar-reporter": "^2.0.0",
     "postcss": "^8.4.4",
     "prettier": "2.5.1",
     "tailwindcss": "^3.0.1"
