@@ -111,7 +111,7 @@ const PlanAdd: FC = () => {
             <div className="flex flex-row mb-4">
               <input
                 autoFocus
-                className="flex-none mr-8 px-1 w-full h-selectbox rounded focus:outline-none"
+                className="flex-none mr-8 px-2 w-full h-selectbox rounded focus:outline-none"
                 type="text"
                 placeholder="Plan Name"
                 defaultValue={toAddName}

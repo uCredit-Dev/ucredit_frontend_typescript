@@ -51,6 +51,19 @@ const CourseBar: FC<{
     distributions,
   ]);
 
+  // Onclick for course bar, opens cart popup passing in corresponding props
+  const openCartPopup = () => {
+    // Filter for the correst distributions from redux store
+    let distrs = distributions.filter(req => req[0] === distribution.name)[0];
+    if (distrs) { // if the distribution exists, then update the cart
+      // at this point we have access to the current requirement
+      // and all dsitibrutions. to pick out hte rest of the ascoatied fine distirbutions, use this filter.
+      // TODO : investigate if fine reqs are available at this level already?
+      dispatch(updateSelectedDistribution(distrs));
+      dispatch(updateShowingCart(true));
+    }
+  }
+
   const tooltip =
     `<div style="overflow: wrap; margin-bottom: 1rem;">${section}</div>` +
     `<div style="margin-bottom: 1rem;">${distribution.description}</div>` +
@@ -99,28 +112,20 @@ const CourseBar: FC<{
         onMouseOver={() => {
           ReactTooltip.rebuild();
         }}
-        onClick={() => {
-          let distrs = distributions.filter(req => req[0] === distribution.name)[0];
-          console.log(distrs) // at this point we have access to the current requirement
-          // and all dsitibrutions. to pick out hte rest of the ascoatied fine distirbutions, use this filter.
-          // TODO : investigate if fine reqs are available at this level already?
-          dispatch(updateSelectedDistribution(distrs));
-          dispatch(updateShowingCart(true));
-        }} // TODO : make own redux store? refactor into helperfunction? for now, uses popup store.
+        onClick={openCartPopup}
       >
         <div
-          className="relative flex flex-row mb-2 w-full h-6 bg-gray-200 rounded transform hover:scale-105 transition duration-200 ease-in"
+          className="relative flex flex-row mb-2 w-full h-6 bg-gray-200 rounded transform hover:scale-105 cursor-pointer transition duration-200 ease-in"
           data-tip={tooltip}
           data-for="godTip"
         >
           <div
             className="h-full bg-blue-300 rounded"
             style={{
-              width: `${
-                plannedCredits <= maxCredits
-                  ? (plannedCredits / maxCredits) * 100 + '%'
-                  : '100%'
-              }`,
+              width: `${plannedCredits <= maxCredits
+                ? (plannedCredits / maxCredits) * 100 + '%'
+                : '100%'
+                }`,
             }}
           />
           {remainingCredits === 0 ? (

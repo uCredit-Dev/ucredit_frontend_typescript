@@ -2,7 +2,6 @@ import { useState, useEffect, FC } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import {
   selectPlaceholder,
-  selectSearchFilters,
   updateInspectedVersion,
   updatePlaceholder,
 } from '../../../../slices/searchSlice';
@@ -22,7 +21,7 @@ import { filterBasedOnReq } from './dummies';
 /*
   List of searched courses.
 */
-
+  
 const CartCourseList: FC<{
   searching: boolean,
   selectedRequirement: requirements,
@@ -48,10 +47,10 @@ const CartCourseList: FC<{
   // Redux setup
   // const courses = useSelector(selectRetrievedCourses); will be from redux
   const placeholder = useSelector(selectPlaceholder);
-  const searchFilters = useSelector(selectSearchFilters);
   const dispatch = useDispatch();
 
-  let coursesPerPage = 10; // should this be a const?
+  const coursesPerPage = 10;
+  const defaultYearForCart = "";
 
   // THIS HAS BEENM OVED TO DASHBOARD!
   // // INITIAL SET FOR THE RAW COURSES for the list. these will
@@ -61,8 +60,8 @@ const CartCourseList: FC<{
     setRawCourses(courseSubset as unknown as SISRetrievedCourse[]);
   }, [props.allCourses]);
 
-  // FOR FILTERS
   // updates courses from raw courses based on filters from dummy filters
+  // Used as a standin for the cart api endpoints which havent been written yet
   useEffect(() => {
     console.log(rawCourses);
     let filterFunction = filterBasedOnReq(props.selectedRequirement);
@@ -74,7 +73,7 @@ const CartCourseList: FC<{
     setCourses(dummyFilteredCourses);
     setPageNum(0);
     console.log(props.selectedRequirement);
-  }, [props.selectedRequirement]);
+  }, [props.selectedRequirement, rawCourses]);
 
   // Updates pagination every time the searched courses change.
   useEffect(() => {
@@ -82,15 +81,11 @@ const CartCourseList: FC<{
       (course: SISRetrievedCourse) => {
         let valid = false;
         course.versions.forEach((version) => {
-          if (
-            version.term === searchFilters.term + " " + searchFilters.year ||
-            (searchFilters.term === "All" &&
-              version.term.includes(searchFilters.year.toString()))
-          ) {
+          // This conditional has been changed
+          if (version.term.includes(defaultYearForCart)) {
             valid = true;
           }
         });
-        console.log(course.title, props.textFilter, course.title.toLowerCase().includes(props.textFilter));
         if (!course.title.toLowerCase().includes(props.textFilter)) return false;
         return valid;
       }
@@ -118,12 +113,10 @@ const CartCourseList: FC<{
         : startingIndex + coursesPerPage - 1;
     for (let i = startingIndex; i <= endingIndex; i++) {
       const inspecting = { ...filteredCourses[i] };
-      inspecting.versions.forEach((v: any, i: number) => {
-        if (
-          v.term === searchFilters.term + " " + searchFilters.year ||
-          (searchFilters.term === "All" &&
-            v.term.includes(searchFilters.year.toString()))
-        ) {
+      // issue is that this adds duplicates of a course. using "every" callback will
+      // stop iterating once a version is found.
+      inspecting.versions.every((v: any, i: number) => { // reverses list to get latest version
+        if (v.term.includes(defaultYearForCart)) { // this has been chagged to not use the filters
           toDisplay.push(
             <div
               key={inspecting.number}
@@ -133,7 +126,9 @@ const CartCourseList: FC<{
               <CartCourseListItem course={inspecting} version={i} />
             </div>
           );
+          return false;
         }
+        return true;
       });
     }
     return toDisplay;

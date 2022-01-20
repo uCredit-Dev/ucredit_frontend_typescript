@@ -1,4 +1,4 @@
-import React, { FC, SyntheticEvent, useState } from 'react';
+import React, { FC, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 
 import CourseDisplay from './search-results/CourseDisplay';
@@ -42,7 +42,6 @@ const Cart: FC<{ allCourses: SISRetrievedCourse[] }> = (props) => {
           opacity: searchOpacity === 100 ? 0.5 : 0,
         }}
         onClick={() => { // clicking off, should reset all things
-          // TODO: make sure proper things rae reset
           dispatch(updateShowingCart(false));
         }}
       ></div>
