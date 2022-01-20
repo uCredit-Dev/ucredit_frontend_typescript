@@ -20,6 +20,7 @@ import currentPlanReducer from '../../slices/currentPlanSlice';
 import popupReducer, {
   updateToAddMajors as mockUpdateToAddMajors,
 } from '../../slices/popupSlice';
+import experimentReducer from '../../slices/experimentSlice';
 import { ToastContainer } from 'react-toastify';
 import { allMajors as mockAllMajors } from '../../resources/majors';
 
@@ -31,6 +32,7 @@ let mockStore = configureStore({
     search: searchReducer,
     currentPlan: currentPlanReducer,
     popup: popupReducer,
+    experiment: experimentReducer,
   },
   middleware: (getDefaultMiddleware) =>
     getDefaultMiddleware({
