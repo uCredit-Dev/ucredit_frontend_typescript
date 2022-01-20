@@ -18,7 +18,7 @@ import counterReducer from '../../resources/redux_sample/counterSlice';
 import searchReducer from '../../slices/searchSlice';
 import currentPlanReducer from '../../slices/currentPlanSlice';
 import popupReducer, {
-  updateToAddMajor as mockUpdateToAddMajor,
+  updateToAddMajors as mockUpdateToAddMajors,
 } from '../../slices/popupSlice';
 import { ToastContainer } from 'react-toastify';
 import { allMajors as mockAllMajors } from '../../resources/majors';
@@ -40,13 +40,13 @@ let mockStore = configureStore({
 
 jest.mock('react-select', () => ({ options, value, onChange }) => {
   function handleChange(event) {
-    const option = options.find((op) => op.label === event.currentTarget.value);
-    mockStore.dispatch(mockUpdateToAddMajor(mockAllMajors[option.value]));
+    const option = options.find((op) => op.value == event.currentTarget.value);
+    mockStore.dispatch(mockUpdateToAddMajors([mockAllMajors[option.value]]));
   }
   return (
-    <select data-testid="select" value={value} onChange={handleChange}>
-      {options.map(({ val, label }) => (
-        <option key={val} value={val}>
+    <select data-testid="select" value={value} onChange={handleChange} multiple>
+      {options.map(({ value, label }) => (
+        <option key={value} value={value} data-testid="select-option">
           {label}
         </option>
       ))}
@@ -96,13 +96,13 @@ test('Able to select old BS', async () => {
   await waitFor(() => {
     expect(screen.getByText('Adding a new plan!')).toBeInTheDocument();
   });
+  const planAddSelect = screen.getAllByTestId('select')[1];
 
-  fireEvent.change(screen.getByTestId('select'), {
-    target: { value: 'B.S. Computer Science (OLD - Pre-2021)' },
+  fireEvent.change(planAddSelect, {
+    target: { value: 0 },
   });
-
   expect(
-    screen.getByText('B.S. Computer Science (OLD - Pre-2021)'),
+    screen.getAllByText('B.S. Computer Science (OLD - Pre-2021)')[0],
   ).toBeInTheDocument();
 });
 
@@ -110,12 +110,12 @@ test('Able to select new BS', async () => {
   await waitFor(() => {
     expect(screen.getByText('Adding a new plan!')).toBeInTheDocument();
   });
-
-  fireEvent.change(screen.getByTestId('select'), {
+  const planAddSelect = screen.getAllByTestId('select')[1];
+  fireEvent.change(planAddSelect, {
     target: { value: 'B.S. Computer Science (NEW - 2021 & after)' },
   });
 
   expect(
-    screen.getByText('B.S. Computer Science (NEW - 2021 & after)'),
+    screen.getAllByText('B.S. Computer Science (OLD - Pre-2021)')[0],
   ).toBeInTheDocument();
 });
