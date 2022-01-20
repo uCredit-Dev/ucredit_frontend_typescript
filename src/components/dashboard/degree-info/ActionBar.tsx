@@ -1,7 +1,11 @@
 import { FC, MouseEventHandler, useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { toast } from 'react-toastify';
-import Select from 'react-select';
+import Select, {
+  components,
+  MultiValueProps,
+  StylesConfig,
+} from 'react-select';
 import { api } from '../../../resources/assets';
 import {
   selectPlan,
@@ -172,6 +176,36 @@ const ActionBar: FC<{
   useEffect(() => {
     ReactTooltip.rebuild();
   });
+
+  /**
+   * Show major multi-select's displayed major name to abbreviations (B.S. Computer Science => B.S. CS)
+   * if user selected more than one major
+   */
+  const MultiValue = (
+    props: MultiValueProps<typeof majorOptions[number], true>,
+  ) => {
+    const major = allMajors.find(
+      (majorObj) => majorObj.degree_name === props.data.label,
+    );
+    // @ts-ignore
+    const showAsAbbrev = props.selectProps.value.length > 1;
+    return (
+      <components.MultiValue {...props}>
+        {showAsAbbrev ? major?.abbrev : major?.degree_name}
+      </components.MultiValue>
+    );
+  };
+
+  /**
+   * Limit the max width of multi-select labels
+   */
+  const customStyles: StylesConfig<typeof majorOptions[number], true> = {
+    multiValue: (provided) => {
+      const maxWidth = '17rem';
+      return { ...provided, maxWidth };
+    },
+  };
+
   return (
     <div className="flex flex-row px-2 py-1 bg-white rounded shadow drop-shadow-md sticky top-0 z-20">
       <PlanChoose dropdown={dropdown} setDropdown={setDropdown} />
@@ -187,17 +221,25 @@ const ActionBar: FC<{
         className="flex mr-2 my-1 px-2 font-light text-lg w-80"
         style={{ width: '25rem' }}
       >
-        <Select
-          isMulti
-          isClearable={false}
-          options={majorOptions}
-          value={majorOptions.filter((major) =>
-            currentPlan.majors.includes(major.label),
-          )}
-          onChange={handleMajorChange}
-          placeholder="Select Majors"
-          className="z-50 w-full"
-        />
+        <form data-testid="major-change-form" className="z-50 w-full">
+          <label htmlFor="majorChange" hidden={true}>
+            majorChange
+          </label>
+          <Select
+            components={{ MultiValue }}
+            isMulti
+            isClearable={false}
+            options={majorOptions}
+            value={majorOptions.filter((major) =>
+              currentPlan.majors.includes(major.label),
+            )}
+            styles={customStyles}
+            onChange={handleMajorChange}
+            placeholder="Change Major"
+            name="majorChange"
+            inputId="majorChange"
+          />
+        </form>
       </div>
       <button
         className="flex flex-row items-center ml-1 mr-2 my-1 px-2 h-10 hover:underline hover:bg-red-300 border border-gray-300 rounded shadow transition duration-200 ease-in"
