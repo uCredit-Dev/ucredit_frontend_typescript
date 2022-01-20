@@ -40,7 +40,7 @@ let mockStore = configureStore({
 
 jest.mock('react-select', () => ({ options, value, onChange }) => {
   function handleChange(event) {
-    const option = options.find((op) => op.value == event.currentTarget.value);
+    const option = options.find((op) => op.value === event.currentTarget.value);
     mockStore.dispatch(mockUpdateToAddMajors([mockAllMajors[option.value]]));
   }
   return (
