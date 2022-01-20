@@ -450,6 +450,7 @@ const CourseList: FC = () => {
           <Droppable droppableId={'years'} type="YEAR" direction="horizontal">
             {(provided, snapshot) => (
               <div
+                className="flex flex-col"
                 ref={provided.innerRef}
                 style={getListStyle(snapshot.isDraggingOver)}
               >
