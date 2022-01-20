@@ -201,6 +201,7 @@ export type DistributionObj = {
   double_count?: boolean;
   exception?: string;
   exclusive?: boolean;
+  pathing?: boolean;
 };
 
 export type Major = {

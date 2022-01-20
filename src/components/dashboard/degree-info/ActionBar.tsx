@@ -219,7 +219,7 @@ const ActionBar: FC<{
       </div>
       <div
         className="flex mr-2 my-1 px-2 font-light text-lg w-80"
-        style={{ width: '25rem' }}
+        style={{ width: '25rem' }} //flex mr-2 my-1 px-2 h-10 text-xl font-light border border-gray-300 rounded stroke-2 shadow
       >
         <form data-testid="major-change-form" className="z-50 w-full">
           <label htmlFor="majorChange" hidden={true}>
