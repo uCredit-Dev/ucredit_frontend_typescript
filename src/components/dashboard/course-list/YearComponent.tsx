@@ -203,7 +203,7 @@ const YearComponent: FC<{
     <div
       id={id.toString()}
       className={
-        'cursor-move p-2 max-w-year-heading w-max rounded mb-4 bg-primary rounded shadow min-w-[14rem]' +
+        'collapse cursor-move p-2 max-w-year-heading w-max rounded mb-4 rounded hover:shadow min-w-[14rem]' +
         (addingPrereqStatus ? 'z-30' : '')
       }
       onMouseLeave={() => {
@@ -215,7 +215,7 @@ const YearComponent: FC<{
       }}
     >
       <div className="flex flex-col mt-1 w-full max-w-yearheading h-yearheading font-medium">
-        <div className="flex flex-row w-full text-white drop-shadow-lg">
+        <div className="flex flex-row w-full text-zinc-700">
           <div className="mr-1 text-lg font-thin">✥</div>
           {edittingName ? (
             <input
@@ -228,7 +228,7 @@ const YearComponent: FC<{
               }}
             />
           ) : (
-            <div className="flex-shrink mt-auto w-full text-md font-semibold bg-transparent border-b focus:border-gray-400 border-transparent focus:outline-none cursor-move select-none">
+            <div className="flex-shrink mt-auto w-full text-lg font-semibold bg-transparent border-b focus:border-gray-400 border-transparent focus:outline-none cursor-move select-none">
               {yearName}
             </div>
           )}
