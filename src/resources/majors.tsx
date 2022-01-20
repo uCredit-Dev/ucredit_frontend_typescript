@@ -1205,6 +1205,7 @@ import { Major, Minor } from './commonTypes';
 // https://www.cs.jhu.edu/undergraduate-studies/academics/ugrad-advising-manual/
 const bsCS_Old: Major = {
   degree_name: 'B.S. Computer Science (OLD - Pre-2021)',
+  abbrev: 'B.S. CS Old',
   department: 'EN Computer Science',
   total_degree_credit: 126,
   wi_credit: 6,
@@ -1347,6 +1348,7 @@ const bsCS_Old: Major = {
 // https://www.cs.jhu.edu/2021undergraduate-advising-manual/
 const bsCS_New: Major = {
   degree_name: 'B.S. Computer Science (NEW - 2021 & after)',
+  abbrev: 'B.S. CS',
   department: 'EN Computer Science',
   total_degree_credit: 120,
   wi_credit: 6,
@@ -1482,6 +1484,7 @@ const bsCS_New: Major = {
 // https://www.cs.jhu.edu/undergraduate-studies/academics/ugrad-advising-manual/
 const baCS_New: Major = {
   degree_name: 'B.A. Computer Science (NEW - 2021 & after)',
+  abbrev: 'B.A. CS',
   department: 'EN Computer Science',
   total_degree_credit: 120,
   wi_credit: 12,
@@ -1605,6 +1608,7 @@ const baCS_New: Major = {
 // https://www.cs.jhu.edu/undergraduate-studies/academics/cs-minor/
 const CS_Minor_New: Minor = {
   degree_name: 'Minor Computer Science (NEW - 2021 & after)',
+  abbrev: 'Minor CS',
   department: 'EN Computer Science',
   total_degree_credit: 21,
   wi_credit: 0,
@@ -1665,6 +1669,7 @@ const CS_Minor_New: Minor = {
 // https://www.cs.jhu.edu/undergraduate-studies/academics/cs-minor/
 const CS_Minor_Old: Minor = {
   degree_name: 'Minor Computer Science (OLD - 2020 & before)',
+  abbrev: 'Minor CS Old',
   department: 'EN Computer Science',
   total_degree_credit: 23,
   wi_credit: 0,
@@ -1729,6 +1734,7 @@ const CS_Minor_Old: Minor = {
 */
 const bsMolCell: Major = {
   degree_name: 'B.S. Molecular and Cellular Biology',
+  abbrev: 'B.S. Mol Cell',
   department: 'AS Biology',
   total_degree_credit: 120,
   wi_credit: 12,
