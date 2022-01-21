@@ -100,7 +100,7 @@ const Dashboard: FC<{ id: string | null }> = ({ id }) => {
           for (const experiment of experimentList) {
             const currentActive = experiment.active;
             const importedActive = importedExperimentList[
-              experimentIDs.indexOf(experiment.name)
+              experimentIDs.indexOf(experiment._id)
             ].active.includes(user._id);
 
             if (currentActive === importedActive) continue;

@@ -520,36 +520,39 @@ const HandleUserEntryDummy: FC<{
       }),
     );
 
-  const updateExperimentsForUser = async (userID: string) => {
+  const updateExperimentsForUser = (userID: string) => {
     // use api from assets.tsx, move experiments and make a new route instead
     // console.log("updating experiments")
 
     const experimentAPI =
       'https://ucredit-experiments-api.herokuapp.com/api/experiments';
 
-    try {
-      const experimentListResponse = await axios.get(
-        `${experimentAPI}/allExperiments`,
-      ); // getting experiment list
-      const experiments = experimentListResponse.data.data;
-      dispatch(setExperiments(experiments));
-
-      const experimentListNamesActive = await axios.get(
-        `${experimentAPI}/${userID}`,
-      );
-      const activeExperiments = experimentListNamesActive.data.data;
-      if (activeExperiments.includes('White List')) {
-        dispatch(setWhitelistStatus(true));
-      }
-
-      for (const experiment of experiments) {
-        if (experiment.active.includes(userID)) {
-          dispatch(toggleExperimentStatus(experiment._id));
+    axios
+      .get(`${experimentAPI}/allExperiments`)
+      .then(async (experimentListResponse) => {
+        const experiments = experimentListResponse.data.data;
+        dispatch(setExperiments(experiments));
+        for (const experiment of experiments) {
+          if (experiment.active.includes(userID)) {
+            dispatch(toggleExperimentStatus(experiment._id));
+          }
         }
-      }
-    } catch (error) {
-      console.log(error);
-    }
+      })
+      .catch((errAllExperiments) => {
+        console.log(errAllExperiments);
+      });
+
+    axios
+      .get(`${experimentAPI}/${userID}`)
+      .then((experimentListNamesActive) => {
+        const activeExperiments = experimentListNamesActive.data.data;
+        if (activeExperiments.includes('White List')) {
+          dispatch(setWhitelistStatus(true));
+        }
+      })
+      .catch((errExperimentList) => {
+        console.log(errExperimentList);
+      });
   };
 
   // Useffect runs once on page load, calling to https://ucredit-api.herokuapp.com/api/retrieveUser to retrieve user data.
@@ -624,7 +627,6 @@ const HandleUserEntryDummy: FC<{
           navigate('/login');
         });
     }
-
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [document.cookie]);
 
