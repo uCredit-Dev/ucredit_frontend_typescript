@@ -14,7 +14,7 @@ const ExperimentPopup: FC<{
 }> = ({ experimentPopup, setExperimentPopup }) => {
   const experimentList = useSelector(selectExperimentList);
   const experimentIDs = useSelector(selectExperimentIDs);
-  const greenButtonID = '61e606029d072ea10d4a92c4';
+  const greenButtonID = '61e0b1d5648bba005539dde0';
   const greenButtonIdx = experimentIDs.indexOf(greenButtonID);
   const greenButton =
     experimentList.length > 0 && greenButtonIdx !== -1

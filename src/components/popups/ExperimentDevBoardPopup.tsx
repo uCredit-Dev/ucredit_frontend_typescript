@@ -14,6 +14,7 @@ import { ReactComponent as AdjustmentSvg } from '../../resources/svg/Adjustment.
 import { ReactComponent as DeleteExperimentSvg } from '../../resources/svg/DeleteExperiment.svg';
 import { ReactComponent as AddExperimentSvg } from '../../resources/svg/AddExperiment.svg';
 import { toast } from 'react-toastify';
+import { api } from './../../resources/assets';
 
 const ExperimentDevBoardPopup: FC<{}> = () => {
   //Retrieve all experiments from redux
@@ -42,9 +43,6 @@ const ExperimentDevBoardPopup: FC<{}> = () => {
   //Used to store the experiment to delete
   const [nameExperimentToDelete, setNameExperimentToDelete] =
     useState<string>('');
-
-  const experimentAPI =
-    'https://ucredit-experiments-api.herokuapp.com/api/experiments/';
 
   const updatePercentageArray = (index, event) => {
     const percent = event.target.value;
@@ -85,7 +83,7 @@ const ExperimentDevBoardPopup: FC<{}> = () => {
         convertedPercentages[i] !== allExperiments[i].percentParticipating
       ) {
         await axios
-          .post(`${experimentAPI}${allExperiments[i].name}`, {
+          .post(`${api}/experiments/${allExperiments[i].name}`, {
             percent_participating: convertedPercentages[i],
           })
           .catch(function (error) {
@@ -111,7 +109,7 @@ const ExperimentDevBoardPopup: FC<{}> = () => {
           return false;
         }
         await axios
-          .put(`${experimentAPI}changeName/${allExperiments[i].name}`, {
+          .put(`${api}/experiments/changeName/${allExperiments[i].name}`, {
             new_name: inputNames[i],
           })
           .catch(function (error) {
@@ -125,7 +123,7 @@ const ExperimentDevBoardPopup: FC<{}> = () => {
   const updateExperimentRedux = async () => {
     try {
       const experimentListResponse = await axios.get(
-        `${experimentAPI}allExperiments`,
+        `${api}/experiments/allExperiments`,
       ); // getting experiment list
       const experiments = experimentListResponse.data.data;
 
@@ -174,7 +172,7 @@ const ExperimentDevBoardPopup: FC<{}> = () => {
       return;
     }
     await axios
-      .post(`${experimentAPI}${inputName}`, {
+      .post(`${api}/experiments/${inputName}`, {
         percent_participating: 0,
       })
       .catch(function (error) {
@@ -191,7 +189,7 @@ const ExperimentDevBoardPopup: FC<{}> = () => {
 
   const handleSubmitForDeleteExperiment = async () => {
     await axios
-      .delete(`${experimentAPI}${nameExperimentToDelete}`)
+      .delete(`${api}/experiments/${nameExperimentToDelete}`)
       .catch(function (error) {
         console.log(error);
       });
@@ -277,6 +275,21 @@ const ExperimentDevBoardPopup: FC<{}> = () => {
                         {` (Current Percentage is ${oneExperiment.percentParticipating}%)`}
                       </div>
                       <div>
+                        {`${oneExperiment.name}'s ID is ${oneExperiment._id}`}{' '}
+                        <button
+                          className="rounded bg-green-500 hover:bg-green-700"
+                          onClick={() => {
+                            navigator.clipboard.writeText(oneExperiment._id);
+                            toast.success(`Copied ID to clipboard`, {
+                              autoClose: 5000,
+                              closeOnClick: true,
+                            });
+                          }}
+                        >
+                          Copy ID
+                        </button>
+                      </div>
+                      <div>
                         <input
                           className="bg-white placeholder-gray-500 border"
                           placeholder={`${oneExperiment.name}`}
@@ -297,7 +310,7 @@ const ExperimentDevBoardPopup: FC<{}> = () => {
                   );
                 })}
 
-                <div className="space-x-48">
+                <div className="flex flex-row shrink">
                   <button
                     className="w-1/3 text-white font-bold py-2 px-4 rounded bg-blue-500 hover:bg-blue-700"
                     onClick={handleSubmitForOldExperiments}
@@ -305,7 +318,7 @@ const ExperimentDevBoardPopup: FC<{}> = () => {
                     Submit
                   </button>
                   <button
-                    className="w-1/3 text-white font-bold py-2 px-4 rounded bg-red-500 hover:bg-red-700 translate-x-20"
+                    className="w-1/3 text-white font-bold py-2 px-4 rounded bg-red-500 hover:bg-red-700 translate-x-52"
                     onClick={() => {
                       setInputPercentages([...emptyArray]);
                       setInputNames([...emptyArray]);
@@ -340,13 +353,14 @@ const ExperimentDevBoardPopup: FC<{}> = () => {
                 </div>
                 <div>
                   <input
-                    className="bg-white placeholder-gray-500 border"
+                    className="bg-white placeholder-gray-500 border "
                     onChange={(event) => {
                       setInputName(event.target.value);
                     }}
                   ></input>
                 </div>
-                <div className="space-x-48">
+                {/*Add Experiment Popup */}
+                <div className="flex">
                   <button
                     className="w-1/3 text-white font-bold py-2 px-4 rounded bg-blue-500 hover:bg-blue-700"
                     onClick={handleSubmitForAddExperiment}
@@ -354,7 +368,7 @@ const ExperimentDevBoardPopup: FC<{}> = () => {
                     Submit
                   </button>
                   <button
-                    className="w-1/3 text-white font-bold py-2 px-4 rounded bg-red-500 hover:bg-red-700 translate-x-20"
+                    className="w-1/3 text-white font-bold py-2 px-4 rounded bg-red-500 hover:bg-red-700 translate-x-64"
                     onClick={() => {
                       setInputName('');
                       setAddExperimentPopup(!addExperimentPopup);

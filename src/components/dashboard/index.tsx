@@ -41,6 +41,7 @@ import ShareLinksPopup from './degree-info/ShareLinksPopup';
 import axios from 'axios';
 import Dropdown from '../popups/Dropdown';
 import ExperimentNumber from '../popups/ExperimentNumber';
+import { api } from './../../resources/assets';
 
 /**
  * The dashboard that displays the user's plan.
@@ -72,7 +73,7 @@ const Dashboard: FC<{ id: string | null }> = ({ id }) => {
   const [displayedNumber, setDisplayedNumber] = useState<number>(3);
   const [crement, setCrement] = useState<number>(0);
 
-  const blueButtonID = '61e606029d072ea10d4a92c2';
+  const blueButtonID = '61e0b1d5648bba005539dde2';
   const blueButtonIdx = experimentIDs.indexOf(blueButtonID);
   const blueButton =
     experimentList.length > 0 && blueButtonIdx !== -1
@@ -88,13 +89,8 @@ const Dashboard: FC<{ id: string | null }> = ({ id }) => {
 
   useEffect(() => {
     if (!experimentPopup && experimentList.length > 0) {
-      const allExperimentsAPI =
-        'https://ucredit-experiments-api.herokuapp.com/api/experiments/allExperiments';
-      const experimentAPI =
-        'https://ucredit-experiments-api.herokuapp.com/api/experiments/';
-
       axios
-        .get(`${allExperimentsAPI}`)
+        .get(`${api}/experiments/allExperiments`)
         .then(function (resp) {
           const importedExperimentList = resp.data.data;
           for (const experiment of experimentList) {
@@ -107,7 +103,7 @@ const Dashboard: FC<{ id: string | null }> = ({ id }) => {
 
             const command = experiment.active ? 'add/' : 'delete/';
             axios
-              .put(`${experimentAPI}${command}${experiment.name}`, {
+              .put(`${api}/experiments/${command}${experiment.name}`, {
                 user_id: user._id,
               })
               .catch(function (error) {
@@ -148,13 +144,10 @@ const Dashboard: FC<{ id: string | null }> = ({ id }) => {
   };
 
   const updateExperimentsForUser = async () => {
-    // use api from assets.tsx, move experiments and make a new route instead
-
-    const experimentAPI =
-      'https://ucredit-experiments-api.herokuapp.com/api/experiments/allExperiments';
-
     try {
-      const experimentListResponse = await axios.get(`${experimentAPI}`); // getting experiment list
+      const experimentListResponse = await axios.get(
+        `${api}/experiments/allExperiments`,
+      ); // getting experiment list
       const experiments = experimentListResponse.data.data;
       dispatch(setExperiments(experiments));
 

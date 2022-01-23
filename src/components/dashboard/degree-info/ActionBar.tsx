@@ -59,7 +59,7 @@ const ActionBar: FC<{
   const experimentList = useSelector(selectExperimentList);
   const experimentIDs = useSelector(selectExperimentIDs);
 
-  const redButtonID = '61e606029d072ea10d4a92c0';
+  const redButtonID = '61e0b1d5648bba005539ddde';
   const redButtonIdx = experimentIDs.indexOf(redButtonID);
   const redButton =
     experimentList.length > 0 && redButtonIdx !== -1

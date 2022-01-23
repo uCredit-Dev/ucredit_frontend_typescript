@@ -521,14 +521,8 @@ const HandleUserEntryDummy: FC<{
     );
 
   const updateExperimentsForUser = (userID: string) => {
-    // use api from assets.tsx, move experiments and make a new route instead
-    // console.log("updating experiments")
-
-    const experimentAPI =
-      'https://ucredit-experiments-api.herokuapp.com/api/experiments';
-
     axios
-      .get(`${experimentAPI}/allExperiments`)
+      .get(`${api}/experiments/allExperiments`)
       .then(async (experimentListResponse) => {
         const experiments = experimentListResponse.data.data;
         dispatch(setExperiments(experiments));
@@ -543,7 +537,7 @@ const HandleUserEntryDummy: FC<{
       });
 
     axios
-      .get(`${experimentAPI}/${userID}`)
+      .get(`${api}/experiments/${userID}`)
       .then((experimentListNamesActive) => {
         const activeExperiments = experimentListNamesActive.data.data;
         if (activeExperiments.includes('White List')) {
