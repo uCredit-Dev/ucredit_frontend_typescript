@@ -92,4 +92,13 @@ export const selectExperimentList = (state: RootState) =>
 export const selectExperimentIDs = (state: RootState) =>
   state.experiment.experimentIDs;
 export const selectWhiteList = (state: RootState) => state.experiment.whitelist;
+export const selectBlueButton = (state: RootState) => {
+  const blueButtonID = '61e0b1d5648bba005539dde2';
+  const blueButtonIdx = state.experiment.experimentIDs.indexOf(blueButtonID);
+  return state.experiment.experimentList.length > 0 && blueButtonIdx !== -1
+    ? state.experiment.experimentList[
+        state.experiment.experimentIDs.indexOf(blueButtonID)
+      ]
+    : null;
+};
 export default experimentSlice.reducer;

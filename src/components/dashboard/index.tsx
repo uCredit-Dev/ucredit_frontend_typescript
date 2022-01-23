@@ -21,6 +21,7 @@ import {
   selectExperimentIDs,
   setExperiments,
   toggleExperimentStatus,
+  selectBlueButton,
 } from '../../slices/experimentSlice';
 import { selectSearchStatus } from '../../slices/searchSlice';
 import AddingPrereqPopup from '../popups/AddingPrereqPopup';
@@ -61,6 +62,7 @@ const Dashboard: FC<{ id: string | null }> = ({ id }) => {
   const addingPrereqStatus = useSelector(selectAddingPrereq);
   const experimentList = useSelector(selectExperimentList);
   const experimentIDs = useSelector(selectExperimentIDs);
+  const blueButton = useSelector(selectBlueButton);
   const dispatch = useDispatch();
 
   // State Setup
@@ -72,13 +74,6 @@ const Dashboard: FC<{ id: string | null }> = ({ id }) => {
   const [shareableURL, setShareableURL] = useState<string>('');
   const [displayedNumber, setDisplayedNumber] = useState<number>(3);
   const [crement, setCrement] = useState<number>(0);
-
-  const blueButtonID = '61e0b1d5648bba005539dde2';
-  const blueButtonIdx = experimentIDs.indexOf(blueButtonID);
-  const blueButton =
-    experimentList.length > 0 && blueButtonIdx !== -1
-      ? experimentList[experimentIDs.indexOf(blueButtonID)]
-      : null;
 
   useEffect(() => {
     if (blueButton !== null) {
@@ -143,22 +138,21 @@ const Dashboard: FC<{ id: string | null }> = ({ id }) => {
     );
   };
 
-  const updateExperimentsForUser = async () => {
-    try {
-      const experimentListResponse = await axios.get(
-        `${api}/experiments/allExperiments`,
-      ); // getting experiment list
+  const updateExperimentsForUser = () => {
+    axios
+    .get(`${api}/experiments/allExperiments`)
+    .then(async (experimentListResponse) => {
       const experiments = experimentListResponse.data.data;
       dispatch(setExperiments(experiments));
-
       for (const experiment of experiments) {
         if (experiment.active.includes(user._id)) {
           dispatch(toggleExperimentStatus(experiment._id));
         }
       }
-    } catch (error) {
-      console.log(error);
-    }
+    })
+    .catch((errAllExperiments) => {
+      console.log(errAllExperiments);
+    });
   };
 
   if (experimentList.length === 0) {
