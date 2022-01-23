@@ -140,19 +140,19 @@ const Dashboard: FC<{ id: string | null }> = ({ id }) => {
 
   const updateExperimentsForUser = () => {
     axios
-    .get(`${api}/experiments/allExperiments`)
-    .then(async (experimentListResponse) => {
-      const experiments = experimentListResponse.data.data;
-      dispatch(setExperiments(experiments));
-      for (const experiment of experiments) {
-        if (experiment.active.includes(user._id)) {
-          dispatch(toggleExperimentStatus(experiment._id));
+      .get(`${api}/experiments/allExperiments`)
+      .then(async (experimentListResponse) => {
+        const experiments = experimentListResponse.data.data;
+        dispatch(setExperiments(experiments));
+        for (const experiment of experiments) {
+          if (experiment.active.includes(user._id)) {
+            dispatch(toggleExperimentStatus(experiment._id));
+          }
         }
-      }
-    })
-    .catch((errAllExperiments) => {
-      console.log(errAllExperiments);
-    });
+      })
+      .catch((errAllExperiments) => {
+        console.log(errAllExperiments);
+      });
   };
 
   if (experimentList.length === 0) {
