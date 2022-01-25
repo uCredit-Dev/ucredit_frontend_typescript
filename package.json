@@ -62,7 +62,7 @@
   },
   "devDependencies": {
     "@types/axios": "^0.14.0",
-    "@types/history": "^4.7.9",
+    "@types/history": "^5.0.0",
     "@types/jest": "^27.0.1",
     "@types/node": "^17.0.1",
     "@types/react": "^17.0.21",
