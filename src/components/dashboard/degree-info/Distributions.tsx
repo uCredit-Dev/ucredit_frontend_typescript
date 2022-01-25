@@ -1,5 +1,6 @@
 import { FC, useState } from 'react';
 import { useSelector } from 'react-redux';
+import Select from 'react-select';
 import { Major } from '../../../resources/commonTypes';
 import { selectTotalCredits } from '../../../slices/currentPlanSlice';
 import CourseBar from './CourseBar';
@@ -11,16 +12,26 @@ const Distributions: FC<{
   distributionOpen: boolean;
   setDistributionOpen: (open: boolean) => void;
   major: Major | null;
+  userMajors: string[];
   distributionBarsJSX: JSX.Element[];
+  changeDisplayMajor: Function;
 }> = ({
   distributionOpen,
   setDistributionOpen,
   major,
+  userMajors,
   distributionBarsJSX,
+  changeDisplayMajor,
 }) => {
   // Component state setup.
   const totalCredits = useSelector(selectTotalCredits);
   const [disclaimer, setDisclaimer] = useState<boolean>(false);
+
+  const majorOptions = userMajors.map((major, index) => ({
+    value: index,
+    label: major,
+  }));
+
   const getHref = (): string => {
     return major !== null ? major.url : '';
   };
@@ -48,6 +59,18 @@ const Distributions: FC<{
 
         </div>
       </div>
+      {userMajors.length > 1 && (
+        <Select
+          options={majorOptions}
+          value={majorOptions.find(({ label }) => label === major?.degree_name)}
+          onChange={(event) => {
+            changeDisplayMajor(event?.label);
+          }}
+          placeholder="Select Majors"
+          className="z-50 w-full"
+          hideSelectedOptions
+        />
+      )}
       {disclaimer ? (
         <div>
           <b> This feature is still being refined. </b> Degree criteria on

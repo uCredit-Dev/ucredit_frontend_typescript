@@ -1,7 +1,7 @@
 import { FC, useEffect } from 'react';
 import axios from 'axios';
 import { useDispatch, useSelector } from 'react-redux';
-import { DistributionObj, Plan } from './commonTypes';
+import { Plan } from './commonTypes';
 import {
   updatePlanList,
   selectUser,
@@ -18,7 +18,7 @@ import { api } from './assets';
 import { updateSearchTime } from '../slices/searchSlice';
 import {
   selectToAddName,
-  selectToAddMajor,
+  selectToAddMajors,
   selectGeneratePlanAddStatus,
   clearToAdd,
   updateGeneratePlanAddStatus,
@@ -33,17 +33,17 @@ const GenerateNewPlan: FC = () => {
   const user = useSelector(selectUser);
   const planList = useSelector(selectPlanList);
   const toAddName = useSelector(selectToAddName);
-  const toAddMajor = useSelector(selectToAddMajor);
+  const toAddMajors = useSelector(selectToAddMajors);
   const importing = useSelector(selectImportingStatus);
   const generatePlanAddStatus = useSelector(selectGeneratePlanAddStatus);
 
   // UseEffect that generates a new plan everytime generateNew is true.
   useEffect(() => {
-    if (!generatePlanAddStatus || toAddMajor === null) return;
+    if (!generatePlanAddStatus || toAddMajors.length === 0) return;
     const planBody = {
       name: 'Unnamed Plan',
       user_id: user._id,
-      majors: [toAddMajor.degree_name],
+      majors: toAddMajors.map((major) => major.degree_name),
       year: user.grade,
       expireAt:
         user._id === 'guestUser' ? Date.now() + 60 * 60 * 24 * 1000 : undefined,
@@ -63,9 +63,9 @@ const GenerateNewPlan: FC = () => {
           searchYear: newPlan.years[0]._id,
         }),
       );
-      // Make a new distribution for each distribution of the major of the plan.
-      toAddMajor.distributions.forEach(
-        async (distr: DistributionObj, index: number) => {
+      // Make a new distribution for each distribution of each major of the plan.
+      for (const { distributions } of toAddMajors) {
+        for (const distr of distributions) {
           const distributionBody = getDistributionBody(
             distr.name,
             user._id,
@@ -82,20 +82,17 @@ const GenerateNewPlan: FC = () => {
               newDistr.data.data._id,
             ],
           };
-          // After making our last distribution, we update our redux stores.
-          if (index === toAddMajor.distributions.length - 1) {
-            dispatch(updateSelectedPlan(newPlan));
-            dispatch(updatePlanList([newPlan, ...planList]));
-            toast.success(newPlan.name + ' created!');
-            if (user._id === 'guestUser') {
-              const planIdArray = [newPlan._id];
-              dispatch(updateGuestPlanIds(planIdArray));
-            }
-            dispatch(clearToAdd());
-            dispatch(updateGeneratePlanAddStatus(false));
-          }
-        },
-      );
+        }
+      }
+      dispatch(updateSelectedPlan(newPlan));
+      dispatch(updatePlanList([newPlan, ...planList]));
+      toast.success(newPlan.name + ' created!');
+      if (user._id === 'guestUser') {
+        const planIdArray = [newPlan._id];
+        dispatch(updateGuestPlanIds(planIdArray));
+      }
+      dispatch(clearToAdd());
+      dispatch(updateGeneratePlanAddStatus(false));
     };
     getData().catch(console.error);
     // eslint-disable-next-line react-hooks/exhaustive-deps
