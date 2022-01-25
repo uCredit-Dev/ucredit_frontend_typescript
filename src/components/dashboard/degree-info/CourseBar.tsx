@@ -9,6 +9,7 @@ import { requirements } from './distributionFunctions';
 import { ReactComponent as CheckSvg } from '../../../resources/svg/Check.svg';
 import DistributionPopup from './DistributionPopup';
 import ReactTooltip from 'react-tooltip';
+import { ReactComponent as Question } from '../../../resources/svg/Question.svg';
 
 /**
  * A distribution bar.
@@ -78,32 +79,44 @@ const CourseBar: FC<{
           flipped={flipped.slice()}
         />
       ) : null}
+      <div>
+      <Question
+                    className="h-4 fill-gray absolute right-1/4"
+                    onClick={() => {ReactTooltip.rebuild();
+                    }}
+                    //onClick={() => setOpenAPInfoBox(!openAPInfoBox)}
+                  />
+      </div>
+             
       <div
         className={clsx(
-          'text mb-1 whitespace-nowrap overflow-hidden overflow-ellipsis',
+          'text mb-1 rounded-lg whitespace-nowrap overflow-hidden overflow-ellipsis',
           {
             'font-bold': general,
           },
+          
         )}
         key={section}
       >
         {section}
       </div>
+      
       <div
-        className="relative flex flex-row w-full h-6 bg-gray-200 rounded transform hover:scale-101 transition duration-200 ease-in"
+        className="relative flex flex-row w-full h-6 transform full hover:scale-101 transition duration-200 ease-in"
         data-tip={tooltip}
         data-for="godTip"
-        onMouseOver={() => {
-          ReactTooltip.rebuild();
-        }}
+        // onMouseOver={() => {
+        //   ReactTooltip.rebuild();
+        // }}
       >
+        
         <div
-          className="relative flex flex-row mb-2 w-full h-6 bg-gray-200 rounded transform hover:scale-105 transition duration-200 ease-in"
+          className="relative flex flex-row mb-2 w-full h-6 bg-gray-200 rounded-full transform hover:scale-105 transition duration-200 ease-in"
           data-tip={tooltip}
           data-for="godTip"
         >
           <div
-            className="h-full bg-secondary rounded"
+            className="h-full bg-secondary rounded-full" 
             style={{
               width: `${
                 plannedCredits <= maxCredits
@@ -112,15 +125,18 @@ const CourseBar: FC<{
               }`,
             }}
           />
+          
           {remainingCredits === 0 ? (
-            <CheckSvg className="absolute left-1/2 top-1/2 w-5 h-5 text-white stroke-2 transform -translate-x-1/2 -translate-y-1/2" />
+            <CheckSvg className="absolute left-1/2 top-1/2 w-5 h-5 stroke-2 transform -translate-x-1/2 -translate-y-1/2" /> 
           ) : null}
         </div>
+
         {/* <Add
           className="h-6 transform hover:scale-150 transition duration-200 ease-in"
           onClick={addToDistribution}
         /> */}
       </div>
+      
     </>
   );
 };

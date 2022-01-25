@@ -131,7 +131,7 @@ const InfoMenu: FC = () => {
                   { hidden: !distributionOpen },
                 )}
               >
-                {getDistributionText(i)}
+                {/* {getDistributionText(i)} MI changed*/} 
               </button>
             ) : null}
           </div>
@@ -285,6 +285,7 @@ const InfoMenu: FC = () => {
     showDistributions[index] === true
       ? 'Hide Fine Requirements'
       : 'Show Fine Requirements';
+
   return (
     <div className="fixed z-40 right-0 flex flex-col justify-between mt-8 w-10 h-[72.5%] min-h-[40vh]">
       <div className="my-auto transform -rotate-90">
