@@ -55,7 +55,7 @@ const Distributions: FC<{
             changeDisplayMajor(event?.label);
           }}
           placeholder="Select Majors"
-          className="z-50 w-full"
+          className="z-40 w-full"
           hideSelectedOptions
         />
       )}

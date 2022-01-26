@@ -24,9 +24,15 @@ import {
 import { api, getCourse, getMajor } from '../../resources/assets';
 import { Course, Major, Plan, UserCourse } from '../../resources/commonTypes';
 import { allMajors } from '../../resources/majors';
-import Select from 'react-select';
+import Select, {
+  components,
+  DropdownIndicatorProps,
+  MultiValueProps,
+  StylesConfig,
+} from 'react-select';
 import axios from 'axios';
 import { toast } from 'react-toastify';
+import { updateGeneratePlanAddStatus } from '../../slices/popupSlice';
 
 /**
  * Info menu shows degree plan and degree information.
@@ -336,6 +342,78 @@ const InfoMenu: FC = () => {
       ? 'Hide Fine Requirements'
       : 'Show Fine Requirements';
 
+  const MultiValue = (
+    props: MultiValueProps<typeof majorOptions[number], true>,
+  ) => {
+    const major = allMajors.find(
+      (majorObj) => majorObj.degree_name === props.data.label,
+    );
+    const typeIndicator = major?.degree_name
+      .toLocaleLowerCase()
+      .includes('minor')
+      ? 'm'
+      : 'M';
+
+    return (
+      <components.MultiValue {...props}>
+        {typeIndicator + ' | ' + major?.degree_name.slice(5)}
+      </components.MultiValue>
+    );
+  };
+
+  const DropdownIndicator = () => {
+    return <components.DownChevron style={{ color: '#b3b3b3' }} />;
+  };
+
+  const customStyles: StylesConfig<typeof majorOptions[number], true> = {
+    control: (provided, state) => ({
+      ...provided,
+      borderColor: '#508aca',
+      color: 'white',
+      boxShadow: 'none',
+      '&:hover': {
+        borderColor: 'white',
+        cursor: 'pointer',
+      },
+      background: '#508aca',
+    }),
+    multiValue: (provided) => {
+      const maxWidth = '19rem';
+      return {
+        ...provided,
+        maxWidth,
+        color: 'white',
+        background: '#508aca',
+      };
+    },
+    multiValueLabel: (provided) => ({
+      ...provided,
+      color: 'white',
+      fontSize: '1rem',
+    }),
+    multiValueRemove: (styles, state) => {
+      console.log(styles);
+      return {
+        ...styles,
+        color: '#508aca',
+        borderRadius: '10%',
+        width: '1.5rem',
+        height: '1.5rem',
+        marginTop: 'auto',
+        marginBottom: 'auto',
+        backgroundColor: '#508aca',
+        ':hover': {
+          backgroundColor: 'red',
+          color: 'white',
+        },
+      };
+    },
+    indicatorSeparator: (provided, state) => ({
+      display: 'none',
+      ...provided,
+    }),
+  };
+
   return (
     <div className="fixed z-40 right-0 flex flex-col justify-between mt-8 w-10 h-[72.5%] min-h-[40vh]">
       <div className="my-auto transform -rotate-90">
@@ -356,6 +434,7 @@ const InfoMenu: FC = () => {
             </div>
             <Select
               isMulti
+              components={{ MultiValue, DropdownIndicator }}
               isClearable={false}
               options={majorOptions}
               value={majorOptions.filter((major) =>
@@ -365,6 +444,9 @@ const InfoMenu: FC = () => {
               placeholder="Change Major"
               name="majorChange"
               inputId="majorChange"
+              styles={customStyles}
+              className="z-50"
+              hideSelectedOptions={false}
             />
             {/* <InfoCards /> */}
             {(() => {
