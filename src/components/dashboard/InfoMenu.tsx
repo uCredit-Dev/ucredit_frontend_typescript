@@ -14,11 +14,19 @@ import {
   selectDistributions,
   selectPlan,
   updateDistributions,
+  updateSelectedPlan,
 } from '../../slices/currentPlanSlice';
-import { selectCourseCache } from '../../slices/userSlice';
-import { getCourse, getMajor } from '../../resources/assets';
+import {
+  selectCourseCache,
+  selectPlanList,
+  updatePlanList,
+} from '../../slices/userSlice';
+import { api, getCourse, getMajor } from '../../resources/assets';
 import { Course, Major, Plan, UserCourse } from '../../resources/commonTypes';
 import { allMajors } from '../../resources/majors';
+import Select from 'react-select';
+import axios from 'axios';
+import { toast } from 'react-toastify';
 
 /**
  * Info menu shows degree plan and degree information.
@@ -30,6 +38,7 @@ const InfoMenu: FC = () => {
   const currentPlan: Plan = useSelector(selectPlan);
   const courseCache = useSelector(selectCourseCache);
   const currPlanCourses = useSelector(selectCurrentPlanCourses);
+  const planList = useSelector(selectPlanList);
 
   const [infoOpen, setInfoOpen] = useState(false);
   const [showDistributions, setShowDistributions] = useState<boolean[]>(
@@ -83,6 +92,31 @@ const InfoMenu: FC = () => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [retrievedDistributions]);
 
+  const handleMajorChange = (event: any) => {
+    if (event.length === 0) {
+      toast.error('You must have at least one major!');
+      return;
+    }
+    const body = {
+      plan_id: currentPlan._id,
+      majors: event.map((option) => option.label),
+    };
+    axios
+      .patch(api + '/plans/update', body)
+      .then(({ data }) => {
+        const newUpdatedPlan = { ...currentPlan, majors: data.data.majors };
+        dispatch(updateSelectedPlan(newUpdatedPlan));
+        let newPlanList = [...planList];
+        for (let i = 0; i < planList.length; i++) {
+          if (newPlanList[i]._id === currentPlan._id) {
+            newPlanList[i] = { ...newUpdatedPlan };
+          }
+        }
+        dispatch(updatePlanList(newPlanList));
+      })
+      .catch((err) => console.log(err));
+  };
+
   /**
    * Gets all distributions associated with current plan
    * @returns an array of pairs for distributions and their requirements if distributions exist and null if they don't
@@ -103,6 +137,11 @@ const InfoMenu: FC = () => {
     setMajor(
       allMajors.find((majorObj) => majorObj.degree_name === selected) || null,
     );
+
+  const majorOptions = allMajors.map((major, index) => ({
+    value: index,
+    label: major.degree_name,
+  }));
 
   // Update displayed JSX every time distributions get updated.
   useEffect(() => {
@@ -142,7 +181,7 @@ const InfoMenu: FC = () => {
                   { hidden: !distributionOpen },
                 )}
               >
-                {/* {getDistributionText(i)} MI changed*/} 
+                {/* {getDistributionText(i)} MI changed*/}
               </button>
             ) : null}
           </div>
@@ -311,22 +350,39 @@ const InfoMenu: FC = () => {
       </div>
       {infoOpen ? (
         <div className="absolute z-50 right-14 top-5 ml-5 p-4 px-0 w-max max-h-full bg-white bg-opacity-90 rounded shadow overflow-y-scroll">
-          {/* <InfoCards /> */}
-          {(() => {
-            if (calculated) {
-              return (
-                <Distributions
-                  major={major}
-                  userMajors={currentPlan.majors}
-                  changeDisplayMajor={changeDisplayMajor}
-                  distributionOpen={distributionOpen}
-                  setDistributionOpen={setDistributionOpen}
-                  distributionBarsJSX={distributionBarsJSX}
-                />
-              );
-            } else
-              return <b className="m-10 h-80">Loading degree progress...</b>;
-          })()}
+          <div className="z-50 flex-none mx-4 p-6 w-96 h-auto bg-white rounded shadow">
+            <div className="self-start text-2xl font-medium">
+              {currentPlan.name}
+            </div>
+            <Select
+              isMulti
+              isClearable={false}
+              options={majorOptions}
+              value={majorOptions.filter((major) =>
+                currentPlan.majors.includes(major.label),
+              )}
+              onChange={handleMajorChange}
+              placeholder="Change Major"
+              name="majorChange"
+              inputId="majorChange"
+            />
+            {/* <InfoCards /> */}
+            {(() => {
+              if (calculated) {
+                return (
+                  <Distributions
+                    major={major}
+                    userMajors={currentPlan.majors}
+                    changeDisplayMajor={changeDisplayMajor}
+                    distributionOpen={distributionOpen}
+                    setDistributionOpen={setDistributionOpen}
+                    distributionBarsJSX={distributionBarsJSX}
+                  />
+                );
+              } else
+                return <b className="m-10 h-80">Loading degree progress...</b>;
+            })()}
+          </div>
         </div>
       ) : null}
     </div>
