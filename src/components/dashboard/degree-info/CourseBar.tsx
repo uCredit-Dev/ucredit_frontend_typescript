@@ -80,54 +80,57 @@ const CourseBar: FC<{
         />
       ) : null}
       <div>
-      <Question
-                    className="h-4 fill-gray absolute right-1/4"
-                    onClick={() => {ReactTooltip.rebuild();
-                    }}
-                    //onClick={() => setOpenAPInfoBox(!openAPInfoBox)}
-                  />
+        <Question
+          className="h-4 fill-gray absolute right-0 mr-12 mt-1"
+          data-tip={tooltip}
+          data-for="godTip"
+          onMouseOver={() => {
+
+            ReactTooltip.rebuild();
+          }}
+        //onHover={() => setOpenAPInfoBox(!openAPInfoBox)}
+        />
       </div>
-             
+
       <div
         className={clsx(
           'text mb-1 rounded-lg whitespace-nowrap overflow-hidden overflow-ellipsis',
           {
             'font-bold': general,
           },
-          
+
         )}
         key={section}
       >
         {section}
       </div>
-      
+
       <div
         className="relative flex flex-row w-full h-6 transform full hover:scale-101 transition duration-200 ease-in"
-        data-tip={tooltip}
-        data-for="godTip"
-        // onMouseOver={() => {
-        //   ReactTooltip.rebuild();
-        // }}
+        // data-tip={tooltip}
+        // data-for="godTip"
+      // onMouseOver={() => {
+      //   ReactTooltip.rebuild();
+      // }}
       >
-        
+
         <div
           className="relative flex flex-row mb-2 w-full h-6 bg-gray-200 rounded-full transform hover:scale-105 transition duration-200 ease-in"
-          data-tip={tooltip}
-          data-for="godTip"
+          // data-tip={tooltip}
+          // data-for="godTip"
         >
           <div
-            className="h-full bg-secondary rounded-full" 
+            className="h-full bg-secondary rounded-full"
             style={{
-              width: `${
-                plannedCredits <= maxCredits
-                  ? (plannedCredits / maxCredits) * 100 + '%'
-                  : '100%'
-              }`,
+              width: `${plannedCredits <= maxCredits
+                ? (plannedCredits / maxCredits) * 100 + '%'
+                : '100%'
+                }`,
             }}
           />
-          
+
           {remainingCredits === 0 ? (
-            <CheckSvg className="absolute left-1/2 top-1/2 w-5 h-5 stroke-2 transform -translate-x-1/2 -translate-y-1/2" /> 
+            <CheckSvg className="absolute left-1/2 top-1/2 w-5 h-5 stroke-2 transform -translate-x-1/2 -translate-y-1/2" />
           ) : null}
         </div>
 
@@ -136,7 +139,7 @@ const CourseBar: FC<{
           onClick={addToDistribution}
         /> */}
       </div>
-      
+
     </>
   );
 };

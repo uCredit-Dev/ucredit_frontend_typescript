@@ -132,7 +132,7 @@ const InfoMenu: FC = () => {
                 );
               }
             })}
-            {pair[1].length > 1 ? (
+            {/* {pair[1].length > 1 ? (
               <button
                 onClick={() => {
                   changeDistributionVisibility(i);
@@ -142,9 +142,9 @@ const InfoMenu: FC = () => {
                   { hidden: !distributionOpen },
                 )}
               >
-                {/* {getDistributionText(i)} MI changed*/} 
+                {getDistributionText(i)} 
               </button>
-            ) : null}
+            ) : null} */}
           </div>
         );
       },
