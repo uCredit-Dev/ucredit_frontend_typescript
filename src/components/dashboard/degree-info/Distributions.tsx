@@ -98,6 +98,7 @@ const Distributions: FC<{
           report any issues in the feedback form.
         </div>
       ) : null}
+      
       <CourseBar
         distribution={{
           name: 'Total Credits',
@@ -111,8 +112,11 @@ const Distributions: FC<{
               : '',
         }}
         general={true}
+        bgcolor=''
       />{' '}
-      {distributionBarsJSX}
+      {distributionBarsJSX} 
+      {/* M notes: distributionsBarsJSX is where the bars except total credits are created  */}
+      
     </div>
   );
 };

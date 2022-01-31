@@ -10,6 +10,7 @@ import { ReactComponent as CheckSvg } from '../../../resources/svg/Check.svg';
 import DistributionPopup from './DistributionPopup';
 import ReactTooltip from 'react-tooltip';
 import { ReactComponent as Question } from '../../../resources/svg/Question.svg';
+import { getColors } from '../../../resources/assets'; //M tried 
 
 /**
  * A distribution bar.
@@ -17,15 +18,18 @@ import { ReactComponent as Question } from '../../../resources/svg/Question.svg'
  * @prop general - if this is a general distribution
  * @prop description - this is the description of the distribution
  * @prop total - whether this is a course bar tracking the total amount of credits
- */
+* M tried @prop bgcolor - color of this distribution  
+*/
 const CourseBar: FC<{
   distribution: requirements;
-  general: boolean;
-}> = ({ distribution, general }) => {
+  general: boolean; 
+  bgcolor: string; //M tried 
+}> = ({ distribution, general, bgcolor }) => {
   const [displayAdd, setDisplayAdd] = useState(false);
   const [flipped, setFlipped] = useState<string[]>([]);
   const [plannedCredits, setPlannedCredits] = useState(
     distribution.fulfilled_credits,
+
   );
 
   const currPlanCourses = useSelector(selectCurrentPlanCourses);
@@ -120,14 +124,34 @@ const CourseBar: FC<{
           // data-for="godTip"
         >
           <div
-            className="h-full bg-secondary rounded-full"
+            className="h-full rounded-full" //tried baby pink here
+
             style={{
+              background: bgcolor, //if i do it here then all bars get affected
+              //backgroundColor: 'testing3', m tried
+              //background: bgcolor - this leads to errors
               width: `${plannedCredits <= maxCredits
                 ? (plannedCredits / maxCredits) * 100 + '%'
                 : '100%'
                 }`,
             }}
           />
+
+{/* const getAreaName = (area: string): string => {
+    if (area === 'N') {
+      return 'Natural Sciences'; //we could return the color instead 
+    } else if (area === 'E') {
+      return 'Engineering';
+    } else if (area === 'S') {
+      return 'Social Sciences';
+    } else if (area === 'H') {
+      return 'Humanities';
+    } else if (area === 'Q') {
+      return 'Quantitative';
+    } else {
+      return 'None';
+    }
+}; */}
 
           {remainingCredits === 0 ? (
             <CheckSvg className="absolute left-1/2 top-1/2 w-5 h-5 stroke-2 transform -translate-x-1/2 -translate-y-1/2" />

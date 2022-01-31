@@ -16,9 +16,10 @@ import {
   updateDistributions,
 } from '../../slices/currentPlanSlice';
 import { selectCourseCache } from '../../slices/userSlice';
-import { getCourse, getMajor } from '../../resources/assets';
+import { getColors, getCourse, getMajor } from '../../resources/assets';
 import { Course, Major, Plan, UserCourse } from '../../resources/commonTypes';
 import { allMajors } from '../../resources/majors';
+import { colors } from 'react-select/dist/declarations/src/theme';
 
 /**
  * Info menu shows degree plan and degree information.
@@ -104,6 +105,30 @@ const InfoMenu: FC = () => {
       allMajors.find((majorObj) => majorObj.degree_name === selected) || null,
     );
 
+      /**
+       * helper function
+       */
+
+  
+  const getColor = (expression: string) : string => {
+    const colors = ["red", "blue", "green", "yellow"];
+    const splitA = expression.split("[A]");
+    let area:string | null = null; 
+    if (splitA.length > 1) {
+        area = splitA[0].charAt(splitA[0].length-1);
+    }
+    const splitW = expression.split("[W]");
+    if (splitW.length > 1) {
+      area = splitW[0].charAt(splitW[0].length-1);
+    }
+    if (area === null) {
+      area = ""
+    }
+
+  }
+
+  //testExpression = getColor('N[A]^OR^E[A]^OR^Q[A]');
+
   // Update displayed JSX every time distributions get updated.
   useEffect(() => {
     const distributionJSX = distributions.map(
@@ -113,11 +138,14 @@ const InfoMenu: FC = () => {
             {pair[1].map((dis, index) => {
               if (index === 0) {
                 return (
+                  //helper function 
                   <div
                     key={dis.name + index + dis.expr}
                     className={clsx({ hidden: !distributionOpen })}
                   >
-                    <CourseBar distribution={dis} general={true} />
+                    <CourseBar distribution={dis} bgcolor={getColors(dis.expr)} general={true} />
+                    {/* above coursebar is also where the bars are??
+                    M note: I added the bgcolor as property of the coursebar */}
                   </div>
                 );
               } else {
