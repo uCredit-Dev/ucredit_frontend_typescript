@@ -220,9 +220,17 @@ const YearComponent: FC<{
       }}
     >
       <div className="flex flex-col mt-1 w-full max-w-yearheading h-yearheading font-medium">
-        <div className="flex flex-row w-full text-zinc-700">
+        <div className="flex flex-row w-full text-zinc-700 gap-2">
           <div className="mr-1 text-lg font-thin">
-            <button onClick={() => setCollapse(!collapse)}>{'>'}</button>
+            {collapse ? (
+              <button 
+              className="text-sky-500"
+              onClick={() => setCollapse(!collapse)}>▶</button>
+            ) : (
+              <button 
+              className="text-sky-500"
+              onClick={() => setCollapse(!collapse)}>▼</button>
+            )}
           </div>
           {edittingName ? (
             <input
@@ -258,7 +266,7 @@ const YearComponent: FC<{
         ) : null}
       </div>
       <div
-        className="p-2 bg-white rounded shadow cursor-default"
+        className="p-2 bg-white rounded cursor-default"
         onMouseLeave={() => setDraggable(false)}
         onMouseEnter={() => setDraggable(true)}
       >
