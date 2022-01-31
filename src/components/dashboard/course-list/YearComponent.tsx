@@ -296,13 +296,12 @@ const YearComponent: FC<{
               {getDisplayedSemesters(collapse)}
             </div>
           ) : (
-            null
-            // <Semester
-            //   semesterName="All"
-            //   semesterYear={year}
-            //   courses={fallCourses}
-            //   display={true}
-            // />
+            <Semester
+              semesterName="All"
+              semesterYear={year}
+              courses={fallCourses}
+              display={true}
+            />
           )}
         </div>
       )}

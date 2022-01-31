@@ -103,7 +103,7 @@ const CourseComponent: FC<{
   return (
     <>
       <div
-        className="relative flex items-center justify-between text-xs mt-2 pl-1 p-0.5 w-1/5 max-w-yearheading rounded hover:shadow md:w-48"
+        className="relative flex items-center justify-between text-xs mt-2 pl-1 p-0.5 w-1/5 max-w-yearheading rounded hover:shadow md:w-full"
         onMouseEnter={activate}
         onMouseLeave={deactivate}
         onMouseOver={() => {
@@ -114,7 +114,7 @@ const CourseComponent: FC<{
         <div className="grid grid-flow-row-dense grid-cols-10 w-full h-full gap-x-1.5">
           {course.area !== 'None' ? (
             <div
-              className="col-span-1 px-1.5 h-3/4 place-self-center rounded-lg select-none"
+              className="col-span-1 px-1.5 h-5/6 place-self-center rounded-lg select-none"
               style={{ backgroundColor: getColors(course.area, course.wi) }}
             >
             </div>
@@ -163,8 +163,8 @@ const CourseComponent: FC<{
                   },
                 )}
               >
-                <div className="absolute left-0 top-0 w-full h-full bg-white bg-opacity-80 rounded" />
-                <div
+                <div className=""/>
+                {/* <div
                   className={clsx(
                     'absolute z-20 left-0 w-0 h-full text-white hover:bg-secondary bg-primary bg-opacity-80 rounded cursor-move transform duration-150 ease-in',
                     {
@@ -211,7 +211,7 @@ const CourseComponent: FC<{
                       />
                     ) : null}
                   </div>
-                </div>
+                </div> */}
               </div>
             )}
           </Transition>
