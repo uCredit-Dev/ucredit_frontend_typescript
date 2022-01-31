@@ -43,6 +43,7 @@ const YearComponent: FC<{
   const [yearName, setYearName] = useState<string>(year.name);
   const [editedName, setEditedName] = useState<boolean>(false);
   const [edittingName, setEdittingName] = useState<boolean>(false);
+  const [collapse, setCollapse] = useState<boolean>(true);
   const [toShow, setToShow] = useState<SemSelected>({
     fall: true,
     spring: true,
@@ -133,7 +134,7 @@ const YearComponent: FC<{
     setEditedName(true);
   };
 
-  const getDisplayedSemesters = (): JSX.Element[] => {
+  const getDisplayedSemesters = (tmp: boolean): JSX.Element[] => {
     const semesters: JSX.Element[] = [];
 
     if (toShow.fall)
@@ -148,6 +149,7 @@ const YearComponent: FC<{
             semesterName="Fall"
             semesterYear={year}
             courses={fallCourses}
+            display={true}
           />
         </div>,
       );
@@ -163,6 +165,7 @@ const YearComponent: FC<{
             semesterName="Intersession"
             semesterYear={year}
             courses={winterCourses}
+            display={true}
           />
         </div>,
       );
@@ -178,6 +181,7 @@ const YearComponent: FC<{
             semesterName="Spring"
             semesterYear={year}
             courses={springCourses}
+            display={true}
           />
         </div>,
       );
@@ -193,17 +197,18 @@ const YearComponent: FC<{
             semesterName="Summer"
             semesterYear={year}
             courses={summerCourses}
+            display={true}
           />
         </div>,
       );
-    return semesters;
+    return tmp ? [] : semesters;
   };
 
   return (
     <div
       id={id.toString()}
       className={
-        'collapse cursor-move p-2 max-w-year-heading w-max rounded mb-4 rounded hover:shadow min-w-[14rem]' +
+        'cursor-move p-2 max-w-year-heading w-max rounded mb-4 rounded hover:shadow min-w-[14rem]' +
         (addingPrereqStatus ? 'z-30' : '')
       }
       onMouseLeave={() => {
@@ -216,7 +221,9 @@ const YearComponent: FC<{
     >
       <div className="flex flex-col mt-1 w-full max-w-yearheading h-yearheading font-medium">
         <div className="flex flex-row w-full text-zinc-700">
-          <div className="mr-1 text-lg font-thin">✥</div>
+          <div className="mr-1 text-lg font-thin">
+            <button onClick={() => setCollapse(!collapse)}>{'>'}</button>
+          </div>
           {edittingName ? (
             <input
               id={year._id + 'input'}
@@ -257,14 +264,15 @@ const YearComponent: FC<{
       >
         {id !== 0 ? (
           <div className="flex flex-row">
-            {getDisplayedSemesters()}
+            {getDisplayedSemesters(collapse)}
           </div>
         ) : (
-          <Semester
-            semesterName="All"
-            semesterYear={year}
-            courses={fallCourses}
-          />
+          null
+          // <Semester
+          //   semesterName="All"
+          //   semesterYear={year}
+          //   courses={fallCourses}
+          // />
         )}
       </div>
     </div>
