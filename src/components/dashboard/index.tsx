@@ -133,7 +133,8 @@ const Dashboard: FC<{ id: string | null }> = ({ id }) => {
         />
       ) : null}
       {showHeader ? <UserSection /> : null}
-      <div className="flex-grow w-full bg-gray-100">
+      {/* <div className="flex-grow w-full bg-white"> */}
+      <div className="flex-grow w-full">
         <div className="flex flex-col w-full">
           <div className="flex flex-row thin:flex-wrap-reverse mt-content w-full h-full">
             <div className="flex flex-col w-full">
@@ -172,7 +173,7 @@ const Dashboard: FC<{ id: string | null }> = ({ id }) => {
                     </button>
                   </div>
                 ) : null}
-
+                
                 <CourseList />
               </div>
             </div>

@@ -208,7 +208,7 @@ const YearComponent: FC<{
     <div
       id={id.toString()}
       className={
-        'cursor-move p-2 max-w-year-heading w-max rounded mb-4 rounded hover:shadow min-w-[14rem]' +
+        'bg-red-500 cursor-move p-2 max-w-year-heading w-full rounded mb-4 rounded hover:shadow min-w-[14rem]' +
         (addingPrereqStatus ? 'z-30' : '')
       }
       onMouseLeave={() => {
@@ -219,8 +219,8 @@ const YearComponent: FC<{
         setDraggable(false);
       }}
     >
-      <div className="flex flex-col mt-1 w-full max-w-yearheading h-yearheading font-medium">
-        <div className="flex flex-row w-full text-zinc-700 gap-2">
+      <div className="flex flex-col mt-1 w-full h-yearheading font-medium">
+        <div className="bg-blue-500 flex flex-row w-full text-zinc-700 gap-2">
           <div className="mr-1 text-lg font-thin">
             {collapse ? (
               <button 
@@ -265,24 +265,47 @@ const YearComponent: FC<{
           />
         ) : null}
       </div>
-      <div
-        className="p-2 bg-white rounded cursor-default"
+      {collapse ? (
+        <div
+        className="bg-white rounded cursor-default"
         onMouseLeave={() => setDraggable(false)}
         onMouseEnter={() => setDraggable(true)}
-      >
-        {id !== 0 ? (
-          <div className="flex flex-row">
-            {getDisplayedSemesters(collapse)}
-          </div>
-        ) : (
-          null
-          // <Semester
-          //   semesterName="All"
-          //   semesterYear={year}
-          //   courses={fallCourses}
-          // />
-        )}
-      </div>
+        >
+          {id !== 0 ? (
+            <div className="flex flex-row">
+              {getDisplayedSemesters(collapse)}
+            </div>
+          ) : (
+            null
+            // <Semester
+            //   semesterName="All"
+            //   semesterYear={year}
+            //   courses={fallCourses}
+            //   display={true}
+            // />
+          )}
+        </div>
+      ) : (
+        <div
+        className="px-6 py-2 bg-white rounded cursor-default"
+        onMouseLeave={() => setDraggable(false)}
+        onMouseEnter={() => setDraggable(true)}
+        >
+          {id !== 0 ? (
+            <div className="flex flex-row">
+              {getDisplayedSemesters(collapse)}
+            </div>
+          ) : (
+            null
+            // <Semester
+            //   semesterName="All"
+            //   semesterYear={year}
+            //   courses={fallCourses}
+            //   display={true}
+            // />
+          )}
+        </div>
+      )}
     </div>
   );
 };
