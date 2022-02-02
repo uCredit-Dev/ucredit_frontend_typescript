@@ -353,7 +353,7 @@ const Semester: FC<{
 };
 
 const getListStyle = (isDraggingOver: any) => ({
-  background: isDraggingOver ? 'skyblue' : 'transparent',
+  background: isDraggingOver ? 'transparent' : 'transparent',
 });
 
 export default Semester;
