@@ -64,6 +64,7 @@ const Dashboard: FC<{ id: string | null }> = ({ id }) => {
   const [showHeader, setShowHeader] = useState<boolean>(true);
   const [dropdown, setDropdown] = useState<boolean>(false);
   const [shareableURL, setShareableURL] = useState<string>('');
+  const [toggleHoriz, setToggleHoriz] = useState<boolean>(true);
 
   // Handles plan change event.
   const handlePlanChange = (event: any) => {
@@ -133,8 +134,8 @@ const Dashboard: FC<{ id: string | null }> = ({ id }) => {
         />
       ) : null}
       {showHeader ? <UserSection /> : null}
-      {/* <div className="flex-grow w-full bg-white"> */}
-      <div className="flex-grow w-full">
+      <div className="flex-grow w-full bg-white">
+      {/* <div className="flex-grow w-full"> */}
         <div className="flex flex-col w-full">
           <div className="flex flex-row thin:flex-wrap-reverse mt-content w-full h-full">
             <div className="flex flex-col w-full">
@@ -173,8 +174,18 @@ const Dashboard: FC<{ id: string | null }> = ({ id }) => {
                     </button>
                   </div>
                 ) : null}
-                
-                <CourseList />
+                <div className="text-3xl mt-1">
+                  {toggleHoriz ? (
+                    <button
+                    className="text-lime-600" 
+                    onClick={() => setToggleHoriz(!toggleHoriz)}>☑</button>
+                  ) : (
+                    <button 
+                    className="text-gray-500"
+                    onClick={() => setToggleHoriz(!toggleHoriz)}>☒</button>
+                  )}
+                </div>
+                {toggleHoriz ? <CourseList /> : null}
               </div>
             </div>
           </div>
