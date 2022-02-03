@@ -208,7 +208,7 @@ const YearComponent: FC<{
     <div
       id={id.toString()}
       className={
-        'bg-red-500 cursor-move p-2 max-w-year-heading w-full rounded mb-4 rounded hover:shadow min-w-[14rem]' +
+        'cursor-move p-2 max-w-year-heading w-full min-w-[14rem]' +
         (addingPrereqStatus ? 'z-30' : '')
       }
       onMouseLeave={() => {
@@ -220,7 +220,7 @@ const YearComponent: FC<{
       }}
     >
       <div className="flex flex-col mt-1 w-full h-yearheading font-medium">
-        <div className="bg-blue-500 flex flex-row w-full text-zinc-700 gap-2">
+        <div className="flex flex-row w-full text-zinc-700 gap-2">
           <div className="mr-1 text-lg font-thin">
             {collapse ? (
               <button 

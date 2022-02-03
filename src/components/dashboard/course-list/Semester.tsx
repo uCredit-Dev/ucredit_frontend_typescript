@@ -259,7 +259,7 @@ const Semester: FC<{
         !display ? null : 
           <div onMouseLeave={() => setOpenAPInfoBox(false)}>
             <div className="flex flex-col max-w-yearheading h-yearheading font-medium">
-              <div className="bg-red-500 flex flex-row items-center justify-between px-2 py-1 h-yearheading1 bg-white">
+              <div className="flex flex-row items-center justify-between px-2 py-1 h-yearheading1 bg-white">
                 <div className="flex flex-row items-center w-full h-auto font-normal gap-3">
                   {semesterName === 'All' ? (
                     <>
