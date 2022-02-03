@@ -28,6 +28,7 @@ import DeletePlanPopup from '../popups/DeletePlanPopup';
 import DeleteYearPopup from '../popups/DeleteYearPopup';
 import PlanAdd from '../popups/PlanAdd';
 import CourseList from './course-list/CourseList';
+import VCourseList from './course-list/VCourseList';
 import InfoMenu from './InfoMenu';
 import ActionBar from './degree-info/ActionBar';
 import { useScrollPosition } from '@n8tb1t/use-scroll-position';
@@ -185,7 +186,7 @@ const Dashboard: FC<{ id: string | null }> = ({ id }) => {
                     onClick={() => setToggleHoriz(!toggleHoriz)}>☒</button>
                   )}
                 </div>
-                {toggleHoriz ? <CourseList /> : null}
+                {toggleHoriz ? <CourseList /> : <VCourseList />}
               </div>
             </div>
           </div>

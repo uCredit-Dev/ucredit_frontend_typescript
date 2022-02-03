@@ -134,7 +134,7 @@ const YearComponent: FC<{
     setEditedName(true);
   };
 
-  const getDisplayedSemesters = (tmp: boolean): JSX.Element[] => {
+  const getDisplayedSemesters = (tmpCollapse: boolean): JSX.Element[] => {
     const semesters: JSX.Element[] = [];
 
     if (toShow.fall)
@@ -201,7 +201,7 @@ const YearComponent: FC<{
           />
         </div>,
       );
-    return tmp ? [] : semesters;
+    return tmpCollapse ? [] : semesters;
   };
 
   return (

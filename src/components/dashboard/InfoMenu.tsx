@@ -110,22 +110,22 @@ const InfoMenu: FC = () => {
        */
 
   
-  const getColor = (expression: string) : string => {
-    const colors = ["red", "blue", "green", "yellow"];
-    const splitA = expression.split("[A]");
-    let area:string | null = null; 
-    if (splitA.length > 1) {
-        area = splitA[0].charAt(splitA[0].length-1);
-    }
-    const splitW = expression.split("[W]");
-    if (splitW.length > 1) {
-      area = splitW[0].charAt(splitW[0].length-1);
-    }
-    if (area === null) {
-      area = ""
-    }
+  // const getColor = (expression: string) : string => {
+  //   const colors = ["red", "blue", "green", "yellow"];
+  //   const splitA = expression.split("[A]");
+  //   let area:string | null = null; 
+  //   if (splitA.length > 1) {
+  //       area = splitA[0].charAt(splitA[0].length-1);
+  //   }
+  //   const splitW = expression.split("[W]");
+  //   if (splitW.length > 1) {
+  //     area = splitW[0].charAt(splitW[0].length-1);
+  //   }
+  //   if (area === null) {
+  //     area = ""
+  //   }
 
-  }
+  // }
 
   //testExpression = getColor('N[A]^OR^E[A]^OR^Q[A]');
 
@@ -143,7 +143,8 @@ const InfoMenu: FC = () => {
                     key={dis.name + index + dis.expr}
                     className={clsx({ hidden: !distributionOpen })}
                   >
-                    <CourseBar distribution={dis} bgcolor={getColors(dis.expr)} general={true} />
+                    <CourseBar distribution={dis} general={true} bgcolor={"skyblue"}/>
+                    {/* <CourseBar distribution={dis} bgcolor={getColors(dis.expr)} general={true} /> */}
                     {/* above coursebar is also where the bars are??
                     M note: I added the bgcolor as property of the coursebar */}
                   </div>
