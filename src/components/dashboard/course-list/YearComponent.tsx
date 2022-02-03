@@ -243,10 +243,13 @@ const YearComponent: FC<{
               }}
             />
           ) : (
-            <div className="flex-shrink mt-auto w-full text-lg font-semibold bg-transparent border-b focus:border-gray-400 border-transparent focus:outline-none cursor-move select-none">
+            <div className="flex-shrink mt-auto w-full text-xl font-semibold bg-transparent border-b focus:border-gray-400 border-transparent focus:outline-none cursor-move select-none">
               {yearName}
             </div>
           )}
+          <div className="text-sm font-bold mt-1">
+            0_credits
+          </div>
           <MoreSvg
             onClick={() => {
               setDisplay(!display);
