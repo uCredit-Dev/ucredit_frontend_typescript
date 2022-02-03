@@ -50,7 +50,8 @@ module.exports = {
       },
       colors: {
         primary: '#83B9FF',
-        secondary: '#5395D2',
+        secondary: '#5395D2', 
+        testing3: '#f4c2c2', //M tried
         H: '#FFDBDB',
         N: '#FFE0CB',
         S: '#FFF9A3',

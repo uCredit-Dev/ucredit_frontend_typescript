@@ -9,6 +9,8 @@ import { requirements } from './distributionFunctions';
 import { ReactComponent as CheckSvg } from '../../../resources/svg/Check.svg';
 import DistributionPopup from './DistributionPopup';
 import ReactTooltip from 'react-tooltip';
+import { ReactComponent as Question } from '../../../resources/svg/Question.svg';
+import { getColors } from '../../../resources/assets'; //M tried 
 
 /**
  * A distribution bar.
@@ -16,15 +18,18 @@ import ReactTooltip from 'react-tooltip';
  * @prop general - if this is a general distribution
  * @prop description - this is the description of the distribution
  * @prop total - whether this is a course bar tracking the total amount of credits
- */
+* M tried @prop bgcolor - color of this distribution  
+*/
 const CourseBar: FC<{
   distribution: requirements;
-  general: boolean;
-}> = ({ distribution, general }) => {
+  general: boolean; 
+  bgcolor: string; //M tried 
+}> = ({ distribution, general, bgcolor }) => {
   const [displayAdd, setDisplayAdd] = useState(false);
   const [flipped, setFlipped] = useState<string[]>([]);
   const [plannedCredits, setPlannedCredits] = useState(
     distribution.fulfilled_credits,
+
   );
 
   const currPlanCourses = useSelector(selectCurrentPlanCourses);
@@ -78,49 +83,87 @@ const CourseBar: FC<{
           flipped={flipped.slice()}
         />
       ) : null}
+      <div>
+        <Question
+          className="h-4 fill-gray absolute right-0 mr-12 mt-1"
+          data-tip={tooltip}
+          data-for="godTip"
+          onMouseOver={() => {
+
+            ReactTooltip.rebuild();
+          }}
+        //onHover={() => setOpenAPInfoBox(!openAPInfoBox)}
+        />
+      </div>
+
       <div
         className={clsx(
-          'text mb-1 whitespace-nowrap overflow-hidden overflow-ellipsis',
+          'text mb-1 rounded-lg whitespace-nowrap overflow-hidden overflow-ellipsis',
           {
             'font-bold': general,
           },
+
         )}
         key={section}
       >
         {section}
       </div>
+
       <div
-        className="relative flex flex-row w-full h-6 bg-gray-200 rounded transform hover:scale-101 transition duration-200 ease-in"
-        data-tip={tooltip}
-        data-for="godTip"
-        onMouseOver={() => {
-          ReactTooltip.rebuild();
-        }}
+        className="relative flex flex-row w-full h-6 transform full hover:scale-101 transition duration-200 ease-in"
+        // data-tip={tooltip}
+        // data-for="godTip"
+      // onMouseOver={() => {
+      //   ReactTooltip.rebuild();
+      // }}
       >
+
         <div
-          className="relative flex flex-row mb-2 w-full h-6 bg-gray-200 rounded transform hover:scale-105 transition duration-200 ease-in"
-          data-tip={tooltip}
-          data-for="godTip"
+          className="relative flex flex-row mb-2 w-full h-6 bg-gray-200 rounded-full transform hover:scale-105 transition duration-200 ease-in"
+          // data-tip={tooltip}
+          // data-for="godTip"
         >
           <div
-            className="h-full bg-secondary rounded"
+            className="h-full rounded-full" //tried baby pink here
+
             style={{
-              width: `${
-                plannedCredits <= maxCredits
-                  ? (plannedCredits / maxCredits) * 100 + '%'
-                  : '100%'
-              }`,
+              background: bgcolor, //if i do it here then all bars get affected
+              //backgroundColor: 'testing3', m tried
+              //background: bgcolor - this leads to errors
+              width: `${plannedCredits <= maxCredits
+                ? (plannedCredits / maxCredits) * 100 + '%'
+                : '100%'
+                }`,
             }}
           />
+
+{/* const getAreaName = (area: string): string => {
+    if (area === 'N') {
+      return 'Natural Sciences'; //we could return the color instead 
+    } else if (area === 'E') {
+      return 'Engineering';
+    } else if (area === 'S') {
+      return 'Social Sciences';
+    } else if (area === 'H') {
+      return 'Humanities';
+    } else if (area === 'Q') {
+      return 'Quantitative';
+    } else {
+      return 'None';
+    }
+}; */}
+
           {remainingCredits === 0 ? (
-            <CheckSvg className="absolute left-1/2 top-1/2 w-5 h-5 text-white stroke-2 transform -translate-x-1/2 -translate-y-1/2" />
+            <CheckSvg className="absolute left-1/2 top-1/2 w-5 h-5 stroke-2 transform -translate-x-1/2 -translate-y-1/2" />
           ) : null}
         </div>
+
         {/* <Add
           className="h-6 transform hover:scale-150 transition duration-200 ease-in"
           onClick={addToDistribution}
         /> */}
       </div>
+
     </>
   );
 };
