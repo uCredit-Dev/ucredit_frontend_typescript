@@ -168,7 +168,7 @@ const YearSettingsDropdown: FC<{
   };
 
   return (
-    <div className="relative -right-12 z-40">
+    <div className="relative left-full z-40">
       <div className="absolute z-40 flex flex-col w-40 text-black bg-gray-100 rounded shadow">
         <button
           onClick={() => {
