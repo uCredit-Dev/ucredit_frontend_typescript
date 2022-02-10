@@ -7,10 +7,11 @@ import {
   selectPlan,
   updateSelectedPlan,
 } from '../../../slices/currentPlanSlice';
-import { api } from '../../../resources/assets';
+import { api, course_tags } from '../../../resources/assets';
 import YearSettingsDropdown from './YearSettingsDropdown';
 import clsx from 'clsx';
 import { selectAddingPrereq } from '../../../slices/popupSlice';
+import { getColors } from '../../../resources/assets';
 
 type SemSelected = {
   fall: boolean;
@@ -44,6 +45,15 @@ const YearComponent: FC<{
   const [editedName, setEditedName] = useState<boolean>(false);
   const [edittingName, setEdittingName] = useState<boolean>(false);
   const [collapse, setCollapse] = useState<boolean>(true);
+  const [totalCredits, setTotalCredits] = useState<number>(0);
+  const [areaCredits, setAreaCredits] = useState({
+    N: 0,
+    Q: 0,
+    E: 0,
+    S: 0,
+    H: 0,
+    W: 0
+  });
   const [toShow, setToShow] = useState<SemSelected>({
     fall: true,
     spring: true,
@@ -78,6 +88,49 @@ const YearComponent: FC<{
     setSpringCourses(parsedSpringCourses);
     setWinterCourses(parsedIntersessionCourses);
     setSummerCourses(parsedSummerCourses);
+    // Tracks total number of credits every year
+    let count: number = 0;
+    courses.forEach((course) => {
+      count += course.credits;
+      if (course.area !== "None") {
+        for (let i = 0; i < course.area.length; i++) {
+          switch(course.area[i]) {
+            case "N":
+              setAreaCredits(previousState => {
+                return {...previousState, N: (previousState.N + course.credits)};
+              });
+              break;
+            case "Q":
+              setAreaCredits(previousState => {
+                return {...previousState, Q: previousState.Q + course.credits};
+              });
+              break;
+            case "E":
+              setAreaCredits(previousState => {
+                return {...previousState, E: previousState.E + course.credits};
+              });
+              break;
+            case "H":
+              setAreaCredits(previousState => {
+                return {...previousState, H: previousState.H + course.credits};
+              });
+              break;
+            case "S":
+              setAreaCredits(previousState => {
+                return {...previousState, S: previousState.S + course.credits};
+              });
+              break;
+          }
+          if (course.wi) {
+            setAreaCredits(previousState => {
+              return {...previousState, W: previousState.W + course.credits};
+            });
+          }
+        }
+      }
+    });
+    setTotalCredits(count);
+
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [courses, currentPlan, currentPlan.name]);
 
@@ -224,11 +277,11 @@ const YearComponent: FC<{
           <div className="mr-1 text-lg font-thin">
             {collapse ? (
               <button 
-              className="text-sky-500"
+              className="text-sky-500 mt-2"
               onClick={() => setCollapse(!collapse)}>▶</button>
             ) : (
               <button 
-              className="text-sky-500"
+              className="text-sky-500 mt-2"
               onClick={() => setCollapse(!collapse)}>▼</button>
             )}
           </div>
@@ -236,26 +289,76 @@ const YearComponent: FC<{
             <input
               id={year._id + 'input'}
               value={yearName}
-              className="flex-shrink mt-auto w-full text-md font-semibold bg-transparent border-b focus:border-gray-400 border-transparent focus:outline-none cursor-move select-none"
+              className="flex-grow mt-auto text-md font-semibold bg-transparent border-b focus:border-gray-400 border-transparent focus:outline-none cursor-move select-none"
               onChange={handleYearNameChange}
               onBlur={() => {
                 setEdittingName(false);
               }}
             />
           ) : (
-            <div className="flex-shrink mt-auto w-full text-xl font-semibold bg-transparent border-b focus:border-gray-400 border-transparent focus:outline-none cursor-move select-none">
+            <div className="flex-grow mt-auto text-xl font-semibold bg-transparent border-b focus:border-gray-400 border-transparent focus:outline-none cursor-move select-none">
               {yearName}
             </div>
           )}
-          <div className="text-sm font-bold mt-1">
-            0_credits
+          <div className="flex flex-row gap-10">
+            <div className="flex flex-row text-sm font-medium mt-2 gap-3">
+              {areaCredits.N ? (
+                <div className="flex flex-row gap-1">
+                  {areaCredits.N}
+                  <div 
+                    className="rounded text-center w-3 mb-2 font-bold"
+                    style={{ backgroundColor: getColors("N", false) }}>N</div>
+                </div>
+              ): null}
+              {areaCredits.Q ? (
+                <div className="flex flex-row gap-1">
+                {areaCredits.Q}
+                <div 
+                  className="rounded text-center w-3 mb-2 font-bold"
+                  style={{ backgroundColor: getColors("Q", false) }}>Q</div>
+              </div>
+              ): null}
+              {areaCredits.E ? (
+                <div className="flex flex-row gap-1">
+                {areaCredits.E}
+                <div 
+                  className="rounded text-center w-3 mb-2 font-bold"
+                  style={{ backgroundColor: getColors("E", false) }}>E</div>
+              </div>
+              ): null}
+              {areaCredits.H ? (
+                <div className="flex flex-row gap-1">
+                {areaCredits.H}
+                <div
+                  className="rounded text-center w-3 mb-2 font-bold" 
+                  style={{ backgroundColor: getColors("H", false) }}>H</div>
+              </div>
+              ): null}
+              {areaCredits.S ? (
+                <div className="flex flex-row gap-1">
+                {areaCredits.S}
+                <div
+                  className="rounded text-center w-3 mb-2 font-bold" 
+                  style={{ backgroundColor: getColors("S", false) }}>S</div>
+              </div>
+              ): null}
+              {areaCredits.W ? (
+                <div className="flex flex-row gap-1">
+                {areaCredits.W}
+                <div
+                  className="rounded text-center mb-2 font-bold" 
+                  style={{ backgroundColor: getColors("None", true) }}>W</div>
+              </div>
+              ): null}
+              <div className="font-bold">{totalCredits} Credits</div>
+            </div>
+            <MoreSvg
+              onClick={() => {
+                setDisplay(!display);
+              }}
+              className="mt-0.5 w-8 stroke-2 cursor-pointer"
+            />
           </div>
-          <MoreSvg
-            onClick={() => {
-              setDisplay(!display);
-            }}
-            className="mt-0.5 w-8 stroke-2 cursor-pointer"
-          />
         </div>
         {display ? (
           <YearSettingsDropdown
