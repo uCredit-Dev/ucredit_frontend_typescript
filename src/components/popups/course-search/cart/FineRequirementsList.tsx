@@ -14,8 +14,6 @@ const FineRequirementsList: FC<{ searching: boolean, selectRequirement: Function
   }
 
   const getRequirements = () => {
-
-    // if the distribution is pathing, show a dropdown menu rather than a single list?
     return props.selectedDistribution[1].map((requirement, i) => {
       if (i === 0) return <></> // TODO : better key
       return <FineRequirementListItem id={i} itemRequirement={requirement} onClick={selectRequirement} selected={i === selectedListItem} />

@@ -11,7 +11,7 @@ import {
   selectPlan,
   updateSelectedPlan,
 } from '../../../slices/currentPlanSlice';
-import { updateDeletePlanStatus, updateShowingCart } from '../../../slices/popupSlice';
+import { updateDeletePlanStatus } from '../../../slices/popupSlice';
 import {
   selectPlanList,
   selectUser,
@@ -205,11 +205,6 @@ const ActionBar: FC<{
       toast.error("Can't add more than 8 years!");
     }
   };
-
-  // temp wayof display cart feature:
-  const displayCart = () => {
-    dispatch(updateShowingCart(true));
-  }
 
   useEffect(() => {
     ReactTooltip.rebuild();

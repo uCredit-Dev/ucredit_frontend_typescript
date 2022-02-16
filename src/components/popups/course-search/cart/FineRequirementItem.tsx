@@ -12,7 +12,7 @@ const FineRequirementListItem: FC<{
 }> = (props) => {
   // Setup Redux
 
-  const handleCourseClick = () => { // TODO : rename this
+  const handleFineReqClick = () => {
     props.onClick(props.itemRequirement, props.id);
     console.log(props.itemRequirement);
   };
@@ -23,7 +23,7 @@ const FineRequirementListItem: FC<{
         props.selected ? "bg-secondary bg-opacity-25" : "bg-white",
         "mb-2 p-2 w-full h-auto rounded hover:shadow cursor-pointer transition duration-200 ease-in-out"
       )}
-      onClick={handleCourseClick}
+      onClick={handleFineReqClick}
     >
       <div className="flex flex-col justify-center w-full h-full">
         <div className="break-normal">

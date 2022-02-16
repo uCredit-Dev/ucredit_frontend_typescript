@@ -1,16 +1,16 @@
-import React, { FC, useEffect, useState } from 'react';
+import React, { FC, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 
 import CourseDisplay from './search-results/CourseDisplay';
 import { ReactComponent as HideSvg } from '../../../resources/svg/Hide.svg';
 import ReactTooltip from 'react-tooltip';
-import { Course, SearchExtras, SISRetrievedCourse } from '../../../resources/commonTypes';
+import { SearchExtras, SISRetrievedCourse } from '../../../resources/commonTypes';
 import { selectSelectedDistribution, updateShowingCart } from '../../../slices/popupSlice';
 import FineRequirementsList from './cart/FineRequirementsList';
 import CartCourseList from './cart/CartCourseList';
 import { emptyRequirements } from './cart/dummies';
 import { requirements, splitRequirements } from '../../dashboard/degree-info/distributionFunctions';
-import { clearSearch, selectRetrievedCourses, updateRetrievedCourses } from '../../../slices/searchSlice';
+import { clearSearch, updateRetrievedCourses } from '../../../slices/searchSlice';
 import axios from 'axios';
 import { api } from '../../../resources/assets';
 
@@ -20,7 +20,6 @@ import { api } from '../../../resources/assets';
 const Cart: FC<{ allCourses: SISRetrievedCourse[] }> = (props) => {
   // Component states
   const [searchOpacity, setSearchOpacity] = useState<number>(100);
-  const [localRetrievedCourses, setLocalRetrievedCourses] = useState<SISRetrievedCourse[]>([]);
 
   // FOR DUMMY FILTER TESTING TODO REMOVE
   // TODO : double check the initial state on this hook. do i even need this if stored in redux?
@@ -30,7 +29,6 @@ const Cart: FC<{ allCourses: SISRetrievedCourse[] }> = (props) => {
   // Redux selectors and dispatch
   const dispatch = useDispatch();
   const distrs = useSelector(selectSelectedDistribution);
-  const retrievedCourses = useSelector(selectRetrievedCourses);
   const updateSelectedRequirement = (newRequirement: requirements) => {
     // setLocalRetrievedCourses([]);
     // dispatch(updateRetrievedCourses([]));
@@ -49,8 +47,6 @@ const Cart: FC<{ allCourses: SISRetrievedCourse[] }> = (props) => {
     let ignores = ['(', ')', 'OR', 'AND', 'NOT'];
     while (index < splitRequirement.length) {
       if (!ignores.includes(splitRequirement[index])) {
-        // let extra = generateExtrasFromSplitRequirement(splitRequirement, index);
-        // if (extra) allExtras.push(generateExtrasFromSplitRequirement(splitRequirement, index));
         allExtras.push(generateExtrasFromSplitRequirement(splitRequirement, index));
         index += 2;
       } else {
