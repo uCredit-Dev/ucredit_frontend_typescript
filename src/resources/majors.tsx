@@ -206,6 +206,7 @@ import { Major, Minor } from './commonTypes';
 // https://e-catalogue.jhu.edu/arts-sciences/full-time-residential-programs/degree-programs/economics/economics-bachelor-arts/
 const baEcon: Major = {
   degree_name: 'B.A. Economics',
+  abbrev: 'B.A. Econ',
   department: 'AS Economics',
   total_degree_credit: 120,
   wi_credit: 12,
@@ -342,6 +343,7 @@ const baEcon: Major = {
 // https://www.bme.jhu.edu/academics/undergraduate/undergraduate-degree-requirements/
 const bsBME: Major = {
   degree_name: 'B.S. Biomedical Engineering',
+  abbrev: 'B.S. BME',
   department: 'EN Biomedical Engineering',
   total_degree_credit: 129,
   wi_credit: 6,
@@ -1088,6 +1090,7 @@ const bsBME: Major = {
 // https://engineering.jhu.edu/chembe/undergraduate-studies/undergraduate-degree-program/
 const bsCBE: Major = {
   degree_name: 'B.S. Chemical & Biomolecular Engineering',
+  abbrev: 'B.S. ChemBE',
   department: 'EN Chemical & Biomolecular Engineering',
   total_degree_credit: 128,
   wi_credit: 6,
@@ -1382,6 +1385,7 @@ const bsCBE: Major = {
 // https://krieger.jhu.edu/internationalstudies/undergraduate/requirements/
 const baIS: Major = {
   degree_name: 'B.A. International Studies',
+  abbrev: 'B.A. IS',
   department: 'AS International Studies',
   total_degree_credit: 120,
   wi_credit: 12,
@@ -1573,6 +1577,7 @@ const baIS: Major = {
 // https://e-catalogue.jhu.edu/engineering/full-time-residential-programs/degree-programs/applied-mathematics-statistics/applied-mathematics-statistics-bs/#requirementstext
 const bsAMS: Major = {
   degree_name: 'B.S. Applied Mathematics & Statistics',
+  abbrev: 'B.S. AMS',
   department: 'EN Applied Mathematics & Statistics',
   total_degree_credit: 120,
   wi_credit: 6,
@@ -1804,6 +1809,7 @@ const bsAMS: Major = {
 // https://www.cs.jhu.edu/undergraduate-studies/academics/ugrad-advising-manual/
 const bsCS_Old: Major = {
   degree_name: 'B.S. Computer Science (OLD - Pre-2021)',
+  abbrev: 'B.S. CS Old',
   department: 'EN Computer Science',
   total_degree_credit: 126,
   wi_credit: 6,
@@ -1946,6 +1952,7 @@ const bsCS_Old: Major = {
 // https://www.cs.jhu.edu/2021undergraduate-advising-manual/
 const bsCS_New: Major = {
   degree_name: 'B.S. Computer Science (NEW - 2021 & after)',
+  abbrev: 'B.S. CS',
   department: 'EN Computer Science',
   total_degree_credit: 120,
   wi_credit: 6,
@@ -2081,6 +2088,7 @@ const bsCS_New: Major = {
 // https://www.cs.jhu.edu/undergraduate-studies/academics/ugrad-advising-manual/
 const baCS_New: Major = {
   degree_name: 'B.A. Computer Science (NEW - 2021 & after)',
+  abbrev: 'B.A. CS',
   department: 'EN Computer Science',
   total_degree_credit: 120,
   wi_credit: 12,
@@ -2204,6 +2212,7 @@ const baCS_New: Major = {
 // https://www.cs.jhu.edu/undergraduate-studies/academics/cs-minor/
 const CS_Minor_New: Minor = {
   degree_name: 'Minor Computer Science (NEW - 2021 & after)',
+  abbrev: 'Minor CS',
   department: 'EN Computer Science',
   total_degree_credit: 23,
   wi_credit: 0,
@@ -2264,6 +2273,7 @@ const CS_Minor_New: Minor = {
 // https://www.cs.jhu.edu/undergraduate-studies/academics/cs-minor/
 const CS_Minor_Old: Minor = {
   degree_name: 'Minor Computer Science (OLD - Pre-2021)',
+  abbrev: 'Minor CS Old',
   department: 'EN Computer Science',
   total_degree_credit: 23,
   wi_credit: 0,
@@ -2328,6 +2338,7 @@ const CS_Minor_Old: Minor = {
 */
 const bsMolCell: Major = {
   degree_name: 'B.S. Molecular and Cellular Biology',
+  abbrev: 'B.S. Mol Cell',
   department: 'AS Biology',
   total_degree_credit: 120,
   wi_credit: 12,

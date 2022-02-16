@@ -7,8 +7,6 @@ import { useDispatch, useSelector } from 'react-redux';
 import {
   selectImportingStatus,
   selectPlan,
-  updateCurrentPlanCourses,
-  updateSelectedPlan,
 } from '../../slices/currentPlanSlice';
 import {
   selectDeletePlanStatus,
@@ -17,9 +15,15 @@ import {
   selectCourseToDelete,
   selectShowCourseInfo,
   selectAddingPrereq,
-  updateAddingPlanStatus,
   selectShowingCart,
 } from '../../slices/popupSlice';
+import {
+  selectExperimentList,
+  selectExperimentIDs,
+  setExperiments,
+  toggleExperimentStatus,
+  selectBlueButton,
+} from '../../slices/experimentSlice';
 import { selectSearchStatus } from '../../slices/searchSlice';
 import AddingPrereqPopup from '../popups/AddingPrereqPopup';
 import Search from '../popups/course-search/Search';
@@ -27,29 +31,26 @@ import CourseDisplayPopup from '../popups/CourseDisplayPopup';
 import DeleteCoursePopup from '../popups/DeleteCoursePopup';
 import DeletePlanPopup from '../popups/DeletePlanPopup';
 import DeleteYearPopup from '../popups/DeleteYearPopup';
+import ExperimentPopup from '../popups/ExperimentPopup';
+import ExperimentDevBoardPopup from '../popups/ExperimentDevBoardPopup';
 import PlanAdd from '../popups/PlanAdd';
 import CourseList from './course-list/CourseList';
 import InfoMenu from './InfoMenu';
 import ActionBar from './degree-info/ActionBar';
 import { useScrollPosition } from '@n8tb1t/use-scroll-position';
-import { toast } from 'react-toastify';
-import { Plan, SISRetrievedCourse } from '../../resources/commonTypes';
-import {
-  selectUser,
-  selectPlanList,
-  updatePlanList,
-} from '../../slices/userSlice';
-import Cart from '../popups/course-search/Cart';
-import axios from 'axios';
-import { api } from '../../resources/assets';
+import { selectUser, selectPlanList } from '../../slices/userSlice';
 import ShareLinksPopup from './degree-info/ShareLinksPopup';
+import axios from 'axios';
+import Dropdown from '../popups/Dropdown';
+import ExperimentNumber from '../popups/ExperimentNumber';
+import { api } from './../../resources/assets';
+import Cart from '../popups/course-search/Cart';
 
 /**
  * The dashboard that displays the user's plan.
  */
 const Dashboard: FC<{ id: string | null }> = ({ id }) => {
   // Redux setup.
-  const dispatch = useDispatch();
   const user = useSelector(selectUser);
   const planList = useSelector(selectPlanList);
   const currentPlan = useSelector(selectPlan);
@@ -62,65 +63,58 @@ const Dashboard: FC<{ id: string | null }> = ({ id }) => {
   const courseInfoStatus = useSelector(selectShowCourseInfo);
   const addingPrereqStatus = useSelector(selectAddingPrereq);
   const cartStatus = useSelector(selectShowingCart);
+  const experimentList = useSelector(selectExperimentList);
+  const experimentIDs = useSelector(selectExperimentIDs);
+  const blueButton = useSelector(selectBlueButton);
+  const dispatch = useDispatch();
 
   // State Setup
   const [showNotif, setShowNotif] = useState<boolean>(true);
   const [formPopup, setFormPopup] = useState<boolean>(false);
   const [showHeader, setShowHeader] = useState<boolean>(true);
   const [dropdown, setDropdown] = useState<boolean>(false);
+  const [experimentPopup, setExperimentPopup] = useState<boolean>(false);
   const [shareableURL, setShareableURL] = useState<string>('');
+  const [displayedNumber, setDisplayedNumber] = useState<number>(3);
+  const [crement, setCrement] = useState<number>(0);
 
-
-  // // FETCHES ALL COURSES
-  // // for all courses: TODO: Remove and all imports
-  // const [courses, setCourses] = useState<SISRetrievedCourse[]>([]);
-  // useEffect(() => {
-  //   // here's the messy fetch. TODO: add some visual feedback for searching.
-  //   let courseSubset: SISRetrievedCourse[] = [];
-  //   console.log("fetching... for CartCourseList");
-  //   axios // THIS IS A PROMSE. TODO: WHATS THE ERROR HERE IF the COMPONENT UNMOUNTS BEFORE THIS IS RESOLVED?
-  //     .get(api + "/search/all")
-  //     .then((retrieved) => {
-  //       let retrievedCourses: SISRetrievedCourse[] = retrieved.data.data;
-  //       courseSubset = retrievedCourses;
-  //       setCourses(courseSubset as unknown as SISRetrievedCourse[]); // fix this type casting
-  //     })
-  //     .catch(() => {
-  //       console.log("There was an error in the fetching of all courses for the cart course popup!");
-  //     });
-  // }, []);
-
-  // Handles plan change event.
-  const handlePlanChange = (event: any) => {
-    setDropdown(false);
-    const selectedOption = event.target.value;
-    const planListClone = [...planList];
-    if (selectedOption === 'new plan' && user._id !== 'noUser') {
-      dispatch(updateAddingPlanStatus(true));
-    } else {
-      let newSelected: Plan = currentPlan;
-      planList.forEach((plan, index) => {
-        if (plan._id === selectedOption) {
-          newSelected = plan;
-          planListClone.splice(index, 1);
-          planListClone.splice(0, 0, newSelected);
-        }
-      });
-
-      toast(newSelected.name + ' selected!', {
-        position: 'top-right',
-        autoClose: 5000,
-        hideProgressBar: true,
-        closeOnClick: true,
-        pauseOnHover: true,
-        draggable: true,
-        progress: 0,
-      });
-      dispatch(updateSelectedPlan(newSelected));
-      dispatch(updateCurrentPlanCourses([]));
-      dispatch(updatePlanList(planListClone));
+  useEffect(() => {
+    if (blueButton !== null) {
+      setCrement(blueButton.active ? 1 : -1);
     }
-  };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [experimentList.length > 0 ? blueButton : null]);
+
+  useEffect(() => {
+    if (!experimentPopup && experimentList.length > 0) {
+      axios
+        .get(`${api}/experiments/allExperiments`)
+        .then(function (resp) {
+          const importedExperimentList = resp.data.data;
+          for (const experiment of experimentList) {
+            const currentActive = experiment.active;
+            const importedActive = importedExperimentList[
+              experimentIDs.indexOf(experiment._id)
+            ].active.includes(user._id);
+
+            if (currentActive === importedActive) continue;
+
+            const command = experiment.active ? 'add/' : 'delete/';
+            axios
+              .put(`${api}/experiments/${command}${experiment.name}`, {
+                user_id: user._id,
+              })
+              .catch(function (error) {
+                console.log(error);
+              });
+          }
+        })
+        .catch(function (error) {
+          console.log(error);
+        });
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [experimentPopup]);
 
   useScrollPosition(({ prevPos, currPos }) => {
     if (currPos.y > -14) {
@@ -147,9 +141,45 @@ const Dashboard: FC<{ id: string | null }> = ({ id }) => {
     );
   };
 
+  const updateExperimentsForUser = () => {
+    axios
+      .get(`${api}/experiments/allExperiments`)
+      .then(async (experimentListResponse) => {
+        const experiments = experimentListResponse.data.data;
+        dispatch(setExperiments(experiments));
+        for (const experiment of experiments) {
+          if (experiment.active.includes(user._id)) {
+            dispatch(toggleExperimentStatus(experiment._id));
+          }
+        }
+      })
+      .catch((errAllExperiments) => {
+        console.log(errAllExperiments);
+      });
+  };
+
+  if (experimentList.length === 0) {
+    updateExperimentsForUser();
+  }
+
   return (
     <div className="flex flex-col w-full h-full min-h-screen">
       <HandleUserEntryDummy id={id} />
+      {
+        <div className="fixed flex flex-row z-40 bottom-11 right-2 flex flex-row select-none">
+          <ExperimentDevBoardPopup />
+          <ExperimentPopup
+            experimentPopup={experimentPopup}
+            setExperimentPopup={setExperimentPopup}
+          />
+          <ExperimentNumber
+            displayedNumber={displayedNumber}
+            setDisplayedNumber={setDisplayedNumber}
+            crement={crement}
+            setCrement={setCrement}
+          />
+        </div>
+      }
       {formPopup ? <FeedbackPopup setFormPopup={setFormPopup} /> : null}
       {showNotif ? (
         <FeedbackNotification
@@ -176,28 +206,13 @@ const Dashboard: FC<{ id: string | null }> = ({ id }) => {
                   setDropdown={setDropdown}
                   onShareClick={onShareClick}
                 />
-                {dropdown ? (
-                  <div className="absolute z-30 flex flex-col -mt-2 ml-2 w-60 text-black bg-white rounded shadow">
-                    {planList.map((plan, index) => (
-                      <button
-                        key={index}
-                        value={plan._id}
-                        onClick={handlePlanChange}
-                        className="px-1 py-1 h-9 hover:bg-gray-200 border-t focus:outline-none transform overflow-ellipsis truncate"
-                      >
-                        {plan.name}
-                      </button>
-                    ))}
-                    <button
-                      value="new plan"
-                      onClick={handlePlanChange}
-                      className="py-1 hover:bg-gray-200 border-t focus:outline-none"
-                    >
-                      Create a plan +
-                    </button>
-                  </div>
-                ) : null}
-
+                <Dropdown
+                  dropdown={dropdown}
+                  planList={planList}
+                  setDropdown={setDropdown}
+                  user={user}
+                  currentPlan={currentPlan}
+                />
                 <CourseList />
               </div>
             </div>
