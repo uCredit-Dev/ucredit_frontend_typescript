@@ -1,4 +1,4 @@
-import React, { FC, useState } from 'react';
+import React, { FC, useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 
 import CourseDisplay from './search-results/CourseDisplay';
@@ -10,7 +10,7 @@ import FineRequirementsList from './cart/FineRequirementsList';
 import CartCourseList from './cart/CartCourseList';
 import { emptyRequirements } from './cart/dummies';
 import { requirements, splitRequirements } from '../../dashboard/degree-info/distributionFunctions';
-import { clearSearch, updateRetrievedCourses } from '../../../slices/searchSlice';
+import { clearSearch, selectRetrievedCourses, updateRetrievedCourses } from '../../../slices/searchSlice';
 import axios from 'axios';
 import { api } from '../../../resources/assets';
 
@@ -20,6 +20,7 @@ import { api } from '../../../resources/assets';
 const Cart: FC<{ allCourses: SISRetrievedCourse[] }> = (props) => {
   // Component states
   const [searchOpacity, setSearchOpacity] = useState<number>(100);
+  const [localRetrievedCourses, setLocalRetrievedCourses] = useState<SISRetrievedCourse[]>([]);
 
   // FOR DUMMY FILTER TESTING TODO REMOVE
   // TODO : double check the initial state on this hook. do i even need this if stored in redux?
@@ -29,7 +30,10 @@ const Cart: FC<{ allCourses: SISRetrievedCourse[] }> = (props) => {
   // Redux selectors and dispatch
   const dispatch = useDispatch();
   const distrs = useSelector(selectSelectedDistribution);
+  const retrievedCourses = useSelector(selectRetrievedCourses);
   const updateSelectedRequirement = (newRequirement: requirements) => {
+    // setLocalRetrievedCourses([]);
+    // dispatch(updateRetrievedCourses([]));
     setSelectedRequirement(newRequirement);
     // will find based on selected requirement
     // concern with selecting multiple requirements in a row? how will promises be handled correctly?
@@ -45,13 +49,25 @@ const Cart: FC<{ allCourses: SISRetrievedCourse[] }> = (props) => {
     let ignores = ['(', ')', 'OR', 'AND', 'NOT'];
     while (index < splitRequirement.length) {
       if (!ignores.includes(splitRequirement[index])) {
+        // let extra = generateExtrasFromSplitRequirement(splitRequirement, index);
+        // if (extra) allExtras.push(generateExtrasFromSplitRequirement(splitRequirement, index));
         allExtras.push(generateExtrasFromSplitRequirement(splitRequirement, index));
+        index += 2;
+      } else {
+        index += 1;
       }
-      index += 2;
     }
-
     console.log(allExtras);
-    fineReqFind(allExtras[0]).then((found) => dispatch(updateRetrievedCourses(found[0])));
+
+
+    let finishedFinds = 0;
+    let courses: SISRetrievedCourse[] = [];
+    allExtras.forEach(extra => fineReqFind(extra)
+      .then((found) => {
+        courses = [...courses, ...found[0]];
+        finishedFinds += 1;
+        if (finishedFinds === allExtras.length) dispatch(updateRetrievedCourses(courses));
+      }));
   }
 
   const generateExtrasFromSplitRequirement = (
@@ -63,7 +79,7 @@ const Cart: FC<{ allCourses: SISRetrievedCourse[] }> = (props) => {
       credits: null,
       areas: null,
       wi: null,
-      term: "Fall",
+      term: "All",
       year: 2021, // TODO : what's hte default date here? whereis this gotten from?
       department: null,
       tags: null,
@@ -81,7 +97,6 @@ const Cart: FC<{ allCourses: SISRetrievedCourse[] }> = (props) => {
         extras.department = splitArr[index];
         break;
       case 'A': // Area
-
         break;
       case 'N': // Name
         extras.query = splitArr[index];
@@ -94,9 +109,10 @@ const Cart: FC<{ allCourses: SISRetrievedCourse[] }> = (props) => {
         // TODO : figure out levels ? factor from distrubitionFunctions.tsx
         // also why is distributionFunctions a tsx file....
         // updatedConcat = handleLCase(splitArr, index, course);
+        extras.query = "djaskdlfjaslkdfjsaodkfjasoidf jasdkflajsdlfksa";
         break;
       default:
-        // updatedConcat = 'false';
+        extras.query = splitArr[index];
     }
     return extras;
   };
