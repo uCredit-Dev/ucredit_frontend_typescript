@@ -71,23 +71,24 @@ const Dashboard: FC<{ id: string | null }> = ({ id }) => {
   const [shareableURL, setShareableURL] = useState<string>('');
 
 
-  // for all courses: TODO: Revme and all imports
-  const [courses, setCourses] = useState<SISRetrievedCourse[]>([]);
-  useEffect(() => {
-    // here's the messy fetch. TODO: add some visual feedback for searching.
-    let courseSubset: SISRetrievedCourse[] = [];
-    console.log("fetching... for CartCourseList");
-    axios // THIS IS A PROMSE. TODO: WHATS THE ERROR HERE IF the COMPONENT UNMOUNTS BEFORE THIS IS RESOLVED?
-      .get(api + "/search/all")
-      .then((retrieved) => {
-        let retrievedCourses: SISRetrievedCourse[] = retrieved.data.data;
-        courseSubset = retrievedCourses;
-        setCourses(courseSubset as unknown as SISRetrievedCourse[]); // fix this type casting
-      })
-      .catch(() => {
-        console.log("There was an error in the fetching of all courses for the cart course popup!");
-      });
-  }, []);
+  // // FETCHES ALL COURSES
+  // // for all courses: TODO: Remove and all imports
+  // const [courses, setCourses] = useState<SISRetrievedCourse[]>([]);
+  // useEffect(() => {
+  //   // here's the messy fetch. TODO: add some visual feedback for searching.
+  //   let courseSubset: SISRetrievedCourse[] = [];
+  //   console.log("fetching... for CartCourseList");
+  //   axios // THIS IS A PROMSE. TODO: WHATS THE ERROR HERE IF the COMPONENT UNMOUNTS BEFORE THIS IS RESOLVED?
+  //     .get(api + "/search/all")
+  //     .then((retrieved) => {
+  //       let retrievedCourses: SISRetrievedCourse[] = retrieved.data.data;
+  //       courseSubset = retrievedCourses;
+  //       setCourses(courseSubset as unknown as SISRetrievedCourse[]); // fix this type casting
+  //     })
+  //     .catch(() => {
+  //       console.log("There was an error in the fetching of all courses for the cart course popup!");
+  //     });
+  // }, []);
 
   // Handles plan change event.
   const handlePlanChange = (event: any) => {
@@ -213,7 +214,7 @@ const Dashboard: FC<{ id: string | null }> = ({ id }) => {
         {deleteCourseStatus ? <DeleteCoursePopup /> : null}
         {courseInfoStatus ? <CourseDisplayPopup /> : null}
         {addingPrereqStatus ? <AddingPrereqPopup /> : null}
-        {cartStatus ? <Cart allCourses={courses}/> : null}
+        {cartStatus ? <Cart allCourses={[]}/> : null } {/** TODO : remove allCourses props */}
       </div>
     </div>
   );

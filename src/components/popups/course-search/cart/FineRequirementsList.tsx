@@ -2,9 +2,6 @@ import { useState, FC } from 'react';
 import FineRequirementListItem from './FineRequirementItem';
 import { requirements } from '../../../dashboard/degree-info/distributionFunctions';
 
-/* 
-  List of searched courses.
-*/
 const FineRequirementsList: FC<{ searching: boolean, selectRequirement: Function, selectedDistribution: [string, requirements[]] }> = (props) => {
   // Component state setup.
   const [hideResults, setHideResults] = useState<boolean>(false);
@@ -19,11 +16,8 @@ const FineRequirementsList: FC<{ searching: boolean, selectRequirement: Function
   const getRequirements = () => {
 
     // if the distribution is pathing, show a dropdown menu rather than a single list?
-    // if (props.selectedDistribution[1][0].pathing) {
-    //   return <FineRequirementListFocusItem focusRequirements={props.selectedDistribution[1]} onClick={selectRequirement}/>
-    // }
     return props.selectedDistribution[1].map((requirement, i) => {
-      if (i == 0) return <></> // TODO : better key
+      if (i === 0) return <></> // TODO : better key
       return <FineRequirementListItem id={i} itemRequirement={requirement} onClick={selectRequirement} selected={i === selectedListItem} />
     });
   }

@@ -195,6 +195,8 @@ const Form: FC<{ setSearching: (searching: boolean) => void }> = (props) => {
   const find = (
     extras: SearchExtras,
   ): Promise<[SISRetrievedCourse[], number[]]> => {
+    console.log(extras);
+
     return new Promise(async (resolve) => {
       let courses: SISRetrievedCourse[] = [...courseCache];
       if (!retrievedAll) {
@@ -286,6 +288,9 @@ const Form: FC<{ setSearching: (searching: boolean) => void }> = (props) => {
   };
 
   // Handles the finishing of finding courses.
+  // tracks the number of times a course appears in the searchedCourses after a search
+  // and presumably uses it to sort the list by relevancy
+  // also recursively calls the smartSearch
   const handleFinishFinding = (
     courses: SISRetrievedCourse[],
     versions: number[],
@@ -359,6 +364,7 @@ const Form: FC<{ setSearching: (searching: boolean) => void }> = (props) => {
         for (let i = 0; i < searchTerm.length - queryLength + 1; i++) {
           querySubstrs.push(searchTerm.substring(i, i + queryLength));
         }
+        console.log(querySubstrs);
         substringSearch(originalQuery, extras, queryLength, querySubstrs);
       } else if (queryLength > 0 && queryLength < minLength) {
         // Perform normal search if query length is between 1 and minLength

@@ -2,6 +2,8 @@ import { useState, useEffect, FC } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import {
   selectPlaceholder,
+  selectRetrievedCourses,
+  selectSearchFilters,
   updateInspectedVersion,
   updatePlaceholder,
 } from '../../../../slices/searchSlice';
@@ -21,7 +23,6 @@ import { filterBasedOnReq } from './dummies';
 /*
   List of searched courses.
 */
-  
 const CartCourseList: FC<{
   searching: boolean,
   selectedRequirement: requirements,
@@ -41,12 +42,16 @@ const CartCourseList: FC<{
   // different ways to retrieve all the SISCourses to filter from
   // courses - the courses post filtering based on requirement, parsed to display list items/paginated
   // filteredCourses - the courses to display on the current page of courses
-  const [courses, setCourses] = useState<SISRetrievedCourse[]>([]); // TODO : get from redux store
+
+  // TEMP CHANGE 2/15 : use courses from redux, to comply with find()
+  // const [courses, setCourses] = useState<SISRetrievedCourse[]>([]); // TODO : get from redux store
   const [rawCourses, setRawCourses] = useState<SISRetrievedCourse[]>([]);
 
   // Redux setup
   // const courses = useSelector(selectRetrievedCourses); will be from redux
+  const courses = useSelector(selectRetrievedCourses);
   const placeholder = useSelector(selectPlaceholder);
+  const searchFilters = useSelector(selectSearchFilters);
   const dispatch = useDispatch();
 
   const coursesPerPage = 10;
@@ -54,26 +59,28 @@ const CartCourseList: FC<{
 
   // reads in the dummy data fetched in dashboard.
   // This and the below useEffect will be replaced by the cart endpoints Erica is working on.
-  useEffect(() => {
-    let courseSubset: SISRetrievedCourse[] = props.allCourses;
-    setCourses(courseSubset as unknown as SISRetrievedCourse[]); // TODO: fix this type casting
-    setRawCourses(courseSubset as unknown as SISRetrievedCourse[]);
-  }, [props.allCourses]);
+
+  // TEMP CHANGE 2/15 : removing this to use search list directly
+  // useEffect(() => {
+  //   let courseSubset: SISRetrievedCourse[] = props.allCourses;
+  //   setCourses(courseSubset as unknown as SISRetrievedCourse[]); // TODO: fix this type casting
+  //   setRawCourses(courseSubset as unknown as SISRetrievedCourse[]);
+  // }, [props.allCourses]);
 
   // updates courses from raw courses based on filters from dummy filters
   // Used as a standin for the cart api endpoints which havent been written yet
-  useEffect(() => {
-    console.log(rawCourses);
-    let filterFunction = filterBasedOnReq(props.selectedRequirement);
-    let dummyFilteredCourses = rawCourses.filter((course, i) => {
-      // return course.title.includes(props.selectedRequirement.text);
-      // this results in A LOT OF REPEATED CSALLS. TODO: REFACTOR THIS UP HIGHER!
-      return filterFunction(course);
-    });
-    setCourses(dummyFilteredCourses);
-    setPageNum(0);
-    console.log(props.selectedRequirement);
-  }, [props.selectedRequirement, rawCourses]);
+  // useEffect(() => {
+  //   console.log(rawCourses);
+  //   let filterFunction = filterBasedOnReq(props.selectedRequirement);
+  //   let dummyFilteredCourses = rawCourses.filter((course, i) => {
+  //     // return course.title.includes(props.selectedRequirement.text);
+  //     // this results in A LOT OF REPEATED CSALLS. TODO: REFACTOR THIS UP HIGHER!
+  //     return filterFunction(course);
+  //   });
+  //   setCourses(dummyFilteredCourses);
+  //   setPageNum(0);
+  //   console.log(props.selectedRequirement);
+  // }, [props.selectedRequirement, rawCourses]);
 
   // Updates pagination every time the searched courses change.
   useEffect(() => {

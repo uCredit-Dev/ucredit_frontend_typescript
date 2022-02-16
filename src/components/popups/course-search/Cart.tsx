@@ -4,13 +4,15 @@ import { useDispatch, useSelector } from 'react-redux';
 import CourseDisplay from './search-results/CourseDisplay';
 import { ReactComponent as HideSvg } from '../../../resources/svg/Hide.svg';
 import ReactTooltip from 'react-tooltip';
-import { SISRetrievedCourse } from '../../../resources/commonTypes';
+import { SearchExtras, SISRetrievedCourse } from '../../../resources/commonTypes';
 import { selectSelectedDistribution, updateShowingCart } from '../../../slices/popupSlice';
 import FineRequirementsList from './cart/FineRequirementsList';
 import CartCourseList from './cart/CartCourseList';
 import { emptyRequirements } from './cart/dummies';
 import { requirements } from '../../dashboard/degree-info/distributionFunctions';
-import { clearSearch } from '../../../slices/searchSlice';
+import { clearSearch, updateRetrievedCourses } from '../../../slices/searchSlice';
+import axios from 'axios';
+import { api } from '../../../resources/assets';
 
 /**
  * Search component for when someone clicks a search action.
@@ -29,7 +31,91 @@ const Cart: FC<{ allCourses: SISRetrievedCourse[] }> = (props) => {
   const distrs = useSelector(selectSelectedDistribution);
   const updateSelectedRequirement = (newRequirement: requirements) => {
     setSelectedRequirement(newRequirement);
+    // will find based on selected requirement
+    // concern with selecting multiple requirements in a row? how will promises be handled correctly?
+    // probably simlar to how seraches are ended prematurely. anyways, just want ot see if this works.
+
+    //placeholder extras to make sure finds work
+    let tempExtras: SearchExtras = {
+      "query": "Programming",
+      "credits": null,
+      "areas": null,
+      "wi": null,
+      "term": "Fall",
+      "year": 2021,
+      "department": null,
+      "tags": null,
+      "levels": null
+    }
+
+    // issue here will be making sure to reject all these promises once the component unmounts!!!
+    fineReqFind(tempExtras).then((found) => dispatch(updateRetrievedCourses(found[0])));
+
   }
+
+  const fineReqFind = (
+    extras: SearchExtras,
+  ): Promise<[SISRetrievedCourse[], number[]]> => {
+    return new Promise(async (resolve) => {
+      // let courses: SISRetrievedCourse[] = [...courseCache]; // how actively is this cache updated?
+      // if (!retrievedAll) { // how often is this filter used?
+      const retrieved: any = await axios
+        .get(api + '/search', {
+          params: getParams(extras),
+        })
+        .catch(() => {
+          return [[], []];
+        });
+      let SISRetrieved: SISRetrievedCourse[] = processedRetrievedData(
+        retrieved.data.data,
+        extras,
+      );
+      return resolve([SISRetrieved, []]);
+      // } else {
+      //   const filterProcessing = filterCourses(extras, courses);
+      //   if (filterProcessing) return filterProcessing;
+      //   return resolve([courses, []]);
+      // }
+    });
+  };
+
+  const processedRetrievedData = (
+    data: SISRetrievedCourse[],
+    extras: SearchExtras,
+  ): SISRetrievedCourse[] => {
+    let SISRetrieved: SISRetrievedCourse[] = data;
+    if (extras.areas === 'N')
+      // TODO: backend searches for courses with "None" area. Fix this.
+      SISRetrieved = SISRetrieved.filter((course) => {
+        for (let version of course.versions) {
+          if (version.areas === 'N') return true;
+        }
+        return false;
+      });
+    // need some logic here to make sure all the courses are finished being found? since we're running
+    // multiple finds.
+    // if (
+    //   extras.query.length <= minLength ||
+    //   searchTerm.length - extras.query.length >= 2
+    // ) {
+    //   props.setSearching(false);
+    // }
+    return SISRetrieved;
+  };
+
+  // TODO : this is copied from Form.tsx. refactor inthe future
+  const getParams = (extras: SearchExtras) => ({
+    query: extras.query,
+    department: extras.department,
+    term: extras.term === 'All' ? null : extras.term,
+    areas: extras.areas,
+    credits: extras.credits,
+    wi: extras.wi,
+    tags: extras.tags,
+    level: extras.levels,
+  });
+
+
   const updateTextFilterInputValue = (e: React.ChangeEvent<HTMLInputElement>) => {
     setTextFilterInputValue(e.target.value);
   }
@@ -73,7 +159,6 @@ const Cart: FC<{ allCourses: SISRetrievedCourse[] }> = (props) => {
                     className="mb-2 mr-2 px-1 w-full h-6 rounded outline-none width-[100%]"
                     type="text"
                     placeholder={'Filter courses by keyword'}
-                    defaultValue={textFilterInputValue}
                     value={textFilterInputValue}
                     onChange={updateTextFilterInputValue}
                   />
