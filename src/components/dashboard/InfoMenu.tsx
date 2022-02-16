@@ -26,13 +26,11 @@ import { Course, Major, Plan, UserCourse } from '../../resources/commonTypes';
 import { allMajors } from '../../resources/majors';
 import Select, {
   components,
-  DropdownIndicatorProps,
   MultiValueProps,
   StylesConfig,
 } from 'react-select';
 import axios from 'axios';
 import { toast } from 'react-toastify';
-import { updateGeneratePlanAddStatus } from '../../slices/popupSlice';
 
 /**
  * Info menu shows degree plan and degree information.
@@ -50,7 +48,6 @@ const InfoMenu: FC = () => {
   const [showDistributions, setShowDistributions] = useState<boolean[]>(
     new Array(distributions.length),
   );
-  const [distributionOpen, setDistributionOpen] = useState<boolean>(true);
   const [calculated, setCalculated] = useState<boolean>(false);
   const [major, setMajor] = useState<Major | null>(null);
   const [distributionBarsJSX, setDistributionBarsJSX] = useState<JSX.Element[]>(
@@ -144,9 +141,9 @@ const InfoMenu: FC = () => {
       allMajors.find((majorObj) => majorObj.degree_name === selected) || null,
     );
 
-  const majorOptions = allMajors.map((major, index) => ({
+  const majorOptions = allMajors.map((m, index) => ({
     value: index,
-    label: major.degree_name,
+    label: m.degree_name,
   }));
 
   // Update displayed JSX every time distributions get updated.
@@ -158,10 +155,7 @@ const InfoMenu: FC = () => {
             {pair[1].map((dis, index) => {
               if (index === 0) {
                 return (
-                  <div
-                    key={dis.name + index + dis.expr}
-                    className={clsx({ hidden: !distributionOpen })}
-                  >
+                  <div key={dis.name + index + dis.expr}>
                     <CourseBar distribution={dis} general={true} />
                   </div>
                 );
@@ -170,7 +164,6 @@ const InfoMenu: FC = () => {
                   <div key={dis.name + index + dis.expr}>
                     <FineDistribution
                       dis={dis}
-                      distributionOpen={distributionOpen}
                       hidden={showDistributions[i] !== true}
                     />
                   </div>
@@ -184,7 +177,6 @@ const InfoMenu: FC = () => {
                 }}
                 className={clsx(
                   'mb-2 underline text-sm focus:outline-none transform hover:scale-101 transition duration-200 ease-in',
-                  { hidden: !distributionOpen },
                 )}
               >
                 {/* {getDistributionText(i)} MI changed*/}
@@ -196,7 +188,7 @@ const InfoMenu: FC = () => {
     );
     setDistributionBarsJSX(distributionJSX);
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [distributions, distributionOpen, showDistributions]);
+  }, [distributions, showDistributions]);
 
   /**
    * args: an array containing focus areas and their associated requirements, and all courses
@@ -337,18 +329,13 @@ const InfoMenu: FC = () => {
     setShowDistributions(showDistributionsCopy);
   };
 
-  const getDistributionText = (index: number): string =>
-    showDistributions[index] === true
-      ? 'Hide Fine Requirements'
-      : 'Show Fine Requirements';
-
   const MultiValue = (
     props: MultiValueProps<typeof majorOptions[number], true>,
   ) => {
-    const major = allMajors.find(
+    const currMajor = allMajors.find(
       (majorObj) => majorObj.degree_name === props.data.label,
     );
-    const typeIndicator = major?.degree_name
+    const typeIndicator = currMajor?.degree_name
       .toLocaleLowerCase()
       .includes('minor')
       ? 'm'
@@ -356,7 +343,7 @@ const InfoMenu: FC = () => {
 
     return (
       <components.MultiValue {...props}>
-        {typeIndicator + ' | ' + major?.degree_name.slice(5)}
+        {typeIndicator + ' | ' + currMajor?.degree_name.slice(5)}
       </components.MultiValue>
     );
   };
@@ -437,8 +424,8 @@ const InfoMenu: FC = () => {
               components={{ MultiValue, DropdownIndicator }}
               isClearable={false}
               options={majorOptions}
-              value={majorOptions.filter((major) =>
-                currentPlan.majors.includes(major.label),
+              value={majorOptions.filter((m) =>
+                currentPlan.majors.includes(m.label),
               )}
               onChange={handleMajorChange}
               placeholder="Change Major"
@@ -456,8 +443,6 @@ const InfoMenu: FC = () => {
                     major={major}
                     userMajors={currentPlan.majors}
                     changeDisplayMajor={changeDisplayMajor}
-                    distributionOpen={distributionOpen}
-                    setDistributionOpen={setDistributionOpen}
                     distributionBarsJSX={distributionBarsJSX}
                   />
                 );

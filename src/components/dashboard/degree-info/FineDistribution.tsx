@@ -20,9 +20,8 @@ import DistributionPopup from './DistributionPopup';
  */
 const FineDistribution: FC<{
   dis: requirements;
-  distributionOpen: boolean;
   hidden: boolean;
-}> = ({ dis, distributionOpen, hidden }) => {
+}> = ({ dis, hidden }) => {
   const [showDistrDesc, setShowDistrDesc] = useState<boolean>(true);
   const [displayAdd, setDisplayAdd] = useState(false);
   const [flipped, setFlipped] = useState<string[]>([]);
@@ -68,7 +67,7 @@ const FineDistribution: FC<{
     <div
       key={dis.name}
       className={clsx('flex justify-between w-full', {
-        hidden: !distributionOpen || hidden,
+        hidden: hidden,
       })}
     >
       <button
