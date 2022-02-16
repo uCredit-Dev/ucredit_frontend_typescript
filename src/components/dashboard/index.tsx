@@ -228,7 +228,6 @@ const Dashboard: FC<{ id: string | null }> = ({ id }) => {
         {deleteYearStatus ? <DeleteYearPopup /> : null}
         {deleteCourseStatus ? <DeleteCoursePopup /> : null}
         {courseInfoStatus ? <CourseDisplayPopup /> : null}
-        {addingPrereqStatus ? <AddingPrereqPopup /> : null}
         {cartStatus ? <Cart allCourses={[]}/> : null } {/** TODO : remove allCourses props */}
       </div>
     </div>

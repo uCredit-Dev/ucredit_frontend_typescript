@@ -100,10 +100,6 @@ const Semester: FC<{
    */
   const addCourse = () => {
     dispatch(updateSearchStatus(true));
-    console.log({
-      searchSemester: semesterName,
-      searchYear: semesterYear._id,
-    });
     dispatch(
       updateSearchTime({
         searchSemester: semesterName,

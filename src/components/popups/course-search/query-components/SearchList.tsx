@@ -104,7 +104,6 @@ const SearchList: FC<{ searching: boolean }> = (props) => {
    */
   const handlePageClick = (event: any) => {
     setPageNum(event.selected);
-    console.log(filteredCourses);
   };
 
   /**

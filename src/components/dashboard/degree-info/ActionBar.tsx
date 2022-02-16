@@ -149,23 +149,6 @@ const ActionBar: FC<{
   };
 
   /**
-   * Handles when button for shareable link is clicked.
-   */
-  // const onShareClick = (): void => {
-  //   if (shareableURL !== "") {
-  //     setShareableURL("");
-  //     return;
-  //   }
-  //   setShareableURL(
-  //     (window.location.href.includes("localhost")
-  //       ? "localhost:3000"
-  //       : "https://ucredit.me") +
-  //     "/share?_id=" +
-  //     currentPlan._id
-  //   );
-  // };
-
-  /**
    * Adds a new year, if preUni is true, add to the start of the plan, otherwise add to the end
    * @param preUniversity - whether the new year is a pre uni year
    */
