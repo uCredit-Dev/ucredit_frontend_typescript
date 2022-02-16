@@ -4,12 +4,12 @@ import { useDispatch, useSelector } from 'react-redux';
 import CourseDisplay from './search-results/CourseDisplay';
 import { ReactComponent as HideSvg } from '../../../resources/svg/Hide.svg';
 import ReactTooltip from 'react-tooltip';
-import { SearchExtras, SISRetrievedCourse } from '../../../resources/commonTypes';
+import { Course, SearchExtras, SISRetrievedCourse } from '../../../resources/commonTypes';
 import { selectSelectedDistribution, updateShowingCart } from '../../../slices/popupSlice';
 import FineRequirementsList from './cart/FineRequirementsList';
 import CartCourseList from './cart/CartCourseList';
 import { emptyRequirements } from './cart/dummies';
-import { requirements } from '../../dashboard/degree-info/distributionFunctions';
+import { requirements, splitRequirements } from '../../dashboard/degree-info/distributionFunctions';
 import { clearSearch, updateRetrievedCourses } from '../../../slices/searchSlice';
 import axios from 'axios';
 import { api } from '../../../resources/assets';
@@ -35,23 +35,71 @@ const Cart: FC<{ allCourses: SISRetrievedCourse[] }> = (props) => {
     // concern with selecting multiple requirements in a row? how will promises be handled correctly?
     // probably simlar to how seraches are ended prematurely. anyways, just want ot see if this works.
 
-    //placeholder extras to make sure finds work
-    let tempExtras: SearchExtras = {
-      "query": "Programming",
-      "credits": null,
-      "areas": null,
-      "wi": null,
-      "term": "Fall",
-      "year": 2021,
-      "department": null,
-      "tags": null,
-      "levels": null
-    }
+    let splitRequirement = splitRequirements(newRequirement.expr);
+    console.log(splitRequirement);
 
     // issue here will be making sure to reject all these promises once the component unmounts!!!
-    fineReqFind(tempExtras).then((found) => dispatch(updateRetrievedCourses(found[0])));
+    // getall extras
+    let allExtras: SearchExtras[] = [];
+    let index = 0;
+    let ignores = ['(', ')', 'OR', 'AND', 'NOT'];
+    while (index < splitRequirement.length) {
+      if (!ignores.includes(splitRequirement[index])) {
+        allExtras.push(generateExtrasFromSplitRequirement(splitRequirement, index));
+      }
+      index += 2;
+    }
 
+    console.log(allExtras);
+    fineReqFind(allExtras[0]).then((found) => dispatch(updateRetrievedCourses(found[0])));
   }
+
+  const generateExtrasFromSplitRequirement = (
+    splitArr: string[],
+    index: number,
+  ): SearchExtras => {
+    let extras: SearchExtras = {
+      query: "",
+      credits: null,
+      areas: null,
+      wi: null,
+      term: "Fall",
+      year: 2021, // TODO : what's hte default date here? whereis this gotten from?
+      department: null,
+      tags: null,
+      levels: null
+    }
+    switch (splitArr[index + 1]) {
+      case 'C': // Course Number
+        // is there a way to search by course number?
+        extras.query = splitArr[index];
+        break;
+      case 'T': // Tag
+        extras.tags = splitArr[index];
+        break;
+      case 'D': // Department
+        extras.department = splitArr[index];
+        break;
+      case 'A': // Area
+
+        break;
+      case 'N': // Name
+        extras.query = splitArr[index];
+
+        break;
+      case 'W': //Written intensive
+        extras.query = splitArr[index]; // does this work?
+        break;
+      case 'L': // Level
+        // TODO : figure out levels ? factor from distrubitionFunctions.tsx
+        // also why is distributionFunctions a tsx file....
+        // updatedConcat = handleLCase(splitArr, index, course);
+        break;
+      default:
+        // updatedConcat = 'false';
+    }
+    return extras;
+  };
 
   const fineReqFind = (
     extras: SearchExtras,
@@ -115,7 +163,7 @@ const Cart: FC<{ allCourses: SISRetrievedCourse[] }> = (props) => {
     level: extras.levels,
   });
 
-
+  // for text filter
   const updateTextFilterInputValue = (e: React.ChangeEvent<HTMLInputElement>) => {
     setTextFilterInputValue(e.target.value);
   }
