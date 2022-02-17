@@ -64,7 +64,6 @@ const CourseBar: FC<{
     // Filter for the correst distributions from redux store
     let distrs = distributions.filter((req) => req[0] === distribution.name)[0];
     if (distrs) {
-      console.log(distrs);
       // if the distribution exists, then update the cart
       // at this point we have access to the current requirement
       // and all dsitibrutions. to pick out hte rest of the ascoatied fine distirbutions, use this filter.

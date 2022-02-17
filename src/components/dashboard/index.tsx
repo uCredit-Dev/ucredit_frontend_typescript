@@ -165,6 +165,7 @@ const Dashboard: FC<{ id: string | null }> = ({ id }) => {
   return (
     <div className="flex flex-col w-full h-full min-h-screen bg-white">
       <HandleUserEntryDummy id={id} />
+      {/* Commented out right now because needs polishing */}
       {/* {
         <div className="fixed flex flex-row z-40 bottom-11 right-2 flex flex-row select-none">
           <ExperimentDevBoardPopup />
