@@ -1,6 +1,10 @@
 import { FC, useState } from 'react';
 import { Draggable } from 'react-beautiful-dnd';
-import { SemesterType, UserCourse, Year } from '../../../resources/commonTypes';
+import {
+  SemesterType,
+  UserCourse,
+  Year,
+} from '../../../../resources/commonTypes';
 import VCourseComponent from './VCourseComponent';
 
 /**

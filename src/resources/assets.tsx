@@ -370,7 +370,7 @@ export const processPrereqs = async (
 export interface prereqCourses {
   numNameList: any[];
   numList: RegExpMatchArray;
-  expr: String;
+  expr: string;
 }
 
 /**

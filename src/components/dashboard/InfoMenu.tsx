@@ -16,10 +16,9 @@ import {
   updateDistributions,
 } from '../../slices/currentPlanSlice';
 import { selectCourseCache } from '../../slices/userSlice';
-import { getColors, getCourse, getMajor } from '../../resources/assets';
+import { getCourse, getMajor } from '../../resources/assets';
 import { Course, Major, Plan, UserCourse } from '../../resources/commonTypes';
 import { allMajors } from '../../resources/majors';
-import { colors } from 'react-select/dist/declarations/src/theme';
 
 /**
  * Info menu shows degree plan and degree information.
@@ -105,29 +104,6 @@ const InfoMenu: FC = () => {
       allMajors.find((majorObj) => majorObj.degree_name === selected) || null,
     );
 
-  /**
-   * helper function
-   */
-
-  // const getColor = (expression: string) : string => {
-  //   const colors = ["red", "blue", "green", "yellow"];
-  //   const splitA = expression.split("[A]");
-  //   let area:string | null = null;
-  //   if (splitA.length > 1) {
-  //       area = splitA[0].charAt(splitA[0].length-1);
-  //   }
-  //   const splitW = expression.split("[W]");
-  //   if (splitW.length > 1) {
-  //     area = splitW[0].charAt(splitW[0].length-1);
-  //   }
-  //   if (area === null) {
-  //     area = ""
-  //   }
-
-  // }
-
-  //testExpression = getColor('N[A]^OR^E[A]^OR^Q[A]');
-
   // Update displayed JSX every time distributions get updated.
   useEffect(() => {
     const distributionJSX = distributions.map(
@@ -147,9 +123,6 @@ const InfoMenu: FC = () => {
                       general={true}
                       bgcolor={'skyblue'}
                     />
-                    {/* <CourseBar distribution={dis} bgcolor={getColors(dis.expr)} general={true} /> */}
-                    {/* above coursebar is also where the bars are??
-                    M note: I added the bgcolor as property of the coursebar */}
                   </div>
                 );
               } else {
@@ -164,7 +137,7 @@ const InfoMenu: FC = () => {
                 );
               }
             })}
-            {/* {pair[1].length > 1 ? (
+            {pair[1].length > 1 ? (
               <button
                 onClick={() => {
                   changeDistributionVisibility(i);
@@ -174,9 +147,9 @@ const InfoMenu: FC = () => {
                   { hidden: !distributionOpen },
                 )}
               >
-                {getDistributionText(i)} 
+                {getDistributionText(i)}
               </button>
-            ) : null} */}
+            ) : null}
           </div>
         );
       },
@@ -330,7 +303,7 @@ const InfoMenu: FC = () => {
       : 'Show Fine Requirements';
 
   return (
-    <div className="fixed z-40 right-0 flex flex-col justify-between mt-8 w-10 h-[72.5%] min-h-[40vh]">
+    <div className="fixed z-40 bg-red-100 right-0 flex flex-col justify-between mt-8 w-10 top-60">
       <div className="my-auto transform -rotate-90">
         <button
           className="w-32 h-10 text-center text-white font-bold hover:bg-secondary bg-primary rounded focus:outline-none shadow hover:scale-105 transition duration-200 ease-in drop-shadow-xl"
@@ -342,7 +315,7 @@ const InfoMenu: FC = () => {
         </button>
       </div>
       {infoOpen ? (
-        <div className="absolute z-50 right-14 top-5 ml-5 p-4 px-0 w-max max-h-full bg-white bg-opacity-90 rounded shadow overflow-y-scroll">
+        <div className="absolute z-50 right-14 -top-60 ml-5 p-4 px-0 w-max max-h-[75vh] bg-white bg-opacity-90 rounded shadow overflow-y-scroll">
           {/* <InfoCards /> */}
           {(() => {
             if (calculated) {

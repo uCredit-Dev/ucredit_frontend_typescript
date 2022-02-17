@@ -56,7 +56,7 @@ const UserSection: FC = () => {
                   console.log('error logging out', err);
                 });
             }}
-            className="flex flex-row items-center justify-center w-24 h-9 bg-white rounded focus:outline-none cursor-pointer select-none transform hover:scale-110 transition duration-200 ease-in drop-shadow-xl"
+            className="flex flex-row items-center justify-center w-24 h-9 bg-white rounded focus:outline-none cursor-pointer select-none transform hover:scale-110 transition duration-200 ease-in drop-shadow-md"
           >
             Log Out
           </button>

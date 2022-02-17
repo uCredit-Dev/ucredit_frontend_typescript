@@ -1,6 +1,6 @@
 import { FC, useState } from 'react';
 import { Draggable } from 'react-beautiful-dnd';
-import { UserCourse, Year } from '../../../resources/commonTypes';
+import { UserCourse, Year } from '../../../../resources/commonTypes';
 import VYearComponent from './VYearComponent';
 
 /**

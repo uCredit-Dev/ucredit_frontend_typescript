@@ -207,9 +207,9 @@ const ActionBar: FC<{
   };
 
   return (
-    <div className="flex flex-row px-2 py-1 bg-white rounded shadow drop-shadow-md sticky top-0 z-20">
+    <div className="flex flex-row px-2 bg-white rounded sticky top-0 z-20">
       <PlanChoose dropdown={dropdown} setDropdown={setDropdown} />
-      <div className="flex flex-row items-end mr-2 my-1 h-10 border bg-white border-gray-300 rounded shadow">
+      <div className="flex flex-row items-end mr-2 my-1 h-11 border bg-white border-gray-300 rounded shadow">
         <div className="text-xl m-auto ml-2 mr-0">✎</div>
         <input
           value={planName}
@@ -221,7 +221,7 @@ const ActionBar: FC<{
         className="flex mr-2 my-1 px-2 font-light text-lg w-80"
         style={{ width: '25rem' }}
       >
-        <form data-testid="major-change-form" className="z-50 w-full">
+        <form data-testid="major-change-form" className="z-50 w-full shadow">
           <label htmlFor="majorChange" hidden={true}>
             majorChange
           </label>
@@ -242,14 +242,14 @@ const ActionBar: FC<{
         </form>
       </div>
       <button
-        className="flex flex-row items-center ml-1 mr-2 my-1 px-2 h-10 hover:underline hover:bg-red-300 border border-gray-300 rounded shadow transition duration-200 ease-in"
+        className="flex flex-row items-center ml-1 mr-2 my-1 px-2 h-11 hover:underline hover:bg-red-300 border border-gray-300 rounded shadow transition duration-200 ease-in"
         onClick={activateDeletePlan}
       >
         <RemoveSvg className="my-auto w-5 stroke-2 cursor-pointer select-none transform hover:scale-110 transition duration-200 ease-in" />{' '}
         <div className="ml-1">Delete</div>
       </button>
       <button
-        className="flex flex-row items-center ml-1 mr-2 my-1 px-2 h-10 hover:underline hover:bg-primary border border-gray-300 rounded shadow transition duration-200 ease-in"
+        className="flex flex-row items-center ml-1 mr-2 my-1 px-2 h-11 hover:underline hover:bg-primary border border-gray-300 rounded shadow transition duration-200 ease-in"
         onClick={onShareClick}
       >
         <svg
@@ -268,12 +268,12 @@ const ActionBar: FC<{
         </svg>
         <div className="ml-1">Share</div>
       </button>
-      <div className="flex flex-row items-center my-1 w-10 h-10 hover:underline hover:bg-primary border border-gray-300 rounded focus:outline-none shadow cursor-pointer transition duration-200 ease-in">
+      <div className="flex flex-row items-center my-1 w-11 h-11 hover:underline hover:bg-primary border border-gray-300 rounded focus:outline-none shadow cursor-pointer transition duration-200 ease-in">
         <AddSvg
           onClick={() => addNewYear(false)}
           data-tip={`Add a new year!`}
           data-for="godTip"
-          className="w-10 h-10 focus:outline-none"
+          className="w-11 h-11 focus:outline-none"
         />
       </div>
     </div>

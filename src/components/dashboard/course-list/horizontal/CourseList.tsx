@@ -7,7 +7,7 @@ import {
   SISRetrievedCourse,
   UserCourse,
   Year,
-} from '../../../resources/commonTypes';
+} from '../../../../resources/commonTypes';
 import axios from 'axios';
 import {
   selectCurrentPlanCourses,
@@ -16,26 +16,26 @@ import {
   updateCurrentPlanCourses,
   updateSelectedPlan,
   updateTotalCredits,
-} from '../../../slices/currentPlanSlice';
+} from '../../../../slices/currentPlanSlice';
 import {
   selectPlaceholder,
   selectSearchStatus,
-} from '../../../slices/searchSlice';
+} from '../../../../slices/searchSlice';
 import { toast } from 'react-toastify';
 import {
   selectCourseCache,
   selectPlanList,
   updatePlanList,
-} from '../../../slices/userSlice';
-import { api } from '../../../resources/assets';
+} from '../../../../slices/userSlice';
+import { api } from '../../../../resources/assets';
 import { DragDropContext, Droppable } from 'react-beautiful-dnd';
-import VYearDraggable from './VYearDraggable';
+import YearDraggable from './YearDraggable';
 
 /**
  * Container component that holds all the years, semesters, and courses of the current plan.
  * TODO: Cleanup and modularize
  */
-const VCourseList: FC = () => {
+const CourseList: FC = () => {
   // Setting up redux
   const dispatch = useDispatch();
   const currentPlan = useSelector(selectPlan);
@@ -137,7 +137,7 @@ const VCourseList: FC = () => {
     if (totalCredits >= 0 && yearCourses.length !== year.courses.length) return;
     jsx.push(
       <div key={year._id}>
-        <VYearDraggable
+        <YearDraggable
           id={yearIndex}
           year={year}
           yearIndex={yearIndex}
@@ -446,10 +446,11 @@ const VCourseList: FC = () => {
   return (
     <>
       <DragDropContext onDragEnd={onDragEnd}>
-        <div className="flex flex-row justify-between thin:justify-center mr-10 mt-5 h-full">
-          <Droppable droppableId={'years'} type="YEAR" direction="horizontal">
+        <div className="flex flex-row justify-between thin:justify-center mr-10 -mt-3 h-full">
+          <Droppable droppableId={'years'} type="YEAR" direction="vertical">
             {(provided, snapshot) => (
               <div
+                className="flex flex-col w-full"
                 ref={provided.innerRef}
                 style={getListStyle(snapshot.isDraggingOver)}
               >
@@ -470,4 +471,4 @@ const getListStyle = (isDraggingOver: any) => ({
   padding: '0rem',
 });
 
-export default VCourseList;
+export default CourseList;

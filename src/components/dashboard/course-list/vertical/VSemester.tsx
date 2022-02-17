@@ -5,7 +5,7 @@ import {
   SemesterType,
   UserCourse,
   Year,
-} from '../../../resources/commonTypes';
+} from '../../../../resources/commonTypes';
 import { useDispatch, useSelector } from 'react-redux';
 import {
   clearSearch,
@@ -13,7 +13,7 @@ import {
   selectVersion,
   updateSearchStatus,
   updateSearchTime,
-} from '../../../slices/searchSlice';
+} from '../../../../slices/searchSlice';
 import { ReactComponent as AddSvg } from '../../../resources/svg/Add.svg';
 import { Droppable } from 'react-beautiful-dnd';
 import {
@@ -22,21 +22,21 @@ import {
   updateCurrentPlanCourses,
   updateDroppables,
   updateSelectedPlan,
-} from '../../../slices/currentPlanSlice';
+} from '../../../../slices/currentPlanSlice';
 import ReactTooltip from 'react-tooltip';
 import clsx from 'clsx';
-import CourseDraggable from './CourseDraggable';
+import VCourseDraggable from './VCourseDraggable';
 import {
   selectAddingPrereq,
   updateAddingPrereq,
-} from '../../../slices/popupSlice';
+} from '../../../../slices/popupSlice';
 import { toast } from 'react-toastify';
-import { api } from '../../../resources/assets';
+import { api } from '../../../../resources/assets';
 import {
   selectUser,
   selectPlanList,
   updatePlanList,
-} from '../../../slices/userSlice';
+} from '../../../../slices/userSlice';
 import { ReactComponent as Question } from '../../../resources/svg/Question.svg';
 
 /**
@@ -46,12 +46,11 @@ import { ReactComponent as Question } from '../../../resources/svg/Question.svg'
  * @prop semesterName - name of the semester
  * @prop customStyle - custom styling for the semester
  */
-const Semester: FC<{
+const VSemester: FC<{
   semesterName: SemesterType;
   semesterYear: Year;
   courses: UserCourse[];
-  display: boolean;
-}> = ({ semesterName, semesterYear, courses, display }) => {
+}> = ({ semesterName, semesterYear, courses }) => {
   // Redux setup
   const dispatch = useDispatch();
   const addingPrereqStatus = useSelector(selectAddingPrereq);
@@ -116,7 +115,7 @@ const Semester: FC<{
   const getDraggables = (): any => {
     return semesterCourses.map((course, index) => (
       <div key={course._id}>
-        <CourseDraggable
+        <VCourseDraggable
           course={course}
           index={index}
           semesterName={semesterName}
@@ -255,104 +254,102 @@ const Semester: FC<{
 
   return (
     <>
-      {!display ? null : (
-        <div onMouseLeave={() => setOpenAPInfoBox(false)}>
-          <div className="flex flex-col max-w-yearheading h-yearheading font-medium">
-            <div className="flex flex-row items-center justify-between px-2 py-1 h-yearheading1 bg-white">
-              <div className="flex flex-row items-center w-full h-auto font-normal gap-3">
-                {semesterName === 'All' ? (
-                  <>
-                    <Question
-                      className="h-4 fill-gray"
-                      onClick={() => setOpenAPInfoBox(!openAPInfoBox)}
-                    />
-                    <div className="flex flex-row text-gray-600 font-semibold text-sm">
-                      Equivalents
-                      <div className="ml-1">{'≤'}</div>
-                      <div className="font-light">{semesterYear.year}</div>
-                    </div>
-                  </>
-                ) : (
-                  <div className="text-md">{getSemesterName()}</div>
-                )}{' '}
-                {courses.length !== 0 && totalCredits !== 0 ? (
-                  <>
-                    <div
-                      className={clsx(
-                        { 'bg-red-200': totalCredits < 12 },
-                        { 'bg-yellow-200': totalCredits > 18 },
-                        {
-                          'bg-green-200':
-                            totalCredits <= 18 && totalCredits >= 12,
-                        },
-                        ' flex flex-row items-center justify-center ml-1 px-1 w-auto text-black text-xs bg-white rounded',
-                      )}
-                      data-tip={getCreditString()}
-                      data-for="godTip"
-                    >
-                      {totalCredits}
-                    </div>
-                  </>
-                ) : null}
-              </div>
-              {!addingPrereqStatus ? (
-                <div
-                  className="group flex flex-row items-center justify-center rounded-md cursor-pointer"
-                  onClick={addCourse}
-                >
-                  <AddSvg className="w-4 h-4 group-hover:text-sky-700 stroke-2" />
-                </div>
+      <div onMouseLeave={() => setOpenAPInfoBox(false)}>
+        <div className="flex flex-col h-yearheading font-medium">
+          <div className="flex flex-row items-center justify-between px-0.5 py-1 h-yearheading1 bg-white">
+            <div className="flex flex-row items-center w-full h-auto font-normal">
+              {semesterName === 'All' ? (
+                <>
+                  <Question
+                    className="h-4 fill-gray"
+                    onClick={() => setOpenAPInfoBox(!openAPInfoBox)}
+                  />
+                  <div className="flex flex-row text-gray-600 font-semibold text-sm">
+                    Equivalents
+                    <div className="ml-1">{'≤'}</div>
+                    <div className="font-light">{semesterYear.year}</div>
+                  </div>
+                </>
               ) : (
-                <button
-                  className="py-1 z-40 w-24 text-white text-xs hover:bg-secondary bg-primary rounded focus:outline-none transform hover:scale-101 transition duration-150 ease-in"
-                  onClick={addPrereq}
-                >
-                  Add Here
-                </button>
-              )}
+                <div className="text-sm">{getSemesterName()}</div>
+              )}{' '}
+              {courses.length !== 0 && totalCredits !== 0 ? (
+                <>
+                  <div
+                    className={clsx(
+                      { 'bg-red-200': totalCredits < 12 },
+                      { 'bg-yellow-200': totalCredits > 18 },
+                      {
+                        'bg-green-200':
+                          totalCredits <= 18 && totalCredits >= 12,
+                      },
+                      ' flex flex-row items-center justify-center ml-1 px-1 w-auto text-black text-xs bg-white rounded',
+                    )}
+                    data-tip={getCreditString()}
+                    data-for="godTip"
+                  >
+                    {totalCredits}
+                  </div>
+                </>
+              ) : null}
             </div>
-            <div className="w-full h-px bg-primary"></div>
-          </div>
-          <div id={semesterName + '|' + semesterYear._id}>
-            <Droppable
-              droppableId={semesterName + '|' + semesterYear._id}
-              type="COURSE"
-            >
-              {(provided, snapshot) => (
-                <div
-                  ref={provided.innerRef}
-                  style={getListStyle(snapshot.isDraggingOver)}
-                  className="rounded"
-                >
-                  {getDraggables()}
-                  {provided.placeholder}
-                </div>
-              )}
-            </Droppable>
-            {openAPInfoBox ? (
-              <div className="absolute -ml-6 -mt-48 p-2 w-72 bg-gray-100 rounded shadow select-text">
-                These are courses transferred over from AP tests that you've
-                taken! Find out equivalent courses your scores cover for{' '}
-                <a
-                  className="text-blue-400 underline font-bold"
-                  target="_blank"
-                  rel="noreferrer"
-                  href="https://e-catalogue.jhu.edu/arts-sciences/full-time-residential-programs/undergraduate-policies/academic-policies/external-credit/#examcredittext"
-                >
-                  here
-                </a>
-                .
+            {!addingPrereqStatus ? (
+              <div
+                className="group flex flex-row items-center justify-center text-white hover:bg-blue-400 bg-green-400 rounded-md cursor-pointer"
+                onClick={addCourse}
+              >
+                <AddSvg className="w-6 h-6 group-hover:text-white stroke-2" />
               </div>
-            ) : null}
+            ) : (
+              <button
+                className="py-1 z-40 w-24 text-white text-xs hover:bg-blue-400 bg-green-400 rounded focus:outline-none transform hover:scale-101 transition duration-150 ease-in"
+                onClick={addPrereq}
+              >
+                Add Here
+              </button>
+            )}
           </div>
+          <div className="w-full h-px bg-gradient-to-r from-blue-500 to-green-400"></div>
         </div>
-      )}
+        <div id={semesterName + '|' + semesterYear._id}>
+          <Droppable
+            droppableId={semesterName + '|' + semesterYear._id}
+            type="COURSE"
+          >
+            {(provided, snapshot) => (
+              <div
+                ref={provided.innerRef}
+                style={getListStyle(snapshot.isDraggingOver)}
+                className="rounded"
+              >
+                {getDraggables()}
+                {provided.placeholder}
+              </div>
+            )}
+          </Droppable>
+          {openAPInfoBox ? (
+            <div className="absolute -ml-6 -mt-48 p-2 w-72 bg-gray-100 rounded shadow select-text">
+              These are courses transferred over from AP tests that you've
+              taken! Find out equivalent courses your scores cover for{' '}
+              <a
+                className="text-blue-400 underline font-bold"
+                target="_blank"
+                rel="noreferrer"
+                href="https://e-catalogue.jhu.edu/arts-sciences/full-time-residential-programs/undergraduate-policies/academic-policies/external-credit/#examcredittext"
+              >
+                here
+              </a>
+              .
+            </div>
+          ) : null}
+        </div>
+      </div>
     </>
   );
 };
 
 const getListStyle = (isDraggingOver: any) => ({
-  background: isDraggingOver ? 'transparent' : 'transparent',
+  background: isDraggingOver ? 'skyblue' : 'transparent',
 });
 
-export default Semester;
+export default VSemester;

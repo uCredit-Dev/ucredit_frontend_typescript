@@ -1,26 +1,32 @@
+// TODO: V components need to be split as presentational and logical components or old components should be gotten rid of entirely
+
 import { useState, useEffect, FC } from 'react';
 import ReactTooltip from 'react-tooltip';
-import { UserCourse, SemesterType, Year } from '../../../resources/commonTypes';
-import { checkAllPrereqs, getColors } from '../../../resources/assets';
+import {
+  UserCourse,
+  SemesterType,
+  Year,
+} from '../../../../resources/commonTypes';
+import { checkAllPrereqs, getColors } from '../../../../resources/assets';
 import { useDispatch, useSelector } from 'react-redux';
 import { ReactComponent as RemoveSvg } from '../../../resources/svg/Remove.svg';
 import { ReactComponent as DetailsSvg } from '../../../resources/svg/Details.svg';
-import { ReactComponent as WarningSvg } from '../../../resources/svg/Warning.svg';
+// import { ReactComponent as WarningSvg } from '../../../resources/svg/Warning.svg';
 import { Transition } from '@tailwindui/react';
 import clsx from 'clsx';
 import 'react-toastify/dist/ReactToastify.css';
 import {
   selectCurrentPlanCourses,
   selectPlan,
-} from '../../../slices/currentPlanSlice';
-import { selectCourseCache } from '../../../slices/userSlice';
-import VOverridePrereqPopup from './VOverridePrereqPopup';
+} from '../../../../slices/currentPlanSlice';
+import { selectCourseCache } from '../../../../slices/userSlice';
+// import VOverridePrereqPopup from './VOverridePrereqPopup';
 import {
   updateCourseToDelete,
   updateCourseToShow,
   updateDeleteCourseStatus,
   updateShowCourseInfo,
-} from '../../../slices/popupSlice';
+} from '../../../../slices/popupSlice';
 
 /**
  * This is a course card displayed in the course list under each semester.
@@ -38,8 +44,8 @@ const VCourseComponent: FC<{
   // React setup
   const [activated, setActivated] = useState<boolean>(false);
   const [satisfied, setSatisfied] = useState<boolean>(false);
-  const [overridden, setOverridden] = useState<boolean>(false);
-  const [displayPopup, setDisplayPopup] = useState<boolean>(false);
+  // const [overridden, setOverridden] = useState<boolean>(false);
+  // const [displayPopup, setDisplayPopup] = useState<boolean>(false);
   const [hovered, setHovered] = useState<boolean>(false);
 
   // Redux setup
@@ -97,7 +103,7 @@ const VCourseComponent: FC<{
   const deactivate = () => {
     setActivated(false);
     setHovered(false);
-    setDisplayPopup(false);
+    // setDisplayPopup(false);
   };
 
   return (
@@ -128,9 +134,9 @@ const VCourseComponent: FC<{
                 {course.area}
               </div>
             ) : null}{' '}
-            {!satisfied && !overridden ? (
+            {/* {!satisfied && !overridden ? (
               <WarningSvg className="flex items-center w-5 h-5 text-white font-semibold rounded select-none" />
-            ) : null}
+            ) : null} */}
           </div>
         </div>
 
@@ -182,7 +188,7 @@ const VCourseComponent: FC<{
                       )}
                       onClick={deleteCourse}
                     />
-                    {!satisfied && !overridden ? (
+                    {/* {!satisfied && !overridden ? (
                       <>
                         <WarningSvg
                           data-tip="<p>Prereqs not yet satisfied</p><p>Press here to override.</p>"
@@ -191,7 +197,7 @@ const VCourseComponent: FC<{
                           onClick={() => setDisplayPopup(true)}
                         />
                       </>
-                    ) : null}
+                    ) : null} */}
                   </div>
                   {/* <div>
                     {displayPopup ? (

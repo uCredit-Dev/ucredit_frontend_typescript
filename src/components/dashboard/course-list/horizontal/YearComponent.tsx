@@ -1,17 +1,16 @@
 import { useState, useEffect, FC } from 'react';
 import Semester from './Semester';
-import { UserCourse, Year } from '../../../resources/commonTypes';
-import { ReactComponent as MoreSvg } from '../../../resources/svg/More.svg';
+import { UserCourse, Year } from '../../../../resources/commonTypes';
+import { ReactComponent as MoreSvg } from '../../../../resources/svg/More.svg';
 import { useSelector, useDispatch } from 'react-redux';
 import {
   selectPlan,
   updateSelectedPlan,
-} from '../../../slices/currentPlanSlice';
-import { api, course_tags } from '../../../resources/assets';
+} from '../../../../slices/currentPlanSlice';
+import { api, getColors } from '../../../../resources/assets';
 import YearSettingsDropdown from './YearSettingsDropdown';
 import clsx from 'clsx';
-import { selectAddingPrereq } from '../../../slices/popupSlice';
-import { getColors } from '../../../resources/assets';
+import { selectAddingPrereq } from '../../../../slices/popupSlice';
 
 type SemSelected = {
   fall: boolean;
@@ -44,7 +43,9 @@ const YearComponent: FC<{
   const [yearName, setYearName] = useState<string>(year.name);
   const [editedName, setEditedName] = useState<boolean>(false);
   const [edittingName, setEdittingName] = useState<boolean>(false);
-  const [collapse, setCollapse] = useState<boolean>(true);
+  const [collapse, setCollapse] = useState<boolean>(
+    year.name === 'AP Equivalents',
+  );
   const [totalCredits, setTotalCredits] = useState<number>(0);
   const [areaCredits, setAreaCredits] = useState({
     N: 0,
@@ -69,83 +70,9 @@ const YearComponent: FC<{
   // Updates and parses all courses into semesters whenever the current plan or courses array changes.
   useEffect(() => {
     // For each of the user's courses for this year, put them in their respective semesters.
-    const parsedFallCourses: UserCourse[] = [];
-    const parsedSpringCourses: UserCourse[] = [];
-    const parsedIntersessionCourses: UserCourse[] = [];
-    const parsedSummerCourses: UserCourse[] = [];
-    courses.forEach((course) => {
-      if (course.term.toLowerCase() === 'fall') {
-        parsedFallCourses.push(course);
-      } else if (course.term.toLowerCase() === 'spring') {
-        parsedSpringCourses.push(course);
-      } else if (course.term.toLowerCase() === 'summer') {
-        parsedSummerCourses.push(course);
-      } else if (course.term.toLowerCase() === 'intersession') {
-        parsedIntersessionCourses.push(course);
-      }
-    });
-    setFallCourses(parsedFallCourses);
-    setSpringCourses(parsedSpringCourses);
-    setWinterCourses(parsedIntersessionCourses);
-    setSummerCourses(parsedSummerCourses);
+    updateSemesterCourses();
     // Tracks total number of credits every year
-    let count: number = 0;
-    courses.forEach((course) => {
-      count += course.credits;
-      if (course.area !== 'None') {
-        for (let i = 0; i < course.area.length; i++) {
-          switch (course.area[i]) {
-            case 'N':
-              setAreaCredits((previousState) => {
-                return {
-                  ...previousState,
-                  N: previousState.N + course.credits,
-                };
-              });
-              break;
-            case 'Q':
-              setAreaCredits((previousState) => {
-                return {
-                  ...previousState,
-                  Q: previousState.Q + course.credits,
-                };
-              });
-              break;
-            case 'E':
-              setAreaCredits((previousState) => {
-                return {
-                  ...previousState,
-                  E: previousState.E + course.credits,
-                };
-              });
-              break;
-            case 'H':
-              setAreaCredits((previousState) => {
-                return {
-                  ...previousState,
-                  H: previousState.H + course.credits,
-                };
-              });
-              break;
-            case 'S':
-              setAreaCredits((previousState) => {
-                return {
-                  ...previousState,
-                  S: previousState.S + course.credits,
-                };
-              });
-              break;
-          }
-          if (course.wi) {
-            setAreaCredits((previousState) => {
-              return { ...previousState, W: previousState.W + course.credits };
-            });
-          }
-        }
-      }
-    });
-    setTotalCredits(count);
-
+    updateYearCreditDistribution();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [courses, currentPlan, currentPlan.name]);
 
@@ -165,6 +92,75 @@ const YearComponent: FC<{
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [yearName]);
+
+  /**
+   * Updates the credit distribution of the year.
+   */
+  const updateYearCreditDistribution = () => {
+    const newCreditCount = {
+      N: 0,
+      Q: 0,
+      E: 0,
+      S: 0,
+      H: 0,
+      W: 0,
+    };
+    let count: number = 0;
+    courses.forEach((course) => {
+      count += course.credits;
+      if (course.area !== 'None') {
+        for (let area of course.area) {
+          switch (area) {
+            case 'N':
+              newCreditCount.N += course.credits;
+              break;
+            case 'Q':
+              newCreditCount.Q += course.credits;
+              break;
+            case 'E':
+              newCreditCount.E += course.credits;
+              break;
+            case 'H':
+              newCreditCount.H += course.credits;
+              break;
+            case 'S':
+              newCreditCount.S += course.credits;
+              break;
+          }
+        }
+      }
+      if (course.wi) {
+        newCreditCount.W += course.credits;
+      }
+    });
+    setTotalCredits(count);
+    setAreaCredits(newCreditCount);
+  };
+
+  /**
+   * Populates semester courses based on the courses array.
+   */
+  const updateSemesterCourses = (): void => {
+    const parsedFallCourses: UserCourse[] = [];
+    const parsedSpringCourses: UserCourse[] = [];
+    const parsedIntersessionCourses: UserCourse[] = [];
+    const parsedSummerCourses: UserCourse[] = [];
+    courses.forEach((course) => {
+      if (course.term.toLowerCase() === 'fall') {
+        parsedFallCourses.push(course);
+      } else if (course.term.toLowerCase() === 'spring') {
+        parsedSpringCourses.push(course);
+      } else if (course.term.toLowerCase() === 'summer') {
+        parsedSummerCourses.push(course);
+      } else if (course.term.toLowerCase() === 'intersession') {
+        parsedIntersessionCourses.push(course);
+      }
+    });
+    setFallCourses(parsedFallCourses);
+    setSpringCourses(parsedSpringCourses);
+    setWinterCourses(parsedIntersessionCourses);
+    setSummerCourses(parsedSummerCourses);
+  };
 
   /**
    * Update the name of the year
@@ -272,11 +268,42 @@ const YearComponent: FC<{
     return tmpCollapse ? [] : semesters;
   };
 
+  /**
+   * Get semester, return AP Equivalents if id is 0
+   */
+  const getSemester = () => {
+    return (
+      <>
+        {id !== 0 ? (
+          <div className="flex flex-row">{getDisplayedSemesters(collapse)}</div>
+        ) : (
+          <Semester
+            semesterName="All"
+            semesterYear={year}
+            courses={fallCourses}
+            display={true}
+          />
+        )}
+      </>
+    );
+  };
+
+  /**
+   * Get semester, return null if id is 0
+   */
+  const getSemesterWNull = () => (
+    <>
+      {id !== 0 ? (
+        <div className="flex flex-row">{getDisplayedSemesters(collapse)}</div>
+      ) : null}
+    </>
+  );
+
   return (
     <div
       id={id.toString()}
       className={
-        'cursor-move p-2 max-w-year-heading w-full min-w-[14rem]' +
+        'cursor-move p-2 max-w-year-heading w-full min-w-[14rem] border-b-[2px]' +
         (addingPrereqStatus ? 'z-30' : '')
       }
       onMouseLeave={() => {
@@ -416,18 +443,7 @@ const YearComponent: FC<{
           onMouseLeave={() => setDraggable(false)}
           onMouseEnter={() => setDraggable(true)}
         >
-          {id !== 0 ? (
-            <div className="flex flex-row">
-              {getDisplayedSemesters(collapse)}
-            </div>
-          ) : null
-          // <Semester
-          //   semesterName="All"
-          //   semesterYear={year}
-          //   courses={fallCourses}
-          //   display={true}
-          // />
-          }
+          {getSemesterWNull()}
         </div>
       ) : (
         <div
@@ -435,18 +451,7 @@ const YearComponent: FC<{
           onMouseLeave={() => setDraggable(false)}
           onMouseEnter={() => setDraggable(true)}
         >
-          {id !== 0 ? (
-            <div className="flex flex-row">
-              {getDisplayedSemesters(collapse)}
-            </div>
-          ) : (
-            <Semester
-              semesterName="All"
-              semesterYear={year}
-              courses={fallCourses}
-              display={true}
-            />
-          )}
+          {getSemester()}
         </div>
       )}
     </div>

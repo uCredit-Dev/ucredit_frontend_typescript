@@ -1,16 +1,16 @@
 import { useState, useEffect, FC } from 'react';
 import VSemester from './VSemester';
-import { UserCourse, Year } from '../../../resources/commonTypes';
-import { ReactComponent as MoreSvg } from '../../../resources/svg/More.svg';
+import { UserCourse, Year } from '../../../../resources/commonTypes';
+import { ReactComponent as MoreSvg } from '../../../../resources/svg/More.svg';
 import { useSelector, useDispatch } from 'react-redux';
 import {
   selectPlan,
   updateSelectedPlan,
-} from '../../../slices/currentPlanSlice';
-import { api } from '../../../resources/assets';
+} from '../../../../slices/currentPlanSlice';
+import { api } from '../../../../resources/assets';
 import VYearSettingsDropdown from './VYearSettingsDropdown';
 import clsx from 'clsx';
-import { selectAddingPrereq } from '../../../slices/popupSlice';
+import { selectAddingPrereq } from '../../../../slices/popupSlice';
 
 type SemSelected = {
   fall: boolean;

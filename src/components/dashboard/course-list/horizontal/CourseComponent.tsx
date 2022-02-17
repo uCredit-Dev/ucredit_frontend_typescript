@@ -1,26 +1,29 @@
 import { useState, useEffect, FC } from 'react';
 import ReactTooltip from 'react-tooltip';
-import { UserCourse, SemesterType, Year } from '../../../resources/commonTypes';
-import { checkAllPrereqs, getColors } from '../../../resources/assets';
+import {
+  UserCourse,
+  SemesterType,
+  Year,
+} from '../../../../resources/commonTypes';
+import { checkAllPrereqs, getColors } from '../../../../resources/assets';
 import { useDispatch, useSelector } from 'react-redux';
-import { ReactComponent as RemoveSvg } from '../../../resources/svg/Remove.svg';
-import { ReactComponent as DetailsSvg } from '../../../resources/svg/Details.svg';
-import { ReactComponent as WarningSvg } from '../../../resources/svg/Warning.svg';
+import { ReactComponent as RemoveSvg } from '../../../../resources/svg/Remove.svg';
+import { ReactComponent as WarningSvg } from '../../../../resources/svg/Warning.svg';
 import { Transition } from '@tailwindui/react';
 import clsx from 'clsx';
 import 'react-toastify/dist/ReactToastify.css';
 import {
   selectCurrentPlanCourses,
   selectPlan,
-} from '../../../slices/currentPlanSlice';
-import { selectCourseCache } from '../../../slices/userSlice';
+} from '../../../../slices/currentPlanSlice';
+import { selectCourseCache } from '../../../../slices/userSlice';
 import OverridePrereqPopup from './OverridePrereqPopup';
 import {
   updateCourseToDelete,
   updateCourseToShow,
   updateDeleteCourseStatus,
   updateShowCourseInfo,
-} from '../../../slices/popupSlice';
+} from '../../../../slices/popupSlice';
 
 /**
  * This is a course card displayed in the course list under each semester.
@@ -88,34 +91,64 @@ const CourseComponent: FC<{
    */
   const activate = () => {
     setActivated(true);
-    setTimeout(() => setHovered(true), 100);
+    setHovered(true);
+    // setTimeout(() => setHovered(true), 100);
   };
 
   /**
    * Deactivates the course component button menu and grab icon.
    */
   const deactivate = () => {
-    setActivated(false);
     setHovered(false);
+    setActivated(false);
     setDisplayPopup(false);
   };
 
   return (
-    <>
+    <div
+      className="flex flex-row"
+      onMouseEnter={activate}
+      onMouseLeave={deactivate}
+    >
+      <div className="absolute">
+        {hovered ? (
+          <div className="flex flex-row">
+            <RemoveSvg
+              className=" z-20 -ml-6 mt-3 flex flex-row items-center justify-center p-0.5 w-6 h-6 text-white bg-red-300 hover:bg-red-600 rounded-md outline-none stroke-2 cursor-pointer transform hover:scale-110 transition duration-150 ease-in"
+              onClick={deleteCourse}
+            />
+            {/* {(() => (
+              <>
+                {!satisfied && !overridden ? (
+                  <>
+                    <WarningSvg
+                      data-tip="<p>Prereqs not yet satisfied</p><p>Press here to override.</p>"
+                      data-for="godTip"
+                      className={clsx(
+                        'mt-3 z-20 flex flex-row items-center justify-center p-0.5 w-6 h-6 text-white hover:bg-secondary bg-primary rounded-md outline-none stroke-2 cursor-pointer transform hover:scale-110 transition duration-150 ease-in',
+                        { '-ml-12': !satisfied },
+                      )}
+                      onClick={() => setDisplayPopup(true)}
+                    />
+                  </>
+                ) : null}
+              </>
+            ))()} */}
+          </div>
+        ) : null}
+      </div>
       <div
-        className="relative flex items-center justify-between text-xs mt-2 pl-1 p-0.5 w-1/5 max-w-yearheading rounded md:w-full"
+        className="shadow relative flex items-center justify-between text-xs mt-2 pl-1 p-0.5 w-1/5 max-w-yearheading rounded md:w-full bg-white"
         onMouseEnter={() => setDraggable(false)}
         onMouseLeave={() => setDraggable(true)}
         onClick={displayCourses}
-        // onMouseEnter={activate}
-        // onMouseLeave={deactivate}
         onMouseOver={() => {
           ReactTooltip.rebuild();
         }}
         key={course.number}
       >
         <div className="grid grid-flow-row-dense grid-cols-10 w-full h-full gap-x-1.5">
-          {course.area !== 'None' ? (
+          {course.area !== 'None' || course.wi ? (
             <div
               className="col-span-1 px-1.5 h-5/6 place-self-center rounded-lg select-none"
               style={{ backgroundColor: getColors(course.area, course.wi) }}
@@ -165,60 +198,20 @@ const CourseComponent: FC<{
                 )}
               >
                 <div className="" />
-                {/* <div
-                  className={clsx(
-                    'absolute z-20 left-0 w-0 h-full text-white hover:bg-secondary bg-primary bg-opacity-80 rounded cursor-move transform duration-150 ease-in',
-                    {
-                      'w-1/4': hovered,
-                    },
-                  )}
-                  onMouseEnter={() => setDraggable(false)}
-                  onMouseLeave={() => setDraggable(true)}
-                >
-                  <div className="h-min mt-1 mx-auto w-min text-lg font-thin">
-                    ✥
-                  </div>
-                </div>
-                <div className="flex flex-col">
-                  <div className="flex flex-row">
-                    <DetailsSvg
-                      className="relative z-20 flex flex-row items-center justify-center ml-12 mr-5 p-0.5 w-6 h-6 text-white hover:bg-secondary bg-primary rounded-md outline-none stroke-2 cursor-pointer transform hover:scale-110 transition duration-150 ease-in"
-                      onClick={displayCourses}
-                    />
-                    <RemoveSvg
-                      className={clsx(
-                        'relative z-20 flex flex-row items-center justify-center p-0.5 w-6 h-6 text-white bg-red-300 hover:bg-red-600 rounded-md outline-none stroke-2 cursor-pointer transform hover:scale-110 transition duration-150 ease-in',
-                        { 'mr-5': !satisfied },
-                      )}
-                      onClick={deleteCourse}
-                    />
-                    {!satisfied && !overridden ? (
-                      <>
-                        <WarningSvg
-                          data-tip="<p>Prereqs not yet satisfied</p><p>Press here to override.</p>"
-                          data-for="godTip"
-                          className="relative z-20 flex flex-row items-center justify-center p-0.5 w-6 h-6 text-white hover:bg-secondary bg-primary rounded-md outline-none stroke-2 cursor-pointer transform hover:scale-110 transition duration-150 ease-in"
-                          onClick={() => setDisplayPopup(true)}
-                        />
-                      </>
-                    ) : null}
-                  </div>
-                  <div>
-                    {displayPopup ? (
-                      <OverridePrereqPopup
-                        courseName={course.number}
-                        cleanup={() => setDisplayPopup(false)}
-                        save={() => setOverridden(true)}
-                      />
-                    ) : null}
-                  </div>
-                </div> */}
+
+                {displayPopup ? (
+                  <OverridePrereqPopup
+                    courseName={course.number}
+                    cleanup={() => setDisplayPopup(false)}
+                    save={() => setOverridden(true)}
+                  />
+                ) : null}
               </div>
             )}
           </Transition>
         </div>
       </div>
-    </>
+    </div>
   );
 };
 

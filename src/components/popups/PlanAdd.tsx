@@ -83,17 +83,6 @@ const PlanAdd: FC = () => {
     dispatch(updateToAddMajors(selectedMajors));
   };
 
-  // const placeholderOptions = [
-  //   { value: "foo", label: "foo" },
-  //   { value: "bar", label: "bar" },
-  //   { value: "baz", label: "baz" },
-  // ];
-
-  // const selectPlanOption = [
-  //   { value: "default", label: "Default" },
-  //   { value: "template", label: "Template" },
-  // ];
-
   return (
     <div className="absolute top-0">
       {/* Background Grey */}
@@ -120,15 +109,6 @@ const PlanAdd: FC = () => {
                 defaultValue={toAddName}
                 onChange={handleNameChange}
               />
-              {/* <div className="flex flex-row w-full">
-                <div className="flex flex-none flex-row items-center mr-2">
-                  Number of years
-                </div>
-                <Select
-                  options={placeholderOptions}
-                  className="flex-grow px-1 h-6 rounded"
-                />
-              </div> */}
             </div>
             <div className="z-40 flex flex-row justify-between mb-4">
               <Select
@@ -138,36 +118,7 @@ const PlanAdd: FC = () => {
                 placeholder="Select Majors"
                 className="z-50 w-full"
               />
-              {/* <Select
-                options={placeholderOptions}
-                onChange={() => {}}
-                placeholder="Secondary Major (developing)"
-                className="w-full"
-              />
             </div>
-            <div className="flex flex-row justify-between mb-4">
-              <Select
-                options={placeholderOptions}
-                onChange={() => {}}
-                placeholder="Select a Plan Option (developing)"
-                className="mr-8 w-full"
-              />
-              <Select
-                options={placeholderOptions}
-                onChange={() => {}}
-                placeholder="Minor (developing)"
-                className="w-full"
-              /> */}
-            </div>
-            {/* <div className="flex flex-row items-center mb-4 w-full">
-              <div className="flex-none mr-8">Select a Plan Option</div>
-              <Select
-                options={selectPlanOption}
-                onChange={() => {}}
-                placeholder="Please Select"
-                className="w-full"
-              />
-            </div> */}
             <div className="flex flex-row justify-end">
               <button
                 className="z-30 p-2 w-16 h-10 text-white hover:bg-secondary bg-primary rounded focus:outline-none transform hover:scale-105 transition duration-200 ease-in"

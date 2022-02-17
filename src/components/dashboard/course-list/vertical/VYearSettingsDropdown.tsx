@@ -1,18 +1,18 @@
 import { FC, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { Plan, Year } from '../../../resources/commonTypes';
+import { Plan, Year } from '../../../../resources/commonTypes';
 import {
   updateYearToDelete,
   updateDeleteYearStatus,
-} from '../../../slices/popupSlice';
+} from '../../../../slices/popupSlice';
 import Select from 'react-select';
 import {
   selectPlan,
   updateSelectedPlan,
-} from '../../../slices/currentPlanSlice';
+} from '../../../../slices/currentPlanSlice';
 import axios from 'axios';
-import { api } from '../../../resources/assets';
-import { selectPlanList, updatePlanList } from '../../../slices/userSlice';
+import { api } from '../../../../resources/assets';
+import { selectPlanList, updatePlanList } from '../../../../slices/userSlice';
 import { toast } from 'react-toastify';
 
 type SemSelected = {
