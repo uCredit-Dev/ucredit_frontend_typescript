@@ -209,12 +209,30 @@ const YearComponent: FC<{
   };
 
   /**
+   * Gets start year of a semester for this year.
+   * @param semesterName - semester to check.
+   * @returns the year that the semester starts in.
+   */
+  const getYear = (semesterName): string => {
+    if (semesterName === 'Fall' || semesterName === 'Winter') {
+      return year.year.toString();
+    } else {
+      return (year.year + 1).toString();
+    }
+  };
+
+  /**
    * Check if semester is valid for adding course
+   * TODO: Check for year matching
    */
   const checkSemester = (semesterName: string): boolean => {
     if (inspected !== 'None') {
       for (let term of inspected.terms) {
-        if (term.includes(semesterName)) {
+        if (
+          term.includes(semesterName) &&
+          (term.includes(getYear(semesterName)) ||
+            new Date().getFullYear() <= year.year)
+        ) {
           return true;
         }
       }
