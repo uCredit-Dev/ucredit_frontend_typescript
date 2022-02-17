@@ -1,4 +1,4 @@
-import React, { FC, useState } from 'react';
+import React, { FC, useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 
 import CourseDisplay from './search-results/CourseDisplay';
@@ -19,10 +19,7 @@ import {
   requirements,
   splitRequirements,
 } from '../../dashboard/degree-info/distributionFunctions';
-import {
-  clearSearch,
-  updateRetrievedCourses,
-} from '../../../slices/searchSlice';
+import { updateRetrievedCourses } from '../../../slices/searchSlice';
 import axios from 'axios';
 import { api } from '../../../resources/assets';
 
@@ -32,6 +29,7 @@ import { api } from '../../../resources/assets';
 const Cart: FC<{ allCourses: SISRetrievedCourse[] }> = (props) => {
   // Component states
   const [searchOpacity, setSearchOpacity] = useState<number>(100);
+  const [searching, setSearching] = useState<boolean>(false);
 
   // FOR DUMMY FILTER TESTING TODO REMOVE
   // TODO : double check the initial state on this hook. do i even need this if stored in redux?
@@ -42,16 +40,29 @@ const Cart: FC<{ allCourses: SISRetrievedCourse[] }> = (props) => {
   // Redux selectors and dispatch
   const dispatch = useDispatch();
   const distrs = useSelector(selectSelectedDistribution);
-  const updateSelectedRequirement = (newRequirement: requirements) => {
+
+  useEffect(() => {
+    if (distrs[1] && distrs[1].length > 0) {
+      setSelectedRequirement(distrs[1][0]);
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [distrs]);
+
+  // Performing searching in useEffect so as to activate searching
+  useEffect(() => {
+    setSearching(true);
+    updateSelectedRequirement();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [selectedRequirement]);
+
+  const updateSelectedRequirement = () => {
     // setLocalRetrievedCourses([]);
     // dispatch(updateRetrievedCourses([]));
-    setSelectedRequirement(newRequirement);
     // will find based on selected requirement
     // concern with selecting multiple requirements in a row? how will promises be handled correctly?
     // probably simlar to how seraches are ended prematurely. anyways, just want ot see if this works.
 
-    let splitRequirement = splitRequirements(newRequirement.expr);
-    console.log(splitRequirement);
+    let splitRequirement = splitRequirements(selectedRequirement.expr);
 
     // issue here will be making sure to reject all these promises once the component unmounts!!!
     // getall extras
@@ -68,17 +79,25 @@ const Cart: FC<{ allCourses: SISRetrievedCourse[] }> = (props) => {
         index += 1;
       }
     }
-    console.log(allExtras);
-
     let finishedFinds = 0;
     let courses: SISRetrievedCourse[] = [];
+    if (!selectedRequirement) {
+      setSearching(false);
+    }
     allExtras.forEach((extra) =>
-      fineReqFind(extra).then((found) => {
-        courses = [...courses, ...found[0]];
-        finishedFinds += 1;
-        if (finishedFinds === allExtras.length)
-          dispatch(updateRetrievedCourses(courses));
-      }),
+      fineReqFind(extra)
+        .then((found) => {
+          courses = [...courses, ...found[0]];
+          finishedFinds += 1;
+          if (finishedFinds === allExtras.length) {
+            dispatch(updateRetrievedCourses(courses));
+            setSearching(false);
+          }
+        })
+        .catch((err) => {
+          setSearching(false);
+          console.log(err);
+        }),
     );
   };
 
@@ -115,7 +134,7 @@ const Cart: FC<{ allCourses: SISRetrievedCourse[] }> = (props) => {
 
         break;
       case 'W': //Written intensive
-        extras.query = splitArr[index]; // does this work?
+        extras.wi = true; // does this work?
         break;
       case 'L': // Level
         // TODO : figure out levels ? factor from distrubitionFunctions.tsx
@@ -209,14 +228,14 @@ const Cart: FC<{ allCourses: SISRetrievedCourse[] }> = (props) => {
         onClick={() => {
           // clicking off, should reset all things
           dispatch(updateShowingCart(false));
-          dispatch(clearSearch());
+          // dispatch(clearSearch());
         }}
       ></div>
 
       {/* Search area */}
       <div
         className={
-          'fixed flex flex-col bg-gradient-to-r shadow from-blue-500 to-green-400 select-none rounded z-40 w-9/12 tight:overflow-y-none h-5/6 top-1/3 left-1/2 transform -translate-x-1/2 -translate-y-1/3 tight:h-auto'
+          'fixed flex flex-col bg-primary shadow select-none rounded z-40 w-9/12 tight:overflow-y-none h-5/6 top-1/3 left-1/2 transform -translate-x-1/2 -translate-y-1/3 tight:h-auto'
         }
         style={{ opacity: searchOpacity === 100 ? 1 : 0.1 }}
       >
@@ -245,7 +264,7 @@ const Cart: FC<{ allCourses: SISRetrievedCourse[] }> = (props) => {
               </div>
               <CartCourseList
                 allCourses={props.allCourses} //remove this later
-                searching={false}
+                searching={searching}
                 selectedRequirement={selectedRequirement}
                 textFilter={textFilterInputValue.toLowerCase()}
               />
@@ -262,7 +281,7 @@ const Cart: FC<{ allCourses: SISRetrievedCourse[] }> = (props) => {
               <HideSvg className="w-6 h-6 text-gray-500 stroke-2" />
             </div>
           </div>
-          <CourseDisplay />
+          <CourseDisplay cart={true} />
           {/** */}
           <div
             className={
@@ -274,7 +293,7 @@ const Cart: FC<{ allCourses: SISRetrievedCourse[] }> = (props) => {
               {/* This is where the courses would go (the left column) */}
               <FineRequirementsList
                 searching={false}
-                selectRequirement={updateSelectedRequirement}
+                selectRequirement={setSelectedRequirement}
                 selectedDistribution={distrs}
               />
             </div>

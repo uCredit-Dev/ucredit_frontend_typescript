@@ -32,7 +32,7 @@ const InfoMenu: FC = () => {
   const currPlanCourses = useSelector(selectCurrentPlanCourses);
 
   const [infoOpen, setInfoOpen] = useState(false);
-  const [showDistributions, setShowDistributions] = useState<boolean[]>(
+  const [showDistributions] = useState<boolean[]>(
     new Array(distributions.length),
   );
   const [distributionOpen, setDistributionOpen] = useState<boolean>(true);
@@ -137,7 +137,7 @@ const InfoMenu: FC = () => {
                 );
               }
             })}
-            {pair[1].length > 1 ? (
+            {/* {pair[1].length > 1 ? (
               <button
                 onClick={() => {
                   changeDistributionVisibility(i);
@@ -149,7 +149,7 @@ const InfoMenu: FC = () => {
               >
                 {getDistributionText(i)}
               </button>
-            ) : null}
+            ) : null} */}
           </div>
         );
       },
@@ -291,16 +291,16 @@ const InfoMenu: FC = () => {
    * Changes whether fine distributions are hidden
    * @param i - the distribution's index amongst other distributions
    */
-  const changeDistributionVisibility = (i: number) => {
-    let showDistributionsCopy = showDistributions.slice();
-    showDistributionsCopy[i] = !showDistributions[i];
-    setShowDistributions(showDistributionsCopy);
-  };
+  // const changeDistributionVisibility = (i: number) => {
+  //   let showDistributionsCopy = showDistributions.slice();
+  //   showDistributionsCopy[i] = !showDistributions[i];
+  //   setShowDistributions(showDistributionsCopy);
+  // };
 
-  const getDistributionText = (index: number): string =>
-    showDistributions[index] === true
-      ? 'Hide Fine Requirements'
-      : 'Show Fine Requirements';
+  // const getDistributionText = (index: number): string =>
+  //   showDistributions[index] === true
+  //     ? 'Hide Fine Requirements'
+  //     : 'Show Fine Requirements';
 
   return (
     <div className="fixed z-40 bg-red-100 right-0 flex flex-col justify-between mt-8 w-10 top-60">

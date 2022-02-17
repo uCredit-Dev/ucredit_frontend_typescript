@@ -44,7 +44,7 @@ const CartCourseList: FC<{
 
   // Updates pagination every time the searched courses change.
   useEffect(() => {
-    const filteredCourses: SISRetrievedCourse[] = courses.filter(
+    const filtered: SISRetrievedCourse[] = courses.filter(
       (course: SISRetrievedCourse) => {
         let valid = false;
         course.versions.forEach((version) => {
@@ -59,11 +59,11 @@ const CartCourseList: FC<{
       },
     );
     // If coursesPerPage doesn't divide perfectly into total courses, we need one more page.
-    const division = Math.floor(filteredCourses.length / coursesPerPage);
+    const division = Math.floor(filtered.length / coursesPerPage);
     const pages =
-      filteredCourses.length % coursesPerPage === 0 ? division : division + 1;
+      filtered.length % coursesPerPage === 0 ? division : division + 1;
     setPageCount(pages);
-    setFilteredCourses(filteredCourses);
+    setFilteredCourses(filtered);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [courses, props.textFilter]);
 
@@ -83,7 +83,7 @@ const CartCourseList: FC<{
       const inspecting = { ...filteredCourses[i] };
       // issue is that this adds duplicates of a course. using "every" callback will
       // stop iterating once a version is found.
-      inspecting.versions.every((v: any, i: number) => {
+      inspecting.versions.every((v: any, ind: number) => {
         // reverses list to get latest version
         if (v.term.includes(defaultYearForCart)) {
           // this has been chagged to not use the filters
@@ -93,7 +93,7 @@ const CartCourseList: FC<{
               className="transform hover:scale-105 transition duration-200 ease-in"
               onClick={() => setHideResults(true)}
             >
-              <CartCourseListItem course={inspecting} version={i} />
+              <CartCourseListItem course={inspecting} version={ind} />
             </div>,
           );
           return false;
@@ -156,7 +156,9 @@ const CartCourseList: FC<{
                 setHideResults(!hideResults);
               }}
             >
-              {!hideResults ? 'Hide Results' : 'Show Results'}
+              {(() => (
+                <>{!hideResults ? 'Hide Results' : 'Show Results'}</>
+              ))()}
             </button>
           ) : null}
         </div>
@@ -188,37 +190,57 @@ const CartCourseList: FC<{
           </div>
         </div>
       </div>
-      {!hideResults || window.innerWidth > 700 ? (
-        <div className="py px-5 w-full bg-gray-200 select-none">
-          <div className="w-full h-full">
-            {courses.length > 0 ? (
-              <>
-                <div className="y-full flex flex-col w-full">
-                  {courseList()}
-                </div>
-                {pageCount > 1 ? (
-                  <div className="flex flex-row justify-center w-full h-auto">
-                    <Pagination
-                      pageCount={pageCount}
-                      handlePageClick={handlePageClick}
-                    />
-                  </div>
-                ) : null}
-              </>
-            ) : (
-              <div className="flex flex-col items-center justify-center mt-24 w-full">
-                {props.searching ? (
-                  <img src={loading} alt="Searching..." className="h-10"></img>
-                ) : (
-                  <div className="text-center text-gray-400 text-lg">
-                    No current search results.
-                  </div>
-                )}
+      {(() => (
+        <>
+          {!hideResults || window.innerWidth > 700 ? (
+            <div className="py px-5 w-full bg-gray-200 select-none">
+              <div className="w-full h-full">
+                {(() => (
+                  <>
+                    {courses.length > 0 ? (
+                      <>
+                        <div className="y-full flex flex-col w-full">
+                          {courseList()}
+                        </div>
+                        {(() => (
+                          <>
+                            {pageCount > 1 ? (
+                              <div className="flex flex-row justify-center w-full h-auto">
+                                <Pagination
+                                  pageCount={pageCount}
+                                  handlePageClick={handlePageClick}
+                                />
+                              </div>
+                            ) : null}
+                          </>
+                        ))()}
+                      </>
+                    ) : (
+                      <div className="flex flex-col items-center justify-center mt-24 w-full">
+                        {(() => (
+                          <>
+                            {props.searching ? (
+                              <img
+                                src={loading}
+                                alt="Searching..."
+                                className="h-10"
+                              ></img>
+                            ) : (
+                              <div className="text-center text-gray-400 text-lg">
+                                No current search results.
+                              </div>
+                            )}
+                          </>
+                        ))()}
+                      </div>
+                    )}
+                  </>
+                ))()}
               </div>
-            )}
-          </div>
-        </div>
-      ) : null}
+            </div>
+          ) : null}
+        </>
+      ))()}
     </>
   );
 };

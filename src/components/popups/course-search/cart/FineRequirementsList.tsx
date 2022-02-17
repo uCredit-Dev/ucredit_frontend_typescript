@@ -14,7 +14,6 @@ const FineRequirementsList: FC<{
   const selectRequirement = (requirement: requirements, i: number) => {
     props.selectRequirement(requirement);
     setSelectedListItem(i);
-    console.log(i);
   };
 
   const getRequirements = () => {
@@ -46,7 +45,9 @@ const FineRequirementsList: FC<{
                 setHideResults(!hideResults);
               }}
             >
-              {!hideResults ? 'Hide Results' : 'Show Results'}
+              {(() => (
+                <>{!hideResults ? 'Hide Results' : 'Show Results'}</>
+              ))()}
             </button>
           ) : null}
         </div>

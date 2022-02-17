@@ -30,7 +30,7 @@ const FeedbackPopup: FC<{ setFormPopup: (value: boolean) => void }> = ({
           width="640"
           height="1829"
           title="form"
-          className="bg-gray-100"
+          className="bg-white"
         >
           Loading…
         </iframe>

@@ -14,7 +14,6 @@ const FineRequirementListItem: FC<{
 
   const handleFineReqClick = () => {
     props.onClick(props.itemRequirement, props.id);
-    console.log(props.itemRequirement);
   };
 
   return (
@@ -22,6 +21,11 @@ const FineRequirementListItem: FC<{
       className={clsx(
         props.selected ? 'bg-secondary bg-opacity-25' : 'bg-white',
         'mb-2 p-2 w-full h-auto rounded hover:shadow cursor-pointer transition duration-200 ease-in-out',
+        {
+          'bg-green-100':
+            props.itemRequirement.fulfilled_credits >=
+            props.itemRequirement.required_credits,
+        },
       )}
       onClick={handleFineReqClick}
     >
