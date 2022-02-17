@@ -219,7 +219,6 @@ const Dashboard: FC<{ id: string | null }> = ({ id }) => {
           </div>
           <InfoMenu />
         </div>
-
         {/* Global popups */}
         {addingPrereqStatus ? <AddingPrereqPopup /> : null}
         {searchStatus ? <Search /> : null}
@@ -228,7 +227,8 @@ const Dashboard: FC<{ id: string | null }> = ({ id }) => {
         {deleteYearStatus ? <DeleteYearPopup /> : null}
         {deleteCourseStatus ? <DeleteCoursePopup /> : null}
         {courseInfoStatus ? <CourseDisplayPopup /> : null}
-        {cartStatus ? <Cart allCourses={[]}/> : null } {/** TODO : remove allCourses props */}
+        {cartStatus ? <Cart allCourses={[]} /> : null}{' '}
+        {/** TODO : remove allCourses props */}
       </div>
     </div>
   );

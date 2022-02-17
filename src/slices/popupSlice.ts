@@ -38,7 +38,7 @@ const initialState: PopupSlice = {
   courseToShow: null,
   addingPrereq: false,
   showingCart: false,
-  selectedDistribution: ["", []],
+  selectedDistribution: ['', []],
 };
 
 export const popupSlice = createSlice({
@@ -97,9 +97,12 @@ export const popupSlice = createSlice({
     updateShowingCart: (state: any, action: PayloadAction<boolean>) => {
       state.showingCart = action.payload;
     },
-    updateSelectedDistribution: (state: any, action: PayloadAction<[string, requirements[]]>) => {
+    updateSelectedDistribution: (
+      state: any,
+      action: PayloadAction<[string, requirements[]]>,
+    ) => {
       state.selectedDistribution = action.payload;
-    }
+    },
   },
 });
 
@@ -144,8 +147,7 @@ export const selectCourseToShow = (state: RootState) =>
   state.popup.courseToShow;
 export const selectAddingPrereq = (state: RootState) =>
   state.popup.addingPrereq;
-export const selectShowingCart = (state: RootState) =>
-  state.popup.showingCart;
+export const selectShowingCart = (state: RootState) => state.popup.showingCart;
 
 export const selectSelectedDistribution = (state: RootState) =>
   state.popup.selectedDistribution;

@@ -2,7 +2,11 @@ import { useState, FC } from 'react';
 import FineRequirementListItem from './FineRequirementItem';
 import { requirements } from '../../../dashboard/degree-info/distributionFunctions';
 
-const FineRequirementsList: FC<{ searching: boolean, selectRequirement: Function, selectedDistribution: [string, requirements[]] }> = (props) => {
+const FineRequirementsList: FC<{
+  searching: boolean;
+  selectRequirement: Function;
+  selectedDistribution: [string, requirements[]];
+}> = (props) => {
   // Component state setup.
   const [hideResults, setHideResults] = useState<boolean>(false);
   const [selectedListItem, setSelectedListItem] = useState<number>(-1);
@@ -11,14 +15,21 @@ const FineRequirementsList: FC<{ searching: boolean, selectRequirement: Function
     props.selectRequirement(requirement);
     setSelectedListItem(i);
     console.log(i);
-  }
+  };
 
   const getRequirements = () => {
     return props.selectedDistribution[1].map((requirement, i) => {
-      if (i === 0) return <></> // TODO : better key
-      return <FineRequirementListItem id={i} itemRequirement={requirement} onClick={selectRequirement} selected={i === selectedListItem} />
+      if (i === 0) return <></>; // TODO : better key
+      return (
+        <FineRequirementListItem
+          id={i}
+          itemRequirement={requirement}
+          onClick={selectRequirement}
+          selected={i === selectedListItem}
+        />
+      );
     });
-  }
+  };
 
   return (
     <>
@@ -27,7 +38,7 @@ const FineRequirementsList: FC<{ searching: boolean, selectRequirement: Function
         data-tip="Hide Search Results"
       >
         <div className="flex flex-row">
-          <div className="text-lg font-semibold">Fine Requirements List</div>{" "}
+          <div className="text-lg font-semibold">Fine Requirements List</div>{' '}
           {window.innerWidth < 800 ? (
             <button
               className="ml-2 focus:outline-none"
@@ -35,7 +46,7 @@ const FineRequirementsList: FC<{ searching: boolean, selectRequirement: Function
                 setHideResults(!hideResults);
               }}
             >
-              {!hideResults ? "Hide Results" : "Show Results"}
+              {!hideResults ? 'Hide Results' : 'Show Results'}
             </button>
           ) : null}
         </div>

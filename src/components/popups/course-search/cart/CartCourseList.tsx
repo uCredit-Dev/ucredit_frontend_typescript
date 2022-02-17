@@ -22,17 +22,17 @@ import { requirements } from '../../../dashboard/degree-info/distributionFunctio
   List of searched courses.
 */
 const CartCourseList: FC<{
-  searching: boolean,
-  selectedRequirement: requirements,
-  allCourses: SISRetrievedCourse[],
-  textFilter: string,
+  searching: boolean;
+  selectedRequirement: requirements;
+  allCourses: SISRetrievedCourse[];
+  textFilter: string;
 }> = (props) => {
   // Component state setup.
   const [pageNum, setPageNum] = useState<number>(0);
   const [pageCount, setPageCount] = useState<number>(0);
   const [hideResults, setHideResults] = useState<boolean>(false);
   const [filteredCourses, setFilteredCourses] = useState<SISRetrievedCourse[]>(
-    []
+    [],
   );
   // Redux setup
   const courses = useSelector(selectRetrievedCourses);
@@ -40,7 +40,7 @@ const CartCourseList: FC<{
   const dispatch = useDispatch();
 
   const coursesPerPage = 10;
-  const defaultYearForCart = "2021";
+  const defaultYearForCart = '2021';
 
   // Updates pagination every time the searched courses change.
   useEffect(() => {
@@ -53,9 +53,10 @@ const CartCourseList: FC<{
             valid = true;
           }
         });
-        if (!course.title.toLowerCase().includes(props.textFilter)) return false;
+        if (!course.title.toLowerCase().includes(props.textFilter))
+          return false;
         return valid;
-      }
+      },
     );
     // If coursesPerPage doesn't divide perfectly into total courses, we need one more page.
     const division = Math.floor(filteredCourses.length / coursesPerPage);
@@ -82,8 +83,10 @@ const CartCourseList: FC<{
       const inspecting = { ...filteredCourses[i] };
       // issue is that this adds duplicates of a course. using "every" callback will
       // stop iterating once a version is found.
-      inspecting.versions.every((v: any, i: number) => { // reverses list to get latest version
-        if (v.term.includes(defaultYearForCart)) { // this has been chagged to not use the filters
+      inspecting.versions.every((v: any, i: number) => {
+        // reverses list to get latest version
+        if (v.term.includes(defaultYearForCart)) {
+          // this has been chagged to not use the filters
           toDisplay.push(
             <div
               key={inspecting.number}
@@ -91,7 +94,7 @@ const CartCourseList: FC<{
               onClick={() => setHideResults(true)}
             >
               <CartCourseListItem course={inspecting} version={i} />
-            </div>
+            </div>,
           );
           return false;
         }
@@ -118,19 +121,19 @@ const CartCourseList: FC<{
       setHideResults(false);
     } else {
       const placeholderCourse: Course = {
-        title: "placeholder",
-        number: "placeholder",
-        areas: "",
-        term: "",
-        school: "none",
-        department: "none",
-        credits: "",
+        title: 'placeholder',
+        number: 'placeholder',
+        areas: '',
+        term: '',
+        school: 'none',
+        department: 'none',
+        credits: '',
         wi: false,
-        bio: "This is a placeholder course",
+        bio: 'This is a placeholder course',
         tags: [],
         preReq: [],
         restrictions: [],
-        level: "",
+        level: '',
       };
       dispatch(updatePlaceholder(true));
       dispatch(updateInspectedVersion(placeholderCourse));
@@ -145,7 +148,7 @@ const CartCourseList: FC<{
         data-tip="Hide Search Results"
       >
         <div className="flex flex-row">
-          <div className="text-lg font-semibold">Search Results</div>{" "}
+          <div className="text-lg font-semibold">Search Results</div>{' '}
           {window.innerWidth < 800 ? (
             <button
               className="ml-2 focus:outline-none"
@@ -153,7 +156,7 @@ const CartCourseList: FC<{
                 setHideResults(!hideResults);
               }}
             >
-              {!hideResults ? "Hide Results" : "Show Results"}
+              {!hideResults ? 'Hide Results' : 'Show Results'}
             </button>
           ) : null}
         </div>
@@ -234,20 +237,20 @@ const Pagination: React.FC<PaginationProps> = ({
       Use it to add new classnames when styling and add new props for logic */
   return (
     <ReactPaginate
-      previousLabel={"<"}
-      nextLabel={">"}
-      previousClassName={"m-2"}
-      nextClassName={"m-2"}
-      breakLabel={"..."}
-      breakClassName={"justify-items-end h-6 mt-1"}
+      previousLabel={'<'}
+      nextLabel={'>'}
+      previousClassName={'m-2'}
+      nextClassName={'m-2'}
+      breakLabel={'...'}
+      breakClassName={'justify-items-end h-6 mt-1'}
       pageCount={pageCount}
       marginPagesDisplayed={2}
       pageRangeDisplayed={3}
       onPageChange={handlePageClick}
-      containerClassName={"flex"}
-      activeClassName={"bg-gray-400"}
+      containerClassName={'flex'}
+      activeClassName={'bg-gray-400'}
       activeLinkClassName="rounded p-1 py-2 h-10"
-      pageClassName={"w-6 h-6 bg-gray-100 m-1 p-1 rounded text-center"}
+      pageClassName={'w-6 h-6 bg-gray-100 m-1 p-1 rounded text-center'}
     />
   );
 };

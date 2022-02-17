@@ -9,7 +9,10 @@ import { requirements } from './distributionFunctions';
 import { ReactComponent as CheckSvg } from '../../../resources/svg/Check.svg';
 import DistributionPopup from './DistributionPopup';
 import ReactTooltip from 'react-tooltip';
-import { updateSelectedDistribution, updateShowingCart } from '../../../slices/popupSlice';
+import {
+  updateSelectedDistribution,
+  updateShowingCart,
+} from '../../../slices/popupSlice';
 import { clearSearch, updatePlaceholder } from '../../../slices/searchSlice';
 
 /**
@@ -55,19 +58,20 @@ const CourseBar: FC<{
   // Onclick for course bar, opens cart popup passing in corresponding props
   const openCartPopup = () => {
     // Filter for the correst distributions from redux store
-    let distrs = distributions.filter(req => req[0] === distribution.name)[0];
-    if (distrs) { // if the distribution exists, then update the cart
+    let distrs = distributions.filter((req) => req[0] === distribution.name)[0];
+    if (distrs) {
+      // if the distribution exists, then update the cart
       // at this point we have access to the current requirement
       // and all dsitibrutions. to pick out hte rest of the ascoatied fine distirbutions, use this filter.
       // TODO : investigate if fine reqs are available at this level already?
       dispatch(updateSelectedDistribution(distrs));
       dispatch(updateShowingCart(true));
-      
+
       // closes the search popup (if its showing)
       dispatch(clearSearch());
       dispatch(updatePlaceholder(false));
     }
-  }
+  };
 
   const tooltip =
     `<div style="overflow: wrap; margin-bottom: 1rem;">${section}</div>` +
@@ -127,10 +131,11 @@ const CourseBar: FC<{
           <div
             className="h-full bg-blue-300 rounded"
             style={{
-              width: `${plannedCredits <= maxCredits
-                ? (plannedCredits / maxCredits) * 100 + '%'
-                : '100%'
-                }`,
+              width: `${
+                plannedCredits <= maxCredits
+                  ? (plannedCredits / maxCredits) * 100 + '%'
+                  : '100%'
+              }`,
             }}
           />
           {remainingCredits === 0 ? (

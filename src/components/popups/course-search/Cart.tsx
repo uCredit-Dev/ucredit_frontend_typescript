@@ -4,13 +4,25 @@ import { useDispatch, useSelector } from 'react-redux';
 import CourseDisplay from './search-results/CourseDisplay';
 import { ReactComponent as HideSvg } from '../../../resources/svg/Hide.svg';
 import ReactTooltip from 'react-tooltip';
-import { SearchExtras, SISRetrievedCourse } from '../../../resources/commonTypes';
-import { selectSelectedDistribution, updateShowingCart } from '../../../slices/popupSlice';
+import {
+  SearchExtras,
+  SISRetrievedCourse,
+} from '../../../resources/commonTypes';
+import {
+  selectSelectedDistribution,
+  updateShowingCart,
+} from '../../../slices/popupSlice';
 import FineRequirementsList from './cart/FineRequirementsList';
 import CartCourseList from './cart/CartCourseList';
 import { emptyRequirements } from './cart/dummies';
-import { requirements, splitRequirements } from '../../dashboard/degree-info/distributionFunctions';
-import { clearSearch, updateRetrievedCourses } from '../../../slices/searchSlice';
+import {
+  requirements,
+  splitRequirements,
+} from '../../dashboard/degree-info/distributionFunctions';
+import {
+  clearSearch,
+  updateRetrievedCourses,
+} from '../../../slices/searchSlice';
 import axios from 'axios';
 import { api } from '../../../resources/assets';
 
@@ -23,8 +35,9 @@ const Cart: FC<{ allCourses: SISRetrievedCourse[] }> = (props) => {
 
   // FOR DUMMY FILTER TESTING TODO REMOVE
   // TODO : double check the initial state on this hook. do i even need this if stored in redux?
-  const [selectedRequirement, setSelectedRequirement] = useState<requirements>(emptyRequirements);
-  const [textFilterInputValue, setTextFilterInputValue] = useState<string>("");
+  const [selectedRequirement, setSelectedRequirement] =
+    useState<requirements>(emptyRequirements);
+  const [textFilterInputValue, setTextFilterInputValue] = useState<string>('');
 
   // Redux selectors and dispatch
   const dispatch = useDispatch();
@@ -47,7 +60,9 @@ const Cart: FC<{ allCourses: SISRetrievedCourse[] }> = (props) => {
     let ignores = ['(', ')', 'OR', 'AND', 'NOT'];
     while (index < splitRequirement.length) {
       if (!ignores.includes(splitRequirement[index])) {
-        allExtras.push(generateExtrasFromSplitRequirement(splitRequirement, index));
+        allExtras.push(
+          generateExtrasFromSplitRequirement(splitRequirement, index),
+        );
         index += 2;
       } else {
         index += 1;
@@ -55,32 +70,33 @@ const Cart: FC<{ allCourses: SISRetrievedCourse[] }> = (props) => {
     }
     console.log(allExtras);
 
-
     let finishedFinds = 0;
     let courses: SISRetrievedCourse[] = [];
-    allExtras.forEach(extra => fineReqFind(extra)
-      .then((found) => {
+    allExtras.forEach((extra) =>
+      fineReqFind(extra).then((found) => {
         courses = [...courses, ...found[0]];
         finishedFinds += 1;
-        if (finishedFinds === allExtras.length) dispatch(updateRetrievedCourses(courses));
-      }));
-  }
+        if (finishedFinds === allExtras.length)
+          dispatch(updateRetrievedCourses(courses));
+      }),
+    );
+  };
 
   const generateExtrasFromSplitRequirement = (
     splitArr: string[],
     index: number,
   ): SearchExtras => {
     let extras: SearchExtras = {
-      query: "",
+      query: '',
       credits: null,
       areas: null,
       wi: null,
-      term: "All",
+      term: 'All',
       year: 2021, // TODO : what's hte default date here? whereis this gotten from?
       department: null,
       tags: null,
-      levels: null
-    }
+      levels: null,
+    };
     switch (splitArr[index + 1]) {
       case 'C': // Course Number
         // is there a way to search by course number?
@@ -105,7 +121,7 @@ const Cart: FC<{ allCourses: SISRetrievedCourse[] }> = (props) => {
         // TODO : figure out levels ? factor from distrubitionFunctions.tsx
         // also why is distributionFunctions a tsx file....
         // updatedConcat = handleLCase(splitArr, index, course);
-        extras.query = "djaskdlfjaslkdfjsaodkfjasoidf jasdkflajsdlfksa";
+        extras.query = 'djaskdlfjaslkdfjsaodkfjasoidf jasdkflajsdlfksa';
         break;
       default:
         extras.query = splitArr[index];
@@ -176,9 +192,11 @@ const Cart: FC<{ allCourses: SISRetrievedCourse[] }> = (props) => {
   });
 
   // for text filter
-  const updateTextFilterInputValue = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const updateTextFilterInputValue = (
+    e: React.ChangeEvent<HTMLInputElement>,
+  ) => {
     setTextFilterInputValue(e.target.value);
-  }
+  };
 
   return (
     <div className="absolute top-0">
@@ -188,7 +206,8 @@ const Cart: FC<{ allCourses: SISRetrievedCourse[] }> = (props) => {
         style={{
           opacity: searchOpacity === 100 ? 0.5 : 0,
         }}
-        onClick={() => { // clicking off, should reset all things
+        onClick={() => {
+          // clicking off, should reset all things
           dispatch(updateShowingCart(false));
           dispatch(clearSearch());
         }}
@@ -197,7 +216,7 @@ const Cart: FC<{ allCourses: SISRetrievedCourse[] }> = (props) => {
       {/* Search area */}
       <div
         className={
-          "fixed flex flex-col bg-gradient-to-r shadow from-blue-500 to-green-400 select-none rounded z-40 w-9/12 tight:overflow-y-none h-5/6 top-1/3 left-1/2 transform -translate-x-1/2 -translate-y-1/3 tight:h-auto"
+          'fixed flex flex-col bg-gradient-to-r shadow from-blue-500 to-green-400 select-none rounded z-40 w-9/12 tight:overflow-y-none h-5/6 top-1/3 left-1/2 transform -translate-x-1/2 -translate-y-1/3 tight:h-auto'
         }
         style={{ opacity: searchOpacity === 100 ? 1 : 0.1 }}
       >
@@ -208,7 +227,7 @@ const Cart: FC<{ allCourses: SISRetrievedCourse[] }> = (props) => {
         <div className="flex tight:flex-col flex-row w-full tight:h-auto h-full tight:max-h-mobileSearch text-coursecard tight:overflow-y-scroll">
           <div
             className={
-              "flex flex-col rounded-l bg-gray-200 flex-none border-r-2 tight:border-0 border-gray-300 tight:w-auto w-80"
+              'flex flex-col rounded-l bg-gray-200 flex-none border-r-2 tight:border-0 border-gray-300 tight:w-auto w-80'
             }
           >
             <div className="h-full overflow-y-auto">
@@ -246,8 +265,9 @@ const Cart: FC<{ allCourses: SISRetrievedCourse[] }> = (props) => {
           <CourseDisplay />
           {/** */}
           <div
-            className={ // todo: check styles?
-              "flex flex-col rounded-l bg-gray-200 flex-none border-l-2 tight:border-0 border-gray-300 tight:w-auto w-80"
+            className={
+              // todo: check styles?
+              'flex flex-col rounded-l bg-gray-200 flex-none border-l-2 tight:border-0 border-gray-300 tight:w-auto w-80'
             }
           >
             <div className="h-full overflow-y-auto">
