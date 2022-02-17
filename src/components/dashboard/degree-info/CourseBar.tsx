@@ -7,6 +7,7 @@ import {
 } from '../../../slices/currentPlanSlice';
 import { requirements } from './distributionFunctions';
 import { ReactComponent as CheckSvg } from '../../../resources/svg/Check.svg';
+import { ReactComponent as WarnSvg } from '../../../resources/svg/Warning.svg';
 import DistributionPopup from './DistributionPopup';
 import ReactTooltip from 'react-tooltip';
 import {
@@ -27,7 +28,8 @@ const CourseBar: FC<{
   distribution: requirements;
   general: boolean;
   bgcolor: string;
-}> = ({ distribution, general, bgcolor }) => {
+  completed: boolean;
+}> = ({ distribution, general, bgcolor, completed }) => {
   const [displayAdd, setDisplayAdd] = useState(false);
   const [flipped, setFlipped] = useState<string[]>([]);
   const [plannedCredits, setPlannedCredits] = useState(
@@ -79,13 +81,16 @@ const CourseBar: FC<{
   const tooltip =
     `<div style="overflow: wrap; margin-bottom: 1rem;">${section}</div>` +
     `<div style="margin-bottom: 1rem;">${distribution.description}</div>` +
-    `<div style='width: 90px; height: auto;'><div style='width: 100%; display: flex; flex-direction: row; justify-content: space-between;'>` +
+    `<div style='width: 100%; height: auto;'><div style='width: 100%; display: flex; flex-direction: row; justify-content: space-between;'>` +
     `<div>Planned</div><div>${plannedCredits}</div>
     </div>
     <div style='display: flex; flex-direction: row; justify-content: space-between;'>` +
     (remainingCredits !== 0
       ? `<div>Remaining</div><div>${remainingCredits}</div>`
-      : `<div style="width: 100%; height: auto; display: flex; flex-direction: row; justify-content: center">Completed!</div>`) +
+      : (() =>
+          completed
+            ? `<div style="width: 100%; height: auto; display: flex; flex-direction: row; justify-content: center">Completed!</div>`
+            : `<div style="width: 100%; height: auto; display: flex; flex-direction: row; justify-content: center">Your credits fulfill this overall requirement, but your fine requirements are lacking! Please click this bar to find out more.</div>`)()) +
     `</div>`;
 
   const closePopup = () => {
@@ -120,7 +125,7 @@ const CourseBar: FC<{
 
       <div
         className={clsx(
-          'text mb-1 rounded-lg whitespace-nowrap overflow-hidden overflow-ellipsis',
+          'flex flex-row text mb-1 rounded-lg whitespace-nowrap overflow-hidden overflow-ellipsis',
           {
             'font-bold': general,
           },
@@ -156,9 +161,23 @@ const CourseBar: FC<{
             }}
           />
 
-          {remainingCredits === 0 ? (
-            <CheckSvg className="absolute left-1/2 top-1/2 w-5 h-5 stroke-2 transform -translate-x-1/2 -translate-y-1/2" />
-          ) : null}
+          {remainingCredits === 0 && completed ? (
+            <CheckSvg className="text-white absolute left-1/2 top-1/2 w-5 h-5 stroke-2 transform -translate-x-1/2 -translate-y-1/2" />
+          ) : (
+            (() => (
+              <>
+                {remainingCredits === 0 && !completed
+                  ? (() => (
+                      <>
+                        {!completed ? (
+                          <WarnSvg className=" absolute left-1/2 top-1/2 w-5 h-5 stroke-2 transform -translate-x-1/2 -translate-y-1/2" />
+                        ) : null}
+                      </>
+                    ))()
+                  : null}
+              </>
+            ))()
+          )}
         </div>
 
         {/* <Add

@@ -300,6 +300,7 @@ const Semester: FC<{
    * Check if semester is valid for adding course
    */
   const checkSemester = (): boolean => {
+    if (semesterName === 'All') return true;
     if (inspected !== 'None') {
       for (let term of inspected.terms) {
         if (term.includes(semesterName)) {

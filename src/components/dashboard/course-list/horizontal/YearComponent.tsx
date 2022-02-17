@@ -10,7 +10,10 @@ import {
 import { api, getColors } from '../../../../resources/assets';
 import YearSettingsDropdown from './YearSettingsDropdown';
 import clsx from 'clsx';
-import { selectAddingPrereq } from '../../../../slices/popupSlice';
+import {
+  selectAddingPrereq,
+  selectShowingCart,
+} from '../../../../slices/popupSlice';
 import { selectInspectedCourse } from '../../../../slices/searchSlice';
 
 type SemSelected = {
@@ -66,6 +69,7 @@ const YearComponent: FC<{
   // Setting up redux
   const currentPlan = useSelector(selectPlan);
   const addingPrereqStatus = useSelector(selectAddingPrereq);
+  const showingCart = useSelector(selectShowingCart);
   const inspected = useSelector(selectInspectedCourse);
   const dispatch = useDispatch();
 
@@ -77,6 +81,10 @@ const YearComponent: FC<{
     updateYearCreditDistribution();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [courses, currentPlan, currentPlan.name]);
+
+  useEffect(() => {
+    if (showingCart) setCollapse(false);
+  }, [showingCart]);
 
   // Focuses on year name after clicking edit name option.
   useEffect(() => {
@@ -293,12 +301,19 @@ const YearComponent: FC<{
         {id !== 0 ? (
           <div className="flex flex-row">{getDisplayedSemesters(collapse)}</div>
         ) : (
-          <Semester
-            semesterName="All"
-            semesterYear={year}
-            courses={fallCourses}
-            display={true}
-          />
+          <div
+            key={'AP' + year._id}
+            className={clsx(`relative mb-3 w-full h-auto pr-1 rounded`, {
+              'z-50': addingPrereqStatus,
+            })}
+          >
+            <Semester
+              semesterName="All"
+              semesterYear={year}
+              courses={fallCourses}
+              display={true}
+            />
+          </div>
         )}
       </>
     );

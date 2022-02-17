@@ -109,6 +109,9 @@ const Distributions: FC<{
                 major.degree_name
               : '',
         }}
+        completed={
+          totalCredits >= (major !== null ? major.total_degree_credit : 0)
+        }
         general={true}
         bgcolor=""
       />{' '}
