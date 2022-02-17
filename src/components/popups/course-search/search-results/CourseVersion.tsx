@@ -114,8 +114,8 @@ const CourseVersion: FC<{ setInspectedArea: (area: string) => void }> = ({
           key={area + version.number + i + version.term}
         >
           <div
-            className="flex items-center px-1 w-auto text-white font-semibold rounded select-none"
-            style={{ backgroundColor: getColors(area)[0] }}
+            className="flex items-center px-1 w-auto font-semibold rounded select-none"
+            style={{ backgroundColor: getColors(area, version.wi) }}
             data-tip={getAreaName(area)}
             data-for="godTip"
           >
@@ -126,8 +126,8 @@ const CourseVersion: FC<{ setInspectedArea: (area: string) => void }> = ({
     else if (version !== 'None')
       return (
         <div
-          className="flex items-center px-1 w-auto text-white font-semibold rounded select-none"
-          style={{ backgroundColor: getColors(version.areas)[0] }}
+          className="flex items-center px-1 w-auto font-semibold rounded select-none"
+          style={{ backgroundColor: getColors(version.areas, version.wi) }}
           key={'noneVersion' + version.term}
         >
           None
@@ -144,7 +144,7 @@ const CourseVersion: FC<{ setInspectedArea: (area: string) => void }> = ({
         return version.tags.map((tag, i) => (
           <div
             key={'' + tag + version.number + i + version.term}
-            className="mt-1 mx-1 px-1 w-max text-white font-semibold bg-blue-500 rounded transform hover:scale-101 transition duration-200 ease-in"
+            className="mt-1 mx-1 px-1 w-max text-white font-semibold bg-primary rounded transform hover:scale-101 transition duration-200 ease-in"
           >
             <div
               data-tip={'Ask your advisor for more info about ' + tag + ' tag!'}
@@ -205,7 +205,7 @@ const CourseVersion: FC<{ setInspectedArea: (area: string) => void }> = ({
               <div className="flex flex-row items-center">
                 <div className="mr-1 font-semibold">Credit: </div>
                 <div
-                  className="flex items-center px-1 w-auto text-white font-semibold bg-secondary rounded select-none transform hover:scale-110 transition duration-200 ease-in"
+                  className="flex items-center px-1 w-auto text-white font-semibold bg-primary rounded select-none transform hover:scale-110 transition duration-200 ease-in"
                   data-tip={version.credits + ' credits'}
                   data-for="godTip"
                 >

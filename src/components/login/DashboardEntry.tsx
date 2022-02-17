@@ -122,21 +122,17 @@ const DashboardEntry: FC = () => {
       <div
         className="absolute flex w-screen h-screen"
         style={{
-          backgroundImage:
-            'url(' +
-            samplePlan +
-            '), linear-gradient(205deg, rgba(52, 211, 153), rgba(59, 130, 246))',
+          backgroundImage: 'url(' + samplePlan + ')',
           backgroundRepeat: 'no-repeat',
           backgroundSize: 'cover',
           backgroundPosition: 'center center',
-          // backgroundColor: "black",
           backgroundBlendMode: 'lighten',
-          filter: 'blur(9px) hue-rotate(340deg)',
+          filter: 'blur(7px)',
           zIndex: 45,
         }}
       ></div>
       <div className="absolute z-50 flex w-full h-full">
-        <div className="flex flex-col mx-auto mx-auto my-auto p-14 text-white text-lg font-bold bg-gradient-to-b rounded shadow from-blue-500 to-green-400">
+        <div className="flex flex-col mx-auto mx-auto my-auto p-14 text-white text-lg font-bold rounded shadow bg-primary">
           <div className="flex flex-row items-center justify-center mt-auto pr-2 w-full text-3xl">
             <img src={logo} alt="logo" className="mr-2 h-16" />
             <div>uCredit</div>
@@ -146,12 +142,12 @@ const DashboardEntry: FC = () => {
           </div>
           <a
             href="https://ucredit-api.herokuapp.com/api/login"
-            className="flex flex-row items-center justify-center mx-auto w-64 h-12 font-semibold tracking-widest bg-primary rounded-full shadow cursor-pointer select-none transform hover:scale-105 transition duration-200 ease-in"
+            className="flex flex-row items-center justify-center mx-auto w-64 h-12 font-semibold tracking-widest bg-secondary rounded-full shadow cursor-pointer select-none transform hover:scale-105 transition duration-200 ease-in"
           >
             JHU SSO Login
           </a>
           <button
-            className="flex flex-row items-center justify-center mb-auto mt-5 mx-auto w-64 h-12 font-semibold tracking-widest bg-primary rounded-full focus:outline-none shadow cursor-pointer select-none transform hover:scale-105 transition duration-200 ease-in"
+            className="flex flex-row items-center justify-center mb-auto mt-5 mx-auto w-64 h-12 font-semibold tracking-widest bg-secondary rounded-full focus:outline-none shadow cursor-pointer select-none transform hover:scale-105 transition duration-200 ease-in"
             onClick={
               finishedLoginCheck
                 ? handleGuest

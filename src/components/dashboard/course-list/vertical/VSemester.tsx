@@ -5,7 +5,7 @@ import {
   SemesterType,
   UserCourse,
   Year,
-} from '../../../resources/commonTypes';
+} from '../../../../resources/commonTypes';
 import { useDispatch, useSelector } from 'react-redux';
 import {
   clearSearch,
@@ -13,7 +13,7 @@ import {
   selectVersion,
   updateSearchStatus,
   updateSearchTime,
-} from '../../../slices/searchSlice';
+} from '../../../../slices/searchSlice';
 import { ReactComponent as AddSvg } from '../../../resources/svg/Add.svg';
 import { Droppable } from 'react-beautiful-dnd';
 import {
@@ -22,21 +22,21 @@ import {
   updateCurrentPlanCourses,
   updateDroppables,
   updateSelectedPlan,
-} from '../../../slices/currentPlanSlice';
+} from '../../../../slices/currentPlanSlice';
 import ReactTooltip from 'react-tooltip';
 import clsx from 'clsx';
-import CourseDraggable from './CourseDraggable';
+import VCourseDraggable from './VCourseDraggable';
 import {
   selectAddingPrereq,
   updateAddingPrereq,
-} from '../../../slices/popupSlice';
+} from '../../../../slices/popupSlice';
 import { toast } from 'react-toastify';
-import { api } from '../../../resources/assets';
+import { api } from '../../../../resources/assets';
 import {
   selectUser,
   selectPlanList,
   updatePlanList,
-} from '../../../slices/userSlice';
+} from '../../../../slices/userSlice';
 import { ReactComponent as Question } from '../../../resources/svg/Question.svg';
 
 /**
@@ -46,7 +46,7 @@ import { ReactComponent as Question } from '../../../resources/svg/Question.svg'
  * @prop semesterName - name of the semester
  * @prop customStyle - custom styling for the semester
  */
-const Semester: FC<{
+const VSemester: FC<{
   semesterName: SemesterType;
   semesterYear: Year;
   courses: UserCourse[];
@@ -115,7 +115,7 @@ const Semester: FC<{
   const getDraggables = (): any => {
     return semesterCourses.map((course, index) => (
       <div key={course._id}>
-        <CourseDraggable
+        <VCourseDraggable
           course={course}
           index={index}
           semesterName={semesterName}
@@ -352,4 +352,4 @@ const getListStyle = (isDraggingOver: any) => ({
   background: isDraggingOver ? 'skyblue' : 'transparent',
 });
 
-export default Semester;
+export default VSemester;

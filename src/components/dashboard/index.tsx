@@ -27,7 +27,7 @@ import DeleteCoursePopup from '../popups/DeleteCoursePopup';
 import DeletePlanPopup from '../popups/DeletePlanPopup';
 import DeleteYearPopup from '../popups/DeleteYearPopup';
 import PlanAdd from '../popups/PlanAdd';
-import CourseList from './course-list/CourseList';
+import CourseList from './course-list/horizontal/CourseList';
 import InfoMenu from './InfoMenu';
 import ActionBar from './degree-info/ActionBar';
 import { useScrollPosition } from '@n8tb1t/use-scroll-position';
@@ -64,6 +64,7 @@ const Dashboard: FC<{ id: string | null }> = ({ id }) => {
   const [showHeader, setShowHeader] = useState<boolean>(true);
   const [dropdown, setDropdown] = useState<boolean>(false);
   const [shareableURL, setShareableURL] = useState<string>('');
+  // const [toggleHoriz, setToggleHoriz] = useState<boolean>(true);
 
   // Handles plan change event.
   const handlePlanChange = (event: any) => {
@@ -123,7 +124,7 @@ const Dashboard: FC<{ id: string | null }> = ({ id }) => {
   };
 
   return (
-    <div className="flex flex-col w-full h-full min-h-screen">
+    <div className="flex flex-col w-full h-full min-h-screen bg-white">
       <HandleUserEntryDummy id={id} />
       {formPopup ? <FeedbackPopup setFormPopup={setFormPopup} /> : null}
       {showNotif ? (
@@ -135,7 +136,7 @@ const Dashboard: FC<{ id: string | null }> = ({ id }) => {
       {showHeader ? <UserSection /> : null}
       <div className="flex-grow w-full">
         <div className="flex flex-col w-full">
-          <div className="flex flex-row thin:flex-wrap-reverse mt-content w-full h-full">
+          <div className="flex flex-row thin:flex-wrap-reverse mt-[5rem] w-full h-full">
             <div className="flex flex-col w-full">
               <div className="mx-auto">
                 {shareableURL === '' ? null : (
@@ -172,7 +173,7 @@ const Dashboard: FC<{ id: string | null }> = ({ id }) => {
                     </button>
                   </div>
                 ) : null}
-
+                {/* {toggleHoriz ? <CourseList /> : <VCourseList />} */}
                 <CourseList />
               </div>
             </div>

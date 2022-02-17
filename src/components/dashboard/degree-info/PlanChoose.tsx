@@ -22,7 +22,7 @@ const PlanChoose: FC<{ dropdown: boolean; setDropdown: Function }> = ({
       <GenerateNewPlan />
       <div className="flex flex-col items-center mr-2 my-1">
         <button
-          className="flex flex-row w-60 h-10 text-xl font-light border border-gray-300 rounded outline-none shadow"
+          className="flex flex-row w-60 h-11 text-xl font-light border border-gray-300 rounded outline-none shadow"
           onClick={() => setDropdown(!dropdown)}
         >
           <div className="flex-grow my-auto px-1 w-full overflow-ellipsis truncate">

@@ -26,39 +26,23 @@ export const guestUser: User = {
   plan_ids: [],
 };
 
-interface DistributionColors {
-  total: string[];
-  naturalSciences: string[];
-  humanities: string[];
-  computerScience: string[];
-  mathematics: string[];
-  general: string[];
-}
-
-const DistributionColorsArray: DistributionColors = {
-  total: ['#001B87', '#30E7ED', '#0058B3'],
-  naturalSciences: ['#26D701', '#95F985', '#4DED30'],
-  humanities: ['#E56AB3', '#FCBCD7', '#EF87BE'],
-  computerScience: ['#DC1C13', '#F1959B', '#EA4C46'],
-  mathematics: ['orange', 'yellow', 'gold'],
-  general: ['#00A6D7', '#86FAF2', '#30E7ED'],
-};
-
-export const getColors = function (distribution: string): string[] {
-  if (distribution === 'Total Credits') {
-    return DistributionColorsArray.total;
-  } else if (distribution === 'Natural Sciences' || distribution === 'N') {
-    return DistributionColorsArray.naturalSciences;
-  } else if (distribution === 'Computer Science') {
-    return DistributionColorsArray.computerScience;
-  } else if (distribution === 'Humanities' || distribution === 'H') {
-    return DistributionColorsArray.humanities;
-  } else if (distribution === 'Mathematics' || distribution === 'Q') {
-    return DistributionColorsArray.mathematics;
-  } else if (distribution === 'General Electives') {
-    return ['#3168AF', '#3168AF', '#3168AF'];
+export const getColors = function (
+  distribution: string,
+  writingIntensive: boolean,
+): string {
+  if (writingIntensive) {
+    return '#D0D0FF';
+  }
+  if (distribution === 'N') {
+    return '#FFE0CB';
+  } else if (distribution === 'S') {
+    return '#FFF9A3';
+  } else if (distribution === 'H') {
+    return '#FFDBDB';
+  } else if (distribution === 'Q') {
+    return '#D1FFCD';
   } else {
-    return ['#3168AF', '#3168AF', '#3168AF'];
+    return '#83B9FF';
   }
 };
 
@@ -386,7 +370,7 @@ export const processPrereqs = async (
 export interface prereqCourses {
   numNameList: any[];
   numList: RegExpMatchArray;
-  expr: String;
+  expr: string;
 }
 
 /**

@@ -19,7 +19,7 @@ const OverridePrereqPopup: FC<{
     cleanup();
   };
   return (
-    <div className="absolute z-40 top-14 h-auto transform">
+    <div className="absolute z-40 h-auto transform">
       <div className="p-3 w-full text-center font-bold bg-gray-50 rounded shadow">
         <h1>
           Override warning that prerequisites for {courseName} is not satisfied?
@@ -34,7 +34,7 @@ const OverridePrereqPopup: FC<{
           Cancel
         </div>
         <div
-          className="p-2 bg-green-300 rounded-lg transform hover:scale-105 transition duration-200 ease-in"
+          className="p-2 bg-primary rounded-lg transform hover:scale-105 transition duration-200 ease-in"
           onClick={onSaveClick}
         >
           Confirm
