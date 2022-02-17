@@ -30,7 +30,7 @@ const MyApp: React.FC<{
         </Provider>
       </CookiesProvider>
       <ToastContainer
-        position="bottom-left"
+        position="bottom-center"
         autoClose={4000}
         hideProgressBar={true}
         newestOnTop={false}

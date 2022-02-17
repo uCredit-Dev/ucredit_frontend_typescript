@@ -20,7 +20,7 @@ const PlanChoose: React.FC<{ dropdown: boolean; setDropdown: Function }> = ({
       <GenerateNewPlan />
       <div className="flex flex-col items-center my-1 mr-2">
         <button
-          className="flex flex-row h-10 my-auto text-xl font-light border border-gray-300 rounded shadow outline-none w-60"
+          className="flex flex-row text-xl font-light border border-gray-300 rounded shadow outline-none w-60 h-11"
           onClick={() => setDropdown(!dropdown)}
         >
           <div className="flex-grow w-full px-1 my-auto truncate overflow-ellipsis">

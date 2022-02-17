@@ -63,7 +63,7 @@ export const filterCourses = (
     });
     return toReturn;
   });
-  console.log(courses); // line 115 has sonarlint error for useless variable assignment, will prob need to modify this in the future
+  // console.log(courses); // line 115 has sonarlint error for useless variable assignment, will prob need to modify this in the future
   return null;
 };
 

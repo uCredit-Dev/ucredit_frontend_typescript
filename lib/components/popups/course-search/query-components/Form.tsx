@@ -1,6 +1,5 @@
-import { useEffect, useState } from 'react';
+import { FC, useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import 'react-toastify/dist/ReactToastify.css';
 import {
   updateSearchTerm,
   updateRetrievedCourses,
@@ -14,6 +13,7 @@ import {
   SearchExtras,
   SISRetrievedCourse,
 } from '../../../../resources/commonTypes';
+import 'react-toastify/dist/ReactToastify.css';
 import Filters from './Filters';
 import {
   selectCourseCache,
@@ -37,9 +37,7 @@ type SearchMapEl = {
  *
  * @prop setSearching - sets searching state
  */
-const Form: React.FC<{ setSearching: (searching: boolean) => void }> = (
-  props,
-) => {
+const Form: FC<{ setSearching: (searching: boolean) => void }> = (props) => {
   // Set up redux dispatch and variables.
   const dispatch = useDispatch();
   const searchTerm = useSelector(selectSearchterm);
@@ -248,8 +246,7 @@ const Form: React.FC<{ setSearching: (searching: boolean) => void }> = (
 
   /**
    * Searches for all subquery combinations for the specific substring length, queryLength.
-   * Calls performSmartSearch again if the queryLength is still greater than the
-   * minimum query length. Otherwise, displays results.
+
    * @param extras - search params
    * @param queryLength - length of search query
    * @param querySubstrs - an array of different substring combinations of search query
@@ -286,6 +283,9 @@ const Form: React.FC<{ setSearching: (searching: boolean) => void }> = (
   };
 
   // Handles the finishing of finding courses.
+  // tracks the number of times a course appears in the searchedCourses after a search
+  // and presumably uses it to sort the list by relevancy (the map thingy)
+  // also recursively calls the smartSearch
   const handleFinishFinding = (
     courses: SISRetrievedCourse[],
     versions: number[],
@@ -437,14 +437,14 @@ const Form: React.FC<{ setSearching: (searching: boolean) => void }> = (
         >
           {!showCriteria ? (
             <img
-              src={'/svg/filter-nonfilled.svg'}
-              alt="filter nonfilled"
+              src="/svg/filter-nonfilled.svg"
+              alt=""
               className="w-4 h-4 transform"
             />
           ) : (
             <img
-              src={'/svg/filter-filled.svg'}
-              alt="filter filled"
+              src="/svg/filter-filled.svg"
+              alt=""
               className="w-4 h-4 transform"
             />
           )}

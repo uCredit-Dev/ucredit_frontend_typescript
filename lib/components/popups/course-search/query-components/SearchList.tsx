@@ -1,8 +1,5 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, FC } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
-import ReactPaginate from 'react-paginate';
-import { QuestionMarkCircleIcon } from '@heroicons/react/outline';
-import ReactTooltip from 'react-tooltip';
 import {
   selectPlaceholder,
   selectRetrievedCourses,
@@ -11,12 +8,15 @@ import {
   updatePlaceholder,
 } from '../../../../slices/searchSlice';
 import CourseCard from './CourseCard';
+import ReactPaginate from 'react-paginate';
 import { Course, SISRetrievedCourse } from '../../../../resources/commonTypes';
+import ReactTooltip from 'react-tooltip';
+import { QuestionMarkCircleIcon } from '@heroicons/react/outline';
 
 /* 
   List of searched courses.
 */
-const SearchList: React.FC<{ searching: boolean }> = (props) => {
+const SearchList: FC<{ searching: boolean }> = (props) => {
   // Component state setup.
   const [pageNum, setPageNum] = useState<number>(0);
   const [pageCount, setPageCount] = useState<number>(0);
@@ -180,13 +180,13 @@ const SearchList: React.FC<{ searching: boolean }> = (props) => {
             {placeholder ? (
               <img
                 src="/svg/placeholder-filled.svg"
-                alt="placeholder filled"
+                alt=""
                 className="w-4 h-4 stroke-2"
               />
             ) : (
               <img
                 src="/svg/placeholder-empty.svg"
-                alt="placeholder filled"
+                alt=""
                 className="w-4 h-4 stroke-2"
               />
             )}
@@ -217,7 +217,7 @@ const SearchList: React.FC<{ searching: boolean }> = (props) => {
                   {(() =>
                     props.searching ? (
                       <img
-                        src="img/loading.gif"
+                        src="/img/loading.gif"
                         alt="Searching..."
                         className="h-10"
                       ></img>

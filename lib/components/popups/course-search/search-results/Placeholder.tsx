@@ -1,8 +1,6 @@
 import { useState, useEffect, FC } from 'react';
+import { Course, Plan, Year } from '../../../../resources/commonTypes';
 import { useSelector, useDispatch } from 'react-redux';
-import { XIcon, QuestionMarkCircleIcon } from '@heroicons/react/outline';
-import Select from 'react-select';
-import ReactTooltip from 'react-tooltip';
 import {
   updateInspectedVersion,
   selectPlaceholder,
@@ -11,7 +9,7 @@ import {
   updatePlaceholder,
   selectSearchStatus,
 } from '../../../../slices/searchSlice';
-import { Course, Plan, Year } from '../../../../resources/commonTypes';
+import Select from 'react-select';
 import { all_deps, api, course_tags } from '../../../../resources/assets';
 import { selectCourseToShow } from '../../../../slices/popupSlice';
 import {
@@ -20,6 +18,8 @@ import {
   updateCurrentPlanCourses,
   updateSelectedPlan,
 } from '../../../../slices/currentPlanSlice';
+import ReactTooltip from 'react-tooltip';
+import { QuestionMarkCircleIcon, XIcon } from '@heroicons/react/outline';
 
 const departmentFilters = ['none', ...all_deps];
 const tagFilters = ['none', ...course_tags];
@@ -294,7 +294,7 @@ const Placeholder: FC<{ addCourse: (plan?: Plan) => void }> = (props) => {
             </div>
           </div>
           <Select
-            options={['none', 'N', 'S', 'H', 'E', 'Q'].map((area: any) => ({
+            options={['None', 'N', 'S', 'H', 'E', 'Q'].map((area: any) => ({
               label: area,
               value: area,
             }))}
@@ -306,14 +306,14 @@ const Placeholder: FC<{ addCourse: (plan?: Plan) => void }> = (props) => {
       </div>
       {searchStatus ? (
         <button
-          className="p-2 mr-0 text-white transition duration-200 ease-in transform bg-green-400 rounded w-28 hover:bg-blue-400 focus:outline-none hover:scale-105"
+          className="p-2 mr-0 text-white transition duration-200 ease-in transform rounded w-28 hover:bg-secondary bg-primary focus:outline-none hover:scale-105"
           onClick={() => props.addCourse()}
         >
           Add Course
         </button>
       ) : (
         <button
-          className="p-2 mr-0 text-white transition duration-200 ease-in transform bg-blue-500 rounded w-28 focus:outline-none hover:scale-105"
+          className="p-2 mr-0 text-white transition duration-200 ease-in transform rounded w-28 bg-secondary focus:outline-none hover:scale-105"
           onClick={updateCourse}
         >
           Update Course

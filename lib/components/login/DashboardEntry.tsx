@@ -107,9 +107,8 @@ const DashboardEntry: React.FC<{ token: string }> = ({ token }) => {
           backgroundRepeat: 'no-repeat',
           backgroundSize: 'cover',
           backgroundPosition: 'center center',
-          // backgroundColor: "black",
           backgroundBlendMode: 'lighten',
-          filter: 'blur(9px) hue-rotate(340deg)',
+          filter: 'blur(7px)',
           zIndex: 45,
         }}
       ></div>
@@ -124,12 +123,12 @@ const DashboardEntry: React.FC<{ token: string }> = ({ token }) => {
           </div>
           <a
             href="https://ucredit-api.herokuapp.com/api/login"
-            className="flex flex-row items-center justify-center w-64 h-12 mx-auto font-semibold tracking-widest transition duration-200 ease-in transform rounded-full shadow cursor-pointer select-none bg-primary hover:scale-105"
+            className="flex flex-row items-center justify-center w-64 h-12 mx-auto font-semibold tracking-widest transition duration-200 ease-in transform rounded-full shadow cursor-pointer select-none bg-secondary hover:scale-105"
           >
             JHU SSO Login
           </a>
           <button
-            className="flex flex-row items-center justify-center w-64 h-12 mx-auto mt-5 mb-auto font-semibold tracking-widest transition duration-200 ease-in transform rounded-full shadow cursor-pointer select-none bg-primary focus:outline-none hover:scale-105"
+            className="flex flex-row items-center justify-center w-64 h-12 mx-auto mt-5 mb-auto font-semibold tracking-widest transition duration-200 ease-in transform rounded-full shadow cursor-pointer select-none bg-secondary focus:outline-none hover:scale-105"
             onClick={
               finishedLoginCheck
                 ? handleGuest

@@ -1,8 +1,8 @@
+import { QuestionMarkCircleIcon } from '@heroicons/react/outline';
 import clsx from 'clsx';
-import { useState, useRef, useEffect } from 'react';
+import { useState, useRef, useEffect, FC } from 'react';
 import { useSelector } from 'react-redux';
 import ReactTooltip from 'react-tooltip';
-import { QuestionMarkCircleIcon } from '@heroicons/react/outline';
 import { getColors } from '../../../../resources/assets';
 import { selectVersion } from '../../../../slices/searchSlice';
 import PrereqDisplay from '../prereqs/PrereqDisplay';
@@ -12,7 +12,7 @@ import CourseEvalSection from './CourseEvalSection';
  * A component showing the specific version of the course at a particular semester/year
  * @prop props - setInspected area is a function that sets the area to add this prospective course to.
  */
-const CourseVersion: React.FC<{ setInspectedArea: (area: string) => void }> = ({
+const CourseVersion: FC<{ setInspectedArea: (area: string) => void }> = ({
   setInspectedArea,
 }) => {
   // Redux Setup
@@ -114,8 +114,8 @@ const CourseVersion: React.FC<{ setInspectedArea: (area: string) => void }> = ({
           key={area + version.number + i + version.term}
         >
           <div
-            className="flex items-center w-auto px-1 font-semibold text-white rounded select-none"
-            style={{ backgroundColor: getColors(area)[0] }}
+            className="flex items-center w-auto px-1 font-semibold rounded select-none"
+            style={{ backgroundColor: getColors(area, version.wi) }}
             data-tip={getAreaName(area)}
             data-for="godTip"
           >
@@ -126,8 +126,8 @@ const CourseVersion: React.FC<{ setInspectedArea: (area: string) => void }> = ({
     else if (version !== 'None')
       return (
         <div
-          className="flex items-center w-auto px-1 font-semibold text-white rounded select-none"
-          style={{ backgroundColor: getColors(version.areas)[0] }}
+          className="flex items-center w-auto px-1 font-semibold rounded select-none"
+          style={{ backgroundColor: getColors(version.areas, version.wi) }}
           key={'noneVersion' + version.term}
         >
           None
@@ -144,7 +144,7 @@ const CourseVersion: React.FC<{ setInspectedArea: (area: string) => void }> = ({
         return version.tags.map((tag, i) => (
           <div
             key={'' + tag + version.number + i + version.term}
-            className="px-1 mx-1 mt-1 font-semibold text-white transition duration-200 ease-in transform bg-blue-500 rounded w-max hover:scale-101"
+            className="px-1 mx-1 mt-1 font-semibold text-white transition duration-200 ease-in transform rounded w-max bg-primary hover:scale-101"
           >
             <div
               data-tip={'Ask your advisor for more info about ' + tag + ' tag!'}
@@ -205,7 +205,7 @@ const CourseVersion: React.FC<{ setInspectedArea: (area: string) => void }> = ({
               <div className="flex flex-row items-center">
                 <div className="mr-1 font-semibold">Credit: </div>
                 <div
-                  className="flex items-center w-auto px-1 font-semibold text-white transition duration-200 ease-in transform rounded select-none bg-secondary hover:scale-110"
+                  className="flex items-center w-auto px-1 font-semibold text-white transition duration-200 ease-in transform rounded select-none bg-primary hover:scale-110"
                   data-tip={version.credits + ' credits'}
                   data-for="godTip"
                 >

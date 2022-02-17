@@ -2,7 +2,7 @@ import { FC, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import Select from 'react-select';
 import ReactTooltip from 'react-tooltip';
-import { QuestionMarkCircleIcon } from '@heroicons/react/solid';
+import { QuestionMarkCircleIcon } from '@heroicons/react/outline';
 import { all_deps, course_tags } from '../../../../resources/assets';
 import { FilterType } from '../../../../resources/commonTypes';
 import {
@@ -133,7 +133,7 @@ const Filters: FC<{
     //     tags = tags.concat("|");
     //   }
     // });
-    let tags = event.value.toString();
+    let tags = event.value ? event.value.toString() : null;
     const params: { filter: FilterType; value: any } = {
       filter: 'tags',
       // value: tags.length === 0 ? null : tags,

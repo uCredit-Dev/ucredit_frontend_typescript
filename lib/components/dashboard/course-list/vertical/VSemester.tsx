@@ -12,32 +12,29 @@ import {
   selectVersion,
   updateSearchStatus,
   updateSearchTime,
-} from '../../../slices/searchSlice';
-import {
-  DroppableType,
-  Plan,
-  SemesterType,
-  UserCourse,
-  Year,
-} from '../../../resources/commonTypes';
+} from '../../../../slices/searchSlice';
+import { Droppable } from 'react-beautiful-dnd';
 import {
   selectCurrentPlanCourses,
   selectPlan,
   updateCurrentPlanCourses,
   updateDroppables,
   updateSelectedPlan,
-} from '../../../slices/currentPlanSlice';
-import CourseDraggable from './CourseDraggable';
+} from '../../../../slices/currentPlanSlice';
+import ReactTooltip from 'react-tooltip';
+import clsx from 'clsx';
+import VCourseDraggable from './VCourseDraggable';
 import {
   selectAddingPrereq,
   updateAddingPrereq,
-} from '../../../slices/popupSlice';
-import { api } from '../../../resources/assets';
+} from '../../../../slices/popupSlice';
+import { toast } from 'react-toastify';
+import { api } from '../../../../resources/assets';
 import {
   selectUser,
   selectPlanList,
   updatePlanList,
-} from '../../../slices/userSlice';
+} from '../../../../slices/userSlice';
 
 /**
  * A component displaying all the courses in a specific semester.
@@ -115,7 +112,7 @@ const Semester: React.FC<{
   const getDraggables = (): any => {
     return semesterCourses.map((course, index) => (
       <div key={course._id}>
-        <CourseDraggable
+        <VCourseDraggable
           course={course}
           index={index}
           semesterName={semesterName}
@@ -352,4 +349,4 @@ const getListStyle = (isDraggingOver: any) => ({
   background: isDraggingOver ? 'skyblue' : 'transparent',
 });
 
-export default Semester;
+export default VSemester;

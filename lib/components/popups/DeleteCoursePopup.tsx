@@ -44,15 +44,7 @@ const DeleteCoursePopup: FC = () => {
         });
         newPlan = { ...currentPlan, years: years };
 
-        toast.error(courseInfo.course.title + ' deleted!', {
-          position: 'top-right',
-          autoClose: 5000,
-          hideProgressBar: true,
-          closeOnClick: true,
-          pauseOnHover: true,
-          draggable: true,
-          progress: 0,
-        });
+        toast.error(courseInfo.course.title + ' deleted!');
         dispatch(updateSelectedPlan(newPlan));
         dispatch(
           updatePlanList(
@@ -95,7 +87,7 @@ const DeleteCoursePopup: FC = () => {
           </div>
           {/* Search area */}
           <div className="w-full h-full text-coursecard">
-            <div className="p-4 w-full h-auto bg-gray-200 rounded">
+            <div className="p-4 w-full h-auto bg-white rounded">
               <div className="flex flex-col items-center justify-center mb-4">
                 <b className="flex flex-row mt-4 text-center font-semibold">
                   Are you sure you want to delete{' '}

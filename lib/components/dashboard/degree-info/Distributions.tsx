@@ -1,5 +1,6 @@
 import { FC, useState } from 'react';
 import { useSelector } from 'react-redux';
+import Select from 'react-select';
 import { Major } from '../../../resources/commonTypes';
 import { selectTotalCredits } from '../../../slices/currentPlanSlice';
 import CourseBar from './CourseBar';
@@ -11,16 +12,26 @@ const Distributions: FC<{
   distributionOpen: boolean;
   setDistributionOpen: (open: boolean) => void;
   major: Major | null;
+  userMajors: string[];
   distributionBarsJSX: JSX.Element[];
+  changeDisplayMajor: Function;
 }> = ({
   distributionOpen,
   setDistributionOpen,
   major,
+  userMajors,
   distributionBarsJSX,
+  changeDisplayMajor,
 }) => {
   // Component state setup.
   const totalCredits = useSelector(selectTotalCredits);
   const [disclaimer, setDisclaimer] = useState<boolean>(false);
+
+  const majorOptions = userMajors.map((m, index) => ({
+    value: index,
+    label: m,
+  }));
+
   const getHref = (): string => {
     return major !== null ? major.url : '';
   };
@@ -28,7 +39,8 @@ const Distributions: FC<{
   return (
     <div className="z-50 flex-none mx-4 p-6 w-96 h-auto bg-white rounded shadow">
       <div className="flex flex-row mb-3 w-full">
-        <div className="self-start text-2xl font-medium">Degree Progress</div>
+        <div className="self-start text-2xl font-medium">Main Plan</div>
+        {/* Degree Progress */}
         <button
           className="ml-1 mt-1 w-24 h-6 text-center bg-red-100 rounded"
           onClick={() => setDisclaimer(!disclaimer)}
@@ -46,6 +58,18 @@ const Distributions: FC<{
           </button>
         </div>
       </div>
+      {userMajors.length > 1 && (
+        <Select
+          options={majorOptions}
+          value={majorOptions.find(({ label }) => label === major?.degree_name)}
+          onChange={(event) => {
+            changeDisplayMajor(event?.label);
+          }}
+          placeholder="Select Majors"
+          className="z-50 w-full"
+          hideSelectedOptions
+        />
+      )}
       {disclaimer ? (
         <div>
           <b> This feature is still being refined. </b> Degree criteria on
@@ -85,9 +109,14 @@ const Distributions: FC<{
                 major.degree_name
               : '',
         }}
+        completed={
+          totalCredits >= (major !== null ? major.total_degree_credit : 0)
+        }
         general={true}
+        bgcolor=""
       />{' '}
       {distributionBarsJSX}
+      {/* M notes: distributionsBarsJSX is where the bars except total credits are created  */}
     </div>
   );
 };

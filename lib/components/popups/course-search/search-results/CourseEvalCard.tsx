@@ -1,7 +1,7 @@
-import { useEffect } from 'react';
-import { StarIcon } from '@heroicons/react/outline';
+import { FC, useEffect } from 'react';
 import clsx from 'clsx';
 import ReactTooltip from 'react-tooltip';
+import { StarIcon } from '@heroicons/react/outline';
 
 const ratingStars = Array(5).fill(0);
 
@@ -9,9 +9,7 @@ const ratingStars = Array(5).fill(0);
  * A course evaluation card display component.
  * @prop props - rating: the evaluation rating, summary: the evaluation summary
  */
-const CourseEvalCard: React.FC<{ rating: string; summary: string }> = (
-  props,
-) => {
+const CourseEvalCard: FC<{ rating: string; summary: string }> = (props) => {
   const ratingNum = Math.trunc(parseInt(props.rating)) - 1;
 
   useEffect(() => {

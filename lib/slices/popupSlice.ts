@@ -5,12 +5,13 @@ import {
   UserCourse,
   Year,
 } from '../components/../resources/commonTypes';
+import { requirements } from '../components/dashboard/degree-info/distributionFunctions';
 
 type PopupSlice = {
   deletePlan: boolean;
   addPlan: boolean;
   toAddName: string;
-  toAddMajor: Major | null;
+  toAddMajors: Major[];
   generateAdd: boolean;
   deleteYear: boolean;
   yearToDelete: Year | null;
@@ -19,6 +20,8 @@ type PopupSlice = {
   showCourseInfo: boolean;
   courseToShow: UserCourse | null;
   addingPrereq: boolean;
+  showingCart: boolean;
+  selectedDistribution: [string, requirements[]];
 };
 
 const initialState: PopupSlice = {
@@ -28,12 +31,14 @@ const initialState: PopupSlice = {
   generateAdd: false,
   deleteYear: false,
   toAddName: 'Unnamed Plan',
-  toAddMajor: null,
+  toAddMajors: [],
   deleteCourse: false,
   courseToDelete: null,
   showCourseInfo: false,
   courseToShow: null,
   addingPrereq: false,
+  showingCart: false,
+  selectedDistribution: ['', []],
 };
 
 export const popupSlice = createSlice({
@@ -52,9 +57,9 @@ export const popupSlice = createSlice({
     updateYearToDelete: (state: any, action: PayloadAction<Year | null>) => {
       state.yearToDelete = action.payload;
     },
-    clearToAdd: (state: any) => {
+    clearToAdd: (state) => {
       state.toAddName = initialState.toAddName;
-      state.toAddMajor = initialState.toAddMajor;
+      state.toAddMajors = initialState.toAddMajors;
     },
     updateAddingPlanStatus: (state: any, action: PayloadAction<boolean>) => {
       state.addPlan = action.payload;
@@ -62,8 +67,8 @@ export const popupSlice = createSlice({
     updateToAddName: (state: any, action: PayloadAction<string>) => {
       state.toAddName = action.payload;
     },
-    updateToAddMajor: (state: any, action: PayloadAction<Major>) => {
-      state.toAddMajor = action.payload;
+    updateToAddMajors: (state, action: PayloadAction<Major[]>) => {
+      state.toAddMajors = action.payload;
     },
     updateDeletePlanStatus: (state: any, action: PayloadAction<boolean>) => {
       state.deletePlan = action.payload;
@@ -89,13 +94,22 @@ export const popupSlice = createSlice({
     updateAddingPrereq: (state: any, action: PayloadAction<boolean>) => {
       state.addingPrereq = action.payload;
     },
+    updateShowingCart: (state: any, action: PayloadAction<boolean>) => {
+      state.showingCart = action.payload;
+    },
+    updateSelectedDistribution: (
+      state: any,
+      action: PayloadAction<[string, requirements[]]>,
+    ) => {
+      state.selectedDistribution = action.payload;
+    },
   },
 });
 
 export const {
   updateAddingPlanStatus,
   updateToAddName,
-  updateToAddMajor,
+  updateToAddMajors,
   updateGeneratePlanAddStatus,
   updateYearToDelete,
   updateDeleteYearStatus,
@@ -106,6 +120,8 @@ export const {
   updateShowCourseInfo,
   updateCourseToShow,
   updateAddingPrereq,
+  updateShowingCart,
+  updateSelectedDistribution,
 } = popupSlice.actions;
 
 // The function below is called a selector and allows us to select a value from
@@ -120,7 +136,7 @@ export const selectDeletePlanStatus = (state: RootState) =>
   state.popup.deletePlan;
 export const selectAddingPlanStatus = (state: RootState) => state.popup.addPlan;
 export const selectToAddName = (state: RootState) => state.popup.toAddName;
-export const selectToAddMajor = (state: RootState) => state.popup.toAddMajor;
+export const selectToAddMajors = (state: RootState) => state.popup.toAddMajors;
 export const selectCourseToDelete = (state: RootState) =>
   state.popup.courseToDelete;
 export const selectDeleteCourseStatus = (state: RootState) =>
@@ -131,5 +147,9 @@ export const selectCourseToShow = (state: RootState) =>
   state.popup.courseToShow;
 export const selectAddingPrereq = (state: RootState) =>
   state.popup.addingPrereq;
+export const selectShowingCart = (state: RootState) => state.popup.showingCart;
+
+export const selectSelectedDistribution = (state: RootState) =>
+  state.popup.selectedDistribution;
 
 export default popupSlice.reducer;

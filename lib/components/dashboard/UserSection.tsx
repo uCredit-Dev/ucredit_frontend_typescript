@@ -17,7 +17,7 @@ const UserSection: React.FC = () => {
   const router = useRouter();
 
   return (
-    <div className="fixed z-20 w-screen h-16 p-3 px-6 shadow select-none bg-gradient-to-r from-blue-500 to-green-400">
+    <div className="fixed z-20 w-screen h-16 p-3 px-6 shadow select-none bg-primary">
       <div className="flex flex-row items-center justify-end w-full h-full">
         {/* <div className="flex flex-row items-center justify-center mr-3 bg-white rounded-full w-11 h-11"> */}
         {/* <UserSvg className="w-6 h-6 stroke-2" /> */}
@@ -34,7 +34,7 @@ const UserSection: React.FC = () => {
         {user._id === 'guestUser' ? (
           <a
             href="https://ucredit-api.herokuapp.com/api/login"
-            className="flex flex-row items-center justify-center w-24 mr-3 transition duration-200 ease-in transform bg-white rounded cursor-pointer select-none h-9 hover:text-white hover:bg-blue-400 hover:scale-105"
+            className="flex flex-row items-center justify-center w-24 mr-3 transition duration-200 ease-in transform bg-white rounded cursor-pointer select-none h-9 hover:text-white hover:bg-secondary hover:scale-105"
           >
             Log In
           </a>
@@ -54,7 +54,7 @@ const UserSection: React.FC = () => {
                   console.log('error logging out', err);
                 });
             }}
-            className="flex flex-row items-center justify-center w-24 transition duration-200 ease-in transform bg-white rounded cursor-pointer select-none h-9 focus:outline-none hover:scale-110 drop-shadow-xl"
+            className="flex flex-row items-center justify-center w-24 transition duration-200 ease-in transform bg-white rounded cursor-pointer select-none h-9 focus:outline-none hover:scale-110 drop-shadow-md"
           >
             Log Out
           </button>

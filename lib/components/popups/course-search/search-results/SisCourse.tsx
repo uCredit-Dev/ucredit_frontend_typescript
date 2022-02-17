@@ -1,10 +1,6 @@
 import { FC, useEffect, useState } from 'react';
 import Select from 'react-select';
 import CourseVersion from './CourseVersion';
-import {
-  ChevronDownIcon,
-  QuestionMarkCircleIcon,
-} from '@heroicons/react/outline';
 import { useDispatch, useSelector } from 'react-redux';
 import {
   selectCurrentPlanCourses,
@@ -30,8 +26,13 @@ import {
   updateAddingPrereq,
   updateCourseToShow,
   updateShowCourseInfo,
+  updateShowingCart,
 } from '../../../../slices/popupSlice';
 import { api } from '../../../../resources/assets';
+import {
+  ChevronDownIcon,
+  QuestionMarkCircleIcon,
+} from '@heroicons/react/outline';
 
 /**
  * Displays a sis course when searching.
@@ -45,6 +46,7 @@ const SisCourse: FC<{
   inspectedArea: string;
   setInspectedArea: (area: string) => void;
   addCourse: (plan?: Plan) => void;
+  cart: boolean;
 }> = (props) => {
   // Redux Setup
   const dispatch = useDispatch();
@@ -124,6 +126,7 @@ const SisCourse: FC<{
    * Cleanup and opens adding prereqs
    */
   const addPrereq = () => {
+    dispatch(updateShowingCart(false));
     dispatch(updateCourseToShow(null));
     dispatch(updateShowCourseInfo(false));
     dispatch(updateAddingPrereq(true));
@@ -194,7 +197,7 @@ const SisCourse: FC<{
   const getAddPrereqButton = (): JSX.Element =>
     searchStack.length !== 0 && showCourseInfo ? (
       <button
-        className="p-1 px-2 ml-auto -mt-1 text-xl text-white transition duration-200 ease-in transform bg-green-400 rounded hover:bg-blue-400 focus:outline-none hover:scale-105"
+        className="p-1 px-2 ml-auto -mt-1 text-xl text-white transition duration-200 ease-in transform rounded hover:bg-secondary bg-primary focus:outline-none hover:scale-105"
         onClick={addPrereq}
       >
         Add Prereq
@@ -263,14 +266,18 @@ const SisCourse: FC<{
   const getAddCourseButton = (): JSX.Element =>
     !showCourseInfo ? (
       <button
-        className="w-auto h-10 p-2 mt-2 text-white transition duration-200 ease-in transform bg-green-400 rounded hover:bg-blue-400 focus:outline-none hover:scale-105"
-        onClick={() => props.addCourse()}
+        className="w-auto h-10 p-2 mt-2 text-white transition duration-200 ease-in transform rounded hover:bg-secondary bg-primary focus:outline-none hover:scale-105"
+        onClick={() => {
+          if (props.cart) {
+            addPrereq();
+          } else props.addCourse();
+        }}
       >
         Add Course
       </button>
     ) : (
       <button
-        className="w-auto h-10 p-2 mt-2 text-white transition duration-200 ease-in transform bg-green-400 rounded hover:bg-blue-400 focus:outline-none hover:scale-105"
+        className="w-auto h-10 p-2 mt-2 text-white transition duration-200 ease-in transform rounded hover:bg-secondary bg-primary focus:outline-none hover:scale-105"
         onClick={updateCourse}
       >
         Update Course
@@ -328,7 +335,17 @@ const SisCourse: FC<{
             </div>
             <CourseVersion setInspectedArea={props.setInspectedArea} />
           </div>
-          {getAddCourseUI()}
+          {(() => (
+            <>
+              {props.cart ? (
+                <div className="relative bottom-0 flex flex-row items-center w-full h-20 px-4 py-2 bg-gray-100 rounded-b">
+                  {getAddCourseButton()}
+                </div>
+              ) : (
+                getAddCourseUI()
+              )}
+            </>
+          ))()}
         </>
       ) : null}
     </div>

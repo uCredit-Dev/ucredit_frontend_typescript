@@ -1,10 +1,18 @@
 import { useRouter } from 'next/router';
+import { useState, useEffect } from 'react';
 import Dashboard from '../lib/components/dashboard';
 
 const Share: React.FC = () => {
   const router = useRouter();
-  console.log(router.query._id);
-  return <Dashboard id={router.query._id && router.query._id[0]} />;
+  const [id, setId] = useState('');
+
+  useEffect(() => {
+    if (router.query._id) {
+      setId(router.query._id as string);
+    }
+  }, [router.query._id]);
+
+  return id && <Dashboard id={id} />;
 };
 
 export default Share;

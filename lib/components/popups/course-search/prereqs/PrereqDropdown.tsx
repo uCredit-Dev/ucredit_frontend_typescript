@@ -1,10 +1,5 @@
 import { FC, useEffect, useState } from 'react';
 import clsx from 'clsx';
-import {
-  ChevronRightIcon,
-  ChevronDownIcon,
-  CheckIcon,
-} from '@heroicons/react/outline';
 
 /**
  * This is one of the open-close prereq dropdowns.
@@ -69,8 +64,9 @@ const PrereqDropdown: FC<{
   };
 
   const getChevron = (): JSX.Element => {
-    if (open) return <ChevronDownIcon className="w-5 h-5" />;
-    else return <ChevronRightIcon className="w-5 h-5" />;
+    if (open)
+      return <img src="svg/ChevronDown.svg" alt="" className="w-5 h-5" />;
+    return <img src="svg/ChevronRight.svg" alt="" className="w-5 h-5" />;
   };
 
   return (
@@ -88,7 +84,7 @@ const PrereqDropdown: FC<{
           setOpen(!open);
         }}
         className={clsx(
-          'focus:outline-none transform hover:scale-105 transition duration-200 ease-in',
+          'focus:outline-none transform hover:scale-105 transition transition duration-100 duration-200 ease-in ease-in',
           {
             'text-green-700 hover:text-green-900': satisfied,
             'text-red-700 hover:text-red-900': !satisfied,
@@ -97,7 +93,9 @@ const PrereqDropdown: FC<{
       >
         <div className="flex flex-row w-auto h-auto font-medium">
           {satisfied ? (
-            <CheckIcon
+            <img
+              src="svg/CheckMark.svg"
+              alt=""
               className={clsx('mr-1 w-5 h-5', {
                 'text-green-700 group-hover:text-red-900': !satisfied,
                 'text-green-700 group-hover:text-green-900': satisfied,

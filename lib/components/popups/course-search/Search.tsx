@@ -1,6 +1,5 @@
 import { FC, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { EyeOffIcon } from '@heroicons/react/outline';
 import {
   selectYear,
   selectSemester,
@@ -9,6 +8,7 @@ import {
 import CourseDisplay from './search-results/CourseDisplay';
 import Form from './query-components/Form';
 import SearchList from './query-components/SearchList';
+import { EyeOffIcon } from '@heroicons/react/outline';
 import { selectPlan } from '../../../slices/currentPlanSlice';
 import ReactTooltip from 'react-tooltip';
 import { Year } from '../../../resources/commonTypes';
@@ -57,7 +57,7 @@ const Search: FC = () => {
       {/* Search area */}
       <div
         className={
-          'fixed flex flex-col bg-gradient-to-r shadow from-blue-500 to-green-400 select-none rounded z-30 w-9/12 tight:overflow-y-none h-5/6 top-1/3 left-1/2 transform -translate-x-1/2 -translate-y-1/3 tight:h-auto'
+          'fixed flex flex-col bg-primary gradient-to-r shadow select-none rounded z-30 w-9/12 tight:overflow-y-none h-5/6 top-1/3 left-1/2 transform -translate-x-1/2 -translate-y-1/3 tight:h-auto'
         }
         style={{ opacity: searchOpacity === 100 ? 1 : 0.1 }}
       >
@@ -89,7 +89,7 @@ const Search: FC = () => {
               <EyeOffIcon className="w-6 h-6 text-gray-500 stroke-2" />
             </div>
           </div>
-          <CourseDisplay />
+          <CourseDisplay cart={false} />
         </div>
       </div>
     </div>

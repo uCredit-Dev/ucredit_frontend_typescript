@@ -1,7 +1,6 @@
 import clsx from 'clsx';
 import { useState, useEffect, FC } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
-import { CheckIcon, ChatAltIcon, MenuAlt1Icon } from '@heroicons/react/outline';
 import {
   selectSemester,
   selectYear,
@@ -240,7 +239,9 @@ const PrereqDisplay: FC = () => {
             >
               <div className="flex flex-row w-auto h-auto transition duration-100 ease-in group">
                 {satisfied ? (
-                  <CheckIcon
+                  <img
+                    src="svg/CheckMark.svg"
+                    alt=""
                     className={clsx('mr-1 w-5 h-5', {
                       'text-green-700 group-hover:text-red-900': !satisfied,
                       'text-green-700 group-hover:text-green-900': satisfied,
@@ -481,7 +482,7 @@ const PrereqDisplay: FC = () => {
           data-tip="bullet list"
           data-for="godTip"
         >
-          <MenuAlt1Icon />
+          <img src="svg/Menu.svg" alt="" />
         </div>
         <div
           className={clsx(
@@ -496,7 +497,7 @@ const PrereqDisplay: FC = () => {
           data-tip="description"
           data-for="godTip"
         >
-          <ChatAltIcon className="w-5 h-5" />
+          <img src="svg/Description.svg" alt="" className="w-5 h-5" />
         </div>
       </div>
 

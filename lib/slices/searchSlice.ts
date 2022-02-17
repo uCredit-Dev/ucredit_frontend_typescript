@@ -38,7 +38,7 @@ type searchStates = {
   searchTime: TimeBundle;
   filters: FilterObj;
   retrievedCourses: SISRetrievedCourse[];
-  retrievedVerions: number[];
+  retrievedVerions: number[]; // typo here
   inspectedVersion: Course | 'None';
   inspectedCourse: SISRetrievedCourse | 'None';
   placeholder: boolean;
