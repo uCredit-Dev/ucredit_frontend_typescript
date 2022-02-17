@@ -143,15 +143,7 @@ const CourseDisplay: FC<{ cart: boolean }> = ({ cart }) => {
     }
     dispatch(updatePlanList(newPlanList));
     dispatch(updateTotalCredits(totalCredits + newUserCourse.credits));
-    toast.success(version.title + ' added!', {
-      position: 'top-right',
-      autoClose: 5000,
-      hideProgressBar: true,
-      closeOnClick: true,
-      pauseOnHover: true,
-      draggable: true,
-      progress: 0,
-    });
+    toast.success(version.title + ' added!');
   };
 
   if (version === 'None') {

@@ -38,14 +38,7 @@ const PlanAdd: FC = () => {
    */
   const createNewPlan = () => {
     if (toAddMajors.length === 0) {
-      toast.error('Please choose a valid major!', {
-        position: 'top-right',
-        autoClose: 5000,
-        hideProgressBar: true,
-        closeOnClick: true,
-        draggable: true,
-        progress: 0,
-      });
+      toast.error('Please choose a valid major!');
     } else {
       // TODO: resolve confusing naming; generatePlanAddStatus signals generateNewPlan to generate a new plan, updateAdding signals planAdd to pop up
       dispatch(updateAddingPlanStatus(false));
@@ -61,14 +54,7 @@ const PlanAdd: FC = () => {
   // Handles user's intention to cancel creating a new plan.
   const handleCancel = () => {
     if (planList.length === 0) {
-      toast.error('Please create at least one plan to continue!', {
-        position: 'top-right',
-        autoClose: 5000,
-        hideProgressBar: true,
-        closeOnClick: true,
-        draggable: true,
-        progress: 0,
-      });
+      toast.error('Please create at least one plan to continue!');
     } else {
       dispatch(updateAddingPlanStatus(false));
     }

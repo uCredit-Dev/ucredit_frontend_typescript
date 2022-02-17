@@ -210,15 +210,7 @@ const Semester: FC<{
       dispatch(updatePlanList(newPlanList));
       dispatch(updateAddingPrereq(false));
       dispatch(clearSearch());
-      toast.success(version.title + ' added!', {
-        position: 'top-right',
-        autoClose: 5000,
-        hideProgressBar: true,
-        closeOnClick: true,
-        pauseOnHover: true,
-        draggable: true,
-        progress: 0,
-      });
+      toast.success(version.title + ' added!');
     } else {
       console.log('Failed to add', data.errors);
     }
