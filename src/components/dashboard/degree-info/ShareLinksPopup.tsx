@@ -14,10 +14,7 @@ const ShareLinksPopup: FC<{
   const copyToClipBoard = () => {
     navigator.clipboard.writeText(link).then(() => {
       navigator.clipboard.writeText(link).then(() => {
-        toast.info('Copied to Clipboard!', {
-          autoClose: 5000,
-          closeOnClick: false,
-        });
+        toast.info('Copied to Clipboard!');
       });
     });
   };

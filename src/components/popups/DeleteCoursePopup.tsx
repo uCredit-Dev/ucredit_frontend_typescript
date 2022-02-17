@@ -44,15 +44,7 @@ const DeleteCoursePopup: FC = () => {
         });
         newPlan = { ...currentPlan, years: years };
 
-        toast.error(courseInfo.course.title + ' deleted!', {
-          position: 'top-right',
-          autoClose: 5000,
-          hideProgressBar: true,
-          closeOnClick: true,
-          pauseOnHover: true,
-          draggable: true,
-          progress: 0,
-        });
+        toast.error(courseInfo.course.title + ' deleted!');
         dispatch(updateSelectedPlan(newPlan));
         dispatch(
           updatePlanList(

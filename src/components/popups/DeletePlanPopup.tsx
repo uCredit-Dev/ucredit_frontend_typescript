@@ -35,14 +35,7 @@ const DeletePlanPopup: FC = () => {
         method: 'DELETE',
       })
         .then(() => {
-          toast.error(currentPlan.name + ' deleted!', {
-            position: 'top-right',
-            autoClose: 5000,
-            hideProgressBar: true,
-            closeOnClick: true,
-            draggable: true,
-            progress: 0,
-          });
+          toast.error(currentPlan.name + ' deleted!');
           let updatedList = [...planList];
           updatedList = updatedList.filter((plan) => {
             return plan._id !== currentPlan._id;
@@ -53,14 +46,7 @@ const DeletePlanPopup: FC = () => {
         })
         .catch((err) => console.log(err));
     } else {
-      toast.error('Cannot delete last plan!', {
-        position: 'top-right',
-        autoClose: 5000,
-        hideProgressBar: true,
-        closeOnClick: true,
-        draggable: true,
-        progress: 0,
-      });
+      toast.error('Cannot delete last plan!');
     }
   };
 
