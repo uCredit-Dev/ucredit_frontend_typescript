@@ -23,6 +23,9 @@ import { ReactComponent as AddSvg } from '../../../resources/svg/Add.svg';
 import axios from 'axios';
 import { Year, Plan } from '../../../resources/commonTypes';
 import ReactTooltip from 'react-tooltip';
+import // selectExperimentList,
+// selectExperimentIDs,
+'../../../slices/experimentSlice';
 import { allMajors } from '../../../resources/majors';
 
 const majorOptions = allMajors.map((major, index) => ({
@@ -49,6 +52,17 @@ const ActionBar: FC<{
 
   // Determines whether we're editing the name.
   const [editName, setEditName] = useState<boolean>(false);
+
+  // Gets Experiment List and Experiment Names
+  // const experimentList = useSelector(selectExperimentList);
+  // const experimentIDs = useSelector(selectExperimentIDs);
+
+  // const redButtonID = '61e0b1d5648bba005539ddde';
+  // const redButtonIdx = experimentIDs.indexOf(redButtonID);
+  // const redButton =
+  //   experimentList.length > 0 && redButtonIdx !== -1
+  //     ? experimentList[redButtonIdx]
+  //     : null;
 
   // Only edits name if editName is true. If true, calls debounce update function
   useEffect(() => {

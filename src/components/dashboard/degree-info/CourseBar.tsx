@@ -1,6 +1,6 @@
 import clsx from 'clsx';
 import { useState, useEffect, FC } from 'react';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import {
   selectCurrentPlanCourses,
   selectDistributions,
@@ -9,7 +9,11 @@ import { requirements } from './distributionFunctions';
 import { ReactComponent as CheckSvg } from '../../../resources/svg/Check.svg';
 import DistributionPopup from './DistributionPopup';
 import ReactTooltip from 'react-tooltip';
-// import { ReactComponent as Question } from '../../../resources/svg/Question.svg';
+import {
+  updateSelectedDistribution,
+  updateShowingCart,
+} from '../../../slices/popupSlice';
+import { clearSearch, updatePlaceholder } from '../../../slices/searchSlice';
 
 /**
  * A distribution bar.
@@ -35,6 +39,8 @@ const CourseBar: FC<{
   const section = distribution.name;
   const distributions = useSelector(selectDistributions);
 
+  const dispatch = useDispatch();
+
   const remainingCredits =
     plannedCredits <= maxCredits ? maxCredits - plannedCredits : 0;
 
@@ -50,6 +56,25 @@ const CourseBar: FC<{
     distribution,
     distributions,
   ]);
+
+  // Onclick for course bar, opens cart popup passing in corresponding props
+  const openCartPopup = () => {
+    // Filter for the correst distributions from redux store
+    let distrs = distributions.filter((req) => req[0] === distribution.name)[0];
+    if (distrs) {
+      console.log(distrs);
+      // if the distribution exists, then update the cart
+      // at this point we have access to the current requirement
+      // and all dsitibrutions. to pick out hte rest of the ascoatied fine distirbutions, use this filter.
+      // TODO : investigate if fine reqs are available at this level already?
+      dispatch(updateSelectedDistribution(distrs));
+      dispatch(updateShowingCart(true));
+
+      // closes the search popup (if its showing)
+      dispatch(clearSearch());
+      dispatch(updatePlaceholder(false));
+    }
+  };
 
   const tooltip =
     `<div style="overflow: wrap; margin-bottom: 1rem;">${section}</div>` +
@@ -112,6 +137,7 @@ const CourseBar: FC<{
         onMouseOver={() => {
           ReactTooltip.rebuild();
         }}
+        onClick={openCartPopup}
       >
         <div
           className="relative flex flex-row mb-2 w-full h-6 bg-gray-200 rounded-full transform hover:scale-105 transition duration-200 ease-in"

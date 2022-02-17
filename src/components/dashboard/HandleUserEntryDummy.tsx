@@ -28,6 +28,11 @@ import {
 import { useCookies } from 'react-cookie';
 import { useNavigate } from 'react-router';
 import { getMajorFromCommonName } from '../../resources/majors';
+import {
+  setExperiments,
+  toggleExperimentStatus,
+  setWhitelistStatus,
+} from '../../slices/experimentSlice';
 
 /**
  * Handles dashboard user entry and login logic.
@@ -515,9 +520,39 @@ const HandleUserEntryDummy: FC<{
       }),
     );
 
+  const updateExperimentsForUser = (userID: string) => {
+    axios
+      .get(`${api}/experiments/allExperiments`)
+      .then(async (experimentListResponse) => {
+        const experiments = experimentListResponse.data.data;
+        dispatch(setExperiments(experiments));
+        for (const experiment of experiments) {
+          if (experiment.active.includes(userID)) {
+            dispatch(toggleExperimentStatus(experiment._id));
+          }
+        }
+      })
+      .catch((errAllExperiments) => {
+        console.log(errAllExperiments);
+      });
+
+    axios
+      .get(`${api}/experiments/${userID}`)
+      .then((experimentListNamesActive) => {
+        const activeExperiments = experimentListNamesActive.data.data;
+        if (activeExperiments.includes('White List')) {
+          dispatch(setWhitelistStatus(true));
+        }
+      })
+      .catch((errExperimentList) => {
+        console.log(errExperimentList);
+      });
+  };
+
   // Useffect runs once on page load, calling to https://ucredit-api.herokuapp.com/api/retrieveUser to retrieve user data.
   // On successful retrieve, update redux with retrieved user,
   useEffect(() => {
+    updateExperimentsForUser(user._id); //Handles updating redux for the experiments that a user is participating in.
     if (id !== null) {
       // Retrieves user if user ID is "noUser", the initial user id state for userSlice.tsx.
       // Make call for backend const cookieVals = document.cookie.split("=");
@@ -540,7 +575,7 @@ const HandleUserEntryDummy: FC<{
             closeOnClick: false,
           });
           dispatch(updateUser(retrievedUser.data.data));
-
+          updateExperimentsForUser(user._id); //I think need another call here in case the account is new on Ucredit
           // // means that the user entered a sharable link
           // // first login with guest, then populate the plan with the information from the id
           navigate('/dashboard');
@@ -579,6 +614,7 @@ const HandleUserEntryDummy: FC<{
         })
         .then((retrievedUser) => {
           dispatch(updateUser(retrievedUser.data.data));
+          updateExperimentsForUser(retrievedUser.data.data._id); //Update experiments on refresh
         })
         .catch((err) => {
           console.log('ERROR: ', err);
@@ -604,7 +640,6 @@ const HandleUserEntryDummy: FC<{
         );
         navigate('/login');
       });
-
     let plan: Plan = planResponse.data.data;
     // get the years of that plan, stored in years
     const yearsResponse: any = await axios

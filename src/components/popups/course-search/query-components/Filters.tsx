@@ -133,7 +133,7 @@ const Filters: FC<{
     //     tags = tags.concat("|");
     //   }
     // });
-    let tags = event.value.toString();
+    let tags = event.value ? event.value.toString() : null;
     const params: { filter: FilterType; value: any } = {
       filter: 'tags',
       // value: tags.length === 0 ? null : tags,

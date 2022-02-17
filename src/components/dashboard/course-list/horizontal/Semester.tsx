@@ -9,6 +9,7 @@ import {
 import { useDispatch, useSelector } from 'react-redux';
 import {
   clearSearch,
+  selectInspectedCourse,
   selectPlaceholder,
   selectVersion,
   updateSearchStatus,
@@ -61,6 +62,7 @@ const Semester: FC<{
   const planList = useSelector(selectPlanList);
   const placeholder = useSelector(selectPlaceholder);
   const currentCourses = useSelector(selectCurrentPlanCourses);
+  const inspected = useSelector(selectInspectedCourse);
 
   // State used to control whether dropdown is opened or closed
   const [totalCredits, setTotalCredits] = useState<number>(0);
@@ -295,6 +297,20 @@ const Semester: FC<{
   );
 
   /**
+   * Check if semester is valid for adding course
+   */
+  const checkSemester = (): boolean => {
+    if (inspected !== 'None') {
+      for (let term of inspected.terms) {
+        if (term.includes(semesterName)) {
+          return true;
+        }
+      }
+    }
+    return false;
+  };
+
+  /**
    * Displays semester add button type based on whether or not the user is adding a prereq.
    */
   const getSemesterAddButton = (): JSX.Element => (
@@ -307,12 +323,15 @@ const Semester: FC<{
           <AddSvg className="w-4 h-4 group-hover:text-sky-700 stroke-2" />
         </div>
       ) : (
-        <button
-          className="py-1 z-40 w-24 text-white text-xs hover:bg-secondary bg-primary rounded focus:outline-none transform hover:scale-101 transition duration-150 ease-in"
-          onClick={addPrereq}
-        >
-          Add Here
-        </button>
+        (() =>
+          checkSemester() ? (
+            <button
+              className="py-1 z-40 w-24 text-white text-xs hover:bg-secondary bg-primary rounded focus:outline-none transform hover:scale-101 transition duration-150 ease-in"
+              onClick={addPrereq}
+            >
+              Add Here
+            </button>
+          ) : null)()
       )}
     </>
   );

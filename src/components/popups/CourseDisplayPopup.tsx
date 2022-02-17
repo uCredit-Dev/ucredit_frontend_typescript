@@ -219,6 +219,7 @@ const CourseDisplayPopup: FC = () => {
               addCourse={addCourse}
               setInspectedArea={setInspectedArea}
               inspectedArea={inspectedArea}
+              cart={false}
             />
           </div>
         )}

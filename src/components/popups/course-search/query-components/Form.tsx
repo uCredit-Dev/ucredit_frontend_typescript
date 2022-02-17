@@ -248,8 +248,7 @@ const Form: FC<{ setSearching: (searching: boolean) => void }> = (props) => {
 
   /**
    * Searches for all subquery combinations for the specific substring length, queryLength.
-   * Calls performSmartSearch again if the queryLength is still greater than the
-   * minimum query length. Otherwise, displays results.
+
    * @param extras - search params
    * @param queryLength - length of search query
    * @param querySubstrs - an array of different substring combinations of search query
@@ -286,6 +285,9 @@ const Form: FC<{ setSearching: (searching: boolean) => void }> = (props) => {
   };
 
   // Handles the finishing of finding courses.
+  // tracks the number of times a course appears in the searchedCourses after a search
+  // and presumably uses it to sort the list by relevancy (the map thingy)
+  // also recursively calls the smartSearch
   const handleFinishFinding = (
     courses: SISRetrievedCourse[],
     versions: number[],

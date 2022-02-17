@@ -89,7 +89,7 @@ const Search: FC = () => {
               <HideSvg className="w-6 h-6 text-gray-500 stroke-2" />
             </div>
           </div>
-          <CourseDisplay />
+          <CourseDisplay cart={false} />
         </div>
       </div>
     </div>

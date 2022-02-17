@@ -11,6 +11,7 @@ import { api, getColors } from '../../../../resources/assets';
 import YearSettingsDropdown from './YearSettingsDropdown';
 import clsx from 'clsx';
 import { selectAddingPrereq } from '../../../../slices/popupSlice';
+import { selectInspectedCourse } from '../../../../slices/searchSlice';
 
 type SemSelected = {
   fall: boolean;
@@ -61,10 +62,11 @@ const YearComponent: FC<{
     summer: true,
     intersession: true,
   });
-  const addingPrereqStatus = useSelector(selectAddingPrereq);
 
   // Setting up redux
   const currentPlan = useSelector(selectPlan);
+  const addingPrereqStatus = useSelector(selectAddingPrereq);
+  const inspected = useSelector(selectInspectedCourse);
   const dispatch = useDispatch();
 
   // Updates and parses all courses into semesters whenever the current plan or courses array changes.
@@ -198,6 +200,20 @@ const YearComponent: FC<{
     setEditedName(true);
   };
 
+  /**
+   * Check if semester is valid for adding course
+   */
+  const checkSemester = (semesterName: string): boolean => {
+    if (inspected !== 'None') {
+      for (let term of inspected.terms) {
+        if (term.includes(semesterName)) {
+          return true;
+        }
+      }
+    }
+    return false;
+  };
+
   const getDisplayedSemesters = (tmpCollapse: boolean): JSX.Element[] => {
     const semesters: JSX.Element[] = [];
 
@@ -206,7 +222,7 @@ const YearComponent: FC<{
         <div
           key={'Fall' + year._id}
           className={clsx(`mb-3 w-full h-auto pr-1 rounded`, {
-            'z-50': addingPrereqStatus,
+            'z-50': addingPrereqStatus && checkSemester('Fall'),
           })}
         >
           <Semester
@@ -222,7 +238,7 @@ const YearComponent: FC<{
         <div
           key={'Winter' + year._id}
           className={clsx(`mb-3 w-full h-auto pr-1 rounded`, {
-            'z-50': addingPrereqStatus,
+            'z-50': addingPrereqStatus && checkSemester('Winter'),
           })}
         >
           <Semester
@@ -238,7 +254,7 @@ const YearComponent: FC<{
         <div
           key={'Spring' + year._id}
           className={clsx(`mb-3 w-full h-auto pr-1 rounded`, {
-            'z-50': addingPrereqStatus,
+            'z-50': addingPrereqStatus && checkSemester('Spring'),
           })}
         >
           <Semester
@@ -254,7 +270,7 @@ const YearComponent: FC<{
         <div
           key={'Summer' + year._id}
           className={clsx(`mb-3 w-full h-auto pr-1 rounded`, {
-            'z-50': addingPrereqStatus,
+            'z-50': addingPrereqStatus && checkSemester('Summer'),
           })}
         >
           <Semester
