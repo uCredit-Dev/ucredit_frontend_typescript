@@ -24,7 +24,7 @@ const Banner: FC = () => {
             <div className="mt-5/6 absolute flex w-full top-[70%]">
               <button
                 onClick={() => navigate('/login')}
-                className="mx-auto w-72 h-16 text-white text-3xl font-thin bg-primary rounded-full shadow-xl transform hover:scale-105 transition duration-200 ease-in"
+                className="mx-auto w-72 h-16 text-black text-3xl font-thin bg-gray-200 rounded-full shadow-xl transform hover:scale-105 transition duration-200 ease-in"
               >
                 Get Started
               </button>
