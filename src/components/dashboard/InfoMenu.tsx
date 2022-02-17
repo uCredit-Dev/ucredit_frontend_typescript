@@ -113,11 +113,16 @@ const InfoMenu: FC = () => {
             {pair[1].map((dis, index) => {
               if (index === 0) {
                 return (
+                  //helper function
                   <div
                     key={dis.name + index + dis.expr}
                     className={clsx({ hidden: !distributionOpen })}
                   >
-                    <CourseBar distribution={dis} general={true} />
+                    <CourseBar
+                      distribution={dis}
+                      general={true}
+                      bgcolor={'skyblue'}
+                    />
                   </div>
                 );
               } else {
@@ -296,11 +301,12 @@ const InfoMenu: FC = () => {
     showDistributions[index] === true
       ? 'Hide Fine Requirements'
       : 'Show Fine Requirements';
+
   return (
-    <div className="fixed z-40 right-0 flex flex-col justify-between mt-8 w-10 h-[72.5%] min-h-[40vh]">
+    <div className="fixed z-40 bg-red-100 right-0 flex flex-col justify-between mt-8 w-10 top-60">
       <div className="my-auto transform -rotate-90">
         <button
-          className="w-32 h-10 text-center text-white font-bold hover:bg-blue-400 bg-green-400 rounded focus:outline-none shadow hover:scale-105 transition duration-200 ease-in drop-shadow-xl"
+          className="w-32 h-10 text-center text-white font-bold hover:bg-secondary bg-primary rounded focus:outline-none shadow hover:scale-105 transition duration-200 ease-in drop-shadow-xl"
           onClick={() => {
             setInfoOpen(!infoOpen);
           }}
@@ -309,7 +315,7 @@ const InfoMenu: FC = () => {
         </button>
       </div>
       {infoOpen ? (
-        <div className="absolute z-50 right-14 top-5 ml-5 p-4 px-0 w-max max-h-full bg-white bg-opacity-90 rounded shadow overflow-y-scroll">
+        <div className="absolute z-50 right-14 -top-60 ml-5 p-4 px-0 w-max max-h-[75vh] bg-white bg-opacity-90 rounded shadow overflow-y-scroll">
           {/* <InfoCards /> */}
           {(() => {
             if (calculated) {

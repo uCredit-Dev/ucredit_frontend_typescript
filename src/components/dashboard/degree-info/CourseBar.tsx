@@ -21,11 +21,13 @@ import { clearSearch, updatePlaceholder } from '../../../slices/searchSlice';
  * @prop general - if this is a general distribution
  * @prop description - this is the description of the distribution
  * @prop total - whether this is a course bar tracking the total amount of credits
+ * M tried @prop bgcolor - color of this distribution
  */
 const CourseBar: FC<{
   distribution: requirements;
   general: boolean;
-}> = ({ distribution, general }) => {
+  bgcolor: string;
+}> = ({ distribution, general, bgcolor }) => {
   const [displayAdd, setDisplayAdd] = useState(false);
   const [flipped, setFlipped] = useState<string[]>([]);
   const [plannedCredits, setPlannedCredits] = useState(
@@ -60,6 +62,7 @@ const CourseBar: FC<{
     // Filter for the correst distributions from redux store
     let distrs = distributions.filter((req) => req[0] === distribution.name)[0];
     if (distrs) {
+      console.log(distrs);
       // if the distribution exists, then update the cart
       // at this point we have access to the current requirement
       // and all dsitibrutions. to pick out hte rest of the ascoatied fine distirbutions, use this filter.
@@ -103,9 +106,21 @@ const CourseBar: FC<{
           flipped={flipped.slice()}
         />
       ) : null}
+      {/* <div>
+        <Question
+          className="h-4 fill-gray absolute right-0 mr-12 mt-1"
+          data-tip={tooltip}
+          data-for="godTip"
+          onMouseOver={() => {
+            ReactTooltip.rebuild();
+          }}
+          //onHover={() => setOpenAPInfoBox(!openAPInfoBox)}
+        />
+      </div> */}
+
       <div
         className={clsx(
-          'text mb-1 whitespace-nowrap overflow-hidden overflow-ellipsis',
+          'text mb-1 rounded-lg whitespace-nowrap overflow-hidden overflow-ellipsis',
           {
             'font-bold': general,
           },
@@ -114,8 +129,9 @@ const CourseBar: FC<{
       >
         {section}
       </div>
+
       <div
-        className="relative flex flex-row w-full h-6 bg-gray-200 rounded transform hover:scale-101 transition duration-200 ease-in"
+        className="relative flex flex-row w-full h-6 transform full hover:scale-101 transition duration-200 ease-in"
         data-tip={tooltip}
         data-for="godTip"
         onMouseOver={() => {
@@ -124,13 +140,14 @@ const CourseBar: FC<{
         onClick={openCartPopup}
       >
         <div
-          className="relative flex flex-row mb-2 w-full h-6 bg-gray-200 rounded transform hover:scale-105 cursor-pointer transition duration-200 ease-in"
+          className="relative flex flex-row mb-2 w-full h-6 bg-gray-200 rounded-full transform hover:scale-105 transition duration-200 ease-in"
           data-tip={tooltip}
           data-for="godTip"
         >
           <div
-            className="h-full bg-blue-300 rounded"
+            className="h-full rounded-full"
             style={{
+              background: bgcolor.length > 0 ? bgcolor : '#90EE90',
               width: `${
                 plannedCredits <= maxCredits
                   ? (plannedCredits / maxCredits) * 100 + '%'
@@ -138,10 +155,12 @@ const CourseBar: FC<{
               }`,
             }}
           />
+
           {remainingCredits === 0 ? (
-            <CheckSvg className="absolute left-1/2 top-1/2 w-5 h-5 text-white stroke-2 transform -translate-x-1/2 -translate-y-1/2" />
+            <CheckSvg className="absolute left-1/2 top-1/2 w-5 h-5 stroke-2 transform -translate-x-1/2 -translate-y-1/2" />
           ) : null}
         </div>
+
         {/* <Add
           className="h-6 transform hover:scale-150 transition duration-200 ease-in"
           onClick={addToDistribution}

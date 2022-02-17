@@ -22,7 +22,7 @@ import {
   selectExperimentIDs,
   setExperiments,
   toggleExperimentStatus,
-  selectBlueButton,
+  // selectBlueButton,
 } from '../../slices/experimentSlice';
 import { selectSearchStatus } from '../../slices/searchSlice';
 import AddingPrereqPopup from '../popups/AddingPrereqPopup';
@@ -31,10 +31,10 @@ import CourseDisplayPopup from '../popups/CourseDisplayPopup';
 import DeleteCoursePopup from '../popups/DeleteCoursePopup';
 import DeletePlanPopup from '../popups/DeletePlanPopup';
 import DeleteYearPopup from '../popups/DeleteYearPopup';
-import ExperimentPopup from '../popups/ExperimentPopup';
-import ExperimentDevBoardPopup from '../popups/ExperimentDevBoardPopup';
+// import ExperimentPopup from '../popups/ExperimentPopup';
+// import ExperimentDevBoardPopup from '../popups/ExperimentDevBoardPopup';
 import PlanAdd from '../popups/PlanAdd';
-import CourseList from './course-list/CourseList';
+import CourseList from './course-list/horizontal/CourseList';
 import InfoMenu from './InfoMenu';
 import ActionBar from './degree-info/ActionBar';
 import { useScrollPosition } from '@n8tb1t/use-scroll-position';
@@ -42,7 +42,7 @@ import { selectUser, selectPlanList } from '../../slices/userSlice';
 import ShareLinksPopup from './degree-info/ShareLinksPopup';
 import axios from 'axios';
 import Dropdown from '../popups/Dropdown';
-import ExperimentNumber from '../popups/ExperimentNumber';
+// import ExperimentNumber from '../popups/ExperimentNumber';
 import { api } from './../../resources/assets';
 import Cart from '../popups/course-search/Cart';
 
@@ -65,7 +65,7 @@ const Dashboard: FC<{ id: string | null }> = ({ id }) => {
   const cartStatus = useSelector(selectShowingCart);
   const experimentList = useSelector(selectExperimentList);
   const experimentIDs = useSelector(selectExperimentIDs);
-  const blueButton = useSelector(selectBlueButton);
+  // const blueButton = useSelector(selectBlueButton);
   const dispatch = useDispatch();
 
   // State Setup
@@ -73,17 +73,17 @@ const Dashboard: FC<{ id: string | null }> = ({ id }) => {
   const [formPopup, setFormPopup] = useState<boolean>(false);
   const [showHeader, setShowHeader] = useState<boolean>(true);
   const [dropdown, setDropdown] = useState<boolean>(false);
-  const [experimentPopup, setExperimentPopup] = useState<boolean>(false);
+  const [experimentPopup] = useState<boolean>(false);
   const [shareableURL, setShareableURL] = useState<string>('');
-  const [displayedNumber, setDisplayedNumber] = useState<number>(3);
-  const [crement, setCrement] = useState<number>(0);
+  // const [displayedNumber, setDisplayedNumber] = useState<number>(3);
+  // const [crement, setCrement] = useState<number>(0);
 
-  useEffect(() => {
-    if (blueButton !== null) {
-      setCrement(blueButton.active ? 1 : -1);
-    }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [experimentList.length > 0 ? blueButton : null]);
+  // useEffect(() => {
+  //   if (blueButton !== null) {
+  //     setCrement(blueButton.active ? 1 : -1);
+  //   }
+  //   // eslint-disable-next-line react-hooks/exhaustive-deps
+  // }, [experimentList.length > 0 ? blueButton : null]);
 
   useEffect(() => {
     if (!experimentPopup && experimentList.length > 0) {
@@ -163,9 +163,9 @@ const Dashboard: FC<{ id: string | null }> = ({ id }) => {
   }
 
   return (
-    <div className="flex flex-col w-full h-full min-h-screen">
+    <div className="flex flex-col w-full h-full min-h-screen bg-white">
       <HandleUserEntryDummy id={id} />
-      {
+      {/* {
         <div className="fixed flex flex-row z-40 bottom-11 right-2 flex flex-row select-none">
           <ExperimentDevBoardPopup />
           <ExperimentPopup
@@ -179,7 +179,7 @@ const Dashboard: FC<{ id: string | null }> = ({ id }) => {
             setCrement={setCrement}
           />
         </div>
-      }
+      } */}
       {formPopup ? <FeedbackPopup setFormPopup={setFormPopup} /> : null}
       {showNotif ? (
         <FeedbackNotification
@@ -190,7 +190,7 @@ const Dashboard: FC<{ id: string | null }> = ({ id }) => {
       {showHeader ? <UserSection /> : null}
       <div className="flex-grow w-full">
         <div className="flex flex-col w-full">
-          <div className="flex flex-row thin:flex-wrap-reverse mt-content w-full h-full">
+          <div className="flex flex-row thin:flex-wrap-reverse mt-[5rem] w-full h-full">
             <div className="flex flex-col w-full">
               <div className="mx-auto">
                 {shareableURL === '' ? null : (
