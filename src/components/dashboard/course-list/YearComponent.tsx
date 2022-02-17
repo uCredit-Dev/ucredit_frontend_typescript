@@ -52,7 +52,7 @@ const YearComponent: FC<{
     E: 0,
     S: 0,
     H: 0,
-    W: 0
+    W: 0,
   });
   const [toShow, setToShow] = useState<SemSelected>({
     fall: true,
@@ -92,38 +92,53 @@ const YearComponent: FC<{
     let count: number = 0;
     courses.forEach((course) => {
       count += course.credits;
-      if (course.area !== "None") {
+      if (course.area !== 'None') {
         for (let i = 0; i < course.area.length; i++) {
-          switch(course.area[i]) {
-            case "N":
-              setAreaCredits(previousState => {
-                return {...previousState, N: (previousState.N + course.credits)};
+          switch (course.area[i]) {
+            case 'N':
+              setAreaCredits((previousState) => {
+                return {
+                  ...previousState,
+                  N: previousState.N + course.credits,
+                };
               });
               break;
-            case "Q":
-              setAreaCredits(previousState => {
-                return {...previousState, Q: previousState.Q + course.credits};
+            case 'Q':
+              setAreaCredits((previousState) => {
+                return {
+                  ...previousState,
+                  Q: previousState.Q + course.credits,
+                };
               });
               break;
-            case "E":
-              setAreaCredits(previousState => {
-                return {...previousState, E: previousState.E + course.credits};
+            case 'E':
+              setAreaCredits((previousState) => {
+                return {
+                  ...previousState,
+                  E: previousState.E + course.credits,
+                };
               });
               break;
-            case "H":
-              setAreaCredits(previousState => {
-                return {...previousState, H: previousState.H + course.credits};
+            case 'H':
+              setAreaCredits((previousState) => {
+                return {
+                  ...previousState,
+                  H: previousState.H + course.credits,
+                };
               });
               break;
-            case "S":
-              setAreaCredits(previousState => {
-                return {...previousState, S: previousState.S + course.credits};
+            case 'S':
+              setAreaCredits((previousState) => {
+                return {
+                  ...previousState,
+                  S: previousState.S + course.credits,
+                };
               });
               break;
           }
           if (course.wi) {
-            setAreaCredits(previousState => {
-              return {...previousState, W: previousState.W + course.credits};
+            setAreaCredits((previousState) => {
+              return { ...previousState, W: previousState.W + course.credits };
             });
           }
         }
@@ -276,13 +291,19 @@ const YearComponent: FC<{
         <div className="flex flex-row w-full text-zinc-700 gap-2">
           <div className="mr-1 text-lg font-thin">
             {collapse ? (
-              <button 
-              className="text-sky-500 mt-2"
-              onClick={() => setCollapse(!collapse)}>▶</button>
+              <button
+                className="text-sky-500 mt-2"
+                onClick={() => setCollapse(!collapse)}
+              >
+                ▶
+              </button>
             ) : (
-              <button 
-              className="text-sky-500 mt-2"
-              onClick={() => setCollapse(!collapse)}>▼</button>
+              <button
+                className="text-sky-500 mt-2"
+                onClick={() => setCollapse(!collapse)}
+              >
+                ▼
+              </button>
             )}
           </div>
           {edittingName ? (
@@ -305,51 +326,69 @@ const YearComponent: FC<{
               {areaCredits.N ? (
                 <div className="flex flex-row gap-1">
                   {areaCredits.N}
-                  <div 
+                  <div
                     className="rounded text-center w-3 mb-2 font-bold"
-                    style={{ backgroundColor: getColors("N", false) }}>N</div>
+                    style={{ backgroundColor: getColors('N', false) }}
+                  >
+                    N
+                  </div>
                 </div>
-              ): null}
+              ) : null}
               {areaCredits.Q ? (
                 <div className="flex flex-row gap-1">
-                {areaCredits.Q}
-                <div 
-                  className="rounded text-center w-3 mb-2 font-bold"
-                  style={{ backgroundColor: getColors("Q", false) }}>Q</div>
-              </div>
-              ): null}
+                  {areaCredits.Q}
+                  <div
+                    className="rounded text-center w-3 mb-2 font-bold"
+                    style={{ backgroundColor: getColors('Q', false) }}
+                  >
+                    Q
+                  </div>
+                </div>
+              ) : null}
               {areaCredits.E ? (
                 <div className="flex flex-row gap-1">
-                {areaCredits.E}
-                <div 
-                  className="rounded text-center w-3 mb-2 font-bold"
-                  style={{ backgroundColor: getColors("E", false) }}>E</div>
-              </div>
-              ): null}
+                  {areaCredits.E}
+                  <div
+                    className="rounded text-center w-3 mb-2 font-bold"
+                    style={{ backgroundColor: getColors('E', false) }}
+                  >
+                    E
+                  </div>
+                </div>
+              ) : null}
               {areaCredits.H ? (
                 <div className="flex flex-row gap-1">
-                {areaCredits.H}
-                <div
-                  className="rounded text-center w-3 mb-2 font-bold" 
-                  style={{ backgroundColor: getColors("H", false) }}>H</div>
-              </div>
-              ): null}
+                  {areaCredits.H}
+                  <div
+                    className="rounded text-center w-3 mb-2 font-bold"
+                    style={{ backgroundColor: getColors('H', false) }}
+                  >
+                    H
+                  </div>
+                </div>
+              ) : null}
               {areaCredits.S ? (
                 <div className="flex flex-row gap-1">
-                {areaCredits.S}
-                <div
-                  className="rounded text-center w-3 mb-2 font-bold" 
-                  style={{ backgroundColor: getColors("S", false) }}>S</div>
-              </div>
-              ): null}
+                  {areaCredits.S}
+                  <div
+                    className="rounded text-center w-3 mb-2 font-bold"
+                    style={{ backgroundColor: getColors('S', false) }}
+                  >
+                    S
+                  </div>
+                </div>
+              ) : null}
               {areaCredits.W ? (
                 <div className="flex flex-row gap-1">
-                {areaCredits.W}
-                <div
-                  className="rounded text-center mb-2 font-bold" 
-                  style={{ backgroundColor: getColors("None", true) }}>W</div>
-              </div>
-              ): null}
+                  {areaCredits.W}
+                  <div
+                    className="rounded text-center mb-2 font-bold"
+                    style={{ backgroundColor: getColors('None', true) }}
+                  >
+                    W
+                  </div>
+                </div>
+              ) : null}
               <div className="font-bold">{totalCredits} Credits</div>
             </div>
             <MoreSvg
@@ -373,29 +412,28 @@ const YearComponent: FC<{
       </div>
       {collapse ? (
         <div
-        className="bg-white rounded cursor-default"
-        onMouseLeave={() => setDraggable(false)}
-        onMouseEnter={() => setDraggable(true)}
+          className="bg-white rounded cursor-default"
+          onMouseLeave={() => setDraggable(false)}
+          onMouseEnter={() => setDraggable(true)}
         >
           {id !== 0 ? (
             <div className="flex flex-row">
               {getDisplayedSemesters(collapse)}
             </div>
-          ) : (
-            null
-            // <Semester
-            //   semesterName="All"
-            //   semesterYear={year}
-            //   courses={fallCourses}
-            //   display={true}
-            // />
-          )}
+          ) : null
+          // <Semester
+          //   semesterName="All"
+          //   semesterYear={year}
+          //   courses={fallCourses}
+          //   display={true}
+          // />
+          }
         </div>
       ) : (
         <div
-        className="px-6 py-2 bg-white rounded cursor-default"
-        onMouseLeave={() => setDraggable(false)}
-        onMouseEnter={() => setDraggable(true)}
+          className="px-6 py-2 bg-white rounded cursor-default"
+          onMouseLeave={() => setDraggable(false)}
+          onMouseEnter={() => setDraggable(true)}
         >
           {id !== 0 ? (
             <div className="flex flex-row">

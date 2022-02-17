@@ -136,7 +136,7 @@ const Dashboard: FC<{ id: string | null }> = ({ id }) => {
       ) : null}
       {showHeader ? <UserSection /> : null}
       <div className="flex-grow w-full bg-white">
-      {/* <div className="flex-grow w-full"> */}
+        {/* <div className="flex-grow w-full"> */}
         <div className="flex flex-col w-full">
           <div className="flex flex-row thin:flex-wrap-reverse mt-content w-full h-full">
             <div className="flex flex-col w-full">
@@ -178,12 +178,18 @@ const Dashboard: FC<{ id: string | null }> = ({ id }) => {
                 <div className="text-3xl mt-1">
                   {toggleHoriz ? (
                     <button
-                    className="text-lime-600" 
-                    onClick={() => setToggleHoriz(!toggleHoriz)}>☑</button>
+                      className="text-lime-600"
+                      onClick={() => setToggleHoriz(!toggleHoriz)}
+                    >
+                      ☑
+                    </button>
                   ) : (
-                    <button 
-                    className="text-gray-500"
-                    onClick={() => setToggleHoriz(!toggleHoriz)}>☒</button>
+                    <button
+                      className="text-gray-500"
+                      onClick={() => setToggleHoriz(!toggleHoriz)}
+                    >
+                      ☒
+                    </button>
                   )}
                 </div>
                 {toggleHoriz ? <CourseList /> : <VCourseList />}

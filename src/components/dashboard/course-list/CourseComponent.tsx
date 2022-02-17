@@ -119,10 +119,10 @@ const CourseComponent: FC<{
             <div
               className="col-span-1 px-1.5 h-5/6 place-self-center rounded-lg select-none"
               style={{ backgroundColor: getColors(course.area, course.wi) }}
-            >
-            </div>
-          ) : <div className="col-span-1"></div>}{' '}
-
+            ></div>
+          ) : (
+            <div className="col-span-1"></div>
+          )}{' '}
           <div className="col-span-8">
             <div className="truncate">{course.title}</div>
             <div className="flex flex-row gap-0.5">
@@ -137,9 +137,7 @@ const CourseComponent: FC<{
               {course.credits}
             </div>
             {course.area !== 'None' ? (
-              <div
-                className="text-[10px] flex px-1 font-semibold rounded select-none font-normal"
-              >
+              <div className="text-[10px] flex px-1 font-semibold rounded select-none font-normal">
                 {course.area}
               </div>
             ) : null}{' '}
@@ -166,7 +164,7 @@ const CourseComponent: FC<{
                   },
                 )}
               >
-                <div className=""/>
+                <div className="" />
                 {/* <div
                   className={clsx(
                     'absolute z-20 left-0 w-0 h-full text-white hover:bg-secondary bg-primary bg-opacity-80 rounded cursor-move transform duration-150 ease-in',

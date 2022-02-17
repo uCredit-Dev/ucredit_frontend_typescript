@@ -121,7 +121,9 @@ const VCourseComponent: FC<{
             {course.area !== 'None' ? (
               <div
                 className="flex items-center px-1 text-white font-semibold rounded select-none"
-                style={{ backgroundColor: getColors(course.area, course.wi)[0] }}
+                style={{
+                  backgroundColor: getColors(course.area, course.wi)[0],
+                }}
               >
                 {course.area}
               </div>
