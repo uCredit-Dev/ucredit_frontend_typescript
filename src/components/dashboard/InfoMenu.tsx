@@ -108,6 +108,12 @@ const InfoMenu: FC = () => {
   useEffect(() => {
     const distributionJSX = distributions.map(
       (pair: [string, requirements[]], i: number) => {
+        let completed = true;
+        pair[1].forEach((req: requirements) => {
+          if (req.fulfilled_credits < req.required_credits) {
+            completed = false;
+          }
+        });
         return (
           <div key={pair[0] + pair[1] + i}>
             {pair[1].map((dis, index) => {
@@ -122,6 +128,7 @@ const InfoMenu: FC = () => {
                       distribution={dis}
                       general={true}
                       bgcolor={'skyblue'}
+                      completed={completed}
                     />
                   </div>
                 );
