@@ -19,7 +19,7 @@ const UserSection: FC = () => {
   const [cookies, , removeCookie] = useCookies(['connect.sid']);
 
   return (
-    <div className="fixed z-20 p-3 px-6 w-screen h-16 bg-gradient-to-r shadow from-blue-500 to-green-400 select-none">
+    <div className="fixed z-20 p-3 px-6 w-screen h-16 shadow select-none bg-primary">
       <div className="flex flex-row items-center justify-end w-full h-full">
         {/* <div className="flex flex-row items-center justify-center mr-3 w-11 h-11 bg-white rounded-full"> */}
         {/* <UserSvg className="w-6 h-6 stroke-2" /> */}
@@ -36,7 +36,7 @@ const UserSection: FC = () => {
         {user._id === 'guestUser' ? (
           <a
             href="https://ucredit-api.herokuapp.com/api/login"
-            className="flex flex-row items-center justify-center mr-3 w-24 h-9 hover:text-white hover:bg-blue-400 bg-white rounded cursor-pointer select-none transform hover:scale-105 transition duration-200 ease-in"
+            className="flex flex-row items-center justify-center mr-3 w-24 h-9 hover:text-white hover:bg-secondary bg-white rounded cursor-pointer select-none transform hover:scale-105 transition duration-200 ease-in"
           >
             Log In
           </a>
@@ -56,7 +56,7 @@ const UserSection: FC = () => {
                   console.log('error logging out', err);
                 });
             }}
-            className="flex flex-row items-center justify-center w-24 h-9 bg-white rounded focus:outline-none cursor-pointer select-none transform hover:scale-110 transition duration-200 ease-in drop-shadow-xl"
+            className="flex flex-row items-center justify-center w-24 h-9 bg-white rounded focus:outline-none cursor-pointer select-none transform hover:scale-110 transition duration-200 ease-in drop-shadow-md"
           >
             Log Out
           </button>

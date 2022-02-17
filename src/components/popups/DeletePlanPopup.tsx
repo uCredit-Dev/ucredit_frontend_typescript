@@ -87,7 +87,7 @@ const DeletePlanPopup: FC = () => {
           </div>
           {/* Search area */}
           <div className="w-full h-full text-coursecard">
-            <div className="p-4 w-full h-auto bg-gray-200 rounded">
+            <div className="p-4 w-full h-auto bg-white rounded">
               <div className="flex flex-col items-center justify-center mb-4">
                 <b className="flex flex-row mt-4 text-center font-semibold">
                   Are you sure you want to delete
@@ -116,7 +116,7 @@ const DeletePlanPopup: FC = () => {
         </div>
         <div
           className={
-            'fixed flex flex-col bg-gray-100 rounded z-20 top-1/3 left-1/2 transform -translate-x-1/2 p-5'
+            'fixed flex flex-col bg-white rounded z-20 top-1/3 left-1/2 transform -translate-x-1/2 p-5'
           }
         ></div>
       </div>

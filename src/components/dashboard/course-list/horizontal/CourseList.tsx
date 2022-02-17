@@ -7,7 +7,7 @@ import {
   SISRetrievedCourse,
   UserCourse,
   Year,
-} from '../../../resources/commonTypes';
+} from '../../../../resources/commonTypes';
 import axios from 'axios';
 import {
   selectCurrentPlanCourses,
@@ -16,18 +16,18 @@ import {
   updateCurrentPlanCourses,
   updateSelectedPlan,
   updateTotalCredits,
-} from '../../../slices/currentPlanSlice';
+} from '../../../../slices/currentPlanSlice';
 import {
   selectPlaceholder,
   selectSearchStatus,
-} from '../../../slices/searchSlice';
+} from '../../../../slices/searchSlice';
 import { toast } from 'react-toastify';
 import {
   selectCourseCache,
   selectPlanList,
   updatePlanList,
-} from '../../../slices/userSlice';
-import { api } from '../../../resources/assets';
+} from '../../../../slices/userSlice';
+import { api } from '../../../../resources/assets';
 import { DragDropContext, Droppable } from 'react-beautiful-dnd';
 import YearDraggable from './YearDraggable';
 
@@ -446,10 +446,11 @@ const CourseList: FC = () => {
   return (
     <>
       <DragDropContext onDragEnd={onDragEnd}>
-        <div className="flex flex-row justify-between thin:justify-center mr-10 mt-5 h-full">
-          <Droppable droppableId={'years'} type="YEAR" direction="horizontal">
+        <div className="flex flex-row justify-between thin:justify-center mr-10 -mt-3 h-full">
+          <Droppable droppableId={'years'} type="YEAR" direction="vertical">
             {(provided, snapshot) => (
               <div
+                className="flex flex-col w-full"
                 ref={provided.innerRef}
                 style={getListStyle(snapshot.isDraggingOver)}
               >

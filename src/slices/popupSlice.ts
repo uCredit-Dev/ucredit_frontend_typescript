@@ -5,6 +5,7 @@ import {
   UserCourse,
   Year,
 } from '../components/../resources/commonTypes';
+import { requirements } from '../components/dashboard/degree-info/distributionFunctions';
 
 type PopupSlice = {
   deletePlan: boolean;
@@ -19,6 +20,8 @@ type PopupSlice = {
   showCourseInfo: boolean;
   courseToShow: UserCourse | null;
   addingPrereq: boolean;
+  showingCart: boolean;
+  selectedDistribution: [string, requirements[]];
 };
 
 const initialState: PopupSlice = {
@@ -34,6 +37,8 @@ const initialState: PopupSlice = {
   showCourseInfo: false,
   courseToShow: null,
   addingPrereq: false,
+  showingCart: false,
+  selectedDistribution: ['', []],
 };
 
 export const popupSlice = createSlice({
@@ -89,6 +94,15 @@ export const popupSlice = createSlice({
     updateAddingPrereq: (state: any, action: PayloadAction<boolean>) => {
       state.addingPrereq = action.payload;
     },
+    updateShowingCart: (state: any, action: PayloadAction<boolean>) => {
+      state.showingCart = action.payload;
+    },
+    updateSelectedDistribution: (
+      state: any,
+      action: PayloadAction<[string, requirements[]]>,
+    ) => {
+      state.selectedDistribution = action.payload;
+    },
   },
 });
 
@@ -106,6 +120,8 @@ export const {
   updateShowCourseInfo,
   updateCourseToShow,
   updateAddingPrereq,
+  updateShowingCart,
+  updateSelectedDistribution,
 } = popupSlice.actions;
 
 // The function below is called a selector and allows us to select a value from
@@ -131,5 +147,9 @@ export const selectCourseToShow = (state: RootState) =>
   state.popup.courseToShow;
 export const selectAddingPrereq = (state: RootState) =>
   state.popup.addingPrereq;
+export const selectShowingCart = (state: RootState) => state.popup.showingCart;
+
+export const selectSelectedDistribution = (state: RootState) =>
+  state.popup.selectedDistribution;
 
 export default popupSlice.reducer;

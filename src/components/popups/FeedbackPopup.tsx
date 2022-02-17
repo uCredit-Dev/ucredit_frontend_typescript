@@ -18,7 +18,7 @@ const FeedbackPopup: FC<{ setFormPopup: (value: boolean) => void }> = ({
       {/* Popup */}
       <div
         className={
-          'z-50 fixed flex flex-col bg-gradient-to-r shadow from-blue-500 to-green-400 select-none rounded h-4/5 top-1/3 left-1/2 transform -translate-x-1/2 -translate-y-1/3 min-w-planAdd'
+          'z-50 fixed flex flex-col bg-primary shadow select-none rounded h-4/5 top-1/3 left-1/2 transform -translate-x-1/2 -translate-y-1/3 min-w-planAdd'
         }
       >
         <div className="px-4 py-2 text-white text-coursecard select-none">
@@ -30,7 +30,7 @@ const FeedbackPopup: FC<{ setFormPopup: (value: boolean) => void }> = ({
           width="640"
           height="1829"
           title="form"
-          className="bg-gray-100"
+          className="bg-white"
         >
           Loading…
         </iframe>

@@ -42,13 +42,18 @@ let mockStore = configureStore({
 
 jest.mock('react-select', () => ({ options, value, onChange }) => {
   function handleChange(event) {
-    const option = options.find((op) => op.value === event.currentTarget.value);
+    const option = options.find((op) => op.label === event.currentTarget.value);
     mockStore.dispatch(mockUpdateToAddMajors([mockAllMajors[option.value]]));
   }
   return (
-    <select data-testid="select" value={value} onChange={handleChange} multiple>
-      {options.map(({ value, label }) => (
-        <option key={value} value={value} data-testid="select-option">
+    <select
+      data-testid="select"
+      value={value}
+      onChange={handleChange}
+      multiple={true}
+    >
+      {options.map(({ val, label }, index: number) => (
+        <option key={index} value={val}>
           {label}
         </option>
       ))}
@@ -101,7 +106,7 @@ test('Able to select old BS', async () => {
   const planAddSelect = screen.getAllByTestId('select')[1];
 
   fireEvent.change(planAddSelect, {
-    target: { value: 0 },
+    target: { value: 'B.S. Computer Science (OLD - Pre-2021)' },
   });
   expect(
     screen.getAllByText('B.S. Computer Science (OLD - Pre-2021)')[0],

@@ -27,11 +27,12 @@ import {
 } from '../../../../slices/currentPlanSlice';
 import { api } from '../../../../resources/assets';
 import SisCourse from './SisCourse';
+import { updateShowingCart } from '../../../../slices/popupSlice';
 
 /**
  * Displays course information once a user selects a course in the search list
  */
-const CourseDisplay: FC = () => {
+const CourseDisplay: FC<{ cart: boolean }> = ({ cart }) => {
   // Redux Setup
   const dispatch = useDispatch();
   const version = useSelector(selectVersion);
@@ -58,6 +59,7 @@ const CourseDisplay: FC = () => {
 
       // Clears search state.
       dispatch(clearSearch());
+      dispatch(updateShowingCart(false));
       dispatch(updatePlaceholder(false));
     }
   };
@@ -173,6 +175,7 @@ const CourseDisplay: FC = () => {
           inspectedArea={inspectedArea}
           setInspectedArea={setInspectedArea}
           addCourse={addCourse}
+          cart={cart}
         />
       </div>
     );

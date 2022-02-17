@@ -1,16 +1,16 @@
 import { useState, useEffect, FC } from 'react';
-import Semester from './Semester';
-import { UserCourse, Year } from '../../../resources/commonTypes';
-import { ReactComponent as MoreSvg } from '../../../resources/svg/More.svg';
+import VSemester from './VSemester';
+import { UserCourse, Year } from '../../../../resources/commonTypes';
+import { ReactComponent as MoreSvg } from '../../../../resources/svg/More.svg';
 import { useSelector, useDispatch } from 'react-redux';
 import {
   selectPlan,
   updateSelectedPlan,
-} from '../../../slices/currentPlanSlice';
-import { api } from '../../../resources/assets';
-import YearSettingsDropdown from './YearSettingsDropdown';
+} from '../../../../slices/currentPlanSlice';
+import { api } from '../../../../resources/assets';
+import VYearSettingsDropdown from './VYearSettingsDropdown';
 import clsx from 'clsx';
-import { selectAddingPrereq } from '../../../slices/popupSlice';
+import { selectAddingPrereq } from '../../../../slices/popupSlice';
 
 type SemSelected = {
   fall: boolean;
@@ -28,7 +28,7 @@ type SemSelected = {
  * @prop courses - courses that belong to this year
  * @prop setDraggable - avtivates/deactivates draggability of year component
  */
-const YearComponent: FC<{
+const VYearComponent: FC<{
   id: number;
   year: Year;
   courses: UserCourse[];
@@ -144,7 +144,7 @@ const YearComponent: FC<{
             'z-50': addingPrereqStatus,
           })}
         >
-          <Semester
+          <VSemester
             semesterName="Fall"
             semesterYear={year}
             courses={fallCourses}
@@ -159,7 +159,7 @@ const YearComponent: FC<{
             'z-50': addingPrereqStatus,
           })}
         >
-          <Semester
+          <VSemester
             semesterName="Intersession"
             semesterYear={year}
             courses={winterCourses}
@@ -174,7 +174,7 @@ const YearComponent: FC<{
             'z-50': addingPrereqStatus,
           })}
         >
-          <Semester
+          <VSemester
             semesterName="Spring"
             semesterYear={year}
             courses={springCourses}
@@ -189,7 +189,7 @@ const YearComponent: FC<{
             'z-50': addingPrereqStatus,
           })}
         >
-          <Semester
+          <VSemester
             semesterName="Summer"
             semesterYear={year}
             courses={summerCourses}
@@ -240,7 +240,7 @@ const YearComponent: FC<{
           />
         </div>
         {display ? (
-          <YearSettingsDropdown
+          <VYearSettingsDropdown
             year={year}
             setToShow={setToShow}
             setDisplay={setDisplay}
@@ -260,7 +260,7 @@ const YearComponent: FC<{
             {getDisplayedSemesters()}
           </div>
         ) : (
-          <Semester
+          <VSemester
             semesterName="All"
             semesterYear={year}
             courses={fallCourses}
@@ -271,4 +271,4 @@ const YearComponent: FC<{
   );
 };
 
-export default YearComponent;
+export default VYearComponent;

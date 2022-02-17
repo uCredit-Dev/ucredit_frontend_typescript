@@ -28,6 +28,7 @@ import {
   updateAddingPrereq,
   updateCourseToShow,
   updateShowCourseInfo,
+  updateShowingCart,
 } from '../../../../slices/popupSlice';
 import { api } from '../../../../resources/assets';
 
@@ -43,6 +44,7 @@ const SisCourse: FC<{
   inspectedArea: string;
   setInspectedArea: (area: string) => void;
   addCourse: (plan?: Plan) => void;
+  cart: boolean;
 }> = (props) => {
   // Redux Setup
   const dispatch = useDispatch();
@@ -122,6 +124,7 @@ const SisCourse: FC<{
    * Cleanup and opens adding prereqs
    */
   const addPrereq = () => {
+    dispatch(updateShowingCart(false));
     dispatch(updateCourseToShow(null));
     dispatch(updateShowCourseInfo(false));
     dispatch(updateAddingPrereq(true));
@@ -192,7 +195,7 @@ const SisCourse: FC<{
   const getAddPrereqButton = (): JSX.Element =>
     searchStack.length !== 0 && showCourseInfo ? (
       <button
-        className="-mt-1 ml-auto p-1 px-2 text-white text-xl hover:bg-blue-400 bg-green-400 rounded focus:outline-none transform hover:scale-105 transition duration-200 ease-in"
+        className="-mt-1 ml-auto p-1 px-2 text-white text-xl hover:bg-secondary bg-primary rounded focus:outline-none transform hover:scale-105 transition duration-200 ease-in"
         onClick={addPrereq}
       >
         Add Prereq
@@ -261,14 +264,18 @@ const SisCourse: FC<{
   const getAddCourseButton = (): JSX.Element =>
     !showCourseInfo ? (
       <button
-        className="mt-2 p-2 w-auto h-10 text-white hover:bg-blue-400 bg-green-400 rounded focus:outline-none transform hover:scale-105 transition duration-200 ease-in"
-        onClick={() => props.addCourse()}
+        className="mt-2 p-2 w-auto h-10 text-white hover:bg-secondary bg-primary rounded focus:outline-none transform hover:scale-105 transition duration-200 ease-in"
+        onClick={() => {
+          if (props.cart) {
+            addPrereq();
+          } else props.addCourse();
+        }}
       >
         Add Course
       </button>
     ) : (
       <button
-        className="mt-2 p-2 w-auto h-10 text-white hover:bg-blue-400 bg-green-400 rounded focus:outline-none transform hover:scale-105 transition duration-200 ease-in"
+        className="mt-2 p-2 w-auto h-10 text-white hover:bg-secondary bg-primary rounded focus:outline-none transform hover:scale-105 transition duration-200 ease-in"
         onClick={updateCourse}
       >
         Update Course
@@ -326,7 +333,17 @@ const SisCourse: FC<{
             </div>
             <CourseVersion setInspectedArea={props.setInspectedArea} />
           </div>
-          {getAddCourseUI()}
+          {(() => (
+            <>
+              {props.cart ? (
+                <div className="relative bottom-0 flex flex-row items-center px-4 py-2 w-full h-20 bg-gray-100 rounded-b">
+                  {getAddCourseButton()}
+                </div>
+              ) : (
+                getAddCourseUI()
+              )}
+            </>
+          ))()}
         </>
       ) : null}
     </div>

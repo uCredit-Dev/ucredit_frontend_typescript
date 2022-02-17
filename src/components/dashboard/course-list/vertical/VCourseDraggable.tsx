@@ -1,7 +1,11 @@
 import { FC, useState } from 'react';
 import { Draggable } from 'react-beautiful-dnd';
-import { SemesterType, UserCourse, Year } from '../../../resources/commonTypes';
-import CourseComponent from './CourseComponent';
+import {
+  SemesterType,
+  UserCourse,
+  Year,
+} from '../../../../resources/commonTypes';
+import VCourseComponent from './VCourseComponent';
 
 /**
  * This is a draggable CourseComponent container used for course DnD.
@@ -10,7 +14,7 @@ import CourseComponent from './CourseComponent';
  * @prop semesterYear - the year the parent semester is part of
  * @prop semesterName - the parent semester's name
  */
-const CourseDraggable: FC<{
+const VCourseDraggable: FC<{
   course: UserCourse;
   index: number;
   semesterYear: Year;
@@ -35,7 +39,7 @@ const CourseDraggable: FC<{
               provided.draggableProps.style,
             )}
           >
-            <CourseComponent
+            <VCourseComponent
               setDraggable={setDraggable}
               year={semesterYear}
               course={course}
@@ -56,4 +60,4 @@ const getItemStyle = (isDragging: any, draggableStyle: any) => ({
   ...draggableStyle,
 });
 
-export default CourseDraggable;
+export default VCourseDraggable;
