@@ -352,7 +352,7 @@ const YearComponent: FC<{
     <div
       id={id.toString()}
       className={
-        'cursor-move p-2 max-w-year-heading w-full min-w-[14rem] border-b-[2px]' +
+        'cursor-move py-2 max-w-year-heading w-full min-w-[14rem] border-b-[2px]' +
         (addingPrereqStatus ? 'z-30' : '')
       }
       onMouseLeave={() => {
@@ -397,7 +397,7 @@ const YearComponent: FC<{
               {yearName}
             </div>
           )}
-          <div className="flex flex-row gap-10">
+          <div className="flex flex-row gap-8">
             <div className="flex flex-row gap-3 mt-2 text-sm font-medium">
               {areaCredits.N ? (
                 <div className="flex flex-row gap-1">
@@ -471,7 +471,7 @@ const YearComponent: FC<{
               onClick={() => {
                 setDisplay(!display);
               }}
-              className="mt-0.5 w-8 stroke-2 cursor-pointer"
+              className="w-7 stroke-2 cursor-pointer"
             />
           </div>
         </div>
