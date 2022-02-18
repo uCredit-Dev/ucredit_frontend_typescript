@@ -134,28 +134,17 @@ const VCourseComponent: FC<{
             </div>
             {course.area !== 'None' ? (
               <div
-<<<<<<< HEAD:lib/components/dashboard/course-list/CourseComponent.tsx
                 className="flex items-center px-1 font-semibold text-white rounded select-none"
-                style={{ backgroundColor: getColors(course.area)[0] }}
-=======
-                className="flex items-center px-1 text-white font-semibold rounded select-none"
                 style={{
                   backgroundColor: getColors(course.area, course.wi)[0],
                 }}
->>>>>>> master:pages/dashboard/course-list/vertical/VCourseComponent.tsx
               >
                 {course.area}
               </div>
             ) : null}{' '}
-<<<<<<< HEAD:lib/components/dashboard/course-list/CourseComponent.tsx
-            {!satisfied && !overridden ? (
-              <ExclamationIcon className="flex items-center w-5 h-5 font-semibold text-white rounded select-none" />
-            ) : null}
-=======
             {/* {!satisfied && !overridden ? (
-              <WarningSvg className="flex items-center w-5 h-5 text-white font-semibold rounded select-none" />
+              <WarningSvg className="flex items-center w-5 h-5 font-semibold text-white rounded select-none" />
             ) : null} */}
->>>>>>> master:pages/dashboard/course-list/vertical/VCourseComponent.tsx
           </div>
         </div>
 

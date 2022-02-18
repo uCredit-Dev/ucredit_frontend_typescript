@@ -7,7 +7,7 @@ import {
 } from '../../../../resources/commonTypes';
 import { checkAllPrereqs, getColors } from '../../../../resources/assets';
 import { useDispatch, useSelector } from 'react-redux';
-import { MinusIcon, ExclamationCircleIcon } from '@heroicons/react/outline';
+import { MinusIcon, ExclamationIcon } from '@heroicons/react/outline';
 import { Transition } from '@tailwindui/react';
 import clsx from 'clsx';
 import 'react-toastify/dist/ReactToastify.css';
@@ -156,16 +156,16 @@ const CourseComponent: FC<{
             <div className="flex flex-row gap-0.5">
               <div className="text-[10px]">{course.number}</div>
               {!satisfied && !overridden ? (
-                <ExclamationCircleIcon className="flex items-center w-4 h-4 font-semibold text-white rounded select-none" />
+                <ExclamationIcon className="flex items-center w-4 h-4 font-semibold text-white rounded select-none" />
               ) : null}
             </div>
           </div>
-          <div className="flex flex-col grid justify-items-start gap-0.5">
+          <div className="flex flex-col justify-items-start gap-0.5">
             <div className="flex px-1 rounded select-none">
               {course.credits}
             </div>
             {course.area !== 'None' ? (
-              <div className="text-[10px] flex px-1 font-semibold rounded select-none font-normal">
+              <div className="text-[10px] flex px-1 font-semibold rounded select-none">
                 {course.area}
               </div>
             ) : null}{' '}

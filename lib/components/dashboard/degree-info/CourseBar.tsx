@@ -6,7 +6,8 @@ import {
   selectDistributions,
 } from '../../../slices/currentPlanSlice';
 import { requirements } from './distributionFunctions';
-import { CheckIcon } from '@heroicons/react/outline';
+import { ExclamationIcon } from '@heroicons/react/outline';
+import { CheckCircleIcon } from '@heroicons/react/solid';
 import DistributionPopup from './DistributionPopup';
 import ReactTooltip from 'react-tooltip';
 import {
@@ -158,9 +159,23 @@ const CourseBar: FC<{
               }`,
             }}
           />
-          {remainingCredits === 0 ? (
-            <CheckIcon className="absolute w-5 h-5 text-white transform -translate-x-1/2 -translate-y-1/2 stroke-2 left-1/2 top-1/2" />
-          ) : null}
+          {remainingCredits === 0 && completed ? (
+            <CheckCircleIcon className="absolute w-5 h-5 text-white transform -translate-x-1/2 -translate-y-1/2 stroke-2 left-1/2 top-1/2" />
+          ) : (
+            (() => (
+              <>
+                {remainingCredits === 0 && !completed
+                  ? (() => (
+                      <>
+                        {!completed ? (
+                          <ExclamationIcon className="absolute w-5 h-5 transform -translate-x-1/2 -translate-y-1/2 stroke-2 left-1/2 top-1/2" />
+                        ) : null}
+                      </>
+                    ))()
+                  : null}
+              </>
+            ))()
+          )}
         </div>
 
         {/* <Add

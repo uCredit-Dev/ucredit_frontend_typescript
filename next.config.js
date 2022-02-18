@@ -4,6 +4,10 @@ module.exports = {
       process.env.NODE_ENV === 'development'
         ? 'https://ucredit-dev.herokuapp.com/api'
         : 'https://ucredit-api.herokuapp.com/api',
+    baseUrl:
+      process.env.NODE_ENV === 'development'
+        ? 'http://localhost:3000'
+        : 'https://ucredit.me',
   },
   reactStrictMode: true,
   pageExtensions: ['js', 'jsx', 'ts', 'tsx'],

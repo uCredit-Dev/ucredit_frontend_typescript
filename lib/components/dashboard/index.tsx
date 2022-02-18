@@ -1,7 +1,6 @@
 import { useState, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useScrollPosition } from '@n8tb1t/use-scroll-position';
-import { toast } from 'react-toastify';
 import UserSection from './UserSection';
 import FeedbackPopup from '../popups/FeedbackPopup';
 import FeedbackNotification from '../popups/FeedbackNotification';
@@ -39,18 +38,17 @@ import PlanAdd from '../popups/PlanAdd';
 import CourseList from './course-list/horizontal/CourseList';
 import InfoMenu from './InfoMenu';
 import ActionBar from './degree-info/ActionBar';
-import { Plan } from '../../resources/commonTypes';
-import {
-  selectUser,
-  selectPlanList,
-  updatePlanList,
-} from '../../slices/userSlice';
+import { selectUser, selectPlanList } from '../../slices/userSlice';
 import ShareLinksPopup from './degree-info/ShareLinksPopup';
 import axios from 'axios';
 import Dropdown from '../popups/Dropdown';
 // import ExperimentNumber from '../popups/ExperimentNumber';
 import { api } from './../../resources/assets';
 import Cart from '../popups/course-search/Cart';
+import getConfig from 'next/config';
+
+const { publicRuntimeConfig } = getConfig();
+const baseUrl = publicRuntimeConfig.baseUrl;
 
 /**
  * The dashboard that displays the user's plan.
@@ -138,13 +136,7 @@ const Dashboard: React.FC<{ id: string | null }> = ({ id }) => {
       setShareableURL('');
       return;
     }
-    setShareableURL(
-      (window.location.href.includes('localhost')
-        ? 'localhost:3000'
-        : 'https://ucredit.me') +
-        '/share?_id=' +
-        currentPlan._id,
-    );
+    setShareableURL(baseUrl + '/share?_id=' + currentPlan._id);
   };
 
   const updateExperimentsForUser = () => {

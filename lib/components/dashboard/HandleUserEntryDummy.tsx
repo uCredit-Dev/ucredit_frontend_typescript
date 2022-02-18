@@ -623,7 +623,7 @@ const HandleUserEntryDummy: React.FC<{
         });
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [process.browser && document.cookie]);
+  }, []);
 
   // Handle the case where the user is already exists
   const handleExistingUser = async (): Promise<void> => {

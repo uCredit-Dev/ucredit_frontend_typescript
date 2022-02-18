@@ -65,8 +65,8 @@ const PrereqDropdown: FC<{
 
   const getChevron = (): JSX.Element => {
     if (open)
-      return <img src="svg/ChevronDown.svg" alt="" className="w-5 h-5" />;
-    return <img src="svg/ChevronRight.svg" alt="" className="w-5 h-5" />;
+      return <img src="/svg/ChevronDown.svg" alt="" className="w-5 h-5" />;
+    return <img src="/svg/ChevronRight.svg" alt="" className="w-5 h-5" />;
   };
 
   return (
@@ -94,7 +94,7 @@ const PrereqDropdown: FC<{
         <div className="flex flex-row w-auto h-auto font-medium">
           {satisfied ? (
             <img
-              src="svg/CheckMark.svg"
+              src="/svg/CheckMark.svg"
               alt=""
               className={clsx('mr-1 w-5 h-5', {
                 'text-green-700 group-hover:text-red-900': !satisfied,
