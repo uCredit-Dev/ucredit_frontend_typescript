@@ -243,7 +243,6 @@ const HandleUserEntryDummy: React.FC = () => {
   const addImportedYears = async (): Promise<void> => {
     let empty = true;
     let allYears: Year[] = [];
-    console.log('to add is ', toAdd);
     // Check for extraneous years
     toAdd.forEach(async (year, i) => {
       const yearBody: Year = {

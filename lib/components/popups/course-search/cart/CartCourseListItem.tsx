@@ -49,8 +49,16 @@ const CartCourseListItem: FC<{
     >
       <div className="flex flex-col justify-center w-full h-full">
         <div className="truncate">{props.course.title}</div>
-        <div>
-          {props.course.number} {props.course.terms[props.version]}
+        <div className="flex flex-row truncate">
+          {/*   {props.course.terms[props.version]} */}
+          {props.course.number}
+          {[
+            ...new Set(
+              props.course.terms.map((fullTerm) => fullTerm.split(' ')[0]),
+            ),
+          ].map((term) => (
+            <div className="ml-1">{term}</div>
+          ))}
         </div>
       </div>
     </div>

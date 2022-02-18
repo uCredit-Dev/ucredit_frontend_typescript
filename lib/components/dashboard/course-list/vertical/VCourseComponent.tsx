@@ -9,19 +9,10 @@ import {
 } from '../../../../resources/commonTypes';
 import { checkAllPrereqs, getColors } from '../../../../resources/assets';
 import { useDispatch, useSelector } from 'react-redux';
-<<<<<<< HEAD:lib/components/dashboard/course-list/CourseComponent.tsx
-=======
-import { ReactComponent as RemoveSvg } from '../../../resources/svg/Remove.svg';
-import { ReactComponent as DetailsSvg } from '../../../resources/svg/Details.svg';
 // import { ReactComponent as WarningSvg } from '../../../resources/svg/Warning.svg';
->>>>>>> master:pages/dashboard/course-list/vertical/VCourseComponent.tsx
 import { Transition } from '@tailwindui/react';
 import clsx from 'clsx';
-import {
-  ExclamationIcon,
-  InformationCircleIcon,
-  TrashIcon,
-} from '@heroicons/react/outline';
+import { InformationCircleIcon, TrashIcon } from '@heroicons/react/outline';
 import 'react-toastify/dist/ReactToastify.css';
 import {
   selectCurrentPlanCourses,

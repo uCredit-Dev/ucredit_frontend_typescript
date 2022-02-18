@@ -1,13 +1,7 @@
 import { useState, useEffect, FC } from 'react';
-<<<<<<< HEAD:lib/components/dashboard/course-list/YearComponent.tsx
-import Semester from './Semester';
-import { UserCourse, Year } from '../../../resources/commonTypes';
-import { DotsHorizontalIcon } from '@heroicons/react/outline';
-=======
 import VSemester from './VSemester';
 import { UserCourse, Year } from '../../../../resources/commonTypes';
-import { ReactComponent as MoreSvg } from '../../../../resources/svg/More.svg';
->>>>>>> master:pages/dashboard/course-list/vertical/VYearComponent.tsx
+// import { ReactComponent as MoreSvg } from '../../../../resources/svg/More.svg';
 import { useSelector, useDispatch } from 'react-redux';
 import {
   selectPlan,
@@ -238,12 +232,12 @@ const VYearComponent: FC<{
               {yearName}
             </div>
           )}
-          <DotsHorizontalIcon
+          {/* <DotsHorizontalIcon
             onClick={() => {
               setDisplay(!display);
             }}
             className="mt-0.5 w-8 stroke-2 cursor-pointer"
-          />
+          /> */}
         </div>
         {display ? (
           <VYearSettingsDropdown

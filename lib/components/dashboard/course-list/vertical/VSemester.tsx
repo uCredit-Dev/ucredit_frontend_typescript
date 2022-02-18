@@ -3,9 +3,6 @@ import { useDispatch, useSelector } from 'react-redux';
 import { PlusIcon } from '@heroicons/react/outline';
 import { Droppable } from 'react-beautiful-dnd';
 import { QuestionMarkCircleIcon } from '@heroicons/react/solid';
-import ReactTooltip from 'react-tooltip';
-import clsx from 'clsx';
-import { toast } from 'react-toastify';
 import {
   clearSearch,
   selectPlaceholder,
@@ -13,7 +10,6 @@ import {
   updateSearchStatus,
   updateSearchTime,
 } from '../../../../slices/searchSlice';
-import { Droppable } from 'react-beautiful-dnd';
 import {
   selectCurrentPlanCourses,
   selectPlan,
@@ -35,6 +31,13 @@ import {
   selectPlanList,
   updatePlanList,
 } from '../../../../slices/userSlice';
+import {
+  SemesterType,
+  Year,
+  UserCourse,
+  DroppableType,
+  Plan,
+} from '../../../../resources/commonTypes';
 
 /**
  * A component displaying all the courses in a specific semester.
@@ -43,7 +46,7 @@ import {
  * @prop semesterName - name of the semester
  * @prop customStyle - custom styling for the semester
  */
-const Semester: React.FC<{
+const VSemester: React.FC<{
   semesterName: SemesterType;
   semesterYear: Year;
   courses: UserCourse[];

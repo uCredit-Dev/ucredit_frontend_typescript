@@ -37,22 +37,24 @@ const CartCourseList: FC<{
   const dispatch = useDispatch();
 
   const coursesPerPage = 10;
-  const defaultYearForCart = '2021';
+  // const defaultYearForCart = '2021';
 
   // Updates pagination every time the searched courses change.
   useEffect(() => {
+    console.log(courses);
     const filtered: SISRetrievedCourse[] = courses.filter(
       (course: SISRetrievedCourse) => {
-        let valid = false;
-        course.versions.forEach((version) => {
-          // This conditional has been changed
-          if (version.term.includes(defaultYearForCart)) {
-            valid = true;
-          }
-        });
+        // Why is this here? We should be searching for all years
+        // let valid = false;
+        // course.versions.forEach((version) => {
+        //   // This conditional has been changed
+        //   if (version.term.includes(defaultYearForCart)) {
+        //     valid = true;
+        //   }
+        // });
         if (!course.title.toLowerCase().includes(props.textFilter))
           return false;
-        return valid;
+        return true;
       },
     );
     // If coursesPerPage doesn't divide perfectly into total courses, we need one more page.
@@ -80,23 +82,24 @@ const CartCourseList: FC<{
       const inspecting = { ...filteredCourses[i] };
       // issue is that this adds duplicates of a course. using "every" callback will
       // stop iterating once a version is found.
-      inspecting.versions.every((v: any, ind: number) => {
-        // reverses list to get latest version
-        if (v.term.includes(defaultYearForCart)) {
-          // this has been chagged to not use the filters
-          toDisplay.push(
-            <div
-              key={inspecting.number}
-              className="transition duration-200 ease-in transform hover:scale-105"
-              onClick={() => setHideResults(true)}
-            >
-              <CartCourseListItem course={inspecting} version={ind} />
-            </div>,
-          );
-          return false;
-        }
-        return true;
-      });
+      // Matt: I don't believe we need to do this.
+      // inspecting.versions.every((v: any, ind: number) => {
+      // reverses list to get latest version
+      // if (v.term.includes(defaultYearForCart)) {
+      // this has been chagged to not use the filters
+      toDisplay.push(
+        <div
+          key={inspecting.number}
+          className="transition duration-200 ease-in transform hover:scale-105"
+          onClick={() => setHideResults(true)}
+        >
+          <CartCourseListItem course={inspecting} version={0} />
+        </div>,
+      );
+      //     return false;
+      //   }
+      //   return true;
+      // });
     }
     return toDisplay;
   };

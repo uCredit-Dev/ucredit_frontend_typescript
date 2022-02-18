@@ -79,26 +79,16 @@ const Cart: FC<{ allCourses: SISRetrievedCourse[] }> = (props) => {
         index += 1;
       }
     }
-    let finishedFinds = 0;
     let courses: SISRetrievedCourse[] = [];
-    if (!selectedRequirement) {
-      setSearching(false);
-    }
-    allExtras.forEach((extra) =>
-      fineReqFind(extra)
-        .then((found) => {
-          courses = [...courses, ...found[0]];
-          finishedFinds += 1;
-          if (finishedFinds === allExtras.length) {
-            dispatch(updateRetrievedCourses(courses));
-            setSearching(false);
-          }
-        })
-        .catch((err) => {
-          setSearching(false);
-          console.log(err);
-        }),
-    );
+    setSearching(false);
+    allExtras.forEach(async (extra) => {
+      const found = await fineReqFind(extra);
+      if (!found) {
+        console.log('Course not found!');
+      }
+      courses = [...courses, ...found[0]];
+      dispatch(updateRetrievedCourses(courses));
+    });
   };
 
   const generateExtrasFromSplitRequirement = (
