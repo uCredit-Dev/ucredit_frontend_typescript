@@ -6,6 +6,7 @@ import ReactTooltip from 'react-tooltip';
 import { ToastContainer } from 'react-toastify';
 import { store } from '../lib/appStore/store';
 import '../lib/index.css';
+import Head from 'next/head';
 
 const MyApp: React.FC<{
   Component: NextComponentType;
@@ -17,6 +18,10 @@ const MyApp: React.FC<{
 
   return (
     <>
+      <Head>
+        <link rel="shortcut icon" href="/static/favicon.ico" />
+        <meta name="description" content="Quick accessible degree planning." />
+      </Head>
       <ReactTooltip
         id="godTip"
         html={true}
