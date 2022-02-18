@@ -38,7 +38,9 @@ Deployment: https://ucredit.me
     └── svg
 ```
 
-All folders and files in the `pages` foler correspond to paths you access. E.g., `/pages/index.tsx` corresponds to `/`. For any other (utility) components, put them under the lib folder.
+All folders and files in the `pages` folder correspond to client paths you access. E.g., `/pages/index.tsx` corresponds to `/` in the browser. For any other (utility) components, put them under the `lib` folder. Basically, `src` is now `lib`.
+
+Any static assets placed in the `public` folder can be accessed directly as follows, `/img/bg.png` instead of `/public/img/bg.png`.
 
 ## Getting Started
 
