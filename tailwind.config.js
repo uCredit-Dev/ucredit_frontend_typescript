@@ -1,7 +1,5 @@
 module.exports = {
-  content: ['./src/**/*.{js,jsx}'],
-  purge: ['./src/**/*.{js,jsx,ts,tsx}', './public/index.html'],
-  darkMode: 'media', // or 'media' or 'class'
+  content: ['./pages/**/*.{js,ts,jsx,tsx}', './lib/**/*.{js,ts,jsx,tsx}'],
   theme: {
     extend: {
       minWidth: {
