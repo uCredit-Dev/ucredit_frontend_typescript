@@ -215,7 +215,7 @@ const SisCourse: FC<{
               Year
               <div className="flex-grow">
                 <QuestionMarkCircleIcon
-                  className="h-4"
+                  className="h-4 fill-gray"
                   data-for="godTip"
                   data-tip={`<p>This is the year you're selecting for.</p><p>The version you are viewing gives you a snapshot of the information of the course at a specific time to give you an understanding of the past and current states of the course. This is NOT to determine where on the plan you are adding the course.</p><p>NOTE: This could be different from the version of the course you are viewing.</p><p>(ie. Course Version "Spring, 2021" may not equal "Spring, Senior")</p>`}
                 />
@@ -236,7 +236,7 @@ const SisCourse: FC<{
               Area
               <div className="flex-grow">
                 <QuestionMarkCircleIcon
-                  className="h-4"
+                  className="h-4 fill-gray"
                   data-for="godTip"
                   data-tip={
                     '<p>Areas designate the specific subset a course belongs to. Each degree requires students to take a certain amount of credits or courses in a spcific area.</p><p>H - Humanities</p><p>S - Social Sciences</p><p>E - Engineering</p><p>N - Natural Sciences</p><p>Q - Quantitative</p>'
@@ -301,7 +301,7 @@ const SisCourse: FC<{
                 Term
                 <div className="flex-grow mt-1">
                   <QuestionMarkCircleIcon
-                    className="h-4"
+                    className="h-4 fill-gray"
                     data-for="godTip"
                     data-tip={`<p>This is a specific snapshot of course information at a specific time in the past or present.</p><p>NOTE: This is NOT to determine where on the plan you are adding the course.</p><p>(ie. Course Version "Spring, 2021" may not equal "Spring, Senior")</p>`}
                   />

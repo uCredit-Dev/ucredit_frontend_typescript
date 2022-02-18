@@ -320,7 +320,7 @@ const Filters: FC<{
             Areas
             <div className="flex-grow">
               <QuestionMarkCircleIcon
-                className="h-4"
+                className="h-4 fill-gray"
                 data-for="godTip"
                 data-tip={
                   '<p>Areas designate the specific subset a course belongs to. Each degree requires students to take a certain amount of credits or courses in a spcific area.</p><p>H - Humanities</p><p>S - Social Sciences</p><p>E - Engineering</p><p>N - Natural Sciences</p><p>Q - Quantitative</p>'
@@ -374,7 +374,7 @@ const Filters: FC<{
             Tag{' '}
             <div className="flex-grow">
               <QuestionMarkCircleIcon
-                className="h-4"
+                className="h-4 fill-gray"
                 data-for="godTip"
                 data-tip={
                   '<p>Many degree and a few courses require students to complete a specific amount of courses under a certain tag.</p><p>These usually come in the form of 3-4 letters designating department (ie. CSC = Computer Science) followed by 2+ letters signalling the specific subgroup designation within the department (ie. SOFT = Software).</p>'
