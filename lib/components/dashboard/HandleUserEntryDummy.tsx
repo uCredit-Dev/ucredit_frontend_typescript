@@ -13,6 +13,7 @@ import {
   updateSelectedPlan,
 } from '../../slices/currentPlanSlice';
 import {
+  selectImportID,
   selectPlanList,
   selectUser,
   updateCourseCache,
@@ -38,9 +39,7 @@ import {
  * Handles dashboard user entry and login logic.
  * TODO: Gracefully handle axios error cases (what happens when axios fails?), clean up extra years that are not being trash collected right now on import, and modularize this component!
  */
-const HandleUserEntryDummy: React.FC<{
-  id: string | null;
-}> = ({ id }) => {
+const HandleUserEntryDummy: React.FC = () => {
   // Redux setup
   const dispatch = useDispatch();
   const user = useSelector(selectUser);
@@ -48,6 +47,7 @@ const HandleUserEntryDummy: React.FC<{
   const generatePlanAddStatus = useSelector(selectGeneratePlanAddStatus);
   const currentCourses = useSelector(selectCurrentPlanCourses);
   const planList = useSelector(selectPlanList);
+  const id = useSelector(selectImportID);
 
   // Component state setup
   const [toAdd, setToAdd] = useState<Year[]>([]);
@@ -243,7 +243,7 @@ const HandleUserEntryDummy: React.FC<{
   const addImportedYears = async (): Promise<void> => {
     let empty = true;
     let allYears: Year[] = [];
-
+    console.log('to add is ', toAdd);
     // Check for extraneous years
     toAdd.forEach(async (year, i) => {
       const yearBody: Year = {
@@ -377,8 +377,9 @@ const HandleUserEntryDummy: React.FC<{
 
   /**
    * Overloaded function that adds courses from plan from shareable link.
-   * @param id - plan id of sharer's plan
+   * @param courseId - course id to add
    * @param yearIndex - position of year in plan
+   * @param plan - plan to add to
    * @returns a promise that resolves on successful deep copy of plan
    */
   const addCourse = async (
@@ -623,11 +624,10 @@ const HandleUserEntryDummy: React.FC<{
         });
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [process.browser && document.cookie]);
+  }, []);
 
   // Handle the case where the user is already exists
   const handleExistingUser = async (): Promise<void> => {
-    console.log(id);
     const planResponse: any = await axios
       .get(api + '/plans/' + id)
       .catch((e) => {
@@ -642,6 +642,7 @@ const HandleUserEntryDummy: React.FC<{
         );
         router.push('/login');
       });
+
     if (planResponse === undefined) return Promise.reject();
     let plan: Plan = planResponse.data.data;
     // get the years of that plan, stored in years
@@ -651,6 +652,8 @@ const HandleUserEntryDummy: React.FC<{
         console.log('ERROR: ', e);
       });
     let years = yearsResponse.data.data;
+
+    console.log('id is ', id, planResponse, years);
     cache(years);
     // check whether the user is logged in (whether a cookie exists)
     let cookieVal = '';

@@ -7,6 +7,7 @@ import {
   selectUser,
   selectPlanList,
   updateGuestPlanIds,
+  updateImportID,
 } from '../slices/userSlice';
 import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
@@ -50,6 +51,7 @@ const GenerateNewPlan: FC = () => {
     };
 
     planBody.name = !importing ? toAddName : 'Imported ' + toAddName;
+    dispatch(updateImportID(null));
 
     let newPlan: Plan;
     const getData = async () => {

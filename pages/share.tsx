@@ -1,18 +1,21 @@
 import { useRouter } from 'next/router';
-import { useState, useEffect } from 'react';
-import Dashboard from '../lib/components/dashboard';
+import { useEffect } from 'react';
+import { useDispatch } from 'react-redux';
+import { updateImportID } from '../lib/slices/userSlice';
 
 const Share: React.FC = () => {
   const router = useRouter();
-  const [id, setId] = useState('');
+  const dispatch = useDispatch();
 
   useEffect(() => {
     if (router.query._id) {
-      setId(router.query._id as string);
+      dispatch(updateImportID(router.query._id as string));
     }
+    router.push('/dashboard');
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [router.query._id]);
 
-  return id && <Dashboard id={id} />;
+  return <></>;
 };
 
 export default Share;

@@ -102,8 +102,7 @@ const DashboardEntry: React.FC<{ token: string }> = ({ token }) => {
       <div
         className="absolute flex w-screen h-screen"
         style={{
-          backgroundImage:
-            'url(/img/sample-plan.png), linear-gradient(205deg, rgba(52, 211, 153), rgba(59, 130, 246))',
+          backgroundImage: 'url(/img/sample-plan.png)',
           backgroundRepeat: 'no-repeat',
           backgroundSize: 'cover',
           backgroundPosition: 'center center',
@@ -113,7 +112,7 @@ const DashboardEntry: React.FC<{ token: string }> = ({ token }) => {
         }}
       ></div>
       <div className="absolute z-50 flex w-full h-full">
-        <div className="flex flex-col mx-auto my-auto text-lg font-bold text-white rounded shadow p-14 bg-gradient-to-b from-blue-500 to-green-400">
+        <div className="flex flex-col mx-auto my-auto text-lg font-bold text-white rounded shadow p-14 bg-primary">
           <div className="flex flex-row items-center justify-center w-full pr-2 mt-auto text-3xl">
             <img src="/img/logo-darker.png" alt="logo" className="h-16 mr-2" />
             <div>uCredit</div>
@@ -125,7 +124,7 @@ const DashboardEntry: React.FC<{ token: string }> = ({ token }) => {
             href="https://ucredit-api.herokuapp.com/api/login"
             className="flex flex-row items-center justify-center w-64 h-12 mx-auto font-semibold tracking-widest transition duration-200 ease-in transform rounded-full shadow cursor-pointer select-none bg-secondary hover:scale-105"
           >
-            JHU SSO Login
+            JHU Login
           </a>
           <button
             className="flex flex-row items-center justify-center w-64 h-12 mx-auto mt-5 mb-auto font-semibold tracking-widest transition duration-200 ease-in transform rounded-full shadow cursor-pointer select-none bg-secondary focus:outline-none hover:scale-105"

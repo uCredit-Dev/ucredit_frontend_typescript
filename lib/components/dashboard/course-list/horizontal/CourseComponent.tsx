@@ -156,7 +156,11 @@ const CourseComponent: FC<{
             <div className="flex flex-row gap-0.5">
               <div className="text-[10px]">{course.number}</div>
               {!satisfied && !overridden ? (
-                <ExclamationCircleIcon className="flex items-center w-4 h-4 font-semibold text-white rounded select-none" />
+                <>
+                  hello(
+                  <ExclamationCircleIcon className="flex items-center w-4 h-4 font-semibold text-white rounded select-none" />
+                  ){' '}
+                </>
               ) : null}
             </div>
           </div>

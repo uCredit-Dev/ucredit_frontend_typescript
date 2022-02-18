@@ -1,7 +1,7 @@
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useScrollPosition } from '@n8tb1t/use-scroll-position';
-import { toast } from 'react-toastify';
+// import { toast } from 'react-toastify';
 import UserSection from './UserSection';
 import FeedbackPopup from '../popups/FeedbackPopup';
 import FeedbackNotification from '../popups/FeedbackNotification';
@@ -21,7 +21,7 @@ import {
 } from '../../slices/popupSlice';
 import {
   selectExperimentList,
-  selectExperimentIDs,
+  // selectExperimentIDs,
   setExperiments,
   toggleExperimentStatus,
   // selectBlueButton,
@@ -39,11 +39,11 @@ import PlanAdd from '../popups/PlanAdd';
 import CourseList from './course-list/horizontal/CourseList';
 import InfoMenu from './InfoMenu';
 import ActionBar from './degree-info/ActionBar';
-import { Plan } from '../../resources/commonTypes';
+// import { Plan } from '../../resources/commonTypes';
 import {
   selectUser,
   selectPlanList,
-  updatePlanList,
+  // updatePlanList,
 } from '../../slices/userSlice';
 import ShareLinksPopup from './degree-info/ShareLinksPopup';
 import axios from 'axios';
@@ -55,7 +55,7 @@ import Cart from '../popups/course-search/Cart';
 /**
  * The dashboard that displays the user's plan.
  */
-const Dashboard: React.FC<{ id: string | null }> = ({ id }) => {
+const Dashboard: React.FC = () => {
   // Redux setup.
   const user = useSelector(selectUser);
   const planList = useSelector(selectPlanList);
@@ -70,7 +70,7 @@ const Dashboard: React.FC<{ id: string | null }> = ({ id }) => {
   const addingPrereqStatus = useSelector(selectAddingPrereq);
   const cartStatus = useSelector(selectShowingCart);
   const experimentList = useSelector(selectExperimentList);
-  const experimentIDs = useSelector(selectExperimentIDs);
+  // const experimentIDs = useSelector(selectExperimentIDs);
   // const blueButton = useSelector(selectBlueButton);
   const dispatch = useDispatch();
 
@@ -79,7 +79,7 @@ const Dashboard: React.FC<{ id: string | null }> = ({ id }) => {
   const [formPopup, setFormPopup] = useState<boolean>(false);
   const [showHeader, setShowHeader] = useState<boolean>(true);
   const [dropdown, setDropdown] = useState<boolean>(false);
-  const [experimentPopup] = useState<boolean>(false);
+  // const [experimentPopup] = useState<boolean>(false);
   const [shareableURL, setShareableURL] = useState<string>('');
   // const [displayedNumber, setDisplayedNumber] = useState<number>(3);
   // const [crement, setCrement] = useState<number>(0);
@@ -91,36 +91,36 @@ const Dashboard: React.FC<{ id: string | null }> = ({ id }) => {
   //   // eslint-disable-next-line react-hooks/exhaustive-deps
   // }, [experimentList.length > 0 ? blueButton : null]);
 
-  useEffect(() => {
-    if (!experimentPopup && experimentList.length > 0) {
-      axios
-        .get(`${api}/experiments/allExperiments`)
-        .then(function (resp) {
-          const importedExperimentList = resp.data.data;
-          for (const experiment of experimentList) {
-            const currentActive = experiment.active;
-            const importedActive = importedExperimentList[
-              experimentIDs.indexOf(experiment._id)
-            ].active.includes(user._id);
+  // useEffect(() => {
+  //   if (!experimentPopup && experimentList.length > 0) {
+  //     axios
+  //       .get(`${api}/experiments/allExperiments`)
+  //       .then(function (resp) {
+  //         const importedExperimentList = resp.data.data;
+  //         for (const experiment of experimentList) {
+  //           const currentActive = experiment.active;
+  //           const importedActive = importedExperimentList[
+  //             experimentIDs.indexOf(experiment._id)
+  //           ].active.includes(user._id);
 
-            if (currentActive === importedActive) continue;
+  //           if (currentActive === importedActive) continue;
 
-            const command = experiment.active ? 'add/' : 'delete/';
-            axios
-              .put(`${api}/experiments/${command}${experiment.name}`, {
-                user_id: user._id,
-              })
-              .catch(function (error) {
-                console.log(error);
-              });
-          }
-        })
-        .catch(function (error) {
-          console.log(error);
-        });
-    }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [experimentPopup]);
+  //           const command = experiment.active ? 'add/' : 'delete/';
+  //           axios
+  //             .put(`${api}/experiments/${command}${experiment.name}`, {
+  //               user_id: user._id,
+  //             })
+  //             .catch(function (error) {
+  //               console.log(error);
+  //             });
+  //         }
+  //       })
+  //       .catch(function (error) {
+  //         console.log(error);
+  //       });
+  //   }
+  //   // eslint-disable-next-line react-hooks/exhaustive-deps
+  // }, [experimentPopup]);
 
   useScrollPosition(({ prevPos, currPos }) => {
     if (currPos.y > -14) {
@@ -170,7 +170,7 @@ const Dashboard: React.FC<{ id: string | null }> = ({ id }) => {
 
   return (
     <div className="flex flex-col w-full h-full min-h-screen bg-white">
-      <HandleUserEntryDummy id={id} />
+      <HandleUserEntryDummy />
       {/* Commented out right now because needs polishing */}
       {/* {
         <div className="fixed z-40 flex flex-row select-none bottom-11 right-2">
