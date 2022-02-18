@@ -11,7 +11,7 @@ import CourseCard from './CourseCard';
 import ReactPaginate from 'react-paginate';
 import { Course, SISRetrievedCourse } from '../../../../resources/commonTypes';
 import ReactTooltip from 'react-tooltip';
-import { QuestionMarkCircleIcon } from '@heroicons/react/outline';
+import { QuestionMarkCircleIcon } from '@heroicons/react/solid';
 
 /* 
   List of searched courses.

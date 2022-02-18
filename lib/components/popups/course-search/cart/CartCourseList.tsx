@@ -7,7 +7,7 @@ import {
   updatePlaceholder,
 } from '../../../../slices/searchSlice';
 import ReactPaginate from 'react-paginate';
-import { QuestionMarkCircleIcon } from '@heroicons/react/outline';
+import { QuestionMarkCircleIcon } from '@heroicons/react/solid';
 import { Course, SISRetrievedCourse } from '../../../../resources/commonTypes';
 import ReactTooltip from 'react-tooltip';
 

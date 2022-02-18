@@ -1,4 +1,4 @@
-import { QuestionMarkCircleIcon } from '@heroicons/react/outline';
+import { QuestionMarkCircleIcon } from '@heroicons/react/solid';
 import clsx from 'clsx';
 import { useState, useRef, useEffect, FC } from 'react';
 import { useSelector } from 'react-redux';

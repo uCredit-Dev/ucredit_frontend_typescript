@@ -15,7 +15,8 @@ import {
   updateSearchStatus,
   updateSearchTime,
 } from '../../../../slices/searchSlice';
-import { PlusIcon, QuestionMarkCircleIcon } from '@heroicons/react/outline';
+import { PlusIcon } from '@heroicons/react/outline';
+import { QuestionMarkCircleIcon } from '@heroicons/react/solid';
 import { Droppable } from 'react-beautiful-dnd';
 import {
   selectCurrentPlanCourses,

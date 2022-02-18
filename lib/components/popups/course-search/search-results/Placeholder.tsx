@@ -19,7 +19,8 @@ import {
   updateSelectedPlan,
 } from '../../../../slices/currentPlanSlice';
 import ReactTooltip from 'react-tooltip';
-import { QuestionMarkCircleIcon, XIcon } from '@heroicons/react/outline';
+import { QuestionMarkCircleIcon } from '@heroicons/react/solid';
+import { XIcon } from '@heroicons/react/outline';
 
 const departmentFilters = ['none', ...all_deps];
 const tagFilters = ['none', ...course_tags];

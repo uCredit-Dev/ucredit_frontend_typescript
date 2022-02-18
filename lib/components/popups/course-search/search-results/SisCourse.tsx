@@ -29,10 +29,8 @@ import {
   updateShowingCart,
 } from '../../../../slices/popupSlice';
 import { api } from '../../../../resources/assets';
-import {
-  ChevronDownIcon,
-  QuestionMarkCircleIcon,
-} from '@heroicons/react/outline';
+import { ChevronDownIcon } from '@heroicons/react/outline';
+import { QuestionMarkCircleIcon } from '@heroicons/react/solid';
 
 /**
  * Displays a sis course when searching.

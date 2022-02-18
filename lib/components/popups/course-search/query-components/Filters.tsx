@@ -2,7 +2,7 @@ import { FC, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import Select from 'react-select';
 import ReactTooltip from 'react-tooltip';
-import { QuestionMarkCircleIcon } from '@heroicons/react/outline';
+import { QuestionMarkCircleIcon } from '@heroicons/react/solid';
 import { all_deps, course_tags } from '../../../../resources/assets';
 import { FilterType } from '../../../../resources/commonTypes';
 import {
