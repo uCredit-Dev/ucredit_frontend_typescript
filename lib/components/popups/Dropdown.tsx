@@ -35,15 +35,7 @@ const Dropdown: FC<{
         }
       });
 
-      toast(newSelected.name + ' selected!', {
-        position: 'top-right',
-        autoClose: 5000,
-        hideProgressBar: true,
-        closeOnClick: true,
-        pauseOnHover: true,
-        draggable: true,
-        progress: 0,
-      });
+      toast(newSelected.name + ' selected!');
       if (currentPlan._id !== newSelected._id)
         dispatch(updateCurrentPlanCourses([]));
       dispatch(updateSelectedPlan(newSelected));

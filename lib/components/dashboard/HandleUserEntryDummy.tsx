@@ -634,13 +634,12 @@ const HandleUserEntryDummy: React.FC = () => {
         dispatch(updateImportingStatus(false));
         toast.dismiss();
         toast.error(
-          "Failed to Import. Please log in and try again... If that doesn't work. This is an issue on our end! Please report it in the feedback form and we will get to it asap!",
+          "Failed to Import. Please log in and try again or check your link... If that doesn't work. This is an issue on our end! Please report it in the feedback form and we will get to it asap!",
           {
             closeOnClick: false,
             autoClose: false,
           },
         );
-        router.push('/login');
       });
 
     if (planResponse === undefined) return Promise.reject();
@@ -653,7 +652,6 @@ const HandleUserEntryDummy: React.FC = () => {
       });
     let years = yearsResponse.data.data;
 
-    console.log('id is ', id, planResponse, years);
     cache(years);
     // check whether the user is logged in (whether a cookie exists)
     let cookieVal = '';
