@@ -28,24 +28,26 @@ export type Course = {
   level: string;
 };
 
+export type Version = {
+  areas: string;
+  term: string;
+  school: string;
+  department: string;
+  credits: string;
+  wi: boolean;
+  bio: string;
+  level: string;
+  tags: string[];
+  preReq: string[];
+  coReq: string[];
+  restrictions: any[];
+};
+
 export type SISRetrievedCourse = {
   title: string;
   number: string;
   terms: string[];
-  versions: {
-    areas: string;
-    term: string;
-    school: string;
-    department: string;
-    credits: string;
-    wi: boolean;
-    bio: string;
-    level: string;
-    tags: string[];
-    preReq: string[];
-    coReq: string[];
-    restrictions: any[];
-  }[];
+  versions: Version[];
 };
 
 // For course Evals
@@ -83,7 +85,7 @@ export type Year = {
   _id: string;
   name: string;
   courses: string[];
-  plan_id: any;
+  plan_id: string;
   user_id: string;
   year: number;
 };
