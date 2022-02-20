@@ -17,7 +17,6 @@ import {
   selectUser,
   updatePlanList,
 } from '../../../slices/userSlice';
-import PlanChoose from './PlanChoose';
 import { TrashIcon, PlusIcon } from '@heroicons/react/outline';
 import axios from 'axios';
 import { Year, Plan } from '../../../resources/commonTypes';
@@ -36,10 +35,8 @@ const majorOptions = allMajors.map((major, index) => ({
  * @description ActionBar component
  */
 const ActionBar: FC<{
-  dropdown: boolean;
-  setDropdown: Function;
   onShareClick: MouseEventHandler<HTMLButtonElement>;
-}> = ({ dropdown, setDropdown, onShareClick }) => {
+}> = ({ onShareClick }) => {
   // Redux Setup
   const dispatch = useDispatch();
   const currentPlan = useSelector(selectPlan);
@@ -219,10 +216,19 @@ const ActionBar: FC<{
     },
   };
 
+  const handlePlanChange = (event) => {
+    dispatch(updateSelectedPlan(event.value));
+  };
+
   return (
-    <div className="sticky top-0 z-20 flex flex-row px-2 bg-white rounded">
-      <PlanChoose dropdown={dropdown} setDropdown={setDropdown} />
-      <div className="flex flex-row items-end my-1 mr-2 bg-white border border-gray-300 rounded shadow h-11">
+    <div className="top-0 z-20 flex flex-row">
+      <Select
+        options={planList.map((plan) => ({ value: plan, label: plan.name }))}
+        value={{ label: currentPlan.name, value: currentPlan }}
+        onChange={handlePlanChange}
+        className="mr-2 text-lg font-light w-60 mt-[0.15rem]"
+      ></Select>
+      <div className="flex flex-row items-end my-1 mr-2 bg-white border border-gray-300 rounded h-10">
         <div className="m-auto ml-2 mr-0 text-xl">✎</div>
         <input
           value={planName}
@@ -231,10 +237,10 @@ const ActionBar: FC<{
         />
       </div>
       <div
-        className="flex px-2 my-1 mr-2 text-lg font-light w-80"
-        style={{ width: '25rem' }}
+        className="flex px-2  mt-[0.15rem] mr-2 text-lg font-light"
+        style={{ width: '23rem' }}
       >
-        <form data-testid="major-change-form" className="z-50 w-full shadow">
+        <form data-testid="major-change-form" className="z-20 w-full">
           <label htmlFor="majorChange" hidden={true}>
             majorChange
           </label>
@@ -255,14 +261,14 @@ const ActionBar: FC<{
         </form>
       </div>
       <button
-        className="flex flex-row items-center px-2 my-1 ml-1 mr-2 transition duration-200 ease-in border border-gray-300 rounded shadow h-11 hover:underline hover:bg-red-300"
+        className="flex flex-row items-center px-2 my-1 ml-1 mr-2 transition duration-200 ease-in border border-gray-300 rounded h-10 hover:underline hover:bg-red-300"
         onClick={activateDeletePlan}
       >
         <TrashIcon className="w-5 my-auto transition duration-200 ease-in transform cursor-pointer select-none stroke-2 hover:scale-110" />{' '}
         <div className="ml-1">Delete</div>
       </button>
       <button
-        className="flex flex-row items-center px-2 my-1 ml-1 mr-2 transition duration-200 ease-in border border-gray-300 rounded shadow h-11 hover:underline hover:bg-primary"
+        className="flex flex-row items-center px-2 my-1 ml-1 mr-2 transition duration-200 ease-in border border-gray-300 rounded h-10 hover:underline hover:bg-primary"
         onClick={onShareClick}
       >
         <svg
@@ -281,12 +287,12 @@ const ActionBar: FC<{
         </svg>
         <div className="ml-1">Share</div>
       </button>
-      <div className="flex flex-row items-center w-11 h-11 my-1 transition duration-200 ease-in border border-gray-300 rounded shadow cursor-pointer hover:underline hover:bg-green-300 focus:outline-none">
+      <div className="flex flex-row items-center w-10 h-10 my-1 transition duration-200 ease-in border border-gray-300 rounded cursor-pointer hover:underline hover:bg-green-300 focus:outline-none">
         <PlusIcon
           onClick={() => addNewYear(false)}
           data-tip={`Add a new year!`}
           data-for="godTip"
-          className="w-6 h-6 m-auto focus:outline-none"
+          className="w-5 h-5 m-auto focus:outline-none"
         />
       </div>
     </div>

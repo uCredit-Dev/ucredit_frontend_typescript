@@ -38,10 +38,9 @@ import PlanAdd from '../popups/PlanAdd';
 import CourseList from './course-list/horizontal/CourseList';
 import InfoMenu from './InfoMenu';
 import ActionBar from './degree-info/ActionBar';
-import { selectUser, selectPlanList } from '../../slices/userSlice';
+import { selectUser } from '../../slices/userSlice';
 import ShareLinksPopup from './degree-info/ShareLinksPopup';
 import axios from 'axios';
-import Dropdown from '../popups/Dropdown';
 // import ExperimentNumber from '../popups/ExperimentNumber';
 import { api } from './../../resources/assets';
 import Cart from '../popups/course-search/Cart';
@@ -56,7 +55,6 @@ const baseUrl = publicRuntimeConfig.baseUrl;
 const Dashboard: React.FC = () => {
   // Redux setup.
   const user = useSelector(selectUser);
-  const planList = useSelector(selectPlanList);
   const currentPlan = useSelector(selectPlan);
   const searchStatus = useSelector(selectSearchStatus);
   const deletePlanStatus = useSelector(selectDeletePlanStatus);
@@ -76,7 +74,6 @@ const Dashboard: React.FC = () => {
   const [showNotif, setShowNotif] = useState<boolean>(true);
   const [formPopup, setFormPopup] = useState<boolean>(false);
   const [showHeader, setShowHeader] = useState<boolean>(true);
-  const [dropdown, setDropdown] = useState<boolean>(false);
   // const [experimentPopup] = useState<boolean>(false);
   const [shareableURL, setShareableURL] = useState<string>('');
   // const [displayedNumber, setDisplayedNumber] = useState<number>(3);
@@ -200,18 +197,7 @@ const Dashboard: React.FC = () => {
                     />
                   </div>
                 )}
-                <ActionBar
-                  dropdown={dropdown}
-                  setDropdown={setDropdown}
-                  onShareClick={onShareClick}
-                />
-                <Dropdown
-                  dropdown={dropdown}
-                  planList={planList}
-                  setDropdown={setDropdown}
-                  user={user}
-                  currentPlan={currentPlan}
-                />
+                <ActionBar onShareClick={onShareClick} />
                 <CourseList />
               </div>
             </div>

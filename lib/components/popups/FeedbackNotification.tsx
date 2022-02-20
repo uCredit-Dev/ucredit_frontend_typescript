@@ -23,7 +23,10 @@ const FeedbackNotification: FC<{
         </div>
         !
       </div>
-      <div className="mr-5 cursor-pointer" onClick={() => notifHandler(false)}>
+      <div
+        className="mr-5 h-5 w-5 cursor-pointer"
+        onClick={() => notifHandler(false)}
+      >
         <XIcon />
       </div>
     </div>
