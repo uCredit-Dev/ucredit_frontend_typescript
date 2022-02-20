@@ -3,7 +3,6 @@ import { useSelector, useDispatch } from 'react-redux';
 import { selectPlanList, updatePlanList } from '../../slices/userSlice';
 import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
-import GenerateNewPlan from '../../resources/GenerateNewPlan';
 import { selectPlan, updateSelectedPlan } from '../../slices/currentPlanSlice';
 import { api } from '../../resources/assets';
 import { Plan } from '../../resources/commonTypes';
@@ -71,7 +70,6 @@ const DeleteCoursePopup: FC = () => {
 
   return (
     <>
-      <GenerateNewPlan />
       <div className="absolute top-0">
         {/* Background Grey */}
         <div className="fixed z-30 left-0 top-0 m-0 w-full h-screen bg-black opacity-50"></div>

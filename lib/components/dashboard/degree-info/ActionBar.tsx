@@ -9,9 +9,13 @@ import Select, {
 import { api } from '../../../resources/assets';
 import {
   selectPlan,
+  updateCurrentPlanCourses,
   updateSelectedPlan,
 } from '../../../slices/currentPlanSlice';
-import { updateDeletePlanStatus } from '../../../slices/popupSlice';
+import {
+  updateAddingPlanStatus,
+  updateDeletePlanStatus,
+} from '../../../slices/popupSlice';
 import {
   selectPlanList,
   selectUser,
@@ -217,13 +221,25 @@ const ActionBar: FC<{
   };
 
   const handlePlanChange = (event) => {
-    dispatch(updateSelectedPlan(event.value));
+    if (event.label === 'Create New Plan' && user._id !== 'noUser') {
+      dispatch(updateAddingPlanStatus(true));
+    } else {
+      toast(event.value.name + ' selected!');
+      if (currentPlan._id !== event.value._id)
+        dispatch(updateCurrentPlanCourses([]));
+      dispatch(updateSelectedPlan(event.value));
+    }
   };
 
   return (
     <div className="top-0 z-20 flex flex-row">
       <Select
-        options={planList.map((plan) => ({ value: plan, label: plan.name }))}
+        options={[
+          ...planList
+            .filter((plan) => plan._id !== currentPlan._id)
+            .map((plan) => ({ value: plan, label: plan.name })),
+          { value: currentPlan, label: 'Create New Plan' },
+        ]}
         value={{ label: currentPlan.name, value: currentPlan }}
         onChange={handlePlanChange}
         className="mr-2 text-lg font-light w-60 mt-[0.15rem]"

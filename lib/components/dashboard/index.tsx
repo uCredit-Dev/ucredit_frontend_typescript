@@ -45,6 +45,7 @@ import axios from 'axios';
 import { api } from './../../resources/assets';
 import Cart from '../popups/course-search/Cart';
 import getConfig from 'next/config';
+import GenerateNewPlan from '../../resources/GenerateNewPlan';
 
 const { publicRuntimeConfig } = getConfig();
 const baseUrl = publicRuntimeConfig.baseUrl;
@@ -159,6 +160,7 @@ const Dashboard: React.FC = () => {
 
   return (
     <div className="flex flex-col w-full h-full min-h-screen bg-white">
+      <GenerateNewPlan />
       <HandleUserEntryDummy />
       {/* Commented out right now because needs polishing */}
       {/* {

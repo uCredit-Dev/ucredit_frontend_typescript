@@ -40,7 +40,6 @@ const PlanAdd: FC = () => {
     if (toAddMajors.length === 0) {
       toast.error('Please choose a valid major!');
     } else {
-      // TODO: resolve confusing naming; generatePlanAddStatus signals generateNewPlan to generate a new plan, updateAdding signals planAdd to pop up
       dispatch(updateAddingPlanStatus(false));
       dispatch(updateGeneratePlanAddStatus(true));
     }
