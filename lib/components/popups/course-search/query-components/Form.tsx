@@ -174,7 +174,7 @@ const Form: FC<{ setSearching: (searching: boolean) => void }> = (props) => {
     if (searchTerm.length > 0) {
       // Search with half second debounce.
       const search = setTimeout(
-        performSmartSearch(searchTerm, extras, searchTerm.length),
+        performNewSmartSearch(searchTerm, extras, searchTerm.length),
         500,
       );
       return () => clearTimeout(search);
@@ -376,6 +376,75 @@ const Form: FC<{ setSearching: (searching: boolean) => void }> = (props) => {
           .catch(() => {
             props.setSearching(false);
           });
+      } else {
+        props.setSearching(false);
+      }
+    };
+
+  // okay boys, heres da NEW smawt search B)
+  const performNewSmartSearch =
+    (
+      originalQuery: string,
+      extras: SearchExtras,
+      queryLength: number,
+    ): (() => void) =>
+    (): void => {
+      console.log('perfmoring new smart search??');
+      if (queryLength >= 3) {
+        // only searches for queries above 3
+        axios
+          .get(api + '/search/smart', {
+            params: getParams(extras),
+          })
+          .then((retrieved) => {
+            let retrievedCourses: SISRetrievedCourse[] = retrieved.data.data;
+            if (extras.areas === 'N')
+              retrievedCourses = retrievedCourses.filter((course) => {
+                for (let version of course.versions) {
+                  if (version.areas === 'N') return true;
+                }
+                return false;
+              });
+            retrievedCourses.forEach(
+              (course: SISRetrievedCourse, index: number) => {
+                if (!searchedCourses.has(course.number + '0')) {
+                  searchedCourses.set(course.number + '0', {
+                    course: course,
+                    version: [][index],
+                    priority: queryLength,
+                  });
+                  searchedCoursesFrequency.set(course.number, 1);
+                } else {
+                  handleFrequency(course, [], queryLength, index);
+                }
+              },
+            );
+            const newSearchList: SISRetrievedCourse[] = getNewSearchList();
+            dispatch(updateRetrievedCourses(newSearchList));
+            // dispatch(updateCourseCache([...retrievedCourses]));
+            // dispatch(updateRetrievedCourses(retrievedCourses));
+            props.setSearching(false);
+          })
+          .catch(() => {
+            props.setSearching(false);
+          });
+      } else if (queryLength > 0 && queryLength < 3) {
+        console.log('somethings happend');
+        // // Perform normal search if query length is between 1 and 3
+        // axios
+        //   .get(api + '/search', {
+        //     params: getParams(extras),
+        //   })
+        //   .then((retrieved) => {
+        //     let retrievedCourses: SISRetrievedCourse[] = retrieved.data.data;
+        //     dispatch(updateCourseCache([...retrievedCourses]));
+        //     let SISRetrieved: SISRetrievedCourse[] = retrieved.data.data;
+        //     dispatch(updateRetrievedCourses(SISRetrieved));
+        //     props.setSearching(false);
+        //   })
+        //   .catch(() => {
+        //     props.setSearching(false);
+        //   });
       } else {
         props.setSearching(false);
       }
