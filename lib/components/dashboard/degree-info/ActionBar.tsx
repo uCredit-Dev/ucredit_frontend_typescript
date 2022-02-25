@@ -303,7 +303,7 @@ const ActionBar: FC<{
         </svg>
         <div className="ml-1">Share</div>
       </button>
-      <div className="flex flex-row items-center w-10 h-10 my-1 transition duration-200 ease-in border border-gray-300 rounded cursor-pointer hover:underline hover:bg-green-300 focus:outline-none">
+      <div className="flex flex-row items-center w-10 h-10 my-1 ml-1 mr-2 transition duration-200 ease-in border border-gray-300 rounded cursor-pointer hover:underline hover:bg-green-300 focus:outline-none">
         <PlusIcon
           onClick={() => addNewYear(false)}
           data-tip={`Add a new year!`}

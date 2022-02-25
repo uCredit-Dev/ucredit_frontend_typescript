@@ -4,6 +4,7 @@ import Select from 'react-select';
 import { Major } from '../../../resources/commonTypes';
 import { selectTotalCredits } from '../../../slices/currentPlanSlice';
 import CourseBar from './CourseBar';
+import Reviewers from './Reviewers/Reviewers';
 
 /**
  * Area in the right hand plan information that shows various elements of degree progression.
@@ -117,6 +118,7 @@ const Distributions: FC<{
       />{' '}
       {distributionBarsJSX}
       {/* M notes: distributionsBarsJSX is where the bars except total credits are created  */}
+      <Reviewers />
     </div>
   );
 };
