@@ -31,11 +31,11 @@ export const getColors = function (
   distribution: string,
   writingIntensive: boolean,
 ): string {
-  if (distribution === 'None') {
-    return '#F0F0F0';
-  }
   if (writingIntensive) {
     return '#D0D0FF';
+  }
+  if (distribution === 'None') {
+    return '#F0F0F0';
   }
   if (distribution === 'N') {
     return '#FFE0CB';
@@ -545,7 +545,7 @@ export const getCourse = async (
         })
         .catch((err) => console.log(err));
     }
-    if (out !== null) return resolve(out);
+    if (out !== null) return resolve({ index: indexNum, resp: out });
   });
 };
 

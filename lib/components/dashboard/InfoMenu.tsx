@@ -322,7 +322,7 @@ const InfoMenu: FC = () => {
         </button>
       </div>
       {infoOpen ? (
-        <div className="absolute z-50 right-14 -top-60 ml-5 p-4 px-0 w-max max-h-[75vh] bg-white bg-opacity-90 rounded shadow overflow-y-scroll">
+        <div className="absolute z-50 right-14 -top-48 max-h-[75vh] bg-white bg-opacity-90 rounded shadow overflow-y-auto">
           {/* <InfoCards /> */}
           {(() => {
             if (calculated) {
