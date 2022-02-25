@@ -34,6 +34,8 @@ import {
   toggleExperimentStatus,
   setWhitelistStatus,
 } from '../../slices/experimentSlice';
+import { userService } from '../../services/user.service';
+import { route } from 'next/dist/server/router';
 
 /**
  * Handles dashboard user entry and login logic.
@@ -451,16 +453,8 @@ const HandleUserEntryDummy: React.FC = () => {
       let curUser: User;
       // Retrieves user if user ID is "noUser", the initial user id state for userSlice.tsx.
       // Make call for backend
-      fetch(api + '/retrieveUser/' + cookieVal, {
-        mode: 'cors',
-        method: 'GET',
-        credentials: 'include',
-        headers: {
-          Accept: 'application/json',
-          'Content-Type': 'application/json',
-        },
-      })
-        .then((resp) => resp.json())
+      userService
+        .login(cookieVal)
         .then((retrievedUser) => {
           if (retrievedUser.errors === undefined) {
             dispatch(updateUser(retrievedUser.data));
@@ -583,6 +577,8 @@ const HandleUserEntryDummy: React.FC = () => {
           dispatch(updateImportingStatus(true));
           // Get the plan that we are importing, stored in plan
           handleExistingUser();
+          const referrer = router.query.referrer as string;
+          if (referrer) router.push(referrer);
         })
         .catch((err) => {
           toast.info('Importing Plan...', {
@@ -623,9 +619,9 @@ const HandleUserEntryDummy: React.FC = () => {
         });
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  }, [router.query]);
 
-  // Handle the case where the user is already exists
+  // Handle the case where the user already exists
   const handleExistingUser = async (): Promise<void> => {
     const planResponse: any = await axios
       .get(api + '/plans/' + id)
