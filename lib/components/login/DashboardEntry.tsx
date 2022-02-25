@@ -18,7 +18,7 @@ const DashboardEntry: React.FC<{ token: string }> = ({ token }) => {
   const [finishedLoginCheck, setFinishedLoginCheck] = useState(true);
   const router = useRouter();
 
-  // Useffect runs once on page load, calling to https://ucredit-api.herokuapp.com/api/retrieveUser to retrieve user data.
+  // Useffect runs once on page load, calling to https://ucredit-api.herokuapp.com/api/verifyLogin to retrieve user data.
   // On successful retrieve, update redux with retrieved user
   // On fail, guest user is used.
   useEffect(() => {
@@ -31,7 +31,7 @@ const DashboardEntry: React.FC<{ token: string }> = ({ token }) => {
   const initialLogin = (): void => {
     setFinishedLoginCheck(false);
     const loginId = getLoginCookieVal(cookies);
-    fetch(api + '/retrieveUser/' + loginId, {
+    fetch(api + '/verifyLogin/' + loginId, {
       mode: 'cors',
       method: 'GET',
       credentials: 'include',
@@ -57,7 +57,7 @@ const DashboardEntry: React.FC<{ token: string }> = ({ token }) => {
 
   // Fetches user based on url token.
   const fetchUser = (token: string): void => {
-    fetch(api + '/retrieveUser/' + token, {
+    fetch(api + '/verifyLogin/' + token, {
       mode: 'cors',
       method: 'GET',
       credentials: 'include',

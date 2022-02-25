@@ -17,7 +17,7 @@ import { setupServer } from 'msw/node';
 import { api } from '../../resources/assets';
 
 const server = setupServer(
-  rest.get(api + '/retrieveUser/', (req, res, ctx) => {
+  rest.get(api + '/verifyLogin/', (req, res, ctx) => {
     return res(
       ctx.status(403),
       ctx.json({

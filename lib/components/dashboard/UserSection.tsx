@@ -43,7 +43,7 @@ const UserSection: React.FC = () => {
             onClick={() => {
               const loginId = getLoginCookieVal(cookies);
               axios
-                .delete(api + '/retrieveUser/' + loginId)
+                .delete(api + '/verifyLogin/' + loginId)
                 .then(() => {
                   removeCookie('connect.sid', { path: '/' });
                   dispatch(resetUser());

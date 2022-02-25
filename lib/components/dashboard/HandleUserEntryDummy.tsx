@@ -451,7 +451,7 @@ const HandleUserEntryDummy: React.FC = () => {
       let curUser: User;
       // Retrieves user if user ID is "noUser", the initial user id state for userSlice.tsx.
       // Make call for backend
-      fetch(api + '/retrieveUser/' + cookieVal, {
+      fetch(api + '/verifyLogin/' + cookieVal, {
         mode: 'cors',
         method: 'GET',
         credentials: 'include',
@@ -550,7 +550,7 @@ const HandleUserEntryDummy: React.FC = () => {
       });
   };
 
-  // Useffect runs once on page load, calling to https://ucredit-api.herokuapp.com/api/retrieveUser to retrieve user data.
+  // Useffect runs once on page load, calling to https://ucredit-api.herokuapp.com/api/verifyLogin to retrieve user data.
   // On successful retrieve, update redux with retrieved user,
   useEffect(() => {
     updateExperimentsForUser(user._id); //Handles updating redux for the experiments that a user is participating in.
@@ -563,7 +563,7 @@ const HandleUserEntryDummy: React.FC = () => {
           cookieVal = cookie[1];
       });
       axios
-        .get(api + '/retrieveUser/' + cookieVal, {
+        .get(api + '/verifyLogin/' + cookieVal, {
           method: 'GET',
           headers: {
             Accept: 'application/json',
@@ -606,7 +606,7 @@ const HandleUserEntryDummy: React.FC = () => {
           cookieVal = cookie[1];
       });
       axios
-        .get(api + '/retrieveUser/' + cookieVal, {
+        .get(api + '/verifyLogin/' + cookieVal, {
           method: 'GET',
           headers: {
             Accept: 'application/json',

@@ -91,7 +91,7 @@ export const userSlice = createSlice({
     updateImportID: (state: any, action: PayloadAction<String>) => {
       state.importId = action.payload;
     },
-    resetUser: (state: any) => {
+    resetUser: (state: RootState) => {
       state.currentUser = initialState.currentUser;
       state.planList = initialState.planList;
     },
