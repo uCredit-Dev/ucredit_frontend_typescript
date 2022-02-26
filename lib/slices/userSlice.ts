@@ -14,6 +14,7 @@ type UserSlice = {
   unfoundNumbers: String[];
   retrievedAll: boolean;
   importId: string;
+  loginCheck: boolean;
 };
 
 const initialState: UserSlice = {
@@ -24,6 +25,7 @@ const initialState: UserSlice = {
     affiliation: 'STUDENT',
     grade: 'AE UG Freshman',
     school: '',
+    whitelisted_plan_ids: [],
     plan_ids: ['no plan'],
   },
   planList: [],
@@ -32,6 +34,7 @@ const initialState: UserSlice = {
   cacheNumbers: [],
   unfoundNumbers: [],
   importId: null,
+  loginCheck: false,
 };
 
 // Updates all user info from database. This function should be called after an axios get on the user routes.
@@ -91,6 +94,9 @@ export const userSlice = createSlice({
     updateImportID: (state: any, action: PayloadAction<String>) => {
       state.importId = action.payload;
     },
+    updateLoginCheck: (state: any, action: PayloadAction<Boolean>) => {
+      state.loginCheck = action.payload;
+    },
     resetUser: (state: any) => {
       state.currentUser = initialState.currentUser;
       state.planList = initialState.planList;
@@ -107,6 +113,7 @@ export const {
   updateRetrievedAll,
   updateUnfoundNumbers,
   updateImportID,
+  updateLoginCheck,
   resetUser,
 } = userSlice.actions;
 
@@ -119,5 +126,6 @@ export const selectRetrievedAll = (state: RootState) => state.user.retrievedAll;
 export const selectUnfoundNumbers = (state: RootState) =>
   state.user.unfoundNumbers;
 export const selectImportID = (state: RootState) => state.user.importId;
+export const selectLoginCheck = (state: RootState) => state.user.loginCheck;
 
 export default userSlice.reducer;

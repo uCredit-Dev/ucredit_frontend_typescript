@@ -4,7 +4,6 @@ import { useScrollPosition } from '@n8tb1t/use-scroll-position';
 import UserSection from './UserSection';
 import FeedbackPopup from '../popups/FeedbackPopup';
 import FeedbackNotification from '../popups/FeedbackNotification';
-import HandleUserEntryDummy from './HandleUserEntryDummy';
 import {
   selectImportingStatus,
   selectPlan,
@@ -38,7 +37,7 @@ import PlanAdd from '../popups/PlanAdd';
 import CourseList from './course-list/horizontal/CourseList';
 import InfoMenu from './InfoMenu';
 import ActionBar from './degree-info/ActionBar';
-import { selectUser } from '../../slices/userSlice';
+import { selectLoginCheck, selectUser } from '../../slices/userSlice';
 import ShareLinksPopup from './degree-info/ShareLinksPopup';
 import axios from 'axios';
 // import ExperimentNumber from '../popups/ExperimentNumber';
@@ -46,6 +45,9 @@ import { api } from './../../resources/assets';
 import Cart from '../popups/course-search/Cart';
 import getConfig from 'next/config';
 import GenerateNewPlan from '../../resources/GenerateNewPlan';
+import LoadingPage from '../LoadingPage';
+import HandlePlanShareDummy from './HandlePlanShareDummy';
+import HandleUserInfoSetupDummy from './HandleUserInfoSetupDummy';
 
 const { publicRuntimeConfig } = getConfig();
 const baseUrl = publicRuntimeConfig.baseUrl;
@@ -57,6 +59,7 @@ const Dashboard: React.FC = () => {
   // Redux setup.
   const user = useSelector(selectUser);
   const currentPlan = useSelector(selectPlan);
+  const loginCheck = useSelector(selectLoginCheck);
   const searchStatus = useSelector(selectSearchStatus);
   const deletePlanStatus = useSelector(selectDeletePlanStatus);
   const addPlanStatus = useSelector(selectAddingPlanStatus);
@@ -159,11 +162,13 @@ const Dashboard: React.FC = () => {
   }
 
   return (
-    <div className="flex flex-col w-full h-full min-h-screen bg-white">
-      <GenerateNewPlan />
-      <HandleUserEntryDummy />
-      {/* Commented out right now because needs polishing */}
-      {/* {
+    <>
+      {!loginCheck || importingStatus ? (
+        <LoadingPage />
+      ) : (
+        <div className="flex flex-col w-full h-full min-h-screen bg-white">
+          {/* Commented out right now because needs polishing */}
+          {/* {
         <div className="fixed z-40 flex flex-row select-none bottom-11 right-2">
           <ExperimentDevBoardPopup />
           <ExperimentPopup
@@ -178,46 +183,51 @@ const Dashboard: React.FC = () => {
           />
         </div>
       } */}
-      {formPopup ? <FeedbackPopup setFormPopup={setFormPopup} /> : null}
-      {showNotif ? (
-        <FeedbackNotification
-          actionHandler={setFormPopup}
-          notifHandler={setShowNotif}
-        />
-      ) : null}
-      {showHeader ? <UserSection /> : null}
-      <div className="flex-grow w-full">
-        <div className="flex flex-col w-full">
-          <div className="flex flex-row thin:flex-wrap-reverse mt-[5rem] w-full h-full">
+          {formPopup ? <FeedbackPopup setFormPopup={setFormPopup} /> : null}
+          {showNotif ? (
+            <FeedbackNotification
+              actionHandler={setFormPopup}
+              notifHandler={setShowNotif}
+            />
+          ) : null}
+          {showHeader ? <UserSection /> : null}
+          <div className="flex-grow w-full">
             <div className="flex flex-col w-full">
-              <div className="mx-auto">
-                {shareableURL === '' ? null : (
-                  <div className="absolute right-24">
-                    <ShareLinksPopup
-                      link={shareableURL}
-                      setURL={onShareClick}
-                    />
+              <div className="flex flex-row thin:flex-wrap-reverse mt-[5rem] w-full h-full">
+                <div className="flex flex-col w-full">
+                  <div className="mx-auto">
+                    {shareableURL === '' ? null : (
+                      <div className="absolute right-24">
+                        <ShareLinksPopup
+                          link={shareableURL}
+                          setURL={onShareClick}
+                        />
+                      </div>
+                    )}
+                    <ActionBar onShareClick={onShareClick} />
+                    <CourseList />
                   </div>
-                )}
-                <ActionBar onShareClick={onShareClick} />
-                <CourseList />
+                </div>
               </div>
+              <InfoMenu />
             </div>
+            {/* Global popups */}
+            {addingPrereqStatus ? <AddingPrereqPopup /> : null}
+            {searchStatus ? <Search /> : null}
+            {deletePlanStatus ? <DeletePlanPopup /> : null}
+            {addPlanStatus && !importingStatus ? <PlanAdd /> : null}
+            {deleteYearStatus ? <DeleteYearPopup /> : null}
+            {deleteCourseStatus ? <DeleteCoursePopup /> : null}
+            {courseInfoStatus ? <CourseDisplayPopup /> : null}
+            {cartStatus ? <Cart allCourses={[]} /> : null}{' '}
+            {/** TODO : remove allCourses props */}
           </div>
-          <InfoMenu />
         </div>
-        {/* Global popups */}
-        {addingPrereqStatus ? <AddingPrereqPopup /> : null}
-        {searchStatus ? <Search /> : null}
-        {deletePlanStatus ? <DeletePlanPopup /> : null}
-        {addPlanStatus && !importingStatus ? <PlanAdd /> : null}
-        {deleteYearStatus ? <DeleteYearPopup /> : null}
-        {deleteCourseStatus ? <DeleteCoursePopup /> : null}
-        {courseInfoStatus ? <CourseDisplayPopup /> : null}
-        {cartStatus ? <Cart allCourses={[]} /> : null}{' '}
-        {/** TODO : remove allCourses props */}
-      </div>
-    </div>
+      )}
+      <GenerateNewPlan />
+      <HandleUserInfoSetupDummy />
+      <HandlePlanShareDummy />
+    </>
   );
 };
 
