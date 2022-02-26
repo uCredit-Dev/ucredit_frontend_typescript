@@ -25,6 +25,7 @@ const initialState: UserSlice = {
     affiliation: 'STUDENT',
     grade: 'AE UG Freshman',
     school: '',
+    whitelisted_plan_ids: [],
     plan_ids: ['no plan'],
   },
   planList: [],
