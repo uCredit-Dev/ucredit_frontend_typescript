@@ -1,15 +1,22 @@
 import axios from 'axios';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { api } from '../../../../resources/assets';
 import ReviewersSearchResults from './ReviewerSearchResults';
 
 const ReviewersSearch = () => {
   const [searchState, updateSearchState] = useState('');
+  const [searchData, updateSearchData] = useState([]);
 
   const handleChange = (e) => {
     updateSearchState(e.target.value);
-    Search('Alan');
   };
+
+  useEffect(() => {
+    if (searchState.length > 0) {
+      const search = setTimeout(() => Search(searchState), 500);
+      return () => clearTimeout(search);
+    }
+  }, [searchState]);
 
   const Search = (text: String) => {
     axios
@@ -23,20 +30,10 @@ const ReviewersSearch = () => {
         },
       })
       .then((users) => {
-        console.log(users);
+        updateSearchData(users.data.data);
       });
   };
 
-  const data = [
-    {
-      name: 'Adam Jones',
-      jhed: 'jSmith1',
-    },
-    {
-      name: 'Jane Doe',
-      jhed: 'jDoe2',
-    },
-  ];
   return (
     <div className="flex flex-col pr-1 bg-gray-100 rounded-lg">
       <div className="ml-2 py-2">
@@ -49,7 +46,7 @@ const ReviewersSearch = () => {
         value={searchState}
         onChange={handleChange}
       ></input>
-      <ReviewersSearchResults Users={data} />
+      <ReviewersSearchResults Users={searchData} />
     </div>
   );
 };

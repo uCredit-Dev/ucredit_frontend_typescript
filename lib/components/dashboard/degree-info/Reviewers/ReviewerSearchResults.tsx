@@ -1,4 +1,5 @@
 import { FC } from 'react';
+import { User } from '../../../../resources/commonTypes';
 
 const ReviewersSearchResults: FC<{
   Users: any[];
@@ -11,7 +12,7 @@ const ReviewersSearchResults: FC<{
     console.log('TODO!!');
   };
 
-  const getElements = (data) => {
+  const getElements = (data: User[]) => {
     return data.map((element) => {
       return (
         <div
@@ -26,7 +27,7 @@ const ReviewersSearchResults: FC<{
             />
           ) : null}
           <p>
-            {element.name} - {element.jhed}
+            {element.name} - {element._id}
           </p>
         </div>
       );
