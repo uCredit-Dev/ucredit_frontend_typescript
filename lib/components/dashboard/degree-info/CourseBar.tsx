@@ -178,7 +178,7 @@ const CourseBar: FC<{
           )}
           <div className="absolute left-2 font-thin">{plannedCredits}</div>
           <div className="absolute right-2 font-thin">
-            {maxCredits >= plannedCredits ? maxCredits - plannedCredits : null}
+            {maxCredits > plannedCredits ? maxCredits - plannedCredits : null}
           </div>
         </div>
 

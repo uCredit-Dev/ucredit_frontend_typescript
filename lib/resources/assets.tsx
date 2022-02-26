@@ -31,11 +31,11 @@ export const getColors = function (
   distribution: string,
   writingIntensive: boolean,
 ): string {
-  if (writingIntensive) {
-    return '#D0D0FF';
-  }
   if (distribution === 'None') {
     return '#F0F0F0';
+  }
+  if (writingIntensive) {
+    return '#D0D0FF';
   }
   if (distribution === 'N') {
     return '#FFE0CB';

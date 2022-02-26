@@ -1891,7 +1891,13 @@ const bsCS_Old: Major = {
             '<b>Probability and Statistics:</b><p>Two paths:</p><p>1. Any of the three courses below:</p><p>EN.553.211</p><p>EN.553.310</p><p>EN.553.311</p><p>2. Both Intro to Probability and Intro to Statistics</p><p>En.553.420</p><p>EN.553.430</p> ',
           required_credits: 4,
           criteria:
-            '(EN.553.211[C]^OR^EN.553.310[C]^OR^EN.553.311[C])^OR^(EN.553.420[C]^AND^EN.553.430[C])',
+            'EN Applied Mathematics & Statistics[D]^AND^(Probability & Statistics[N]^OR^Probability and Statistics[N])',
+        },
+        {
+          description:
+            '<b>Math Elective:</b><p>This must be 200-level or above, chosen from Mathematics (AS.110.xxx) or Applied Math and Statistics (EN.553.xxx)</p>',
+          required_credits: 4,
+          criteria: 'AS.110.[C]^OR^EN.553.[C]',
         },
       ],
     },
@@ -2036,7 +2042,13 @@ const bsCS_New: Major = {
             '<b>Probability and Statistics:</b><p>Two paths:</p><p>1. Any of the three courses below:</p><p>EN.553.211</p><p>EN.553.310</p><p>EN.553.311</p><p>2. Both Intro to Probability and Intro to Statistics</p><p>En.553.420</p><p>EN.553.430</p> ',
           required_credits: 4,
           criteria:
-            'EN Applied Mathematics & Statistics[D]^AND^(Probability & Statistics[N]^OR^Probability and Statistics[N])^AND^Upper Level Undergraduate[L]',
+            'EN Applied Mathematics & Statistics[D]^AND^(Probability & Statistics[N]^OR^Probability and Statistics[N])',
+        },
+        {
+          description:
+            '<b>Math Elective:</b><p>This must be 200-level or above, chosen from Mathematics (AS.110.xxx) or Applied Math and Statistics (EN.553.xxx)</p>',
+          required_credits: 4,
+          criteria: 'AS.110.[C]^OR^EN.553.[C]',
         },
       ],
     },

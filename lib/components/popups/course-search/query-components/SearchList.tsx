@@ -12,6 +12,7 @@ import ReactPaginate from 'react-paginate';
 import { Course, SISRetrievedCourse } from '../../../../resources/commonTypes';
 import ReactTooltip from 'react-tooltip';
 import { QuestionMarkCircleIcon } from '@heroicons/react/solid';
+import { NewspaperIcon } from '@heroicons/react/outline';
 
 /* 
   List of searched courses.
@@ -177,19 +178,7 @@ const SearchList: FC<{ searching: boolean }> = (props) => {
             }}
           >
             <div className="mr-1">Custom</div>
-            {placeholder ? (
-              <img
-                src="/svg/placeholder-filled.svg"
-                alt=""
-                className="w-4 h-4 stroke-2"
-              />
-            ) : (
-              <img
-                src="/svg/placeholder-empty.svg"
-                alt=""
-                className="w-4 h-4 stroke-2"
-              />
-            )}
+            <NewspaperIcon className="w-4 h-4 stroke-2" />
           </div>
         </div>
       </div>
