@@ -98,6 +98,7 @@ export type Plan = {
   user_id: string;
   numYears: number;
   years: Year[];
+  reviewers: string[];
 };
 
 type Affiliation = 'STUDENT' | 'FACULTY' | 'STAFF';
@@ -118,6 +119,7 @@ export type User = {
   school: string;
   grade: Grade;
   plan_ids: string[];
+  whitelisted_plan_ids: string[];
 };
 
 export type Filter = {
