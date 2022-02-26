@@ -1,3 +1,5 @@
+import ReactTooltip from 'react-tooltip';
+
 const CurrentReviewers = () => {
   const data = [
     {
@@ -20,11 +22,25 @@ const CurrentReviewers = () => {
     },
   ];
 
-  const getSVG = (status: string): string => {
+  const getSVG = (status: string) => {
     if (status === 'pending') {
-      return 'svg/Star.svg';
+      return (
+        <img
+          src={'svg/Check.svg'}
+          alt="status"
+          className="h-4 block m-auto h-4 mt-1 tooltip"
+          data-tip="Pending"
+        />
+      );
     } else if (status === 'approved') {
-      return 'svg/Checkmark.svg';
+      return (
+        <img
+          src={'svg/Checkmark.svg'}
+          alt="status"
+          className="tooltip"
+          data-tip="Approved"
+        />
+      );
     }
   };
 
@@ -35,16 +51,26 @@ const CurrentReviewers = () => {
           <p>{element.name}</p>
           <div className="flex flex-row">
             {element.requestingReview ? (
-              <img src="svg/Grab.svg" alt="requesting review" className="h-6" />
+              <img
+                src="svg/CircularArrow.svg"
+                alt="requesting review"
+                className="h-3 w-3 mt-1.5 mr-1 tooltip"
+                data-tip="This reviewer is requesting a review"
+              />
             ) : null}
-            <img src={getSVG(element.status)} alt="status" className="h-6" />
+            <div className="h-6 w-6">{getSVG(element.status)}</div>
           </div>
         </div>
       );
     });
   };
 
-  return <div className="flex flex-col pl-1 border-b">{getElements(data)}</div>;
+  return (
+    <div className="flex flex-col pl-1 border-b">
+      {getElements(data)}
+      <ReactTooltip delayShow={200} />
+    </div>
+  );
 };
 
 export default CurrentReviewers;

@@ -23,6 +23,7 @@ const MyApp: React.FC<{
         className="max-w-sm"
         place="top"
         effect="solid"
+        delayShow={250}
       />
       <CookiesProvider>
         <Provider store={store}>
