@@ -8,7 +8,7 @@ const Reviewers = () => {
 
   return (
     <div className="flex flex-col ml-1 mt-3 border-t">
-      <div className="flex flex-row justify-between items-center pl-1 pb-1 font-bold text-xl">
+      <div className="flex flex-row justify-between items-center pl-1 pb-1 mt-2 font-bold text-xl">
         <p>Reviewers</p>
         <DotsVerticalIcon
           className="h-6"
