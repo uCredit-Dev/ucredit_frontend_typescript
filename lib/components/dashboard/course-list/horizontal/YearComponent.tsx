@@ -223,7 +223,6 @@ const YearComponent: FC<{
 
   /**
    * Check if semester is valid for adding course
-   * TODO: Check for year matching
    */
   const checkSemester = (semesterName: string): boolean => {
     if (inspected !== 'None') {
@@ -342,9 +341,9 @@ const YearComponent: FC<{
    */
   const getSemesterWNull = () => (
     <>
-      {id !== 0 ? (
+      {id !== 0 && (
         <div className="flex flex-row">{getDisplayedSemesters(collapse)}</div>
-      ) : null}
+      )}
     </>
   );
 
@@ -399,7 +398,7 @@ const YearComponent: FC<{
           )}
           <div className="flex flex-row gap-8">
             <div className="flex flex-row gap-3 mt-2 text-sm font-medium">
-              {areaCredits.N ? (
+              {areaCredits.N && (
                 <div className="flex flex-row gap-1">
                   {areaCredits.N}
                   <div
@@ -409,8 +408,8 @@ const YearComponent: FC<{
                     N
                   </div>
                 </div>
-              ) : null}
-              {areaCredits.Q ? (
+              )}
+              {areaCredits.Q && (
                 <div className="flex flex-row gap-1">
                   {areaCredits.Q}
                   <div
@@ -420,8 +419,8 @@ const YearComponent: FC<{
                     Q
                   </div>
                 </div>
-              ) : null}
-              {areaCredits.E ? (
+              )}
+              {areaCredits.E && (
                 <div className="flex flex-row gap-1">
                   {areaCredits.E}
                   <div
@@ -431,8 +430,8 @@ const YearComponent: FC<{
                     E
                   </div>
                 </div>
-              ) : null}
-              {areaCredits.H ? (
+              )}
+              {areaCredits.H && (
                 <div className="flex flex-row gap-1">
                   {areaCredits.H}
                   <div
@@ -442,8 +441,8 @@ const YearComponent: FC<{
                     H
                   </div>
                 </div>
-              ) : null}
-              {areaCredits.S ? (
+              )}
+              {areaCredits.S && (
                 <div className="flex flex-row gap-1">
                   {areaCredits.S}
                   <div
@@ -453,8 +452,8 @@ const YearComponent: FC<{
                     S
                   </div>
                 </div>
-              ) : null}
-              {areaCredits.W ? (
+              )}
+              {areaCredits.W && (
                 <div className="flex flex-row gap-1">
                   {areaCredits.W}
                   <div
@@ -464,7 +463,7 @@ const YearComponent: FC<{
                     W
                   </div>
                 </div>
-              ) : null}
+              )}
               <div className="font-bold">{totalCredits} Credits</div>
             </div>
             <DotsVerticalIcon
@@ -475,7 +474,7 @@ const YearComponent: FC<{
             />
           </div>
         </div>
-        {display ? (
+        {display && (
           <YearSettingsDropdown
             year={year}
             setToShow={setToShow}
@@ -484,7 +483,7 @@ const YearComponent: FC<{
             setEdittingName={setEdittingName}
             id={id}
           />
-        ) : null}
+        )}
       </div>
       {collapse ? (
         <div

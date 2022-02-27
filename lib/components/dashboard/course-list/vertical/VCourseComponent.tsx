@@ -123,7 +123,7 @@ const VCourseComponent: FC<{
             <div className="flex items-center px-1 font-semibold text-white rounded select-none bg-secondary">
               {course.credits}
             </div>
-            {course.area !== 'None' ? (
+            {course.area !== 'None' && (
               <div
                 className="flex items-center px-1 font-semibold text-white rounded select-none"
                 style={{
@@ -132,7 +132,7 @@ const VCourseComponent: FC<{
               >
                 {course.area}
               </div>
-            ) : null}{' '}
+            )}{' '}
             {/* {!satisfied && !overridden ? (
               <WarningSvg className="flex items-center w-5 h-5 font-semibold text-white rounded select-none" />
             ) : null} */}

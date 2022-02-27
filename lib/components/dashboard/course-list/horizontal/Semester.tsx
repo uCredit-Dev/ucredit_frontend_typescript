@@ -274,7 +274,7 @@ const Semester: FC<{
       ) : (
         <div className="text-md">{getSemesterName()}</div>
       )}{' '}
-      {courses.length !== 0 && totalCredits !== 0 ? (
+      {courses.length !== 0 && totalCredits !== 0 && (
         <>
           <div
             className={clsx(
@@ -295,7 +295,7 @@ const Semester: FC<{
             {totalCredits}
           </div>
         </>
-      ) : null}
+      )}
     </>
   );
 
@@ -376,25 +376,30 @@ const Semester: FC<{
           <PlusIcon className="w-4 h-4 stroke-2 group-hover:text-sky-700" />
         </div>
       ) : (
-        (() =>
-          checkSemester() ? (
-            <button
-              className="z-40 w-24 py-1 text-xs text-white transition duration-150 ease-in transform rounded hover:bg-secondary bg-primary focus:outline-none hover:scale-101"
-              onClick={addPrereq}
-            >
-              Add Here
-            </button>
-          ) : null)()
+        <>{getAddHereButton()}</>
       )}
     </>
   );
+
+  /**
+   * Determines whether to get add here button or not.
+   */
+  const getAddHereButton = () =>
+    checkSemester() && (
+      <button
+        className="z-40 w-24 py-1 text-xs text-white transition duration-150 ease-in transform rounded hover:bg-secondary bg-primary focus:outline-none hover:scale-101"
+        onClick={addPrereq}
+      >
+        Add Here
+      </button>
+    );
 
   /**
    * Displays AP info box.
    */
   const getAPInfoBox = (): JSX.Element => (
     <>
-      {openAPInfoBox ? (
+      {openAPInfoBox && (
         <div className="absolute p-2 -mt-48 -ml-6 bg-gray-100 rounded shadow select-text w-72">
           These are courses transferred over from AP tests that you've taken!
           Find out equivalent courses your scores cover for{' '}
@@ -408,7 +413,7 @@ const Semester: FC<{
           </a>
           .
         </div>
-      ) : null}
+      )}
     </>
   );
 

@@ -116,7 +116,7 @@ const PrereqDropdown: FC<{
           'border-red-900 ': !satisfied && rootHovered,
         })}
       >
-        {open ? getChildPrereqs() : null}
+        {open && getChildPrereqs()}
       </div>
     </div>
   );

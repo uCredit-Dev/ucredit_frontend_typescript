@@ -98,14 +98,14 @@ const FineDistribution: FC<{
         className="h-6 transition duration-200 ease-in transform hover:scale-150"
         onClick={addToDistribution}
       /> */}
-      {displayAdd ? (
+      {displayAdd && (
         <DistributionPopup
           distribution={dis}
           cleanup={closePopup}
           save={onSave}
           flipped={flipped.slice()}
         />
-      ) : null}
+      )}
     </div>
   );
 };

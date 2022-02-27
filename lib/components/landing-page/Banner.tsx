@@ -13,9 +13,9 @@ const Banner: React.FC = () => {
 
   return (
     <>
-      {activateEmailPopup ? (
+      {activateEmailPopup && (
         <ApplicationFormPopup setActivateEmailPopup={setActivateEmailPopup} />
-      ) : null}
+      )}
       <div className="w-full h-4/6">
         <Carousel showThumbs={false} autoPlay interval={5000} infiniteLoop>
           <div>

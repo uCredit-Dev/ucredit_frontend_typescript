@@ -33,8 +33,7 @@ import { ChevronDownIcon } from '@heroicons/react/outline';
 import { QuestionMarkCircleIcon } from '@heroicons/react/solid';
 
 /**
- * Displays a sis course when searching.
- * TODO: Split UI into finer components
+ * Displays a sis course when searching
  *
  * @prop inspectedArea - the area to add the course to
  * @prop setInspectedArea - sets the area to add the course to
@@ -282,9 +281,24 @@ const SisCourse: FC<{
       </button>
     );
 
+  /**
+   * Returns add course UI based on cart activation
+   */
+  const getAddCourseType = () => (
+    <>
+      {props.cart ? (
+        <div className="relative bottom-0 flex flex-row items-center w-full h-20 px-4 py-2 bg-gray-100 rounded-b">
+          {getAddCourseButton()}
+        </div>
+      ) : (
+        getAddCourseUI()
+      )}
+    </>
+  );
+
   return (
     <div className="flex flex-col h-full">
-      {inspected !== 'None' ? (
+      {inspected !== 'None' && (
         <>
           <div className="w-full h-full px-5 pt-4 pb-5 overflow-y-auto text-base bg-white rounded-t select-text">
             <div className="flex flex-row w-full h-auto mb-1">
@@ -333,19 +347,9 @@ const SisCourse: FC<{
             </div>
             <CourseVersion setInspectedArea={props.setInspectedArea} />
           </div>
-          {(() => (
-            <>
-              {props.cart ? (
-                <div className="relative bottom-0 flex flex-row items-center w-full h-20 px-4 py-2 bg-gray-100 rounded-b">
-                  {getAddCourseButton()}
-                </div>
-              ) : (
-                getAddCourseUI()
-              )}
-            </>
-          ))()}
+          {getAddCourseType()}
         </>
-      ) : null}
+      )}
     </div>
   );
 };

@@ -101,12 +101,12 @@ const CourseEvalSection: FC = () => {
               >
                 {s} | {i} | {g}
               </button>
-              {selectedCourseEval === index ? (
+              {selectedCourseEval === index && (
                 <CourseEvalCard
                   rating={courseEvals.rating}
                   summary={courseEvals.summary}
                 />
-              ) : null}
+              )}
             </div>
           );
         })}

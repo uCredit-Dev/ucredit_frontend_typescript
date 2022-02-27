@@ -20,15 +20,24 @@ const FineRequirementsList: FC<{
     return props.selectedDistribution[1].map((requirement, i) => {
       if (i === 0) return <></>; // TODO : better key
       return (
-        <FineRequirementListItem
-          id={i}
-          itemRequirement={requirement}
-          onClick={selectRequirement}
-          selected={i === selectedListItem}
-        />
+        <div key={i}>
+          <FineRequirementListItem
+            id={i}
+            itemRequirement={requirement}
+            onClick={selectRequirement}
+            selected={i === selectedListItem}
+          />
+        </div>
       );
     });
   };
+
+  /**
+   * Returns results button text
+   */
+  const getResultsButtonText = () => (
+    <>{!hideResults ? 'Hide Results' : 'Show Results'}</>
+  );
 
   return (
     <>
@@ -38,21 +47,19 @@ const FineRequirementsList: FC<{
       >
         <div className="flex flex-row">
           <div className="text-lg font-semibold">Fine Requirements List</div>{' '}
-          {window.innerWidth < 800 ? (
+          {window.innerWidth < 800 && (
             <button
               className="ml-2 focus:outline-none"
               onClick={() => {
                 setHideResults(!hideResults);
               }}
             >
-              {(() => (
-                <>{!hideResults ? 'Hide Results' : 'Show Results'}</>
-              ))()}
+              {getResultsButtonText()}
             </button>
-          ) : null}
+          )}
         </div>
       </div>
-      {!hideResults || window.innerWidth > 700 ? (
+      {(!hideResults || window.innerWidth > 700) && (
         <div className="py px-5 w-full bg-gray-200 select-none">
           <div className="w-full h-full">
             <div className="y-full flex flex-col w-full">
@@ -61,7 +68,7 @@ const FineRequirementsList: FC<{
             </div>
           </div>
         </div>
-      ) : null}
+      )}
     </>
   );
 };

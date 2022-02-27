@@ -106,9 +106,9 @@ const ApplicationFormPopup: FC<{
                   />
                 </div>
               </div>
-              {activateError ? (
+              {activateError && (
                 <div className="text-red-600">*Please fill in all inputs.*</div>
-              ) : null}
+              )}
               <button
                 className="mt-4 p-2 text-white bg-primary rounded"
                 onClick={() => {

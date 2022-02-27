@@ -10,9 +10,9 @@ import {
   experiment,
 } from '../../slices/experimentSlice';
 import { selectUser } from '../../slices/userSlice';
-import { ReactComponent as AdjustmentSvg } from '../../resources/svg/Adjustment.svg';
-import { ReactComponent as DeleteExperimentSvg } from '../../resources/svg/DeleteExperiment.svg';
-import { ReactComponent as AddExperimentSvg } from '../../resources/svg/AddExperiment.svg';
+// import { ReactComponent as AdjustmentSvg } from '../../resources/svg/Adjustment.svg';
+// import { ReactComponent as DeleteExperimentSvg } from '../../resources/svg/DeleteExperiment.svg';
+// import { ReactComponent as AddExperimentSvg } from '../../resources/svg/AddExperiment.svg';
 import { toast } from 'react-toastify';
 import { api } from './../../resources/assets';
 
@@ -204,17 +204,17 @@ const ExperimentDevBoardPopup: FC<{}> = () => {
 
   return (
     <>
-      {whiteList.active ? (
+      {whiteList.active && (
         <div className="flex flex-row items-center ml-2 my-1 w-10 h-10 hover:underline hover:bg-green-300 border border-gray-300 rounded focus:outline-none shadow cursor-pointer transition duration-200 ease-in">
-          <AdjustmentSvg
+          {/* <AdjustmentSvg
             onClick={() => setExperimentDevBoardPopup(!experimentDevBoardPopup)}
             data-tip={`Update Experiment Distributions!`}
             data-for="godTip"
             className="w-10 h-10 focus:outline-none"
-          />
+          /> */}
         </div>
-      ) : null}
-      {experimentDevBoardPopup ? (
+      )}
+      {experimentDevBoardPopup && (
         <>
           {/* Background Grey */}
           <div className="fixed z-30 left-0 top-0 m-0 w-full h-screen bg-black opacity-50"></div>
@@ -238,7 +238,7 @@ const ExperimentDevBoardPopup: FC<{}> = () => {
                     Add an Experiment:
                   </div>
                   <div className="translate-x-6 items-center hover:underline hover:bg-green-400 focus:outline-none shadow cursor-pointer transition duration-200 ease-in">
-                    <AddExperimentSvg
+                    {/* <AddExperimentSvg
                       onClick={() => {
                         setAddExperimentPopup(!addExperimentPopup);
                         setExperimentDevBoardPopup(!experimentDevBoardPopup);
@@ -246,7 +246,7 @@ const ExperimentDevBoardPopup: FC<{}> = () => {
                       data-tip={`Add a New Experiment!`}
                       data-for="godTip"
                       className="w-8 h-8 focus:outline-none"
-                    />
+                    /> */}
                   </div>
                 </div>
               </div>
@@ -258,7 +258,7 @@ const ExperimentDevBoardPopup: FC<{}> = () => {
                     <div key={index}>
                       <div className="flex flex-row -translate-x-2">
                         <div className="-translate-y-2 items-center hover:underline hover:bg-red-700 focus:outline-none shadow cursor-pointer transition duration-200 ease-in">
-                          <DeleteExperimentSvg
+                          {/* <DeleteExperimentSvg
                             onClick={() => {
                               setNameExperimentToDelete(oneExperiment.name);
                               setDeleteExperimentPopup(!deleteExperimentPopup);
@@ -269,7 +269,7 @@ const ExperimentDevBoardPopup: FC<{}> = () => {
                             data-tip={`Delete This Experiment!`}
                             data-for="godTip"
                             className="w-10 h-10 focus:outline-none"
-                          />
+                          /> */}
                         </div>
                         <span className="font-bold">{oneExperiment.name}</span>
                         {` (Current Percentage is ${oneExperiment.percentParticipating}%)`}
@@ -332,10 +332,10 @@ const ExperimentDevBoardPopup: FC<{}> = () => {
             </div>
           </div>
         </>
-      ) : null}
+      )}
 
       {/*Add Popup */}
-      {addExperimentPopup ? (
+      {addExperimentPopup && (
         <>
           <div className="absolute top-0">
             {/* Background Grey */}
@@ -381,10 +381,10 @@ const ExperimentDevBoardPopup: FC<{}> = () => {
             </div>
           </div>
         </>
-      ) : null}
+      )}
 
       {/*Delete Popup*/}
-      {deleteExperimentPopup ? (
+      {deleteExperimentPopup && (
         <>
           <div className="absolute top-0">
             {/* Background Grey */}
@@ -432,7 +432,7 @@ const ExperimentDevBoardPopup: FC<{}> = () => {
             </div>
           </div>
         </>
-      ) : null}
+      )}
     </>
   );
 };

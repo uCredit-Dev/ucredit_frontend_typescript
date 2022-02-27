@@ -183,14 +183,14 @@ const Dashboard: React.FC = () => {
           />
         </div>
       } */}
-          {formPopup ? <FeedbackPopup setFormPopup={setFormPopup} /> : null}
-          {showNotif ? (
+          {formPopup && <FeedbackPopup setFormPopup={setFormPopup} />}
+          {showNotif && (
             <FeedbackNotification
               actionHandler={setFormPopup}
               notifHandler={setShowNotif}
             />
-          ) : null}
-          {showHeader ? <UserSection /> : null}
+          )}
+          {showHeader && <UserSection />}
           <div className="flex-grow w-full">
             <div className="flex flex-col w-full">
               <div className="flex flex-row thin:flex-wrap-reverse mt-[5rem] w-full h-full">
@@ -212,15 +212,14 @@ const Dashboard: React.FC = () => {
               <InfoMenu />
             </div>
             {/* Global popups */}
-            {addingPrereqStatus ? <AddingPrereqPopup /> : null}
-            {searchStatus ? <Search /> : null}
-            {deletePlanStatus ? <DeletePlanPopup /> : null}
-            {addPlanStatus && !importingStatus ? <PlanAdd /> : null}
-            {deleteYearStatus ? <DeleteYearPopup /> : null}
-            {deleteCourseStatus ? <DeleteCoursePopup /> : null}
-            {courseInfoStatus ? <CourseDisplayPopup /> : null}
-            {cartStatus ? <Cart allCourses={[]} /> : null}{' '}
-            {/** TODO : remove allCourses props */}
+            {addingPrereqStatus && <AddingPrereqPopup />}
+            {searchStatus && <Search />}
+            {deletePlanStatus && <DeletePlanPopup />}
+            {addPlanStatus && !importingStatus && <PlanAdd />}
+            {deleteYearStatus && <DeleteYearPopup />}
+            {deleteCourseStatus && <DeleteCoursePopup />}
+            {courseInfoStatus && <CourseDisplayPopup />}
+            {cartStatus && <Cart allCourses={[]} />}{' '}
           </div>
         </div>
       )}

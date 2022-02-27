@@ -227,7 +227,6 @@ const Filters: FC<{
     }));
   };
 
-  // TODO: We can probably modularize distribution bars.
   return (
     <>
       <div className="flex flex-row items-center justify-between w-full h-auto mb-2">
@@ -249,7 +248,7 @@ const Filters: FC<{
           }}
         />
       </div>
-      {props.showCriteria ? (
+      {props.showCriteria && (
         <div>
           <div
             className="flex flex-row items-center justify-between w-full h-auto mb-2"
@@ -437,7 +436,7 @@ const Filters: FC<{
             </div>
           </div> */}
         </div>
-      ) : null}
+      )}
     </>
   );
 };

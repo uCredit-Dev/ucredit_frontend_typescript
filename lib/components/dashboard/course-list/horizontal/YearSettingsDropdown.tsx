@@ -188,7 +188,7 @@ const YearSettingsDropdown: FC<{
         >
           Change Year
         </button>
-        {yearSelect ? (
+        {yearSelect && (
           <>
             <Select
               options={yearOptions}
@@ -197,8 +197,8 @@ const YearSettingsDropdown: FC<{
               value={{ label: year.year, value: year.year }}
             />
           </>
-        ) : null}
-        {id !== 0 ? (
+        )}
+        {id !== 0 && (
           <>
             <button
               className="hover:bg-gray-300 border-t border-gray-300 focus:outline-none"
@@ -217,7 +217,7 @@ const YearSettingsDropdown: FC<{
               Remove
             </button>
           </>
-        ) : null}
+        )}
       </div>
     </div>
   );

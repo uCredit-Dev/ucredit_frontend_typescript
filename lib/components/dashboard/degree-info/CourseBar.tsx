@@ -67,7 +67,6 @@ const CourseBar: FC<{
       // if the distribution exists, then update the cart
       // at this point we have access to the current requirement
       // and all dsitibrutions. to pick out hte rest of the ascoatied fine distirbutions, use this filter.
-      // TODO : investigate if fine reqs are available at this level already?
       dispatch(updateSelectedDistribution(distrs));
       dispatch(updateShowingCart(true));
 
@@ -105,9 +104,9 @@ const CourseBar: FC<{
    */
   const getExclamationMark = () => (
     <>
-      {!completed ? (
+      {!completed && (
         <ExclamationIcon className="absolute w-5 h-5 transform -translate-x-1/2 -translate-y-1/2 stroke-2 left-1/2 top-1/2 stroke-white" />
-      ) : null}
+      )}
     </>
   );
 
@@ -115,23 +114,19 @@ const CourseBar: FC<{
    * Wrapper for exclamation mark when credit count matches, but fine reqs are not fulfilled
    */
   const exclamationMarkWrapper = () => (
-    <>
-      {remainingCredits === 0 && !completed ? (
-        <>{getExclamationMark()}</>
-      ) : null}
-    </>
+    <>{remainingCredits === 0 && !completed && <>{getExclamationMark()}</>}</>
   );
 
   return (
     <>
-      {displayAdd ? (
+      {displayAdd && (
         <DistributionPopup
           distribution={distribution}
           cleanup={closePopup}
           save={onSave}
           flipped={flipped.slice()}
         />
-      ) : null}
+      )}
       {/* <div>
         <Question
           className="absolute right-0 h-4 mt-1 mr-12 fill-gray"
@@ -188,7 +183,7 @@ const CourseBar: FC<{
           )}
           <div className="absolute left-2 font-thin">{plannedCredits}</div>
           <div className="absolute right-2 font-thin">
-            {maxCredits > plannedCredits ? maxCredits - plannedCredits : null}
+            {maxCredits > plannedCredits && maxCredits - plannedCredits}
           </div>
         </div>
 

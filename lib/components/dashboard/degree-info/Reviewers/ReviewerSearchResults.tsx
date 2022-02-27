@@ -19,13 +19,13 @@ const ReviewersSearchResults: FC<{
           className="flex flex-row hover:bg-sky-300 hover:hand hover:cursor-pointer"
           onClick={(e) => changeReviewer(element)}
         >
-          {isReviewer(element) ? (
+          {isReviewer(element) && (
             <img
               src="svg/CheckMark.svg"
               alt="requesting review"
               className="w-6 mr-2 ml-2"
             />
-          ) : null}
+          )}
           <p>
             {element.name} - {element._id}
           </p>

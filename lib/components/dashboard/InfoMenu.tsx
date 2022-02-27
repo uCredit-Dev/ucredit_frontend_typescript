@@ -321,7 +321,7 @@ const InfoMenu: FC = () => {
           Plan Overview
         </button>
       </div>
-      {infoOpen ? (
+      {infoOpen && (
         <div className="absolute z-50 right-14 -top-48 max-h-[75vh] bg-white bg-opacity-90 rounded shadow overflow-y-auto">
           {/* <InfoCards /> */}
           {(() => {
@@ -340,7 +340,7 @@ const InfoMenu: FC = () => {
               return <b className="m-10 h-80">Loading degree progress...</b>;
           })()}
         </div>
-      ) : null}
+      )}
     </div>
   );
 };

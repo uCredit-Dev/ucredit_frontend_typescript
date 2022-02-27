@@ -145,7 +145,7 @@ const Login: React.FC = () => {
       </Head>
       {loginCheck ? (
         <>
-          {openDevChoose ? (
+          {openDevChoose && (
             <div className="flex flex-col absolute left-[35%] top-[35%] z-[80] w-[30%] pb-8 bg-gray-100 text-black rounded shadow">
               <div
                 className="font-bold text-right mr-4 mt-2 text-2xl cursor-pointer"
@@ -158,12 +158,13 @@ const Login: React.FC = () => {
                 <button
                   onClick={handleDevLogin(id)}
                   className="mb-2 rounded bg-primary w-32 mx-auto"
+                  key={id}
                 >
                   {id}
                 </button>
               ))}
             </div>
-          ) : null}
+          )}
           <div
             className="absolute flex w-screen h-screen"
             style={{

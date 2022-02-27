@@ -238,7 +238,7 @@ const PrereqDisplay: FC = () => {
               }}
             >
               <div className="flex flex-row w-auto h-auto transition duration-100 ease-in group">
-                {satisfied ? (
+                {satisfied && (
                   <img
                     src="svg/CheckMark.svg"
                     alt=""
@@ -247,7 +247,7 @@ const PrereqDisplay: FC = () => {
                       'text-green-700 group-hover:text-green-900': satisfied,
                     })}
                   />
-                ) : null}
+                )}
                 <div
                   className={clsx(
                     'border-b border-solid border-gray-300 transition duration-100 ease-in',

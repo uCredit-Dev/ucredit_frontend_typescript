@@ -71,7 +71,7 @@ const Distributions: FC<{
           hideSelectedOptions
         />
       )}
-      {disclaimer ? (
+      {disclaimer && (
         <div>
           <b> This feature is still being refined. </b> Degree criteria on
           uCredit is currently implemented by hand to match as closely to
@@ -97,7 +97,7 @@ const Distributions: FC<{
           to double check that your degree is being correctly tracked. Please
           report any issues in the feedback form.
         </div>
-      ) : null}
+      )}
       <CourseBar
         distribution={{
           name: 'Total Credits',

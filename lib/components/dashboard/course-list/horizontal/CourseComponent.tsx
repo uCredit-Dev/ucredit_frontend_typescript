@@ -1,4 +1,4 @@
-import { useState, useEffect, FC } from 'react';
+import { useState, useEffect, FC, useRef } from 'react';
 import ReactTooltip from 'react-tooltip';
 import {
   UserCourse,
@@ -44,6 +44,8 @@ const CourseComponent: FC<{
   const [displayPopup, setDisplayPopup] = useState<boolean>(false);
   const [hovered, setHovered] = useState<boolean>(false);
 
+  const isMounted = useRef(false);
+
   // Redux setup
   const dispatch = useDispatch();
   const currentPlan = useSelector(selectPlan);
@@ -52,6 +54,7 @@ const CourseComponent: FC<{
 
   // Checks whether course is satisfied every time plan courses gets updated.
   useEffect(() => {
+    isMounted.current = true;
     if (course.isPlaceholder) {
       setSatisfied(true);
     } else {
@@ -63,9 +66,12 @@ const CourseComponent: FC<{
         semester,
         courseCache,
       ).then((satisfiedResponse) => {
-        setSatisfied(satisfiedResponse);
+        if (isMounted.current) setSatisfied(satisfiedResponse);
       });
     }
+    return () => {
+      isMounted.current = false;
+    };
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [currPlanCourses]);
 
@@ -110,7 +116,7 @@ const CourseComponent: FC<{
       onMouseLeave={deactivate}
     >
       <div className="absolute">
-        {hovered ? (
+        {hovered && (
           <div className="flex flex-row">
             <MinusIcon
               className=" z-20 -ml-6 mt-3 flex flex-row items-center justify-center p-0.5 w-6 h-6 text-white bg-red-300 hover:bg-red-600 rounded-md outline-none stroke-2 cursor-pointer transform hover:scale-110 transition duration-150 ease-in"
@@ -134,7 +140,7 @@ const CourseComponent: FC<{
               </>
             ))()} */}
           </div>
-        ) : null}
+        )}
       </div>
       <div
         className="shadow relative flex items-center justify-between text-xs mt-2 pl-1 p-0.5 w-1/5 max-w-yearheading rounded md:w-full bg-white"
@@ -155,20 +161,20 @@ const CourseComponent: FC<{
             <div className="truncate">{course.title}</div>
             <div className="flex flex-row gap-0.5">
               <div className="text-[10px]">{course.number}</div>
-              {!satisfied && !overridden ? (
+              {!satisfied && !overridden && (
                 <ExclamationIcon className="flex items-center w-4 h-4 font-semibold text-red-400 rounded select-none" />
-              ) : null}
+              )}
             </div>
           </div>
           <div className="flex flex-col justify-items-start gap-0.5">
             <div className="flex px-1 rounded select-none">
               {course.credits}
             </div>
-            {course.area !== 'None' ? (
+            {course.area !== 'None' && (
               <div className="text-[10px] flex px-1 font-semibold rounded select-none">
                 {course.area}
               </div>
-            ) : null}{' '}
+            )}{' '}
           </div>
         </div>
 
@@ -194,13 +200,13 @@ const CourseComponent: FC<{
               >
                 <div className="" />
 
-                {displayPopup ? (
+                {displayPopup && (
                   <OverridePrereqPopup
                     courseName={course.number}
                     cleanup={() => setDisplayPopup(false)}
                     save={() => setOverridden(true)}
                   />
-                ) : null}
+                )}
               </div>
             )}
           </Transition>

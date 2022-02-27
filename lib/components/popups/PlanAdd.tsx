@@ -23,7 +23,6 @@ const majorOptions = [
 
 /**
  * Popup for adding a new plan.
- * TODO: Implement all commented code features
  * @prop setGenerateNew - signals the generateNewPlan component to generate a new plan.
  * */
 const PlanAdd: FC = () => {
@@ -111,14 +110,14 @@ const PlanAdd: FC = () => {
               >
                 Add
               </button>
-              {planList.length > 0 ? (
+              {planList.length > 0 && (
                 <button
                   className="z-30 ml-4 p-2 w-16 h-10 text-black bg-white border border-solid border-secondary rounded focus:outline-none transform hover:scale-105 transition duration-200 ease-in"
                   onClick={handleCancel}
                 >
                   Cancel
                 </button>
-              ) : null}
+              )}
             </div>
           </div>
         </div>
