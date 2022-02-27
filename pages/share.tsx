@@ -11,7 +11,7 @@ const Share: React.FC = () => {
     if (router.query._id) {
       dispatch(updateImportID(router.query._id as string));
     }
-    router.push('/dashboard');
+    router.push('/login');
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [router.query._id]);
 

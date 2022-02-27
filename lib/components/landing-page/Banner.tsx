@@ -54,7 +54,7 @@ const Banner: React.FC = () => {
         className="w-full cursor-pointer"
         onClick={() => window.scrollTo(0, 575)}
       >
-        <div className="mx-auto mb-6 font-serif text-lg font-semibold text-center border-b w-36 border-theme">
+        <div className="mx-auto mb-6 text-lg font-semibold text-center border-b w-32 border-theme">
           Why uCredit?
         </div>
       </div>

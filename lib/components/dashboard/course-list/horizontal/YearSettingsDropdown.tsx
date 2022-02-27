@@ -135,6 +135,16 @@ const YearSettingsDropdown: FC<{
           <label>
             <input
               type="checkbox"
+              name="Intersession"
+              className="ml-6 mr-2"
+              onChange={modifyIntersession}
+              checked={toShow.intersession}
+            />
+            Intersession
+          </label>
+          <label>
+            <input
+              type="checkbox"
               name="Spring"
               className="ml-6 mr-2"
               onChange={modifySpring}
@@ -151,16 +161,6 @@ const YearSettingsDropdown: FC<{
               checked={toShow.summer}
             />
             Summer
-          </label>
-          <label>
-            <input
-              type="checkbox"
-              name="Intersession"
-              className="ml-6 mr-2"
-              onChange={modifyIntersession}
-              checked={toShow.intersession}
-            />
-            Intersession
           </label>
         </div>
       );
@@ -183,7 +183,7 @@ const YearSettingsDropdown: FC<{
         <button
           className="hover:bg-gray-300 border-t border-gray-300 focus:outline-none"
           onClick={() => {
-            setYearSelect(!semSelect);
+            setYearSelect(!yearSelect);
           }}
         >
           Change Year

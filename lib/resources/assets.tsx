@@ -545,7 +545,7 @@ export const getCourse = async (
         })
         .catch((err) => console.log(err));
     }
-    if (out !== null) return resolve(out);
+    if (out !== null) return resolve({ index: indexNum, resp: out });
   });
 };
 
