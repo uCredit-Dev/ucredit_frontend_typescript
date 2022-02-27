@@ -51,6 +51,15 @@ export const getColors = function (
   }
 };
 
+export const checkLocalhost = (): boolean => {
+  if (
+    window.location.href.substring(0, 21) === 'http://localhost:3000' ||
+    window.location.href.substring(0, 22) === 'https://localhost:3000'
+  )
+    return true;
+  return false;
+};
+
 // export const getCourses = (courseIds: string[]): Course[] => {
 //   const retrieved: Course[] = [];
 //   courseIds.forEach((id) => {

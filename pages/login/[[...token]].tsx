@@ -4,7 +4,12 @@ import { useState, useEffect } from 'react';
 import { useCookies } from 'react-cookie';
 import { useDispatch, useSelector } from 'react-redux';
 import { toast } from 'react-toastify';
-import { getLoginCookieVal, api, guestUser } from '../../lib/resources/assets';
+import {
+  getLoginCookieVal,
+  api,
+  guestUser,
+  checkLocalhost,
+} from '../../lib/resources/assets';
 import {
   selectImportID,
   selectLoginCheck,
@@ -37,7 +42,7 @@ const Login: React.FC = () => {
     setFinishedLoginCheck(false);
     const token = router.query.token && router.query.token[0];
     const loginId = token ? token : getLoginCookieVal(cookies);
-    if (loginId && !window.location.href.includes('localhost'))
+    if (loginId && !checkLocalhost())
       fetch(api + '/verifyLogin/' + loginId, {
         mode: 'cors',
         method: 'GET',
@@ -93,8 +98,7 @@ const Login: React.FC = () => {
    * Handles JHU Login button being pressed.
    */
   const handleJHULogin = (loginId) => {
-    if (!window.location.href.includes('localhost'))
-      window.location.href = api + '/login';
+    if (!checkLocalhost()) window.location.href = api + '/login';
     else if (typeof loginId === 'string') handleDevLogin(loginId)();
     else setOpenDevChoose(true);
   };

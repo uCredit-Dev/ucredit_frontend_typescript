@@ -4,7 +4,7 @@ import axios from 'axios';
 import { useRouter } from 'next/router';
 import { selectUser, resetUser } from '../../slices/userSlice';
 import { resetCurrentPlan } from '../../slices/currentPlanSlice';
-import { api, getLoginCookieVal } from '../../resources/assets';
+import { api, checkLocalhost, getLoginCookieVal } from '../../resources/assets';
 
 /**
  * User login/logout buttons.
@@ -18,7 +18,7 @@ const UserSection: React.FC = () => {
 
   const handleLogoutClick = (): void => {
     const loginId = getLoginCookieVal(cookies);
-    if (!window.location.href.includes('localhost'))
+    if (!checkLocalhost())
       axios
         .delete(api + '/verifyLogin/' + loginId)
         .then(() => logOut())
