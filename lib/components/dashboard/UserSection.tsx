@@ -16,6 +16,25 @@ const UserSection: React.FC = () => {
   const [cookies, , removeCookie] = useCookies(['connect.sid']);
   const router = useRouter();
 
+  const handleLogoutClick = (): void => {
+    const loginId = getLoginCookieVal(cookies);
+    if (!window.location.href.includes('localhost'))
+      axios
+        .delete(api + '/verifyLogin/' + loginId)
+        .then(() => logOut())
+        .catch((err) => {
+          console.log('error logging out', err);
+        });
+    else logOut();
+  };
+
+  const logOut = () => {
+    removeCookie('connect.sid', { path: '/' });
+    dispatch(resetUser());
+    dispatch(resetCurrentPlan());
+    router.push('/login');
+  };
+
   return (
     <div className="fixed z-20 w-screen h-16 p-3 px-6 shadow select-none bg-primary">
       <div className="flex flex-row items-center justify-end w-full h-full">
@@ -40,20 +59,7 @@ const UserSection: React.FC = () => {
           </a>
         ) : (
           <button
-            onClick={() => {
-              const loginId = getLoginCookieVal(cookies);
-              axios
-                .delete(api + '/verifyLogin/' + loginId)
-                .then(() => {
-                  removeCookie('connect.sid', { path: '/' });
-                  dispatch(resetUser());
-                  dispatch(resetCurrentPlan());
-                  router.push('/login');
-                })
-                .catch((err) => {
-                  console.log('error logging out', err);
-                });
-            }}
+            onClick={handleLogoutClick}
             className="flex flex-row items-center justify-center w-24 transition duration-200 ease-in transform bg-white rounded cursor-pointer select-none h-9 focus:outline-none hover:scale-110 drop-shadow-md"
           >
             Log Out

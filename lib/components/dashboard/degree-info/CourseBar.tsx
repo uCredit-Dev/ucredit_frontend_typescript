@@ -100,6 +100,28 @@ const CourseBar: FC<{
     setFlipped(s);
   };
 
+  /**
+   * Returns UI for unstasified fine req course bar with satisfied credit count
+   */
+  const getExclamationMark = () => (
+    <>
+      {!completed ? (
+        <ExclamationIcon className="absolute w-5 h-5 transform -translate-x-1/2 -translate-y-1/2 stroke-2 left-1/2 top-1/2 stroke-white" />
+      ) : null}
+    </>
+  );
+
+  /**
+   * Wrapper for exclamation mark when credit count matches, but fine reqs are not fulfilled
+   */
+  const exclamationMarkWrapper = () => (
+    <>
+      {remainingCredits === 0 && !completed ? (
+        <>{getExclamationMark()}</>
+      ) : null}
+    </>
+  );
+
   return (
     <>
       {displayAdd ? (
@@ -162,19 +184,7 @@ const CourseBar: FC<{
           {remainingCredits === 0 && completed ? (
             <CheckCircleIcon className="absolute w-5 h-5 text-white transform -translate-x-1/2 -translate-y-1/2 stroke-2 left-1/2 top-1/2" />
           ) : (
-            (() => (
-              <>
-                {remainingCredits === 0 && !completed
-                  ? (() => (
-                      <>
-                        {!completed ? (
-                          <ExclamationIcon className="absolute w-5 h-5 transform -translate-x-1/2 -translate-y-1/2 stroke-2 left-1/2 top-1/2 stroke-white" />
-                        ) : null}
-                      </>
-                    ))()
-                  : null}
-              </>
-            ))()
+            <>{exclamationMarkWrapper()}</>
           )}
           <div className="absolute left-2 font-thin">{plannedCredits}</div>
           <div className="absolute right-2 font-thin">

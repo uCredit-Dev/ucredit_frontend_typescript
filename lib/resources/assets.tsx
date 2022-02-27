@@ -24,6 +24,7 @@ export const guestUser: User = {
   affiliation: 'STUDENT',
   school: 'none',
   grade: 'AE UG Freshman',
+  whitelisted_plan_ids: [],
   plan_ids: [],
 };
 

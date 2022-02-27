@@ -13,6 +13,8 @@ import {
 } from '../../lib/slices/userSlice';
 import LoadingPage from '../../lib/components/LoadingPage';
 import { updateImportingStatus } from '../../lib/slices/currentPlanSlice';
+import axios from 'axios';
+import { User } from '../../lib/resources/commonTypes';
 
 /**
  * The login page, designed after the Spotify login page..
@@ -23,9 +25,11 @@ const Login: React.FC = () => {
   const dispatch = useDispatch();
   const loginCheck = useSelector(selectLoginCheck);
   const [cookies] = useCookies();
-  const [finishedLoginCheck, setFinishedLoginCheck] = useState(true);
+  const [finishedLoginCheck, setFinishedLoginCheck] = useState<boolean>(true);
+  const [openDevChoose, setOpenDevChoose] = useState<boolean>(false);
   const router = useRouter();
   const importID = useSelector(selectImportID);
+  const devIDs = ['freshmanDev', 'sophomoreDev', 'juniorDev', 'seniorDev'];
 
   // Useffect runs once on page load, calling to https://ucredit-api.herokuapp.com/api/verifyLogin to retrieve user data.
   // On successful retrieve, update redux with retrieved user
@@ -33,44 +37,47 @@ const Login: React.FC = () => {
     setFinishedLoginCheck(false);
     const token = router.query.token && router.query.token[0];
     const loginId = token ? token : getLoginCookieVal(cookies);
-    fetch(api + '/verifyLogin/' + loginId, {
-      mode: 'cors',
-      method: 'GET',
-      credentials: 'include',
-      headers: {
-        Accept: 'application/json',
-        'Content-Type': 'application/json',
-      },
-    })
-      .then((resp) => resp.json())
-      .then((retrievedUser) => {
-        if (retrievedUser.errors === undefined) {
-          if (token)
-            document.cookie =
-              'connect.sid=' +
-              token +
-              '; expires=' +
-              new Date(Date.now() + 200000000000000).toString() +
-              '; path=/';
-          if (importID) dispatch(updateImportingStatus(true));
-          dispatch(updateUser(retrievedUser.data));
-          dispatch(updateLoginCheck(true));
-          router.push('/dashboard');
-        } else {
+    if (loginId && !window.location.href.includes('localhost'))
+      fetch(api + '/verifyLogin/' + loginId, {
+        mode: 'cors',
+        method: 'GET',
+        credentials: 'include',
+        headers: {
+          Accept: 'application/json',
+          'Content-Type': 'application/json',
+        },
+      })
+        .then((resp) => resp.json())
+        .then((retrievedUser) => {
+          if (retrievedUser.errors === undefined) {
+            if (token)
+              document.cookie =
+                'connect.sid=' +
+                token +
+                '; expires=' +
+                new Date(Date.now() + 200000000000000).toString() +
+                '; path=/';
+            if (importID) dispatch(updateImportingStatus(true));
+            dispatch(updateUser(retrievedUser.data));
+            dispatch(updateLoginCheck(true));
+            router.push('/dashboard');
+          } else {
+            dispatch(updateLoginCheck(true));
+            setFinishedLoginCheck(true);
+          }
+        })
+        .catch((err) => {
+          console.log('FAILED TO LOG IN. ERROR IS: ', err);
+          if (importID) {
+            dispatch(updateImportingStatus(true));
+            dispatch(updateUser(guestUser));
+            router.push('/dashboard');
+          }
           dispatch(updateLoginCheck(true));
           setFinishedLoginCheck(true);
-        }
-      })
-      .catch((err) => {
-        console.log('FAILED TO LOG IN. ERROR IS: ', err);
-        if (importID) {
-          dispatch(updateImportingStatus(true));
-          dispatch(updateUser(guestUser));
-          router.push('/dashboard');
-        }
-        dispatch(updateLoginCheck(true));
-        setFinishedLoginCheck(true);
-      });
+        });
+    else if (loginId) handleJHULogin(loginId);
+    else dispatch(updateLoginCheck(true));
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [router.query.token]);
 
@@ -81,6 +88,46 @@ const Login: React.FC = () => {
     dispatch(updateUser(guestUser));
     router.push('/dashboard');
   };
+
+  /*
+   * Handles JHU Login button being pressed.
+   */
+  const handleJHULogin = (loginId) => {
+    if (!window.location.href.includes('localhost'))
+      window.location.href = api + '/login';
+    else if (typeof loginId === 'string') handleDevLogin(loginId)();
+    else setOpenDevChoose(true);
+  };
+
+  /**
+   * Handles login for a chosen dev being pressed.
+   * @param id - id of the dev to login as
+   */
+  const handleDevLogin = (id: string) => (): void => {
+    axios
+      .get(api + '/backdoor/verification/' + id)
+      .then((res) => {
+        const devUser: User = res.data.data;
+        dispatch(updateUser(devUser));
+        dispatch(updateLoginCheck(true));
+        document.cookie =
+          'connect.sid=' +
+          devUser._id +
+          '; expires=' +
+          new Date(Date.now() + 200000000000000).toString() +
+          '; path=/';
+        router.push('/dashboard');
+      })
+      .catch((err) => {
+        console.log('Backdoor verfication failed!', err);
+      });
+  };
+
+  /**
+   * Handles the case where we haven't logged in yet and users are exposed to the guest login button.
+   */
+  const preventPreLoginClick = () =>
+    toast.info("Please wait while we check if you're logged in...");
 
   return (
     <>
@@ -94,6 +141,25 @@ const Login: React.FC = () => {
       </Head>
       {loginCheck ? (
         <>
+          {openDevChoose ? (
+            <div className="flex flex-col absolute left-[35%] top-[35%] z-[80] w-[30%] pb-8 bg-gray-100 text-black rounded shadow">
+              <div
+                className="font-bold text-right mr-4 mt-2 text-2xl cursor-pointer"
+                onClick={() => setOpenDevChoose(false)}
+              >
+                X
+              </div>
+              <div className="text-xl ml-4 mb-4">Choose a dev account:</div>
+              {devIDs.map((id) => (
+                <button
+                  onClick={handleDevLogin(id)}
+                  className="mb-2 rounded bg-primary w-32 mx-auto"
+                >
+                  {id}
+                </button>
+              ))}
+            </div>
+          ) : null}
           <div
             className="absolute flex w-screen h-screen"
             style={{
@@ -119,22 +185,16 @@ const Login: React.FC = () => {
               <div className="w-full mx-auto mt-8 text-4xl text-center mb-14">
                 Quick accessible degree planning.
               </div>
-              <a
-                href="https://ucredit-api.herokuapp.com/api/login"
+              <button
+                onClick={handleJHULogin}
                 className="flex flex-row items-center justify-center w-64 h-12 mx-auto font-semibold tracking-widest transition duration-200 ease-in transform rounded-full shadow cursor-pointer select-none bg-secondary hover:scale-105"
               >
                 JHU Login
-              </a>
+              </button>
               <button
                 className="flex flex-row items-center justify-center w-64 h-12 mx-auto mt-5 mb-auto font-semibold tracking-widest transition duration-200 ease-in transform rounded-full shadow cursor-pointer select-none bg-secondary focus:outline-none hover:scale-105"
                 onClick={
-                  finishedLoginCheck
-                    ? handleGuest
-                    : () => {
-                        toast.info(
-                          "Please wait while we check if you're logged in...",
-                        );
-                      }
+                  finishedLoginCheck ? handleGuest : preventPreLoginClick
                 }
               >
                 Continue as guest

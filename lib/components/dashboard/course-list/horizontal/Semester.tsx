@@ -279,24 +279,13 @@ const Semester: FC<{
           <div
             className={clsx(
               {
-                'bg-red-200':
-                  (totalCredits < 12 && semesterName !== 'Intersession') ||
-                  totalCredits < 3,
+                'bg-red-200': colorCheck('bg-red-200'),
               },
               {
-                'bg-yellow-200':
-                  (totalCredits > 18 && semesterName !== 'Intersession') ||
-                  (totalCredits > 6 && semesterName === 'Intersession'),
+                'bg-yellow-200': colorCheck('bg-yellow-200'),
               },
               {
-                'bg-green-200':
-                  (totalCredits <= 18 &&
-                    totalCredits >= 12 &&
-                    semesterName !== 'Intersession') ||
-                  (totalCredits <= 6 &&
-                    totalCredits >= 3 &&
-                    semesterName === 'Intersession') ||
-                  semesterName === 'All',
+                'bg-green-200': colorCheck('bg-green-200'),
               },
               ' flex flex-row items-center justify-center ml-1 px-1 w-auto text-black text-xs bg-white rounded',
             )}
@@ -309,6 +298,38 @@ const Semester: FC<{
       ) : null}
     </>
   );
+
+  /**
+   * Gets the color of the credit count based on semester and total credits for that semester.
+   * @param colorType - type of color to check for
+   * @returns - true if color is valid, false if not
+   */
+  const colorCheck = (colorType): boolean => {
+    switch (colorType) {
+      case 'bg-red-200':
+        return (
+          (totalCredits < 12 && semesterName !== 'Intersession') ||
+          totalCredits < 3
+        );
+      case 'bg-yellow-200':
+        return (
+          (totalCredits > 18 && semesterName !== 'Intersession') ||
+          (totalCredits > 6 && semesterName === 'Intersession')
+        );
+      case 'bg-green-200':
+        return (
+          (totalCredits <= 18 &&
+            totalCredits >= 12 &&
+            semesterName !== 'Intersession') ||
+          (totalCredits <= 6 &&
+            totalCredits >= 3 &&
+            semesterName === 'Intersession') ||
+          semesterName === 'All'
+        );
+      default:
+        return false;
+    }
+  };
 
   /**
    * Gets start year of a semester for this year.

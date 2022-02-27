@@ -9,24 +9,29 @@ const LoadingPage = () => {
   const importStatus = useSelector(selectImportingStatus);
   const generatePlanAddStatus = useSelector(selectGeneratePlanAddStatus);
   const [dotNum, setDotNum] = useState<number>(0);
+
   useEffect(() => {
-    setTimeout(() => {
+    const timeoutId = setTimeout(() => {
       setDotNum(dotNum === 3 ? 0 : dotNum + 1);
     }, 500);
+    return () => clearInterval(timeoutId);
   }, [dotNum]);
+
+  const getLoadingText = () =>
+    user._id === 'noUser'
+      ? 'Logging in'
+      : generatePlanAddStatus
+      ? 'Creating New Plan...'
+      : importStatus
+      ? 'Importing Plan'
+      : 'Loading';
 
   return (
     <div className="w-full h-screen bg-white flex flex-col">
       <div className="m-auto">
         <img src="/img/blue-jay-shake.gif" alt="loading..." />{' '}
         <div className="font-bold text-white bg-gray-800 rounded p-1 px-2 mt-2">
-          {user._id === 'noUser'
-            ? 'Logging in'
-            : generatePlanAddStatus
-            ? 'Creating New Plan...'
-            : importStatus
-            ? 'Importing Plan'
-            : 'Loading'}
+          {getLoadingText()}
           {(() => {
             let string = '';
             for (let i = 0; i < dotNum; i++) string += '.';
