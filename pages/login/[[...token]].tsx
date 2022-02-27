@@ -55,7 +55,12 @@ const Login: React.FC = () => {
           if (importID) dispatch(updateImportingStatus(true));
           dispatch(updateUser(retrievedUser.data));
           dispatch(updateLoginCheck(true));
-          router.push('/dashboard');
+
+          const referrer = router.query.referrer as string;
+          if (referrer) {
+            const [pathname, id] = referrer.split('-');
+            router.push(`/${pathname}/${id}`);
+          } else router.push('/dashboard');
         } else {
           dispatch(updateLoginCheck(true));
           setFinishedLoginCheck(true);

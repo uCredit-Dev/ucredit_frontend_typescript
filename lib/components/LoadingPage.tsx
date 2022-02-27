@@ -16,10 +16,10 @@ const LoadingPage = () => {
   }, [dotNum]);
 
   return (
-    <div className="w-full h-screen bg-white flex flex-col">
+    <div className="flex flex-col w-full h-screen bg-white">
       <div className="m-auto">
         <img src="/img/blue-jay-shake.gif" alt="loading..." />{' '}
-        <div className="font-bold text-white bg-gray-800 rounded p-1 px-2 mt-2">
+        <div className="p-1 px-2 mt-2 font-bold text-white bg-gray-800 rounded">
           {user._id === 'noUser'
             ? 'Logging in'
             : generatePlanAddStatus
