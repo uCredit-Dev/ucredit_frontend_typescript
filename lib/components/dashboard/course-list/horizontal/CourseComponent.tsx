@@ -97,7 +97,6 @@ const CourseComponent: FC<{
   const activate = () => {
     setActivated(true);
     setHovered(true);
-    // setTimeout(() => setHovered(true), 100);
   };
 
   /**
