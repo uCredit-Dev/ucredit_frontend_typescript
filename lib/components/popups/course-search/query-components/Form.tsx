@@ -174,7 +174,7 @@ const Form: FC<{ setSearching: (searching: boolean) => void }> = (props) => {
     if (searchTerm.length > 0) {
       // Search with half second debounce.
       const search = setTimeout(
-        performNewSmartSearch(searchTerm, extras, searchTerm.length),
+        performMultiSmartSearch(searchTerm, extras, searchTerm.length),
         500,
       );
       return () => clearTimeout(search);
@@ -199,6 +199,33 @@ const Form: FC<{ setSearching: (searching: boolean) => void }> = (props) => {
         const retrieved: any = await axios
           .get(api + '/search', {
             params: getParams(extras),
+          })
+          .catch(() => {
+            return [[], []];
+          });
+        let SISRetrieved: SISRetrievedCourse[] = processedRetrievedData(
+          retrieved.data.data,
+          extras,
+        );
+        return resolve([SISRetrieved, []]);
+      } else {
+        const filterProcessing = filterCourses(extras, courses);
+        if (filterProcessing) return filterProcessing;
+        return resolve([courses, []]);
+      }
+    });
+  };
+
+  const multiFind = (
+    extras: SearchExtras,
+    queryLength: number,
+  ): Promise<[SISRetrievedCourse[], number[]]> => {
+    return new Promise(async (resolve) => {
+      let courses: SISRetrievedCourse[] = [...courseCache];
+      if (!retrievedAll) {
+        const retrieved: any = await axios
+          .get(api + '/search/smart/multi', {
+            params: {...getParams(extras), queryLength},
           })
           .catch(() => {
             return [[], []];
@@ -282,6 +309,36 @@ const Form: FC<{ setSearching: (searching: boolean) => void }> = (props) => {
     });
   };
 
+  const multiSubstringSearch = async (
+    originalQuery: string,
+    extras: SearchExtras,
+    queryLength: number,
+  ): Promise<void> => {
+    let courses: SISRetrievedCourse[] = [];
+    let versions: number[] = [];
+    let total = 0;
+    let cum = 0;
+    // querySubstrs.forEach(async (subQuery) => {
+    total++;
+    const courseVersions = await multiFind(
+      extras,
+      queryLength,
+    );
+    cum++;
+    courses.push(...courseVersions[0]);
+    versions.push(...courseVersions[1]);
+    setSearchedQuery({
+      total,
+      cum,
+      originalQuery,
+      courses,
+      versions,
+      queryLength,
+      extras,
+    });
+    // });
+  };
+
   // Handles the finishing of finding courses.
   // tracks the number of times a course appears in the searchedCourses after a search
   // and presumably uses it to sort the list by relevancy (the map thingy)
@@ -307,7 +364,8 @@ const Form: FC<{ setSearching: (searching: boolean) => void }> = (props) => {
     const newSearchList: SISRetrievedCourse[] = getNewSearchList();
     dispatch(updateRetrievedCourses(newSearchList));
     if (queryLength > minLength && initialQueryLength - queryLength < 9) {
-      performSmartSearch(extras.query, extras, queryLength - 1)();
+      // performSmartSearch(extras.query, extras, queryLength - 1)(); original
+      performMultiSmartSearch(extras.query, extras, queryLength - 1)(); // new
     }
   };
 
@@ -381,7 +439,39 @@ const Form: FC<{ setSearching: (searching: boolean) => void }> = (props) => {
       }
     };
 
+  const performMultiSmartSearch =
+    (
+      originalQuery: string,
+      extras: SearchExtras,
+      queryLength: number,
+    ): (() => void) =>
+    (): void => {
+      if (queryLength >= minLength) {
+        // Finds all substring combinations and searches.
+        multiSubstringSearch(originalQuery, extras, queryLength);
+      } else if (queryLength > 0 && queryLength < minLength) {
+        // Perform normal search if query length is between 1 and minLength
+        axios
+          .get(api + '/search', {
+            params: getParams(extras),
+          })
+          .then((retrieved) => {
+            let retrievedCourses: SISRetrievedCourse[] = retrieved.data.data;
+            dispatch(updateCourseCache([...retrievedCourses]));
+            let SISRetrieved: SISRetrievedCourse[] = retrieved.data.data;
+            dispatch(updateRetrievedCourses(SISRetrieved));
+            props.setSearching(false);
+          })
+          .catch(() => {
+            props.setSearching(false);
+          });
+      } else {
+        props.setSearching(false);
+      }
+    };
+
   // okay boys, heres da NEW smawt search B)
+  // nvm... trying smth new with newMultSmartSearch (above)
   const performNewSmartSearch =
     (
       originalQuery: string,
