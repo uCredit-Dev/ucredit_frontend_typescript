@@ -14,6 +14,7 @@ type UserSlice = {
   unfoundNumbers: String[];
   retrievedAll: boolean;
   importId: string;
+  reviewerPlanId: string;
   loginCheck: boolean;
 };
 
@@ -34,6 +35,7 @@ const initialState: UserSlice = {
   cacheNumbers: [],
   unfoundNumbers: [],
   importId: null,
+  reviewerPlanId: '',
   loginCheck: false,
 };
 
@@ -94,6 +96,9 @@ export const userSlice = createSlice({
     updateImportID: (state: any, action: PayloadAction<String>) => {
       state.importId = action.payload;
     },
+    updateReviewerPlanID: (state: any, action: PayloadAction<String>) => {
+      state.reviewerPlanId = action.payload;
+    },
     updateLoginCheck: (state: any, action: PayloadAction<Boolean>) => {
       state.loginCheck = action.payload;
     },
@@ -113,6 +118,7 @@ export const {
   updateRetrievedAll,
   updateUnfoundNumbers,
   updateImportID,
+  updateReviewerPlanID,
   updateLoginCheck,
   resetUser,
 } = userSlice.actions;
@@ -126,6 +132,8 @@ export const selectRetrievedAll = (state: RootState) => state.user.retrievedAll;
 export const selectUnfoundNumbers = (state: RootState) =>
   state.user.unfoundNumbers;
 export const selectImportID = (state: RootState) => state.user.importId;
+export const selectReviewerPlanId = (state: RootState) =>
+  state.user.reviewerPlanId;
 export const selectLoginCheck = (state: RootState) => state.user.loginCheck;
 
 export default userSlice.reducer;

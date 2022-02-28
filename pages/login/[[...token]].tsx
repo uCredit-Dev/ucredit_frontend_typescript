@@ -65,7 +65,12 @@ const Login: React.FC = () => {
             if (importID) dispatch(updateImportingStatus(true));
             dispatch(updateUser(retrievedUser.data));
             dispatch(updateLoginCheck(true));
-            router.push('/dashboard');
+
+            const referrer = router.query.referrer as string;
+            if (referrer) {
+              const [pathname, id] = referrer.split('-');
+              router.push(`/${pathname}/${id}`);
+            } else router.push('/dashboard');
           } else {
             dispatch(updateLoginCheck(true));
             setFinishedLoginCheck(true);
@@ -78,8 +83,6 @@ const Login: React.FC = () => {
             dispatch(updateUser(guestUser));
             router.push('/dashboard');
           }
-          dispatch(updateLoginCheck(true));
-          setFinishedLoginCheck(true);
         });
     else if (loginId) handleJHULogin(loginId);
     else dispatch(updateLoginCheck(true));
@@ -97,7 +100,7 @@ const Login: React.FC = () => {
   /*
    * Handles JHU Login button being pressed.
    */
-  const handleJHULogin = (loginId) => {
+  const handleJHULogin = (loginId: any) => {
     if (!checkLocalhost()) window.location.href = api + '/login';
     else if (typeof loginId === 'string') handleDevLogin(loginId)();
     else setOpenDevChoose(true);
