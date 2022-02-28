@@ -1,5 +1,4 @@
 import {
-  AreaType,
   SearchExtras,
   SISRetrievedCourse,
 } from '../../../../resources/commonTypes';
@@ -63,7 +62,6 @@ export const filterCourses = (
     });
     return toReturn;
   });
-  // console.log(courses); // line 115 has sonarlint error for useless variable assignment, will prob need to modify this in the future
   return null;
 };
 
@@ -86,7 +84,7 @@ const processCredits = (
 };
 
 const processAreas = (
-  areas: AreaType,
+  areas: string,
   courses: SISRetrievedCourse[],
 ): SISRetrievedCourse[] => {
   return courses.filter((course) => {

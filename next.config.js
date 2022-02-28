@@ -2,7 +2,7 @@ module.exports = {
   publicRuntimeConfig: {
     apiUrl:
       process.env.NODE_ENV === 'development'
-        ? 'https://ucredit-dev.herokuapp.com/api'
+        ? 'http://localhost:4567/api'
         : 'https://ucredit-api.herokuapp.com/api',
     baseUrl:
       process.env.NODE_ENV === 'development'
