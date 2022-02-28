@@ -19,7 +19,7 @@ const LoadingPage = () => {
 
   const getLoadingText = () =>
     user._id === 'noUser'
-      ? 'Logging in'
+      ? 'Loading'
       : generatePlanAddStatus
       ? 'Creating New Plan...'
       : importStatus
