@@ -10,7 +10,6 @@ import {
 import { selectCurrentPlanCourses } from '../../../slices/currentPlanSlice';
 import { selectCourseCache } from '../../../slices/userSlice';
 import { getCourse } from '../../../resources/assets';
-import DistributionPopup from './DistributionPopup';
 
 /**
  * Component that displays fine requirements of a specific distribution.
@@ -23,20 +22,10 @@ const FineDistribution: FC<{
   hidden: boolean;
 }> = ({ dis, distributionOpen, hidden }) => {
   const [showDistrDesc, setShowDistrDesc] = useState<boolean>(true);
-  const [displayAdd, setDisplayAdd] = useState(false);
-  const [flipped, setFlipped] = useState<string[]>([]);
   const [plannedCredits, setPlannedCredits] = useState(dis.fulfilled_credits);
 
   const courseCache = useSelector(selectCourseCache);
   const currPlanCourses = useSelector(selectCurrentPlanCourses);
-
-  const closePopup = () => {
-    setDisplayAdd(false);
-  };
-
-  const onSave = (s: string[]) => {
-    setFlipped(s);
-  };
 
   // Updates fine distribution progress
   useEffect(() => {
@@ -48,20 +37,16 @@ const FineDistribution: FC<{
             courseObj.resp != null &&
             checkRequirementSatisfied(dis, courseObj.resp)
           ) {
-            if (flipped.includes(course.number)) {
-              temp -= course.credits;
-            }
+            temp -= course.credits;
           } else {
-            if (flipped.includes(course.number)) {
-              temp += course.credits;
-            }
+            temp += course.credits;
           }
         },
       );
     });
     setPlannedCredits(temp);
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [currPlanCourses, dis.expr, flipped, dis.fulfilled_credits]);
+  }, [currPlanCourses, dis.expr, dis.fulfilled_credits]);
 
   return (
     <div
@@ -92,18 +77,6 @@ const FineDistribution: FC<{
       <div className="font-bold">
         {plannedCredits}/{dis.required_credits}
       </div>
-      {/* <Add
-        className="h-6 transition duration-200 ease-in transform hover:scale-150"
-        onClick={addToDistribution}
-      /> */}
-      {displayAdd && (
-        <DistributionPopup
-          distribution={dis}
-          cleanup={closePopup}
-          save={onSave}
-          flipped={flipped.slice()}
-        />
-      )}
     </div>
   );
 };

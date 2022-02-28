@@ -6,7 +6,6 @@ import {
   FilterType,
   TagType,
   DepartmentType,
-  AreaType,
   SISRetrievedCourse,
 } from '../components/../resources/commonTypes';
 
@@ -22,7 +21,7 @@ type TimeBundle = {
 // Contains all the filters.
 type FilterObj = {
   credits: string | null;
-  distribution: AreaType | null;
+  distribution: string | null;
   tags: TagType | null;
   term: SemesterType;
   year: number;

@@ -8,7 +8,6 @@ import {
 import { requirements } from './distributionFunctions';
 import { ExclamationIcon } from '@heroicons/react/outline';
 import { CheckCircleIcon } from '@heroicons/react/solid';
-import DistributionPopup from './DistributionPopup';
 import ReactTooltip from 'react-tooltip';
 import {
   updateSelectedDistribution,
@@ -30,8 +29,6 @@ const CourseBar: FC<{
   bgcolor: string;
   completed: boolean;
 }> = ({ distribution, general, bgcolor, completed }) => {
-  const [displayAdd, setDisplayAdd] = useState(false);
-  const [flipped, setFlipped] = useState<string[]>([]);
   const [plannedCredits, setPlannedCredits] = useState(
     distribution.fulfilled_credits,
   );
@@ -53,7 +50,6 @@ const CourseBar: FC<{
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [
     currPlanCourses,
-    flipped,
     distribution.fulfilled_credits,
     distribution,
     distributions,
@@ -91,14 +87,6 @@ const CourseBar: FC<{
             : `<div style="width: 100%; height: auto; display: flex; flex-direction: row; justify-content: center">Your credits fulfill this overall requirement, but your fine requirements are lacking! Please click this bar to find out more.</div>`)()) +
     `</div>`;
 
-  const closePopup = () => {
-    setDisplayAdd(false);
-  };
-
-  const onSave = (s: string[]) => {
-    setFlipped(s);
-  };
-
   /**
    * Returns UI for unstasified fine req course bar with satisfied credit count
    */
@@ -119,15 +107,6 @@ const CourseBar: FC<{
 
   return (
     <>
-      {displayAdd && (
-        <DistributionPopup
-          distribution={distribution}
-          cleanup={closePopup}
-          save={onSave}
-          flipped={flipped.slice()}
-        />
-      )}
-
       <div
         className={clsx(
           'flex flex-row text mb-1 rounded-lg whitespace-nowrap overflow-hidden overflow-ellipsis',
@@ -173,11 +152,6 @@ const CourseBar: FC<{
             {maxCredits > plannedCredits && maxCredits - plannedCredits}
           </div>
         </div>
-
-        {/* <Add
-          className="h-6 transition duration-200 ease-in transform hover:scale-150"
-          onClick={addToDistribution}
-        /> */}
       </div>
     </>
   );

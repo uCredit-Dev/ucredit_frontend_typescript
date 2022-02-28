@@ -15,7 +15,7 @@ export type Course = {
   title: string;
   number: string;
   areas: string;
-  term: String;
+  term: string;
   school: string;
   department: string;
   credits: string;
@@ -135,9 +135,9 @@ export type Filter = {
 export type SearchExtras = {
   query: string;
   credits: string | null;
-  areas: AreaType | null;
+  areas: string | null;
   tags: TagType | null;
-  term: SemesterType;
+  term: string;
   year: number;
   department: DepartmentType | null;
   wi: boolean | null;
@@ -161,8 +161,6 @@ export type Distribution = {
   user_id: string;
   plan_id: string;
 };
-
-// export type YearType = "Freshman" | "Sophomore" | "Junior" | "Senior";
 
 export type SemesterType =
   | 'Fall'
