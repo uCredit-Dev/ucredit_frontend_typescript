@@ -684,19 +684,22 @@ const isSatisfied = (
 
 const createPrereqBulletList = (input: string[]): string[] => {
   const courseArr: any[] = [];
-  const parenthesesStack = [];
   for (let i = 0; i < input.length; i++) {
-    if (parenthesesStack.length > 0) {
-      // Keeps track of whether we have closed the original open parentheses
-      const subCourseArr: string[] = [];
-      processParenthesisStack(input, i, parenthesesStack, subCourseArr);
-      // Recursively calls function on string inside of parentheses.
-      courseArr.push(createPrereqBulletList(subCourseArr));
-    } else if (input[i] === 'AND') {
+    if (input[i] === 'AND') {
       // skip
     } else if (input[i] === '(') {
       // Adds in everything between this level's open and close parentheses
-      parenthesesStack.push(input[i]);
+
+      // Keeps track of whether we have closed the original open parentheses
+      const parenthesesStack = [input[i]];
+      const subCourseArr: string[] = [];
+      while (parenthesesStack.length > 0) {
+        i++;
+        processParenthesisStack(input, i, parenthesesStack, subCourseArr);
+      }
+
+      // Recursively calls function on string inside of parentheses.
+      courseArr.push(createPrereqBulletList(subCourseArr));
     } else {
       courseArr.push(input[i]);
     }

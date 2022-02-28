@@ -10,9 +10,12 @@ const LoadingPage = () => {
   const generatePlanAddStatus = useSelector(selectGeneratePlanAddStatus);
   const [dotNum, setDotNum] = useState<number>(0);
   useEffect(() => {
-    setTimeout(() => {
+    const id = setTimeout(() => {
       setDotNum(dotNum === 3 ? 0 : dotNum + 1);
     }, 500);
+    return () => {
+      clearInterval(id);
+    };
   }, [dotNum]);
 
   return (
