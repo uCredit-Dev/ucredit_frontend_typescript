@@ -387,9 +387,7 @@ const YearComponent: FC<{
               value={yearName}
               className="flex-grow mt-auto font-semibold bg-transparent border-b border-transparent cursor-move select-none text-md focus:border-gray-400 focus:outline-none"
               onChange={handleYearNameChange}
-              onBlur={() => {
-                setEdittingName(false);
-              }}
+              onBlur={() => setEdittingName(false)}
             />
           ) : (
             <div className="flex-grow mt-auto text-xl font-semibold bg-transparent border-b border-transparent cursor-move select-none focus:border-gray-400 focus:outline-none">
@@ -398,7 +396,7 @@ const YearComponent: FC<{
           )}
           <div className="flex flex-row gap-8">
             <div className="flex flex-row gap-3 mt-2 text-sm font-medium">
-              {areaCredits.N && (
+              {areaCredits.N > 0 && (
                 <div className="flex flex-row gap-1">
                   {areaCredits.N}
                   <div
@@ -409,7 +407,7 @@ const YearComponent: FC<{
                   </div>
                 </div>
               )}
-              {areaCredits.Q && (
+              {areaCredits.Q > 0 && (
                 <div className="flex flex-row gap-1">
                   {areaCredits.Q}
                   <div
@@ -420,7 +418,7 @@ const YearComponent: FC<{
                   </div>
                 </div>
               )}
-              {areaCredits.E && (
+              {areaCredits.E > 0 && (
                 <div className="flex flex-row gap-1">
                   {areaCredits.E}
                   <div
@@ -431,7 +429,7 @@ const YearComponent: FC<{
                   </div>
                 </div>
               )}
-              {areaCredits.H && (
+              {areaCredits.H > 0 && (
                 <div className="flex flex-row gap-1">
                   {areaCredits.H}
                   <div
@@ -442,7 +440,7 @@ const YearComponent: FC<{
                   </div>
                 </div>
               )}
-              {areaCredits.S && (
+              {areaCredits.S > 0 && (
                 <div className="flex flex-row gap-1">
                   {areaCredits.S}
                   <div
@@ -453,7 +451,7 @@ const YearComponent: FC<{
                   </div>
                 </div>
               )}
-              {areaCredits.W && (
+              {areaCredits.W > 0 && (
                 <div className="flex flex-row gap-1">
                   {areaCredits.W}
                   <div
@@ -467,9 +465,7 @@ const YearComponent: FC<{
               <div className="font-bold">{totalCredits} Credits</div>
             </div>
             <DotsVerticalIcon
-              onClick={() => {
-                setDisplay(!display);
-              }}
+              onClick={() => setDisplay(!display)}
               className="w-7 stroke-2 cursor-pointer"
             />
           </div>

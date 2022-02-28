@@ -182,9 +182,7 @@ const YearSettingsDropdown: FC<{
 
         <button
           className="hover:bg-gray-300 border-t border-gray-300 focus:outline-none"
-          onClick={() => {
-            setYearSelect(!yearSelect);
-          }}
+          onClick={() => setYearSelect(!yearSelect)}
         >
           Change Year
         </button>
@@ -202,9 +200,7 @@ const YearSettingsDropdown: FC<{
           <>
             <button
               className="hover:bg-gray-300 border-t border-gray-300 focus:outline-none"
-              onClick={() => {
-                setSemSelect(!semSelect);
-              }}
+              onClick={() => setSemSelect(!semSelect)}
             >
               Select Terms
             </button>

@@ -18,6 +18,33 @@ const ApplicationFormPopup: FC<{
   const [fromName, setFromName] = useState<string>('');
   const [resume, setResume] = useState<string>('');
   const [activateError, setActivateError] = useState<boolean>(false);
+  const handleFormEmail = (): void => {
+    if (
+      fromName.length > 0 &&
+      fromEmail.length > 0 &&
+      selfPitch.length > 0 &&
+      position.length > 0 &&
+      year.length > 0 &&
+      reason.length > 0 &&
+      resume.length > 0
+    ) {
+      emailjs.send('service_czbc7ct', 'template_cxuebne', {
+        from_name: fromName,
+        from_email: fromEmail,
+        to_email: 'mliu78@jh.edu',
+        self_pitch: selfPitch,
+        position: position,
+        year: year,
+        reason: reason,
+        resume: resume,
+      });
+      setActivateError(false);
+      setActivateEmailPopup(false);
+      toast.success('Application sent!');
+    } else {
+      setActivateError(true);
+    }
+  };
   return (
     <div className="absolute top-0">
       {/* Background Grey */}
@@ -111,33 +138,7 @@ const ApplicationFormPopup: FC<{
               )}
               <button
                 className="mt-4 p-2 text-white bg-primary rounded"
-                onClick={() => {
-                  if (
-                    fromName.length > 0 &&
-                    fromEmail.length > 0 &&
-                    selfPitch.length > 0 &&
-                    position.length > 0 &&
-                    year.length > 0 &&
-                    reason.length > 0 &&
-                    resume.length > 0
-                  ) {
-                    emailjs.send('service_czbc7ct', 'template_cxuebne', {
-                      from_name: fromName,
-                      from_email: fromEmail,
-                      to_email: 'mliu78@jh.edu',
-                      self_pitch: selfPitch,
-                      position: position,
-                      year: year,
-                      reason: reason,
-                      resume: resume,
-                    });
-                    setActivateError(false);
-                    setActivateEmailPopup(false);
-                    toast.success('Application sent!');
-                  } else {
-                    setActivateError(true);
-                  }
-                }}
+                onClick={handleFormEmail}
               >
                 Submit
               </button>

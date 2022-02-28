@@ -419,9 +419,9 @@ const ExperimentDevBoardPopup: FC<{}> = () => {
                       </button>
                       <button
                         className="m-1 ml-20 p-1 w-1/6 text-white bg-secondary rounded focus:outline-none shadow transform hover:scale-110 transition duration-200 ease-in"
-                        onClick={() => {
-                          setDeleteExperimentPopup(!deleteExperimentPopup);
-                        }}
+                        onClick={() =>
+                          setDeleteExperimentPopup(!deleteExperimentPopup)
+                        }
                       >
                         <b>No</b>
                       </button>

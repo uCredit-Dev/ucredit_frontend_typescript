@@ -233,9 +233,7 @@ const PrereqDisplay: FC = () => {
               className={clsx(
                 'flex flex-wrap mb-1 max-w-md text-left text-sm font-medium focus:outline-none',
               )}
-              onClick={() => {
-                updateInspected(noCBracketsNum)();
-              }}
+              onClick={() => updateInspected(noCBracketsNum)()}
             >
               <div className="flex flex-row w-auto h-auto transition duration-100 ease-in group">
                 {satisfied && (

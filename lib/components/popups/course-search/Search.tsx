@@ -49,9 +49,7 @@ const Search: FC = () => {
         style={{
           opacity: searchOpacity === 100 ? 0.5 : 0,
         }}
-        onClick={() => {
-          dispatch(updateSearchStatus(false));
-        }}
+        onClick={() => dispatch(updateSearchStatus(false))}
       ></div>
 
       {/* Search area */}

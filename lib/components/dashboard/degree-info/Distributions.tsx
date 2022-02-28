@@ -51,9 +51,7 @@ const Distributions: FC<{
         <div className="relative flex-grow">
           <button
             className="absolute bottom-1 right-0 underline focus:outline-none transform hover:scale-110 transition duration-200 ease-in"
-            onClick={() => {
-              setDistributionOpen(!distributionOpen);
-            }}
+            onClick={() => setDistributionOpen(!distributionOpen)}
           >
             {distributionOpen ? 'Hide' : 'Show'}
           </button>

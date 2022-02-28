@@ -111,9 +111,7 @@ const VCourseComponent: FC<{
         className="relative flex items-center justify-between text-xs mt-2 pl-2 p-0.5 w-1/5 max-w-yearheading bg-gray-100 rounded shadow md:w-48"
         onMouseEnter={activate}
         onMouseLeave={deactivate}
-        onMouseOver={() => {
-          ReactTooltip.rebuild();
-        }}
+        onMouseOver={() => ReactTooltip.rebuild()}
         key={course.number}
       >
         <div className="flex flex-col w-full h-full">

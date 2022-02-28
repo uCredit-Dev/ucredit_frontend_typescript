@@ -127,17 +127,6 @@ const CourseBar: FC<{
           flipped={flipped.slice()}
         />
       )}
-      {/* <div>
-        <Question
-          className="absolute right-0 h-4 mt-1 mr-12 fill-gray"
-          data-tip={tooltip}
-          data-for="godTip"
-          onMouseOver={() => {
-            ReactTooltip.rebuild();
-          }}
-          //onHover={() => setOpenAPInfoBox(!openAPInfoBox)}
-        />
-      </div> */}
 
       <div
         className={clsx(
@@ -155,9 +144,7 @@ const CourseBar: FC<{
         className="relative flex flex-row w-full h-6 transition duration-200 ease-in transform full hover:scale-101"
         data-tip={tooltip}
         data-for="godTip"
-        onMouseOver={() => {
-          ReactTooltip.rebuild();
-        }}
+        onMouseOver={() => ReactTooltip.rebuild()}
         onClick={openCartPopup}
       >
         <div

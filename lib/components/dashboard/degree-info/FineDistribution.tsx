@@ -71,9 +71,7 @@ const FineDistribution: FC<{
       })}
     >
       <button
-        onClick={() => {
-          setShowDistrDesc(!showDistrDesc);
-        }}
+        onClick={() => setShowDistrDesc(!showDistrDesc)}
         className="flex w-full h-auto pr-2 mb-1 overflow-hidden text-left transition duration-200 ease-in transform focus:outline-none hover:scale-101 overflow-ellipsis"
       >
         <div>

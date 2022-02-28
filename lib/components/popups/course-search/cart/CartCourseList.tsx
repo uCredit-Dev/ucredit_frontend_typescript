@@ -217,9 +217,7 @@ const CartCourseList: FC<{
           {window.innerWidth < 800 && (
             <button
               className="ml-2 focus:outline-none"
-              onClick={() => {
-                setHideResults(!hideResults);
-              }}
+              onClick={() => setHideResults(!hideResults)}
             >
               {getResultsButtonText()}
             </button>
