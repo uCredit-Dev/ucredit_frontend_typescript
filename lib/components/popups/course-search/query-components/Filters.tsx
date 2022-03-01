@@ -37,7 +37,8 @@ const Filters: FC<{
    */
   const handleCreditFilterChange = (event: any): void => {
     let credits = '';
-    event.forEach((c: { label: string; value: string }) => {
+    event.forEach((c: { label: string; value: string }, i: number) => {
+      if (i !== 0) credits = credits.concat('|');
       credits = credits.concat(c.label);
     });
     // let credits = event.value;
@@ -50,12 +51,13 @@ const Filters: FC<{
   };
 
   /**
-   * Update searching filter state for distributions.
-   * @param event - the event sent when handling distribution dropdown
+   * Update searching filter state for areas.
+   * @param event - the event sent when handling area dropdown
    */
-  const handleDistributionFilterChange = (event: any): void => {
+  const handleAreaFilterChange = (event: any): void => {
     let areas: string = '';
-    event.forEach((a: { label: string; value: string }) => {
+    event.forEach((a: { label: string; value: string }, i: number) => {
+      if (i !== 0) areas = areas.concat('|');
       areas = areas.concat(a.label);
     });
     // areas = event.value;
@@ -292,7 +294,7 @@ const Filters: FC<{
               value={(() =>
                 searchFilters.credits !== null
                   ? searchFilters.credits
-                      .split('')
+                      .split('|')
                       .map((c) => ({ label: c, value: c }))
                   : [])()}
               className="w-40 rounded outline-none"
@@ -325,11 +327,11 @@ const Filters: FC<{
                 })),
               ]}
               className="w-40 rounded outline-none"
-              onChange={handleDistributionFilterChange}
+              onChange={handleAreaFilterChange}
               value={(() =>
                 searchFilters.distribution !== null
                   ? searchFilters.distribution
-                      .split('')
+                      .split('|')
                       .map((distr) => ({ label: distr, value: distr }))
                   : [])()}
             />
