@@ -20,6 +20,7 @@ import LoadingPage from '../../lib/components/LoadingPage';
 import { updateImportingStatus } from '../../lib/slices/currentPlanSlice';
 import axios from 'axios';
 import { User } from '../../lib/resources/commonTypes';
+import { userService } from '../../lib/services';
 
 /**
  * The login page, designed after the Spotify login page..
@@ -32,6 +33,7 @@ const Login: React.FC = () => {
   const [cookies] = useCookies();
   const [finishedLoginCheck, setFinishedLoginCheck] = useState<boolean>(true);
   const [openDevChoose, setOpenDevChoose] = useState<boolean>(false);
+  const [session, setSession] = useState<string>('');
   const router = useRouter();
   const importID = useSelector(selectImportID);
   const devIDs = ['freshmanDev', 'sophomoreDev', 'juniorDev', 'seniorDev'];
@@ -42,52 +44,52 @@ const Login: React.FC = () => {
     setFinishedLoginCheck(false);
     const token = router.query.token && router.query.token[0];
     const loginId = token ? token : getLoginCookieVal(cookies);
-    if (loginId && !checkLocalhost())
-      fetch(api + '/verifyLogin/' + loginId, {
-        mode: 'cors',
-        method: 'GET',
-        credentials: 'include',
-        headers: {
-          Accept: 'application/json',
-          'Content-Type': 'application/json',
-        },
-      })
-        .then((resp) => resp.json())
-        .then((retrievedUser) => {
-          if (retrievedUser.errors === undefined) {
-            if (token)
-              document.cookie =
-                'connect.sid=' +
-                token +
-                '; expires=' +
-                new Date(Date.now() + 200000000000000).toString() +
-                '; path=/';
-            if (importID) dispatch(updateImportingStatus(true));
-            dispatch(updateUser(retrievedUser.data));
-            dispatch(updateLoginCheck(true));
-
-            const referrer = router.query.referrer as string;
-            if (referrer) {
-              const [pathname, id] = referrer.split('-');
-              router.push(`/${pathname}/${id}`);
-            } else router.push('/dashboard');
-          } else {
-            dispatch(updateLoginCheck(true));
-            setFinishedLoginCheck(true);
-          }
-        })
-        .catch((err) => {
-          console.log('FAILED TO LOG IN. ERROR IS: ', err);
-          if (importID) {
-            dispatch(updateImportingStatus(true));
-            dispatch(updateUser(guestUser));
-            router.push('/dashboard');
-          }
-        });
+    if (loginId && !checkLocalhost()) handleDBLogin(loginId);
     else if (loginId) handleJHULogin(loginId);
     else dispatch(updateLoginCheck(true));
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [router.query.token]);
+
+  /**
+   *
+   * @param loginId the loginId to check sessions for
+   * @param token the token to set the cookie as
+   */
+  const handleDBLogin = (loginId: string) => {
+    userService
+      .login(loginId)
+      .then((retrievedUser) => {
+        if (retrievedUser.errors === undefined) {
+          if (loginId)
+            document.cookie =
+              'connect.sid=' +
+              loginId +
+              '; expires=' +
+              new Date(Date.now() + 200000000000000).toString() +
+              '; path=/';
+          if (importID) dispatch(updateImportingStatus(true));
+          dispatch(updateUser(retrievedUser.data));
+          dispatch(updateLoginCheck(true));
+
+          const referrer = router.query.referrer as string;
+          if (referrer) {
+            const [pathname, id] = referrer.split('-');
+            router.push(`/${pathname}/${id}`);
+          } else router.push('/dashboard');
+        } else {
+          dispatch(updateLoginCheck(true));
+          setFinishedLoginCheck(true);
+        }
+      })
+      .catch((err) => {
+        console.log('FAILED TO LOG IN. ERROR IS: ', err);
+        if (importID) {
+          dispatch(updateImportingStatus(true));
+          dispatch(updateUser(guestUser));
+          router.push('/dashboard');
+        }
+      });
+  };
 
   /**
    * Handles if the user is invalid.
@@ -102,6 +104,7 @@ const Login: React.FC = () => {
    */
   const handleJHULogin = (loginId: any) => {
     if (!checkLocalhost()) window.location.href = api + '/login';
+    else if (loginId.length === 20) handleDBLogin(loginId);
     else if (typeof loginId === 'string') handleDevLogin(loginId)();
     else setOpenDevChoose(true);
   };
@@ -136,6 +139,20 @@ const Login: React.FC = () => {
   const preventPreLoginClick = () =>
     toast.info("Please wait while we check if you're logged in...");
 
+  /**
+   * Handles custom session id change.
+   */
+  const onSessionChange = (e) => {
+    setSession(e.target.value);
+  };
+
+  /**
+   * Handles custom session id submission
+   */
+  const submitSession = () => {
+    handleJHULogin(session);
+  };
+
   return (
     <>
       <Head>
@@ -166,6 +183,18 @@ const Login: React.FC = () => {
                   {id}
                 </button>
               ))}
+              <input
+                placeholder="Enter your session ID cookie here"
+                className="w-80 mx-auto rounded p-1"
+                onChange={onSessionChange}
+                value={session}
+              />
+              <button
+                className="mb-2 rounded bg-primary w-80 mx-auto text-center"
+                onClick={submitSession}
+              >
+                Submit Custom Session
+              </button>
             </div>
           )}
           <div

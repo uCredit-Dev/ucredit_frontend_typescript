@@ -10,7 +10,9 @@ const { apiUrl } = publicRuntimeConfig;
  * @returns a promises that resolves on success or failure in logging in
  */
 const login = (cookieVal: string) => {
-  return get(apiUrl + '/retrieveUser/' + cookieVal).then((resp) => resp.json());
+  return get(apiUrl + '/verifyLogin/' + cookieVal, true, true)
+    .then((resp) => resp.json())
+    .then((resp) => resp);
 };
 
 export const userService = { login };
