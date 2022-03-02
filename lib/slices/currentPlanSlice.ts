@@ -25,6 +25,7 @@ const initialState: CurrentPlanSlice = {
     user_id: '',
     years: [],
     numYears: 0,
+    reviewers: [],
   },
   distributions: [],
   currentPlanCourses: [],
