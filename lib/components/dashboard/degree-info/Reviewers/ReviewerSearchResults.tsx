@@ -7,6 +7,8 @@ import {
   selectPlan,
   updateSelectedPlan,
 } from '../../../../slices/currentPlanSlice';
+import emailjs from 'emailjs-com';
+emailjs.init('user_7Cn3A3FQW9PTxExf6Npel');
 
 const ReviewersSearchResults: FC<{
   Users: any[];
@@ -16,6 +18,10 @@ const ReviewersSearchResults: FC<{
 
   const isReviewer = (id) => {
     return currentPlan.reviewers.includes(id);
+  };
+
+  const isPending = (id) => {
+    return false;
   };
 
   const changeReviewer = async (id) => {
@@ -29,7 +35,18 @@ const ReviewersSearchResults: FC<{
         data: body,
       });
     } else {
-      plan = await axios.post(api + '/planReview/addReviewer', body);
+      if (!isPending(id)) {
+        plan = await axios.post(api + '/planReview/addReviewer', body);
+        emailjs.send('service_czbc7ct', 'template_9g4knbk', {
+          from_name: currentPlan.name,
+          to_jhed: id,
+          to_name: id, // replace with name
+          url: 'https://google.com', // TODO
+        });
+      } else {
+        // TODO
+        // toast if pending
+      }
     }
     dispatch(
       updateSelectedPlan({
