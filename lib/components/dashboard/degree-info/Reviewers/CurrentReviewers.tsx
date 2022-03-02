@@ -1,27 +1,9 @@
+import { useSelector } from 'react-redux';
 import ReactTooltip from 'react-tooltip';
+import { selectPlan } from '../../../../slices/currentPlanSlice';
 
 const CurrentReviewers = () => {
-  const data = [
-    {
-      name: 'John Smith',
-      jhed: 'jsmith1',
-      status: 'pending',
-      requestingReview: false,
-    },
-    {
-      name: 'Mary Poppins',
-      jhed: 'mpoppins1',
-      status: 'approved',
-      requestingReview: false,
-    },
-    {
-      name: 'Charlie Brown',
-      jhed: 'cbrown53',
-      status: 'approved',
-      requestingReview: true,
-    },
-  ];
-
+  const currentPlan = useSelector(selectPlan);
   const getSVG = (status: string) => {
     if (status === 'pending') {
       return (
@@ -51,9 +33,9 @@ const CurrentReviewers = () => {
           className="flex flex-row justify-between items-center pt-2"
           key={element.name}
         >
-          <p>{element.name}</p>
+          <p>{element}</p>
           <div className="flex flex-row">
-            {element.requestingReview && (
+            {false && ( // requesting
               <img
                 src="svg/CircularArrow.svg"
                 alt="requesting review"
@@ -61,7 +43,11 @@ const CurrentReviewers = () => {
                 data-tip="This reviewer is requesting a review"
               />
             )}
-            <div className="h-6 w-6">{getSVG(element.status)}</div>
+            <div className="h-6 w-6">
+              {
+                getSVG('approved') // pending?
+              }
+            </div>
           </div>
         </div>
       );
@@ -69,8 +55,8 @@ const CurrentReviewers = () => {
   };
 
   return (
-    <div className="flex flex-col pl-1 border-b">
-      {getElements(data)}
+    <div className="flex flex-col border-b">
+      {getElements(currentPlan.reviewers)}
       <ReactTooltip delayShow={200} />
     </div>
   );
