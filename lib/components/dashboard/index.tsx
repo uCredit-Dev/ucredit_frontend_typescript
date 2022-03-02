@@ -38,19 +38,14 @@ import CourseList from './course-list/horizontal/CourseList';
 import InfoMenu from './InfoMenu';
 import ActionBar from './degree-info/ActionBar';
 import { selectLoginCheck, selectUser } from '../../slices/userSlice';
-import ShareLinksPopup from './degree-info/ShareLinksPopup';
 import axios from 'axios';
 // import ExperimentNumber from '../popups/ExperimentNumber';
 import { api } from './../../resources/assets';
 import Cart from '../popups/course-search/Cart';
-import getConfig from 'next/config';
 import GenerateNewPlan from '../../resources/GenerateNewPlan';
 import LoadingPage from '../LoadingPage';
 import HandlePlanShareDummy from './HandlePlanShareDummy';
 import HandleUserInfoSetupDummy from './HandleUserInfoSetupDummy';
-
-const { publicRuntimeConfig } = getConfig();
-const baseUrl = publicRuntimeConfig.baseUrl;
 
 /**
  * The dashboard that displays the user's plan.
@@ -58,7 +53,6 @@ const baseUrl = publicRuntimeConfig.baseUrl;
 const Dashboard: React.FC = () => {
   // Redux setup.
   const user = useSelector(selectUser);
-  const currentPlan = useSelector(selectPlan);
   const loginCheck = useSelector(selectLoginCheck);
   const searchStatus = useSelector(selectSearchStatus);
   const deletePlanStatus = useSelector(selectDeletePlanStatus);
@@ -79,7 +73,6 @@ const Dashboard: React.FC = () => {
   const [formPopup, setFormPopup] = useState<boolean>(false);
   const [showHeader, setShowHeader] = useState<boolean>(true);
   // const [experimentPopup] = useState<boolean>(false);
-  const [shareableURL, setShareableURL] = useState<string>('');
   // const [displayedNumber, setDisplayedNumber] = useState<number>(3);
   // const [crement, setCrement] = useState<number>(0);
 
@@ -128,17 +121,6 @@ const Dashboard: React.FC = () => {
       setShowHeader(false);
     }
   });
-
-  /**
-   * Handles when button for shareable link is clicked.
-   */
-  const onShareClick = (): void => {
-    if (shareableURL !== '') {
-      setShareableURL('');
-      return;
-    }
-    setShareableURL(baseUrl + '/share?_id=' + currentPlan._id);
-  };
 
   const updateExperimentsForUser = () => {
     axios
@@ -196,15 +178,7 @@ const Dashboard: React.FC = () => {
               <div className="flex flex-row thin:flex-wrap-reverse mt-[5rem] w-full h-full">
                 <div className="flex flex-col w-full">
                   <div className="mx-auto">
-                    {shareableURL === '' ? null : (
-                      <div className="absolute right-24">
-                        <ShareLinksPopup
-                          link={shareableURL}
-                          setURL={onShareClick}
-                        />
-                      </div>
-                    )}
-                    <ActionBar onShareClick={onShareClick} />
+                    <ActionBar />
                     <CourseList />
                   </div>
                 </div>

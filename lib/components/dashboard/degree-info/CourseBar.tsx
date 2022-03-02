@@ -92,7 +92,7 @@ const CourseBar: FC<{
     <>
       <div
         className={clsx(
-          'flex flex-row text mb-1 rounded-lg whitespace-nowrap overflow-hidden overflow-ellipsis',
+          'flex flex-row text mb-1 rounded-lg whitespace-nowrap overflow-hidden overflow-ellipsis items-center',
           {
             'font-bold': general,
           },
@@ -100,6 +100,11 @@ const CourseBar: FC<{
         key={section}
       >
         {section}
+        <div>
+          {remainingCredits === 0 && completed ? (
+            <CheckCircleIcon className="w-4 h-5  ml-1 stroke-2" />
+          ) : null}
+        </div>
       </div>
 
       <div
@@ -127,7 +132,7 @@ const CourseBar: FC<{
               }`,
             }}
           />
-          {remainingCredits === 0 && completed ? (
+          {/* {remainingCredits === 0 && completed ? (
             <CheckCircleIcon className="absolute w-5 h-5 text-white transform -translate-x-1/2 -translate-y-1/2 stroke-2 left-1/2 top-1/2" />
           ) : (
             (() => (
@@ -143,11 +148,13 @@ const CourseBar: FC<{
                   : null}
               </>
             ))()
-          )}
-          <div className="absolute left-2 font-thin">{plannedCredits}</div>
-          <div className="absolute right-2 font-thin">
-            {maxCredits > plannedCredits ? maxCredits - plannedCredits : null}
+          )} */}
+          <div className="absolute left-1/2 font-semibold -translate-x-1/2">
+            {plannedCredits + '/' + maxCredits}
           </div>
+          {/* <div className="absolute right-2 font-thin">
+            {maxCredits > plannedCredits ? maxCredits - plannedCredits : null}
+          </div> */}
         </div>
       </div>
     </>
