@@ -30,12 +30,12 @@ const ReviewerAdd: React.FC = () => {
     dispatch(updateReviewerPlanID(id));
     const { _id } = user;
     if (_id === 'noUser' || _id === 'guestUser') {
-      if (user._id === 'noUser') {
+      if (user._id === 'noUser' && reviewerPlanId) {
         router.push(`/login?referrer=reviewer-${id}`);
       }
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [user, router.query.id]);
+  }, [router.query.id, user, reviewerPlanId]);
 
   useEffect(() => {
     (async () => {

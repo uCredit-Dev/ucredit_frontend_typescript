@@ -14,6 +14,7 @@ import {
   selectImportID,
   selectLoginCheck,
   updateLoginCheck,
+  updateLoginRedirect,
   updateUser,
 } from '../../lib/slices/userSlice';
 import LoadingPage from '../../lib/components/LoadingPage';
@@ -66,11 +67,7 @@ const Login: React.FC = () => {
             dispatch(updateUser(retrievedUser.data));
             dispatch(updateLoginCheck(true));
 
-            const referrer = router.query.referrer as string;
-            if (referrer) {
-              const [pathname, id] = referrer.split('-');
-              router.push(`/${pathname}/${id}`);
-            } else router.push('/dashboard');
+            redirectToReferrer();
           } else {
             dispatch(updateLoginCheck(true));
             setFinishedLoginCheck(true);
@@ -88,6 +85,15 @@ const Login: React.FC = () => {
     else dispatch(updateLoginCheck(true));
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [router.query.token]);
+
+  const redirectToReferrer = () => {
+    const referrer = router.query.referrer as string;
+    console.log(referrer);
+    if (referrer) {
+      const [pathname, id] = referrer.split('-');
+      router.push(`/${pathname}/${id}`);
+    } else router.push('/dashboard');
+  };
 
   /**
    * Handles if the user is invalid.
@@ -123,7 +129,8 @@ const Login: React.FC = () => {
           '; expires=' +
           new Date(Date.now() + 200000000000000).toString() +
           '; path=/';
-        router.push('/dashboard');
+
+        redirectToReferrer();
       })
       .catch((err) => {
         console.log('Backdoor verfication failed!', err);
@@ -151,16 +158,16 @@ const Login: React.FC = () => {
           {openDevChoose && (
             <div className="flex flex-col absolute left-[35%] top-[35%] z-[80] w-[30%] pb-8 bg-gray-100 text-black rounded shadow">
               <div
-                className="font-bold text-right mr-4 mt-2 text-2xl cursor-pointer"
+                className="mt-2 mr-4 text-2xl font-bold text-right cursor-pointer"
                 onClick={() => setOpenDevChoose(false)}
               >
                 X
               </div>
-              <div className="text-xl ml-4 mb-4">Choose a dev account:</div>
+              <div className="mb-4 ml-4 text-xl">Choose a dev account:</div>
               {devIDs.map((id) => (
                 <button
                   onClick={handleDevLogin(id)}
-                  className="mb-2 rounded bg-primary w-32 mx-auto"
+                  className="w-32 mx-auto mb-2 rounded bg-primary"
                   key={id}
                 >
                   {id}
