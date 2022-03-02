@@ -7,7 +7,6 @@ import {
   selectPlan,
   updateSelectedPlan,
 } from '../../../../slices/currentPlanSlice';
-import { post } from '../../../../utils/fetchWrapper';
 
 const ReviewersSearchResults: FC<{
   Users: any[];
