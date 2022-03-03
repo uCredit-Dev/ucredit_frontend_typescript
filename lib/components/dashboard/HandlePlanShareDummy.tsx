@@ -134,7 +134,7 @@ const HandlePlanShareDummy = () => {
             params: { query: c },
           })
           .then((retrieved) => {
-            dispatch(updateCourseCache([retrieved.data.data]));
+            dispatch(updateCourseCache(retrieved.data.data));
             cum++;
             if (cum === total) {
               setCached(true);

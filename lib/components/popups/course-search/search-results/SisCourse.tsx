@@ -17,8 +17,14 @@ import {
   selectVersion,
   updateInspectedVersion,
   updateSearchTime,
+  updateSearchFilters,
 } from '../../../../slices/searchSlice';
-import { Course, Plan, Year } from '../../../../resources/commonTypes';
+import {
+  Course,
+  Plan,
+  SemesterType,
+  Year,
+} from '../../../../resources/commonTypes';
 import ReactTooltip from 'react-tooltip';
 import {
   selectCourseToShow,
@@ -58,6 +64,12 @@ const SisCourse: FC<{
   const currentCourses = useSelector(selectCurrentPlanCourses);
 
   const [versionIndex, updateVersionIndex] = useState<number>(0);
+  const [ogSem, setOgSem] = useState<SemesterType | 'All'>('All');
+
+  useEffect(() => {
+    setOgSem(searchSemester);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   useEffect(() => {
     if (inspected !== 'None' && version !== 'None') {
@@ -95,12 +107,25 @@ const SisCourse: FC<{
 
   // For changing the year to add course while in the search popout.
   const handleYearChange = (event: any): void => {
-    dispatch(
-      updateSearchTime({
-        searchYear: event.target.value,
-        searchSemester: searchSemester,
-      }),
-    );
+    const searchYearId = event.target.value;
+    currentPlan.years.forEach((year) => {
+      if (year._id === searchYearId) {
+        dispatch(
+          updateSearchTime({
+            searchYear: event.target.value,
+            searchSemester:
+              year.year === currentPlan.years[0].year ? 'All' : ogSem,
+          }),
+        );
+        dispatch(updateSearchFilters({ filter: 'year', value: year.year }));
+        dispatch(
+          updateSearchFilters({
+            filter: 'term',
+            value: year.year === currentPlan.years[0].year ? 'All' : ogSem,
+          }),
+        );
+      }
+    });
   };
 
   // Handles switching displayed term.
@@ -224,11 +249,35 @@ const SisCourse: FC<{
                 onChange={handleYearChange}
                 value={searchYear}
               >
-                {currentPlan.years.map((currPlanYear) => (
-                  <option key={currPlanYear._id} value={currPlanYear._id}>
-                    {currPlanYear.name}
-                  </option>
-                ))}
+                {currentPlan.years.map((currPlanYear, i) => {
+                  if (inspected !== 'None') {
+                    for (let term of inspected.terms) {
+                      if (
+                        i === 0 ||
+                        term ===
+                          searchSemester +
+                            ' ' +
+                            (searchSemester === 'Spring' ||
+                            searchSemester === 'Summer' ||
+                            searchSemester === 'Intersession'
+                              ? currPlanYear.year + 1
+                              : currPlanYear.year
+                            ).toString() ||
+                        currPlanYear.year + 1 >= new Date().getFullYear() // Sloppy checking, fix
+                      ) {
+                        return (
+                          <option
+                            key={currPlanYear._id}
+                            value={currPlanYear._id}
+                          >
+                            {currPlanYear.name}
+                          </option>
+                        );
+                      }
+                    }
+                  }
+                  return null;
+                })}
               </select>
             </div>
             <div className="flex flex-row items-center w-auto h-auto ml-5 tight:ml-0 tight:mt-2">

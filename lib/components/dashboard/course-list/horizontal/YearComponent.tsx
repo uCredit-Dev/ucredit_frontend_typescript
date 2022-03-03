@@ -48,7 +48,7 @@ const YearComponent: FC<{
   const [editedName, setEditedName] = useState<boolean>(false);
   const [edittingName, setEdittingName] = useState<boolean>(false);
   const [collapse, setCollapse] = useState<boolean>(
-    year.name === 'AP Equivalents',
+    year.name === 'AP/Transfer',
   );
   const [totalCredits, setTotalCredits] = useState<number>(0);
   const [areaCredits, setAreaCredits] = useState({
