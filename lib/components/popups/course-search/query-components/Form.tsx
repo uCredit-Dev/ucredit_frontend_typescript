@@ -105,7 +105,7 @@ const Form: FC<{ setSearching: (searching: boolean) => void }> = (props) => {
       } else
         dispatch(updateSearchFilters({ filter: 'year', value: yearVal + 1 }));
     } else {
-      if (semester === 'Fall') {
+      if (semester === 'Fall' || semester === 'All') {
         dispatch(updateSearchFilters({ filter: 'year', value: yearVal }));
       } else {
         dispatch(updateSearchFilters({ filter: 'year', value: yearVal + 1 }));
@@ -156,7 +156,6 @@ const Form: FC<{ setSearching: (searching: boolean) => void }> = (props) => {
       props.setSearching(false);
       return;
     }
-
     // Search params.
     const extras: SearchExtras = {
       query: searchTerm,
@@ -164,7 +163,10 @@ const Form: FC<{ setSearching: (searching: boolean) => void }> = (props) => {
       areas: searchFilters.distribution,
       wi: searchFilters.wi,
       term: searchFilters.term,
-      year: searchFilters.year,
+      year:
+        currentPlan.years[0].year === searchFilters.year
+          ? 'All'
+          : searchFilters.year,
       department: searchFilters.department,
       tags: searchFilters.tags,
       levels: searchFilters.levels,
@@ -234,7 +236,12 @@ const Form: FC<{ setSearching: (searching: boolean) => void }> = (props) => {
     // This filtering needs to be done because backend returns courses with incorrect term and year matching. This needs to be fixed.
     SISRetrieved = SISRetrieved.filter((course) => {
       for (let version of course.versions) {
-        if (version.term === extras.term + ' ' + extras.year) return true;
+        if (
+          version.term === extras.term + ' ' + extras.year ||
+          extras.term === 'All' ||
+          extras.year === 'All'
+        )
+          return true;
       }
       return false;
     });
@@ -371,9 +378,8 @@ const Form: FC<{ setSearching: (searching: boolean) => void }> = (props) => {
           })
           .then((retrieved) => {
             let retrievedCourses: SISRetrievedCourse[] = retrieved.data.data;
-            dispatch(updateCourseCache([...retrievedCourses]));
-            let SISRetrieved: SISRetrievedCourse[] = retrieved.data.data;
-            dispatch(updateRetrievedCourses(SISRetrieved));
+            dispatch(updateCourseCache(retrievedCourses));
+            dispatch(updateRetrievedCourses(retrievedCourses));
             props.setSearching(false);
           })
           .catch(() => {
@@ -411,7 +417,7 @@ const Form: FC<{ setSearching: (searching: boolean) => void }> = (props) => {
   const getParams = (extras: SearchExtras) => ({
     query: extras.query,
     department: extras.department,
-    term: extras.term === 'All' ? null : extras.term,
+    term: extras.term,
     areas: extras.areas,
     credits: extras.credits,
     wi: extras.wi,

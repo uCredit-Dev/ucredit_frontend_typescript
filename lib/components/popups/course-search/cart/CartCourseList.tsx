@@ -41,17 +41,8 @@ const CartCourseList: FC<{
 
   // Updates pagination every time the searched courses change.
   useEffect(() => {
-    console.log(courses);
     const filtered: SISRetrievedCourse[] = courses.filter(
       (course: SISRetrievedCourse) => {
-        // Why is this here? We should be searching for all years
-        // let valid = false;
-        // course.versions.forEach((version) => {
-        //   // This conditional has been changed
-        //   if (version.term.includes(defaultYearForCart)) {
-        //     valid = true;
-        //   }
-        // });
         if (!course.title.toLowerCase().includes(props.textFilter))
           return false;
         return true;

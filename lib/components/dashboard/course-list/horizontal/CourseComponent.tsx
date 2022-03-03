@@ -97,10 +97,22 @@ const CourseComponent: FC<{
   /**
    * Deactivates the course component button menu and grab icon.
    */
-  const deactivate = () => {
+  const deactivate = (): void => {
     setHovered(false);
     setActivated(false);
     setDisplayPopup(false);
+  };
+
+  /**
+   * Checks if this course is a placeholder
+   */
+  const checkIfPlaceholder = (): boolean => {
+    for (let c of courseCache) {
+      if (course.number === c.number) {
+        return true;
+      }
+    }
+    return false;
   };
 
   return (
@@ -138,7 +150,7 @@ const CourseComponent: FC<{
             <div className="truncate">{course.title}</div>
             <div className="flex flex-row gap-0.5">
               <div className="text-[10px]">{course.number}</div>
-              {!satisfied && !overridden ? (
+              {!satisfied && !overridden && checkIfPlaceholder() ? (
                 <ExclamationIcon className="flex items-center w-4 h-4 font-semibold text-red-400 rounded select-none" />
               ) : null}
             </div>

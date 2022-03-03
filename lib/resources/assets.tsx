@@ -535,7 +535,7 @@ const backendSearch = async (
         versionIndex = index;
       }
     });
-    store.dispatch(updateCourseCache([retrieved]));
+    store.dispatch(updateCourseCache(courses.data.data));
     resolve({
       index: indexNum,
       resp: {

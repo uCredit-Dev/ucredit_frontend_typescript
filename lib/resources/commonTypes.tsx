@@ -135,8 +135,8 @@ export type SearchExtras = {
   credits: string | null;
   areas: string | null;
   tags: TagType | null;
-  term: string;
-  year: number;
+  term: SemesterType | 'All';
+  year: number | 'All';
   department: DepartmentType | null;
   wi: boolean | null;
   levels: string | null;
