@@ -409,6 +409,8 @@ const CourseList: FC = () => {
           ...c,
           year_id: destYear._id,
           term,
+          version:
+            term + ' ' + (term === 'Fall' ? destYear.year : destYear.year + 1),
         };
         const planCourseCopy = [...currentPlanCourses];
         planCourseCopy[index] = newCourse;
