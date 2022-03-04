@@ -21,31 +21,36 @@ const ReviewersSearchResults: FC<{
   };
 
   const isPending = (id) => {
-    return false;
+    return !(
+      id === 'sophomoreDev' ||
+      id === 'freshmanDev' ||
+      id === 'juniorDev' ||
+      id === 'seniorDev'
+    );
   };
 
-  const changeReviewer = async (id) => {
+  const changeReviewer = async (user: User) => {
     const body = {
       plan_id: currentPlan._id,
-      reviewer_id: id,
+      reviewer_id: user._id,
     };
     let plan;
-    if (isReviewer(id)) {
+    if (isReviewer(user._id)) {
       plan = await axios.delete(api + '/planReview/removeReviewer', {
         data: body,
       });
     } else {
-      if (!isPending(id)) {
+      if (!isPending(user._id)) {
         plan = await axios.post(api + '/planReview/addReviewer', body);
         emailjs.send('service_czbc7ct', 'template_9g4knbk', {
           from_name: currentPlan.name,
-          to_jhed: id,
-          to_name: id, // replace with name
+          to_jhed: user._id,
+          to_name: user._id, // replace with name
+          to_email: user.email,
           url: 'https://google.com', // TODO
         });
       } else {
         // TODO
-        // toast if pending
       }
     }
     dispatch(
@@ -57,11 +62,13 @@ const ReviewersSearchResults: FC<{
   };
 
   const getElements = (data: User[]) => {
+    console.log(data);
     return data.map((element) => {
       return (
         <div
           className="flex flex-row hover:bg-sky-300 hover:hand hover:cursor-pointer"
-          onClick={(e) => changeReviewer(element._id)}
+          onClick={(e) => changeReviewer(element)}
+          key={element._id}
         >
           {isReviewer(element._id) ? (
             <img
