@@ -11,6 +11,7 @@ type UserSlice = {
   planList: Plan[];
   courseCache: SISRetrievedCourse[];
   cacheNumbers: String[];
+  cacheTitles: String[];
   unfoundNumbers: String[];
   retrievedAll: boolean;
   importId: string;
@@ -35,6 +36,7 @@ const initialState: UserSlice = {
   courseCache: [],
   retrievedAll: false,
   cacheNumbers: [],
+  cacheTitles: [], // we need both cachenumbers and titles since some courses may have the same numbers but different titles
   unfoundNumbers: [],
   importId: null,
   reviewerPlanId: '',
@@ -68,8 +70,12 @@ export const userSlice = createSlice({
     ) => {
       if (!state.selectedAll) {
         for (let course of action.payload) {
-          if (!state.cacheNumbers.includes(course.number)) {
+          if (
+            !state.cacheNumbers.includes(course.number) ||
+            !state.cacheTitles.includes(course.title)
+          ) {
             state.cacheNumbers = [...state.cacheNumbers, course.number];
+            state.cacheTitles = [...state.cacheTitles, course.title];
             state.courseCache = [...state.courseCache, course];
           }
         }

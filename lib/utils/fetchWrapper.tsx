@@ -21,6 +21,10 @@ const post = (url: string, data: Object) => {
     },
     body: JSON.stringify(data),
   });
+  // .then((res) => res.text())
+  // .then((text) => {
+  //   JSON.parse(text);
+  // });}
 };
 
 export { get, post };
