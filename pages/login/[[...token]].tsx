@@ -14,7 +14,6 @@ import {
   selectImportID,
   selectLoginCheck,
   updateLoginCheck,
-  updateLoginRedirect,
   updateUser,
 } from '../../lib/slices/userSlice';
 import LoadingPage from '../../lib/components/LoadingPage';
