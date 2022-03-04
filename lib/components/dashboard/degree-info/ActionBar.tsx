@@ -1,4 +1,4 @@
-import { FC, MouseEventHandler, useEffect, useState } from 'react';
+import { FC, useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { toast } from 'react-toastify';
 import Select, {

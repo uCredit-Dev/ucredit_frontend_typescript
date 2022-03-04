@@ -6,7 +6,6 @@ import {
   selectDistributions,
 } from '../../../slices/currentPlanSlice';
 import { requirements } from './distributionFunctions';
-import { ExclamationIcon } from '@heroicons/react/outline';
 import { CheckCircleIcon } from '@heroicons/react/solid';
 import ReactTooltip from 'react-tooltip';
 import {

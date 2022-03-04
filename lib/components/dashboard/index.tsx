@@ -4,10 +4,7 @@ import { useScrollPosition } from '@n8tb1t/use-scroll-position';
 import UserSection from './UserSection';
 import FeedbackPopup from '../popups/FeedbackPopup';
 import FeedbackNotification from '../popups/FeedbackNotification';
-import {
-  selectImportingStatus,
-  selectPlan,
-} from '../../slices/currentPlanSlice';
+import { selectImportingStatus } from '../../slices/currentPlanSlice';
 import {
   selectDeletePlanStatus,
   selectAddingPlanStatus,
