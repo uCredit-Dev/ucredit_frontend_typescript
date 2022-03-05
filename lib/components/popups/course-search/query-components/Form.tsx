@@ -33,7 +33,7 @@ type SearchMapEl = {
 
 /**
  * Search form, including the search query input and filters.
- * TODO: Multi select for various filters.
+ * TODO: filter by uppeer/lower levels
  *
  * @prop setSearching - sets searching state
  */
@@ -87,7 +87,6 @@ const Form: FC<{ setSearching: (searching: boolean) => void }> = (props) => {
   };
 
   // On opening search, set the term filter to match semester you're adding to.
-  // TODO: update registration times for each semester
   useEffect(() => {
     dispatch(updateSearchFilters({ filter: 'term', value: semester }));
     const date: Date = new Date();

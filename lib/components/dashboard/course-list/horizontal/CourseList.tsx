@@ -281,7 +281,6 @@ const CourseList: FC = () => {
       destination.year,
     );
 
-    // TODO: CLEANUP!!!!!
     if (sourceObj.year === null || destObj.year === null) return;
 
     // Defining relevant variables

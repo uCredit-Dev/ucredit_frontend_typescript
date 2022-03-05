@@ -192,7 +192,7 @@ const CourseVersion: FC<{ setInspectedArea: (area: string) => void }> = ({
 
   return (
     <>
-      {version !== 'None' ? (
+      {version !== 'None' && (
         <>
           <div className="grid w-auto h-auto grid-cols-2 tight:flex tight:flex-col">
             <div className="w-auto h-auto">
@@ -315,7 +315,7 @@ const CourseVersion: FC<{ setInspectedArea: (area: string) => void }> = ({
           </div>
           {getPrereqDisplayMode()}
         </>
-      ) : null}
+      )}
     </>
   );
 };

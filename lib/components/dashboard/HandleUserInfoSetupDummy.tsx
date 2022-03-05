@@ -10,7 +10,6 @@ import { updateAddingPlanStatus } from '../../slices/popupSlice';
 
 /**
  * Handles dashboard user entry and login logic.
- * TODO: Gracefully handle axios error cases (what happens when axios fails?), clean up extra years that are not being trash collected right now on import, and modularize this component!
  */
 const HandleUserInfoSetupDummy: React.FC = () => {
   // Redux setup

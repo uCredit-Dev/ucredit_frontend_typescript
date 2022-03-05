@@ -71,18 +71,12 @@ const PrereqDropdown: FC<{
 
   return (
     <div
-      onMouseEnter={() => {
-        setRootHovered(true);
-      }}
-      onMouseLeave={() => {
-        setRootHovered(false);
-      }}
+      onMouseEnter={() => setRootHovered(true)}
+      onMouseLeave={() => setRootHovered(false)}
       className="transition duration-200 ease-in transform hover:scale-101"
     >
       <button
-        onClick={() => {
-          setOpen(!open);
-        }}
+        onClick={() => setOpen(!open)}
         className={clsx(
           'focus:outline-none transform hover:scale-105 transition transition duration-100 duration-200 ease-in ease-in',
           {
@@ -116,7 +110,7 @@ const PrereqDropdown: FC<{
           'border-red-900 ': !satisfied && rootHovered,
         })}
       >
-        {open ? getChildPrereqs() : null}
+        {open && getChildPrereqs()}
       </div>
     </div>
   );

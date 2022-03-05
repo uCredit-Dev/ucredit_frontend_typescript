@@ -111,9 +111,7 @@ const VCourseComponent: FC<{
         className="relative flex items-center justify-between text-xs mt-2 pl-2 p-0.5 w-1/5 max-w-yearheading bg-gray-100 rounded shadow md:w-48"
         onMouseEnter={activate}
         onMouseLeave={deactivate}
-        onMouseOver={() => {
-          ReactTooltip.rebuild();
-        }}
+        onMouseOver={() => ReactTooltip.rebuild()}
         key={course.number}
       >
         <div className="flex flex-col w-full h-full">
@@ -123,7 +121,7 @@ const VCourseComponent: FC<{
             <div className="flex items-center px-1 font-semibold text-white rounded select-none bg-secondary">
               {course.credits}
             </div>
-            {course.area !== 'None' ? (
+            {course.area !== 'None' && (
               <div
                 className="flex items-center px-1 font-semibold text-white rounded select-none"
                 style={{
@@ -132,7 +130,7 @@ const VCourseComponent: FC<{
               >
                 {course.area}
               </div>
-            ) : null}{' '}
+            )}{' '}
             {/* {!satisfied && !overridden ? (
               <WarningSvg className="flex items-center w-5 h-5 font-semibold text-white rounded select-none" />
             ) : null} */}

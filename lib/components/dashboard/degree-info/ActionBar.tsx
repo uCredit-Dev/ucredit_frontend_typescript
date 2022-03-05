@@ -1,4 +1,4 @@
-import { FC, MouseEventHandler, useEffect, useState } from 'react';
+import { FC, useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { toast } from 'react-toastify';
 import Select, {
@@ -25,10 +25,12 @@ import { TrashIcon, PlusIcon } from '@heroicons/react/outline';
 import axios from 'axios';
 import { Year, Plan } from '../../../resources/commonTypes';
 import ReactTooltip from 'react-tooltip';
-import // selectExperimentList,
-// selectExperimentIDs,
-'../../../slices/experimentSlice';
 import { allMajors } from '../../../resources/majors';
+import getConfig from 'next/config';
+import ShareLinksPopup from './ShareLinksPopup';
+
+const { publicRuntimeConfig } = getConfig();
+const baseUrl = publicRuntimeConfig.baseUrl;
 
 const majorOptions = allMajors.map((major, index) => ({
   value: index,
@@ -38,31 +40,20 @@ const majorOptions = allMajors.map((major, index) => ({
 /**
  * @description ActionBar component
  */
-const ActionBar: FC<{
-  onShareClick: MouseEventHandler<HTMLButtonElement>;
-}> = ({ onShareClick }) => {
+const ActionBar: FC = () => {
   // Redux Setup
   const dispatch = useDispatch();
-  const currentPlan = useSelector(selectPlan);
   const planList = useSelector(selectPlanList);
   const user = useSelector(selectUser);
+  const currentPlan = useSelector(selectPlan);
+
+  const [shareableURL, setShareableURL] = useState<string>('');
 
   // Holds temporary plan name.
   const [planName, setPlanName] = useState<string>(currentPlan.name);
 
   // Determines whether we're editing the name.
   const [editName, setEditName] = useState<boolean>(false);
-
-  // Gets Experiment List and Experiment Names
-  // const experimentList = useSelector(selectExperimentList);
-  // const experimentIDs = useSelector(selectExperimentIDs);
-
-  // const redButtonID = '61e0b1d5648bba005539ddde';
-  // const redButtonIdx = experimentIDs.indexOf(redButtonID);
-  // const redButton =
-  //   experimentList.length > 0 && redButtonIdx !== -1
-  //     ? experimentList[redButtonIdx]
-  //     : null;
 
   // Only edits name if editName is true. If true, calls debounce update function
   useEffect(() => {
@@ -231,6 +222,17 @@ const ActionBar: FC<{
     }
   };
 
+  /**
+   * Handles when button for shareable link is clicked.
+   */
+  const onShareClick = (): void => {
+    if (shareableURL !== '') {
+      setShareableURL('');
+      return;
+    }
+    setShareableURL(baseUrl + '/share?_id=' + currentPlan._id);
+  };
+
   return (
     <div className="top-0 z-20 flex flex-row">
       <Select
@@ -303,6 +305,11 @@ const ActionBar: FC<{
         </svg>
         <div className="ml-1">Share</div>
       </button>
+      {shareableURL === '' ? null : (
+        <div className="left-24 relative">
+          <ShareLinksPopup link={shareableURL} setURL={onShareClick} />
+        </div>
+      )}
       <div className="flex flex-row items-center w-10 h-10 my-1 transition duration-200 ease-in border border-gray-300 rounded cursor-pointer hover:underline hover:bg-green-300 focus:outline-none">
         <PlusIcon
           onClick={() => addNewYear(false)}

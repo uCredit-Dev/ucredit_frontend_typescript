@@ -121,6 +121,51 @@ const SearchList: FC<{ searching: boolean }> = (props) => {
     }
   };
 
+  /**
+   * Gets the text for the results button.
+   */
+  const getResultsButtonText = () => {
+    if (!hideResults) {
+      return 'Hide Results';
+    } else {
+      return 'Show Results';
+    }
+  };
+
+  /**
+   * Gets search result pagination UI
+   */
+  const getPaginationUI = () =>
+    pageCount > 1 && (
+      <div className="flex flex-row justify-center w-full h-auto">
+        <Pagination pageCount={pageCount} handlePageClick={handlePageClick} />
+      </div>
+    );
+
+  const getSearchResultsUI = () =>
+    courses.length > 0 ? (
+      <>
+        <div className="flex flex-col w-full y-full">{courseList()}</div>
+        {getPaginationUI()}
+      </>
+    ) : (
+      <div className="flex flex-col items-center justify-center w-full mt-24">
+        {getSearchingUI()}
+      </div>
+    );
+
+  /**
+   * Gets loading search UI
+   */
+  const getSearchingUI = () =>
+    props.searching ? (
+      <img src="/img/loading.gif" alt="Searching..." className="h-10"></img>
+    ) : (
+      <div className="text-lg text-center text-gray-400">
+        No current search results.
+      </div>
+    );
+
   return (
     <>
       <div
@@ -129,22 +174,14 @@ const SearchList: FC<{ searching: boolean }> = (props) => {
       >
         <div className="flex flex-row">
           <div className="text-lg font-semibold">Search Results</div>{' '}
-          {window.innerWidth < 800 ? (
+          {window.innerWidth < 800 && (
             <button
               className="ml-2 focus:outline-none"
-              onClick={() => {
-                setHideResults(!hideResults);
-              }}
+              onClick={() => setHideResults(!hideResults)}
             >
-              {() => {
-                if (!hideResults) {
-                  return 'Hide Results';
-                } else {
-                  return 'Show Results';
-                }
-              }}
+              {getResultsButtonText()}
             </button>
-          ) : null}
+          )}
         </div>
         <div className="flex flex-row items-center">
           <div className="flex-grow mr-1">
@@ -170,44 +207,11 @@ const SearchList: FC<{ searching: boolean }> = (props) => {
           </div>
         </div>
       </div>
-      {!hideResults || window.innerWidth > 700 ? (
+      {(!hideResults || window.innerWidth > 700) && (
         <div className="w-full px-5 bg-gray-200 select-none py">
-          <div className="w-full h-full">
-            {(() =>
-              courses.length > 0 ? (
-                <>
-                  <div className="flex flex-col w-full y-full">
-                    {courseList()}
-                  </div>
-                  {(() =>
-                    pageCount > 1 ? (
-                      <div className="flex flex-row justify-center w-full h-auto">
-                        <Pagination
-                          pageCount={pageCount}
-                          handlePageClick={handlePageClick}
-                        />
-                      </div>
-                    ) : null)()}
-                </>
-              ) : (
-                <div className="flex flex-col items-center justify-center w-full mt-24">
-                  {(() =>
-                    props.searching ? (
-                      <img
-                        src="/img/loading.gif"
-                        alt="Searching..."
-                        className="h-10"
-                      ></img>
-                    ) : (
-                      <div className="text-lg text-center text-gray-400">
-                        No current search results.
-                      </div>
-                    ))()}
-                </div>
-              ))()}
-          </div>
+          <div className="w-full h-full">{getSearchResultsUI()}</div>
         </div>
-      ) : null}
+      )}
     </>
   );
 };

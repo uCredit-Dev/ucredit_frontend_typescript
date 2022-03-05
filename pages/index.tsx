@@ -66,7 +66,6 @@ const Home: React.FC = () => {
     curPlan.years.forEach((year: Year) => {
       if (year.courses.length !== 0) {
         hasCourses = true;
-        return;
       }
     });
     return hasCourses;

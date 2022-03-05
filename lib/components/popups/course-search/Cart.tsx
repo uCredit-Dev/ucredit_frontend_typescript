@@ -215,11 +215,7 @@ const Cart: FC<{ allCourses: SISRetrievedCourse[] }> = (props) => {
         style={{
           opacity: searchOpacity === 100 ? 0.5 : 0,
         }}
-        onClick={() => {
-          // clicking off, should reset all things
-          dispatch(updateShowingCart(false));
-          // dispatch(clearSearch());
-        }}
+        onClick={() => dispatch(updateShowingCart(false))}
       ></div>
 
       {/* Search area */}

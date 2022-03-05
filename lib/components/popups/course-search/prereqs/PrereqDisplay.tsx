@@ -233,12 +233,10 @@ const PrereqDisplay: FC = () => {
               className={clsx(
                 'flex flex-wrap mb-1 max-w-md text-left text-sm font-medium focus:outline-none',
               )}
-              onClick={() => {
-                updateInspected(noCBracketsNum)();
-              }}
+              onClick={() => updateInspected(noCBracketsNum)()}
             >
               <div className="flex flex-row w-auto h-auto transition duration-100 ease-in group">
-                {satisfied ? (
+                {satisfied && (
                   <img
                     src="svg/CheckMark.svg"
                     alt=""
@@ -247,7 +245,7 @@ const PrereqDisplay: FC = () => {
                       'text-green-700 group-hover:text-green-900': satisfied,
                     })}
                   />
-                ) : null}
+                )}
                 <div
                   className={clsx(
                     'border-b border-solid border-gray-300 transition duration-100 ease-in',

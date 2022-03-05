@@ -12,6 +12,7 @@ import { EyeOffIcon } from '@heroicons/react/outline';
 import { selectPlan } from '../../../slices/currentPlanSlice';
 import ReactTooltip from 'react-tooltip';
 import { Year } from '../../../resources/commonTypes';
+import clsx from 'clsx';
 
 /**
  * Search component for when someone clicks a search action.
@@ -49,16 +50,15 @@ const Search: FC = () => {
         style={{
           opacity: searchOpacity === 100 ? 0.5 : 0,
         }}
-        onClick={() => {
-          dispatch(updateSearchStatus(false));
-        }}
+        onClick={() => dispatch(updateSearchStatus(false))}
       ></div>
 
       {/* Search area */}
       <div
-        className={
-          'fixed flex flex-col bg-primary gradient-to-r shadow select-none rounded z-30 w-9/12 tight:overflow-y-none h-5/6 top-1/3 left-1/2 transform -translate-x-1/2 -translate-y-1/3 tight:h-auto'
-        }
+        className={clsx(
+          'fixed flex flex-col bg-primary gradient-to-r shadow select-none rounded z-30 w-9/12 tight:overflow-y-none h-5/6 top-1/3 left-1/2 transform -translate-x-1/2 -translate-y-1/3 tight:h-auto',
+          { '-translate-x-[62.5%]': window.innerWidth > 2200 },
+        )}
         style={{ opacity: searchOpacity === 100 ? 1 : 0.1 }}
       >
         <div className="px-4 py-2 font-normal text-white select-none text-coursecard">
