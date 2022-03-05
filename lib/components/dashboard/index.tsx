@@ -4,10 +4,7 @@ import { useScrollPosition } from '@n8tb1t/use-scroll-position';
 import UserSection from './UserSection';
 import FeedbackPopup from '../popups/FeedbackPopup';
 import FeedbackNotification from '../popups/FeedbackNotification';
-import {
-  selectImportingStatus,
-  selectPlan,
-} from '../../slices/currentPlanSlice';
+import { selectImportingStatus } from '../../slices/currentPlanSlice';
 import {
   selectDeletePlanStatus,
   selectAddingPlanStatus,
@@ -34,18 +31,13 @@ import CourseList from './course-list/horizontal/CourseList';
 import InfoMenu from './InfoMenu';
 import ActionBar from './degree-info/ActionBar';
 import { selectLoginCheck, selectUser } from '../../slices/userSlice';
-import ShareLinksPopup from './degree-info/ShareLinksPopup';
 import axios from 'axios';
 import { api } from './../../resources/assets';
 import Cart from '../popups/course-search/Cart';
-import getConfig from 'next/config';
 import GenerateNewPlan from '../../resources/GenerateNewPlan';
 import LoadingPage from '../LoadingPage';
 import HandlePlanShareDummy from './HandlePlanShareDummy';
 import HandleUserInfoSetupDummy from './HandleUserInfoSetupDummy';
-
-const { publicRuntimeConfig } = getConfig();
-const baseUrl = publicRuntimeConfig.baseUrl;
 
 /**
  * The dashboard that displays the user's plan.
@@ -53,7 +45,6 @@ const baseUrl = publicRuntimeConfig.baseUrl;
 const Dashboard: React.FC = () => {
   // Redux setup.
   const user = useSelector(selectUser);
-  const currentPlan = useSelector(selectPlan);
   const loginCheck = useSelector(selectLoginCheck);
   const searchStatus = useSelector(selectSearchStatus);
   const deletePlanStatus = useSelector(selectDeletePlanStatus);
@@ -71,7 +62,47 @@ const Dashboard: React.FC = () => {
   const [showNotif, setShowNotif] = useState<boolean>(true);
   const [formPopup, setFormPopup] = useState<boolean>(false);
   const [showHeader, setShowHeader] = useState<boolean>(true);
-  const [shareableURL, setShareableURL] = useState<string>('');
+  // const [experimentPopup] = useState<boolean>(false);
+  // const [displayedNumber, setDisplayedNumber] = useState<number>(3);
+  // const [crement, setCrement] = useState<number>(0);
+
+  // useEffect(() => {
+  //   if (blueButton !== null) {
+  //     setCrement(blueButton.active ? 1 : -1);
+  //   }
+  //   // eslint-disable-next-line react-hooks/exhaustive-deps
+  // }, [experimentList.length > 0 ? blueButton : null]);
+
+  // useEffect(() => {
+  //   if (!experimentPopup && experimentList.length > 0) {
+  //     axios
+  //       .get(`${api}/experiments/allExperiments`)
+  //       .then(function (resp) {
+  //         const importedExperimentList = resp.data.data;
+  //         for (const experiment of experimentList) {
+  //           const currentActive = experiment.active;
+  //           const importedActive = importedExperimentList[
+  //             experimentIDs.indexOf(experiment._id)
+  //           ].active.includes(user._id);
+
+  //           if (currentActive === importedActive) continue;
+
+  //           const command = experiment.active ? 'add/' : 'delete/';
+  //           axios
+  //             .put(`${api}/experiments/${command}${experiment.name}`, {
+  //               user_id: user._id,
+  //             })
+  //             .catch(function (error) {
+  //               console.log(error);
+  //             });
+  //         }
+  //       })
+  //       .catch(function (error) {
+  //         console.log(error);
+  //       });
+  //   }
+  //   // eslint-disable-next-line react-hooks/exhaustive-deps
+  // }, [experimentPopup]);
 
   useScrollPosition(({ prevPos, currPos }) => {
     if (currPos.y > -14) {
@@ -80,17 +111,6 @@ const Dashboard: React.FC = () => {
       setShowHeader(false);
     }
   });
-
-  /**
-   * Handles when button for shareable link is clicked.
-   */
-  const onShareClick = (): void => {
-    if (shareableURL !== '') {
-      setShareableURL('');
-      return;
-    }
-    setShareableURL(baseUrl + '/share?_id=' + currentPlan._id);
-  };
 
   const updateExperimentsForUser = () => {
     axios
@@ -132,15 +152,7 @@ const Dashboard: React.FC = () => {
               <div className="flex flex-row thin:flex-wrap-reverse mt-[5rem] w-full h-full">
                 <div className="flex flex-col w-full">
                   <div className="mx-auto">
-                    {shareableURL === '' ? null : (
-                      <div className="absolute right-24">
-                        <ShareLinksPopup
-                          link={shareableURL}
-                          setURL={onShareClick}
-                        />
-                      </div>
-                    )}
-                    <ActionBar onShareClick={onShareClick} />
+                    <ActionBar />
                     <CourseList />
                   </div>
                 </div>

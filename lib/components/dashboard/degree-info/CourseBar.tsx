@@ -6,7 +6,6 @@ import {
   selectDistributions,
 } from '../../../slices/currentPlanSlice';
 import { requirements } from './distributionFunctions';
-import { ExclamationIcon } from '@heroicons/react/outline';
 import { CheckCircleIcon } from '@heroicons/react/solid';
 import ReactTooltip from 'react-tooltip';
 import {
@@ -90,26 +89,26 @@ const CourseBar: FC<{
   /**
    * Returns UI for unstasified fine req course bar with satisfied credit count
    */
-  const getExclamationMark = () => (
-    <>
-      {!completed && (
-        <ExclamationIcon className="absolute w-5 h-5 transform -translate-x-1/2 -translate-y-1/2 stroke-2 left-1/2 top-1/2 stroke-white" />
-      )}
-    </>
-  );
+  // const getExclamationMark = () => (
+  //   <>
+  //     {!completed && (
+  //       <ExclamationIcon className="absolute w-5 h-5 transform -translate-x-1/2 -translate-y-1/2 stroke-2 left-1/2 top-1/2 stroke-white" />
+  //     )}
+  //   </>
+  // );
 
   /**
    * Wrapper for exclamation mark when credit count matches, but fine reqs are not fulfilled
    */
-  const exclamationMarkWrapper = () => (
-    <>{remainingCredits === 0 && !completed && <>{getExclamationMark()}</>}</>
-  );
+  // const exclamationMarkWrapper = () => (
+  //   <>{remainingCredits === 0 && !completed && <>{getExclamationMark()}</>}</>
+  // );
 
   return (
     <>
       <div
         className={clsx(
-          'flex flex-row text mb-1 rounded-lg whitespace-nowrap overflow-hidden overflow-ellipsis',
+          'flex flex-row text mb-1 rounded-lg whitespace-nowrap overflow-hidden overflow-ellipsis items-center',
           {
             'font-bold': general,
           },
@@ -117,6 +116,11 @@ const CourseBar: FC<{
         key={section}
       >
         {section}
+        <div>
+          {remainingCredits === 0 && completed ? (
+            <CheckCircleIcon className="w-4 h-5  ml-1 stroke-2" />
+          ) : null}
+        </div>
       </div>
 
       <div
@@ -142,15 +146,29 @@ const CourseBar: FC<{
               }`,
             }}
           />
-          {remainingCredits === 0 && completed ? (
+          {/* {remainingCredits === 0 && completed ? (
             <CheckCircleIcon className="absolute w-5 h-5 text-white transform -translate-x-1/2 -translate-y-1/2 stroke-2 left-1/2 top-1/2" />
           ) : (
-            <>{exclamationMarkWrapper()}</>
-          )}
-          <div className="absolute left-2 font-thin">{plannedCredits}</div>
-          <div className="absolute right-2 font-thin">
-            {maxCredits > plannedCredits && maxCredits - plannedCredits}
+            (() => (
+              <>
+                {remainingCredits === 0 && !completed
+                  ? (() => (
+                      <>
+                        {!completed ? (
+                          <ExclamationIcon className="absolute w-5 h-5 transform -translate-x-1/2 -translate-y-1/2 stroke-2 left-1/2 top-1/2 stroke-white" />
+                        ) : null}
+                      </>
+                    ))()
+                  : null}
+              </>
+            ))()
+          )} */}
+          <div className="absolute left-1/2 font-semibold -translate-x-1/2">
+            {plannedCredits + '/' + maxCredits}
           </div>
+          {/* <div className="absolute right-2 font-thin">
+            {maxCredits > plannedCredits ? maxCredits - plannedCredits : null}
+          </div> */}
         </div>
       </div>
     </>
