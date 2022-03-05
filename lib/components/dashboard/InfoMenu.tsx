@@ -321,17 +321,19 @@ const InfoMenu: FC = () => {
 
   return (
     <div className="fixed z-40 bg-red-100 right-0 flex flex-col justify-between mt-8 w-10 top-60">
-      <div className="my-auto transform -rotate-90">
-        <button
-          className="w-32 h-10 text-center text-white font-bold hover:bg-secondary bg-primary rounded focus:outline-none shadow hover:scale-105 transition duration-200 ease-in drop-shadow-xl"
-          onClick={() => {
-            setInfoOpen(!infoOpen);
-          }}
-        >
-          Plan Overview
-        </button>
-      </div>
-      {infoOpen || windowWidth > 2200 ? (
+      {windowWidth <= 2200 && (
+        <div className="my-auto transform -rotate-90">
+          <button
+            className="w-32 h-10 text-center text-white font-bold hover:bg-secondary bg-primary rounded focus:outline-none shadow hover:scale-105 transition duration-200 ease-in drop-shadow-xl"
+            onClick={() => {
+              setInfoOpen(!infoOpen);
+            }}
+          >
+            Plan Overview
+          </button>
+        </div>
+      )}
+      {(infoOpen || windowWidth > 2200) && (
         <div className="absolute z-50 right-14 -top-48 max-h-[75vh] bg-white bg-opacity-90 rounded shadow overflow-y-auto">
           {/* <InfoCards /> */}
           {(() => {
@@ -350,7 +352,7 @@ const InfoMenu: FC = () => {
               return <b className="m-10 h-80">Loading degree progress...</b>;
           })()}
         </div>
-      ) : null}
+      )}
     </div>
   );
 };
