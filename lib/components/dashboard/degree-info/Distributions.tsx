@@ -116,7 +116,8 @@ const Distributions: FC<{
       />{' '}
       {distributionBarsJSX}
       {/* M notes: distributionsBarsJSX is where the bars except total credits are created  */}
-      <Reviewers />
+      {/* Reviewers commented out while OOSE project is in progress*/}
+      {/* <Reviewers /> */}
     </div>
   );
 };
