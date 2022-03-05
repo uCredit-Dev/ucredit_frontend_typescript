@@ -13,6 +13,7 @@ import { Course, SISRetrievedCourse } from '../../../../resources/commonTypes';
 import ReactTooltip from 'react-tooltip';
 import { QuestionMarkCircleIcon } from '@heroicons/react/solid';
 import { NewspaperIcon } from '@heroicons/react/outline';
+import { selectPlan } from '../../../../slices/currentPlanSlice';
 
 /* 
   List of searched courses.
@@ -30,27 +31,14 @@ const SearchList: FC<{ searching: boolean }> = (props) => {
   const courses = useSelector(selectRetrievedCourses);
   const placeholder = useSelector(selectPlaceholder);
   const searchFilters = useSelector(selectSearchFilters);
+  const currentPlan = useSelector(selectPlan);
   const dispatch = useDispatch();
 
   let coursesPerPage = 10;
 
   // Updates pagination every time the searched courses change.
   useEffect(() => {
-    const SISFilteredCourses: SISRetrievedCourse[] = courses.filter(
-      (course: SISRetrievedCourse) => {
-        let valid = false;
-        course.versions.forEach((version) => {
-          if (
-            version.term === searchFilters.term + ' ' + searchFilters.year ||
-            (searchFilters.term === 'All' &&
-              version.term.includes(searchFilters.year.toString()))
-          ) {
-            valid = true;
-          }
-        });
-        return valid;
-      },
-    );
+    const SISFilteredCourses: SISRetrievedCourse[] = courses;
     // If coursesPerPage doesn't divide perfectly into total courses, we need one more page.
     const division = Math.floor(SISFilteredCourses.length / coursesPerPage);
     const pages =
@@ -60,7 +48,7 @@ const SearchList: FC<{ searching: boolean }> = (props) => {
     setPageCount(pages);
     setFilteredCourses(SISFilteredCourses);
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [courses]);
+  }, [courses, searchFilters]);
 
   /**
    * Generates a list of 10 retrieved course matching the search queries and page number.
@@ -79,11 +67,11 @@ const SearchList: FC<{ searching: boolean }> = (props) => {
         if (
           v.term === searchFilters.term + ' ' + searchFilters.year ||
           (searchFilters.term === 'All' &&
-            v.term.includes(searchFilters.year.toString()))
+            searchFilters.year === currentPlan.years[0].year)
         ) {
           toDisplay.push(
             <div
-              key={inspecting.number}
+              key={inspecting.number + v.term + versionNum}
               className="transition duration-200 ease-in transform hover:scale-105"
               onClick={() => setHideResults(true)}
             >
@@ -133,6 +121,51 @@ const SearchList: FC<{ searching: boolean }> = (props) => {
     }
   };
 
+  /**
+   * Gets the text for the results button.
+   */
+  const getResultsButtonText = () => {
+    if (!hideResults) {
+      return 'Hide Results';
+    } else {
+      return 'Show Results';
+    }
+  };
+
+  /**
+   * Gets search result pagination UI
+   */
+  const getPaginationUI = () =>
+    pageCount > 1 && (
+      <div className="flex flex-row justify-center w-full h-auto">
+        <Pagination pageCount={pageCount} handlePageClick={handlePageClick} />
+      </div>
+    );
+
+  const getSearchResultsUI = () =>
+    courses.length > 0 ? (
+      <>
+        <div className="flex flex-col w-full y-full">{courseList()}</div>
+        {getPaginationUI()}
+      </>
+    ) : (
+      <div className="flex flex-col items-center justify-center w-full mt-24">
+        {getSearchingUI()}
+      </div>
+    );
+
+  /**
+   * Gets loading search UI
+   */
+  const getSearchingUI = () =>
+    props.searching ? (
+      <img src="/img/loading.gif" alt="Searching..." className="h-10"></img>
+    ) : (
+      <div className="text-lg text-center text-gray-400">
+        No current search results.
+      </div>
+    );
+
   return (
     <>
       <div
@@ -141,22 +174,14 @@ const SearchList: FC<{ searching: boolean }> = (props) => {
       >
         <div className="flex flex-row">
           <div className="text-lg font-semibold">Search Results</div>{' '}
-          {window.innerWidth < 800 ? (
+          {window.innerWidth < 800 && (
             <button
               className="ml-2 focus:outline-none"
-              onClick={() => {
-                setHideResults(!hideResults);
-              }}
+              onClick={() => setHideResults(!hideResults)}
             >
-              {() => {
-                if (!hideResults) {
-                  return 'Hide Results';
-                } else {
-                  return 'Show Results';
-                }
-              }}
+              {getResultsButtonText()}
             </button>
-          ) : null}
+          )}
         </div>
         <div className="flex flex-row items-center">
           <div className="flex-grow mr-1">
@@ -182,44 +207,11 @@ const SearchList: FC<{ searching: boolean }> = (props) => {
           </div>
         </div>
       </div>
-      {!hideResults || window.innerWidth > 700 ? (
+      {(!hideResults || window.innerWidth > 700) && (
         <div className="w-full px-5 bg-gray-200 select-none py">
-          <div className="w-full h-full">
-            {(() =>
-              courses.length > 0 ? (
-                <>
-                  <div className="flex flex-col w-full y-full">
-                    {courseList()}
-                  </div>
-                  {(() =>
-                    pageCount > 1 ? (
-                      <div className="flex flex-row justify-center w-full h-auto">
-                        <Pagination
-                          pageCount={pageCount}
-                          handlePageClick={handlePageClick}
-                        />
-                      </div>
-                    ) : null)()}
-                </>
-              ) : (
-                <div className="flex flex-col items-center justify-center w-full mt-24">
-                  {(() =>
-                    props.searching ? (
-                      <img
-                        src="/img/loading.gif"
-                        alt="Searching..."
-                        className="h-10"
-                      ></img>
-                    ) : (
-                      <div className="text-lg text-center text-gray-400">
-                        No current search results.
-                      </div>
-                    ))()}
-                </div>
-              ))()}
-          </div>
+          <div className="w-full h-full">{getSearchResultsUI()}</div>
         </div>
-      ) : null}
+      )}
     </>
   );
 };

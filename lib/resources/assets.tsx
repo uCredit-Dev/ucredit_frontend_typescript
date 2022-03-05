@@ -24,6 +24,7 @@ export const guestUser: User = {
   affiliation: 'STUDENT',
   school: 'none',
   grade: 'AE UG Freshman',
+  whitelisted_plan_ids: [],
   plan_ids: [],
 };
 
@@ -535,7 +536,7 @@ const backendSearch = async (
         versionIndex = index;
       }
     });
-    store.dispatch(updateCourseCache([retrieved]));
+    store.dispatch(updateCourseCache(courses.data.data));
     resolve({
       index: indexNum,
       resp: {

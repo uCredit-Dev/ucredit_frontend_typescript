@@ -210,9 +210,7 @@ const VYearComponent: FC<{
         setDraggable(true);
         setDisplay(false);
       }}
-      onMouseEnter={() => {
-        setDraggable(false);
-      }}
+      onMouseEnter={() => setDraggable(false)}
     >
       <div className="flex flex-col w-full mt-1 font-medium max-w-yearheading h-yearheading">
         <div className="flex flex-row w-full text-white drop-shadow-lg">
@@ -223,9 +221,7 @@ const VYearComponent: FC<{
               value={yearName}
               className="flex-shrink w-full mt-auto font-semibold bg-transparent border-b border-transparent cursor-move select-none text-md focus:border-gray-400 focus:outline-none"
               onChange={handleYearNameChange}
-              onBlur={() => {
-                setEdittingName(false);
-              }}
+              onBlur={() => setEdittingName(false)}
             />
           ) : (
             <div className="flex-shrink w-full mt-auto font-semibold bg-transparent border-b border-transparent cursor-move select-none text-md focus:border-gray-400 focus:outline-none">

@@ -54,7 +54,6 @@ export const getBoolExpr = (
   }
   while (index < splitArr.length) {
     if (splitArr[index] === '(') {
-      // TODO: Could be optimized in splitRequirements?
       concat = '(';
     } else if (splitArr[index] === ')') {
       concat = ')';

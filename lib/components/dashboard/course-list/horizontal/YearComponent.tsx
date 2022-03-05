@@ -48,7 +48,7 @@ const YearComponent: FC<{
   const [editedName, setEditedName] = useState<boolean>(false);
   const [edittingName, setEdittingName] = useState<boolean>(false);
   const [collapse, setCollapse] = useState<boolean>(
-    year.name === 'AP Equivalents',
+    year.name === 'AP/Transfer',
   );
   const [totalCredits, setTotalCredits] = useState<number>(0);
   const [areaCredits, setAreaCredits] = useState({
@@ -223,7 +223,6 @@ const YearComponent: FC<{
 
   /**
    * Check if semester is valid for adding course
-   * TODO: Check for year matching
    */
   const checkSemester = (semesterName: string): boolean => {
     if (inspected !== 'None') {
@@ -342,9 +341,9 @@ const YearComponent: FC<{
    */
   const getSemesterWNull = () => (
     <>
-      {id !== 0 ? (
+      {id !== 0 && (
         <div className="flex flex-row">{getDisplayedSemesters(collapse)}</div>
-      ) : null}
+      )}
     </>
   );
 
@@ -388,9 +387,7 @@ const YearComponent: FC<{
               value={yearName}
               className="flex-grow mt-auto font-semibold bg-transparent border-b border-transparent cursor-move select-none text-md focus:border-gray-400 focus:outline-none"
               onChange={handleYearNameChange}
-              onBlur={() => {
-                setEdittingName(false);
-              }}
+              onBlur={() => setEdittingName(false)}
             />
           ) : (
             <div className="flex-grow mt-auto text-xl font-semibold bg-transparent border-b border-transparent cursor-move select-none focus:border-gray-400 focus:outline-none">
@@ -399,7 +396,7 @@ const YearComponent: FC<{
           )}
           <div className="flex flex-row gap-8">
             <div className="flex flex-row gap-3 mt-2 text-sm font-medium">
-              {areaCredits.N ? (
+              {areaCredits.N > 0 && (
                 <div className="flex flex-row gap-1">
                   {areaCredits.N}
                   <div
@@ -409,8 +406,8 @@ const YearComponent: FC<{
                     N
                   </div>
                 </div>
-              ) : null}
-              {areaCredits.Q ? (
+              )}
+              {areaCredits.Q > 0 && (
                 <div className="flex flex-row gap-1">
                   {areaCredits.Q}
                   <div
@@ -420,8 +417,8 @@ const YearComponent: FC<{
                     Q
                   </div>
                 </div>
-              ) : null}
-              {areaCredits.E ? (
+              )}
+              {areaCredits.E > 0 && (
                 <div className="flex flex-row gap-1">
                   {areaCredits.E}
                   <div
@@ -431,8 +428,8 @@ const YearComponent: FC<{
                     E
                   </div>
                 </div>
-              ) : null}
-              {areaCredits.H ? (
+              )}
+              {areaCredits.H > 0 && (
                 <div className="flex flex-row gap-1">
                   {areaCredits.H}
                   <div
@@ -442,8 +439,8 @@ const YearComponent: FC<{
                     H
                   </div>
                 </div>
-              ) : null}
-              {areaCredits.S ? (
+              )}
+              {areaCredits.S > 0 && (
                 <div className="flex flex-row gap-1">
                   {areaCredits.S}
                   <div
@@ -453,8 +450,8 @@ const YearComponent: FC<{
                     S
                   </div>
                 </div>
-              ) : null}
-              {areaCredits.W ? (
+              )}
+              {areaCredits.W > 0 && (
                 <div className="flex flex-row gap-1">
                   {areaCredits.W}
                   <div
@@ -464,18 +461,16 @@ const YearComponent: FC<{
                     W
                   </div>
                 </div>
-              ) : null}
+              )}
               <div className="font-bold">{totalCredits} Credits</div>
             </div>
             <DotsVerticalIcon
-              onClick={() => {
-                setDisplay(!display);
-              }}
+              onClick={() => setDisplay(!display)}
               className="w-7 stroke-2 cursor-pointer"
             />
           </div>
         </div>
-        {display ? (
+        {display && (
           <YearSettingsDropdown
             year={year}
             setToShow={setToShow}
@@ -484,7 +479,7 @@ const YearComponent: FC<{
             setEdittingName={setEdittingName}
             id={id}
           />
-        ) : null}
+        )}
       </div>
       {collapse ? (
         <div

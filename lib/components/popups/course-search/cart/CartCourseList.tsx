@@ -41,17 +41,8 @@ const CartCourseList: FC<{
 
   // Updates pagination every time the searched courses change.
   useEffect(() => {
-    console.log(courses);
     const filtered: SISRetrievedCourse[] = courses.filter(
       (course: SISRetrievedCourse) => {
-        // Why is this here? We should be searching for all years
-        // let valid = false;
-        // course.versions.forEach((version) => {
-        //   // This conditional has been changed
-        //   if (version.term.includes(defaultYearForCart)) {
-        //     valid = true;
-        //   }
-        // });
         if (!course.title.toLowerCase().includes(props.textFilter))
           return false;
         return true;
@@ -141,6 +132,72 @@ const CartCourseList: FC<{
     }
   };
 
+  /**
+   * Returns pagination ui.
+   */
+  const getPagination = () => (
+    <>
+      {pageCount > 1 && (
+        <div className="flex flex-row justify-center w-full h-auto">
+          <Pagination pageCount={pageCount} handlePageClick={handlePageClick} />
+        </div>
+      )}
+    </>
+  );
+
+  /**
+   * Returns text for results button
+   */
+  const getResultsButtonText = () => (
+    <>{!hideResults ? 'Hide Results' : 'Show Results'}</>
+  );
+
+  /**
+   * Gets UI for loading while searching for courses
+   */
+  const getLoadingUI = () => (
+    <>
+      {props.searching ? (
+        <img src="/img/loading.gif" alt="Searching..." className="h-10"></img>
+      ) : (
+        <div className="text-lg text-center text-gray-400">
+          No current search results.
+        </div>
+      )}
+    </>
+  );
+
+  /**
+   * Returns result list UI
+   */
+  const getResultListUI = () => (
+    <>
+      {courses.length > 0 ? (
+        <>
+          <div className="flex flex-col w-full y-full">{courseList()}</div>
+          {getPagination()}
+        </>
+      ) : (
+        <div className="flex flex-col items-center justify-center w-full mt-24">
+          {getLoadingUI()}
+        </div>
+      )}
+    </>
+  );
+
+  /**
+   * Gets search results UI
+   */
+  const getSearchResults = () => (
+    <>
+      {(!hideResults || window.innerWidth > 700) && (
+        <div className="w-full px-5 bg-gray-200 select-none py">
+          <div className="w-full h-full">{getResultListUI()}</div>
+        </div>
+      )}
+    </>
+  );
+
   return (
     <>
       <div
@@ -149,18 +206,14 @@ const CartCourseList: FC<{
       >
         <div className="flex flex-row">
           <div className="text-lg font-semibold">Search Results</div>{' '}
-          {window.innerWidth < 800 ? (
+          {window.innerWidth < 800 && (
             <button
               className="ml-2 focus:outline-none"
-              onClick={() => {
-                setHideResults(!hideResults);
-              }}
+              onClick={() => setHideResults(!hideResults)}
             >
-              {(() => (
-                <>{!hideResults ? 'Hide Results' : 'Show Results'}</>
-              ))()}
+              {getResultsButtonText()}
             </button>
-          ) : null}
+          )}
         </div>
         <div className="flex flex-row items-center">
           <div className="flex-grow mr-1">
@@ -198,57 +251,7 @@ const CartCourseList: FC<{
           </div>
         </div>
       </div>
-      {(() => (
-        <>
-          {!hideResults || window.innerWidth > 700 ? (
-            <div className="w-full px-5 bg-gray-200 select-none py">
-              <div className="w-full h-full">
-                {(() => (
-                  <>
-                    {courses.length > 0 ? (
-                      <>
-                        <div className="flex flex-col w-full y-full">
-                          {courseList()}
-                        </div>
-                        {(() => (
-                          <>
-                            {pageCount > 1 ? (
-                              <div className="flex flex-row justify-center w-full h-auto">
-                                <Pagination
-                                  pageCount={pageCount}
-                                  handlePageClick={handlePageClick}
-                                />
-                              </div>
-                            ) : null}
-                          </>
-                        ))()}
-                      </>
-                    ) : (
-                      <div className="flex flex-col items-center justify-center w-full mt-24">
-                        {(() => (
-                          <>
-                            {props.searching ? (
-                              <img
-                                src="/img/loading.gif"
-                                alt="Searching..."
-                                className="h-10"
-                              ></img>
-                            ) : (
-                              <div className="text-lg text-center text-gray-400">
-                                No current search results.
-                              </div>
-                            )}
-                          </>
-                        ))()}
-                      </div>
-                    )}
-                  </>
-                ))()}
-              </div>
-            </div>
-          ) : null}
-        </>
-      ))()}
+      {getSearchResults()}
     </>
   );
 };

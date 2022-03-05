@@ -4,6 +4,7 @@ import Select from 'react-select';
 import { Major } from '../../../resources/commonTypes';
 import { selectTotalCredits } from '../../../slices/currentPlanSlice';
 import CourseBar from './CourseBar';
+import Reviewers from './Reviewers/Reviewers';
 
 /**
  * Area in the right hand plan information that shows various elements of degree progression.
@@ -50,9 +51,7 @@ const Distributions: FC<{
         <div className="relative flex-grow">
           <button
             className="absolute bottom-1 right-0 underline focus:outline-none transform hover:scale-110 transition duration-200 ease-in"
-            onClick={() => {
-              setDistributionOpen(!distributionOpen);
-            }}
+            onClick={() => setDistributionOpen(!distributionOpen)}
           >
             {distributionOpen ? 'Hide' : 'Show'}
           </button>
@@ -70,7 +69,7 @@ const Distributions: FC<{
           hideSelectedOptions
         />
       )}
-      {disclaimer ? (
+      {disclaimer && (
         <div>
           <b> This feature is still being refined. </b> Degree criteria on
           uCredit is currently implemented by hand to match as closely to
@@ -96,7 +95,7 @@ const Distributions: FC<{
           to double check that your degree is being correctly tracked. Please
           report any issues in the feedback form.
         </div>
-      ) : null}
+      )}
       <CourseBar
         distribution={{
           name: 'Total Credits',
@@ -117,6 +116,7 @@ const Distributions: FC<{
       />{' '}
       {distributionBarsJSX}
       {/* M notes: distributionsBarsJSX is where the bars except total credits are created  */}
+      <Reviewers />
     </div>
   );
 };

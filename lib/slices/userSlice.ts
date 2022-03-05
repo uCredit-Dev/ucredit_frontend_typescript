@@ -11,10 +11,13 @@ type UserSlice = {
   planList: Plan[];
   courseCache: SISRetrievedCourse[];
   cacheNumbers: String[];
+  cacheTitles: String[];
   unfoundNumbers: String[];
   retrievedAll: boolean;
   importId: string;
+  reviewerPlanId: string;
   loginCheck: boolean;
+  loginRedirect: boolean;
 };
 
 const initialState: UserSlice = {
@@ -25,15 +28,19 @@ const initialState: UserSlice = {
     affiliation: 'STUDENT',
     grade: 'AE UG Freshman',
     school: '',
+    whitelisted_plan_ids: [],
     plan_ids: ['no plan'],
   },
   planList: [],
   courseCache: [],
   retrievedAll: false,
   cacheNumbers: [],
+  cacheTitles: [], // we need both cachenumbers and titles since some courses may have the same numbers but different titles
   unfoundNumbers: [],
   importId: null,
+  reviewerPlanId: '',
   loginCheck: false,
+  loginRedirect: false,
 };
 
 // Updates all user info from database. This function should be called after an axios get on the user routes.
@@ -67,8 +74,12 @@ export const userSlice = createSlice({
     ) => {
       if (!state.selectedAll) {
         for (let course of action.payload) {
-          if (!state.cacheNumbers.includes(course.number)) {
+          if (
+            !state.cacheNumbers.includes(course.number) ||
+            !state.cacheTitles.includes(course.title)
+          ) {
             state.cacheNumbers = [...state.cacheNumbers, course.number];
+            state.cacheTitles = [...state.cacheTitles, course.title];
             state.courseCache = [...state.courseCache, course];
           }
         }
@@ -93,8 +104,14 @@ export const userSlice = createSlice({
     updateImportID: (state: any, action: PayloadAction<String>) => {
       state.importId = action.payload;
     },
+    updateReviewerPlanID: (state: any, action: PayloadAction<String>) => {
+      state.reviewerPlanId = action.payload;
+    },
     updateLoginCheck: (state: any, action: PayloadAction<Boolean>) => {
       state.loginCheck = action.payload;
+    },
+    updateLoginRedirect: (state: any, action: PayloadAction<Boolean>) => {
+      state.loginRedirect = action.payload;
     },
     resetUser: (state: any) => {
       state.currentUser = initialState.currentUser;
@@ -112,7 +129,9 @@ export const {
   updateRetrievedAll,
   updateUnfoundNumbers,
   updateImportID,
+  updateReviewerPlanID,
   updateLoginCheck,
+  updateLoginRedirect,
   resetUser,
 } = userSlice.actions;
 
@@ -125,6 +144,10 @@ export const selectRetrievedAll = (state: RootState) => state.user.retrievedAll;
 export const selectUnfoundNumbers = (state: RootState) =>
   state.user.unfoundNumbers;
 export const selectImportID = (state: RootState) => state.user.importId;
+export const selectReviewerPlanId = (state: RootState) =>
+  state.user.reviewerPlanId;
 export const selectLoginCheck = (state: RootState) => state.user.loginCheck;
+export const selectLoginRedirect = (state: RootState) =>
+  state.user.loginRedirect;
 
 export default userSlice.reducer;

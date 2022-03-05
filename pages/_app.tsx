@@ -1,4 +1,4 @@
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { Provider } from 'react-redux';
 import { CookiesProvider } from 'react-cookie';
 import { NextComponentType } from 'next';
@@ -11,19 +11,28 @@ const MyApp: React.FC<{
   Component: NextComponentType;
   pageProps: any;
 }> = ({ Component, pageProps }) => {
+  const [isMounted, setIsMounted] = useState(false);
+
+  useEffect(() => {
+    setIsMounted(true);
+  }, []);
+
   useEffect(() => {
     ReactTooltip.rebuild();
   });
 
   return (
     <>
-      <ReactTooltip
-        id="godTip"
-        html={true}
-        className="max-w-sm"
-        place="top"
-        effect="solid"
-      />
+      {isMounted && (
+        <ReactTooltip
+          id="godTip"
+          html={true}
+          className="max-w-sm"
+          place="top"
+          effect="solid"
+          delayShow={250}
+        />
+      )}
       <CookiesProvider>
         <Provider store={store}>
           <Component {...pageProps} />

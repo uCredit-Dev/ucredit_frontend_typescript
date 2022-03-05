@@ -9,13 +9,11 @@ import {
   selectSearchFilters,
   updateSearchFilters,
 } from '../../../../slices/searchSlice';
+import { selectPlan } from '../../../../slices/currentPlanSlice';
 
 const creditFilters = ['Any', 0, 1, 2, 3, 4];
 const distributionFilters = ['N', 'S', 'H', 'Q', 'E'];
 const wiFilters = ['Any', 'Yes', 'No'];
-const date: Date = new Date();
-const year: number = date.getFullYear();
-const month: number = date.getMonth();
 
 /**
  * The component containing all search filters.
@@ -26,6 +24,7 @@ const Filters: FC<{
   // Set up redux dispatch and variables.
   const dispatch = useDispatch();
   const searchFilters = useSelector(selectSearchFilters);
+  const currentPlan = useSelector(selectPlan);
 
   useEffect(() => {
     ReactTooltip.rebuild();
@@ -217,17 +216,12 @@ const Filters: FC<{
    * @returns an array of options for the year select.
    */
   const getYears = (): { value: number; label: number }[] => {
-    const years =
-      month >= 9
-        ? [year + 1, year, year - 1, year - 2, year - 3]
-        : [year, year - 1, year - 2, year - 3];
-    return years.map((y: any) => ({
-      value: y,
-      label: y,
+    return currentPlan.years.map((y: any, i: number) => ({
+      value: y.year,
+      label: i === 0 ? 'All' : y.year,
     }));
   };
 
-  // TODO: We can probably modularize distribution bars.
   return (
     <>
       <div className="flex flex-row items-center justify-between w-full h-auto mb-2">
@@ -245,11 +239,14 @@ const Filters: FC<{
           onChange={handleYearFilterChange}
           value={{
             value: searchFilters.year,
-            label: searchFilters.year,
+            label:
+              searchFilters.year === currentPlan.years[0].year
+                ? 'All'
+                : searchFilters.year,
           }}
         />
       </div>
-      {props.showCriteria ? (
+      {props.showCriteria && (
         <div>
           <div
             className="flex flex-row items-center justify-between w-full h-auto mb-2"
@@ -417,7 +414,7 @@ const Filters: FC<{
             </div>
           </div>
         </div>
-      ) : null}
+      )}
     </>
   );
 };

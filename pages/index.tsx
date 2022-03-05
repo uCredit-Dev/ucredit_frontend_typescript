@@ -66,7 +66,6 @@ const Home: React.FC = () => {
     curPlan.years.forEach((year: Year) => {
       if (year.courses.length !== 0) {
         hasCourses = true;
-        return;
       }
     });
     return hasCourses;
@@ -79,29 +78,18 @@ const Home: React.FC = () => {
       curPlan._id !== 'noPlan' &&
       planHasCourses
     ) {
-      let total = 0;
-      let cum = 0;
-      let SISCourses: SISRetrievedCourse[] = [];
       setNeedsToLoad(true);
       axios
         .get(api + '/coursesByPlan/' + curPlan._id)
         .then((response) => {
           response.data.data.forEach((c: UserCourse) => {
-            total++;
             axios
               .get(api + '/search', {
                 params: { query: c.number },
                 // eslint-disable-next-line no-loop-func
               })
               .then((retrieved) => {
-                let SISRetrieved: SISRetrievedCourse = retrieved.data.data[0];
-
-                SISCourses.push(SISRetrieved);
-                cum++;
-                if (cum === total) {
-                  dispatch(updateCourseCache([...SISCourses]));
-                  setNeedsToLoad(false);
-                }
+                dispatch(updateCourseCache(retrieved.data.data));
               })
               .catch((err) => {
                 console.log(err);

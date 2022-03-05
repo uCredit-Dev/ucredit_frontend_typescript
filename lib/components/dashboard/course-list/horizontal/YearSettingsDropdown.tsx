@@ -182,13 +182,11 @@ const YearSettingsDropdown: FC<{
 
         <button
           className="hover:bg-gray-300 border-t border-gray-300 focus:outline-none"
-          onClick={() => {
-            setYearSelect(!yearSelect);
-          }}
+          onClick={() => setYearSelect(!yearSelect)}
         >
           Change Year
         </button>
-        {yearSelect ? (
+        {yearSelect && (
           <>
             <Select
               options={yearOptions}
@@ -197,14 +195,12 @@ const YearSettingsDropdown: FC<{
               value={{ label: year.year, value: year.year }}
             />
           </>
-        ) : null}
-        {id !== 0 ? (
+        )}
+        {id !== 0 && (
           <>
             <button
               className="hover:bg-gray-300 border-t border-gray-300 focus:outline-none"
-              onClick={() => {
-                setSemSelect(!semSelect);
-              }}
+              onClick={() => setSemSelect(!semSelect)}
             >
               Select Terms
             </button>
@@ -217,7 +213,7 @@ const YearSettingsDropdown: FC<{
               Remove
             </button>
           </>
-        ) : null}
+        )}
       </div>
     </div>
   );

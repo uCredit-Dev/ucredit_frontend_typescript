@@ -23,8 +23,8 @@ import {
 } from '../../../../slices/searchSlice';
 import { toast } from 'react-toastify';
 import {
-  selectCourseCache,
   selectPlanList,
+  updateCourseCache,
   updatePlanList,
 } from '../../../../slices/userSlice';
 import { api } from '../../../../resources/assets';
@@ -44,7 +44,6 @@ const CourseList: FC = () => {
   const droppables = useSelector(selectDroppables);
   const currentPlanCourses = useSelector(selectCurrentPlanCourses);
   const planList = useSelector(selectPlanList);
-  const courseCache = useSelector(selectCourseCache);
 
   // Component State setup.
   const [elements, setElements] = useState<JSX.Element[]>([]);
@@ -282,7 +281,6 @@ const CourseList: FC = () => {
       destination.year,
     );
 
-    // TODO: CLEANUP!!!!!
     if (sourceObj.year === null || destObj.year === null) return;
 
     // Defining relevant variables
@@ -307,10 +305,10 @@ const CourseList: FC = () => {
         params: { query: courseObj.number },
       });
       let retrievedCourses: SISRetrievedCourse[] = resp.data.data;
-
+      dispatch(updateCourseCache(retrievedCourses));
       if (
         retrievedCourses.length !== 0 &&
-        !checkDestValid(courseId, destination)
+        !checkDestValid(courseId, destination, retrievedCourses)
       ) {
         toast.error("Course isn't usually held this semester!");
       } else {
@@ -372,33 +370,25 @@ const CourseList: FC = () => {
    * @param dest - destination droppable
    * @returns true if valid destination, false if not
    */
-  const checkDestValid = (courseId: string, dest: DroppableType): boolean => {
+  const checkDestValid = (
+    courseId: string,
+    dest: DroppableType,
+    retrievedCourses: SISRetrievedCourse[],
+  ): boolean => {
     const userCourse: UserCourse = getUserCourse(courseId);
-    const sisVer: SISRetrievedCourse | null = getSISCourse(userCourse);
     let valid = false;
-    if (sisVer !== null) {
-      sisVer.terms.forEach((term: string) => {
-        if (term.split(' ')[0] === dest.semester) {
-          valid = true;
+    for (let sisVer of retrievedCourses) {
+      if (valid) break;
+      if (sisVer.number === userCourse.number) {
+        for (let term of sisVer.terms) {
+          if (term.split(' ')[0] === dest.semester) {
+            valid = true;
+            break;
+          }
         }
-      });
+      }
     }
     return valid;
-  };
-
-  /**
-   * Gets corresponding SIS course from the user course version.
-   * @param userCourse - the user course for which you want to get its SIS version of
-   * @returns a corresponding SISRetrievedCourse version of the user course if found, null if not
-   */
-  const getSISCourse = (userCourse: UserCourse): SISRetrievedCourse | null => {
-    let out: SISRetrievedCourse | null = null;
-    courseCache.forEach((course) => {
-      if (course.number === userCourse.number) {
-        out = course;
-      }
-    });
-    return out;
   };
 
   /**
@@ -418,6 +408,8 @@ const CourseList: FC = () => {
           ...c,
           year_id: destYear._id,
           term,
+          version:
+            term + ' ' + (term === 'Fall' ? destYear.year : destYear.year + 1),
         };
         const planCourseCopy = [...currentPlanCourses];
         planCourseCopy[index] = newCourse;

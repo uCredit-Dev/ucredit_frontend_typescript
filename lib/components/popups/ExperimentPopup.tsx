@@ -54,9 +54,7 @@ const ExperimentPopup: FC<{
               <button
                 key={index}
                 value={experiment.name}
-                onClick={() => {
-                  handleExperimentToggle(experiment._id);
-                }}
+                onClick={() => handleExperimentToggle(experiment._id)}
                 className={clsx(
                   'relative flex hover:bg-gray-400 border border-gray-300 rounded focus:outline-none shadow cursor-pointer transition duration-200 ease-in',
                   {

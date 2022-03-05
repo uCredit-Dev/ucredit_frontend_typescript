@@ -101,7 +101,7 @@ const Cart: FC<{ allCourses: SISRetrievedCourse[] }> = (props) => {
       areas: null,
       wi: null,
       term: 'All',
-      year: 2021, // TODO : what's hte default date here? whereis this gotten from?
+      year: 'All',
       department: null,
       tags: null,
       levels: null,
@@ -192,7 +192,7 @@ const Cart: FC<{ allCourses: SISRetrievedCourse[] }> = (props) => {
   const getParams = (extras: SearchExtras) => ({
     query: extras.query,
     department: extras.department,
-    term: extras.term === 'All' ? null : extras.term,
+    term: extras.term,
     areas: extras.areas,
     credits: extras.credits,
     wi: extras.wi,
@@ -215,11 +215,7 @@ const Cart: FC<{ allCourses: SISRetrievedCourse[] }> = (props) => {
         style={{
           opacity: searchOpacity === 100 ? 0.5 : 0,
         }}
-        onClick={() => {
-          // clicking off, should reset all things
-          dispatch(updateShowingCart(false));
-          // dispatch(clearSearch());
-        }}
+        onClick={() => dispatch(updateShowingCart(false))}
       ></div>
 
       {/* Search area */}
