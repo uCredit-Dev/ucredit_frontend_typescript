@@ -4,7 +4,7 @@ import Select from 'react-select';
 import { Major } from '../../../resources/commonTypes';
 import { selectTotalCredits } from '../../../slices/currentPlanSlice';
 import CourseBar from './CourseBar';
-import Reviewers from './Reviewers/Reviewers';
+// import Reviewers from './Reviewers/Reviewers';
 
 /**
  * Area in the right hand plan information that shows various elements of degree progression.
