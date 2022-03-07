@@ -52,10 +52,11 @@ const Login: React.FC = () => {
 
   const redirectToReferrer = () => {
     const referrer = router.query.referrer as string;
-    console.log(referrer);
     if (referrer) {
-      const [pathname, id] = referrer.split('-');
-      router.push(`/${pathname}/${id}`);
+      if (referrer.includes('-')) {
+        const [pathname, id] = referrer.split('-');
+        router.push(`/${pathname}/${id}`);
+      } else router.push(`/${referrer}`);
     } else router.push('/dashboard');
   };
 

@@ -18,6 +18,7 @@ type UserSlice = {
   reviewerPlanId: string;
   loginCheck: boolean;
   loginRedirect: boolean;
+  reviewerPlans: Plan[];
 };
 
 const initialState: UserSlice = {
@@ -41,17 +42,12 @@ const initialState: UserSlice = {
   reviewerPlanId: '',
   loginCheck: false,
   loginRedirect: false,
+  reviewerPlans: [],
 };
 
 // Updates all user info from database. This function should be called after an axios get on the user routes.
 function userUpdate(state: any, action: PayloadAction<User>) {
-  state.currentUser._id = action.payload._id;
-  state.currentUser.name = action.payload.name;
-  state.currentUser.email = action.payload.email;
-  state.currentUser.grade = action.payload.grade;
-  state.currentUser.school = action.payload.school;
-  state.currentUser.affiliation = action.payload.affiliation;
-  state.currentUser.plan_ids = action.payload.plan_ids;
+  state.currentUser = action.payload;
 }
 
 // Not being used as we can update database when user adds course, and call the reusable update user function for any updates to display
@@ -113,6 +109,9 @@ export const userSlice = createSlice({
     updateLoginRedirect: (state: any, action: PayloadAction<Boolean>) => {
       state.loginRedirect = action.payload;
     },
+    updateReviewerPlans: (state: any, action: PayloadAction<Plan[]>) => {
+      state.reviewerPlans = [...action.payload];
+    },
     resetUser: (state: any) => {
       state.currentUser = initialState.currentUser;
       state.planList = initialState.planList;
@@ -132,6 +131,7 @@ export const {
   updateReviewerPlanID,
   updateLoginCheck,
   updateLoginRedirect,
+  updateReviewerPlans,
   resetUser,
 } = userSlice.actions;
 
@@ -149,5 +149,7 @@ export const selectReviewerPlanId = (state: RootState) =>
 export const selectLoginCheck = (state: RootState) => state.user.loginCheck;
 export const selectLoginRedirect = (state: RootState) =>
   state.user.loginRedirect;
+export const selectReviewerPlans = (state: RootState) =>
+  state.user.reviewerPlans;
 
 export default userSlice.reducer;
