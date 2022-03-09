@@ -11,9 +11,11 @@ type UserSlice = {
   planList: Plan[];
   courseCache: SISRetrievedCourse[];
   cacheNumbers: String[];
+  cacheTitles: String[];
   unfoundNumbers: String[];
   retrievedAll: boolean;
   importId: string;
+  loginCheck: boolean;
 };
 
 const initialState: UserSlice = {
@@ -30,8 +32,10 @@ const initialState: UserSlice = {
   courseCache: [],
   retrievedAll: false,
   cacheNumbers: [],
+  cacheTitles: [], // we need both cachenumbers and titles since some courses may have the same numbers but different titles
   unfoundNumbers: [],
   importId: null,
+  loginCheck: false,
 };
 
 // Updates all user info from database. This function should be called after an axios get on the user routes.
@@ -65,8 +69,12 @@ export const userSlice = createSlice({
     ) => {
       if (!state.selectedAll) {
         for (let course of action.payload) {
-          if (!state.cacheNumbers.includes(course.number)) {
+          if (
+            !state.cacheNumbers.includes(course.number) ||
+            !state.cacheTitles.includes(course.title)
+          ) {
             state.cacheNumbers = [...state.cacheNumbers, course.number];
+            state.cacheTitles = [...state.cacheTitles, course.title];
             state.courseCache = [...state.courseCache, course];
           }
         }
@@ -91,6 +99,9 @@ export const userSlice = createSlice({
     updateImportID: (state: any, action: PayloadAction<String>) => {
       state.importId = action.payload;
     },
+    updateLoginCheck: (state: any, action: PayloadAction<Boolean>) => {
+      state.loginCheck = action.payload;
+    },
     resetUser: (state: any) => {
       state.currentUser = initialState.currentUser;
       state.planList = initialState.planList;
@@ -107,6 +118,7 @@ export const {
   updateRetrievedAll,
   updateUnfoundNumbers,
   updateImportID,
+  updateLoginCheck,
   resetUser,
 } = userSlice.actions;
 
@@ -119,5 +131,6 @@ export const selectRetrievedAll = (state: RootState) => state.user.retrievedAll;
 export const selectUnfoundNumbers = (state: RootState) =>
   state.user.unfoundNumbers;
 export const selectImportID = (state: RootState) => state.user.importId;
+export const selectLoginCheck = (state: RootState) => state.user.loginCheck;
 
 export default userSlice.reducer;

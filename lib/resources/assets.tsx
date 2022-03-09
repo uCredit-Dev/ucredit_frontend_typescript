@@ -51,19 +51,14 @@ export const getColors = function (
   }
 };
 
-// export const getCourses = (courseIds: string[]): Course[] => {
-//   const retrieved: Course[] = [];
-//   courseIds.forEach((id) => {
-//     // retrieve courses
-//     // if (id === testCourseFall._id) {
-//     //   retrieved.push(testCourseFall);
-//     // } else if (id === testCourseSpring._id) {
-//     //   retrieved.push(testCourseSpring);
-//     // }
-//   });
-
-//   return retrieved;
-// };
+export const checkLocalhost = (): boolean => {
+  if (
+    window.location.href.substring(0, 21) === 'http://localhost:3000' ||
+    window.location.href.substring(0, 22) === 'https://localhost:3000'
+  )
+    return true;
+  return false;
+};
 
 // On SIS, scrape the majors using the console, check Notion for more info
 export const AS_deps = [
@@ -312,14 +307,13 @@ export const processPrereqs = async (
   preReqs: any[],
   courseCache: SISRetrievedCourse[],
   planCourses: UserCourse[],
-): Promise<prereqCourses> => {
+): Promise<PrereqCourses> => {
   // Regex used to get an array of course numbers.
-  const regex: RegExp = /[A-Z]{2}\.[0-9]{3}\.[0-9]{3}/g;
+  const regex: RegExp = /[A-Z]{2}\.\d{3}\.\d{3}/g;
   const forwardSlashRegex: RegExp =
-    /[A-Z]{2}\.[0-9]{3}\.[0-9]{3}\/[A-Z]{2}\.[0-9]{3}\.[0-9]{3}/g; // e.g. EN.XXX.XXX/EN.XXX.XXX
-  const forwardSlashRegex2: RegExp =
-    /[A-Z]{2}\.[0-9]{3}\.[0-9]{3}\/[0-9]{3}\.[0-9]{3}/g; // e.g. EN.XXX.XXX/XXX.XXX
-  const forwardSlashRegex3: RegExp = /[A-Z]{2}\.[0-9]{3}\/[0-9]{3}\.[0-9]{3}/g; // e.g. EN.XXX/XXX.XXX
+    /[A-Z]{2}\.\d{3}\.\d{3}\/[A-Z]{2}\.\d{3}\.\d{3}/g; // e.g. EN.XXX.XXX/EN.XXX.XXX
+  const forwardSlashRegex2: RegExp = /[A-Z]{2}\.\d{3}\.\d{3}\/\d{3}\.\d{3}/g; // e.g. EN.XXX.XXX/XXX.XXX
+  const forwardSlashRegex3: RegExp = /[A-Z]{2}\.\d{3}\/\d{3}\.\d{3}/g; // e.g. EN.XXX/XXX.XXX
 
   let description: string = preReqs[0].Description;
   let expr: any = preReqs[0].Expression;
@@ -372,7 +366,7 @@ export const processPrereqs = async (
   });
 };
 
-export interface prereqCourses {
+export interface PrereqCourses {
   numNameList: any[];
   numList: RegExpMatchArray;
   expr: string;
@@ -391,8 +385,8 @@ export const getCourses = (
   regex: RegExp,
   courseCache: SISRetrievedCourse[],
   planCourses: UserCourse[],
-): Promise<prereqCourses> => {
-  return new Promise((resolve) => {
+): Promise<PrereqCourses> => {
+  return new Promise(async (resolve) => {
     // Gets an array of all courses in expression.
     let match = expr.match(regex);
     let numList: RegExpMatchArray = [];
@@ -408,69 +402,67 @@ export const getCourses = (
     for (let n = 0; n < numList.length; n++) {
       let num = numList[n];
       // eslint-disable-next-line no-loop-func
-      getCourse(num, courseCache, planCourses, n).then((retrievedCourse) => {
-        const outIndex = retrievedCourse.index;
-        let outNum = numList[outIndex];
-        if (retrievedCourse.resp !== null) {
+      const retrievedCourse = await getCourse(num, courseCache, planCourses, n);
+      const outIndex = retrievedCourse.index;
+      let outNum = numList[outIndex];
+      if (retrievedCourse.resp !== null) {
+        retrieved++;
+        numNameList[outIndex] =
+          outNum + outNum + ' ' + retrievedCourse.resp.title;
+        // num is added twice to distinquish which was the base course (refer to the case of EN.600 below) in the case that departments change numbers (600 to 601)
+      }
+      if (
+        retrievedCourse.resp === null &&
+        (outNum.match('EN.600') !== null || outNum.match('EN.550') !== null)
+      ) {
+        if (outNum.match('EN.600') !== null)
+          outNum = outNum.replace('EN.600', 'EN.601');
+        else if (outNum.match('EN.550') !== null)
+          outNum = outNum.replace('EN.550', 'EN.553');
+        const retrievedCourseDepChange = await getCourse(
+          outNum,
+          courseCache,
+          planCourses,
+          retrievedCourse.index,
+        );
+        const inIndex = retrievedCourseDepChange.index;
+        if (retrievedCourseDepChange.resp !== null) {
+          retrieved++;
+          // Append original num to front for later sorting.
+          numNameList[inIndex] =
+            outNum + outNum + ' ' + retrievedCourseDepChange.resp.title;
+        } else if (numNameList[inIndex] == null) {
+          retrieved++;
+          numNameList[inIndex] =
+            numList[inIndex] +
+            numList[inIndex] +
+            ' Has not been offered in the past 4 years or listed on SIS. Please click on the Prerequisites Description tab for full description.';
+        }
+        if (retrieved === numList.length) {
+          let out = {
+            numNameList: numNameList,
+            numList: numList,
+            expr: expr,
+          };
+          return resolve(out);
+        }
+      } else {
+        if (numNameList[outIndex] == null) {
           retrieved++;
           numNameList[outIndex] =
-            outNum + outNum + ' ' + retrievedCourse.resp.title;
-          // num is added twice to distinquish which was the base course (refer to the case of EN.600 below) in the case that departments change numbers (600 to 601)
+            numList[outIndex] +
+            numList[outIndex] +
+            ' Has not been offered in the past 4 years or listed on SIS. Please click on the Prerequisites Description tab for full description.';
         }
-        if (
-          retrievedCourse.resp === null &&
-          (outNum.match('EN.600') !== null || outNum.match('EN.550') !== null)
-        ) {
-          if (outNum.match('EN.600') !== null)
-            outNum = outNum.replace('EN.600', 'EN.601');
-          else if (outNum.match('EN.550') !== null)
-            outNum = outNum.replace('EN.550', 'EN.553');
-          getCourse(
-            outNum,
-            courseCache,
-            planCourses,
-            retrievedCourse.index,
-          ).then((retrievedCourseDepChange) => {
-            const inIndex = retrievedCourseDepChange.index;
-            if (retrievedCourseDepChange.resp !== null) {
-              retrieved++;
-              // Append original num to front for later sorting // TODO: We don't need this. Please look to removing this extraneous complexity in the code logic.
-              numNameList[inIndex] =
-                outNum + outNum + ' ' + retrievedCourseDepChange.resp.title;
-            } else if (numNameList[inIndex] == null) {
-              retrieved++;
-              numNameList[inIndex] =
-                numList[inIndex] +
-                numList[inIndex] +
-                ' Has not been offered in the past 4 years or listed on SIS. Please click on the Prerequisites Description tab for full description.';
-            }
-            if (retrieved === numList.length) {
-              let out = {
-                numNameList: numNameList,
-                numList: numList,
-                expr: expr,
-              };
-              return resolve(out);
-            }
-          });
-        } else {
-          if (numNameList[outIndex] == null) {
-            retrieved++;
-            numNameList[outIndex] =
-              numList[outIndex] +
-              numList[outIndex] +
-              ' Has not been offered in the past 4 years or listed on SIS. Please click on the Prerequisites Description tab for full description.';
-          }
-          if (retrieved === numList.length) {
-            let out = {
-              numNameList: numNameList,
-              numList: numList,
-              expr: expr,
-            };
-            return resolve(out);
-          }
+        if (retrieved === numList.length) {
+          let out = {
+            numNameList: numNameList,
+            numList: numList,
+            expr: expr,
+          };
+          return resolve(out);
         }
-      });
+      }
     }
   });
 };
@@ -489,8 +481,8 @@ export const getCourse = async (
   courseCache: SISRetrievedCourse[],
   allPlanCourses: UserCourse[],
   indexNum: number,
-): Promise<{ index: number; resp: Course | null }> => {
-  return new Promise((resolve) => {
+): Promise<{ index: number; resp: Course | null }> =>
+  new Promise(async (resolve) => {
     let out: Course | null = null;
     let userC: UserCourse | null = null;
 
@@ -517,38 +509,42 @@ export const getCourse = async (
       }
     }
     // Then pull from db.
-    if (out === null) {
-      axios
-        .get(api + '/search', {
-          params: { query: courseNumber },
-        })
-        .then((courses) => {
-          let retrieved: SISRetrievedCourse = courses.data.data[0];
-          if (retrieved === undefined) {
-            store.dispatch(updateUnfoundNumbers(courseNumber));
-            return resolve({ index: indexNum, resp: null });
-          }
-          let versionIndex = 0;
-          retrieved.versions.forEach((element, index) => {
-            if (userC === null) return;
-            if (element.term === userC.term) {
-              versionIndex = index;
-            }
-          });
-          store.dispatch(updateCourseCache([retrieved]));
-          out = {
-            ...retrieved,
-            ...retrieved.versions[versionIndex],
-          };
-          if (out !== null) {
-            return resolve({ index: indexNum, resp: out });
-          }
-        })
-        .catch((err) => console.log(err));
-    }
-    if (out !== null) return resolve(out);
+    return resolve(await backendSearch(courseNumber, indexNum, userC));
   });
-};
+
+const backendSearch = async (
+  courseNumber: string,
+  indexNum: number,
+  userC: UserCourse | null,
+): Promise<{ index: number; resp: Course }> =>
+  new Promise(async (resolve) => {
+    const courses: any = await axios
+      .get(api + '/search', {
+        params: { query: courseNumber },
+      })
+      .catch((err) => console.log(err));
+    if (courses === undefined) return Promise.reject();
+    let retrieved: SISRetrievedCourse = courses.data.data[0];
+    if (retrieved === undefined) {
+      store.dispatch(updateUnfoundNumbers(courseNumber));
+      return resolve({ index: indexNum, resp: null });
+    }
+    let versionIndex = 0;
+    retrieved.versions.forEach((element, index) => {
+      if (userC === null) return;
+      if (element.term === userC.term) {
+        versionIndex = index;
+      }
+    });
+    store.dispatch(updateCourseCache(courses.data.data));
+    resolve({
+      index: indexNum,
+      resp: {
+        ...retrieved,
+        ...retrieved.versions[versionIndex],
+      },
+    });
+  });
 
 /**
  * replaces the prereq expression with the course names
@@ -556,7 +552,7 @@ export const getCourse = async (
  * @param input - the array of numbers, course names, and prereq expr
  * @returns an array with the names split
  */
-const process = (input: prereqCourses) => {
+const process = (input: PrereqCourses) => {
   let numList = input.numList;
   let numNameList = input.numNameList;
   let expr: any = input.expr;
@@ -566,8 +562,7 @@ const process = (input: prereqCourses) => {
       numNameList[i].substr(10, numNameList[i].length),
     );
   }
-  const out = expr.split('^');
-  return out;
+  return expr.split('^');
 };
 
 /**
@@ -742,13 +737,18 @@ const processParenthesisStack = (
 // Takes parsed prereq array and then parses this array again to make OR sequences
 const parsePrereqsOr = (input: any, depth: number): any => {
   const orParsed: any[] = [];
+  let skip: boolean = false;
   // Group by ORs: Put elements connected by ORs as arrays starting with depth number (as an identifier). All other elements are treated as ands.
   // if OR, pop last element from orParsed. If it's a string, make a new array. If array, push the next element into this array. Put the array back into orParsed.
   // if not OR, push element into orParsed
   for (let i = 0; i < input.length; i++) {
+    if (skip) {
+      skip = false;
+      continue;
+    }
     if (input[i] === 'OR') {
       processOrCase(orParsed, input, depth, i);
-      i++;
+      skip = true;
     } else if (typeof input[i] === 'string') {
       // If number, just push in
       orParsed.push(input[i]);
@@ -850,7 +850,7 @@ const checkOldPrereqNumbers = (
   return false;
 };
 
-const semesters: String[] = ['fall', 'intersession', 'spring', 'summer'];
+const semesters: string[] = ['fall', 'intersession', 'spring', 'summer'];
 
 /**
  * Check's whether prereq is satisfied by the course in the past
@@ -989,9 +989,9 @@ export const checkAllPrereqs = (
  * @returns the major object from the name
  */
 export const getMajor = (major: string) => {
-  for (let i = 0; i < allMajors.length; i++) {
-    if (allMajors[i].degree_name === major) {
-      return allMajors[i];
+  for (let m of allMajors) {
+    if (m.degree_name === major) {
+      return m;
     }
   }
 };

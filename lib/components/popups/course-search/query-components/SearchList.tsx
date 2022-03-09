@@ -12,6 +12,8 @@ import ReactPaginate from 'react-paginate';
 import { Course, SISRetrievedCourse } from '../../../../resources/commonTypes';
 import ReactTooltip from 'react-tooltip';
 import { QuestionMarkCircleIcon } from '@heroicons/react/solid';
+import { NewspaperIcon } from '@heroicons/react/outline';
+import { selectPlan } from '../../../../slices/currentPlanSlice';
 
 /* 
   List of searched courses.
@@ -29,27 +31,14 @@ const SearchList: FC<{ searching: boolean }> = (props) => {
   const courses = useSelector(selectRetrievedCourses);
   const placeholder = useSelector(selectPlaceholder);
   const searchFilters = useSelector(selectSearchFilters);
+  const currentPlan = useSelector(selectPlan);
   const dispatch = useDispatch();
 
   let coursesPerPage = 10;
 
   // Updates pagination every time the searched courses change.
   useEffect(() => {
-    const SISFilteredCourses: SISRetrievedCourse[] = courses.filter(
-      (course: SISRetrievedCourse) => {
-        let valid = false;
-        course.versions.forEach((version) => {
-          if (
-            version.term === searchFilters.term + ' ' + searchFilters.year ||
-            (searchFilters.term === 'All' &&
-              version.term.includes(searchFilters.year.toString()))
-          ) {
-            valid = true;
-          }
-        });
-        return valid;
-      },
-    );
+    const SISFilteredCourses: SISRetrievedCourse[] = courses;
     // If coursesPerPage doesn't divide perfectly into total courses, we need one more page.
     const division = Math.floor(SISFilteredCourses.length / coursesPerPage);
     const pages =
@@ -59,7 +48,7 @@ const SearchList: FC<{ searching: boolean }> = (props) => {
     setPageCount(pages);
     setFilteredCourses(SISFilteredCourses);
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [courses]);
+  }, [courses, searchFilters]);
 
   /**
    * Generates a list of 10 retrieved course matching the search queries and page number.
@@ -78,11 +67,11 @@ const SearchList: FC<{ searching: boolean }> = (props) => {
         if (
           v.term === searchFilters.term + ' ' + searchFilters.year ||
           (searchFilters.term === 'All' &&
-            v.term.includes(searchFilters.year.toString()))
+            searchFilters.year === currentPlan.years[0].year)
         ) {
           toDisplay.push(
             <div
-              key={inspecting.number}
+              key={inspecting.number + v.term + versionNum}
               className="transition duration-200 ease-in transform hover:scale-105"
               onClick={() => setHideResults(true)}
             >
@@ -177,19 +166,7 @@ const SearchList: FC<{ searching: boolean }> = (props) => {
             }}
           >
             <div className="mr-1">Custom</div>
-            {placeholder ? (
-              <img
-                src="/svg/placeholder-filled.svg"
-                alt=""
-                className="w-4 h-4 stroke-2"
-              />
-            ) : (
-              <img
-                src="/svg/placeholder-empty.svg"
-                alt=""
-                className="w-4 h-4 stroke-2"
-              />
-            )}
+            <NewspaperIcon className="w-4 h-4 stroke-2" />
           </div>
         </div>
       </div>

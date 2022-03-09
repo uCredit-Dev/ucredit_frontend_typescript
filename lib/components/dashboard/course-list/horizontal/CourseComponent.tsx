@@ -97,10 +97,22 @@ const CourseComponent: FC<{
   /**
    * Deactivates the course component button menu and grab icon.
    */
-  const deactivate = () => {
+  const deactivate = (): void => {
     setHovered(false);
     setActivated(false);
     setDisplayPopup(false);
+  };
+
+  /**
+   * Checks if this course is a placeholder
+   */
+  const checkIfPlaceholder = (): boolean => {
+    for (let c of courseCache) {
+      if (course.number === c.number) {
+        return true;
+      }
+    }
+    return false;
   };
 
   return (
@@ -116,23 +128,6 @@ const CourseComponent: FC<{
               className=" z-20 -ml-6 mt-3 flex flex-row items-center justify-center p-0.5 w-6 h-6 text-white bg-red-300 hover:bg-red-600 rounded-md outline-none stroke-2 cursor-pointer transform hover:scale-110 transition duration-150 ease-in"
               onClick={deleteCourse}
             />
-            {/* {(() => (
-              <>
-                {!satisfied && !overridden ? (
-                  <>
-                    <WarningSvg
-                      data-tip="<p>Prereqs not yet satisfied</p><p>Press here to override.</p>"
-                      data-for="godTip"
-                      className={clsx(
-                        'mt-3 z-20 flex flex-row items-center justify-center p-0.5 w-6 h-6 text-white hover:bg-secondary bg-primary rounded-md outline-none stroke-2 cursor-pointer transform hover:scale-110 transition duration-150 ease-in',
-                        { '-ml-12': !satisfied },
-                      )}
-                      onClick={() => setDisplayPopup(true)}
-                    />
-                  </>
-                ) : null}
-              </>
-            ))()} */}
           </div>
         ) : null}
       </div>
@@ -155,7 +150,7 @@ const CourseComponent: FC<{
             <div className="truncate">{course.title}</div>
             <div className="flex flex-row gap-0.5">
               <div className="text-[10px]">{course.number}</div>
-              {!satisfied && !overridden ? (
+              {!satisfied && !overridden && checkIfPlaceholder() ? (
                 <ExclamationIcon className="flex items-center w-4 h-4 font-semibold text-red-400 rounded select-none" />
               ) : null}
             </div>

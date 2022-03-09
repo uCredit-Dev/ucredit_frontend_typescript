@@ -9,13 +9,11 @@ import {
   selectSearchFilters,
   updateSearchFilters,
 } from '../../../../slices/searchSlice';
+import { selectPlan } from '../../../../slices/currentPlanSlice';
 
 const creditFilters = ['Any', 0, 1, 2, 3, 4];
 const distributionFilters = ['N', 'S', 'H', 'Q', 'E'];
 const wiFilters = ['Any', 'Yes', 'No'];
-const date: Date = new Date();
-const year: number = date.getFullYear();
-const month: number = date.getMonth();
 
 /**
  * The component containing all search filters.
@@ -26,6 +24,7 @@ const Filters: FC<{
   // Set up redux dispatch and variables.
   const dispatch = useDispatch();
   const searchFilters = useSelector(selectSearchFilters);
+  const currentPlan = useSelector(selectPlan);
 
   useEffect(() => {
     ReactTooltip.rebuild();
@@ -36,33 +35,35 @@ const Filters: FC<{
    * @param event - the event sent when handling credit dropdown
    */
   const handleCreditFilterChange = (event: any): void => {
-    // let credits = "";
-    // event.forEach((c: { label: string; value: string }) => {
-    //   credits = credits.concat(c.label);
-    // });
-    let credits = event.value;
+    let credits = '';
+    event.forEach((c: { label: string; value: string }, i: number) => {
+      if (i !== 0) credits = credits.concat('|');
+      credits = credits.concat(c.label);
+    });
+    // let credits = event.value;
     const params: { filter: FilterType; value: any } = {
       filter: 'credits',
-      value: credits,
-      // value: credits.length === 0 ? null : credits.toString(),
+      // value: credits,
+      value: credits.length === 0 ? null : credits.toString(),
     };
     dispatch(updateSearchFilters(params));
   };
 
   /**
-   * Update searching filter state for distributions.
-   * @param event - the event sent when handling distribution dropdown
+   * Update searching filter state for areas.
+   * @param event - the event sent when handling area dropdown
    */
-  const handleDistributionFilterChange = (event: any): void => {
+  const handleAreaFilterChange = (event: any): void => {
     let areas: string = '';
-    // event.forEach((a: { label: string; value: string }) => {
-    //   areas = areas.concat(a.label);
-    // });
-    areas = event.value;
+    event.forEach((a: { label: string; value: string }, i: number) => {
+      if (i !== 0) areas = areas.concat('|');
+      areas = areas.concat(a.label);
+    });
+    // areas = event.value;
     const params: { filter: FilterType; value: any } = {
       filter: 'distribution',
-      value: areas,
-      // value: areas.length === 0 ? null : areas,
+      // value: areas,
+      value: areas.length === 0 ? null : areas,
     };
     dispatch(updateSearchFilters(params));
   };
@@ -126,18 +127,16 @@ const Filters: FC<{
    * @param event - the event sent when handling tag dropdown
    */
   const handleTagsFilterChange = (event: any): void => {
-    // let tags = "";
-    // event.forEach((tag: { label: string; value: string }, i: number) => {
-    //   tags = tags.concat(tag.label);
-    //   if (i < event.length - 1) {
-    //     tags = tags.concat("|");
-    //   }
-    // });
-    let tags = event.value ? event.value.toString() : null;
+    let tags = '';
+    event.forEach((tag: { label: string; value: string }, i: number) => {
+      tags = tags.concat(tag.label);
+      if (i < event.length - 1) {
+        tags = tags.concat('|');
+      }
+    });
     const params: { filter: FilterType; value: any } = {
       filter: 'tags',
-      // value: tags.length === 0 ? null : tags,
-      value: tags,
+      value: tags.length === 0 ? null : tags,
     };
     dispatch(updateSearchFilters(params));
   };
@@ -146,20 +145,20 @@ const Filters: FC<{
    * Update searching filter state for level.
    * @param event - the event sent when handling upper/lower level dropdown
    */
-  // const handleLevelFilterChange = (event: any): void => {
-  //   let levels = "";
-  //   event.forEach((level: { label: string; value: string }, i: number) => {
-  //     levels = levels.concat(level.label);
-  //     if (i < event.length - 1) {
-  //       levels = levels.concat("|");
-  //     }
-  //   });
-  //   const params: { filter: FilterType; value: any } = {
-  //     filter: "levels",
-  //     value: levels.length === 0 ? null : levels,
-  //   };
-  //   dispatch(updateSearchFilters(params));
-  // };
+  const handleLevelFilterChange = (event: any): void => {
+    let levels = '';
+    event.forEach((level: { label: string; value: string }, i: number) => {
+      levels = levels.concat(level.label);
+      if (i < event.length - 1) {
+        levels = levels.concat('|');
+      }
+    });
+    const params: { filter: FilterType; value: any } = {
+      filter: 'levels',
+      value: levels.length === 0 ? null : levels,
+    };
+    dispatch(updateSearchFilters(params));
+  };
 
   /**
    * Update searching filter state for year.
@@ -203,27 +202,23 @@ const Filters: FC<{
    * Gets search filter level as a string
    * @returns a level string (either upper or lower level undergraduate)
    */
-  // const getLevelString = (): string => {
-  //   return (
-  //     "Selected " +
-  //     (searchFilters.levels !== null
-  //       ? searchFilters.levels.split("|").map((level) => " " + level)
-  //       : "nothing")
-  //   );
-  // };
+  const getLevelString = (): string => {
+    return (
+      'Selected ' +
+      (searchFilters.levels !== null
+        ? searchFilters.levels.split('|').map((level) => ' ' + level)
+        : 'nothing')
+    );
+  };
 
   /**
    * Gets array of years to display in the filters
    * @returns an array of options for the year select.
    */
   const getYears = (): { value: number; label: number }[] => {
-    const years =
-      month >= 9
-        ? [year + 1, year, year - 1, year - 2, year - 3]
-        : [year, year - 1, year - 2, year - 3];
-    return years.map((y: any) => ({
-      value: y,
-      label: y,
+    return currentPlan.years.map((y: any, i: number) => ({
+      value: y.year,
+      label: i === 0 ? 'All' : y.year,
     }));
   };
 
@@ -245,7 +240,10 @@ const Filters: FC<{
           onChange={handleYearFilterChange}
           value={{
             value: searchFilters.year,
-            label: searchFilters.year,
+            label:
+              searchFilters.year === currentPlan.years[0].year
+                ? 'All'
+                : searchFilters.year,
           }}
         />
       </div>
@@ -285,28 +283,19 @@ const Filters: FC<{
             Credits
             <Select
               onChange={handleCreditFilterChange}
-              // isMulti
+              isMulti
               options={[
                 ...creditFilters.map((credits: any) => ({
                   value: credits,
                   label: credits,
                 })),
               ]}
-              // value={(() =>
-              //   searchFilters.credits !== null
-              //     ? searchFilters.credits
-              //         .split("")
-              //         .map((c) => ({ label: c, value: c }))
-              //     : []
-              // )()}
-              value={{
-                value:
-                  searchFilters.credits === null ? null : searchFilters.credits,
-                label:
-                  searchFilters.credits === null
-                    ? 'Any'
-                    : searchFilters.credits,
-              }}
+              value={(() =>
+                searchFilters.credits !== null
+                  ? searchFilters.credits
+                      .split('|')
+                      .map((c) => ({ label: c, value: c }))
+                  : [])()}
               className="w-40 rounded outline-none"
             />
           </div>
@@ -328,7 +317,7 @@ const Filters: FC<{
               />
             </div>
             <Select
-              // isMulti
+              isMulti
               options={[
                 { label: 'Any', value: null },
                 ...distributionFilters.map((distribution: any) => ({
@@ -337,20 +326,13 @@ const Filters: FC<{
                 })),
               ]}
               className="w-40 rounded outline-none"
-              onChange={handleDistributionFilterChange}
-              // value={(() =>
-              //   searchFilters.distribution !== null
-              //     ? searchFilters.distribution
-              //         .split("")
-              //         .map((distr) => ({ label: distr, value: distr }))
-              //     : [])()}
-              value={{
-                value: searchFilters.distribution,
-                label:
-                  searchFilters.distribution === null
-                    ? 'Any'
-                    : searchFilters.distribution,
-              }}
+              onChange={handleAreaFilterChange}
+              value={(() =>
+                searchFilters.distribution !== null
+                  ? searchFilters.distribution
+                      .split('|')
+                      .map((distr) => ({ label: distr, value: distr }))
+                  : [])()}
             />
           </div>
           <div className="flex flex-row items-center justify-between w-full h-auto mb-2">
@@ -392,24 +374,19 @@ const Filters: FC<{
                 ]}
                 className="w-40 rounded outline-none"
                 onChange={handleTagsFilterChange}
-                // value={(() =>
-                //   searchFilters.tags !== null
-                //     ? searchFilters.tags
-                //         .split("|")
-                //         .map((tag) => ({ label: tag, value: tag }))
-                //     : [])()}
-                // isMulti
-                value={{
-                  label:
-                    searchFilters.tags === null ? 'Any' : searchFilters.tags,
-                  value: searchFilters.tags,
-                }}
+                value={(() =>
+                  searchFilters.tags !== null
+                    ? searchFilters.tags
+                        .split('|')
+                        .map((tag) => ({ label: tag, value: tag }))
+                    : [])()}
+                isMulti
               />
             </div>
           </div>{' '}
-          {/* <div
+          <div
             className="flex flex-row items-center justify-between w-full h-auto mb-2"
-            data-tip={"course level of the searched courses, eg Upper Level"}
+            data-tip={'course level of the searched courses, eg Upper Level'}
             data-for="godTip"
           >
             Level
@@ -417,8 +394,9 @@ const Filters: FC<{
               <Select
                 options={[
                   ...[
-                    "Upper Level Undergraduate",
-                    "Lower Level Undergraduate",
+                    'Upper Level Undergraduate',
+                    'Lower Level Undergraduate',
+                    'Independent Academic Work',
                   ].map((level: any) => ({
                     value: level,
                     label: level,
@@ -429,13 +407,13 @@ const Filters: FC<{
                 value={(() =>
                   searchFilters.levels !== null
                     ? searchFilters.levels
-                        .split("|")
+                        .split('|')
                         .map((level) => ({ label: level, value: level }))
                     : [])()}
                 isMulti
               />
             </div>
-          </div> */}
+          </div>
         </div>
       ) : null}
     </>

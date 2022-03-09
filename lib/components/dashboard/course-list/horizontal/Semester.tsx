@@ -134,9 +134,16 @@ const Semester: FC<{
    */
   const getCreditString = (): string => {
     let string = `<div>${totalCredits} Credits</div>`;
-    if (totalCredits < 12) string += '\nMore than 12 credits required!';
+    if (
+      (semesterName !== 'Intersession' && totalCredits < 12) ||
+      (semesterName === 'Intersession' && totalCredits < 3)
+    )
+      string += `\nMore than ${
+        semesterName !== 'Intersession' ? 12 : 3
+      } credits required!`;
     else if (totalCredits > 18)
-      string += '\nCritical credit count reached! Check with your advisor!';
+      string +=
+        '\nCritical credit count reached (you seem to be taking a lot of credits)! Check with your advisor!';
     return string;
   };
 
@@ -271,10 +278,25 @@ const Semester: FC<{
         <>
           <div
             className={clsx(
-              { 'bg-red-200': totalCredits < 12 },
-              { 'bg-yellow-200': totalCredits > 18 },
               {
-                'bg-green-200': totalCredits <= 18 && totalCredits >= 12,
+                'bg-red-200':
+                  (totalCredits < 12 && semesterName !== 'Intersession') ||
+                  totalCredits < 3,
+              },
+              {
+                'bg-yellow-200':
+                  (totalCredits > 18 && semesterName !== 'Intersession') ||
+                  (totalCredits > 6 && semesterName === 'Intersession'),
+              },
+              {
+                'bg-green-200':
+                  (totalCredits <= 18 &&
+                    totalCredits >= 12 &&
+                    semesterName !== 'Intersession') ||
+                  (totalCredits <= 6 &&
+                    totalCredits >= 3 &&
+                    semesterName === 'Intersession') ||
+                  semesterName === 'All',
               },
               ' flex flex-row items-center justify-center ml-1 px-1 w-auto text-black text-xs bg-white rounded',
             )}
@@ -353,8 +375,9 @@ const Semester: FC<{
     <>
       {openAPInfoBox ? (
         <div className="absolute p-2 -mt-48 -ml-6 bg-gray-100 rounded shadow select-text w-72">
-          These are courses transferred over from AP tests that you've taken!
-          Find out equivalent courses your scores cover for{' '}
+          These are courses transferred over from AP tests and other college
+          courses that you've taken! Find out equivalent courses your scores
+          cover for{' '}
           <a
             className="font-bold text-blue-400 underline"
             target="_blank"

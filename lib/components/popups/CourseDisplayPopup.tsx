@@ -57,15 +57,19 @@ const CourseDisplayPopup: FC = () => {
       let found = false;
       courseCache.forEach((c: SISRetrievedCourse) => {
         if (c.number === courseToShow.number) {
-          const inspectedVersion: Course = {
-            title: c.title,
-            number: c.number,
-            ...c.versions[0],
-          };
-          dispatch(updateInspectedCourse(c));
-          dispatch(updateInspectedVersion(inspectedVersion));
-          dispatch(updatePlaceholder(false));
-          found = true;
+          c.versions.forEach((v: any, index: number) => {
+            if (v.term === courseToShow.version) {
+              const inspectedVersion: Course = {
+                title: c.title,
+                number: c.number,
+                ...c.versions[index],
+              };
+              dispatch(updateInspectedCourse(c));
+              dispatch(updateInspectedVersion(inspectedVersion));
+              dispatch(updatePlaceholder(false));
+              found = true;
+            }
+          });
         }
       });
       if (!found) {
@@ -73,7 +77,7 @@ const CourseDisplayPopup: FC = () => {
           title: courseToShow.title,
           number: courseToShow.number,
           areas: courseToShow.area,
-          term: courseToShow.term,
+          term: courseToShow.version,
           school: 'none',
           department: 'none',
           credits: courseToShow.credits.toString(),
