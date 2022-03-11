@@ -38,6 +38,7 @@ import GenerateNewPlan from '../../resources/GenerateNewPlan';
 import LoadingPage from '../LoadingPage';
 import HandlePlanShareDummy from './HandlePlanShareDummy';
 import HandleUserInfoSetupDummy from './HandleUserInfoSetupDummy';
+import { DashboardMode } from '../../types';
 
 /**
  * The dashboard that displays the user's plan.
@@ -146,7 +147,7 @@ const Dashboard: React.FC = () => {
               notifHandler={setShowNotif}
             />
           )}
-          {showHeader && <UserSection />}
+          {showHeader && <UserSection mode={DashboardMode.Planning} />}
           <div className="flex-grow w-full">
             <div className="flex flex-col w-full">
               <div className="flex flex-row thin:flex-wrap-reverse mt-[5rem] w-full h-full">

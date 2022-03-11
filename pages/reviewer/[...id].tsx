@@ -54,7 +54,7 @@ const ReviewerAdd: React.FC = () => {
           reviewerPlanId,
           user._id,
           (status: number) => {
-            if (status === 400)
+            if (status === 402)
               toast.error('Reviewer already added for this plan');
             else if (status === 200) toast.success('Imported reviewer plan!');
             else toast.error('Invalid link');

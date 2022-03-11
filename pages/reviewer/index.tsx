@@ -8,6 +8,8 @@ import {
   selectUser,
   updateReviewerPlans,
 } from '../../lib/slices/userSlice';
+import { DashboardMode } from '../../lib/types';
+import { Reviewee, Search } from '../../lib/components/reviewer';
 
 const Reviewer: React.FC = () => {
   const router = useRouter();
@@ -30,25 +32,31 @@ const Reviewer: React.FC = () => {
     const { _id } = user;
     if (_id === 'noUser' || _id === 'guestUser') return;
     (async () => {
-      const list = [];
+      const plansByUser = new Map();
       for (const planId of user.whitelisted_plan_ids) {
         const res = await userService.getPlan(planId);
-        list.push(res.data);
+        const data = res.data;
+        const user = data.user_id;
+        const plans = plansByUser.get(user) || [];
+        plansByUser.set(user, [...plans, data]);
       }
-      dispatch(updateReviewerPlans(list));
+      dispatch(updateReviewerPlans([...plansByUser]));
     })();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [user]);
 
   return (
     <div>
-      <UserSection />
-      <div className="flex flex-col items-center w-screen h-screen pt-20 bg-white divide-y">
-        {reviewerPlans.map(({ _id, name, user_id }) => (
-          <div key={_id} className="">
-            <p>{name}</p>
-            <p>{user_id}</p>
-          </div>
+      <UserSection mode={DashboardMode.Advising} />
+      <div className="pt-24 text-black bg-[#eff2f5] font-bold text-xl md:px-[250px] pb-4">
+        Reviewees
+      </div>
+      <div className="md:px-[250px] bg-[#eff2f5] pb-3 w-screen">
+        <Search />
+      </div>
+      <div className="flex flex-col items-center w-screen h-screen bg-[#eff2f5] md:px-[250px] gap-2 overflow-y-auto">
+        {reviewerPlans.map((plans) => (
+          <Reviewee key={plans[0]} userId={plans[0]} plans={plans[1]} />
         ))}
       </div>
     </div>
