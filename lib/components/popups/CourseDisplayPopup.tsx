@@ -181,7 +181,7 @@ const CourseDisplayPopup: FC = () => {
     (newYears: Year[], newUserCourse: UserCourse) =>
     (year: Year): void => {
       if (courseToShow !== null && year._id === courseToShow.year_id) {
-        const yCourses = [...year.courses, newUserCourse._id];
+        const yCourses = [...year.courses, newUserCourse];
         newYears.push({ ...year, courses: yCourses });
       } else {
         newYears.push(year);

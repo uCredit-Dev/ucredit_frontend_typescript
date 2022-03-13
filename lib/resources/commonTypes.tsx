@@ -84,7 +84,7 @@ export type UserCourse = {
 export type Year = {
   _id: string;
   name: string;
-  courses: string[];
+  courses: UserCourse[];
   plan_id: string;
   user_id: string;
   year: number;
