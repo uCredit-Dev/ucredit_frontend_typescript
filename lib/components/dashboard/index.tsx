@@ -38,11 +38,17 @@ import GenerateNewPlan from '../../resources/GenerateNewPlan';
 import LoadingPage from '../LoadingPage';
 import HandlePlanShareDummy from './HandlePlanShareDummy';
 import HandleUserInfoSetupDummy from './HandleUserInfoSetupDummy';
+import { DashboardMode } from '../../types';
+import { Plan } from '../../resources/commonTypes';
+
+interface Props {
+  plan: Plan;
+}
 
 /**
  * The dashboard that displays the user's plan.
  */
-const Dashboard: React.FC = () => {
+const Dashboard: React.FC<Props> = ({ plan }) => {
   // Redux setup.
   const user = useSelector(selectUser);
   const loginCheck = useSelector(selectLoginCheck);
@@ -146,7 +152,7 @@ const Dashboard: React.FC = () => {
               notifHandler={setShowNotif}
             />
           )}
-          {showHeader && <UserSection />}
+          {showHeader && <UserSection mode={DashboardMode.Planning} />}
           <div className="flex-grow w-full">
             <div className="flex flex-col w-full">
               <div className="flex flex-row thin:flex-wrap-reverse mt-[5rem] w-full h-full">
@@ -172,7 +178,7 @@ const Dashboard: React.FC = () => {
         </div>
       )}
       <GenerateNewPlan />
-      <HandleUserInfoSetupDummy />
+      <HandleUserInfoSetupDummy plan={plan} />
       <HandlePlanShareDummy />
     </>
   );

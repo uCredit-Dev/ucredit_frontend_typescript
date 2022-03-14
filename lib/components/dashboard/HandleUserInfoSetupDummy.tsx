@@ -8,10 +8,14 @@ import { selectUser, updatePlanList } from '../../slices/userSlice';
 import { api } from '../../resources/assets';
 import { updateAddingPlanStatus } from '../../slices/popupSlice';
 
+interface Props {
+  plan: Plan;
+}
+
 /**
  * Handles dashboard user entry and login logic.
  */
-const HandleUserInfoSetupDummy: React.FC = () => {
+const HandleUserInfoSetupDummy: React.FC<Props> = ({ plan }) => {
   // Redux setup
   const dispatch = useDispatch();
   const user = useSelector(selectUser);
@@ -28,23 +32,27 @@ const HandleUserInfoSetupDummy: React.FC = () => {
   // Gets all users's plans and updates state everytime a new user is chosen.
   useEffect(() => {
     if (user._id !== 'noUser' && user._id !== 'guestUser') {
-      axios
-        .get(api + '/plansByUser/' + user._id)
-        .then((retrieved) => {
-          processRetrievedPlans(retrieved.data.data);
-        })
-        .catch((err) => {
-          if (user._id === 'guestUser') {
-            console.log(
-              'In guest user! This is expected as there are no users with this id.',
-            );
-          } else {
-            console.log('ERROR:', err);
-          }
-        });
+      if (!plan) {
+        axios
+          .get(api + '/plansByUser/' + user._id)
+          .then((retrieved) => {
+            processRetrievedPlans(retrieved.data.data);
+          })
+          .catch((err) => {
+            if (user._id === 'guestUser') {
+              console.log(
+                'In guest user! This is expected as there are no users with this id.',
+              );
+            } else {
+              console.log('ERROR:', err);
+            }
+          });
+      } else {
+        processRetrievedPlans(plan);
+      }
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [user._id]);
+  }, [user._id, plan]);
 
   const processRetrievedPlans = async (retrievedData: any): Promise<void> => {
     const retrievedPlans: Plan[] = retrievedData.map((plan: any) => ({

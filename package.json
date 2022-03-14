@@ -3,6 +3,7 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
+    "@headlessui/react": "^1.5.0",
     "@heroicons/react": "^1.0.5",
     "@n8tb1t/use-scroll-position": "^2.0.3",
     "@reduxjs/toolkit": "^1.6.1",
@@ -46,7 +47,7 @@
     "start:prod": "next start",
     "lint": "next lint",
     "test": "react-scripts test",
-    "//":  "commented out to pass sonar report: test:ci: react-scripts test --testResultsProcessor ./node_modules/jest-sonar-reporter --collectCoverage --watchAll=false",
+    "//": "commented out to pass sonar report: test:ci: react-scripts test --testResultsProcessor ./node_modules/jest-sonar-reporter --collectCoverage --watchAll=false",
     "coverage": "npm run test -- --coverage ."
   },
   "eslintConfig": {
@@ -85,9 +86,9 @@
     "@types/typescript": "^2.0.0",
     "@types/webpack-env": "^1.16.3",
     "autoprefixer": "^10.4.0",
+    "jest-sonar-reporter": "^2.0.0",
     "mini-css-extract-plugin": "2.5.3",
     "msw": "^0.38.1",
-    "jest-sonar-reporter": "^2.0.0",
     "postcss": "^8.4.4",
     "prettier": "2.5.1",
     "tailwindcss": "^3.0.1"

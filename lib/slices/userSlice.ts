@@ -109,7 +109,7 @@ export const userSlice = createSlice({
     updateLoginRedirect: (state: any, action: PayloadAction<Boolean>) => {
       state.loginRedirect = action.payload;
     },
-    updateReviewerPlans: (state: any, action: PayloadAction<Plan[]>) => {
+    updateReviewerPlans: (state: any, action: PayloadAction<Plan[][]>) => {
       state.reviewerPlans = [...action.payload];
     },
     resetUser: (state: any) => {

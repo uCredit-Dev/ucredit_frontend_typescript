@@ -21,7 +21,7 @@ const getPlan = (planId: string) => {
 
 const getUser = (username: string) => {
   return get(`${apiUrl}/user?username=${username}`, true).then((res) =>
-    res.json(),
+    handleResponse(res),
   );
 };
 

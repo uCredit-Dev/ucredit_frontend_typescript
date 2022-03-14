@@ -2,18 +2,29 @@ import Dashboard from '../lib/components/dashboard/index';
 import Head from 'next/head';
 import { useSelector } from 'react-redux';
 import { selectUser } from '../lib/slices/userSlice';
-import { useEffect } from 'react';
-import { User } from '../lib/resources/commonTypes';
+import { useEffect, useState } from 'react';
+import { Plan, User } from '../lib/resources/commonTypes';
 import { useRouter } from 'next/router';
+import { userService } from '../lib/services';
 
 const Dash: React.FC = () => {
   const user: User = useSelector(selectUser);
   const router = useRouter();
+  const [plan, setPlan] = useState<Plan>(null);
 
   useEffect(() => {
     if (user._id === 'noUser') router.push('/login');
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
+
+  useEffect(() => {
+    (async () => {
+      try {
+        const data = await userService.getPlan(router.query.plan as string);
+        setPlan(data.data);
+      } catch (e) {}
+    })();
+  }, [router.query.plan]);
 
   return (
     <>
@@ -22,7 +33,7 @@ const Dash: React.FC = () => {
         <meta name="description" content="Quick accessible degree planning." />
         <title>My Plan</title>
       </Head>
-      <Dashboard />
+      <Dashboard plan={plan} />
     </>
   );
 };
