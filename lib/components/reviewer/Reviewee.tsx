@@ -8,11 +8,12 @@ import { userService } from '../../services';
 import { updateSelectedPlan } from '../../slices/currentPlanSlice';
 
 interface Props {
+  key: string;
   userId: string;
   plans: Plan[];
 }
 
-const Reviewee: React.FC<Props> = ({ userId, plans }) => {
+const Reviewee: React.FC<Props> = ({ key, userId, plans }) => {
   const [reviewee, setReviewee] = useState<User>(null);
   const [showPlans, setShowPlans] = useState(false);
   const [majors, setMajors] = useState<string[]>([]);
@@ -38,8 +39,7 @@ const Reviewee: React.FC<Props> = ({ userId, plans }) => {
   const handleViewPlan = (e, plan: Plan) => {
     e.stopPropagation();
     console.log(plan);
-    dispatch(updateSelectedPlan(plan));
-    router.push('/dashboard');
+    router.push(`/dashboard?plan=${plan._id}`);
   };
 
   const handleEditPlan = (e, plan: Plan) => {
@@ -49,6 +49,7 @@ const Reviewee: React.FC<Props> = ({ userId, plans }) => {
   return (
     reviewee && (
       <div
+        key={key}
         className="w-full p-3 bg-white border border-gray-300 rounded-md cursor-pointer"
         onClick={() => setShowPlans((showPlans) => !showPlans)}
       >
