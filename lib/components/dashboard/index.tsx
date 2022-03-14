@@ -131,7 +131,7 @@ const Dashboard: React.FC = () => {
 
   useEffect(() => {
     updateExperimentsForUser();
-  }, [experimentList.length, updateExperimentsForUser])
+  }, [experimentList.length, updateExperimentsForUser]);
 
   return (
     <>
