@@ -4,13 +4,14 @@ import { selectPlan } from '../../../../slices/currentPlanSlice';
 
 const CurrentReviewers = () => {
   const currentPlan = useSelector(selectPlan);
+  console.log(currentPlan);
   const getSVG = (status: string) => {
     if (status === 'pending') {
       return (
         <img
           src={'svg/Check.svg'}
           alt="status"
-          className="h-4 block m-auto h-4 mt-1 tooltip"
+          className="block h-4 m-auto mt-1 tooltip"
           data-tip="Pending"
         />
       );
@@ -27,13 +28,14 @@ const CurrentReviewers = () => {
   };
 
   const getElements = (data) => {
-    return data.map((element) => {
+    return data.map((reviewer) => {
+      const { user_id, _id } = reviewer;
       return (
         <div
-          className="flex flex-row justify-between items-center pt-2"
-          key={element.name}
+          className="flex flex-row items-center justify-between pt-2"
+          key={_id}
         >
-          <p>{element}</p>
+          <p>{user_id.name}</p>
           <div className="flex flex-row">
             {false && ( // requesting
               <img
@@ -43,7 +45,7 @@ const CurrentReviewers = () => {
                 data-tip="This reviewer is requesting a review"
               />
             )}
-            <div className="h-6 w-6">
+            <div className="w-6 h-6">
               {
                 getSVG('approved') // pending?
               }

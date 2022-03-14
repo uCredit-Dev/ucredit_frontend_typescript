@@ -26,7 +26,7 @@ const getUser = (username: string) => {
 };
 
 const addPlan = (plan_id: string, reviewer_id: string, cb) => {
-  return post(`${apiUrl}/planReview/addReviewer`, {
+  return post(`${apiUrl}/planReview/request`, {
     plan_id,
     reviewer_id,
   }).then((res) => handleResponse(res, cb));

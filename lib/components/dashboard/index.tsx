@@ -158,8 +158,8 @@ const Dashboard: React.FC<Props> = ({ plan }) => {
               <div className="flex flex-row thin:flex-wrap-reverse mt-[5rem] w-full h-full">
                 <div className="flex flex-col w-full">
                   <div className="mx-auto">
-                    <ActionBar />
-                    <CourseList />
+                    <ActionBar /> {/*hide this*/}
+                    <CourseList plan={plan} />
                   </div>
                 </div>
               </div>

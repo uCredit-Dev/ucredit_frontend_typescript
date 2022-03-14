@@ -48,7 +48,8 @@ const HandleUserInfoSetupDummy: React.FC<Props> = ({ plan }) => {
             }
           });
       } else {
-        processRetrievedPlans(plan);
+        // console.log(plan);
+        processRetrievedPlans([plan]);
       }
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -59,7 +60,6 @@ const HandleUserInfoSetupDummy: React.FC<Props> = ({ plan }) => {
       ...plan,
       years: plan.year_ids,
     }));
-    console.log(retrievedData);
     if (retrievedPlans.length > 0) {
       // sort plans by ids if there is more than one plan
       retrievedPlans.sort((plan1: Plan, plan2: Plan) =>

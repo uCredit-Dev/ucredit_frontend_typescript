@@ -31,11 +31,15 @@ import { api } from '../../../../resources/assets';
 import { DragDropContext, Droppable } from 'react-beautiful-dnd';
 import YearDraggable from './YearDraggable';
 
+interface Props {
+  plan: Plan;
+}
+
 /**
  * Container component that holds all the years, semesters, and courses of the current plan.
  * TODO: Cleanup and modularize
  */
-const CourseList: FC = () => {
+const CourseList: FC<Props> = ({ plan }) => {
   // Setting up redux
   const dispatch = useDispatch();
   const currentPlan = useSelector(selectPlan);
@@ -50,24 +54,28 @@ const CourseList: FC = () => {
 
   // Gets all courses for each year and generates year objects based on them.
   useEffect(() => {
-    const jsx: JSX.Element[] = [];
-    const totCourses: UserCourse[] = [];
-    let totalCredits: number = 0;
+    if (plan) {
+      console.log(plan);
+    } else {
+      const jsx: JSX.Element[] = [];
+      const totCourses: UserCourse[] = [];
+      let totalCredits: number = 0;
 
-    currentPlan.years.forEach((year: Year, yearIndex: number) => {
-      const yearCourses: UserCourse[] = [];
+      currentPlan.years.forEach((year: Year, yearIndex: number) => {
+        const yearCourses: UserCourse[] = [];
 
-      year.courses.forEach((course: UserCourse) => {
-        if (course._id === 'invalid_course') return;
-        totalCredits += course.credits;
-        totCourses.push(course);
-        yearCourses.push(course);
+        year.courses.forEach((course: UserCourse) => {
+          if (course._id === 'invalid_course') return;
+          totalCredits += course.credits;
+          totCourses.push(course);
+          yearCourses.push(course);
+        });
+        makeUpdates(jsx, totCourses, year, yearIndex, yearCourses);
+        dispatch(updateTotalCredits(totalCredits));
       });
-      makeUpdates(jsx, totCourses, year, yearIndex, yearCourses);
-      dispatch(updateTotalCredits(totalCredits));
-    });
+    }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [currentPlan, currentPlan._id, searching, placeholder]);
+  }, [plan, currentPlan, currentPlan._id, searching, placeholder]);
 
   /**
    * Helper Function for above useEffect call
