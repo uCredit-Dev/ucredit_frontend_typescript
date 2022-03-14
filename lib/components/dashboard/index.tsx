@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useCallback, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useScrollPosition } from '@n8tb1t/use-scroll-position';
 import UserSection from './UserSection';
@@ -112,7 +112,7 @@ const Dashboard: React.FC = () => {
     }
   });
 
-  const updateExperimentsForUser = () => {
+  const updateExperimentsForUser = useCallback(() => {
     axios
       .get(`${api}/experiments/allExperiments`)
       .then(async (experimentListResponse) => {
@@ -127,11 +127,11 @@ const Dashboard: React.FC = () => {
       .catch((errAllExperiments) => {
         console.log(errAllExperiments);
       });
-  };
+  }, [dispatch, user._id]);
 
-  if (experimentList.length === 0) {
+  useEffect(() => {
     updateExperimentsForUser();
-  }
+  }, [experimentList.length, updateExperimentsForUser])
 
   return (
     <>
