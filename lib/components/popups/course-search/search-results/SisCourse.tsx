@@ -184,7 +184,7 @@ const SisCourse: FC<{
       const newYears: Year[] = [];
       allYears.forEach((y) => {
         const yCourses = y.courses.filter((course) => {
-          if (course === courseToShow._id) {
+          if (course._id === courseToShow._id) {
             return false;
           } else {
             return true;

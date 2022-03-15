@@ -4,7 +4,6 @@ import {
   toggleExperimentStatus,
 } from '../../slices/experimentSlice';
 import { useDispatch, useSelector } from 'react-redux';
-import { ReactComponent as BeakerSvg } from '../../resources/svg/Beaker.svg';
 import clsx from 'clsx';
 import { FC } from 'react';
 
@@ -39,11 +38,13 @@ const ExperimentPopup: FC<{
           },
         )}
       >
-        <BeakerSvg
+        <img
+          src={'svg/Beaker.svg'}
           onClick={() => setExperimentPopup(!experimentPopup)}
           data-tip={`View/Toggle Experiments!`}
           data-for="godTip"
           className="w-10 h-10 focus:outline-none"
+          alt="beaker"
         />
       </div>
       {experimentPopup ? (

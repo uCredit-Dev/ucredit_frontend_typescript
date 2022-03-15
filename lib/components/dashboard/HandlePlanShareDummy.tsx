@@ -247,7 +247,7 @@ const HandlePlanShareDummy = () => {
       for (const course of yearIt.courses) {
         if (empty) emptyClone = false;
         const courseResponse = await addCourse(
-          course,
+          course._id,
           toAdd.indexOf(yearIt),
           newUpdatedPlan,
         );
@@ -275,7 +275,7 @@ const HandlePlanShareDummy = () => {
         if (cur.year_id === y._id) {
           nextYears.push({
             ...y,
-            courses: [...y.courses, cur._id],
+            courses: [...y.courses, cur],
           });
         } else {
           nextYears.push(y);

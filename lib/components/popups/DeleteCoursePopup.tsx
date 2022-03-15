@@ -36,7 +36,7 @@ const DeleteCoursePopup: FC = () => {
         currentPlan.years.forEach((planYear, index) => {
           if (planYear._id === courseInfo.course.year_id) {
             const courses = planYear.courses.filter(
-              (yearCourse) => yearCourse !== courseInfo.course._id,
+              (yearCourse) => yearCourse._id !== courseInfo.course._id,
             );
             years[index] = { ...years[index], courses: courses };
           }

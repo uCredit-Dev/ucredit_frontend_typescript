@@ -195,6 +195,7 @@ const Semester: FC<{
     if (data.errors === undefined && version !== 'None') {
       let newUserCourse: UserCourse;
       newUserCourse = { ...data.data };
+      console.log('handlePostResponse');
       dispatch(updateCurrentPlanCourses([...currentCourses, newUserCourse]));
       const allYears: Year[] = [...currentPlan.years];
       const newYears: Year[] = [];

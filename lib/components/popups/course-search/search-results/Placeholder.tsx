@@ -164,7 +164,7 @@ const Placeholder: FC<{ addCourse: (plan?: Plan) => void }> = (props) => {
       const newYears: Year[] = [];
       allYears.forEach((y) => {
         const yCourses = y.courses.filter((course) => {
-          if (course === courseToShow._id) {
+          if (course === courseToShow) {
             return false;
           } else {
             return true;

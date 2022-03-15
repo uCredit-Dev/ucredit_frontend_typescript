@@ -127,7 +127,7 @@ const CourseDisplay: FC<{ cart: boolean }> = ({ cart }) => {
     const newYears: Year[] = [];
     allYears.forEach((y) => {
       if (y._id === year) {
-        const yCourses = [...y.courses, newUserCourse._id];
+        const yCourses = [...y.courses, newUserCourse];
         newYears.push({ ...y, courses: yCourses });
       } else {
         newYears.push(y);
