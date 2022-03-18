@@ -21,7 +21,8 @@ import {
 } from '../../dashboard/degree-info/distributionFunctions';
 import { updateRetrievedCourses } from '../../../slices/searchSlice';
 import axios from 'axios';
-import { getAPI } from '../../../resources/assets';
+import getConfig from 'next/config';
+const { publicRuntimeConfig } = getConfig();
 
 /**
  * Search component for when someone clicks a search action.
@@ -145,7 +146,7 @@ const Cart: FC<{ allCourses: SISRetrievedCourse[] }> = (props) => {
       // let courses: SISRetrievedCourse[] = [...courseCache]; // how actively is this cache updated?
       // if (!retrievedAll) { // how often is this filter used?
       const retrieved: any = await axios
-        .get(getAPI(window) + '/search', {
+        .get(publicRuntimeConfig.apiUrl + '/search', {
           params: getParams(extras),
         })
         .catch(() => {

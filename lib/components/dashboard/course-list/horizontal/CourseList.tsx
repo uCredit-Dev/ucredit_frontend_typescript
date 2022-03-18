@@ -27,9 +27,10 @@ import {
   updateCourseCache,
   updatePlanList,
 } from '../../../../slices/userSlice';
-import { getAPI } from '../../../../resources/assets';
 import { DragDropContext, Droppable } from 'react-beautiful-dnd';
 import YearDraggable from './YearDraggable';
+import getConfig from 'next/config';
+const { publicRuntimeConfig } = getConfig();
 
 interface Props {
   plan: Plan;
@@ -177,7 +178,7 @@ const CourseList: FC<Props> = ({ plan }) => {
       plan_id: currentPlan._id,
       year_ids: yearIdArr,
     };
-    fetch(getAPI(window) + '/years/changeOrder', {
+    fetch(publicRuntimeConfig.apiUrl + '/years/changeOrder', {
       method: 'PATCH',
       headers: {
         'Content-Type': 'application/json',
@@ -211,6 +212,8 @@ const CourseList: FC<Props> = ({ plan }) => {
 
     if (sourceObj.year === null || destObj.year === null) return;
 
+    const api = publicRuntimeConfig.apiUrl;
+
     // Defining relevant variables
     const sourceYear: Year = sourceObj.year;
     const destYear: Year = destObj.year;
@@ -222,7 +225,7 @@ const CourseList: FC<Props> = ({ plan }) => {
       .map((c) => c._id)
       .indexOf(course._id);
     try {
-      const resp = await axios.get(getAPI(window) + '/search', {
+      const resp = await axios.get(api + '/search', {
         params: { query: course.number },
       });
       let retrievedCourses: SISRetrievedCourse[] = resp.data.data;
@@ -256,7 +259,7 @@ const CourseList: FC<Props> = ({ plan }) => {
           newTerm: destination.semester,
         };
 
-        let res = await fetch(getAPI(window) + '/courses/dragged', {
+        let res = await fetch(api + '/courses/dragged', {
           method: 'PATCH',
           headers: {
             'Content-Type': 'application/json',

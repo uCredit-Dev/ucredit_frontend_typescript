@@ -4,8 +4,10 @@ import axios from 'axios';
 import { useRouter } from 'next/router';
 import { selectUser, resetUser } from '../../slices/userSlice';
 import { resetCurrentPlan } from '../../slices/currentPlanSlice';
-import { getAPI, getLoginCookieVal } from '../../resources/assets';
+import { getLoginCookieVal } from '../../resources/assets';
 import { DashboardMode } from '../../types';
+import getConfig from 'next/config';
+const { publicRuntimeConfig } = getConfig();
 
 interface Props {
   mode: DashboardMode;
@@ -23,9 +25,9 @@ const UserSection: React.FC<Props> = ({ mode }) => {
 
   const handleLogoutClick = (): void => {
     const loginId = getLoginCookieVal(cookies);
-    if (getAPI(window).includes('ucredit.me'))
+    if (window.location.hostname.includes('ucredit.me'))
       axios
-        .delete(getAPI(window) + '/verifyLogin/' + loginId)
+        .delete(publicRuntimeConfig.apiUrl + '/verifyLogin/' + loginId)
         .then(() => logOut())
         .catch((err) => {
           console.log('error logging out', err);

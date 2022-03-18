@@ -32,7 +32,6 @@ import InfoMenu from './InfoMenu';
 import ActionBar from './degree-info/ActionBar';
 import { selectLoginCheck, selectUser } from '../../slices/userSlice';
 import axios from 'axios';
-import { getAPI } from './../../resources/assets';
 import Cart from '../popups/course-search/Cart';
 import GenerateNewPlan from '../../resources/GenerateNewPlan';
 import LoadingPage from '../LoadingPage';
@@ -40,6 +39,8 @@ import HandlePlanShareDummy from './HandlePlanShareDummy';
 import HandleUserInfoSetupDummy from './HandleUserInfoSetupDummy';
 import { DashboardMode } from '../../types';
 import { Plan } from '../../resources/commonTypes';
+import getConfig from 'next/config';
+const { publicRuntimeConfig } = getConfig();
 
 interface Props {
   plan: Plan;
@@ -119,8 +120,9 @@ const Dashboard: React.FC<Props> = ({ plan }) => {
   });
 
   const updateExperimentsForUser = () => {
+    const api = publicRuntimeConfig.apiUrl;
     axios
-      .get(getAPI(window) + '/experiments/allExperiments')
+      .get(api + '/experiments/allExperiments')
       .then(async (experimentListResponse) => {
         const experiments = experimentListResponse.data.data;
         dispatch(setExperiments(experiments));
@@ -139,6 +141,7 @@ const Dashboard: React.FC<Props> = ({ plan }) => {
     if (experimentList.length === 0) {
       updateExperimentsForUser();
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   return (

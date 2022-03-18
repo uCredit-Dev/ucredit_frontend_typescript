@@ -7,7 +7,7 @@ import {
   selectPlan,
   updateSelectedPlan,
 } from '../../../../slices/currentPlanSlice';
-import { getAPI, getColors } from '../../../../resources/assets';
+import { getColors } from '../../../../resources/assets';
 import YearSettingsDropdown from './YearSettingsDropdown';
 import clsx from 'clsx';
 import {
@@ -15,6 +15,8 @@ import {
   selectShowingCart,
 } from '../../../../slices/popupSlice';
 import { selectInspectedCourse } from '../../../../slices/searchSlice';
+import getConfig from 'next/config';
+const { publicRuntimeConfig } = getConfig();
 
 type SemSelected = {
   fall: boolean;
@@ -180,7 +182,7 @@ const YearComponent: FC<{
       year_id: year._id,
       name: yearName,
     };
-    fetch(getAPI(window) + '/years/updateName', {
+    fetch(publicRuntimeConfig.apiUrl + '/years/updateName', {
       method: 'PATCH',
       headers: {
         'Content-Type': 'application/json',

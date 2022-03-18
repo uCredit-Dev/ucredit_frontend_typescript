@@ -5,7 +5,8 @@ import { useSelector } from 'react-redux';
 import { selectInspectedCourse } from '../../../../slices/searchSlice';
 import CourseEvalCard from './CourseEvalCard';
 import clsx from 'clsx';
-import { getAPI } from '../../../../resources/assets';
+import getConfig from 'next/config';
+const { publicRuntimeConfig } = getConfig();
 
 /**
  * Displays course Evaluations based on inspected course
@@ -33,7 +34,7 @@ const CourseEvalSection: FC = () => {
 
     if (inspected !== 'None' && inspected !== undefined) {
       axios
-        .get(getAPI(window) + '/evals/' + inspected.number)
+        .get(publicRuntimeConfig.apiUrl + '/evals/' + inspected.number)
         .then((retrievedData) => {
           setReviews(retrievedData.data.data.rev);
         })

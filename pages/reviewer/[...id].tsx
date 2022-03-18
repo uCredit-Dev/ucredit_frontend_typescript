@@ -13,17 +13,13 @@ import {
 } from '../../lib/slices/userSlice';
 import 'react-toastify/dist/ReactToastify.css';
 import { userService } from '../../lib/services';
-import {
-  selectPlan,
-  updateSelectedPlan,
-} from '../../lib/slices/currentPlanSlice';
+import { updateSelectedPlan } from '../../lib/slices/currentPlanSlice';
 
 const ReviewerAdd: React.FC = () => {
   const router = useRouter();
   const dispatch = useDispatch();
   const user = useSelector(selectUser);
   const planList = useSelector(selectPlanList);
-  const plan = useSelector(selectPlan);
   const reviewerPlanId = useSelector(selectReviewerPlanId);
 
   useEffect(() => {

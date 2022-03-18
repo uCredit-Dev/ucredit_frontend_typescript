@@ -33,12 +33,13 @@ import {
   updateAddingPrereq,
 } from '../../../../slices/popupSlice';
 import { toast } from 'react-toastify';
-import { getAPI } from '../../../../resources/assets';
 import {
   selectUser,
   selectPlanList,
   updatePlanList,
 } from '../../../../slices/userSlice';
+import getConfig from 'next/config';
+const { publicRuntimeConfig } = getConfig();
 
 /**
  * A component displaying all the courses in a specific semester.
@@ -179,7 +180,7 @@ const Semester: FC<{
             : undefined,
       };
 
-      fetch(getAPI(window) + '/courses', {
+      fetch(publicRuntimeConfig.apiUrl + '/courses', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

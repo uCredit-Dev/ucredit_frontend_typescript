@@ -1,7 +1,8 @@
 import axios from 'axios';
+import getConfig from 'next/config';
 import { useEffect, useState } from 'react';
-import { getAPI } from '../../../../resources/assets';
 import ReviewersSearchResults from './ReviewerSearchResults';
+const { publicRuntimeConfig } = getConfig();
 
 const ReviewersSearch = () => {
   const [searchState, updateSearchState] = useState('');
@@ -20,7 +21,7 @@ const ReviewersSearch = () => {
 
   const Search = (text: String) => {
     axios
-      .get(getAPI(window) + '/user', {
+      .get(publicRuntimeConfig.apiUrl + '/user', {
         method: 'GET',
         headers: {
           'Content-Type': 'application/json',

@@ -5,8 +5,9 @@ import { toast } from 'react-toastify';
 import { Plan } from '../../resources/commonTypes';
 import { updateSelectedPlan } from '../../slices/currentPlanSlice';
 import { selectUser, updatePlanList } from '../../slices/userSlice';
-import { getAPI } from '../../resources/assets';
 import { updateAddingPlanStatus } from '../../slices/popupSlice';
+import getConfig from 'next/config';
+const { publicRuntimeConfig } = getConfig();
 
 interface Props {
   plan: Plan;
@@ -31,10 +32,12 @@ const HandleUserInfoSetupDummy: React.FC<Props> = ({ plan }) => {
 
   // Gets all users's plans and updates state everytime a new user is chosen.
   useEffect(() => {
+    const api = publicRuntimeConfig.apiUrl;
+    console.log(publicRuntimeConfig);
     if (user._id !== 'noUser' && user._id !== 'guestUser') {
       if (!plan) {
         axios
-          .get(getAPI(window) + '/plansByUser/' + user._id)
+          .get(api + '/plansByUser/' + user._id)
           .then((retrieved) => {
             processRetrievedPlans(retrieved.data.data);
           })

@@ -4,13 +4,14 @@ import { selectPlanList, updatePlanList } from '../../slices/userSlice';
 import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import { selectPlan, updateSelectedPlan } from '../../slices/currentPlanSlice';
-import { getAPI } from '../../resources/assets';
 import { Plan } from '../../resources/commonTypes';
 import {
   selectCourseToDelete,
   updateDeleteCourseStatus,
   updateCourseToDelete,
 } from '../../slices/popupSlice';
+import getConfig from 'next/config';
+const { publicRuntimeConfig } = getConfig();
 
 /**
  * This is the confirmation popup that appears when users press the button to delete a course.
@@ -28,7 +29,7 @@ const DeleteCoursePopup: FC = () => {
    */
   const activateDeleteCourse = () => {
     if (currentPlan.years.length > 1 && courseInfo !== null) {
-      fetch(getAPI(window) + '/courses/' + courseInfo.course._id, {
+      fetch(publicRuntimeConfig.apiUrl + '/courses/' + courseInfo.course._id, {
         method: 'DELETE',
       }).then(() => {
         let newPlan: Plan;

@@ -15,7 +15,6 @@ import {
   selectImportingStatus,
   updateSelectedPlan,
 } from '../slices/currentPlanSlice';
-import { getAPI } from './assets';
 import { updateSearchTime } from '../slices/searchSlice';
 import {
   selectToAddName,
@@ -24,6 +23,8 @@ import {
   clearToAdd,
   updateGeneratePlanAddStatus,
 } from '../slices/popupSlice';
+import getConfig from 'next/config';
+const { publicRuntimeConfig } = getConfig();
 
 /**
  * Reusable component that generates a new empty plan.
@@ -55,11 +56,10 @@ const GenerateNewPlan: FC = () => {
 
     let newPlan: Plan;
     const getData = async () => {
-      let response = await axios.post(getAPI(window) + '/plans', planBody);
+      const api = publicRuntimeConfig.apiUrl;
+      let response = await axios.post(api + '/plans', planBody);
       const newPlanResponse = response.data.data;
-      let resp = await axios.get(
-        getAPI(window) + '/years/' + newPlanResponse._id,
-      );
+      let resp = await axios.get(api + '/years/' + newPlanResponse._id);
       newPlan = { ...newPlanResponse, years: resp.data.data };
       dispatch(
         updateSearchTime({
@@ -76,7 +76,7 @@ const GenerateNewPlan: FC = () => {
             newPlan._id,
           );
           let newDistr = await axios.post(
-            getAPI(window) + '/distributions',
+            api + '/distributions',
             distributionBody,
           );
           newPlan = {

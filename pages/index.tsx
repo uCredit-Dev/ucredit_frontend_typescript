@@ -2,7 +2,6 @@ import axios from 'axios';
 import { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { toast } from 'react-toastify';
-import { getAPI } from '../lib/resources/assets';
 import {
   selectCourseCache,
   selectUser,
@@ -17,6 +16,8 @@ import {
 } from '../lib/resources/commonTypes';
 import { selectPlan } from '../lib/slices/currentPlanSlice';
 import LandingPage from '../lib/components/landing-page';
+import getConfig from 'next/config';
+const { publicRuntimeConfig } = getConfig();
 
 const Home: React.FC = () => {
   const dispatch = useDispatch();
@@ -31,7 +32,9 @@ const Home: React.FC = () => {
   const retrieveData = (counter: number, retrieved: SISRetrievedCourse[]) => {
     setNeedsToLoad(true);
     axios
-      .get(getAPI(window) + '/search/skip/' + counter + '?mod=' + 450)
+      .get(
+        publicRuntimeConfig.apiUrl + '/search/skip/' + counter + '?mod=' + 450,
+      )
       .then((courses: any) => {
         if (courses.data.data.length > 0) {
           retrieveData(counter + 1, [...retrieved, ...courses.data.data]);
@@ -73,6 +76,7 @@ const Home: React.FC = () => {
 
   useEffect(() => {
     const planHasCourses: boolean = courseCheck();
+    const api = publicRuntimeConfig.apiUrl;
     if (
       courseCache.length === 0 &&
       curPlan._id !== 'noPlan' &&
@@ -80,11 +84,11 @@ const Home: React.FC = () => {
     ) {
       setNeedsToLoad(true);
       axios
-        .get(getAPI(window) + '/coursesByPlan/' + curPlan._id)
+        .get(api + '/coursesByPlan/' + curPlan._id)
         .then((response) => {
           response.data.data.forEach((c: UserCourse) => {
             axios
-              .get(getAPI(window) + '/search', {
+              .get(api + '/search', {
                 params: { query: c.number },
                 // eslint-disable-next-line no-loop-func
               })

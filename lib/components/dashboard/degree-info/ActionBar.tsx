@@ -6,7 +6,6 @@ import Select, {
   MultiValueProps,
   StylesConfig,
 } from 'react-select';
-import { getAPI } from '../../../resources/assets';
 import {
   selectPlan,
   updateCurrentPlanCourses,
@@ -27,6 +26,8 @@ import { Year, Plan } from '../../../resources/commonTypes';
 import ReactTooltip from 'react-tooltip';
 import { allMajors } from '../../../resources/majors';
 import ShareLinksPopup from './ShareLinksPopup';
+import getConfig from 'next/config';
+const { publicRuntimeConfig } = getConfig();
 
 const majorOptions = allMajors.map((major, index) => ({
   value: index,
@@ -84,7 +85,7 @@ const ActionBar: FC = () => {
       majors: event.map((option) => option.label),
     };
     axios
-      .patch(getAPI(window) + '/plans/update', body)
+      .patch(publicRuntimeConfig.apiUrl + '/plans/update', body)
       .then(({ data }) => {
         const newUpdatedPlan = { ...currentPlan, majors: data.data.majors };
         dispatch(updateSelectedPlan(newUpdatedPlan));
@@ -105,7 +106,7 @@ const ActionBar: FC = () => {
       majors: currentPlan.majors,
       name: planName,
     };
-    fetch(getAPI(window) + '/plans/update', {
+    fetch(publicRuntimeConfig.apiUrl + '/plans/update', {
       method: 'PATCH',
       headers: {
         'Content-Type': 'application/json',
@@ -157,7 +158,7 @@ const ActionBar: FC = () => {
             : undefined,
       }; // add to end by default
       axios
-        .post(getAPI(window) + '/years', body)
+        .post(publicRuntimeConfig.apiUrl + '/years', body)
         .then((response: any) => {
           const updatedPlanList: Plan[] = [...planList];
           updatedPlanList[0] = {
