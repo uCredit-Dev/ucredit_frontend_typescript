@@ -7,7 +7,7 @@ import {
   selectPlan,
   updateSelectedPlan,
 } from '../../../../slices/currentPlanSlice';
-import { api, getColors } from '../../../../resources/assets';
+import { getAPI, getColors } from '../../../../resources/assets';
 import YearSettingsDropdown from './YearSettingsDropdown';
 import clsx from 'clsx';
 import {
@@ -180,7 +180,7 @@ const YearComponent: FC<{
       year_id: year._id,
       name: yearName,
     };
-    fetch(api + '/years/updateName', {
+    fetch(getAPI(window) + '/years/updateName', {
       method: 'PATCH',
       headers: {
         'Content-Type': 'application/json',

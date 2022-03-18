@@ -33,7 +33,7 @@ import {
   updateSelectedPlan,
 } from '../../slices/currentPlanSlice';
 import { toast } from 'react-toastify';
-import { api } from '../../resources/assets';
+import { getAPI } from '../../resources/assets';
 import SisCourse from './course-search/search-results/SisCourse';
 
 /**
@@ -134,7 +134,7 @@ const CourseDisplayPopup: FC = () => {
             ? Date.now() + 60 * 60 * 24 * 1000
             : undefined,
       };
-      fetch(api + '/courses', {
+      fetch(getAPI(window) + '/courses', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

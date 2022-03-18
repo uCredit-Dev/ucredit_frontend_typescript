@@ -1,7 +1,7 @@
 import axios from 'axios';
 import { FC } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { api } from '../../../../resources/assets';
+import { getAPI } from '../../../../resources/assets';
 import { User } from '../../../../resources/commonTypes';
 import {
   selectPlan,
@@ -36,12 +36,15 @@ const ReviewersSearchResults: FC<{
     };
     let plan;
     if (isReviewer(user._id)) {
-      plan = await axios.delete(api + '/planReview/removeReviewer', {
+      plan = await axios.delete(getAPI(window) + '/planReview/removeReviewer', {
         data: body,
       });
     } else {
       if (!isPending(user._id)) {
-        plan = await axios.post(api + '/planReview/addReviewer', body);
+        plan = await axios.post(
+          getAPI(window) + '/planReview/addReviewer',
+          body,
+        );
         emailjs.send('service_czbc7ct', 'template_9g4knbk', {
           from_name: currentPlan.name,
           to_jhed: user._id,

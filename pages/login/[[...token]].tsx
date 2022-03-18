@@ -6,7 +6,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { toast } from 'react-toastify';
 import {
   getLoginCookieVal,
-  api,
+  getAPI,
   guestUser,
   checkLocalhost,
 } from '../../lib/resources/assets';
@@ -109,7 +109,7 @@ const Login: React.FC = () => {
    * Handles JHU Login button being pressed.
    */
   const handleJHULogin = (loginId: any) => {
-    if (!checkLocalhost()) window.location.href = api + '/login';
+    if (!checkLocalhost()) window.location.href = getAPI(window) + '/login';
     else if (loginId.length === 20) handleDBLogin(loginId);
     else if (typeof loginId === 'string') handleDevLogin(loginId)();
     else setOpenDevChoose(true);
@@ -121,7 +121,7 @@ const Login: React.FC = () => {
    */
   const handleDevLogin = (id: string) => (): void => {
     axios
-      .get(api + '/backdoor/verification/' + id)
+      .get(getAPI(window) + '/backdoor/verification/' + id)
       .then((res) => {
         const devUser: User = res.data.data;
         dispatch(updateUser(devUser));

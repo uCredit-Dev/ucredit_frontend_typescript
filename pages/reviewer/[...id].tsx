@@ -18,13 +18,6 @@ import {
   updateSelectedPlan,
 } from '../../lib/slices/currentPlanSlice';
 
-// const { publicRuntimeConfig } = getConfig();
-// const apiUrl = publicRuntimeConfig.apiUrl;
-const apiUrl =
-  process.env.NODE_ENV === 'development'
-    ? 'http://localhost:4567/api'
-    : 'https://ucredit-api.herokuapp.com/api';
-
 const ReviewerAdd: React.FC = () => {
   const router = useRouter();
   const dispatch = useDispatch();

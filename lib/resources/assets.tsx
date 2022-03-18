@@ -11,11 +11,13 @@ import {
 } from './commonTypes';
 import { allMajors } from './majors';
 import { store } from '../appStore/store';
-import getConfig from 'next/config';
 
-const { publicRuntimeConfig } = getConfig();
-
-export const api = publicRuntimeConfig.apiUrl;
+export const getAPI = (window) =>
+  window.location.href.includes('http://localhost:3000')
+    ? 'http://localhost:4567/api'
+    : window.location.href.includes('https://ucredit.me')
+    ? 'https://ucredit-api.herokuapp.com/api'
+    : 'https://ucredit-dev.herokuapp.com/api';
 
 export const guestUser: User = {
   _id: 'guestUser',
@@ -519,7 +521,7 @@ const backendSearch = async (
 ): Promise<{ index: number; resp: Course }> =>
   new Promise(async (resolve) => {
     const courses: any = await axios
-      .get(api + '/search', {
+      .get(getAPI(window) + '/search', {
         params: { query: courseNumber },
       })
       .catch((err) => console.log(err));

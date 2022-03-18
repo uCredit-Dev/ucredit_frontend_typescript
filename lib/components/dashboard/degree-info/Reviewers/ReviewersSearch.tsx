@@ -1,6 +1,6 @@
 import axios from 'axios';
 import { useEffect, useState } from 'react';
-import { api } from '../../../../resources/assets';
+import { getAPI } from '../../../../resources/assets';
 import ReviewersSearchResults from './ReviewerSearchResults';
 
 const ReviewersSearch = () => {
@@ -20,7 +20,7 @@ const ReviewersSearch = () => {
 
   const Search = (text: String) => {
     axios
-      .get(api + '/user', {
+      .get(getAPI(window) + '/user', {
         method: 'GET',
         headers: {
           'Content-Type': 'application/json',

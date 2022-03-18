@@ -14,7 +14,7 @@ import { selectUser } from '../../slices/userSlice';
 // import { ReactComponent as DeleteExperimentSvg } from '../../resources/svg/DeleteExperiment.svg';
 // import { ReactComponent as AddExperimentSvg } from '../../resources/svg/AddExperiment.svg';
 import { toast } from 'react-toastify';
-import { api } from './../../resources/assets';
+import { getAPI } from './../../resources/assets';
 
 const ExperimentDevBoardPopup: FC<{}> = () => {
   //Retrieve all experiments from redux

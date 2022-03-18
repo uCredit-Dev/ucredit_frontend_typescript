@@ -4,7 +4,7 @@ import { selectPlanList, updatePlanList } from '../../slices/userSlice';
 import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import { selectPlan, updateSelectedPlan } from '../../slices/currentPlanSlice';
-import { api } from '../../resources/assets';
+import { getAPI } from '../../resources/assets';
 import { Plan } from '../../resources/commonTypes';
 import {
   selectCourseToDelete,
@@ -28,7 +28,7 @@ const DeleteCoursePopup: FC = () => {
    */
   const activateDeleteCourse = () => {
     if (currentPlan.years.length > 1 && courseInfo !== null) {
-      fetch(api + '/courses/' + courseInfo.course._id, {
+      fetch(getAPI(window) + '/courses/' + courseInfo.course._id, {
         method: 'DELETE',
       }).then(() => {
         let newPlan: Plan;

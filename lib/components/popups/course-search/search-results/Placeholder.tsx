@@ -139,7 +139,7 @@ const Placeholder: FC<{ addCourse: (plan?: Plan) => void }> = (props) => {
    */
   const updateCourse = (): void => {
     if (courseToShow !== null) {
-      fetch(api + '/courses/' + courseToShow._id, {
+      fetch(getAPI(window) + '/courses/' + courseToShow._id, {
         method: 'DELETE',
         headers: {
           'Content-Type': 'application/json',
