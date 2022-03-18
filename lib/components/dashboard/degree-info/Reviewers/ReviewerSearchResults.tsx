@@ -54,8 +54,11 @@ const ReviewersSearchResults: FC<{
         });
       } else {
         // TODO
+        console.log('here');
+        return;
       }
     }
+    console.log(plan);
     dispatch(
       updateSelectedPlan({
         ...currentPlan,

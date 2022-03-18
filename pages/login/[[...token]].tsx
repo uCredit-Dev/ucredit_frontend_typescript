@@ -8,7 +8,6 @@ import {
   getLoginCookieVal,
   getAPI,
   guestUser,
-  checkLocalhost,
 } from '../../lib/resources/assets';
 import {
   selectImportID,
@@ -21,6 +20,7 @@ import { updateImportingStatus } from '../../lib/slices/currentPlanSlice';
 import axios from 'axios';
 import { User } from '../../lib/resources/commonTypes';
 import { userService } from '../../lib/services';
+import { isLocalhost } from '../../lib/serviceWorker';
 
 /**
  * The login page, designed after the Spotify login page..
@@ -44,7 +44,8 @@ const Login: React.FC = () => {
     setFinishedLoginCheck(false);
     const token = router.query.token && router.query.token[0];
     const loginId = token ? token : getLoginCookieVal(cookies);
-    if (loginId && !checkLocalhost()) handleDBLogin(loginId);
+    if (loginId && !isLocalhost && getAPI(window).includes('ucredit.me'))
+      handleDBLogin(loginId);
     else if (loginId) handleJHULogin(loginId);
     else dispatch(updateLoginCheck(true));
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -109,7 +110,9 @@ const Login: React.FC = () => {
    * Handles JHU Login button being pressed.
    */
   const handleJHULogin = (loginId: any) => {
-    if (!checkLocalhost()) window.location.href = getAPI(window) + '/login';
+    const api: String = getAPI(window);
+    if (!isLocalhost && api.includes('ucredit.me'))
+      window.location.href = api + '/login';
     else if (loginId.length === 20) handleDBLogin(loginId);
     else if (typeof loginId === 'string') handleDevLogin(loginId)();
     else setOpenDevChoose(true);

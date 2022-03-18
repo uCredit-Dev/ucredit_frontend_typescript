@@ -11,9 +11,10 @@ import {
 } from './commonTypes';
 import { allMajors } from './majors';
 import { store } from '../appStore/store';
+import { isLocalhost } from '../serviceWorker';
 
 export const getAPI = (window) =>
-  window.location.href.includes('http://localhost:3000')
+  isLocalhost
     ? 'http://localhost:4567/api'
     : window.location.href.includes('https://ucredit.me')
     ? 'https://ucredit-api.herokuapp.com/api'
@@ -51,15 +52,6 @@ export const getColors = function (
   } else {
     return '#83B9FF';
   }
-};
-
-export const checkLocalhost = (): boolean => {
-  if (
-    window.location.href.substring(0, 21) === 'http://localhost:3000' ||
-    window.location.href.substring(0, 22) === 'https://localhost:3000'
-  )
-    return true;
-  return false;
 };
 
 // On SIS, scrape the majors using the console, check Notion for more info
