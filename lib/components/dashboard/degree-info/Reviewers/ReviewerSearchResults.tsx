@@ -8,6 +8,7 @@ import {
 } from '../../../../slices/currentPlanSlice';
 import emailjs from 'emailjs-com';
 import getConfig from 'next/config';
+import { selectUser } from '../../../../slices/userSlice';
 emailjs.init('user_7Cn3A3FQW9PTxExf6Npel');
 const { publicRuntimeConfig } = getConfig();
 
@@ -16,6 +17,7 @@ const ReviewersSearchResults: FC<{
 }> = ({ Users }) => {
   const dispatch = useDispatch();
   const currentPlan = useSelector(selectPlan);
+  const user = useSelector(selectUser);
 
   const isReviewer = (id) => {
     return currentPlan.reviewers.includes(id);
@@ -68,7 +70,10 @@ const ReviewersSearchResults: FC<{
 
   const getElements = (data: User[]) => {
     console.log(data);
+    if (publicRuntimeConfig.baseUrl.includes('localhost'))
+      data = data.filter((el) => el.name.includes('Dev'));
     return data.map((element) => {
+      if (element._id === user._id) return null;
       return (
         <div
           className="flex flex-row hover:bg-sky-300 hover:hand hover:cursor-pointer"
