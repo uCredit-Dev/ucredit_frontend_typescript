@@ -6,7 +6,6 @@ import { selectUser, resetUser } from '../../slices/userSlice';
 import { resetCurrentPlan } from '../../slices/currentPlanSlice';
 import { getAPI, getLoginCookieVal } from '../../resources/assets';
 import { DashboardMode } from '../../types';
-import { isLocalhost } from '../../serviceWorker';
 
 interface Props {
   mode: DashboardMode;
@@ -24,7 +23,7 @@ const UserSection: React.FC<Props> = ({ mode }) => {
 
   const handleLogoutClick = (): void => {
     const loginId = getLoginCookieVal(cookies);
-    if (!isLocalhost && getAPI(window).includes('ucredit.me'))
+    if (getAPI(window).includes('ucredit.me'))
       axios
         .delete(getAPI(window) + '/verifyLogin/' + loginId)
         .then(() => logOut())

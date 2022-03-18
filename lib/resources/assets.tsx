@@ -11,10 +11,9 @@ import {
 } from './commonTypes';
 import { allMajors } from './majors';
 import { store } from '../appStore/store';
-import { isLocalhost } from '../serviceWorker';
 
 export const getAPI = (window) =>
-  isLocalhost
+  window.location.href.includes('http://localhost:3000')
     ? 'http://localhost:4567/api'
     : window.location.href.includes('https://ucredit.me')
     ? 'https://ucredit-api.herokuapp.com/api'
