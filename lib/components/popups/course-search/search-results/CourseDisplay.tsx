@@ -25,10 +25,9 @@ import {
   updateSelectedPlan,
   updateTotalCredits,
 } from '../../../../slices/currentPlanSlice';
+import { getAPI } from '../../../../resources/assets';
 import SisCourse from './SisCourse';
 import { updateShowingCart } from '../../../../slices/popupSlice';
-import getConfig from 'next/config';
-const { publicRuntimeConfig } = getConfig();
 
 /**
  * Displays course information once a user selects a course in the search list
@@ -107,7 +106,7 @@ const CourseDisplay: FC<{ cart: boolean }> = ({ cart }) => {
         user._id === 'guestUser' ? Date.now() + 60 * 60 * 24 * 1000 : undefined,
     };
 
-    let retrieved = await fetch(publicRuntimeConfig.apiUrl + '/courses', {
+    let retrieved = await fetch(getAPI(window) + '/courses', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',

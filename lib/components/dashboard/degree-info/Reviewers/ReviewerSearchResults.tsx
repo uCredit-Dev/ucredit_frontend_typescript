@@ -1,16 +1,15 @@
 import axios from 'axios';
 import { FC } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
+import { getAPI } from '../../../../resources/assets';
 import { User } from '../../../../resources/commonTypes';
 import {
   selectPlan,
   updateSelectedPlan,
 } from '../../../../slices/currentPlanSlice';
 import emailjs from 'emailjs-com';
-import getConfig from 'next/config';
 import { selectUser } from '../../../../slices/userSlice';
 emailjs.init('user_7Cn3A3FQW9PTxExf6Npel');
-const { publicRuntimeConfig } = getConfig();
 
 const ReviewersSearchResults: FC<{
   Users: any[];
@@ -38,14 +37,16 @@ const ReviewersSearchResults: FC<{
       reviewer_id: user._id,
     };
     let plan;
-    const api = publicRuntimeConfig.apiUrl;
     if (isReviewer(user._id)) {
-      plan = await axios.delete(api + '/planReview/removeReviewer', {
+      plan = await axios.delete(getAPI(window) + '/planReview/removeReviewer', {
         data: body,
       });
     } else {
       if (!isPending(user._id)) {
-        plan = await axios.post(api + '/planReview/addReviewer', body);
+        plan = await axios.post(
+          getAPI(window) + '/planReview/addReviewer',
+          body,
+        );
         emailjs.send('service_czbc7ct', 'template_9g4knbk', {
           from_name: currentPlan.name,
           to_jhed: user._id,
@@ -70,7 +71,7 @@ const ReviewersSearchResults: FC<{
 
   const getElements = (data: User[]) => {
     console.log(data);
-    if (publicRuntimeConfig.baseUrl.includes('localhost'))
+    if (window.location.hostname.includes('localhost'))
       data = data.filter((el) => el.name.includes('Dev'));
     return data.map((element) => {
       if (element._id === user._id) return null;

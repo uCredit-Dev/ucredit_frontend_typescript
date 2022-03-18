@@ -4,7 +4,11 @@ import { useState, useEffect } from 'react';
 import { useCookies } from 'react-cookie';
 import { useDispatch, useSelector } from 'react-redux';
 import { toast } from 'react-toastify';
-import { getLoginCookieVal, guestUser } from '../../lib/resources/assets';
+import {
+  getLoginCookieVal,
+  getAPI,
+  guestUser,
+} from '../../lib/resources/assets';
 import {
   selectImportID,
   selectLoginCheck,
@@ -16,8 +20,6 @@ import { updateImportingStatus } from '../../lib/slices/currentPlanSlice';
 import axios from 'axios';
 import { User } from '../../lib/resources/commonTypes';
 import { userService } from '../../lib/services';
-import getConfig from 'next/config';
-const { publicRuntimeConfig } = getConfig();
 
 /**
  * The login page, designed after the Spotify login page..
@@ -41,7 +43,7 @@ const Login: React.FC = () => {
     setFinishedLoginCheck(false);
     const token = router.query.token && router.query.token[0];
     const loginId = token ? token : getLoginCookieVal(cookies);
-    if (loginId && window.location.hostname.includes('ucredit.me'))
+    if (loginId && getAPI(window).includes('ucredit.me'))
       handleDBLogin(loginId);
     else if (loginId) handleJHULogin(loginId);
     else dispatch(updateLoginCheck(true));
@@ -107,7 +109,7 @@ const Login: React.FC = () => {
    * Handles JHU Login button being pressed.
    */
   const handleJHULogin = (loginId: any) => {
-    const api: String = publicRuntimeConfig.apiUrl;
+    const api: String = getAPI(window);
     if (api.includes('ucredit.me')) window.location.href = api + '/login';
     else if (loginId.length === 20) handleDBLogin(loginId);
     else if (typeof loginId === 'string') handleDevLogin(loginId)();
@@ -120,7 +122,7 @@ const Login: React.FC = () => {
    */
   const handleDevLogin = (id: string) => (): void => {
     axios
-      .get(publicRuntimeConfig.apiUrl + '/backdoor/verification/' + id)
+      .get(getAPI(window) + '/backdoor/verification/' + id)
       .then((res) => {
         const devUser: User = res.data.data;
         dispatch(updateUser(devUser));

@@ -14,8 +14,7 @@ import { selectUser } from '../../slices/userSlice';
 // import { ReactComponent as DeleteExperimentSvg } from '../../resources/svg/DeleteExperiment.svg';
 // import { ReactComponent as AddExperimentSvg } from '../../resources/svg/AddExperiment.svg';
 import { toast } from 'react-toastify';
-import getConfig from 'next/config';
-const { publicRuntimeConfig } = getConfig();
+import { getAPI } from './../../resources/assets';
 
 const ExperimentDevBoardPopup: FC<{}> = () => {
   //Retrieve all experiments from redux
@@ -84,12 +83,9 @@ const ExperimentDevBoardPopup: FC<{}> = () => {
         convertedPercentages[i] !== allExperiments[i].percentParticipating
       ) {
         await axios
-          .post(
-            `${publicRuntimeConfig.apiUrl}/experiments/${allExperiments[i].name}`,
-            {
-              percent_participating: convertedPercentages[i],
-            },
-          )
+          .post(`${api}/experiments/${allExperiments[i].name}`, {
+            percent_participating: convertedPercentages[i],
+          })
           .catch(function (error) {
             console.log(error);
           });
@@ -113,12 +109,9 @@ const ExperimentDevBoardPopup: FC<{}> = () => {
           return false;
         }
         await axios
-          .put(
-            `${publicRuntimeConfig.apiUrl}/experiments/changeName/${allExperiments[i].name}`,
-            {
-              new_name: inputNames[i],
-            },
-          )
+          .put(`${api}/experiments/changeName/${allExperiments[i].name}`, {
+            new_name: inputNames[i],
+          })
           .catch(function (error) {
             console.log(error);
           });
@@ -130,7 +123,7 @@ const ExperimentDevBoardPopup: FC<{}> = () => {
   const updateExperimentRedux = async () => {
     try {
       const experimentListResponse = await axios.get(
-        `${publicRuntimeConfig.apiUrl}/experiments/allExperiments`,
+        `${api}/experiments/allExperiments`,
       ); // getting experiment list
       const experiments = experimentListResponse.data.data;
 
@@ -179,7 +172,7 @@ const ExperimentDevBoardPopup: FC<{}> = () => {
       return;
     }
     await axios
-      .post(`${publicRuntimeConfig.apiUrl}/experiments/${inputName}`, {
+      .post(`${api}/experiments/${inputName}`, {
         percent_participating: 0,
       })
       .catch(function (error) {
@@ -196,9 +189,7 @@ const ExperimentDevBoardPopup: FC<{}> = () => {
 
   const handleSubmitForDeleteExperiment = async () => {
     await axios
-      .delete(
-        `${publicRuntimeConfig.apiUrl}/experiments/${nameExperimentToDelete}`,
-      )
+      .delete(`${api}/experiments/${nameExperimentToDelete}`)
       .catch(function (error) {
         console.log(error);
       });

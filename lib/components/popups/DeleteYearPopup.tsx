@@ -3,13 +3,12 @@ import { useSelector, useDispatch } from 'react-redux';
 import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import { selectPlan, updateSelectedPlan } from '../../slices/currentPlanSlice';
+import { getAPI } from '../../resources/assets';
 import {
   selectYearToDelete,
   updateYearToDelete,
   updateDeleteYearStatus,
 } from '../../slices/popupSlice';
-import getConfig from 'next/config';
-const { publicRuntimeConfig } = getConfig();
 
 /**
  * This is the confirmation popup that appears when users press the button to delete a plan.
@@ -27,7 +26,7 @@ const DeleteYearPopup: FC = () => {
   // Delete the selected year
   const activateDeleteYear = () => {
     if (currentPlan.years.length > 1 && year !== null) {
-      fetch(publicRuntimeConfig.apiUrl + '/years/' + year._id, {
+      fetch(getAPI(window) + '/years/' + year._id, {
         method: 'DELETE',
         headers: {
           'Content-Type': 'application/json',

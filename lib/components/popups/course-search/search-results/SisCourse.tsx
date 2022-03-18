@@ -34,10 +34,9 @@ import {
   updateShowCourseInfo,
   updateShowingCart,
 } from '../../../../slices/popupSlice';
+import { getAPI } from '../../../../resources/assets';
 import { ChevronDownIcon } from '@heroicons/react/outline';
 import { QuestionMarkCircleIcon } from '@heroicons/react/solid';
-import getConfig from 'next/config';
-const { publicRuntimeConfig } = getConfig();
 
 /**
  * Displays a sis course when searching
@@ -160,7 +159,7 @@ const SisCourse: FC<{
    */
   const updateCourse = (): void => {
     if (courseToShow !== null) {
-      fetch(publicRuntimeConfig.apiUrl + '/courses/' + courseToShow._id, {
+      fetch(getAPI(window) + '/courses/' + courseToShow._id, {
         method: 'DELETE',
         headers: {
           'Content-Type': 'application/json',

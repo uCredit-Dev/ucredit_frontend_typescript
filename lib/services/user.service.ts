@@ -1,6 +1,5 @@
-import getConfig from 'next/config';
+import { getAPI } from '../resources/assets';
 import { get, post } from '../utils';
-const { publicRuntimeConfig } = getConfig();
 
 /**
  * Attempts to log in user
@@ -8,30 +7,23 @@ const { publicRuntimeConfig } = getConfig();
  * @returns a promises that resolves on success or failure in logging in
  */
 const login = (cookieVal: string) => {
-  return get(
-    publicRuntimeConfig.apiUrl + '/verifyLogin/' + cookieVal,
-    true,
-    true,
-  )
+  return get(getAPI(window) + '/verifyLogin/' + cookieVal, true, true)
     .then((res) => res.json())
     .then((res) => res);
 };
 
 const getPlan = (planId: string) => {
-  return get(publicRuntimeConfig.apiUrl + '/plans/' + planId, true).then(
-    handleResponse,
-  );
+  return get(getAPI(window) + '/plans/' + planId, true).then(handleResponse);
 };
 
 const getUser = (username: string) => {
-  return get(
-    `${publicRuntimeConfig.apiUrl}/user?username=${username}`,
-    true,
-  ).then((res) => handleResponse(res));
+  return get(`${getAPI(window)}/user?username=${username}`, true).then((res) =>
+    handleResponse(res),
+  );
 };
 
 const addPlan = (plan_id: string, reviewer_id: string, cb) => {
-  return post(`${publicRuntimeConfig.apiUrl}/planReview/request`, {
+  return post(`${getAPI(window)}/planReview/request`, {
     plan_id,
     reviewer_id,
   }).then((res) => handleResponse(res, cb));

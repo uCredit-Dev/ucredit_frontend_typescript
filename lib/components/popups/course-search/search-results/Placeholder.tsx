@@ -10,7 +10,7 @@ import {
   selectSearchStatus,
 } from '../../../../slices/searchSlice';
 import Select from 'react-select';
-import { all_deps, course_tags } from '../../../../resources/assets';
+import { all_deps, api, course_tags } from '../../../../resources/assets';
 import { selectCourseToShow } from '../../../../slices/popupSlice';
 import {
   selectCurrentPlanCourses,
@@ -21,8 +21,6 @@ import {
 import ReactTooltip from 'react-tooltip';
 import { QuestionMarkCircleIcon } from '@heroicons/react/solid';
 import { XIcon } from '@heroicons/react/outline';
-import getConfig from 'next/config';
-const { publicRuntimeConfig } = getConfig();
 
 const departmentFilters = ['none', ...all_deps];
 const tagFilters = ['none', ...course_tags];
@@ -141,7 +139,7 @@ const Placeholder: FC<{ addCourse: (plan?: Plan) => void }> = (props) => {
    */
   const updateCourse = (): void => {
     if (courseToShow !== null) {
-      fetch(publicRuntimeConfig.apiUrl + '/courses/' + courseToShow._id, {
+      fetch(getAPI(window) + '/courses/' + courseToShow._id, {
         method: 'DELETE',
         headers: {
           'Content-Type': 'application/json',

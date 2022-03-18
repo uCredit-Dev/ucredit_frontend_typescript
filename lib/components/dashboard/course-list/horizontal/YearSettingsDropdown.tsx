@@ -11,10 +11,9 @@ import {
   updateSelectedPlan,
 } from '../../../../slices/currentPlanSlice';
 import axios from 'axios';
+import { getAPI } from '../../../../resources/assets';
 import { selectPlanList, updatePlanList } from '../../../../slices/userSlice';
 import { toast } from 'react-toastify';
-import getConfig from 'next/config';
-const { publicRuntimeConfig } = getConfig();
 
 type SemSelected = {
   fall: boolean;
@@ -81,7 +80,7 @@ const YearSettingsDropdown: FC<{
     // Change year
     if (!exists) {
       axios
-        .patch(publicRuntimeConfig.apiUrl + '/years/updateYear', {
+        .patch(getAPI(window) + '/years/updateYear', {
           year_id: year._id,
           year: selectedYear.value,
         })

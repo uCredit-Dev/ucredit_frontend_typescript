@@ -33,9 +33,8 @@ import {
   updateSelectedPlan,
 } from '../../slices/currentPlanSlice';
 import { toast } from 'react-toastify';
+import { getAPI } from '../../resources/assets';
 import SisCourse from './course-search/search-results/SisCourse';
-import getConfig from 'next/config';
-const { publicRuntimeConfig } = getConfig();
 
 /**
  * Course info popup that opens when user preses info button on course components
@@ -135,7 +134,7 @@ const CourseDisplayPopup: FC = () => {
             ? Date.now() + 60 * 60 * 24 * 1000
             : undefined,
       };
-      fetch(publicRuntimeConfig.apiUrl + '/courses', {
+      fetch(getAPI(window) + '/courses', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

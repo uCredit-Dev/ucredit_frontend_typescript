@@ -21,10 +21,9 @@ import {
   updateCourseCache,
 } from '../../../../slices/userSlice';
 import axios from 'axios';
+import { getAPI } from '../../../../resources/assets';
 import { filterCourses } from './formUtils';
 import { selectPlan } from '../../../../slices/currentPlanSlice';
-import getConfig from 'next/config';
-const { publicRuntimeConfig } = getConfig();
 
 type SearchMapEl = {
   course: SISRetrievedCourse;
@@ -200,7 +199,7 @@ const Form: FC<{ setSearching: (searching: boolean) => void }> = (props) => {
       let courses: SISRetrievedCourse[] = [...courseCache];
       if (!retrievedAll) {
         const retrieved: any = await axios
-          .get(publicRuntimeConfig.apiUrl + '/search', {
+          .get(getAPI(window) + '/search', {
             params: getParams(extras),
           })
           .catch(() => {
@@ -373,7 +372,7 @@ const Form: FC<{ setSearching: (searching: boolean) => void }> = (props) => {
       } else if (queryLength > 0 && queryLength < minLength) {
         // Perform normal search if query length is between 1 and minLength
         axios
-          .get(publicRuntimeConfig.apiUrl + '/search', {
+          .get(getAPI(window) + '/search', {
             params: getParams(extras),
           })
           .then((retrieved) => {
