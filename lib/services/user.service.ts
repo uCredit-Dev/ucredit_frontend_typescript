@@ -25,11 +25,35 @@ const getUser = (username: string) => {
   );
 };
 
-const addPlan = (plan_id: string, reviewer_id: string, cb) => {
+const requestReviewerPlan = (
+  plan_id: string,
+  reviewer_id: string,
+  reviewee_id: string,
+  cb = undefined,
+) => {
   return post(`${apiUrl}/planReview/request`, {
     plan_id,
     reviewer_id,
+    reviewee_id,
   }).then((res) => handleResponse(res, cb));
+};
+
+const removeReview = (review_id: string, cb = undefined) => {
+  return post(`${apiUrl}/planReview/removeReview`, {
+    review_id,
+  }).then((res) => handleResponse(res, cb));
+};
+
+const confirmReviewerPlan = (review_id: string, cb = undefined) => {
+  return post(`${apiUrl}/planReview/confirm`, {
+    review_id,
+  }).then((res) => handleResponse(res, cb));
+};
+
+const getReviewerPlans = (reviewer_id: string, cb = undefined) => {
+  return get(
+    `${apiUrl}/planReview/plansToReview?reviewer_id=${reviewer_id}`,
+  ).then((res) => handleResponse(res, cb));
 };
 
 const handleResponse = (res, cb = undefined) => {
@@ -46,4 +70,12 @@ const handleResponse = (res, cb = undefined) => {
   });
 };
 
-export const userService = { login, getPlan, getUser, addPlan };
+export const userService = {
+  login,
+  getPlan,
+  getUser,
+  requestReviewerPlan,
+  confirmReviewerPlan,
+  removeReview,
+  getReviewerPlans,
+};

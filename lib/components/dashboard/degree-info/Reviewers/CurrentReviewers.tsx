@@ -1,10 +1,20 @@
+import { useEffect, useState } from 'react';
 import { useSelector } from 'react-redux';
 import ReactTooltip from 'react-tooltip';
+import { userService } from '../../../../services';
 import { selectPlan } from '../../../../slices/currentPlanSlice';
 
 const CurrentReviewers = () => {
   const currentPlan = useSelector(selectPlan);
-  console.log(currentPlan);
+  const [jsx, setJsx] = useState([]);
+
+  useEffect(() => {
+    (async () => {
+      setJsx(await getElements(currentPlan.reviewers));
+    })();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [currentPlan.reviewers]);
+
   const getSVG = (status: string) => {
     if (status === 'pending') {
       return (
@@ -27,15 +37,16 @@ const CurrentReviewers = () => {
     }
   };
 
-  const getElements = (data) => {
-    return data.map((reviewer) => {
-      const { user_id, _id } = reviewer;
-      return (
+  const getElements = async (data: string[]) => {
+    const elements = [];
+    for (const reviewer_id of data) {
+      const { _id, name } = (await userService.getUser(reviewer_id)).data[0];
+      elements.push(
         <div
           className="flex flex-row items-center justify-between pt-2"
           key={_id}
         >
-          <p>{user_id.name}</p>
+          <p>{name}</p>
           <div className="flex flex-row">
             {false && ( // requesting
               <img
@@ -51,14 +62,15 @@ const CurrentReviewers = () => {
               }
             </div>
           </div>
-        </div>
+        </div>,
       );
-    });
+    }
+    return elements;
   };
 
   return (
     <div className="flex flex-col border-b">
-      {getElements(currentPlan.reviewers)}
+      {jsx}
       <ReactTooltip delayShow={200} />
     </div>
   );

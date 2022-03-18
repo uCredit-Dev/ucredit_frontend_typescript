@@ -55,27 +55,30 @@ const CourseList: FC<Props> = ({ plan }) => {
   // Gets all courses for each year and generates year objects based on them.
   useEffect(() => {
     if (plan) {
-      console.log(plan);
-    } else {
-      const jsx: JSX.Element[] = [];
-      const totCourses: UserCourse[] = [];
-      let totalCredits: number = 0;
-
-      currentPlan.years.forEach((year: Year, yearIndex: number) => {
-        const yearCourses: UserCourse[] = [];
-
-        year.courses.forEach((course: UserCourse) => {
-          if (course._id === 'invalid_course') return;
-          totalCredits += course.credits;
-          totCourses.push(course);
-          yearCourses.push(course);
-        });
-        makeUpdates(jsx, totCourses, year, yearIndex, yearCourses);
-        dispatch(updateTotalCredits(totalCredits));
-      });
-    }
+      // console.log(plan);
+      processPlan(currentPlan);
+    } else processPlan(currentPlan);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [plan, currentPlan, currentPlan._id, searching, placeholder]);
+
+  const processPlan = (plan: Plan) => {
+    const jsx: JSX.Element[] = [];
+    const totCourses: UserCourse[] = [];
+    let totalCredits: number = 0;
+
+    plan.years.forEach((year: Year, yearIndex: number) => {
+      const yearCourses: UserCourse[] = [];
+
+      year.courses.forEach((course: UserCourse) => {
+        if (course._id === 'invalid_course') return;
+        totalCredits += course.credits;
+        totCourses.push(course);
+        yearCourses.push(course);
+      });
+      makeUpdates(jsx, totCourses, year, yearIndex, yearCourses);
+      dispatch(updateTotalCredits(totalCredits));
+    });
+  };
 
   /**
    * Helper Function for above useEffect call

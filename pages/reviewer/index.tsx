@@ -33,6 +33,12 @@ const Reviewer: React.FC = () => {
     if (_id === 'noUser' || _id === 'guestUser') return;
     (async () => {
       const plansByUser = new Map();
+      try {
+        const lol = await userService.getReviewerPlans('juniorDev');
+        console.log(lol);
+      } catch (e) {
+        console.log(e);
+      }
       for (const planId of user.whitelisted_plan_ids) {
         const res = await userService.getPlan(planId);
         const data = res.data;

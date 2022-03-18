@@ -8,6 +8,8 @@ import {
   updateSelectedPlan,
 } from '../../../../slices/currentPlanSlice';
 import emailjs from 'emailjs-com';
+import { userService } from '../../../../services';
+import { selectUser } from '../../../../slices/userSlice';
 emailjs.init('user_7Cn3A3FQW9PTxExf6Npel');
 
 const ReviewersSearchResults: FC<{
@@ -15,12 +17,14 @@ const ReviewersSearchResults: FC<{
 }> = ({ Users }) => {
   const dispatch = useDispatch();
   const currentPlan = useSelector(selectPlan);
+  const currentUser = useSelector(selectUser);
 
   const isReviewer = (id) => {
     return currentPlan.reviewers.includes(id);
   };
 
   const isPending = (id) => {
+    return false;
     return !(
       id === 'sophomoreDev' ||
       id === 'freshmanDev' ||
@@ -30,35 +34,34 @@ const ReviewersSearchResults: FC<{
   };
 
   const changeReviewer = async (user: User) => {
-    const body = {
-      plan_id: currentPlan._id,
-      reviewer_id: user._id,
-    };
-    let plan;
-    if (isReviewer(user._id)) {
-      plan = await axios.delete(api + '/planReview/removeReviewer', {
-        data: body,
-      });
-    } else {
+    if (isReviewer(user._id)) userService.removeReview(currentPlan._id);
+    else {
       if (!isPending(user._id)) {
-        plan = await axios.post(api + '/planReview/addReviewer', body);
+        console.log(currentPlan);
+        const review = (
+          await userService.requestReviewerPlan(
+            currentPlan._id,
+            user._id,
+            currentUser._id,
+          )
+        ).data;
         emailjs.send('service_czbc7ct', 'template_9g4knbk', {
           from_name: currentPlan.name,
           to_jhed: user._id,
           to_name: user._id, // replace with name
           to_email: user.email,
-          url: 'https://google.com', // TODO
+          url: `http://localhost:3000/reviewer/${review._id}`, // TODO
         });
       } else {
         // TODO
       }
     }
-    dispatch(
-      updateSelectedPlan({
-        ...currentPlan,
-        reviewers: plan.data.data.reviewers,
-      }),
-    );
+    // dispatch(
+    //   updateSelectedPlan({
+    //     ...currentPlan,
+    //     reviewers: plan.data.data.reviewers,
+    //   }),
+    // );
   };
 
   const getElements = (data: User[]) => {
@@ -74,10 +77,10 @@ const ReviewersSearchResults: FC<{
             <img
               src="svg/CheckMark.svg"
               alt="requesting review"
-              className="w-6 mr-2 ml-2"
+              className="w-6 ml-2 mr-2"
             />
           ) : (
-            <div className="w-6 mr-2 ml-2" />
+            <div className="w-6 ml-2 mr-2" />
           )}
           <p>
             {element.name} - {element._id}
@@ -87,7 +90,7 @@ const ReviewersSearchResults: FC<{
     });
   };
 
-  return <div className="border-t pb-2">{getElements(Users)}</div>;
+  return <div className="pb-2 border-t">{getElements(Users)}</div>;
 };
 
 export default ReviewersSearchResults;

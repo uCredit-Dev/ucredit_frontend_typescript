@@ -2,7 +2,6 @@ import { useRouter } from 'next/router';
 import { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { toast } from 'react-toastify';
-// import getConfig from 'next/config';
 import {
   selectPlanList,
   selectReviewerPlanId,
@@ -50,14 +49,14 @@ const ReviewerAdd: React.FC = () => {
     (async () => {
       try {
         if (user._id === 'noUser' || user._id === 'guestUser') return;
-        const res = await userService.addPlan(
+        const res = await userService.confirmReviewerPlan(
           reviewerPlanId,
-          user._id,
           (status: number) => {
             if (status === 409)
               toast.error('Reviewer already added for this plan');
             else if (status === 200) toast.success('Requested reviewer plan!');
             else toast.error('Invalid link');
+            console.log(status);
           },
         );
         const plan = res.data;
@@ -72,7 +71,7 @@ const ReviewerAdd: React.FC = () => {
       }
     })();
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [user]);
+  }, [user, router.query.id]);
 
   return <></>;
 };
