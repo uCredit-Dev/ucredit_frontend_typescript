@@ -8,6 +8,7 @@ const Search: React.FC<{
 }> = ({ revieweePlans, setFiltered }) => {
   const [searchState, updateSearchState] = useState('');
   const [displaySettings, setDisplaySettings] = useState(false);
+  const [reversed, setReversed] = useState(false);
   const settings = [
     'Recently Updated',
     'First Name',
@@ -42,7 +43,7 @@ const Search: React.FC<{
         }
       }
     }
-    const filtered: RevieweePlans[] = [];
+    let filtered: RevieweePlans[] = [];
     for (const [k, v] of filteredMap)
       filtered.push({ reviewee: JSON.parse(k), plans: v });
     switch (searchSetting) {
@@ -71,6 +72,9 @@ const Search: React.FC<{
         break;
       default:
     }
+    if (reversed) {
+      filtered = filtered.reverse();
+    }
     setFiltered(filtered);
   };
 
@@ -80,7 +84,17 @@ const Search: React.FC<{
       return () => clearTimeout(search);
     } else setFiltered(revieweePlans);
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [searchState, searchSetting, revieweePlans]);
+  }, [searchState, searchSetting, revieweePlans, reversed]);
+
+  const getSVG = (setting: String) => {
+    if (setting !== searchSetting) {
+      return 'svg/Circle.svg';
+    } else if (reversed) {
+      return 'svg/ArrowUp.svg';
+    } else {
+      return 'svg/ArrowDown.svg';
+    }
+  };
 
   return (
     <div className="flex flex-row items-center">
@@ -103,23 +117,19 @@ const Search: React.FC<{
             {settings.map((setting) => (
               <div
                 className="flex flex-row hover:cursor-pointer"
-                onClick={() => setSearchSetting(setting)}
+                onClick={() => {
+                  if (setting === searchSetting) {
+                    setReversed(!reversed);
+                  }
+                  setSearchSetting(setting);
+                }}
               >
-                {searchSetting === setting ? (
-                  <img
-                    src={'svg/Check.svg'}
-                    alt="status"
-                    className="block h-4 m-auto mt-1 mr-1 tooltip"
-                    data-tip="Pending"
-                  />
-                ) : (
-                  <img
-                    src={'svg/Star.svg'}
-                    alt="status"
-                    className="block h-4 m-auto mt-1 mr-1 tooltip"
-                    data-tip="Pending"
-                  />
-                )}
+                <img
+                  src={getSVG(setting)}
+                  alt="status"
+                  className="block h-4 m-auto mt-1 mr-1 tooltip"
+                  data-tip="Pending"
+                />
                 <div>
                   <p>{setting}</p>
                 </div>
