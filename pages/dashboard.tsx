@@ -20,7 +20,7 @@ const Dash: React.FC = () => {
   useEffect(() => {
     (async () => {
       try {
-        const data = await userService.getPlan(router.query.plan as string);
+        const data = await userService.getPlan(user.plan_ids[0]);
         setPlan(data.data);
       } catch (e) {}
     })();
