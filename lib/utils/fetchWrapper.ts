@@ -1,18 +1,9 @@
-const get = (
-  url: string,
-  cors: boolean = false,
-  includeCred: boolean = false,
-) => {
+const get = (url: string) => {
   return fetch(url, {
     method: 'GET',
-    mode: cors ? 'cors' : 'no-cors',
-    credentials: includeCred ? 'include' : 'omit',
-    headers: {
-      Accept: 'application/json',
-      'Content-Type': 'application/json',
-    },
   });
 };
+
 const post = (url: string, data: Object) => {
   return fetch(url, {
     method: 'POST',
@@ -21,10 +12,12 @@ const post = (url: string, data: Object) => {
     },
     body: JSON.stringify(data),
   });
-  // .then((res) => res.text())
-  // .then((text) => {
-  //   JSON.parse(text);
-  // });}
 };
 
-export { get, post };
+const _delete = (url: string) => {
+  return fetch(url, {
+    method: 'DELETE',
+  });
+};
+
+export const fetchWrapper = { get, post, delete: _delete };

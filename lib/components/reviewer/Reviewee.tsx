@@ -2,31 +2,19 @@ import { useEffect, useState } from 'react';
 import clsx from 'clsx';
 import { EyeIcon, PencilAltIcon } from '@heroicons/react/outline';
 import { useRouter } from 'next/router';
-import { useDispatch } from 'react-redux';
 import { Plan, User } from '../../resources/commonTypes';
-import { userService } from '../../services';
-import { updateSelectedPlan } from '../../slices/currentPlanSlice';
 
 interface Props {
   key: string;
   userId: string;
   plans: Plan[];
+  reviewee: User;
 }
 
-const Reviewee: React.FC<Props> = ({ key, userId, plans }) => {
-  const [reviewee, setReviewee] = useState<User>(null);
+const Reviewee: React.FC<Props> = ({ key, userId, plans, reviewee }) => {
   const [showPlans, setShowPlans] = useState(false);
   const [majors, setMajors] = useState<string[]>([]);
   const router = useRouter();
-  const dispatch = useDispatch();
-
-  useEffect(() => {
-    (async () => {
-      const res = await userService.getUser(userId);
-      const user = res.data[0];
-      setReviewee(user);
-    })();
-  }, [userId]);
 
   useEffect(() => {
     const set = new Set<string>();
@@ -38,7 +26,6 @@ const Reviewee: React.FC<Props> = ({ key, userId, plans }) => {
 
   const handleViewPlan = (e, plan: Plan) => {
     e.stopPropagation();
-    console.log(plan);
     router.push(`/dashboard?plan=${plan._id}`);
   };
 

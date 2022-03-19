@@ -38,8 +38,7 @@ import GenerateNewPlan from '../../resources/GenerateNewPlan';
 import LoadingPage from '../LoadingPage';
 import HandlePlanShareDummy from './HandlePlanShareDummy';
 import HandleUserInfoSetupDummy from './HandleUserInfoSetupDummy';
-import { DashboardMode } from '../../types';
-import { Plan } from '../../resources/commonTypes';
+import { DashboardMode, Plan } from '../../resources/commonTypes';
 
 interface Props {
   plan: Plan;
@@ -161,7 +160,7 @@ const Dashboard: React.FC<Props> = ({ plan }) => {
               <div className="flex flex-row thin:flex-wrap-reverse mt-[5rem] w-full h-full">
                 <div className="flex flex-col w-full">
                   <div className="mx-auto">
-                    <ActionBar /> {/*hide this*/}
+                    {plan ? null : <ActionBar />}
                     <CourseList plan={plan} />
                   </div>
                 </div>
