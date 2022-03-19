@@ -1,12 +1,11 @@
 import { Dispatch, SetStateAction, useEffect, useState } from 'react';
-import { Plan } from '../../../lib/resources/commonTypes';
 import { DotsVerticalIcon } from '@heroicons/react/outline';
-import { planUserTuple } from '../../../pages/reviewer';
+import { RevieweePlans } from '../../../lib/resources/commonTypes';
 
 const Search: React.FC<{
-  plans: planUserTuple[];
-  setFiltered: Dispatch<SetStateAction<planUserTuple[]>>;
-}> = ({ plans, setFiltered }) => {
+  revieweePlans: RevieweePlans[];
+  setFiltered: Dispatch<SetStateAction<RevieweePlans[]>>;
+}> = ({ revieweePlans, setFiltered }) => {
   const [searchState, updateSearchState] = useState('');
   const [displaySettings, setDisplaySettings] = useState(false);
   const settings = [
@@ -16,6 +15,12 @@ const Search: React.FC<{
     'JHED',
     'Graduation Year',
   ];
+  const years = {
+    Freshman: 1,
+    Sophomore: 2,
+    Junior: 3,
+    Senior: 4,
+  };
   const [searchSetting, setSearchSetting] = useState(settings[0]);
 
   const handleChange = (e) => {
@@ -23,34 +28,44 @@ const Search: React.FC<{
   };
 
   const filter = () => {
-    console.log('filtering');
-    let filtered: planUserTuple[] = [];
-    plans.forEach((tuple) => {
-      if (
-        tuple.plan._id.includes(searchState) ||
-        tuple.plan.name.includes(searchState) ||
-        tuple.user.name.includes(searchState)
-      ) {
-        filtered.push(tuple);
+    let filteredMap = new Map();
+    for (const { reviewee, plans } of revieweePlans) {
+      for (const plan of plans) {
+        if (
+          plan._id.includes(searchState) ||
+          plan.name.includes(searchState) ||
+          reviewee.name.includes(searchState)
+        ) {
+          const filteredPlans = filteredMap.get(reviewee) || [];
+          filteredMap.set(reviewee, [...filteredPlans, plan]);
+        }
       }
-    });
+    }
+    const filtered: RevieweePlans[] = [];
+    for (const [k, v] of filteredMap) filtered.push({ reviewee: k, plans: v });
     switch (searchSetting) {
       case 'Recently Updated':
         // TODO
         break;
       case 'First Name':
-        filtered.sort((a, b) => a.user.name.localeCompare(b.user.name));
+        filtered.sort((a, b) => a.reviewee.name.localeCompare(b.reviewee.name));
         break;
       case 'Last Name':
         filtered.sort((a, b) =>
-          a.user.name.split(' ')[1].localeCompare(b.user.name.split(' ')[1]),
+          a.reviewee.name
+            .split(' ')[1]
+            .localeCompare(b.reviewee.name.split(' ')[1]),
         );
         break;
       case 'JHED':
-        filtered.sort((a, b) => a.plan.user_id.localeCompare(b.plan.user_id));
+        filtered.sort((a, b) => a.reviewee._id.localeCompare(b.reviewee._id));
         break;
       case 'Graduation Year':
-        // TODO
+        filtered.sort(
+          (a, b) =>
+            years[b.reviewee.grade.split(' ')[2]] -
+            years[a.reviewee.grade.split(' ')[2]],
+        );
         break;
       default:
     }
@@ -61,11 +76,9 @@ const Search: React.FC<{
     if (searchState.length > 2) {
       const search = setTimeout(() => filter(), 500);
       return () => clearTimeout(search);
-    } else {
-      setFiltered(plans);
-    }
+    } else setFiltered(revieweePlans);
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [searchState, searchSetting, plans]);
+  }, [searchState, searchSetting, revieweePlans]);
 
   return (
     <div className="flex flex-row items-center">
@@ -77,11 +90,11 @@ const Search: React.FC<{
       />
       <div>
         <DotsVerticalIcon
-          className="h-6 w-6 -ml-6 my-1"
+          className="w-6 h-6 my-1 -ml-6"
           onClick={() => setDisplaySettings(!displaySettings)}
         />
         {displaySettings ? (
-          <div className="absolute -translate-x-full flex flex-col items-start bg-white border shadow rounded p-3">
+          <div className="absolute flex flex-col items-start p-3 -translate-x-full bg-white border rounded shadow">
             <div>
               <p>Sort By:</p>
             </div>

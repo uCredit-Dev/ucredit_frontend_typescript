@@ -231,3 +231,13 @@ export type DroppableType = {
   semester: SemesterType;
   courses: UserCourse[];
 };
+
+export enum DashboardMode {
+  Advising = 'Advising',
+  Planning = 'Planning',
+}
+
+export interface RevieweePlans {
+  reviewee: User;
+  plans: Plan[];
+}

@@ -5,7 +5,7 @@ import { useRouter } from 'next/router';
 import { selectUser, resetUser } from '../../slices/userSlice';
 import { resetCurrentPlan } from '../../slices/currentPlanSlice';
 import { api, checkLocalhost, getLoginCookieVal } from '../../resources/assets';
-import { DashboardMode } from '../../types';
+import { DashboardMode } from '../../resources/commonTypes';
 
 interface Props {
   mode: DashboardMode;

@@ -4,6 +4,7 @@ import {
   Plan,
   SISRetrievedCourse,
   User,
+  RevieweePlans,
 } from '../components/../resources/commonTypes';
 
 type UserSlice = {
@@ -18,7 +19,7 @@ type UserSlice = {
   reviewerPlanId: string;
   loginCheck: boolean;
   loginRedirect: boolean;
-  reviewerPlans: Plan[];
+  reviewerPlans: RevieweePlans[];
 };
 
 const initialState: UserSlice = {

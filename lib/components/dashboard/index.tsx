@@ -38,8 +38,7 @@ import GenerateNewPlan from '../../resources/GenerateNewPlan';
 import LoadingPage from '../LoadingPage';
 import HandlePlanShareDummy from './HandlePlanShareDummy';
 import HandleUserInfoSetupDummy from './HandleUserInfoSetupDummy';
-import { DashboardMode } from '../../types';
-import { Plan } from '../../resources/commonTypes';
+import { DashboardMode, Plan } from '../../resources/commonTypes';
 
 interface Props {
   plan: Plan;

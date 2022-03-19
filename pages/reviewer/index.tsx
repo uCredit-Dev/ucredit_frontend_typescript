@@ -8,9 +8,13 @@ import {
   selectUser,
   updateReviewerPlans,
 } from '../../lib/slices/userSlice';
-import { DashboardMode } from '../../lib/types';
 import { Reviewee, Search } from '../../lib/components/reviewer';
-import { Plan, User } from '../../lib/resources/commonTypes';
+import {
+  DashboardMode,
+  Plan,
+  RevieweePlans,
+  User,
+} from '../../lib/resources/commonTypes';
 
 export type planUserTuple = {
   plan: Plan;
@@ -23,8 +27,7 @@ const Reviewer: React.FC = () => {
   const user = useSelector(selectUser);
   const reviewerPlans = useSelector(selectReviewerPlans);
 
-  const [planUsers, setplanUsers] = useState<planUserTuple[]>([]);
-  const [filtered, setFiltered] = useState<planUserTuple[]>([]);
+  const [filtered, setFiltered] = useState<RevieweePlans[]>(reviewerPlans);
 
   useEffect(() => {
     const { _id } = user;
@@ -43,17 +46,17 @@ const Reviewer: React.FC = () => {
     (async () => {
       const plansByUser = new Map();
       const reviews = await userService.getReviewerPlans(user._id);
-      for (const planId of user.whitelisted_plan_ids) {
-        const res = await userService.getPlan(planId);
-        const data = res.data;
-        const user = data.user_id;
+      for (const { plan_id, reviewee_id, _id } of reviews) {
+        const plan = (await userService.getPlan(plan_id)).data;
         const plans = plansByUser.get(user) || [];
-        plansByUser.set(user, [...plans, data]);
-        const res2 = await userService.getUser(data.user_id);
-        const user2 = res2.data[0];
-        setplanUsers([...planUsers, { plan: data, user: user2 }]);
+        const reviewee = (await userService.getUser(reviewee_id._id)).data[0];
+        plansByUser.set(reviewee, [...plans, plan]);
       }
-      dispatch(updateReviewerPlans([...plansByUser]));
+      const revieweePlansArr = [];
+      for (const [k, v] of plansByUser) {
+        revieweePlansArr.push({ reviewee: k, plans: v });
+      }
+      dispatch(updateReviewerPlans(revieweePlansArr));
     })();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [user]);
@@ -65,15 +68,15 @@ const Reviewer: React.FC = () => {
         Reviewees
       </div>
       <div className="md:px-[250px] bg-[#eff2f5] pb-3 w-screen">
-        <Search plans={planUsers} setFiltered={setFiltered} />
+        <Search revieweePlans={reviewerPlans} setFiltered={setFiltered} />
       </div>
       <div className="flex flex-col items-center w-screen h-screen bg-[#eff2f5] md:px-[250px] gap-2 overflow-y-auto">
         {filtered.map((tuple) => (
           <Reviewee
-            key={tuple.plan._id}
-            userId={tuple.user._id}
-            plans={[tuple.plan]}
-            reviewee={tuple.user}
+            key={tuple.reviewee._id}
+            userId={tuple.reviewee._id}
+            plans={tuple.plans}
+            reviewee={tuple.reviewee}
           />
         ))}
       </div>
