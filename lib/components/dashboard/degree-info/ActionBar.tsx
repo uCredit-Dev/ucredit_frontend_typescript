@@ -6,7 +6,7 @@ import Select, {
   MultiValueProps,
   StylesConfig,
 } from 'react-select';
-import { api } from '../../../resources/assets';
+import { getAPI } from '../../../resources/assets';
 import {
   selectPlan,
   updateCurrentPlanCourses,
@@ -26,11 +26,7 @@ import axios from 'axios';
 import { Year, Plan } from '../../../resources/commonTypes';
 import ReactTooltip from 'react-tooltip';
 import { allMajors } from '../../../resources/majors';
-import getConfig from 'next/config';
 import ShareLinksPopup from './ShareLinksPopup';
-
-const { publicRuntimeConfig } = getConfig();
-const baseUrl = publicRuntimeConfig.baseUrl;
 
 const majorOptions = allMajors.map((major, index) => ({
   value: index,
@@ -88,7 +84,7 @@ const ActionBar: FC = () => {
       majors: event.map((option) => option.label),
     };
     axios
-      .patch(api + '/plans/update', body)
+      .patch(getAPI(window) + '/plans/update', body)
       .then(({ data }) => {
         const newUpdatedPlan = { ...currentPlan, majors: data.data.majors };
         dispatch(updateSelectedPlan(newUpdatedPlan));
@@ -109,7 +105,7 @@ const ActionBar: FC = () => {
       majors: currentPlan.majors,
       name: planName,
     };
-    fetch(api + '/plans/update', {
+    fetch(getAPI(window) + '/plans/update', {
       method: 'PATCH',
       headers: {
         'Content-Type': 'application/json',
@@ -161,7 +157,7 @@ const ActionBar: FC = () => {
             : undefined,
       }; // add to end by default
       axios
-        .post(api + '/years', body)
+        .post(getAPI(window) + '/years', body)
         .then((response: any) => {
           const updatedPlanList: Plan[] = [...planList];
           updatedPlanList[0] = {
@@ -230,7 +226,8 @@ const ActionBar: FC = () => {
       setShareableURL('');
       return;
     }
-    setShareableURL(baseUrl + '/share?_id=' + currentPlan._id);
+    console.log(window.location.origin);
+    setShareableURL(window.location.origin + '/share?_id=' + currentPlan._id);
   };
 
   return (

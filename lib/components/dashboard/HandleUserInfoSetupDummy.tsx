@@ -5,7 +5,7 @@ import { toast } from 'react-toastify';
 import { Plan } from '../../resources/commonTypes';
 import { updateSelectedPlan } from '../../slices/currentPlanSlice';
 import { selectUser, updatePlanList } from '../../slices/userSlice';
-import { api } from '../../resources/assets';
+import { getAPI } from '../../resources/assets';
 import { updateAddingPlanStatus } from '../../slices/popupSlice';
 
 interface Props {
@@ -34,7 +34,7 @@ const HandleUserInfoSetupDummy: React.FC<Props> = ({ plan }) => {
     if (user._id !== 'noUser' && user._id !== 'guestUser') {
       if (!plan) {
         axios
-          .get(api + '/plansByUser/' + user._id)
+          .get(getAPI(window) + '/plansByUser/' + user._id)
           .then((retrieved) => {
             processRetrievedPlans(retrieved.data.data);
           })

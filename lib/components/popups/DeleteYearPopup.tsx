@@ -3,7 +3,7 @@ import { useSelector, useDispatch } from 'react-redux';
 import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import { selectPlan, updateSelectedPlan } from '../../slices/currentPlanSlice';
-import { api } from '../../resources/assets';
+import { getAPI } from '../../resources/assets';
 import {
   selectYearToDelete,
   updateYearToDelete,
@@ -26,7 +26,7 @@ const DeleteYearPopup: FC = () => {
   // Delete the selected year
   const activateDeleteYear = () => {
     if (currentPlan.years.length > 1 && year !== null) {
-      fetch(api + '/years/' + year._id, {
+      fetch(getAPI(window) + '/years/' + year._id, {
         method: 'DELETE',
         headers: {
           'Content-Type': 'application/json',
