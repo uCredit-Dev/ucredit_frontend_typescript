@@ -2,25 +2,27 @@ import { Dispatch, SetStateAction, useEffect, useState } from 'react';
 import { DotsVerticalIcon } from '@heroicons/react/outline';
 import { RevieweePlans } from '../../../lib/resources/commonTypes';
 
+const settings = [
+  'Recently Updated',
+  'First Name',
+  'Last Name',
+  'JHED',
+  'Graduation Year',
+];
+
+const years = {
+  Freshman: 1,
+  Sophomore: 2,
+  Junior: 3,
+  Senior: 4,
+};
+
 const Search: React.FC<{
   revieweePlans: RevieweePlans[];
   setFiltered: Dispatch<SetStateAction<RevieweePlans[]>>;
 }> = ({ revieweePlans, setFiltered }) => {
   const [searchState, updateSearchState] = useState('');
   const [displaySettings, setDisplaySettings] = useState(false);
-  const settings = [
-    'Recently Updated',
-    'First Name',
-    'Last Name',
-    'JHED',
-    'Graduation Year',
-  ];
-  const years = {
-    Freshman: 1,
-    Sophomore: 2,
-    Junior: 3,
-    Senior: 4,
-  };
   const [searchSetting, setSearchSetting] = useState(settings[0]);
 
   const handleChange = (e) => {

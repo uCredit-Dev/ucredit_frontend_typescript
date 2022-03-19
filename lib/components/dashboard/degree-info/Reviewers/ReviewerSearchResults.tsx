@@ -42,7 +42,6 @@ const ReviewersSearchResults: FC<{
   };
 
   const changeReviewer = async (user: User) => {
-    console.log(currentUser.name);
     const reviewId = isReviewer(user._id);
     if (reviewId) {
       await userService.removeReview(reviewId);
@@ -63,6 +62,7 @@ const ReviewersSearchResults: FC<{
           to_email: user.email,
           url: `http://localhost:3000/reviewer/${review._id}`, // TODO
         });
+        toast.success('Reviewer requested');
       } else
         toast.error('You have already requested a review from this reviewer');
     }

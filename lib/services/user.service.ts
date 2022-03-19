@@ -71,8 +71,8 @@ const handleResponse = (res, cb = undefined) => {
   return res.text().then((text) => {
     const data = text && JSON.parse(text);
 
+    if (cb) cb(res.status);
     if (!res.ok) {
-      if (cb) cb(res.status);
       const error = (data && data.message) || res.statusText;
       return Promise.reject(error);
     }

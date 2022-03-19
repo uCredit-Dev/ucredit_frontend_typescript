@@ -10,13 +10,6 @@ import {
 import 'react-toastify/dist/ReactToastify.css';
 import { userService } from '../../lib/services';
 
-// const { publicRuntimeConfig } = getConfig();
-// const apiUrl = publicRuntimeConfig.apiUrl;
-const apiUrl =
-  process.env.NODE_ENV === 'development'
-    ? 'http://localhost:4567/api'
-    : 'https://ucredit-api.herokuapp.com/api';
-
 const ReviewerAdd: React.FC = () => {
   const router = useRouter();
   const dispatch = useDispatch();
@@ -43,8 +36,8 @@ const ReviewerAdd: React.FC = () => {
         await userService.confirmReviewerPlan(
           reviewerPlanId,
           (status: number) => {
-            if (status === 200) toast.success('Confirmed reviewer plan!');
-            else toast.error('Failed');
+            if (status === 400) toast.error('Failed');
+            else if (status === 200) toast.success('Confirmed reviewer plan!');
           },
         );
         router.push('/reviewer');
