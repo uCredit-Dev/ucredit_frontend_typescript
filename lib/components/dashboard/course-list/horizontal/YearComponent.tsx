@@ -483,10 +483,12 @@ const YearComponent: FC<{
               )}
               <div className="font-bold">{totalCredits} Credits</div>
             </div>
-            <DotsVerticalIcon
-              onClick={() => setDisplay(!display)}
-              className="cursor-pointer stroke-2 w-7"
-            />
+            {mode === ReviewMode.Edit && (
+              <DotsVerticalIcon
+                onClick={() => setDisplay(!display)}
+                className="cursor-pointer stroke-2 w-7"
+              />
+            )}
           </div>
         </div>
         {display && (

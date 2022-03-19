@@ -46,6 +46,7 @@ const CourseDraggable: FC<{
               year={semesterYear}
               course={course}
               semester={semesterName}
+              mode={mode}
             />
           </div>
         );

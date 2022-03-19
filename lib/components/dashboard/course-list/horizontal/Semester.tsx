@@ -372,7 +372,7 @@ const Semester: FC<{
    */
   const getSemesterAddButton = (): JSX.Element => (
     <>
-      {!addingPrereqStatus ? (
+      {!addingPrereqStatus && mode === ReviewMode.Edit ? (
         <div
           className="flex flex-row items-center justify-center rounded-md cursor-pointer group"
           onClick={addCourse}

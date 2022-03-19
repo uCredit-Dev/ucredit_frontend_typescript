@@ -67,8 +67,6 @@ const CourseList: FC<Props> = ({ plan, mode }) => {
     const totCourses: UserCourse[] = [];
     let totalCredits: number = 0;
 
-    if (!plan.years) plan.years = [...(plan as any).year_ids];
-
     plan.years.forEach((year: Year, yearIndex: number) => {
       const yearCourses: UserCourse[] = [];
 
