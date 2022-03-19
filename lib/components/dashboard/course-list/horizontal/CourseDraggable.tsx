@@ -1,6 +1,7 @@
 import { FC, useState } from 'react';
 import { Draggable } from 'react-beautiful-dnd';
 import {
+  ReviewMode,
   SemesterType,
   UserCourse,
   Year,
@@ -19,14 +20,15 @@ const CourseDraggable: FC<{
   index: number;
   semesterYear: Year;
   semesterName: SemesterType;
-}> = ({ course, index, semesterYear, semesterName }) => {
+  mode: ReviewMode;
+}> = ({ course, index, semesterYear, semesterName, mode }) => {
   const [draggable, setDraggable] = useState<boolean>(true);
   return (
     <Draggable
       key={course._id}
       index={index}
       draggableId={course._id}
-      isDragDisabled={draggable}
+      isDragDisabled={draggable || mode === ReviewMode.View}
     >
       {(provided, snapshot) => {
         return (

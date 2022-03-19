@@ -26,11 +26,12 @@ const Reviewee: React.FC<Props> = ({ key, userId, plans, reviewee }) => {
 
   const handleViewPlan = (e, plan: Plan) => {
     e.stopPropagation();
-    router.push(`/dashboard?plan=${plan._id}`);
+    router.push(`/dashboard?plan=${plan._id}&mode=view`);
   };
 
   const handleEditPlan = (e, plan: Plan) => {
     e.stopPropagation();
+    router.push(`/dashboard?plan=${plan._id}&mode=edit`);
   };
 
   return (

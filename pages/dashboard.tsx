@@ -3,7 +3,7 @@ import Head from 'next/head';
 import { useSelector } from 'react-redux';
 import { selectUser } from '../lib/slices/userSlice';
 import { useEffect, useState } from 'react';
-import { Plan, User } from '../lib/resources/commonTypes';
+import { Plan, ReviewMode, User } from '../lib/resources/commonTypes';
 import { useRouter } from 'next/router';
 import { userService } from '../lib/services';
 
@@ -11,6 +11,7 @@ const Dash: React.FC = () => {
   const user: User = useSelector(selectUser);
   const router = useRouter();
   const [plan, setPlan] = useState<Plan>(null);
+  const [mode, setMode] = useState<ReviewMode>(ReviewMode.View);
 
   useEffect(() => {
     if (user._id === 'noUser') router.push('/login');
@@ -18,7 +19,8 @@ const Dash: React.FC = () => {
   }, []);
 
   useEffect(() => {
-    if (!router.query.plan) return;
+    if (!router.query) return;
+    setMode(router.query.mode as ReviewMode);
     (async () => {
       try {
         const revieweePlan = (
@@ -27,7 +29,7 @@ const Dash: React.FC = () => {
         setPlan(revieweePlan);
       } catch (e) {}
     })();
-  }, [router.query.plan]);
+  }, [router.query]);
 
   return (
     <>
@@ -36,7 +38,7 @@ const Dash: React.FC = () => {
         <meta name="description" content="Quick accessible degree planning." />
         <title>My Plan</title>
       </Head>
-      <Dashboard plan={plan} />
+      <Dashboard plan={plan} mode={mode} />
     </>
   );
 };

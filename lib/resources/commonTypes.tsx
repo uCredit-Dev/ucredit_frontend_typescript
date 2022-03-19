@@ -246,3 +246,8 @@ export enum ReviewRequestStatus {
   Pending = 'PENDING',
   Accepted = 'ACCEPTED',
 }
+
+export enum ReviewMode {
+  View = 'view',
+  Edit = 'edit',
+}

@@ -38,16 +38,17 @@ import GenerateNewPlan from '../../resources/GenerateNewPlan';
 import LoadingPage from '../LoadingPage';
 import HandlePlanShareDummy from './HandlePlanShareDummy';
 import HandleUserInfoSetupDummy from './HandleUserInfoSetupDummy';
-import { DashboardMode, Plan } from '../../resources/commonTypes';
+import { DashboardMode, Plan, ReviewMode } from '../../resources/commonTypes';
 
 interface Props {
   plan: Plan;
+  mode: ReviewMode;
 }
 
 /**
  * The dashboard that displays the user's plan.
  */
-const Dashboard: React.FC<Props> = ({ plan }) => {
+const Dashboard: React.FC<Props> = ({ plan, mode }) => {
   // Redux setup.
   const user = useSelector(selectUser);
   const loginCheck = useSelector(selectLoginCheck);
@@ -158,11 +159,11 @@ const Dashboard: React.FC<Props> = ({ plan }) => {
                 <div className="flex flex-col w-full">
                   <div className="mx-auto">
                     {plan ? null : <ActionBar />}
-                    <CourseList plan={plan} />
+                    <CourseList plan={plan} mode={mode} />
                   </div>
                 </div>
               </div>
-              <InfoMenu />
+              {plan ? null : <InfoMenu />}
             </div>
             {/* Global popups */}
             {addingPrereqStatus && <AddingPrereqPopup />}

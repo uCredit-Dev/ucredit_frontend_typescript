@@ -2,6 +2,7 @@ import { useState, useEffect, FC } from 'react';
 import {
   DroppableType,
   Plan,
+  ReviewMode,
   SemesterType,
   UserCourse,
   Year,
@@ -52,7 +53,8 @@ const Semester: FC<{
   semesterYear: Year;
   courses: UserCourse[];
   display: boolean;
-}> = ({ semesterName, semesterYear, courses, display }) => {
+  mode: ReviewMode;
+}> = ({ semesterName, semesterYear, courses, display, mode }) => {
   // Redux setup
   const dispatch = useDispatch();
   const addingPrereqStatus = useSelector(selectAddingPrereq);
@@ -123,6 +125,7 @@ const Semester: FC<{
           index={index}
           semesterName={semesterName}
           semesterYear={semesterYear}
+          mode={mode}
         />
       </div>
     ));

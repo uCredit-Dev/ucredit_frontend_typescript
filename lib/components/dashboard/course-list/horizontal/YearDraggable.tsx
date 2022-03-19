@@ -1,6 +1,10 @@
 import { FC, useState } from 'react';
 import { Draggable } from 'react-beautiful-dnd';
-import { UserCourse, Year } from '../../../../resources/commonTypes';
+import {
+  ReviewMode,
+  UserCourse,
+  Year,
+} from '../../../../resources/commonTypes';
 import YearComponent from './YearComponent';
 
 /**
@@ -15,6 +19,7 @@ const YearDraggable: FC<{
   year: Year;
   yearIndex: number;
   yearCourses: UserCourse[];
+  mode: ReviewMode;
 }> = (props) => {
   const [draggable, setDraggable] = useState<boolean>(true);
   return (
@@ -22,7 +27,9 @@ const YearDraggable: FC<{
       key={props.year._id}
       index={props.yearIndex}
       draggableId={props.year._id}
-      isDragDisabled={draggable || props.id === 0}
+      isDragDisabled={
+        draggable || props.id === 0 || props.mode === ReviewMode.View
+      }
     >
       {(provided, snapshot) => {
         return (
@@ -41,6 +48,7 @@ const YearDraggable: FC<{
               year={props.year}
               courses={props.yearCourses}
               setDraggable={setDraggable}
+              mode={props.mode}
             />
           </div>
         );

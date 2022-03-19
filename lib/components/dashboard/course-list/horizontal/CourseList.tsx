@@ -1,8 +1,10 @@
 import { useState, useEffect, FC } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
+import { DragDropContext, Droppable } from 'react-beautiful-dnd';
 import {
   DroppableType,
   Plan,
+  ReviewMode,
   SemesterType,
   SISRetrievedCourse,
   UserCourse,
@@ -28,18 +30,18 @@ import {
   updatePlanList,
 } from '../../../../slices/userSlice';
 import { api } from '../../../../resources/assets';
-import { DragDropContext, Droppable } from 'react-beautiful-dnd';
 import YearDraggable from './YearDraggable';
 
 interface Props {
   plan: Plan;
+  mode: ReviewMode;
 }
 
 /**
  * Container component that holds all the years, semesters, and courses of the current plan.
  * TODO: Cleanup and modularize
  */
-const CourseList: FC<Props> = ({ plan }) => {
+const CourseList: FC<Props> = ({ plan, mode }) => {
   // Setting up redux
   const dispatch = useDispatch();
   const currentPlan = useSelector(selectPlan);
@@ -55,8 +57,7 @@ const CourseList: FC<Props> = ({ plan }) => {
   // Gets all courses for each year and generates year objects based on them.
   useEffect(() => {
     if (plan) {
-      // console.log(plan);
-      processPlan(currentPlan);
+      processPlan(plan);
     } else processPlan(currentPlan);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [plan, currentPlan, currentPlan._id, searching, placeholder]);
@@ -65,6 +66,8 @@ const CourseList: FC<Props> = ({ plan }) => {
     const jsx: JSX.Element[] = [];
     const totCourses: UserCourse[] = [];
     let totalCredits: number = 0;
+
+    if (!plan.years) plan.years = [...(plan as any).year_ids];
 
     plan.years.forEach((year: Year, yearIndex: number) => {
       const yearCourses: UserCourse[] = [];
@@ -106,6 +109,7 @@ const CourseList: FC<Props> = ({ plan }) => {
           year={year}
           yearIndex={yearIndex}
           yearCourses={yearCourses}
+          mode={mode}
         />
       </div>,
     );
