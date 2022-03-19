@@ -35,7 +35,7 @@ const Login: React.FC = () => {
   const [session, setSession] = useState<string>('');
   const router = useRouter();
   const importID = useSelector(selectImportID);
-  const devIDs = ['freshmanDev', 'sophomoreDev', 'juniorDev', 'seniorDev'];
+  const devIDs = ['mockUser'];
 
   // Useffect runs once on page load, calling to https://ucredit-api.herokuapp.com/api/verifyLogin to retrieve user data.
   // On successful retrieve, update redux with retrieved user
@@ -192,7 +192,7 @@ const Login: React.FC = () => {
                 </button>
               ))}
               <input
-                placeholder="Enter your session ID cookie here"
+                placeholder="Enter a custom ID here"
                 className="p-1 mx-auto rounded w-80"
                 onChange={onSessionChange}
                 value={session}
@@ -201,7 +201,7 @@ const Login: React.FC = () => {
                 className="mx-auto mb-2 text-center rounded bg-primary w-80"
                 onClick={submitSession}
               >
-                Submit Custom Session
+                Login as custom user
               </button>
             </div>
           )}
