@@ -10,7 +10,7 @@ import {
   selectSearchStatus,
 } from '../../../../slices/searchSlice';
 import Select from 'react-select';
-import { all_deps, api, course_tags } from '../../../../resources/assets';
+import { all_deps, course_tags, getAPI } from '../../../../resources/assets';
 import { selectCourseToShow } from '../../../../slices/popupSlice';
 import {
   selectCurrentPlanCourses,

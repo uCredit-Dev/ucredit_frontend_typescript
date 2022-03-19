@@ -1,14 +1,11 @@
-
-import { useDispatch, useSelector } from 'react-redux';
-import { getAPI } from '../../../../resources/assets';
+import { useSelector } from 'react-redux';
 import { FC, useEffect, useState } from 'react';
 import emailjs from 'emailjs-com';
 import clsx from 'clsx';
 import { CheckIcon } from '@heroicons/react/outline';
 import { toast } from 'react-toastify';
 import { ReviewRequestStatus, User } from '../../../../resources/commonTypes';
-import { selectPlan,
-  updateSelectedPlan, } from '../../../../slices/currentPlanSlice';
+import { selectPlan } from '../../../../slices/currentPlanSlice';
 import { userService } from '../../../../services';
 import { selectUser } from '../../../../slices/userSlice';
 
@@ -66,7 +63,6 @@ const ReviewersSearchResults: FC<{
           to_email: user.email,
           url: `http://localhost:3000/reviewer/${review._id}`, // TODO
         });
-
       } else
         toast.error('You have already requested a review from this reviewer');
     }
