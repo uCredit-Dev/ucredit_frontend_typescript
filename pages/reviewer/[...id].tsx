@@ -52,19 +52,17 @@ const ReviewerAdd: React.FC = () => {
         const res = await userService.confirmReviewerPlan(
           reviewerPlanId,
           (status: number) => {
-            if (status === 409)
-              toast.error('Reviewer already added for this plan');
-            else if (status === 200) toast.success('Requested reviewer plan!');
-            else toast.error('Invalid link');
-            console.log(status);
+            if (status === 200) toast.success('Confirmed reviewer plan!');
+            else toast.error('Failed');
           },
         );
-        const plan = res.data;
-        const updatedPlanList = [...planList, plan];
-        dispatch(updatePlanList(updatedPlanList));
-        dispatch(updateSelectedPlan(plan));
-        const updatedUser = (await userService.getUser(user._id)).data[0];
-        dispatch(updateUser(updatedUser));
+
+        // const plan = res.data;
+        // const updatedPlanList = [...planList, plan];
+        // dispatch(updatePlanList(updatedPlanList));
+        // dispatch(updateSelectedPlan(plan));
+        // const updatedUser = (await userService.getUser(user._id)).data[0];
+        // dispatch(updateUser(updatedUser));
         router.push('/reviewer');
       } catch (err) {
         router.push('/reviewer');

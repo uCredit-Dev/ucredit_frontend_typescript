@@ -5,12 +5,6 @@ const get = (
 ) => {
   return fetch(url, {
     method: 'GET',
-    mode: cors ? 'cors' : 'no-cors',
-    credentials: includeCred ? 'include' : 'omit',
-    headers: {
-      Accept: 'application/json',
-      'Content-Type': 'application/json',
-    },
   });
 };
 const post = (url: string, data: Object) => {
