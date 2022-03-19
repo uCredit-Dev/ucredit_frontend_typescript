@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useState, useCallback, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useScrollPosition } from '@n8tb1t/use-scroll-position';
 import UserSection from './UserSection';
@@ -118,7 +118,7 @@ const Dashboard: React.FC<Props> = ({ plan, mode }) => {
     }
   });
 
-  const updateExperimentsForUser = () => {
+  const updateExperimentsForUser = useCallback(() => {
     axios
       .get(getAPI(window) + '/experiments/allExperiments')
       .then(async (experimentListResponse) => {
@@ -133,14 +133,11 @@ const Dashboard: React.FC<Props> = ({ plan, mode }) => {
       .catch((errAllExperiments) => {
         console.log(errAllExperiments);
       });
-  };
+  }, [dispatch, user._id]);
 
   useEffect(() => {
-    if (experimentList.length === 0) {
-      updateExperimentsForUser();
-    }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+    updateExperimentsForUser();
+  }, [experimentList.length, updateExperimentsForUser]);
 
   return (
     <>
