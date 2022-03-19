@@ -7,7 +7,6 @@ import { fetchWrapper } from '../utils';
  * @returns a promises that resolves on success or failure in logging in
  */
 const login = (cookieVal: string) => {
-
   return fetchWrapper
     .get(`${getAPI(window)}/verifyLogin/${cookieVal}`)
     .then((res) => res.json())
@@ -15,7 +14,9 @@ const login = (cookieVal: string) => {
 };
 
 const getPlan = (planId: string) => {
-  return fetchWrapper.get(`${getAPI(window)}/plans/${planId}`).then(handleResponse);
+  return fetchWrapper
+    .get(`${getAPI(window)}/plans/${planId}`)
+    .then(handleResponse);
 };
 
 const getUser = (username: string) => {
@@ -55,7 +56,9 @@ const confirmReviewerPlan = (review_id: string, cb = undefined) => {
 
 const getReviewerPlans = (reviewer_id: string, cb = undefined) => {
   return fetchWrapper
-    .get(`${getAPI(window)}/planReview/plansToReview?reviewer_id=${reviewer_id}`)
+    .get(
+      `${getAPI(window)}/planReview/plansToReview?reviewer_id=${reviewer_id}`,
+    )
     .then((res) => handleResponse(res, cb));
 };
 
