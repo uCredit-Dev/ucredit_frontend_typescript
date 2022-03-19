@@ -36,17 +36,17 @@ const ReviewersSearch = () => {
 
   return (
     <div className="flex flex-col pr-1 bg-gray-100 rounded-lg">
-      <div className="ml-2 py-2">
+      <div className="py-2 ml-2">
         <p className="text-gray-500">Add or remove advisors</p>
       </div>
       <input
         type="text"
         placeholder="jsmith1 or John Smith"
-        className="bg-gray-200 pl-8 py-1 ml-2 pr-8 mr-2 mb-3 rounded-md"
+        className="px-3 py-1 mx-2 mb-3 bg-gray-200 rounded-md"
         value={searchState}
         onChange={handleChange}
       ></input>
-      <ReviewersSearchResults Users={searchData} />
+      <ReviewersSearchResults users={searchData} />
     </div>
   );
 };

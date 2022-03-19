@@ -13,6 +13,7 @@ import {
   DashboardMode,
   Plan,
   RevieweePlans,
+  ReviewRequestStatus,
   User,
 } from '../../lib/resources/commonTypes';
 
@@ -45,16 +46,18 @@ const Reviewer: React.FC = () => {
     if (_id === 'noUser' || _id === 'guestUser') return;
     (async () => {
       const plansByUser = new Map();
-      const reviews = await userService.getReviewerPlans(user._id);
-      for (const { plan_id, reviewee_id, _id } of reviews) {
+      const reviews = (await userService.getReviewerPlans(user._id)).data;
+      for (const { plan_id, reviewee_id, status } of reviews) {
+        if (status === ReviewRequestStatus.Pending) continue;
         const plan = (await userService.getPlan(plan_id)).data;
-        const plans = plansByUser.get(user) || [];
         const reviewee = (await userService.getUser(reviewee_id._id)).data[0];
-        plansByUser.set(reviewee, [...plans, plan]);
+        const revieweeString = JSON.stringify(reviewee);
+        const plans = plansByUser.get(revieweeString) || [];
+        plansByUser.set(revieweeString, [...plans, plan]);
       }
       const revieweePlansArr = [];
       for (const [k, v] of plansByUser) {
-        revieweePlansArr.push({ reviewee: k, plans: v });
+        revieweePlansArr.push({ reviewee: JSON.parse(k), plans: v });
       }
       dispatch(updateReviewerPlans(revieweePlansArr));
     })();

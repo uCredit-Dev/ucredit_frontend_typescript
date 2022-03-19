@@ -241,3 +241,8 @@ export interface RevieweePlans {
   reviewee: User;
   plans: Plan[];
 }
+
+export enum ReviewRequestStatus {
+  Pending = 'PENDING',
+  Accepted = 'ACCEPTED',
+}

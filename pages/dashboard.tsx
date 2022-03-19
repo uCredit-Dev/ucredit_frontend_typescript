@@ -18,10 +18,13 @@ const Dash: React.FC = () => {
   }, []);
 
   useEffect(() => {
+    if (!router.query.plan) return;
     (async () => {
       try {
-        const data = await userService.getPlan(user.plan_ids[0]);
-        setPlan(data.data);
+        const revieweePlan = (
+          await userService.getPlan(router.query.plan as string)
+        ).data;
+        setPlan(revieweePlan);
       } catch (e) {}
     })();
   }, [router.query.plan]);

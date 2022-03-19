@@ -1,6 +1,8 @@
+import { CheckIcon } from '@heroicons/react/outline';
 import { useEffect, useState } from 'react';
 import { useSelector } from 'react-redux';
 import ReactTooltip from 'react-tooltip';
+import { ReviewRequestStatus } from '../../../../resources/commonTypes';
 import { userService } from '../../../../services';
 import { selectPlan } from '../../../../slices/currentPlanSlice';
 
@@ -10,37 +12,31 @@ const CurrentReviewers = () => {
 
   useEffect(() => {
     (async () => {
-      setJsx(await getElements(currentPlan.reviewers));
+      const reviewers = (await userService.getPlanReviewers(currentPlan._id))
+        .data;
+      setJsx(await getElements(reviewers));
     })();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [currentPlan.reviewers]);
 
   const getSVG = (status: string) => {
-    if (status === 'pending') {
+    if (status === ReviewRequestStatus.Pending) {
       return (
-        <img
-          src={'svg/Check.svg'}
-          alt="status"
-          className="block h-4 m-auto mt-1 tooltip"
+        <div
+          className="w-3 h-3 bg-black rounded-full tooltip"
           data-tip="Pending"
         />
       );
-    } else if (status === 'approved') {
-      return (
-        <img
-          src={'svg/Checkmark.svg'}
-          alt="status"
-          className="tooltip"
-          data-tip="Approved"
-        />
-      );
+    } else if (status === ReviewRequestStatus.Accepted) {
+      return <CheckIcon className="w-5 h-5 tooltip" data-tip="Accepted" />;
     }
   };
 
-  const getElements = async (data: string[]) => {
+  const getElements = async (data: any[]) => {
     const elements = [];
-    for (const reviewer_id of data) {
-      const { _id, name } = (await userService.getUser(reviewer_id)).data[0];
+    for (const { reviewer_id, status } of data) {
+      const { _id, name } = (await userService.getUser(reviewer_id._id))
+        .data[0];
       elements.push(
         <div
           className="flex flex-row items-center justify-between pt-2"
@@ -56,10 +52,8 @@ const CurrentReviewers = () => {
                 data-tip="This reviewer is requesting a review"
               />
             )}
-            <div className="w-6 h-6">
-              {
-                getSVG('approved') // pending?
-              }
+            <div className="flex items-center justify-center w-6 h-6">
+              {getSVG(status)}
             </div>
           </div>
         </div>,

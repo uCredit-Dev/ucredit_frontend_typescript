@@ -1,5 +1,5 @@
 import getConfig from 'next/config';
-import { get, post } from '../utils';
+import { fetchWrapper } from '../utils';
 
 const { publicRuntimeConfig } = getConfig();
 const { apiUrl } = publicRuntimeConfig;
@@ -10,19 +10,20 @@ const { apiUrl } = publicRuntimeConfig;
  * @returns a promises that resolves on success or failure in logging in
  */
 const login = (cookieVal: string) => {
-  return get(apiUrl + '/verifyLogin/' + cookieVal, true, true)
+  return fetchWrapper
+    .get(`${apiUrl}/verifyLogin/${cookieVal}`)
     .then((res) => res.json())
     .then((res) => res);
 };
 
 const getPlan = (planId: string) => {
-  return get(apiUrl + '/plans/' + planId, true).then(handleResponse);
+  return fetchWrapper.get(`${apiUrl}/plans/${planId}`).then(handleResponse);
 };
 
 const getUser = (username: string) => {
-  return get(`${apiUrl}/user?username=${username}`, true).then((res) =>
-    handleResponse(res),
-  );
+  return fetchWrapper
+    .get(`${apiUrl}/user?username=${username}`)
+    .then((res) => handleResponse(res));
 };
 
 const requestReviewerPlan = (
@@ -31,29 +32,39 @@ const requestReviewerPlan = (
   reviewee_id: string,
   cb = undefined,
 ) => {
-  return post(`${apiUrl}/planReview/request`, {
-    plan_id,
-    reviewer_id,
-    reviewee_id,
-  }).then((res) => handleResponse(res, cb));
+  return fetchWrapper
+    .post(`${apiUrl}/planReview/request`, {
+      plan_id,
+      reviewer_id,
+      reviewee_id,
+    })
+    .then((res) => handleResponse(res, cb));
 };
 
 const removeReview = (review_id: string, cb = undefined) => {
-  return post(`${apiUrl}/planReview/removeReview`, {
-    review_id,
-  }).then((res) => handleResponse(res, cb));
+  return fetchWrapper
+    .delete(`${apiUrl}/planReview/removeReview?review_id=${review_id}`)
+    .then((res) => handleResponse(res, cb));
 };
 
 const confirmReviewerPlan = (review_id: string, cb = undefined) => {
-  return post(`${apiUrl}/planReview/confirm`, {
-    review_id,
-  }).then((res) => handleResponse(res, cb));
+  return fetchWrapper
+    .post(`${apiUrl}/planReview/confirm`, {
+      review_id,
+    })
+    .then((res) => handleResponse(res, cb));
 };
 
 const getReviewerPlans = (reviewer_id: string, cb = undefined) => {
-  return get(
-    `${apiUrl}/planReview/plansToReview?reviewer_id=${reviewer_id}`,
-  ).then((res) => handleResponse(res, cb));
+  return fetchWrapper
+    .get(`${apiUrl}/planReview/plansToReview?reviewer_id=${reviewer_id}`)
+    .then((res) => handleResponse(res, cb));
+};
+
+const getPlanReviewers = (plan_id: string, cb = undefined) => {
+  return fetchWrapper
+    .get(`${apiUrl}/planReview/getReviewers?plan_id=${plan_id}`)
+    .then((res) => handleResponse(res, cb));
 };
 
 const handleResponse = (res, cb = undefined) => {
@@ -78,4 +89,5 @@ export const userService = {
   confirmReviewerPlan,
   removeReview,
   getReviewerPlans,
+  getPlanReviewers,
 };

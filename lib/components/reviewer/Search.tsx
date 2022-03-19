@@ -30,19 +30,21 @@ const Search: React.FC<{
   const filter = () => {
     let filteredMap = new Map();
     for (const { reviewee, plans } of revieweePlans) {
+      const revieweeString = JSON.stringify(reviewee);
       for (const plan of plans) {
         if (
-          plan._id.includes(searchState) ||
-          plan.name.includes(searchState) ||
-          reviewee.name.includes(searchState)
+          plan._id.toLowerCase().includes(searchState.toLowerCase()) ||
+          plan.name.toLowerCase().includes(searchState.toLowerCase()) ||
+          reviewee.name.toLowerCase().includes(searchState.toLowerCase())
         ) {
-          const filteredPlans = filteredMap.get(reviewee) || [];
-          filteredMap.set(reviewee, [...filteredPlans, plan]);
+          const filteredPlans = filteredMap.get(revieweeString) || [];
+          filteredMap.set(revieweeString, [...filteredPlans, plan]);
         }
       }
     }
     const filtered: RevieweePlans[] = [];
-    for (const [k, v] of filteredMap) filtered.push({ reviewee: k, plans: v });
+    for (const [k, v] of filteredMap)
+      filtered.push({ reviewee: JSON.parse(k), plans: v });
     switch (searchSetting) {
       case 'Recently Updated':
         // TODO
