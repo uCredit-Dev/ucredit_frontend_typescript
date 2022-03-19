@@ -56,11 +56,7 @@ const GenerateNewPlan: FC = () => {
     let newPlan: Plan;
     const getData = async () => {
       let response = await axios.post(getAPI(window) + '/plans', planBody);
-      const newPlanResponse = response.data.data;
-      let resp = await axios.get(
-        getAPI(window) + '/years/' + newPlanResponse._id,
-      );
-      newPlan = { ...newPlanResponse, years: resp.data.data };
+      newPlan = response.data.data;
       dispatch(
         updateSearchTime({
           searchSemester: 'Fall',

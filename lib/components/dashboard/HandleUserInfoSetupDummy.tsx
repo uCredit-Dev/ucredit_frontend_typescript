@@ -55,11 +55,7 @@ const HandleUserInfoSetupDummy: React.FC<Props> = ({ plan }) => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [user._id, plan]);
 
-  const processRetrievedPlans = async (retrievedData: any): Promise<void> => {
-    const retrievedPlans: Plan[] = retrievedData.map((plan: any) => ({
-      ...plan,
-      years: plan.year_ids,
-    }));
+  const processRetrievedPlans = async (retrievedPlans: any): Promise<void> => {
     if (retrievedPlans.length > 0) {
       // sort plans by ids if there is more than one plan
       retrievedPlans.sort((plan1: Plan, plan2: Plan) =>
