@@ -25,7 +25,7 @@ import {
   updateAddingPrereq,
 } from '../../../../slices/popupSlice';
 import { toast } from 'react-toastify';
-import { api } from '../../../../resources/assets';
+import { getAPI } from '../../../../resources/assets';
 import {
   selectUser,
   selectPlanList,
@@ -169,7 +169,7 @@ const VSemester: React.FC<{
             : undefined,
       };
 
-      fetch(api + '/courses', {
+      fetch(getAPI(window) + '/courses', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

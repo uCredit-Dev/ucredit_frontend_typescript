@@ -11,7 +11,7 @@ import {
   updateSelectedPlan,
 } from '../../../../slices/currentPlanSlice';
 import axios from 'axios';
-import { api } from '../../../../resources/assets';
+import { getAPI } from '../../../../resources/assets';
 import { selectPlanList, updatePlanList } from '../../../../slices/userSlice';
 import { toast } from 'react-toastify';
 
@@ -80,7 +80,7 @@ const YearSettingsDropdown: FC<{
     // Change year
     if (!exists) {
       axios
-        .patch(api + '/years/updateYear', {
+        .patch(getAPI(window) + '/years/updateYear', {
           year_id: year._id,
           year: selectedYear.value,
         })

@@ -7,7 +7,7 @@ const Header: React.FC = () => {
   const router = useRouter();
 
   return (
-    <div className="flex items-center justify-between p-4 h-1/6 bg-primary">
+    <div className="flex items-center justify-between p-4 h-1/6 bg-white">
       <div className="flex items-center">
         <img className="w-8 h-8 mr-2" src="/img/logo.png" alt="logo" />
         <div

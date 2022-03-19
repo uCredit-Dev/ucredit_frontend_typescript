@@ -1,8 +1,5 @@
-import getConfig from 'next/config';
+import { getAPI } from '../resources/assets';
 import { fetchWrapper } from '../utils';
-
-const { publicRuntimeConfig } = getConfig();
-const { apiUrl } = publicRuntimeConfig;
 
 /**
  * Attempts to log in user
@@ -11,18 +8,20 @@ const { apiUrl } = publicRuntimeConfig;
  */
 const login = (cookieVal: string) => {
   return fetchWrapper
-    .get(`${apiUrl}/verifyLogin/${cookieVal}`)
+    .get(`${getAPI(window)}/verifyLogin/${cookieVal}`)
     .then((res) => res.json())
     .then((res) => res);
 };
 
 const getPlan = (planId: string) => {
-  return fetchWrapper.get(`${apiUrl}/plans/${planId}`).then(handleResponse);
+  return fetchWrapper
+    .get(`${getAPI(window)}/plans/${planId}`)
+    .then(handleResponse);
 };
 
 const getUser = (username: string) => {
   return fetchWrapper
-    .get(`${apiUrl}/user?username=${username}`)
+    .get(`${getAPI(window)}/user?username=${username}`)
     .then((res) => handleResponse(res));
 };
 
@@ -33,7 +32,7 @@ const requestReviewerPlan = (
   cb = undefined,
 ) => {
   return fetchWrapper
-    .post(`${apiUrl}/planReview/request`, {
+    .post(`${getAPI(window)}/planReview/request`, {
       plan_id,
       reviewer_id,
       reviewee_id,
@@ -43,13 +42,13 @@ const requestReviewerPlan = (
 
 const removeReview = (review_id: string, cb = undefined) => {
   return fetchWrapper
-    .delete(`${apiUrl}/planReview/removeReview?review_id=${review_id}`)
+    .delete(`${getAPI(window)}/planReview/removeReview?review_id=${review_id}`)
     .then((res) => handleResponse(res, cb));
 };
 
 const confirmReviewerPlan = (review_id: string, cb = undefined) => {
   return fetchWrapper
-    .post(`${apiUrl}/planReview/confirm`, {
+    .post(`${getAPI(window)}/planReview/confirm`, {
       review_id,
     })
     .then((res) => handleResponse(res, cb));
@@ -57,13 +56,15 @@ const confirmReviewerPlan = (review_id: string, cb = undefined) => {
 
 const getReviewerPlans = (reviewer_id: string, cb = undefined) => {
   return fetchWrapper
-    .get(`${apiUrl}/planReview/plansToReview?reviewer_id=${reviewer_id}`)
+    .get(
+      `${getAPI(window)}/planReview/plansToReview?reviewer_id=${reviewer_id}`,
+    )
     .then((res) => handleResponse(res, cb));
 };
 
 const getPlanReviewers = (plan_id: string, cb = undefined) => {
   return fetchWrapper
-    .get(`${apiUrl}/planReview/getReviewers?plan_id=${plan_id}`)
+    .get(`${getAPI(window)}/planReview/getReviewers?plan_id=${plan_id}`)
     .then((res) => handleResponse(res, cb));
 };
 

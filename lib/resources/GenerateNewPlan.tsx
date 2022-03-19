@@ -15,7 +15,7 @@ import {
   selectImportingStatus,
   updateSelectedPlan,
 } from '../slices/currentPlanSlice';
-import { api } from './assets';
+import { getAPI } from './assets';
 import { updateSearchTime } from '../slices/searchSlice';
 import {
   selectToAddName,
@@ -55,9 +55,11 @@ const GenerateNewPlan: FC = () => {
 
     let newPlan: Plan;
     const getData = async () => {
-      let response = await axios.post(api + '/plans', planBody);
+      let response = await axios.post(getAPI(window) + '/plans', planBody);
       const newPlanResponse = response.data.data;
-      let resp = await axios.get(api + '/years/' + newPlanResponse._id);
+      let resp = await axios.get(
+        getAPI(window) + '/years/' + newPlanResponse._id,
+      );
       newPlan = { ...newPlanResponse, years: resp.data.data };
       dispatch(
         updateSearchTime({
@@ -74,7 +76,7 @@ const GenerateNewPlan: FC = () => {
             newPlan._id,
           );
           let newDistr = await axios.post(
-            api + '/distributions',
+            getAPI(window) + '/distributions',
             distributionBody,
           );
           newPlan = {

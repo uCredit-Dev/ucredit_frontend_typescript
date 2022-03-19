@@ -14,7 +14,7 @@ import { selectUser } from '../../slices/userSlice';
 // import { ReactComponent as DeleteExperimentSvg } from '../../resources/svg/DeleteExperiment.svg';
 // import { ReactComponent as AddExperimentSvg } from '../../resources/svg/AddExperiment.svg';
 import { toast } from 'react-toastify';
-import { api } from './../../resources/assets';
+import { getAPI } from './../../resources/assets';
 
 const ExperimentDevBoardPopup: FC<{}> = () => {
   //Retrieve all experiments from redux
@@ -83,7 +83,7 @@ const ExperimentDevBoardPopup: FC<{}> = () => {
         convertedPercentages[i] !== allExperiments[i].percentParticipating
       ) {
         await axios
-          .post(`${api}/experiments/${allExperiments[i].name}`, {
+          .post(`${getAPI(window)}/experiments/${allExperiments[i].name}`, {
             percent_participating: convertedPercentages[i],
           })
           .catch(function (error) {
@@ -109,9 +109,14 @@ const ExperimentDevBoardPopup: FC<{}> = () => {
           return false;
         }
         await axios
-          .put(`${api}/experiments/changeName/${allExperiments[i].name}`, {
-            new_name: inputNames[i],
-          })
+          .put(
+            `${getAPI(window)}/experiments/changeName/${
+              allExperiments[i].name
+            }`,
+            {
+              new_name: inputNames[i],
+            },
+          )
           .catch(function (error) {
             console.log(error);
           });
@@ -123,7 +128,7 @@ const ExperimentDevBoardPopup: FC<{}> = () => {
   const updateExperimentRedux = async () => {
     try {
       const experimentListResponse = await axios.get(
-        `${api}/experiments/allExperiments`,
+        `${getAPI(window)}/experiments/allExperiments`,
       ); // getting experiment list
       const experiments = experimentListResponse.data.data;
 
@@ -172,7 +177,7 @@ const ExperimentDevBoardPopup: FC<{}> = () => {
       return;
     }
     await axios
-      .post(`${api}/experiments/${inputName}`, {
+      .post(`${getAPI(window)}/experiments/${inputName}`, {
         percent_participating: 0,
       })
       .catch(function (error) {
@@ -189,7 +194,7 @@ const ExperimentDevBoardPopup: FC<{}> = () => {
 
   const handleSubmitForDeleteExperiment = async () => {
     await axios
-      .delete(`${api}/experiments/${nameExperimentToDelete}`)
+      .delete(`${getAPI(window)}/experiments/${nameExperimentToDelete}`)
       .catch(function (error) {
         console.log(error);
       });

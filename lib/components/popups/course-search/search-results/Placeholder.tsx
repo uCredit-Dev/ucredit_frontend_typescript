@@ -10,7 +10,7 @@ import {
   selectSearchStatus,
 } from '../../../../slices/searchSlice';
 import Select from 'react-select';
-import { all_deps, api, course_tags } from '../../../../resources/assets';
+import { all_deps, course_tags, getAPI } from '../../../../resources/assets';
 import { selectCourseToShow } from '../../../../slices/popupSlice';
 import {
   selectCurrentPlanCourses,
@@ -139,7 +139,7 @@ const Placeholder: FC<{ addCourse: (plan?: Plan) => void }> = (props) => {
    */
   const updateCourse = (): void => {
     if (courseToShow !== null) {
-      fetch(api + '/courses/' + courseToShow._id, {
+      fetch(getAPI(window) + '/courses/' + courseToShow._id, {
         method: 'DELETE',
         headers: {
           'Content-Type': 'application/json',

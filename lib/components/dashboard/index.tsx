@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useScrollPosition } from '@n8tb1t/use-scroll-position';
 import UserSection from './UserSection';
@@ -32,7 +32,7 @@ import InfoMenu from './InfoMenu';
 import ActionBar from './degree-info/ActionBar';
 import { selectLoginCheck, selectUser } from '../../slices/userSlice';
 import axios from 'axios';
-import { api } from './../../resources/assets';
+import { getAPI } from './../../resources/assets';
 import Cart from '../popups/course-search/Cart';
 import GenerateNewPlan from '../../resources/GenerateNewPlan';
 import LoadingPage from '../LoadingPage';
@@ -119,7 +119,7 @@ const Dashboard: React.FC<Props> = ({ plan }) => {
 
   const updateExperimentsForUser = () => {
     axios
-      .get(`${api}/experiments/allExperiments`)
+      .get(getAPI(window) + '/experiments/allExperiments')
       .then(async (experimentListResponse) => {
         const experiments = experimentListResponse.data.data;
         dispatch(setExperiments(experiments));
@@ -134,9 +134,12 @@ const Dashboard: React.FC<Props> = ({ plan }) => {
       });
   };
 
-  if (experimentList.length === 0) {
-    updateExperimentsForUser();
-  }
+  useEffect(() => {
+    if (experimentList.length === 0) {
+      updateExperimentsForUser();
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   return (
     <>

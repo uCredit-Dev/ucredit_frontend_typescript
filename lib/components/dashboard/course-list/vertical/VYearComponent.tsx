@@ -7,7 +7,7 @@ import {
   selectPlan,
   updateSelectedPlan,
 } from '../../../../slices/currentPlanSlice';
-import { api } from '../../../../resources/assets';
+import { getAPI } from '../../../../resources/assets';
 import VYearSettingsDropdown from './VYearSettingsDropdown';
 import clsx from 'clsx';
 import { selectAddingPrereq } from '../../../../slices/popupSlice';
@@ -105,7 +105,7 @@ const VYearComponent: FC<{
       year_id: year._id,
       name: yearName,
     };
-    fetch(api + '/years/updateName', {
+    fetch(getAPI(window) + '/years/updateName', {
       method: 'PATCH',
       headers: {
         'Content-Type': 'application/json',

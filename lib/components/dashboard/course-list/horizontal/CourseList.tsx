@@ -27,7 +27,7 @@ import {
   updateCourseCache,
   updatePlanList,
 } from '../../../../slices/userSlice';
-import { api } from '../../../../resources/assets';
+import { getAPI } from '../../../../resources/assets';
 import { DragDropContext, Droppable } from 'react-beautiful-dnd';
 import YearDraggable from './YearDraggable';
 
@@ -180,7 +180,7 @@ const CourseList: FC<Props> = ({ plan }) => {
       plan_id: currentPlan._id,
       year_ids: yearIdArr,
     };
-    fetch(api + '/years/changeOrder', {
+    fetch(getAPI(window) + '/years/changeOrder', {
       method: 'PATCH',
       headers: {
         'Content-Type': 'application/json',
@@ -225,7 +225,7 @@ const CourseList: FC<Props> = ({ plan }) => {
       .map((c) => c._id)
       .indexOf(course._id);
     try {
-      const resp = await axios.get(api + '/search', {
+      const resp = await axios.get(getAPI(window) + '/search', {
         params: { query: course.number },
       });
       let retrievedCourses: SISRetrievedCourse[] = resp.data.data;
@@ -259,7 +259,7 @@ const CourseList: FC<Props> = ({ plan }) => {
           newTerm: destination.semester,
         };
 
-        let res = await fetch(api + '/courses/dragged', {
+        let res = await fetch(getAPI(window) + '/courses/dragged', {
           method: 'PATCH',
           headers: {
             'Content-Type': 'application/json',
