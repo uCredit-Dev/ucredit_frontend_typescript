@@ -48,7 +48,6 @@ const HandleUserInfoSetupDummy: React.FC<Props> = ({ plan }) => {
             }
           });
       } else {
-        // console.log(plan);
         processRetrievedPlans([plan]);
       }
     }
