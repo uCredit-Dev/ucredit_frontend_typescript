@@ -22,6 +22,7 @@ import {
 import {
   Course,
   Plan,
+  ReviewMode,
   SemesterType,
   Year,
 } from '../../../../resources/commonTypes';
@@ -37,6 +38,7 @@ import {
 import { getAPI } from '../../../../resources/assets';
 import { ChevronDownIcon } from '@heroicons/react/outline';
 import { QuestionMarkCircleIcon } from '@heroicons/react/solid';
+import { selectReviewMode } from '../../../../slices/userSlice';
 
 /**
  * Displays a sis course when searching
@@ -65,6 +67,8 @@ const SisCourse: FC<{
 
   const [versionIndex, updateVersionIndex] = useState<number>(0);
   const [ogSem, setOgSem] = useState<SemesterType | 'All'>('All');
+
+  const reviewMode = useSelector(selectReviewMode);
 
   useEffect(() => {
     setOgSem(searchSemester);
@@ -217,7 +221,9 @@ const SisCourse: FC<{
 
   // Handles displaying the add prereq button
   const getAddPrereqButton = (): JSX.Element =>
-    searchStack.length !== 0 && showCourseInfo ? (
+    searchStack.length !== 0 &&
+    showCourseInfo &&
+    reviewMode !== ReviewMode.View ? (
       <button
         className="p-1 px-2 ml-auto -mt-1 text-xl text-white transition duration-200 ease-in transform rounded hover:bg-secondary bg-primary focus:outline-none hover:scale-105"
         onClick={addPrereq}
@@ -310,25 +316,27 @@ const SisCourse: FC<{
 
   // Handles Add Course Button
   const getAddCourseButton = (): JSX.Element =>
-    !showCourseInfo ? (
-      <button
-        className="w-auto h-10 p-2 mt-2 text-white transition duration-200 ease-in transform rounded hover:bg-secondary bg-primary focus:outline-none hover:scale-105"
-        onClick={() => {
-          if (props.cart) {
-            addPrereq();
-          } else props.addCourse();
-        }}
-      >
-        Add Course
-      </button>
-    ) : (
-      <button
-        className="w-auto h-10 p-2 mt-2 text-white transition duration-200 ease-in transform rounded hover:bg-secondary bg-primary focus:outline-none hover:scale-105"
-        onClick={updateCourse}
-      >
-        Update Course
-      </button>
-    );
+    !showCourseInfo
+      ? reviewMode !== ReviewMode.View && (
+          <button
+            className="w-auto h-10 p-2 mt-2 text-white transition duration-200 ease-in transform rounded hover:bg-secondary bg-primary focus:outline-none hover:scale-105"
+            onClick={() => {
+              if (props.cart) {
+                addPrereq();
+              } else props.addCourse();
+            }}
+          >
+            Add Course
+          </button>
+        )
+      : reviewMode !== ReviewMode.View && (
+          <button
+            className="w-auto h-10 p-2 mt-2 text-white transition duration-200 ease-in transform rounded hover:bg-secondary bg-primary focus:outline-none hover:scale-105"
+            onClick={updateCourse}
+          >
+            Update Course
+          </button>
+        );
 
   /**
    * Returns add course UI based on cart activation

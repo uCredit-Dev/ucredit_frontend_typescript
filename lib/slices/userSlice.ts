@@ -5,6 +5,7 @@ import {
   SISRetrievedCourse,
   User,
   RevieweePlans,
+  ReviewMode,
 } from '../components/../resources/commonTypes';
 
 type UserSlice = {
@@ -19,7 +20,7 @@ type UserSlice = {
   reviewerPlanId: string;
   loginCheck: boolean;
   loginRedirect: boolean;
-  reviewerPlans: RevieweePlans[];
+  reviewMode: ReviewMode;
 };
 
 const initialState: UserSlice = {
@@ -43,7 +44,7 @@ const initialState: UserSlice = {
   reviewerPlanId: '',
   loginCheck: false,
   loginRedirect: false,
-  reviewerPlans: [],
+  reviewMode: ReviewMode.None,
 };
 
 // Updates all user info from database. This function should be called after an axios get on the user routes.
@@ -110,8 +111,8 @@ export const userSlice = createSlice({
     updateLoginRedirect: (state: any, action: PayloadAction<Boolean>) => {
       state.loginRedirect = action.payload;
     },
-    updateReviewerPlans: (state: any, action: PayloadAction<Plan[][]>) => {
-      state.reviewerPlans = [...action.payload];
+    updateReviewMode: (state: any, action: PayloadAction<ReviewMode>) => {
+      state.reviewMode = action.payload;
     },
     resetUser: (state: any) => {
       state.currentUser = initialState.currentUser;
@@ -132,7 +133,7 @@ export const {
   updateReviewerPlanID,
   updateLoginCheck,
   updateLoginRedirect,
-  updateReviewerPlans,
+  updateReviewMode,
   resetUser,
 } = userSlice.actions;
 
@@ -150,7 +151,6 @@ export const selectReviewerPlanId = (state: RootState) =>
 export const selectLoginCheck = (state: RootState) => state.user.loginCheck;
 export const selectLoginRedirect = (state: RootState) =>
   state.user.loginRedirect;
-export const selectReviewerPlans = (state: RootState) =>
-  state.user.reviewerPlans;
+export const selectReviewMode = (state: RootState) => state.user.reviewMode;
 
 export default userSlice.reducer;

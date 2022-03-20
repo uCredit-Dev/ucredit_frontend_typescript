@@ -24,11 +24,8 @@ export type planUserTuple = {
 
 const Reviewer: React.FC = () => {
   const router = useRouter();
-  const dispatch = useDispatch();
   const user = useSelector(selectUser);
-  const reviewerPlans = useSelector(selectReviewerPlans);
-
-  const [filtered, setFiltered] = useState<RevieweePlans[]>(reviewerPlans);
+  const [filtered, setFiltered] = useState<RevieweePlans[]>([]);
 
   useEffect(() => {
     const { _id } = user;
@@ -59,7 +56,7 @@ const Reviewer: React.FC = () => {
       for (const [k, v] of plansByUser) {
         revieweePlansArr.push({ reviewee: JSON.parse(k), plans: v });
       }
-      dispatch(updateReviewerPlans(revieweePlansArr));
+      setFiltered(revieweePlansArr);
     })();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [user]);
@@ -71,7 +68,7 @@ const Reviewer: React.FC = () => {
         Reviewees
       </div>
       <div className="md:px-[250px] bg-[#eff2f5] pb-3 w-screen">
-        <Search revieweePlans={reviewerPlans} setFiltered={setFiltered} />
+        <Search revieweePlans={filtered} setFiltered={setFiltered} />
       </div>
       <div className="flex flex-col items-center w-screen h-screen bg-[#eff2f5] md:px-[250px] gap-2 overflow-y-auto">
         {filtered.map((tuple) => (

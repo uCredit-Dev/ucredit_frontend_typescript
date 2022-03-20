@@ -1,5 +1,10 @@
 import { useState, useEffect, FC } from 'react';
-import { Course, Plan, Year } from '../../../../resources/commonTypes';
+import {
+  Course,
+  Plan,
+  ReviewMode,
+  Year,
+} from '../../../../resources/commonTypes';
 import { useSelector, useDispatch } from 'react-redux';
 import {
   updateInspectedVersion,
@@ -21,6 +26,8 @@ import {
 import ReactTooltip from 'react-tooltip';
 import { QuestionMarkCircleIcon } from '@heroicons/react/solid';
 import { XIcon } from '@heroicons/react/outline';
+import { selectReviewMode } from '../../../../slices/userSlice';
+import clsx from 'clsx';
 
 const departmentFilters = ['none', ...all_deps];
 const tagFilters = ['none', ...course_tags];
@@ -48,6 +55,8 @@ const Placeholder: FC<{ addCourse: (plan?: Plan) => void }> = (props) => {
   const [placeholderDepartment, setPlaceholderDepartment] =
     useState<string>('none');
   const [placeholderTag, setPlaceholderTag] = useState<string>('none');
+
+  const reviewMode = useSelector(selectReviewMode);
 
   useEffect(() => {
     ReactTooltip.rebuild();
@@ -306,16 +315,22 @@ const Placeholder: FC<{ addCourse: (plan?: Plan) => void }> = (props) => {
         </div>
       </div>
       {searchStatus ? (
-        <button
-          className="p-2 mr-0 text-white transition duration-200 ease-in transform rounded w-28 hover:bg-secondary bg-primary focus:outline-none hover:scale-105"
-          onClick={() => props.addCourse()}
-        >
-          Add Course
-        </button>
+        reviewMode !== ReviewMode.View && (
+          <button
+            className="p-2 mr-0 text-white transition duration-200 ease-in transform rounded w-28 hover:bg-secondary bg-primary focus:outline-none hover:scale-105"
+            onClick={() => props.addCourse()}
+          >
+            Add Course
+          </button>
+        )
       ) : (
         <button
-          className="p-2 mr-0 text-white transition duration-200 ease-in transform rounded w-28 bg-secondary focus:outline-none hover:scale-105"
+          className={clsx(
+            { 'bg-slate-300': reviewMode === ReviewMode.View },
+            'p-2 mr-0 text-white transition duration-200 ease-in transform rounded w-28 bg-secondary focus:outline-none hover:scale-105',
+          )}
           onClick={updateCourse}
+          disabled={reviewMode === ReviewMode.View}
         >
           Update Course
         </button>

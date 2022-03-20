@@ -1,7 +1,7 @@
 import Dashboard from '../lib/components/dashboard/index';
 import Head from 'next/head';
-import { useSelector } from 'react-redux';
-import { selectUser } from '../lib/slices/userSlice';
+import { useDispatch, useSelector } from 'react-redux';
+import { selectUser, updateReviewMode } from '../lib/slices/userSlice';
 import { useEffect, useState } from 'react';
 import { Plan, ReviewMode, User } from '../lib/resources/commonTypes';
 import { useRouter } from 'next/router';
@@ -12,6 +12,7 @@ const Dash: React.FC = () => {
   const router = useRouter();
   const [plan, setPlan] = useState<Plan>(null);
   const [mode, setMode] = useState<ReviewMode>(ReviewMode.View);
+  const dispatch = useDispatch();
 
   useEffect(() => {
     if (user._id === 'noUser') router.push('/login');
@@ -19,8 +20,12 @@ const Dash: React.FC = () => {
   }, []);
 
   useEffect(() => {
-    if (!router.query) return;
+    if (!router.query) {
+      dispatch(updateReviewMode(ReviewMode.None));
+      return;
+    }
     setMode(router.query.mode as ReviewMode);
+    dispatch(updateReviewMode(router.query.mode as ReviewMode));
     (async () => {
       try {
         const revieweePlan = (
@@ -29,6 +34,7 @@ const Dash: React.FC = () => {
         setPlan(revieweePlan);
       } catch (e) {}
     })();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [router.query]);
 
   return (

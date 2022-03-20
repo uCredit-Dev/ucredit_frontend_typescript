@@ -163,7 +163,7 @@ const Dashboard: React.FC<Props> = ({ plan, mode }) => {
                   </div>
                 </div>
               </div>
-              {plan ? null : <InfoMenu />}
+              <InfoMenu plan={plan} mode={mode} />
             </div>
             {/* Global popups */}
             {addingPrereqStatus && <AddingPrereqPopup />}

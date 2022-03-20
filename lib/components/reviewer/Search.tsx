@@ -77,7 +77,7 @@ const Search: React.FC<{
     if (reversed) {
       filtered = filtered.reverse();
     }
-    setFiltered(filtered);
+    setFiltered(filtered || []);
   };
 
   useEffect(() => {

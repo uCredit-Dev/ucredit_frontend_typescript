@@ -17,14 +17,25 @@ import {
 } from '../../slices/currentPlanSlice';
 import { selectCourseCache } from '../../slices/userSlice';
 import { getCourse, getMajor } from '../../resources/assets';
-import { Course, Major, Plan, UserCourse } from '../../resources/commonTypes';
+import {
+  Course,
+  Major,
+  Plan,
+  ReviewMode,
+  UserCourse,
+} from '../../resources/commonTypes';
 import { allMajors } from '../../resources/majors';
+
+interface Props {
+  plan: Plan;
+  mode: ReviewMode;
+}
 
 /**
  * Info menu shows degree plan and degree information.
  * Hidden on default.
  */
-const InfoMenu: FC = () => {
+const InfoMenu: FC<Props> = ({ plan, mode }) => {
   const dispatch = useDispatch();
   const distributions = useSelector(selectDistributions);
   const currentPlan: Plan = useSelector(selectPlan);
@@ -44,12 +55,13 @@ const InfoMenu: FC = () => {
   const [retrievedDistributions, setDistributions] = useState<{
     plan: Plan;
     distr: [string, requirements[]][];
-  }>({ plan: currentPlan, distr: [] });
+  }>({ plan: plan || currentPlan, distr: [] });
   const [windowWidth, setWindowWidth] = useState<number>(0);
 
   // Update major when plan changes
   useEffect(() => {
-    let firstMajor: string | undefined = currentPlan.majors[0];
+    const p = plan || currentPlan;
+    let firstMajor: string | undefined = p.majors[0];
     if (firstMajor === undefined) {
       return;
     }
@@ -57,18 +69,19 @@ const InfoMenu: FC = () => {
     if (majorObj !== undefined) {
       setMajor(majorObj);
     }
-  }, [currentPlan._id, currentPlan, currentPlan.majors, currPlanCourses]);
+  }, [plan, currentPlan._id, currentPlan, currentPlan.majors, currPlanCourses]);
 
   // Gets distribution everytime a plan changes.
   useEffect(() => {
+    const p = plan || currentPlan;
     const distr = getDistributions();
     if (distr && distr.length > 0) {
       let tot = 0;
-      currentPlan.years.forEach((year) => {
+      p.years.forEach((year) => {
         tot += year.courses.length;
       });
       updateFulfilled(
-        currentPlan,
+        p,
         distr,
         tot === currPlanCourses.length ? currPlanCourses : [],
       );
@@ -77,8 +90,9 @@ const InfoMenu: FC = () => {
   }, [major, currPlanCourses]);
 
   useEffect(() => {
+    const p = plan || currentPlan;
     setCalculated(true);
-    if (currentPlan._id === retrievedDistributions.plan._id) {
+    if (p._id === retrievedDistributions.plan._id) {
       dispatch(updateDistributions(retrievedDistributions.distr));
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -320,11 +334,11 @@ const InfoMenu: FC = () => {
   //     : 'Show Fine Requirements';
 
   return (
-    <div className="fixed z-40 bg-red-100 right-0 flex flex-col justify-between mt-8 w-10 top-60">
+    <div className="fixed right-0 z-40 flex flex-col justify-between w-10 mt-8 bg-red-100 top-60">
       {windowWidth <= 2200 && (
         <div className="my-auto transform -rotate-90">
           <button
-            className="w-32 h-10 text-center text-white font-bold hover:bg-secondary bg-primary rounded focus:outline-none shadow hover:scale-105 transition duration-200 ease-in drop-shadow-xl"
+            className="w-32 h-10 font-bold text-center text-white transition duration-200 ease-in rounded shadow hover:bg-secondary bg-primary focus:outline-none hover:scale-105 drop-shadow-xl"
             onClick={() => {
               setInfoOpen(!infoOpen);
             }}

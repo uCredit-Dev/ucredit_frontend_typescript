@@ -250,4 +250,5 @@ export enum ReviewRequestStatus {
 export enum ReviewMode {
   View = 'view',
   Edit = 'edit',
+  None = '',
 }

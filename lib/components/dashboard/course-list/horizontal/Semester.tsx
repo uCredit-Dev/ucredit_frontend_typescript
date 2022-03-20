@@ -372,7 +372,7 @@ const Semester: FC<{
    */
   const getSemesterAddButton = (): JSX.Element => (
     <>
-      {!addingPrereqStatus && (!mode || mode !== ReviewMode.View) ? (
+      {!addingPrereqStatus ? (
         <div
           className="flex flex-row items-center justify-center rounded-md cursor-pointer group"
           onClick={addCourse}
@@ -389,7 +389,8 @@ const Semester: FC<{
    * Determines whether to get add here button or not.
    */
   const getAddHereButton = () =>
-    checkSemester() && (
+    checkSemester() &&
+    mode !== ReviewMode.View && (
       <button
         className="z-40 w-24 py-1 text-xs text-white transition duration-150 ease-in transform rounded hover:bg-secondary bg-primary focus:outline-none hover:scale-101"
         onClick={addPrereq}
