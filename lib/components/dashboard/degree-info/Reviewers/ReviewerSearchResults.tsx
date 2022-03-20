@@ -8,8 +8,12 @@ import { ReviewRequestStatus, User } from '../../../../resources/commonTypes';
 import { selectPlan } from '../../../../slices/currentPlanSlice';
 import { userService } from '../../../../services';
 import { selectUser } from '../../../../slices/userSlice';
+import getConfig from 'next/config';
 
 emailjs.init('user_7Cn3A3FQW9PTxExf6Npel');
+
+const { publicRuntimeConfig } = getConfig();
+const baseUrl = publicRuntimeConfig.baseUrl;
 
 const ReviewersSearchResults: FC<{
   users: User[];
@@ -60,7 +64,7 @@ const ReviewersSearchResults: FC<{
           to_jhed: user._id,
           to_name: user.name,
           to_email: user.email,
-          url: `http://localhost:3000/reviewer/${review._id}`, // TODO
+          url: `${baseUrl}/reviewer/${review._id}`,
         });
         toast.success('Reviewer requested');
       } else

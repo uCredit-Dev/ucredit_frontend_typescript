@@ -323,7 +323,10 @@ const SisCourse: FC<{
     !showCourseInfo ? (
       <button
         className={clsx(
-          { 'bg-slate-300 hover:bg-slate-300': cartInvokedBySemester },
+          {
+            'bg-slate-300 hover:bg-slate-300':
+              cartInvokedBySemester && reviewMode === ReviewMode.View,
+          },
           'w-auto h-10 p-2 mt-2 text-white transition duration-200 ease-in transform rounded hover:bg-secondary bg-primary focus:outline-none hover:scale-105',
         )}
         onClick={() => {
@@ -331,19 +334,21 @@ const SisCourse: FC<{
             addPrereq();
           } else props.addCourse();
         }}
-        disabled={cartInvokedBySemester}
+        disabled={cartInvokedBySemester && reviewMode === ReviewMode.View}
       >
         Add Course
       </button>
     ) : (
-      reviewMode !== ReviewMode.View && (
-        <button
-          className="w-auto h-10 p-2 mt-2 text-white transition duration-200 ease-in transform rounded hover:bg-secondary bg-primary focus:outline-none hover:scale-105"
-          onClick={updateCourse}
-        >
-          Update Course
-        </button>
-      )
+      <button
+        className={clsx(
+          { 'bg-slate-300 hover:bg-slate-300': reviewMode === ReviewMode.View },
+          'w-auto h-10 p-2 mt-2 text-white transition duration-200 ease-in transform rounded hover:bg-secondary bg-primary focus:outline-none hover:scale-105',
+        )}
+        onClick={updateCourse}
+        disabled={reviewMode === ReviewMode.View}
+      >
+        Update Course
+      </button>
     );
 
   /**
