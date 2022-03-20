@@ -20,6 +20,7 @@ type UserSlice = {
   loginCheck: boolean;
   loginRedirect: boolean;
   reviewMode: ReviewMode;
+  cartInvokedBySemester: boolean;
 };
 
 const initialState: UserSlice = {
@@ -44,6 +45,7 @@ const initialState: UserSlice = {
   loginCheck: false,
   loginRedirect: false,
   reviewMode: ReviewMode.None,
+  cartInvokedBySemester: false,
 };
 
 // Updates all user info from database. This function should be called after an axios get on the user routes.
@@ -113,6 +115,12 @@ export const userSlice = createSlice({
     updateReviewMode: (state: any, action: PayloadAction<ReviewMode>) => {
       state.reviewMode = action.payload;
     },
+    updateCartInvokedBySemester: (
+      state: any,
+      action: PayloadAction<Boolean>,
+    ) => {
+      state.cartInvokedBySemester = action.payload;
+    },
     resetUser: (state: any) => {
       state.currentUser = initialState.currentUser;
       state.planList = initialState.planList;
@@ -133,6 +141,7 @@ export const {
   updateLoginCheck,
   updateLoginRedirect,
   updateReviewMode,
+  updateCartInvokedBySemester,
   resetUser,
 } = userSlice.actions;
 
@@ -151,5 +160,7 @@ export const selectLoginCheck = (state: RootState) => state.user.loginCheck;
 export const selectLoginRedirect = (state: RootState) =>
   state.user.loginRedirect;
 export const selectReviewMode = (state: RootState) => state.user.reviewMode;
+export const selectCartInvokedBySemester = (state: RootState) =>
+  state.user.cartInvokedBySemester;
 
 export default userSlice.reducer;

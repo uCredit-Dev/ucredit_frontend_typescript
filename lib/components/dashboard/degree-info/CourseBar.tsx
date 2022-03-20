@@ -13,6 +13,7 @@ import {
   updateShowingCart,
 } from '../../../slices/popupSlice';
 import { clearSearch, updatePlaceholder } from '../../../slices/searchSlice';
+import { updateCartInvokedBySemester } from '../../../slices/userSlice';
 
 /**
  * A distribution bar.
@@ -56,6 +57,7 @@ const CourseBar: FC<{
 
   // Onclick for course bar, opens cart popup passing in corresponding props
   const openCartPopup = () => {
+    dispatch(updateCartInvokedBySemester(false));
     // Filter for the correst distributions from redux store
     let distrs = distributions.filter((req) => req[0] === distribution.name)[0];
     if (distrs) {

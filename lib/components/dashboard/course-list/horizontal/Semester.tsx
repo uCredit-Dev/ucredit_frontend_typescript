@@ -39,6 +39,7 @@ import {
   selectUser,
   selectPlanList,
   updatePlanList,
+  updateCartInvokedBySemester,
 } from '../../../../slices/userSlice';
 
 /**
@@ -104,6 +105,7 @@ const Semester: FC<{
    * Opens search popup to add new course.
    */
   const addCourse = () => {
+    dispatch(updateCartInvokedBySemester(true));
     dispatch(updateSearchStatus(true));
     dispatch(
       updateSearchTime({
@@ -389,11 +391,14 @@ const Semester: FC<{
    * Determines whether to get add here button or not.
    */
   const getAddHereButton = () =>
-    checkSemester() &&
-    mode !== ReviewMode.View && (
+    checkSemester() && (
       <button
-        className="z-40 w-24 py-1 text-xs text-white transition duration-150 ease-in transform rounded hover:bg-secondary bg-primary focus:outline-none hover:scale-101"
+        className={clsx(
+          { 'bg-slate-300 hover:bg-slate-300': mode === ReviewMode.View },
+          'z-40 w-24 py-1 text-xs text-white transition duration-150 ease-in transform rounded hover:bg-secondary bg-primary focus:outline-none hover:scale-101',
+        )}
         onClick={addPrereq}
+        disabled={mode === ReviewMode.View}
       >
         Add Here
       </button>

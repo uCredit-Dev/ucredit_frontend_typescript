@@ -315,14 +315,18 @@ const Placeholder: FC<{ addCourse: (plan?: Plan) => void }> = (props) => {
         </div>
       </div>
       {searchStatus ? (
-        reviewMode !== ReviewMode.View && (
-          <button
-            className="p-2 mr-0 text-white transition duration-200 ease-in transform rounded w-28 hover:bg-secondary bg-primary focus:outline-none hover:scale-105"
-            onClick={() => props.addCourse()}
-          >
-            Add Course
-          </button>
-        )
+        <button
+          className={clsx(
+            {
+              'bg-slate-300 hover:bg-slate-300': reviewMode === ReviewMode.View,
+            },
+            'p-2 mr-0 text-white transition duration-200 ease-in transform rounded w-28 hover:bg-secondary bg-primary focus:outline-none hover:scale-105',
+          )}
+          onClick={() => props.addCourse()}
+          disabled={reviewMode === ReviewMode.View}
+        >
+          Add Course
+        </button>
       ) : (
         <button
           className={clsx(

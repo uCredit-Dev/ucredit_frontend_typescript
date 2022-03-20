@@ -38,7 +38,11 @@ import {
 import { getAPI } from '../../../../resources/assets';
 import { ChevronDownIcon } from '@heroicons/react/outline';
 import { QuestionMarkCircleIcon } from '@heroicons/react/solid';
-import { selectReviewMode } from '../../../../slices/userSlice';
+import {
+  selectCartInvokedBySemester,
+  selectReviewMode,
+} from '../../../../slices/userSlice';
+import clsx from 'clsx';
 
 /**
  * Displays a sis course when searching
@@ -64,11 +68,11 @@ const SisCourse: FC<{
   const showCourseInfo = useSelector(selectShowCourseInfo);
   const courseToShow = useSelector(selectCourseToShow);
   const currentCourses = useSelector(selectCurrentPlanCourses);
+  const reviewMode = useSelector(selectReviewMode);
+  const cartInvokedBySemester = useSelector(selectCartInvokedBySemester);
 
   const [versionIndex, updateVersionIndex] = useState<number>(0);
   const [ogSem, setOgSem] = useState<SemesterType | 'All'>('All');
-
-  const reviewMode = useSelector(selectReviewMode);
 
   useEffect(() => {
     setOgSem(searchSemester);
@@ -316,27 +320,31 @@ const SisCourse: FC<{
 
   // Handles Add Course Button
   const getAddCourseButton = (): JSX.Element =>
-    !showCourseInfo
-      ? reviewMode !== ReviewMode.View && (
-          <button
-            className="w-auto h-10 p-2 mt-2 text-white transition duration-200 ease-in transform rounded hover:bg-secondary bg-primary focus:outline-none hover:scale-105"
-            onClick={() => {
-              if (props.cart) {
-                addPrereq();
-              } else props.addCourse();
-            }}
-          >
-            Add Course
-          </button>
-        )
-      : reviewMode !== ReviewMode.View && (
-          <button
-            className="w-auto h-10 p-2 mt-2 text-white transition duration-200 ease-in transform rounded hover:bg-secondary bg-primary focus:outline-none hover:scale-105"
-            onClick={updateCourse}
-          >
-            Update Course
-          </button>
-        );
+    !showCourseInfo ? (
+      <button
+        className={clsx(
+          { 'bg-slate-300 hover:bg-slate-300': cartInvokedBySemester },
+          'w-auto h-10 p-2 mt-2 text-white transition duration-200 ease-in transform rounded hover:bg-secondary bg-primary focus:outline-none hover:scale-105',
+        )}
+        onClick={() => {
+          if (props.cart) {
+            addPrereq();
+          } else props.addCourse();
+        }}
+        disabled={cartInvokedBySemester}
+      >
+        Add Course
+      </button>
+    ) : (
+      reviewMode !== ReviewMode.View && (
+        <button
+          className="w-auto h-10 p-2 mt-2 text-white transition duration-200 ease-in transform rounded hover:bg-secondary bg-primary focus:outline-none hover:scale-105"
+          onClick={updateCourse}
+        >
+          Update Course
+        </button>
+      )
+    );
 
   /**
    * Returns add course UI based on cart activation
