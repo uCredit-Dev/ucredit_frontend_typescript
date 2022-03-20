@@ -1,13 +1,9 @@
 import { useRouter } from 'next/router';
 import { useEffect, useState } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
+import { useSelector } from 'react-redux';
 import UserSection from '../../lib/components/dashboard/UserSection';
 import { userService } from '../../lib/services';
-import {
-  selectReviewerPlans,
-  selectUser,
-  updateReviewerPlans,
-} from '../../lib/slices/userSlice';
+import { selectUser } from '../../lib/slices/userSlice';
 import { Reviewee, Search } from '../../lib/components/reviewer';
 import {
   DashboardMode,

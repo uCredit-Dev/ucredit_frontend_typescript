@@ -4,7 +4,6 @@ import {
   Plan,
   SISRetrievedCourse,
   User,
-  RevieweePlans,
   ReviewMode,
 } from '../components/../resources/commonTypes';
 
