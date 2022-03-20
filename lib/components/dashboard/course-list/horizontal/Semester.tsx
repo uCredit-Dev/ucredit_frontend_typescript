@@ -2,6 +2,7 @@ import { useState, useEffect, FC } from 'react';
 import {
   DroppableType,
   Plan,
+  ReviewMode,
   SemesterType,
   UserCourse,
   Year,
@@ -33,11 +34,12 @@ import {
   updateAddingPrereq,
 } from '../../../../slices/popupSlice';
 import { toast } from 'react-toastify';
-import { api } from '../../../../resources/assets';
+import { getAPI } from '../../../../resources/assets';
 import {
   selectUser,
   selectPlanList,
   updatePlanList,
+  updateCartInvokedBySemester,
 } from '../../../../slices/userSlice';
 
 /**
@@ -52,7 +54,8 @@ const Semester: FC<{
   semesterYear: Year;
   courses: UserCourse[];
   display: boolean;
-}> = ({ semesterName, semesterYear, courses, display }) => {
+  mode: ReviewMode;
+}> = ({ semesterName, semesterYear, courses, display, mode }) => {
   // Redux setup
   const dispatch = useDispatch();
   const addingPrereqStatus = useSelector(selectAddingPrereq);
@@ -102,6 +105,7 @@ const Semester: FC<{
    * Opens search popup to add new course.
    */
   const addCourse = () => {
+    dispatch(updateCartInvokedBySemester(true));
     dispatch(updateSearchStatus(true));
     dispatch(
       updateSearchTime({
@@ -123,6 +127,7 @@ const Semester: FC<{
           index={index}
           semesterName={semesterName}
           semesterYear={semesterYear}
+          mode={mode}
         />
       </div>
     ));
@@ -179,7 +184,7 @@ const Semester: FC<{
             : undefined,
       };
 
-      fetch(api + '/courses', {
+      fetch(getAPI(window) + '/courses', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -195,12 +200,13 @@ const Semester: FC<{
     if (data.errors === undefined && version !== 'None') {
       let newUserCourse: UserCourse;
       newUserCourse = { ...data.data };
+      console.log('handlePostResponse');
       dispatch(updateCurrentPlanCourses([...currentCourses, newUserCourse]));
       const allYears: Year[] = [...currentPlan.years];
       const newYears: Year[] = [];
       allYears.forEach((y) => {
         if (y._id === semesterYear._id) {
-          const yCourses = [...y.courses, newUserCourse._id];
+          const yCourses = [...y.courses, newUserCourse];
           newYears.push({ ...y, courses: yCourses });
         } else {
           newYears.push(y);
@@ -387,8 +393,12 @@ const Semester: FC<{
   const getAddHereButton = () =>
     checkSemester() && (
       <button
-        className="z-40 w-24 py-1 text-xs text-white transition duration-150 ease-in transform rounded hover:bg-secondary bg-primary focus:outline-none hover:scale-101"
+        className={clsx(
+          { 'bg-slate-300 hover:bg-slate-300': mode === ReviewMode.View },
+          'z-40 w-24 py-1 text-xs text-white transition duration-150 ease-in transform rounded hover:bg-secondary bg-primary focus:outline-none hover:scale-101',
+        )}
         onClick={addPrereq}
+        disabled={mode === ReviewMode.View}
       >
         Add Here
       </button>

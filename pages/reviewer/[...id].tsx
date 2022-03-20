@@ -3,22 +3,17 @@ import { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { toast } from 'react-toastify';
 import {
-  selectPlanList,
   selectReviewerPlanId,
   selectUser,
-  updatePlanList,
   updateReviewerPlanID,
-  updateUser,
 } from '../../lib/slices/userSlice';
 import 'react-toastify/dist/ReactToastify.css';
 import { userService } from '../../lib/services';
-import { updateSelectedPlan } from '../../lib/slices/currentPlanSlice';
 
 const ReviewerAdd: React.FC = () => {
   const router = useRouter();
   const dispatch = useDispatch();
   const user = useSelector(selectUser);
-  const planList = useSelector(selectPlanList);
   const reviewerPlanId = useSelector(selectReviewerPlanId);
 
   useEffect(() => {
@@ -38,29 +33,20 @@ const ReviewerAdd: React.FC = () => {
     (async () => {
       try {
         if (user._id === 'noUser' || user._id === 'guestUser') return;
-        const res = await userService.addPlan(
+        await userService.confirmReviewerPlan(
           reviewerPlanId,
-          user._id,
           (status: number) => {
-            if (status === 400)
-              toast.error('Reviewer already added for this plan');
-            else if (status === 200) toast.success('Imported reviewer plan!');
-            else toast.error('Invalid link');
+            if (status === 400) toast.error('Failed');
+            else if (status === 200) toast.success('Confirmed reviewer plan!');
           },
         );
-        const plan = res.data;
-        const updatedPlanList = [...planList, plan];
-        dispatch(updatePlanList(updatedPlanList));
-        dispatch(updateSelectedPlan(plan));
-        const updatedUser = (await userService.getUser(user._id)).data[0];
-        dispatch(updateUser(updatedUser));
         router.push('/reviewer');
       } catch (err) {
         router.push('/reviewer');
       }
     })();
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [user]);
+  }, [user, router.query.id]);
 
   return <></>;
 };

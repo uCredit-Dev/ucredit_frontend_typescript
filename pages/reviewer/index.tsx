@@ -1,19 +1,27 @@
 import { useRouter } from 'next/router';
-import { useEffect } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
+import { useEffect, useState } from 'react';
+import { useSelector } from 'react-redux';
 import UserSection from '../../lib/components/dashboard/UserSection';
 import { userService } from '../../lib/services';
+import { selectUser } from '../../lib/slices/userSlice';
+import { Reviewee, Search } from '../../lib/components/reviewer';
 import {
-  selectReviewerPlans,
-  selectUser,
-  updateReviewerPlans,
-} from '../../lib/slices/userSlice';
+  DashboardMode,
+  Plan,
+  RevieweePlans,
+  ReviewRequestStatus,
+  User,
+} from '../../lib/resources/commonTypes';
+
+export type planUserTuple = {
+  plan: Plan;
+  user: User;
+};
 
 const Reviewer: React.FC = () => {
   const router = useRouter();
-  const dispatch = useDispatch();
   const user = useSelector(selectUser);
-  const reviewerPlans = useSelector(selectReviewerPlans);
+  const [filtered, setFiltered] = useState<RevieweePlans[]>([]);
 
   useEffect(() => {
     const { _id } = user;
@@ -30,25 +38,42 @@ const Reviewer: React.FC = () => {
     const { _id } = user;
     if (_id === 'noUser' || _id === 'guestUser') return;
     (async () => {
-      const list = [];
-      for (const planId of user.whitelisted_plan_ids) {
-        const res = await userService.getPlan(planId);
-        list.push(res.data);
+      const plansByUser = new Map();
+      const reviews = (await userService.getReviewerPlans(user._id)).data;
+      for (const { plan_id, reviewee_id, status } of reviews) {
+        if (status === ReviewRequestStatus.Pending) continue;
+        const plan = (await userService.getPlan(plan_id)).data;
+        const reviewee = (await userService.getUser(reviewee_id._id)).data[0];
+        const revieweeString = JSON.stringify(reviewee);
+        const plans = plansByUser.get(revieweeString) || [];
+        plansByUser.set(revieweeString, [...plans, plan]);
       }
-      dispatch(updateReviewerPlans(list));
+      const revieweePlansArr = [];
+      for (const [k, v] of plansByUser) {
+        revieweePlansArr.push({ reviewee: JSON.parse(k), plans: v });
+      }
+      setFiltered(revieweePlansArr);
     })();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [user]);
 
   return (
     <div>
-      <UserSection />
-      <div className="flex flex-col items-center w-screen h-screen pt-20 bg-white divide-y">
-        {reviewerPlans.map(({ _id, name, user_id }) => (
-          <div key={_id} className="">
-            <p>{name}</p>
-            <p>{user_id}</p>
-          </div>
+      <UserSection mode={DashboardMode.Advising} />
+      <div className="pt-24 text-black bg-[#eff2f5] font-bold text-xl md:px-[250px] pb-4">
+        Reviewees
+      </div>
+      <div className="md:px-[250px] bg-[#eff2f5] pb-3 w-screen">
+        <Search revieweePlans={filtered} setFiltered={setFiltered} />
+      </div>
+      <div className="flex flex-col items-center w-screen h-screen bg-[#eff2f5] md:px-[250px] gap-2 overflow-y-auto">
+        {filtered.map((tuple) => (
+          <Reviewee
+            key={tuple.reviewee._id}
+            userId={tuple.reviewee._id}
+            plans={tuple.plans}
+            reviewee={tuple.reviewee}
+          />
         ))}
       </div>
     </div>

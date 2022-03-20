@@ -6,7 +6,7 @@ import Select, {
   MultiValueProps,
   StylesConfig,
 } from 'react-select';
-import { api } from '../../../resources/assets';
+import { getAPI } from '../../../resources/assets';
 import {
   selectPlan,
   updateCurrentPlanCourses,
@@ -26,11 +26,7 @@ import axios from 'axios';
 import { Year, Plan } from '../../../resources/commonTypes';
 import ReactTooltip from 'react-tooltip';
 import { allMajors } from '../../../resources/majors';
-import getConfig from 'next/config';
 import ShareLinksPopup from './ShareLinksPopup';
-
-const { publicRuntimeConfig } = getConfig();
-const baseUrl = publicRuntimeConfig.baseUrl;
 
 const majorOptions = allMajors.map((major, index) => ({
   value: index,
@@ -88,7 +84,7 @@ const ActionBar: FC = () => {
       majors: event.map((option) => option.label),
     };
     axios
-      .patch(api + '/plans/update', body)
+      .patch(getAPI(window) + '/plans/update', body)
       .then(({ data }) => {
         const newUpdatedPlan = { ...currentPlan, majors: data.data.majors };
         dispatch(updateSelectedPlan(newUpdatedPlan));
@@ -109,7 +105,7 @@ const ActionBar: FC = () => {
       majors: currentPlan.majors,
       name: planName,
     };
-    fetch(api + '/plans/update', {
+    fetch(getAPI(window) + '/plans/update', {
       method: 'PATCH',
       headers: {
         'Content-Type': 'application/json',
@@ -161,7 +157,7 @@ const ActionBar: FC = () => {
             : undefined,
       }; // add to end by default
       axios
-        .post(api + '/years', body)
+        .post(getAPI(window) + '/years', body)
         .then((response: any) => {
           const updatedPlanList: Plan[] = [...planList];
           updatedPlanList[0] = {
@@ -230,11 +226,12 @@ const ActionBar: FC = () => {
       setShareableURL('');
       return;
     }
-    setShareableURL(baseUrl + '/share?_id=' + currentPlan._id);
+    console.log(window.location.origin);
+    setShareableURL(window.location.origin + '/share?_id=' + currentPlan._id);
   };
 
   return (
-    <div className="top-0 z-20 flex flex-row">
+    <div className="top-0 z-20 flex h-12">
       <Select
         options={[
           ...planList
@@ -245,8 +242,8 @@ const ActionBar: FC = () => {
         value={{ label: currentPlan.name, value: currentPlan }}
         onChange={handlePlanChange}
         className="mr-2 text-lg font-light w-60 mt-[0.15rem]"
-      ></Select>
-      <div className="flex flex-row items-end my-1 mr-2 bg-white border border-gray-300 rounded h-10">
+      />
+      <div className="flex flex-row items-end h-10 my-1 mr-2 bg-white border border-gray-300 rounded">
         <div className="m-auto ml-2 mr-0 text-xl">✎</div>
         <input
           value={planName}
@@ -255,7 +252,7 @@ const ActionBar: FC = () => {
         />
       </div>
       <div
-        className="flex px-2  mt-[0.15rem] mr-2 text-lg font-light"
+        className="flex px-2  mt-[0.15rem] mr-2 text-lg font-light h-10"
         style={{ width: '23rem' }}
       >
         <form data-testid="major-change-form" className="z-20 w-full">
@@ -279,14 +276,14 @@ const ActionBar: FC = () => {
         </form>
       </div>
       <button
-        className="flex flex-row items-center px-2 my-1 ml-1 mr-2 transition duration-200 ease-in border border-gray-300 rounded h-10 hover:underline hover:bg-red-300"
+        className="flex flex-row items-center h-10 px-2 my-1 ml-1 mr-2 transition duration-200 ease-in border border-gray-300 rounded hover:underline hover:bg-red-300"
         onClick={activateDeletePlan}
       >
         <TrashIcon className="w-5 my-auto transition duration-200 ease-in transform cursor-pointer select-none stroke-2 hover:scale-110" />{' '}
         <div className="ml-1">Delete</div>
       </button>
       <button
-        className="flex flex-row items-center px-2 my-1 ml-1 mr-2 transition duration-200 ease-in border border-gray-300 rounded h-10 hover:underline hover:bg-primary"
+        className="flex flex-row items-center h-10 px-2 my-1 ml-1 mr-2 transition duration-200 ease-in border border-gray-300 rounded hover:underline hover:bg-primary"
         onClick={onShareClick}
       >
         <svg
@@ -306,7 +303,7 @@ const ActionBar: FC = () => {
         <div className="ml-1">Share</div>
       </button>
       {shareableURL === '' ? null : (
-        <div className="left-24 relative">
+        <div className="relative left-24">
           <ShareLinksPopup link={shareableURL} setURL={onShareClick} />
         </div>
       )}

@@ -1,5 +1,6 @@
 import { DotsVerticalIcon } from '@heroicons/react/outline';
 import { useState } from 'react';
+import { getAPI } from '../../../../resources/assets';
 import CurrentReviewers from './CurrentReviewers';
 import ReviewersSearch from './ReviewersSearch';
 
@@ -15,6 +16,9 @@ const Reviewers = () => {
           onClick={() => updateAddingReviewer(!addingReviewer)}
         />
       </div>
+      {getAPI(window).includes('localhost')
+        ? '*It looks like you are in dev mode! You will only be able to add or move the following reviewers: freshmanDev, sophomoreDev, juniorDev, seniorDev'
+        : null}
       {addingReviewer ? (
         <div className="pt-2">
           <ReviewersSearch />

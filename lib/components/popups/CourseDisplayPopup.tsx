@@ -33,7 +33,7 @@ import {
   updateSelectedPlan,
 } from '../../slices/currentPlanSlice';
 import { toast } from 'react-toastify';
-import { api } from '../../resources/assets';
+import { getAPI } from '../../resources/assets';
 import SisCourse from './course-search/search-results/SisCourse';
 
 /**
@@ -134,7 +134,7 @@ const CourseDisplayPopup: FC = () => {
             ? Date.now() + 60 * 60 * 24 * 1000
             : undefined,
       };
-      fetch(api + '/courses', {
+      fetch(getAPI(window) + '/courses', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -181,7 +181,7 @@ const CourseDisplayPopup: FC = () => {
     (newYears: Year[], newUserCourse: UserCourse) =>
     (year: Year): void => {
       if (courseToShow !== null && year._id === courseToShow.year_id) {
-        const yCourses = [...year.courses, newUserCourse._id];
+        const yCourses = [...year.courses, newUserCourse];
         newYears.push({ ...year, courses: yCourses });
       } else {
         newYears.push(year);
@@ -192,7 +192,7 @@ const CourseDisplayPopup: FC = () => {
     <div className="absolute top-0">
       {/* Background Grey */}
       <div
-        className="fixed z-40 left-0 top-0 m-0 w-full h-screen bg-black opacity-50"
+        className="fixed top-0 left-0 z-40 w-full h-screen m-0 bg-black opacity-50"
         onClick={() => {
           dispatch(updateCourseToShow(null));
           dispatch(updateShowCourseInfo(false));
@@ -200,17 +200,17 @@ const CourseDisplayPopup: FC = () => {
       ></div>
 
       {/* Actual popup */}
-      <div className="fixed z-40 left-1/2 flex flex-col min-w-planAdd h-3/4 bg-primary rounded shadow shadow select-none transform -translate-x-1/2 translate-y-12">
-        <div className="px-4 py-2 text-white text-coursecard font-semibold select-none">
+      <div className="fixed z-40 flex flex-col transform -translate-x-1/2 translate-y-12 rounded shadow select-none left-1/2 min-w-planAdd h-3/4 bg-primary">
+        <div className="px-4 py-2 font-semibold text-white select-none text-coursecard">
           Inspecting{' '}
           {courseToShow === null ? 'Invalid course' : courseToShow.title}
         </div>
         {placeholder ? (
-          <div className="p-4 min-w-narrowest bg-gray-100 rounded">
+          <div className="p-4 bg-gray-100 rounded min-w-narrowest">
             <Placeholder addCourse={addCourse} />
           </div>
         ) : (
-          <div className="min-w-narrowest h-full bg-gray-100 rounded">
+          <div className="h-full bg-gray-100 rounded min-w-narrowest">
             <SisCourse
               addCourse={addCourse}
               setInspectedArea={setInspectedArea}

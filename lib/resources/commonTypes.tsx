@@ -84,7 +84,7 @@ export type UserCourse = {
 export type Year = {
   _id: string;
   name: string;
-  courses: string[];
+  courses: UserCourse[];
   plan_id: string;
   user_id: string;
   year: number;
@@ -231,3 +231,24 @@ export type DroppableType = {
   semester: SemesterType;
   courses: UserCourse[];
 };
+
+export enum DashboardMode {
+  Advising = 'Advising',
+  Planning = 'Planning',
+}
+
+export interface RevieweePlans {
+  reviewee: User;
+  plans: Plan[];
+}
+
+export enum ReviewRequestStatus {
+  Pending = 'PENDING',
+  Accepted = 'ACCEPTED',
+}
+
+export enum ReviewMode {
+  View = 'view',
+  Edit = 'edit',
+  None = '',
+}

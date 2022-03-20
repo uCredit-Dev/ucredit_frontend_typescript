@@ -25,7 +25,7 @@ import {
   updateSelectedPlan,
   updateTotalCredits,
 } from '../../../../slices/currentPlanSlice';
-import { api } from '../../../../resources/assets';
+import { getAPI } from '../../../../resources/assets';
 import SisCourse from './SisCourse';
 import { updateShowingCart } from '../../../../slices/popupSlice';
 
@@ -106,7 +106,7 @@ const CourseDisplay: FC<{ cart: boolean }> = ({ cart }) => {
         user._id === 'guestUser' ? Date.now() + 60 * 60 * 24 * 1000 : undefined,
     };
 
-    let retrieved = await fetch(api + '/courses', {
+    let retrieved = await fetch(getAPI(window) + '/courses', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
@@ -127,7 +127,7 @@ const CourseDisplay: FC<{ cart: boolean }> = ({ cart }) => {
     const newYears: Year[] = [];
     allYears.forEach((y) => {
       if (y._id === year) {
-        const yCourses = [...y.courses, newUserCourse._id];
+        const yCourses = [...y.courses, newUserCourse];
         newYears.push({ ...y, courses: yCourses });
       } else {
         newYears.push(y);

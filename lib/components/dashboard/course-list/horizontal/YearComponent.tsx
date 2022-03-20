@@ -1,13 +1,17 @@
 import { useState, useEffect, FC } from 'react';
 import Semester from './Semester';
-import { UserCourse, Year } from '../../../../resources/commonTypes';
+import {
+  ReviewMode,
+  UserCourse,
+  Year,
+} from '../../../../resources/commonTypes';
 import { DotsVerticalIcon } from '@heroicons/react/outline';
 import { useSelector, useDispatch } from 'react-redux';
 import {
   selectPlan,
   updateSelectedPlan,
 } from '../../../../slices/currentPlanSlice';
-import { api, getColors } from '../../../../resources/assets';
+import { getAPI, getColors } from '../../../../resources/assets';
 import YearSettingsDropdown from './YearSettingsDropdown';
 import clsx from 'clsx';
 import {
@@ -37,7 +41,8 @@ const YearComponent: FC<{
   year: Year;
   courses: UserCourse[];
   setDraggable: (draggable: boolean) => void;
-}> = ({ id, year, courses, setDraggable }) => {
+  mode: ReviewMode;
+}> = ({ id, year, courses, setDraggable, mode }) => {
   // Component state setup.
   const [fallCourses, setFallCourses] = useState<UserCourse[]>([]);
   const [springCourses, setSpringCourses] = useState<UserCourse[]>([]);
@@ -180,7 +185,7 @@ const YearComponent: FC<{
       year_id: year._id,
       name: yearName,
     };
-    fetch(api + '/years/updateName', {
+    fetch(getAPI(window) + '/years/updateName', {
       method: 'PATCH',
       headers: {
         'Content-Type': 'application/json',
@@ -255,6 +260,7 @@ const YearComponent: FC<{
             semesterYear={year}
             courses={fallCourses}
             display={true}
+            mode={mode}
           />
         </div>,
       );
@@ -271,6 +277,7 @@ const YearComponent: FC<{
             semesterYear={year}
             courses={winterCourses}
             display={true}
+            mode={mode}
           />
         </div>,
       );
@@ -287,6 +294,7 @@ const YearComponent: FC<{
             semesterYear={year}
             courses={springCourses}
             display={true}
+            mode={mode}
           />
         </div>,
       );
@@ -303,6 +311,7 @@ const YearComponent: FC<{
             semesterYear={year}
             courses={summerCourses}
             display={true}
+            mode={mode}
           />
         </div>,
       );
@@ -329,6 +338,7 @@ const YearComponent: FC<{
               semesterYear={year}
               courses={fallCourses}
               display={true}
+              mode={mode}
             />
           </div>
         )}
@@ -350,10 +360,11 @@ const YearComponent: FC<{
   return (
     <div
       id={id.toString()}
-      className={
-        'cursor-move py-2 max-w-year-heading w-full min-w-[14rem] border-b-[2px]' +
-        (addingPrereqStatus ? 'z-30' : '')
-      }
+      className={clsx(
+        'py-2 max-w-year-heading w-full min-w-[14rem] border-b-[2px]',
+        { 'cursor-move': !mode || mode !== ReviewMode.View },
+        { 'z-30': addingPrereqStatus },
+      )}
       onMouseLeave={() => {
         setDraggable(true);
         setDisplay(false);
@@ -385,12 +396,20 @@ const YearComponent: FC<{
             <input
               id={year._id + 'input'}
               value={yearName}
-              className="flex-grow mt-auto font-semibold bg-transparent border-b border-transparent cursor-move select-none text-md focus:border-gray-400 focus:outline-none"
+              className={clsx(
+                { 'cursor-move': !mode || mode !== ReviewMode.View },
+                'flex-grow mt-auto font-semibold bg-transparent border-b border-transparent select-none text-md focus:border-gray-400 focus:outline-none',
+              )}
               onChange={handleYearNameChange}
               onBlur={() => setEdittingName(false)}
             />
           ) : (
-            <div className="flex-grow mt-auto text-xl font-semibold bg-transparent border-b border-transparent cursor-move select-none focus:border-gray-400 focus:outline-none">
+            <div
+              className={clsx(
+                { 'cursor-move': !mode || mode !== ReviewMode.View },
+                'flex-grow mt-auto text-xl font-semibold bg-transparent border-b border-transparent select-none focus:border-gray-400 focus:outline-none',
+              )}
+            >
               {yearName}
             </div>
           )}
@@ -464,10 +483,12 @@ const YearComponent: FC<{
               )}
               <div className="font-bold">{totalCredits} Credits</div>
             </div>
-            <DotsVerticalIcon
-              onClick={() => setDisplay(!display)}
-              className="w-7 stroke-2 cursor-pointer"
-            />
+            {(!mode || mode !== ReviewMode.View) && (
+              <DotsVerticalIcon
+                onClick={() => setDisplay(!display)}
+                className="cursor-pointer stroke-2 w-7"
+              />
+            )}
           </div>
         </div>
         {display && (
