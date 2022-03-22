@@ -26,14 +26,14 @@ const Dash: React.FC = () => {
     }
     setMode(router.query.mode as ReviewMode);
     dispatch(updateReviewMode(router.query.mode as ReviewMode));
-    if (router.query.plan) {
-      userService
-        .getPlan(router.query.plan as string)
-        .then((plan) => {
-          setPlan(plan.data);
-        })
-        .catch((err) => console.log(err));
-    }
+    if (!router.query.plan) return;
+    (async () => {
+      try {
+        const res = (await userService.getPlan(router.query.plan as string))
+          .data;
+        setPlan(res);
+      } catch (e) {}
+    })();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [router.query]);
 
