@@ -273,18 +273,19 @@ const Form: FC<{ setSearching: (searching: boolean) => void }> = (props) => {
     extras: SearchExtras,
   ): SISRetrievedCourse[] => {
     let SISRetrieved: SISRetrievedCourse[] = data;
+    // MOVED THIS TO BACKEND
     // This filtering needs to be done because backend returns courses with incorrect term and year matching. This needs to be fixed.
-    SISRetrieved = SISRetrieved.filter((course) => {
-      for (let version of course.versions) {
-        if (
-          version.term === extras.term + ' ' + extras.year ||
-          extras.term === 'All' ||
-          extras.year === 'All'
-        )
-          return true;
-      }
-      return false;
-    });
+    // SISRetrieved = SISRetrieved.filter((course) => {
+    //   for (let version of course.versions) {
+    //     if (
+    //       version.term === extras.term + ' ' + extras.year ||
+    //       extras.term === 'All' ||
+    //       extras.year === 'All'
+    //     )
+    //       return true;
+    //   }
+    //   return false;
+    // });
     if (
       extras.query.length <= minLength ||
       searchTerm.length - extras.query.length >= 2
@@ -359,16 +360,13 @@ const Form: FC<{ setSearching: (searching: boolean) => void }> = (props) => {
     // });
   };
 
-  // Handles the finishing of finding courses.
-  // tracks the number of times a course appears in the searchedCourses after a search
-  // and presumably uses it to sort the list by relevancy (the map thingy)
-  // also recursively calls the smartSearch
-  const handleFinishFinding = (
+  // updates the frequency map
+  // TODO : description of frequency map
+  const updateFrequencyMap = (
     courses: SISRetrievedCourse[],
     versions: number[],
     queryLength: number,
-    extras: SearchExtras,
-  ) => {
+  )  => {
     courses.forEach((course: SISRetrievedCourse, index: number) => {
       if (!searchedCourses.has(course.number + '0')) {
         searchedCourses.set(course.number + '0', {
@@ -381,6 +379,19 @@ const Form: FC<{ setSearching: (searching: boolean) => void }> = (props) => {
         handleFrequency(course, versions, queryLength, index);
       }
     });
+  }
+
+  // Handles the finishing of finding courses.
+  // tracks the number of times a course appears in the searchedCourses after a search
+  // and presumably uses it to sort the list by relevancy (the map thingy)
+  // also recursively calls the smartSearch
+  const handleFinishFinding = (
+    courses: SISRetrievedCourse[],
+    versions: number[],
+    queryLength: number,
+    extras: SearchExtras,
+  ) => {
+    updateFrequencyMap(courses, versions, queryLength);
     const newSearchList: SISRetrievedCourse[] = getNewSearchList();
     dispatch(updateRetrievedCourses(newSearchList));
     if (queryLength > minLength && initialQueryLength - queryLength < 9) {
