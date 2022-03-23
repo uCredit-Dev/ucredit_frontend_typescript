@@ -267,12 +267,12 @@ const baEcon: Major = {
         {
           description: '<b>Lower Level Classes</b>',
           required_credits: 9,
-          criteria: 'Lower Level[L]',
+          criteria: '100[L]^OR^200[L]',
         },
         {
           description: '<b>Upper Level Classes</b>',
           required_credits: 6,
-          criteria: 'Upper Level[L]',
+          criteria: '300[L]^OR^400[L]',
         },
       ],
     },
@@ -336,6 +336,50 @@ const baEcon: Major = {
         'All students earning a degree from the School of Arts and Sciences must complete at least 12 credits in writing-intensive courses. ' +
         'Writing-intensive courses taken to satisfy major, minor, or distribution requirements may also count toward the writing requirement.',
       criteria: 'Written Intensive[W]',
+    },
+  ],
+};
+
+// https://econ.jhu.edu/undergraduate/minor-requirements/
+const econMinor: Minor = {
+  degree_name: 'Minor in Economics',
+  abbrev: 'Minor Econ',
+  department: 'AS Economics',
+  total_degree_credit: 18,
+  wi_credit: 0,
+  url: 'https://econ.jhu.edu/undergraduate/minor-requirements/',
+  distributions: [
+    {
+      name: 'Economics',
+      required_credits: 18,
+      min_credits_per_course: 3,
+      description:
+        'Each student must complete 180.101 and 180.102 Elements of Macro and Micro as well as four elective courses at the 200 or 300 level. ' +
+        'If you receive AP credit for either 180.101 or 180.102 you may not count those credits toward the 6-course ' +
+        'requirement. No substitution of courses in other departments for economics electives may be made. Students who ' +
+        'use exam credits to satisfy the AS.180.101 Elements of Macroeconomics and/or AS.180.102 Elements of ' +
+        'Microeconomics requirements must take additional courses in the department to reach a total of 6 courses.',
+      criteria: 'AS Economics[D]',
+      fine_requirements: [
+        {
+          description:
+            '<b>Elements of Macroeconomics</b> <br /> AS.180.101 Elements of Macroeconomics',
+          required_credits: 3,
+          criteria: 'AS.180.101[C]',
+        },
+        {
+          description:
+            '<b>Elements of Microeconomics</b> <br /> AS.180.102 Elements of Microeconomics',
+          required_credits: 3,
+          criteria: 'AS.180.102[C]',
+        },
+        {
+          description:
+            '<b>Electives</b> <br /> 4 elective courses required at 200 or 300 level',
+          required_credits: 12,
+          criteria: '200[L]^OR^300[L]',
+        },
+      ],
     },
   ],
 };
@@ -2647,6 +2691,7 @@ export const allMajors: Major[] = [
   bsCBE,
 
   baEcon,
+  econMinor,
   // baPsych,
   // baMolCell,
   // baNeuro,
