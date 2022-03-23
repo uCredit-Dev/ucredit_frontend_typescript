@@ -59,6 +59,10 @@ const Form: FC<{ setSearching: (searching: boolean) => void }> = (props) => {
   const [initialQueryLength, setInitialQueryLength] = useState<number>(0);
   const [searchedQuery, setSearchedQuery] = useState<any | null>(null);
 
+  const [lastTime, setLastTime] = useState<number>(Date.now()); // for total search
+  const [lastSubTime, setLastSubTime] = useState<number>(Date.now()); // for total search
+  const [timingData, setTimingData] = useState<any>({});
+
   // In order to make sure our search results correctly match our search term due to the asynchronous nature of finds.
   // We use this hook to make sure that the search results are updated when the search term matches the term used for the search result.
   useEffect(() => {
@@ -176,10 +180,19 @@ const Form: FC<{ setSearching: (searching: boolean) => void }> = (props) => {
 
     if (searchTerm.length > 0) {
       // Search with half second debounce.
-      const search = setTimeout(
-        performMultiSmartSearch(searchTerm, extras, searchTerm.length),
-        500,
-      );
+
+      const search = setTimeout(() => {
+        setLastTime(Date.now());
+        setLastSubTime(Date.now());
+        let data = {...timingData}
+        if (!data[searchTerm]) {
+          data[searchTerm] = [];
+        };
+        data[searchTerm].push({})
+        setTimingData(data);
+        // performSmartSearch(searchTerm, extras, searchTerm.length)();
+        performMultiSmartSearch(searchTerm, extras, searchTerm.length)();
+      }, 500);
       return () => clearTimeout(search);
     } else {
       find(extras).then((found) => dispatch(updateRetrievedCourses(found[0])));
@@ -231,7 +244,7 @@ const Form: FC<{ setSearching: (searching: boolean) => void }> = (props) => {
       if (!retrievedAll) {
         const retrieved: any = await axios
           .get(api + '/search/smart/multi', {
-            params: {...getParams(extras), queryLength},
+            params: { ...getParams(extras), queryLength },
           })
           .catch(() => {
             return [[], []];
@@ -330,10 +343,7 @@ const Form: FC<{ setSearching: (searching: boolean) => void }> = (props) => {
     let cum = 0;
     // querySubstrs.forEach(async (subQuery) => {
     total++;
-    const courseVersions = await multiFind(
-      extras,
-      queryLength,
-    );
+    const courseVersions = await multiFind(extras, queryLength);
     cum++;
     courses.push(...courseVersions[0]);
     versions.push(...courseVersions[1]);
@@ -374,8 +384,26 @@ const Form: FC<{ setSearching: (searching: boolean) => void }> = (props) => {
     const newSearchList: SISRetrievedCourse[] = getNewSearchList();
     dispatch(updateRetrievedCourses(newSearchList));
     if (queryLength > minLength && initialQueryLength - queryLength < 9) {
-      // performSmartSearch(extras.query, extras, queryLength - 1)(); original
+      console.log(extras.query + ': ' + queryLength + ' : ' + (Date.now() - lastSubTime) + 'ms');
+      let data = {...timingData};
+      data[extras.query][data[extras.query].length - 1]['' + queryLength] = (Date.now() - lastSubTime);
+
+      setTimingData(data);
+
+      setLastSubTime(Date.now());
+      // performSmartSearch(extras.query, extras, queryLength - 1)(); // original
       performMultiSmartSearch(extras.query, extras, queryLength - 1)(); // new
+    } else {
+      let data = {...timingData};
+
+      console.log(extras.query + ': ' + queryLength + ' : ' + (Date.now() - lastSubTime) + 'ms');
+      data[extras.query][data[extras.query].length - 1]['' + queryLength] = (Date.now() - lastSubTime);
+
+      console.log(extras.query+ ' : ' + (Date.now() - lastTime) + 'ms');
+      data[extras.query][data[extras.query].length - 1].total = (Date.now() - lastTime);
+      setTimingData(data);
+      console.log(data);
+
     }
   };
 
@@ -389,7 +417,7 @@ const Form: FC<{ setSearching: (searching: boolean) => void }> = (props) => {
     let frequency = searchedCoursesFrequency.get(course.number);
     let flag = false;
     if (frequency !== undefined) {
-      for (let i = 0; i < frequency; i++) {
+      for (let i = 0; i < frequency;   i++) {
         if (
           searchedCourses.get(course.number + i)?.course.title === course.title
         ) {
