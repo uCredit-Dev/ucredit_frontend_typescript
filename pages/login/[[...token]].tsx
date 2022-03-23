@@ -40,12 +40,12 @@ const Login: React.FC = () => {
   // Useffect runs once on page load, calling to https://ucredit-api.herokuapp.com/api/verifyLogin to retrieve user data.
   // On successful retrieve, update redux with retrieved user
   useEffect(() => {
-    setFinishedLoginCheck(false);
     const token = router.query.token && router.query.token[0];
     const loginId = token ? token : getLoginCookieVal(cookies);
-    if (loginId && getAPI(window).includes('ucredit.me'))
+    if (loginId && getAPI(window).includes('ucredit.me')) {
+      setFinishedLoginCheck(false);
       handleDBLogin(loginId);
-    else if (loginId) handleJHULogin(loginId);
+    } else if (loginId) handleJHULogin(loginId);
     else dispatch(updateLoginCheck(true));
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [router.query.token]);
