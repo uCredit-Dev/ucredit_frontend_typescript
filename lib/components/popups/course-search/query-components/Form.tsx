@@ -142,6 +142,7 @@ const Form: FC<{ setSearching: (searching: boolean) => void }> = (props) => {
   };
 
   // Search with debouncing of 2/4s of a second.
+  // this is where the process to make search call to the API begins
   const minLength = 4;
   useEffect(() => {
     searchedCourses.clear();
@@ -235,6 +236,7 @@ const Form: FC<{ setSearching: (searching: boolean) => void }> = (props) => {
     });
   };
 
+  // Promise that sends API call for courses, resolves all matching courses in an array
   const multiFind = (
     extras: SearchExtras,
     queryLength: number,
@@ -273,19 +275,6 @@ const Form: FC<{ setSearching: (searching: boolean) => void }> = (props) => {
     extras: SearchExtras,
   ): SISRetrievedCourse[] => {
     let SISRetrieved: SISRetrievedCourse[] = data;
-    // MOVED THIS TO BACKEND
-    // This filtering needs to be done because backend returns courses with incorrect term and year matching. This needs to be fixed.
-    // SISRetrieved = SISRetrieved.filter((course) => {
-    //   for (let version of course.versions) {
-    //     if (
-    //       version.term === extras.term + ' ' + extras.year ||
-    //       extras.term === 'All' ||
-    //       extras.year === 'All'
-    //     )
-    //       return true;
-    //   }
-    //   return false;
-    // });
     if (
       extras.query.length <= minLength ||
       searchTerm.length - extras.query.length >= 2
@@ -333,6 +322,7 @@ const Form: FC<{ setSearching: (searching: boolean) => void }> = (props) => {
     });
   };
 
+  // 
   const multiSubstringSearch = async (
     originalQuery: string,
     extras: SearchExtras,
@@ -340,24 +330,29 @@ const Form: FC<{ setSearching: (searching: boolean) => void }> = (props) => {
   ): Promise<void> => {
     let courses: SISRetrievedCourse[] = [];
     let versions: number[] = [];
-    let total = 0;
-    let cum = 0;
-    // querySubstrs.forEach(async (subQuery) => {
-    total++;
     const courseVersions = await multiFind(extras, queryLength);
-    cum++;
     courses.push(...courseVersions[0]);
     versions.push(...courseVersions[1]);
-    setSearchedQuery({
-      total,
-      cum,
+    let searchedQuery = {
       originalQuery,
       courses,
       versions,
       queryLength,
       extras,
-    });
-    // });
+    }
+    if (searchedQuery !== null) {
+      if (
+        // only finishes handling if user is still searching same term
+        searchedQuery.originalQuery === searchTerm
+      ) {
+        handleFinishFinding(
+          searchedQuery.courses,
+          searchedQuery.versions,
+          searchedQuery.queryLength,
+          searchedQuery.extras,
+        );
+      }
+    }
   };
 
   // updates the frequency map
@@ -400,7 +395,6 @@ const Form: FC<{ setSearching: (searching: boolean) => void }> = (props) => {
       data[extras.query][data[extras.query].length - 1]['' + queryLength] = (Date.now() - lastSubTime);
 
       setTimingData(data);
-
       setLastSubTime(Date.now());
       // performSmartSearch(extras.query, extras, queryLength - 1)(); // original
       performMultiSmartSearch(extras.query, extras, queryLength - 1)(); // new
@@ -414,7 +408,6 @@ const Form: FC<{ setSearching: (searching: boolean) => void }> = (props) => {
       data[extras.query][data[extras.query].length - 1].total = (Date.now() - lastTime);
       setTimingData(data);
       console.log(data);
-
     }
   };
 
