@@ -57,30 +57,6 @@ const Form: FC<{ setSearching: (searching: boolean) => void }> = (props) => {
     new Map<string, number>(),
   );
   const [initialQueryLength, setInitialQueryLength] = useState<number>(0);
-  const [searchedQuery, setSearchedQuery] = useState<any | null>(null);
-
-  const [lastTime, setLastTime] = useState<number>(Date.now()); // for total search
-  const [lastSubTime, setLastSubTime] = useState<number>(Date.now()); // for total search
-  const [timingData, setTimingData] = useState<any>({});
-
-  // In order to make sure our search results correctly match our search term due to the asynchronous nature of finds.
-  // We use this hook to make sure that the search results are updated when the search term matches the term used for the search result.
-  useEffect(() => {
-    if (searchedQuery !== null) {
-      if (
-        searchedQuery.total === searchedQuery.cum &&
-        searchedQuery.originalQuery === searchTerm
-      ) {
-        handleFinishFinding(
-          searchedQuery.courses,
-          searchedQuery.versions,
-          searchedQuery.queryLength,
-          searchedQuery.extras,
-        );
-      }
-    }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [searchedQuery]);
 
   const getYearVal = (): number => {
     let year: number = new Date().getFullYear();
@@ -183,15 +159,6 @@ const Form: FC<{ setSearching: (searching: boolean) => void }> = (props) => {
       // Search with half second debounce.
 
       const search = setTimeout(() => {
-        setLastTime(Date.now());
-        setLastSubTime(Date.now());
-        let data = {...timingData}
-        if (!data[searchTerm]) {
-          data[searchTerm] = [];
-        };
-        data[searchTerm].push({})
-        setTimingData(data);
-        // performSmartSearch(searchTerm, extras, searchTerm.length)();
         performMultiSmartSearch(searchTerm, extras, searchTerm.length)();
       }, 500);
       return () => clearTimeout(search);
@@ -287,42 +254,10 @@ const Form: FC<{ setSearching: (searching: boolean) => void }> = (props) => {
   /**
    * Searches for all subquery combinations for the specific substring length, queryLength.
 
+   * @param originalQuery - da original query B)
    * @param extras - search params
    * @param queryLength - length of search query
-   * @param querySubstrs - an array of different substring combinations of search query
    */
-  const substringSearch = async (
-    originalQuery: string,
-    extras: SearchExtras,
-    queryLength: number,
-    querySubstrs: string[],
-  ): Promise<void> => {
-    let courses: SISRetrievedCourse[] = [];
-    let versions: number[] = [];
-    let total = 0;
-    let cum = 0;
-    querySubstrs.forEach(async (subQuery) => {
-      total++;
-      const courseVersions = await find({
-        ...extras,
-        query: subQuery,
-      });
-      cum++;
-      courses.push(...courseVersions[0]);
-      versions.push(...courseVersions[1]);
-      setSearchedQuery({
-        total,
-        cum,
-        originalQuery,
-        courses,
-        versions,
-        queryLength,
-        extras,
-      });
-    });
-  };
-
-  // 
   const multiSubstringSearch = async (
     originalQuery: string,
     extras: SearchExtras,
@@ -390,24 +325,7 @@ const Form: FC<{ setSearching: (searching: boolean) => void }> = (props) => {
     const newSearchList: SISRetrievedCourse[] = getNewSearchList();
     dispatch(updateRetrievedCourses(newSearchList));
     if (queryLength > minLength && initialQueryLength - queryLength < 9) {
-      console.log(extras.query + ': ' + queryLength + ' : ' + (Date.now() - lastSubTime) + 'ms');
-      let data = {...timingData};
-      data[extras.query][data[extras.query].length - 1]['' + queryLength] = (Date.now() - lastSubTime);
-
-      setTimingData(data);
-      setLastSubTime(Date.now());
-      // performSmartSearch(extras.query, extras, queryLength - 1)(); // original
       performMultiSmartSearch(extras.query, extras, queryLength - 1)(); // new
-    } else {
-      let data = {...timingData};
-
-      console.log(extras.query + ': ' + queryLength + ' : ' + (Date.now() - lastSubTime) + 'ms');
-      data[extras.query][data[extras.query].length - 1]['' + queryLength] = (Date.now() - lastSubTime);
-
-      console.log(extras.query+ ' : ' + (Date.now() - lastTime) + 'ms');
-      data[extras.query][data[extras.query].length - 1].total = (Date.now() - lastTime);
-      setTimingData(data);
-      console.log(data);
     }
   };
 
@@ -439,47 +357,6 @@ const Form: FC<{ setSearching: (searching: boolean) => void }> = (props) => {
     }
   };
 
-  /**
-   * Performs search call with filters to backend and updates redux with retrieved courses.
-   * Smart search: performs search with all possible substring combinations of lengths 3 and above based on search query.
-   * @param extras - search params
-   * @param queryLength - length of search query
-   * @returns reference to a function that conducts smart search
-   */
-  const performSmartSearch =
-    (
-      originalQuery: string,
-      extras: SearchExtras,
-      queryLength: number,
-    ): (() => void) =>
-    (): void => {
-      const querySubstrs: string[] = [];
-      if (queryLength >= minLength) {
-        // Finds all substring combinations and searches.
-        for (let i = 0; i < searchTerm.length - queryLength + 1; i++) {
-          querySubstrs.push(searchTerm.substring(i, i + queryLength));
-        }
-        substringSearch(originalQuery, extras, queryLength, querySubstrs);
-      } else if (queryLength > 0 && queryLength < minLength) {
-        // Perform normal search if query length is between 1 and minLength
-        axios
-          .get(api + '/search', {
-            params: getParams(extras),
-          })
-          .then((retrieved) => {
-            let retrievedCourses: SISRetrievedCourse[] = retrieved.data.data;
-            dispatch(updateCourseCache(retrievedCourses));
-            dispatch(updateRetrievedCourses(retrievedCourses));
-            props.setSearching(false);
-          })
-          .catch(() => {
-            props.setSearching(false);
-          });
-      } else {
-        props.setSearching(false);
-      }
-    };
-
   const performMultiSmartSearch =
     (
       originalQuery: string,
@@ -506,76 +383,6 @@ const Form: FC<{ setSearching: (searching: boolean) => void }> = (props) => {
           .catch(() => {
             props.setSearching(false);
           });
-      } else {
-        props.setSearching(false);
-      }
-    };
-
-  // okay boys, heres da NEW smawt search B)
-  // nvm... trying smth new with newMultSmartSearch (above)
-  const performNewSmartSearch =
-    (
-      originalQuery: string,
-      extras: SearchExtras,
-      queryLength: number,
-    ): (() => void) =>
-    (): void => {
-      console.log('perfmoring new smart search??');
-      if (queryLength >= 3) {
-        // only searches for queries above 3
-        axios
-          .get(api + '/search/smart', {
-            params: getParams(extras),
-          })
-          .then((retrieved) => {
-            let retrievedCourses: SISRetrievedCourse[] = retrieved.data.data;
-            if (extras.areas === 'N')
-              retrievedCourses = retrievedCourses.filter((course) => {
-                for (let version of course.versions) {
-                  if (version.areas === 'N') return true;
-                }
-                return false;
-              });
-            retrievedCourses.forEach(
-              (course: SISRetrievedCourse, index: number) => {
-                if (!searchedCourses.has(course.number + '0')) {
-                  searchedCourses.set(course.number + '0', {
-                    course: course,
-                    version: [][index],
-                    priority: queryLength,
-                  });
-                  searchedCoursesFrequency.set(course.number, 1);
-                } else {
-                  handleFrequency(course, [], queryLength, index);
-                }
-              },
-            );
-            const newSearchList: SISRetrievedCourse[] = getNewSearchList();
-            dispatch(updateRetrievedCourses(newSearchList));
-            // dispatch(updateCourseCache([...retrievedCourses]));
-            // dispatch(updateRetrievedCourses(retrievedCourses));
-            props.setSearching(false);
-          })
-          .catch(() => {
-            props.setSearching(false);
-          });
-      } else if (queryLength > 0 && queryLength < 3) {
-        console.log('somethings happend');
-        // // Perform normal search if query length is between 1 and 3
-        // axios
-        //   .get(api + '/search', {
-        //     params: getParams(extras),
-        //   })
-        //   .then((retrieved) => {
-        //     let retrievedCourses: SISRetrievedCourse[] = retrieved.data.data;
-        //     dispatch(updateCourseCache([...retrievedCourses]));
-        //     let SISRetrieved: SISRetrievedCourse[] = retrieved.data.data;
-        //     dispatch(updateRetrievedCourses(SISRetrieved));
-        //     props.setSearching(false);
-        //   })
-        //   .catch(() => {
-        //     props.setSearching(false);
-        //   });
       } else {
         props.setSearching(false);
       }
