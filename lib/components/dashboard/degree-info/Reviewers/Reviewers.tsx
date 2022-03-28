@@ -2,7 +2,7 @@ import { useState } from 'react';
 import { DotsVerticalIcon, ExclamationIcon } from '@heroicons/react/outline';
 import CurrentReviewers from './CurrentReviewers';
 import ReviewersSearch from './ReviewersSearch';
-import { Hoverable } from '../../../utils/hoverable';
+import { Hoverable, TooltipPrimary } from '../../../utils';
 
 const Reviewers = () => {
   const [addingReviewer, updateAddingReviewer] = useState(false);
@@ -18,15 +18,17 @@ const Reviewers = () => {
                 <ExclamationIcon className="text-red-400 w-5 h-5 translate-y-[1.5px]" />
               }
             >
-              {({ hovered }) =>
-                hovered && (
-                  <div className="w-[300px] px-2 py-1 text-sm font-normal bg-white/90 border rounded-md shadow-md border-slate-200">
-                    It looks like you are in dev mode! You will only be able to
-                    add or move the following reviewers: freshmanDev,
-                    sophomoreDev, juniorDev, seniorDev
-                  </div>
-                )
-              }
+              {({ hovered }) => {
+                return (
+                  hovered && (
+                    <TooltipPrimary width={300}>
+                      It looks like you are in dev mode! You will only be able
+                      to add or move the following reviewers: freshmanDev,
+                      sophomoreDev, juniorDev, seniorDev
+                    </TooltipPrimary>
+                  )
+                );
+              }}
             </Hoverable>
           )}
         </div>

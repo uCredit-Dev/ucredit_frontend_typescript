@@ -1,1 +1,2 @@
-export * from './hoverable';
+export * from './Hoverable';
+export * from './TooltipPrimary';

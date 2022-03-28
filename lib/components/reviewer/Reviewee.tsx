@@ -3,16 +3,24 @@ import clsx from 'clsx';
 import { EyeIcon, PencilAltIcon } from '@heroicons/react/outline';
 import { useRouter } from 'next/router';
 import { Plan, User } from '../../resources/commonTypes';
+import { Hoverable } from '../utils/hoverable';
+import { TooltipPrimary } from '../utils/TooltipPrimary';
 
 interface Props {
   key: string;
   userId: string;
   plans: Plan[];
   reviewee: User;
+  expanded?: boolean;
 }
 
-const Reviewee: React.FC<Props> = ({ key, userId, plans, reviewee }) => {
-  const [showPlans, setShowPlans] = useState(false);
+const Reviewee: React.FC<Props> = ({
+  key,
+  plans,
+  reviewee,
+  expanded = false,
+}) => {
+  const [showPlans, setShowPlans] = useState(expanded);
   const [majors, setMajors] = useState<string[]>([]);
   const router = useRouter();
 
@@ -38,7 +46,7 @@ const Reviewee: React.FC<Props> = ({ key, userId, plans, reviewee }) => {
     reviewee && (
       <div
         key={key}
-        className="w-full p-3 bg-white border border-gray-300 rounded-md cursor-pointer"
+        className="w-full p-3 bg-white border border-gray-300 rounded-md"
         onClick={() => setShowPlans((showPlans) => !showPlans)}
       >
         <div className="flex justify-between mb-2">
@@ -62,20 +70,57 @@ const Reviewee: React.FC<Props> = ({ key, userId, plans, reviewee }) => {
                   key={_id}
                   className="flex items-center justify-between h-8 group"
                 >
-                  <p>{name}</p>
+                  <div className="flex items-center gap-[6px]">
+                    <Hoverable
+                      as={
+                        <div className="w-2 h-2 translate-y-[1.5px] bg-slate-500 rounded-full" />
+                      }
+                    >
+                      {({ hovered }) =>
+                        hovered && (
+                          <TooltipPrimary width={140}>
+                            Pending approval
+                          </TooltipPrimary>
+                        )
+                      }
+                    </Hoverable>
+                    <p>{name}</p>
+                  </div>
                   <div className="items-center hidden gap-x-1 group-hover:flex">
-                    <div
-                      className="flex items-center justify-center w-6 h-6 transition-colors duration-150 ease-in rounded-sm hover:bg-gray-200"
-                      onClick={(e) => handleViewPlan(e, p)}
+                    <Hoverable
+                      as={
+                        <div
+                          className="flex items-center justify-center w-6 h-6 transition-colors duration-150 ease-in rounded-sm cursor-pointer hover:bg-gray-200"
+                          onClick={(e) => handleViewPlan(e, p)}
+                        >
+                          <EyeIcon className="w-5 h-5" />
+                        </div>
+                      }
                     >
-                      <EyeIcon className="w-5 h-5" />
-                    </div>
-                    <div
-                      className="flex items-center justify-center w-6 h-6 transition-colors duration-150 ease-in rounded-sm hover:bg-gray-200"
-                      onClick={(e) => handleEditPlan(e, p)}
+                      {({ hovered }) =>
+                        hovered && (
+                          <TooltipPrimary width={120}>
+                            Inspect plan
+                          </TooltipPrimary>
+                        )
+                      }
+                    </Hoverable>
+                    <Hoverable
+                      as={
+                        <div
+                          className="flex items-center justify-center w-6 h-6 transition-colors duration-150 ease-in rounded-sm cursor-pointer hover:bg-gray-200"
+                          onClick={(e) => handleEditPlan(e, p)}
+                        >
+                          <PencilAltIcon className="w-5 h-5" />
+                        </div>
+                      }
                     >
-                      <PencilAltIcon className="w-5 h-5" />
-                    </div>
+                      {({ hovered }) =>
+                        hovered && (
+                          <TooltipPrimary width={120}>Edit Plan</TooltipPrimary>
+                        )
+                      }
+                    </Hoverable>
                   </div>
                 </div>
               );

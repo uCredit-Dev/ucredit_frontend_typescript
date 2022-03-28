@@ -22,6 +22,7 @@ const Reviewer: React.FC = () => {
   const router = useRouter();
   const user = useSelector(selectUser);
   const [filtered, setFiltered] = useState<RevieweePlans[]>([]);
+  const [foundPlan, setFoundPlan] = useState(false);
 
   useEffect(() => {
     const { _id } = user;
@@ -53,6 +54,7 @@ const Reviewer: React.FC = () => {
         revieweePlansArr.push({ reviewee: JSON.parse(k), plans: v });
       }
       setFiltered(revieweePlansArr);
+      setFoundPlan(revieweePlansArr.length > 0);
     })();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [user]);
@@ -63,16 +65,19 @@ const Reviewer: React.FC = () => {
       <div className="pt-24 text-black bg-[#eff2f5] font-bold text-xl md:px-[250px] pb-4">
         Reviewees
       </div>
-      <div className="md:px-[250px] bg-[#eff2f5] pb-3 w-screen">
-        <Search revieweePlans={filtered} setFiltered={setFiltered} />
-      </div>
+      {foundPlan && (
+        <div className="md:px-[250px] bg-[#eff2f5] pb-3 w-screen">
+          <Search revieweePlans={filtered} setFiltered={setFiltered} />
+        </div>
+      )}
       <div className="flex flex-col items-center w-screen h-screen bg-[#eff2f5] md:px-[250px] gap-2 overflow-y-auto">
-        {filtered.map((tuple) => (
+        {filtered.map((tuple, index) => (
           <Reviewee
             key={tuple.reviewee._id}
             userId={tuple.reviewee._id}
             plans={tuple.plans}
             reviewee={tuple.reviewee}
+            expanded={index === 0}
           />
         ))}
       </div>

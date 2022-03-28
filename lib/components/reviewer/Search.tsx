@@ -108,7 +108,7 @@ const Search: React.FC<{
       />
       <div>
         <DotsVerticalIcon
-          className="w-6 h-6 my-1 -ml-6"
+          className="w-5 h-5 my-1 -ml-6"
           onClick={() => setDisplaySettings(!displaySettings)}
         />
         {displaySettings ? (
