@@ -46,7 +46,7 @@
     "start:prod": "next start",
     "lint": "next lint",
     "test": "react-scripts test",
-    "//":  "commented out to pass sonar report: test:ci: react-scripts test --testResultsProcessor ./node_modules/jest-sonar-reporter --collectCoverage --watchAll=false",
+    "//": "commented out to pass sonar report: test:ci: react-scripts test --testResultsProcessor ./node_modules/jest-sonar-reporter --collectCoverage --watchAll=false",
     "coverage": "npm run test -- --coverage ."
   },
   "eslintConfig": {
@@ -65,6 +65,7 @@
     ]
   },
   "devDependencies": {
+    "@playwright/test": "^1.20.1",
     "@svgr/webpack": "^6.2.0",
     "@types/axios": "^0.14.0",
     "@types/history": "^5.0.0",
@@ -85,9 +86,9 @@
     "@types/typescript": "^2.0.0",
     "@types/webpack-env": "^1.16.3",
     "autoprefixer": "^10.4.0",
+    "jest-sonar-reporter": "^2.0.0",
     "mini-css-extract-plugin": "2.5.3",
     "msw": "^0.38.1",
-    "jest-sonar-reporter": "^2.0.0",
     "postcss": "^8.4.4",
     "prettier": "2.5.1",
     "tailwindcss": "^3.0.1"
