@@ -6,6 +6,7 @@ import { selectUser, resetUser } from '../../slices/userSlice';
 import { resetCurrentPlan } from '../../slices/currentPlanSlice';
 import { getAPI, getLoginCookieVal } from '../../resources/assets';
 import { DashboardMode } from '../../resources/commonTypes';
+import Notification from './Notification';
 
 interface Props {
   mode: DashboardMode;
@@ -66,6 +67,9 @@ const UserSection: React.FC<Props> = ({ mode }) => {
               Logged in as {user.name}!
             </div>
           )}
+
+          <Notification />
+
           {user._id === 'guestUser' ? (
             <a
               href="https://ucredit-api.herokuapp.com/api/login"

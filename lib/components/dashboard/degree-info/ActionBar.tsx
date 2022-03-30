@@ -252,7 +252,7 @@ const ActionBar: FC = () => {
         />
       </div>
       <div
-        className="flex px-2  mt-[0.15rem] mr-2 text-lg font-light h-10"
+        className="flex px-2  mt-[0.15rem] mr-2 text-lg font-light h-10 z-0"
         style={{ width: '23rem' }}
       >
         <form data-testid="major-change-form" className="z-20 w-full">
