@@ -4,21 +4,21 @@ import { Popover, Transition } from '@headlessui/react'
 import { Fragment } from 'react'
 
 const notifications = [
-    // {
-    //     name: 'Ali Madooei has approved your "Imported New CS Major" plan!',
-    //     description: '2d ago',
-    //     href: '##',
-    // },
-    // {
-    //     name: 'Ali Madooei left some comments on your "Imported New CS Major" plan.',
-    //     description: '2d ago',
-    //     href: '##',
-    // },
-    // {
-    //     name: 'Sara More has approved your "Imported New CS Major" plan!',
-    //     description: '1w ago',
-    //     href: '##',
-    // },
+    {
+        name: 'Ali Madooei has approved your "Imported New CS Major" plan!',
+        description: '2d ago',
+        href: '##',
+    },
+    {
+        name: 'Ali Madooei left some comments on your "Imported New CS Major" plan.',
+        description: '2d ago',
+        href: '##',
+    },
+    {
+        name: 'Sara More has approved your "Imported New CS Major" plan!',
+        description: '1w ago',
+        href: '##',
+    },
 ]
 
 const Notification = () => {
@@ -26,7 +26,7 @@ const Notification = () => {
     return (
       <div className="flex flex-row justify-between items-center px-4 text-xl">
         {notifications.length !== 0 ?
-            <ExclamationCircleIcon className="bg-white rounded-full absolute h-5 text-red-500 right-32 bottom-9 z-50"></ExclamationCircleIcon>
+            <ExclamationCircleIcon className="bg-white rounded-full absolute h-5 text-red-500 right-[8.5rem] bottom-9 z-50"></ExclamationCircleIcon>
         : null}
         <div className="w-full max-w-sm">
             <Popover className="relative">
@@ -70,7 +70,7 @@ const Notification = () => {
                                 </a>
                                 ))}
                                 {notifications.length === 0 ?
-                                    <p className="text-sm font-medium text-gray-900">There are currently no new notifications!</p>
+                                    <p className="text-center text-sm font-medium text-gray-900">There are currently no new notifications!</p>
                                 : null}
                             </div>
                         </div>
