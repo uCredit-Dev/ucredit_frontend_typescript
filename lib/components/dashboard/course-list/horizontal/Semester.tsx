@@ -41,6 +41,7 @@ import {
   updatePlanList,
   updateCartInvokedBySemester,
 } from '../../../../slices/userSlice';
+import Comments from '../../Comments';
 
 /**
  * A component displaying all the courses in a specific semester.
@@ -72,6 +73,7 @@ const Semester: FC<{
   const [semesterCourses, setSemesterCourses] = useState<UserCourse[]>([]);
   const [inspectedArea, setInspectedArea] = useState<string>('None');
   const [openAPInfoBox, setOpenAPInfoBox] = useState<boolean>(false);
+  const [hovered, setHovered] = useState<boolean>(false);
 
   useEffect(() => {
     ReactTooltip.rebuild();
@@ -431,7 +433,20 @@ const Semester: FC<{
   return (
     <>
       {!display ? null : (
-        <div onMouseLeave={() => setOpenAPInfoBox(false)}>
+        <div
+          onMouseLeave={() => {
+            setOpenAPInfoBox(false);
+            setHovered(false);
+          }}
+          onMouseEnter={() => setHovered(true)}
+        >
+          {hovered && mode === ReviewMode.View && (
+            <Comments
+              location={
+                'Semester ' + semesterName + '-' + (semesterYear.year + 1)
+              }
+            />
+          )}
           <div className="flex flex-col font-medium max-w-yearheading h-yearheading">
             <div className="flex flex-row items-center justify-between px-2 py-1 bg-white h-yearheading1">
               <div className="flex flex-row items-center w-full h-auto gap-3 font-normal">

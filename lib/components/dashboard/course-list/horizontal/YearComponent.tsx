@@ -19,6 +19,7 @@ import {
   selectShowingCart,
 } from '../../../../slices/popupSlice';
 import { selectInspectedCourse } from '../../../../slices/searchSlice';
+import Comments from '../../Comments';
 
 type SemSelected = {
   fall: boolean;
@@ -70,6 +71,8 @@ const YearComponent: FC<{
     summer: true,
     intersession: true,
   });
+
+  const [hovered, setHovered] = useState<boolean>(false);
 
   // Setting up redux
   const currentPlan = useSelector(selectPlan);
@@ -368,14 +371,19 @@ const YearComponent: FC<{
       onMouseLeave={() => {
         setDraggable(true);
         setDisplay(false);
+        setHovered(false);
       }}
       onMouseEnter={() => {
         setDraggable(false);
+        setHovered(true);
       }}
     >
       <div className="flex flex-col w-full mt-1 font-medium h-yearheading">
         <div className="flex flex-row w-full gap-2 text-zinc-700">
           <div className="mr-1 text-lg font-thin">
+            {hovered && mode === ReviewMode.View && (
+              <Comments location={'Year ' + yearName} />
+            )}
             {collapse ? (
               <button
                 className="mt-2 text-sky-500"

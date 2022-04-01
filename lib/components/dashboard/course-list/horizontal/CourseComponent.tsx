@@ -1,7 +1,7 @@
 import { useState, useEffect, FC, useRef } from 'react';
 import ReactTooltip from 'react-tooltip';
 import { useDispatch, useSelector } from 'react-redux';
-import { MinusIcon, ExclamationIcon } from '@heroicons/react/outline';
+import { MinusIcon, ExclamationIcon, PlusIcon } from '@heroicons/react/outline';
 import { Transition } from '@tailwindui/react';
 import clsx from 'clsx';
 import 'react-toastify/dist/ReactToastify.css';
@@ -24,6 +24,7 @@ import {
   updateDeleteCourseStatus,
   updateShowCourseInfo,
 } from '../../../../slices/popupSlice';
+import Comments from '../../Comments';
 
 /**
  * This is a course card displayed in the course list under each semester.
@@ -136,6 +137,9 @@ const CourseComponent: FC<{
               onClick={deleteCourse}
             />
           </div>
+        )}
+        {hovered && mode === ReviewMode.View && (
+          <Comments location={'Course ' + course.number.toString()} />
         )}
       </div>
       <div
