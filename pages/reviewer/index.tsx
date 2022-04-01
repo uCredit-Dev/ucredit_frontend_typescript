@@ -7,15 +7,14 @@ import { selectUser } from '../../lib/slices/userSlice';
 import { Reviewee, Search } from '../../lib/components/reviewer';
 import {
   DashboardMode,
-  Plan,
   RevieweePlans,
   ReviewRequestStatus,
-  User,
 } from '../../lib/resources/commonTypes';
 
-export type planUserTuple = {
-  plan: Plan;
-  user: User;
+export const statusReadable = {
+  [ReviewRequestStatus.UnderReview]: 'Under Review',
+  [ReviewRequestStatus.Approved]: 'Approved',
+  [ReviewRequestStatus.Rejected]: 'Rejected',
 };
 
 const Reviewer: React.FC = () => {
@@ -26,7 +25,6 @@ const Reviewer: React.FC = () => {
 
   useEffect(() => {
     const { _id } = user;
-    // console.log(user);
     if (_id === 'noUser' || _id === 'guestUser') {
       if (user._id === 'noUser') {
         router.push(`/login?referrer=reviewer`);
@@ -43,7 +41,7 @@ const Reviewer: React.FC = () => {
       const reviews = (await userService.getReviewerPlans(user._id)).data;
       for (const { plan_id, reviewee_id, status } of reviews) {
         if (status === ReviewRequestStatus.Pending) continue;
-        const plan = (await userService.getPlan(plan_id)).data;
+        const plan = { ...(await userService.getPlan(plan_id)).data, status };
         const reviewee = (await userService.getUser(reviewee_id._id)).data[0];
         const revieweeString = JSON.stringify(reviewee);
         const plans = plansByUser.get(revieweeString) || [];
@@ -67,7 +65,7 @@ const Reviewer: React.FC = () => {
       </div>
       {foundPlan && (
         <div className="md:px-[250px] bg-[#eff2f5] pb-3 w-screen">
-          <Search revieweePlans={filtered} setFiltered={setFiltered} />
+          <Search filtered={filtered} setFiltered={setFiltered} />
         </div>
       )}
       <div className="flex flex-col items-center w-screen h-screen bg-[#eff2f5] md:px-[250px] gap-2 overflow-y-auto">

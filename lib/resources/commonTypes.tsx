@@ -237,14 +237,20 @@ export enum DashboardMode {
   Planning = 'Planning',
 }
 
+export interface StatusPlan extends Plan {
+  status: ReviewRequestStatus;
+}
+
 export interface RevieweePlans {
   reviewee: User;
-  plans: Plan[];
+  plans: StatusPlan[];
 }
 
 export enum ReviewRequestStatus {
   Pending = 'PENDING',
-  Accepted = 'ACCEPTED',
+  Rejected = 'REJECTED',
+  UnderReview = 'UNDERREVIEW',
+  Approved = 'APPROVED',
 }
 
 export enum ReviewMode {

@@ -2,24 +2,24 @@ import { useEffect, useState } from 'react';
 import clsx from 'clsx';
 import { EyeIcon, PencilAltIcon } from '@heroicons/react/outline';
 import { useRouter } from 'next/router';
-import { Plan, User } from '../../resources/commonTypes';
-import { Hoverable } from '../utils/hoverable';
+import {
+  Plan,
+  ReviewRequestStatus,
+  StatusPlan,
+  User,
+} from '../../resources/commonTypes';
+import { Hoverable } from '../utils';
 import { TooltipPrimary } from '../utils/TooltipPrimary';
+import { statusReadable } from '../../../pages/reviewer';
 
 interface Props {
-  key: string;
   userId: string;
-  plans: Plan[];
+  plans: StatusPlan[];
   reviewee: User;
   expanded?: boolean;
 }
 
-const Reviewee: React.FC<Props> = ({
-  key,
-  plans,
-  reviewee,
-  expanded = false,
-}) => {
+const Reviewee: React.FC<Props> = ({ plans, reviewee, expanded = false }) => {
   const [showPlans, setShowPlans] = useState(expanded);
   const [majors, setMajors] = useState<string[]>([]);
   const router = useRouter();
@@ -45,7 +45,6 @@ const Reviewee: React.FC<Props> = ({
   return (
     reviewee && (
       <div
-        key={key}
         className="w-full p-3 bg-white border border-gray-300 rounded-md"
         onClick={() => setShowPlans((showPlans) => !showPlans)}
       >
@@ -58,32 +57,46 @@ const Reviewee: React.FC<Props> = ({
         </div>
         <div className={clsx('text-sm', { 'mb-2': showPlans })}>
           {majors.map((m) => (
-            <p>{m}</p>
+            <p key={m}>{m}</p>
           ))}
         </div>
         {showPlans && (
           <div className="divide-y">
             {plans.map((p) => {
-              const { _id, name } = p;
+              const { _id, name, status } = p;
               return (
                 <div
                   key={_id}
                   className="flex items-center justify-between h-8 group"
                 >
                   <div className="flex items-center gap-[6px]">
-                    <Hoverable
-                      as={
-                        <div className="w-2 h-2 translate-y-[1.5px] bg-slate-500 rounded-full" />
-                      }
-                    >
-                      {({ hovered }) =>
-                        hovered && (
-                          <TooltipPrimary width={140}>
-                            Pending approval
-                          </TooltipPrimary>
-                        )
-                      }
-                    </Hoverable>
+                    {status && (
+                      <Hoverable
+                        as={
+                          <div
+                            className={clsx(
+                              'w-2 h-2 translate-y-[1.5px] rounded-full',
+                              {
+                                'bg-sky-400':
+                                  status === ReviewRequestStatus.UnderReview,
+                                'bg-emerald-400':
+                                  status === ReviewRequestStatus.Approved,
+                                'bg-red-400':
+                                  status === ReviewRequestStatus.Rejected,
+                              },
+                            )}
+                          />
+                        }
+                      >
+                        {({ hovered }) =>
+                          hovered && (
+                            <TooltipPrimary width={140}>
+                              {statusReadable[status]}
+                            </TooltipPrimary>
+                          )
+                        }
+                      </Hoverable>
+                    )}
                     <p>{name}</p>
                   </div>
                   <div className="items-center hidden gap-x-1 group-hover:flex">

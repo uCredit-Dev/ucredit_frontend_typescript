@@ -1,6 +1,11 @@
 import { Dispatch, SetStateAction, useEffect, useState } from 'react';
 import { DotsVerticalIcon } from '@heroicons/react/outline';
-import { RevieweePlans } from '../../../lib/resources/commonTypes';
+import debounce from 'lodash.debounce';
+import {
+  RevieweePlans,
+  ReviewRequestStatus,
+} from '../../../lib/resources/commonTypes';
+import Status from './Status';
 
 const settings = [
   'Recently Updated',
@@ -8,6 +13,12 @@ const settings = [
   'Last Name',
   'JHED',
   'Graduation Year',
+];
+
+const statusFilter = [
+  ReviewRequestStatus.UnderReview,
+  ReviewRequestStatus.Approved,
+  ReviewRequestStatus.Rejected,
 ];
 
 const years = {
@@ -18,13 +29,18 @@ const years = {
 };
 
 const Search: React.FC<{
-  revieweePlans: RevieweePlans[];
+  filtered: RevieweePlans[];
   setFiltered: Dispatch<SetStateAction<RevieweePlans[]>>;
-}> = ({ revieweePlans, setFiltered }) => {
+}> = ({ filtered, setFiltered }) => {
+  const [revieweePlans] = useState(filtered);
   const [searchState, updateSearchState] = useState('');
   const [displaySettings, setDisplaySettings] = useState(false);
   const [reversed, setReversed] = useState(false);
   const [searchSetting, setSearchSetting] = useState(settings[0]);
+
+  const [selectedUnderReview, setSelectedUnderReview] = useState(true);
+  const [selectedApproved, setSelectedApproved] = useState(true);
+  const [selectedRejected, setSelectedRejected] = useState(true);
 
   const handleChange = (e) => {
     updateSearchState(e.target.value);
@@ -36,37 +52,46 @@ const Search: React.FC<{
       const revieweeString = JSON.stringify(reviewee);
       for (const plan of plans) {
         if (
-          plan._id.toLowerCase().includes(searchState.toLowerCase()) ||
-          plan.name.toLowerCase().includes(searchState.toLowerCase()) ||
-          reviewee.name.toLowerCase().includes(searchState.toLowerCase())
+          (plan._id.toLowerCase().includes(searchState.toLowerCase()) ||
+            plan.name.toLowerCase().includes(searchState.toLowerCase()) ||
+            reviewee.name.toLowerCase().includes(searchState.toLowerCase())) &&
+          ((selectedUnderReview &&
+            plan.status === ReviewRequestStatus.UnderReview) ||
+            (selectedApproved &&
+              plan.status === ReviewRequestStatus.Approved) ||
+            (selectedRejected && plan.status === ReviewRequestStatus.Rejected))
         ) {
           const filteredPlans = filteredMap.get(revieweeString) || [];
           filteredMap.set(revieweeString, [...filteredPlans, plan]);
         }
       }
     }
-    let filtered: RevieweePlans[] = [];
+    let filteredArray: RevieweePlans[] = [];
     for (const [k, v] of filteredMap)
-      filtered.push({ reviewee: JSON.parse(k), plans: v });
+      filteredArray.push({ reviewee: JSON.parse(k), plans: v });
     switch (searchSetting) {
       case 'Recently Updated':
         // TODO
         break;
       case 'First Name':
-        filtered.sort((a, b) => a.reviewee.name.localeCompare(b.reviewee.name));
+        filteredArray.sort((a, b) =>
+          a.reviewee.name.localeCompare(b.reviewee.name),
+        );
         break;
       case 'Last Name':
-        filtered.sort((a, b) =>
+        filteredArray.sort((a, b) =>
           a.reviewee.name
             .split(' ')[1]
             .localeCompare(b.reviewee.name.split(' ')[1]),
         );
         break;
       case 'JHED':
-        filtered.sort((a, b) => a.reviewee._id.localeCompare(b.reviewee._id));
+        filteredArray.sort((a, b) =>
+          a.reviewee._id.localeCompare(b.reviewee._id),
+        );
         break;
       case 'Graduation Year':
-        filtered.sort(
+        filteredArray.sort(
           (a, b) =>
             years[b.reviewee.grade.split(' ')[2]] -
             years[a.reviewee.grade.split(' ')[2]],
@@ -74,19 +99,21 @@ const Search: React.FC<{
         break;
       default:
     }
-    if (reversed) {
-      filtered = filtered.reverse();
-    }
-    setFiltered(filtered || []);
+    if (reversed) filteredArray = filteredArray.reverse();
+    setFiltered(filteredArray || []);
   };
 
+  const debouncedFilter = debounce(filter, 500);
+
   useEffect(() => {
-    if (searchState.length > 2) {
-      const search = setTimeout(() => filter(), 500);
-      return () => clearTimeout(search);
-    } else setFiltered(revieweePlans);
+    debouncedFilter();
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [searchState, searchSetting, revieweePlans, reversed]);
+  }, [searchState, searchSetting, reversed]);
+
+  useEffect(() => {
+    debouncedFilter();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [selectedUnderReview, selectedApproved, selectedRejected]);
 
   const getSVG = (setting: String) => {
     if (setting !== searchSetting) {
@@ -108,35 +135,60 @@ const Search: React.FC<{
       />
       <div>
         <DotsVerticalIcon
-          className="w-5 h-5 my-1 -ml-6"
+          className="w-5 h-5 my-1 -ml-6 cursor-pointer"
           onClick={() => setDisplaySettings(!displaySettings)}
         />
         {displaySettings ? (
-          <div className="absolute flex flex-col items-start p-3 -translate-x-full bg-white border rounded shadow">
-            <div>
-              <p>Sort By:</p>
-            </div>
-            {settings.map((setting) => (
-              <div
-                className="flex flex-row hover:cursor-pointer"
-                onClick={() => {
-                  if (setting === searchSetting) {
-                    setReversed(!reversed);
-                  }
-                  setSearchSetting(setting);
-                }}
-              >
-                <img
-                  src={getSVG(setting)}
-                  alt="status"
-                  className="block h-4 m-auto mt-1 mr-1 tooltip"
-                  data-tip="Pending"
-                />
-                <div>
-                  <p>{setting}</p>
+          <div className="absolute flex w-[350px] p-3 -translate-x-full translate-y-2 bg-white border rounded shadow">
+            <div className="flex flex-col items-start gap-1 w-[150px] flex-none">
+              <div className="font-semibold">Sort By</div>
+              {settings.map((setting) => (
+                <div
+                  key={setting}
+                  className="flex gap-1 text-sm cursor-pointer"
+                  onClick={() => {
+                    if (setting === searchSetting) {
+                      setReversed(!reversed);
+                    }
+                    setSearchSetting(setting);
+                  }}
+                >
+                  <img
+                    src={getSVG(setting)}
+                    alt="status"
+                    className="block w-3 h-3 m-auto tooltip"
+                  />
+                  <div>
+                    <p>{setting}</p>
+                  </div>
                 </div>
+              ))}
+            </div>
+            <div className="flex flex-col items-start grow">
+              <div className="font-semibold">Filter By</div>
+              <div className="flex flex-wrap gap-1">
+                {statusFilter.map((status) => (
+                  <Status
+                    key={status}
+                    status={status}
+                    selected={
+                      status === ReviewRequestStatus.UnderReview
+                        ? selectedUnderReview
+                        : status === ReviewRequestStatus.Approved
+                        ? selectedApproved
+                        : selectedRejected
+                    }
+                    setSelected={
+                      status === ReviewRequestStatus.UnderReview
+                        ? setSelectedUnderReview
+                        : status === ReviewRequestStatus.Approved
+                        ? setSelectedApproved
+                        : setSelectedRejected
+                    }
+                  />
+                ))}
               </div>
-            ))}
+            </div>
           </div>
         ) : null}
       </div>
