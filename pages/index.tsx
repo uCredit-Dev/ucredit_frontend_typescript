@@ -17,6 +17,7 @@ import {
 } from '../lib/resources/commonTypes';
 import { selectPlan } from '../lib/slices/currentPlanSlice';
 import LandingPage from '../lib/components/landing-page';
+import Head from 'next/head';
 
 const Home: React.FC = () => {
   const dispatch = useDispatch();
@@ -103,7 +104,14 @@ const Home: React.FC = () => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [curPlan]);
 
-  return <LandingPage />;
+  return (
+    <>
+      <Head>
+        <title>uCredit</title>
+      </Head>
+      <LandingPage />
+    </>
+  );
 };
 
 export default Home;

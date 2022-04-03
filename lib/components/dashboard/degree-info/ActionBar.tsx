@@ -234,7 +234,7 @@ const ActionBar: FC = () => {
   };
 
   return (
-    <div className="top-0 z-20 flex flex-row">
+    <div className="top-0 z-20 flex flex-row thin:flex-col flex-wrap">
       <Select
         options={[
           ...planList
@@ -244,7 +244,7 @@ const ActionBar: FC = () => {
         ]}
         value={{ label: currentPlan.name, value: currentPlan }}
         onChange={handlePlanChange}
-        className="mr-2 text-lg font-light w-60 mt-[0.15rem]"
+        className="mr-2 thin:mx-auto text-lg font-light w-60 mt-[0.15rem]"
       ></Select>
       <div className="flex flex-row items-end my-1 mr-2 bg-white border border-gray-300 rounded h-10">
         <div className="m-auto ml-2 mr-0 text-xl">✎</div>
@@ -310,7 +310,7 @@ const ActionBar: FC = () => {
           <ShareLinksPopup link={shareableURL} setURL={onShareClick} />
         </div>
       )}
-      <div className="flex flex-row items-center w-10 h-10 my-1 transition duration-200 ease-in border border-gray-300 rounded cursor-pointer hover:underline hover:bg-green-300 focus:outline-none">
+      <div className=" thin:mx-auto flex flex-row items-center w-10 h-10 my-1 transition duration-200 ease-in border border-gray-300 rounded cursor-pointer hover:underline hover:bg-green-300 focus:outline-none">
         <PlusIcon
           onClick={() => addNewYear(false)}
           data-tip={`Add a new year!`}

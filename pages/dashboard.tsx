@@ -18,8 +18,6 @@ const Dash: React.FC = () => {
   return (
     <>
       <Head>
-        <link rel="shortcut icon" href="/static/favicon.ico" />
-        <meta name="description" content="Quick accessible degree planning." />
         <title>My Plan</title>
       </Head>
       <Dashboard />

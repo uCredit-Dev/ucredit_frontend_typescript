@@ -117,7 +117,7 @@ const Semester: FC<{
    */
   const getDraggables = (): any => {
     return semesterCourses.map((course, index) => (
-      <div key={course._id}>
+      <div key={course._id} className="w-auto mr-0">
         <CourseDraggable
           course={course}
           index={index}
@@ -421,10 +421,13 @@ const Semester: FC<{
   return (
     <>
       {!display ? null : (
-        <div onMouseLeave={() => setOpenAPInfoBox(false)}>
+        <div
+          onMouseLeave={() => setOpenAPInfoBox(false)}
+          className="min-w-[15rem] max-w-[40rem] w-min mx-4"
+        >
           <div className="flex flex-col font-medium max-w-yearheading h-yearheading">
             <div className="flex flex-row items-center justify-between px-2 py-1 bg-white h-yearheading1">
-              <div className="flex flex-row items-center w-full h-auto gap-3 font-normal">
+              <div className="flex flex-row items-center h-auto gap-3 font-normal">
                 {getSemesterTitle()}
               </div>
               {getSemesterAddButton()}

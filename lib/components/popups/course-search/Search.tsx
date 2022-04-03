@@ -1,9 +1,10 @@
-import { FC, useState } from 'react';
+import { FC, useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import {
   selectYear,
   selectSemester,
   updateSearchStatus,
+  selectInspectedCourse,
 } from '../../../slices/searchSlice';
 import CourseDisplay from './search-results/CourseDisplay';
 import Form from './query-components/Form';
@@ -21,12 +22,14 @@ const Search: FC = () => {
   // Component states
   const [searchOpacity, setSearchOpacity] = useState<number>(100);
   const [searching, setSearching] = useState<boolean>(false);
+  const [hideResults, setHideResults] = useState<boolean>(false);
 
   // Redux selectors and dispatch
   const dispatch = useDispatch();
   const searchYear = useSelector(selectYear);
   const searchSemester = useSelector(selectSemester);
   const currentPlan = useSelector(selectPlan);
+  const inspected = useSelector(selectInspectedCourse);
 
   /**
    * Gets specific year's name.
@@ -41,6 +44,10 @@ const Search: FC = () => {
     });
     return name;
   };
+
+  useEffect(() => {
+    if (inspected === 'None') setHideResults(false);
+  }, [inspected]);
 
   return (
     <div className="absolute top-0">
@@ -73,13 +80,21 @@ const Search: FC = () => {
               'flex flex-col rounded-l bg-gray-200 flex-none border-r-2 tight:border-0 border-gray-300 tight:w-auto w-80'
             }
           >
-            <div className="h-full overflow-y-auto">
-              <Form setSearching={setSearching} />
-              <SearchList searching={searching} />
+            <div className="h-full">
+              {!hideResults && (
+                <>
+                  <Form setSearching={setSearching} />
+                  <SearchList
+                    searching={searching}
+                    hideResults={hideResults}
+                    setHideResults={setHideResults}
+                  />
+                </>
+              )}
             </div>
 
             <div
-              className="flex flex-row items-center justify-center w-full h-8 p-1 transition duration-200 ease-in transform hover:scale-125"
+              className="flex flex-row items-center justify-center w-8 ml-auto mr-6 h-8 p-1 transition duration-200 ease-in transform hover:scale-125"
               onMouseEnter={() => setSearchOpacity(50)}
               onMouseLeave={() => setSearchOpacity(100)}
               onMouseOver={() => ReactTooltip.rebuild()}

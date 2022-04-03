@@ -246,7 +246,7 @@ const YearComponent: FC<{
       semesters.push(
         <div
           key={'Fall' + year._id}
-          className={clsx(`mb-3 w-full h-auto pr-1 rounded`, {
+          className={clsx(`mb-3 h-auto pr-1 rounded`, {
             'z-50': addingPrereqStatus && checkSemester('Fall'),
           })}
         >
@@ -262,7 +262,7 @@ const YearComponent: FC<{
       semesters.push(
         <div
           key={'Winter' + year._id}
-          className={clsx(`mb-3 w-full h-auto pr-1 rounded`, {
+          className={clsx(`mb-3 h-auto pr-1 rounded`, {
             'z-50': addingPrereqStatus && checkSemester('Winter'),
           })}
         >
@@ -278,7 +278,7 @@ const YearComponent: FC<{
       semesters.push(
         <div
           key={'Spring' + year._id}
-          className={clsx(`mb-3 w-full h-auto pr-1 rounded`, {
+          className={clsx(`mb-3 h-auto pr-1 rounded`, {
             'z-50': addingPrereqStatus && checkSemester('Spring'),
           })}
         >
@@ -294,7 +294,7 @@ const YearComponent: FC<{
       semesters.push(
         <div
           key={'Summer' + year._id}
-          className={clsx(`mb-3 w-full h-auto pr-1 rounded`, {
+          className={clsx(`mb-3 h-auto pr-1 rounded`, {
             'z-50': addingPrereqStatus && checkSemester('Summer'),
           })}
         >
@@ -316,7 +316,9 @@ const YearComponent: FC<{
     return (
       <>
         {id !== 0 ? (
-          <div className="flex flex-row">{getDisplayedSemesters(collapse)}</div>
+          <div className="flex flex-row thin:flex-col w-full flex-wrap">
+            {getDisplayedSemesters(collapse)}
+          </div>
         ) : (
           <div
             key={'AP' + year._id}

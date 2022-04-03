@@ -45,7 +45,7 @@ const UserSection: React.FC = () => {
           <img src="/img/logo-darker.png" alt="logo" className="mr-3 h-9"></img>
           <div>uCredit</div>
         </div>
-        {typeof window !== 'undefined' && window.innerWidth > 800 && (
+        {typeof window !== 'undefined' && window.innerWidth > 600 && (
           <div className="mr-3 font-semibold text-white">
             Logged in as {user.name}!
           </div>
