@@ -139,7 +139,7 @@ const Search: React.FC<{
           onClick={() => setDisplaySettings(!displaySettings)}
         />
         {displaySettings ? (
-          <div className="absolute flex w-[350px] p-3 -translate-x-full translate-y-2 bg-white border rounded shadow">
+          <div className="absolute flex w-[350px] p-3 -translate-x-full translate-y-2 bg-white border rounded shadow z-10">
             <div className="flex flex-col items-start gap-1 w-[150px] flex-none">
               <div className="font-semibold">Sort By</div>
               {settings.map((setting) => (

@@ -1,5 +1,6 @@
 import { ReactNode, useState } from 'react';
 import { ChevronDownIcon } from '@heroicons/react/solid';
+import 'react-toastify/dist/ReactToastify.css';
 
 interface DropdownOptions {
   label: string;
