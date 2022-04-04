@@ -1,93 +1,97 @@
-import axios from 'axios';
-import { FC } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
-import { api } from '../../../../resources/assets';
-import { User } from '../../../../resources/commonTypes';
-import {
-  selectPlan,
-  updateSelectedPlan,
-} from '../../../../slices/currentPlanSlice';
+import { useSelector } from 'react-redux';
+import { FC, useEffect, useState } from 'react';
 import emailjs from 'emailjs-com';
+import clsx from 'clsx';
+import { CheckIcon } from '@heroicons/react/outline';
+import { toast } from 'react-toastify';
+import { ReviewRequestStatus, User } from '../../../../resources/commonTypes';
+import { selectPlan } from '../../../../slices/currentPlanSlice';
+import { userService } from '../../../../services';
+import { selectUser } from '../../../../slices/userSlice';
+import getConfig from 'next/config';
+
 emailjs.init('user_7Cn3A3FQW9PTxExf6Npel');
 
-const ReviewersSearchResults: FC<{
-  Users: any[];
-}> = ({ Users }) => {
-  const dispatch = useDispatch();
-  const currentPlan = useSelector(selectPlan);
+const { publicRuntimeConfig } = getConfig();
+const baseUrl = publicRuntimeConfig.baseUrl;
 
-  const isReviewer = (id) => {
-    return currentPlan.reviewers.includes(id);
+const ReviewersSearchResults: FC<{
+  users: User[];
+}> = ({ users }) => {
+  const currentPlan = useSelector(selectPlan);
+  const currentUser = useSelector(selectUser);
+  const [planReviewers, setPlanReviewers] = useState([]);
+
+  useEffect(() => {
+    (async () => {
+      const reviewers = (await userService.getPlanReviewers(currentPlan._id))
+        .data;
+      setPlanReviewers(reviewers);
+    })();
+  }, [currentPlan._id]);
+
+  const isReviewer = (id: string) => {
+    for (const { reviewer_id, status, _id } of planReviewers) {
+      if (reviewer_id._id === id && status === ReviewRequestStatus.Accepted)
+        return _id;
+    }
+    return '';
   };
 
-  const isPending = (id) => {
-    return !(
-      id === 'sophomoreDev' ||
-      id === 'freshmanDev' ||
-      id === 'juniorDev' ||
-      id === 'seniorDev'
-    );
+  const isPending = (id: string) => {
+    for (const { reviewer_id, status } of planReviewers) {
+      if (reviewer_id._id === id) return status === ReviewRequestStatus.Pending;
+    }
+    return false;
   };
 
   const changeReviewer = async (user: User) => {
-    const body = {
-      plan_id: currentPlan._id,
-      reviewer_id: user._id,
-    };
-    let plan;
-    if (isReviewer(user._id)) {
-      plan = await axios.delete(api + '/planReview/removeReviewer', {
-        data: body,
-      });
+    const reviewId = isReviewer(user._id);
+    if (reviewId) {
+      await userService.removeReview(reviewId);
+      toast.success('Reviewer removed');
     } else {
       if (!isPending(user._id)) {
-        plan = await axios.post(api + '/planReview/addReviewer', body);
+        const review = (
+          await userService.requestReviewerPlan(
+            currentPlan._id,
+            user._id,
+            currentUser._id,
+          )
+        ).data;
         emailjs.send('service_czbc7ct', 'template_9g4knbk', {
-          from_name: currentPlan.name,
+          from_name: currentUser.name,
           to_jhed: user._id,
-          to_name: user._id, // replace with name
+          to_name: user.name,
           to_email: user.email,
-          url: 'https://google.com', // TODO
+          url: `${baseUrl}/reviewer/${review._id}`,
         });
-      } else {
-        // TODO
-      }
+        toast.success('Reviewer requested');
+      } else
+        toast.error('You have already requested a review from this reviewer');
     }
-    dispatch(
-      updateSelectedPlan({
-        ...currentPlan,
-        reviewers: plan.data.data.reviewers,
-      }),
-    );
   };
 
-  const getElements = (data: User[]) => {
-    console.log(data);
-    return data.map((element) => {
+  const getElements = (users: User[]) => {
+    return users.map((user) => {
       return (
         <div
-          className="flex flex-row hover:bg-sky-300 hover:hand hover:cursor-pointer"
-          onClick={(e) => changeReviewer(element)}
-          key={element._id}
+          className="flex items-center px-2 hover:bg-sky-300 hover:cursor-pointer"
+          onClick={() => changeReviewer(user)}
+          key={user._id}
         >
-          {isReviewer(element._id) ? (
-            <img
-              src="svg/CheckMark.svg"
-              alt="requesting review"
-              className="w-6 mr-2 ml-2"
-            />
-          ) : (
-            <div className="w-6 mr-2 ml-2" />
-          )}
+          <CheckIcon
+            className={clsx('w-5 h-5', { 'opacity-0': !isReviewer(user._id) })}
+          />
           <p>
-            {element.name} - {element._id}
+            {user.name} - {user._id}
           </p>
         </div>
       );
     });
   };
 
-  return <div className="border-t pb-2">{getElements(Users)}</div>;
+  return <div className="pb-2 border-t">{getElements(users)}</div>;
 };
 
 export default ReviewersSearchResults;

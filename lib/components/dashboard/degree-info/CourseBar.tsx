@@ -13,6 +13,7 @@ import {
   updateShowingCart,
 } from '../../../slices/popupSlice';
 import { clearSearch, updatePlaceholder } from '../../../slices/searchSlice';
+import { updateCartInvokedBySemester } from '../../../slices/userSlice';
 
 /**
  * A distribution bar.
@@ -56,6 +57,7 @@ const CourseBar: FC<{
 
   // Onclick for course bar, opens cart popup passing in corresponding props
   const openCartPopup = () => {
+    dispatch(updateCartInvokedBySemester(false));
     // Filter for the correst distributions from redux store
     let distrs = distributions.filter((req) => req[0] === distribution.name)[0];
     if (distrs) {
@@ -118,7 +120,7 @@ const CourseBar: FC<{
         {section}
         <div>
           {remainingCredits === 0 && completed ? (
-            <CheckCircleIcon className="w-4 h-5  ml-1 stroke-2" />
+            <CheckCircleIcon className="w-4 h-5 ml-1 stroke-2" />
           ) : null}
         </div>
       </div>
@@ -163,10 +165,10 @@ const CourseBar: FC<{
               </>
             ))()
           )} */}
-          <div className="absolute left-1/2 font-semibold -translate-x-1/2">
+          <div className="absolute font-semibold -translate-x-1/2 left-1/2">
             {plannedCredits + '/' + maxCredits}
           </div>
-          {/* <div className="absolute right-2 font-thin">
+          {/* <div className="absolute font-thin right-2">
             {maxCredits > plannedCredits ? maxCredits - plannedCredits : null}
           </div> */}
         </div>

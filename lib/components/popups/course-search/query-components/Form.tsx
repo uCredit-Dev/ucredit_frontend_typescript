@@ -21,7 +21,7 @@ import {
   updateCourseCache,
 } from '../../../../slices/userSlice';
 import axios from 'axios';
-import { api } from '../../../../resources/assets';
+import { getAPI } from '../../../../resources/assets';
 import { filterCourses } from './formUtils';
 import { selectPlan } from '../../../../slices/currentPlanSlice';
 
@@ -126,7 +126,7 @@ const Form: FC<{ setSearching: (searching: boolean) => void }> = (props) => {
       dispatch(
         updateSearchFilters({ filter: 'year', value: date.getFullYear() + 1 }),
       );
-    else if (semester === 'Fall' && date.getMonth() < 5) {
+    else if (semester === 'Fall' && date.getMonth() < 3) {
       dispatch(
         updateSearchFilters({ filter: 'year', value: date.getFullYear() - 1 }),
       );
@@ -199,7 +199,7 @@ const Form: FC<{ setSearching: (searching: boolean) => void }> = (props) => {
       let courses: SISRetrievedCourse[] = [...courseCache];
       if (!retrievedAll) {
         const retrieved: any = await axios
-          .get(api + '/search', {
+          .get(getAPI(window) + '/search', {
             params: getParams(extras),
           })
           .catch(() => {
@@ -372,7 +372,7 @@ const Form: FC<{ setSearching: (searching: boolean) => void }> = (props) => {
       } else if (queryLength > 0 && queryLength < minLength) {
         // Perform normal search if query length is between 1 and minLength
         axios
-          .get(api + '/search', {
+          .get(getAPI(window) + '/search', {
             params: getParams(extras),
           })
           .then((retrieved) => {
@@ -437,7 +437,7 @@ const Form: FC<{ setSearching: (searching: boolean) => void }> = (props) => {
           onChange={handleSearchTerm}
         />
         <div
-          className="flex flex-row items-center justify-center flex-none w-6 h-6 transition duration-200 ease-in transform bg-white rounded-full shadow cursor-pointer hover:scale-110"
+          className="flex flex-row items-center justify-center flex-none w-6 h-6 transition duration-200 ease-in transform bg-white rounded-full cursor-pointer hover:scale-110"
           onClick={() => setShowCriteria(!showCriteria)}
           data-tip={
             showCriteria ? 'Hide search criteria' : 'Show search criteria'

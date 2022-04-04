@@ -18,10 +18,12 @@ import {
   updateInspectedVersion,
   updateSearchTime,
   updateSearchFilters,
+  updateInspectedCourse,
 } from '../../../../slices/searchSlice';
 import {
   Course,
   Plan,
+  ReviewMode,
   SemesterType,
   Year,
 } from '../../../../resources/commonTypes';
@@ -34,9 +36,14 @@ import {
   updateShowCourseInfo,
   updateShowingCart,
 } from '../../../../slices/popupSlice';
-import { api } from '../../../../resources/assets';
-import { ChevronDownIcon } from '@heroicons/react/outline';
+import { getAPI } from '../../../../resources/assets';
+import { ChevronDownIcon, XIcon } from '@heroicons/react/outline';
 import { QuestionMarkCircleIcon } from '@heroicons/react/solid';
+import {
+  selectCartInvokedBySemester,
+  selectReviewMode,
+} from '../../../../slices/userSlice';
+import clsx from 'clsx';
 
 /**
  * Displays a sis course when searching
@@ -62,6 +69,8 @@ const SisCourse: FC<{
   const showCourseInfo = useSelector(selectShowCourseInfo);
   const courseToShow = useSelector(selectCourseToShow);
   const currentCourses = useSelector(selectCurrentPlanCourses);
+  const reviewMode = useSelector(selectReviewMode);
+  const cartInvokedBySemester = useSelector(selectCartInvokedBySemester);
 
   const [versionIndex, updateVersionIndex] = useState<number>(0);
   const [ogSem, setOgSem] = useState<SemesterType | 'All'>('All');
@@ -149,9 +158,22 @@ const SisCourse: FC<{
    */
   const addPrereq = () => {
     dispatch(updateShowingCart(false));
+    dispatch(updateAddingPrereq(true));
+    cleanup();
+  };
+
+  const cleanup = () => {
     dispatch(updateCourseToShow(null));
     dispatch(updateShowCourseInfo(false));
-    dispatch(updateAddingPrereq(true));
+  };
+
+  /**
+   * Clears inspected course
+   */
+  const clearInspected = () => {
+    cleanup();
+    dispatch(updateInspectedVersion('None'));
+    dispatch(updateInspectedCourse('None'));
   };
 
   /**
@@ -159,7 +181,7 @@ const SisCourse: FC<{
    */
   const updateCourse = (): void => {
     if (courseToShow !== null) {
-      fetch(api + '/courses/' + courseToShow._id, {
+      fetch(getAPI(window) + '/courses/' + courseToShow._id, {
         method: 'DELETE',
         headers: {
           'Content-Type': 'application/json',
@@ -184,7 +206,7 @@ const SisCourse: FC<{
       const newYears: Year[] = [];
       allYears.forEach((y) => {
         const yCourses = y.courses.filter((course) => {
-          if (course === courseToShow._id) {
+          if (course._id === courseToShow._id) {
             return false;
           } else {
             return true;
@@ -217,7 +239,9 @@ const SisCourse: FC<{
 
   // Handles displaying the add prereq button
   const getAddPrereqButton = (): JSX.Element =>
-    searchStack.length !== 0 && showCourseInfo ? (
+    searchStack.length !== 0 &&
+    showCourseInfo &&
+    reviewMode !== ReviewMode.View ? (
       <button
         className="p-1 px-2 ml-auto -mt-1 text-xl text-white transition duration-200 ease-in transform rounded hover:bg-secondary bg-primary focus:outline-none hover:scale-105"
         onClick={addPrereq}
@@ -312,19 +336,30 @@ const SisCourse: FC<{
   const getAddCourseButton = (): JSX.Element =>
     !showCourseInfo ? (
       <button
-        className="w-auto h-10 p-2 mt-2 text-white transition duration-200 ease-in transform rounded hover:bg-secondary bg-primary focus:outline-none hover:scale-105"
+        className={clsx(
+          {
+            'bg-slate-300 hover:bg-slate-300':
+              cartInvokedBySemester && reviewMode === ReviewMode.View,
+          },
+          'w-auto h-10 p-2 mt-2 text-white transition duration-200 ease-in transform rounded hover:bg-secondary bg-primary focus:outline-none hover:scale-105',
+        )}
         onClick={() => {
           if (props.cart) {
             addPrereq();
           } else props.addCourse();
         }}
+        disabled={cartInvokedBySemester && reviewMode === ReviewMode.View}
       >
         Add Course
       </button>
     ) : (
       <button
-        className="w-auto h-10 p-2 mt-2 text-white transition duration-200 ease-in transform rounded hover:bg-secondary bg-primary focus:outline-none hover:scale-105"
+        className={clsx(
+          { 'bg-slate-300 hover:bg-slate-300': reviewMode === ReviewMode.View },
+          'w-auto h-10 p-2 mt-2 text-white transition duration-200 ease-in transform rounded hover:bg-secondary bg-primary focus:outline-none hover:scale-105',
+        )}
         onClick={updateCourse}
+        disabled={reviewMode === ReviewMode.View}
       >
         Update Course
       </button>
@@ -352,12 +387,18 @@ const SisCourse: FC<{
           <div className="w-full h-full px-5 pt-4 pb-5 overflow-y-auto text-base bg-white rounded-t select-text">
             <div className="flex flex-row w-full h-auto mb-1">
               {getPrevCourseButton()}
-              <h1 className="flex flex-row w-auto h-auto transition duration-200 ease-in transform hover:scale-105">
+              <h1 className="flex flex-row w-full h-auto transition duration-200 ease-in transform hover:scale-105">
                 <div className="w-full h-auto text-2xl font-bold">
                   {inspected.title}
                 </div>
               </h1>
               {getAddPrereqButton()}
+              <div
+                className="ml-auto w-10 h-10 cursor-pointer transform hover:scale-105"
+                onClick={clearInspected}
+              >
+                <XIcon />
+              </div>
             </div>
             <div className="flex flex-row items-center font-semibold">
               <div className="flex flex-row">

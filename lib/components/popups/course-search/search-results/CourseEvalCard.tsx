@@ -17,7 +17,7 @@ const CourseEvalCard: FC<{ rating: string; summary: string }> = (props) => {
   }, [props.rating, props.summary]);
 
   return (
-    <div className="w-full px-6 py-8 mb-2 rounded shadow tight:pt-0 h-52 tight:h-96 bg-gray-50">
+    <div className="w-full px-6 py-8 mb-2 rounded tight:pt-0 h-52 tight:h-96 bg-gray-50">
       <div className="flex flex-row w-full h-full tight:flex-col">
         <div className="flex flex-col items-center justify-center w-40 h-full p-4 mr-4">
           <h2 className="mb-2">Rating</h2>

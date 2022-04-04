@@ -27,7 +27,7 @@ import {
   selectPlanList,
   updatePlanList,
 } from '../../../../slices/userSlice';
-import { api } from '../../../../resources/assets';
+import { getAPI } from '../../../../resources/assets';
 import { DragDropContext, Droppable } from 'react-beautiful-dnd';
 import VYearDraggable from './VYearDraggable';
 
@@ -74,7 +74,9 @@ const VCourseList: FC = () => {
         setCurrentPlanId(currentPlan._id);
         year.courses.forEach(async (courseId: string) => {
           try {
-            const resp = await axios.get(api + '/courses/' + courseId);
+            const resp = await axios.get(
+              getAPI(window) + '/courses/' + courseId,
+            );
             const course: UserCourse = resp.data.data;
             yearCourses.push(course);
             totCourses.push(course);
@@ -250,7 +252,7 @@ const VCourseList: FC = () => {
       plan_id: currentPlan._id,
       year_ids: yearIdArr,
     };
-    fetch(api + '/years/changeOrder', {
+    fetch(getAPI(window) + '/years/changeOrder', {
       method: 'PATCH',
       headers: {
         'Content-Type': 'application/json',
@@ -303,7 +305,7 @@ const VCourseList: FC = () => {
 
     if (courseObj === undefined) return;
     try {
-      const resp = await axios.get(api + '/search', {
+      const resp = await axios.get(getAPI(window) + '/search', {
         params: { query: courseObj.number },
       });
       let retrievedCourses: SISRetrievedCourse[] = resp.data.data;
@@ -337,7 +339,7 @@ const VCourseList: FC = () => {
           newTerm: destination.semester,
         };
 
-        let res = await fetch(api + '/courses/dragged', {
+        let res = await fetch(getAPI(window) + '/courses/dragged', {
           method: 'PATCH',
           headers: {
             'Content-Type': 'application/json',

@@ -1,6 +1,6 @@
 import axios from 'axios';
 import { useEffect, useState } from 'react';
-import { api } from '../../../../resources/assets';
+import { getAPI } from '../../../../resources/assets';
 import ReviewersSearchResults from './ReviewerSearchResults';
 
 const ReviewersSearch = () => {
@@ -20,7 +20,7 @@ const ReviewersSearch = () => {
 
   const Search = (text: String) => {
     axios
-      .get(api + '/user', {
+      .get(getAPI(window) + '/user', {
         method: 'GET',
         headers: {
           'Content-Type': 'application/json',
@@ -30,6 +30,7 @@ const ReviewersSearch = () => {
         },
       })
       .then((users) => {
+        // TODO: This should return plan objects as well
         updateSearchData(users.data.data);
       });
   };
@@ -37,16 +38,16 @@ const ReviewersSearch = () => {
   return (
     <div className="flex flex-col pr-1 bg-gray-100 rounded-lg">
       <div className="ml-2 py-2">
-        <p className="text-gray-500">Add or remove advisors</p>
+        <p className="text-gray-500">Add or remove reviewers</p>
       </div>
       <input
         type="text"
         placeholder="jsmith1 or John Smith"
-        className="bg-gray-200 pl-8 py-1 ml-2 pr-8 mr-2 mb-3 rounded-md"
+        className="px-3 py-1 mx-2 mb-3 bg-gray-200 rounded-md"
         value={searchState}
         onChange={handleChange}
       ></input>
-      <ReviewersSearchResults Users={searchData} />
+      <ReviewersSearchResults users={searchData} />
     </div>
   );
 };

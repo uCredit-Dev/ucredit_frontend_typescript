@@ -1,32 +1,25 @@
 import { FC, useState } from 'react';
 import { useSelector } from 'react-redux';
 import Select from 'react-select';
-import { Major } from '../../../resources/commonTypes';
+import { Major, ReviewMode } from '../../../resources/commonTypes';
 import { selectTotalCredits } from '../../../slices/currentPlanSlice';
+import { selectReviewMode } from '../../../slices/userSlice';
 import CourseBar from './CourseBar';
-// import Reviewers from './Reviewers/Reviewers';
+import Reviewers from './Reviewers/Reviewers';
 
 /**
  * Area in the right hand plan information that shows various elements of degree progression.
  */
 const Distributions: FC<{
-  distributionOpen: boolean;
-  setDistributionOpen: (open: boolean) => void;
   major: Major | null;
   userMajors: string[];
   distributionBarsJSX: JSX.Element[];
   changeDisplayMajor: Function;
-}> = ({
-  distributionOpen,
-  setDistributionOpen,
-  major,
-  userMajors,
-  distributionBarsJSX,
-  changeDisplayMajor,
-}) => {
+}> = ({ major, userMajors, distributionBarsJSX, changeDisplayMajor }) => {
   // Component state setup.
   const totalCredits = useSelector(selectTotalCredits);
   const [disclaimer, setDisclaimer] = useState<boolean>(false);
+  const reviewMode = useSelector(selectReviewMode);
 
   const majorOptions = userMajors.map((m, index) => ({
     value: index,
@@ -38,24 +31,16 @@ const Distributions: FC<{
   };
 
   return (
-    <div className="z-50 flex-none p-6 w-96 h-auto bg-white rounded shadow">
+    <div className="z-50 flex-none p-6 w-96 h-auto bg-white rounded">
       <div className="flex flex-row mb-3 w-full">
-        <div className="self-start text-2xl font-medium">Main Plan</div>
+        <div className="self-start text-2xl font-medium">Degree Progress</div>
         {/* Degree Progress */}
         <button
-          className="ml-1 mt-1 w-24 h-6 text-center bg-red-100 rounded"
+          className="w-24 h-6 mt-1 ml-1 text-center bg-red-100 rounded"
           onClick={() => setDisclaimer(!disclaimer)}
         >
           Please read
         </button>
-        <div className="relative flex-grow">
-          <button
-            className="absolute bottom-1 right-0 underline focus:outline-none transform hover:scale-110 transition duration-200 ease-in"
-            onClick={() => setDistributionOpen(!distributionOpen)}
-          >
-            {distributionOpen ? 'Hide' : 'Show'}
-          </button>
-        </div>
       </div>
       {userMajors.length > 1 && (
         <Select
@@ -116,8 +101,7 @@ const Distributions: FC<{
       />{' '}
       {distributionBarsJSX}
       {/* M notes: distributionsBarsJSX is where the bars except total credits are created  */}
-      {/* Reviewers commented out while OOSE project is in progress*/}
-      {/* <Reviewers /> */}
+      {reviewMode !== ReviewMode.View && <Reviewers />}
     </div>
   );
 };

@@ -6,9 +6,8 @@ import { useDispatch, useSelector } from 'react-redux';
 import { toast } from 'react-toastify';
 import {
   getLoginCookieVal,
-  api,
+  getAPI,
   guestUser,
-  checkLocalhost,
 } from '../../lib/resources/assets';
 import {
   selectImportID,
@@ -36,26 +35,28 @@ const Login: React.FC = () => {
   const [session, setSession] = useState<string>('');
   const router = useRouter();
   const importID = useSelector(selectImportID);
-  const devIDs = ['freshmanDev', 'sophomoreDev', 'juniorDev', 'seniorDev'];
+  const devIDs = ['mockUser'];
 
   // Useffect runs once on page load, calling to https://ucredit-api.herokuapp.com/api/verifyLogin to retrieve user data.
   // On successful retrieve, update redux with retrieved user
   useEffect(() => {
-    setFinishedLoginCheck(false);
     const token = router.query.token && router.query.token[0];
     const loginId = token ? token : getLoginCookieVal(cookies);
-    if (loginId && !checkLocalhost()) handleDBLogin(loginId);
-    else if (loginId) handleJHULogin(loginId);
+    if (loginId && getAPI(window).includes('ucredit.me')) {
+      setFinishedLoginCheck(false);
+      handleDBLogin(loginId);
+    } else if (loginId) handleJHULogin(loginId);
     else dispatch(updateLoginCheck(true));
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [router.query.token]);
 
   const redirectToReferrer = () => {
     const referrer = router.query.referrer as string;
-    console.log(referrer);
     if (referrer) {
-      const [pathname, id] = referrer.split('-');
-      router.push(`/${pathname}/${id}`);
+      if (referrer.includes('-')) {
+        const [pathname, id] = referrer.split('-');
+        router.push(`/${pathname}/${id}`);
+      } else router.push(`/${referrer}`);
     } else router.push('/dashboard');
   };
 
@@ -108,7 +109,8 @@ const Login: React.FC = () => {
    * Handles JHU Login button being pressed.
    */
   const handleJHULogin = (loginId: any) => {
-    if (!checkLocalhost()) window.location.href = api + '/login';
+    const api: String = getAPI(window);
+    if (api.includes('ucredit.me')) window.location.href = api + '/login';
     else if (loginId.length === 20) handleDBLogin(loginId);
     else if (typeof loginId === 'string') handleDevLogin(loginId)();
     else setOpenDevChoose(true);
@@ -120,7 +122,7 @@ const Login: React.FC = () => {
    */
   const handleDevLogin = (id: string) => (): void => {
     axios
-      .get(api + '/backdoor/verification/' + id)
+      .get(getAPI(window) + '/backdoor/verification/' + id)
       .then((res) => {
         const devUser: User = res.data.data;
         dispatch(updateUser(devUser));
@@ -172,7 +174,7 @@ const Login: React.FC = () => {
       {loginCheck ? (
         <>
           {openDevChoose && (
-            <div className="flex flex-col absolute left-[35%] top-[35%] z-[80] w-[30%] pb-8 bg-gray-100 text-black rounded shadow">
+            <div className="flex flex-col absolute left-[35%] top-[35%] z-[80] w-[30%] pb-8 bg-gray-100 text-black rounded">
               <div
                 className="mt-2 mr-4 text-2xl font-bold text-right cursor-pointer"
                 onClick={() => setOpenDevChoose(false)}
@@ -190,7 +192,7 @@ const Login: React.FC = () => {
                 </button>
               ))}
               <input
-                placeholder="Enter your session ID cookie here"
+                placeholder="Enter a custom ID here"
                 className="p-1 mx-auto rounded w-80"
                 onChange={onSessionChange}
                 value={session}
@@ -199,7 +201,7 @@ const Login: React.FC = () => {
                 className="mx-auto mb-2 text-center rounded bg-primary w-80"
                 onClick={submitSession}
               >
-                Submit Custom Session
+                Login as custom user
               </button>
             </div>
           )}
@@ -216,7 +218,7 @@ const Login: React.FC = () => {
             }}
           ></div>
           <div className="absolute z-50 flex w-full h-full">
-            <div className="flex flex-col mx-auto my-auto text-lg font-bold text-white rounded shadow p-14 bg-primary">
+            <div className="flex flex-col mx-auto my-auto text-lg font-bold text-white rounded p-14 bg-primary">
               <div className="flex flex-row items-center justify-center w-full pr-2 mt-auto text-3xl">
                 <img
                   src="/img/logo-darker.png"
@@ -230,12 +232,12 @@ const Login: React.FC = () => {
               </div>
               <button
                 onClick={handleJHULogin}
-                className="flex flex-row items-center justify-center w-64 h-12 mx-auto font-semibold tracking-widest transition duration-200 ease-in transform rounded-full shadow cursor-pointer select-none bg-secondary hover:scale-105"
+                className="flex flex-row items-center justify-center w-64 h-12 mx-auto font-semibold tracking-widest transition duration-200 ease-in transform rounded-full cursor-pointer select-none bg-secondary hover:scale-105"
               >
                 JHU Login
               </button>
               <button
-                className="flex flex-row items-center justify-center w-64 h-12 mx-auto mt-5 mb-auto font-semibold tracking-widest transition duration-200 ease-in transform rounded-full shadow cursor-pointer select-none bg-secondary focus:outline-none hover:scale-105"
+                className="flex flex-row items-center justify-center w-64 h-12 mx-auto mt-5 mb-auto font-semibold tracking-widest transition duration-200 ease-in transform rounded-full cursor-pointer select-none bg-secondary focus:outline-none hover:scale-105"
                 onClick={
                   finishedLoginCheck ? handleGuest : preventPreLoginClick
                 }

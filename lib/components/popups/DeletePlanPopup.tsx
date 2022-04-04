@@ -8,7 +8,7 @@ import {
 import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import { selectPlan, updateSelectedPlan } from '../../slices/currentPlanSlice';
-import { api } from '../../resources/assets';
+import { getAPI } from '../../resources/assets';
 import { updateDeletePlanStatus } from '../../slices/popupSlice';
 
 /**
@@ -30,7 +30,7 @@ const DeletePlanPopup: FC = () => {
     // update plan array
     // If plan list has more than one plan, delete. Otherwise, don't.
     if (planList.length > 1 && user._id !== 'noUser') {
-      fetch(api + '/plans/' + currentPlan._id, {
+      fetch(getAPI(window) + '/plans/' + currentPlan._id, {
         method: 'DELETE',
       })
         .then(() => {
@@ -63,7 +63,7 @@ const DeletePlanPopup: FC = () => {
         {/* Actual popup */}
         <div
           className={
-            'z-40 fixed flex flex-col bg-red-500 select-none rounded w-3/12 top-1/3 left-1/2 transform -translate-x-1/2 -translate-y-1/3 min-w-planAdd shadow'
+            'z-40 fixed flex flex-col bg-red-500 select-none rounded w-3/12 top-1/3 left-1/2 transform -translate-x-1/2 -translate-y-1/3 min-w-planAdd'
           }
         >
           <div className="px-4 py-2 text-white text-coursecard font-semibold select-none">
@@ -82,13 +82,13 @@ const DeletePlanPopup: FC = () => {
                 </b>
                 <div className="flex flex-row justify-center mb-4 mt-8 w-full">
                   <button
-                    className="m-1 p-1 w-1/6 text-white bg-red-500 rounded focus:outline-none shadow transform hover:scale-110 transition duration-200 ease-in"
+                    className="m-1 p-1 w-1/6 text-white bg-red-500 rounded focus:outline-none transform hover:scale-110 transition duration-200 ease-in"
                     onClick={deleteCurrentPlan}
                   >
                     <b>Yes</b>
                   </button>
                   <button
-                    className="m-1 ml-20 p-1 w-1/6 text-white bg-secondary rounded focus:outline-none shadow transform hover:scale-110 transition duration-200 ease-in"
+                    className="m-1 ml-20 p-1 w-1/6 text-white bg-secondary rounded focus:outline-none transform hover:scale-110 transition duration-200 ease-in"
                     onClick={cancel}
                   >
                     <b>No</b>
