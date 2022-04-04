@@ -18,14 +18,23 @@ import { getCourse } from '../../../resources/assets';
  */
 const FineDistribution: FC<{
   dis: requirements;
-  distributionOpen: boolean;
-  hidden: boolean;
-}> = ({ dis, distributionOpen, hidden }) => {
+  openSignal: boolean;
+}> = ({ dis, openSignal }) => {
   const [showDistrDesc, setShowDistrDesc] = useState<boolean>(true);
   const [plannedCredits, setPlannedCredits] = useState(dis.fulfilled_credits);
+  const [firstRender, setFirstRender] = useState(true);
 
   const courseCache = useSelector(selectCourseCache);
   const currPlanCourses = useSelector(selectCurrentPlanCourses);
+
+  useEffect(() => {
+    if (firstRender) {
+      setFirstRender(false);
+    } else {
+      setShowDistrDesc(false);
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [openSignal]);
 
   // Updates fine distribution progress
   useEffect(() => {
@@ -49,12 +58,7 @@ const FineDistribution: FC<{
   }, [currPlanCourses, dis.expr, dis.fulfilled_credits]);
 
   return (
-    <div
-      key={dis.name}
-      className={clsx('flex justify-between w-full', {
-        hidden: !distributionOpen || hidden,
-      })}
-    >
+    <div key={dis.name} className={clsx('flex justify-between w-full')}>
       <button
         onClick={() => setShowDistrDesc(!showDistrDesc)}
         className="flex w-full h-auto pr-2 mb-1 overflow-hidden text-left transition duration-200 ease-in transform focus:outline-none hover:scale-101 overflow-ellipsis"

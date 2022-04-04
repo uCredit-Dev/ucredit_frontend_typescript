@@ -221,7 +221,7 @@ const Cart: FC<{ allCourses: SISRetrievedCourse[] }> = (props) => {
       {/* Search area */}
       <div
         className={
-          'fixed flex flex-col bg-primary shadow select-none rounded z-40 w-9/12 tight:overflow-y-none h-5/6 top-1/3 left-1/2 transform -translate-x-1/2 -translate-y-1/3 tight:h-auto'
+          'fixed flex flex-col bg-primary select-none rounded z-40 w-9/12 tight:overflow-y-none h-5/6 top-1/3 left-1/2 transform -translate-x-1/2 -translate-y-1/3 tight:h-auto'
         }
         style={{ opacity: searchOpacity === 100 ? 1 : 0.1 }}
       >

@@ -200,8 +200,8 @@ const CourseDisplayPopup: FC = () => {
       ></div>
 
       {/* Actual popup */}
-      <div className="fixed z-40 flex flex-col transform -translate-x-1/2 translate-y-12 rounded shadow select-none left-1/2 min-w-planAdd h-3/4 bg-primary">
-        <div className="px-4 py-2 font-semibold text-white select-none text-coursecard">
+      <div className="fixed z-40 left-1/2 flex flex-col min-w-planAdd h-3/4 bg-primary rounded select-none transform -translate-x-1/2 translate-y-12">
+        <div className="px-4 py-2 text-white text-coursecard font-semibold select-none">
           Inspecting{' '}
           {courseToShow === null ? 'Invalid course' : courseToShow.title}
         </div>

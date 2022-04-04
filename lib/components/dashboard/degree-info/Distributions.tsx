@@ -11,20 +11,11 @@ import Reviewers from './Reviewers/Reviewers';
  * Area in the right hand plan information that shows various elements of degree progression.
  */
 const Distributions: FC<{
-  distributionOpen: boolean;
-  setDistributionOpen: (open: boolean) => void;
   major: Major | null;
   userMajors: string[];
   distributionBarsJSX: JSX.Element[];
   changeDisplayMajor: Function;
-}> = ({
-  distributionOpen,
-  setDistributionOpen,
-  major,
-  userMajors,
-  distributionBarsJSX,
-  changeDisplayMajor,
-}) => {
+}> = ({ major, userMajors, distributionBarsJSX, changeDisplayMajor }) => {
   // Component state setup.
   const totalCredits = useSelector(selectTotalCredits);
   const [disclaimer, setDisclaimer] = useState<boolean>(false);
@@ -40,9 +31,9 @@ const Distributions: FC<{
   };
 
   return (
-    <div className="z-50 flex-none h-auto p-6 bg-white rounded shadow w-96">
-      <div className="flex flex-row w-full mb-3">
-        <div className="self-start text-2xl font-medium">Main Plan</div>
+    <div className="z-50 flex-none p-6 w-96 h-auto bg-white rounded">
+      <div className="flex flex-row mb-3 w-full">
+        <div className="self-start text-2xl font-medium">Degree Progress</div>
         {/* Degree Progress */}
         <button
           className="w-24 h-6 mt-1 ml-1 text-center bg-red-100 rounded"
@@ -50,14 +41,6 @@ const Distributions: FC<{
         >
           Please read
         </button>
-        <div className="relative flex-grow">
-          <button
-            className="absolute right-0 underline transition duration-200 ease-in transform bottom-1 focus:outline-none hover:scale-110"
-            onClick={() => setDistributionOpen(!distributionOpen)}
-          >
-            {distributionOpen ? 'Hide' : 'Show'}
-          </button>
-        </div>
       </div>
       {userMajors.length > 1 && (
         <Select
