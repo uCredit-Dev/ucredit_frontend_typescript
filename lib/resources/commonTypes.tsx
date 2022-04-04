@@ -239,6 +239,7 @@ export enum DashboardMode {
 
 export interface StatusPlan extends Plan {
   status: ReviewRequestStatus;
+  review_id: string;
 }
 
 export interface RevieweePlans {

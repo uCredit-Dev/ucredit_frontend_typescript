@@ -22,6 +22,7 @@ const Reviewer: React.FC = () => {
   const user = useSelector(selectUser);
   const [filtered, setFiltered] = useState<RevieweePlans[]>([]);
   const [foundPlan, setFoundPlan] = useState(false);
+  const [refreshReviews, setRefreshReviews] = useState(false);
 
   useEffect(() => {
     const { _id } = user;
@@ -39,9 +40,13 @@ const Reviewer: React.FC = () => {
     (async () => {
       const plansByUser = new Map();
       const reviews = (await userService.getReviewerPlans(user._id)).data;
-      for (const { plan_id, reviewee_id, status } of reviews) {
+      for (const { _id, plan_id, reviewee_id, status } of reviews) {
         if (status === ReviewRequestStatus.Pending) continue;
-        const plan = { ...(await userService.getPlan(plan_id)).data, status };
+        const plan = {
+          ...(await userService.getPlan(plan_id)).data,
+          status,
+          review_id: _id,
+        };
         const reviewee = (await userService.getUser(reviewee_id._id)).data[0];
         const revieweeString = JSON.stringify(reviewee);
         const plans = plansByUser.get(revieweeString) || [];
@@ -53,9 +58,10 @@ const Reviewer: React.FC = () => {
       }
       setFiltered(revieweePlansArr);
       setFoundPlan(revieweePlansArr.length > 0);
+      setRefreshReviews(false);
     })();
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [user]);
+  }, [user, refreshReviews]);
 
   return (
     <div>
@@ -76,6 +82,7 @@ const Reviewer: React.FC = () => {
             plans={tuple.plans}
             reviewee={tuple.reviewee}
             expanded={index === 0}
+            setRefreshReviews={setRefreshReviews}
           />
         ))}
       </div>

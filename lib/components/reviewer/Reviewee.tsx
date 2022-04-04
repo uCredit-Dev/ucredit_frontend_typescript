@@ -1,12 +1,8 @@
-import { useEffect, useState } from 'react';
+import { Dispatch, SetStateAction, useEffect, useState } from 'react';
 import clsx from 'clsx';
-import {
-  CheckIcon,
-  EyeIcon,
-  PencilAltIcon,
-  XIcon,
-} from '@heroicons/react/outline';
+import { EyeIcon, PencilAltIcon } from '@heroicons/react/outline';
 import { useRouter } from 'next/router';
+import { toast } from 'react-toastify';
 import {
   Plan,
   ReviewRequestStatus,
@@ -17,15 +13,22 @@ import { Hoverable } from '../utils';
 import { TooltipPrimary } from '../utils/TooltipPrimary';
 import { statusReadable } from '../../../pages/reviewer';
 import Dropdown from './Dropdown';
+import { userService } from '../../services';
 
 interface Props {
   userId: string;
   plans: StatusPlan[];
   reviewee: User;
   expanded?: boolean;
+  setRefreshReviews: Dispatch<SetStateAction<boolean>>;
 }
 
-const Reviewee: React.FC<Props> = ({ plans, reviewee, expanded = false }) => {
+const Reviewee: React.FC<Props> = ({
+  plans,
+  reviewee,
+  expanded = false,
+  setRefreshReviews,
+}) => {
   const [showPlans, setShowPlans] = useState(expanded);
   const [majors, setMajors] = useState<string[]>([]);
   const router = useRouter();
@@ -69,7 +72,7 @@ const Reviewee: React.FC<Props> = ({ plans, reviewee, expanded = false }) => {
         {showPlans && (
           <div className="divide-y">
             {plans.map((p) => {
-              const { _id, name, status } = p;
+              const { _id, name, status, review_id } = p;
               return (
                 <div
                   key={_id}
@@ -107,16 +110,56 @@ const Reviewee: React.FC<Props> = ({ plans, reviewee, expanded = false }) => {
                   </div>
                   <div className="flex items-center gap-x-1">
                     <Dropdown
+                      width={130}
                       options={[
                         {
                           label: 'Under Review',
-                          cb: () => console.log('under review'),
+                          content: <p className="text-sky-400">Under Review</p>,
+                          cb: async () => {
+                            if (status === ReviewRequestStatus.UnderReview)
+                              return;
+                            try {
+                              await userService.changeReviewStatus(
+                                review_id,
+                                'UNDERREVIEW',
+                              );
+                              setRefreshReviews(true);
+                              toast.success('Status changed to Under Review');
+                            } catch (e) {}
+                          },
                         },
                         {
                           label: 'Approved',
-                          cb: () => console.log('approved'),
+                          content: <p className="text-emerald-400">Approved</p>,
+                          cb: async () => {
+                            if (status === ReviewRequestStatus.Approved) return;
+                            try {
+                              await userService.changeReviewStatus(
+                                review_id,
+                                'APPROVED',
+                              );
+                              setRefreshReviews(true);
+                              toast.success('Status changed to Approved');
+                            } catch (e) {}
+                          },
+                        },
+                        {
+                          label: 'Rejected',
+                          content: <p className="text-red-400">Rejected</p>,
+                          cb: async () => {
+                            if (status === ReviewRequestStatus.Rejected) return;
+                            try {
+                              await userService.changeReviewStatus(
+                                review_id,
+                                'REJECTED',
+                              );
+                              setRefreshReviews(true);
+                              toast.success('Status changed to Rejected');
+                            } catch (e) {}
+                          },
                         },
                       ]}
+                      _default={statusReadable[status]}
                     />
                     <Hoverable
                       as={
