@@ -62,7 +62,6 @@ const ReviewersSearchResults: FC<{
   };
 
   const getElements = (data: User[]) => {
-    console.log(data);
     return data.map((element) => {
       return (
         <div

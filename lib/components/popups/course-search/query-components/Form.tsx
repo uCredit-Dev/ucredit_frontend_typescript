@@ -126,7 +126,7 @@ const Form: FC<{ setSearching: (searching: boolean) => void }> = (props) => {
       dispatch(
         updateSearchFilters({ filter: 'year', value: date.getFullYear() + 1 }),
       );
-    else if (semester === 'Fall' && date.getMonth() < 5) {
+    else if (semester === 'Fall' && date.getMonth() < 3) {
       dispatch(
         updateSearchFilters({ filter: 'year', value: date.getFullYear() - 1 }),
       );
