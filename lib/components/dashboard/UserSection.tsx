@@ -57,7 +57,7 @@ const UserSection: React.FC<Props> = ({ mode }) => {
                 mode === DashboardMode.Advising ? '/dashboard' : '/reviewer',
               )
             }
-            className="flex flex-row items-center justify-center w-24 transition duration-200 ease-in transform bg-white border border-gray-200 rounded cursor-pointer select-none hover:shadow-md h-9 focus:outline-none"
+            className="flex flex-row items-center justify-center w-24 mr-3 transition duration-200 ease-in transform bg-white border border-gray-200 rounded cursor-pointer select-none hover:shadow-md h-9 focus:outline-none"
           >
             {mode}
           </button>
@@ -77,7 +77,7 @@ const UserSection: React.FC<Props> = ({ mode }) => {
         ) : (
           <button
             onClick={handleLogoutClick}
-            className="flex flex-row items-center justify-center w-24 bg-white rounded hover:bg-red-100 transition duration-200 ease-in transform cursor-pointer select-none h-9 focus:outline-none"
+            className="flex flex-row items-center justify-center w-24 transition duration-200 ease-in transform bg-white rounded cursor-pointer select-none hover:bg-red-100 h-9 focus:outline-none"
           >
             Log Out
           </button>

@@ -1,6 +1,11 @@
 import { useEffect, useState } from 'react';
 import clsx from 'clsx';
-import { EyeIcon, PencilAltIcon } from '@heroicons/react/outline';
+import {
+  CheckIcon,
+  EyeIcon,
+  PencilAltIcon,
+  XIcon,
+} from '@heroicons/react/outline';
 import { useRouter } from 'next/router';
 import {
   Plan,
@@ -11,6 +16,7 @@ import {
 import { Hoverable } from '../utils';
 import { TooltipPrimary } from '../utils/TooltipPrimary';
 import { statusReadable } from '../../../pages/reviewer';
+import Dropdown from './Dropdown';
 
 interface Props {
   userId: string;
@@ -99,7 +105,19 @@ const Reviewee: React.FC<Props> = ({ plans, reviewee, expanded = false }) => {
                     )}
                     <p>{name}</p>
                   </div>
-                  <div className="items-center hidden gap-x-1 group-hover:flex">
+                  <div className="flex items-center gap-x-1">
+                    <Dropdown
+                      options={[
+                        {
+                          label: 'Under Review',
+                          cb: () => console.log('under review'),
+                        },
+                        {
+                          label: 'Approved',
+                          cb: () => console.log('approved'),
+                        },
+                      ]}
+                    />
                     <Hoverable
                       as={
                         <div

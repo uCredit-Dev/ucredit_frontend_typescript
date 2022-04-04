@@ -164,7 +164,7 @@ const Search: React.FC<{
                 </div>
               ))}
             </div>
-            <div className="flex flex-col items-start grow">
+            <div className="flex flex-col items-start gap-1 grow">
               <div className="font-semibold">Filter By</div>
               <div className="flex flex-wrap gap-1">
                 {statusFilter.map((status) => (
