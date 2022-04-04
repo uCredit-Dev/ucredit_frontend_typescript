@@ -18,6 +18,7 @@ import {
   updateInspectedVersion,
   updateSearchTime,
   updateSearchFilters,
+  updateInspectedCourse,
 } from '../../../../slices/searchSlice';
 import {
   Course,
@@ -36,7 +37,7 @@ import {
   updateShowingCart,
 } from '../../../../slices/popupSlice';
 import { getAPI } from '../../../../resources/assets';
-import { ChevronDownIcon } from '@heroicons/react/outline';
+import { ChevronDownIcon, XIcon } from '@heroicons/react/outline';
 import { QuestionMarkCircleIcon } from '@heroicons/react/solid';
 import {
   selectCartInvokedBySemester,
@@ -157,9 +158,22 @@ const SisCourse: FC<{
    */
   const addPrereq = () => {
     dispatch(updateShowingCart(false));
+    dispatch(updateAddingPrereq(true));
+    cleanup();
+  };
+
+  const cleanup = () => {
     dispatch(updateCourseToShow(null));
     dispatch(updateShowCourseInfo(false));
-    dispatch(updateAddingPrereq(true));
+  };
+
+  /**
+   * Clears inspected course
+   */
+  const clearInspected = () => {
+    cleanup();
+    dispatch(updateInspectedVersion('None'));
+    dispatch(updateInspectedCourse('None'));
   };
 
   /**
@@ -373,12 +387,18 @@ const SisCourse: FC<{
           <div className="w-full h-full px-5 pt-4 pb-5 overflow-y-auto text-base bg-white rounded-t select-text">
             <div className="flex flex-row w-full h-auto mb-1">
               {getPrevCourseButton()}
-              <h1 className="flex flex-row w-auto h-auto transition duration-200 ease-in transform hover:scale-105">
+              <h1 className="flex flex-row w-full h-auto transition duration-200 ease-in transform hover:scale-105">
                 <div className="w-full h-auto text-2xl font-bold">
                   {inspected.title}
                 </div>
               </h1>
               {getAddPrereqButton()}
+              <div
+                className="ml-auto w-10 h-10 cursor-pointer transform hover:scale-105"
+                onClick={clearInspected}
+              >
+                <XIcon />
+              </div>
             </div>
             <div className="flex flex-row items-center font-semibold">
               <div className="flex flex-row">

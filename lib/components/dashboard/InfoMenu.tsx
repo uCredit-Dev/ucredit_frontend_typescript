@@ -1,6 +1,5 @@
 import { FC, useEffect, useState } from 'react';
 import Distributions from './degree-info/Distributions';
-import clsx from 'clsx';
 import FineDistribution from './degree-info/FineDistribution';
 import CourseBar from './degree-info/CourseBar';
 import {
@@ -43,10 +42,9 @@ const InfoMenu: FC<Props> = ({ plan, mode }) => {
   const currPlanCourses = useSelector(selectCurrentPlanCourses);
 
   const [infoOpen, setInfoOpen] = useState(false);
-  const [showDistributions] = useState<boolean[]>(
+  const [showDistributions, setShowDistributions] = useState<boolean[]>(
     new Array(distributions.length),
   );
-  const [distributionOpen, setDistributionOpen] = useState<boolean>(true);
   const [calculated, setCalculated] = useState<boolean>(false);
   const [major, setMajor] = useState<Major | null>(null);
   const [distributionBarsJSX, setDistributionBarsJSX] = useState<JSX.Element[]>(
@@ -144,16 +142,24 @@ const InfoMenu: FC<Props> = ({ plan, mode }) => {
               if (index === 0) {
                 return (
                   //helper function
-                  <div
-                    key={dis.name + index + dis.expr}
-                    className={clsx({ hidden: !distributionOpen })}
-                  >
+                  <div key={dis.name + index + dis.expr}>
                     <CourseBar
                       distribution={dis}
                       general={true}
                       bgcolor={'skyblue'}
                       completed={completed}
                     />
+                    {pair[1].length > 2 && (
+                      <button
+                        className=""
+                        onClick={() => {
+                          showDistributions[i] = !showDistributions[i];
+                          setShowDistributions([...showDistributions]);
+                        }}
+                      >
+                        Collapse all
+                      </button>
+                    )}
                   </div>
                 );
               } else {
@@ -161,8 +167,7 @@ const InfoMenu: FC<Props> = ({ plan, mode }) => {
                   <div key={dis.name + index + dis.expr}>
                     <FineDistribution
                       dis={dis}
-                      distributionOpen={distributionOpen}
-                      hidden={showDistributions[i] !== true}
+                      openSignal={showDistributions[i]}
                     />
                   </div>
                 );
@@ -187,7 +192,7 @@ const InfoMenu: FC<Props> = ({ plan, mode }) => {
     );
     setDistributionBarsJSX(distributionJSX);
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [distributions, distributionOpen, showDistributions]);
+  }, [distributions, showDistributions]);
 
   /**
    * args: an array containing focus areas and their associated requirements, and all courses
@@ -338,7 +343,7 @@ const InfoMenu: FC<Props> = ({ plan, mode }) => {
       {windowWidth <= 2200 && (
         <div className="my-auto transform -rotate-90">
           <button
-            className="w-32 h-10 font-bold text-center text-white transition duration-200 ease-in rounded shadow hover:bg-secondary bg-primary focus:outline-none hover:scale-105 drop-shadow-xl"
+            className="w-32 h-10 text-center text-white font-bold hover:bg-secondary bg-primary rounded focus:outline-none transition duration-200 ease-in transform"
             onClick={() => {
               setInfoOpen(!infoOpen);
             }}
@@ -348,7 +353,7 @@ const InfoMenu: FC<Props> = ({ plan, mode }) => {
         </div>
       )}
       {(infoOpen || windowWidth > 2200) && (
-        <div className="absolute z-50 right-14 -top-48 max-h-[75vh] bg-white bg-opacity-90 rounded shadow overflow-y-auto">
+        <div className="drop-shadow-lg absolute z-50 right-14 -top-48 max-h-[75vh] bg-white bg-opacity-90 rounded overflow-y-auto">
           {/* <InfoCards /> */}
           {(() => {
             if (calculated) {
@@ -357,8 +362,6 @@ const InfoMenu: FC<Props> = ({ plan, mode }) => {
                   major={major}
                   userMajors={currentPlan.majors}
                   changeDisplayMajor={changeDisplayMajor}
-                  distributionOpen={distributionOpen}
-                  setDistributionOpen={setDistributionOpen}
                   distributionBarsJSX={distributionBarsJSX}
                 />
               );

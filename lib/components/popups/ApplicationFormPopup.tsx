@@ -57,14 +57,14 @@ const ApplicationFormPopup: FC<{
       {/* Actual popup */}
       <div
         className={
-          'shadow bg-primary z-40 fixed flex flex-col select-none rounded w-1/2 top-1/3 left-1/2 transform -translate-x-1/2 -translate-y-1/3 min-w-planAdd shadow'
+          'bg-primary z-40 fixed flex flex-col select-none rounded w-1/2 top-1/3 left-1/2 transform -translate-x-1/2 -translate-y-1/3 min-w-planAdd'
         }
       >
         <div className="px-4 py-2 text-white text-coursecard font-semibold select-none">
           uCredit Application Form
         </div>
         <div className="w-full h-full text-coursecard">
-          <div className="py-4 w-full h-auto bg-gray-200 rounded">
+          <div className="py-4 w-full h-auto bg-white rounded">
             <div className="flex flex-col items-center justify-center mb-4">
               <b className="flex flex-row mb-8 mt-4 text-center font-semibold">
                 Please fill out the required information below.
@@ -73,7 +73,7 @@ const ApplicationFormPopup: FC<{
                 <div className="flex flex-row my-2">
                   <div className="flex-grow mr-1">Name: </div>
                   <input
-                    className="p-1 rounded"
+                    className="p-1 rounded bg-gray-200"
                     value={fromName}
                     onChange={(event) => setFromName(event.target.value)}
                   />
@@ -81,7 +81,7 @@ const ApplicationFormPopup: FC<{
                 <div className="flex flex-row my-2">
                   <div className="flex-grow mr-1">Email: </div>
                   <input
-                    className="p-1 rounded"
+                    className="p-1 rounded bg-gray-200"
                     value={fromEmail}
                     onChange={(event) => setFromEmail(event.target.value)}
                   />
@@ -89,7 +89,7 @@ const ApplicationFormPopup: FC<{
                 <div className="flex flex-row my-2">
                   <div className="flex-grow mr-1">Year: </div>
                   <input
-                    className="p-1 rounded"
+                    className="p-1 rounded bg-gray-200"
                     value={year}
                     onChange={(event) => setYear(event.target.value)}
                   />
@@ -97,7 +97,7 @@ const ApplicationFormPopup: FC<{
                 <div className="flex flex-row my-2">
                   <div className="flex-grow mr-1">Position: </div>
                   <select
-                    className="rounded"
+                    className="rounded bg-gray-200"
                     value={position}
                     onChange={(event) => {
                       setPosition(event.target.value);
@@ -111,7 +111,7 @@ const ApplicationFormPopup: FC<{
                 <div className="flex flex-row my-2">
                   <div className="flex-grow mr-1">Self Pitch: </div>
                   <textarea
-                    className="p-1 w-60 rounded"
+                    className="p-1 w-60 rounded bg-gray-200"
                     value={selfPitch}
                     onChange={(event) => setSelfPitch(event.target.value)}
                   />
@@ -119,7 +119,7 @@ const ApplicationFormPopup: FC<{
                 <div className="flex flex-row my-2">
                   <div className="flex-grow mr-1">Reason to join: </div>
                   <textarea
-                    className="p-1 w-60 rounded"
+                    className="p-1 w-60 rounded bg-gray-200"
                     value={reason}
                     onChange={(event) => setReason(event.target.value)}
                   />
@@ -127,7 +127,7 @@ const ApplicationFormPopup: FC<{
                 <div className="flex flex-row my-2">
                   <div className="flex-grow mr-1">Resume Link: </div>
                   <input
-                    className="p-1 rounded"
+                    className="p-1 rounded bg-gray-200"
                     value={resume}
                     onChange={(event) => setResume(event.target.value)}
                   />

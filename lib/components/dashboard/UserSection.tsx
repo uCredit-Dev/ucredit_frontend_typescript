@@ -42,8 +42,8 @@ const UserSection: React.FC<Props> = ({ mode }) => {
   };
 
   return (
-    <div className="fixed z-20 w-screen h-16 p-3 px-6 shadow select-none bg-primary">
-      <div className="flex flex-row items-center justify-between w-full h-full">
+    <div className="fixed z-20 w-screen h-16 p-3 px-6 select-none bg-primary">
+      <div className="flex flex-row items-center justify-end w-full h-full">
         {/* <div className="flex flex-row items-center justify-center mr-3 bg-white rounded-full w-11 h-11"> */}
         {/* <UserSvg className="w-6 h-6 stroke-2" /> */}
         {/* </div> */}
@@ -62,30 +62,28 @@ const UserSection: React.FC<Props> = ({ mode }) => {
           >
             {mode}
           </button>
-          {typeof window !== 'undefined' && window.innerWidth > 800 && (
-            <div className="flex items-center font-semibold text-white">
-              Logged in as {user.name}!
-            </div>
-          )}
-
-          <Notification />
-
-          {user._id === 'guestUser' ? (
-            <a
-              href="https://ucredit-api.herokuapp.com/api/login"
-              className="flex flex-row items-center justify-center w-24 transition duration-200 ease-in transform bg-white border border-gray-200 rounded cursor-pointer select-none hover:shadow-md h-9 focus:outline-none"
-            >
-              Log In
-            </a>
-          ) : (
-            <button
-              onClick={handleLogoutClick}
-              className="flex flex-row items-center justify-center w-24 transition duration-200 ease-in transform bg-white border border-gray-200 rounded cursor-pointer select-none hover:shadow-md h-9 focus:outline-none"
-            >
-              Log Out
-            </button>
-          )}
         </div>
+        {typeof window !== 'undefined' && window.innerWidth > 600 && (
+          <div className="mr-3 font-semibold text-white">
+            Logged in as {user.name}!
+          </div>
+        )}
+        <Notification />
+        {user._id === 'guestUser' ? (
+          <a
+            href="https://ucredit-api.herokuapp.com/api/login"
+            className="flex flex-row items-center justify-center w-24 mr-3 transition duration-200 ease-in transform bg-white rounded cursor-pointer select-none h-9 hover:text-white hover:bg-secondary hover:scale-105"
+          >
+            Log In
+          </a>
+        ) : (
+          <button
+            onClick={handleLogoutClick}
+            className="flex flex-row items-center justify-center w-24 bg-white rounded hover:bg-red-100 transition duration-200 ease-in transform cursor-pointer select-none h-9 focus:outline-none"
+          >
+            Log Out
+          </button>
+        )}
       </div>
     </div>
   );
