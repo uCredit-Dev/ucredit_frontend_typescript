@@ -36,7 +36,7 @@ const UserSection: React.FC = () => {
   };
 
   return (
-    <div className="fixed z-20 w-screen h-16 p-3 px-6 shadow select-none bg-primary">
+    <div className="fixed z-20 w-screen h-16 p-3 px-6 select-none bg-primary">
       <div className="flex flex-row items-center justify-end w-full h-full">
         {/* <div className="flex flex-row items-center justify-center mr-3 bg-white rounded-full w-11 h-11"> */}
         {/* <UserSvg className="w-6 h-6 stroke-2" /> */}
@@ -60,7 +60,7 @@ const UserSection: React.FC = () => {
         ) : (
           <button
             onClick={handleLogoutClick}
-            className="flex flex-row items-center justify-center w-24 transition duration-200 ease-in transform bg-white rounded cursor-pointer select-none h-9 focus:outline-none hover:scale-110 drop-shadow-md"
+            className="flex flex-row items-center justify-center w-24 bg-white rounded hover:bg-red-100 transition duration-200 ease-in transform cursor-pointer select-none h-9 focus:outline-none"
           >
             Log Out
           </button>

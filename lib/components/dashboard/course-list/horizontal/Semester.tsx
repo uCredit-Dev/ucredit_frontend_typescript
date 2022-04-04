@@ -400,7 +400,7 @@ const Semester: FC<{
   const getAPInfoBox = (): JSX.Element => (
     <>
       {openAPInfoBox && (
-        <div className="absolute p-2 -mt-48 -ml-6 bg-gray-100 rounded shadow select-text w-72">
+        <div className="absolute p-2 -mt-12 -ml-6 bg-gray-100 rounded select-text w-72">
           These are courses transferred over from AP tests and other college
           courses that you've taken! Find out equivalent courses your scores
           cover for{' '}

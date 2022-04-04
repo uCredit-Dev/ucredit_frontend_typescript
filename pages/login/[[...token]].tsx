@@ -171,7 +171,7 @@ const Login: React.FC = () => {
       {loginCheck ? (
         <>
           {openDevChoose && (
-            <div className="flex flex-col absolute left-[35%] top-[35%] z-[80] w-[30%] pb-8 bg-gray-100 text-black rounded shadow">
+            <div className="flex flex-col absolute left-[35%] top-[35%] z-[80] w-[30%] pb-8 bg-gray-100 text-black rounded">
               <div
                 className="mt-2 mr-4 text-2xl font-bold text-right cursor-pointer"
                 onClick={() => setOpenDevChoose(false)}
@@ -215,7 +215,7 @@ const Login: React.FC = () => {
             }}
           ></div>
           <div className="absolute z-50 flex w-full h-full">
-            <div className="flex flex-col mx-auto my-auto text-lg font-bold text-white rounded shadow p-14 bg-primary">
+            <div className="flex flex-col mx-auto my-auto text-lg font-bold text-white rounded p-14 bg-primary">
               <div className="flex flex-row items-center justify-center w-full pr-2 mt-auto text-3xl">
                 <img
                   src="/img/logo-darker.png"
@@ -229,12 +229,12 @@ const Login: React.FC = () => {
               </div>
               <button
                 onClick={handleJHULogin}
-                className="flex flex-row items-center justify-center w-64 h-12 mx-auto font-semibold tracking-widest transition duration-200 ease-in transform rounded-full shadow cursor-pointer select-none bg-secondary hover:scale-105"
+                className="flex flex-row items-center justify-center w-64 h-12 mx-auto font-semibold tracking-widest transition duration-200 ease-in transform rounded-full cursor-pointer select-none bg-secondary hover:scale-105"
               >
                 JHU Login
               </button>
               <button
-                className="flex flex-row items-center justify-center w-64 h-12 mx-auto mt-5 mb-auto font-semibold tracking-widest transition duration-200 ease-in transform rounded-full shadow cursor-pointer select-none bg-secondary focus:outline-none hover:scale-105"
+                className="flex flex-row items-center justify-center w-64 h-12 mx-auto mt-5 mb-auto font-semibold tracking-widest transition duration-200 ease-in transform rounded-full cursor-pointer select-none bg-secondary focus:outline-none hover:scale-105"
                 onClick={
                   finishedLoginCheck ? handleGuest : preventPreLoginClick
                 }

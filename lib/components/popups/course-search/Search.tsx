@@ -5,6 +5,7 @@ import {
   selectSemester,
   updateSearchStatus,
   selectInspectedCourse,
+  selectPlaceholder,
 } from '../../../slices/searchSlice';
 import CourseDisplay from './search-results/CourseDisplay';
 import Form from './query-components/Form';
@@ -30,6 +31,7 @@ const Search: FC = () => {
   const searchSemester = useSelector(selectSemester);
   const currentPlan = useSelector(selectPlan);
   const inspected = useSelector(selectInspectedCourse);
+  const placeholder = useSelector(selectPlaceholder);
 
   /**
    * Gets specific year's name.
@@ -46,8 +48,8 @@ const Search: FC = () => {
   };
 
   useEffect(() => {
-    if (inspected === 'None') setHideResults(false);
-  }, [inspected]);
+    if (inspected === 'None' && !placeholder) setHideResults(false);
+  }, [inspected, placeholder]);
 
   return (
     <div className="absolute top-0">
@@ -63,7 +65,7 @@ const Search: FC = () => {
       {/* Search area */}
       <div
         className={clsx(
-          'fixed flex flex-col bg-primary gradient-to-r shadow select-none rounded z-30 w-9/12 tight:overflow-y-none h-5/6 top-1/3 left-1/2 transform -translate-x-1/2 -translate-y-1/3 tight:h-auto',
+          'fixed flex flex-col bg-primary gradient-to-r select-none rounded z-30 w-9/12 tight:overflow-y-none h-5/6 top-1/3 left-1/2 transform -translate-x-1/2 -translate-y-1/3 tight:h-auto',
           { '-translate-x-[62.5%]': window.innerWidth > 2200 },
         )}
         style={{ opacity: searchOpacity === 100 ? 1 : 0.1 }}

@@ -22,7 +22,7 @@ const Banner: React.FC = () => {
             <div className="mt-5/6 absolute flex w-full top-[70%] h-full">
               <button
                 onClick={() => router.push('/login')}
-                className="h-[15%] mx-auto font-thin thin:text-lg text-4xl text-white transition duration-200 ease-in transform rounded-full shadow-xl w-[22.5%] bg-primary hover:scale-105"
+                className="h-[15%] mx-auto font-thin thin:text-lg text-4xl text-white transition duration-200 ease-in transform rounded-full w-[22.5%] bg-primary hover:scale-105"
               >
                 Get Started
               </button>
@@ -33,7 +33,7 @@ const Banner: React.FC = () => {
             <div className="absolute flex w-full top-[70%] h-full">
               <button
                 onClick={() => setActivateEmailPopup(true)}
-                className="h-[15%] mx-auto font-thin text-4xl thin:text-lg text-white transition duration-200 ease-in transform rounded-full shadow-xl w-[22.5%] bg-primary hover:scale-105"
+                className="h-[15%] mx-auto font-thin text-4xl thin:text-lg text-white transition duration-200 ease-in transform rounded-full w-[22.5%] bg-primary hover:scale-105"
               >
                 Contact Us
               </button>
