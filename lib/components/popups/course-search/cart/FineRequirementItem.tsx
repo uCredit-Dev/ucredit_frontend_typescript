@@ -20,7 +20,7 @@ const FineRequirementListItem: FC<{
     <div
       className={clsx(
         props.selected ? 'bg-secondary bg-opacity-25' : 'bg-white',
-        'mb-2 p-2 w-full h-auto rounded hover:shadow cursor-pointer transition duration-200 ease-in-out',
+        'mb-2 p-2 w-full h-auto rounded cursor-pointer transition duration-200 ease-in-out',
         {
           'bg-green-100':
             props.itemRequirement.fulfilled_credits >=

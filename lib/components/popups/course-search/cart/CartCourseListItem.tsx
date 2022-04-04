@@ -43,7 +43,7 @@ const CartCourseListItem: FC<{
             selectedCourse !== 'None' &&
             selectedCourse.number === props.course.number,
         },
-        'mb-2 p-2 w-full h-14 bg-white rounded hover:shadow cursor-pointer transition duration-200 ease-in-out',
+        'mb-2 p-2 w-full h-14 bg-white rounded cursor-pointer transition duration-200 ease-in-out',
       )}
       onClick={handleCourseClick}
     >

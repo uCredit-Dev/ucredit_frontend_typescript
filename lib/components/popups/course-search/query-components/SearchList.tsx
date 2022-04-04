@@ -18,11 +18,14 @@ import { selectPlan } from '../../../../slices/currentPlanSlice';
 /* 
   List of searched courses.
 */
-const SearchList: FC<{ searching: boolean }> = (props) => {
+const SearchList: FC<{
+  searching: boolean;
+  hideResults: boolean;
+  setHideResults: Function;
+}> = ({ searching, hideResults, setHideResults }) => {
   // Component state setup.
   const [pageNum, setPageNum] = useState<number>(0);
   const [pageCount, setPageCount] = useState<number>(0);
-  const [hideResults, setHideResults] = useState<boolean>(false);
   const [filteredCourses, setFilteredCourses] = useState<SISRetrievedCourse[]>(
     [],
   );
@@ -122,17 +125,6 @@ const SearchList: FC<{ searching: boolean }> = (props) => {
   };
 
   /**
-   * Gets the text for the results button.
-   */
-  const getResultsButtonText = () => {
-    if (!hideResults) {
-      return 'Hide Results';
-    } else {
-      return 'Show Results';
-    }
-  };
-
-  /**
    * Gets search result pagination UI
    */
   const getPaginationUI = () =>
@@ -158,7 +150,7 @@ const SearchList: FC<{ searching: boolean }> = (props) => {
    * Gets loading search UI
    */
   const getSearchingUI = () =>
-    props.searching ? (
+    searching ? (
       <img src="/img/loading.gif" alt="Searching..." className="h-10"></img>
     ) : (
       <div className="text-lg text-center text-gray-400">
@@ -173,15 +165,7 @@ const SearchList: FC<{ searching: boolean }> = (props) => {
         data-tip="Hide Search Results"
       >
         <div className="flex flex-row">
-          <div className="text-lg font-semibold">Search Results</div>{' '}
-          {window.innerWidth < 800 && (
-            <button
-              className="ml-2 focus:outline-none"
-              onClick={() => setHideResults(!hideResults)}
-            >
-              {getResultsButtonText()}
-            </button>
-          )}
+          <div className="text-lg font-semibold">Search Results</div>
         </div>
         <div className="flex flex-row items-center">
           <div className="flex-grow mr-1">
