@@ -123,7 +123,7 @@ const Semester: FC<{
    */
   const getDraggables = (): any => {
     return semesterCourses.map((course, index) => (
-      <div key={course._id}>
+      <div key={course._id} className="w-auto mr-0">
         <CourseDraggable
           course={course}
           index={index}
@@ -412,7 +412,7 @@ const Semester: FC<{
   const getAPInfoBox = (): JSX.Element => (
     <>
       {openAPInfoBox && (
-        <div className="absolute p-2 -mt-48 -ml-6 bg-gray-100 rounded shadow select-text w-72">
+        <div className="absolute p-2 -mt-12 -ml-6 bg-gray-100 rounded select-text w-72">
           These are courses transferred over from AP tests and other college
           courses that you've taken! Find out equivalent courses your scores
           cover for{' '}
@@ -439,6 +439,7 @@ const Semester: FC<{
             setHovered(false);
           }}
           onMouseEnter={() => setHovered(true)}
+          className="min-w-[15rem] max-w-[40rem] w-min mx-4"
         >
           {hovered && mode === ReviewMode.View && (
             <Comments
@@ -449,7 +450,7 @@ const Semester: FC<{
           )}
           <div className="flex flex-col font-medium max-w-yearheading h-yearheading">
             <div className="flex flex-row items-center justify-between px-2 py-1 bg-white h-yearheading1">
-              <div className="flex flex-row items-center w-full h-auto gap-3 font-normal">
+              <div className="flex flex-row items-center h-auto gap-3 font-normal">
                 {getSemesterTitle()}
               </div>
               {getSemesterAddButton()}

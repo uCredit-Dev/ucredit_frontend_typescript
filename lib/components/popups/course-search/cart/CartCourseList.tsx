@@ -37,7 +37,6 @@ const CartCourseList: FC<{
   const dispatch = useDispatch();
 
   const coursesPerPage = 10;
-  // const defaultYearForCart = '2021';
 
   // Updates pagination every time the searched courses change.
   useEffect(() => {

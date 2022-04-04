@@ -216,6 +216,16 @@ const Filters: FC<{
    * @returns an array of options for the year select.
    */
   const getYears = (): { value: number; label: number }[] => {
+    const yearRange = JSON.parse(localStorage.getItem('yearRange'));
+    if (yearRange) {
+      let total = yearRange.max - yearRange.min;
+      if (new Date().getMonth() >= 3) total++;
+      const years = [];
+      for (let i = 0; i < total; i++) {
+        years.push({ value: yearRange.min + i, label: yearRange.min + i });
+      }
+      return years;
+    }
     return currentPlan.years.map((y: any, i: number) => ({
       value: y.year,
       label: i === 0 ? 'All' : y.year,

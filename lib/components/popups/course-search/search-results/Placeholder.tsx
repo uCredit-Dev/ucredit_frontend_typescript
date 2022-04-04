@@ -15,8 +15,12 @@ import {
   selectSearchStatus,
 } from '../../../../slices/searchSlice';
 import Select from 'react-select';
-import { all_deps, course_tags, getAPI } from '../../../../resources/assets';
-import { selectCourseToShow } from '../../../../slices/popupSlice';
+import { all_deps, getAPI, course_tags } from '../../../../resources/assets';
+import {
+  selectCourseToShow,
+  updateCourseToShow,
+  updateShowCourseInfo,
+} from '../../../../slices/popupSlice';
 import {
   selectCurrentPlanCourses,
   selectPlan,
@@ -140,7 +144,10 @@ const Placeholder: FC<{ addCourse: (plan?: Plan) => void }> = (props) => {
   // Clears inspected course.
   const clearInspected = (): void => {
     dispatch(updatePlaceholder(false));
+    dispatch(updateCourseToShow(null));
+    dispatch(updateShowCourseInfo(false));
     dispatch(updateInspectedCourse('None'));
+    dispatch(updateInspectedVersion('None'));
   };
 
   /**

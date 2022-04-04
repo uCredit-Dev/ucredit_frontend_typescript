@@ -6,6 +6,8 @@ import { useEffect, useState } from 'react';
 import { Plan, ReviewMode, User } from '../lib/resources/commonTypes';
 import { useRouter } from 'next/router';
 import { userService } from '../lib/services';
+import axios from 'axios';
+import { getAPI } from '../lib/resources/assets';
 
 const Dash: React.FC = () => {
   const user: User = useSelector(selectUser);
@@ -16,6 +18,20 @@ const Dash: React.FC = () => {
 
   useEffect(() => {
     if (user._id === 'noUser') router.push('/login');
+    const yearRange = localStorage.getItem('yearRange');
+    if (!yearRange)
+      axios
+        .get(getAPI(window) + '/getYearRange')
+        .then((res) => {
+          const { min, max } = res.data.data;
+          const yearRange = {
+            min,
+            max,
+            expiry: new Date().getTime() + 1829800000,
+          };
+          localStorage.setItem('yearRange', JSON.stringify(yearRange));
+        })
+        .catch((err) => console.log(err));
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
@@ -40,8 +56,6 @@ const Dash: React.FC = () => {
   return (
     <>
       <Head>
-        <link rel="shortcut icon" href="/static/favicon.ico" />
-        <meta name="description" content="Quick accessible degree planning." />
         <title>My Plan</title>
       </Head>
       <Dashboard plan={plan} mode={mode} />
