@@ -20,6 +20,7 @@ import { updateImportingStatus } from '../../lib/slices/currentPlanSlice';
 import axios from 'axios';
 import { User } from '../../lib/resources/commonTypes';
 import { userService } from '../../lib/services';
+import { updateAddingPlanStatus } from '../../lib/slices/popupSlice';
 
 /**
  * The login page, designed after the Spotify login page..
@@ -70,6 +71,8 @@ const Login: React.FC = () => {
       .login(loginId)
       .then((retrievedUser) => {
         if (retrievedUser.errors === undefined) {
+          if (retrievedUser.data.plan_ids.length === 0)
+            dispatch(updateAddingPlanStatus(true));
           if (loginId)
             document.cookie =
               'connect.sid=' +
@@ -125,6 +128,8 @@ const Login: React.FC = () => {
       .get(getAPI(window) + '/backdoor/verification/' + id)
       .then((res) => {
         const devUser: User = res.data.data;
+        if (devUser.plan_ids.length === 0)
+          dispatch(updateAddingPlanStatus(true));
         dispatch(updateUser(devUser));
         dispatch(updateLoginCheck(true));
         document.cookie =
