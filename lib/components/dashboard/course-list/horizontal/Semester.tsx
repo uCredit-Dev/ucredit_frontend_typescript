@@ -122,6 +122,9 @@ const Semester: FC<{
    * @returns a list of draggable react components
    */
   const getDraggables = (): any => {
+    // TODO: Search for a thread matching course id here.
+    // Do something similar for plan, year, and semester
+    // All threads should be retrieved on first load of the plan and stored in a map.
     return semesterCourses.map((course, index) => (
       <div key={course._id} className="w-auto mr-0">
         <CourseDraggable
@@ -130,6 +133,8 @@ const Semester: FC<{
           semesterName={semesterName}
           semesterYear={semesterYear}
           mode={mode}
+          // TODO: Add a thread prop here. Add a thread state in the course component.
+          // When retrieving threads make sure the threads are stored as a map. We can then not add further complexity when searching for threads since map find is O(1) if we check them here.
         />
       </div>
     ));
