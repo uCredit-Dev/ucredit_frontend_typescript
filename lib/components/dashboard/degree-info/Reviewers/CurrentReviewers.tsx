@@ -1,14 +1,31 @@
-import { CheckIcon } from '@heroicons/react/outline';
+import { CheckIcon, BellIcon } from '@heroicons/react/outline';
 import { useEffect, useState } from 'react';
 import { useSelector } from 'react-redux';
 import ReactTooltip from 'react-tooltip';
 import { ReviewRequestStatus } from '../../../../resources/commonTypes';
 import { userService } from '../../../../services';
 import { selectPlan } from '../../../../slices/currentPlanSlice';
+import emailjs, {init} from '@emailjs/browser';
 
 const CurrentReviewers = () => {
   const currentPlan = useSelector(selectPlan);
   const [jsx, setJsx] = useState([]);
+  init('OYZ6l2hEt-shlZ7K1');
+
+  const sendEmail = (fromName, toEmail, toName) => {
+    var form = {
+      from_name: fromName,
+      to_email: toEmail,
+      to_name: toName
+    }
+
+    emailjs.send('service_cami1cj', 'template_kilkjhv', form, 'OYZ6l2hEt-shlZ7K1')
+      .then((result) => {
+          console.log(result.text);
+      }, (error) => {
+          console.log(error.text);
+      });
+  };
 
   useEffect(() => {
     (async () => {
@@ -32,17 +49,20 @@ const CurrentReviewers = () => {
     }
   };
 
+  const makeOnClickHandler = (reviewee_name, email, name) => (() => sendEmail(reviewee_name, email, name)); // Saves temporal values
+
   const getElements = async (data: any[]) => {
     const elements = [];
-    for (const { reviewer_id, status } of data) {
-      const { _id, name } = (await userService.getUser(reviewer_id._id))
+    for (const { reviewer_id, status, reviewee_id} of data) {
+      const { _id, name, email } = (await userService.getUser(reviewer_id._id))
+        .data[0];
+      const reviewee = (await userService.getUser(reviewee_id))
         .data[0];
       elements.push(
         <div
-          className="flex flex-row items-center justify-between pt-2"
+          className="flex flex-row items-center space-between pt-2"
           key={_id}
         >
-          <p>{name}</p>
           <div className="flex flex-row">
             {false && ( // requesting
               <img
@@ -56,6 +76,8 @@ const CurrentReviewers = () => {
               {getSVG(status)}
             </div>
           </div>
+          <p className="pl-2 justify-start">{name}</p>
+          <BellIcon className="h-5 ml-auto" onClick={makeOnClickHandler(reviewee.name, email, name)}></BellIcon>
         </div>,
       );
     }

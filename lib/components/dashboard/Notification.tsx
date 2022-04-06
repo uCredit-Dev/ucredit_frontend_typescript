@@ -1,4 +1,4 @@
-import { useState } from 'react';
+// import { useState } from 'react';
 import { BellIcon, ExclamationCircleIcon } from '@heroicons/react/solid';
 import { Popover, Transition } from '@headlessui/react'
 import { Fragment } from 'react'
@@ -22,11 +22,11 @@ const notifications = [
 ]
 
 const Notification = () => {
-    const [notifState, setNotifState] = useState(true);
+    // const [notifState, setNotifState] = useState(true);
     return (
       <div className="flex flex-row justify-between items-center px-4 text-xl">
         {notifications.length !== 0 ?
-            <ExclamationCircleIcon className="bg-white rounded-full absolute h-5 text-red-500 right-[8.5rem] bottom-9 z-50"></ExclamationCircleIcon>
+            <ExclamationCircleIcon className="bg-white rounded-full absolute h-5 text-red-500 right-[8rem] bottom-9 z-50"></ExclamationCircleIcon>
         : null}
         <div className="w-full max-w-sm">
             <Popover className="relative">
