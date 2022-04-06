@@ -149,7 +149,7 @@ const InfoMenu: FC<Props> = ({ plan, mode }) => {
                       bgcolor={'skyblue'}
                       completed={completed}
                     />
-                    {pair[1].length > 2 && (
+                    {/* {pair[1].length > 2 && (
                       <button
                         className=""
                         onClick={() => {
@@ -159,19 +159,20 @@ const InfoMenu: FC<Props> = ({ plan, mode }) => {
                       >
                         Collapse all
                       </button>
-                    )}
-                  </div>
-                );
-              } else {
-                return (
-                  <div key={dis.name + index + dis.expr}>
-                    <FineDistribution
-                      dis={dis}
-                      openSignal={showDistributions[i]}
-                    />
+                    )} */}
                   </div>
                 );
               }
+              // else {
+              //   return (
+              //     <div key={dis.name + index + dis.expr}>
+              //       <FineDistribution
+              //         dis={dis}
+              //         openSignal={showDistributions[i]}
+              //       />
+              //     </div>
+              //   );
+              // }
             })}
             {/* {pair[1].length > 1 ? (
               <button
