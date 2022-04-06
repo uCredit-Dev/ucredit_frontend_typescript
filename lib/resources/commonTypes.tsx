@@ -245,6 +245,7 @@ export interface RevieweePlans {
 export enum ReviewRequestStatus {
   Pending = 'PENDING',
   Accepted = 'ACCEPTED',
+  UnderReview = 'UNDERREVIEW',
 }
 
 export enum ReviewMode {

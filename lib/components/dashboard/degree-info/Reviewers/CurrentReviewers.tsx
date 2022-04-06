@@ -5,26 +5,46 @@ import ReactTooltip from 'react-tooltip';
 import { ReviewRequestStatus } from '../../../../resources/commonTypes';
 import { userService } from '../../../../services';
 import { selectPlan } from '../../../../slices/currentPlanSlice';
-import emailjs, {init} from '@emailjs/browser';
+import { toast } from 'react-toastify';
+import emailjs from '@emailjs/browser';
+import { getAPI } from '../../../../resources/assets';
 
 const CurrentReviewers = () => {
   const currentPlan = useSelector(selectPlan);
   const [jsx, setJsx] = useState([]);
-  init('OYZ6l2hEt-shlZ7K1');
 
-  const sendEmail = (fromName, toEmail, toName) => {
+  const sendEmail = (fromName, toEmail, toName, reviewID) => {
     var form = {
       from_name: fromName,
       to_email: toEmail,
       to_name: toName
     }
 
-    emailjs.send('service_cami1cj', 'template_kilkjhv', form, 'OYZ6l2hEt-shlZ7K1')
-      .then((result) => {
-          console.log(result.text);
-      }, (error) => {
-          console.log(error.text);
-      });
+    const body = {
+      review_id: reviewID,
+      status: 'UNDERREVIEW',
+    };
+
+    fetch(getAPI(window) + '/planReview/changeStatus', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(body),
+    })
+
+    console.log(fromName);
+
+    // emailjs.send('service_cami1cj', 'template_kilkjhv', form, 'OYZ6l2hEt-shlZ7K1')
+    //   .then((result) => {
+    //     toast.success('Plan successfully sent to ' + toName + ' for review!', {
+    //       autoClose: 5000,
+    //       closeOnClick: false,
+    //     });
+    //       // console.log(result.text);
+    //   }, (error) => {
+    //       console.log(error.text);
+    //   });
   };
 
   useEffect(() => {
@@ -44,24 +64,24 @@ const CurrentReviewers = () => {
           data-tip="Pending"
         />
       );
-    } else if (status === ReviewRequestStatus.Accepted) {
+    } else if (status === ReviewRequestStatus.Accepted || status === ReviewRequestStatus.UnderReview) {
       return <CheckIcon className="w-5 h-5 tooltip" data-tip="Accepted" />;
     }
   };
 
-  const makeOnClickHandler = (reviewee_name, email, name) => (() => sendEmail(reviewee_name, email, name)); // Saves temporal values
+  const makeOnClickHandler = (reviewee_name, email, name, review_id) => (() => sendEmail(reviewee_name, email, name, review_id)); // Saves temporal values
 
   const getElements = async (data: any[]) => {
     const elements = [];
-    for (const { reviewer_id, status, reviewee_id} of data) {
-      const { _id, name, email } = (await userService.getUser(reviewer_id._id))
+    for (const { reviewer_id, status, reviewee_id, _id } of data) {
+      const reviewer = (await userService.getUser(reviewer_id._id))
         .data[0];
       const reviewee = (await userService.getUser(reviewee_id))
         .data[0];
       elements.push(
         <div
           className="flex flex-row items-center space-between pt-2"
-          key={_id}
+          key={reviewer._id}
         >
           <div className="flex flex-row">
             {false && ( // requesting
@@ -76,8 +96,8 @@ const CurrentReviewers = () => {
               {getSVG(status)}
             </div>
           </div>
-          <p className="pl-2 justify-start">{name}</p>
-          <BellIcon className="h-5 ml-auto" onClick={makeOnClickHandler(reviewee.name, email, name)}></BellIcon>
+          <p className="pl-2 justify-start">{reviewer.name}</p>
+          <button className="ml-auto"> <BellIcon className="h-5" onClick={makeOnClickHandler(reviewee.name, reviewer.email, reviewer.name, _id)}> </BellIcon> </button>
         </div>,
       );
     }
