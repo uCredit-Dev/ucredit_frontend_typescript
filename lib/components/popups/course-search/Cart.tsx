@@ -192,7 +192,7 @@ const Cart: FC<{ allCourses: SISRetrievedCourse[] }> = (props) => {
   const getParams = (extras: SearchExtras) => ({
     query: extras.query,
     department: extras.department,
-    term: extras.term,
+    term: extras.term === 'All' ? '' : extras.term,
     areas: extras.areas,
     credits: extras.credits,
     wi: extras.wi,

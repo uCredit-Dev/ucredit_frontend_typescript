@@ -67,7 +67,8 @@ const SearchList: FC<{ searching: boolean }> = (props) => {
         if (
           v.term === searchFilters.term + ' ' + searchFilters.year ||
           (searchFilters.term === 'All' &&
-            searchFilters.year === currentPlan.years[0].year)
+            (searchFilters.year === currentPlan.years[0].year ||
+              searchFilters.year.toString() === v.term.split(' ')[1]))
         ) {
           toDisplay.push(
             <div
