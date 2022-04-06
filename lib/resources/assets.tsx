@@ -15,8 +15,7 @@ import getConfig from 'next/config';
 
 const { publicRuntimeConfig } = getConfig();
 
-// export const api = publicRuntimeConfig.apiUrl;
-export const api = 'http://localhost:4567/api';
+export const api = publicRuntimeConfig.apiUrl;
 
 export const guestUser: User = {
   _id: 'guestUser',

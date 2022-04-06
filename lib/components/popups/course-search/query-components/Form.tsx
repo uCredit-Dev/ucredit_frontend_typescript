@@ -263,18 +263,16 @@ const Form: FC<{ setSearching: (searching: boolean) => void }> = (props) => {
     extras: SearchExtras,
     queryLength: number,
   ): Promise<void> => {
-    let courses: SISRetrievedCourse[] = [];
-    let versions: number[] = [];
     const courseVersions = await multiFind(extras, queryLength);
-    courses.push(...courseVersions[0]);
-    versions.push(...courseVersions[1]);
+    let courses: SISRetrievedCourse[] = courseVersions[0];
+    let versions: number[] = courseVersions[1];
     let searchedQuery = {
       originalQuery,
       courses,
       versions,
       queryLength,
       extras,
-    }
+    };
     if (searchedQuery !== null) {
       if (
         // only finishes handling if user is still searching same term
@@ -296,7 +294,7 @@ const Form: FC<{ setSearching: (searching: boolean) => void }> = (props) => {
     courses: SISRetrievedCourse[],
     versions: number[],
     queryLength: number,
-  )  => {
+  ) => {
     courses.forEach((course: SISRetrievedCourse, index: number) => {
       if (!searchedCourses.has(course.number + '0')) {
         searchedCourses.set(course.number + '0', {
@@ -309,7 +307,7 @@ const Form: FC<{ setSearching: (searching: boolean) => void }> = (props) => {
         handleFrequency(course, versions, queryLength, index);
       }
     });
-  }
+  };
 
   // Handles the finishing of finding courses.
   // tracks the number of times a course appears in the searchedCourses after a search
@@ -339,7 +337,7 @@ const Form: FC<{ setSearching: (searching: boolean) => void }> = (props) => {
     let frequency = searchedCoursesFrequency.get(course.number);
     let flag = false;
     if (frequency !== undefined) {
-      for (let i = 0; i < frequency;   i++) {
+      for (let i = 0; i < frequency; i++) {
         if (
           searchedCourses.get(course.number + i)?.course.title === course.title
         ) {
