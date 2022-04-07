@@ -66,6 +66,7 @@ const Comments: FC<{
         },
       };
       const temp = await userService.postNewThread(data);
+      console.log(temp);
     }
   };
 
@@ -93,20 +94,20 @@ const Comments: FC<{
   return (
     <div className="absolute pl-60 w-[30rem] h-12 z-[10000]">
       {expanded ? (
-        <div className="bg-gray-100 rounded border shadow p-2">
+        <div className="p-2 bg-gray-100 border rounded shadow">
           <div className="flex flex-col">{getComments()}</div>
-          <div className="pt-2 flex flex-row items-center w-full">
+          <div className="flex flex-row items-center w-full pt-2">
             <form onSubmit={submitReply} className="flex-grow">
               <textarea
                 value={replyText}
                 onChange={handleChange}
                 placeholder="Add a reply..."
-                className="px-2 w-full"
+                className="w-full px-2"
                 rows={3}
               />
             </form>
             <div
-              className="rotate-90 ml-2 h-4 w-4 transform hover:scale-110"
+              className="w-4 h-4 ml-2 transform rotate-90 hover:scale-110"
               onClick={submitReply}
             >
               <PaperAirplaneIcon />
@@ -115,12 +116,12 @@ const Comments: FC<{
         </div>
       ) : thisThread ? (
         <AnnotationIcon
-          className="z-20 mt-2 absolute w-4 h-4 text-black rounded-md outline-none stroke-2 cursor-pointer transform hover:scale-110 transition duration-150 ease-in"
+          className="absolute z-20 w-4 h-4 mt-2 text-black transition duration-150 ease-in transform rounded-md outline-none cursor-pointer stroke-2 hover:scale-110"
           onClick={() => setExpanded(true)}
         />
       ) : hovered ? (
         <PlusIcon
-          className="z-20 mt-2 absolute w-4 h-4 text-black rounded-md outline-none stroke-2 cursor-pointer transform hover:scale-110 transition duration-150 ease-in"
+          className="absolute z-20 w-4 h-4 mt-2 text-black transition duration-150 ease-in transform rounded-md outline-none cursor-pointer stroke-2 hover:scale-110"
           onClick={() => setExpanded(true)}
         />
       ) : null}

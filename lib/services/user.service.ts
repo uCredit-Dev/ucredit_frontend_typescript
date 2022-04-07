@@ -76,17 +76,16 @@ const postNewThread = (data: any) => {
     .then(handleResponse);
 };
 
-const getThreads = (id: string) => {
+const getThreads = (id: string, cb = undefined) => {
   return fetchWrapper
     .get(`${getAPI(window)}/thread/getByPlan/${id}`)
-    .then(handleResponse);
+    .then((res) => handleResponse(res, cb));
 };
 
-const postNewComment = (data: any) => {
+const postNewComment = (data: any, cb = undefined) => {
   return fetchWrapper
     .post(`${getAPI(window)}/thread/reply`, data)
-    .then((res) => {})
-    .then(handleResponse);
+    .then((res) => console.log(res));
 };
 const changeReviewStatus = (review_id, status, cb = undefined) => {
   return fetchWrapper
@@ -98,6 +97,7 @@ const changeReviewStatus = (review_id, status, cb = undefined) => {
 };
 
 const handleResponse = (res, cb = undefined) => {
+  if (!res) return;
   return res.text().then((text) => {
     const data = text && JSON.parse(text);
     if (cb) cb(res.status);
