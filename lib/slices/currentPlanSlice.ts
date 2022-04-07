@@ -3,6 +3,7 @@ import { RootState } from '../appStore/store';
 import {
   DroppableType,
   Plan,
+  ThreadType,
   UserCourse,
 } from '../components/../resources/commonTypes';
 import { requirements } from '../components/dashboard/degree-info/distributionFunctions';
@@ -14,6 +15,8 @@ type CurrentPlanSlice = {
   totalCredits: number;
   droppables: DroppableType[];
   importing: boolean;
+  threads: Map<string, ThreadType>;
+  reviewedPlan: Plan;
 };
 
 const initialState: CurrentPlanSlice = {
@@ -32,6 +35,8 @@ const initialState: CurrentPlanSlice = {
   totalCredits: 0,
   droppables: [],
   importing: false,
+  threads: new Map(),
+  reviewedPlan: null,
 };
 
 export const currentPlanSlice = createSlice({
@@ -79,6 +84,16 @@ export const currentPlanSlice = createSlice({
     updateImportingStatus: (state: any, action: PayloadAction<boolean>) => {
       state.importing = action.payload;
     },
+    updateThreads: (state: any, action: PayloadAction<ThreadType[]>) => {
+      state.threads = new Map();
+      for (const t of Array.from(action.payload)) {
+        console.log(t.location_type + ' ' + t.location_id)
+        state.threads.set(t.location_type + ' ' + t.location_id, t)
+      }
+    },
+    updateReviewedPlan: (state: any, action: PayloadAction<Plan>) => {
+      state.reviewedPlan = { ...action.payload };
+    },
   },
 });
 
@@ -90,6 +105,8 @@ export const {
   updateDroppables,
   resetCurrentPlan,
   updateImportingStatus,
+  updateThreads,
+  updateReviewedPlan,
 } = currentPlanSlice.actions;
 
 // The function below is called a selector and allows us to select a value from
@@ -105,5 +122,7 @@ export const selectDroppables = (state: RootState) =>
   state.currentPlan.droppables;
 export const selectImportingStatus = (state: RootState) =>
   state.currentPlan.importing;
+export const selectThreads = (state: RootState) => state.currentPlan.threads;
+export const selectReviewedPlan = (state: RootState) => state.currentPlan.reviewedPlan;
 
 export default currentPlanSlice.reducer;

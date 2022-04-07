@@ -138,9 +138,6 @@ const CourseComponent: FC<{
             />
           </div>
         )}
-        {hovered && mode === ReviewMode.View && (
-          <Comments location={'Course ' + course.number.toString()} />
-        )}
       </div>
       <div
         className="shadow relative flex items-center justify-between text-xs mt-2 pl-1 p-0.5 w-1/5 max-w-yearheading rounded md:w-full bg-white"

@@ -6,6 +6,7 @@ import {
   UserCourse,
   Year,
 } from '../../../../resources/commonTypes';
+import Comments from '../../Comments';
 import CourseComponent from './CourseComponent';
 
 /**
@@ -23,35 +24,44 @@ const CourseDraggable: FC<{
   mode: ReviewMode;
 }> = ({ course, index, semesterYear, semesterName, mode }) => {
   const [draggable, setDraggable] = useState<boolean>(true);
+  const [hovered, setHovered] = useState<boolean>(false);
   return (
-    <Draggable
-      key={course._id}
-      index={index}
-      draggableId={course._id}
-      isDragDisabled={draggable || mode === ReviewMode.View}
+    <div
+      onMouseEnter={() => setHovered(true)}
+      onMouseLeave={() => setHovered(false)}
     >
-      {(provided, snapshot) => {
-        return (
-          <div
-            ref={provided.innerRef}
-            {...provided.draggableProps}
-            {...provided.dragHandleProps}
-            style={getItemStyle(
-              snapshot.isDragging,
-              provided.draggableProps.style,
-            )}
-          >
-            <CourseComponent
-              setDraggable={setDraggable}
-              year={semesterYear}
-              course={course}
-              semester={semesterName}
-              mode={mode}
-            />
-          </div>
-        );
-      }}
-    </Draggable>
+      <Draggable
+        key={course._id}
+        index={index}
+        draggableId={course._id}
+        isDragDisabled={draggable || mode === ReviewMode.View}
+      >
+        {(provided, snapshot) => {
+          return (
+            <div
+              ref={provided.innerRef}
+              {...provided.draggableProps}
+              {...provided.dragHandleProps}
+              style={getItemStyle(
+                snapshot.isDragging,
+                provided.draggableProps.style,
+              )}
+            >
+              {mode === ReviewMode.View && (
+                <Comments location={'Course ' + course._id} hovered={hovered} />
+              )}
+              <CourseComponent
+                setDraggable={setDraggable}
+                year={semesterYear}
+                course={course}
+                semester={semesterName}
+                mode={mode}
+              />
+            </div>
+          );
+        }}
+      </Draggable>
+    </div>
   );
 };
 

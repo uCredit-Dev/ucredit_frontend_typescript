@@ -446,11 +446,10 @@ const Semester: FC<{
           onMouseEnter={() => setHovered(true)}
           className="min-w-[15rem] max-w-[40rem] w-min mx-4"
         >
-          {hovered && mode === ReviewMode.View && (
+          {mode === ReviewMode.View && (
             <Comments
-              location={
-                'Semester ' + semesterName + '-' + (semesterYear.year + 1)
-              }
+              location={'Semester ' + semesterYear._id + semesterName}
+              hovered={hovered}
             />
           )}
           <div className="flex flex-col font-medium max-w-yearheading h-yearheading">
@@ -462,7 +461,12 @@ const Semester: FC<{
             </div>
             <div className="w-full h-px bg-primary"></div>
           </div>
-          <div id={semesterName + '|' + semesterYear._id} className="mr-11">
+          <div
+            id={semesterName + '|' + semesterYear._id}
+            // className="pr-11"
+            onMouseEnter={() => setHovered(false)}
+            onMouseLeave={() => setHovered(true)}
+          >
             <Droppable
               droppableId={semesterName + '|' + semesterYear._id}
               type="COURSE"

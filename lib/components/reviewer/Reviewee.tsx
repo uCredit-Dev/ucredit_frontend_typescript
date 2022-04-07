@@ -5,6 +5,15 @@ import { useRouter } from 'next/router';
 import { Plan, User } from '../../resources/commonTypes';
 import { Hoverable } from '../utils/hoverable';
 import { TooltipPrimary } from '../utils/TooltipPrimary';
+import { fetchWrapper } from '../../utils';
+import { getAPI } from '../../resources/assets';
+import { useDispatch } from 'react-redux';
+import {
+  updateReviewedPlan,
+  updateThreads,
+} from '../../slices/currentPlanSlice';
+import { userService } from '../../services/user.service';
+import axios from 'axios';
 
 interface Props {
   key: string;
@@ -24,6 +33,8 @@ const Reviewee: React.FC<Props> = ({
   const [majors, setMajors] = useState<string[]>([]);
   const router = useRouter();
 
+  const dispatch = useDispatch();
+
   useEffect(() => {
     const set = new Set<string>();
     for (const p of plans) {
@@ -32,8 +43,14 @@ const Reviewee: React.FC<Props> = ({
     setMajors([...set]);
   }, [plans]);
 
-  const handleViewPlan = (e, plan: Plan) => {
+  const handleViewPlan = async (e, plan: Plan) => {
     e.stopPropagation();
+    const threads = await axios.get(
+      `${getAPI(window)}/thread/getByPlan/${plan._id}`,
+    );
+    console.log(threads.data);
+    dispatch(updateThreads(threads.data.data));
+    dispatch(updateReviewedPlan(plan));
     router.push(`/dashboard?plan=${plan._id}&mode=view`);
   };
 

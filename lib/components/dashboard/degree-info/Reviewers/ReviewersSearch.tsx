@@ -4,11 +4,11 @@ import { getAPI } from '../../../../resources/assets';
 import ReviewersSearchResults from './ReviewerSearchResults';
 
 const ReviewersSearch = () => {
-  const [searchState, updateSearchState] = useState('');
-  const [searchData, updateSearchData] = useState([]);
+  const [searchState, setSearchState] = useState('');
+  const [searchData, setSearchData] = useState([]);
 
   const handleChange = (e) => {
-    updateSearchState(e.target.value);
+    setSearchState(e.target.value);
   };
 
   useEffect(() => {
@@ -31,7 +31,7 @@ const ReviewersSearch = () => {
       })
       .then((users) => {
         // TODO: This should return plan objects as well
-        updateSearchData(users.data.data);
+        setSearchData(users.data.data);
       });
   };
 
