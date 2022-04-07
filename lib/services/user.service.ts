@@ -71,18 +71,31 @@ const getPlanReviewers = (plan_id: string, cb = undefined) => {
 
 const postNewThread = (data: any) => {
   return fetchWrapper
-    .post(`${getAPI(window)}/thread/new`, data).then((res) => {}).then(handleResponse);
-}
+    .post(`${getAPI(window)}/thread/new`, data)
+    .then((res) => {})
+    .then(handleResponse);
+};
 
 const getThreads = (id: string) => {
-  return fetchWrapper.get(`${getAPI(window)}/thread/getByPlan/${id}`)
+  return fetchWrapper
+    .get(`${getAPI(window)}/thread/getByPlan/${id}`)
     .then(handleResponse);
-}
+};
 
 const postNewComment = (data: any) => {
   return fetchWrapper
-    .post(`${getAPI(window)}/thread/reply`, data).then((res) => {}).then(handleResponse);
-}
+    .post(`${getAPI(window)}/thread/reply`, data)
+    .then((res) => {})
+    .then(handleResponse);
+};
+const changeReviewStatus = (review_id, status, cb = undefined) => {
+  return fetchWrapper
+    .post(`${getAPI(window)}/planReview/changeStatus`, {
+      review_id,
+      status,
+    })
+    .then((res) => handleResponse(res, cb));
+};
 
 const handleResponse = (res, cb = undefined) => {
   return res.text().then((text) => {
@@ -107,5 +120,6 @@ export const userService = {
   getPlanReviewers,
   postNewThread,
   getThreads,
-  postNewComment
+  postNewComment,
+  changeReviewStatus,
 };
