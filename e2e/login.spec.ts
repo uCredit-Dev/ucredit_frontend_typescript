@@ -23,6 +23,8 @@ test.beforeEach(async ({ page }) => {
   await page.goto(URL);
 });
 
+// test.afterEach(deleteUser);
+
 export const after_login_page = async (page) => {
   const { LOGIN_BUTTON_SELECTOR } = HOME_PAGE;
   await page.click(LOGIN_BUTTON_SELECTOR);
