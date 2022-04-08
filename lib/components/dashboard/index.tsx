@@ -4,7 +4,10 @@ import { useScrollPosition } from '@n8tb1t/use-scroll-position';
 import UserSection from './UserSection';
 import FeedbackPopup from '../popups/FeedbackPopup';
 import FeedbackNotification from '../popups/FeedbackNotification';
-import { selectImportingStatus } from '../../slices/currentPlanSlice';
+import {
+  selectImportingStatus,
+  selectPlan,
+} from '../../slices/currentPlanSlice';
 import {
   selectDeletePlanStatus,
   selectAddingPlanStatus,
@@ -39,6 +42,7 @@ import LoadingPage from '../LoadingPage';
 import HandlePlanShareDummy from './HandlePlanShareDummy';
 import HandleUserInfoSetupDummy from './HandleUserInfoSetupDummy';
 import { DashboardMode, Plan, ReviewMode } from '../../resources/commonTypes';
+import { userService } from '../../services';
 
 interface Props {
   plan: Plan;
@@ -63,6 +67,7 @@ const Dashboard: React.FC<Props> = ({ plan, mode }) => {
   const cartStatus = useSelector(selectShowingCart);
   const experimentList = useSelector(selectExperimentList);
   const dispatch = useDispatch();
+  const currPlan = useSelector(selectPlan);
 
   // State Setup
   const [showNotif, setShowNotif] = useState<boolean>(true);
@@ -138,6 +143,14 @@ const Dashboard: React.FC<Props> = ({ plan, mode }) => {
   useEffect(() => {
     updateExperimentsForUser();
   }, [experimentList.length, updateExperimentsForUser]);
+
+  // useEffect(() => {
+  //   if (currPlan) {
+  //     userService.getPlanReviewers(currPlan._id).then((r) => {
+  //       console.log(r);
+  //     });
+  //   }
+  // }, [currPlan]);
 
   return (
     <>

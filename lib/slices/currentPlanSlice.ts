@@ -88,20 +88,23 @@ export const currentPlanSlice = createSlice({
     updateThreads: (state: any, action: PayloadAction<ThreadType[]>) => {
       state.threads = {};
       for (const t of Array.from(action.payload)) {
-        state.threads[t.location_type + ' ' + t.location_id] = t
+        state.threads[t.location_type + ' ' + t.location_id] = t;
       }
-      console.log(state.threads)
+      console.log(state.threads);
     },
     updateReviewedPlan: (state: any, action: PayloadAction<Plan>) => {
       state.reviewedPlan = { ...action.payload };
     },
-    updateCurrentComment: (state: any, action: PayloadAction<[CommentType, string]>) => {
-      let thread: ThreadType = state.threads[action.payload[1]]
-      console.log(state.threads)
-      console.log(action.payload[0])
-      thread.comments.push(action.payload[0])
-      console.log(action.payload)
-    }
+    updateCurrentComment: (
+      state: any,
+      action: PayloadAction<[CommentType, string]>,
+    ) => {
+      let thread: ThreadType = state.threads[action.payload[1]];
+      console.log(state.threads);
+      console.log(action.payload[0]);
+      thread.comments.push(action.payload[0]);
+      console.log(action.payload);
+    },
   },
 });
 
@@ -115,7 +118,7 @@ export const {
   updateImportingStatus,
   updateThreads,
   updateReviewedPlan,
-  updateCurrentComment
+  updateCurrentComment,
 } = currentPlanSlice.actions;
 
 // The function below is called a selector and allows us to select a value from
@@ -132,6 +135,7 @@ export const selectDroppables = (state: RootState) =>
 export const selectImportingStatus = (state: RootState) =>
   state.currentPlan.importing;
 export const selectThreads = (state: RootState) => state.currentPlan.threads;
-export const selectReviewedPlan = (state: RootState) => state.currentPlan.reviewedPlan;
+export const selectReviewedPlan = (state: RootState) =>
+  state.currentPlan.reviewedPlan;
 
 export default currentPlanSlice.reducer;
