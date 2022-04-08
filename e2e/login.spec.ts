@@ -1,9 +1,4 @@
-import {
-  URL,
-  LOGIN_PAGE,
-  ADD_PLAN_MODAL,
-  DASHBOARD_PAGE,
-} from './e2eFixtures';
+import { URL, LOGIN_PAGE, ADD_PLAN_MODAL, DASHBOARD_PAGE } from './e2eFixtures';
 import { test, expect } from '@playwright/test';
 import { AFTER_LOGIN, AFTER_LOGIN_PAGE, AFTER_PLAN_CREATED } from './e2eFlows';
 import { deleteUser } from './e2eUtils';
