@@ -1,22 +1,12 @@
 import {
   URL,
-  API_URL,
-  TEST_ID,
   LOGIN_PAGE,
   ADD_PLAN_MODAL,
   DASHBOARD_PAGE,
 } from './e2eFixtures';
 import { test, expect } from '@playwright/test';
-import axios from 'axios';
 import { AFTER_LOGIN, AFTER_LOGIN_PAGE, AFTER_PLAN_CREATED } from './e2eFlows';
-
-const deleteUser = async () => {
-  try {
-    await axios.delete(`${API_URL}/api/user/${TEST_ID}`);
-  } catch (e) {
-    // Do nothing
-  }
-};
+import { deleteUser } from './e2eUtils';
 
 test.beforeEach(async ({ page }) => {
   await deleteUser();
