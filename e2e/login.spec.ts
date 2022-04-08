@@ -10,17 +10,20 @@ import {
 import { test, expect } from '@playwright/test';
 import axios from 'axios';
 
-test.beforeEach(async ({ page }) => {
-  await page.goto(URL);
-});
-
-test.afterEach(async () => {
+const deleteUser = async () => {
   try {
     await axios.delete(`${API_URL}/api/user/${TEST_ID}`);
   } catch (e) {
     // Do nothing
   }
+};
+
+test.beforeEach(async ({ page }) => {
+  await deleteUser();
+  await page.goto(URL);
 });
+
+// test.afterEach(deleteUser);
 
 export const after_login_page = async (page) => {
   const { LOGIN_BUTTON_SELECTOR } = HOME_PAGE;
@@ -86,8 +89,6 @@ test.describe('Post-Login', () => {
   });
 
   test('should be able to logout after logging in', async ({ page }) => {
-    await after_plan_created(page);
-
     const { LOGOUT_BUTTON_SELECTOR } = DASHBOARD_PAGE;
     const { JHU_LOGIN_BUTTON_SELECTOR } = LOGIN_PAGE;
     await page.click(LOGOUT_BUTTON_SELECTOR);
