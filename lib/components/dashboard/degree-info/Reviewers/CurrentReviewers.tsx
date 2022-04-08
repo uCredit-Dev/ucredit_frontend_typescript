@@ -17,8 +17,8 @@ const CurrentReviewers = () => {
     var form = {
       from_name: fromName,
       to_email: toEmail,
-      to_name: toName
-    }
+      to_name: toName,
+    };
 
     const body = {
       review_id: reviewID,
@@ -31,21 +31,36 @@ const CurrentReviewers = () => {
         'Content-Type': 'application/json',
       },
       body: JSON.stringify(body),
-    }).then(response => { // If 200, then status successfully changed to UNDERREVIEW
-      emailjs.send('service_cami1cj', 'template_kilkjhv', form, 'OYZ6l2hEt-shlZ7K1')
-      .then((result) => {
-        toast.success('Plan successfully sent to ' + toName + ' for review!', {
-          autoClose: 5000,
-          closeOnClick: false,
-        });
-      }, (error) => { // Failed to send email
-          console.log(error.text);
-      });
     })
-    .catch(err => { // Error in /changeStatus call
-      console.log(err);
-    });
-
+      .then((response) => {
+        // If 200, then status successfully changed to UNDERREVIEW
+        emailjs
+          .send(
+            'service_cami1cj',
+            'template_kilkjhv',
+            form,
+            'OYZ6l2hEt-shlZ7K1',
+          )
+          .then(
+            (result) => {
+              toast.success(
+                'Plan successfully sent to ' + toName + ' for review!',
+                {
+                  autoClose: 5000,
+                  closeOnClick: false,
+                },
+              );
+            },
+            (error) => {
+              // Failed to send email
+              console.log(error.text);
+            },
+          );
+      })
+      .catch((err) => {
+        // Error in /changeStatus call
+        console.log(err);
+      });
   };
 
   useEffect(() => {
@@ -65,20 +80,22 @@ const CurrentReviewers = () => {
           data-tip="Pending"
         />
       );
-    } else if (status === ReviewRequestStatus.Accepted || status === ReviewRequestStatus.UnderReview) {
+    } else if (
+      status === ReviewRequestStatus.Accepted ||
+      status === ReviewRequestStatus.UnderReview
+    ) {
       return <CheckIcon className="w-5 h-5 tooltip" data-tip="Accepted" />;
     }
   };
 
-  const makeOnClickHandler = (reviewee_name, email, name, review_id) => (() => sendEmail(reviewee_name, email, name, review_id)); // Saves temporal values
+  const makeOnClickHandler = (reviewee_name, email, name, review_id) => () =>
+    sendEmail(reviewee_name, email, name, review_id); // Saves temporal values
 
   const getElements = async (data: any[]) => {
     const elements = [];
     for (const { reviewer_id, status, reviewee_id, _id } of data) {
-      const reviewer = (await userService.getUser(reviewer_id._id))
-        .data[0];
-      const reviewee = (await userService.getUser(reviewee_id))
-        .data[0];
+      const reviewer = (await userService.getUser(reviewer_id._id)).data[0];
+      const reviewee = (await userService.getUser(reviewee_id)).data[0];
       elements.push(
         <div
           className="flex flex-row items-center space-between pt-2"
@@ -98,7 +115,20 @@ const CurrentReviewers = () => {
             </div>
           </div>
           <p className="pl-2 justify-start">{reviewer.name}</p>
-          <button className="ml-auto"> <BellIcon className="h-5" onClick={makeOnClickHandler(reviewee.name, reviewer.email, reviewer.name, _id)}> </BellIcon> </button>
+          <button className="ml-auto">
+            {' '}
+            <BellIcon
+              className="h-5"
+              onClick={makeOnClickHandler(
+                reviewee.name,
+                reviewer.email,
+                reviewer.name,
+                _id,
+              )}
+            >
+              {' '}
+            </BellIcon>{' '}
+          </button>
         </div>,
       );
     }
