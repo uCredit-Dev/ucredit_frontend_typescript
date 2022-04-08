@@ -1,12 +1,16 @@
 import { CheckIcon } from '@heroicons/react/outline';
 import { useEffect, useState } from 'react';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import ReactTooltip from 'react-tooltip';
 import { ReviewRequestStatus } from '../../../../resources/commonTypes';
 import { userService } from '../../../../services';
-import { selectPlan } from '../../../../slices/currentPlanSlice';
+import {
+  selectPlan,
+  updateSelectedPlan,
+} from '../../../../slices/currentPlanSlice';
 
 const CurrentReviewers = () => {
+  const dispatch = useDispatch();
   const currentPlan = useSelector(selectPlan);
   const [jsx, setJsx] = useState([]);
 
@@ -15,6 +19,7 @@ const CurrentReviewers = () => {
       const reviewers = (await userService.getPlanReviewers(currentPlan._id))
         .data;
       setJsx(await getElements(reviewers));
+      // dispatch(updateSelectedPlan({ ...currentPlan, reviewers: reviewers }));
     })();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [currentPlan.reviewers]);
@@ -27,7 +32,7 @@ const CurrentReviewers = () => {
           data-tip="Pending"
         />
       );
-    } else if (status === ReviewRequestStatus.Accepted) {
+    } else if (status === ReviewRequestStatus.Approved) {
       return <CheckIcon className="w-5 h-5 tooltip" data-tip="Accepted" />;
     }
   };

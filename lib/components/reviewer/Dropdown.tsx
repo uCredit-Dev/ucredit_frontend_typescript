@@ -18,7 +18,8 @@ const Dropdown: React.FC<Props> = ({ width, options, _default }) => {
   const defaultOption = options.filter(({ label }) => label === _default);
   const [expanded, setExpanded] = useState(false);
   const [selected, setSelected] = useState(
-    (defaultOption && (defaultOption[0].content || defaultOption[0].label)) ||
+    (defaultOption.length > 0 &&
+      (defaultOption[0].content || defaultOption[0].label)) ||
       options[0].content ||
       options[0].label,
   );

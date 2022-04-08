@@ -47,9 +47,11 @@ const CourseDraggable: FC<{
                 provided.draggableProps.style,
               )}
             >
-              {mode === ReviewMode.View && (
-                <Comments location={'Course ' + course._id} hovered={hovered} />
-              )}
+              <Comments
+                location={'Course ' + course._id}
+                hovered={hovered}
+                mode={mode}
+              />
               <CourseComponent
                 setDraggable={setDraggable}
                 year={semesterYear}

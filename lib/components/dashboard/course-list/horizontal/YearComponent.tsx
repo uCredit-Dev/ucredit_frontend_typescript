@@ -379,11 +379,17 @@ const YearComponent: FC<{
       }}
     >
       <div className="flex flex-col w-full mt-1 font-medium h-yearheading">
-        <div className="flex flex-row w-full gap-2 text-zinc-700">
+        <div
+          className="flex flex-row w-full gap-2 text-zinc-700"
+          onMouseEnter={() => setHovered(true)}
+          onMouseLeave={() => setHovered(false)}
+        >
           <div className="mr-1 text-lg font-thin">
-            {mode === ReviewMode.View && (
-              <Comments location={'Year ' + year._id} hovered={hovered} />
-            )}
+            <Comments
+              location={'Year ' + year._id}
+              hovered={hovered}
+              mode={mode}
+            />
             {collapse ? (
               <button
                 className="mt-2 text-sky-500"
@@ -417,8 +423,6 @@ const YearComponent: FC<{
                 { 'cursor-move': !mode || mode !== ReviewMode.View },
                 'flex-grow mt-auto text-xl font-semibold bg-transparent border-b border-transparent select-none focus:border-gray-400 focus:outline-none',
               )}
-              onMouseEnter={() => setHovered(true)}
-              onMouseLeave={() => setHovered(false)}
             >
               {yearName}
             </div>

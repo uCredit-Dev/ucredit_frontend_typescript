@@ -446,12 +446,11 @@ const Semester: FC<{
           onMouseEnter={() => setHovered(true)}
           className="min-w-[15rem] max-w-[40rem] w-min mx-4"
         >
-          {mode === ReviewMode.View && (
-            <Comments
-              location={'Semester ' + semesterYear._id + semesterName}
-              hovered={hovered}
-            />
-          )}
+          <Comments
+            location={'Semester ' + semesterYear._id + semesterName}
+            hovered={hovered}
+            mode={mode}
+          />
           <div className="flex flex-col font-medium max-w-yearheading h-yearheading">
             <div className="flex flex-row items-center justify-between px-2 py-1 bg-white h-yearheading1">
               <div className="flex flex-row items-center h-auto gap-3 font-normal">

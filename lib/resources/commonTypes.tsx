@@ -98,7 +98,7 @@ export type Plan = {
   user_id: string;
   numYears: number;
   years: Year[];
-  reviewers: string[];
+  reviewers: any[];
 };
 
 type Affiliation = 'STUDENT' | 'FACULTY' | 'STAFF';

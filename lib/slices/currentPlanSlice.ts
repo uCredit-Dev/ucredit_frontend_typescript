@@ -1,6 +1,7 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { RootState } from '../appStore/store';
 import {
+  CommentType,
   DroppableType,
   Plan,
   ThreadType,
@@ -15,7 +16,7 @@ type CurrentPlanSlice = {
   totalCredits: number;
   droppables: DroppableType[];
   importing: boolean;
-  threads: Map<string, ThreadType>;
+  threads: any;
   reviewedPlan: Plan;
 };
 
@@ -35,7 +36,7 @@ const initialState: CurrentPlanSlice = {
   totalCredits: 0,
   droppables: [],
   importing: false,
-  threads: new Map(),
+  threads: {},
   reviewedPlan: null,
 };
 
@@ -85,15 +86,22 @@ export const currentPlanSlice = createSlice({
       state.importing = action.payload;
     },
     updateThreads: (state: any, action: PayloadAction<ThreadType[]>) => {
-      state.threads = new Map();
+      state.threads = {};
       for (const t of Array.from(action.payload)) {
-        console.log(t.location_type + ' ' + t.location_id)
-        state.threads.set(t.location_type + ' ' + t.location_id, t)
+        state.threads[t.location_type + ' ' + t.location_id] = t
       }
+      console.log(state.threads)
     },
     updateReviewedPlan: (state: any, action: PayloadAction<Plan>) => {
       state.reviewedPlan = { ...action.payload };
     },
+    updateCurrentComment: (state: any, action: PayloadAction<[CommentType, string]>) => {
+      let thread: ThreadType = state.threads[action.payload[1]]
+      console.log(state.threads)
+      console.log(action.payload[0])
+      thread.comments.push(action.payload[0])
+      console.log(action.payload)
+    }
   },
 });
 
@@ -107,6 +115,7 @@ export const {
   updateImportingStatus,
   updateThreads,
   updateReviewedPlan,
+  updateCurrentComment
 } = currentPlanSlice.actions;
 
 // The function below is called a selector and allows us to select a value from

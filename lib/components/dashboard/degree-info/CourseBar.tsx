@@ -14,6 +14,8 @@ import {
 } from '../../../slices/popupSlice';
 import { clearSearch, updatePlaceholder } from '../../../slices/searchSlice';
 import { updateCartInvokedBySemester } from '../../../slices/userSlice';
+import Comments from '../Comments';
+import { ReviewMode } from '../../../resources/commonTypes';
 
 /**
  * A distribution bar.
@@ -28,10 +30,12 @@ const CourseBar: FC<{
   general: boolean;
   bgcolor: string;
   completed: boolean;
-}> = ({ distribution, general, bgcolor, completed }) => {
+  mode: ReviewMode;
+}> = ({ distribution, general, bgcolor, completed, mode }) => {
   const [plannedCredits, setPlannedCredits] = useState(
     distribution.fulfilled_credits,
   );
+  const [hovered, setHovered] = useState(false);
 
   const currPlanCourses = useSelector(selectCurrentPlanCourses);
   const maxCredits = distribution.required_credits;
@@ -116,7 +120,15 @@ const CourseBar: FC<{
           },
         )}
         key={section}
+        onMouseEnter={() => setHovered(true)}
+        onMouseLeave={() => setHovered(false)}
       >
+        <Comments
+          location={'Distribution ' + distribution.name.replace(/\s/g, '')}
+          hovered={hovered}
+          left={true}
+          mode={mode}
+        />
         {section}
         <div>
           {remainingCredits === 0 && completed ? (

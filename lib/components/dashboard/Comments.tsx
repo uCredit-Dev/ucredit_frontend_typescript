@@ -1,46 +1,66 @@
-import { FC, useEffect, useState } from 'react';
+import { FC, useEffect, useRef, useState } from 'react';
 import {
-  PlusIcon,
   PaperAirplaneIcon,
   AnnotationIcon,
+  ChatAlt2Icon,
 } from '@heroicons/react/outline';
-import { CommentType, ThreadType } from '../../resources/commonTypes';
+import {
+  CommentType,
+  ReviewMode,
+  ThreadType,
+} from '../../resources/commonTypes';
 import { useDispatch, useSelector } from 'react-redux';
 import {
   selectPlan,
   selectReviewedPlan,
   selectThreads,
+  updateCurrentComment,
+  updateSelectedPlan,
+  updateThreads,
 } from '../../slices/currentPlanSlice';
 import { userService } from '../../services';
 import { selectUser } from '../../slices/userSlice';
+import clsx from 'clsx';
+import Select from 'react-select';
 
 const Comments: FC<{
   location: string;
   hovered: boolean;
-}> = ({ location, hovered }) => {
+  mode: ReviewMode;
+  left?: boolean;
+}> = ({ location, hovered, left, mode }) => {
   const [expanded, setExpanded] = useState(false);
   const [replyText, setReplyText] = useState('');
   const [thisThread, setThisThread] = useState<ThreadType>(null);
   const dispatch = useDispatch();
   const threads = useSelector(selectThreads);
-  const currentPlan = useSelector(selectPlan);
   const user = useSelector(selectUser);
+  const plan = useSelector(selectPlan);
   const reviewedPlan = useSelector(selectReviewedPlan);
+  let wrapperRef = useRef(null);
 
   useEffect(() => {
-    setExpanded(false);
-  }, [hovered]);
-
-  useEffect(() => {
-    setThisThread(threads.get(location));
+    setThisThread(threads[location]);
   }, [threads]);
 
   const handleChange = (e) => {
     setReplyText(e.target.value);
   };
 
+  useEffect(() => {
+    if (plan.reviewers !== undefined) {
+      (async () => {
+        const reviewers = (await userService.getPlanReviewers(plan._id)).data;
+        dispatch(updateSelectedPlan({ ...plan, reviewers: reviewers }));
+      })();
+    }
+  }, []);
+
   const submitReply = async (e) => {
     e.preventDefault();
+    if (replyText === '') {
+      return;
+    }
     if (thisThread) {
       const body = {
         comment: {
@@ -51,6 +71,8 @@ const Comments: FC<{
         },
       };
       const temp = await userService.postNewComment(body);
+      dispatch(updateCurrentComment([temp.data, location]));
+      setReplyText('');
     } else {
       const data = {
         thread: {
@@ -66,7 +88,7 @@ const Comments: FC<{
         },
       };
       const temp = await userService.postNewThread(data);
-      console.log(temp);
+      dispatch(updateThreads([...threads.values(), temp.data]));
     }
   };
 
@@ -79,9 +101,12 @@ const Comments: FC<{
   const getComments = () => {
     if (!thisThread) return;
     const divs = thisThread.comments.map((c: CommentType) => {
+      if (!c.visible_user_id.includes(user._id)) {
+        return null;
+      }
       return (
         <div key={c.message}>
-          <div className="font-bold">
+          <div className="z-30 font-bold">
             {c.commenter_id.name + ' - ' + getDate(new Date(c.date))}
           </div>
           <div>{c.message}</div>
@@ -91,12 +116,46 @@ const Comments: FC<{
     return divs;
   };
 
+  const getOptions = () => {
+    let ids;
+    if (thisThread) {
+      ids = thisThread.comments[0].visible_user_id;
+    } else if (mode === ReviewMode.View) {
+      ids = [user._id, reviewedPlan.user_id];
+    } else if (mode === undefined || mode === ReviewMode.None) {
+      ids = [];
+      const reviewers = plan.reviewers;
+      if (reviewers === undefined) return [];
+      for (const r of reviewers) {
+        ids.push(r.reviewer_id._id);
+      }
+    }
+    let options = [];
+    for (const s of ids) {
+      options.push({ value: s, label: s });
+    }
+    return options;
+  };
+
   return (
-    <div className="absolute pl-60 w-[30rem] h-12 z-[10000]">
+    <div
+      className={clsx('absolute w-[30rem] h-12 cursor-default', {
+        '-left-px w-[15rem]': left,
+        'pl-60': !left,
+      })}
+      ref={wrapperRef}
+    >
       {expanded ? (
-        <div className="p-2 bg-gray-100 border rounded shadow">
+        <div
+          className="fixed w-screen h-screen top-0 left-0 z-30"
+          onClick={() => setExpanded(false)}
+        />
+      ) : null}
+      {expanded ? (
+        <div className="relative bg-gray-100 rounded border shadow p-2 z-50 cursor-default">
           <div className="flex flex-col">{getComments()}</div>
-          <div className="flex flex-row items-center w-full pt-2">
+          {!thisThread && <div className="font-bold">Add a Comment</div>}
+          <div className="pt-2 flex flex-row items-center w-full">
             <form onSubmit={submitReply} className="flex-grow">
               <textarea
                 value={replyText}
@@ -104,24 +163,28 @@ const Comments: FC<{
                 placeholder="Add a reply..."
                 className="w-full px-2"
                 rows={3}
+                autoFocus
               />
             </form>
             <div
-              className="w-4 h-4 ml-2 transform rotate-90 hover:scale-110"
+              className="rotate-90 ml-2 h-4 w-4 transform hover:scale-110 hover:cursor-pointer"
               onClick={submitReply}
             >
               <PaperAirplaneIcon />
             </div>
           </div>
+          <div>
+            <Select options={getOptions()} isMulti={true} />
+          </div>
         </div>
       ) : thisThread ? (
-        <AnnotationIcon
-          className="absolute z-20 w-4 h-4 mt-2 text-black transition duration-150 ease-in transform rounded-md outline-none cursor-pointer stroke-2 hover:scale-110"
+        <ChatAlt2Icon
+          className="z-0 mt-2 absolute w-4 h-4 text-black rounded-md outline-none stroke-2 cursor-pointer transform hover:scale-110 transition duration-150 ease-in"
           onClick={() => setExpanded(true)}
         />
       ) : hovered ? (
-        <PlusIcon
-          className="absolute z-20 w-4 h-4 mt-2 text-black transition duration-150 ease-in transform rounded-md outline-none cursor-pointer stroke-2 hover:scale-110"
+        <AnnotationIcon
+          className="z-0 mt-2 absolute w-4 h-4 text-black rounded-md outline-none stroke-2 cursor-pointer transform hover:scale-110 transition duration-150 ease-in"
           onClick={() => setExpanded(true)}
         />
       ) : null}
@@ -130,9 +193,3 @@ const Comments: FC<{
 };
 
 export default Comments;
-function postNewThread(data: {
-  thread: { plan_id: string; location_type: string; location_id: string };
-  comment: string;
-}) {
-  throw new Error('Function not implemented.');
-}

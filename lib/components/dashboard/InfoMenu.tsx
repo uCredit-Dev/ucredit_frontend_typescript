@@ -148,6 +148,7 @@ const InfoMenu: FC<Props> = ({ plan, mode }) => {
                       general={true}
                       bgcolor={'skyblue'}
                       completed={completed}
+                      mode={mode}
                     />
                     {pair[1].length > 2 && (
                       <button
