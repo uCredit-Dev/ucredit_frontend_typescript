@@ -33,16 +33,16 @@ const CurrentReviewers = () => {
       body: JSON.stringify(body),
     })
       .then((response) => {
-        // If 200, then status successfully changed to UNDERREVIEW
-        emailjs
-          .send(
-            'service_cami1cj',
-            'template_kilkjhv',
-            form,
-            'OYZ6l2hEt-shlZ7K1',
-          )
-          .then(
-            (result) => {
+        if (response.status === 200) {
+          // Status successfully changed to UNDERREVIEW
+          emailjs
+            .send(
+              'service_cami1cj',
+              'template_kilkjhv',
+              form,
+              'OYZ6l2hEt-shlZ7K1',
+            )
+            .then((result) => {
               toast.success(
                 'Plan successfully sent to ' + toName + ' for review!',
                 {
@@ -50,16 +50,15 @@ const CurrentReviewers = () => {
                   closeOnClick: false,
                 },
               );
-            },
-            (error) => {
-              // Failed to send email
-              console.log(error.text);
-            },
-          );
+            });
+        }
       })
       .catch((err) => {
         // Error in /changeStatus call
-        console.log(err);
+        toast.error('Plan failed to send to ' + toName + '.', {
+          autoClose: 5000,
+          closeOnClick: false,
+        });
       });
   };
 
