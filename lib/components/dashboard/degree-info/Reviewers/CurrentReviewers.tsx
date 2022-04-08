@@ -31,20 +31,21 @@ const CurrentReviewers = () => {
         'Content-Type': 'application/json',
       },
       body: JSON.stringify(body),
+    }).then(response => { // If 200, then status successfully changed to UNDERREVIEW
+      emailjs.send('service_cami1cj', 'template_kilkjhv', form, 'OYZ6l2hEt-shlZ7K1')
+      .then((result) => {
+        toast.success('Plan successfully sent to ' + toName + ' for review!', {
+          autoClose: 5000,
+          closeOnClick: false,
+        });
+      }, (error) => { // Failed to send email
+          console.log(error.text);
+      });
     })
+    .catch(err => { // Error in /changeStatus call
+      console.log(err);
+    });
 
-    console.log(fromName);
-
-    // emailjs.send('service_cami1cj', 'template_kilkjhv', form, 'OYZ6l2hEt-shlZ7K1')
-    //   .then((result) => {
-    //     toast.success('Plan successfully sent to ' + toName + ' for review!', {
-    //       autoClose: 5000,
-    //       closeOnClick: false,
-    //     });
-    //       // console.log(result.text);
-    //   }, (error) => {
-    //       console.log(error.text);
-    //   });
   };
 
   useEffect(() => {
