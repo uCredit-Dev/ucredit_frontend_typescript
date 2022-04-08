@@ -2,13 +2,13 @@ import {
   URL,
   API_URL,
   TEST_ID,
-  HOME_PAGE,
   LOGIN_PAGE,
   ADD_PLAN_MODAL,
   DASHBOARD_PAGE,
 } from './e2eFixtures';
 import { test, expect } from '@playwright/test';
 import axios from 'axios';
+import { AFTER_LOGIN, AFTER_LOGIN_PAGE, AFTER_PLAN_CREATED } from './e2eFlows';
 
 const deleteUser = async () => {
   try {
@@ -23,38 +23,9 @@ test.beforeEach(async ({ page }) => {
   await page.goto(URL);
 });
 
-export const after_login_page = async (page) => {
-  const { LOGIN_BUTTON_SELECTOR } = HOME_PAGE;
-  await page.click(LOGIN_BUTTON_SELECTOR);
-};
-
-export const after_login = async (page) => {
-  await after_login_page(page);
-  const {
-    JHU_LOGIN_BUTTON_SELECTOR,
-    LOGIN_INPUT_SELECTOR,
-    CONFIRM_LOGIN_BUTTON_SELECTOR,
-  } = LOGIN_PAGE;
-  await page.click(JHU_LOGIN_BUTTON_SELECTOR);
-  await page.type(LOGIN_INPUT_SELECTOR, TEST_ID);
-  await page.click(CONFIRM_LOGIN_BUTTON_SELECTOR);
-};
-
-export const after_plan_created = async (page) => {
-  await after_login(page);
-  const {
-    SELECT_MAJOR_INPUT_SELECTOR,
-    CS_BA_MAJOR_NAME,
-    ADD_MAJOR_BUTTON_SELECTOR,
-  } = ADD_PLAN_MODAL;
-  await page.locator(SELECT_MAJOR_INPUT_SELECTOR).type(CS_BA_MAJOR_NAME);
-  await page.locator(SELECT_MAJOR_INPUT_SELECTOR).press('Tab');
-  await page.locator(ADD_MAJOR_BUTTON_SELECTOR).click();
-};
-
 test.describe('Login Page', () => {
   test.beforeEach(async ({ page }) => {
-    await after_login_page(page);
+    await AFTER_LOGIN_PAGE(page);
   });
 
   test('should show jhu login button', async ({ page }) => {
@@ -65,7 +36,7 @@ test.describe('Login Page', () => {
 
 test.describe('Logging In', () => {
   test.beforeEach(async ({ page }) => {
-    await after_login(page);
+    await AFTER_LOGIN(page);
   });
 
   test('should be able to login', async ({ page }) => {
@@ -76,7 +47,7 @@ test.describe('Logging In', () => {
 
 test.describe('Post-Login', () => {
   test.beforeEach(async ({ page }) => {
-    await after_plan_created(page);
+    await AFTER_PLAN_CREATED(page);
   });
 
   test('should be able to add the CS BA major', async ({ page }) => {
