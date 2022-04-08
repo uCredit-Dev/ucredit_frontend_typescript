@@ -62,34 +62,52 @@ const Comments: FC<{
     if (replyText === '') {
       return;
     }
+    const planToAdd = reviewedPlan ? reviewedPlan : plan;
     if (thisThread) {
       const body = {
         comment: {
           commenter_id: user._id,
-          visible_user_id: [user._id, reviewedPlan.user_id],
+          visible_user_id: [user._id, planToAdd.user_id],
           thread_id: thisThread._id,
           message: replyText,
         },
       };
       const temp = await userService.postNewComment(body);
-      dispatch(updateCurrentComment([temp.data, location]));
+      const newComment = temp.data;
+      newComment.commenter_id = {
+        _id: user._id,
+        name: user.name,
+      };
+      dispatch(updateCurrentComment([newComment, location]));
       setReplyText('');
     } else {
+      console.log(user._id);
       const data = {
         thread: {
-          plan_id: reviewedPlan._id,
+          plan_id: planToAdd._id,
           location_type: location.split(' ')[0],
           location_id: location.split(' ')[1],
           resolved: false,
         },
         comment: {
           commenter_id: user._id,
-          visible_user_id: [user._id, reviewedPlan.user_id],
+          visible_user_id: [user._id, planToAdd.user_id],
           message: replyText,
         },
       };
+      console.log('asdf', data);
       const temp = await userService.postNewThread(data);
-      dispatch(updateThreads([...threads.values(), temp.data]));
+      console.log('values are', threads, location);
+      JSON.parse(JSON.stringify(threads));
+      let threadCopy = JSON.parse(JSON.stringify(threads));
+      threadCopy[location] = temp.data;
+      threadCopy[location].comments[0].commenter_id = {
+        _id: user._id,
+        name: user.name,
+      };
+      console.log('copy is', threadCopy);
+      dispatch(updateThreads(Object.values(threadCopy)));
+      setThisThread(temp.data);
     }
   };
 

@@ -4,13 +4,9 @@ import { useDispatch, useSelector } from 'react-redux';
 import ReactTooltip from 'react-tooltip';
 import { ReviewRequestStatus } from '../../../../resources/commonTypes';
 import { userService } from '../../../../services';
-import {
-  selectPlan,
-  updateSelectedPlan,
-} from '../../../../slices/currentPlanSlice';
+import { selectPlan } from '../../../../slices/currentPlanSlice';
 
 const CurrentReviewers = () => {
-  const dispatch = useDispatch();
   const currentPlan = useSelector(selectPlan);
   const [jsx, setJsx] = useState([]);
 
