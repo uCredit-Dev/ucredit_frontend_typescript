@@ -22,6 +22,7 @@ import { userService } from '../../services';
 import { selectUser } from '../../slices/userSlice';
 import clsx from 'clsx';
 import Select from 'react-select';
+import { format, formatDistance } from 'date-fns';
 
 const Comments: FC<{
   location: string;
@@ -92,12 +93,6 @@ const Comments: FC<{
     }
   };
 
-  const getDate = (date: Date) => {
-    return (
-      date.getMonth() + '/' + date.getDate() + ' ' + date.toLocaleTimeString()
-    );
-  };
-
   const getComments = () => {
     if (!thisThread) return;
     const divs = thisThread.comments.map((c: CommentType) => {
@@ -105,11 +100,18 @@ const Comments: FC<{
         return null;
       }
       return (
-        <div key={c.message}>
-          <div className="z-30 font-bold">
-            {c.commenter_id.name + ' - ' + getDate(new Date(c.date))}
-          </div>
-          <div>{c.message}</div>
+        <div
+          key={c.message}
+          className="bg-white border divide-y rounded select-text cursor-text"
+        >
+          <p className="flex flex-wrap px-2 py-1 text-sm">
+            {`${c.commenter_id.name} ${formatDistance(
+              new Date(c.date),
+              new Date(),
+              { addSuffix: true },
+            )}`}
+          </p>
+          <p className="px-2 py-1 font-medium">{c.message}</p>
         </div>
       );
     });
@@ -147,44 +149,50 @@ const Comments: FC<{
     >
       {expanded ? (
         <div
-          className="fixed w-screen h-screen top-0 left-0 z-30"
+          className="fixed top-0 left-0 z-30 w-screen h-screen"
           onClick={() => setExpanded(false)}
         />
       ) : null}
       {expanded ? (
-        <div className="relative bg-gray-100 rounded border shadow p-2 z-50 cursor-default">
-          <div className="flex flex-col">{getComments()}</div>
-          {!thisThread && <div className="font-bold">Add a Comment</div>}
-          <div className="pt-2 flex flex-row items-center w-full">
+        <div className="w-[300px] relative z-50 flex flex-col gap-2 p-2 border rounded shadow cursor-default bg-slate-100">
+          <div className="flex flex-col gap-1.5">{getComments()}</div>
+          {!thisThread && <div className="font-semibold">Add a Comment</div>}
+          <div className="flex flex-col w-full">
             <form onSubmit={submitReply} className="flex-grow">
               <textarea
                 value={replyText}
                 onChange={handleChange}
                 placeholder="Add a reply..."
-                className="w-full px-2"
+                className="w-full px-2 py-1 border rounded outline-none"
                 rows={3}
                 autoFocus
               />
             </form>
-            <div
-              className="rotate-90 ml-2 h-4 w-4 transform hover:scale-110 hover:cursor-pointer"
-              onClick={submitReply}
-            >
-              <PaperAirplaneIcon />
+            <div className="flex justify-between h-6">
+              <Select
+                // styles={{ height: '24px' }}
+                options={getOptions()}
+                isMulti={true}
+                className="h-6"
+              />
+              <div
+                className="flex items-center justify-center gap-1 text-sm transition-colors duration-150 ease-in transform rounded cursor-pointer hover:text-sky-600"
+                onClick={submitReply}
+              >
+                <span>Send</span>
+                <PaperAirplaneIcon className="w-4 h-4 rotate-90" />
+              </div>
             </div>
-          </div>
-          <div>
-            <Select options={getOptions()} isMulti={true} />
           </div>
         </div>
       ) : thisThread ? (
         <ChatAlt2Icon
-          className="z-0 mt-2 absolute w-4 h-4 text-black rounded-md outline-none stroke-2 cursor-pointer transform hover:scale-110 transition duration-150 ease-in"
+          className="absolute z-0 w-4 h-4 mt-2 text-black transition duration-150 ease-in transform rounded-md outline-none cursor-pointer stroke-2 hover:scale-110"
           onClick={() => setExpanded(true)}
         />
       ) : hovered ? (
         <AnnotationIcon
-          className="z-0 mt-2 absolute w-4 h-4 text-black rounded-md outline-none stroke-2 cursor-pointer transform hover:scale-110 transition duration-150 ease-in"
+          className="absolute z-0 w-4 h-4 mt-2 text-black transition duration-150 ease-in transform rounded-md outline-none cursor-pointer stroke-2 hover:scale-110"
           onClick={() => setExpanded(true)}
         />
       ) : null}
