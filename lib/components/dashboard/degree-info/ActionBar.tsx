@@ -231,7 +231,7 @@ const ActionBar: FC = () => {
   };
 
   return (
-    <div className="top-0 z-20 flex flex-row thin:flex-col flex-wrap">
+    <div className="top-0 z-20 flex flex-row thin:flex-col flex-wrap mx-auto">
       <Select
         options={[
           ...planList
@@ -247,13 +247,13 @@ const ActionBar: FC = () => {
         <div className="m-auto ml-2 mr-0 text-xl">✎</div>
         <input
           value={planName}
-          className=" my-0.5 px-1 w-80 h-8 text-gray-800 text-lg outline-none"
+          className=" my-0.5 px-1 w-60 h-8 text-gray-800 text-lg outline-none"
           onChange={handlePlanNameChange}
         />
       </div>
       <div
-        className="flex px-2  mt-[0.15rem] mr-2 text-lg font-light h-10 z-0"
-        style={{ width: '23rem' }}
+        className="flex px-2  mt-[0.15rem] mr-2 text-lg font-light h-10"
+        style={{ width: '20rem' }}
       >
         <form data-testid="major-change-form" className="z-20 w-full">
           <label htmlFor="majorChange" hidden={true}>
