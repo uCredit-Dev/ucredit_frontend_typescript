@@ -114,20 +114,19 @@ const CurrentReviewers = () => {
             </div>
           </div>
           <p className="pl-2 justify-start">{reviewer.name}</p>
-          <button className="ml-auto">
-            {' '}
-            <BellIcon
-              className="h-5"
-              onClick={makeOnClickHandler(
-                reviewee.name,
-                reviewer.email,
-                reviewer.name,
-                _id,
-              )}
-            >
-              {' '}
-            </BellIcon>{' '}
-          </button>
+          {status !== 'PENDING' ? (
+            <button className="ml-auto">
+              <BellIcon
+                className="h-5"
+                onClick={makeOnClickHandler(
+                  reviewee.name,
+                  reviewer.email,
+                  reviewer.name,
+                  _id,
+                )}
+              ></BellIcon>
+            </button>
+          ) : null}
         </div>,
       );
     }
