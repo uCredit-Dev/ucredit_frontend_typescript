@@ -76,7 +76,9 @@ const SearchList: FC<{
             <div
               key={inspecting.number + v.term + versionNum}
               className="transition duration-200 ease-in transform hover:scale-105"
-              onClick={() => setHideResults(true)}
+              onClick={() =>
+                window.innerWidth < 1200 ? setHideResults(true) : null
+              }
             >
               <CourseCard course={inspecting} version={versionNum} />
             </div>,
