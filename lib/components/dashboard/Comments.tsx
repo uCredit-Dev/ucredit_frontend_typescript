@@ -1,15 +1,18 @@
 import React, { FC, useEffect, useRef, useState } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
 import {
   PaperAirplaneIcon,
   AnnotationIcon,
   ChatAlt2Icon,
 } from '@heroicons/react/outline';
+import clsx from 'clsx';
+import Select from 'react-select';
+import { formatDistance } from 'date-fns';
 import {
   CommentType,
   ReviewMode,
   ThreadType,
 } from '../../resources/commonTypes';
-import { useDispatch, useSelector } from 'react-redux';
 import {
   selectPlan,
   selectReviewedPlan,
@@ -20,9 +23,6 @@ import {
 } from '../../slices/currentPlanSlice';
 import { userService } from '../../services';
 import { selectUser } from '../../slices/userSlice';
-import clsx from 'clsx';
-import Select from 'react-select';
-import { formatDistance } from 'date-fns';
 
 const Comments: FC<{
   location: string;
@@ -70,7 +70,20 @@ const Comments: FC<{
 
   useEffect(() => {
     const handleClickOutside = (e: MouseEvent) => {
-      if (!expanded) return;
+      if (
+        !expanded ||
+        // @ts-ignore: property does not exist error
+        (typeof e.target.className === 'string' &&
+          // @ts-ignore: property does not exist error
+          e.target.className.includes('option')) ||
+        // @ts-ignore: property does not exist error
+        e.target.tagName === 'svg' ||
+        // @ts-ignore: property does not exist error
+        e.target.tagName === 'path' ||
+        // @ts-ignore: property does not exist error
+        (e.target.tagName === 'DIV' && e.target.className.includes('css'))
+      )
+        return;
       if (wrapperRef.current && !wrapperRef.current.contains(e.target))
         setExpanded(false);
     };

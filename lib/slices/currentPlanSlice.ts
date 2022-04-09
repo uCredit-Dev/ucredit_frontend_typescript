@@ -99,10 +99,7 @@ export const currentPlanSlice = createSlice({
       action: PayloadAction<[CommentType, string]>,
     ) => {
       let thread: ThreadType = state.threads[action.payload[1]];
-      console.log(state.threads);
-      console.log(action.payload[0]);
       thread.comments.push(action.payload[0]);
-      console.log(action.payload);
     },
   },
 });
