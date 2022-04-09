@@ -57,7 +57,7 @@ const CourseComponent: FC<{
   // Checks whether course is satisfied every time plan courses gets updated.
   useEffect(() => {
     isMounted.current = true;
-    if (course.isPlaceholder) {
+    if (course.isPlaceholder || semester === 'All') {
       setSatisfied(true);
     } else {
       checkAllPrereqs(
