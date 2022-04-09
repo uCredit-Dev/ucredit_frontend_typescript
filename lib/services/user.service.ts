@@ -1,4 +1,3 @@
-import axios from 'axios';
 import { getAPI } from '../resources/assets';
 import { fetchWrapper } from '../utils';
 
