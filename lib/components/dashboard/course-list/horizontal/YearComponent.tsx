@@ -328,7 +328,7 @@ const YearComponent: FC<{
     return (
       <>
         {id !== 0 ? (
-          <div className="flex flex-row thin:flex-col w-full flex-wrap">
+          <div className="flex flex-row flex-wrap w-full thin:flex-col">
             {getDisplayedSemesters(collapse)}
           </div>
         ) : (
@@ -363,177 +363,177 @@ const YearComponent: FC<{
   );
 
   return (
-    <div
-      id={id.toString()}
-      className={clsx(
-        'py-2 max-w-year-heading w-full min-w-[14rem] border-b-[2px]',
-        { 'cursor-move': !mode || mode !== ReviewMode.View },
-        { 'z-30': addingPrereqStatus },
-      )}
-      onMouseLeave={() => {
-        setDraggable(true);
-        setDisplay(false);
-      }}
-      onMouseEnter={() => {
-        setDraggable(false);
-      }}
-    >
-      <div className="flex flex-col w-full mt-1 font-medium h-yearheading">
-        <div
-          className="flex flex-row w-full gap-2 text-zinc-700"
-          onMouseEnter={() => setHovered(true)}
-          onMouseLeave={() => setHovered(false)}
-        >
-          <div className="mr-1 text-lg font-thin">
-            <Comments
-              location={'Year ' + year._id}
-              hovered={hovered}
-              mode={mode}
-            />
-            {collapse ? (
-              <button
-                className="mt-2 text-sky-500"
-                onClick={() => setCollapse(!collapse)}
-              >
-                ▶
-              </button>
-            ) : (
-              <button
-                className="mt-2 text-sky-500"
-                onClick={() => setCollapse(!collapse)}
-              >
-                ▼
-              </button>
-            )}
-          </div>
-          {edittingName ? (
-            <input
-              id={year._id + 'input'}
-              value={yearName}
-              className={clsx(
-                { 'cursor-move': !mode || mode !== ReviewMode.View },
-                'flex-grow mt-auto font-semibold bg-transparent border-b border-transparent select-none text-md focus:border-gray-400 focus:outline-none',
-              )}
-              onChange={handleYearNameChange}
-              onBlur={() => setEdittingName(false)}
-            />
-          ) : (
-            <div
-              className={clsx(
-                { 'cursor-move': !mode || mode !== ReviewMode.View },
-                'flex-grow mt-auto text-xl font-semibold bg-transparent border-b border-transparent select-none focus:border-gray-400 focus:outline-none',
-              )}
-            >
-              {yearName}
-            </div>
-          )}
-          <div className="flex flex-row gap-8">
-            <div className="flex flex-row gap-3 mt-2 text-sm font-medium">
-              {areaCredits.N > 0 && (
-                <div className="flex flex-row gap-1">
-                  {areaCredits.N}
-                  <div
-                    className="w-3 mb-2 font-bold text-center rounded"
-                    style={{ backgroundColor: getColors('N', false) }}
-                  >
-                    N
-                  </div>
-                </div>
-              )}
-              {areaCredits.Q > 0 && (
-                <div className="flex flex-row gap-1">
-                  {areaCredits.Q}
-                  <div
-                    className="w-3 mb-2 font-bold text-center rounded"
-                    style={{ backgroundColor: getColors('Q', false) }}
-                  >
-                    Q
-                  </div>
-                </div>
-              )}
-              {areaCredits.E > 0 && (
-                <div className="flex flex-row gap-1">
-                  {areaCredits.E}
-                  <div
-                    className="w-3 mb-2 font-bold text-center rounded"
-                    style={{ backgroundColor: getColors('E', false) }}
-                  >
-                    E
-                  </div>
-                </div>
-              )}
-              {areaCredits.H > 0 && (
-                <div className="flex flex-row gap-1">
-                  {areaCredits.H}
-                  <div
-                    className="w-3 mb-2 font-bold text-center rounded"
-                    style={{ backgroundColor: getColors('H', false) }}
-                  >
-                    H
-                  </div>
-                </div>
-              )}
-              {areaCredits.S > 0 && (
-                <div className="flex flex-row gap-1">
-                  {areaCredits.S}
-                  <div
-                    className="w-3 mb-2 font-bold text-center rounded"
-                    style={{ backgroundColor: getColors('S', false) }}
-                  >
-                    S
-                  </div>
-                </div>
-              )}
-              {areaCredits.W > 0 && (
-                <div className="flex flex-row gap-1">
-                  {areaCredits.W}
-                  <div
-                    className="mb-2 font-bold text-center rounded"
-                    style={{ backgroundColor: getColors('None', true) }}
-                  >
-                    W
-                  </div>
-                </div>
-              )}
-              <div className="font-bold">{totalCredits} Credits</div>
-            </div>
-            {(!mode || mode !== ReviewMode.View) && (
-              <DotsVerticalIcon
-                onClick={() => setDisplay(!display)}
-                className="cursor-pointer stroke-2 w-7"
+    <>
+      <div
+        id={id.toString()}
+        className={clsx(
+          'py-2 max-w-year-heading w-full min-w-[14rem] border-b-[2px]',
+          { 'cursor-move': !mode || mode !== ReviewMode.View },
+          { 'z-30': addingPrereqStatus },
+        )}
+        onMouseLeave={() => {
+          setDraggable(true);
+          setDisplay(false);
+          setHovered(false);
+        }}
+        onMouseEnter={() => {
+          setDraggable(false);
+          setHovered(true);
+        }}
+      >
+        <div className="flex flex-col w-full mt-1 font-medium h-yearheading">
+          <div className="flex flex-row w-full gap-2 text-zinc-700">
+            <div className="flex mr-1 text-lg font-thin">
+              <Comments
+                location={'Year ' + year._id}
+                hovered={hovered}
+                mode={mode}
               />
+              {collapse ? (
+                <button
+                  className="mt-2 text-sky-500"
+                  onClick={() => setCollapse(!collapse)}
+                >
+                  ▶
+                </button>
+              ) : (
+                <button
+                  className="mt-2 text-sky-500"
+                  onClick={() => setCollapse(!collapse)}
+                >
+                  ▼
+                </button>
+              )}
+            </div>
+            {edittingName ? (
+              <input
+                id={year._id + 'input'}
+                value={yearName}
+                className={clsx(
+                  { 'cursor-move': !mode || mode !== ReviewMode.View },
+                  'flex-grow w-auto mt-auto font-semibold bg-transparent border-b border-transparent select-none text-md focus:border-gray-400 focus:outline-none',
+                )}
+                onChange={handleYearNameChange}
+                onBlur={() => setEdittingName(false)}
+              />
+            ) : (
+              <div
+                className={clsx(
+                  { 'cursor-move': !mode || mode !== ReviewMode.View },
+                  'flex-grow w-auto mt-auto text-xl font-semibold bg-transparent border-b border-transparent select-none focus:border-gray-400 focus:outline-none',
+                )}
+              >
+                {yearName}
+              </div>
             )}
+            <div className="flex flex-row gap-8">
+              <div className="flex flex-row gap-3 mt-2 text-sm font-medium">
+                {areaCredits.N > 0 && (
+                  <div className="flex flex-row gap-1">
+                    {areaCredits.N}
+                    <div
+                      className="w-3 mb-2 font-bold text-center rounded"
+                      style={{ backgroundColor: getColors('N', false) }}
+                    >
+                      N
+                    </div>
+                  </div>
+                )}
+                {areaCredits.Q > 0 && (
+                  <div className="flex flex-row gap-1">
+                    {areaCredits.Q}
+                    <div
+                      className="w-3 mb-2 font-bold text-center rounded"
+                      style={{ backgroundColor: getColors('Q', false) }}
+                    >
+                      Q
+                    </div>
+                  </div>
+                )}
+                {areaCredits.E > 0 && (
+                  <div className="flex flex-row gap-1">
+                    {areaCredits.E}
+                    <div
+                      className="w-3 mb-2 font-bold text-center rounded"
+                      style={{ backgroundColor: getColors('E', false) }}
+                    >
+                      E
+                    </div>
+                  </div>
+                )}
+                {areaCredits.H > 0 && (
+                  <div className="flex flex-row gap-1">
+                    {areaCredits.H}
+                    <div
+                      className="w-3 mb-2 font-bold text-center rounded"
+                      style={{ backgroundColor: getColors('H', false) }}
+                    >
+                      H
+                    </div>
+                  </div>
+                )}
+                {areaCredits.S > 0 && (
+                  <div className="flex flex-row gap-1">
+                    {areaCredits.S}
+                    <div
+                      className="w-3 mb-2 font-bold text-center rounded"
+                      style={{ backgroundColor: getColors('S', false) }}
+                    >
+                      S
+                    </div>
+                  </div>
+                )}
+                {areaCredits.W > 0 && (
+                  <div className="flex flex-row gap-1">
+                    {areaCredits.W}
+                    <div
+                      className="mb-2 font-bold text-center rounded"
+                      style={{ backgroundColor: getColors('None', true) }}
+                    >
+                      W
+                    </div>
+                  </div>
+                )}
+                <div className="font-bold">{totalCredits} Credits</div>
+              </div>
+              {(!mode || mode !== ReviewMode.View) && (
+                <DotsVerticalIcon
+                  onClick={() => setDisplay(!display)}
+                  className="cursor-pointer stroke-2 w-7"
+                />
+              )}
+            </div>
           </div>
+          {display && (
+            <YearSettingsDropdown
+              year={year}
+              setToShow={setToShow}
+              setDisplay={setDisplay}
+              toShow={toShow}
+              setEdittingName={setEdittingName}
+              id={id}
+            />
+          )}
         </div>
-        {display && (
-          <YearSettingsDropdown
-            year={year}
-            setToShow={setToShow}
-            setDisplay={setDisplay}
-            toShow={toShow}
-            setEdittingName={setEdittingName}
-            id={id}
-          />
+        {collapse ? (
+          <div
+            className="bg-white rounded cursor-default"
+            onMouseLeave={() => setDraggable(false)}
+            onMouseEnter={() => setDraggable(true)}
+          >
+            {getSemesterWNull()}
+          </div>
+        ) : (
+          <div
+            className="px-6 py-2 bg-white rounded cursor-default"
+            onMouseLeave={() => setDraggable(false)}
+            onMouseEnter={() => setDraggable(true)}
+          >
+            {getSemester()}
+          </div>
         )}
       </div>
-      {collapse ? (
-        <div
-          className="bg-white rounded cursor-default"
-          onMouseLeave={() => setDraggable(false)}
-          onMouseEnter={() => setDraggable(true)}
-        >
-          {getSemesterWNull()}
-        </div>
-      ) : (
-        <div
-          className="px-6 py-2 bg-white rounded cursor-default"
-          onMouseLeave={() => setDraggable(false)}
-          onMouseEnter={() => setDraggable(true)}
-        >
-          {getSemester()}
-        </div>
-      )}
-    </div>
+    </>
   );
 };
 

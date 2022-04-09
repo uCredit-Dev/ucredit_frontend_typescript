@@ -22,14 +22,14 @@ import { userService } from '../../services';
 import { selectUser } from '../../slices/userSlice';
 import clsx from 'clsx';
 import Select from 'react-select';
-import { format, formatDistance } from 'date-fns';
+import { formatDistance } from 'date-fns';
 
 const Comments: FC<{
   location: string;
   hovered: boolean;
   mode: ReviewMode;
   left?: boolean;
-}> = ({ location, hovered, left, mode }) => {
+}> = ({ location, hovered, mode }) => {
   const [expanded, setExpanded] = useState(false);
   const [replyText, setReplyText] = useState('');
   const [thisThread, setThisThread] = useState<ThreadType>(null);
@@ -39,9 +39,11 @@ const Comments: FC<{
   const plan = useSelector(selectPlan);
   const reviewedPlan = useSelector(selectReviewedPlan);
   let wrapperRef = useRef(null);
+  const [comments, setComments] = useState([]);
 
   useEffect(() => {
     setThisThread(threads[location]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [threads]);
 
   const handleChange = (e) => {
@@ -55,7 +57,19 @@ const Comments: FC<{
         dispatch(updateSelectedPlan({ ...plan, reviewers: reviewers }));
       })();
     }
+    setComments(getComments());
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
+
+  useEffect(() => {
+    const handleClickOutside = (e: MouseEvent) => {
+      if (!expanded) return;
+      if (wrapperRef.current && !wrapperRef.current.contains(e.target))
+        setExpanded(false);
+    };
+    document.addEventListener('click', handleClickOutside);
+    return () => document.removeEventListener('click', handleClickOutside);
+  }, [wrapperRef, expanded]);
 
   const submitReply = async (e) => {
     e.preventDefault();
@@ -81,7 +95,6 @@ const Comments: FC<{
       dispatch(updateCurrentComment([newComment, location]));
       setReplyText('');
     } else {
-      console.log(user._id);
       const data = {
         thread: {
           plan_id: planToAdd._id,
@@ -95,18 +108,14 @@ const Comments: FC<{
           message: replyText,
         },
       };
-      console.log('asdf', data);
       const temp = await userService.postNewThread(data);
-      console.log('values are', threads, location);
+      // console.log(temp);
       JSON.parse(JSON.stringify(threads));
       let threadCopy = JSON.parse(JSON.stringify(threads));
       threadCopy[location] = temp.data;
-      threadCopy[location].comments[0].commenter_id = {
-        _id: user._id,
-        name: user.name,
-      };
-      console.log('copy is', threadCopy);
-      dispatch(updateThreads(Object.values(threadCopy)));
+      console.log(Object.values(threadCopy));
+      // console.log('copy is', threadCopy);
+      dispatch(updateThreads([...Object.values(threadCopy)] as ThreadType[]));
       setThisThread(temp.data);
     }
   };
@@ -159,21 +168,19 @@ const Comments: FC<{
 
   return (
     <div
-      className={clsx('absolute w-[30rem] h-12 cursor-default', {
-        '-left-px w-[15rem]': left,
-        'pl-60': !left,
+      className={clsx('absolute z-50 h-12 cursor-default translate-x-60', {
+        'translate-y-[12px]': location.split(' ')[0] === 'Course',
+        '-left-[125px] translate-y-7': location.split(' ')[0] === 'Year',
       })}
-      ref={wrapperRef}
     >
       {expanded ? (
         <div
-          className="fixed top-0 left-0 z-30 w-screen h-screen"
-          onClick={() => setExpanded(false)}
-        />
-      ) : null}
-      {expanded ? (
-        <div className="w-[300px] relative z-50 flex flex-col gap-2 p-2 border rounded shadow cursor-default bg-slate-100">
-          <div className="flex flex-col gap-1.5">{getComments()}</div>
+          className="w-[300px] relative z-50 left-2 top-2 flex flex-col gap-2 p-2 border rounded shadow cursor-default bg-slate-100"
+          ref={wrapperRef}
+        >
+          {comments && comments.length && (
+            <div className="flex flex-col gap-1.5">{comments}</div>
+          )}
           {!thisThread && <div className="font-semibold">Add a Comment</div>}
           <div className="flex flex-col w-full">
             <form onSubmit={submitReply} className="flex-grow">
@@ -186,20 +193,13 @@ const Comments: FC<{
                 autoFocus
               />
             </form>
-            <div className="flex justify-between h-6">
-              <Select
-                // styles={{ height: '24px' }}
-                options={getOptions()}
-                isMulti={true}
-                className="h-6"
-              />
-              <div
-                className="flex items-center justify-center gap-1 text-sm transition-colors duration-150 ease-in transform rounded cursor-pointer hover:text-sky-600"
-                onClick={submitReply}
-              >
-                <span>Send</span>
-                <PaperAirplaneIcon className="w-4 h-4 rotate-90" />
-              </div>
+            <Select options={getOptions()} isMulti={true} />
+            <div
+              className="flex items-center self-end justify-center gap-1 mt-2 text-sm transition-colors duration-150 ease-in transform rounded cursor-pointer hover:text-sky-600"
+              onClick={submitReply}
+            >
+              <span>Send</span>
+              <PaperAirplaneIcon className="w-4 h-4 rotate-90" />
             </div>
           </div>
         </div>

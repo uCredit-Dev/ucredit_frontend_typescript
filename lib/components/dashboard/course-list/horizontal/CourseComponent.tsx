@@ -1,7 +1,7 @@
 import { useState, useEffect, FC, useRef } from 'react';
 import ReactTooltip from 'react-tooltip';
 import { useDispatch, useSelector } from 'react-redux';
-import { MinusIcon, ExclamationIcon, PlusIcon } from '@heroicons/react/outline';
+import { MinusIcon, ExclamationIcon } from '@heroicons/react/outline';
 import { Transition } from '@tailwindui/react';
 import clsx from 'clsx';
 import 'react-toastify/dist/ReactToastify.css';
@@ -24,7 +24,6 @@ import {
   updateDeleteCourseStatus,
   updateShowCourseInfo,
 } from '../../../../slices/popupSlice';
-import Comments from '../../Comments';
 
 /**
  * This is a course card displayed in the course list under each semester.
@@ -140,7 +139,7 @@ const CourseComponent: FC<{
         )}
       </div>
       <div
-        className="shadow w-max relative flex items-center justify-between text-xs mt-2 pl-1 p-0.5 w-1/5 max-w-yearheading rounded md:w-full bg-white"
+        className="shadow relative flex items-center justify-between text-xs mt-2 pl-1 p-0.5 w-1/5 max-w-yearheading rounded md:w-full bg-white"
         onMouseEnter={() => setDraggable(false)}
         onMouseLeave={() => setDraggable(true)}
         onClick={displayCourses}
