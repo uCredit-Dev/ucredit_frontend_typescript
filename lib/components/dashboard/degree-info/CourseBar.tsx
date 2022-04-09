@@ -30,7 +30,7 @@ const CourseBar: FC<{
   general: boolean;
   bgcolor: string;
   completed: boolean;
-  mode: ReviewMode;
+  mode?: ReviewMode;
 }> = ({ distribution, general, bgcolor, completed, mode }) => {
   const [plannedCredits, setPlannedCredits] = useState(
     distribution.fulfilled_credits,

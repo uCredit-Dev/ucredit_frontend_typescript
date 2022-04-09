@@ -1,4 +1,4 @@
-import { FC, useEffect, useRef, useState } from 'react';
+import React, { FC, useEffect, useRef, useState } from 'react';
 import {
   PaperAirplaneIcon,
   AnnotationIcon,
@@ -39,12 +39,20 @@ const Comments: FC<{
   const plan = useSelector(selectPlan);
   const reviewedPlan = useSelector(selectReviewedPlan);
   let wrapperRef = useRef(null);
-  const [comments, setComments] = useState([]);
+  const [comments, setComments] = useState<JSX.Element[]>([]);
 
   useEffect(() => {
-    setThisThread(threads[location]);
+    if (threads[location]) {
+      setThisThread(threads[location]);
+    }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [threads]);
+
+  useEffect(() => {
+    const commentsJSX = getComments();
+    setComments(commentsJSX);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [thisThread]);
 
   const handleChange = (e) => {
     setReplyText(e.target.value);
@@ -57,7 +65,6 @@ const Comments: FC<{
         dispatch(updateSelectedPlan({ ...plan, reviewers: reviewers }));
       })();
     }
-    setComments(getComments());
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
@@ -109,19 +116,20 @@ const Comments: FC<{
         },
       };
       const temp = await userService.postNewThread(data);
-      // console.log(temp);
       JSON.parse(JSON.stringify(threads));
       let threadCopy = JSON.parse(JSON.stringify(threads));
       threadCopy[location] = temp.data;
-      console.log(Object.values(threadCopy));
-      // console.log('copy is', threadCopy);
-      dispatch(updateThreads([...Object.values(threadCopy)] as ThreadType[]));
-      setThisThread(temp.data);
+      threadCopy[location].comments[0].commenter_id = {
+        _id: user._id,
+        name: user.name,
+      };
+      dispatch(updateThreads(Object.values(threadCopy)));
+      setThisThread(threadCopy[location]);
     }
   };
 
-  const getComments = () => {
-    if (!thisThread) return;
+  const getComments = (): JSX.Element[] => {
+    if (!thisThread) return [];
     const divs = thisThread.comments.map((c: CommentType) => {
       if (!c.visible_user_id.includes(user._id)) {
         return null;
@@ -161,7 +169,7 @@ const Comments: FC<{
     }
     let options = [];
     for (const s of ids) {
-      options.push({ value: s, label: s });
+      if (s !== user._id) options.push({ value: s, label: s });
     }
     return options;
   };
@@ -171,17 +179,18 @@ const Comments: FC<{
       className={clsx('absolute z-50 h-12 cursor-default translate-x-60', {
         'translate-y-[12px]': location.split(' ')[0] === 'Course',
         '-left-[125px] translate-y-7': location.split(' ')[0] === 'Year',
+        'z-0': !expanded && (hovered || thisThread),
       })}
     >
       {expanded ? (
         <div
-          className="w-[300px] relative z-50 left-2 top-2 flex flex-col gap-2 p-2 border rounded shadow cursor-default bg-slate-100"
+          className="w-[300px] relative z-90 left-2 top-2 flex flex-col gap-2 p-2 border rounded shadow cursor-default bg-slate-100"
           ref={wrapperRef}
         >
-          {comments && comments.length && (
+          {comments && comments.length ? (
             <div className="flex flex-col gap-1.5">{comments}</div>
-          )}
-          {!thisThread && <div className="font-semibold">Add a Comment</div>}
+          ) : null}
+          {!thisThread && <div className="font-semibold">Add a comment</div>}
           <div className="flex flex-col w-full">
             <form onSubmit={submitReply} className="flex-grow">
               <textarea

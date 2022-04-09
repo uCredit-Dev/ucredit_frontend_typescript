@@ -7,6 +7,7 @@ import FeedbackNotification from '../popups/FeedbackNotification';
 import {
   selectImportingStatus,
   selectPlan,
+  updateThreads,
 } from '../../slices/currentPlanSlice';
 import {
   selectDeletePlanStatus,
@@ -144,13 +145,15 @@ const Dashboard: React.FC<Props> = ({ plan, mode }) => {
     updateExperimentsForUser();
   }, [experimentList.length, updateExperimentsForUser]);
 
-  // useEffect(() => {
-  //   if (currPlan) {
-  //     userService.getPlanReviewers(currPlan._id).then((r) => {
-  //       console.log(r);
-  //     });
-  //   }
-  // }, [currPlan]);
+  useEffect(() => {
+    const toGet = mode === ReviewMode.View ? plan : currPlan;
+    if (toGet) {
+      userService.getThreads(toGet._id).then((r) => {
+        dispatch(updateThreads(r.data));
+      });
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [plan, mode, currPlan]);
 
   return (
     <>

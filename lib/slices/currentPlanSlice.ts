@@ -90,7 +90,6 @@ export const currentPlanSlice = createSlice({
       for (const t of Array.from(action.payload)) {
         state.threads[t.location_type + ' ' + t.location_id] = t;
       }
-      // console.log(state.threads);
     },
     updateReviewedPlan: (state: any, action: PayloadAction<Plan>) => {
       state.reviewedPlan = { ...action.payload };

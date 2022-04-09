@@ -11,7 +11,6 @@ import {
 } from '../../resources/commonTypes';
 import { Hoverable } from '../utils';
 import { TooltipPrimary } from '../utils/TooltipPrimary';
-import { fetchWrapper } from '../../utils';
 import { getAPI } from '../../resources/assets';
 import { useDispatch } from 'react-redux';
 import {
