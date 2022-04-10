@@ -1,14 +1,66 @@
-import { CheckIcon } from '@heroicons/react/outline';
+import { CheckIcon, BellIcon } from '@heroicons/react/outline';
 import { useEffect, useState } from 'react';
 import { useSelector } from 'react-redux';
 import ReactTooltip from 'react-tooltip';
 import { ReviewRequestStatus } from '../../../../resources/commonTypes';
 import { userService } from '../../../../services';
 import { selectPlan } from '../../../../slices/currentPlanSlice';
+import { toast } from 'react-toastify';
+import emailjs from '@emailjs/browser';
+import { getAPI } from '../../../../resources/assets';
 
 const CurrentReviewers = () => {
   const currentPlan = useSelector(selectPlan);
   const [jsx, setJsx] = useState([]);
+
+  const sendEmail = (fromName, toEmail, toName, reviewID) => {
+    var form = {
+      from_name: fromName,
+      to_email: toEmail,
+      to_name: toName,
+    };
+
+    const body = {
+      review_id: reviewID,
+      status: 'UNDERREVIEW',
+    };
+
+    fetch(getAPI(window) + '/planReview/changeStatus', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(body),
+    })
+      .then((response) => {
+        if (response.status === 200) {
+          // Status successfully changed to UNDERREVIEW
+          emailjs
+            .send(
+              'service_cami1cj',
+              'template_kilkjhv',
+              form,
+              'OYZ6l2hEt-shlZ7K1',
+            )
+            .then((result) => {
+              toast.success(
+                'Plan successfully sent to ' + toName + ' for review!',
+                {
+                  autoClose: 5000,
+                  closeOnClick: false,
+                },
+              );
+            });
+        }
+      })
+      .catch((err) => {
+        // Error in /changeStatus call
+        toast.error('Plan failed to send to ' + toName + '.', {
+          autoClose: 5000,
+          closeOnClick: false,
+        });
+      });
+  };
 
   useEffect(() => {
     (async () => {
@@ -27,22 +79,24 @@ const CurrentReviewers = () => {
           data-tip="Pending"
         />
       );
-    } else if (status === ReviewRequestStatus.Accepted) {
+    } else if (status !== ReviewRequestStatus.Pending) {
       return <CheckIcon className="w-5 h-5 tooltip" data-tip="Accepted" />;
     }
   };
 
+  const makeOnClickHandler = (reviewee_name, email, name, review_id) => () =>
+    sendEmail(reviewee_name, email, name, review_id); // Saves temporal values
+
   const getElements = async (data: any[]) => {
     const elements = [];
-    for (const { reviewer_id, status } of data) {
-      const { _id, name } = (await userService.getUser(reviewer_id._id))
-        .data[0];
+    for (const { reviewer_id, status, reviewee_id, _id } of data) {
+      const reviewer = (await userService.getUser(reviewer_id._id)).data[0];
+      const reviewee = (await userService.getUser(reviewee_id)).data[0];
       elements.push(
         <div
-          className="flex flex-row items-center justify-between pt-2"
-          key={_id}
+          className="flex flex-row items-center space-between pt-2"
+          key={reviewer._id}
         >
-          <p>{name}</p>
           <div className="flex flex-row">
             {false && ( // requesting
               <img
@@ -56,6 +110,20 @@ const CurrentReviewers = () => {
               {getSVG(status)}
             </div>
           </div>
+          <p className="pl-2 justify-start">{reviewer.name}</p>
+          {status !== 'PENDING' ? (
+            <button className="ml-auto">
+              <BellIcon
+                className="h-5"
+                onClick={makeOnClickHandler(
+                  reviewee.name,
+                  reviewer.email,
+                  reviewer.name,
+                  _id,
+                )}
+              ></BellIcon>
+            </button>
+          ) : null}
         </div>,
       );
     }

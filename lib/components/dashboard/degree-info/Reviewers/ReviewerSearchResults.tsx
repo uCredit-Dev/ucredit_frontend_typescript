@@ -32,7 +32,7 @@ const ReviewersSearchResults: FC<{
 
   const isReviewer = (id: string) => {
     for (const { reviewer_id, status, _id } of planReviewers) {
-      if (reviewer_id._id === id && status === ReviewRequestStatus.Accepted)
+      if (reviewer_id._id === id && status !== ReviewRequestStatus.Pending)
         return _id;
     }
     return '';
