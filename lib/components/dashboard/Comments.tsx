@@ -50,7 +50,7 @@ const Comments: FC<{
 
   useEffect(() => {
     const commentsJSX = getComments();
-    setComments(commentsJSX);
+    setComments(commentsJSX.filter((el) => el !== null));
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [thisThread]);
 
@@ -225,7 +225,7 @@ const Comments: FC<{
             </div>
           </div>
         </div>
-      ) : thisThread ? (
+      ) : thisThread && comments.length > 0 ? (
         <ChatAlt2Icon
           className="absolute z-0 w-4 h-4 mt-2 text-black transition duration-150 ease-in transform rounded-md outline-none cursor-pointer stroke-2 hover:scale-110"
           onClick={() => setExpanded(true)}
