@@ -82,7 +82,7 @@ const Search: FC = () => {
               'flex flex-col rounded-l bg-gray-200 flex-none border-r-2 tight:border-0 border-gray-300 tight:w-auto w-80'
             }
           >
-            <div className="h-full">
+            <div className="h-full overflow-y-auto">
               {!hideResults && (
                 <>
                   <Form setSearching={setSearching} />

@@ -267,7 +267,9 @@ const Cart: FC<{ allCourses: SISRetrievedCourse[] }> = (props) => {
               <EyeOffIcon className="w-6 h-6 text-gray-500 stroke-2" />
             </div>
           </div>
-          <CourseDisplay cart={true} />
+          <div className="min-h-80">
+            <CourseDisplay cart={true} />
+          </div>
           {/** */}
           <div
             className={
