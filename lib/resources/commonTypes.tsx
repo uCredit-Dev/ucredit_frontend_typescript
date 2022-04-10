@@ -98,7 +98,7 @@ export type Plan = {
   user_id: string;
   numYears: number;
   years: Year[];
-  reviewers: string[];
+  reviewers: any[];
 };
 
 type Affiliation = 'STUDENT' | 'FACULTY' | 'STAFF';
@@ -259,3 +259,24 @@ export enum ReviewMode {
   Edit = 'edit',
   None = '',
 }
+
+export type ThreadType = {
+  plan_id: string;
+  resolved: boolean;
+  location_type: string;
+  location_id: string;
+  comments: CommentType[];
+  _id: string;
+};
+
+export type CommentType = {
+  commenter_id: {
+    name: string;
+    _id: string;
+  };
+  visible_user_id: string[];
+  thread_id: string;
+  message: string;
+  date: string;
+  _id: string;
+};

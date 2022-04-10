@@ -60,7 +60,9 @@ const UserSection: React.FC<Props> = ({ mode }) => {
             }
             className="flex flex-row items-center justify-center w-24 mr-3 transition duration-200 ease-in transform bg-white border border-gray-200 rounded cursor-pointer select-none hover:shadow-md h-9 focus:outline-none"
           >
-            {mode}
+            {mode === DashboardMode.Advising
+              ? DashboardMode.Planning
+              : DashboardMode.Advising}
           </button>
         </div>
         {typeof window !== 'undefined' && window.innerWidth > 600 && (

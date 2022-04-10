@@ -67,6 +67,7 @@ const CurrentReviewers = () => {
       const reviewers = (await userService.getPlanReviewers(currentPlan._id))
         .data;
       setJsx(await getElements(reviewers));
+      // dispatch(updateSelectedPlan({ ...currentPlan, reviewers: reviewers }));
     })();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [currentPlan.reviewers]);

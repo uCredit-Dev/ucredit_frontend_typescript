@@ -1,8 +1,10 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { RootState } from '../appStore/store';
 import {
+  CommentType,
   DroppableType,
   Plan,
+  ThreadType,
   UserCourse,
 } from '../components/../resources/commonTypes';
 import { requirements } from '../components/dashboard/degree-info/distributionFunctions';
@@ -14,6 +16,8 @@ type CurrentPlanSlice = {
   totalCredits: number;
   droppables: DroppableType[];
   importing: boolean;
+  threads: any;
+  reviewedPlan: Plan;
 };
 
 const initialState: CurrentPlanSlice = {
@@ -32,6 +36,8 @@ const initialState: CurrentPlanSlice = {
   totalCredits: 0,
   droppables: [],
   importing: false,
+  threads: {},
+  reviewedPlan: null,
 };
 
 export const currentPlanSlice = createSlice({
@@ -79,6 +85,22 @@ export const currentPlanSlice = createSlice({
     updateImportingStatus: (state: any, action: PayloadAction<boolean>) => {
       state.importing = action.payload;
     },
+    updateThreads: (state: any, action: PayloadAction<ThreadType[]>) => {
+      state.threads = {};
+      for (const t of Array.from(action.payload)) {
+        state.threads[t.location_type + ' ' + t.location_id] = t;
+      }
+    },
+    updateReviewedPlan: (state: any, action: PayloadAction<Plan>) => {
+      state.reviewedPlan = { ...action.payload };
+    },
+    updateCurrentComment: (
+      state: any,
+      action: PayloadAction<[CommentType, string]>,
+    ) => {
+      let thread: ThreadType = state.threads[action.payload[1]];
+      thread.comments.push(action.payload[0]);
+    },
   },
 });
 
@@ -90,6 +112,9 @@ export const {
   updateDroppables,
   resetCurrentPlan,
   updateImportingStatus,
+  updateThreads,
+  updateReviewedPlan,
+  updateCurrentComment,
 } = currentPlanSlice.actions;
 
 // The function below is called a selector and allows us to select a value from
@@ -105,5 +130,8 @@ export const selectDroppables = (state: RootState) =>
   state.currentPlan.droppables;
 export const selectImportingStatus = (state: RootState) =>
   state.currentPlan.importing;
+export const selectThreads = (state: RootState) => state.currentPlan.threads;
+export const selectReviewedPlan = (state: RootState) =>
+  state.currentPlan.reviewedPlan;
 
 export default currentPlanSlice.reducer;

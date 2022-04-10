@@ -41,6 +41,7 @@ import {
   updatePlanList,
   updateCartInvokedBySemester,
 } from '../../../../slices/userSlice';
+import Comments from '../../Comments';
 
 /**
  * A component displaying all the courses in a specific semester.
@@ -72,6 +73,7 @@ const Semester: FC<{
   const [semesterCourses, setSemesterCourses] = useState<UserCourse[]>([]);
   const [inspectedArea, setInspectedArea] = useState<string>('None');
   const [openAPInfoBox, setOpenAPInfoBox] = useState<boolean>(false);
+  const [hovered, setHovered] = useState<boolean>(false);
 
   useEffect(() => {
     ReactTooltip.rebuild();
@@ -120,6 +122,9 @@ const Semester: FC<{
    * @returns a list of draggable react components
    */
   const getDraggables = (): any => {
+    // TODO: Search for a thread matching course id here.
+    // Do something similar for plan, year, and semester
+    // All threads should be retrieved on first load of the plan and stored in a map.
     return semesterCourses.map((course, index) => (
       <div key={course._id} className="w-auto mr-0">
         <CourseDraggable
@@ -128,6 +133,8 @@ const Semester: FC<{
           semesterName={semesterName}
           semesterYear={semesterYear}
           mode={mode}
+          // TODO: Add a thread prop here. Add a thread state in the course component.
+          // When retrieving threads make sure the threads are stored as a map. We can then not add further complexity when searching for threads since map find is O(1) if we check them here.
         />
       </div>
     ));
@@ -432,9 +439,18 @@ const Semester: FC<{
     <>
       {!display ? null : (
         <div
-          onMouseLeave={() => setOpenAPInfoBox(false)}
+          onMouseLeave={() => {
+            setOpenAPInfoBox(false);
+            setHovered(false);
+          }}
+          onMouseEnter={() => setHovered(true)}
           className="min-w-[15rem] max-w-[40rem] w-min mx-4"
         >
+          <Comments
+            location={'Semester ' + semesterYear._id + semesterName}
+            hovered={hovered}
+            mode={mode}
+          />
           <div className="flex flex-col font-medium max-w-yearheading h-yearheading">
             <div className="flex flex-row items-center justify-between px-2 py-1 bg-white h-yearheading1">
               <div className="flex flex-row items-center h-auto gap-3 font-normal">
@@ -444,7 +460,12 @@ const Semester: FC<{
             </div>
             <div className="w-full h-px bg-primary"></div>
           </div>
-          <div id={semesterName + '|' + semesterYear._id} className="mr-11">
+          <div
+            id={semesterName + '|' + semesterYear._id}
+            // className="pr-11"
+            onMouseEnter={() => setHovered(false)}
+            onMouseLeave={() => setHovered(true)}
+          >
             <Droppable
               droppableId={semesterName + '|' + semesterYear._id}
               type="COURSE"

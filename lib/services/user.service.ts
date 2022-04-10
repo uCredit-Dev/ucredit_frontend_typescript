@@ -68,6 +68,21 @@ const getPlanReviewers = (plan_id: string, cb = undefined) => {
     .then((res) => handleResponse(res, cb));
 };
 
+const postNewThread = (data: any) => {
+  return fetchWrapper
+    .post(`${getAPI(window)}/thread/new`, data).then(handleResponse);
+}
+
+const getThreads = (id: string) => {
+  return fetchWrapper.get(`${getAPI(window)}/thread/getByPlan/${id}`)
+    .then(handleResponse);
+};
+
+
+const postNewComment = (data: any, cb = undefined) => {
+  return fetchWrapper
+  .post(`${getAPI(window)}/thread/reply`, data).then(handleResponse);
+};
 const changeReviewStatus = (review_id, status, cb = undefined) => {
   return fetchWrapper
     .post(`${getAPI(window)}/planReview/changeStatus`, {
@@ -78,15 +93,14 @@ const changeReviewStatus = (review_id, status, cb = undefined) => {
 };
 
 const handleResponse = (res, cb = undefined) => {
+  if (!res) return;
   return res.text().then((text) => {
     const data = text && JSON.parse(text);
-
     if (cb) cb(res.status);
     if (!res.ok) {
       const error = (data && data.message) || res.statusText;
       return Promise.reject(error);
     }
-
     return data;
   });
 };
@@ -100,5 +114,8 @@ export const userService = {
   removeReview,
   getReviewerPlans,
   getPlanReviewers,
+  postNewThread,
+  getThreads,
+  postNewComment,
   changeReviewStatus,
 };
