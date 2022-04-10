@@ -70,13 +70,16 @@ const SearchList: FC<{
         if (
           v.term === searchFilters.term + ' ' + searchFilters.year ||
           (searchFilters.term === 'All' &&
-            searchFilters.year === currentPlan.years[0].year)
+            (searchFilters.year === currentPlan.years[0].year ||
+              searchFilters.year.toString() === v.term.split(' ')[1]))
         ) {
           toDisplay.push(
             <div
               key={inspecting.number + v.term + versionNum}
               className="transition duration-200 ease-in transform hover:scale-105"
-              onClick={() => setHideResults(true)}
+              onClick={() =>
+                window.innerWidth < 1200 ? setHideResults(true) : null
+              }
             >
               <CourseCard course={inspecting} version={versionNum} />
             </div>,

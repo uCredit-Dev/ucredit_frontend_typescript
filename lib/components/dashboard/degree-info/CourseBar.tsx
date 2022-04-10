@@ -6,7 +6,7 @@ import {
   selectDistributions,
 } from '../../../slices/currentPlanSlice';
 import { requirements } from './distributionFunctions';
-import { CheckCircleIcon } from '@heroicons/react/solid';
+import { CheckCircleIcon, ExclamationIcon } from '@heroicons/react/solid';
 import ReactTooltip from 'react-tooltip';
 import {
   updateSelectedDistribution,
@@ -132,7 +132,9 @@ const CourseBar: FC<{
         {section}
         <div>
           {remainingCredits === 0 && completed ? (
-            <CheckCircleIcon className="w-4 h-5 ml-1 stroke-2" />
+            <CheckCircleIcon className="w-4 h-5 mt-1 ml-1 stroke-2" />
+          ) : remainingCredits === 0 ? (
+            <ExclamationIcon className="w-4 h-5 mt-1 ml-1 stroke-2" />
           ) : null}
         </div>
       </div>

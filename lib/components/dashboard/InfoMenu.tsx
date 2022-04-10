@@ -1,6 +1,5 @@
 import { FC, useEffect, useState } from 'react';
 import Distributions from './degree-info/Distributions';
-import FineDistribution from './degree-info/FineDistribution';
 import CourseBar from './degree-info/CourseBar';
 import {
   checkRequirementSatisfied,
@@ -34,7 +33,7 @@ interface Props {
  * Info menu shows degree plan and degree information.
  * Hidden on default.
  */
-const InfoMenu: FC<Props> = ({ plan, mode }) => {
+const InfoMenu: FC<Props> = ({ plan }) => {
   const dispatch = useDispatch();
   const distributions = useSelector(selectDistributions);
   const currentPlan: Plan = useSelector(selectPlan);
@@ -42,7 +41,7 @@ const InfoMenu: FC<Props> = ({ plan, mode }) => {
   const currPlanCourses = useSelector(selectCurrentPlanCourses);
 
   const [infoOpen, setInfoOpen] = useState(false);
-  const [showDistributions, setShowDistributions] = useState<boolean[]>(
+  const [showDistributions] = useState<boolean[]>(
     new Array(distributions.length),
   );
   const [calculated, setCalculated] = useState<boolean>(false);
@@ -138,55 +137,14 @@ const InfoMenu: FC<Props> = ({ plan, mode }) => {
         });
         return (
           <div key={pair[0] + pair[1] + i}>
-            {pair[1].map((dis, index) => {
-              if (index === 0) {
-                return (
-                  //helper function
-                  <div key={dis.name + index + dis.expr}>
-                    <CourseBar
-                      distribution={dis}
-                      general={true}
-                      bgcolor={'skyblue'}
-                      completed={completed}
-                      mode={mode}
-                    />
-                    {pair[1].length > 2 && (
-                      <button
-                        className=""
-                        onClick={() => {
-                          showDistributions[i] = !showDistributions[i];
-                          setShowDistributions([...showDistributions]);
-                        }}
-                      >
-                        Collapse all
-                      </button>
-                    )}
-                  </div>
-                );
-              } else {
-                return (
-                  <div key={dis.name + index + dis.expr}>
-                    <FineDistribution
-                      dis={dis}
-                      openSignal={showDistributions[i]}
-                    />
-                  </div>
-                );
-              }
-            })}
-            {/* {pair[1].length > 1 ? (
-              <button
-                onClick={() => {
-                  changeDistributionVisibility(i);
-                }}
-                className={clsx(
-                  'mb-2 underline text-sm focus:outline-none transform hover:scale-101 transition duration-200 ease-in',
-                  { hidden: !distributionOpen },
-                )}
-              >
-                {getDistributionText(i)}
-              </button>
-            ) : null} */}
+            <div key={pair[1][0].name + 0 + pair[1][0].expr}>
+              <CourseBar
+                distribution={pair[1][0]}
+                general={true}
+                bgcolor={'skyblue'}
+                completed={completed}
+              />
+            </div>
           </div>
         );
       },
