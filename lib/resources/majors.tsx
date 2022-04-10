@@ -1851,7 +1851,6 @@ const bsCS_Old: Major = {
             '<b>2 Upper Level Classifications:</b><p>At least one upper level course in two of these four different classification</p> ' +
             'areas: Applications(CSCI-APPL), Systems(CSCI-SYST), Software(CSCI-SOFT) and Reasoning(CSCI-RSNG)',
           required_credits: 6,
-          exclusive: true,
           criteria:
             'CSCI-APPL[T]^OR^CSCI-SYST[T]^OR^CSCI-SOFT[T]^OR^CSCI-RSNG[T]',
         },
@@ -2003,7 +2002,6 @@ const bsCS_New: Major = {
             '<b>2 Upper Level Classifications:</b><p>At least one upper level course in two of these four different classification</p> ' +
             'areas: Applications(CSCI-APPL), Systems(CSCI-SYST), Software(CSCI-SOFT) and Reasoning(CSCI-RSNG)',
           required_credits: 6,
-          exclusive: true,
           criteria:
             'CSCI-APPL[T]^OR^CSCI-SYST[T]^OR^CSCI-SOFT[T]^OR^CSCI-RSNG[T]',
         },

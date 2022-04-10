@@ -68,6 +68,15 @@ const getPlanReviewers = (plan_id: string, cb = undefined) => {
     .then((res) => handleResponse(res, cb));
 };
 
+const changeReviewStatus = (review_id, status, cb = undefined) => {
+  return fetchWrapper
+    .post(`${getAPI(window)}/planReview/changeStatus`, {
+      review_id,
+      status,
+    })
+    .then((res) => handleResponse(res, cb));
+};
+
 const handleResponse = (res, cb = undefined) => {
   return res.text().then((text) => {
     const data = text && JSON.parse(text);
@@ -91,4 +100,5 @@ export const userService = {
   removeReview,
   getReviewerPlans,
   getPlanReviewers,
+  changeReviewStatus,
 };
