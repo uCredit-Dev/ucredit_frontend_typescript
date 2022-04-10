@@ -79,10 +79,7 @@ const CurrentReviewers = () => {
           data-tip="Pending"
         />
       );
-    } else if (
-      status === ReviewRequestStatus.Accepted ||
-      status === ReviewRequestStatus.UnderReview
-    ) {
+    } else if (status !== ReviewRequestStatus.Pending) {
       return <CheckIcon className="w-5 h-5 tooltip" data-tip="Accepted" />;
     }
   };

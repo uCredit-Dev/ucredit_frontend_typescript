@@ -1,4 +1,5 @@
 interface Props {
+  children: any;
   width: number;
 }
 
