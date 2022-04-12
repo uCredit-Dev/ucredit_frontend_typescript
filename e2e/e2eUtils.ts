@@ -1,9 +1,9 @@
 import axios from 'axios';
-import { API_URL, TEST_ID } from './e2eFixtures';
+import { API_URL } from './e2eFixtures';
 
-export const deleteUser = async () => {
+export const deleteUser = async (user_id) => {
   try {
-    await axios.delete(`${API_URL}/api/user/${TEST_ID}`);
+    await axios.delete(`${API_URL}/api/user/${user_id}`);
   } catch (e) {
     // Do nothing
   }
