@@ -8,3 +8,9 @@ export const deleteUser = async () => {
     // Do nothing
   }
 };
+
+export const confirmPlanReview = async (reviewer_id) => {
+  await axios.post(`${API_URL}/api/backdoor/planReview/confirm`, {
+    reviewer_id,
+  });
+};
