@@ -146,12 +146,14 @@ const Dashboard: React.FC<Props> = ({ plan, mode }) => {
   }, [experimentList.length, updateExperimentsForUser]);
 
   useEffect(() => {
-    const toGet = mode === ReviewMode.View ? plan : currPlan;
-    if (toGet) {
-      userService.getThreads(toGet._id).then((r) => {
-        dispatch(updateThreads(r.data));
-      });
-    }
+    (async () => {
+      const toGet = mode === ReviewMode.View ? plan : currPlan;
+      if (toGet) {
+        const res = await userService.getThreads(toGet._id);
+        console.log(res.data);
+        dispatch(updateThreads(res.data));
+      }
+    })();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [plan, mode, currPlan]);
 

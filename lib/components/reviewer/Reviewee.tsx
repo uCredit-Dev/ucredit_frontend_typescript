@@ -52,11 +52,6 @@ const Reviewee: React.FC<Props> = ({
 
   const handleViewPlan = async (e, plan: Plan) => {
     e.stopPropagation();
-    const threads = await axios.get(
-      `${getAPI(window)}/thread/getByPlan/${plan._id}`,
-    );
-    dispatch(updateThreads(threads.data.data));
-    dispatch(updateReviewedPlan(plan));
     router.push(`/dashboard?plan=${plan._id}&mode=view`);
   };
 
