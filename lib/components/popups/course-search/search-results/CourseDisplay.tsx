@@ -148,7 +148,7 @@ const CourseDisplay: FC<{ cart: boolean }> = ({ cart }) => {
 
   if (version === 'None') {
     return (
-      <div className="flex flex-col p-5 w-full bg-gray-200 rounded-r overflow-y-auto h-full">
+      <div className="flex flex-col p-5 w-full bg-gray-200 rounded-r overflow-y-auto">
         <div className="flex flex-col items-center justify-center w-full h-full font-normal">
           No selected course!
         </div>
@@ -156,13 +156,13 @@ const CourseDisplay: FC<{ cart: boolean }> = ({ cart }) => {
     );
   } else if (placeholder) {
     return (
-      <div className="flex flex-col p-5 w-full h-full bg-gray-200 rounded-r overflow-y-auto thin:min-h-40">
+      <div className="flex flex-col p-5 w-full bg-gray-200 rounded-r overflow-y-auto thin:min-h-40">
         <Placeholder addCourse={addCourse} />
       </div>
     );
   } else {
     return (
-      <div className="flex flex-col p-5 w-full h-full bg-gray-200 rounded-r overflow-y-auto thin:min-h-40">
+      <div className="flex flex-col p-5 w-full bg-gray-200 rounded-r overflow-y-auto thin:min-h-40">
         <SisCourse
           inspectedArea={inspectedArea}
           setInspectedArea={setInspectedArea}
