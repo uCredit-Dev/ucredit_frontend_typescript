@@ -1,17 +1,8 @@
-import { API_URL, TEST_ID, URL, HOME_PAGE } from './e2eFixtures';
+import { URL, HOME_PAGE } from './e2eFixtures';
 import { test, expect } from '@playwright/test';
-import axios from 'axios';
 
 test.beforeEach(async ({ page }) => {
   await page.goto(URL);
-});
-
-test.afterEach(async () => {
-  try {
-    await axios.delete(`${API_URL}/api/user/${TEST_ID}`);
-  } catch (e) {
-    // Do nothing
-  }
 });
 
 test.describe('Landing Page', () => {
