@@ -161,7 +161,7 @@ const HandlePlanShareDummy = () => {
     shouldAdd,
     toAdd,
     user._id,
-    currentPlan,
+    currentPlan._id,
     currentCourses,
     cached,
     generatePlanAddStatus,

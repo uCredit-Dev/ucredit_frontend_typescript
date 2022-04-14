@@ -150,12 +150,11 @@ const Dashboard: React.FC<Props> = ({ plan, mode }) => {
       const toGet = mode === ReviewMode.View ? plan : currPlan;
       if (toGet) {
         const res = await userService.getThreads(toGet._id);
-        console.log(res.data);
         dispatch(updateThreads(res.data));
       }
     })();
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [plan, mode, currPlan]);
+  }, [plan, mode, currPlan._id]);
 
   return (
     <>
