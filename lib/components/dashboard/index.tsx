@@ -148,6 +148,7 @@ const Dashboard: React.FC<Props> = ({ plan, mode }) => {
   useEffect(() => {
     (async () => {
       const toGet = mode === ReviewMode.View ? plan : currPlan;
+
       if (toGet) {
         const res = await userService.getThreads(toGet._id);
         dispatch(updateThreads(res.data));
