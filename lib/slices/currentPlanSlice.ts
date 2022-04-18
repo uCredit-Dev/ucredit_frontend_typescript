@@ -18,6 +18,7 @@ type CurrentPlanSlice = {
   importing: boolean;
   threads: any;
   reviewedPlan: Plan;
+  selectedThread: string;
 };
 
 const initialState: CurrentPlanSlice = {
@@ -38,6 +39,7 @@ const initialState: CurrentPlanSlice = {
   importing: false,
   threads: {},
   reviewedPlan: null,
+  selectedThread: null,
 };
 
 export const currentPlanSlice = createSlice({
@@ -101,6 +103,12 @@ export const currentPlanSlice = createSlice({
       let thread: ThreadType = state.threads[action.payload[1]];
       thread.comments.push(action.payload[0]);
     },
+    updateSelectedThread: (
+      state: any,
+      action: PayloadAction<String>
+    ) => {
+      state.selectedThread = action.payload;
+    }
   },
 });
 
@@ -115,6 +123,7 @@ export const {
   updateThreads,
   updateReviewedPlan,
   updateCurrentComment,
+  updateSelectedThread,
 } = currentPlanSlice.actions;
 
 // The function below is called a selector and allows us to select a value from
@@ -133,5 +142,7 @@ export const selectImportingStatus = (state: RootState) =>
 export const selectThreads = (state: RootState) => state.currentPlan.threads;
 export const selectReviewedPlan = (state: RootState) =>
   state.currentPlan.reviewedPlan;
+export const selectSelectedThread = (state: RootState) => 
+  state.currentPlan.selectedThread;
 
 export default currentPlanSlice.reducer;

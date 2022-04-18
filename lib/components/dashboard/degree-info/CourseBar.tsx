@@ -114,7 +114,7 @@ const CourseBar: FC<{
     <>
       <div
         className={clsx(
-          'flex flex-row text mb-1 rounded-lg whitespace-nowrap overflow-hidden overflow-ellipsis items-center',
+          'z-0 flex flex-row text mb-1 rounded-lg whitespace-nowrap overflow-hidden overflow-ellipsis items-center',
           {
             'font-bold': general,
           },

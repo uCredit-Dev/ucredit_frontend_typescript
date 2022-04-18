@@ -16,9 +16,11 @@ import {
 import {
   selectPlan,
   selectReviewedPlan,
+  selectSelectedThread,
   selectThreads,
   updateCurrentComment,
   updateSelectedPlan,
+  updateSelectedThread,
   updateThreads,
 } from '../../slices/currentPlanSlice';
 import { userService } from '../../services';
@@ -38,8 +40,16 @@ const Comments: FC<{
   const user = useSelector(selectUser);
   const plan = useSelector(selectPlan);
   const reviewedPlan = useSelector(selectReviewedPlan);
+  const selectedThread = useSelector(selectSelectedThread);
   let wrapperRef = useRef(null);
   const [comments, setComments] = useState<JSX.Element[]>([]);
+
+  useEffect(() => {
+    if (selectedThread === location) {
+      setExpanded(true);
+      dispatch(updateSelectedThread(null));
+    }
+  }, [selectedThread]);
 
   useEffect(() => {
     if (threads[location]) {

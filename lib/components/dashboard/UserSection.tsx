@@ -7,6 +7,7 @@ import { resetCurrentPlan } from '../../slices/currentPlanSlice';
 import { getAPI, getLoginCookieVal } from '../../resources/assets';
 import { DashboardMode } from '../../resources/commonTypes';
 import Notification from './Notification';
+import CommentsOverview from './CommentsOverview';
 
 interface Props {
   mode: DashboardMode;
@@ -70,6 +71,7 @@ const UserSection: React.FC<Props> = ({ mode }) => {
             Logged in as {user.name}!
           </div>
         )}
+        <CommentsOverview />
         <Notification />
         {user._id === 'guestUser' ? (
           <a
