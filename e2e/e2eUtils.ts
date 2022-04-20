@@ -15,7 +15,7 @@ export const newPage = async (url = URL) => {
 
 export const screenshot = async (page: Page, name: string) => {
   await page.screenshot({ path: `./e2e/screenshots/${name}.png` });
-};
+}
 
 export const deleteUser = async (user_id) => {
   try {

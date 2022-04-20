@@ -7,6 +7,7 @@ import {
   HOME_PAGE,
   LOGIN_PAGE,
   PLAN_OVERVIEW,
+  REVIEWER_ID,
   TEST_ID,
 } from './e2eFixtures';
 import { newPage } from './e2eUtils';
@@ -16,7 +17,7 @@ export const AFTER_LOGIN_PAGE = async (page) => {
   await page.click(LOGIN_BUTTON_SELECTOR);
 };
 
-export const AFTER_LOGIN = async (page, loginId = null) => {
+export const AFTER_LOGIN = async (page, loginId) => {
   await AFTER_LOGIN_PAGE(page);
   const {
     JHU_LOGIN_BUTTON_SELECTOR,
@@ -24,11 +25,11 @@ export const AFTER_LOGIN = async (page, loginId = null) => {
     CONFIRM_LOGIN_BUTTON_SELECTOR,
   } = LOGIN_PAGE;
   await page.click(JHU_LOGIN_BUTTON_SELECTOR);
-  await page.type(LOGIN_INPUT_SELECTOR, loginId ? loginId : TEST_ID);
+  await page.type(LOGIN_INPUT_SELECTOR, loginId);
   await page.click(CONFIRM_LOGIN_BUTTON_SELECTOR);
 };
 
-export const AFTER_PLAN_CREATED = async (page, loginId = null) => {
+export const AFTER_PLAN_CREATED = async (page, loginId = TEST_ID) => {
   await AFTER_LOGIN(page, loginId);
   const {
     SELECT_MAJOR_INPUT_SELECTOR,
@@ -40,7 +41,7 @@ export const AFTER_PLAN_CREATED = async (page, loginId = null) => {
   await page.locator(ADD_MAJOR_BUTTON_SELECTOR).click();
 };
 
-export const AFTER_PLAN_OVERVIEW_CLICKED = async (page, loginId = null) => {
+export const AFTER_PLAN_OVERVIEW_CLICKED = async (page, loginId = TEST_ID) => {
   await AFTER_PLAN_CREATED(page, loginId);
   const { PLAN_OVERVIEW_BUTTON_SELECTOR } = DASHBOARD_PAGE;
   await page.locator(PLAN_OVERVIEW_BUTTON_SELECTOR).click();
@@ -48,12 +49,11 @@ export const AFTER_PLAN_OVERVIEW_CLICKED = async (page, loginId = null) => {
 
 export const AFTER_REVIEWER_REQUESTED = async (
   page,
-  loginId = null,
-  reviewerId = null,
+  loginId = TEST_ID,
+  reviewerId = REVIEWER_ID,
 ) => {
   const reviewerPage = await newPage();
   await AFTER_PLAN_OVERVIEW_CLICKED(reviewerPage, reviewerId);
-
   await AFTER_PLAN_OVERVIEW_CLICKED(page, loginId);
   const {
     ADD_REVIEWER_ICON_SELECTOR,

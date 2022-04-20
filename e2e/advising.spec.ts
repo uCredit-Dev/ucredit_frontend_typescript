@@ -2,7 +2,6 @@
  * Advising E2E Tests: All tests related to plan reviews and commenting.
  */
 
-
 import { test, expect } from '@playwright/test';
 import { URL, TEST_ID, PLAN_OVERVIEW, REVIEWER_ID } from './e2eFixtures';
 import {
@@ -24,9 +23,15 @@ test.describe('Request Reviewer', async () => {
     await expect(page.locator(DEGREE_PROGRESS_SELECTOR)).toBeVisible();
   });
 
-  test('Should be able to search for reviewers', async ({ page }) => {
-    await AFTER_REVIEWER_REQUESTED(page, TEST_ID, REVIEWER_ID);
+  test('Should be able to search and add reviewer', async ({ page }) => {
+    await AFTER_REVIEWER_REQUESTED(page);
     const { ADD_REVIEWER_SUCCEEDED_SELECTOR } = PLAN_OVERVIEW;
     await expect(page.locator(ADD_REVIEWER_SUCCEEDED_SELECTOR)).toBeVisible();
   });
+});
+
+test.describe('Reviewer Flow', async () => {
+  test('Should be able to see reviewee after accepting request', async ({
+    page,
+  }) => {});
 });
