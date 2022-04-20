@@ -49,6 +49,7 @@ const Comments: FC<{
       setExpanded(true);
       dispatch(updateSelectedThread(null));
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [selectedThread]);
 
   useEffect(() => {

@@ -31,6 +31,7 @@ const CommentsOverview: React.FC = () => {
       return getComments(e);
     });
     setThreadJSX(ts);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, threadObjs);
 
   const getComments = (thisThread: ThreadType): JSX.Element => {
