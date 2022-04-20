@@ -1,3 +1,6 @@
+/**
+ * Login Tests: All tests related to authentication/login flow.
+ */
 import {
   URL,
   LOGIN_PAGE,

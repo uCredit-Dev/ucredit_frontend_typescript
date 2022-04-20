@@ -1,3 +1,6 @@
+/**
+ * Landing Page Tests: All tests related to the landing page.
+ */
 import { URL, HOME_PAGE } from './e2eFixtures';
 import { test, expect } from '@playwright/test';
 
