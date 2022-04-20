@@ -31,3 +31,4 @@ yarn.lock
 /out/
 test-results/
 playwright-report/
+e2e/screenshots/
