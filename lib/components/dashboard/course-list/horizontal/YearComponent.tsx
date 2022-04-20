@@ -45,6 +45,10 @@ const YearComponent: FC<{
   mode: ReviewMode;
 }> = ({ id, year, courses, setDraggable, mode }) => {
   // Component state setup.
+  // console.log("id is: " + id);
+  // console.log("year is: " + year);
+  // console.log(courses);
+  // console.log("mode is: " + mode);
   const [fallCourses, setFallCourses] = useState<UserCourse[]>([]);
   const [springCourses, setSpringCourses] = useState<UserCourse[]>([]);
   const [winterCourses, setWinterCourses] = useState<UserCourse[]>([]);

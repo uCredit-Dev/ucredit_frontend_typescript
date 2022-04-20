@@ -1,6 +1,9 @@
 import { Dispatch, SetStateAction, useEffect, useState } from 'react';
 import clsx from 'clsx';
-import { EyeIcon, PencilAltIcon } from '@heroicons/react/outline';
+import {
+  EyeIcon,
+  PencilAltIcon,
+} from '@heroicons/react/outline';
 import { useRouter } from 'next/router';
 import { toast } from 'react-toastify';
 import {
@@ -21,6 +24,7 @@ import axios from 'axios';
 import { statusReadable } from '../../../pages/reviewer';
 import Dropdown from './Dropdown';
 import { userService } from '../../services';
+import PlanSummary from './PlanSummary';
 
 interface Props {
   userId: string;
@@ -201,6 +205,19 @@ const Reviewee: React.FC<Props> = ({
                       {({ hovered }) =>
                         hovered && (
                           <TooltipPrimary width={120}>Edit Plan</TooltipPrimary>
+                        )
+                      }
+                    </Hoverable>
+                    <Hoverable
+                      as={
+                          <PlanSummary plan={p}></PlanSummary>
+                      }
+                    >
+                      {({ hovered }) =>
+                        hovered && (
+                          <TooltipPrimary width={120}>
+                            View Summary
+                          </TooltipPrimary>
                         )
                       }
                     </Hoverable>
