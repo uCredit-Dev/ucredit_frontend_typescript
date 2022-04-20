@@ -103,12 +103,9 @@ export const currentPlanSlice = createSlice({
       let thread: ThreadType = state.threads[action.payload[1]];
       thread.comments.push(action.payload[0]);
     },
-    updateSelectedThread: (
-      state: any,
-      action: PayloadAction<String>
-    ) => {
+    updateSelectedThread: (state: any, action: PayloadAction<String>) => {
       state.selectedThread = action.payload;
-    }
+    },
   },
 });
 
@@ -142,7 +139,7 @@ export const selectImportingStatus = (state: RootState) =>
 export const selectThreads = (state: RootState) => state.currentPlan.threads;
 export const selectReviewedPlan = (state: RootState) =>
   state.currentPlan.reviewedPlan;
-export const selectSelectedThread = (state: RootState) => 
+export const selectSelectedThread = (state: RootState) =>
   state.currentPlan.selectedThread;
 
 export default currentPlanSlice.reducer;
