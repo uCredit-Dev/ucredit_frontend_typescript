@@ -4,7 +4,7 @@ import {
   selectThreads,
   updateFilteredThreads,
 } from '../../slices/currentPlanSlice';
-import { selectCommenters } from '../../slices/userSlice';
+import { selectCommenters, selectUser } from '../../slices/userSlice';
 import Dropdown from '../reviewer/Dropdown';
 
 interface Props {
@@ -14,11 +14,8 @@ interface Props {
 const CommenterToggle: React.FC<Props> = () => {
   const commenters = useSelector(selectCommenters);
   const threads = useSelector(selectThreads);
-  // const commenters = [
-  //   { name: 'test', _id: 'test' },
-  //   { name: 'test2', _id: 'test2' },
-  // ];
   const [selectedCommenters, setSelectedCommenters] = useState([]);
+  const user = useSelector(selectUser);
   const dispatch = useDispatch();
 
   useEffect(() => {
@@ -32,11 +29,13 @@ const CommenterToggle: React.FC<Props> = () => {
     const filtered = new Map();
     for (const [key, value] of Object.entries(threads)) {
       const { comments } = value as any;
-      const newComments = [];
+      let newComments = [];
       for (const { label } of selectedCommenters) {
-        newComments.push(
-          comments.filter((c) => c.commenter_id._id === label)[0],
+        const filteredComment = comments.filter(
+          (c) =>
+            c.commenter_id._id === label || c.commenter_id.name === user.name,
         );
+        if (filteredComment) newComments = [...newComments, ...filteredComment];
       }
       const newValue = JSON.parse(JSON.stringify(value));
       (newValue as any).comments = newComments;

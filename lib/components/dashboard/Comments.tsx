@@ -40,6 +40,7 @@ const Comments: FC<{
   const reviewedPlan = useSelector(selectReviewedPlan);
   let wrapperRef = useRef(null);
   const [comments, setComments] = useState<JSX.Element[]>([]);
+  const [visibleUsers, setVisibleUsers] = useState<String[]>([]);
 
   useEffect(() => {
     if (threads[location]) {
@@ -97,11 +98,14 @@ const Comments: FC<{
       return;
     }
     const planToAdd = reviewedPlan ? reviewedPlan : plan;
+    visibleUsers.push(user._id);
+    visibleUsers.push(planToAdd.user_id);
+    const visibleUsersBody = [...visibleUsers];
     if (thisThread) {
       const body = {
         comment: {
           commenter_id: user._id,
-          visible_user_id: [user._id, planToAdd.user_id],
+          visible_user_id: visibleUsersBody,
           thread_id: thisThread._id,
           message: replyText,
         },
@@ -124,7 +128,7 @@ const Comments: FC<{
         },
         comment: {
           commenter_id: user._id,
-          visible_user_id: [user._id, planToAdd.user_id],
+          visible_user_id: visibleUsersBody,
           message: replyText,
         },
       };
@@ -166,14 +170,29 @@ const Comments: FC<{
     return divs;
   };
 
+  // TODO: Handle more elegantly
   const getOptions = () => {
-    let ids;
+    let ids = [];
     if (thisThread) {
-      ids = thisThread.comments.length
-        ? thisThread.comments[0].visible_user_id
-        : [];
+      // if there are already comments here, we need to do one of the following
+      // 1. if the user is the commenter, show all reviewers
+      // 2. if the user is a reviewer, show the below
+      //     a. if one of the comments contains the user, show the max of all the reviewers included in the comments
+      //     b. if none of the comments contain the user, show only the user
+      thisThread.comments.forEach((comment) => {
+        if (comment.visible_user_id.includes(user._id)) {
+          comment.visible_user_id.forEach((uID) => {
+            if (!ids.includes(uID)) ids = [...ids, uID];
+          });
+        }
+      });
+      if (ids.length === 0) {
+        if (reviewedPlan && ReviewMode.View) ids.push(reviewedPlan.user_id);
+        if (ReviewMode.Edit) ids.push(user._id);
+      }
     } else if (mode === ReviewMode.View) {
-      ids = [user._id, reviewedPlan.user_id];
+      ids = [user._id];
+      if (reviewedPlan) ids.push(reviewedPlan.user_id);
     } else if (mode === undefined || mode === ReviewMode.None) {
       ids = [];
       const reviewers = plan.reviewers;
@@ -182,11 +201,15 @@ const Comments: FC<{
         ids.push(r.reviewer_id._id);
       }
     }
+    ids = ids.filter((el, i) => !ids.slice(i + 1, ids.length).includes(el));
     let options = [];
     for (const s of ids) {
       if (s !== user._id) options.push({ value: s, label: s });
     }
     return options;
+  };
+  const updateVisibleUsers = (event) => {
+    setVisibleUsers(event.map((el) => el.value));
   };
 
   return (
@@ -217,7 +240,11 @@ const Comments: FC<{
                 autoFocus
               />
             </form>
-            <Select options={getOptions()} isMulti={true} />
+            <Select
+              options={getOptions()}
+              isMulti={true}
+              onChange={updateVisibleUsers}
+            />
             <div
               className="flex items-center self-end justify-center gap-1 mt-2 text-sm transition-colors duration-150 ease-in transform rounded cursor-pointer hover:text-sky-600"
               onClick={submitReply}

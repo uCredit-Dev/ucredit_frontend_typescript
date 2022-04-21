@@ -154,7 +154,7 @@ const Dashboard: React.FC<Props> = ({ plan, mode }) => {
     (async () => {
       const toGet = mode === ReviewMode.View ? plan : currPlan;
 
-      if (toGet) {
+      if (toGet && toGet._id !== 'noPlan') {
         const res = await userService.getThreads(toGet._id);
         const commentersSet = new Set<string>();
         for (const thread of res.data) {

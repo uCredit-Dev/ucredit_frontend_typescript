@@ -91,6 +91,7 @@ export const currentPlanSlice = createSlice({
       state.threads = {};
       for (const t of Array.from(action.payload)) {
         state.threads[t.location_type + ' ' + t.location_id] = t;
+        state.filteredThreads[t.location_type + ' ' + t.location_id] = t;
       }
     },
     updateFilteredThreads: (state: any, action: any) => {
@@ -107,7 +108,9 @@ export const currentPlanSlice = createSlice({
       action: PayloadAction<[CommentType, string]>,
     ) => {
       let thread: ThreadType = state.threads[action.payload[1]];
+      let filteredThread: ThreadType = state.filteredThreads[action.payload[1]];
       thread.comments.push(action.payload[0]);
+      filteredThread.comments.push(action.payload[0]);
     },
   },
 });
