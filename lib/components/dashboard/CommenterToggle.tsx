@@ -4,7 +4,7 @@ import {
   selectThreads,
   updateFilteredThreads,
 } from '../../slices/currentPlanSlice';
-import { selectCommenters, selectUser } from '../../slices/userSlice';
+import { selectCommenters } from '../../slices/userSlice';
 import Dropdown from '../reviewer/Dropdown';
 
 interface Props {
@@ -17,7 +17,6 @@ const CommenterToggle: React.FC<Props> = () => {
   const [selectedCommenters, setSelectedCommenters] = useState(
     commenters.map(({ _id, name }) => ({ label: _id, content: name })),
   );
-  const user = useSelector(selectUser);
   const dispatch = useDispatch();
 
   useEffect(() => {
@@ -34,8 +33,7 @@ const CommenterToggle: React.FC<Props> = () => {
       const { comments } = value as any;
       for (const { label } of selectedCommenters) {
         const filteredComment = comments.filter(
-          (c) =>
-            c.commenter_id._id === label || c.commenter_id._id === user._id,
+          (c) => c.commenter_id._id === label,
         );
         for (const comment of filteredComment) {
           filteredComments.set(comment._id, comment);
@@ -53,7 +51,7 @@ const CommenterToggle: React.FC<Props> = () => {
     <div className="px-[100px] my-2">
       {commenters.length ? (
         <Dropdown
-          width={200}
+          width={400}
           multi={true}
           options={commenters.map(({ _id, name }) => ({
             label: _id,

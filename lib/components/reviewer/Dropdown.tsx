@@ -6,7 +6,12 @@ import {
   useRef,
   useState,
 } from 'react';
-import { ChevronDownIcon, XIcon } from '@heroicons/react/solid';
+import {
+  BackspaceIcon,
+  ChevronDownIcon,
+  RefreshIcon,
+  XIcon,
+} from '@heroicons/react/solid';
 import 'react-toastify/dist/ReactToastify.css';
 import { useClickOutside } from '../utils';
 
@@ -36,19 +41,8 @@ const Dropdown: React.FC<Props> = ({
   const [clickedOutside, setClickedOutside] = useClickOutside(ref);
 
   useEffect(() => {
-    if (typeof _default === 'string') {
-      const defaultOption = options.filter(({ label }) => label === _default);
-      if (defaultOption.length > 0) setSelected([defaultOption[0]]);
-      else setSelected([options[0]]);
-    } else if (Array.isArray(_default)) {
-      if (!multi) return;
-      const defaultOptions = [];
-      for (const d of _default) {
-        const defaultOption = options.filter(({ label }) => label === d);
-        if (defaultOption.length > 0) defaultOptions.push(defaultOption[0]);
-      }
-      setSelected(defaultOptions);
-    }
+    const res = processDefault(_default);
+    setSelected(res);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [_default]);
 
@@ -59,6 +53,24 @@ const Dropdown: React.FC<Props> = ({
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [clickedOutside]);
+
+  const processDefault = (_default) => {
+    let res;
+    if (typeof _default === 'string') {
+      const defaultOption = options.filter(({ label }) => label === _default);
+      if (defaultOption.length > 0) setSelected([defaultOption[0]]);
+      res = [options[0]];
+    } else if (Array.isArray(_default)) {
+      if (!multi) return;
+      const defaultOptions = [];
+      for (const d of _default) {
+        const defaultOption = options.filter(({ label }) => label === d);
+        if (defaultOption.length > 0) defaultOptions.push(defaultOption[0]);
+      }
+      res = defaultOptions;
+    }
+    return res;
+  };
 
   const handleExpand = (e) => {
     e.stopPropagation();
@@ -85,17 +97,18 @@ const Dropdown: React.FC<Props> = ({
 
   return (
     <div
-      className="relative pl-2 py-[2.5px] text-sm border rounded select-none z-50"
+      className="relative z-50 py-1 pl-2 pr-1 text-sm transition-colors duration-100 ease-in border rounded select-none group border-slate-200 hover:border-slate-300"
       style={{ width }}
       onClick={handleExpand}
       ref={ref}
     >
       <div className="flex items-center justify-between w-full">
-        <div className="flex flex-wrap flex-none w-full gap-1">
-          {multi
-            ? selected.map((s) => (
+        <div className="flex flex-wrap w-full gap-1">
+          {multi ? (
+            selected.length ? (
+              selected.map((s) => (
                 <span
-                  className="flex items-center h-4 gap-1 px-1 text-xs transition-shadow duration-100 ease-in rounded-sm bg-slate-200 hover:shadow"
+                  className="flex items-center h-5 gap-1 px-1 duration-100 ease-in rounded-sm transition-color bg-slate-200 hover:bg-slate-300"
                   key={s.label}
                 >
                   <p className="truncate" style={{ maxWidth: width }}>
@@ -112,17 +125,46 @@ const Dropdown: React.FC<Props> = ({
                       onChange(newSelected);
                     }}
                   >
-                    <XIcon className="w-3 h-3" />
+                    <XIcon className="w-3.5 h-3.5 text-slate-600" />
                   </div>
                 </span>
               ))
-            : selected.length && (selected[0].content || selected[0].label)}
+            ) : (
+              <span className="text-slate-400">Select...</span>
+            )
+          ) : (
+            selected.length && (selected[0].content || selected[0].label)
+          )}
         </div>
-        <ChevronDownIcon className="flex-none w-4 h-4 -translate-x-5 text-slate-600" />
+        <div className="flex items-center flex-none h-full gap-1 transition-colors duration-100 ease-in">
+          {multi && (
+            <div className="flex gap-1">
+              <div
+                onClick={(e) => {
+                  e.stopPropagation();
+                  setSelected(options);
+                  onChange(options);
+                }}
+              >
+                <RefreshIcon className="w-4 h-4 cursor-pointer text-slate-500 hover:text-slate-600" />
+              </div>
+              <div
+                onClick={(e) => {
+                  e.stopPropagation();
+                  setSelected([]);
+                  onChange([]);
+                }}
+              >
+                <BackspaceIcon className="w-4 h-4 cursor-pointer text-slate-500 hover:text-slate-600" />
+              </div>
+            </div>
+          )}
+          <ChevronDownIcon className="w-5 h-5 text-slate-500 group-hover:text-slate-600" />
+        </div>
       </div>
       {expanded && (
         <div
-          className="absolute bg-white border -translate-x-[9px] translate-y-1.5 rounded px-2 py-[2.5px] flex flex-col gap-1"
+          className="absolute bg-white border -translate-x-[9px] translate-y-2 border-slate-200 rounded px-2 py-[2.5px] flex flex-col gap-1"
           style={{ width }}
         >
           {options.map((option) => {
