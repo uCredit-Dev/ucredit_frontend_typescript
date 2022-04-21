@@ -63,7 +63,8 @@ const ActionBar: FC = () => {
   // Updates current plan every time current plan changes
   useEffect((): void => {
     setPlanName(currentPlan.name);
-  }, [currentPlan]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [currentPlan._id]);
 
   /**
    * Updates temporary plan name and notifies useffect on state change to update db plan name with debounce.

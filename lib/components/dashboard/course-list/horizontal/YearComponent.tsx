@@ -88,7 +88,7 @@ const YearComponent: FC<{
     // Tracks total number of credits every year
     updateYearCreditDistribution();
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [courses, currentPlan, currentPlan.name]);
+  }, [courses, currentPlan._id, currentPlan.name]);
 
   useEffect(() => {
     if (showingCart) setCollapse(false);

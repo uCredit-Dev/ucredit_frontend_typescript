@@ -61,7 +61,7 @@ const VCourseList: FC = () => {
       setCurrentPlanId(currentPlan._id);
       if (year.courses.length === 0 || currentPlanId === currentPlan._id) {
         // We simply update courses
-        year.courses.forEach((course: string) => {
+        year.courses.forEach((course: UserCourse) => {
           const courseObj: UserCourse = getUserCourse(course);
           if (courseObj._id === 'invalid_course') return;
           totalCredits += courseObj.credits;
@@ -97,7 +97,7 @@ const VCourseList: FC = () => {
       handleNonFetch(yearIndex, updateNonFetch, totCourses, totalCredits);
     });
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [currentPlan, currentPlan._id, searching, placeholder]);
+  }, [currentPlan._id, searching, placeholder]);
 
   /**
    * Helper function to handle non-fetch scenarios

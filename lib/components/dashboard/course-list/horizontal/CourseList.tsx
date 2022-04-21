@@ -60,7 +60,7 @@ const CourseList: FC<Props> = ({ plan, mode }) => {
       processPlan(plan);
     } else processPlan(currentPlan);
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [plan, currentPlan, currentPlan._id, searching, placeholder]);
+  }, [plan, currentPlan._id, searching, placeholder, currentPlan.years]);
 
   const processPlan = (plan: Plan) => {
     const jsx: JSX.Element[] = [];

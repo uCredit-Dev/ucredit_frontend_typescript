@@ -153,6 +153,7 @@ const Dashboard: React.FC<Props> = ({ plan, mode }) => {
   useEffect(() => {
     (async () => {
       const toGet = mode === ReviewMode.View ? plan : currPlan;
+
       if (toGet) {
         const res = await userService.getThreads(toGet._id);
         const commentersSet = new Set<string>();
@@ -166,7 +167,7 @@ const Dashboard: React.FC<Props> = ({ plan, mode }) => {
       }
     })();
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [plan, mode, currPlan]);
+  }, [plan, mode, currPlan._id]);
 
   return (
     <>
