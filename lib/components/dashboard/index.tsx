@@ -156,7 +156,6 @@ const Dashboard: React.FC<Props> = ({ plan, mode }) => {
 
       if (toGet && toGet._id !== 'noPlan') {
         const res = await userService.getThreads(toGet._id);
-        // console.log(res.data); // HERE
         dispatch(updateThreads(res.data));
         const commentersSet = new Set<string>();
         for (const thread of res.data) {

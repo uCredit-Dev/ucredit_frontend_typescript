@@ -19,7 +19,6 @@ import {
   selectPlan,
   selectReviewedPlan,
   updateCurrentComment,
-  updateSelectedPlan,
   updateThreads,
 } from '../../slices/currentPlanSlice';
 import { userService } from '../../services';
@@ -54,23 +53,12 @@ const Comments: FC<{
       const commentsJSX = getComments(threads[location]);
       setComments(commentsJSX.filter((el) => el !== null));
     }
-    console.log('asfsad');
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [threads]);
 
   const handleChange = (e) => {
     setReplyText(e.target.value);
   };
-
-  useEffect(() => {
-    if (plan.reviewers !== undefined) {
-      (async () => {
-        const reviewers = (await userService.getPlanReviewers(plan._id)).data;
-        dispatch(updateSelectedPlan({ ...plan, reviewers: reviewers }));
-      })();
-    }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
 
   useEffect(() => {
     const handleClickOutside = (e: MouseEvent) => {
@@ -114,7 +102,6 @@ const Comments: FC<{
         },
       };
       const temp = await userService.postNewComment(body);
-      // console.log('temp', temp); // HERE
       const newComment = temp.data;
       const commenter = {
         _id: user._id,
@@ -142,7 +129,6 @@ const Comments: FC<{
         },
       };
       const temp = await userService.postNewThread(data);
-      // console.log('temp1', temp);// HERE
       JSON.parse(JSON.stringify(threads));
       let threadCopy = JSON.parse(JSON.stringify(threads));
       threadCopy[location] = temp.data;
@@ -150,14 +136,12 @@ const Comments: FC<{
         _id: user._id,
         name: user.name,
       };
-      console.log(threadCopy);
       dispatch(updateThreads(Object.values(threadCopy)));
       setThisThread(threadCopy[location]);
     }
   };
 
   const getComments = (thisThread): JSX.Element[] => {
-    // console.log(thisThread, threads); // HERE
     if (!thisThread) return [];
     // console.log(thisThread);
     const divs = thisThread.comments.map((c: CommentType) => {

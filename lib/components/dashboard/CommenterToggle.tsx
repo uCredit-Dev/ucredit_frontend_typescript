@@ -30,18 +30,19 @@ const CommenterToggle: React.FC<Props> = () => {
     if (!threads || !selectCommenters) return;
     const filtered = new Map();
     for (const [key, value] of Object.entries(threads)) {
+      const filteredComments = new Map();
       const { comments } = value as any;
-      let newComments = [];
       for (const { label } of selectedCommenters) {
         const filteredComment = comments.filter(
           (c) =>
             c.commenter_id._id === label || c.commenter_id._id === user._id,
         );
-        if (filteredComment) newComments = [...newComments, ...filteredComment];
+        for (const comment of filteredComment) {
+          filteredComments.set(comment._id, comment);
+        }
       }
       const newValue = JSON.parse(JSON.stringify(value));
-      (newValue as any).comments = newComments;
-      // console.log(newValue);
+      (newValue as any).comments = Array.from(filteredComments.values());
       filtered.set(key, newValue);
     }
     dispatch(updateFilteredThreads(filtered));
