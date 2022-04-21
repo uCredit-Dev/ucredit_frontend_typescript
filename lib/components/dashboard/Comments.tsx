@@ -11,6 +11,7 @@ import { formatDistance } from 'date-fns';
 import {
   CommentType,
   ReviewMode,
+  ReviewRequestStatus,
   ThreadType,
 } from '../../resources/commonTypes';
 import {
@@ -111,6 +112,7 @@ const Comments: FC<{
         },
       };
       const temp = await userService.postNewComment(body);
+      // console.log('temp', temp); // HERE
       const newComment = temp.data;
       newComment.commenter_id = {
         _id: user._id,
@@ -133,6 +135,7 @@ const Comments: FC<{
         },
       };
       const temp = await userService.postNewThread(data);
+      // console.log('temp1', temp);// HERE
       JSON.parse(JSON.stringify(threads));
       let threadCopy = JSON.parse(JSON.stringify(threads));
       threadCopy[location] = temp.data;
@@ -146,6 +149,7 @@ const Comments: FC<{
   };
 
   const getComments = (): JSX.Element[] => {
+    // console.log(thisThread, threads); // HERE
     if (!thisThread) return [];
     const divs = thisThread.comments.map((c: CommentType) => {
       if (!c.visible_user_id.includes(user._id)) {
@@ -153,7 +157,7 @@ const Comments: FC<{
       }
       return (
         <div
-          key={c.message}
+          key={c._id}
           className="bg-white border divide-y rounded select-text cursor-text"
         >
           <p className="flex flex-wrap px-2 py-1 text-sm">
@@ -179,26 +183,35 @@ const Comments: FC<{
       // 2. if the user is a reviewer, show the below
       //     a. if one of the comments contains the user, show the max of all the reviewers included in the comments
       //     b. if none of the comments contain the user, show only the user
-      thisThread.comments.forEach((comment) => {
-        if (comment.visible_user_id.includes(user._id)) {
-          comment.visible_user_id.forEach((uID) => {
-            if (!ids.includes(uID)) ids = [...ids, uID];
-          });
+      if (mode === ReviewMode.View) {
+        thisThread.comments.forEach((comment) => {
+          if (comment.visible_user_id.includes(user._id)) {
+            comment.visible_user_id.forEach((uID) => {
+              if (!ids.includes(uID)) ids = [...ids, uID];
+            });
+          }
+        });
+        if (ids.length === 0) {
+          if (reviewedPlan && ReviewMode.View) ids.push(reviewedPlan.user_id);
+          if (ReviewMode.Edit) ids.push(user._id);
         }
-      });
-      if (ids.length === 0) {
-        if (reviewedPlan && ReviewMode.View) ids.push(reviewedPlan.user_id);
-        if (ReviewMode.Edit) ids.push(user._id);
+      } else {
+        const reviewers = plan.reviewers;
+        if (!reviewers) return [];
+        for (const r of reviewers) {
+          if (r.status !== ReviewRequestStatus.Pending)
+            ids.push(r.reviewer_id._id);
+        }
       }
     } else if (mode === ReviewMode.View) {
       ids = [user._id];
       if (reviewedPlan) ids.push(reviewedPlan.user_id);
     } else if (mode === undefined || mode === ReviewMode.None) {
-      ids = [];
       const reviewers = plan.reviewers;
       if (reviewers === undefined) return [];
       for (const r of reviewers) {
-        ids.push(r.reviewer_id._id);
+        if (r.status !== ReviewRequestStatus.Pending)
+          ids.push(r.reviewer_id._id);
       }
     }
     ids = ids.filter((el, i) => !ids.slice(i + 1, ids.length).includes(el));
@@ -228,7 +241,9 @@ const Comments: FC<{
           {comments && comments.length ? (
             <div className="flex flex-col gap-1.5">{comments}</div>
           ) : null}
-          {!thisThread && <div className="font-semibold">Add a comment</div>}
+          {(!thisThread || !comments.length) && (
+            <div className="font-semibold">Add a comment</div>
+          )}
           <div className="flex flex-col w-full">
             <form onSubmit={submitReply} className="flex-grow">
               <textarea

@@ -156,6 +156,7 @@ const Dashboard: React.FC<Props> = ({ plan, mode }) => {
 
       if (toGet && toGet._id !== 'noPlan') {
         const res = await userService.getThreads(toGet._id);
+        // console.log(res.data); // HERE
         const commentersSet = new Set<string>();
         for (const thread of res.data) {
           const userId = thread.comments[0].commenter_id;
