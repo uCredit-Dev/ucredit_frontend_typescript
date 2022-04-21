@@ -14,9 +14,9 @@ import {
   ThreadType,
 } from '../../resources/commonTypes';
 import {
+  selectFilteredThreads,
   selectPlan,
   selectReviewedPlan,
-  selectThreads,
   updateCurrentComment,
   updateSelectedPlan,
   updateThreads,
@@ -34,7 +34,7 @@ const Comments: FC<{
   const [replyText, setReplyText] = useState('');
   const [thisThread, setThisThread] = useState<ThreadType>(null);
   const dispatch = useDispatch();
-  const threads = useSelector(selectThreads);
+  const threads = useSelector(selectFilteredThreads); // threads filtered by commenter toggle
   const user = useSelector(selectUser);
   const plan = useSelector(selectPlan);
   const reviewedPlan = useSelector(selectReviewedPlan);
@@ -169,7 +169,9 @@ const Comments: FC<{
   const getOptions = () => {
     let ids;
     if (thisThread) {
-      ids = thisThread.comments[0].visible_user_id;
+      ids = thisThread.comments.length
+        ? thisThread.comments[0].visible_user_id
+        : [];
     } else if (mode === ReviewMode.View) {
       ids = [user._id, reviewedPlan.user_id];
     } else if (mode === undefined || mode === ReviewMode.None) {

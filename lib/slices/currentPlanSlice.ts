@@ -17,6 +17,7 @@ type CurrentPlanSlice = {
   droppables: DroppableType[];
   importing: boolean;
   threads: any;
+  filteredThreads: any;
   reviewedPlan: Plan;
 };
 
@@ -37,6 +38,7 @@ const initialState: CurrentPlanSlice = {
   droppables: [],
   importing: false,
   threads: {},
+  filteredThreads: {},
   reviewedPlan: null,
 };
 
@@ -91,6 +93,12 @@ export const currentPlanSlice = createSlice({
         state.threads[t.location_type + ' ' + t.location_id] = t;
       }
     },
+    updateFilteredThreads: (state: any, action: any) => {
+      state.filteredThreads = {};
+      for (const [key, value] of action.payload) {
+        state.filteredThreads[key] = value;
+      }
+    },
     updateReviewedPlan: (state: any, action: PayloadAction<Plan>) => {
       state.reviewedPlan = { ...action.payload };
     },
@@ -113,6 +121,7 @@ export const {
   resetCurrentPlan,
   updateImportingStatus,
   updateThreads,
+  updateFilteredThreads,
   updateReviewedPlan,
   updateCurrentComment,
 } = currentPlanSlice.actions;
@@ -131,6 +140,8 @@ export const selectDroppables = (state: RootState) =>
 export const selectImportingStatus = (state: RootState) =>
   state.currentPlan.importing;
 export const selectThreads = (state: RootState) => state.currentPlan.threads;
+export const selectFilteredThreads = (state: RootState) =>
+  state.currentPlan.filteredThreads;
 export const selectReviewedPlan = (state: RootState) =>
   state.currentPlan.reviewedPlan;
 

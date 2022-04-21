@@ -34,7 +34,11 @@ import PlanAdd from '../popups/PlanAdd';
 import CourseList from './course-list/horizontal/CourseList';
 import InfoMenu from './InfoMenu';
 import ActionBar from './degree-info/ActionBar';
-import { selectLoginCheck, selectUser } from '../../slices/userSlice';
+import {
+  selectLoginCheck,
+  selectUser,
+  udpateCommenters,
+} from '../../slices/userSlice';
 import axios from 'axios';
 import { getAPI } from './../../resources/assets';
 import Cart from '../popups/course-search/Cart';
@@ -44,6 +48,7 @@ import HandlePlanShareDummy from './HandlePlanShareDummy';
 import HandleUserInfoSetupDummy from './HandleUserInfoSetupDummy';
 import { DashboardMode, Plan, ReviewMode } from '../../resources/commonTypes';
 import { userService } from '../../services';
+import CommenterToggle from './CommenterToggle';
 
 interface Props {
   plan: Plan;
@@ -150,7 +155,13 @@ const Dashboard: React.FC<Props> = ({ plan, mode }) => {
       const toGet = mode === ReviewMode.View ? plan : currPlan;
       if (toGet) {
         const res = await userService.getThreads(toGet._id);
-        console.log(res.data);
+        const commentersSet = new Set<string>();
+        for (const thread of res.data) {
+          const userId = thread.comments[0].commenter_id;
+          commentersSet.add(JSON.stringify(userId));
+        }
+        const commentersArr = [...commentersSet].map((c) => JSON.parse(c));
+        dispatch(udpateCommenters(commentersArr));
         dispatch(updateThreads(res.data));
       }
     })();
@@ -176,6 +187,7 @@ const Dashboard: React.FC<Props> = ({ plan, mode }) => {
               <div className="flex flex-row thin:flex-wrap-reverse mt-[5rem] w-full h-full">
                 <div className="flex flex-col w-full">
                   {plan ? null : <ActionBar />}
+                  <CommenterToggle />
                   <div className="px-[100px]">
                     <CourseList plan={plan} mode={mode} />
                   </div>

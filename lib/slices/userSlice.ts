@@ -5,6 +5,7 @@ import {
   SISRetrievedCourse,
   User,
   ReviewMode,
+  UserId,
 } from '../components/../resources/commonTypes';
 
 type UserSlice = {
@@ -21,6 +22,7 @@ type UserSlice = {
   loginRedirect: boolean;
   reviewMode: ReviewMode;
   cartInvokedBySemester: boolean;
+  commenters: UserId[];
 };
 
 const initialState: UserSlice = {
@@ -46,6 +48,7 @@ const initialState: UserSlice = {
   loginRedirect: false,
   reviewMode: ReviewMode.None,
   cartInvokedBySemester: false,
+  commenters: [],
 };
 
 // Updates all user info from database. This function should be called after an axios get on the user routes.
@@ -121,6 +124,9 @@ export const userSlice = createSlice({
     ) => {
       state.cartInvokedBySemester = action.payload;
     },
+    udpateCommenters: (state: any, action: PayloadAction<UserId[]>) => {
+      state.commenters = [...action.payload];
+    },
     resetUser: (state: any) => {
       state.currentUser = initialState.currentUser;
       state.planList = initialState.planList;
@@ -142,6 +148,7 @@ export const {
   updateLoginRedirect,
   updateReviewMode,
   updateCartInvokedBySemester,
+  udpateCommenters,
   resetUser,
 } = userSlice.actions;
 
@@ -162,5 +169,6 @@ export const selectLoginRedirect = (state: RootState) =>
 export const selectReviewMode = (state: RootState) => state.user.reviewMode;
 export const selectCartInvokedBySemester = (state: RootState) =>
   state.user.cartInvokedBySemester;
+export const selectCommenters = (state: RootState) => state.user.commenters;
 
 export default userSlice.reducer;

@@ -98,6 +98,7 @@ const Hoverable: FC<Props> = ({ children, as, mode = 'hover' }) => {
               ? asWidth / 2
               : 0)
           }px) translateY(${-(tooltipSize.height + 4)}px)`,
+          zIndex: 100,
         }}
         ref={tooltipRef}
       >

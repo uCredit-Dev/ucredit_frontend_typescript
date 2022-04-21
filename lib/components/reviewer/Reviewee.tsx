@@ -11,13 +11,6 @@ import {
 } from '../../resources/commonTypes';
 import { Hoverable } from '../utils';
 import { TooltipPrimary } from '../utils/TooltipPrimary';
-import { getAPI } from '../../resources/assets';
-import { useDispatch } from 'react-redux';
-import {
-  updateReviewedPlan,
-  updateThreads,
-} from '../../slices/currentPlanSlice';
-import axios from 'axios';
 import { statusReadable } from '../../../pages/reviewer';
 import Dropdown from './Dropdown';
 import { userService } from '../../services';
@@ -39,8 +32,6 @@ const Reviewee: React.FC<Props> = ({
   const [showPlans, setShowPlans] = useState(expanded);
   const [majors, setMajors] = useState<string[]>([]);
   const router = useRouter();
-
-  const dispatch = useDispatch();
 
   useEffect(() => {
     const set = new Set<string>();
@@ -122,53 +113,33 @@ const Reviewee: React.FC<Props> = ({
                       width={130}
                       options={[
                         {
-                          label: 'Under Review',
+                          label: 'UNDERREVIEW',
                           content: <p className="text-sky-400">Under Review</p>,
-                          cb: async () => {
-                            if (status === ReviewRequestStatus.UnderReview)
-                              return;
-                            try {
-                              await userService.changeReviewStatus(
-                                review_id,
-                                'UNDERREVIEW',
-                              );
-                              setRefreshReviews(true);
-                              toast.success('Status changed to Under Review');
-                            } catch (e) {}
-                          },
                         },
                         {
-                          label: 'Approved',
+                          label: 'APPROVED',
                           content: <p className="text-emerald-400">Approved</p>,
-                          cb: async () => {
-                            if (status === ReviewRequestStatus.Approved) return;
-                            try {
-                              await userService.changeReviewStatus(
-                                review_id,
-                                'APPROVED',
-                              );
-                              setRefreshReviews(true);
-                              toast.success('Status changed to Approved');
-                            } catch (e) {}
-                          },
                         },
                         {
-                          label: 'Rejected',
+                          label: 'REJECTED',
                           content: <p className="text-red-400">Rejected</p>,
-                          cb: async () => {
-                            if (status === ReviewRequestStatus.Rejected) return;
-                            try {
-                              await userService.changeReviewStatus(
-                                review_id,
-                                'REJECTED',
-                              );
-                              setRefreshReviews(true);
-                              toast.success('Status changed to Rejected');
-                            } catch (e) {}
-                          },
                         },
                       ]}
-                      _default={statusReadable[status]}
+                      onChange={async (values) => {
+                        const value = values[0];
+                        if (!value) return;
+                        try {
+                          await userService.changeReviewStatus(
+                            review_id,
+                            value.label,
+                          );
+                          setRefreshReviews(true);
+                          toast.success(
+                            `Status changed to ${statusReadable[value.label]}`,
+                          );
+                        } catch (e) {}
+                      }}
+                      _default={status}
                     />
                     <Hoverable
                       as={
