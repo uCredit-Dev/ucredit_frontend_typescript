@@ -1,4 +1,11 @@
-import { ReactNode, useEffect, useRef, useState } from 'react';
+import {
+  Dispatch,
+  ReactNode,
+  SetStateAction,
+  useEffect,
+  useRef,
+  useState,
+} from 'react';
 import { ChevronDownIcon, XIcon } from '@heroicons/react/solid';
 import 'react-toastify/dist/ReactToastify.css';
 import { useClickOutside } from '../utils';
@@ -26,7 +33,7 @@ const Dropdown: React.FC<Props> = ({
   const [expanded, setExpanded] = useState(false);
   const [selected, setSelected] = useState([]);
   const ref = useRef(null);
-  const clickedOutside = useClickOutside(ref);
+  const [clickedOutside, setClickedOutside] = useClickOutside(ref);
 
   useEffect(() => {
     if (typeof _default === 'string') {
@@ -46,8 +53,11 @@ const Dropdown: React.FC<Props> = ({
   }, []);
 
   useEffect(() => {
-    console.log(clickedOutside);
-    if (clickedOutside) setExpanded(false);
+    if (clickedOutside) {
+      setExpanded(false);
+      (setClickedOutside as Dispatch<SetStateAction<boolean>>)(false);
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [clickedOutside]);
 
   const handleExpand = (e) => {

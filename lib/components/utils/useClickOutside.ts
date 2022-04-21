@@ -12,7 +12,7 @@ const useClickOutside = (ref) => {
     return () => document.removeEventListener('click', handleClickOutside);
   }, [ref]);
 
-  return hit;
+  return [hit, setHit];
 };
 
 export { useClickOutside };
