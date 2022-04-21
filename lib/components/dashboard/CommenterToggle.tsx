@@ -8,10 +8,10 @@ import { selectCommenters } from '../../slices/userSlice';
 import Dropdown from '../reviewer/Dropdown';
 
 interface Props {
-  // commenters: UserId[];
+  className?: string;
 }
 
-const CommenterToggle: React.FC<Props> = () => {
+const CommenterToggle: React.FC<Props> = ({ className = '' }) => {
   const commenters = useSelector(selectCommenters);
   const threads = useSelector(selectThreads);
   const [selectedCommenters, setSelectedCommenters] = useState(
@@ -48,10 +48,10 @@ const CommenterToggle: React.FC<Props> = () => {
   }, [threads, selectedCommenters]);
 
   return (
-    <div className="px-[100px] my-2">
+    <div className={className}>
       {commenters.length ? (
         <Dropdown
-          width={400}
+          width={264}
           multi={true}
           options={commenters.map(({ _id, name }) => ({
             label: _id,

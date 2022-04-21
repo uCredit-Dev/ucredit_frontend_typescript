@@ -58,8 +58,8 @@ const Dropdown: React.FC<Props> = ({
     let res;
     if (typeof _default === 'string') {
       const defaultOption = options.filter(({ label }) => label === _default);
-      if (defaultOption.length > 0) setSelected([defaultOption[0]]);
-      res = [options[0]];
+      if (defaultOption.length > 0) res = [defaultOption[0]];
+      else res = [options[0]];
     } else if (Array.isArray(_default)) {
       if (!multi) return;
       const defaultOptions = [];

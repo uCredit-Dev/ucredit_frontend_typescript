@@ -48,7 +48,6 @@ import HandlePlanShareDummy from './HandlePlanShareDummy';
 import HandleUserInfoSetupDummy from './HandleUserInfoSetupDummy';
 import { DashboardMode, Plan, ReviewMode } from '../../resources/commonTypes';
 import { userService } from '../../services';
-import CommenterToggle from './CommenterToggle';
 
 interface Props {
   plan: Plan;
@@ -191,7 +190,6 @@ const Dashboard: React.FC<Props> = ({ plan, mode }) => {
               <div className="flex flex-row thin:flex-wrap-reverse mt-[5rem] w-full h-full">
                 <div className="flex flex-col w-full">
                   {plan ? null : <ActionBar />}
-                  <CommenterToggle />
                   <div className="px-[100px]">
                     <CourseList plan={plan} mode={mode} />
                   </div>

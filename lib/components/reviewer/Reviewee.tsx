@@ -23,6 +23,21 @@ interface Props {
   setRefreshReviews: Dispatch<SetStateAction<boolean>>;
 }
 
+const dropdownOptions = [
+  {
+    label: 'UNDERREVIEW',
+    content: <p className="text-sky-400">Under Review</p>,
+  },
+  {
+    label: 'APPROVED',
+    content: <p className="text-emerald-400">Approved</p>,
+  },
+  {
+    label: 'REJECTED',
+    content: <p className="text-red-400">Rejected</p>,
+  },
+];
+
 const Reviewee: React.FC<Props> = ({
   plans,
   reviewee,
@@ -111,20 +126,7 @@ const Reviewee: React.FC<Props> = ({
                   <div className="flex items-center gap-x-1">
                     <Dropdown
                       width={130}
-                      options={[
-                        {
-                          label: 'UNDERREVIEW',
-                          content: <p className="text-sky-400">Under Review</p>,
-                        },
-                        {
-                          label: 'APPROVED',
-                          content: <p className="text-emerald-400">Approved</p>,
-                        },
-                        {
-                          label: 'REJECTED',
-                          content: <p className="text-red-400">Rejected</p>,
-                        },
-                      ]}
+                      options={dropdownOptions}
                       onChange={async (values) => {
                         const value = values[0];
                         if (!value) return;

@@ -19,9 +19,7 @@ import {
   selectPlan,
   selectReviewedPlan,
   selectSelectedThread,
-  selectThreads,
   updateCurrentComment,
-  updateSelectedPlan,
   updateSelectedThread,
   updateThreads,
 } from '../../slices/currentPlanSlice';
