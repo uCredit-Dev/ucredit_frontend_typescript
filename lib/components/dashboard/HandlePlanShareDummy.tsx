@@ -131,7 +131,7 @@ const HandlePlanShareDummy = () => {
         total++;
         axios
           .get(getAPI(window) + '/search', {
-            params: { query: c },
+            params: { query: c._id },
           })
           .then((retrieved) => {
             dispatch(updateCourseCache(retrieved.data.data));
@@ -161,7 +161,7 @@ const HandlePlanShareDummy = () => {
     shouldAdd,
     toAdd,
     user._id,
-    currentPlan,
+    currentPlan._id,
     currentCourses,
     cached,
     generatePlanAddStatus,
@@ -321,45 +321,50 @@ const HandlePlanShareDummy = () => {
     plan: Plan,
   ): Promise<UserCourse> => {
     return new Promise((resolve) => {
-      axios.get(getAPI(window) + '/courses/' + courseId).then((response) => {
-        let course: UserCourse = response.data.data;
-        const addingYear: Year = plan.years[yearIndex];
+      axios
+        .get(getAPI(window) + '/courses/' + courseId)
+        .then((response) => {
+          let course: UserCourse = response.data.data;
+          const addingYear: Year = plan.years[yearIndex];
 
-        const body = {
-          user_id: user._id,
-          year_id: addingYear._id,
-          plan_id: currentPlan._id,
-          title: course.title,
-          term: course.term,
-          year: addingYear.name,
-          credits: course.credits,
-          distribution_ids: currentPlan.distribution_ids,
-          isPlaceholder: false,
-          number: course.number,
-          area: course.area,
-          preReq: course.preReq,
-          expireAt:
-            user._id === 'guestUser'
-              ? Date.now() + 60 * 60 * 24 * 1000
-              : undefined,
-        };
-        fetch(getAPI(window) + '/courses', {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-          },
-          body: JSON.stringify(body),
+          const body = {
+            user_id: user._id,
+            year_id: addingYear._id,
+            plan_id: currentPlan._id,
+            title: course.title,
+            term: course.term,
+            year: addingYear.name,
+            credits: course.credits,
+            distribution_ids: currentPlan.distribution_ids,
+            isPlaceholder: false,
+            number: course.number,
+            area: course.area,
+            preReq: course.preReq,
+            expireAt:
+              user._id === 'guestUser'
+                ? Date.now() + 60 * 60 * 24 * 1000
+                : undefined,
+          };
+          fetch(getAPI(window) + '/courses', {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(body),
+          })
+            .then((retrieved) => retrieved.json())
+            .then((data) => {
+              if (data.errors === undefined) {
+                let newUserCourse: UserCourse = { ...data.data };
+                return resolve(newUserCourse);
+              } else {
+                console.log('Failed to add', data.errors);
+              }
+            });
         })
-          .then((retrieved) => retrieved.json())
-          .then((data) => {
-            if (data.errors === undefined) {
-              let newUserCourse: UserCourse = { ...data.data };
-              return resolve(newUserCourse);
-            } else {
-              console.log('Failed to add', data.errors);
-            }
-          });
-      });
+        .catch((err) =>
+          console.log('error creating course while sharing', err),
+        );
     });
   };
 

@@ -11,9 +11,11 @@ import { formatDistance } from 'date-fns';
 import {
   CommentType,
   ReviewMode,
+  ReviewRequestStatus,
   ThreadType,
 } from '../../resources/commonTypes';
 import {
+  selectFilteredThreads,
   selectPlan,
   selectReviewedPlan,
   selectSelectedThread,
@@ -24,7 +26,11 @@ import {
   updateThreads,
 } from '../../slices/currentPlanSlice';
 import { userService } from '../../services';
-import { selectUser } from '../../slices/userSlice';
+import {
+  selectCommenters,
+  selectUser,
+  updateCommenters,
+} from '../../slices/userSlice';
 
 const Comments: FC<{
   location: string;
@@ -36,13 +42,15 @@ const Comments: FC<{
   const [replyText, setReplyText] = useState('');
   const [thisThread, setThisThread] = useState<ThreadType>(null);
   const dispatch = useDispatch();
-  const threads = useSelector(selectThreads);
+  const threads = useSelector(selectFilteredThreads); // threads filtered by commenter toggle
   const user = useSelector(selectUser);
   const plan = useSelector(selectPlan);
   const reviewedPlan = useSelector(selectReviewedPlan);
   const selectedThread = useSelector(selectSelectedThread);
+  const commenters = useSelector(selectCommenters);
   let wrapperRef = useRef(null);
   const [comments, setComments] = useState<JSX.Element[]>([]);
+  const [visibleUsers, setVisibleUsers] = useState<String[]>([]);
 
   useEffect(() => {
     if (selectedThread === location) {
@@ -55,29 +63,15 @@ const Comments: FC<{
   useEffect(() => {
     if (threads[location]) {
       setThisThread(threads[location]);
+      const commentsJSX = getComments(threads[location]);
+      setComments(commentsJSX.filter((el) => el !== null));
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [threads]);
 
-  useEffect(() => {
-    const commentsJSX = getComments();
-    setComments(commentsJSX);
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [thisThread]);
-
   const handleChange = (e) => {
     setReplyText(e.target.value);
   };
-
-  useEffect(() => {
-    if (plan.reviewers !== undefined) {
-      (async () => {
-        const reviewers = (await userService.getPlanReviewers(plan._id)).data;
-        dispatch(updateSelectedPlan({ ...plan, reviewers: reviewers }));
-      })();
-    }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
 
   useEffect(() => {
     const handleClickOutside = (e: MouseEvent) => {
@@ -108,21 +102,29 @@ const Comments: FC<{
       return;
     }
     const planToAdd = reviewedPlan ? reviewedPlan : plan;
+    visibleUsers.push(user._id);
+    visibleUsers.push(planToAdd.user_id);
+    const visibleUsersBody = [...visibleUsers];
     if (thisThread) {
       const body = {
         comment: {
           commenter_id: user._id,
-          visible_user_id: [user._id, planToAdd.user_id],
+          visible_user_id: visibleUsersBody,
           thread_id: thisThread._id,
           message: replyText,
         },
       };
       const temp = await userService.postNewComment(body);
       const newComment = temp.data;
-      newComment.commenter_id = {
+      const commenter = {
         _id: user._id,
         name: user.name,
       };
+      newComment.commenter_id = commenter;
+      const newCommenters = [...commenters];
+      if (!newCommenters.find((c) => c._id === commenter._id))
+        newCommenters.push(commenter);
+      dispatch(updateCommenters(newCommenters));
       dispatch(updateCurrentComment([newComment, location]));
       setReplyText('');
     } else {
@@ -135,7 +137,7 @@ const Comments: FC<{
         },
         comment: {
           commenter_id: user._id,
-          visible_user_id: [user._id, planToAdd.user_id],
+          visible_user_id: visibleUsersBody,
           message: replyText,
         },
       };
@@ -152,15 +154,16 @@ const Comments: FC<{
     }
   };
 
-  const getComments = (): JSX.Element[] => {
+  const getComments = (thisThread): JSX.Element[] => {
     if (!thisThread) return [];
+    // console.log(thisThread);
     const divs = thisThread.comments.map((c: CommentType) => {
       if (!c.visible_user_id.includes(user._id)) {
         return null;
       }
       return (
         <div
-          key={c.message}
+          key={c._id}
           className="bg-white border divide-y rounded select-text cursor-text"
         >
           <p className="flex flex-wrap px-2 py-1 text-sm">
@@ -177,25 +180,55 @@ const Comments: FC<{
     return divs;
   };
 
+  // TODO: Handle more elegantly
   const getOptions = () => {
-    let ids;
+    let ids = [];
     if (thisThread) {
-      ids = thisThread.comments[0].visible_user_id;
+      // if there are already comments here, we need to do one of the following
+      // 1. if the user is the commenter, show all reviewers
+      // 2. if the user is a reviewer, show the below
+      //     a. if one of the comments contains the user, show the max of all the reviewers included in the comments
+      //     b. if none of the comments contain the user, show only the user
+      if (mode === ReviewMode.View) {
+        thisThread.comments.forEach((comment) => {
+          if (comment.visible_user_id.includes(user._id)) {
+            comment.visible_user_id.forEach((uID) => {
+              if (!ids.includes(uID)) ids = [...ids, uID];
+            });
+          }
+        });
+        if (ids.length === 0) {
+          if (reviewedPlan && ReviewMode.View) ids.push(reviewedPlan.user_id);
+          if (ReviewMode.Edit) ids.push(user._id);
+        }
+      } else {
+        const reviewers = plan.reviewers;
+        if (!reviewers) return [];
+        for (const r of reviewers) {
+          if (r.status !== ReviewRequestStatus.Pending)
+            ids.push(r.reviewer_id._id);
+        }
+      }
     } else if (mode === ReviewMode.View) {
-      ids = [user._id, reviewedPlan.user_id];
+      ids = [user._id];
+      if (reviewedPlan) ids.push(reviewedPlan.user_id);
     } else if (mode === undefined || mode === ReviewMode.None) {
-      ids = [];
       const reviewers = plan.reviewers;
       if (reviewers === undefined) return [];
       for (const r of reviewers) {
-        ids.push(r.reviewer_id._id);
+        if (r.status !== ReviewRequestStatus.Pending)
+          ids.push(r.reviewer_id._id);
       }
     }
+    ids = ids.filter((el, i) => !ids.slice(i + 1, ids.length).includes(el));
     let options = [];
     for (const s of ids) {
       if (s !== user._id) options.push({ value: s, label: s });
     }
     return options;
+  };
+  const updateVisibleUsers = (event) => {
+    setVisibleUsers(event.map((el) => el.value));
   };
 
   return (
@@ -214,7 +247,9 @@ const Comments: FC<{
           {comments && comments.length ? (
             <div className="flex flex-col gap-1.5">{comments}</div>
           ) : null}
-          {!thisThread && <div className="font-semibold">Add a comment</div>}
+          {(!thisThread || !comments.length) && (
+            <div className="font-semibold">Add a comment</div>
+          )}
           <div className="flex flex-col w-full">
             <form onSubmit={submitReply} className="flex-grow">
               <textarea
@@ -226,7 +261,11 @@ const Comments: FC<{
                 autoFocus
               />
             </form>
-            <Select options={getOptions()} isMulti={true} />
+            <Select
+              options={getOptions()}
+              isMulti={true}
+              onChange={updateVisibleUsers}
+            />
             <div
               className="flex items-center self-end justify-center gap-1 mt-2 text-sm transition-colors duration-150 ease-in transform rounded cursor-pointer hover:text-sky-600"
               onClick={submitReply}
@@ -236,7 +275,7 @@ const Comments: FC<{
             </div>
           </div>
         </div>
-      ) : thisThread ? (
+      ) : thisThread && comments.length > 0 ? (
         <ChatAlt2Icon
           className="absolute z-0 w-4 h-4 mt-2 text-black transition duration-150 ease-in transform rounded-md outline-none cursor-pointer stroke-2 hover:scale-110"
           onClick={() => setExpanded(true)}

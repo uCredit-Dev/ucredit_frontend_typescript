@@ -195,7 +195,7 @@ const SearchList: FC<{
         </div>
       </div>
       {(!hideResults || window.innerWidth > 700) && (
-        <div className="w-full px-5 bg-gray-200 select-none py">
+        <div className="w-full px-5 bg-gray-200 select-none py flex-grow">
           <div className="w-full h-full">{getSearchResultsUI()}</div>
         </div>
       )}

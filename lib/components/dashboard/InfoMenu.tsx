@@ -66,7 +66,8 @@ const InfoMenu: FC<Props> = ({ plan }) => {
     if (majorObj !== undefined) {
       setMajor(majorObj);
     }
-  }, [plan, currentPlan._id, currentPlan, currentPlan.majors, currPlanCourses]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [plan, currentPlan._id, currentPlan.majors, currPlanCourses]);
 
   // Gets distribution everytime a plan changes.
   useEffect(() => {

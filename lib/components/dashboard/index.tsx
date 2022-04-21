@@ -34,7 +34,11 @@ import PlanAdd from '../popups/PlanAdd';
 import CourseList from './course-list/horizontal/CourseList';
 import InfoMenu from './InfoMenu';
 import ActionBar from './degree-info/ActionBar';
-import { selectLoginCheck, selectUser } from '../../slices/userSlice';
+import {
+  selectLoginCheck,
+  selectUser,
+  updateCommenters,
+} from '../../slices/userSlice';
 import axios from 'axios';
 import { getAPI } from './../../resources/assets';
 import Cart from '../popups/course-search/Cart';
@@ -44,6 +48,7 @@ import HandlePlanShareDummy from './HandlePlanShareDummy';
 import HandleUserInfoSetupDummy from './HandleUserInfoSetupDummy';
 import { DashboardMode, Plan, ReviewMode } from '../../resources/commonTypes';
 import { userService } from '../../services';
+import CommenterToggle from './CommenterToggle';
 
 interface Props {
   plan: Plan;
@@ -146,14 +151,26 @@ const Dashboard: React.FC<Props> = ({ plan, mode }) => {
   }, [experimentList.length, updateExperimentsForUser]);
 
   useEffect(() => {
-    const toGet = mode === ReviewMode.View ? plan : currPlan;
-    if (toGet) {
-      userService.getThreads(toGet._id).then((r) => {
-        dispatch(updateThreads(r.data));
-      });
-    }
+    (async () => {
+      const toGet = mode === ReviewMode.View ? plan : currPlan;
+
+      if (toGet && toGet._id !== 'noPlan') {
+        const res = await userService.getThreads(toGet._id);
+        dispatch(updateThreads(res.data));
+        const commentersSet = new Set<string>();
+        for (const thread of res.data) {
+          for (const comment of thread.comments) {
+            const userId = comment.commenter_id;
+            commentersSet.add(JSON.stringify(userId));
+          }
+          // if (thread._id === '6260ed6745fec48f045f27c8') console.log(thread);
+        }
+        const commentersArr = [...commentersSet].map((c) => JSON.parse(c));
+        dispatch(updateCommenters(commentersArr));
+      }
+    })();
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [plan, mode, currPlan]);
+  }, [plan, mode, currPlan._id]);
 
   return (
     <>
@@ -174,6 +191,7 @@ const Dashboard: React.FC<Props> = ({ plan, mode }) => {
               <div className="flex flex-row thin:flex-wrap-reverse mt-[5rem] w-full h-full">
                 <div className="flex flex-col w-full">
                   {plan ? null : <ActionBar />}
+                  <CommenterToggle />
                   <div className="px-[100px]">
                     <CourseList plan={plan} mode={mode} />
                   </div>
