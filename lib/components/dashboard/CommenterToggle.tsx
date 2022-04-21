@@ -14,7 +14,9 @@ interface Props {
 const CommenterToggle: React.FC<Props> = () => {
   const commenters = useSelector(selectCommenters);
   const threads = useSelector(selectThreads);
-  const [selectedCommenters, setSelectedCommenters] = useState([]);
+  const [selectedCommenters, setSelectedCommenters] = useState(
+    commenters.map(({ _id, name }) => ({ label: _id, content: name })),
+  );
   const user = useSelector(selectUser);
   const dispatch = useDispatch();
 
@@ -33,12 +35,13 @@ const CommenterToggle: React.FC<Props> = () => {
       for (const { label } of selectedCommenters) {
         const filteredComment = comments.filter(
           (c) =>
-            c.commenter_id._id === label || c.commenter_id.name === user.name,
+            c.commenter_id._id === label || c.commenter_id._id === user._id,
         );
         if (filteredComment) newComments = [...newComments, ...filteredComment];
       }
       const newValue = JSON.parse(JSON.stringify(value));
       (newValue as any).comments = newComments;
+      // console.log(newValue);
       filtered.set(key, newValue);
     }
     dispatch(updateFilteredThreads(filtered));
@@ -51,11 +54,11 @@ const CommenterToggle: React.FC<Props> = () => {
         <Dropdown
           width={200}
           multi={true}
-          options={commenters.map(({ name, _id }) => ({
+          options={commenters.map(({ _id, name }) => ({
             label: _id,
             content: name,
           }))}
-          _default={commenters.map(({ _id }) => _id)}
+          _default={selectedCommenters.map(({ label }) => label)}
           onChange={(values) => setSelectedCommenters(values)}
         />
       ) : null}

@@ -37,7 +37,7 @@ import ActionBar from './degree-info/ActionBar';
 import {
   selectLoginCheck,
   selectUser,
-  udpateCommenters,
+  updateCommenters,
 } from '../../slices/userSlice';
 import axios from 'axios';
 import { getAPI } from './../../resources/assets';
@@ -157,14 +157,17 @@ const Dashboard: React.FC<Props> = ({ plan, mode }) => {
       if (toGet && toGet._id !== 'noPlan') {
         const res = await userService.getThreads(toGet._id);
         // console.log(res.data); // HERE
+        dispatch(updateThreads(res.data));
         const commentersSet = new Set<string>();
         for (const thread of res.data) {
-          const userId = thread.comments[0].commenter_id;
-          commentersSet.add(JSON.stringify(userId));
+          for (const comment of thread.comments) {
+            const userId = comment.commenter_id;
+            commentersSet.add(JSON.stringify(userId));
+          }
+          // if (thread._id === '6260ed6745fec48f045f27c8') console.log(thread);
         }
         const commentersArr = [...commentersSet].map((c) => JSON.parse(c));
-        dispatch(udpateCommenters(commentersArr));
-        dispatch(updateThreads(res.data));
+        dispatch(updateCommenters(commentersArr));
       }
     })();
     // eslint-disable-next-line react-hooks/exhaustive-deps

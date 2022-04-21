@@ -124,8 +124,8 @@ export const userSlice = createSlice({
     ) => {
       state.cartInvokedBySemester = action.payload;
     },
-    udpateCommenters: (state: any, action: PayloadAction<UserId[]>) => {
-      state.commenters = [...action.payload];
+    updateCommenters: (state: any, action: PayloadAction<UserId[]>) => {
+      state.commenters = action.payload.map(({ _id, name }) => ({ _id, name }));
     },
     resetUser: (state: any) => {
       state.currentUser = initialState.currentUser;
@@ -148,7 +148,7 @@ export const {
   updateLoginRedirect,
   updateReviewMode,
   updateCartInvokedBySemester,
-  udpateCommenters,
+  updateCommenters,
   resetUser,
 } = userSlice.actions;
 

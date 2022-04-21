@@ -23,7 +23,11 @@ import {
   updateThreads,
 } from '../../slices/currentPlanSlice';
 import { userService } from '../../services';
-import { selectUser } from '../../slices/userSlice';
+import {
+  selectCommenters,
+  selectUser,
+  updateCommenters,
+} from '../../slices/userSlice';
 
 const Comments: FC<{
   location: string;
@@ -39,6 +43,7 @@ const Comments: FC<{
   const user = useSelector(selectUser);
   const plan = useSelector(selectPlan);
   const reviewedPlan = useSelector(selectReviewedPlan);
+  const commenters = useSelector(selectCommenters);
   let wrapperRef = useRef(null);
   const [comments, setComments] = useState<JSX.Element[]>([]);
   const [visibleUsers, setVisibleUsers] = useState<String[]>([]);
@@ -46,15 +51,12 @@ const Comments: FC<{
   useEffect(() => {
     if (threads[location]) {
       setThisThread(threads[location]);
+      const commentsJSX = getComments(threads[location]);
+      setComments(commentsJSX.filter((el) => el !== null));
     }
+    console.log('asfsad');
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [threads]);
-
-  useEffect(() => {
-    const commentsJSX = getComments();
-    setComments(commentsJSX.filter((el) => el !== null));
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [thisThread]);
 
   const handleChange = (e) => {
     setReplyText(e.target.value);
@@ -114,10 +116,15 @@ const Comments: FC<{
       const temp = await userService.postNewComment(body);
       // console.log('temp', temp); // HERE
       const newComment = temp.data;
-      newComment.commenter_id = {
+      const commenter = {
         _id: user._id,
         name: user.name,
       };
+      newComment.commenter_id = commenter;
+      const newCommenters = [...commenters];
+      if (!newCommenters.find((c) => c._id === commenter._id))
+        newCommenters.push(commenter);
+      dispatch(updateCommenters(newCommenters));
       dispatch(updateCurrentComment([newComment, location]));
       setReplyText('');
     } else {
@@ -143,14 +150,16 @@ const Comments: FC<{
         _id: user._id,
         name: user.name,
       };
+      console.log(threadCopy);
       dispatch(updateThreads(Object.values(threadCopy)));
       setThisThread(threadCopy[location]);
     }
   };
 
-  const getComments = (): JSX.Element[] => {
+  const getComments = (thisThread): JSX.Element[] => {
     // console.log(thisThread, threads); // HERE
     if (!thisThread) return [];
+    // console.log(thisThread);
     const divs = thisThread.comments.map((c: CommentType) => {
       if (!c.visible_user_id.includes(user._id)) {
         return null;

@@ -50,7 +50,7 @@ const Dropdown: React.FC<Props> = ({
       setSelected(defaultOptions);
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  }, [_default]);
 
   useEffect(() => {
     if (clickedOutside) {
