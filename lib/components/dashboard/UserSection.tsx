@@ -1,12 +1,7 @@
-import { useDispatch, useSelector } from 'react-redux';
-import { useCookies } from 'react-cookie';
-import axios from 'axios';
-import { useRouter } from 'next/router';
-import { selectUser, resetUser } from '../../slices/userSlice';
-import { resetCurrentPlan } from '../../slices/currentPlanSlice';
-import { getAPI, getLoginCookieVal } from '../../resources/assets';
 import { DashboardMode } from '../../resources/commonTypes';
 import Notification from './Notification';
+import { useState } from 'react';
+import HamburgerMenu from './HamburgerMenu';
 
 interface Props {
   mode: DashboardMode;
@@ -16,30 +11,7 @@ interface Props {
  * User login/logout buttons.
  */
 const UserSection: React.FC<Props> = ({ mode }) => {
-  // Redux setup
-  const dispatch = useDispatch();
-  const user = useSelector(selectUser);
-  const [cookies, , removeCookie] = useCookies(['connect.sid']);
-  const router = useRouter();
-
-  const handleLogoutClick = (): void => {
-    const loginId = getLoginCookieVal(cookies);
-    if (getAPI(window).includes('ucredit.me'))
-      axios
-        .delete(getAPI(window) + '/verifyLogin/' + loginId)
-        .then(() => logOut())
-        .catch((err) => {
-          console.log('error logging out', err);
-        });
-    else logOut();
-  };
-
-  const logOut = () => {
-    removeCookie('connect.sid', { path: '/' });
-    dispatch(resetUser());
-    dispatch(resetCurrentPlan());
-    router.push('/login');
-  };
+  const [openHamburger, setOpenHamburger] = useState(false);
 
   return (
     <div className="fixed z-20 w-screen h-16 p-3 px-6 select-none bg-primary">
@@ -51,41 +23,20 @@ const UserSection: React.FC<Props> = ({ mode }) => {
           <img src="/img/logo-darker.png" alt="logo" className="mr-3 h-9"></img>
           <div>uCredit</div>
         </div>
-        <div className="flex gap-2">
-          <button
-            onClick={() =>
-              router.push(
-                mode === DashboardMode.Advising ? '/dashboard' : '/reviewer',
-              )
-            }
-            className="flex flex-row items-center justify-center w-24 mr-3 transition duration-200 ease-in transform bg-white border border-gray-200 rounded cursor-pointer select-none hover:shadow-md h-9 focus:outline-none"
-          >
-            {mode === DashboardMode.Advising
-              ? DashboardMode.Planning
-              : DashboardMode.Advising}
-          </button>
-        </div>
-        {typeof window !== 'undefined' && window.innerWidth > 600 && (
-          <div className="font-semibold text-white">
-            Logged in as {user.name}!
-          </div>
-        )}
         <Notification />
-        {user._id === 'guestUser' ? (
-          <a
-            href="https://ucredit-api.herokuapp.com/api/login"
-            className="flex flex-row items-center justify-center w-24 mr-3 transition duration-200 ease-in transform bg-white rounded cursor-pointer select-none h-9 hover:text-white hover:bg-secondary hover:scale-105"
-          >
-            Log In
-          </a>
-        ) : (
-          <button
-            onClick={handleLogoutClick}
-            className="flex flex-row items-center justify-center w-24 transition duration-200 ease-in transform bg-white rounded cursor-pointer select-none hover:bg-red-100 h-9 focus:outline-none"
-          >
-            Log Out
-          </button>
-        )}
+        <div
+          className="p-2 space-y-2 bg-gray-100 rounded shadow h-9 w-9 mx-2 cursor-pointer"
+          onClick={() => setOpenHamburger(!openHamburger)}
+        >
+          <span className="block w-5 h-0.5 bg-black"></span>
+          <span className="block w-5 h-0.5 bg-black"></span>
+          <span className="block w-5 h-0.5 bg-black"></span>
+        </div>
+        <HamburgerMenu
+          openHamburger={openHamburger}
+          setOpenHamburger={setOpenHamburger}
+          mode={mode}
+        />
       </div>
     </div>
   );

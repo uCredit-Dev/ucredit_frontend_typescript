@@ -17,6 +17,7 @@ import {
   selectShowCourseInfo,
   selectAddingPrereq,
   selectShowingCart,
+  selectInfoPopup,
 } from '../../slices/popupSlice';
 import {
   selectExperimentList,
@@ -69,6 +70,7 @@ const Dashboard: React.FC<Props> = ({ plan, mode }) => {
   const experimentList = useSelector(selectExperimentList);
   const dispatch = useDispatch();
   const currPlan = useSelector(selectPlan);
+  const infoPopup = useSelector(selectInfoPopup);
 
   // State Setup
   const [showNotif, setShowNotif] = useState<boolean>(true);
@@ -151,6 +153,7 @@ const Dashboard: React.FC<Props> = ({ plan, mode }) => {
 
       if (toGet) {
         const res = await userService.getThreads(toGet._id);
+        console.log(res.data);
         dispatch(updateThreads(res.data));
       }
     })();
@@ -181,7 +184,7 @@ const Dashboard: React.FC<Props> = ({ plan, mode }) => {
                   </div>
                 </div>
               </div>
-              <InfoMenu plan={plan} mode={mode} />
+              {infoPopup && <InfoMenu plan={plan} mode={mode} />}
             </div>
             {/* Global popups */}
             {addingPrereqStatus && <AddingPrereqPopup />}
@@ -191,7 +194,7 @@ const Dashboard: React.FC<Props> = ({ plan, mode }) => {
             {deleteYearStatus && <DeleteYearPopup />}
             {deleteCourseStatus && <DeleteCoursePopup />}
             {courseInfoStatus && <CourseDisplayPopup />}
-            {cartStatus && <Cart allCourses={[]} />}{' '}
+            {cartStatus && <Cart allCourses={[]} />}
           </div>
         </div>
       )}

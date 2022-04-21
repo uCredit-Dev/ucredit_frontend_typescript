@@ -232,7 +232,7 @@ const ActionBar: FC = () => {
   };
 
   return (
-    <div className="top-0 z-20 flex flex-row thin:flex-col flex-wrap mx-auto z-0">
+    <div className="top-0 z-0 flex flex-row thin:flex-col flex-wrap mx-auto z-0">
       <Select
         options={[
           ...planList

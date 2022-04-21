@@ -39,8 +39,6 @@ const InfoMenu: FC<Props> = ({ plan }) => {
   const currentPlan: Plan = useSelector(selectPlan);
   const courseCache = useSelector(selectCourseCache);
   const currPlanCourses = useSelector(selectCurrentPlanCourses);
-
-  const [infoOpen, setInfoOpen] = useState(false);
   const [showDistributions] = useState<boolean[]>(
     new Array(distributions.length),
   );
@@ -282,54 +280,35 @@ const InfoMenu: FC<Props> = ({ plan }) => {
     });
     return reqCopy;
   };
-
-  /**
-   * Changes whether fine distributions are hidden
-   * @param i - the distribution's index amongst other distributions
-   */
-  // const changeDistributionVisibility = (i: number) => {
-  //   let showDistributionsCopy = showDistributions.slice();
-  //   showDistributionsCopy[i] = !showDistributions[i];
-  //   setShowDistributions(showDistributionsCopy);
-  // };
-
-  // const getDistributionText = (index: number): string =>
-  //   showDistributions[index] === true
-  //     ? 'Hide Fine Requirements'
-  //     : 'Show Fine Requirements';
+  useEffect(() => {
+    console.log('here');
+  }, []);
 
   return (
-    <div className="fixed right-0 z-40 flex flex-col justify-between w-10 mt-8 bg-red-100 top-60">
-      {windowWidth <= 2200 && (
-        <div className="my-auto transform -rotate-90">
-          <button
-            className="w-32 h-10 text-center text-white font-bold hover:bg-secondary bg-primary rounded focus:outline-none transition duration-200 ease-in transform"
-            onClick={() => {
-              setInfoOpen(!infoOpen);
-            }}
-          >
-            Plan Overview
-          </button>
-        </div>
-      )}
-      {(infoOpen || windowWidth > 2200) && (
-        <div className="drop-shadow-lg absolute z-50 right-14 -top-48 max-h-[75vh] bg-white bg-opacity-90 rounded overflow-y-auto">
-          {/* <InfoCards /> */}
-          {(() => {
-            if (calculated) {
-              return (
+    <div className="z-40 flex flex-col justify-between w-10 mt-8 bg-red-100 h-min w-96 right-0 fixed">
+      <div className="drop-shadow-lg z-50 max-h-[75vh] bg-white bg-opacity-90 rounded overflow-y-auto w-full">
+        {/* <InfoCards /> */}
+        {(() => {
+          if (calculated) {
+            return (
+              <div className="w-96 h-full">
                 <Distributions
                   major={major}
                   userMajors={currentPlan.majors}
                   changeDisplayMajor={changeDisplayMajor}
                   distributionBarsJSX={distributionBarsJSX}
                 />
-              );
-            } else
-              return <b className="m-10 h-80">Loading degree progress...</b>;
-          })()}
-        </div>
-      )}
+              </div>
+            );
+          } else {
+            return (
+              <b className="m-10 h-full w-96 bg-blue-100">
+                Loading degree progress...
+              </b>
+            );
+          }
+        })()}
+      </div>
     </div>
   );
 };

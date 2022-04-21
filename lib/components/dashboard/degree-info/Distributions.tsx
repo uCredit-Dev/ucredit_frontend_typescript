@@ -1,8 +1,10 @@
+import { XIcon } from '@heroicons/react/solid';
 import { FC, useState } from 'react';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import Select from 'react-select';
 import { Major, ReviewMode } from '../../../resources/commonTypes';
 import { selectTotalCredits } from '../../../slices/currentPlanSlice';
+import { updateInfoPopup } from '../../../slices/popupSlice';
 import { selectReviewMode } from '../../../slices/userSlice';
 import CourseBar from './CourseBar';
 import Reviewers from './Reviewers/Reviewers';
@@ -20,6 +22,7 @@ const Distributions: FC<{
   const totalCredits = useSelector(selectTotalCredits);
   const [disclaimer, setDisclaimer] = useState<boolean>(false);
   const reviewMode = useSelector(selectReviewMode);
+  const dispatch = useDispatch();
 
   const majorOptions = userMajors.map((m, index) => ({
     value: index,
@@ -41,6 +44,12 @@ const Distributions: FC<{
         >
           Please read
         </button>
+        <div
+          className="h-6 w-6 m-auto cursor-pointer"
+          onClick={() => dispatch(updateInfoPopup(false))}
+        >
+          <XIcon />
+        </div>
       </div>
       {userMajors.length > 1 && (
         <Select
