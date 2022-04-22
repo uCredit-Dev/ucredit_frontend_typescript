@@ -52,6 +52,7 @@ import { userService } from '../../services';
 import HamburgerMenu from './menus/HamburgerMenu';
 import Notification from './menus/Notification';
 import PlanEditMenu from './menus/PlanEditMenu';
+import CommentsOverview from './CommentsOverview';
 
 interface Props {
   plan: Plan;
@@ -216,7 +217,7 @@ const Dashboard: React.FC<Props> = ({ plan, mode }) => {
       <GenerateNewPlan />
       <HandleUserInfoSetupDummy plan={plan} />
       <HandlePlanShareDummy />
-
+      <CommentsOverview />
       {/* Menus*/}
       <Notification />
       {reviewMode !== ReviewMode.View && <PlanEditMenu />}

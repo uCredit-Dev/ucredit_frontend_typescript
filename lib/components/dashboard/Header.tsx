@@ -19,7 +19,6 @@ const Header: React.FC = () => {
           <img src="/img/logo-darker.png" alt="logo" className="mr-3 h-9"></img>
           <div>uCredit</div>
         </div>
-        <CommentsOverview />
       </div>
     </div>
   );

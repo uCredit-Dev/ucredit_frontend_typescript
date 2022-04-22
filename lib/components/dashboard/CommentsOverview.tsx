@@ -78,7 +78,7 @@ const CommentsOverview: React.FC = () => {
   };
 
   return (
-    <div className="flex flex-row items-center justify-between px-4 text-xl">
+    <div className="absolute right-[155px] z-20 flex flex-row items-center justify-between px-4 text-xl top-[12px]">
       <div className="w-full max-w-sm">
         <Popover className="">
           {({ open }) => (
