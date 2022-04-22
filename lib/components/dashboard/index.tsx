@@ -161,8 +161,6 @@ const Dashboard: React.FC<Props> = ({ plan, mode }) => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [plan, mode, currPlan._id]);
 
-  useEffect(() => console.log('bruh', currPlan), [currPlan]);
-
   return (
     <>
       {!loginCheck || importingStatus ? (
