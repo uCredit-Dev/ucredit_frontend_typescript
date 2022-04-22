@@ -38,7 +38,7 @@ import {
   selectUser,
   updatePlanList,
 } from '../../../slices/userSlice';
-import Reviewers from '../degree-info/Reviewers/Reviewers';
+import Reviewers from './reviewers/Reviewers';
 import ShareLinksPopup from '../degree-info/ShareLinksPopup';
 
 const majorOptions = allMajors.map((major, index) => ({
@@ -261,7 +261,7 @@ const HamburgerMenu: FC<{
   return (
     <>
       <div
-        className="z-40 p-[0.53rem] pt-[0.6rem] space-y-1 bg-white rounded shadow h-9 w-9 mx-2 cursor-pointer fixed top-3 right-7"
+        className="z-40 p-[0.53rem] pt-[0.6rem] space-y-1 bg-white rounded shadow h-9 w-9 mx-2 cursor-pointer absolute top-3 right-7"
         onClick={() => setOpenHamburger(!openHamburger)}
       >
         <span className="block w-5 h-[0.2rem] bg-black"></span>
@@ -270,7 +270,7 @@ const HamburgerMenu: FC<{
       </div>
       {openHamburger && (
         <aside
-          className="w-72 top-14 z-40 fixed right-0 shadow-lg"
+          className="w-72 top-14 z-40 absolute right-0 shadow-lg"
           aria-label="Sidebar"
         >
           <div className="overflow-y-auto py-4 px-3 bg-white rounded">

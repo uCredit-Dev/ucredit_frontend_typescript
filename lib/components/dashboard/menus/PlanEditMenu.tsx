@@ -32,7 +32,6 @@ import {
   updateInfoPopup,
 } from '../../../slices/popupSlice';
 import {
-  resetUser,
   selectPlanList,
   selectReviewMode,
   selectUser,
@@ -40,6 +39,8 @@ import {
 } from '../../../slices/userSlice';
 import Reviewers from './reviewers/Reviewers';
 import ShareLinksPopup from '../degree-info/ShareLinksPopup';
+import clsx from 'clsx';
+import { selectSearchStatus } from '../../../slices/searchSlice';
 
 const majorOptions = allMajors.map((major, index) => ({
   value: index,
@@ -52,14 +53,14 @@ const PlanEditMenu: FC = () => {
   const currentPlan = useSelector(selectPlan);
   const user = useSelector(selectUser);
   const dispatch = useDispatch();
-  const router = useRouter();
   const infoPopup = useSelector(selectInfoPopup);
   const reviewMode = useSelector(selectReviewMode);
-  const [cookies, , removeCookie] = useCookies(['connect.sid']);
   const [planName, setPlanName] = useState<string>(currentPlan.name);
   const [editName, setEditName] = useState<boolean>(false);
   const [open, setOpenEdit] = useState<boolean>(false);
+  const [openEditArea, setOpenEditArea] = useState<boolean>(false);
   const [shareableURL, setShareableURL] = useState<string>('');
+  const searchStatus = useSelector(selectSearchStatus);
 
   // Only edits name if editName is true. If true, calls debounce update function
   useEffect(() => {
@@ -103,25 +104,6 @@ const PlanEditMenu: FC = () => {
         dispatch(updatePlanList(newPlanList));
       })
       .catch((err) => console.log(err));
-  };
-
-  const handleLogoutClick = (): void => {
-    const loginId = getLoginCookieVal(cookies);
-    if (getAPI(window).includes('ucredit.me'))
-      axios
-        .delete(getAPI(window) + '/verifyLogin/' + loginId)
-        .then(() => logOut())
-        .catch((err) => {
-          console.log('error logging out', err);
-        });
-    else logOut();
-  };
-
-  const logOut = () => {
-    removeCookie('connect.sid', { path: '/' });
-    dispatch(resetUser());
-    dispatch(resetCurrentPlan());
-    router.push('/login');
   };
 
   const handlePlanChange = (event) => {
@@ -260,7 +242,13 @@ const PlanEditMenu: FC = () => {
     <>
       <button
         onClick={() => setOpenEdit(!open)}
-        className="flex items-center p-2 text-base font-normal text-black rounded-lg bg-white w-min z-20 fixed top-20 right-9 shadow-lg"
+        className={clsx(
+          'flex items-center p-2 text-base font-normal text-black rounded-lg bg-white w-min z-30 top-20 right-9 shadow-lg',
+          {
+            'fixed ': searchStatus,
+            ' absolute': !searchStatus,
+          },
+        )}
       >
         <span className="flex-1 whitespace-nowrap text-left flex flex-row">
           <CogIcon className="w-[1.4rem] text-black" />
@@ -268,7 +256,13 @@ const PlanEditMenu: FC = () => {
       </button>
       {open && (
         <aside
-          className="w-80 top-28 z-40 fixed right-0 shadow-lg"
+          className={clsx(
+            'w-80 top-28 z-40 right-0 shadow-lg overflow-y-auto max-h-[75%]',
+            {
+              ' fixed': searchStatus,
+              ' absolute': !searchStatus,
+            },
+          )}
           aria-label="Sidebar"
         >
           <div className="overflow-y-auto py-4 px-3 bg-white rounded">
@@ -312,10 +306,9 @@ const PlanEditMenu: FC = () => {
                   </span>
                 </button>
               </li>
-
               <li>
                 <button
-                  onClick={() => setOpenEdit(!open)}
+                  onClick={() => setOpenEditArea(!openEditArea)}
                   className="flex items-center p-2 text-base font-normal text-gray-900 rounded-lg hover:bg-gray-100 w-full"
                 >
                   <span className="flex-1 ml-0.5 whitespace-nowrap w-full text-left flex flex-row">
@@ -324,7 +317,7 @@ const PlanEditMenu: FC = () => {
                   </span>
                 </button>
               </li>
-              {open && (
+              {openEditArea && (
                 <>
                   <ul className="pt-4 space-y-2 border-t border-gray-200">
                     <li>
@@ -414,51 +407,6 @@ const PlanEditMenu: FC = () => {
               <ul className="pt-2 space-y-2 border-t border-b pb-2 border-gray-200">
                 {reviewMode !== ReviewMode.View && <Reviewers />}
               </ul>
-              <li>
-                {user._id === 'guestUser' ? (
-                  <a
-                    href="https://ucredit-api.herokuapp.com/api/login"
-                    className="flex items-center p-2 text-base font-normal text-gray-900 rounded-lg hover:bg-gray-100"
-                  >
-                    <svg
-                      className="flex-shrink-0 w-6 h-6 text-gray-500 transition duration-75 group-hover:text-gray-900"
-                      fill="currentColor"
-                      viewBox="0 0 20 20"
-                      xmlns="http://www.w3.org/2000/svg"
-                    >
-                      <path
-                        fillRule="evenodd"
-                        d="M3 3a1 1 0 00-1 1v12a1 1 0 102 0V4a1 1 0 00-1-1zm10.293 9.293a1 1 0 001.414 1.414l3-3a1 1 0 000-1.414l-3-3a1 1 0 10-1.414 1.414L14.586 9H7a1 1 0 100 2h7.586l-1.293 1.293z"
-                        clipRule="evenodd"
-                      ></path>
-                    </svg>
-                    <span className="flex-1 ml-3 whitespace-nowrap">
-                      Sign In
-                    </span>
-                  </a>
-                ) : (
-                  <button
-                    onClick={handleLogoutClick}
-                    className="flex items-center p-2 text-base w-full font-normal text-gray-900 rounded-lg hover:bg-gray-100"
-                  >
-                    <svg
-                      className="flex-shrink-0 w-6 h-6 text-gray-500 transition duration-75 group-hover:text-gray-900"
-                      fill="currentColor"
-                      viewBox="0 0 20 20"
-                      xmlns="http://www.w3.org/2000/svg"
-                    >
-                      <path
-                        fillRule="evenodd"
-                        d="M3 3a1 1 0 00-1 1v12a1 1 0 102 0V4a1 1 0 00-1-1zm10.293 9.293a1 1 0 001.414 1.414l3-3a1 1 0 000-1.414l-3-3a1 1 0 10-1.414 1.414L14.586 9H7a1 1 0 100 2h7.586l-1.293 1.293z"
-                        clipRule="evenodd"
-                      ></path>
-                    </svg>
-                    <span className="flex-1 ml-3 whitespace-nowrap w-full text-left">
-                      Sign Out
-                    </span>
-                  </button>
-                )}
-              </li>
             </ul>
           </div>
         </aside>
