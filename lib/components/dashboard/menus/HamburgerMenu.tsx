@@ -11,35 +11,35 @@ import Select, {
   StylesConfig,
 } from 'react-select';
 import { toast } from 'react-toastify';
-import { getLoginCookieVal, getAPI } from '../../resources/assets';
+import { getLoginCookieVal, getAPI } from '../../../resources/assets';
 import {
   DashboardMode,
   Plan,
   ReviewMode,
   Year,
-} from '../../resources/commonTypes';
-import { allMajors } from '../../resources/majors';
+} from '../../../resources/commonTypes';
+import { allMajors } from '../../../resources/majors';
 import {
   resetCurrentPlan,
   selectPlan,
   updateCurrentPlanCourses,
   updateSelectedPlan,
-} from '../../slices/currentPlanSlice';
+} from '../../../slices/currentPlanSlice';
 import {
   selectInfoPopup,
   updateAddingPlanStatus,
   updateDeletePlanStatus,
   updateInfoPopup,
-} from '../../slices/popupSlice';
+} from '../../../slices/popupSlice';
 import {
   resetUser,
   selectPlanList,
   selectReviewMode,
   selectUser,
   updatePlanList,
-} from '../../slices/userSlice';
-import Reviewers from './degree-info/Reviewers/Reviewers';
-import ShareLinksPopup from './degree-info/ShareLinksPopup';
+} from '../../../slices/userSlice';
+import Reviewers from '../degree-info/Reviewers/Reviewers';
+import ShareLinksPopup from '../degree-info/ShareLinksPopup';
 
 const majorOptions = allMajors.map((major, index) => ({
   value: index,
@@ -47,10 +47,8 @@ const majorOptions = allMajors.map((major, index) => ({
 }));
 
 const HamburgerMenu: FC<{
-  openHamburger: boolean;
-  setOpenHamburger: (openHamburger: boolean) => void;
   mode: DashboardMode;
-}> = ({ openHamburger, mode, setOpenHamburger }) => {
+}> = ({ mode }) => {
   // Redux Setup
   const planList = useSelector(selectPlanList);
   const currentPlan = useSelector(selectPlan);
@@ -60,7 +58,7 @@ const HamburgerMenu: FC<{
   const infoPopup = useSelector(selectInfoPopup);
   const reviewMode = useSelector(selectReviewMode);
   const [cookies, , removeCookie] = useCookies(['connect.sid']);
-  const [openEdit, setOpenEdit] = useState<boolean>(false);
+  const [openHamburger, setOpenHamburger] = useState<boolean>(false);
   const [planName, setPlanName] = useState<string>(currentPlan.name);
   const [editName, setEditName] = useState<boolean>(false);
   const [shareableURL, setShareableURL] = useState<string>('');
@@ -261,10 +259,18 @@ const HamburgerMenu: FC<{
   };
 
   return (
-    <div>
+    <>
+      <div
+        className="z-40 p-[0.53rem] pt-[0.6rem] space-y-1 bg-white rounded shadow h-9 w-9 mx-2 cursor-pointer fixed top-3 right-7"
+        onClick={() => setOpenHamburger(!openHamburger)}
+      >
+        <span className="block w-5 h-[0.2rem] bg-black"></span>
+        <span className="block w-5 h-[0.2rem] bg-black"></span>
+        <span className="block w-5 h-[0.2rem] bg-black"></span>
+      </div>
       {openHamburger && (
         <aside
-          className="w-72 top-14 z-40 absolute right-0 shadow-lg"
+          className="w-72 top-14 z-40 fixed right-0 shadow-lg"
           aria-label="Sidebar"
         >
           <div className="overflow-y-auto py-4 px-3 bg-white rounded">
@@ -275,19 +281,6 @@ const HamburgerMenu: FC<{
                     <div className="ml-2">{user.name}</div>
                   )}
                 </span>
-              </li>
-              <li>
-                <Select
-                  options={[
-                    ...planList
-                      .filter((plan) => plan._id !== currentPlan._id)
-                      .map((plan) => ({ value: plan, label: plan.name })),
-                    { value: currentPlan, label: 'Create New Plan' },
-                  ]}
-                  value={{ label: currentPlan.name, value: currentPlan }}
-                  onChange={handlePlanChange}
-                  className="mr-2 thin:mx-auto text-lg font-light mt-[0.15rem]"
-                />
               </li>
               <li>
                 <button
@@ -317,134 +310,6 @@ const HamburgerMenu: FC<{
                   </span>
                 </button>
               </li>
-              <li>
-                <button
-                  onClick={() => {
-                    dispatch(updateInfoPopup(!infoPopup));
-                    setOpenHamburger(false);
-                  }}
-                  className="flex items-center p-2 text-base font-normal text-gray-900 rounded-lg hover:bg-gray-100 w-full"
-                >
-                  <svg
-                    className="flex-shrink-0 w-6 h-6 text-gray-500 transition duration-75 group-hover:text-gray-900"
-                    fill="currentColor"
-                    viewBox="0 0 20 20"
-                    xmlns="http://www.w3.org/2000/svg"
-                  >
-                    <path d="M9 2a1 1 0 000 2h2a1 1 0 100-2H9z"></path>
-                    <path
-                      fillRule="evenodd"
-                      d="M4 5a2 2 0 012-2 3 3 0 003 3h2a3 3 0 003-3 2 2 0 012 2v11a2 2 0 01-2 2H6a2 2 0 01-2-2V5zm3 4a1 1 0 000 2h.01a1 1 0 100-2H7zm3 0a1 1 0 000 2h3a1 1 0 100-2h-3zm-3 4a1 1 0 100 2h.01a1 1 0 100-2H7zm3 0a1 1 0 100 2h3a1 1 0 100-2h-3z"
-                      clipRule="evenodd"
-                    ></path>
-                  </svg>
-                  <span className="flex-1 ml-3 whitespace-nowrap w-full text-left">
-                    Degree Progresss{' '}
-                  </span>
-                </button>
-              </li>
-
-              <li>
-                <button
-                  onClick={() => setOpenEdit(!openEdit)}
-                  className="flex items-center p-2 text-base font-normal text-gray-900 rounded-lg hover:bg-gray-100 w-full"
-                >
-                  <span className="flex-1 ml-0.5 whitespace-nowrap w-full text-left flex flex-row">
-                    <PencilAltIcon className="bg-gray-100 w-[1.4rem] text-gray-500 mr-3" />{' '}
-                    Edit Plan
-                  </span>
-                </button>
-              </li>
-              {openEdit && (
-                <>
-                  <ul className="pt-4 space-y-2 border-t border-gray-200">
-                    <li>
-                      <div className="flex flex-row items-end bg-white border border-gray-300 rounded h-10 mr-2">
-                        <div className="m-auto ml-2 mr-0 text-xl">✎</div>
-                        <input
-                          value={planName}
-                          className=" my-0.5 px-1 h-8 text-gray-800 text-lg outline-none w-full"
-                          onChange={handlePlanNameChange}
-                        />
-                      </div>
-                    </li>
-                    <li>
-                      <form
-                        data-testid="major-change-form"
-                        className="z-20 w-full pr-2"
-                      >
-                        <label htmlFor="majorChange" hidden={true}>
-                          majorChange
-                        </label>
-                        <Select
-                          components={{ MultiValue }}
-                          isMulti
-                          isClearable={false}
-                          options={majorOptions}
-                          value={majorOptions.filter((major) =>
-                            currentPlan.majors.includes(major.label),
-                          )}
-                          styles={customStyles}
-                          onChange={handleMajorChange}
-                          placeholder="Change Major"
-                          name="majorChange"
-                          inputId="majorChange"
-                        />
-                      </form>
-                    </li>
-                    <li className="flex flex-row">
-                      <button
-                        className="flex flex-row items-center h-10 px-2 my-1 ml-1 mr-2 transition duration-200 ease-in border border-gray-300 rounded hover:underline hover:bg-primary"
-                        onClick={onShareClick}
-                      >
-                        <svg
-                          xmlns="http://www.w3.org/2000/svg"
-                          className="w-6 h-6 transition duration-200 ease-in transform hover:scale-110"
-                          fill="none"
-                          viewBox="0 0 24 24"
-                          stroke="currentColor"
-                        >
-                          <path
-                            strokeLinecap="round"
-                            strokeLinejoin="round"
-                            strokeWidth={2}
-                            d="M8.684 13.342C8.886 12.938 9 12.482 9 12c0-.482-.114-.938-.316-1.342m0 2.684a3 3 0 110-2.684m0 2.684l6.632 3.316m-6.632-6l6.632-3.316m0 0a3 3 0 105.367-2.684 3 3 0 00-5.367 2.684zm0 9.316a3 3 0 105.368 2.684 3 3 0 00-5.368-2.684z"
-                          />
-                        </svg>
-                        <div className="ml-1">Share</div>
-                      </button>
-                      <div
-                        onClick={() => addNewYear(false)}
-                        className=" thin:mx-auto flex mr-2 flex-row items-center text-left w-full h-10 my-1 transition duration-200 ease-in border border-gray-300 rounded cursor-pointer hover:underline hover:bg-green-300 focus:outline-none"
-                      >
-                        <PlusIcon
-                          data-tip={`Add a new year!`}
-                          data-for="godTip"
-                          className="w-5 h-5 ml-2 m-auto focus:outline-none"
-                        />
-                        <div className="w-full ml-1">{' Add Year'}</div>
-                      </div>
-                      <button
-                        className="flex flex-row items-center h-10 px-2 my-1 mr-2 transition duration-200 ease-in border border-gray-300 rounded hover:underline hover:bg-red-300"
-                        onClick={activateDeletePlan}
-                      >
-                        <TrashIcon className="w-5 my-auto transition duration-200 ease-in transform cursor-pointer select-none stroke-2 hover:scale-110" />{' '}
-                      </button>
-                    </li>
-                    <li>
-                      {shareableURL === '' ? null : (
-                        <ShareLinksPopup
-                          link={shareableURL}
-                          setURL={onShareClick}
-                        />
-                      )}
-                    </li>
-                  </ul>
-                </>
-              )}
-              <ul className="pt-2 space-y-2 border-t border-b pb-2 border-gray-200">
-                {reviewMode !== ReviewMode.View && <Reviewers />}
-              </ul>
               <li>
                 {user._id === 'guestUser' ? (
                   <a
@@ -494,7 +359,7 @@ const HamburgerMenu: FC<{
           </div>
         </aside>
       )}
-    </div>
+    </>
   );
 };
 
