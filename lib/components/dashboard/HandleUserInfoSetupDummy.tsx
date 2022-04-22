@@ -2,13 +2,17 @@ import { useEffect } from 'react';
 import axios from 'axios';
 import { useDispatch, useSelector } from 'react-redux';
 import { toast } from 'react-toastify';
-import { Plan } from '../../resources/commonTypes';
+import { Plan, ReviewMode } from '../../resources/commonTypes';
 import {
   selectImportingStatus,
   selectPlan,
   updateSelectedPlan,
 } from '../../slices/currentPlanSlice';
-import { selectUser, updatePlanList } from '../../slices/userSlice';
+import {
+  selectReviewMode,
+  selectUser,
+  updatePlanList,
+} from '../../slices/userSlice';
 import { getAPI } from '../../resources/assets';
 import { updateAddingPlanStatus } from '../../slices/popupSlice';
 
@@ -25,6 +29,7 @@ const HandleUserInfoSetupDummy: React.FC<Props> = ({ plan }) => {
   const user = useSelector(selectUser);
   const importing = useSelector(selectImportingStatus);
   const curPlan = useSelector(selectPlan);
+  const reviewMode = useSelector(selectReviewMode);
 
   // Adds a new plan every time a new guest user is created and they don't have a a plan.
   useEffect(() => {
@@ -37,8 +42,12 @@ const HandleUserInfoSetupDummy: React.FC<Props> = ({ plan }) => {
 
   // Gets all users's plans and updates state everytime a new user is chosen.
   useEffect(() => {
+    console.log('yo', plan);
     if (user._id !== 'noUser' && user._id !== 'guestUser') {
-      if (plan._id === 'noPlan' || !importing) {
+      if (
+        (plan._id === 'noPlan' || (!importing && user._id === plan.user_id)) &&
+        reviewMode !== ReviewMode.View
+      ) {
         axios
           .get(getAPI(window) + '/plansByUser/' + user._id)
           .then((retrieved) => processRetrievedPlans(retrieved.data.data))
@@ -51,6 +60,8 @@ const HandleUserInfoSetupDummy: React.FC<Props> = ({ plan }) => {
               console.log('ERROR:', err);
             }
           });
+      } else {
+        processRetrievedPlans([plan]);
       }
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -63,8 +74,10 @@ const HandleUserInfoSetupDummy: React.FC<Props> = ({ plan }) => {
         plan1._id.localeCompare(plan2._id),
       );
       dispatch(updatePlanList(retrievedPlans));
-      if (curPlan._id === 'noPlan')
+      if (curPlan._id === 'noPlan') {
         dispatch(updateSelectedPlan(retrievedPlans[0]));
+        // plan = retrievedPlans[0];
+      }
       toast('Retrieved ' + retrievedPlans.length + ' plans!');
     }
 

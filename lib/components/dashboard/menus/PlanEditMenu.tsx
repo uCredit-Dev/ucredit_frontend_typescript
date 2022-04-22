@@ -1,9 +1,7 @@
 import { TrashIcon } from '@heroicons/react/outline';
-import { PencilAltIcon, PlusIcon } from '@heroicons/react/solid';
+import { CogIcon, PencilAltIcon, PlusIcon } from '@heroicons/react/solid';
 import axios from 'axios';
-import { useRouter } from 'next/router';
 import React, { FC, useEffect, useState } from 'react';
-import { useCookies } from 'react-cookie';
 import { useDispatch, useSelector } from 'react-redux';
 import Select, {
   components,
@@ -11,59 +9,50 @@ import Select, {
   StylesConfig,
 } from 'react-select';
 import { toast } from 'react-toastify';
-import { getLoginCookieVal, getAPI } from '../../resources/assets';
+import { getAPI } from '../../../resources/assets';
+import { Plan, ReviewMode, Year } from '../../../resources/commonTypes';
+import { allMajors } from '../../../resources/majors';
 import {
-  DashboardMode,
-  Plan,
-  ReviewMode,
-  Year,
-} from '../../resources/commonTypes';
-import { allMajors } from '../../resources/majors';
-import {
-  resetCurrentPlan,
   selectPlan,
   updateCurrentPlanCourses,
   updateSelectedPlan,
-} from '../../slices/currentPlanSlice';
+} from '../../../slices/currentPlanSlice';
 import {
   selectInfoPopup,
   updateAddingPlanStatus,
   updateDeletePlanStatus,
   updateInfoPopup,
-} from '../../slices/popupSlice';
+} from '../../../slices/popupSlice';
 import {
-  resetUser,
   selectPlanList,
   selectReviewMode,
   selectUser,
   updatePlanList,
-} from '../../slices/userSlice';
-import Reviewers from './degree-info/Reviewers/Reviewers';
-import ShareLinksPopup from './degree-info/ShareLinksPopup';
+} from '../../../slices/userSlice';
+import Reviewers from './reviewers/Reviewers';
+import ShareLinksPopup from '../degree-info/ShareLinksPopup';
+import clsx from 'clsx';
+import { selectSearchStatus } from '../../../slices/searchSlice';
 
 const majorOptions = allMajors.map((major, index) => ({
   value: index,
   label: major.degree_name,
 }));
 
-const HamburgerMenu: FC<{
-  openHamburger: boolean;
-  setOpenHamburger: (openHamburger: boolean) => void;
-  mode: DashboardMode;
-}> = ({ openHamburger, mode, setOpenHamburger }) => {
+const PlanEditMenu: FC = () => {
   // Redux Setup
   const planList = useSelector(selectPlanList);
   const currentPlan = useSelector(selectPlan);
   const user = useSelector(selectUser);
   const dispatch = useDispatch();
-  const router = useRouter();
   const infoPopup = useSelector(selectInfoPopup);
   const reviewMode = useSelector(selectReviewMode);
-  const [cookies, , removeCookie] = useCookies(['connect.sid']);
-  const [openEdit, setOpenEdit] = useState<boolean>(false);
   const [planName, setPlanName] = useState<string>(currentPlan.name);
   const [editName, setEditName] = useState<boolean>(false);
+  const [open, setOpenEdit] = useState<boolean>(false);
+  const [openEditArea, setOpenEditArea] = useState<boolean>(false);
   const [shareableURL, setShareableURL] = useState<string>('');
+  const searchStatus = useSelector(selectSearchStatus);
 
   // Only edits name if editName is true. If true, calls debounce update function
   useEffect(() => {
@@ -107,25 +96,6 @@ const HamburgerMenu: FC<{
         dispatch(updatePlanList(newPlanList));
       })
       .catch((err) => console.log(err));
-  };
-
-  const handleLogoutClick = (): void => {
-    const loginId = getLoginCookieVal(cookies);
-    if (getAPI(window).includes('ucredit.me'))
-      axios
-        .delete(getAPI(window) + '/verifyLogin/' + loginId)
-        .then(() => logOut())
-        .catch((err) => {
-          console.log('error logging out', err);
-        });
-    else logOut();
-  };
-
-  const logOut = () => {
-    removeCookie('connect.sid', { path: '/' });
-    dispatch(resetUser());
-    dispatch(resetCurrentPlan());
-    router.push('/login');
   };
 
   const handlePlanChange = (event) => {
@@ -261,21 +231,34 @@ const HamburgerMenu: FC<{
   };
 
   return (
-    <div>
-      {openHamburger && (
+    <>
+      <button
+        onClick={() => setOpenEdit(!open)}
+        className={clsx(
+          'flex items-center p-2 text-base font-normal text-black rounded-lg bg-white w-min z-30 top-20 right-9 shadow-lg',
+          {
+            'fixed ': searchStatus,
+            ' absolute': !searchStatus,
+          },
+        )}
+      >
+        <span className="flex-1 whitespace-nowrap text-left flex flex-row">
+          <CogIcon className="w-[1.4rem] text-black" />
+        </span>
+      </button>
+      {open && (
         <aside
-          className="w-72 top-14 z-40 absolute right-0 shadow-lg"
+          className={clsx(
+            'w-80 top-28 z-40 right-0 shadow-lg overflow-y-auto max-h-[75%]',
+            {
+              ' fixed': searchStatus,
+              ' absolute': !searchStatus,
+            },
+          )}
           aria-label="Sidebar"
         >
           <div className="overflow-y-auto py-4 px-3 bg-white rounded">
             <ul className="space-y-2">
-              <li>
-                <span className="self-center text-xl font-semibold whitespace-nowrap">
-                  {typeof window !== 'undefined' && window.innerWidth > 600 && (
-                    <div className="ml-2">{user.name}</div>
-                  )}
-                </span>
-              </li>
               <li>
                 <Select
                   options={[
@@ -291,37 +274,9 @@ const HamburgerMenu: FC<{
               </li>
               <li>
                 <button
-                  onClick={() =>
-                    router.push(
-                      mode === DashboardMode.Advising
-                        ? '/dashboard'
-                        : '/reviewer',
-                    )
-                  }
-                  className="flex items-center p-2 text-base font-normal text-gray-900 rounded-lg hover:bg-gray-100 w-full"
-                >
-                  <svg
-                    className="flex-shrink-0 w-6 h-6 text-gray-500 transition duration-75 group-hover:text-gray-900"
-                    fill="currentColor"
-                    viewBox="0 0 20 20"
-                    xmlns="http://www.w3.org/2000/svg"
-                  >
-                    <path d="M8.707 7.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l2-2a1 1 0 00-1.414-1.414L11 7.586V3a1 1 0 10-2 0v4.586l-.293-.293z"></path>
-                    <path d="M3 5a2 2 0 012-2h1a1 1 0 010 2H5v7h2l1 2h4l1-2h2V5h-1a1 1 0 110-2h1a2 2 0 012 2v10a2 2 0 01-2 2H5a2 2 0 01-2-2V5z"></path>
-                  </svg>
-                  <span className="flex-1 ml-3 whitespace-nowrap text-left">
-                    {mode === DashboardMode.Advising
-                      ? DashboardMode.Planning
-                      : DashboardMode.Advising}{' '}
-                    {' Dashboard'}
-                  </span>
-                </button>
-              </li>
-              <li>
-                <button
                   onClick={() => {
                     dispatch(updateInfoPopup(!infoPopup));
-                    setOpenHamburger(false);
+                    setOpenEdit(false);
                   }}
                   className="flex items-center p-2 text-base font-normal text-gray-900 rounded-lg hover:bg-gray-100 w-full"
                 >
@@ -343,10 +298,9 @@ const HamburgerMenu: FC<{
                   </span>
                 </button>
               </li>
-
               <li>
                 <button
-                  onClick={() => setOpenEdit(!openEdit)}
+                  onClick={() => setOpenEditArea(!openEditArea)}
                   className="flex items-center p-2 text-base font-normal text-gray-900 rounded-lg hover:bg-gray-100 w-full"
                 >
                   <span className="flex-1 ml-0.5 whitespace-nowrap w-full text-left flex flex-row">
@@ -355,7 +309,7 @@ const HamburgerMenu: FC<{
                   </span>
                 </button>
               </li>
-              {openEdit && (
+              {openEditArea && (
                 <>
                   <ul className="pt-4 space-y-2 border-t border-gray-200">
                     <li>
@@ -445,57 +399,12 @@ const HamburgerMenu: FC<{
               <ul className="pt-2 space-y-2 border-t border-b pb-2 border-gray-200">
                 {reviewMode !== ReviewMode.View && <Reviewers />}
               </ul>
-              <li>
-                {user._id === 'guestUser' ? (
-                  <a
-                    href="https://ucredit-api.herokuapp.com/api/login"
-                    className="flex items-center p-2 text-base font-normal text-gray-900 rounded-lg hover:bg-gray-100"
-                  >
-                    <svg
-                      className="flex-shrink-0 w-6 h-6 text-gray-500 transition duration-75 group-hover:text-gray-900"
-                      fill="currentColor"
-                      viewBox="0 0 20 20"
-                      xmlns="http://www.w3.org/2000/svg"
-                    >
-                      <path
-                        fillRule="evenodd"
-                        d="M3 3a1 1 0 00-1 1v12a1 1 0 102 0V4a1 1 0 00-1-1zm10.293 9.293a1 1 0 001.414 1.414l3-3a1 1 0 000-1.414l-3-3a1 1 0 10-1.414 1.414L14.586 9H7a1 1 0 100 2h7.586l-1.293 1.293z"
-                        clipRule="evenodd"
-                      ></path>
-                    </svg>
-                    <span className="flex-1 ml-3 whitespace-nowrap">
-                      Sign In
-                    </span>
-                  </a>
-                ) : (
-                  <button
-                    onClick={handleLogoutClick}
-                    className="flex items-center p-2 text-base w-full font-normal text-gray-900 rounded-lg hover:bg-gray-100"
-                  >
-                    <svg
-                      className="flex-shrink-0 w-6 h-6 text-gray-500 transition duration-75 group-hover:text-gray-900"
-                      fill="currentColor"
-                      viewBox="0 0 20 20"
-                      xmlns="http://www.w3.org/2000/svg"
-                    >
-                      <path
-                        fillRule="evenodd"
-                        d="M3 3a1 1 0 00-1 1v12a1 1 0 102 0V4a1 1 0 00-1-1zm10.293 9.293a1 1 0 001.414 1.414l3-3a1 1 0 000-1.414l-3-3a1 1 0 10-1.414 1.414L14.586 9H7a1 1 0 100 2h7.586l-1.293 1.293z"
-                        clipRule="evenodd"
-                      ></path>
-                    </svg>
-                    <span className="flex-1 ml-3 whitespace-nowrap w-full text-left">
-                      Sign Out
-                    </span>
-                  </button>
-                )}
-              </li>
             </ul>
           </div>
         </aside>
       )}
-    </div>
+    </>
   );
 };
 
-export default HamburgerMenu;
+export default PlanEditMenu;

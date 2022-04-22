@@ -1,28 +1,28 @@
 import { FC, useEffect, useState } from 'react';
-import Distributions from './degree-info/Distributions';
-import CourseBar from './degree-info/CourseBar';
+import Distributions from './Distributions';
+import CourseBar from './CourseBar';
 import {
   checkRequirementSatisfied,
   getRequirements,
   requirements,
-} from './degree-info/distributionFunctions';
+} from './distributionFunctions';
 import { useDispatch, useSelector } from 'react-redux';
 import {
   selectCurrentPlanCourses,
   selectDistributions,
   selectPlan,
   updateDistributions,
-} from '../../slices/currentPlanSlice';
-import { selectCourseCache } from '../../slices/userSlice';
-import { getCourse, getMajor } from '../../resources/assets';
+} from '../../../slices/currentPlanSlice';
+import { selectCourseCache } from '../../../slices/userSlice';
+import { getCourse, getMajor } from '../../../resources/assets';
 import {
   Course,
   Major,
   Plan,
   ReviewMode,
   UserCourse,
-} from '../../resources/commonTypes';
-import { allMajors } from '../../resources/majors';
+} from '../../../resources/commonTypes';
+import { allMajors } from '../../../resources/majors';
 
 interface Props {
   plan: Plan;
