@@ -16,6 +16,14 @@ const PlanSummary: FC<{
 }> = ({ plan }) => {
   const [notifState, setNotifState] = useState(false);
   const [draggable, setDraggable] = useState<boolean>(true);
+  // const [distributionBarsJSX, setDistributionBarsJSX] = useState<JSX.Element[]>(
+  //   [],
+  // );
+  // const [major, setMajor] = useState<Major | null>(null);
+  // const changeDisplayMajor = (selected: string) =>
+  // setMajor(
+  //   allMajors.find((majorObj) => majorObj.degree_name === selected) || null,
+  // );
   return (
     <div>
       <InfoMenu plan={plan} mode={ReviewMode.View}/>
@@ -34,9 +42,15 @@ const PlanSummary: FC<{
           <span className="hidden sm:inline-block sm:align-middle sm:h-screen" aria-hidden="true">&#8203;</span>
           <div className="relative inline-block align-bottom bg-white rounded-lg text-left overflow-hidden shadow-xl transform transition-all sm:my-8 sm:align-middle sm:max-w-lg sm:w-full">
             <div className="bg-white px-4 pt-5 pb-4 sm:p-6 sm:pb-4">
-              {/* <YearComponent id={4} year={plan.years[1]} courses={plan.years[1].courses} setDraggable={setDraggable} mode={ReviewMode.View}></YearComponent> */}
-              <InfoMenu plan={plan} mode={ReviewMode.View}/>
-              <p className="text-sm text-gray-500">Sample text.</p>
+              <YearComponent id={4} year={plan.years[1]} courses={plan.years[1].courses} mode={ReviewMode.View}></YearComponent>
+              {/* <InfoMenu plan={plan} mode={ReviewMode.View}/> */}
+              {/* <Distributions
+                  major={plan.majors[0]}
+                  userMajors={plan.majors}
+                  changeDisplayMajor={changeDisplayMajor}
+                  distributionBarsJSX={distributionBarsJSX}
+                /> */}
+              <p className="text-sm text-gray-500">Here is a summary of the student's courses</p>
             </div>
             <div className="bg-gray-50 px-4 py-3 sm:px-6 sm:flex sm:flex-row-reverse">
               <button type="button" className="w-full inline-flex justify-center rounded-md border border-transparent shadow-sm px-4 py-2 bg-red-600 text-base font-medium text-white hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500 sm:ml-3 sm:w-auto sm:text-sm">Reject</button>
