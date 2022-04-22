@@ -413,9 +413,11 @@ const HamburgerMenu: FC<{
                         </svg>
                         <div className="ml-1">Share</div>
                       </button>
-                      <div className=" thin:mx-auto flex mr-2 flex-row items-center text-left w-full h-10 my-1 transition duration-200 ease-in border border-gray-300 rounded cursor-pointer hover:underline hover:bg-green-300 focus:outline-none">
+                      <div
+                        onClick={() => addNewYear(false)}
+                        className=" thin:mx-auto flex mr-2 flex-row items-center text-left w-full h-10 my-1 transition duration-200 ease-in border border-gray-300 rounded cursor-pointer hover:underline hover:bg-green-300 focus:outline-none"
+                      >
                         <PlusIcon
-                          onClick={() => addNewYear(false)}
                           data-tip={`Add a new year!`}
                           data-for="godTip"
                           className="w-5 h-5 ml-2 m-auto focus:outline-none"
