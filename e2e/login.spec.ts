@@ -30,7 +30,7 @@ test.describe('Login Page', () => {
 
 test.describe('Logging In', () => {
   test.beforeEach(async ({ page }) => {
-    await AFTER_LOGIN(page);
+    await AFTER_LOGIN(page, TEST_ID);
   });
 
   test('should be able to login', async ({ page }) => {
