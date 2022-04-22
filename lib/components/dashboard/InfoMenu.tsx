@@ -54,7 +54,7 @@ const InfoMenu: FC<Props> = ({ plan }) => {
 
   // Update major when plan changes
   useEffect(() => {
-    const p = plan || currentPlan;
+    const p = plan && plan._id !== 'noPlan' ? plan : currentPlan;
     let firstMajor: string | undefined = p.majors[0];
     if (firstMajor === undefined) {
       return;
@@ -64,11 +64,12 @@ const InfoMenu: FC<Props> = ({ plan }) => {
       setMajor(majorObj);
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [plan, currentPlan._id, currentPlan.majors, currPlanCourses]);
+  }, [plan._id, currentPlan._id, currentPlan.majors, currPlanCourses]);
 
   // Gets distribution everytime a plan changes.
   useEffect(() => {
-    const p = plan || currentPlan;
+    const p = plan && plan._id !== 'noPlan' ? plan : currentPlan;
+    console.log(p);
     const distr = getDistributions();
     if (distr && distr.length > 0) {
       let tot = 0;
@@ -85,7 +86,7 @@ const InfoMenu: FC<Props> = ({ plan }) => {
   }, [major, currPlanCourses]);
 
   useEffect(() => {
-    const p = plan || currentPlan;
+    const p = plan && plan._id !== 'noPlan' ? plan : currentPlan;
     setCalculated(true);
     if (p._id === retrievedDistributions.plan._id) {
       dispatch(updateDistributions(retrievedDistributions.distr));

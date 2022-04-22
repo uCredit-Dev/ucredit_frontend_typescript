@@ -130,6 +130,7 @@ const Login: React.FC = () => {
         const devUser: User = res.data.data;
         if (devUser.plan_ids.length === 0)
           dispatch(updateAddingPlanStatus(true));
+        if (importID) dispatch(updateImportingStatus(true));
         dispatch(updateUser(devUser));
         dispatch(updateLoginCheck(true));
         document.cookie =
