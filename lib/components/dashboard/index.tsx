@@ -155,12 +155,13 @@ const Dashboard: React.FC<Props> = ({ plan, mode }) => {
 
       if (toGet) {
         const res = await userService.getThreads(toGet._id);
-        console.log(res.data);
         dispatch(updateThreads(res.data));
       }
     })();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [plan, mode, currPlan._id]);
+
+  useEffect(() => console.log('bruh', currPlan), [currPlan]);
 
   return (
     <>

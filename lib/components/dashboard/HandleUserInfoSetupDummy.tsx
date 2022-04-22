@@ -60,7 +60,6 @@ const HandleUserInfoSetupDummy: React.FC<Props> = ({ plan }) => {
       retrievedPlans.sort((plan1: Plan, plan2: Plan) =>
         plan1._id.localeCompare(plan2._id),
       );
-
       dispatch(updatePlanList(retrievedPlans));
       dispatch(updateSelectedPlan(retrievedPlans[0]));
       toast('Retrieved ' + retrievedPlans.length + ' plans!');

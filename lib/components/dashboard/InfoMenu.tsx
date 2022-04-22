@@ -270,9 +270,6 @@ const InfoMenu: FC<Props> = ({ plan }) => {
     });
     return reqCopy;
   };
-  useEffect(() => {
-    console.log('here');
-  }, []);
 
   return (
     <div className="z-50 flex flex-col justify-between w-10 bg-red-100 h-min w-96 right-0 fixed">
