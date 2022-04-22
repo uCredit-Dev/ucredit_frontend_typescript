@@ -51,7 +51,6 @@ const InfoMenu: FC<Props> = ({ plan }) => {
     plan: Plan;
     distr: [string, requirements[]][];
   }>({ plan: plan || currentPlan, distr: [] });
-  const [windowWidth, setWindowWidth] = useState<number>(0);
 
   // Update major when plan changes
   useEffect(() => {
@@ -93,15 +92,6 @@ const InfoMenu: FC<Props> = ({ plan }) => {
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [retrievedDistributions]);
-
-  useEffect(() => {
-    window.addEventListener('resize', updateSize);
-    return () => window.removeEventListener('resize', updateSize);
-  });
-
-  const updateSize = () => {
-    setWindowWidth(window.innerWidth);
-  };
 
   /**
    * Gets all distributions associated with current plan
@@ -285,8 +275,8 @@ const InfoMenu: FC<Props> = ({ plan }) => {
   }, []);
 
   return (
-    <div className="z-40 flex flex-col justify-between w-10 mt-8 bg-red-100 h-min w-96 right-0 fixed">
-      <div className="drop-shadow-lg z-50 max-h-[75vh] bg-white bg-opacity-90 rounded overflow-y-auto w-full">
+    <div className="z-50 flex flex-col justify-between w-10 bg-red-100 h-min w-96 right-0 fixed">
+      <div className="drop-shadow-lg z-50 max-h-[80vh] bg-white bg-opacity-90 rounded  overflow-x-hidden overflow-y-auto w-full">
         {/* <InfoCards /> */}
         {(() => {
           if (calculated) {

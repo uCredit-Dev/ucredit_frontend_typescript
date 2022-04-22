@@ -91,7 +91,7 @@ const ReviewersSearchResults: FC<{
     });
   };
 
-  return <div className="pb-2 border-t">{getElements(users)}</div>;
+  return <div>{getElements(users)}</div>;
 };
 
 export default ReviewersSearchResults;

@@ -132,7 +132,7 @@ const CurrentReviewers = () => {
   };
 
   return (
-    <div className="flex flex-col border-b">
+    <div className="flex flex-col">
       {jsx}
       <ReactTooltip delayShow={200} />
     </div>
