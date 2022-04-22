@@ -8,11 +8,13 @@ import { useRouter } from 'next/router';
 import { userService } from '../lib/services';
 import axios from 'axios';
 import { getAPI } from '../lib/resources/assets';
+import { selectPlan } from '../lib/slices/currentPlanSlice';
 
 const Dash: React.FC = () => {
   const user: User = useSelector(selectUser);
   const router = useRouter();
-  const [plan, setPlan] = useState<Plan>(null);
+  const curPlan = useSelector(selectPlan);
+  const [plan, setPlan] = useState<Plan>(curPlan);
   const [mode, setMode] = useState<ReviewMode>(ReviewMode.View);
   const dispatch = useDispatch();
 

@@ -32,7 +32,7 @@ const HandleUserInfoSetupDummy: React.FC<Props> = ({ plan }) => {
   // Gets all users's plans and updates state everytime a new user is chosen.
   useEffect(() => {
     if (user._id !== 'noUser' && user._id !== 'guestUser') {
-      if (!plan) {
+      if (plan._id === 'noPlan') {
         axios
           .get(getAPI(window) + '/plansByUser/' + user._id)
           .then((retrieved) => {
@@ -52,7 +52,7 @@ const HandleUserInfoSetupDummy: React.FC<Props> = ({ plan }) => {
       }
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [user._id, plan]);
+  }, [user._id, plan._id]);
 
   const processRetrievedPlans = async (retrievedPlans: any): Promise<void> => {
     if (retrievedPlans.length > 0) {
