@@ -28,6 +28,7 @@ export const DASHBOARD_PAGE = {
   DEFAULT_PLAN_NAME_SELECTOR: 'text=Unnamed Plan',
   LOGOUT_BUTTON_SELECTOR: 'button:text("Log Out")',
   PLAN_OVERVIEW_BUTTON_SELECTOR: 'button:text("Plan Overview")',
+  ADVISING_BUTTON_SELECTOR: 'button:text("Advising")',
 };
 
 export const PLAN_OVERVIEW = {

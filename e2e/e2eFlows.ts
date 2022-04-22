@@ -10,7 +10,6 @@ import {
   REVIEWER_ID,
   TEST_ID,
 } from './e2eFixtures';
-import { newPage } from './e2eUtils';
 
 export const AFTER_LOGIN_PAGE = async (page) => {
   const { LOGIN_BUTTON_SELECTOR } = HOME_PAGE;
@@ -49,10 +48,10 @@ export const AFTER_PLAN_OVERVIEW_CLICKED = async (page, loginId = TEST_ID) => {
 
 export const AFTER_REVIEWER_REQUESTED = async (
   page,
+  reviewerPage,
   loginId = TEST_ID,
   reviewerId = REVIEWER_ID,
 ) => {
-  const reviewerPage = await newPage();
   await AFTER_PLAN_OVERVIEW_CLICKED(reviewerPage, reviewerId);
   await AFTER_PLAN_OVERVIEW_CLICKED(page, loginId);
   const {
@@ -67,4 +66,5 @@ export const AFTER_REVIEWER_REQUESTED = async (
   // Return to dashboard
   const { PLAN_OVERVIEW_BUTTON_SELECTOR } = DASHBOARD_PAGE;
   await page.locator(PLAN_OVERVIEW_BUTTON_SELECTOR).click();
+  return reviewerPage;
 };
