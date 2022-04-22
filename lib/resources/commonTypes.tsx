@@ -122,6 +122,11 @@ export type User = {
   whitelisted_plan_ids: string[];
 };
 
+export type UserId = {
+  _id: string;
+  name: string;
+};
+
 export type Filter = {
   area?: string;
   tags?: TagType[];

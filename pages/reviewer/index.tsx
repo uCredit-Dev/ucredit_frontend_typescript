@@ -1,7 +1,7 @@
 import { useRouter } from 'next/router';
 import { useEffect, useState } from 'react';
 import { useSelector } from 'react-redux';
-import UserSection from '../../lib/components/dashboard/UserSection';
+import Header from '../../lib/components/dashboard/Header';
 import { userService } from '../../lib/services';
 import { selectUser } from '../../lib/slices/userSlice';
 import { Reviewee, Search } from '../../lib/components/reviewer';
@@ -10,6 +10,8 @@ import {
   RevieweePlans,
   ReviewRequestStatus,
 } from '../../lib/resources/commonTypes';
+import HamburgerMenu from '../../lib/components/dashboard/menus/HamburgerMenu';
+import Notification from '../../lib/components/dashboard/menus/Notification';
 
 export const statusReadable = {
   [ReviewRequestStatus.UnderReview]: 'Under Review',
@@ -65,7 +67,7 @@ const Reviewer: React.FC = () => {
 
   return (
     <div>
-      <UserSection mode={DashboardMode.Advising} />
+      <Header />
       <div className="pt-24 text-black bg-[#eff2f5] font-bold text-xl md:px-[250px] pb-4">
         Reviewees
       </div>
@@ -86,6 +88,8 @@ const Reviewer: React.FC = () => {
           />
         ))}
       </div>
+      <HamburgerMenu mode={DashboardMode.Advising} />
+      <Notification />
     </div>
   );
 };

@@ -1,7 +1,6 @@
 import { useState, useCallback, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { useScrollPosition } from '@n8tb1t/use-scroll-position';
-import UserSection from './UserSection';
+import Header from './Header';
 import FeedbackPopup from '../popups/FeedbackPopup';
 import FeedbackNotification from '../popups/FeedbackNotification';
 import {
@@ -33,8 +32,13 @@ import DeletePlanPopup from '../popups/DeletePlanPopup';
 import DeleteYearPopup from '../popups/DeleteYearPopup';
 import PlanAdd from '../popups/PlanAdd';
 import CourseList from './course-list/horizontal/CourseList';
-import InfoMenu from './InfoMenu';
-import { selectLoginCheck, selectUser } from '../../slices/userSlice';
+import InfoMenu from './degree-info/InfoMenu';
+import {
+  selectLoginCheck,
+  selectReviewMode,
+  selectUser,
+  updateCommenters,
+} from '../../slices/userSlice';
 import axios from 'axios';
 import { getAPI } from './../../resources/assets';
 import Cart from '../popups/course-search/Cart';
@@ -44,8 +48,10 @@ import HandlePlanShareDummy from './HandlePlanShareDummy';
 import HandleUserInfoSetupDummy from './HandleUserInfoSetupDummy';
 import { DashboardMode, Plan, ReviewMode } from '../../resources/commonTypes';
 import { userService } from '../../services';
-import HamburgerMenu from './HamburgerMenu';
-import Notification from './Notification';
+import HamburgerMenu from './menus/HamburgerMenu';
+import Notification from './menus/Notification';
+import PlanEditMenu from './menus/PlanEditMenu';
+import CommentsOverview from './CommentsOverview';
 
 interface Props {
   plan: Plan;
@@ -72,12 +78,11 @@ const Dashboard: React.FC<Props> = ({ plan, mode }) => {
   const dispatch = useDispatch();
   const currPlan = useSelector(selectPlan);
   const infoPopup = useSelector(selectInfoPopup);
+  const reviewMode = useSelector(selectReviewMode);
 
   // State Setup
   const [showNotif, setShowNotif] = useState<boolean>(true);
   const [formPopup, setFormPopup] = useState<boolean>(false);
-  const [showHeader, setShowHeader] = useState<boolean>(true);
-  const [openHamburger, setOpenHamburger] = useState(false);
   // const [experimentPopup] = useState<boolean>(false);
   // const [displayedNumber, setDisplayedNumber] = useState<number>(3);
   // const [crement, setCrement] = useState<number>(0);
@@ -120,13 +125,13 @@ const Dashboard: React.FC<Props> = ({ plan, mode }) => {
   //   // eslint-disable-next-line react-hooks/exhaustive-deps
   // }, [experimentPopup]);
 
-  useScrollPosition(({ prevPos, currPos }) => {
-    if (currPos.y > -14) {
-      setShowHeader(true);
-    } else if (currPos.y > -120) {
-      setShowHeader(false);
-    }
-  });
+  // useScrollPosition(({ prevPos, currPos }) => {
+  //   if (currPos.y > -14) {
+  //     setShowHeader(true);
+  //   } else if (currPos.y > -120) {
+  //     setShowHeader(false);
+  //   }
+  // });
 
   const updateExperimentsForUser = useCallback(() => {
     axios
@@ -152,14 +157,23 @@ const Dashboard: React.FC<Props> = ({ plan, mode }) => {
   useEffect(() => {
     (async () => {
       const toGet = mode === ReviewMode.View ? plan : currPlan;
-
       if (toGet && toGet._id !== 'noPlan') {
         const res = await userService.getThreads(toGet._id);
         dispatch(updateThreads(res.data));
+        const commentersSet = new Set<string>();
+        for (const thread of res.data) {
+          for (const comment of thread.comments) {
+            const userId = comment.commenter_id;
+            commentersSet.add(JSON.stringify(userId));
+          }
+          // if (thread._id === '6260ed6745fec48f045f27c8') console.log(thread);
+        }
+        const commentersArr = [...commentersSet].map((c) => JSON.parse(c));
+        dispatch(updateCommenters(commentersArr));
       }
     })();
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [plan, mode, currPlan._id]);
+  }, [plan._id, mode, currPlan._id]);
 
   return (
     <>
@@ -174,7 +188,7 @@ const Dashboard: React.FC<Props> = ({ plan, mode }) => {
               notifHandler={setShowNotif}
             />
           )}
-          {showHeader && <UserSection />}
+          <Header />
           <div className="flex-grow w-full">
             <div className="flex flex-col w-full">
               <div className="flex flex-row thin:flex-wrap-reverse mt-[5rem] w-full h-full">
@@ -198,25 +212,15 @@ const Dashboard: React.FC<Props> = ({ plan, mode }) => {
           </div>
         </div>
       )}
+      {/* Dummy components used to generate state information */}
       <GenerateNewPlan />
       <HandleUserInfoSetupDummy plan={plan} />
       <HandlePlanShareDummy />
-      <div
-        className="z-40 p-[0.53rem] pt-[0.6rem] space-y-1 bg-white rounded shadow h-9 w-9 mx-2 cursor-pointer absolute top-3 right-7"
-        onClick={() => setOpenHamburger(!openHamburger)}
-      >
-        <span className="block w-5 h-[0.2rem] bg-black"></span>
-        <span className="block w-5 h-[0.2rem] bg-black"></span>
-        <span className="block w-5 h-[0.2rem] bg-black"></span>
-      </div>
-
+      <CommentsOverview />
+      {/* Menus*/}
       <Notification />
-
-      <HamburgerMenu
-        openHamburger={openHamburger}
-        setOpenHamburger={setOpenHamburger}
-        mode={DashboardMode.Planning}
-      />
+      {reviewMode !== ReviewMode.View && <PlanEditMenu />}
+      <HamburgerMenu mode={DashboardMode.Planning} />
     </>
   );
 };
