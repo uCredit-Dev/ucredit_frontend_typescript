@@ -31,3 +31,5 @@ yarn.lock
 /out/
 test-results/
 playwright-report/
+
+.env

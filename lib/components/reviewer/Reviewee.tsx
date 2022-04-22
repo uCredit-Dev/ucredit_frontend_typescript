@@ -14,13 +14,6 @@ import {
 } from '../../resources/commonTypes';
 import { Hoverable } from '../utils';
 import { TooltipPrimary } from '../utils/TooltipPrimary';
-import { getAPI } from '../../resources/assets';
-import { useDispatch } from 'react-redux';
-import {
-  updateReviewedPlan,
-  updateThreads,
-} from '../../slices/currentPlanSlice';
-import axios from 'axios';
 import { statusReadable } from '../../../pages/reviewer';
 import Dropdown from './Dropdown';
 import { userService } from '../../services';
@@ -43,8 +36,6 @@ const Reviewee: React.FC<Props> = ({
   const [showPlans, setShowPlans] = useState(expanded);
   const [majors, setMajors] = useState<string[]>([]);
   const router = useRouter();
-
-  const dispatch = useDispatch();
 
   useEffect(() => {
     const set = new Set<string>();

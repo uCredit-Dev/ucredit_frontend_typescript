@@ -39,8 +39,6 @@ const InfoMenu: FC<Props> = ({ plan }) => {
   const currentPlan: Plan = useSelector(selectPlan);
   const courseCache = useSelector(selectCourseCache);
   const currPlanCourses = useSelector(selectCurrentPlanCourses);
-
-  const [infoOpen, setInfoOpen] = useState(false);
   const [showDistributions] = useState<boolean[]>(
     new Array(distributions.length),
   );
@@ -53,11 +51,10 @@ const InfoMenu: FC<Props> = ({ plan }) => {
     plan: Plan;
     distr: [string, requirements[]][];
   }>({ plan: plan || currentPlan, distr: [] });
-  const [windowWidth, setWindowWidth] = useState<number>(0);
 
   // Update major when plan changes
   useEffect(() => {
-    const p = plan || currentPlan;
+    const p = plan && plan._id !== 'noPlan' ? plan : currentPlan;
     let firstMajor: string | undefined = p.majors[0];
     if (firstMajor === undefined) {
       return;
@@ -67,11 +64,12 @@ const InfoMenu: FC<Props> = ({ plan }) => {
       setMajor(majorObj);
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [plan, currentPlan._id, currentPlan.majors, currPlanCourses]);
+  }, [plan._id, currentPlan._id, currentPlan.majors, currPlanCourses]);
 
   // Gets distribution everytime a plan changes.
   useEffect(() => {
-    const p = plan || currentPlan;
+    const p = plan && plan._id !== 'noPlan' ? plan : currentPlan;
+    console.log(p);
     const distr = getDistributions();
     if (distr && distr.length > 0) {
       let tot = 0;
@@ -88,22 +86,13 @@ const InfoMenu: FC<Props> = ({ plan }) => {
   }, [major, currPlanCourses]);
 
   useEffect(() => {
-    const p = plan || currentPlan;
+    const p = plan && plan._id !== 'noPlan' ? plan : currentPlan;
     setCalculated(true);
     if (p._id === retrievedDistributions.plan._id) {
       dispatch(updateDistributions(retrievedDistributions.distr));
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [retrievedDistributions]);
-
-  useEffect(() => {
-    window.addEventListener('resize', updateSize);
-    return () => window.removeEventListener('resize', updateSize);
-  });
-
-  const updateSize = () => {
-    setWindowWidth(window.innerWidth);
-  };
 
   /**
    * Gets all distributions associated with current plan
@@ -283,53 +272,31 @@ const InfoMenu: FC<Props> = ({ plan }) => {
     return reqCopy;
   };
 
-  /**
-   * Changes whether fine distributions are hidden
-   * @param i - the distribution's index amongst other distributions
-   */
-  // const changeDistributionVisibility = (i: number) => {
-  //   let showDistributionsCopy = showDistributions.slice();
-  //   showDistributionsCopy[i] = !showDistributions[i];
-  //   setShowDistributions(showDistributionsCopy);
-  // };
-
-  // const getDistributionText = (index: number): string =>
-  //   showDistributions[index] === true
-  //     ? 'Hide Fine Requirements'
-  //     : 'Show Fine Requirements';
-
   return (
-    <div className="fixed right-0 z-40 flex flex-col justify-between w-10 mt-8 bg-red-100 top-60">
-      {windowWidth <= 2200 && (
-        <div className="my-auto transform -rotate-90">
-          <button
-            className="w-32 h-10 text-center text-white font-bold hover:bg-secondary bg-primary rounded focus:outline-none transition duration-200 ease-in transform"
-            onClick={() => {
-              setInfoOpen(!infoOpen);
-            }}
-          >
-            Plan Overview
-          </button>
-        </div>
-      )}
-      {(infoOpen || windowWidth > 2200) && (
-        <div className="drop-shadow-lg absolute z-50 right-14 -top-48 max-h-[75vh] bg-white bg-opacity-90 rounded overflow-y-auto">
-          {/* <InfoCards /> */}
-          {(() => {
-            if (calculated) {
-              return (
+    <div className="z-50 flex flex-col justify-between w-10 bg-red-100 h-min w-96 right-0 fixed">
+      <div className="drop-shadow-lg z-50 max-h-[80vh] bg-white bg-opacity-90 rounded  overflow-x-hidden overflow-y-auto w-full">
+        {/* <InfoCards /> */}
+        {(() => {
+          if (calculated) {
+            return (
+              <div className="w-96 h-full">
                 <Distributions
                   major={major}
                   userMajors={currentPlan.majors}
                   changeDisplayMajor={changeDisplayMajor}
                   distributionBarsJSX={distributionBarsJSX}
                 />
-              );
-            } else
-              return <b className="m-10 h-80">Loading degree progress...</b>;
-          })()}
-        </div>
-      )}
+              </div>
+            );
+          } else {
+            return (
+              <b className="m-10 h-full w-96 bg-blue-100">
+                Loading degree progress...
+              </b>
+            );
+          }
+        })()}
+      </div>
     </div>
   );
 };

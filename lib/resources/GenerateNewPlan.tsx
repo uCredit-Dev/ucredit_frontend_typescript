@@ -49,7 +49,6 @@ const GenerateNewPlan: FC = () => {
       expireAt:
         user._id === 'guestUser' ? Date.now() + 60 * 60 * 24 * 1000 : undefined,
     };
-
     planBody.name = !importing ? toAddName : 'Imported ' + toAddName;
     dispatch(updateImportID(null));
 

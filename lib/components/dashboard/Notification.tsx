@@ -24,9 +24,9 @@ const notifications = [
 const Notification = () => {
   // const [notifState, setNotifState] = useState(true);
   return (
-    <div className="flex flex-row justify-between items-center px-4 text-xl">
+    <div className="flex flex-row justify-between items-center px-4 text-xl absolute top-3 right-20 z-40">
       {notifications.length !== 0 ? (
-        <ExclamationCircleIcon className="bg-white rounded-full absolute h-5 text-red-500 right-[8rem] bottom-9 z-50"></ExclamationCircleIcon>
+        <ExclamationCircleIcon className="bg-white rounded-full relative -right-12 -top-4 h-4 w-5 text-red-500 z-50"></ExclamationCircleIcon>
       ) : null}
       <div className="w-full max-w-sm">
         <Popover className="relative">

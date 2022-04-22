@@ -431,12 +431,12 @@ const YearComponent: FC<{
               </div>
             )}
             <div className="flex flex-row gap-8">
-              <div className="flex flex-row gap-3 mt-2 text-sm font-medium">
+              <div className="flex flex-row gap-3 mt-2 text-sm font-medium h-7">
                 {areaCredits.N > 0 && (
                   <div className="flex flex-row gap-1">
                     {areaCredits.N}
                     <div
-                      className="w-3 mb-2 font-bold text-center rounded"
+                      className="w-4 mb-2 font-bold text-center rounded"
                       style={{ backgroundColor: getColors('N', false) }}
                     >
                       N
@@ -447,7 +447,7 @@ const YearComponent: FC<{
                   <div className="flex flex-row gap-1">
                     {areaCredits.Q}
                     <div
-                      className="w-3 mb-2 font-bold text-center rounded"
+                      className="w-4 mb-2 font-bold text-center rounded"
                       style={{ backgroundColor: getColors('Q', false) }}
                     >
                       Q
@@ -458,7 +458,7 @@ const YearComponent: FC<{
                   <div className="flex flex-row gap-1">
                     {areaCredits.E}
                     <div
-                      className="w-3 mb-2 font-bold text-center rounded"
+                      className="w-4 mb-2 font-bold text-center rounded"
                       style={{ backgroundColor: getColors('E', false) }}
                     >
                       E
@@ -469,7 +469,7 @@ const YearComponent: FC<{
                   <div className="flex flex-row gap-1">
                     {areaCredits.H}
                     <div
-                      className="w-3 mb-2 font-bold text-center rounded"
+                      className="w-4 mb-2 font-bold text-center rounded"
                       style={{ backgroundColor: getColors('H', false) }}
                     >
                       H
@@ -480,7 +480,7 @@ const YearComponent: FC<{
                   <div className="flex flex-row gap-1">
                     {areaCredits.S}
                     <div
-                      className="w-3 mb-2 font-bold text-center rounded"
+                      className="w-4 mb-2 font-bold text-center rounded"
                       style={{ backgroundColor: getColors('S', false) }}
                     >
                       S
@@ -491,7 +491,7 @@ const YearComponent: FC<{
                   <div className="flex flex-row gap-1">
                     {areaCredits.W}
                     <div
-                      className="mb-2 font-bold text-center rounded"
+                      className="mb-2 font-bold text-center rounded w-4"
                       style={{ backgroundColor: getColors('None', true) }}
                     >
                       W
