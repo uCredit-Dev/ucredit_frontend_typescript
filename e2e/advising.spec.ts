@@ -46,6 +46,6 @@ test.describe('Reviewer Flow', async () => {
     await confirmPlanReview(REVIEWER_ID);
     const { ADVISING_BUTTON_SELECTOR } = DASHBOARD_PAGE;
     await page.locator(ADVISING_BUTTON_SELECTOR).click();
-    await expect(page.locator(`text=${TEST_ID}`)).toBeVisible();
+    await expect(page.locator(`text="${TEST_ID}"`)).toBeVisible();
   });
 });
