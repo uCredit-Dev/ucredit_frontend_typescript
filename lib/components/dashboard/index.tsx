@@ -202,12 +202,12 @@ const Dashboard: React.FC<Props> = ({ plan, mode }) => {
       <HandleUserInfoSetupDummy plan={plan} />
       <HandlePlanShareDummy />
       <div
-        className="z-40 p-2 space-y-2 bg-white rounded shadow h-9 w-9 mx-2 cursor-pointer absolute top-3 right-7"
+        className="z-40 p-[0.53rem] pt-[0.6rem] space-y-1 bg-white rounded shadow h-9 w-9 mx-2 cursor-pointer absolute top-3 right-7"
         onClick={() => setOpenHamburger(!openHamburger)}
       >
-        <span className="block w-5 h-0.5 bg-black"></span>
-        <span className="block w-5 h-0.5 bg-black"></span>
-        <span className="block w-5 h-0.5 bg-black"></span>
+        <span className="block w-5 h-[0.2rem] bg-black"></span>
+        <span className="block w-5 h-[0.2rem] bg-black"></span>
+        <span className="block w-5 h-[0.2rem] bg-black"></span>
       </div>
 
       <Notification />
