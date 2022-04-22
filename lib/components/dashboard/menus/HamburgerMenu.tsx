@@ -1,50 +1,22 @@
-import { TrashIcon } from '@heroicons/react/outline';
-import { PencilAltIcon, PlusIcon } from '@heroicons/react/solid';
 import axios from 'axios';
 import { useRouter } from 'next/router';
 import React, { FC, useEffect, useState } from 'react';
 import { useCookies } from 'react-cookie';
 import { useDispatch, useSelector } from 'react-redux';
-import Select, {
-  components,
-  MultiValueProps,
-  StylesConfig,
-} from 'react-select';
 import { toast } from 'react-toastify';
 import { getLoginCookieVal, getAPI } from '../../../resources/assets';
-import {
-  DashboardMode,
-  Plan,
-  ReviewMode,
-  Year,
-} from '../../../resources/commonTypes';
-import { allMajors } from '../../../resources/majors';
+import { DashboardMode } from '../../../resources/commonTypes';
 import {
   resetCurrentPlan,
   selectPlan,
-  updateCurrentPlanCourses,
   updateSelectedPlan,
 } from '../../../slices/currentPlanSlice';
 import {
-  selectInfoPopup,
-  updateAddingPlanStatus,
-  updateDeletePlanStatus,
-  updateInfoPopup,
-} from '../../../slices/popupSlice';
-import {
   resetUser,
   selectPlanList,
-  selectReviewMode,
   selectUser,
   updatePlanList,
 } from '../../../slices/userSlice';
-import Reviewers from './reviewers/Reviewers';
-import ShareLinksPopup from '../degree-info/ShareLinksPopup';
-
-const majorOptions = allMajors.map((major, index) => ({
-  value: index,
-  label: major.degree_name,
-}));
 
 const HamburgerMenu: FC<{
   mode: DashboardMode;
@@ -55,13 +27,10 @@ const HamburgerMenu: FC<{
   const user = useSelector(selectUser);
   const dispatch = useDispatch();
   const router = useRouter();
-  const infoPopup = useSelector(selectInfoPopup);
-  const reviewMode = useSelector(selectReviewMode);
   const [cookies, , removeCookie] = useCookies(['connect.sid']);
   const [openHamburger, setOpenHamburger] = useState<boolean>(false);
   const [planName, setPlanName] = useState<string>(currentPlan.name);
   const [editName, setEditName] = useState<boolean>(false);
-  const [shareableURL, setShareableURL] = useState<string>('');
 
   // Only edits name if editName is true. If true, calls debounce update function
   useEffect(() => {
@@ -125,139 +94,6 @@ const HamburgerMenu: FC<{
     dispatch(resetCurrentPlan());
     router.push('/login');
   };
-
-  const handlePlanChange = (event) => {
-    if (event.label === 'Create New Plan' && user._id !== 'noUser') {
-      dispatch(updateAddingPlanStatus(true));
-    } else {
-      toast(event.value.name + ' selected!');
-      if (currentPlan._id !== event.value._id)
-        dispatch(updateCurrentPlanCourses([]));
-      dispatch(updateSelectedPlan(event.value));
-    }
-  };
-
-  /**
-   * Updates temporary plan name and notifies useffect on state change to update db plan name with debounce.
-   * @param event
-   */
-  const handlePlanNameChange = (event: any): void => {
-    setPlanName(event.target.value);
-    setEditName(true);
-  };
-
-  /**
-   * Limit the max width of multi-select labels
-   */
-  const customStyles: StylesConfig<typeof majorOptions[number], true> = {
-    multiValue: (provided) => {
-      const maxWidth = '17rem';
-      return { ...provided, maxWidth };
-    },
-  };
-
-  const handleMajorChange = (event: any) => {
-    if (event.length === 0) {
-      toast.error('You must have at least one major!');
-      return;
-    }
-    const newMajors = event.map((option) => option.label);
-    const body = {
-      plan_id: currentPlan._id,
-      majors: newMajors,
-    };
-    axios
-      .patch(getAPI(window) + '/plans/update', body)
-      .then(() => {
-        const newUpdatedPlan = { ...currentPlan, majors: newMajors };
-        dispatch(updateSelectedPlan(newUpdatedPlan));
-        let newPlanList = [...planList];
-        for (let i = 0; i < planList.length; i++) {
-          if (newPlanList[i]._id === currentPlan._id) {
-            newPlanList[i] = { ...newUpdatedPlan };
-          }
-        }
-        dispatch(updatePlanList(newPlanList));
-      })
-      .catch((err) => console.log(err));
-  };
-
-  /**
-   * Show major multi-select's displayed major name to abbreviations (B.S. Computer Science => B.S. CS)
-   * if user selected more than one major
-   */
-  const MultiValue = (
-    props: MultiValueProps<typeof majorOptions[number], true>,
-  ) => {
-    const major = allMajors.find(
-      (majorObj) => majorObj.degree_name === props.data.label,
-    );
-    // @ts-ignore
-    const showAsAbbrev = props.selectProps.value.length > 1;
-    return (
-      <components.MultiValue {...props}>
-        {showAsAbbrev ? major?.abbrev : major?.degree_name}
-      </components.MultiValue>
-    );
-  };
-
-  // Activates delete plan popup.
-  const activateDeletePlan = (): void => {
-    dispatch(updateDeletePlanStatus(true));
-  };
-
-  /**
-   * Handles when button for shareable link is clicked.
-   */
-  const onShareClick = (): void => {
-    if (shareableURL !== '') {
-      setShareableURL('');
-      return;
-    }
-    setShareableURL(window.location.origin + '/share?_id=' + currentPlan._id);
-  };
-
-  /**
-   * Adds a new year, if preUni is true, add to the start of the plan, otherwise add to the end
-   * @param preUniversity - whether the new year is a pre uni year
-   */
-  const addNewYear = (preUniversity: boolean): void => {
-    if (currentPlan.years.length < 8) {
-      const newYear: Year = {
-        name: 'New Year',
-        _id: '',
-        plan_id: currentPlan._id,
-        user_id: user._id,
-        courses: [],
-        year: currentPlan.years[currentPlan.years.length - 1].year + 1,
-      };
-
-      const body = {
-        ...newYear,
-        preUniversity: preUniversity,
-        expireAt:
-          user._id === 'guestUser'
-            ? Date.now() + 60 * 60 * 24 * 1000
-            : undefined,
-      }; // add to end by default
-      axios
-        .post(getAPI(window) + '/years', body)
-        .then((response: any) => {
-          const updatedPlanList: Plan[] = [...planList];
-          updatedPlanList[0] = {
-            ...currentPlan,
-            years: [...currentPlan.years, { ...response.data.data }],
-          };
-          dispatch(updateSelectedPlan(updatedPlanList[0]));
-          dispatch(updatePlanList(updatedPlanList));
-          toast.success('New Year added!');
-        })
-        .catch((err) => console.log(err));
-    } else {
-      toast.error("Can't add more than 8 years!");
-    }
-  };
-
   return (
     <>
       <div

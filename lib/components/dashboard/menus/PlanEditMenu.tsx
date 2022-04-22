@@ -1,9 +1,7 @@
 import { TrashIcon } from '@heroicons/react/outline';
 import { CogIcon, PencilAltIcon, PlusIcon } from '@heroicons/react/solid';
 import axios from 'axios';
-import { useRouter } from 'next/router';
 import React, { FC, useEffect, useState } from 'react';
-import { useCookies } from 'react-cookie';
 import { useDispatch, useSelector } from 'react-redux';
 import Select, {
   components,
@@ -11,16 +9,10 @@ import Select, {
   StylesConfig,
 } from 'react-select';
 import { toast } from 'react-toastify';
-import { getLoginCookieVal, getAPI } from '../../../resources/assets';
-import {
-  DashboardMode,
-  Plan,
-  ReviewMode,
-  Year,
-} from '../../../resources/commonTypes';
+import { getAPI } from '../../../resources/assets';
+import { Plan, ReviewMode, Year } from '../../../resources/commonTypes';
 import { allMajors } from '../../../resources/majors';
 import {
-  resetCurrentPlan,
   selectPlan,
   updateCurrentPlanCourses,
   updateSelectedPlan,

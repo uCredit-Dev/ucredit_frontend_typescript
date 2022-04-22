@@ -1,6 +1,5 @@
 import { useState, useCallback, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { useScrollPosition } from '@n8tb1t/use-scroll-position';
 import Header from './Header';
 import FeedbackPopup from '../popups/FeedbackPopup';
 import FeedbackNotification from '../popups/FeedbackNotification';
