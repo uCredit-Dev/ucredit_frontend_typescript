@@ -6,10 +6,10 @@ import {
   updateSelectedThread,
 } from '../../slices/currentPlanSlice';
 import { useDispatch, useSelector } from 'react-redux';
-import { CommentType, ThreadType } from '../../resources/commonTypes';
-import { selectUser } from '../../slices/userSlice';
 import { formatDistance } from 'date-fns';
+import { selectUser } from '../../slices/userSlice';
 import CommenterToggle from './CommenterToggle';
+import { CommentType, ThreadType } from '../../resources/commonTypes';
 
 const CommentsOverview: React.FC = () => {
   const [threadJSX, setThreadJSX] = useState<JSX.Element[]>([]);
@@ -102,7 +102,7 @@ const CommentsOverview: React.FC = () => {
                 leaveFrom="opacity-100 translate-y-0"
                 leaveTo="opacity-0 translate-y-1"
               >
-                <Popover.Panel className="absolute z-10 transform translate-y-2 w-80 max-w-none -translate-x-52 sm:px-0 lg:max-w-3xl">
+                <Popover.Panel className="absolute z-10 transform translate-x-[-140px] translate-y-2 w-80 max-w-none sm:px-0 lg:max-w-3xl">
                   <div className="overflow-hidden rounded-lg shadow-lg ring-1 ring-black ring-opacity-5">
                     <div className="z-30 grid bg-white p-7 lg:grid-cols-1">
                       <CommenterToggle className="mb-3" />

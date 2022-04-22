@@ -164,7 +164,7 @@ const Dropdown: React.FC<Props> = ({
       </div>
       {expanded && (
         <div
-          className="absolute bg-white border -translate-x-[9px] translate-y-2 border-slate-200 rounded px-2 py-[2.5px] flex flex-col gap-1"
+          className="fixed bg-white border -translate-x-[9px] translate-y-2 border-slate-200 rounded px-2 py-[2.5px] flex flex-col gap-1"
           style={{ width }}
         >
           {options.map((option) => {
