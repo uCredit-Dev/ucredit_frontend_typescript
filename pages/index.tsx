@@ -102,7 +102,7 @@ const Home: React.FC = () => {
         });
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [curPlan]);
+  }, [curPlan._id]);
 
   return (
     <>

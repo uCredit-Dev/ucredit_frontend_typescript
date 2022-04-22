@@ -70,18 +70,20 @@ const getPlanReviewers = (plan_id: string, cb = undefined) => {
 
 const postNewThread = (data: any) => {
   return fetchWrapper
-    .post(`${getAPI(window)}/thread/new`, data).then(handleResponse);
-}
-
-const getThreads = (id: string) => {
-  return fetchWrapper.get(`${getAPI(window)}/thread/getByPlan/${id}`)
+    .post(`${getAPI(window)}/thread/new`, data)
     .then(handleResponse);
 };
 
+const getThreads = (id: string) => {
+  return fetchWrapper
+    .get(`${getAPI(window)}/thread/getByPlan/${id}`)
+    .then(handleResponse);
+};
 
 const postNewComment = (data: any, cb = undefined) => {
   return fetchWrapper
-  .post(`${getAPI(window)}/thread/reply`, data).then(handleResponse);
+    .post(`${getAPI(window)}/thread/reply`, data)
+    .then(handleResponse);
 };
 const changeReviewStatus = (review_id, status, cb = undefined) => {
   return fetchWrapper

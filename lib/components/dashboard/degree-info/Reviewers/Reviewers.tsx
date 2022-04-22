@@ -5,12 +5,13 @@ import ReviewersSearch from './ReviewersSearch';
 import { Hoverable, TooltipPrimary } from '../../../utils';
 
 const Reviewers = () => {
-  const [addingReviewer, updateAddingReviewer] = useState(false);
+  const [addingReviewer, updateAddingReviewer] = useState<Boolean>(false);
+  const [show, setShow] = useState<Boolean>(false);
 
   return (
-    <div className="flex flex-col mt-3 border-t">
-      <div className="flex flex-row items-center justify-between pb-1 mt-2 text-xl font-bold">
-        <div className="flex items-center gap-1">
+    <div className="flex flex-col">
+      <div className="flex flex-row items-center justify-between pb-1 text-xl cursor-pointer  hover:bg-gray-100 rounded p-2">
+        <div className="flex items-center gap-1" onClick={() => setShow(!show)}>
           <p>Reviewers</p>
           {process.env.NODE_ENV === 'development' && (
             <Hoverable
@@ -34,15 +35,22 @@ const Reviewers = () => {
         </div>
         <DotsVerticalIcon
           className="h-6"
-          onClick={() => updateAddingReviewer(!addingReviewer)}
+          onClick={() => {
+            updateAddingReviewer(!addingReviewer);
+            setShow(true);
+          }}
         />
       </div>
-      {addingReviewer ? (
-        <div className="pt-2">
-          <ReviewersSearch />
-        </div>
-      ) : (
-        <CurrentReviewers />
+      {show && (
+        <>
+          {addingReviewer ? (
+            <div className="pt-2">
+              <ReviewersSearch />
+            </div>
+          ) : (
+            <CurrentReviewers />
+          )}
+        </>
       )}
     </div>
   );

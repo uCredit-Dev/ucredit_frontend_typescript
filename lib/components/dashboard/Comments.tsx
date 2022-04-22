@@ -18,7 +18,6 @@ import {
   selectReviewedPlan,
   selectThreads,
   updateCurrentComment,
-  updateSelectedPlan,
   updateThreads,
 } from '../../slices/currentPlanSlice';
 import { userService } from '../../services';
@@ -57,16 +56,6 @@ const Comments: FC<{
   const handleChange = (e) => {
     setReplyText(e.target.value);
   };
-
-  useEffect(() => {
-    if (plan.reviewers !== undefined) {
-      (async () => {
-        const reviewers = (await userService.getPlanReviewers(plan._id)).data;
-        dispatch(updateSelectedPlan({ ...plan, reviewers: reviewers }));
-      })();
-    }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
 
   useEffect(() => {
     const handleClickOutside = (e: MouseEvent) => {
