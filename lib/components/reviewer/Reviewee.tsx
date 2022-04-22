@@ -23,6 +23,21 @@ interface Props {
   setRefreshReviews: Dispatch<SetStateAction<boolean>>;
 }
 
+const dropdownOptions = [
+  {
+    label: 'UNDERREVIEW',
+    content: <p className="text-sky-400">Under Review</p>,
+  },
+  {
+    label: 'APPROVED',
+    content: <p className="text-emerald-400">Approved</p>,
+  },
+  {
+    label: 'REJECTED',
+    content: <p className="text-red-400">Rejected</p>,
+  },
+];
+
 const Reviewee: React.FC<Props> = ({
   plans,
   reviewee,
@@ -111,55 +126,22 @@ const Reviewee: React.FC<Props> = ({
                   <div className="flex items-center gap-x-1">
                     <Dropdown
                       width={130}
-                      options={[
-                        {
-                          label: 'Under Review',
-                          content: <p className="text-sky-400">Under Review</p>,
-                          cb: async () => {
-                            if (status === ReviewRequestStatus.UnderReview)
-                              return;
-                            try {
-                              await userService.changeReviewStatus(
-                                review_id,
-                                'UNDERREVIEW',
-                              );
-                              setRefreshReviews(true);
-                              toast.success('Status changed to Under Review');
-                            } catch (e) {}
-                          },
-                        },
-                        {
-                          label: 'Approved',
-                          content: <p className="text-emerald-400">Approved</p>,
-                          cb: async () => {
-                            if (status === ReviewRequestStatus.Approved) return;
-                            try {
-                              await userService.changeReviewStatus(
-                                review_id,
-                                'APPROVED',
-                              );
-                              setRefreshReviews(true);
-                              toast.success('Status changed to Approved');
-                            } catch (e) {}
-                          },
-                        },
-                        {
-                          label: 'Rejected',
-                          content: <p className="text-red-400">Rejected</p>,
-                          cb: async () => {
-                            if (status === ReviewRequestStatus.Rejected) return;
-                            try {
-                              await userService.changeReviewStatus(
-                                review_id,
-                                'REJECTED',
-                              );
-                              setRefreshReviews(true);
-                              toast.success('Status changed to Rejected');
-                            } catch (e) {}
-                          },
-                        },
-                      ]}
-                      _default={statusReadable[status]}
+                      options={dropdownOptions}
+                      onChange={async (values) => {
+                        const value = values[0];
+                        if (!value) return;
+                        try {
+                          await userService.changeReviewStatus(
+                            review_id,
+                            value.label,
+                          );
+                          setRefreshReviews(true);
+                          toast.success(
+                            `Status changed to ${statusReadable[value.label]}`,
+                          );
+                        } catch (e) {}
+                      }}
+                      _default={status}
                     />
                     <Hoverable
                       as={

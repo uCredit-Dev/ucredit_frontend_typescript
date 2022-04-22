@@ -17,7 +17,9 @@ type CurrentPlanSlice = {
   droppables: DroppableType[];
   importing: boolean;
   threads: any;
+  filteredThreads: any;
   reviewedPlan: Plan;
+  selectedThread: string;
 };
 
 const initialState: CurrentPlanSlice = {
@@ -37,7 +39,9 @@ const initialState: CurrentPlanSlice = {
   droppables: [],
   importing: false,
   threads: {},
+  filteredThreads: {},
   reviewedPlan: null,
+  selectedThread: null,
 };
 
 export const currentPlanSlice = createSlice({
@@ -89,6 +93,13 @@ export const currentPlanSlice = createSlice({
       state.threads = {};
       for (const t of Array.from(action.payload)) {
         state.threads[t.location_type + ' ' + t.location_id] = t;
+        state.filteredThreads[t.location_type + ' ' + t.location_id] = t;
+      }
+    },
+    updateFilteredThreads: (state: any, action: any) => {
+      state.filteredThreads = {};
+      for (const [key, value] of action.payload) {
+        state.filteredThreads[key] = value;
       }
     },
     updateReviewedPlan: (state: any, action: PayloadAction<Plan>) => {
@@ -99,7 +110,12 @@ export const currentPlanSlice = createSlice({
       action: PayloadAction<[CommentType, string]>,
     ) => {
       let thread: ThreadType = state.threads[action.payload[1]];
+      let filteredThread: ThreadType = state.filteredThreads[action.payload[1]];
       thread.comments.push(action.payload[0]);
+      filteredThread.comments.push(action.payload[0]);
+    },
+    updateSelectedThread: (state: any, action: PayloadAction<String>) => {
+      state.selectedThread = action.payload;
     },
   },
 });
@@ -113,8 +129,10 @@ export const {
   resetCurrentPlan,
   updateImportingStatus,
   updateThreads,
+  updateFilteredThreads,
   updateReviewedPlan,
   updateCurrentComment,
+  updateSelectedThread,
 } = currentPlanSlice.actions;
 
 // The function below is called a selector and allows us to select a value from
@@ -131,7 +149,11 @@ export const selectDroppables = (state: RootState) =>
 export const selectImportingStatus = (state: RootState) =>
   state.currentPlan.importing;
 export const selectThreads = (state: RootState) => state.currentPlan.threads;
+export const selectFilteredThreads = (state: RootState) =>
+  state.currentPlan.filteredThreads;
 export const selectReviewedPlan = (state: RootState) =>
   state.currentPlan.reviewedPlan;
+export const selectSelectedThread = (state: RootState) =>
+  state.currentPlan.selectedThread;
 
 export default currentPlanSlice.reducer;
