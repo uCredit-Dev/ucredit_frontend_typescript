@@ -15,6 +15,15 @@ import DistributionBarsJSX from '../dashboard/degree-info/DistributionBarsJSX';
 import { allMajors } from '../../resources/majors';
 import Dropdown from './Dropdown';
 
+const getNextSem = (): { year: Number; semester: SemesterType } => {
+  const date = new Date();
+  const currYear = date.getFullYear();
+  const currMonth = date.getMonth();
+  if (currMonth < 9 && currMonth > 0)
+    return { year: currYear, semester: 'Fall' };
+  else return { year: currYear + 1, semester: 'Spring' };
+};
+
 // Implement next plan/student and additional info
 const PlanSummary: FC<{
   plan: Plan;
@@ -23,20 +32,18 @@ const PlanSummary: FC<{
   review_id: string;
   setRefreshReviews: (refreshReviews: boolean) => void;
 }> = ({ plan, notifState, setNotifState, review_id, setRefreshReviews }) => {
-  const [semester, setSemester] = useState<SemesterType>('Fall');
-  const [year, setYear] = useState<Year>(plan.years[0]);
+  const [semester, setSemester] = useState<SemesterType>(getNextSem().semester);
+  const [year, setYear] = useState<Year>(
+    (() => {
+      for (let y of plan.years) {
+        if (y.year === getNextSem().year) return y;
+      }
+    })(),
+  );
   const [courses, setCourses] = useState<UserCourse[]>(plan.years[0].courses);
   const [majors, setMajors] = useState<Major[]>([]);
   const [selectedMajor, setSelectedMajor] = useState<Major>(allMajors[0]);
   const [semesters, setSemesters] = useState([]);
-
-  const getNextSem = (): { year: Number; semester: SemesterType } => {
-    const date = new Date();
-    const year = date.getFullYear();
-    const month = date.getMonth();
-    if (month < 9 && month > 0) return { year: year, semester: 'Fall' };
-    else return { year: year + 1, semester: 'Spring' };
-  };
 
   useEffect(() => {
     const { year, semester } = getNextSem();
@@ -148,7 +155,15 @@ const PlanSummary: FC<{
                           if (y.year === parseInt(split[1])) setYear(y);
                         });
                       }}
-                      _default={semester + ' ' + year}
+                      _default={
+                        getNextSem().semester +
+                        ' ' +
+                        (() => {
+                          for (let y of plan.years) {
+                            if (y.year === getNextSem().year) return y.year;
+                          }
+                        })()
+                      }
                     />
                   </div>
                   <Semester
