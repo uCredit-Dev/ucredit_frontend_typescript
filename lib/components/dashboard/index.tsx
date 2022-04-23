@@ -51,7 +51,7 @@ import { userService } from '../../services';
 import HamburgerMenu from './menus/HamburgerMenu';
 import Notification from './menus/Notification';
 import PlanEditMenu from './menus/PlanEditMenu';
-import CommentsOverview from './CommentsOverview';
+import CommentsOverview from './menus/comments/CommentsOverview';
 
 interface Props {
   mode: ReviewMode;

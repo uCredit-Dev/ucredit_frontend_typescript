@@ -3,9 +3,9 @@ import { useDispatch, useSelector } from 'react-redux';
 import {
   selectThreads,
   updateFilteredThreads,
-} from '../../slices/currentPlanSlice';
-import { selectCommenters } from '../../slices/userSlice';
-import Dropdown from '../reviewer/Dropdown';
+} from '../../../../slices/currentPlanSlice';
+import { selectCommenters } from '../../../../slices/userSlice';
+import Dropdown from '../../../reviewer/Dropdown';
 
 interface Props {
   className?: string;

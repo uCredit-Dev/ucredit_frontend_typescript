@@ -4,12 +4,12 @@ import { Fragment, useEffect, useState } from 'react';
 import {
   selectFilteredThreads,
   updateSelectedThread,
-} from '../../slices/currentPlanSlice';
+} from '../../../../slices/currentPlanSlice';
 import { useDispatch, useSelector } from 'react-redux';
 import { formatDistance } from 'date-fns';
-import { selectUser } from '../../slices/userSlice';
+import { selectUser } from '../../../../slices/userSlice';
 import CommenterToggle from './CommenterToggle';
-import { CommentType, ThreadType } from '../../resources/commonTypes';
+import { CommentType, ThreadType } from '../../../../resources/commonTypes';
 
 const CommentsOverview: React.FC = () => {
   const [threadJSX, setThreadJSX] = useState<JSX.Element[]>([]);
