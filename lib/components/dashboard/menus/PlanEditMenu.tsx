@@ -249,7 +249,7 @@ const PlanEditMenu: FC = () => {
       {open && (
         <aside
           className={clsx(
-            'w-80 top-28 z-40 right-0 shadow-lg overflow-y-auto max-h-[75%]',
+            'w-80 top-28 z-30 right-0 shadow-lg overflow-y-auto max-h-[75%]',
             {
               ' fixed': searchStatus,
               ' absolute': !searchStatus,

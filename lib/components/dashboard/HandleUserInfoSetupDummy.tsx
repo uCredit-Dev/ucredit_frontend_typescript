@@ -16,14 +16,10 @@ import {
 import { getAPI } from '../../resources/assets';
 import { updateAddingPlanStatus } from '../../slices/popupSlice';
 
-interface Props {
-  plan: Plan;
-}
-
 /**
  * Handles dashboard user entry and login logic.
  */
-const HandleUserInfoSetupDummy: React.FC<Props> = ({ plan }) => {
+const HandleUserInfoSetupDummy: React.FC<{ mode: ReviewMode }> = ({ mode }) => {
   // Redux setup
   const dispatch = useDispatch();
   const user = useSelector(selectUser);
@@ -42,10 +38,10 @@ const HandleUserInfoSetupDummy: React.FC<Props> = ({ plan }) => {
 
   // Gets all users's plans and updates state everytime a new user is chosen.
   useEffect(() => {
-    console.log('yo', plan);
     if (user._id !== 'noUser' && user._id !== 'guestUser') {
       if (
-        (plan._id === 'noPlan' || (!importing && user._id === plan.user_id)) &&
+        (curPlan._id === 'noPlan' ||
+          (!importing && user._id === curPlan.user_id)) &&
         reviewMode !== ReviewMode.View
       ) {
         axios
@@ -60,8 +56,6 @@ const HandleUserInfoSetupDummy: React.FC<Props> = ({ plan }) => {
               console.log('ERROR:', err);
             }
           });
-      } else {
-        processRetrievedPlans([plan]);
       }
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -76,7 +70,6 @@ const HandleUserInfoSetupDummy: React.FC<Props> = ({ plan }) => {
       dispatch(updatePlanList(retrievedPlans));
       if (curPlan._id === 'noPlan') {
         dispatch(updateSelectedPlan(retrievedPlans[0]));
-        // plan = retrievedPlans[0];
       }
       toast('Retrieved ' + retrievedPlans.length + ' plans!');
     }

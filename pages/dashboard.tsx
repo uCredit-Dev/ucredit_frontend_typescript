@@ -1,27 +1,33 @@
 import Dashboard from '../lib/components/dashboard/index';
 import Head from 'next/head';
 import { useDispatch, useSelector } from 'react-redux';
-import { selectUser, updateReviewMode } from '../lib/slices/userSlice';
+import {
+  selectPlanList,
+  selectUser,
+  updateReviewMode,
+} from '../lib/slices/userSlice';
 import { useEffect, useState } from 'react';
-import { Plan, ReviewMode, User } from '../lib/resources/commonTypes';
+import { ReviewMode, User } from '../lib/resources/commonTypes';
 import { useRouter } from 'next/router';
 import { userService } from '../lib/services';
 import axios from 'axios';
 import { getAPI } from '../lib/resources/assets';
-import { selectPlan } from '../lib/slices/currentPlanSlice';
+import {
+  initialPlan,
+  updateSelectedPlan,
+} from '../lib/slices/currentPlanSlice';
 
 const Dash: React.FC = () => {
   const user: User = useSelector(selectUser);
   const router = useRouter();
-  const curPlan = useSelector(selectPlan);
-  const [plan, setPlan] = useState<Plan>(curPlan);
-  const [mode, setMode] = useState<ReviewMode>(ReviewMode.View);
+  const planList = useSelector(selectPlanList);
+  const [mode, setMode] = useState<ReviewMode>(ReviewMode.None);
   const dispatch = useDispatch();
 
   useEffect(() => {
     if (user._id === 'noUser') router.push('/login');
     const yearRange = localStorage.getItem('yearRange');
-    if (!yearRange)
+    if (!yearRange) {
       axios
         .get(getAPI(window) + '/getYearRange')
         .then((res) => {
@@ -34,23 +40,34 @@ const Dash: React.FC = () => {
           localStorage.setItem('yearRange', JSON.stringify(yearRange));
         })
         .catch((err) => console.log(err));
+    }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   useEffect(() => {
-    if (!router.query) {
-      dispatch(updateReviewMode(ReviewMode.None));
+    if (!router.query || !router.query.mode) {
+      if (planList.length > 0) dispatch(updateSelectedPlan(planList[0]));
+      else dispatch(updateSelectedPlan(initialPlan));
+      dispatch(updateReviewMode(ReviewMode.Edit));
+      setMode(ReviewMode.Edit);
       return;
     }
     setMode(router.query.mode as ReviewMode);
     dispatch(updateReviewMode(router.query.mode as ReviewMode));
-    if (!router.query.plan) return;
+    if (!router.query.plan) {
+      setMode(ReviewMode.Edit);
+      dispatch(updateReviewMode(ReviewMode.Edit));
+      return;
+    }
     (async () => {
       try {
-        const res = (await userService.getPlan(router.query.plan as string))
-          .data;
-        setPlan(res);
-      } catch (e) {}
+        const res = await userService.getPlan(router.query.plan as string);
+        dispatch(updateSelectedPlan(res.data));
+        dispatch(updateReviewMode(ReviewMode.View));
+        setMode(ReviewMode.View);
+      } catch (e) {
+        console.log(e);
+      }
     })();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [router.query]);
@@ -60,7 +77,7 @@ const Dash: React.FC = () => {
       <Head>
         <title>My Plan</title>
       </Head>
-      <Dashboard plan={plan} mode={mode} />
+      <Dashboard mode={mode} />
     </>
   );
 };

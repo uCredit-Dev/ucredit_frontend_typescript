@@ -1,6 +1,6 @@
 import { Dispatch, SetStateAction, useEffect, useState } from 'react';
 import clsx from 'clsx';
-import { EyeIcon, PencilAltIcon } from '@heroicons/react/outline';
+import { ClipboardListIcon, EyeIcon } from '@heroicons/react/outline';
 import { useRouter } from 'next/router';
 import { toast } from 'react-toastify';
 import {
@@ -14,6 +14,12 @@ import { TooltipPrimary } from '../utils/TooltipPrimary';
 import { statusReadable } from '../../../pages/reviewer';
 import Dropdown from './Dropdown';
 import { userService } from '../../services';
+import PlanSummary from './PlanSummary';
+import {
+  updateCurrentPlanCourses,
+  updateSelectedPlan,
+} from '../../slices/currentPlanSlice';
+import { useDispatch } from 'react-redux';
 
 interface Props {
   userId: string;
@@ -46,7 +52,9 @@ const Reviewee: React.FC<Props> = ({
 }) => {
   const [showPlans, setShowPlans] = useState(expanded);
   const [majors, setMajors] = useState<string[]>([]);
+  const [notifState, setNotifState] = useState(false);
   const router = useRouter();
+  const dispatch = useDispatch();
 
   useEffect(() => {
     const set = new Set<string>();
@@ -60,19 +68,13 @@ const Reviewee: React.FC<Props> = ({
     e.stopPropagation();
     router.push(`/dashboard?plan=${plan._id}&mode=view`);
   };
-
-  const handleEditPlan = (e, plan: Plan) => {
-    e.stopPropagation();
-    router.push(`/dashboard?plan=${plan._id}&mode=edit`);
-  };
-
   return (
     reviewee && (
-      <div
-        className="w-full p-3 bg-white border border-gray-300 rounded-md"
-        onClick={() => setShowPlans((showPlans) => !showPlans)}
-      >
-        <div className="flex justify-between mb-2">
+      <div className="w-full p-3 bg-white border border-gray-300 rounded-md">
+        <div
+          className="flex justify-between mb-2"
+          onClick={() => setShowPlans(!showPlans)}
+        >
           <div>
             <p className="font-semibold">{reviewee.name}</p>
             <p>{reviewee.email}</p>
@@ -139,7 +141,9 @@ const Reviewee: React.FC<Props> = ({
                           toast.success(
                             `Status changed to ${statusReadable[value.label]}`,
                           );
-                        } catch (e) {}
+                        } catch (e) {
+                          console.log(e);
+                        }
                       }}
                       _default={status}
                     />
@@ -161,19 +165,37 @@ const Reviewee: React.FC<Props> = ({
                         )
                       }
                     </Hoverable>
+                    <PlanSummary
+                      plan={p}
+                      notifState={notifState}
+                      setNotifState={setNotifState}
+                      review_id={review_id}
+                      setRefreshReviews={setRefreshReviews}
+                    />
                     <Hoverable
                       as={
-                        <div
+                        <button
                           className="flex items-center justify-center w-6 h-6 transition-colors duration-150 ease-in rounded-sm cursor-pointer hover:bg-gray-200"
-                          onClick={(e) => handleEditPlan(e, p)}
+                          onClick={(e) => {
+                            e.stopPropagation();
+                            setNotifState(!notifState);
+                            dispatch(updateSelectedPlan(p));
+                            let allCourses = [];
+                            p.years.forEach((y) => {
+                              allCourses = [...allCourses, ...y.courses];
+                            });
+                            dispatch(updateCurrentPlanCourses(allCourses));
+                          }}
                         >
-                          <PencilAltIcon className="w-5 h-5" />
-                        </div>
+                          <ClipboardListIcon className="w-5 h-5"></ClipboardListIcon>
+                        </button>
                       }
                     >
                       {({ hovered }) =>
                         hovered && (
-                          <TooltipPrimary width={120}>Edit Plan</TooltipPrimary>
+                          <TooltipPrimary width={120}>
+                            View Summary
+                          </TooltipPrimary>
                         )
                       }
                     </Hoverable>

@@ -1,80 +1,22 @@
 import axios from 'axios';
 import { useRouter } from 'next/router';
-import React, { FC, useEffect, useState } from 'react';
+import React, { FC, useState } from 'react';
 import { useCookies } from 'react-cookie';
 import { useDispatch, useSelector } from 'react-redux';
-import { toast } from 'react-toastify';
 import { getLoginCookieVal, getAPI } from '../../../resources/assets';
 import { DashboardMode } from '../../../resources/commonTypes';
-import {
-  resetCurrentPlan,
-  selectPlan,
-  updateSelectedPlan,
-} from '../../../slices/currentPlanSlice';
-import {
-  resetUser,
-  selectPlanList,
-  selectUser,
-  updatePlanList,
-} from '../../../slices/userSlice';
+import { resetCurrentPlan } from '../../../slices/currentPlanSlice';
+import { resetUser, selectUser } from '../../../slices/userSlice';
 
 const HamburgerMenu: FC<{
   mode: DashboardMode;
 }> = ({ mode }) => {
   // Redux Setup
-  const planList = useSelector(selectPlanList);
-  const currentPlan = useSelector(selectPlan);
   const user = useSelector(selectUser);
   const dispatch = useDispatch();
   const router = useRouter();
   const [cookies, , removeCookie] = useCookies(['connect.sid']);
   const [openHamburger, setOpenHamburger] = useState<boolean>(false);
-  const [planName, setPlanName] = useState<string>(currentPlan.name);
-  const [editName, setEditName] = useState<boolean>(false);
-
-  // Only edits name if editName is true. If true, calls debounce update function
-  useEffect(() => {
-    if (editName) {
-      const update = setTimeout(updateName, 1000);
-      return () => clearTimeout(update);
-    }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [planName]);
-
-  // Updates current plan every time current plan changes
-  useEffect((): void => {
-    setPlanName(currentPlan.name);
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [currentPlan._id]);
-
-  const updateName = (): void => {
-    const body = {
-      plan_id: currentPlan._id,
-      majors: currentPlan.majors,
-      name: planName,
-    };
-    fetch(getAPI(window) + '/plans/update', {
-      method: 'PATCH',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify(body),
-    })
-      .then(() => {
-        const newUpdatedPlan = { ...currentPlan, name: planName };
-        dispatch(updateSelectedPlan(newUpdatedPlan));
-        let newPlanList = [...planList];
-        for (let i = 0; i < planList.length; i++) {
-          if (newPlanList[i]._id === currentPlan._id) {
-            newPlanList[i] = { ...newUpdatedPlan };
-          }
-        }
-        toast.success('Plan name changed to ' + planName + '!');
-        setEditName(false);
-        dispatch(updatePlanList(newPlanList));
-      })
-      .catch((err) => console.log(err));
-  };
 
   const handleLogoutClick = (): void => {
     const loginId = getLoginCookieVal(cookies);
@@ -122,7 +64,7 @@ const HamburgerMenu: FC<{
                 <button
                   onClick={() =>
                     router.push(
-                      mode === DashboardMode.Advising
+                      mode === DashboardMode.Reviewer
                         ? '/dashboard'
                         : '/reviewer',
                     )
@@ -139,9 +81,9 @@ const HamburgerMenu: FC<{
                     <path d="M3 5a2 2 0 012-2h1a1 1 0 010 2H5v7h2l1 2h4l1-2h2V5h-1a1 1 0 110-2h1a2 2 0 012 2v10a2 2 0 01-2 2H5a2 2 0 01-2-2V5z"></path>
                   </svg>
                   <span className="flex-1 ml-3 whitespace-nowrap text-left">
-                    {mode === DashboardMode.Advising
+                    {mode === DashboardMode.Reviewer
                       ? DashboardMode.Planning
-                      : DashboardMode.Advising}{' '}
+                      : DashboardMode.Reviewer}{' '}
                     {' Dashboard'}
                   </span>
                 </button>

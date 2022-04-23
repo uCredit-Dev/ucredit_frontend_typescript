@@ -36,7 +36,6 @@ const CommentsOverview: React.FC = () => {
   const getComments = (thisThread: ThreadType): JSX.Element => {
     if (!thisThread) return null;
     let divs = thisThread.comments.map((c: CommentType) => {
-      // console.log(c.message)
       if (
         !c.visible_user_id.includes(user._id) &&
         user._id !== c.commenter_id._id
@@ -45,7 +44,7 @@ const CommentsOverview: React.FC = () => {
       }
       return (
         <div
-          key={c.message}
+          key={c._id + c.date}
           className="m-2 bg-white border divide-y rounded select-text cursor-text"
         >
           <p className="flex flex-wrap px-2 py-1 text-xs">
@@ -78,7 +77,7 @@ const CommentsOverview: React.FC = () => {
   };
 
   return (
-    <div className="absolute right-[155px] z-20 flex flex-row items-center justify-between px-4 text-xl top-[12px]">
+    <div className="absolute right-[155px] z-40 flex flex-row items-center justify-between px-4 text-xl top-[12px]">
       <div className="w-full max-w-sm">
         <Popover className="">
           {({ open }) => (

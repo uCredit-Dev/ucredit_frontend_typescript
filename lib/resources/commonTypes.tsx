@@ -238,7 +238,7 @@ export type DroppableType = {
 };
 
 export enum DashboardMode {
-  Advising = 'Advising',
+  Reviewer = 'Reviewer',
   Planning = 'Planning',
 }
 
