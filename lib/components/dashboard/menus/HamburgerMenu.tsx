@@ -1,22 +1,12 @@
 import axios from 'axios';
 import { useRouter } from 'next/router';
-import React, { FC, useEffect, useState } from 'react';
+import React, { FC, useState } from 'react';
 import { useCookies } from 'react-cookie';
 import { useDispatch, useSelector } from 'react-redux';
-import { toast } from 'react-toastify';
 import { getLoginCookieVal, getAPI } from '../../../resources/assets';
-import { DashboardMode, ReviewMode } from '../../../resources/commonTypes';
-import {
-  resetCurrentPlan,
-  selectPlan,
-  updateSelectedPlan,
-} from '../../../slices/currentPlanSlice';
-import {
-  resetUser,
-  selectPlanList,
-  selectUser,
-  updatePlanList,
-} from '../../../slices/userSlice';
+import { DashboardMode } from '../../../resources/commonTypes';
+import { resetCurrentPlan } from '../../../slices/currentPlanSlice';
+import { resetUser, selectUser } from '../../../slices/userSlice';
 
 const HamburgerMenu: FC<{
   mode: DashboardMode;

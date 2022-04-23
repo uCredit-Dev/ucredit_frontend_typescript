@@ -1,27 +1,12 @@
 import { FC, useEffect, useState } from 'react';
 import Distributions from './Distributions';
-import CourseBar from './CourseBar';
-import {
-  checkRequirementSatisfied,
-  getRequirements,
-  requirements,
-} from './distributionFunctions';
-import { useDispatch, useSelector } from 'react-redux';
+import { useSelector } from 'react-redux';
 import {
   selectCurrentPlanCourses,
-  selectDistributions,
   selectPlan,
-  updateDistributions,
 } from '../../../slices/currentPlanSlice';
-import { selectCourseCache } from '../../../slices/userSlice';
-import { getCourse, getMajor } from '../../../resources/assets';
-import {
-  Course,
-  Major,
-  Plan,
-  ReviewMode,
-  UserCourse,
-} from '../../../resources/commonTypes';
+import { getMajor } from '../../../resources/assets';
+import { Major, Plan, ReviewMode } from '../../../resources/commonTypes';
 import { allMajors } from '../../../resources/majors';
 
 interface Props {
