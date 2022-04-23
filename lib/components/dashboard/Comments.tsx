@@ -210,7 +210,7 @@ const Comments: FC<{
     } else if (mode === ReviewMode.View) {
       ids = [user._id];
       if (reviewedPlan) ids.push(reviewedPlan.user_id);
-    } else if (mode === undefined || mode === ReviewMode.None) {
+    } else {
       const reviewers = plan.reviewers;
       if (reviewers === undefined) return [];
       for (const r of reviewers) {
