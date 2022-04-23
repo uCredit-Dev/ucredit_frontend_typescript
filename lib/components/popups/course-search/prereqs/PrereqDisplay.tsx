@@ -210,8 +210,6 @@ const PrereqDisplay: FC = () => {
           ? courseToShow.term.charAt(0).toUpperCase() +
             courseToShow.term.slice(1)
           : semester;
-      console.log('getNonSTring');
-      console.log(currPlanCourses);
       let satisfied: boolean = checkPrereq(
         currPlanCourses,
         currentPlan,

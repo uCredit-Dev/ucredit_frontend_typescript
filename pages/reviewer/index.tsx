@@ -88,7 +88,7 @@ const Reviewer: React.FC = () => {
           />
         ))}
       </div>
-      <HamburgerMenu mode={DashboardMode.Advising} />
+      <HamburgerMenu mode={DashboardMode.Reviewer} />
       <Notification />
     </div>
   );

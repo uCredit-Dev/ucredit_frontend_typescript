@@ -97,7 +97,7 @@ const Dropdown: React.FC<Props> = ({
 
   return (
     <div
-      className="relative z-50 py-1 pl-2 pr-1 text-sm transition-colors duration-100 ease-in border rounded select-none group border-slate-200 hover:border-slate-300"
+      className="relative z-10 py-1 pl-2 pr-1 text-sm transition-colors duration-100 ease-in border rounded select-none group border-slate-200 hover:border-slate-300"
       style={{ width }}
       onClick={handleExpand}
       ref={ref}

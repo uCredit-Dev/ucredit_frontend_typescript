@@ -41,7 +41,7 @@ const YearComponent: FC<{
   id: number;
   year: Year;
   courses: UserCourse[];
-  setDraggable?: (draggable: boolean) => void;
+  setDraggable: (draggable: boolean) => void;
   mode: ReviewMode;
 }> = ({ id, year, courses, setDraggable, mode }) => {
   // Component state setup.
@@ -376,12 +376,12 @@ const YearComponent: FC<{
           { 'z-30': addingPrereqStatus },
         )}
         onMouseLeave={() => {
-          if (setDraggable) setDraggable(true);
+          setDraggable(true);
           setDisplay(false);
           setHovered(false);
         }}
         onMouseEnter={() => {
-          if (setDraggable) setDraggable(false);
+          setDraggable(false);
           setHovered(true);
         }}
       >
@@ -522,16 +522,16 @@ const YearComponent: FC<{
         {collapse ? (
           <div
             className="bg-white rounded cursor-default"
-            // onMouseLeave={() => setDraggable(false)}
-            // onMouseEnter={() => setDraggable(true)}
+            onMouseLeave={() => setDraggable(false)}
+            onMouseEnter={() => setDraggable(true)}
           >
             {getSemesterWNull()}
           </div>
         ) : (
           <div
             className="px-6 py-2 bg-white rounded cursor-default"
-            // onMouseLeave={() => setDraggable(false)}
-            // onMouseEnter={() => setDraggable(true)}
+            onMouseLeave={() => setDraggable(false)}
+            onMouseEnter={() => setDraggable(true)}
           >
             {getSemester()}
           </div>

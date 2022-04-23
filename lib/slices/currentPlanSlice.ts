@@ -22,17 +22,19 @@ type CurrentPlanSlice = {
   selectedThread: string;
 };
 
+export const initialPlan = {
+  _id: 'noPlan',
+  name: '',
+  majors: [],
+  distribution_ids: [],
+  user_id: '',
+  years: [],
+  numYears: 0,
+  reviewers: [],
+};
+
 const initialState: CurrentPlanSlice = {
-  plan: {
-    _id: 'noPlan',
-    name: '',
-    majors: [],
-    distribution_ids: [],
-    user_id: '',
-    years: [],
-    numYears: 0,
-    reviewers: [],
-  },
+  plan: initialPlan,
   distributions: [],
   currentPlanCourses: [],
   totalCredits: 0,

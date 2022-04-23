@@ -42,6 +42,7 @@ import {
   updateCartInvokedBySemester,
 } from '../../../../slices/userSlice';
 import Comments from '../../Comments';
+import CourseComponent from './CourseComponent';
 
 /**
  * A component displaying all the courses in a specific semester.
@@ -121,23 +122,42 @@ const Semester: FC<{
    * Gets a list of course components wrapped in a DnD draggable.
    * @returns a list of draggable react components
    */
-  const getDraggables = (): any => {
+  const getCourses = (): any => {
     // TODO: Search for a thread matching course id here.
     // Do something similar for plan, year, and semester
     // All threads should be retrieved on first load of the plan and stored in a map.
-    return semesterCourses.map((course, index) => (
-      <div key={course._id} className="w-auto mr-0">
-        <CourseDraggable
-          course={course}
-          index={index}
-          semesterName={semesterName}
-          semesterYear={semesterYear}
-          mode={mode}
-          // TODO: Add a thread prop here. Add a thread state in the course component.
-          // When retrieving threads make sure the threads are stored as a map. We can then not add further complexity when searching for threads since map find is O(1) if we check them here.
-        />
-      </div>
-    ));
+    return semesterCourses.map((course, index) => {
+      console.log(mode);
+      if (mode !== ReviewMode.View) {
+        return (
+          <div key={course._id} className="w-auto mr-0">
+            <CourseDraggable
+              course={course}
+              index={index}
+              semesterName={semesterName}
+              semesterYear={semesterYear}
+              mode={mode}
+              // TODO: Add a thread prop here. Add a thread state in the course component.
+              // When retrieving threads make sure the threads are stored as a map. We can then not add further complexity when searching for threads since map find is O(1) if we check them here.
+            />
+          </div>
+        );
+      } else {
+        return (
+          <div key={course._id} className="w-auto mr-0">
+            <CourseComponent
+              setDraggable={(draggable) => {
+                return;
+              }}
+              course={course}
+              semester={semesterName}
+              year={semesterYear}
+              mode={mode}
+            />
+          </div>
+        );
+      }
+    });
   };
 
   /**
@@ -465,21 +485,25 @@ const Semester: FC<{
             onMouseEnter={() => setHovered(false)}
             onMouseLeave={() => setHovered(true)}
           >
-            <Droppable
-              droppableId={semesterName + '|' + semesterYear._id}
-              type="COURSE"
-            >
-              {(provided, snapshot) => (
-                <div
-                  ref={provided.innerRef}
-                  style={getListStyle(snapshot.isDraggingOver)}
-                  className="rounded"
-                >
-                  {getDraggables()}
-                  {provided.placeholder}
-                </div>
-              )}
-            </Droppable>
+            {mode === ReviewMode.View ? (
+              <>{getCourses()}</>
+            ) : (
+              <Droppable
+                droppableId={semesterName + '|' + semesterYear._id}
+                type="COURSE"
+              >
+                {(provided, snapshot) => (
+                  <div
+                    ref={provided.innerRef}
+                    style={getListStyle(snapshot.isDraggingOver)}
+                    className="rounded"
+                  >
+                    {getCourses()}
+                    {provided.placeholder}
+                  </div>
+                )}
+              </Droppable>
+            )}
             {getAPInfoBox()}
           </div>
         </div>

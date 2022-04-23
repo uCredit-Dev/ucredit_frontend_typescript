@@ -33,7 +33,6 @@ import { getAPI } from '../../../../resources/assets';
 import YearDraggable from './YearDraggable';
 
 interface Props {
-  plan: Plan;
   mode: ReviewMode;
 }
 
@@ -41,7 +40,7 @@ interface Props {
  * Container component that holds all the years, semesters, and courses of the current plan.
  * TODO: Cleanup and modularize
  */
-const CourseList: FC<Props> = ({ plan, mode }) => {
+const CourseList: FC<Props> = ({ mode }) => {
   // Setting up redux
   const dispatch = useDispatch();
   const currentPlan = useSelector(selectPlan);
@@ -56,11 +55,9 @@ const CourseList: FC<Props> = ({ plan, mode }) => {
 
   // Gets all courses for each year and generates year objects based on them.
   useEffect(() => {
-    if (plan && plan._id !== 'noPlan') {
-      processPlan(plan);
-    } else processPlan(currentPlan);
+    processPlan(currentPlan);
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [currentPlan._id, searching, placeholder, currentPlan.years, plan._id]);
+  }, [currentPlan._id, searching, placeholder, currentPlan.years]);
 
   const processPlan = (plan: Plan) => {
     const jsx: JSX.Element[] = [];

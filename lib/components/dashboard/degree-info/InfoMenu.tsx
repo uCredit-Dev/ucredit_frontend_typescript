@@ -25,7 +25,6 @@ import {
 import { allMajors } from '../../../resources/majors';
 
 interface Props {
-  plan: Plan;
   mode: ReviewMode;
 }
 
@@ -33,29 +32,14 @@ interface Props {
  * Info menu shows degree plan and degree information.
  * Hidden on default.
  */
-const InfoMenu: FC<Props> = ({ plan }) => {
-  const dispatch = useDispatch();
-  const distributions = useSelector(selectDistributions);
+const InfoMenu: FC<Props> = () => {
   const currentPlan: Plan = useSelector(selectPlan);
-  const courseCache = useSelector(selectCourseCache);
   const currPlanCourses = useSelector(selectCurrentPlanCourses);
-  const [showDistributions] = useState<boolean[]>(
-    new Array(distributions.length),
-  );
-  const [calculated, setCalculated] = useState<boolean>(false);
   const [major, setMajor] = useState<Major | null>(null);
-  const [distributionBarsJSX, setDistributionBarsJSX] = useState<JSX.Element[]>(
-    [],
-  );
-  const [retrievedDistributions, setDistributions] = useState<{
-    plan: Plan;
-    distr: [string, requirements[]][];
-  }>({ plan: plan || currentPlan, distr: [] });
 
   // Update major when plan changes
   useEffect(() => {
-    const p = plan && plan._id !== 'noPlan' ? plan : currentPlan;
-    let firstMajor: string | undefined = p.majors[0];
+    let firstMajor: string | undefined = currentPlan.majors[0];
     if (firstMajor === undefined) {
       return;
     }
@@ -64,46 +48,7 @@ const InfoMenu: FC<Props> = ({ plan }) => {
       setMajor(majorObj);
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [plan._id, currentPlan._id, currentPlan.majors, currPlanCourses]);
-
-  // Gets distribution everytime a plan changes.
-  useEffect(() => {
-    const p = plan && plan._id !== 'noPlan' ? plan : currentPlan;
-    console.log(p);
-    const distr = getDistributions();
-    if (distr && distr.length > 0) {
-      let tot = 0;
-      p.years.forEach((year) => {
-        tot += year.courses.length;
-      });
-      updateFulfilled(
-        p,
-        distr,
-        tot === currPlanCourses.length ? currPlanCourses : [],
-      );
-    }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [major, currPlanCourses]);
-
-  useEffect(() => {
-    const p = plan && plan._id !== 'noPlan' ? plan : currentPlan;
-    setCalculated(true);
-    if (p._id === retrievedDistributions.plan._id) {
-      dispatch(updateDistributions(retrievedDistributions.distr));
-    }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [retrievedDistributions]);
-
-  /**
-   * Gets all distributions associated with current plan
-   * @returns an array of pairs for distributions and their requirements if distributions exist and null if they don't
-   */
-  const getDistributions = (): [string, requirements[]][] | null => {
-    if (major) {
-      return getRequirements(major);
-    }
-    return null;
-  };
+  }, [currentPlan._id, currentPlan.majors, currPlanCourses]);
 
   /**
    * Callback used to change the major of degree progress when user has multiple majors
@@ -115,187 +60,17 @@ const InfoMenu: FC<Props> = ({ plan }) => {
       allMajors.find((majorObj) => majorObj.degree_name === selected) || null,
     );
 
-  // Update displayed JSX every time distributions get updated.
-  useEffect(() => {
-    const distributionJSX = distributions.map(
-      (pair: [string, requirements[]], i: number) => {
-        let completed = true;
-        pair[1].forEach((req: requirements) => {
-          if (req.fulfilled_credits < req.required_credits) {
-            completed = false;
-          }
-        });
-        return (
-          <div key={pair[0] + pair[1] + i}>
-            <div key={pair[1][0].name + 0 + pair[1][0].expr}>
-              <CourseBar
-                distribution={pair[1][0]}
-                general={true}
-                bgcolor={'skyblue'}
-                completed={completed}
-              />
-            </div>
-          </div>
-        );
-      },
-    );
-    setDistributionBarsJSX(distributionJSX);
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [distributions, showDistributions]);
-
-  /**
-   * args: an array containing focus areas and their associated requirements, and all courses
-   * updates the requirements obj so that the fulfilled credits accurately reflects the plan
-   * @param requirements - an array of requirement pairs
-   * @param courses
-   * @param courseCache - cached courses
-   * @param currPlanCourses - courses in current plan
-   */
-  const updateFulfilled = (
-    updatingPlan: Plan,
-    reqs: [string, requirements[]][],
-    courses: UserCourse[],
-  ) => {
-    setDistributions({ plan: updatingPlan, distr: reqs });
-    const coursesCopy: UserCourse[] = [...courses];
-    coursesCopy.sort((c1: UserCourse, c2: UserCourse) => {
-      const c1Split = c1.number.split('.');
-      const c2Split = c2.number.split('.');
-      const c1LastNum = c1Split[c1Split.length - 1];
-      const c2LastNum = c2Split[c2Split.length - 1];
-      if (c1LastNum === '' && c1Split.length === 1) {
-        return -1;
-      } else if (c2LastNum === '' && c2Split.length === 1) {
-        return 1;
-      } else {
-        return parseInt(c1LastNum) - parseInt(c2LastNum);
-      }
-    });
-    processCoursesCopy(courses, coursesCopy, reqs, updatingPlan);
-  };
-
-  const processCoursesCopy = async (
-    courses: UserCourse[],
-    coursesCopy: UserCourse[],
-    reqs: [string, requirements[]][],
-    updatingPlan: Plan,
-  ) => {
-    let reqCopy: [string, requirements[]][] = copyReqs(reqs);
-    let count: number = 0;
-    const checked: Course[] = [];
-    for (let course of coursesCopy) {
-      setCalculated(false);
-      const courseObj = await getCourse(
-        course.number,
-        courseCache,
-        courses,
-        -1,
-      );
-      let counted: boolean = false;
-      if (courseObj.resp !== null) {
-        checked.forEach((c) => {
-          if (courseObj.resp !== null && c.number === courseObj.resp.number)
-            counted = true;
-        });
-        checked.push(courseObj.resp);
-      }
-      const localReqCopy: [string, requirements[]][] = copyReqs(reqCopy);
-      if (!counted) updateReqs(localReqCopy, courseObj.resp);
-      reqCopy = localReqCopy;
-      count++;
-      if (count === courses.length) {
-        setDistributions({ plan: updatingPlan, distr: reqCopy });
-      }
-    }
-  };
-
-  const updateReqs = (reqs: [string, requirements[]][], courseObj) => {
-    let inNonExclusive: boolean = false;
-    // Exclusive check:
-    // If the requirement is exclusive, this means that if a course fulfills the requirement,
-    // it cannot fulfill any other requirements. Alternatively, if a course fulfills any other requirement, it cannot fulfill this one.
-    reqs.forEach((reqGroup, i) =>
-      reqGroup[1].forEach((req: requirements, j: number) => {
-        if (
-          courseObj !== null &&
-          checkRequirementSatisfied(req, courseObj) &&
-          (req.exclusive === undefined || !req.exclusive) &&
-          req.fulfilled_credits < req.required_credits
-        ) {
-          reqs[i][1][j].fulfilled_credits += parseInt(courseObj.credits);
-          if (j !== 0) inNonExclusive = true;
-        }
-      }),
-    );
-    reqs.forEach((reqGroup, i) =>
-      reqGroup[1].forEach((req: requirements, j: number) => {
-        if (
-          courseObj !== null &&
-          checkRequirementSatisfied(req, courseObj) &&
-          req.exclusive &&
-          req.fulfilled_credits < req.required_credits &&
-          !inNonExclusive
-        ) {
-          reqs[i][1][j].fulfilled_credits += parseInt(courseObj.credits);
-        }
-      }),
-    );
-    // Pathing check
-    reqs.forEach((reqGroup: [string, requirements[]]) =>
-      reqGroup[1].forEach((req: requirements) => {
-        processReq(req, reqGroup);
-      }),
-    );
-  };
-
-  const processReq = (
-    req: requirements,
-    reqGroup: [string, requirements[]],
-  ) => {
-    if (req.pathing) {
-      let [requirement, ...focus_areas] = reqGroup[1];
-      for (let focus_area of focus_areas) {
-        if (focus_area.fulfilled_credits >= focus_area.required_credits) {
-          reqGroup[1] = [requirement, focus_area];
-        }
-      }
-    }
-  };
-
-  const copyReqs = (reqs) => {
-    const reqCopy: [string, requirements[]][] = [];
-    reqs.forEach((reqGroup) => {
-      const reqGroupCopy: any = [];
-      reqGroup[1].forEach((req) => reqGroupCopy.push({ ...req }));
-      reqCopy.push([reqGroup[0], reqGroupCopy]);
-    });
-    return reqCopy;
-  };
-
   return (
     <div className="z-50 flex flex-col justify-between w-10 bg-red-100 h-min w-96 right-0 fixed">
       <div className="drop-shadow-lg z-50 max-h-[80vh] bg-white bg-opacity-90 rounded  overflow-x-hidden overflow-y-auto w-full">
         {/* <InfoCards /> */}
-        {(() => {
-          if (calculated) {
-            return (
-              <div className="w-96 h-full">
-                <Distributions
-                  major={major}
-                  userMajors={currentPlan.majors}
-                  changeDisplayMajor={changeDisplayMajor}
-                  distributionBarsJSX={distributionBarsJSX}
-                />
-              </div>
-            );
-          } else {
-            return (
-              <b className="m-10 h-full w-96 bg-blue-100">
-                Loading degree progress...
-              </b>
-            );
-          }
-        })()}
+        <div className="w-96 h-full">
+          <Distributions
+            major={major}
+            userMajors={currentPlan.majors}
+            changeDisplayMajor={changeDisplayMajor}
+          />
+        </div>
       </div>
     </div>
   );

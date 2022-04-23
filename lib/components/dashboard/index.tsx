@@ -46,7 +46,7 @@ import GenerateNewPlan from '../../resources/GenerateNewPlan';
 import LoadingPage from '../LoadingPage';
 import HandlePlanShareDummy from './HandlePlanShareDummy';
 import HandleUserInfoSetupDummy from './HandleUserInfoSetupDummy';
-import { DashboardMode, Plan, ReviewMode } from '../../resources/commonTypes';
+import { DashboardMode, ReviewMode } from '../../resources/commonTypes';
 import { userService } from '../../services';
 import HamburgerMenu from './menus/HamburgerMenu';
 import Notification from './menus/Notification';
@@ -54,14 +54,13 @@ import PlanEditMenu from './menus/PlanEditMenu';
 import CommentsOverview from './CommentsOverview';
 
 interface Props {
-  plan: Plan;
   mode: ReviewMode;
 }
 
 /**
  * The dashboard that displays the user's plan.
  */
-const Dashboard: React.FC<Props> = ({ plan, mode }) => {
+const Dashboard: React.FC<Props> = ({ mode }) => {
   // Redux setup.
   const user = useSelector(selectUser);
   const loginCheck = useSelector(selectLoginCheck);
@@ -156,9 +155,8 @@ const Dashboard: React.FC<Props> = ({ plan, mode }) => {
 
   useEffect(() => {
     (async () => {
-      const toGet = mode === ReviewMode.View ? plan : currPlan;
-      if (toGet && toGet._id !== 'noPlan') {
-        const res = await userService.getThreads(toGet._id);
+      if (currPlan && currPlan._id !== 'noPlan') {
+        const res = await userService.getThreads(currPlan._id);
         dispatch(updateThreads(res.data));
         const commentersSet = new Set<string>();
         for (const thread of res.data) {
@@ -173,7 +171,7 @@ const Dashboard: React.FC<Props> = ({ plan, mode }) => {
       }
     })();
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [plan._id, mode, currPlan._id]);
+  }, [mode, currPlan._id]);
 
   return (
     <>
@@ -194,11 +192,11 @@ const Dashboard: React.FC<Props> = ({ plan, mode }) => {
               <div className="flex flex-row thin:flex-wrap-reverse mt-[5rem] w-full h-full">
                 <div className="flex flex-col w-full">
                   <div className="px-[100px]">
-                    <CourseList plan={plan} mode={mode} />
+                    <CourseList mode={mode} />
                   </div>
                 </div>
               </div>
-              {infoPopup && <InfoMenu plan={plan} mode={mode} />}
+              {infoPopup && <InfoMenu mode={mode} />}
             </div>
             {/* Global popups */}
             {addingPrereqStatus && <AddingPrereqPopup />}
@@ -214,7 +212,7 @@ const Dashboard: React.FC<Props> = ({ plan, mode }) => {
       )}
       {/* Dummy components used to generate state information */}
       <GenerateNewPlan />
-      <HandleUserInfoSetupDummy plan={plan} />
+      <HandleUserInfoSetupDummy mode={mode} />
       <HandlePlanShareDummy />
       <CommentsOverview />
       {/* Menus*/}
