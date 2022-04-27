@@ -51,7 +51,7 @@ const Reviewers = () => {
           )}
         </div>
         <DotsVerticalIcon
-          className="h-6"
+          className="h-6 add-reviewer-button"
           onClick={() => {
             updateAddingReviewer(!addingReviewer);
             setShow(true);
