@@ -1,10 +1,19 @@
-import { URL, LOGIN_PAGE, ADD_PLAN_MODAL, DASHBOARD_PAGE } from './e2eFixtures';
+/**
+ * Login Tests: All tests related to authentication/login flow.
+ */
+import {
+  URL,
+  LOGIN_PAGE,
+  ADD_PLAN_MODAL,
+  DASHBOARD_PAGE,
+  TEST_ID,
+} from './e2eFixtures';
 import { test, expect } from '@playwright/test';
 import { AFTER_LOGIN, AFTER_LOGIN_PAGE, AFTER_PLAN_CREATED } from './e2eFlows';
 import { deleteUser } from './e2eUtils';
 
 test.beforeEach(async ({ page }) => {
-  await deleteUser();
+  await deleteUser(TEST_ID);
   await page.goto(URL);
 });
 
@@ -21,7 +30,7 @@ test.describe('Login Page', () => {
 
 test.describe('Logging In', () => {
   test.beforeEach(async ({ page }) => {
-    await AFTER_LOGIN(page);
+    await AFTER_LOGIN(page, TEST_ID);
   });
 
   test('should be able to login', async ({ page }) => {

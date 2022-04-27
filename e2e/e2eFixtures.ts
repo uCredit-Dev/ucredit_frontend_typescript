@@ -1,6 +1,10 @@
+/**
+ * Fixtures: Hard-coded data for tests.
+ */
 export const URL = 'http://localhost:3000';
 export const API_URL = 'http://localhost:4567';
 export const TEST_ID = 'TEST_DEV';
+export const REVIEWER_ID = 'REVIEWER_DEV';
 
 export const HOME_PAGE = {
   APP_NAME: 'uCredit',
@@ -23,4 +27,14 @@ export const ADD_PLAN_MODAL = {
 export const DASHBOARD_PAGE = {
   DEFAULT_PLAN_NAME_SELECTOR: 'text=Unnamed Plan',
   LOGOUT_BUTTON_SELECTOR: 'button:text("Log Out")',
+  PLAN_OVERVIEW_BUTTON_SELECTOR: 'button:text("Plan Overview")',
+  ADVISING_BUTTON_SELECTOR: 'button:text("Advising")',
+};
+
+export const PLAN_OVERVIEW = {
+  ADD_REVIEWER_ICON_SELECTOR: '.add-reviewer-button',
+  DEGREE_PROGRESS_SELECTOR: 'text=Degree Progress',
+  SEARCH_REVIEWER_INPUT_SELECTOR: 'input[placeholder="jsmith1 or John Smith"]',
+  REVIEWER_RESULT_SELECTOR: `text=${REVIEWER_ID}`,
+  ADD_REVIEWER_SUCCEEDED_SELECTOR: 'text="Reviewer requested"',
 };
