@@ -3,7 +3,6 @@ import clsx from 'clsx';
 import { ClipboardListIcon, EyeIcon } from '@heroicons/react/outline';
 import { useRouter } from 'next/router';
 import { toast } from 'react-toastify';
-import { Selectable } from '@robertzhidealx/lyte';
 import {
   Plan,
   ReviewRequestStatus,
@@ -20,6 +19,7 @@ import {
   updateSelectedPlan,
 } from '../../slices/currentPlanSlice';
 import { useDispatch } from 'react-redux';
+import Dropdown from './Dropdown';
 
 interface Props {
   userId: string;
@@ -131,7 +131,7 @@ const Reviewee: React.FC<Props> = ({
                       <p>{name}</p>
                     </div>
                     <div className="flex items-center gap-x-1">
-                      <Selectable
+                      <Dropdown
                         width={180}
                         options={dropdownOptions}
                         onChange={async (values) => {
@@ -152,7 +152,7 @@ const Reviewee: React.FC<Props> = ({
                             console.log(e);
                           }
                         }}
-                        defaultValue={status}
+                        _default={status}
                       />
                       <Hoverable
                         as={

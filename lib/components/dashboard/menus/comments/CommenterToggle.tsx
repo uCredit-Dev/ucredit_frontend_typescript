@@ -1,11 +1,11 @@
 import { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { Selectable } from '@robertzhidealx/lyte';
 import {
   selectThreads,
   updateFilteredThreads,
 } from '../../../../slices/currentPlanSlice';
 import { selectCommenters } from '../../../../slices/userSlice';
+import Dropdown from '../../../reviewer/Dropdown';
 
 interface Props {
   className?: string;
@@ -51,14 +51,14 @@ const CommenterToggle: React.FC<Props> = ({ className = '' }) => {
     <div className={className}>
       {commenters.length ? (
         <div className="bg-white">
-          <Selectable
+          <Dropdown
             width={264}
             multi={true}
             options={commenters.map(({ _id, name }) => ({
               label: _id,
               content: name,
             }))}
-            defaultValue={selectedCommenters.map(({ label }) => label)}
+            _default={selectedCommenters.map(({ label }) => label)}
             onChange={(values) => setSelectedCommenters(values as any)}
           />
         </div>

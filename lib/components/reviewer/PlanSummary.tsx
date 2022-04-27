@@ -14,7 +14,6 @@ import { userService } from '../../services';
 import DistributionBarsJSX from '../dashboard/degree-info/DistributionBarsJSX';
 import { allMajors } from '../../resources/majors';
 import Dropdown from './Dropdown';
-import { Selectable } from '@robertzhidealx/lyte';
 
 const getNextSem = (): { year: Number; semester: SemesterType } => {
   const date = new Date();
@@ -144,7 +143,7 @@ const PlanSummary: FC<{
               <div className="flex flex-row px-4 pt-5 pb-4 bg-white sm:p-6 sm:pb-4">
                 <div>
                   <div className="mt-4 ml-4">
-                    <Selectable
+                    <Dropdown
                       width={200}
                       options={semesters}
                       onChange={async (values) => {
@@ -156,7 +155,7 @@ const PlanSummary: FC<{
                           if (y.year === parseInt(split[1])) setYear(y);
                         });
                       }}
-                      defaultValue={
+                      _default={
                         getNextSem().semester +
                         ' ' +
                         (() => {
@@ -186,7 +185,7 @@ const PlanSummary: FC<{
                   </p>
                 </div>
                 <div className="m-4 w-96">
-                  <Selectable
+                  <Dropdown
                     width={300}
                     options={majors.map((m) => ({
                       label: m.degree_name,
@@ -199,7 +198,7 @@ const PlanSummary: FC<{
                         if (m.degree_name === value.label) setSelectedMajor(m);
                       });
                     }}
-                    defaultValue={allMajors[0].degree_name}
+                    _default={allMajors[0].degree_name}
                   />
                   <DistributionBarsJSX major={selectedMajor} />
                 </div>
