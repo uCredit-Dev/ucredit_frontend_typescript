@@ -24,9 +24,9 @@ const notifications = [
 const Notification = () => {
   // const [notifState, setNotifState] = useState(true);
   return (
-    <div className="flex flex-row justify-between items-center px-4 text-xl absolute top-3 right-20 z-40">
+    <div className="absolute z-40 flex flex-row items-center justify-between px-4 text-xl top-3 right-20">
       {notifications.length !== 0 ? (
-        <ExclamationCircleIcon className="bg-white rounded-full relative -right-12 -top-4 h-4 w-5 text-red-500 z-50"></ExclamationCircleIcon>
+        <ExclamationCircleIcon className="relative z-50 w-5 h-4 text-red-500 bg-white rounded-full -right-12 -top-4"></ExclamationCircleIcon>
       ) : null}
       <div className="w-full max-w-sm">
         <Popover className="relative">
@@ -51,9 +51,9 @@ const Notification = () => {
                 leaveFrom="opacity-100 translate-y-0"
                 leaveTo="opacity-0 translate-y-1"
               >
-                <Popover.Panel className="absolute z-10 w-80 max-w-none transform -translate-x-52 translate-y-2 sm:px-0 lg:max-w-3xl">
+                <Popover.Panel className="absolute z-10 w-80 max-w-none transform -translate-x-52 translate-y-[8px] sm:px-0 lg:max-w-3xl">
                   <div className="overflow-hidden rounded-lg shadow-lg ring-1 ring-black ring-opacity-5">
-                    <div className="relative grid gap-8 bg-white p-7 lg:grid-cols-1 z-30">
+                    <div className="relative z-30 grid gap-8 bg-white p-7 lg:grid-cols-1">
                       {notifications.map((item) => (
                         <a
                           key={item.name}
@@ -64,14 +64,14 @@ const Notification = () => {
                             <p className="text-sm font-medium text-gray-900">
                               {item.name}
                             </p>
-                            <p className="text-sm text-gray-500 text-right pt-1">
+                            <p className="pt-1 text-sm text-right text-gray-500">
                               {item.description}
                             </p>
                           </div>
                         </a>
                       ))}
                       {notifications.length === 0 ? (
-                        <p className="text-center text-sm font-medium text-gray-900">
+                        <p className="text-sm font-medium text-center text-gray-900">
                           There are currently no new notifications!
                         </p>
                       ) : null}

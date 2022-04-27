@@ -3,6 +3,7 @@ import clsx from 'clsx';
 import { ClipboardListIcon, EyeIcon } from '@heroicons/react/outline';
 import { useRouter } from 'next/router';
 import { toast } from 'react-toastify';
+import { Selectable } from '@robertzhidealx/lyte';
 import {
   Plan,
   ReviewRequestStatus,
@@ -12,7 +13,6 @@ import {
 import { Hoverable } from '../utils';
 import { TooltipPrimary } from '../utils/TooltipPrimary';
 import { statusReadable } from '../../../pages/reviewer';
-import Dropdown from './Dropdown';
 import { userService } from '../../services';
 import PlanSummary from './PlanSummary';
 import {
@@ -32,15 +32,15 @@ interface Props {
 const dropdownOptions = [
   {
     label: 'UNDERREVIEW',
-    content: <p className="text-sky-400">Under Review</p>,
+    content: <p className="text-sky-500">Under Review</p>,
   },
   {
     label: 'APPROVED',
-    content: <p className="text-emerald-400">Approved</p>,
+    content: <p className="text-emerald-500">Approved</p>,
   },
   {
     label: 'REJECTED',
-    content: <p className="text-red-400">Rejected</p>,
+    content: <p className="text-red-500">Rejected</p>,
   },
 ];
 
@@ -91,114 +91,115 @@ const Reviewee: React.FC<Props> = ({
             {plans.map((p) => {
               const { _id, name, status, review_id } = p;
               return (
-                <div
-                  key={_id}
-                  className="flex items-center justify-between h-8 group"
-                >
-                  <div className="flex items-center gap-[6px]">
-                    {status && (
+                <div key={_id}>
+                  <PlanSummary
+                    plan={p}
+                    notifState={notifState}
+                    setNotifState={setNotifState}
+                    review_id={review_id}
+                    setRefreshReviews={setRefreshReviews}
+                  />
+                  <div className="flex items-center justify-between h-8 group">
+                    <div className="flex items-center gap-[6px]">
+                      {status && (
+                        <Hoverable
+                          as={
+                            <div
+                              className={clsx(
+                                'w-2 h-2 translate-y-[1.5px] rounded-full',
+                                {
+                                  'bg-sky-500':
+                                    status === ReviewRequestStatus.UnderReview,
+                                  'bg-emerald-500':
+                                    status === ReviewRequestStatus.Approved,
+                                  'bg-red-500':
+                                    status === ReviewRequestStatus.Rejected,
+                                },
+                              )}
+                            />
+                          }
+                        >
+                          {({ hovered }) =>
+                            hovered && (
+                              <TooltipPrimary width={140}>
+                                {statusReadable[status]}
+                              </TooltipPrimary>
+                            )
+                          }
+                        </Hoverable>
+                      )}
+                      <p>{name}</p>
+                    </div>
+                    <div className="flex items-center gap-x-1">
+                      <Selectable
+                        width={180}
+                        options={dropdownOptions}
+                        onChange={async (values) => {
+                          const value = values[0];
+                          if (!value) return;
+                          try {
+                            await userService.changeReviewStatus(
+                              review_id,
+                              value.label,
+                            );
+                            setRefreshReviews(true);
+                            toast.success(
+                              `Status changed to ${
+                                statusReadable[value.label]
+                              }`,
+                            );
+                          } catch (e) {
+                            console.log(e);
+                          }
+                        }}
+                        defaultValue={status}
+                      />
                       <Hoverable
                         as={
                           <div
-                            className={clsx(
-                              'w-2 h-2 translate-y-[1.5px] rounded-full',
-                              {
-                                'bg-sky-400':
-                                  status === ReviewRequestStatus.UnderReview,
-                                'bg-emerald-400':
-                                  status === ReviewRequestStatus.Approved,
-                                'bg-red-400':
-                                  status === ReviewRequestStatus.Rejected,
-                              },
-                            )}
-                          />
+                            className="flex items-center justify-center w-6 h-6 transition-colors duration-150 ease-in rounded-sm cursor-pointer hover:bg-gray-200"
+                            onClick={(e) => handleViewPlan(e, p)}
+                          >
+                            <EyeIcon className="w-5 h-5" />
+                          </div>
                         }
                       >
                         {({ hovered }) =>
                           hovered && (
-                            <TooltipPrimary width={140}>
-                              {statusReadable[status]}
+                            <TooltipPrimary width={120}>
+                              Inspect plan
                             </TooltipPrimary>
                           )
                         }
                       </Hoverable>
-                    )}
-                    <p>{name}</p>
-                  </div>
-                  <div className="flex items-center gap-x-1">
-                    <Dropdown
-                      width={130}
-                      options={dropdownOptions}
-                      onChange={async (values) => {
-                        const value = values[0];
-                        if (!value) return;
-                        try {
-                          await userService.changeReviewStatus(
-                            review_id,
-                            value.label,
-                          );
-                          setRefreshReviews(true);
-                          toast.success(
-                            `Status changed to ${statusReadable[value.label]}`,
-                          );
-                        } catch (e) {
-                          console.log(e);
+                      <Hoverable
+                        as={
+                          <button
+                            className="flex items-center justify-center w-6 h-6 transition-colors duration-150 ease-in rounded-sm cursor-pointer hover:bg-gray-200"
+                            onClick={(e) => {
+                              e.stopPropagation();
+                              setNotifState(!notifState);
+                              dispatch(updateSelectedPlan(p));
+                              let allCourses = [];
+                              p.years.forEach((y) => {
+                                allCourses = [...allCourses, ...y.courses];
+                              });
+                              dispatch(updateCurrentPlanCourses(allCourses));
+                            }}
+                          >
+                            <ClipboardListIcon className="w-5 h-5"></ClipboardListIcon>
+                          </button>
                         }
-                      }}
-                      _default={status}
-                    />
-                    <Hoverable
-                      as={
-                        <div
-                          className="flex items-center justify-center w-6 h-6 transition-colors duration-150 ease-in rounded-sm cursor-pointer hover:bg-gray-200"
-                          onClick={(e) => handleViewPlan(e, p)}
-                        >
-                          <EyeIcon className="w-5 h-5" />
-                        </div>
-                      }
-                    >
-                      {({ hovered }) =>
-                        hovered && (
-                          <TooltipPrimary width={120}>
-                            Inspect plan
-                          </TooltipPrimary>
-                        )
-                      }
-                    </Hoverable>
-                    <PlanSummary
-                      plan={p}
-                      notifState={notifState}
-                      setNotifState={setNotifState}
-                      review_id={review_id}
-                      setRefreshReviews={setRefreshReviews}
-                    />
-                    <Hoverable
-                      as={
-                        <button
-                          className="flex items-center justify-center w-6 h-6 transition-colors duration-150 ease-in rounded-sm cursor-pointer hover:bg-gray-200"
-                          onClick={(e) => {
-                            e.stopPropagation();
-                            setNotifState(!notifState);
-                            dispatch(updateSelectedPlan(p));
-                            let allCourses = [];
-                            p.years.forEach((y) => {
-                              allCourses = [...allCourses, ...y.courses];
-                            });
-                            dispatch(updateCurrentPlanCourses(allCourses));
-                          }}
-                        >
-                          <ClipboardListIcon className="w-5 h-5"></ClipboardListIcon>
-                        </button>
-                      }
-                    >
-                      {({ hovered }) =>
-                        hovered && (
-                          <TooltipPrimary width={120}>
-                            View Summary
-                          </TooltipPrimary>
-                        )
-                      }
-                    </Hoverable>
+                      >
+                        {({ hovered }) =>
+                          hovered && (
+                            <TooltipPrimary width={120}>
+                              View Summary
+                            </TooltipPrimary>
+                          )
+                        }
+                      </Hoverable>
+                    </div>
                   </div>
                 </div>
               );
