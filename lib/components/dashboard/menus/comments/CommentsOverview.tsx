@@ -77,9 +77,9 @@ const CommentsOverview: React.FC = () => {
   };
 
   return (
-    <div className="absolute right-[155px] z-40 flex flex-row items-center justify-between px-4 text-xl top-[12px]">
-      <div className="w-full max-w-sm">
-        <Popover className="">
+    <div className="absolute right-[155px] z-40 flex flex-row px-4 text-xl top-[12px]">
+      <div className="w-full h-full max-w-sm">
+        <Popover className="h-full">
           {({ open }) => (
             <>
               <Popover.Button
@@ -101,9 +101,9 @@ const CommentsOverview: React.FC = () => {
                 leaveFrom="opacity-100 translate-y-0"
                 leaveTo="opacity-0 translate-y-1"
               >
-                <Popover.Panel className="absolute z-10 transform translate-x-[-140px] translate-y-2 w-80 max-w-none sm:px-0 lg:max-w-3xl">
-                  <div className="overflow-hidden rounded-lg shadow-lg ring-1 ring-black ring-opacity-5">
-                    <div className="z-30 grid bg-white p-7 lg:grid-cols-1">
+                <Popover.Panel className="absolute z-10 transform translate-x-[-140px] bg-white rounded-lg translate-y-[8px] w-80 max-w-none sm:px-0 lg:max-w-3xl h-[600px]">
+                  <div className="h-full overflow-hidden rounded-lg shadow-lg ring-1 ring-black ring-opacity-5">
+                    <div className="z-30 grid max-h-full overflow-y-auto bg-white p-7 lg:grid-cols-1">
                       <CommenterToggle className="mb-3" />
                       {threadJSX}
                     </div>
