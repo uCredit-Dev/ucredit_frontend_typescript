@@ -6,7 +6,7 @@ on:
     branches: [iter-04-frontend]
 jobs:
   test:
-    timeout-minutes: 5
+    timeout-minutes: 60
     runs-on: ubuntu-latest
     strategy:
       matrix:
