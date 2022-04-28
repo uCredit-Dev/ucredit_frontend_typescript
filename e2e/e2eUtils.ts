@@ -30,7 +30,3 @@ export const confirmPlanReview = async (reviewer_id) => {
     reviewer_id,
   });
 };
-
-export const deletePlanReview = async (reviewer_id) => {
-  await axios.delete(`${API_URL}/api/backdoor/removeReview`);
-};
