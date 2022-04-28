@@ -2,9 +2,7 @@
  * Fixtures: Hard-coded data for tests.
  */
 const DEBUG = process.env.DEBUG === 'True';
-export const URL = DEBUG
-  ? 'http://localhost:3000'
-  : 'ucredit-frontend-typescript-local.vercel.app';
+export const URL = 'http://localhost:3000';
 export const API_URL = DEBUG
   ? 'http://localhost:4567'
   : 'ucredit-dev.herokuapp.com';
