@@ -1,11 +1,8 @@
 /**
  * Fixtures: Hard-coded data for tests.
  */
-const DEBUG = process.env.DEBUG === 'True';
 export const URL = 'http://localhost:3000';
-export const API_URL = DEBUG
-  ? 'http://localhost:4567'
-  : 'ucredit-dev.herokuapp.com';
+export const API_URL = 'http://localhost:4567';
 export const TEST_ID = 'TEST_DEV';
 export const REVIEWER_ID = 'REVIEWER_DEV';
 export const COURSE_NAMES = {
