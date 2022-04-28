@@ -157,7 +157,7 @@ const Reviewee: React.FC<Props> = ({
                       <Hoverable
                         as={
                           <div
-                            className="flex items-center justify-center w-6 h-6 transition-colors duration-150 ease-in rounded-sm cursor-pointer hover:bg-gray-200"
+                            className="flex items-center justify-center w-6 h-6 transition-colors duration-150 ease-in rounded-sm cursor-pointer hover:bg-gray-200 inspect-plan-button"
                             onClick={(e) => handleViewPlan(e, p)}
                           >
                             <EyeIcon className="w-5 h-5" />
@@ -175,7 +175,7 @@ const Reviewee: React.FC<Props> = ({
                       <Hoverable
                         as={
                           <button
-                            className="flex items-center justify-center w-6 h-6 transition-colors duration-150 ease-in rounded-sm cursor-pointer hover:bg-gray-200"
+                            className="flex items-center justify-center w-6 h-6 transition-colors duration-150 ease-in rounded-sm cursor-pointer hover:bg-gray-200 view-summary-button"
                             onClick={(e) => {
                               e.stopPropagation();
                               setNotifState(!notifState);

@@ -24,7 +24,31 @@ export const ADD_PLAN_MODAL = {
   ADD_MAJOR_BUTTON_SELECTOR: 'button:text("Add")',
 };
 
-export const DASHBOARD_PAGE = {
+export const DASHBOARD = {
+  /**
+   * Generates the selector for buttons that add courses to the plan.
+   * @param year The year to select, one of "Freshman", "Sophomore", "Junior", "Senior"
+   * @param semester The semester to select, one of "Fall", "Intersession", "Spring", "Summer"
+   * @returns {string} The selector for the button that adds a course for the year and semester
+   */
+  addCourseButtonSelector: (year: string, semester: string) =>
+    `.add-course-button-${year}-${semester}`,
+};
+
+export const ADD_COURSE_MODAL = {
+  COURSE_SEARCH_INPUT_SELECTOR: 'input[placeholder="Course title or number"]',
+  ADD_COURSE_BUTTON_SELECTOR: 'button:text("Add Course")',
+  SEARCH_RESULT_SELECTOR: '.search-result',
+  /**
+   * Generates the selector for the toast message that appears after adding a course.
+   * @param name The name of the course to add
+   * @returns The selector for the toast message after adding a course with the name
+   */
+  addCourseSucceededSelector: (name: string) => `text="${name} added!"`,
+};
+
+export const COURSE_NAMES = {
+  DATA_STRUCTURES_COURSE_NAME: 'Data Structures',
 };
 
 export const HAMBURGER_MENU = {
@@ -41,8 +65,11 @@ export const PLAN_EDIT_MENU = {
   SEARCH_REVIEWER_INPUT_SELECTOR: 'input[placeholder="jsmith1 or John Smith"]',
   REVIEWER_RESULT_SELECTOR: `text=${REVIEWER_ID}`,
   ADD_REVIEWER_SUCCEEDED_SELECTOR: 'text="Reviewer requested"',
-}
+};
 
+export const DEGREE_PROGRESS = {};
 
-export const DEGREE_PROGRESS = {
+export const REVIEWER_DASHBOARD = {
+  INSPECT_PLAN_BUTTON_SELECTOR: '.inspect-plan-button',
+  VIEW_SUMMARY_BUTTON_SELECTOR: '.view-summary-button',
 };
