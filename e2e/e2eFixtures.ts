@@ -31,11 +31,19 @@ export const ADD_PLAN_MODAL = {
 };
 
 export const DASHBOARD = {
+  RETRIEVED_PLANS_SELECTOR: 'text=/Retrieved [0-9]+ plans!/',
+  /**
+   * Generates the selector for the header of year sections.
+   * @param year The year to select, one of "Freshman", "Sophomore", "Junior", "Senior"
+   * @returns The selector for the year's header.
+   */
+  yearHeaderSelector: (year: string) => `text="${year}"`,
+  ADD_COMMENT_BUTTON_SELECTOR: '.add-comment-button',
   /**
    * Generates the selector for buttons that add courses to the plan.
    * @param year The year to select, one of "Freshman", "Sophomore", "Junior", "Senior"
    * @param semester The semester to select, one of "Fall", "Intersession", "Spring", "Summer"
-   * @returns {string} The selector for the button that adds a course for the year and semester
+   * @returns The selector for the button that adds a course for the year and semester
    */
   addCourseButtonSelector: (year: string, semester: string) =>
     `.add-course-button-${year}-${semester}`,
@@ -51,6 +59,13 @@ export const ADD_COURSE_MODAL = {
    * @returns The selector for the toast message after adding a course with the name
    */
   addCourseSucceededSelector: (name: string) => `text="${name} added!"`,
+};
+
+export const ADD_COMMENT_MODAL = {
+  COMMENT_INPUT_SELECTOR: 'textarea[placeholder="Add a reply..."]',
+  SEND_BUTTON_SELECTOR: 'text="Send"',
+  commentSelector: (content: string) => `p:text("${content}")`,
+  SELECT_REVIEWERS_INPUT_SELECTOR: '.select-reviewers-input',
 };
 
 export const HAMBURGER_MENU = {
@@ -75,3 +90,7 @@ export const REVIEWER_DASHBOARD = {
   INSPECT_PLAN_BUTTON_SELECTOR: '.inspect-plan-button',
   VIEW_SUMMARY_BUTTON_SELECTOR: '.view-summary-button',
 };
+
+export const PLAN_SUMMARY_MODAL = {
+  CLOSE_BUTTON_SELECTOR: 'button:text("Close")',
+}

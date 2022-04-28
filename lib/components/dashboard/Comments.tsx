@@ -263,6 +263,7 @@ const Comments: FC<{
               options={getOptions()}
               isMulti={true}
               onChange={updateVisibleUsers}
+              className="select-reviewers-input"
             />
             <div
               className="flex items-center self-end justify-center gap-1 mt-2 text-sm transition-colors duration-150 ease-in transform rounded cursor-pointer hover:text-sky-600"
@@ -275,12 +276,12 @@ const Comments: FC<{
         </div>
       ) : thisThread && comments.length > 0 ? (
         <ChatAlt2Icon
-          className="absolute z-0 w-4 h-4 mt-2 text-black transition duration-150 ease-in transform rounded-md outline-none cursor-pointer stroke-2 hover:scale-110"
+          className="absolute z-0 w-4 h-4 mt-2 text-black transition duration-150 ease-in transform rounded-md outline-none cursor-pointer stroke-2 hover:scale-110 add-comment-button"
           onClick={() => setExpanded(true)}
         />
       ) : hovered ? (
         <AnnotationIcon
-          className="absolute z-0 w-4 h-4 mt-2 text-black transition duration-150 ease-in transform rounded-md outline-none cursor-pointer stroke-2 hover:scale-110"
+          className="absolute z-0 w-4 h-4 mt-2 text-black transition duration-150 ease-in transform rounded-md outline-none cursor-pointer stroke-2 hover:scale-110 add-comment-button"
           onClick={() => setExpanded(true)}
         />
       ) : null}

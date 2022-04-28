@@ -2,6 +2,7 @@
  * Flows: Browser navigation for E2E testing.
  * All instances of `page` and `reviewerPage` should start at the home page.
  */
+import { inspectPlan, visitReviewerDashboard } from './e2eActions';
 import {
   ADD_PLAN_MODAL,
   HOME_PAGE,
@@ -9,7 +10,6 @@ import {
   REVIEWER_ID,
   TEST_ID,
   PLAN_EDIT_MENU,
-  HAMBURGER_MENU,
 } from './e2eFixtures';
 import { confirmPlanReview } from './e2eUtils';
 
@@ -97,8 +97,16 @@ export const AFTER_VISITING_REVIEW_DASHBOARD = async (
 ) => {
   await AFTER_REVIEWER_REQUESTED(page, reviewerPage, loginId, reviewerId);
   await confirmPlanReview(REVIEWER_ID);
-  const { HAMBURGER_MENU_SELECTOR, REVIEWER_DASHBOARD_BUTTON_SELECTOR } =
-    HAMBURGER_MENU;
-  await reviewerPage.locator(HAMBURGER_MENU_SELECTOR).click();
-  await reviewerPage.locator(REVIEWER_DASHBOARD_BUTTON_SELECTOR).click();
+  await page.reload();  // Reviewer will not be recognized unless refreshed
+  await visitReviewerDashboard(reviewerPage);
+};
+
+export const AFTER_INSPECTING_PLAN = async (
+  page,
+  reviewerPage,
+  loginId = TEST_ID,
+  reviewerId = REVIEWER_ID,
+) => {
+  await AFTER_VISITING_REVIEW_DASHBOARD(page, reviewerPage, loginId, reviewerId);
+  await inspectPlan(reviewerPage);
 };
