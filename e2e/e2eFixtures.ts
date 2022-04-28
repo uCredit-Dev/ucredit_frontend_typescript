@@ -5,6 +5,12 @@ export const URL = 'http://localhost:3000';
 export const API_URL = 'http://localhost:4567';
 export const TEST_ID = 'TEST_DEV';
 export const REVIEWER_ID = 'REVIEWER_DEV';
+export const COURSE_NAMES = {
+  DATA_STRUCTURES: 'Data Structures',
+  INTERMEDIATE_PROGRAMMING: 'Intermediate Programming',
+  DISCRETE_MATHEMATICS: 'Discrete Mathematics',
+  HONORS_LINEAR_ALGEBRA: 'Honors Linear Algebra',
+};
 
 export const HOME_PAGE = {
   APP_NAME: 'uCredit',
@@ -45,10 +51,6 @@ export const ADD_COURSE_MODAL = {
    * @returns The selector for the toast message after adding a course with the name
    */
   addCourseSucceededSelector: (name: string) => `text="${name} added!"`,
-};
-
-export const COURSE_NAMES = {
-  DATA_STRUCTURES_COURSE_NAME: 'Data Structures',
 };
 
 export const HAMBURGER_MENU = {
