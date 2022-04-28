@@ -18,7 +18,7 @@ jobs:
     - name: Install Playwright
       run: npx playwright install --with-deps
     - name: Run Playwright tests
-      uses: BerniWittmann/background-server-action@latest
+      uses: BerniWittmann/background-server-action@v1.0.4
       with:
         command: npx playwright test
         start: npm start
