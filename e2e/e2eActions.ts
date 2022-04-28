@@ -5,6 +5,14 @@
 import { ADD_COURSE_MODAL, DASHBOARD } from './e2eFixtures';
 import { Page, expect } from '@playwright/test';
 
+/**
+ * Adds a course to a dashboard
+ * @precondition page must be on the dashboard
+ * @param page The page to add the course to.
+ * @param name The name of the course to add
+ * @param year The year to add it to, one of "Freshman", "Sophomore", "Junior", or "Senior"
+ * @param semester The semester to add it to, one of "Fall", "Intersession", "Spring", or "Summer"
+ */
 export const addCourse = async (
   page: Page,
   name: string,

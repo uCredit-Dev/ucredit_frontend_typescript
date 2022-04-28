@@ -1,5 +1,6 @@
 /**
  * Flows: Browser navigation for E2E testing.
+ * All instances of `page` and `reviewerPage` should start at the home page.
  */
 import {
   ADD_PLAN_MODAL,
@@ -12,11 +13,18 @@ import {
 } from './e2eFixtures';
 import { confirmPlanReview } from './e2eUtils';
 
+/**
+ * Navigates to the login page.
+ */
 export const AFTER_LOGIN_PAGE = async (page) => {
   const { LOGIN_BUTTON_SELECTOR } = HOME_PAGE;
   await page.click(LOGIN_BUTTON_SELECTOR);
 };
 
+/**
+ * Logs in with the given credentials.
+ * @param loginId The user_id of the user to log in as.
+ */
 export const AFTER_LOGIN = async (page, loginId) => {
   await AFTER_LOGIN_PAGE(page);
   const {
@@ -29,6 +37,10 @@ export const AFTER_LOGIN = async (page, loginId) => {
   await page.click(CONFIRM_LOGIN_BUTTON_SELECTOR);
 };
 
+/**
+ * Logs in and selects the CS BA major. The page should then be on the dashboard.
+ * @param loginId The user_id of the user to log in as.
+ */
 export const AFTER_PLAN_CREATED = async (page, loginId = TEST_ID) => {
   await AFTER_LOGIN(page, loginId);
   const {
@@ -42,6 +54,12 @@ export const AFTER_PLAN_CREATED = async (page, loginId = TEST_ID) => {
   await page.locator(ADD_MAJOR_BUTTON_SELECTOR).click();
 };
 
+/**
+ * Logs in as both the reviewee and reviewer; the reviewee then requests the reviewer to
+ * review their plan. Both the reviewee and reviewer are left on the dashboard.
+ * @param loginId The reviewee's user_id
+ * @param reviewerId The reviewer's user_id
+ */
 export const AFTER_REVIEWER_REQUESTED = async (
   page,
   reviewerPage,
@@ -63,9 +81,14 @@ export const AFTER_REVIEWER_REQUESTED = async (
 
   // Return to dashboard
   await page.locator(PLAN_EDIT_MENU_SELECTOR).click();
-  return reviewerPage;
 };
 
+/**
+ * Upon requesting the reviewer, the reviewer visits the reviewer dashboard. The
+ * reviewee is left on the dashboard while the reviewer is left on the reviewer dashboard.
+ * @param loginId The reviewee's user_id
+ * @param reviewerId The reviewer's user_id
+ */
 export const AFTER_VISITING_REVIEW_DASHBOARD = async (
   page,
   reviewerPage,
