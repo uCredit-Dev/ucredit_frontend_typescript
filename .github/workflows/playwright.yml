@@ -5,19 +5,6 @@ on:
   pull_request:
     branches: [iter-04-frontend]
 jobs:
-  server:
-    timeout-minutes: 60
-    runs-on: ubuntu-latest
-    steps:
-    - uses: actions/checkout@v2
-    - uses: actions/setup-node@v2
-      with:
-        node-version: '14.x'
-    - name: Install dependencies
-      run: npm i
-    - name: Run server
-      run: npm start
-
   test:
     timeout-minutes: 60
     runs-on: ubuntu-latest
@@ -31,7 +18,11 @@ jobs:
     - name: Install Playwright
       run: npx playwright install --with-deps
     - name: Run Playwright tests
-      run: npx playwright test
+      uses: cypress-io/github-action@v2
+      with:
+        start: npm start
+        wait-on: 'http://localhost:3000'
+        command: npx playwright test
     - uses: actions/upload-artifact@v2
       with:
         name: playwright-report
