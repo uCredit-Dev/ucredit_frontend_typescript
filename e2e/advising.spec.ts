@@ -15,10 +15,8 @@ import {
   TEST_ID,
   REVIEWER_ID,
   PLAN_EDIT_MENU,
-  REVIEWER_DASHBOARD,
   ADD_PLAN_MODAL,
   COURSE_NAMES,
-  DASHBOARD,
   ADD_COMMENT_MODAL,
 } from './e2eFixtures';
 import {

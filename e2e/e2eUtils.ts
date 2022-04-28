@@ -25,17 +25,17 @@ export const newPage = async (url = URL) => {
  */
 export const screenshot = async (page: Page, name: string) => {
   await page.screenshot({ path: `./e2e/screenshots/${name}.png` });
-}
+};
 
 /**
- * Backdoors and tries to delete a user to reset their state. 
+ * Backdoors and tries to delete a user to reset their state.
  * @param user_id The user_id of the user to delete
  */
 export const deleteUser = async (user_id) => {
   try {
     await axios.delete(`${API_URL}/api/user/${user_id}`);
   } catch (e) {
-    // Do nothing
+    console.log(e);
   }
 };
 
