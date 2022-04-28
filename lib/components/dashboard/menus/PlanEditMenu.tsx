@@ -244,7 +244,7 @@ const PlanEditMenu: FC = () => {
             )}
           >
             <span className="flex-1 whitespace-nowrap text-left flex flex-row">
-              <CogIcon className="w-[1.4rem] text-black" />
+              <CogIcon className="w-[1.4rem] text-black plan-edit-menu" />
             </span>
           </Popover.Button>
           <Transition
@@ -301,7 +301,7 @@ const PlanEditMenu: FC = () => {
                         ></path>
                       </svg>
                       <span className="flex-1 ml-3 whitespace-nowrap w-full text-left">
-                        Degree Progresss{' '}
+                        Degree Progress
                       </span>
                     </button>
                   </li>
