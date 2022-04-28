@@ -6,8 +6,11 @@ on:
     branches: [iter-04-frontend]
 jobs:
   test:
-    timeout-minutes: 60
+    timeout-minutes: 5
     runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        thread: ["main", "server"]
     steps:
     - uses: actions/checkout@v2
     - uses: actions/setup-node@v2
@@ -15,14 +18,17 @@ jobs:
         node-version: '14.x'
     - name: Install dependencies
       run: npm i
-    - name: Install Playwright
-      run: npx playwright install --with-deps
-    - name: Just start the server 4head
+    - name: Run server
+      if: ${{ matrix.thread == "server" }}
       run: npm start
+    - name: Install Playwright
+      if: ${{ matrix.thread == "main" }}
+      run: npx playwright install --with-deps
     - name: Run Playwright tests
+      if: ${{ matrix.thread == "main" }}
       run: npx playwright test
     - uses: actions/upload-artifact@v2
-      if: always()
+      if: ${{ matrix.thread == "main" }}
       with:
         name: playwright-report
         path: playwright-report/
