@@ -3,13 +3,14 @@
  */
 import {
   ADD_PLAN_MODAL,
-  DASHBOARD_PAGE,
   HOME_PAGE,
   LOGIN_PAGE,
   REVIEWER_ID,
   TEST_ID,
   PLAN_EDIT_MENU,
+  HAMBURGER_MENU,
 } from './e2eFixtures';
+import { confirmPlanReview } from './e2eUtils';
 
 export const AFTER_LOGIN_PAGE = async (page) => {
   const { LOGIN_BUTTON_SELECTOR } = HOME_PAGE;
@@ -63,4 +64,18 @@ export const AFTER_REVIEWER_REQUESTED = async (
   // Return to dashboard
   await page.locator(PLAN_EDIT_MENU_SELECTOR).click();
   return reviewerPage;
+};
+
+export const AFTER_VISITING_REVIEW_DASHBOARD = async (
+  page,
+  reviewerPage,
+  loginId = TEST_ID,
+  reviewerId = REVIEWER_ID,
+) => {
+  await AFTER_REVIEWER_REQUESTED(page, reviewerPage, loginId, reviewerId);
+  await confirmPlanReview(REVIEWER_ID);
+  const { HAMBURGER_MENU_SELECTOR, REVIEWER_DASHBOARD_BUTTON_SELECTOR } =
+    HAMBURGER_MENU;
+  await reviewerPage.locator(HAMBURGER_MENU_SELECTOR).click();
+  await reviewerPage.locator(REVIEWER_DASHBOARD_BUTTON_SELECTOR).click();
 };
