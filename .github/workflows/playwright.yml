@@ -17,8 +17,9 @@ jobs:
       run: npm i
     - name: Install Playwright
       run: npx playwright install --with-deps
+    - name: Just start the server 4head
+      run: npm start
     - name: Run Playwright tests
-      uses: ./
       with:
         build: npm start
         wait-on: 'http://localhost:3000'
