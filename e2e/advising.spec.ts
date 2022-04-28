@@ -6,14 +6,12 @@ import { test, expect } from '@playwright/test';
 import {
   URL,
   TEST_ID,
-  PLAN_OVERVIEW,
   REVIEWER_ID,
   DASHBOARD_PAGE,
+  PLAN_EDIT_MENU,
+  HAMBURGER_MENU,
 } from './e2eFixtures';
-import {
-  AFTER_PLAN_OVERVIEW_CLICKED,
-  AFTER_REVIEWER_REQUESTED,
-} from './e2eFlows';
+import { AFTER_REVIEWER_REQUESTED } from './e2eFlows';
 import { confirmPlanReview, deleteUser, newPage } from './e2eUtils';
 
 test.beforeEach(async ({ page }) => {
@@ -23,16 +21,10 @@ test.beforeEach(async ({ page }) => {
 });
 
 test.describe('Request Reviewer', async () => {
-  test('Should be able to see plan overview', async ({ page }) => {
-    await AFTER_PLAN_OVERVIEW_CLICKED(page);
-    const { DEGREE_PROGRESS_SELECTOR } = PLAN_OVERVIEW;
-    await expect(page.locator(DEGREE_PROGRESS_SELECTOR)).toBeVisible();
-  });
-
   test('Should be able to search and add reviewer', async ({ page }) => {
     const reviewerPage = await newPage();
     await AFTER_REVIEWER_REQUESTED(page, reviewerPage);
-    const { ADD_REVIEWER_SUCCEEDED_SELECTOR } = PLAN_OVERVIEW;
+    const { ADD_REVIEWER_SUCCEEDED_SELECTOR } = PLAN_EDIT_MENU;
     await expect(page.locator(ADD_REVIEWER_SUCCEEDED_SELECTOR)).toBeVisible();
   });
 });
@@ -44,8 +36,10 @@ test.describe('Reviewer Flow', async () => {
     const revieweePage = await newPage();
     await AFTER_REVIEWER_REQUESTED(revieweePage, page);
     await confirmPlanReview(REVIEWER_ID);
-    const { ADVISING_BUTTON_SELECTOR } = DASHBOARD_PAGE;
-    await page.locator(ADVISING_BUTTON_SELECTOR).click();
+    const { HAMBURGER_MENU_SELECTOR, REVIEWER_DASHBOARD_BUTTON_SELECTOR } =
+      HAMBURGER_MENU;
+    await page.locator(HAMBURGER_MENU_SELECTOR).click();
+    await page.locator(REVIEWER_DASHBOARD_BUTTON_SELECTOR).click();
     await expect(page.locator(`text="${TEST_ID}"`)).toBeVisible();
   });
 });

@@ -19,22 +19,30 @@ export const LOGIN_PAGE = {
 
 export const ADD_PLAN_MODAL = {
   ADD_PLAN_MODAL_SELECTOR: 'text=Adding a new plan!',
-  SELECT_MAJOR_INPUT_SELECTOR: 'id=react-select-7-input',
+  SELECT_MAJOR_INPUT_SELECTOR: '.select-major-input',
   CS_BA_MAJOR_NAME: 'B.A. Computer',
   ADD_MAJOR_BUTTON_SELECTOR: 'button:text("Add")',
 };
 
 export const DASHBOARD_PAGE = {
-  DEFAULT_PLAN_NAME_SELECTOR: 'text=Unnamed Plan',
-  LOGOUT_BUTTON_SELECTOR: 'button:text("Log Out")',
-  PLAN_OVERVIEW_BUTTON_SELECTOR: 'button:text("Plan Overview")',
-  ADVISING_BUTTON_SELECTOR: 'button:text("Advising")',
 };
 
-export const PLAN_OVERVIEW = {
-  ADD_REVIEWER_ICON_SELECTOR: '.add-reviewer-button',
-  DEGREE_PROGRESS_SELECTOR: 'text=Degree Progress',
+export const HAMBURGER_MENU = {
+  HAMBURGER_MENU_SELECTOR: '.hamburger-menu',
+  REVIEWER_DASHBOARD_BUTTON_SELECTOR: 'span:text("Reviewer Dashboard")',
+  LOGOUT_BUTTON_SELECTOR: 'span:text("Sign Out")',
+};
+
+export const PLAN_EDIT_MENU = {
+  PLAN_EDIT_MENU_SELECTOR: '.plan-edit-menu',
+  DEFAULT_PLAN_NAME_SELECTOR: 'text="Unnamed Plan"',
+  DEGREE_PROGRESS_SELECTOR: 'text="Degree Progress"',
+  ADD_REVIEWER_BUTTON_SELECTOR: '.add-reviewer-button',
   SEARCH_REVIEWER_INPUT_SELECTOR: 'input[placeholder="jsmith1 or John Smith"]',
   REVIEWER_RESULT_SELECTOR: `text=${REVIEWER_ID}`,
   ADD_REVIEWER_SUCCEEDED_SELECTOR: 'text="Reviewer requested"',
+}
+
+
+export const DEGREE_PROGRESS = {
 };
