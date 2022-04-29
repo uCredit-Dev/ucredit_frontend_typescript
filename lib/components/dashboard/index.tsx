@@ -35,7 +35,6 @@ import CourseList from './course-list/horizontal/CourseList';
 import InfoMenu from './degree-info/InfoMenu';
 import {
   selectLoginCheck,
-  selectReviewMode,
   selectUser,
   updateCommenters,
 } from '../../slices/userSlice';
@@ -77,7 +76,6 @@ const Dashboard: React.FC<Props> = ({ mode }) => {
   const dispatch = useDispatch();
   const currPlan = useSelector(selectPlan);
   const infoPopup = useSelector(selectInfoPopup);
-  const reviewMode = useSelector(selectReviewMode);
 
   // State Setup
   const [showNotif, setShowNotif] = useState<boolean>(true);
@@ -164,7 +162,6 @@ const Dashboard: React.FC<Props> = ({ mode }) => {
             const userId = comment.commenter_id;
             commentersSet.add(JSON.stringify(userId));
           }
-          // if (thread._id === '6260ed6745fec48f045f27c8') console.log(thread);
         }
         const commentersArr = [...commentersSet].map((c) => JSON.parse(c));
         dispatch(updateCommenters(commentersArr));
@@ -212,12 +209,12 @@ const Dashboard: React.FC<Props> = ({ mode }) => {
       )}
       {/* Dummy components used to generate state information */}
       <GenerateNewPlan />
-      <HandleUserInfoSetupDummy mode={mode} />
+      {mode === ReviewMode.Edit && <HandleUserInfoSetupDummy mode={mode} />}
       <HandlePlanShareDummy />
       <CommentsOverview />
       {/* Menus*/}
       <Notification />
-      {reviewMode !== ReviewMode.View && <PlanEditMenu />}
+      <PlanEditMenu mode={mode} />
       <HamburgerMenu mode={DashboardMode.Planning} />
     </>
   );

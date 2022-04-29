@@ -87,7 +87,6 @@ const HandlePlanShareDummy = () => {
     });
     if (cookieVal === '') {
       // if not, create a user first, then add
-      console.log('User not logged in');
       dispatch(updateToAddName(plan.name));
       dispatch(
         updateToAddMajors(

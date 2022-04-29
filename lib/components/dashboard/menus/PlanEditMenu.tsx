@@ -40,7 +40,7 @@ const majorOptions = allMajors.map((major, index) => ({
   label: major.degree_name,
 }));
 
-const PlanEditMenu: FC = () => {
+const PlanEditMenu: FC<{ mode: ReviewMode }> = ({ mode }) => {
   // Redux Setup
   const planList = useSelector(selectPlanList);
   const currentPlan = useSelector(selectPlan);
@@ -267,19 +267,21 @@ const PlanEditMenu: FC = () => {
             >
               <div className="overflow-y-auto py-4 px-3 bg-white rounded">
                 <ul className="space-y-2">
-                  <li>
-                    <Select
-                      options={[
-                        ...planList
-                          .filter((plan) => plan._id !== currentPlan._id)
-                          .map((plan) => ({ value: plan, label: plan.name })),
-                        { value: currentPlan, label: 'Create New Plan' },
-                      ]}
-                      value={{ label: currentPlan.name, value: currentPlan }}
-                      onChange={handlePlanChange}
-                      className="mr-2 thin:mx-auto text-lg font-light mt-[0.15rem]"
-                    />
-                  </li>
+                  {mode === ReviewMode.Edit && (
+                    <li>
+                      <Select
+                        options={[
+                          ...planList
+                            .filter((plan) => plan._id !== currentPlan._id)
+                            .map((plan) => ({ value: plan, label: plan.name })),
+                          { value: currentPlan, label: 'Create New Plan' },
+                        ]}
+                        value={{ label: currentPlan.name, value: currentPlan }}
+                        onChange={handlePlanChange}
+                        className="mr-2 thin:mx-auto text-lg font-light mt-[0.15rem]"
+                      />
+                    </li>
+                  )}
                   <li>
                     <button
                       onClick={() => {
@@ -305,17 +307,19 @@ const PlanEditMenu: FC = () => {
                       </span>
                     </button>
                   </li>
-                  <li>
-                    <button
-                      onClick={() => setOpenEditArea(!openEditArea)}
-                      className="flex items-center p-2 text-base font-normal text-gray-900 rounded-lg hover:bg-gray-100 w-full"
-                    >
-                      <span className="flex-1 ml-0.5 whitespace-nowrap w-full text-left flex flex-row">
-                        <PencilAltIcon className="bg-gray-100 w-[1.4rem] text-gray-500 mr-3" />{' '}
-                        Edit Plan
-                      </span>
-                    </button>
-                  </li>
+                  {mode === ReviewMode.Edit && (
+                    <li>
+                      <button
+                        onClick={() => setOpenEditArea(!openEditArea)}
+                        className="flex items-center p-2 text-base font-normal text-gray-900 rounded-lg hover:bg-gray-100 w-full"
+                      >
+                        <span className="flex-1 ml-0.5 whitespace-nowrap w-full text-left flex flex-row">
+                          <PencilAltIcon className="bg-gray-100 w-[1.4rem] text-gray-500 mr-3" />{' '}
+                          Edit Plan
+                        </span>
+                      </button>
+                    </li>
+                  )}
                   {openEditArea && (
                     <>
                       <ul className="pt-4 space-y-2 border-t border-gray-200">
@@ -403,9 +407,11 @@ const PlanEditMenu: FC = () => {
                       </ul>
                     </>
                   )}
-                  <ul className="pt-2 space-y-2 border-t border-b pb-2 border-gray-200">
-                    {reviewMode !== ReviewMode.View && <Reviewers />}
-                  </ul>
+                  {mode === ReviewMode.Edit && (
+                    <ul className="pt-2 space-y-2 border-t border-b pb-2 border-gray-200">
+                      {reviewMode !== ReviewMode.View && <Reviewers />}
+                    </ul>
+                  )}
                 </ul>
               </div>
             </Popover.Panel>

@@ -154,7 +154,6 @@ const Comments: FC<{
 
   const getComments = (thisThread): JSX.Element[] => {
     if (!thisThread) return [];
-    // console.log(thisThread);
     const divs = thisThread.comments.map((c: CommentType) => {
       if (!c.visible_user_id.includes(user._id)) {
         return null;

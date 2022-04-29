@@ -44,8 +44,9 @@ const Reviewer: React.FC = () => {
       const reviews = (await userService.getReviewerPlans(user._id)).data;
       for (const { _id, plan_id, reviewee_id, status } of reviews) {
         if (status === ReviewRequestStatus.Pending) continue;
+        const plansResp = await userService.getPlan(plan_id);
         const plan = {
-          ...(await userService.getPlan(plan_id)).data,
+          ...plansResp.data,
           status,
           review_id: _id,
         };

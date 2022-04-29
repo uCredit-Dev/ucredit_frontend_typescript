@@ -205,9 +205,6 @@ const Form: FC<{ setSearching: (searching: boolean) => void }> = (props) => {
           .catch(() => {
             return [[], []];
           });
-        if (!retrieved.data) {
-          console.log(retrieved);
-        }
         let SISRetrieved: SISRetrievedCourse[] = processedRetrievedData(
           retrieved.data.data,
           extras,
