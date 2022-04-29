@@ -74,6 +74,7 @@ export const addYearComment = async (
   } = ADD_COMMENT_MODAL;
   await clickYearComment(page, year);
   await page.locator(COMMENT_INPUT_SELECTOR).type(content);
+  await page.locator(COMMENT_INPUT_SELECTOR).press('Tab');
   for (const reviewer of toReviewers) {
     await page.locator(SELECT_REVIEWERS_INPUT_SELECTOR).click();
     await page.locator(SELECT_REVIEWERS_INPUT_SELECTOR).type(reviewer);
