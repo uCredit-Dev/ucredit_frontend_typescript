@@ -34,9 +34,7 @@ export const screenshot = async (page: Page, name: string) => {
 export const deleteUser = async (user_id) => {
   try {
     await axios.delete(`${API_URL}/api/user/${user_id}`);
-  } catch (e) {
-    console.log(e);
-  }
+  } catch (e) {}
 };
 
 /**
