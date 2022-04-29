@@ -97,7 +97,7 @@ export const AFTER_VISITING_REVIEW_DASHBOARD = async (
 ) => {
   await AFTER_REVIEWER_REQUESTED(page, reviewerPage, loginId, reviewerId);
   await confirmPlanReview(REVIEWER_ID);
-  await page.reload();  // Reviewer will not be recognized unless refreshed
+  await page.reload(); // Reviewer will not be recognized unless refreshed
   await visitReviewerDashboard(reviewerPage);
 };
 
@@ -107,6 +107,11 @@ export const AFTER_INSPECTING_PLAN = async (
   loginId = TEST_ID,
   reviewerId = REVIEWER_ID,
 ) => {
-  await AFTER_VISITING_REVIEW_DASHBOARD(page, reviewerPage, loginId, reviewerId);
+  await AFTER_VISITING_REVIEW_DASHBOARD(
+    page,
+    reviewerPage,
+    loginId,
+    reviewerId,
+  );
   await inspectPlan(reviewerPage);
 };

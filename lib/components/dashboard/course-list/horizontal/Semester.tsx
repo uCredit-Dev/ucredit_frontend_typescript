@@ -405,7 +405,9 @@ const Semester: FC<{
           className="flex flex-row items-center justify-center rounded-md cursor-pointer group"
           onClick={addCourse}
         >
-          <PlusIcon className={`w-4 h-4 stroke-2 group-hover:text-sky-700 add-course-button-${semesterYear.name}-${semesterName}`} />
+          <PlusIcon
+            className={`w-4 h-4 stroke-2 group-hover:text-sky-700 add-course-button-${semesterYear.name}-${semesterName}`}
+          />
         </div>
       ) : (
         <>{getAddHereButton()}</>
