@@ -1,38 +1,19 @@
 import { BellIcon, ExclamationCircleIcon } from '@heroicons/react/solid';
 import { Popover, Transition } from '@headlessui/react';
-import { FC, Fragment, useEffect } from 'react';
+import { FC, Fragment, useEffect, useState } from 'react';
 import { userService } from '../../../services';
-
-// const notifications = [
-//   {
-//     message: 'Ali Madooei has approved your "Imported New CS Major" plan!',
-//     date: '2d ago',
-//     href: '##',
-//   },
-//   {
-//     message: 'Ali Madooei left some comments on your "Imported New CS Major" plan.',
-//     date: '2d ago',
-//     href: '##',
-//   },
-//   {
-//     message: 'Sara More has approved your "Imported New CS Major" plan!',
-//     date: '1w ago',
-//     href: '##',
-//   },
-// ];
 
 const Notification: FC<{
   userID: string;
 }> = ({ userID }) => {
 
-  const notifications = [];
+  const [notifications, setNotifications] = useState([]);
 
   useEffect(() => {
     (async () => {
-      const Notifs = (await userService.getNotifications(userID)).data;
-      console.log(Notifs);
+      setNotifications((await userService.getNotifications(userID)).data);
     })();
-  }, [userID]);
+  },[]);
   
   return (
     <div className="absolute z-40 flex flex-row items-center justify-between px-4 text-xl top-3 right-20">
@@ -65,7 +46,7 @@ const Notification: FC<{
                 <Popover.Panel className="absolute z-10 w-80 max-w-none transform -translate-x-52 translate-y-[8px] sm:px-0 lg:max-w-3xl">
                   <div className="overflow-hidden rounded-lg shadow-lg ring-1 ring-black ring-opacity-5">
                     <div className="relative z-30 grid gap-8 bg-white p-7 lg:grid-cols-1">
-                      {notifications.map((item) => (
+                      {notifications.slice(0,10).map((item) => (
                         <a
                           key={item.message}
                           href={item.href}
@@ -76,7 +57,7 @@ const Notification: FC<{
                               {item.message}
                             </p>
                             <p className="pt-1 text-sm text-right text-gray-500">
-                              {item.date}
+                              {item.date.substring(0, 10)}
                             </p>
                           </div>
                         </a>
