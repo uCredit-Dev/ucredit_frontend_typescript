@@ -1,28 +1,39 @@
-// import { useState } from 'react';
 import { BellIcon, ExclamationCircleIcon } from '@heroicons/react/solid';
 import { Popover, Transition } from '@headlessui/react';
-import { Fragment } from 'react';
+import { FC, Fragment, useEffect } from 'react';
+import { userService } from '../../../services';
 
-const notifications = [
-  {
-    name: 'Ali Madooei has approved your "Imported New CS Major" plan!',
-    description: '2d ago',
-    href: '##',
-  },
-  {
-    name: 'Ali Madooei left some comments on your "Imported New CS Major" plan.',
-    description: '2d ago',
-    href: '##',
-  },
-  {
-    name: 'Sara More has approved your "Imported New CS Major" plan!',
-    description: '1w ago',
-    href: '##',
-  },
-];
+// const notifications = [
+//   {
+//     message: 'Ali Madooei has approved your "Imported New CS Major" plan!',
+//     date: '2d ago',
+//     href: '##',
+//   },
+//   {
+//     message: 'Ali Madooei left some comments on your "Imported New CS Major" plan.',
+//     date: '2d ago',
+//     href: '##',
+//   },
+//   {
+//     message: 'Sara More has approved your "Imported New CS Major" plan!',
+//     date: '1w ago',
+//     href: '##',
+//   },
+// ];
 
-const Notification = () => {
-  // const [notifState, setNotifState] = useState(true);
+const Notification: FC<{
+  userID: string;
+}> = ({ userID }) => {
+
+  const notifications = [];
+
+  useEffect(() => {
+    (async () => {
+      const Notifs = (await userService.getNotifications(userID)).data;
+      console.log(Notifs);
+    })();
+  }, [userID]);
+  
   return (
     <div className="absolute z-40 flex flex-row items-center justify-between px-4 text-xl top-3 right-20">
       {notifications.length !== 0 ? (
@@ -56,16 +67,16 @@ const Notification = () => {
                     <div className="relative z-30 grid gap-8 bg-white p-7 lg:grid-cols-1">
                       {notifications.map((item) => (
                         <a
-                          key={item.name}
+                          key={item.message}
                           href={item.href}
                           className="flex items-center p-2 -m-3 transition duration-150 ease-in-out rounded-lg hover:bg-gray-50 focus:outline-none focus-visible:ring focus-visible:ring-orange-500 focus-visible:ring-opacity-50"
                         >
                           <div className="ml-4">
                             <p className="text-sm font-medium text-gray-900">
-                              {item.name}
+                              {item.message}
                             </p>
                             <p className="pt-1 text-sm text-right text-gray-500">
-                              {item.description}
+                              {item.date}
                             </p>
                           </div>
                         </a>

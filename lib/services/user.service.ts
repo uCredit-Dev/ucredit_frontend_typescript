@@ -94,6 +94,12 @@ const changeReviewStatus = (review_id, status, cb = undefined) => {
     .then((res) => handleResponse(res, cb));
 };
 
+const getNotifications = (userID: string) => {
+  return fetchWrapper
+    .get(`${getAPI(window)}/notifications/${userID}`)
+    .then(handleResponse);
+};
+
 const handleResponse = (res, cb = undefined) => {
   if (!res) return;
   return res.text().then((text) => {
@@ -120,4 +126,5 @@ export const userService = {
   getThreads,
   postNewComment,
   changeReviewStatus,
+  getNotifications
 };
