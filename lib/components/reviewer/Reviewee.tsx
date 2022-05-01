@@ -19,7 +19,7 @@ import {
   updateSelectedPlan,
 } from '../../slices/currentPlanSlice';
 import { useDispatch } from 'react-redux';
-import Dropdown from './Dropdown';
+import { Selectable } from '@robertzhidealx/lyte';
 
 interface Props {
   userId: string;
@@ -131,7 +131,7 @@ const Reviewee: React.FC<Props> = ({
                       <p>{name}</p>
                     </div>
                     <div className="flex items-center gap-x-1">
-                      <Dropdown
+                      <Selectable
                         width={180}
                         options={dropdownOptions}
                         onChange={async (values) => {
@@ -152,7 +152,7 @@ const Reviewee: React.FC<Props> = ({
                             console.log(e);
                           }
                         }}
-                        _default={status}
+                        defaultValue={status}
                       />
                       <Hoverable
                         as={

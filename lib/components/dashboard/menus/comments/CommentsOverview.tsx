@@ -105,7 +105,13 @@ const CommentsOverview: React.FC = () => {
                   <div className="h-full overflow-hidden rounded-lg shadow-lg ring-1 ring-black ring-opacity-5">
                     <div className="z-30 grid max-h-full overflow-y-auto bg-white p-7 lg:grid-cols-1">
                       <CommenterToggle className="mb-3" />
-                      {threadJSX}
+                      {threadJSX.length ? (
+                        threadJSX
+                      ) : (
+                        <p className="text-sm italic text-slate-500">
+                          Looks like there's no comment for now...
+                        </p>
+                      )}
                     </div>
                   </div>
                 </Popover.Panel>
