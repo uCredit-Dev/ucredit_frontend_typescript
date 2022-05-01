@@ -1,28 +1,20 @@
-// import { useState } from 'react';
 import { BellIcon, ExclamationCircleIcon } from '@heroicons/react/solid';
 import { Popover, Transition } from '@headlessui/react';
-import { Fragment } from 'react';
+import { FC, Fragment, useEffect, useState } from 'react';
+import { userService } from '../../../services';
 
-const notifications = [
-  {
-    name: 'Ali Madooei has approved your "Imported New CS Major" plan!',
-    description: '2d ago',
-    href: '##',
-  },
-  {
-    name: 'Ali Madooei left some comments on your "Imported New CS Major" plan.',
-    description: '2d ago',
-    href: '##',
-  },
-  {
-    name: 'Sara More has approved your "Imported New CS Major" plan!',
-    description: '1w ago',
-    href: '##',
-  },
-];
+const Notification: FC<{
+  userID: string;
+}> = ({ userID }) => {
 
-const Notification = () => {
-  // const [notifState, setNotifState] = useState(true);
+  const [notifications, setNotifications] = useState([]);
+
+  useEffect(() => {
+    (async () => {
+      setNotifications((await userService.getNotifications(userID)).data);
+    })();
+  },[]);
+  
   return (
     <div className="absolute z-40 flex flex-row items-center justify-between px-4 text-xl top-3 right-20">
       {notifications.length !== 0 ? (
@@ -54,18 +46,18 @@ const Notification = () => {
                 <Popover.Panel className="absolute z-10 w-80 max-w-none transform -translate-x-52 translate-y-[8px] sm:px-0 lg:max-w-3xl">
                   <div className="overflow-hidden rounded-lg shadow-lg ring-1 ring-black ring-opacity-5">
                     <div className="relative z-30 grid gap-8 bg-white p-7 lg:grid-cols-1">
-                      {notifications.map((item) => (
+                      {notifications.slice(0,10).map((item) => (
                         <a
-                          key={item.name}
+                          key={item.message}
                           href={item.href}
                           className="flex items-center p-2 -m-3 transition duration-150 ease-in-out rounded-lg hover:bg-gray-50 focus:outline-none focus-visible:ring focus-visible:ring-orange-500 focus-visible:ring-opacity-50"
                         >
                           <div className="ml-4">
                             <p className="text-sm font-medium text-gray-900">
-                              {item.name}
+                              {item.message}
                             </p>
                             <p className="pt-1 text-sm text-right text-gray-500">
-                              {item.description}
+                              {item.date.substring(0, 10)}
                             </p>
                           </div>
                         </a>

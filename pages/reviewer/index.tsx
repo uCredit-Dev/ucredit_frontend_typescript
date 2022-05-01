@@ -91,7 +91,7 @@ const Reviewer: React.FC = () => {
         ))}
       </div>
       <HamburgerMenu mode={DashboardMode.Reviewer} />
-      <Notification />
+      <Notification userID={user._id} />
     </div>
   );
 };
