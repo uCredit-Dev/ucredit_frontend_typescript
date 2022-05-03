@@ -1,11 +1,9 @@
 import { XIcon } from '@heroicons/react/solid';
 import { FC, useState } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
+import { useDispatch } from 'react-redux';
 import Select from 'react-select';
 import { Major } from '../../../resources/commonTypes';
-import { selectTotalCredits } from '../../../slices/currentPlanSlice';
 import { updateInfoPopup } from '../../../slices/popupSlice';
-import CourseBar from './CourseBar';
 import DistributionBarsJSX from './DistributionBarsJSX';
 
 /**
@@ -17,7 +15,6 @@ const Distributions: FC<{
   changeDisplayMajor: Function;
 }> = ({ major, userMajors, changeDisplayMajor }) => {
   // Component state setup.
-  const totalCredits = useSelector(selectTotalCredits);
   const [disclaimer, setDisclaimer] = useState<boolean>(true);
   const dispatch = useDispatch();
 
@@ -54,24 +51,6 @@ const Distributions: FC<{
           hideSelectedOptions
         />
       )}
-      <CourseBar
-        distribution={{
-          name: 'Total Credits',
-          expr: '',
-          required_credits: major !== null ? major.total_degree_credit : 0,
-          fulfilled_credits: totalCredits,
-          description:
-            major !== null
-              ? 'This is the total amount of credits that is required for ' +
-                major.degree_name
-              : '',
-        }}
-        completed={
-          totalCredits >= (major !== null ? major.total_degree_credit : 0)
-        }
-        general={true}
-        bgcolor=""
-      />{' '}
       <DistributionBarsJSX major={major} />
       {disclaimer && (
         <div
