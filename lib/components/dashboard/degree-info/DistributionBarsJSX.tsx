@@ -90,6 +90,26 @@ const DistributionBarsJSX: FC<{ major: Major }> = ({ major }) => {
         );
       },
     );
+    distributionJSX.unshift(
+      <CourseBar
+        distribution={{
+          name: 'Total Credits',
+          expr: '',
+          required_credits: major !== null ? major.total_degree_credit : 0,
+          fulfilled_credits: totalCredits,
+          description:
+            major !== null
+              ? 'This is the total amount of credits that is required for ' +
+                major.degree_name
+              : '',
+        }}
+        completed={
+          totalCredits >= (major !== null ? major.total_degree_credit : 0)
+        }
+        general={true}
+        bgcolor=""
+      />,
+    );
     setDistributionBarsJSX(distributionJSX);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [distributions, showDistributions]);
@@ -234,27 +254,7 @@ const DistributionBarsJSX: FC<{ major: Major }> = ({ major }) => {
   return (
     <div>
       {calculated ? (
-        <>
-          <CourseBar
-            distribution={{
-              name: 'Total Credits',
-              expr: '',
-              required_credits: major !== null ? major.total_degree_credit : 0,
-              fulfilled_credits: totalCredits,
-              description:
-                major !== null
-                  ? 'This is the total amount of credits that is required for ' +
-                    major.degree_name
-                  : '',
-            }}
-            completed={
-              totalCredits >= (major !== null ? major.total_degree_credit : 0)
-            }
-            general={true}
-            bgcolor=""
-          />
-          {distributionBarsJSX}
-        </>
+        <>{distributionBarsJSX}</>
       ) : (
         <b className="m-10 h-full w-96 bg-blue-100">
           Loading degree progress...

@@ -40,13 +40,14 @@ const InfoMenu: FC<Props> = () => {
    * @param selected selected value from dropdown
    * @returns
    */
-  const changeDisplayMajor = (selected: string) =>
-    setMajor(
-      allMajors.find((majorObj) => majorObj.degree_name === selected) || null,
+  const changeDisplayMajor = (selected: string) => {
+    const newMajor = allMajors.find(
+      (majorObj) => majorObj.degree_name === selected,
     );
-
+    setMajor(newMajor || null);
+  };
   return (
-    <div className="z-50 flex flex-col justify-between w-10 bg-red-100 h-min w-96 right-0 fixed">
+    <div className="z-50 flex flex-col justify-between w-10 bg-red-100 h-min w-96 right-0 fixed mt-14">
       <div className="drop-shadow-lg z-50 max-h-[80vh] bg-white bg-opacity-90 rounded  overflow-x-hidden overflow-y-auto w-full">
         {/* <InfoCards /> */}
         <div className="w-96 h-full">
