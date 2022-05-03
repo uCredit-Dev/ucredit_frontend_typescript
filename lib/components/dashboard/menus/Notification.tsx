@@ -6,17 +6,16 @@ import { userService } from '../../../services';
 const Notification: FC<{
   userID: string;
 }> = ({ userID }) => {
-
   const [notifications, setNotifications] = useState([]);
 
   useEffect(() => {
     (async () => {
       setNotifications((await userService.getNotifications(userID)).data);
     })();
-  },[]);
-  
+  }, []);
+
   return (
-    <div className="absolute z-40 flex flex-row items-center justify-between px-4 text-xl top-3 right-20">
+    <div className="absolute z-[100] flex flex-row items-center justify-between px-4 text-xl top-3 right-20">
       {notifications.length !== 0 ? (
         <ExclamationCircleIcon className="relative z-50 w-5 h-4 text-red-500 bg-white rounded-full -right-12 -top-4"></ExclamationCircleIcon>
       ) : null}
@@ -43,10 +42,10 @@ const Notification: FC<{
                 leaveFrom="opacity-100 translate-y-0"
                 leaveTo="opacity-0 translate-y-1"
               >
-                <Popover.Panel className="absolute z-10 w-80 max-w-none transform -translate-x-52 translate-y-[8px] sm:px-0 lg:max-w-3xl">
-                  <div className="overflow-hidden rounded-lg shadow-lg ring-1 ring-black ring-opacity-5">
+                <Popover.Panel className="absolute w-80 max-w-none transform rounded-lg h-[20rem] overflow-y-auto -translate-x-52 translate-y-[8px] sm:px-0 lg:max-w-3xl">
+                  <div className="overflow-hidden shadow-lg ring-1 ring-black ring-opacity-5">
                     <div className="relative z-30 grid gap-8 bg-white p-7 lg:grid-cols-1">
-                      {notifications.slice(0,10).map((item) => (
+                      {notifications.slice(0, 10).map((item) => (
                         <a
                           key={item.message}
                           href={item.href}

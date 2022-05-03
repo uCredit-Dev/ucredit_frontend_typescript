@@ -74,11 +74,11 @@ const Reviewer: React.FC = () => {
         Reviewees
       </div>
       {foundPlan && (
-        <div className="md:px-[250px] bg-[#eff2f5] pb-3 w-screen">
+        <div className="md:px-[250px] bg-[#eff2f5] pb-3 w-full">
           <Search filtered={filtered} setFiltered={setFiltered} />
         </div>
       )}
-      <div className="flex flex-col items-center w-screen h-screen bg-[#eff2f5] md:px-[250px] gap-2 overflow-y-auto">
+      <div className="flex flex-col items-center w-full h-screen bg-[#eff2f5] md:px-[250px] gap-2 overflow-y-auto">
         {filtered.map((tuple, index) => (
           <Reviewee
             key={tuple.reviewee._id}

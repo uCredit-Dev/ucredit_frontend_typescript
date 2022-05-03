@@ -114,7 +114,7 @@ const CourseBar: FC<{
     <>
       <div
         className={clsx(
-          'z-0 flex flex-row text mb-1 rounded-lg whitespace-nowrap overflow-hidden overflow-ellipsis items-center',
+          'z-0 flex flex-row text mb-1 rounded-lg whitespace-nowrap overflow-hidden overflow-ellipsis items-center w-full',
           {
             'font-bold': general,
           },
@@ -129,7 +129,7 @@ const CourseBar: FC<{
           left={true}
           mode={mode}
         />
-        {section}
+        <div className="truncate">{section}</div>
         <div>
           {remainingCredits === 0 && completed ? (
             <CheckCircleIcon className="w-4 h-5 mt-1 ml-1 stroke-2" />
@@ -140,14 +140,14 @@ const CourseBar: FC<{
       </div>
 
       <div
-        className="relative flex flex-row w-full h-6 transition duration-200 ease-in transform full hover:scale-101"
+        className="relative flex flex-row w-full h-6"
         data-tip={tooltip}
         data-for="godTip"
         onMouseOver={() => ReactTooltip.rebuild()}
         onClick={openCartPopup}
       >
         <div
-          className="relative flex flex-row w-full h-6 mb-2 transition duration-200 ease-in transform bg-gray-200 rounded-full hover:scale-105"
+          className="relative flex flex-row w-full h-6 mb-2 bg-gray-200 rounded-full"
           data-tip={tooltip}
           data-for="godTip"
         >

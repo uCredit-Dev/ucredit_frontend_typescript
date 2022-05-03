@@ -184,9 +184,9 @@ const PlanSummary: FC<{
                     Here is a summary of the student's courses
                   </p>
                 </div>
-                <div className="m-4 w-96">
+                <div className="m-4 overflow-auto max-h-screen">
                   <Selectable
-                    width={300}
+                    width={'100%'}
                     options={majors.map((m) => ({
                       label: m.degree_name,
                       content: m.degree_name,
