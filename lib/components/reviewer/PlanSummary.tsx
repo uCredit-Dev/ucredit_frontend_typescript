@@ -7,13 +7,13 @@ import {
   Year,
 } from '../../resources/commonTypes';
 import { FC, useEffect, useState } from 'react';
-import Semester from '../dashboard/course-list/horizontal/Semester';
 import { toast } from 'react-toastify';
+import { Selectable } from '@robertz65/lyte';
+import Semester from '../dashboard/course-list/horizontal/Semester';
 import { statusReadable } from '../../../pages/reviewer';
 import { userService } from '../../services';
 import DistributionBarsJSX from '../dashboard/degree-info/DistributionBarsJSX';
 import { allMajors } from '../../resources/majors';
-import Dropdown from './Dropdown';
 
 const getNextSem = (): { year: Number; semester: SemesterType } => {
   const date = new Date();
@@ -139,12 +139,12 @@ const PlanSummary: FC<{
             >
               &#8203;
             </span>
-            <div className="relative inline-block align-bottom bg-white rounded-lg text-left overflow-hidden shadow-xl transform transition-all sm:my-8 sm:align-middle sm:max-w-[40rem] sm:w-full">
-              <div className="flex flex-row px-4 pt-5 pb-4 bg-white sm:p-6 sm:pb-4">
+            <div className="inline-block align-bottom bg-white text-left rounded-lg shadow-xl transform transition-all sm:my-8 sm:align-middle sm:max-w-[40rem] sm:w-full">
+              <div className="flex flex-row px-4 pt-5 pb-4 bg-white rounded-lg sm:p-6 sm:pb-4">
                 <div>
                   <div className="mt-4 ml-4">
-                    <Dropdown
-                      width={200}
+                    <Selectable
+                      width={242}
                       options={semesters}
                       onChange={async (values) => {
                         const value = values[0];
@@ -155,7 +155,7 @@ const PlanSummary: FC<{
                           if (y.year === parseInt(split[1])) setYear(y);
                         });
                       }}
-                      _default={
+                      defaultValue={
                         getNextSem().semester +
                         ' ' +
                         (() => {
@@ -180,12 +180,12 @@ const PlanSummary: FC<{
                   changeDisplayMajor={changeDisplayMajor}
                   distributionBarsJSX={distributionBarsJSX}
                 /> */}
-                  <p className="text-sm text-gray-500">
+                  <p className="px-5 mt-2 text-sm text-center text-gray-500">
                     Here is a summary of the student's courses
                   </p>
                 </div>
                 <div className="m-4 w-96">
-                  <Dropdown
+                  <Selectable
                     width={300}
                     options={majors.map((m) => ({
                       label: m.degree_name,
@@ -198,12 +198,12 @@ const PlanSummary: FC<{
                         if (m.degree_name === value.label) setSelectedMajor(m);
                       });
                     }}
-                    _default={allMajors[0].degree_name}
+                    defaultValue={allMajors[0].degree_name}
                   />
                   <DistributionBarsJSX major={selectedMajor} />
                 </div>
               </div>
-              <div className="px-4 py-3 bg-gray-50 sm:px-6 sm:flex sm:flex-row-reverse">
+              <div className="px-4 py-3 rounded-b-lg bg-gray-50 sm:px-6 sm:flex sm:flex-row-reverse ">
                 <button
                   type="button"
                   className="inline-flex justify-center w-full px-4 py-2 text-base font-medium text-white bg-red-600 border border-transparent rounded-md shadow-sm hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500 sm:ml-3 sm:w-auto sm:text-sm"

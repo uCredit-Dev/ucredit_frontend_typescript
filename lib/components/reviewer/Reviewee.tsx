@@ -3,6 +3,8 @@ import clsx from 'clsx';
 import { ClipboardListIcon, EyeIcon } from '@heroicons/react/outline';
 import { useRouter } from 'next/router';
 import { toast } from 'react-toastify';
+import { useDispatch } from 'react-redux';
+import { Selectable } from '@robertz65/lyte';
 import {
   Plan,
   ReviewRequestStatus,
@@ -18,8 +20,6 @@ import {
   updateCurrentPlanCourses,
   updateSelectedPlan,
 } from '../../slices/currentPlanSlice';
-import { useDispatch } from 'react-redux';
-import { Selectable } from '@robertzhidealx/lyte';
 
 interface Props {
   userId: string;

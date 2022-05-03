@@ -5,7 +5,7 @@ import {
   updateFilteredThreads,
 } from '../../../../slices/currentPlanSlice';
 import { selectCommenters } from '../../../../slices/userSlice';
-import Dropdown from '../../../reviewer/Dropdown';
+import { Selectable } from '@robertz65/lyte';
 
 interface Props {
   className?: string;
@@ -50,18 +50,19 @@ const CommenterToggle: React.FC<Props> = ({ className = '' }) => {
   return (
     <div className={className}>
       {commenters.length ? (
-        <div className="bg-white">
-          <Dropdown
-            width={264}
-            multi={true}
-            options={commenters.map(({ _id, name }) => ({
-              label: _id,
-              content: name,
-            }))}
-            _default={selectedCommenters.map(({ label }) => label)}
-            onChange={(values) => setSelectedCommenters(values as any)}
-          />
-        </div>
+        <Selectable
+          width="100%"
+          allowClear={true}
+          allowRefill={true}
+          className="bg-white"
+          multi={true}
+          options={commenters.map(({ _id, name }) => ({
+            label: _id,
+            content: name,
+          }))}
+          defaultValue={selectedCommenters.map(({ label }) => label)}
+          onChange={(values) => setSelectedCommenters(values as any)}
+        />
       ) : null}
     </div>
   );

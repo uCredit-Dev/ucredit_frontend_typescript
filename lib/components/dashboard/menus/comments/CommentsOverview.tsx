@@ -77,7 +77,7 @@ const CommentsOverview: React.FC = () => {
   };
 
   return (
-    <div className="absolute right-[155px] z-40 flex flex-row px-4 text-xl top-[12px]">
+    <div className="absolute right-[146px] z-40 flex flex-row px-4 text-xl top-[12px]">
       <div className="w-full h-full max-w-sm">
         <Popover className="h-full">
           {({ open }) => (
