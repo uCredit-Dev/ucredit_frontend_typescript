@@ -7,12 +7,27 @@ import { ToastContainer } from 'react-toastify';
 import { store } from '../lib/appStore/store';
 import '../lib/index.css';
 import Head from 'next/head';
+import MobileTurnPage from '../lib/components/MobileTurnPage';
 
 const MyApp: React.FC<{
   Component: NextComponentType;
   pageProps: any;
 }> = ({ Component, pageProps }) => {
   const [isMounted, setIsMounted] = useState(false);
+  const [screenWidth, setScreenWidth] = useState(0);
+  const setDimension = () => {
+    if (window) setScreenWidth(window.innerWidth);
+  };
+
+  useEffect(() => {
+    if (window) {
+      window.addEventListener('resize', setDimension);
+      return () => {
+        window.removeEventListener('resize', setDimension);
+      };
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [typeof window, screenWidth]);
 
   useEffect(() => {
     setIsMounted(true);
@@ -43,7 +58,11 @@ const MyApp: React.FC<{
               content="Quick accessible degree planning."
             />
           </Head>
-          <Component {...pageProps} />
+          {screenWidth < 474 ? (
+            <MobileTurnPage />
+          ) : (
+            <Component {...pageProps} />
+          )}
         </Provider>
       </CookiesProvider>
       <ToastContainer

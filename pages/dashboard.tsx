@@ -16,6 +16,7 @@ import {
   initialPlan,
   updateSelectedPlan,
 } from '../lib/slices/currentPlanSlice';
+import MobileTurnPage from '../lib/components/MobileTurnPage';
 
 const Dash: React.FC = () => {
   const user: User = useSelector(selectUser);

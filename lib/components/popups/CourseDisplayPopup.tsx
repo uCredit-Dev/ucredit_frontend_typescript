@@ -200,17 +200,17 @@ const CourseDisplayPopup: FC = () => {
       ></div>
 
       {/* Actual popup */}
-      <div className="fixed z-40 left-1/2 flex flex-col min-w-planAdd h-3/4 bg-primary rounded select-none transform -translate-x-1/2 translate-y-12">
+      <div className="h-screen fixed z-40 left-1/2 flex flex-col min-w-planAdd h-3/4 bg-primary rounded select-none transform -translate-x-1/2 translate-y-12">
         <div className="px-4 py-2 text-white text-coursecard font-semibold select-none">
           Inspecting{' '}
           {courseToShow === null ? 'Invalid course' : courseToShow.title}
         </div>
         {placeholder ? (
-          <div className="p-4 bg-gray-100 rounded min-w-narrowest">
+          <div className="p-4 bg-gray-100 rounded min-w-[40rem] overflow-y-auto">
             <Placeholder addCourse={addCourse} />
           </div>
         ) : (
-          <div className="h-full bg-gray-100 rounded min-w-narrowest">
+          <div className="h-full bg-gray-100 rounded min-w-[40rem]">
             <SisCourse
               addCourse={addCourse}
               setInspectedArea={setInspectedArea}

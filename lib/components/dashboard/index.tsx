@@ -213,7 +213,7 @@ const Dashboard: React.FC<Props> = ({ mode }) => {
       <HandlePlanShareDummy />
       <CommentsOverview />
       {/* Menus*/}
-      <Notification userID={user._id}/>
+      <Notification userID={user._id} />
       <PlanEditMenu mode={mode} />
       <HamburgerMenu mode={DashboardMode.Planning} />
     </>
