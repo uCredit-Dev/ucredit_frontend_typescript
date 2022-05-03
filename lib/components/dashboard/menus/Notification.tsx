@@ -2,6 +2,8 @@ import { BellIcon, ExclamationCircleIcon } from '@heroicons/react/solid';
 import { Popover, Transition } from '@headlessui/react';
 import { FC, Fragment, useEffect, useState } from 'react';
 import { userService } from '../../../services';
+import axios from 'axios';
+import { getAPI } from '../../../resources/assets';
 
 const Notification: FC<{
   userID: string;
@@ -45,22 +47,60 @@ const Notification: FC<{
                 <Popover.Panel className="absolute w-80 max-w-none transform rounded-lg h-[20rem] overflow-y-auto -translate-x-52 translate-y-[8px] sm:px-0 lg:max-w-3xl">
                   <div className="overflow-hidden shadow-lg ring-1 ring-black ring-opacity-5">
                     <div className="relative z-30 grid gap-8 bg-white p-7 lg:grid-cols-1">
-                      {notifications.slice(0, 10).map((item) => (
-                        <a
-                          key={item.message}
-                          href={item.href}
-                          className="flex items-center p-2 -m-3 transition duration-150 ease-in-out rounded-lg hover:bg-gray-50 focus:outline-none focus-visible:ring focus-visible:ring-orange-500 focus-visible:ring-opacity-50"
-                        >
-                          <div className="ml-4">
-                            <p className="text-sm font-medium text-gray-900">
-                              {item.message}
-                            </p>
-                            <p className="pt-1 text-sm text-right text-gray-500">
-                              {item.date.substring(0, 10)}
-                            </p>
-                          </div>
-                        </a>
-                      ))}
+                      <button
+                        onClick={async () => {
+                          const notifs = [...notifications];
+                          setNotifications(
+                            notifications.slice(
+                              notifications.length < 100
+                                ? notifications.length
+                                : 100,
+                              notifications.length,
+                            ),
+                          );
+                          for (
+                            let i = 0;
+                            i <
+                            (notifications.length < 100
+                              ? notifications.length
+                              : 100);
+                            i++
+                          ) {
+                            const resp = await axios.delete(
+                              getAPI(window) +
+                                `/notifications/${notifs[i]._id}`,
+                            );
+                            if (resp.status !== 200) {
+                              console.log(resp.statusText);
+                            }
+                          }
+                        }}
+                      >
+                        Read All
+                      </button>
+                      {notifications
+                        .slice(
+                          0,
+                          notifications.length < 100
+                            ? notifications.length
+                            : 100,
+                        )
+                        .map((item) => (
+                          <a
+                            key={item._id}
+                            href={item.href}
+                            className="flex items-center p-2 -m-3 transition duration-150 ease-in-out rounded-lg hover:bg-gray-50 focus:outline-none focus-visible:ring focus-visible:ring-orange-500 focus-visible:ring-opacity-50"
+                          >
+                            <div className="ml-4">
+                              <p className="text-sm font-medium text-gray-900">
+                                {item.message}
+                              </p>
+                              <p className="pt-1 text-sm text-right text-gray-500">
+                                {item.date.substring(0, 10)}
+                              </p>
+                            </div>
+                          </a>
+                        ))}
                       {notifications.length === 0 ? (
                         <p className="text-sm font-medium text-center text-gray-900">
                           There are currently no new notifications!
