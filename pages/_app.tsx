@@ -7,7 +7,7 @@ import { ToastContainer } from 'react-toastify';
 import { store } from '../lib/appStore/store';
 import '../lib/index.css';
 import Head from 'next/head';
-import MobileTurnPage from '../lib/components/MobileTurnPage';
+// import MobileTurnPage from '../lib/components/MobileTurnPage';
 
 const MyApp: React.FC<{
   Component: NextComponentType;
@@ -58,11 +58,11 @@ const MyApp: React.FC<{
               content="Quick accessible degree planning."
             />
           </Head>
-          {screenWidth < 474 ? (
+          {/* {screenWidth < 474 ? (
             <MobileTurnPage />
-          ) : (
-            <Component {...pageProps} />
-          )}
+          ) : ( */}
+          <Component {...pageProps} />
+          {/* )} */}
         </Provider>
       </CookiesProvider>
       <ToastContainer
