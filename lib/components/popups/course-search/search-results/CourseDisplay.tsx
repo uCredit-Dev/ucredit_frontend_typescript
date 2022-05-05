@@ -148,7 +148,7 @@ const CourseDisplay: FC<{ cart: boolean }> = ({ cart }) => {
 
   if (version === 'None') {
     return (
-      <div className="flex flex-col p-5 w-full bg-gray-200 rounded-r overflow-y-auto">
+      <div className="flex flex-col p-5 w-full h-full bg-gray-200 rounded-r overflow-y-auto">
         <div className="flex flex-col items-center justify-center w-full h-full font-normal">
           No selected course!
         </div>
