@@ -126,5 +126,5 @@ export const userService = {
   getThreads,
   postNewComment,
   changeReviewStatus,
-  getNotifications
+  getNotifications,
 };
