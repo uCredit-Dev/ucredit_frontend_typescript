@@ -1,5 +1,5 @@
 import { TrashIcon } from '@heroicons/react/outline';
-import { CogIcon, PencilAltIcon, PlusIcon } from '@heroicons/react/solid';
+import { ChartBarIcon, PencilAltIcon, PlusIcon } from '@heroicons/react/solid';
 import axios from 'axios';
 import React, { FC, Fragment, useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
@@ -244,7 +244,7 @@ const PlanEditMenu: FC<{ mode: ReviewMode }> = ({ mode }) => {
             )}
           >
             <span className="flex-1 whitespace-nowrap text-left flex flex-row">
-              <CogIcon className="w-[1.4rem] text-black plan-edit-menu" />
+              <ChartBarIcon className="w-[1.4rem] text-black plan-edit-menu" />
             </span>
           </Popover.Button>
           <Transition
