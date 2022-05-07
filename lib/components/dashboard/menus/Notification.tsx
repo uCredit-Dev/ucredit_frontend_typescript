@@ -46,39 +46,44 @@ const Notification: FC<{
                 leaveTo="opacity-0 translate-y-1"
               >
                 <Popover.Panel className="absolute w-80 max-w-none transform rounded-lg h-[20rem] overflow-y-auto -translate-x-52 translate-y-[8px] sm:px-0 lg:max-w-3xl">
-                  <div className="overflow-hidden shadow-lg ring-1 ring-black ring-opacity-5">
-                    <div className="relative z-30 grid gap-8 bg-white p-7 lg:grid-cols-1">
-                      <button
-                        onClick={async () => {
-                          const notifs = [...notifications];
-                          setNotifications(
-                            notifications.slice(
-                              notifications.length < 100
-                                ? notifications.length
-                                : 100,
-                              notifications.length,
-                            ),
-                          );
-                          for (
-                            let i = 0;
-                            i <
-                            (notifications.length < 100
-                              ? notifications.length
-                              : 100);
-                            i++
-                          ) {
-                            const resp = await axios.delete(
-                              getAPI(window) +
-                                `/notifications/${notifs[i]._id}`,
-                            );
-                            if (resp.status !== 200) {
-                              console.log(resp.statusText);
-                            }
-                          }
-                        }}
-                      >
-                        Read All
-                      </button>
+                  <div className="rounded-lg shadow-lg ring-1 ring-black ring-opacity-5">
+                    <div className="relative z-30 grid gap-8 bg-white rounded-lg p-7 lg:grid-cols-1">
+                      {notifications.length !== 0 ? (
+                        <div className="flex justify-end w-full">
+                          <button
+                            className="text-sm underline transition-colors duration-150 ease-in underline-offset-1 text-slate-500 hover:text-slate-800"
+                            onClick={async () => {
+                              const notifs = [...notifications];
+                              setNotifications(
+                                notifications.slice(
+                                  notifications.length < 100
+                                    ? notifications.length
+                                    : 100,
+                                  notifications.length,
+                                ),
+                              );
+                              for (
+                                let i = 0;
+                                i <
+                                (notifications.length < 100
+                                  ? notifications.length
+                                  : 100);
+                                i++
+                              ) {
+                                const resp = await axios.delete(
+                                  getAPI(window) +
+                                    `/notifications/${notifs[i]._id}`,
+                                );
+                                if (resp.status !== 200) {
+                                  console.log(resp.statusText);
+                                }
+                              }
+                            }}
+                          >
+                            Read All
+                          </button>
+                        </div>
+                      ) : null}
                       {notifications
                         .slice(
                           0,
@@ -103,8 +108,8 @@ const Notification: FC<{
                           </a>
                         ))}
                       {notifications.length === 0 ? (
-                        <p className="text-sm font-medium text-center text-gray-900">
-                          There are currently no new notifications!
+                        <p className="text-sm italic text-center text-slate-500">
+                          Looks like there's no nofication yet
                         </p>
                       ) : null}
                     </div>

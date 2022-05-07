@@ -142,7 +142,8 @@ const Reviewee: React.FC<Props> = ({
                               review_id,
                               value.label,
                             );
-                            setRefreshReviews(true);
+                            window.location.href = '/reviewer';
+                            // setRefreshReviews(true);
                             toast.success(
                               `Status changed to ${
                                 statusReadable[value.label]
