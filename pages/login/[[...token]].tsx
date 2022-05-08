@@ -84,7 +84,9 @@ const Login: React.FC = () => {
           dispatch(updateUser(retrievedUser.data));
           dispatch(updateLoginCheck(true));
 
-          redirectToReferrer();
+          const referrer = router.query.referrer as string;
+          if (referrer) redirectToReferrer();
+          else router.push('/dashboard');
         } else {
           dispatch(updateLoginCheck(true));
           setFinishedLoginCheck(true);
