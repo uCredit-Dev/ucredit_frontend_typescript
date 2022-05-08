@@ -32,6 +32,7 @@ test.beforeEach(async ({ page }) => {
   await page.goto(URL);
 });
 
+// TODO: Below tests break after some frontend updates
 test.describe('Request Reviewer', async () => {
   test('Should be able to search and add reviewer', async ({ page }) => {
     const reviewerPage = await newPage();
