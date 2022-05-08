@@ -1,10 +1,13 @@
-import { useState } from 'react';
+import { useState, useCallback, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { useScrollPosition } from '@n8tb1t/use-scroll-position';
-import UserSection from './UserSection';
+import Header from './Header';
 import FeedbackPopup from '../popups/FeedbackPopup';
 import FeedbackNotification from '../popups/FeedbackNotification';
-import { selectImportingStatus } from '../../slices/currentPlanSlice';
+import {
+  selectImportingStatus,
+  selectPlan,
+  updateThreads,
+} from '../../slices/currentPlanSlice';
 import {
   selectDeletePlanStatus,
   selectAddingPlanStatus,
@@ -13,6 +16,7 @@ import {
   selectShowCourseInfo,
   selectAddingPrereq,
   selectShowingCart,
+  selectInfoPopup,
 } from '../../slices/popupSlice';
 import {
   selectExperimentList,
@@ -28,21 +32,34 @@ import DeletePlanPopup from '../popups/DeletePlanPopup';
 import DeleteYearPopup from '../popups/DeleteYearPopup';
 import PlanAdd from '../popups/PlanAdd';
 import CourseList from './course-list/horizontal/CourseList';
-import InfoMenu from './InfoMenu';
-import ActionBar from './degree-info/ActionBar';
-import { selectLoginCheck, selectUser } from '../../slices/userSlice';
+import InfoMenu from './degree-info/InfoMenu';
+import {
+  selectLoginCheck,
+  selectUser,
+  updateCommenters,
+} from '../../slices/userSlice';
 import axios from 'axios';
-import { api } from './../../resources/assets';
+import { getAPI } from './../../resources/assets';
 import Cart from '../popups/course-search/Cart';
 import GenerateNewPlan from '../../resources/GenerateNewPlan';
 import LoadingPage from '../LoadingPage';
 import HandlePlanShareDummy from './HandlePlanShareDummy';
 import HandleUserInfoSetupDummy from './HandleUserInfoSetupDummy';
+import { DashboardMode, ReviewMode } from '../../resources/commonTypes';
+import { userService } from '../../services';
+import HamburgerMenu from './menus/HamburgerMenu';
+import Notification from './menus/Notification';
+import PlanEditMenu from './menus/PlanEditMenu';
+import CommentsOverview from './menus/comments/CommentsOverview';
+
+interface Props {
+  mode: ReviewMode;
+}
 
 /**
  * The dashboard that displays the user's plan.
  */
-const Dashboard: React.FC = () => {
+const Dashboard: React.FC<Props> = ({ mode }) => {
   // Redux setup.
   const user = useSelector(selectUser);
   const loginCheck = useSelector(selectLoginCheck);
@@ -57,11 +74,12 @@ const Dashboard: React.FC = () => {
   const cartStatus = useSelector(selectShowingCart);
   const experimentList = useSelector(selectExperimentList);
   const dispatch = useDispatch();
+  const currPlan = useSelector(selectPlan);
+  const infoPopup = useSelector(selectInfoPopup);
 
   // State Setup
   const [showNotif, setShowNotif] = useState<boolean>(true);
   const [formPopup, setFormPopup] = useState<boolean>(false);
-  const [showHeader, setShowHeader] = useState<boolean>(true);
   // const [experimentPopup] = useState<boolean>(false);
   // const [displayedNumber, setDisplayedNumber] = useState<number>(3);
   // const [crement, setCrement] = useState<number>(0);
@@ -104,17 +122,17 @@ const Dashboard: React.FC = () => {
   //   // eslint-disable-next-line react-hooks/exhaustive-deps
   // }, [experimentPopup]);
 
-  useScrollPosition(({ prevPos, currPos }) => {
-    if (currPos.y > -14) {
-      setShowHeader(true);
-    } else if (currPos.y > -120) {
-      setShowHeader(false);
-    }
-  });
+  // useScrollPosition(({ prevPos, currPos }) => {
+  //   if (currPos.y > -14) {
+  //     setShowHeader(true);
+  //   } else if (currPos.y > -120) {
+  //     setShowHeader(false);
+  //   }
+  // });
 
-  const updateExperimentsForUser = () => {
+  const updateExperimentsForUser = useCallback(() => {
     axios
-      .get(`${api}/experiments/allExperiments`)
+      .get(getAPI(window) + '/experiments/allExperiments')
       .then(async (experimentListResponse) => {
         const experiments = experimentListResponse.data.data;
         dispatch(setExperiments(experiments));
@@ -127,11 +145,30 @@ const Dashboard: React.FC = () => {
       .catch((errAllExperiments) => {
         console.log(errAllExperiments);
       });
-  };
+  }, [dispatch, user._id]);
 
-  if (experimentList.length === 0) {
+  useEffect(() => {
     updateExperimentsForUser();
-  }
+  }, [experimentList.length, updateExperimentsForUser]);
+
+  useEffect(() => {
+    (async () => {
+      if (currPlan && currPlan._id !== 'noPlan') {
+        const res = await userService.getThreads(currPlan._id);
+        dispatch(updateThreads(res.data));
+        const commentersSet = new Set<string>();
+        for (const thread of res.data) {
+          for (const comment of thread.comments) {
+            const userId = comment.commenter_id;
+            commentersSet.add(JSON.stringify(userId));
+          }
+        }
+        const commentersArr = [...commentersSet].map((c) => JSON.parse(c));
+        dispatch(updateCommenters(commentersArr));
+      }
+    })();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [mode, currPlan._id]);
 
   return (
     <>
@@ -146,18 +183,17 @@ const Dashboard: React.FC = () => {
               notifHandler={setShowNotif}
             />
           )}
-          {showHeader && <UserSection />}
+          <Header />
           <div className="flex-grow w-full">
             <div className="flex flex-col w-full">
               <div className="flex flex-row thin:flex-wrap-reverse mt-[5rem] w-full h-full">
                 <div className="flex flex-col w-full">
-                  <div className="mx-auto">
-                    <ActionBar />
-                    <CourseList />
+                  <div className="px-[100px]">
+                    <CourseList mode={mode} />
                   </div>
                 </div>
               </div>
-              <InfoMenu />
+              {infoPopup && <InfoMenu mode={mode} />}
             </div>
             {/* Global popups */}
             {addingPrereqStatus && <AddingPrereqPopup />}
@@ -167,13 +203,19 @@ const Dashboard: React.FC = () => {
             {deleteYearStatus && <DeleteYearPopup />}
             {deleteCourseStatus && <DeleteCoursePopup />}
             {courseInfoStatus && <CourseDisplayPopup />}
-            {cartStatus && <Cart allCourses={[]} />}{' '}
+            {cartStatus && <Cart allCourses={[]} />}
           </div>
         </div>
       )}
+      {/* Dummy components used to generate state information */}
       <GenerateNewPlan />
-      <HandleUserInfoSetupDummy />
+      {mode === ReviewMode.Edit && <HandleUserInfoSetupDummy mode={mode} />}
       <HandlePlanShareDummy />
+      <CommentsOverview />
+      {/* Menus*/}
+      <Notification userID={user._id} />
+      <PlanEditMenu mode={mode} />
+      <HamburgerMenu mode={DashboardMode.Planning} />
     </>
   );
 };

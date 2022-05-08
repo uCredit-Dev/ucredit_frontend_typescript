@@ -15,7 +15,7 @@ import {
   selectImportingStatus,
   updateSelectedPlan,
 } from '../slices/currentPlanSlice';
-import { api } from './assets';
+import { getAPI } from './assets';
 import { updateSearchTime } from '../slices/searchSlice';
 import {
   selectToAddName,
@@ -49,16 +49,13 @@ const GenerateNewPlan: FC = () => {
       expireAt:
         user._id === 'guestUser' ? Date.now() + 60 * 60 * 24 * 1000 : undefined,
     };
-
     planBody.name = !importing ? toAddName : 'Imported ' + toAddName;
     dispatch(updateImportID(null));
 
     let newPlan: Plan;
     const getData = async () => {
-      let response = await axios.post(api + '/plans', planBody);
-      const newPlanResponse = response.data.data;
-      let resp = await axios.get(api + '/years/' + newPlanResponse._id);
-      newPlan = { ...newPlanResponse, years: resp.data.data };
+      let response = await axios.post(getAPI(window) + '/plans', planBody);
+      newPlan = response.data.data;
       dispatch(
         updateSearchTime({
           searchSemester: 'Fall',
@@ -66,26 +63,28 @@ const GenerateNewPlan: FC = () => {
         }),
       );
       // Make a new distribution for each distribution of each major of the plan.
-      for (const { distributions } of toAddMajors) {
-        for (const distr of distributions) {
-          const distributionBody = getDistributionBody(
-            distr.name,
-            user._id,
-            newPlan._id,
-          );
-          let newDistr = await axios.post(
-            api + '/distributions',
-            distributionBody,
-          );
-          newPlan = {
-            ...newPlan,
-            distribution_ids: [
-              ...newPlan.distribution_ids,
-              newDistr.data.data._id,
-            ],
-          };
-        }
-      }
+      // for (const { distributions } of toAddMajors) {
+      //   for (const distr of distributions) {
+      //     const distributionBody = getDistributionBody(
+      //       distr.name,
+      //       user._id,
+      //       newPlan._id,
+      //     );
+      //     console.log(distr);
+      //     let newDistr = await axios.post(
+      //       getAPI(window) + '/distributions',
+      //       distributionBody,
+      //     );
+      //     console.log(newDistr);
+      //     newPlan = {
+      //       ...newPlan,
+      //       distribution_ids: [
+      //         ...newPlan.distribution_ids,
+      //         newDistr.data.data._id,
+      //       ],
+      //     };
+      //   }
+      // }
       dispatch(updateSelectedPlan(newPlan));
       dispatch(updatePlanList([newPlan, ...planList]));
       if (!importing) toast.success(newPlan.name + ' created!');
@@ -102,20 +101,20 @@ const GenerateNewPlan: FC = () => {
   return <div></div>;
 };
 
-const getDistributionBody = (
-  distrName: string,
-  userID: string,
-  planID: string,
-): object => {
-  return {
-    name: distrName,
-    required: true,
-    user_id: userID,
-    plan_id: planID,
-    filter: '',
-    expireAt:
-      userID === 'guestUser' ? Date.now() + 60 * 60 * 24 * 1000 : undefined,
-  };
-};
+// const getDistributionBody = (
+//   distrName: string,
+//   userID: string,
+//   planID: string,
+// ): object => {
+//   return {
+//     name: distrName,
+//     required: true,
+//     user_id: userID,
+//     plan_id: planID,
+//     filter: '',
+//     expireAt:
+//       userID === 'guestUser' ? Date.now() + 60 * 60 * 24 * 1000 : undefined,
+//   };
+// };
 
 export default GenerateNewPlan;

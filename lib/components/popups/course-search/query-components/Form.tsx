@@ -21,7 +21,7 @@ import {
   updateCourseCache,
 } from '../../../../slices/userSlice';
 import axios from 'axios';
-import { api } from '../../../../resources/assets';
+import { getAPI } from '../../../../resources/assets';
 import { filterCourses } from './formUtils';
 import { selectPlan } from '../../../../slices/currentPlanSlice';
 
@@ -199,15 +199,12 @@ const Form: FC<{ setSearching: (searching: boolean) => void }> = (props) => {
       let courses: SISRetrievedCourse[] = [...courseCache];
       if (!retrievedAll) {
         const retrieved: any = await axios
-          .get(api + '/search', {
+          .get(getAPI(window) + '/search', {
             params: getParams(extras),
           })
           .catch(() => {
             return [[], []];
           });
-        if (!retrieved.data) {
-          console.log(retrieved);
-        }
         let SISRetrieved: SISRetrievedCourse[] = processedRetrievedData(
           retrieved.data.data,
           extras,
@@ -372,7 +369,7 @@ const Form: FC<{ setSearching: (searching: boolean) => void }> = (props) => {
       } else if (queryLength > 0 && queryLength < minLength) {
         // Perform normal search if query length is between 1 and minLength
         axios
-          .get(api + '/search', {
+          .get(getAPI(window) + '/search', {
             params: getParams(extras),
           })
           .then((retrieved) => {

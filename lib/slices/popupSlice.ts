@@ -22,6 +22,7 @@ type PopupSlice = {
   addingPrereq: boolean;
   showingCart: boolean;
   selectedDistribution: [string, requirements[]];
+  infoPopup: boolean;
 };
 
 const initialState: PopupSlice = {
@@ -39,6 +40,7 @@ const initialState: PopupSlice = {
   addingPrereq: false,
   showingCart: false,
   selectedDistribution: ['', []],
+  infoPopup: false,
 };
 
 export const popupSlice = createSlice({
@@ -103,6 +105,10 @@ export const popupSlice = createSlice({
     ) => {
       state.selectedDistribution = action.payload;
     },
+    updateInfoPopup: (state: any, action: PayloadAction<boolean>) => {
+      // TODO: compress to one update function
+      state.infoPopup = action.payload;
+    },
   },
 });
 
@@ -122,6 +128,7 @@ export const {
   updateAddingPrereq,
   updateShowingCart,
   updateSelectedDistribution,
+  updateInfoPopup,
 } = popupSlice.actions;
 
 // The function below is called a selector and allows us to select a value from
@@ -148,8 +155,8 @@ export const selectCourseToShow = (state: RootState) =>
 export const selectAddingPrereq = (state: RootState) =>
   state.popup.addingPrereq;
 export const selectShowingCart = (state: RootState) => state.popup.showingCart;
-
 export const selectSelectedDistribution = (state: RootState) =>
   state.popup.selectedDistribution;
+export const selectInfoPopup = (state: RootState) => state.popup.infoPopup;
 
 export default popupSlice.reducer;

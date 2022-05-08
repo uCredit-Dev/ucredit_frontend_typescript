@@ -1,5 +1,10 @@
 import { useState, useEffect, FC } from 'react';
-import { Course, Plan, Year } from '../../../../resources/commonTypes';
+import {
+  Course,
+  Plan,
+  ReviewMode,
+  Year,
+} from '../../../../resources/commonTypes';
 import { useSelector, useDispatch } from 'react-redux';
 import {
   updateInspectedVersion,
@@ -10,7 +15,7 @@ import {
   selectSearchStatus,
 } from '../../../../slices/searchSlice';
 import Select from 'react-select';
-import { all_deps, api, course_tags } from '../../../../resources/assets';
+import { all_deps, getAPI, course_tags } from '../../../../resources/assets';
 import {
   selectCourseToShow,
   updateCourseToShow,
@@ -25,6 +30,8 @@ import {
 import ReactTooltip from 'react-tooltip';
 import { QuestionMarkCircleIcon } from '@heroicons/react/solid';
 import { XIcon } from '@heroicons/react/outline';
+import { selectReviewMode } from '../../../../slices/userSlice';
+import clsx from 'clsx';
 
 const departmentFilters = ['none', ...all_deps];
 const tagFilters = ['none', ...course_tags];
@@ -52,6 +59,8 @@ const Placeholder: FC<{ addCourse: (plan?: Plan) => void }> = (props) => {
   const [placeholderDepartment, setPlaceholderDepartment] =
     useState<string>('none');
   const [placeholderTag, setPlaceholderTag] = useState<string>('none');
+
+  const reviewMode = useSelector(selectReviewMode);
 
   useEffect(() => {
     ReactTooltip.rebuild();
@@ -146,7 +155,7 @@ const Placeholder: FC<{ addCourse: (plan?: Plan) => void }> = (props) => {
    */
   const updateCourse = (): void => {
     if (courseToShow !== null) {
-      fetch(api + '/courses/' + courseToShow._id, {
+      fetch(getAPI(window) + '/courses/' + courseToShow._id, {
         method: 'DELETE',
         headers: {
           'Content-Type': 'application/json',
@@ -171,7 +180,7 @@ const Placeholder: FC<{ addCourse: (plan?: Plan) => void }> = (props) => {
       const newYears: Year[] = [];
       allYears.forEach((y) => {
         const yCourses = y.courses.filter((course) => {
-          if (course === courseToShow._id) {
+          if (course === courseToShow) {
             return false;
           } else {
             return true;
@@ -188,7 +197,7 @@ const Placeholder: FC<{ addCourse: (plan?: Plan) => void }> = (props) => {
   };
 
   return (
-    <div className="flex flex-col h-full py-4 pl-8 font-medium bg-gray-100">
+    <div className="flex flex-col h-[80%] py-4 pl-8 font-medium bg-gray-100">
       <div className="flex flex-row items-center w-full">
         <div className="mr-auto text-2xl">Add a placeholder</div>
         <button
@@ -198,7 +207,7 @@ const Placeholder: FC<{ addCourse: (plan?: Plan) => void }> = (props) => {
           <XIcon className="stroke-2 w-7 h-7" />
         </button>
       </div>
-      <div className="flex flex-col flex-wrap pb-5 max-h-[70%]">
+      <div className="flex flex-col flex-wrap pb-5 min-h-[20rem] h-full">
         <div className="flex flex-col w-2/6 mt-3">
           Title
           <input
@@ -314,15 +323,25 @@ const Placeholder: FC<{ addCourse: (plan?: Plan) => void }> = (props) => {
       </div>
       {searchStatus ? (
         <button
-          className="p-2 mr-0 text-white transition duration-200 ease-in transform rounded w-28 hover:bg-secondary bg-primary focus:outline-none hover:scale-105"
+          className={clsx(
+            {
+              'bg-slate-300 hover:bg-slate-300': reviewMode === ReviewMode.View,
+            },
+            'p-1 mr-0 text-white transition duration-200 ease-in transform rounded w-28 hover:bg-secondary bg-primary focus:outline-none hover:scale-105',
+          )}
           onClick={() => props.addCourse()}
+          disabled={reviewMode === ReviewMode.View}
         >
           Add Course
         </button>
       ) : (
         <button
-          className="p-2 mr-0 text-white transition duration-200 ease-in transform rounded w-28 bg-secondary focus:outline-none hover:scale-105"
+          className={clsx(
+            { 'bg-slate-300': reviewMode === ReviewMode.View },
+            'p-1 mr-0 text-white transition duration-200 ease-in transform rounded w-28 bg-secondary focus:outline-none hover:scale-105',
+          )}
           onClick={updateCourse}
+          disabled={reviewMode === ReviewMode.View}
         >
           Update Course
         </button>

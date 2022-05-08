@@ -21,7 +21,7 @@ import {
 } from '../../dashboard/degree-info/distributionFunctions';
 import { updateRetrievedCourses } from '../../../slices/searchSlice';
 import axios from 'axios';
-import { api } from '../../../resources/assets';
+import { getAPI } from '../../../resources/assets';
 
 /**
  * Search component for when someone clicks a search action.
@@ -145,7 +145,7 @@ const Cart: FC<{ allCourses: SISRetrievedCourse[] }> = (props) => {
       // let courses: SISRetrievedCourse[] = [...courseCache]; // how actively is this cache updated?
       // if (!retrievedAll) { // how often is this filter used?
       const retrieved: any = await axios
-        .get(api + '/search', {
+        .get(getAPI(window) + '/search', {
           params: getParams(extras),
         })
         .catch(() => {
@@ -267,7 +267,9 @@ const Cart: FC<{ allCourses: SISRetrievedCourse[] }> = (props) => {
               <EyeOffIcon className="w-6 h-6 text-gray-500 stroke-2" />
             </div>
           </div>
-          <CourseDisplay cart={true} />
+          <div className="min-h-80 w-full">
+            <CourseDisplay cart={true} />
+          </div>
           {/** */}
           <div
             className={

@@ -77,7 +77,9 @@ const SearchList: FC<{
             <div
               key={inspecting.number + v.term + versionNum}
               className="transition duration-200 ease-in transform hover:scale-105"
-              onClick={() => setHideResults(true)}
+              onClick={() =>
+                window.innerWidth < 1200 ? setHideResults(true) : null
+              }
             >
               <CourseCard course={inspecting} version={versionNum} />
             </div>,
@@ -193,7 +195,7 @@ const SearchList: FC<{
         </div>
       </div>
       {(!hideResults || window.innerWidth > 700) && (
-        <div className="w-full px-5 bg-gray-200 select-none py">
+        <div className="w-full px-5 bg-gray-200 select-none py flex-grow">
           <div className="w-full h-full">{getSearchResultsUI()}</div>
         </div>
       )}

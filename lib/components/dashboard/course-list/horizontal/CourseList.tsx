@@ -1,8 +1,10 @@
 import { useState, useEffect, FC } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
+import { DragDropContext, Droppable } from 'react-beautiful-dnd';
 import {
   DroppableType,
   Plan,
+  ReviewMode,
   SemesterType,
   SISRetrievedCourse,
   UserCourse,
@@ -27,15 +29,18 @@ import {
   updateCourseCache,
   updatePlanList,
 } from '../../../../slices/userSlice';
-import { api } from '../../../../resources/assets';
-import { DragDropContext, Droppable } from 'react-beautiful-dnd';
+import { getAPI } from '../../../../resources/assets';
 import YearDraggable from './YearDraggable';
+
+interface Props {
+  mode: ReviewMode;
+}
 
 /**
  * Container component that holds all the years, semesters, and courses of the current plan.
  * TODO: Cleanup and modularize
  */
-const CourseList: FC = () => {
+const CourseList: FC<Props> = ({ mode }) => {
   // Setting up redux
   const dispatch = useDispatch();
   const currentPlan = useSelector(selectPlan);
@@ -47,72 +52,30 @@ const CourseList: FC = () => {
 
   // Component State setup.
   const [elements, setElements] = useState<JSX.Element[]>([]);
-  const [currentPlanId, setCurrentPlanId] = useState<string>('');
 
   // Gets all courses for each year and generates year objects based on them.
   useEffect(() => {
+    processPlan(currentPlan);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [currentPlan._id, searching, placeholder, currentPlan.years]);
+
+  const processPlan = (plan: Plan) => {
     const jsx: JSX.Element[] = [];
     const totCourses: UserCourse[] = [];
     let totalCredits: number = 0;
-    let updateNonFetch: boolean = true;
-    currentPlan.years.forEach((year: Year, yearIndex: number) => {
-      const yearCourses: UserCourse[] = [];
-      setCurrentPlanId(currentPlan._id);
-      if (year.courses.length === 0 || currentPlanId === currentPlan._id) {
-        // We simply update courses
-        year.courses.forEach((course: string) => {
-          const courseObj: UserCourse = getUserCourse(course);
-          if (courseObj._id === 'invalid_course') return;
-          totalCredits += courseObj.credits;
-          totCourses.push(courseObj);
-          yearCourses.push(courseObj);
-        });
-        makeUpdates(jsx, totCourses, year, yearIndex, yearCourses);
-      } else if (currentPlanId !== currentPlan._id) {
-        updateNonFetch = false;
-        setCurrentPlanId(currentPlan._id);
-        year.courses.forEach(async (courseId: string) => {
-          try {
-            const resp = await axios.get(api + '/courses/' + courseId);
-            const course: UserCourse = resp.data.data;
-            yearCourses.push(course);
-            totCourses.push(course);
-            totalCredits += course.credits;
-            makeUpdates(
-              jsx,
-              totCourses,
-              year,
-              yearIndex,
-              yearCourses,
-              totalCredits,
-            );
-          } catch (err) {
-            console.log(err);
-          }
-        });
-      }
-      handleNonFetch(yearIndex, updateNonFetch, totCourses, totalCredits);
-    });
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [currentPlan, currentPlan._id, searching, placeholder]);
 
-  /**
-   * Helper function to handle non-fetch scenarios
-   * @param yearIndex
-   * @param updateNonFetch
-   * @param totCourses
-   * @param totalCredits
-   */
-  const handleNonFetch = (
-    yearIndex: number,
-    updateNonFetch: boolean,
-    totCourses: UserCourse[],
-    totalCredits: number,
-  ): void => {
-    if (yearIndex === currentPlan.years.length - 1 && updateNonFetch) {
-      dispatch(updateCurrentPlanCourses(totCourses));
+    plan.years.forEach((year: Year, yearIndex: number) => {
+      const yearCourses: UserCourse[] = [];
+
+      year.courses.forEach((course: UserCourse) => {
+        if (course._id === 'invalid_course') return;
+        totalCredits += course.credits;
+        totCourses.push(course);
+        yearCourses.push(course);
+      });
+      makeUpdates(jsx, totCourses, year, yearIndex, yearCourses);
       dispatch(updateTotalCredits(totalCredits));
-    }
+    });
   };
 
   /**
@@ -141,6 +104,7 @@ const CourseList: FC = () => {
           year={year}
           yearIndex={yearIndex}
           yearCourses={yearCourses}
+          mode={mode}
         />
       </div>,
     );
@@ -159,40 +123,6 @@ const CourseList: FC = () => {
       if (totalCredits >= 0) dispatch(updateTotalCredits(totalCredits));
       setElements(jsx);
     }
-  };
-
-  /**
-   * Gets course based on id. If course isn't found, returns empty course
-   * @param id - course id
-   * @returns user course that corresponds to the course id
-   */
-  const getUserCourse = (id: string): UserCourse => {
-    let course: UserCourse = {
-      _id: 'invalid_course',
-      title: 'invalid course',
-      number: 'please refresh page',
-      term: 'Fall',
-      credits: 0,
-      department: 'invalid',
-      tags: [],
-      area: '',
-      wi: false,
-      taken: false,
-      ratings: [],
-      distribution_ids: [],
-      plan_id: '',
-      user_id: '',
-      year_id: '',
-      preReq: [],
-      isPlaceholder: false,
-      version: '',
-    };
-    currentPlanCourses.forEach((c: UserCourse) => {
-      if (c._id === id) {
-        course = c;
-      }
-    });
-    return course;
   };
 
   // Handles all drag n drop logic within the drag n drop context.
@@ -249,7 +179,7 @@ const CourseList: FC = () => {
       plan_id: currentPlan._id,
       year_ids: yearIdArr,
     };
-    fetch(api + '/years/changeOrder', {
+    fetch(getAPI(window) + '/years/changeOrder', {
       method: 'PATCH',
       headers: {
         'Content-Type': 'application/json',
@@ -286,37 +216,30 @@ const CourseList: FC = () => {
     // Defining relevant variables
     const sourceYear: Year = sourceObj.year;
     const destYear: Year = destObj.year;
-    const courseId: string = [...source.courses].sort(
+    const course: UserCourse = [...source.courses].sort(
       (course1: UserCourse, course2: UserCourse) =>
         course2._id.localeCompare(course1._id),
-    )[sourceIndex]._id;
-    const courseYearIndex: number = sourceYear.courses.indexOf(courseId);
-    let courseObj: undefined | UserCourse;
-
-    currentPlanCourses.forEach((course: UserCourse) => {
-      if (course._id === courseId) {
-        courseObj = course;
-      }
-    });
-
-    if (courseObj === undefined) return;
+    )[sourceIndex];
+    const courseYearIndex: number = sourceYear.courses
+      .map((c) => c._id)
+      .indexOf(course._id);
     try {
-      const resp = await axios.get(api + '/search', {
-        params: { query: courseObj.number },
+      const resp = await axios.get(getAPI(window) + '/search', {
+        params: { query: course.number },
       });
       let retrievedCourses: SISRetrievedCourse[] = resp.data.data;
       dispatch(updateCourseCache(retrievedCourses));
       if (
         retrievedCourses.length !== 0 &&
-        !checkDestValid(courseId, destination, retrievedCourses)
+        !checkDestValid(course, destination, retrievedCourses)
       ) {
         toast.error("Course isn't usually held this semester!");
       } else {
         const sourceCourseArr = [...sourceYear.courses];
         const destCourseArr = [...destYear.courses];
         sourceCourseArr.splice(courseYearIndex, 1);
-        if (destCourseArr.indexOf(courseId) === -1) {
-          destCourseArr.push(courseId);
+        if (destCourseArr.map((c) => c._id).indexOf(course._id) === -1) {
+          destCourseArr.push(course);
         }
         const currPlanYears = [...currentPlan.years];
         currPlanYears[sourceObj.index] = {
@@ -331,11 +254,11 @@ const CourseList: FC = () => {
         const body = {
           newYear: destYear._id,
           oldYear: sourceYear._id,
-          courseId: courseId,
+          courseId: course._id,
           newTerm: destination.semester,
         };
 
-        let res = await fetch(api + '/courses/dragged', {
+        let res = await fetch(getAPI(window) + '/courses/dragged', {
           method: 'PATCH',
           headers: {
             'Content-Type': 'application/json',
@@ -355,7 +278,7 @@ const CourseList: FC = () => {
         };
         const planListClone = [...planList];
         planListClone[0] = newCurrentPlan;
-        updatePlanCourses(destYear, destination.semester, courseId);
+        updatePlanCourses(destYear, destination.semester, course);
         dispatch(updatePlanList(planListClone));
         dispatch(updateSelectedPlan(newCurrentPlan));
       }
@@ -371,15 +294,14 @@ const CourseList: FC = () => {
    * @returns true if valid destination, false if not
    */
   const checkDestValid = (
-    courseId: string,
+    course: UserCourse,
     dest: DroppableType,
     retrievedCourses: SISRetrievedCourse[],
   ): boolean => {
-    const userCourse: UserCourse = getUserCourse(courseId);
     let valid = false;
     for (let sisVer of retrievedCourses) {
       if (valid) break;
-      if (sisVer.number === userCourse.number) {
+      if (sisVer.number === course.number) {
         for (let term of sisVer.terms) {
           if (term.split(' ')[0] === dest.semester) {
             valid = true;
@@ -395,15 +317,15 @@ const CourseList: FC = () => {
    * Updates plan after handling DnD
    * @param destYear - destination year
    * @param term - the term droppable you are dragging to
-   * @param courseId - course id of course you're draggin
+   * @param course - course of course you're draggin
    */
   const updatePlanCourses = (
     destYear: Year,
     term: SemesterType,
-    courseId: string,
+    course: UserCourse,
   ) => {
     currentPlanCourses.forEach((c: UserCourse, index: number) => {
-      if (c._id === courseId) {
+      if (c._id === course._id) {
         const newCourse: UserCourse = {
           ...c,
           year_id: destYear._id,

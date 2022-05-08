@@ -7,11 +7,11 @@ const Header: React.FC = () => {
   const router = useRouter();
 
   return (
-    <div className="flex items-center justify-between p-4 h-1/6 bg-white ">
+    <div className="flex items-center justify-between p-4 h-1/6 bg-white">
       <div className="flex items-center">
-        <img className="mr-2 w-8 h-8" src="/img/logo.png" alt="logo" />
+        <img className="w-8 h-8 mr-2" src="/img/logo.png" alt="logo" />
         <div
-          className="text-3xl font-bold  italic text-secondary cursor-pointer"
+          className="text-3xl italic font-bold cursor-pointer text-secondary"
           onClick={() => router.push('/login')}
         >
           uCredit

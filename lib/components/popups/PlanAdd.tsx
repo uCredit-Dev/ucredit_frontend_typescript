@@ -100,7 +100,7 @@ const PlanAdd: FC = () => {
                 options={majorOptions}
                 onChange={handleMajorChange}
                 placeholder="Select Majors"
-                className="z-50 w-full"
+                className="z-50 w-full select-major-input"
               />
             </div>
             <div className="flex flex-row justify-end">

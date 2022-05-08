@@ -6,9 +6,8 @@ import { useDispatch, useSelector } from 'react-redux';
 import { toast } from 'react-toastify';
 import {
   getLoginCookieVal,
-  api,
+  getAPI,
   guestUser,
-  checkLocalhost,
 } from '../../lib/resources/assets';
 import {
   selectImportID,
@@ -21,6 +20,7 @@ import { updateImportingStatus } from '../../lib/slices/currentPlanSlice';
 import axios from 'axios';
 import { User } from '../../lib/resources/commonTypes';
 import { userService } from '../../lib/services';
+import { updateAddingPlanStatus } from '../../lib/slices/popupSlice';
 
 /**
  * The login page, designed after the Spotify login page..
@@ -36,16 +36,17 @@ const Login: React.FC = () => {
   const [session, setSession] = useState<string>('');
   const router = useRouter();
   const importID = useSelector(selectImportID);
-  const devIDs = ['freshmanDev', 'sophomoreDev', 'juniorDev', 'seniorDev'];
+  const devIDs = ['mockUser'];
 
   // Useffect runs once on page load, calling to https://ucredit-api.herokuapp.com/api/verifyLogin to retrieve user data.
   // On successful retrieve, update redux with retrieved user
   useEffect(() => {
-    setFinishedLoginCheck(false);
     const token = router.query.token && router.query.token[0];
     const loginId = token ? token : getLoginCookieVal(cookies);
-    if (loginId && !checkLocalhost()) handleDBLogin(loginId);
-    else if (loginId) handleJHULogin(loginId);
+    if (loginId && getAPI(window).includes('ucredit.me')) {
+      setFinishedLoginCheck(false);
+      handleDBLogin(loginId);
+    } else if (loginId) handleJHULogin(loginId);
     else dispatch(updateLoginCheck(true));
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [router.query.token]);
@@ -53,8 +54,10 @@ const Login: React.FC = () => {
   const redirectToReferrer = () => {
     const referrer = router.query.referrer as string;
     if (referrer) {
-      const [pathname, id] = referrer.split('-');
-      router.push(`/${pathname}/${id}`);
+      if (referrer.includes('-')) {
+        const [pathname, id] = referrer.split('-');
+        router.push(`/${pathname}/${id}`);
+      } else router.push(`/${referrer}`);
     } else router.push('/dashboard');
   };
 
@@ -68,6 +71,8 @@ const Login: React.FC = () => {
       .login(loginId)
       .then((retrievedUser) => {
         if (retrievedUser.errors === undefined) {
+          if (retrievedUser.data.plan_ids.length === 0)
+            dispatch(updateAddingPlanStatus(true));
           if (loginId)
             document.cookie =
               'connect.sid=' +
@@ -107,7 +112,8 @@ const Login: React.FC = () => {
    * Handles JHU Login button being pressed.
    */
   const handleJHULogin = (loginId: any) => {
-    if (!checkLocalhost()) window.location.href = api + '/login';
+    const api: String = getAPI(window);
+    if (api.includes('ucredit.me')) window.location.href = api + '/login';
     else if (loginId.length === 20) handleDBLogin(loginId);
     else if (typeof loginId === 'string') handleDevLogin(loginId)();
     else setOpenDevChoose(true);
@@ -119,9 +125,12 @@ const Login: React.FC = () => {
    */
   const handleDevLogin = (id: string) => (): void => {
     axios
-      .get(api + '/backdoor/verification/' + id)
+      .get(getAPI(window) + '/backdoor/verification/' + id)
       .then((res) => {
         const devUser: User = res.data.data;
+        if (devUser.plan_ids.length === 0)
+          dispatch(updateAddingPlanStatus(true));
+        if (importID) dispatch(updateImportingStatus(true));
         dispatch(updateUser(devUser));
         dispatch(updateLoginCheck(true));
         document.cookie =
@@ -189,7 +198,7 @@ const Login: React.FC = () => {
                 </button>
               ))}
               <input
-                placeholder="Enter your session ID cookie here"
+                placeholder="Enter a custom ID here"
                 className="p-1 mx-auto rounded w-80"
                 onChange={onSessionChange}
                 value={session}
@@ -198,7 +207,7 @@ const Login: React.FC = () => {
                 className="mx-auto mb-2 text-center rounded bg-primary w-80"
                 onClick={submitSession}
               >
-                Submit Custom Session
+                Login as custom user
               </button>
             </div>
           )}

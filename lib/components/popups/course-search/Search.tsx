@@ -15,6 +15,7 @@ import { selectPlan } from '../../../slices/currentPlanSlice';
 import ReactTooltip from 'react-tooltip';
 import { Year } from '../../../resources/commonTypes';
 import clsx from 'clsx';
+import { selectInfoPopup } from '../../../slices/popupSlice';
 
 /**
  * Search component for when someone clicks a search action.
@@ -32,6 +33,7 @@ const Search: FC = () => {
   const currentPlan = useSelector(selectPlan);
   const inspected = useSelector(selectInspectedCourse);
   const placeholder = useSelector(selectPlaceholder);
+  const infoPopup = useSelector(selectInfoPopup);
 
   /**
    * Gets specific year's name.
@@ -66,7 +68,9 @@ const Search: FC = () => {
       <div
         className={clsx(
           'fixed flex flex-col bg-primary gradient-to-r select-none rounded z-30 w-9/12 tight:overflow-y-none h-5/6 top-1/3 left-1/2 transform -translate-x-1/2 -translate-y-1/3 tight:h-auto',
-          { '-translate-x-[62.5%]': window.innerWidth > 2200 },
+          {
+            '-translate-x-[62.5%]': infoPopup,
+          },
         )}
         style={{ opacity: searchOpacity === 100 ? 1 : 0.1 }}
       >
@@ -82,7 +86,7 @@ const Search: FC = () => {
               'flex flex-col rounded-l bg-gray-200 flex-none border-r-2 tight:border-0 border-gray-300 tight:w-auto w-80'
             }
           >
-            <div className="h-full">
+            <div className="h-full overflow-y-auto">
               {!hideResults && (
                 <>
                   <Form setSearching={setSearching} />

@@ -1,16 +1,17 @@
 import { useState, useEffect, FC, useRef } from 'react';
 import ReactTooltip from 'react-tooltip';
-import {
-  UserCourse,
-  SemesterType,
-  Year,
-} from '../../../../resources/commonTypes';
-import { checkAllPrereqs, getColors } from '../../../../resources/assets';
 import { useDispatch, useSelector } from 'react-redux';
 import { MinusIcon, ExclamationIcon } from '@heroicons/react/outline';
 import { Transition } from '@tailwindui/react';
 import clsx from 'clsx';
 import 'react-toastify/dist/ReactToastify.css';
+import { checkAllPrereqs, getColors } from '../../../../resources/assets';
+import {
+  UserCourse,
+  SemesterType,
+  Year,
+  ReviewMode,
+} from '../../../../resources/commonTypes';
 import {
   selectCurrentPlanCourses,
   selectPlan,
@@ -36,7 +37,8 @@ const CourseComponent: FC<{
   course: UserCourse;
   year: Year;
   semester: SemesterType;
-}> = ({ setDraggable, year, course, semester }) => {
+  mode: ReviewMode;
+}> = ({ setDraggable, year, course, semester, mode }) => {
   // React setup
   const [activated, setActivated] = useState<boolean>(false);
   const [satisfied, setSatisfied] = useState<boolean>(false);
@@ -127,7 +129,7 @@ const CourseComponent: FC<{
       onMouseLeave={deactivate}
     >
       <div className="absolute">
-        {hovered && (
+        {hovered && mode !== ReviewMode.View && (
           <div className="flex flex-row">
             <MinusIcon
               className=" z-20 -ml-6 mt-3 flex flex-row items-center justify-center p-0.5 w-6 h-6 text-white bg-red-300 hover:bg-red-600 rounded-md outline-none stroke-2 cursor-pointer transform hover:scale-110 transition duration-150 ease-in"
@@ -137,7 +139,7 @@ const CourseComponent: FC<{
         )}
       </div>
       <div
-        className="shadow relative flex items-center justify-between text-xs mt-2 pl-1 p-0.5 w-1/5 max-w-yearheading rounded md:w-full bg-white"
+        className="shadow relative flex items-center justify-between text-xs mt-2 pl-1 p-0.5 w-full rounded md:w-full bg-white"
         onMouseEnter={() => setDraggable(false)}
         onMouseLeave={() => setDraggable(true)}
         onClick={displayCourses}

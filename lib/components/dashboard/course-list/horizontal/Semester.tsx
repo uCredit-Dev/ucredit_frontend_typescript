@@ -2,6 +2,7 @@ import { useState, useEffect, FC } from 'react';
 import {
   DroppableType,
   Plan,
+  ReviewMode,
   SemesterType,
   UserCourse,
   Year,
@@ -33,12 +34,15 @@ import {
   updateAddingPrereq,
 } from '../../../../slices/popupSlice';
 import { toast } from 'react-toastify';
-import { api } from '../../../../resources/assets';
+import { getAPI } from '../../../../resources/assets';
 import {
   selectUser,
   selectPlanList,
   updatePlanList,
+  updateCartInvokedBySemester,
 } from '../../../../slices/userSlice';
+import Comments from '../../Comments';
+import CourseComponent from './CourseComponent';
 
 /**
  * A component displaying all the courses in a specific semester.
@@ -52,7 +56,8 @@ const Semester: FC<{
   semesterYear: Year;
   courses: UserCourse[];
   display: boolean;
-}> = ({ semesterName, semesterYear, courses, display }) => {
+  mode: ReviewMode;
+}> = ({ semesterName, semesterYear, courses, display, mode }) => {
   // Redux setup
   const dispatch = useDispatch();
   const addingPrereqStatus = useSelector(selectAddingPrereq);
@@ -69,6 +74,7 @@ const Semester: FC<{
   const [semesterCourses, setSemesterCourses] = useState<UserCourse[]>([]);
   const [inspectedArea, setInspectedArea] = useState<string>('None');
   const [openAPInfoBox, setOpenAPInfoBox] = useState<boolean>(false);
+  const [hovered, setHovered] = useState<boolean>(false);
 
   useEffect(() => {
     ReactTooltip.rebuild();
@@ -102,6 +108,7 @@ const Semester: FC<{
    * Opens search popup to add new course.
    */
   const addCourse = () => {
+    dispatch(updateCartInvokedBySemester(true));
     dispatch(updateSearchStatus(true));
     dispatch(
       updateSearchTime({
@@ -115,17 +122,41 @@ const Semester: FC<{
    * Gets a list of course components wrapped in a DnD draggable.
    * @returns a list of draggable react components
    */
-  const getDraggables = (): any => {
-    return semesterCourses.map((course, index) => (
-      <div key={course._id} className="w-auto mr-0">
-        <CourseDraggable
-          course={course}
-          index={index}
-          semesterName={semesterName}
-          semesterYear={semesterYear}
-        />
-      </div>
-    ));
+  const getCourses = (): any => {
+    // TODO: Search for a thread matching course id here.
+    // Do something similar for plan, year, and semester
+    // All threads should be retrieved on first load of the plan and stored in a map.
+    return semesterCourses.map((course, index) => {
+      if (mode !== ReviewMode.View) {
+        return (
+          <div key={course._id} className="w-auto mr-0">
+            <CourseDraggable
+              course={course}
+              index={index}
+              semesterName={semesterName}
+              semesterYear={semesterYear}
+              mode={mode}
+              // TODO: Add a thread prop here. Add a thread state in the course component.
+              // When retrieving threads make sure the threads are stored as a map. We can then not add further complexity when searching for threads since map find is O(1) if we check them here.
+            />
+          </div>
+        );
+      } else {
+        return (
+          <div key={course._id} className="w-auto mr-0">
+            <CourseComponent
+              setDraggable={(draggable) => {
+                return;
+              }}
+              course={course}
+              semester={semesterName}
+              year={semesterYear}
+              mode={mode}
+            />
+          </div>
+        );
+      }
+    });
   };
 
   /**
@@ -179,7 +210,7 @@ const Semester: FC<{
             : undefined,
       };
 
-      fetch(api + '/courses', {
+      fetch(getAPI(window) + '/courses', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -200,7 +231,7 @@ const Semester: FC<{
       const newYears: Year[] = [];
       allYears.forEach((y) => {
         if (y._id === semesterYear._id) {
-          const yCourses = [...y.courses, newUserCourse._id];
+          const yCourses = [...y.courses, newUserCourse];
           newYears.push({ ...y, courses: yCourses });
         } else {
           newYears.push(y);
@@ -373,7 +404,9 @@ const Semester: FC<{
           className="flex flex-row items-center justify-center rounded-md cursor-pointer group"
           onClick={addCourse}
         >
-          <PlusIcon className="w-4 h-4 stroke-2 group-hover:text-sky-700" />
+          <PlusIcon
+            className={`w-4 h-4 stroke-2 group-hover:text-sky-700 add-course-button-${semesterYear.name}-${semesterName}`}
+          />
         </div>
       ) : (
         <>{getAddHereButton()}</>
@@ -387,8 +420,12 @@ const Semester: FC<{
   const getAddHereButton = () =>
     checkSemester() && (
       <button
-        className="z-40 w-24 py-1 text-xs text-white transition duration-150 ease-in transform rounded hover:bg-secondary bg-primary focus:outline-none hover:scale-101"
+        className={clsx(
+          { 'bg-slate-300 hover:bg-slate-300': mode === ReviewMode.View },
+          'z-40 w-24 py-1 text-xs text-white transition duration-150 ease-in transform rounded hover:bg-secondary bg-primary focus:outline-none hover:scale-101',
+        )}
         onClick={addPrereq}
+        disabled={mode === ReviewMode.View}
       >
         Add Here
       </button>
@@ -422,9 +459,18 @@ const Semester: FC<{
     <>
       {!display ? null : (
         <div
-          onMouseLeave={() => setOpenAPInfoBox(false)}
+          onMouseLeave={() => {
+            setOpenAPInfoBox(false);
+            setHovered(false);
+          }}
+          onMouseEnter={() => setHovered(true)}
           className="min-w-[15rem] max-w-[40rem] w-min mx-4"
         >
+          <Comments
+            location={'Semester ' + semesterYear._id + semesterName}
+            hovered={hovered}
+            mode={mode}
+          />
           <div className="flex flex-col font-medium max-w-yearheading h-yearheading">
             <div className="flex flex-row items-center justify-between px-2 py-1 bg-white h-yearheading1">
               <div className="flex flex-row items-center h-auto gap-3 font-normal">
@@ -434,22 +480,31 @@ const Semester: FC<{
             </div>
             <div className="w-full h-px bg-primary"></div>
           </div>
-          <div id={semesterName + '|' + semesterYear._id} className="mr-11">
-            <Droppable
-              droppableId={semesterName + '|' + semesterYear._id}
-              type="COURSE"
-            >
-              {(provided, snapshot) => (
-                <div
-                  ref={provided.innerRef}
-                  style={getListStyle(snapshot.isDraggingOver)}
-                  className="rounded"
-                >
-                  {getDraggables()}
-                  {provided.placeholder}
-                </div>
-              )}
-            </Droppable>
+          <div
+            id={semesterName + '|' + semesterYear._id}
+            // className="pr-11"
+            onMouseEnter={() => setHovered(false)}
+            onMouseLeave={() => setHovered(true)}
+          >
+            {mode === ReviewMode.View ? (
+              <>{getCourses()}</>
+            ) : (
+              <Droppable
+                droppableId={semesterName + '|' + semesterYear._id}
+                type="COURSE"
+              >
+                {(provided, snapshot) => (
+                  <div
+                    ref={provided.innerRef}
+                    style={getListStyle(snapshot.isDraggingOver)}
+                    className="rounded"
+                  >
+                    {getCourses()}
+                    {provided.placeholder}
+                  </div>
+                )}
+              </Droppable>
+            )}
             {getAPInfoBox()}
           </div>
         </div>

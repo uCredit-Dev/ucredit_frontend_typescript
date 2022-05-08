@@ -2,21 +2,13 @@ import { useRouter } from 'next/router';
 import { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { toast } from 'react-toastify';
-// import getConfig from 'next/config';
 import {
   selectReviewerPlanId,
   selectUser,
   updateReviewerPlanID,
 } from '../../lib/slices/userSlice';
-import { post } from '../../lib/utils';
 import 'react-toastify/dist/ReactToastify.css';
-
-// const { publicRuntimeConfig } = getConfig();
-// const apiUrl = publicRuntimeConfig.apiUrl;
-const apiUrl =
-  process.env.NODE_ENV === 'development'
-    ? 'http://localhost:4567/api'
-    : 'https://ucredit-api.herokuapp.com/api';
+import { userService } from '../../lib/services';
 
 const ReviewerAdd: React.FC = () => {
   const router = useRouter();
@@ -41,21 +33,20 @@ const ReviewerAdd: React.FC = () => {
     (async () => {
       try {
         if (user._id === 'noUser' || user._id === 'guestUser') return;
-        const res = await post(`${apiUrl}/planReview/addReviewer`, {
-          plan_id: reviewerPlanId,
-          reviewer_id: user._id,
-        });
-        if (res.status === 400)
-          toast.error('Reviewer already added for this plan');
-        else if (res.status === 200) toast.success('Imported reviewer plan!');
-        else toast.error('Invalid link');
+        await userService.confirmReviewerPlan(
+          reviewerPlanId,
+          (status: number) => {
+            if (status === 400) toast.error('Failed');
+            else if (status === 200) toast.success('Confirmed reviewer plan!');
+          },
+        );
         router.push('/reviewer');
       } catch (err) {
-        console.log(err);
+        router.push('/reviewer');
       }
     })();
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [user]);
+  }, [user, router.query.id]);
 
   return <></>;
 };
