@@ -84,7 +84,7 @@ export type UserCourse = {
 export type Year = {
   _id: string;
   name: string;
-  courses: string[];
+  courses: UserCourse[];
   plan_id: string;
   user_id: string;
   year: number;
@@ -98,6 +98,7 @@ export type Plan = {
   user_id: string;
   numYears: number;
   years: Year[];
+  reviewers: any[];
 };
 
 type Affiliation = 'STUDENT' | 'FACULTY' | 'STAFF';
@@ -118,6 +119,12 @@ export type User = {
   school: string;
   grade: Grade;
   plan_ids: string[];
+  whitelisted_plan_ids: string[];
+};
+
+export type UserId = {
+  _id: string;
+  name: string;
 };
 
 export type Filter = {
@@ -228,4 +235,53 @@ export type DroppableType = {
   year: string;
   semester: SemesterType;
   courses: UserCourse[];
+};
+
+export enum DashboardMode {
+  Reviewer = 'Reviewer',
+  Planning = 'Planning',
+}
+
+export interface StatusPlan extends Plan {
+  status: ReviewRequestStatus;
+  review_id: string;
+}
+
+export interface RevieweePlans {
+  reviewee: User;
+  plans: StatusPlan[];
+}
+
+export enum ReviewRequestStatus {
+  Pending = 'PENDING',
+  Rejected = 'REJECTED',
+  UnderReview = 'UNDERREVIEW',
+  Approved = 'APPROVED',
+}
+
+export enum ReviewMode {
+  View = 'view',
+  Edit = 'edit',
+  None = '',
+}
+
+export type ThreadType = {
+  plan_id: string;
+  resolved: boolean;
+  location_type: string;
+  location_id: string;
+  comments: CommentType[];
+  _id: string;
+};
+
+export type CommentType = {
+  commenter_id: {
+    name: string;
+    _id: string;
+  };
+  visible_user_id: string[];
+  thread_id: string;
+  message: string;
+  date: string;
+  _id: string;
 };

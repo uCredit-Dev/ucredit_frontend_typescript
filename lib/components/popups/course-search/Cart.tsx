@@ -21,7 +21,7 @@ import {
 } from '../../dashboard/degree-info/distributionFunctions';
 import { updateRetrievedCourses } from '../../../slices/searchSlice';
 import axios from 'axios';
-import { api } from '../../../resources/assets';
+import { getAPI } from '../../../resources/assets';
 
 /**
  * Search component for when someone clicks a search action.
@@ -145,7 +145,7 @@ const Cart: FC<{ allCourses: SISRetrievedCourse[] }> = (props) => {
       // let courses: SISRetrievedCourse[] = [...courseCache]; // how actively is this cache updated?
       // if (!retrievedAll) { // how often is this filter used?
       const retrieved: any = await axios
-        .get(api + '/search', {
+        .get(getAPI(window) + '/search', {
           params: getParams(extras),
         })
         .catch(() => {
@@ -215,17 +215,13 @@ const Cart: FC<{ allCourses: SISRetrievedCourse[] }> = (props) => {
         style={{
           opacity: searchOpacity === 100 ? 0.5 : 0,
         }}
-        onClick={() => {
-          // clicking off, should reset all things
-          dispatch(updateShowingCart(false));
-          // dispatch(clearSearch());
-        }}
+        onClick={() => dispatch(updateShowingCart(false))}
       ></div>
 
       {/* Search area */}
       <div
         className={
-          'fixed flex flex-col bg-primary shadow select-none rounded z-40 w-9/12 tight:overflow-y-none h-5/6 top-1/3 left-1/2 transform -translate-x-1/2 -translate-y-1/3 tight:h-auto'
+          'fixed flex flex-col bg-primary select-none rounded z-40 w-9/12 tight:overflow-y-none h-5/6 top-1/3 left-1/2 transform -translate-x-1/2 -translate-y-1/3 tight:h-auto'
         }
         style={{ opacity: searchOpacity === 100 ? 1 : 0.1 }}
       >
@@ -271,7 +267,9 @@ const Cart: FC<{ allCourses: SISRetrievedCourse[] }> = (props) => {
               <EyeOffIcon className="w-6 h-6 text-gray-500 stroke-2" />
             </div>
           </div>
-          <CourseDisplay cart={true} />
+          <div className="min-h-80 w-full">
+            <CourseDisplay cart={true} />
+          </div>
           {/** */}
           <div
             className={

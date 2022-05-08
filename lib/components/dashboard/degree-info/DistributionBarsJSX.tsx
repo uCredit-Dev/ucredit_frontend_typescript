@@ -1,62 +1,45 @@
-import { FC, useEffect, useState } from 'react';
-import Distributions from './degree-info/Distributions';
-import clsx from 'clsx';
-import FineDistribution from './degree-info/FineDistribution';
-import CourseBar from './degree-info/CourseBar';
+import React, { FC, useEffect, useState } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import { getCourse } from '../../../resources/assets';
+import {
+  Plan,
+  Major,
+  Course,
+  UserCourse,
+} from '../../../resources/commonTypes';
+import {
+  selectDistributions,
+  selectPlan,
+  selectCurrentPlanCourses,
+  updateDistributions,
+  selectTotalCredits,
+} from '../../../slices/currentPlanSlice';
+import { selectCourseCache } from '../../../slices/userSlice';
+import CourseBar from './CourseBar';
 import {
   checkRequirementSatisfied,
   getRequirements,
   requirements,
-} from './degree-info/distributionFunctions';
-import { useDispatch, useSelector } from 'react-redux';
-import {
-  selectCurrentPlanCourses,
-  selectDistributions,
-  selectPlan,
-  updateDistributions,
-} from '../../slices/currentPlanSlice';
-import { selectCourseCache } from '../../slices/userSlice';
-import { getCourse, getMajor } from '../../resources/assets';
-import { Course, Major, Plan, UserCourse } from '../../resources/commonTypes';
-import { allMajors } from '../../resources/majors';
+} from './distributionFunctions';
 
-/**
- * Info menu shows degree plan and degree information.
- * Hidden on default.
- */
-const InfoMenu: FC = () => {
+const DistributionBarsJSX: FC<{ major: Major }> = ({ major }) => {
   const dispatch = useDispatch();
   const distributions = useSelector(selectDistributions);
   const currentPlan: Plan = useSelector(selectPlan);
   const courseCache = useSelector(selectCourseCache);
   const currPlanCourses = useSelector(selectCurrentPlanCourses);
-
-  const [infoOpen, setInfoOpen] = useState(false);
-  const [showDistributions] = useState<boolean[]>(
-    new Array(distributions.length),
-  );
-  const [distributionOpen, setDistributionOpen] = useState<boolean>(true);
+  const totalCredits = useSelector(selectTotalCredits);
   const [calculated, setCalculated] = useState<boolean>(false);
-  const [major, setMajor] = useState<Major | null>(null);
   const [distributionBarsJSX, setDistributionBarsJSX] = useState<JSX.Element[]>(
     [],
   );
   const [retrievedDistributions, setDistributions] = useState<{
     plan: Plan;
     distr: [string, requirements[]][];
-  }>({ plan: currentPlan, distr: [] });
-
-  // Update major when plan changes
-  useEffect(() => {
-    let firstMajor: string | undefined = currentPlan.majors[0];
-    if (firstMajor === undefined) {
-      return;
-    }
-    let majorObj: Major | undefined = getMajor(firstMajor);
-    if (majorObj !== undefined) {
-      setMajor(majorObj);
-    }
-  }, [currentPlan._id, currentPlan, currentPlan.majors, currPlanCourses]);
+  }>({ plan: currentPlan || currentPlan, distr: [] });
+  const [showDistributions] = useState<boolean[]>(
+    new Array(distributions.length),
+  );
 
   // Gets distribution everytime a plan changes.
   useEffect(() => {
@@ -83,27 +66,6 @@ const InfoMenu: FC = () => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [retrievedDistributions]);
 
-  /**
-   * Gets all distributions associated with current plan
-   * @returns an array of pairs for distributions and their requirements if distributions exist and null if they don't
-   */
-  const getDistributions = (): [string, requirements[]][] | null => {
-    if (major) {
-      return getRequirements(major);
-    }
-    return null;
-  };
-
-  /**
-   * Callback used to change the major of degree progress when user has multiple majors
-   * @param selected selected value from dropdown
-   * @returns
-   */
-  const changeDisplayMajor = (selected: string) =>
-    setMajor(
-      allMajors.find((majorObj) => majorObj.degree_name === selected) || null,
-    );
-
   // Update displayed JSX every time distributions get updated.
   useEffect(() => {
     const distributionJSX = distributions.map(
@@ -116,55 +78,52 @@ const InfoMenu: FC = () => {
         });
         return (
           <div key={pair[0] + pair[1] + i}>
-            {pair[1].map((dis, index) => {
-              if (index === 0) {
-                return (
-                  //helper function
-                  <div
-                    key={dis.name + index + dis.expr}
-                    className={clsx({ hidden: !distributionOpen })}
-                  >
-                    <CourseBar
-                      distribution={dis}
-                      general={true}
-                      bgcolor={'skyblue'}
-                      completed={completed}
-                    />
-                  </div>
-                );
-              } else {
-                return (
-                  <div key={dis.name + index + dis.expr}>
-                    <FineDistribution
-                      dis={dis}
-                      distributionOpen={distributionOpen}
-                      hidden={showDistributions[i] !== true}
-                    />
-                  </div>
-                );
-              }
-            })}
-            {/* {pair[1].length > 1 ? (
-              <button
-                onClick={() => {
-                  changeDistributionVisibility(i);
-                }}
-                className={clsx(
-                  'mb-2 underline text-sm focus:outline-none transform hover:scale-101 transition duration-200 ease-in',
-                  { hidden: !distributionOpen },
-                )}
-              >
-                {getDistributionText(i)}
-              </button>
-            ) : null} */}
+            <div key={pair[1][0].name + 0 + pair[1][0].expr}>
+              <CourseBar
+                distribution={pair[1][0]}
+                general={true}
+                bgcolor={'skyblue'}
+                completed={completed}
+              />
+            </div>
           </div>
         );
       },
     );
+    distributionJSX.unshift(
+      <CourseBar
+        distribution={{
+          name: 'Total Credits',
+          expr: '',
+          required_credits: major !== null ? major.total_degree_credit : 0,
+          fulfilled_credits: totalCredits,
+          description:
+            major !== null
+              ? 'This is the total amount of credits that is required for ' +
+                major.degree_name
+              : '',
+        }}
+        completed={
+          totalCredits >= (major !== null ? major.total_degree_credit : 0)
+        }
+        general={true}
+        bgcolor=""
+      />,
+    );
     setDistributionBarsJSX(distributionJSX);
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [distributions, distributionOpen, showDistributions]);
+  }, [distributions, showDistributions]);
 
+  /**
+   * Gets all distributions associated with current plan
+   * @returns an array of pairs for distributions and their requirements if distributions exist and null if they don't
+   */
+  const getDistributions = (): [string, requirements[]][] | null => {
+    if (major) {
+      return getRequirements(major);
+    }
+    return null;
+  };
   /**
    * args: an array containing focus areas and their associated requirements, and all courses
    * updates the requirements obj so that the fulfilled credits accurately reflects the plan
@@ -230,7 +189,6 @@ const InfoMenu: FC = () => {
       }
     }
   };
-
   const updateReqs = (reqs: [string, requirements[]][], courseObj) => {
     let inNonExclusive: boolean = false;
     // Exclusive check:
@@ -293,56 +251,17 @@ const InfoMenu: FC = () => {
     });
     return reqCopy;
   };
-
-  /**
-   * Changes whether fine distributions are hidden
-   * @param i - the distribution's index amongst other distributions
-   */
-  // const changeDistributionVisibility = (i: number) => {
-  //   let showDistributionsCopy = showDistributions.slice();
-  //   showDistributionsCopy[i] = !showDistributions[i];
-  //   setShowDistributions(showDistributionsCopy);
-  // };
-
-  // const getDistributionText = (index: number): string =>
-  //   showDistributions[index] === true
-  //     ? 'Hide Fine Requirements'
-  //     : 'Show Fine Requirements';
-
   return (
-    <div className="fixed z-40 bg-red-100 right-0 flex flex-col justify-between mt-8 w-10 top-60">
-      <div className="my-auto transform -rotate-90">
-        <button
-          className="w-32 h-10 text-center text-white font-bold hover:bg-secondary bg-primary rounded focus:outline-none shadow hover:scale-105 transition duration-200 ease-in drop-shadow-xl"
-          onClick={() => {
-            setInfoOpen(!infoOpen);
-          }}
-        >
-          Plan Overview
-        </button>
-      </div>
-      {infoOpen ? (
-        <div className="absolute z-50 right-14 -top-48 max-h-[75vh] bg-white bg-opacity-90 rounded shadow overflow-y-auto">
-          {/* <InfoCards /> */}
-          {(() => {
-            if (calculated) {
-              return (
-                <Distributions
-                  major={major}
-                  userMajors={currentPlan.majors}
-                  changeDisplayMajor={changeDisplayMajor}
-                  distributionOpen={distributionOpen}
-                  setDistributionOpen={setDistributionOpen}
-                  distributionBarsJSX={distributionBarsJSX}
-                />
-              );
-            } else
-              return <b className="m-10 h-80">Loading degree progress...</b>;
-          })()}
-        </div>
-      ) : null}
+    <div>
+      {calculated ? (
+        <>{distributionBarsJSX}</>
+      ) : (
+        <b className="m-10 h-full w-96 bg-blue-100">
+          Loading degree progress...
+        </b>
+      )}
     </div>
   );
 };
 
-export default InfoMenu;
+export default DistributionBarsJSX;

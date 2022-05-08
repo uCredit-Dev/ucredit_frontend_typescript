@@ -2,7 +2,7 @@ import axios from 'axios';
 import { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { toast } from 'react-toastify';
-import { api } from '../lib/resources/assets';
+import { getAPI } from '../lib/resources/assets';
 import {
   selectCourseCache,
   selectUser,
@@ -17,6 +17,7 @@ import {
 } from '../lib/resources/commonTypes';
 import { selectPlan } from '../lib/slices/currentPlanSlice';
 import LandingPage from '../lib/components/landing-page';
+import Head from 'next/head';
 
 const Home: React.FC = () => {
   const dispatch = useDispatch();
@@ -31,7 +32,7 @@ const Home: React.FC = () => {
   const retrieveData = (counter: number, retrieved: SISRetrievedCourse[]) => {
     setNeedsToLoad(true);
     axios
-      .get(api + '/search/skip/' + counter + '?mod=' + 450)
+      .get(getAPI(window) + '/search/skip/' + counter + '?mod=' + 450)
       .then((courses: any) => {
         if (courses.data.data.length > 0) {
           retrieveData(counter + 1, [...retrieved, ...courses.data.data]);
@@ -66,7 +67,6 @@ const Home: React.FC = () => {
     curPlan.years.forEach((year: Year) => {
       if (year.courses.length !== 0) {
         hasCourses = true;
-        return;
       }
     });
     return hasCourses;
@@ -81,11 +81,11 @@ const Home: React.FC = () => {
     ) {
       setNeedsToLoad(true);
       axios
-        .get(api + '/coursesByPlan/' + curPlan._id)
+        .get(getAPI(window) + '/coursesByPlan/' + curPlan._id)
         .then((response) => {
           response.data.data.forEach((c: UserCourse) => {
             axios
-              .get(api + '/search', {
+              .get(getAPI(window) + '/search', {
                 params: { query: c.number },
                 // eslint-disable-next-line no-loop-func
               })
@@ -102,9 +102,16 @@ const Home: React.FC = () => {
         });
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [curPlan]);
+  }, [curPlan._id]);
 
-  return <LandingPage />;
+  return (
+    <>
+      <Head>
+        <title>uCredit</title>
+      </Head>
+      <LandingPage />
+    </>
+  );
 };
 
 export default Home;

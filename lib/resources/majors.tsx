@@ -291,7 +291,7 @@ const baEcon: Major = {
       description:
         'Students must complete one course from the approved list of statistics courses: <br /> EN.553.111 Statistical Analysis I <br /> ' +
         'EN.553.112 Statistical Analysis II <br /> EN.553.211 Probability and Statistics for the Life Sciences <br /> EN.553.310 Probability & Statistics for the Physical Sciences & Engineering <br /> ' +
-        'EN.553.311 Probability and Statistics for the Biological Sciences and Engineering <br />  EN.553.420 Introduction to Probability <br />  EN.553.430 Introduction to Statistics <br /> ' +
+        'EN.553.311 Probability and Statistics for the Biological Sciences and Engineering <br />   Introduction to Probability <br />  EN.553.430 Introduction to Statistics <br /> ' +
         'AS.280.345 Public Health Biostatistics',
       criteria:
         'EN.553.111[C]^OR^EN.553.112[C]^OR^EN.553.211[C]^OR^EN.553.310[C]^OR^EN.553.311[C]^OR^EN.553.420[C]^OR^EN.553.430[C]^OR^AS.280.345[C]',
@@ -1865,38 +1865,56 @@ const bsCS_Old: Major = {
     },
     {
       name: 'Math',
-      required_credits: 24,
+      required_credits: 16,
       min_credits_per_course: 3,
       description:
         'All courses in this category must be from one of the two math departments on ' +
         'campus: Mathematics or Applied Math and Statistics. However, 553.171 Discrete Mathematics ' +
         'may not count towards these math requirements. Other than Calculus I and II, all the ' +
-        'remaining courses must be 200-level or above. The BS math courses must include coverage ' +
-        'of both probability and statistics, which can be satisfied in many ways, including ' +
-        'taking any of the 553.3xx combined Probability & Statistics courses.',
-      criteria: 'AS Mathematics[D]^OR^EN Applied Math and Statistics[D]',
+        'remaining courses must be 200-level or above.',
+      criteria: 'AS Mathematics[D]^OR^EN Applied Mathematics & Statistics[D]',
       exception: 'EN.553.171[C]',
       fine_requirements: [
         {
           description:
             '<b>Required Courses:</b><p>110.108 Calculus I or AP equivalent</p>110.109 Calculus II or AP equivalent</p>' +
-            '<p>550.171/553.171 Discrete Mathematics</p>',
-          required_credits: 12,
-          criteria:
-            'AS.110.108[C]^OR^AS.110.109[C]^OR^EN.550.171[C]^OR^EN.553.171[C]',
-        },
-        {
-          description:
-            '<b>Probability and Statistics:</b><p>Two paths:</p><p>1. Any of the three courses below:</p><p>EN.553.211</p><p>EN.553.310</p><p>EN.553.311</p><p>2. Both Intro to Probability and Intro to Statistics</p><p>En.553.420</p><p>EN.553.430</p> ',
-          required_credits: 4,
-          criteria:
-            'EN Applied Mathematics & Statistics[D]^AND^(Probability & Statistics[N]^OR^Probability and Statistics[N])',
+            '<p>550.171/553.171 Discrete Mathematics if grandfathered into old major</p>',
+          required_credits: 8,
+          criteria: 'AS.110.108[C]^OR^AS.110.109[C]',
         },
         {
           description:
             '<b>Math Elective:</b><p>This must be 200-level or above, chosen from Mathematics (AS.110.xxx) or Applied Math and Statistics (EN.553.xxx)</p>',
           required_credits: 4,
           criteria: 'AS.110.[C]^OR^EN.553.[C]',
+        },
+      ],
+    },
+    {
+      name: 'Probability and Statistics Requirements',
+      required_credits: 4,
+      min_credits_per_course: 3,
+      description:
+        '<p> The BS math courses must include coverage ' +
+        'of both probability and statistics, which can be satisfied in many ways, including ' +
+        'taking any of the 553.3xx combined Probability & Statistics courses. Probability and Statistics:</p><p>Two paths:</p>',
+      criteria: 'AS Mathematics[D]^OR^EN Applied Mathematics & Statistics[D]',
+      exception:
+        '(Probability & Statistics[N]^OR^Probability and Statistics[N]^OR^EN.553.211[C]^OR^EN.553.310[C]^OR^EN.553.311[C]^OR^EN.553.420[C]^OR^EN.553.430[C])',
+      pathing: true,
+      fine_requirements: [
+        {
+          description:
+            '<p>1. Any of the three courses below:</p><p>EN.553.211</p><p>EN.553.310</p><p>EN.553.311</p> ',
+          required_credits: 4,
+          criteria:
+            'Probability & Statistics[N]^OR^Probability and Statistics[N]^OR^EN.553.211[C]^OR^EN.553.310[C]^OR^EN.553.311[C]',
+        },
+        {
+          description:
+            '<p>2. Both Intro to Probability and Intro to Statistics</p><p>EN.553.420</p><p>EN.553.430</p> ',
+          required_credits: 8,
+          criteria: 'EN.553.420[C]^OR^EN.553.430[C]',
         },
       ],
     },
@@ -2022,9 +2040,7 @@ const bsCS_New: Major = {
         'All courses in this category must be from one of the two math departments on ' +
         'campus: Mathematics or Applied Math and Statistics. However, 553.171 Discrete Mathematics ' +
         'may not count towards these math requirements. Other than Calculus I and II, all the ' +
-        'remaining courses must be 200-level or above. The BS math courses must include coverage ' +
-        'of both probability and statistics, which can be satisfied in many ways, including ' +
-        'taking any of the 553.3xx combined Probability & Statistics courses.',
+        'remaining courses must be 200-level or above.',
       criteria: 'AS Mathematics[D]^OR^EN Applied Mathematics & Statistics[D]',
       exception: 'EN.553.171[C]',
       fine_requirements: [
@@ -2037,16 +2053,37 @@ const bsCS_New: Major = {
         },
         {
           description:
-            '<b>Probability and Statistics:</b><p>Two paths:</p><p>1. Any of the three courses below:</p><p>EN.553.211</p><p>EN.553.310</p><p>EN.553.311</p><p>2. Both Intro to Probability and Intro to Statistics</p><p>En.553.420</p><p>EN.553.430</p> ',
-          required_credits: 4,
-          criteria:
-            'EN Applied Mathematics & Statistics[D]^AND^(Probability & Statistics[N]^OR^Probability and Statistics[N])',
-        },
-        {
-          description:
             '<b>Math Elective:</b><p>This must be 200-level or above, chosen from Mathematics (AS.110.xxx) or Applied Math and Statistics (EN.553.xxx)</p>',
           required_credits: 4,
           criteria: 'AS.110.[C]^OR^EN.553.[C]',
+        },
+      ],
+    },
+    {
+      name: 'Probability and Statistics Requirements',
+      required_credits: 4,
+      min_credits_per_course: 3,
+      description:
+        '<p> The BS math courses must include coverage ' +
+        'of both probability and statistics, which can be satisfied in many ways, including ' +
+        'taking any of the 553.3xx combined Probability & Statistics courses. Probability and Statistics:</p><p>Two paths:</p>',
+      criteria: 'AS Mathematics[D]^OR^EN Applied Mathematics & Statistics[D]',
+      exception:
+        '(Probability & Statistics[N]^OR^Probability and Statistics[N]^OR^EN.553.211[C]^OR^EN.553.310[C]^OR^EN.553.311[C]^OR^EN.553.420[C]^OR^EN.553.430[C])',
+      pathing: true,
+      fine_requirements: [
+        {
+          description:
+            '<p>1. Any of the three courses below:</p><p>EN.553.211</p><p>EN.553.310</p><p>EN.553.311</p> ',
+          required_credits: 4,
+          criteria:
+            'Probability & Statistics[N]^OR^Probability and Statistics[N]^OR^EN.553.211[C]^OR^EN.553.310[C]^OR^EN.553.311[C]',
+        },
+        {
+          description:
+            '<p>2. Both Intro to Probability and Intro to Statistics</p><p>EN.553.420</p><p>EN.553.430</p> ',
+          required_credits: 8,
+          criteria: 'EN.553.420[C]^OR^EN.553.430[C]',
         },
       ],
     },

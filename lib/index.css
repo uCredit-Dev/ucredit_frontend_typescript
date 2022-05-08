@@ -37,11 +37,11 @@ code {
 /* Handle */
 ::-webkit-scrollbar-thumb {
   border-radius: 0.2rem;
-  background: #83b9ff;
+  background: #ababab;
   fill-opacity: 1;
 }
 
 /* Handle on hover */
 ::-webkit-scrollbar-thumb:hover {
-  background: #3168af;
+  background: #bbbbbb;
 }

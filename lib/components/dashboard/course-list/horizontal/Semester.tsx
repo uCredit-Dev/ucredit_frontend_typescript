@@ -2,6 +2,7 @@ import { useState, useEffect, FC } from 'react';
 import {
   DroppableType,
   Plan,
+  ReviewMode,
   SemesterType,
   UserCourse,
   Year,
@@ -33,12 +34,15 @@ import {
   updateAddingPrereq,
 } from '../../../../slices/popupSlice';
 import { toast } from 'react-toastify';
-import { api } from '../../../../resources/assets';
+import { getAPI } from '../../../../resources/assets';
 import {
   selectUser,
   selectPlanList,
   updatePlanList,
+  updateCartInvokedBySemester,
 } from '../../../../slices/userSlice';
+import Comments from '../../Comments';
+import CourseComponent from './CourseComponent';
 
 /**
  * A component displaying all the courses in a specific semester.
@@ -52,7 +56,8 @@ const Semester: FC<{
   semesterYear: Year;
   courses: UserCourse[];
   display: boolean;
-}> = ({ semesterName, semesterYear, courses, display }) => {
+  mode: ReviewMode;
+}> = ({ semesterName, semesterYear, courses, display, mode }) => {
   // Redux setup
   const dispatch = useDispatch();
   const addingPrereqStatus = useSelector(selectAddingPrereq);
@@ -69,6 +74,7 @@ const Semester: FC<{
   const [semesterCourses, setSemesterCourses] = useState<UserCourse[]>([]);
   const [inspectedArea, setInspectedArea] = useState<string>('None');
   const [openAPInfoBox, setOpenAPInfoBox] = useState<boolean>(false);
+  const [hovered, setHovered] = useState<boolean>(false);
 
   useEffect(() => {
     ReactTooltip.rebuild();
@@ -102,6 +108,7 @@ const Semester: FC<{
    * Opens search popup to add new course.
    */
   const addCourse = () => {
+    dispatch(updateCartInvokedBySemester(true));
     dispatch(updateSearchStatus(true));
     dispatch(
       updateSearchTime({
@@ -115,17 +122,41 @@ const Semester: FC<{
    * Gets a list of course components wrapped in a DnD draggable.
    * @returns a list of draggable react components
    */
-  const getDraggables = (): any => {
-    return semesterCourses.map((course, index) => (
-      <div key={course._id}>
-        <CourseDraggable
-          course={course}
-          index={index}
-          semesterName={semesterName}
-          semesterYear={semesterYear}
-        />
-      </div>
-    ));
+  const getCourses = (): any => {
+    // TODO: Search for a thread matching course id here.
+    // Do something similar for plan, year, and semester
+    // All threads should be retrieved on first load of the plan and stored in a map.
+    return semesterCourses.map((course, index) => {
+      if (mode !== ReviewMode.View) {
+        return (
+          <div key={course._id} className="w-auto mr-0">
+            <CourseDraggable
+              course={course}
+              index={index}
+              semesterName={semesterName}
+              semesterYear={semesterYear}
+              mode={mode}
+              // TODO: Add a thread prop here. Add a thread state in the course component.
+              // When retrieving threads make sure the threads are stored as a map. We can then not add further complexity when searching for threads since map find is O(1) if we check them here.
+            />
+          </div>
+        );
+      } else {
+        return (
+          <div key={course._id} className="w-auto mr-0">
+            <CourseComponent
+              setDraggable={(draggable) => {
+                return;
+              }}
+              course={course}
+              semester={semesterName}
+              year={semesterYear}
+              mode={mode}
+            />
+          </div>
+        );
+      }
+    });
   };
 
   /**
@@ -179,7 +210,7 @@ const Semester: FC<{
             : undefined,
       };
 
-      fetch(api + '/courses', {
+      fetch(getAPI(window) + '/courses', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -200,7 +231,7 @@ const Semester: FC<{
       const newYears: Year[] = [];
       allYears.forEach((y) => {
         if (y._id === semesterYear._id) {
-          const yCourses = [...y.courses, newUserCourse._id];
+          const yCourses = [...y.courses, newUserCourse];
           newYears.push({ ...y, courses: yCourses });
         } else {
           newYears.push(y);
@@ -274,29 +305,18 @@ const Semester: FC<{
       ) : (
         <div className="text-md">{getSemesterName()}</div>
       )}{' '}
-      {courses.length !== 0 && totalCredits !== 0 ? (
+      {courses.length !== 0 && totalCredits !== 0 && (
         <>
           <div
             className={clsx(
               {
-                'bg-red-200':
-                  (totalCredits < 12 && semesterName !== 'Intersession') ||
-                  totalCredits < 3,
+                'bg-red-200': colorCheck('bg-red-200'),
               },
               {
-                'bg-yellow-200':
-                  (totalCredits > 18 && semesterName !== 'Intersession') ||
-                  (totalCredits > 6 && semesterName === 'Intersession'),
+                'bg-yellow-200': colorCheck('bg-yellow-200'),
               },
               {
-                'bg-green-200':
-                  (totalCredits <= 18 &&
-                    totalCredits >= 12 &&
-                    semesterName !== 'Intersession') ||
-                  (totalCredits <= 6 &&
-                    totalCredits >= 3 &&
-                    semesterName === 'Intersession') ||
-                  semesterName === 'All',
+                'bg-green-200': colorCheck('bg-green-200'),
               },
               ' flex flex-row items-center justify-center ml-1 px-1 w-auto text-black text-xs bg-white rounded',
             )}
@@ -306,9 +326,41 @@ const Semester: FC<{
             {totalCredits}
           </div>
         </>
-      ) : null}
+      )}
     </>
   );
+
+  /**
+   * Gets the color of the credit count based on semester and total credits for that semester.
+   * @param colorType - type of color to check for
+   * @returns - true if color is valid, false if not
+   */
+  const colorCheck = (colorType): boolean => {
+    switch (colorType) {
+      case 'bg-red-200':
+        return (
+          (totalCredits < 12 && semesterName !== 'Intersession') ||
+          totalCredits < 3
+        );
+      case 'bg-yellow-200':
+        return (
+          (totalCredits > 18 && semesterName !== 'Intersession') ||
+          (totalCredits > 6 && semesterName === 'Intersession')
+        );
+      case 'bg-green-200':
+        return (
+          (totalCredits <= 18 &&
+            totalCredits >= 12 &&
+            semesterName !== 'Intersession') ||
+          (totalCredits <= 6 &&
+            totalCredits >= 3 &&
+            semesterName === 'Intersession') ||
+          semesterName === 'All'
+        );
+      default:
+        return false;
+    }
+  };
 
   /**
    * Gets start year of a semester for this year.
@@ -352,29 +404,40 @@ const Semester: FC<{
           className="flex flex-row items-center justify-center rounded-md cursor-pointer group"
           onClick={addCourse}
         >
-          <PlusIcon className="w-4 h-4 stroke-2 group-hover:text-sky-700" />
+          <PlusIcon
+            className={`w-4 h-4 stroke-2 group-hover:text-sky-700 add-course-button-${semesterYear.name}-${semesterName}`}
+          />
         </div>
       ) : (
-        (() =>
-          checkSemester() ? (
-            <button
-              className="z-40 w-24 py-1 text-xs text-white transition duration-150 ease-in transform rounded hover:bg-secondary bg-primary focus:outline-none hover:scale-101"
-              onClick={addPrereq}
-            >
-              Add Here
-            </button>
-          ) : null)()
+        <>{getAddHereButton()}</>
       )}
     </>
   );
+
+  /**
+   * Determines whether to get add here button or not.
+   */
+  const getAddHereButton = () =>
+    checkSemester() && (
+      <button
+        className={clsx(
+          { 'bg-slate-300 hover:bg-slate-300': mode === ReviewMode.View },
+          'z-40 w-24 py-1 text-xs text-white transition duration-150 ease-in transform rounded hover:bg-secondary bg-primary focus:outline-none hover:scale-101',
+        )}
+        onClick={addPrereq}
+        disabled={mode === ReviewMode.View}
+      >
+        Add Here
+      </button>
+    );
 
   /**
    * Displays AP info box.
    */
   const getAPInfoBox = (): JSX.Element => (
     <>
-      {openAPInfoBox ? (
-        <div className="absolute p-2 -mt-48 -ml-6 bg-gray-100 rounded shadow select-text w-72">
+      {openAPInfoBox && (
+        <div className="absolute p-2 -mt-12 -ml-6 bg-gray-100 rounded select-text w-72">
           These are courses transferred over from AP tests and other college
           courses that you've taken! Find out equivalent courses your scores
           cover for{' '}
@@ -388,39 +451,60 @@ const Semester: FC<{
           </a>
           .
         </div>
-      ) : null}
+      )}
     </>
   );
 
   return (
     <>
       {!display ? null : (
-        <div onMouseLeave={() => setOpenAPInfoBox(false)}>
+        <div
+          onMouseLeave={() => {
+            setOpenAPInfoBox(false);
+            setHovered(false);
+          }}
+          onMouseEnter={() => setHovered(true)}
+          className="min-w-[15rem] max-w-[40rem] w-min mx-4"
+        >
+          <Comments
+            location={'Semester ' + semesterYear._id + semesterName}
+            hovered={hovered}
+            mode={mode}
+          />
           <div className="flex flex-col font-medium max-w-yearheading h-yearheading">
             <div className="flex flex-row items-center justify-between px-2 py-1 bg-white h-yearheading1">
-              <div className="flex flex-row items-center w-full h-auto gap-3 font-normal">
+              <div className="flex flex-row items-center h-auto gap-3 font-normal">
                 {getSemesterTitle()}
               </div>
               {getSemesterAddButton()}
             </div>
             <div className="w-full h-px bg-primary"></div>
           </div>
-          <div id={semesterName + '|' + semesterYear._id} className="mr-11">
-            <Droppable
-              droppableId={semesterName + '|' + semesterYear._id}
-              type="COURSE"
-            >
-              {(provided, snapshot) => (
-                <div
-                  ref={provided.innerRef}
-                  style={getListStyle(snapshot.isDraggingOver)}
-                  className="rounded"
-                >
-                  {getDraggables()}
-                  {provided.placeholder}
-                </div>
-              )}
-            </Droppable>
+          <div
+            id={semesterName + '|' + semesterYear._id}
+            // className="pr-11"
+            onMouseEnter={() => setHovered(false)}
+            onMouseLeave={() => setHovered(true)}
+          >
+            {mode === ReviewMode.View ? (
+              <>{getCourses()}</>
+            ) : (
+              <Droppable
+                droppableId={semesterName + '|' + semesterYear._id}
+                type="COURSE"
+              >
+                {(provided, snapshot) => (
+                  <div
+                    ref={provided.innerRef}
+                    style={getListStyle(snapshot.isDraggingOver)}
+                    className="rounded"
+                  >
+                    {getCourses()}
+                    {provided.placeholder}
+                  </div>
+                )}
+              </Droppable>
+            )}
             {getAPInfoBox()}
           </div>
         </div>

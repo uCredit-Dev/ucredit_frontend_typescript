@@ -11,7 +11,7 @@ import {
   updateSelectedPlan,
 } from '../../../../slices/currentPlanSlice';
 import axios from 'axios';
-import { api } from '../../../../resources/assets';
+import { getAPI } from '../../../../resources/assets';
 import { selectPlanList, updatePlanList } from '../../../../slices/userSlice';
 import { toast } from 'react-toastify';
 
@@ -80,7 +80,7 @@ const YearSettingsDropdown: FC<{
     // Change year
     if (!exists) {
       axios
-        .patch(api + '/years/updateYear', {
+        .patch(getAPI(window) + '/years/updateYear', {
           year_id: year._id,
           year: selectedYear.value,
         })
@@ -182,13 +182,11 @@ const YearSettingsDropdown: FC<{
 
         <button
           className="hover:bg-gray-300 border-t border-gray-300 focus:outline-none"
-          onClick={() => {
-            setYearSelect(!yearSelect);
-          }}
+          onClick={() => setYearSelect(!yearSelect)}
         >
           Change Year
         </button>
-        {yearSelect ? (
+        {yearSelect && (
           <>
             <Select
               options={yearOptions}
@@ -197,14 +195,12 @@ const YearSettingsDropdown: FC<{
               value={{ label: year.year, value: year.year }}
             />
           </>
-        ) : null}
-        {id !== 0 ? (
+        )}
+        {id !== 0 && (
           <>
             <button
               className="hover:bg-gray-300 border-t border-gray-300 focus:outline-none"
-              onClick={() => {
-                setSemSelect(!semSelect);
-              }}
+              onClick={() => setSemSelect(!semSelect)}
             >
               Select Terms
             </button>
@@ -217,7 +213,7 @@ const YearSettingsDropdown: FC<{
               Remove
             </button>
           </>
-        ) : null}
+        )}
       </div>
     </div>
   );

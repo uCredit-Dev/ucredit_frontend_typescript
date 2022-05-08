@@ -216,13 +216,22 @@ const Filters: FC<{
    * @returns an array of options for the year select.
    */
   const getYears = (): { value: number; label: number }[] => {
+    const yearRange = JSON.parse(localStorage.getItem('yearRange'));
+    if (yearRange) {
+      let total = yearRange.max - yearRange.min;
+      if (new Date().getMonth() >= 3) total++;
+      const years = [];
+      for (let i = 0; i < total; i++) {
+        years.push({ value: yearRange.min + i, label: yearRange.min + i });
+      }
+      return years;
+    }
     return currentPlan.years.map((y: any, i: number) => ({
       value: y.year,
       label: i === 0 ? 'All' : y.year,
     }));
   };
 
-  // TODO: We can probably modularize distribution bars.
   return (
     <>
       <div className="flex flex-row items-center justify-between w-full h-auto mb-2">
@@ -247,7 +256,7 @@ const Filters: FC<{
           }}
         />
       </div>
-      {props.showCriteria ? (
+      {props.showCriteria && (
         <div>
           <div
             className="flex flex-row items-center justify-between w-full h-auto mb-2"
@@ -415,7 +424,7 @@ const Filters: FC<{
             </div>
           </div>
         </div>
-      ) : null}
+      )}
     </>
   );
 };

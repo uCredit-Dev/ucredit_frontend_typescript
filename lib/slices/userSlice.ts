@@ -4,6 +4,8 @@ import {
   Plan,
   SISRetrievedCourse,
   User,
+  ReviewMode,
+  UserId,
 } from '../components/../resources/commonTypes';
 
 type UserSlice = {
@@ -15,7 +17,12 @@ type UserSlice = {
   unfoundNumbers: String[];
   retrievedAll: boolean;
   importId: string;
+  reviewerPlanId: string;
   loginCheck: boolean;
+  loginRedirect: boolean;
+  reviewMode: ReviewMode;
+  cartInvokedBySemester: boolean;
+  commenters: UserId[];
 };
 
 const initialState: UserSlice = {
@@ -26,6 +33,7 @@ const initialState: UserSlice = {
     affiliation: 'STUDENT',
     grade: 'AE UG Freshman',
     school: '',
+    whitelisted_plan_ids: [],
     plan_ids: ['no plan'],
   },
   planList: [],
@@ -35,18 +43,17 @@ const initialState: UserSlice = {
   cacheTitles: [], // we need both cachenumbers and titles since some courses may have the same numbers but different titles
   unfoundNumbers: [],
   importId: null,
+  reviewerPlanId: '',
   loginCheck: false,
+  loginRedirect: false,
+  reviewMode: ReviewMode.None,
+  cartInvokedBySemester: false,
+  commenters: [],
 };
 
 // Updates all user info from database. This function should be called after an axios get on the user routes.
 function userUpdate(state: any, action: PayloadAction<User>) {
-  state.currentUser._id = action.payload._id;
-  state.currentUser.name = action.payload.name;
-  state.currentUser.email = action.payload.email;
-  state.currentUser.grade = action.payload.grade;
-  state.currentUser.school = action.payload.school;
-  state.currentUser.affiliation = action.payload.affiliation;
-  state.currentUser.plan_ids = action.payload.plan_ids;
+  state.currentUser = action.payload;
 }
 
 // Not being used as we can update database when user adds course, and call the reusable update user function for any updates to display
@@ -99,8 +106,26 @@ export const userSlice = createSlice({
     updateImportID: (state: any, action: PayloadAction<String>) => {
       state.importId = action.payload;
     },
+    updateReviewerPlanID: (state: any, action: PayloadAction<String>) => {
+      state.reviewerPlanId = action.payload;
+    },
     updateLoginCheck: (state: any, action: PayloadAction<Boolean>) => {
       state.loginCheck = action.payload;
+    },
+    updateLoginRedirect: (state: any, action: PayloadAction<Boolean>) => {
+      state.loginRedirect = action.payload;
+    },
+    updateReviewMode: (state: any, action: PayloadAction<ReviewMode>) => {
+      state.reviewMode = action.payload;
+    },
+    updateCartInvokedBySemester: (
+      state: any,
+      action: PayloadAction<Boolean>,
+    ) => {
+      state.cartInvokedBySemester = action.payload;
+    },
+    updateCommenters: (state: any, action: PayloadAction<UserId[]>) => {
+      state.commenters = action.payload.map(({ _id, name }) => ({ _id, name }));
     },
     resetUser: (state: any) => {
       state.currentUser = initialState.currentUser;
@@ -118,7 +143,12 @@ export const {
   updateRetrievedAll,
   updateUnfoundNumbers,
   updateImportID,
+  updateReviewerPlanID,
   updateLoginCheck,
+  updateLoginRedirect,
+  updateReviewMode,
+  updateCartInvokedBySemester,
+  updateCommenters,
   resetUser,
 } = userSlice.actions;
 
@@ -131,6 +161,14 @@ export const selectRetrievedAll = (state: RootState) => state.user.retrievedAll;
 export const selectUnfoundNumbers = (state: RootState) =>
   state.user.unfoundNumbers;
 export const selectImportID = (state: RootState) => state.user.importId;
+export const selectReviewerPlanId = (state: RootState) =>
+  state.user.reviewerPlanId;
 export const selectLoginCheck = (state: RootState) => state.user.loginCheck;
+export const selectLoginRedirect = (state: RootState) =>
+  state.user.loginRedirect;
+export const selectReviewMode = (state: RootState) => state.user.reviewMode;
+export const selectCartInvokedBySemester = (state: RootState) =>
+  state.user.cartInvokedBySemester;
+export const selectCommenters = (state: RootState) => state.user.commenters;
 
 export default userSlice.reducer;

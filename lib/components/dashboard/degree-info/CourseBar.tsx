@@ -6,14 +6,16 @@ import {
   selectDistributions,
 } from '../../../slices/currentPlanSlice';
 import { requirements } from './distributionFunctions';
-import { ExclamationIcon } from '@heroicons/react/outline';
-import { CheckCircleIcon } from '@heroicons/react/solid';
+import { CheckCircleIcon, ExclamationIcon } from '@heroicons/react/solid';
 import ReactTooltip from 'react-tooltip';
 import {
   updateSelectedDistribution,
   updateShowingCart,
 } from '../../../slices/popupSlice';
 import { clearSearch, updatePlaceholder } from '../../../slices/searchSlice';
+import { updateCartInvokedBySemester } from '../../../slices/userSlice';
+import Comments from '../Comments';
+import { ReviewMode } from '../../../resources/commonTypes';
 
 /**
  * A distribution bar.
@@ -28,10 +30,12 @@ const CourseBar: FC<{
   general: boolean;
   bgcolor: string;
   completed: boolean;
-}> = ({ distribution, general, bgcolor, completed }) => {
+  mode?: ReviewMode;
+}> = ({ distribution, general, bgcolor, completed, mode }) => {
   const [plannedCredits, setPlannedCredits] = useState(
     distribution.fulfilled_credits,
   );
+  const [hovered, setHovered] = useState(false);
 
   const currPlanCourses = useSelector(selectCurrentPlanCourses);
   const maxCredits = distribution.required_credits;
@@ -57,13 +61,13 @@ const CourseBar: FC<{
 
   // Onclick for course bar, opens cart popup passing in corresponding props
   const openCartPopup = () => {
+    dispatch(updateCartInvokedBySemester(false));
     // Filter for the correst distributions from redux store
     let distrs = distributions.filter((req) => req[0] === distribution.name)[0];
     if (distrs) {
       // if the distribution exists, then update the cart
       // at this point we have access to the current requirement
       // and all dsitibrutions. to pick out hte rest of the ascoatied fine distirbutions, use this filter.
-      // TODO : investigate if fine reqs are available at this level already?
       dispatch(updateSelectedDistribution(distrs));
       dispatch(updateShowingCart(true));
 
@@ -88,31 +92,62 @@ const CourseBar: FC<{
             : `<div style="width: 100%; height: auto; display: flex; flex-direction: row; justify-content: center">Your credits fulfill this overall requirement, but your fine requirements are lacking! Please click this bar to find out more.</div>`)()) +
     `</div>`;
 
+  /**
+   * Returns UI for unstasified fine req course bar with satisfied credit count
+   */
+  // const getExclamationMark = () => (
+  //   <>
+  //     {!completed && (
+  //       <ExclamationIcon className="absolute w-5 h-5 transform -translate-x-1/2 -translate-y-1/2 stroke-2 left-1/2 top-1/2 stroke-white" />
+  //     )}
+  //   </>
+  // );
+
+  /**
+   * Wrapper for exclamation mark when credit count matches, but fine reqs are not fulfilled
+   */
+  // const exclamationMarkWrapper = () => (
+  //   <>{remainingCredits === 0 && !completed && <>{getExclamationMark()}</>}</>
+  // );
+
   return (
     <>
       <div
         className={clsx(
-          'flex flex-row text mb-1 rounded-lg whitespace-nowrap overflow-hidden overflow-ellipsis',
+          'z-0 flex flex-row text mb-1 rounded-lg whitespace-nowrap overflow-hidden overflow-ellipsis items-center w-full',
           {
             'font-bold': general,
           },
         )}
         key={section}
+        onMouseEnter={() => setHovered(true)}
+        onMouseLeave={() => setHovered(false)}
       >
-        {section}
+        <Comments
+          location={'Distribution ' + distribution.name.replace(/\s/g, '')}
+          hovered={hovered}
+          left={true}
+          mode={mode}
+        />
+        <div className="truncate">{section}</div>
+        <div>
+          {remainingCredits === 0 && completed ? (
+            <CheckCircleIcon className="w-4 h-5 mt-1 ml-1 stroke-2" />
+          ) : remainingCredits === 0 ? (
+            <ExclamationIcon className="w-4 h-5 mt-1 ml-1 stroke-2" />
+          ) : null}
+        </div>
       </div>
 
       <div
-        className="relative flex flex-row w-full h-6 transition duration-200 ease-in transform full hover:scale-101"
+        className="relative flex flex-row w-full h-6"
         data-tip={tooltip}
         data-for="godTip"
-        onMouseOver={() => {
-          ReactTooltip.rebuild();
-        }}
+        onMouseOver={() => ReactTooltip.rebuild()}
         onClick={openCartPopup}
       >
         <div
-          className="relative flex flex-row w-full h-6 mb-2 transition duration-200 ease-in transform bg-gray-200 rounded-full hover:scale-105"
+          className="relative flex flex-row w-full h-6 mb-2 bg-gray-200 rounded-full"
           data-tip={tooltip}
           data-for="godTip"
         >
@@ -127,7 +162,7 @@ const CourseBar: FC<{
               }`,
             }}
           />
-          {remainingCredits === 0 && completed ? (
+          {/* {remainingCredits === 0 && completed ? (
             <CheckCircleIcon className="absolute w-5 h-5 text-white transform -translate-x-1/2 -translate-y-1/2 stroke-2 left-1/2 top-1/2" />
           ) : (
             (() => (
@@ -143,11 +178,13 @@ const CourseBar: FC<{
                   : null}
               </>
             ))()
-          )}
-          <div className="absolute left-2 font-thin">{plannedCredits}</div>
-          <div className="absolute right-2 font-thin">
-            {maxCredits > plannedCredits ? maxCredits - plannedCredits : null}
+          )} */}
+          <div className="absolute font-semibold -translate-x-1/2 left-1/2">
+            {plannedCredits + '/' + maxCredits}
           </div>
+          {/* <div className="absolute font-thin right-2">
+            {maxCredits > plannedCredits ? maxCredits - plannedCredits : null}
+          </div> */}
         </div>
       </div>
     </>

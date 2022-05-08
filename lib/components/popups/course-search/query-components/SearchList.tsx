@@ -18,11 +18,14 @@ import { selectPlan } from '../../../../slices/currentPlanSlice';
 /* 
   List of searched courses.
 */
-const SearchList: FC<{ searching: boolean }> = (props) => {
+const SearchList: FC<{
+  searching: boolean;
+  hideResults: boolean;
+  setHideResults: Function;
+}> = ({ searching, hideResults, setHideResults }) => {
   // Component state setup.
   const [pageNum, setPageNum] = useState<number>(0);
   const [pageCount, setPageCount] = useState<number>(0);
-  const [hideResults, setHideResults] = useState<boolean>(false);
   const [filteredCourses, setFilteredCourses] = useState<SISRetrievedCourse[]>(
     [],
   );
@@ -74,7 +77,9 @@ const SearchList: FC<{ searching: boolean }> = (props) => {
             <div
               key={inspecting.number + v.term + versionNum}
               className="transition duration-200 ease-in transform hover:scale-105"
-              onClick={() => setHideResults(true)}
+              onClick={() =>
+                window.innerWidth < 1200 ? setHideResults(true) : null
+              }
             >
               <CourseCard course={inspecting} version={versionNum} />
             </div>,
@@ -122,6 +127,40 @@ const SearchList: FC<{ searching: boolean }> = (props) => {
     }
   };
 
+  /**
+   * Gets search result pagination UI
+   */
+  const getPaginationUI = () =>
+    pageCount > 1 && (
+      <div className="flex flex-row justify-center w-full h-auto">
+        <Pagination pageCount={pageCount} handlePageClick={handlePageClick} />
+      </div>
+    );
+
+  const getSearchResultsUI = () =>
+    courses.length > 0 ? (
+      <>
+        <div className="flex flex-col w-full y-full">{courseList()}</div>
+        {getPaginationUI()}
+      </>
+    ) : (
+      <div className="flex flex-col items-center justify-center w-full mt-24">
+        {getSearchingUI()}
+      </div>
+    );
+
+  /**
+   * Gets loading search UI
+   */
+  const getSearchingUI = () =>
+    searching ? (
+      <img src="/img/loading.gif" alt="Searching..." className="h-10"></img>
+    ) : (
+      <div className="text-lg text-center text-gray-400">
+        No current search results.
+      </div>
+    );
+
   return (
     <>
       <div
@@ -129,23 +168,7 @@ const SearchList: FC<{ searching: boolean }> = (props) => {
         data-tip="Hide Search Results"
       >
         <div className="flex flex-row">
-          <div className="text-lg font-semibold">Search Results</div>{' '}
-          {window.innerWidth < 800 ? (
-            <button
-              className="ml-2 focus:outline-none"
-              onClick={() => {
-                setHideResults(!hideResults);
-              }}
-            >
-              {() => {
-                if (!hideResults) {
-                  return 'Hide Results';
-                } else {
-                  return 'Show Results';
-                }
-              }}
-            </button>
-          ) : null}
+          <div className="text-lg font-semibold">Search Results</div>
         </div>
         <div className="flex flex-row items-center">
           <div className="flex-grow mr-1">
@@ -171,44 +194,11 @@ const SearchList: FC<{ searching: boolean }> = (props) => {
           </div>
         </div>
       </div>
-      {!hideResults || window.innerWidth > 700 ? (
-        <div className="w-full px-5 bg-gray-200 select-none py">
-          <div className="w-full h-full">
-            {(() =>
-              courses.length > 0 ? (
-                <>
-                  <div className="flex flex-col w-full y-full">
-                    {courseList()}
-                  </div>
-                  {(() =>
-                    pageCount > 1 ? (
-                      <div className="flex flex-row justify-center w-full h-auto">
-                        <Pagination
-                          pageCount={pageCount}
-                          handlePageClick={handlePageClick}
-                        />
-                      </div>
-                    ) : null)()}
-                </>
-              ) : (
-                <div className="flex flex-col items-center justify-center w-full mt-24">
-                  {(() =>
-                    props.searching ? (
-                      <img
-                        src="/img/loading.gif"
-                        alt="Searching..."
-                        className="h-10"
-                      ></img>
-                    ) : (
-                      <div className="text-lg text-center text-gray-400">
-                        No current search results.
-                      </div>
-                    ))()}
-                </div>
-              ))()}
-          </div>
+      {(!hideResults || window.innerWidth > 700) && (
+        <div className="w-full px-5 bg-gray-200 select-none py flex-grow">
+          <div className="w-full h-full">{getSearchResultsUI()}</div>
         </div>
-      ) : null}
+      )}
     </>
   );
 };

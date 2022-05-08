@@ -5,7 +5,7 @@ import { useSelector } from 'react-redux';
 import { selectInspectedCourse } from '../../../../slices/searchSlice';
 import CourseEvalCard from './CourseEvalCard';
 import clsx from 'clsx';
-import { api } from '../../../../resources/assets';
+import { getAPI } from '../../../../resources/assets';
 
 /**
  * Displays course Evaluations based on inspected course
@@ -33,7 +33,7 @@ const CourseEvalSection: FC = () => {
 
     if (inspected !== 'None' && inspected !== undefined) {
       axios
-        .get(api + '/evals/' + inspected.number)
+        .get(getAPI(window) + '/evals/' + inspected.number)
         .then((retrievedData) => {
           setReviews(retrievedData.data.data.rev);
         })
@@ -101,12 +101,12 @@ const CourseEvalSection: FC = () => {
               >
                 {s} | {i} | {g}
               </button>
-              {selectedCourseEval === index ? (
+              {selectedCourseEval === index && (
                 <CourseEvalCard
                   rating={courseEvals.rating}
                   summary={courseEvals.summary}
                 />
-              ) : null}
+              )}
             </div>
           );
         })}

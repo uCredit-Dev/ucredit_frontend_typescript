@@ -21,7 +21,7 @@ import {
   updateCourseCache,
 } from '../../../../slices/userSlice';
 import axios from 'axios';
-import { api } from '../../../../resources/assets';
+import { getAPI } from '../../../../resources/assets';
 import { filterCourses } from './formUtils';
 import { selectPlan } from '../../../../slices/currentPlanSlice';
 
@@ -33,7 +33,7 @@ type SearchMapEl = {
 
 /**
  * Search form, including the search query input and filters.
- * TODO: Multi select for various filters.
+ * TODO: filter by uppeer/lower levels
  *
  * @prop setSearching - sets searching state
  */
@@ -87,7 +87,6 @@ const Form: FC<{ setSearching: (searching: boolean) => void }> = (props) => {
   };
 
   // On opening search, set the term filter to match semester you're adding to.
-  // TODO: update registration times for each semester
   useEffect(() => {
     dispatch(updateSearchFilters({ filter: 'term', value: semester }));
     const date: Date = new Date();
@@ -127,7 +126,7 @@ const Form: FC<{ setSearching: (searching: boolean) => void }> = (props) => {
       dispatch(
         updateSearchFilters({ filter: 'year', value: date.getFullYear() + 1 }),
       );
-    else if (semester === 'Fall' && date.getMonth() < 5) {
+    else if (semester === 'Fall' && date.getMonth() < 3) {
       dispatch(
         updateSearchFilters({ filter: 'year', value: date.getFullYear() - 1 }),
       );
@@ -200,15 +199,12 @@ const Form: FC<{ setSearching: (searching: boolean) => void }> = (props) => {
       let courses: SISRetrievedCourse[] = [...courseCache];
       if (!retrievedAll) {
         const retrieved: any = await axios
-          .get(api + '/search', {
+          .get(getAPI(window) + '/search', {
             params: getParams(extras),
           })
           .catch(() => {
             return [[], []];
           });
-        if (!retrieved.data) {
-          console.log(retrieved);
-        }
         let SISRetrieved: SISRetrievedCourse[] = processedRetrievedData(
           retrieved.data.data,
           extras,
@@ -373,7 +369,7 @@ const Form: FC<{ setSearching: (searching: boolean) => void }> = (props) => {
       } else if (queryLength > 0 && queryLength < minLength) {
         // Perform normal search if query length is between 1 and minLength
         axios
-          .get(api + '/search', {
+          .get(getAPI(window) + '/search', {
             params: getParams(extras),
           })
           .then((retrieved) => {
@@ -438,7 +434,7 @@ const Form: FC<{ setSearching: (searching: boolean) => void }> = (props) => {
           onChange={handleSearchTerm}
         />
         <div
-          className="flex flex-row items-center justify-center flex-none w-6 h-6 transition duration-200 ease-in transform bg-white rounded-full shadow cursor-pointer hover:scale-110"
+          className="flex flex-row items-center justify-center flex-none w-6 h-6 transition duration-200 ease-in transform bg-white rounded-full cursor-pointer hover:scale-110"
           onClick={() => setShowCriteria(!showCriteria)}
           data-tip={
             showCriteria ? 'Hide search criteria' : 'Show search criteria'

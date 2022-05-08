@@ -29,3 +29,8 @@ yarn.lock
 
 /.next/
 /out/
+test-results/
+playwright-report/
+
+.env
+e2e/screenshots/

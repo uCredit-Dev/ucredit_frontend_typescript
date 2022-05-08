@@ -1,9 +1,11 @@
-import { FC, useState } from 'react';
+import { FC, useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import {
   selectYear,
   selectSemester,
   updateSearchStatus,
+  selectInspectedCourse,
+  selectPlaceholder,
 } from '../../../slices/searchSlice';
 import CourseDisplay from './search-results/CourseDisplay';
 import Form from './query-components/Form';
@@ -12,6 +14,8 @@ import { EyeOffIcon } from '@heroicons/react/outline';
 import { selectPlan } from '../../../slices/currentPlanSlice';
 import ReactTooltip from 'react-tooltip';
 import { Year } from '../../../resources/commonTypes';
+import clsx from 'clsx';
+import { selectInfoPopup } from '../../../slices/popupSlice';
 
 /**
  * Search component for when someone clicks a search action.
@@ -20,12 +24,16 @@ const Search: FC = () => {
   // Component states
   const [searchOpacity, setSearchOpacity] = useState<number>(100);
   const [searching, setSearching] = useState<boolean>(false);
+  const [hideResults, setHideResults] = useState<boolean>(false);
 
   // Redux selectors and dispatch
   const dispatch = useDispatch();
   const searchYear = useSelector(selectYear);
   const searchSemester = useSelector(selectSemester);
   const currentPlan = useSelector(selectPlan);
+  const inspected = useSelector(selectInspectedCourse);
+  const placeholder = useSelector(selectPlaceholder);
+  const infoPopup = useSelector(selectInfoPopup);
 
   /**
    * Gets specific year's name.
@@ -41,6 +49,10 @@ const Search: FC = () => {
     return name;
   };
 
+  useEffect(() => {
+    if (inspected === 'None' && !placeholder) setHideResults(false);
+  }, [inspected, placeholder]);
+
   return (
     <div className="absolute top-0">
       {/* Background Grey */}
@@ -49,16 +61,17 @@ const Search: FC = () => {
         style={{
           opacity: searchOpacity === 100 ? 0.5 : 0,
         }}
-        onClick={() => {
-          dispatch(updateSearchStatus(false));
-        }}
+        onClick={() => dispatch(updateSearchStatus(false))}
       ></div>
 
       {/* Search area */}
       <div
-        className={
-          'fixed flex flex-col bg-primary gradient-to-r shadow select-none rounded z-30 w-9/12 tight:overflow-y-none h-5/6 top-1/3 left-1/2 transform -translate-x-1/2 -translate-y-1/3 tight:h-auto'
-        }
+        className={clsx(
+          'fixed flex flex-col bg-primary gradient-to-r select-none rounded z-30 w-9/12 tight:overflow-y-none h-5/6 top-1/3 left-1/2 transform -translate-x-1/2 -translate-y-1/3 tight:h-auto',
+          {
+            '-translate-x-[62.5%]': infoPopup,
+          },
+        )}
         style={{ opacity: searchOpacity === 100 ? 1 : 0.1 }}
       >
         <div className="px-4 py-2 font-normal text-white select-none text-coursecard">
@@ -74,12 +87,20 @@ const Search: FC = () => {
             }
           >
             <div className="h-full overflow-y-auto">
-              <Form setSearching={setSearching} />
-              <SearchList searching={searching} />
+              {!hideResults && (
+                <>
+                  <Form setSearching={setSearching} />
+                  <SearchList
+                    searching={searching}
+                    hideResults={hideResults}
+                    setHideResults={setHideResults}
+                  />
+                </>
+              )}
             </div>
 
             <div
-              className="flex flex-row items-center justify-center w-full h-8 p-1 transition duration-200 ease-in transform hover:scale-125"
+              className="flex flex-row items-center justify-center w-8 ml-auto mr-6 h-8 p-1 transition duration-200 ease-in transform hover:scale-125"
               onMouseEnter={() => setSearchOpacity(50)}
               onMouseLeave={() => setSearchOpacity(100)}
               onMouseOver={() => ReactTooltip.rebuild()}
