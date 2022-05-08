@@ -43,7 +43,7 @@ const Login: React.FC = () => {
   useEffect(() => {
     const token = router.query.token && router.query.token[0];
     const loginId = token ? token : getLoginCookieVal(cookies);
-    if (loginId && getAPI(window).includes('ucredit.me')) {
+    if (loginId && window.location.href.includes('ucredit.me')) {
       setFinishedLoginCheck(false);
       handleDBLogin(loginId);
     } else if (loginId) handleJHULogin(loginId);
