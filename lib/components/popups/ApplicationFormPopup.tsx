@@ -1,7 +1,7 @@
 import { FC, useState } from 'react';
 import { toast } from 'react-toastify';
 import emailjs from 'emailjs-com';
-emailjs.init('Q-AuEay-7tGmmVaNw');
+emailjs.init('user_7Cn3A3FQW9PTxExf6Npel');
 
 /**
  * This is the recruitment application popup from the landing page
@@ -28,7 +28,7 @@ const ApplicationFormPopup: FC<{
       reason.length > 0 &&
       resume.length > 0
     ) {
-      emailjs.send('service_ixnb5h9', 'template_1dmlber', {
+      emailjs.send('service_czbc7ct', 'template_cxuebne', {
         from_name: fromName,
         from_email: fromEmail,
         to_email: 'mliu78@jh.edu',
