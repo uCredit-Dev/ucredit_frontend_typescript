@@ -7,7 +7,7 @@ import {
 } from '@heroicons/react/outline';
 import clsx from 'clsx';
 import Select from 'react-select';
-import { format, formatDistanceToNow } from 'date-fns';
+import { formatDistanceToNow } from 'date-fns';
 import {
   CommentType,
   ReviewMode,
