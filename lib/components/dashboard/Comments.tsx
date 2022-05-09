@@ -110,7 +110,7 @@ const Comments: FC<{
           visible_user_id: visibleUsersBody,
           thread_id: thisThread._id,
           message: replyText,
-          date: format(new Date(), 'yyyy-MM-dd HH:mm:ss'),
+          date: new Date(),
         },
       };
       const temp = await userService.postNewComment(body);
@@ -138,7 +138,7 @@ const Comments: FC<{
           commenter_id: user._id,
           visible_user_id: visibleUsersBody,
           message: replyText,
-          date: format(new Date(), 'yyyy-MM-dd HH:mm:ss'),
+          date: new Date(),
         },
       };
       const temp = await userService.postNewThread(data);
