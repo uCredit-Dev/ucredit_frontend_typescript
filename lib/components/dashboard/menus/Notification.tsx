@@ -3,6 +3,7 @@ import { Popover, Transition } from '@headlessui/react';
 import { FC, Fragment, useEffect, useState } from 'react';
 import { userService } from '../../../services';
 import axios from 'axios';
+import { compareDesc } from 'date-fns';
 import { getAPI } from '../../../resources/assets';
 
 const Notification: FC<{
@@ -12,7 +13,11 @@ const Notification: FC<{
 
   useEffect(() => {
     (async () => {
-      setNotifications((await userService.getNotifications(userID)).data);
+      let data = await userService.getNotifications(userID);
+      data = data.data.sort((d1, d2) =>
+        compareDesc(new Date(d1.date), new Date(d2.date)),
+      );
+      setNotifications(data);
     })();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
@@ -45,8 +50,8 @@ const Notification: FC<{
                 leaveFrom="opacity-100 translate-y-0"
                 leaveTo="opacity-0 translate-y-1"
               >
-                <Popover.Panel className="absolute w-80 max-w-none transform rounded-lg h-[20rem] overflow-y-auto -translate-x-52 translate-y-[8px] sm:px-0 lg:max-w-3xl">
-                  <div className="rounded-lg shadow-lg ring-1 ring-black ring-opacity-5">
+                <Popover.Panel className="absolute w-80 max-w-none transform rounded-lg max-h-[20rem] overflow-y-auto -translate-x-52 translate-y-[8px] sm:px-0 lg:max-w-3xl shadow-md">
+                  <div className="rounded-lg ring-1 ring-black ring-opacity-5">
                     <div className="relative z-30 grid gap-8 bg-white rounded-lg p-7 lg:grid-cols-1">
                       {notifications.length !== 0 ? (
                         <div className="flex justify-end w-full">
@@ -55,12 +60,14 @@ const Notification: FC<{
                             onClick={async () => {
                               const notifs = [...notifications];
                               setNotifications(
-                                notifications.slice(
-                                  notifications.length < 100
-                                    ? notifications.length
-                                    : 100,
-                                  notifications.length,
-                                ),
+                                notifications
+                                  .reverse()
+                                  .slice(
+                                    notifications.length < 100
+                                      ? notifications.length
+                                      : 100,
+                                    notifications.length,
+                                  ),
                               );
                               for (
                                 let i = 0;
@@ -85,6 +92,7 @@ const Notification: FC<{
                         </div>
                       ) : null}
                       {notifications
+                        .reverse()
                         .slice(
                           0,
                           notifications.length < 100

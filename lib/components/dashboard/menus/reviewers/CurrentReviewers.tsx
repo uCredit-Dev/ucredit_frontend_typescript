@@ -37,10 +37,10 @@ const CurrentReviewers = () => {
           // Status successfully changed to UNDERREVIEW
           emailjs
             .send(
-              'service_ixnb5h9',
-              'template_1dmlber',
+              'service_cami1cj',
+              'template_kilkjhv',
               form,
-              'Q-AuEay-7tGmmVaNw',
+              'OYZ6l2hEt-shlZ7K1',
             )
             .then((result) => {
               toast.success(
