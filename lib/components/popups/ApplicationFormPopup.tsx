@@ -28,7 +28,7 @@ const ApplicationFormPopup: FC<{
       reason.length > 0 &&
       resume.length > 0
     ) {
-      emailjs.send('service_czbc7ct', 'template_cxuebne', {
+      emailjs.send('service_czbc7ct', 'template_70fexbc', {
         from_name: fromName,
         from_email: fromEmail,
         to_email: 'mliu78@jh.edu',
