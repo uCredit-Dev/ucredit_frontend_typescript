@@ -6,7 +6,7 @@ import {
   updateSelectedThread,
 } from '../../../../slices/currentPlanSlice';
 import { useDispatch, useSelector } from 'react-redux';
-import { formatDistance } from 'date-fns';
+import { formatDistanceToNow } from 'date-fns';
 import { selectUser } from '../../../../slices/userSlice';
 import CommenterToggle from './CommenterToggle';
 import { CommentType, ThreadType } from '../../../../resources/commonTypes';
@@ -47,13 +47,16 @@ const CommentsOverview: React.FC = () => {
           key={c._id + c.date}
           className="m-2 bg-white border divide-y rounded select-text cursor-text"
         >
-          <p className="flex flex-wrap px-2 py-1 text-xs">
-            {`${c.commenter_id.name} ${formatDistance(
-              new Date(c.date),
-              new Date(),
-              { addSuffix: true },
-            )}`}
-          </p>
+          <div className="flex items-center justify-between w-full px-2 py-1 text-sm">
+            <p className="w-[50%] font-medium truncate">
+              {c.commenter_id.name}
+            </p>
+            <p className="text-xs truncate">
+              {formatDistanceToNow(new Date(c.date), {
+                addSuffix: true,
+              })}
+            </p>
+          </div>
           <p className="px-2 py-1 text-sm font-medium">{c.message}</p>
         </div>
       );

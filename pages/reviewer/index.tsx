@@ -59,7 +59,6 @@ const Reviewer: React.FC = () => {
       for (const [k, v] of plansByUser) {
         revieweePlansArr.push({ reviewee: JSON.parse(k), plans: v });
       }
-      console.log(revieweePlansArr);
       setFiltered(revieweePlansArr);
       setFoundPlan(revieweePlansArr.length > 0);
       setRefreshReviews(false);
