@@ -1,7 +1,7 @@
 import { FC, useState } from 'react';
 import { toast } from 'react-toastify';
 import emailjs from 'emailjs-com';
-emailjs.init('user_7Cn3A3FQW9PTxExf6Npel');
+emailjs.init('OYZ6l2hEt-shlZ7K1');
 
 /**
  * This is the recruitment application popup from the landing page

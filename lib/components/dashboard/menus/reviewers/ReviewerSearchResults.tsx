@@ -10,7 +10,7 @@ import { userService } from '../../../../services';
 import { selectUser } from '../../../../slices/userSlice';
 import getConfig from 'next/config';
 
-emailjs.init('user_7Cn3A3FQW9PTxExf6Npel');
+emailjs.init('Q-AuEay-7tGmmVaNw');
 
 const { publicRuntimeConfig } = getConfig();
 const baseUrl = publicRuntimeConfig.baseUrl;
