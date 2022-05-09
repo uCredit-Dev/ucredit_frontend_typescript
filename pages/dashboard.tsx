@@ -25,7 +25,7 @@ const Dash: React.FC = () => {
   const dispatch = useDispatch();
 
   useEffect(() => {
-    if (user._id === 'noUser') router.push('/login');
+    if (!user || user._id === 'noUser') router.push('/login');
     const yearRange = localStorage.getItem('yearRange');
     if (!yearRange) {
       axios

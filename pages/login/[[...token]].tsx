@@ -43,7 +43,7 @@ const Login: React.FC = () => {
   useEffect(() => {
     const token = router.query.token && router.query.token[0];
     const loginId = token ? token : getLoginCookieVal(cookies);
-    if (loginId && getAPI(window).includes('ucredit.me')) {
+    if (loginId && window.location.href.includes('ucredit.me')) {
       setFinishedLoginCheck(false);
       handleDBLogin(loginId);
     } else if (loginId) handleJHULogin(loginId);
@@ -58,7 +58,7 @@ const Login: React.FC = () => {
         const [pathname, id] = referrer.split('-');
         router.push(`/${pathname}/${id}`);
       } else router.push(`/${referrer}`);
-    } else router.push('/dashboard');
+    }
   };
 
   /**
@@ -84,7 +84,9 @@ const Login: React.FC = () => {
           dispatch(updateUser(retrievedUser.data));
           dispatch(updateLoginCheck(true));
 
-          redirectToReferrer();
+          const referrer = router.query.referrer as string;
+          if (referrer) redirectToReferrer();
+          else router.push('/dashboard');
         } else {
           dispatch(updateLoginCheck(true));
           setFinishedLoginCheck(true);
@@ -96,6 +98,8 @@ const Login: React.FC = () => {
           dispatch(updateImportingStatus(true));
           dispatch(updateUser(guestUser));
           router.push('/dashboard');
+        } else {
+          router.push('/login');
         }
       });
   };
@@ -112,11 +116,12 @@ const Login: React.FC = () => {
    * Handles JHU Login button being pressed.
    */
   const handleJHULogin = (loginId: any) => {
-    const api: String = getAPI(window);
-    if (api.includes('ucredit.me')) window.location.href = api + '/login';
-    else if (loginId.length === 20) handleDBLogin(loginId);
-    else if (typeof loginId === 'string') handleDevLogin(loginId)();
-    else setOpenDevChoose(true);
+    if (window.location.href.includes('ucredit.me')) {
+      if (loginId && typeof loginId === 'string') handleDBLogin(loginId);
+      else window.location.href = getAPI(window) + '/login';
+    } else if (typeof loginId === 'string') handleDevLogin(loginId)();
+    else if (!window.location.href.includes('ucredit.me'))
+      setOpenDevChoose(true);
   };
 
   /**
@@ -139,8 +144,9 @@ const Login: React.FC = () => {
           '; expires=' +
           new Date(Date.now() + 200000000000000).toString() +
           '; path=/';
-
-        redirectToReferrer();
+        const referrer = router.query.referrer as string;
+        if (referrer) redirectToReferrer();
+        else router.push('/dashboard');
       })
       .catch((err) => {
         console.log('Backdoor verfication failed!', err);
