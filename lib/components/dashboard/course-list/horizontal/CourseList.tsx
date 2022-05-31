@@ -235,22 +235,6 @@ const CourseList: FC<Props> = ({ mode }) => {
       ) {
         toast.error("Course isn't usually held this semester!");
       } else {
-        const sourceCourseArr = [...sourceYear.courses];
-        const destCourseArr = [...destYear.courses];
-        sourceCourseArr.splice(courseYearIndex, 1);
-        if (destCourseArr.map((c) => c._id).indexOf(course._id) === -1) {
-          destCourseArr.push(course);
-        }
-        const currPlanYears = [...currentPlan.years];
-        currPlanYears[sourceObj.index] = {
-          ...sourceYear,
-          courses: sourceCourseArr,
-        };
-        currPlanYears[destObj.index] = {
-          ...destYear,
-          courses: destCourseArr,
-        };
-
         const body = {
           newYear: destYear._id,
           oldYear: sourceYear._id,
@@ -258,7 +242,7 @@ const CourseList: FC<Props> = ({ mode }) => {
           newTerm: destination.semester,
         };
 
-        let res = await fetch(getAPI(window) + '/courses/dragged', {
+        let res: any = await fetch(getAPI(window) + '/courses/dragged', {
           method: 'PATCH',
           headers: {
             'Content-Type': 'application/json',
@@ -271,6 +255,28 @@ const CourseList: FC<Props> = ({ mode }) => {
         } else {
           toast.success('Successfully moved course!');
         }
+        res = await res.json();
+        const updatedCourse = res.data;
+
+        const sourceCourseArr = [...sourceYear.courses];
+        let destCourseArr = [...destYear.courses];
+        sourceCourseArr.splice(courseYearIndex, 1);
+        if (destCourseArr.map((c) => c._id).indexOf(updatedCourse._id) === -1) {
+          destCourseArr.push(updatedCourse);
+        } else {
+          // otherwase source and destination are the same.
+          destCourseArr = sourceCourseArr;
+          destCourseArr.push(updatedCourse);
+        }
+        const currPlanYears = [...currentPlan.years];
+        currPlanYears[sourceObj.index] = {
+          ...sourceYear,
+          courses: sourceCourseArr,
+        };
+        currPlanYears[destObj.index] = {
+          ...destYear,
+          courses: destCourseArr,
+        };
 
         const newCurrentPlan: Plan = {
           ...currentPlan,
@@ -278,7 +284,7 @@ const CourseList: FC<Props> = ({ mode }) => {
         };
         const planListClone = [...planList];
         planListClone[0] = newCurrentPlan;
-        updatePlanCourses(destYear, destination.semester, course);
+        updatePlanCourses(destYear, destination.semester, updatedCourse);
         dispatch(updatePlanList(planListClone));
         dispatch(updateSelectedPlan(newCurrentPlan));
       }

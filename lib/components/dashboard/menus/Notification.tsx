@@ -117,7 +117,7 @@ const Notification: FC<{
                         ))}
                       {notifications.length === 0 ? (
                         <p className="text-sm italic text-center text-slate-500">
-                          Looks like there's no nofication yet
+                          Looks like there're no notifications yet!
                         </p>
                       ) : null}
                     </div>

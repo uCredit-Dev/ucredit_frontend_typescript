@@ -10,7 +10,7 @@ import { userService } from '../../../../services';
 import { selectUser } from '../../../../slices/userSlice';
 import getConfig from 'next/config';
 
-emailjs.init('user_7Cn3A3FQW9PTxExf6Npel');
+emailjs.init('Q-AuEay-7tGmmVaNw');
 
 const { publicRuntimeConfig } = getConfig();
 const baseUrl = publicRuntimeConfig.baseUrl;
@@ -59,7 +59,7 @@ const ReviewersSearchResults: FC<{
             currentUser._id,
           )
         ).data;
-        emailjs.send('service_czbc7ct', 'template_9g4knbk', {
+        emailjs.send('service_ixnb5h9', 'template_1dmlber', {
           from_name: currentUser.name,
           to_jhed: user._id,
           to_name: user.name,

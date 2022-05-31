@@ -7,7 +7,7 @@ import {
 } from '@heroicons/react/outline';
 import clsx from 'clsx';
 import Select from 'react-select';
-import { formatDistance } from 'date-fns';
+import { formatDistanceToNow } from 'date-fns';
 import {
   CommentType,
   ReviewMode,
@@ -110,6 +110,7 @@ const Comments: FC<{
           visible_user_id: visibleUsersBody,
           thread_id: thisThread._id,
           message: replyText,
+          date: new Date(),
         },
       };
       const temp = await userService.postNewComment(body);
@@ -137,6 +138,7 @@ const Comments: FC<{
           commenter_id: user._id,
           visible_user_id: visibleUsersBody,
           message: replyText,
+          date: new Date(),
         },
       };
       const temp = await userService.postNewThread(data);
@@ -163,14 +165,17 @@ const Comments: FC<{
           key={c._id}
           className="bg-white border divide-y rounded select-text cursor-text"
         >
-          <p className="flex flex-wrap px-2 py-1 text-sm">
-            {`${c.commenter_id.name} ${formatDistance(
-              new Date(c.date),
-              new Date(),
-              { addSuffix: true },
-            )}`}
-          </p>
-          <p className="px-2 py-1 font-medium">{c.message}</p>
+          <div className="flex items-center justify-between w-full px-2 py-1 text-sm">
+            <p className="w-[50%] font-medium truncate">
+              {c.commenter_id.name}
+            </p>
+            <p className="text-xs truncate">
+              {formatDistanceToNow(new Date(c.date), {
+                addSuffix: true,
+              })}
+            </p>
+          </div>
+          <p className="px-2 py-1">{c.message}</p>
         </div>
       );
     });

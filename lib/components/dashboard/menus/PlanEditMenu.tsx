@@ -271,14 +271,15 @@ const PlanEditMenu: FC<{ mode: ReviewMode }> = ({ mode }) => {
                     <li>
                       <Select
                         options={[
+                          { value: currentPlan, label: 'Create New Plan' },
                           ...planList
                             .filter((plan) => plan._id !== currentPlan._id)
                             .map((plan) => ({ value: plan, label: plan.name })),
-                          { value: currentPlan, label: 'Create New Plan' },
                         ]}
                         value={{ label: currentPlan.name, value: currentPlan }}
                         onChange={handlePlanChange}
                         className="mr-2 thin:mx-auto text-lg font-light mt-[0.15rem]"
+                        maxMenuHeight={150}
                       />
                     </li>
                   )}
