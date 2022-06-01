@@ -10,6 +10,8 @@ import {
 } from '../../../resources/commonTypes';
 import {
   selectSelectedDistribution,
+  updateInfoPopup,
+  updateShowCourseInfo,
   updateShowingCart,
 } from '../../../slices/popupSlice';
 import FineRequirementsList from './cart/FineRequirementsList';
@@ -207,6 +209,11 @@ const Cart: FC<{ allCourses: SISRetrievedCourse[] }> = (props) => {
     setTextFilterInputValue(e.target.value);
   };
 
+  useEffect(() => {
+    ReactTooltip.rebuild();
+    ReactTooltip.hide();
+  });
+
   return (
     <div className="absolute top-0">
       {/* Background Grey */}
@@ -215,13 +222,16 @@ const Cart: FC<{ allCourses: SISRetrievedCourse[] }> = (props) => {
         style={{
           opacity: searchOpacity === 100 ? 0.5 : 0,
         }}
-        onClick={() => dispatch(updateShowingCart(false))}
+        onClick={() => {
+          dispatch(updateShowingCart(false));
+          dispatch(updateInfoPopup(true));
+        }}
       ></div>
 
       {/* Search area */}
       <div
         className={
-          'fixed flex flex-col bg-primary select-none rounded z-40 w-9/12 tight:overflow-y-none h-5/6 top-1/3 left-1/2 transform -translate-x-1/2 -translate-y-1/3 tight:h-auto'
+          'fixed flex flex-col bg-primary select-none rounded z-40 min-w-[70rem] tight:overflow-y-none h-5/6 top-1/3 left-1/2 transform -translate-x-1/2 -translate-y-1/3 tight:h-auto'
         }
         style={{ opacity: searchOpacity === 100 ? 1 : 0.1 }}
       >
@@ -267,7 +277,7 @@ const Cart: FC<{ allCourses: SISRetrievedCourse[] }> = (props) => {
               <EyeOffIcon className="w-6 h-6 text-gray-500 stroke-2" />
             </div>
           </div>
-          <div className="min-h-80 w-full">
+          <div className="h-full overflow-y-auto w-full bg-gray-200">
             <CourseDisplay cart={true} />
           </div>
           {/** */}

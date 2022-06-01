@@ -9,6 +9,8 @@ import { requirements } from './distributionFunctions';
 import { CheckCircleIcon, ExclamationIcon } from '@heroicons/react/solid';
 import ReactTooltip from 'react-tooltip';
 import {
+  updateAddingPrereq,
+  updateInfoPopup,
   updateSelectedDistribution,
   updateShowingCart,
 } from '../../../slices/popupSlice';
@@ -70,6 +72,8 @@ const CourseBar: FC<{
       // and all dsitibrutions. to pick out hte rest of the ascoatied fine distirbutions, use this filter.
       dispatch(updateSelectedDistribution(distrs));
       dispatch(updateShowingCart(true));
+      dispatch(updateInfoPopup(false));
+      dispatch(updateAddingPrereq(false));
 
       // closes the search popup (if its showing)
       dispatch(clearSearch());

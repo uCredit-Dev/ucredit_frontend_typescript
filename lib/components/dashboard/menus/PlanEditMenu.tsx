@@ -236,7 +236,7 @@ const PlanEditMenu: FC<{ mode: ReviewMode }> = ({ mode }) => {
         <>
           <Popover.Button
             className={clsx(
-              'flex items-center p-2 text-base font-normal text-black rounded-lg bg-white w-min z-30 top-20 right-9 shadow-lg',
+              'flex items-center p-2 text-base font-normal text-black rounded-lg bg-white w-min z-20 top-20 right-9 shadow-lg',
               {
                 'fixed ': searchStatus,
                 ' absolute': !searchStatus,
@@ -258,14 +258,14 @@ const PlanEditMenu: FC<{ mode: ReviewMode }> = ({ mode }) => {
           >
             <Popover.Panel
               className={clsx(
-                'w-80 top-28 z-30 right-0 shadow-lg overflow-y-auto max-h-[75%]',
+                'w-80 top-28 z-50 right-0 overflow-y-auto max-h-[75%]',
                 {
                   ' fixed': searchStatus,
                   ' absolute': !searchStatus,
                 },
               )}
             >
-              <div className="overflow-y-auto py-4 px-3 bg-white rounded">
+              <div className="overflow-y-auto py-4 px-3 bg-white rounded mr-5 mt-3 shadow-lg z-50">
                 <ul className="space-y-2">
                   {mode === ReviewMode.Edit && (
                     <li>
