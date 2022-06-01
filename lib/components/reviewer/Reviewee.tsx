@@ -3,7 +3,6 @@ import clsx from 'clsx';
 import { ClipboardListIcon, EyeIcon } from '@heroicons/react/outline';
 import { useRouter } from 'next/router';
 import { toast } from 'react-toastify';
-import { useDispatch } from 'react-redux';
 import { Selectable } from '@robertz65/lyte';
 import {
   Plan,
@@ -17,9 +16,11 @@ import { statusReadable } from '../../../pages/reviewer';
 import { userService } from '../../services';
 import PlanSummary from './PlanSummary';
 import {
-  updateCurrentPlanCourses,
   updateSelectedPlan,
+  updateCurrentPlanCourses,
+  updateTotalCredits,
 } from '../../slices/currentPlanSlice';
+import { useDispatch } from 'react-redux';
 
 interface Props {
   userId: string;
@@ -53,6 +54,8 @@ const Reviewee: React.FC<Props> = ({
   const [showPlans, setShowPlans] = useState(expanded);
   const [majors, setMajors] = useState<string[]>([]);
   const [notifState, setNotifState] = useState(false);
+  const [summaryReviewID, setSummaryReviewID] = useState('');
+  const [summaryPlan, setSummaryPlan] = useState<Plan>(null);
   const router = useRouter();
   const dispatch = useDispatch();
 
@@ -86,19 +89,20 @@ const Reviewee: React.FC<Props> = ({
             <p key={m}>{m}</p>
           ))}
         </div>
+        {notifState ? (
+          <PlanSummary
+            plan={summaryPlan}
+            setNotifState={setNotifState}
+            review_id={summaryReviewID}
+            setRefreshReviews={setRefreshReviews}
+          />
+        ) : null}
         {showPlans && (
           <div className="divide-y">
             {plans.map((p) => {
               const { _id, name, status, review_id } = p;
               return (
                 <div key={_id}>
-                  <PlanSummary
-                    plan={p}
-                    notifState={notifState}
-                    setNotifState={setNotifState}
-                    review_id={review_id}
-                    setRefreshReviews={setRefreshReviews}
-                  />
                   <div className="flex items-center justify-between h-8 group">
                     <div className="flex items-center gap-[6px]">
                       {status && (
@@ -179,13 +183,20 @@ const Reviewee: React.FC<Props> = ({
                             className="flex items-center justify-center w-6 h-6 transition-colors duration-150 ease-in rounded-sm cursor-pointer hover:bg-gray-200 view-summary-button"
                             onClick={(e) => {
                               e.stopPropagation();
+                              setSummaryReviewID(review_id);
+                              setSummaryPlan(p);
                               setNotifState(!notifState);
                               dispatch(updateSelectedPlan(p));
                               let allCourses = [];
+                              let totCredits = 0;
                               p.years.forEach((y) => {
+                                y.courses.forEach((c) => {
+                                  totCredits += c.credits;
+                                });
                                 allCourses = [...allCourses, ...y.courses];
                               });
                               dispatch(updateCurrentPlanCourses(allCourses));
+                              dispatch(updateTotalCredits(totCredits));
                             }}
                           >
                             <ClipboardListIcon className="w-5 h-5"></ClipboardListIcon>

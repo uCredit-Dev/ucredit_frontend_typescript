@@ -11,7 +11,6 @@ import {
 import {
   selectSelectedDistribution,
   updateInfoPopup,
-  updateShowCourseInfo,
   updateShowingCart,
 } from '../../../slices/popupSlice';
 import FineRequirementsList from './cart/FineRequirementsList';
