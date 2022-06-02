@@ -77,7 +77,7 @@
     "@svgr/webpack": "^6.2.0",
     "@types/axios": "^0.14.0",
     "@types/history": "^5.0.0",
-    "@types/jest": "^27.0.1",
+    "@types/jest": "^28.1.0",
     "@types/node": "^17.0.1",
     "@types/react": "^18.0.1",
     "@types/react-beautiful-dnd": "^13.1.2",
