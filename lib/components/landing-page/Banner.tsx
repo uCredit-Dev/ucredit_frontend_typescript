@@ -16,33 +16,25 @@ const Banner: React.FC = () => {
       {activateEmailPopup && (
         <ApplicationFormPopup setActivateEmailPopup={setActivateEmailPopup} />
       )}
-      <div className="w-full h-4/6">
-        <Carousel showThumbs={false} autoPlay interval={5000} infiniteLoop>
-          <div>
-            <div className="mt-5/6 absolute flex w-full top-[70%] h-full">
-              <button
-                onClick={() => router.push('/login')}
-                className="h-[15%] mx-auto font-thin thin:text-lg text-4xl text-white transition duration-200 ease-in transform rounded-full w-[22.5%] bg-primary hover:scale-105"
-              >
-                Get Started
-              </button>
+      <div className="grid grid-cols-9 gap-4 h-30 bg-blue-header items-stretch font-landingPage">
+        
+        <div className="p-35 col-span-4">
+          <div className="grid grid-flow-row auto-rows-auto ">
+            <div className="p-8 mb-2 font-medium m-5 text-9xl truncate text-right text-name">uCredit</div>
+            <div className="p-3 mb-2 font-normal m-2 text-4xl truncate text-right pr-10 text-slogan text-opacity-70">
+            Your Academic Planning,<br></br> Made Simple
             </div>
-            <img src="/img/landing-page/headline.png" alt="headline" />
-          </div>
-          <div>
-            <div className="absolute flex w-full top-[70%] h-full">
-              <button
-                onClick={() => setActivateEmailPopup(true)}
-                className="h-[15%] mx-auto font-thin text-4xl thin:text-lg text-white transition duration-200 ease-in transform rounded-full w-[22.5%] bg-primary hover:scale-105"
-              >
-                Contact Us
+            <div className="relative p-4 mb-2 text-right pr-10 border-blue-footer pr-20 pt-5">
+              <img className="z-10 w-50 h-50 mr-1 scale-x-[-1] absolute left-4 top-8" src="/img/logo.png" alt="logo" />
+              <button className="bg-blue-footer text-white font-normal text-2xl py-4 px-10 rounded-full text-right" onClick={() => router.push('/login')}>
+                Start
               </button>
-            </div>
-            <img src="/img/landing-page/join-team.png" alt="join team" />
-          </div>
-        </Carousel>
-      </div>
-      <div className="flex items-center justify-end mt-2 mr-2 text-gray-600 select-none">
+            </div> 
+          </div> 
+        </div>
+        <div className="p-4 col-span-5 w-5/6">
+          <img src="/img/landing-page/cartoon.png" alt="cartoon schedule" />
+          <div className="flex items-right justify-end mt-2 text-gray-600 select-none">
         Partnered with Semesterly
         <img
           src="/img/semlylogo.png"
@@ -50,6 +42,20 @@ const Banner: React.FC = () => {
           className="w-8 h-8 ml-1"
         />
       </div>
+        </div>
+        <br></br><br></br>
+    </div>
+    <img src="/img/landing-page/wave.png" alt="cartoon schedule" />
+          
+    
+      {/* <div className="flex items-center justify-end mt-2 mr-2 text-gray-600 select-none">
+        Partnered with Semesterly
+        <img
+          src="/img/semlylogo.png"
+          alt="semesterly"
+          className="w-8 h-8 ml-1"
+        />
+      </div> */}
       <div
         className="w-full cursor-pointer"
         onClick={() => window.scrollTo(0, 575)}

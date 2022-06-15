@@ -62,6 +62,8 @@ module.exports = {
           header: "#C6E8FF",
           footer: "#0C3A76",
         },
+        name: "#38596C",
+        slogan: "#4851AA",
       },
       backgroundColor: {
         gray: {
