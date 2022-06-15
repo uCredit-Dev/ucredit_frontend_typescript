@@ -16,6 +16,9 @@ const Banner: React.FC = () => {
       {activateEmailPopup && (
         <ApplicationFormPopup setActivateEmailPopup={setActivateEmailPopup} />
       )}
+      <div className=" bg-blue-header ">
+      <br></br><br></br>
+      </div>
       <div className="grid grid-cols-9 gap-4 h-30 bg-blue-header items-stretch font-landingPage">
         
         <div className="p-35 col-span-4">
