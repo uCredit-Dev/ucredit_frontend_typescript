@@ -6,28 +6,28 @@ const Links: React.FC = () => {
   return (
     <div className="space-x-5">
       <button
-        className="px-3 py-1 hover:text-blue-header hover:bg-blue-footer rounded-[12px] transition duration-100 ease-in"
+        className="px-3 py-1 hover:text-blue-header hover:bg-blue-footer rounded-[13px] transition duration-100 ease-in"
         onClick={() => router.push('/about')}
       >
         About
       </button>
 
       <button
-        className="px-3 py-1 hover:text-blue-header hover:bg-blue-footer rounded-[12px] transition duration-100 ease-in"
+        className="px-3 py-1 hover:text-blue-header hover:bg-blue-footer rounded-[13px] transition duration-100 ease-in"
         onClick={() => router.push('/team')}
       >
         Team
       </button>
 
       <button
-        className="px-3 py-1 hover:text-blue-header hover:bg-blue-footer rounded-[12px] transition duration-100 ease-in"
+        className="px-3 py-1 hover:text-blue-header hover:bg-blue-footer rounded-[13px] transition duration-100 ease-in"
         onClick={() => router.push('/docs')}
       >
         Docs
       </button>
 
       <button
-        className="px-3 py-1 text-blue-header bg-blue-footer border hover:text-blue-footer hover:bg-blue-header border-blue-footer rounded-[12px] transition duration-100 ease-in"
+        className="px-3 py-1 text-blue-header bg-blue-footer border hover:text-blue-footer hover:bg-blue-header border-blue-footer rounded-[13px] transition duration-100 ease-in"
         onClick={() => router.push('/login')}
       >
         Log in

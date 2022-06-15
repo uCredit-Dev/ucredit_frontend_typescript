@@ -11,7 +11,7 @@ const Footer: React.FC = () => {
         <div className="flex-col space-y-4">
           
           <div className="inline-flex">
-            <img className="w-8 h-8 mr-2 scale-x-[-1]" src="/img/logo.png" alt="logo" />
+            <img className="w-12 h-12 mr-1 scale-x-[-1]" src="/img/logo.png" alt="logo" />
                 
             <div
               className="text-2xl cursor-pointer text-blue-header self-center"
