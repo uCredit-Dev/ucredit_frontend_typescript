@@ -2653,6 +2653,16 @@ const bsMolCell: Major = {
   ],
 };
 
+const no_degree: Major = {
+  degree_name: "No Degree/My degree isn't supported yet",
+  distributions: [],
+  abbrev: 'N/A',
+  department: 'n/a',
+  total_degree_credit: 0,
+  url: '',
+  wi_credit: 0,
+};
+
 export function getMajorFromCommonName(name: string) {
   let out: Major | null = null;
   allMajors.forEach((major) => {
@@ -2667,6 +2677,7 @@ export function getMajorFromCommonName(name: string) {
 }
 
 export const allMajors: Major[] = [
+  no_degree,
   bsCS_Old,
   bsCS_New,
   baCS_New,
