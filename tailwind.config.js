@@ -64,6 +64,8 @@ module.exports = {
         },
         name: "#38596C",
         slogan: "#4851AA",
+        gray: "#5F5F5F",
+  
       },
       backgroundColor: {
         gray: {

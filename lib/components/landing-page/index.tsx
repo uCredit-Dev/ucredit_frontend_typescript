@@ -2,6 +2,7 @@ import Banner from './Banner';
 import Footer from './Footer';
 import Header from './Header';
 import Promo from './Promo';
+import Links from './Links';
 
 /**
  * This is our future landing page!
@@ -12,6 +13,7 @@ const LandingPage: React.FC = () => {
       <Header />
       <Banner />
       <Promo />
+      <Links />
       <Footer />
     </div>
   );
