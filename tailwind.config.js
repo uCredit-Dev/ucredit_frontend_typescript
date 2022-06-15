@@ -58,6 +58,10 @@ module.exports = {
         W: '#D0D0FF',
         background: '#83B9FF',
         emphasis: '#fad4f5',
+        blue: {
+          header: "#C6E8FF",
+          footer: "#0C3A76",
+        },
       },
       backgroundColor: {
         gray: {
@@ -74,6 +78,9 @@ module.exports = {
           year: '#D4D4D4',
         },
         theme: '#3168AF',
+      },
+      fontFamily: {
+        landingPage: ['Futura', ]
       },
       fontSize: {
         myplan: ['2rem'],
