@@ -2654,7 +2654,7 @@ const bsMolCell: Major = {
 };
 
 const no_degree: Major = {
-  degree_name: "No Degree/My degree isn't supported yet",
+  degree_name: "Undecided Degree/My degree isn't supported yet",
   distributions: [],
   abbrev: 'N/A',
   department: 'n/a',
