@@ -21,7 +21,8 @@
   },
   "include": [
     "src",
-    "tailwind.config.js"
+    "tailwind.config.js",
+    "custom.d.ts"
   ],
   "exclude": [
     "node_modules"
