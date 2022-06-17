@@ -7,7 +7,8 @@ const Footer: React.FC = () => {
   const router = useRouter();
 
   return (
-      <div className="w-full h-32 flex flex-row px-10 pt-5 pb-3 justify-between items-end text-blue-header bg-blue-footer font-landingPage">
+      <div className="w-full h-1/4 flex flex-row px-10 pt-5 pb-3 justify-between items-end text-blue-header bg-blue-footer font-landingPage">
+        
         <div className="flex-col space-y-4">
           
           <div className="inline-flex">
@@ -21,7 +22,7 @@ const Footer: React.FC = () => {
             </div>
           </div>
           <p>
-            @ Johns Hopkins University, Baltimore, 21218
+            @ Johns Hopkins University, Baltimore, Maryland 21218
           </p>
         </div>
         
@@ -35,7 +36,7 @@ const Footer: React.FC = () => {
           </a>
 
           
-          <a href="#!" className="text-blue-header">
+          <a href="https://github.com/uCredit-Dev" className="text-blue-header">
             <svg
               aria-hidden="true"
               focusable="false"
