@@ -16,7 +16,7 @@ const Links: React.FC = () => {
         <ApplicationFormPopup setActivateEmailPopup={setActivateEmailPopup} />
       )}
     <img src="/img/landing-page/wave.png" alt="cartoon schedule" />
-    <div className="font-landingPage grid grid-rows-4 grid-cols-3 grid-flow-col gap-4 items-stretch">
+    <div className="font-landingPage grid grid-rows-5 grid-cols-3 grid-flow-col gap-4 items-stretch">
       <div className="row-start-1 row-end-2 col-span-4 text-gray text-center text-3xl md:text-4xl lg:text-5xl">Open Source</div>
       <div className="px-48 row-span-1 col-span-4 text-center text-base md:text-lg lg:text-xl">
         Ucredit is an Open Source community resource dedicated to helping open source projects be as successful as possible. We thrive on community collaboration to help us create a premier resource for open source software development and distribution.

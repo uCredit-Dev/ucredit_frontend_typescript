@@ -1,9 +1,8 @@
 import { useState } from 'react';
-import { Carousel } from 'react-responsive-carousel';
 import { useRouter } from 'next/router';
 import 'react-responsive-carousel/lib/styles/carousel.min.css'; // requires a loader
 import ApplicationFormPopup from '../popups/ApplicationFormPopup';
-
+import Bird from './BlueJay.svg';
 /**
  * Getting Started banners.
  */
@@ -19,6 +18,7 @@ const Banner: React.FC = () => {
       <div className=" bg-blue-header ">
       <br></br><br></br>
       </div>
+      {/* <Bird></Bird> */}
       <div className="grid flex grid-cols-9 h-30 bg-blue-header items-stretch font-landingPage">
         
         <div className="p-35 col-span-4">
@@ -27,8 +27,9 @@ const Banner: React.FC = () => {
             <div className="p-3 mb-2 font-normal m-2 text-sm sm:text-lg md:text-xl lg:text-2xl xl:text-4xl text-right pr-10 text-slogan text-opacity-70">
               Your Academic Planning, <br></br> Made Simple
             </div>
+            <Bird className="z-10 mr-1 scale-[30%] sm:scale-50 md:scale-50 lg:scale-75 xl:scale-100  md:top-[30%] lg:top-[40%] xl:top-[60%] sm:top-[25%] top-[15%] md:left-[-20%] lg:left-[-10%] xl:left-0 sm:left-[-35%] left-[-50%] absolute" alt="logo" />
             <div className="relative z-10 p-4 mb-2 text-right pr-10 border-blue-footer pr-16 pt-5">
-              <img className="z-10 mr-1 scale-x-[-1] absolute left-4 top-8" src="/img/logo.png" alt="logo" />
+              {/* <img className=" scale-x-[-1] absolute" src="/img/logo.png" alt="logo" /> */}
               <button className="z-40 bg-blue-footer text-white absolute font-normal text-sm py-4 px-10 sm:text-base md:text-lg lg:text-xl xl:text-2xl rounded-full right-8" onClick={() => router.push('/login')}>
                 Start
               </button>
