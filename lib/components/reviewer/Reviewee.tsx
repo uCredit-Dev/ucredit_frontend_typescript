@@ -28,6 +28,7 @@ interface Props {
   reviewee: User;
   expanded?: boolean;
   setRefreshReviews: Dispatch<SetStateAction<boolean>>;
+  onDeleteItem: Function;
 }
 
 const dropdownOptions = [
@@ -50,6 +51,7 @@ const Reviewee: React.FC<Props> = ({
   reviewee,
   expanded = false,
   setRefreshReviews,
+  onDeleteItem,
 }) => {
   const [showPlans, setShowPlans] = useState(expanded);
   const [majors, setMajors] = useState<string[]>([]);
@@ -71,6 +73,11 @@ const Reviewee: React.FC<Props> = ({
     e.stopPropagation();
     router.push(`/dashboard?plan=${plan._id}&mode=view`);
   };
+
+  const deleteHandler = () => {
+    onDeleteItem(reviewee._id);
+  };
+
   return (
     reviewee && (
       <div className="w-full p-3 bg-white border border-gray-300 rounded-md">
@@ -218,6 +225,7 @@ const Reviewee: React.FC<Props> = ({
             })}
           </div>
         )}
+        <button onClick={deleteHandler}>delete</button>
       </div>
     )
   );
