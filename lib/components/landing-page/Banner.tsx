@@ -19,17 +19,17 @@ const Banner: React.FC = () => {
       <div className=" bg-blue-header ">
       <br></br><br></br>
       </div>
-      <div className="grid grid-cols-9 gap-4 h-30 bg-blue-header items-stretch font-landingPage">
+      <div className="grid flex grid-cols-9 h-30 bg-blue-header items-stretch font-landingPage">
         
         <div className="p-35 col-span-4">
-          <div className="grid grid-flow-row auto-rows-auto ">
-            <div className="p-8 mb-2 font-medium m-5 text-9xl truncate text-right text-name">uCredit</div>
-            <div className="p-3 mb-2 font-normal m-2 text-4xl truncate text-right pr-10 text-slogan text-opacity-70">
+          <div className="grid grid-flow-row rows">
+            <div className="p-8 mb-2 font-medium m-5 text-3xl sm:text-5xl md:text-7xl lg:text-8xl xl:text-9xl text-right text-name">uCredit</div>
+            <div className="p-3 mb-2 font-normal m-2 text-sm sm:text-lg md:text-xl lg:text-2xl xl:text-4xl text-right pr-10 text-slogan text-opacity-70">
               Your Academic Planning, <br></br> Made Simple
             </div>
             <div className="relative z-10 p-4 mb-2 text-right pr-10 border-blue-footer pr-16 pt-5">
-              <img className="z-10 w-50 h-50 mr-1 scale-x-[-1] absolute left-4 top-8" src="/img/logo.png" alt="logo" />
-              <button className="z-40 bg-blue-footer text-white absolute font-normal text-2xl py-4 px-10 rounded-full right-8" onClick={() => router.push('/login')}>
+              <img className="z-10 mr-1 scale-x-[-1] absolute left-4 top-8" src="/img/logo.png" alt="logo" />
+              <button className="z-40 bg-blue-footer text-white absolute font-normal text-sm py-4 px-10 sm:text-base md:text-lg lg:text-xl xl:text-2xl rounded-full right-8" onClick={() => router.push('/login')}>
                 Start
               </button>
             </div> 
@@ -37,7 +37,7 @@ const Banner: React.FC = () => {
         </div>
         <div className="p-4 col-span-5 w-5/6">
           <img src="/img/landing-page/cartoon.png" alt="cartoon schedule" />
-          <div className="flex items-right justify-end mt-2 text-gray-600 select-none">
+          <div className="flex items-right justify-end mt-2 text-gray-600 select-none sm:text-base md:text-lg lg:text-xl xl:text-2xl">
             Partnered with Semesterly
           <img
             src="/img/semlylogo.png"
