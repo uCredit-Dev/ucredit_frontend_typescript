@@ -25,7 +25,7 @@ const Banner: React.FC = () => {
           <div className="grid grid-flow-row auto-rows-auto ">
             <div className="p-8 mb-2 font-medium m-5 text-9xl truncate text-right text-name">uCredit</div>
               <div className="p-3 mb-2 font-normal m-2 text-4xl truncate text-right pr-10 text-slogan text-opacity-70">
-                Your Academic Planning,<br></br> Made Simple
+                Your Academic Planning, <br></br> Made Simple
               </div>
             <div className="relative p-4 mb-2 text-right pr-10 border-blue-footer pr-16 pt-5">
               <img className="z-10 w-50 h-50 mr-1 scale-x-[-1] absolute left-4 top-8" src="/img/logo.png" alt="logo" />
