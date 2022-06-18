@@ -10,7 +10,7 @@ import Introduce from './Introduce';
  */
 const LandingPage: React.FC = () => {
   return (
-    <div className="flex flex-col w-full h-full bg-white">
+    <div className="flex flex-col w-full h-full bg-white fixed overflow-y-auto">
       <Header />
       <Banner />
       <Introduce />
