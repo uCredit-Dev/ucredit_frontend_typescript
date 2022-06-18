@@ -131,7 +131,7 @@ const CourseBar: FC<{
           location={'Distribution ' + distribution.name.replace(/\s/g, '')}
           hovered={hovered}
           left={true}
-          mode={mode}
+          mode={mode ? mode : ReviewMode.None}
         />
         <div className="truncate">{section}</div>
         <div>

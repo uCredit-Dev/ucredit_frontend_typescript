@@ -3,6 +3,7 @@ import { RootState } from '../appStore/store';
 import {
   CommentType,
   DroppableType,
+  Major,
   Plan,
   ThreadType,
   UserCourse,
@@ -18,8 +19,9 @@ type CurrentPlanSlice = {
   importing: boolean;
   threads: any;
   filteredThreads: any;
-  reviewedPlan: Plan;
-  selectedThread: string;
+  reviewedPlan: Plan | null;
+  selectedThread: string | null;
+  selectedMajor: Major | null;
 };
 
 export const initialPlan = {
@@ -44,6 +46,7 @@ const initialState: CurrentPlanSlice = {
   filteredThreads: {},
   reviewedPlan: null,
   selectedThread: null,
+  selectedMajor: null,
 };
 
 export const currentPlanSlice = createSlice({
@@ -119,6 +122,9 @@ export const currentPlanSlice = createSlice({
     updateSelectedThread: (state: any, action: PayloadAction<String>) => {
       state.selectedThread = action.payload;
     },
+    updateSelectedMajor: (state: any, action: PayloadAction<Major>) => {
+      state.selectedMajor = action.payload;
+    },
   },
 });
 
@@ -135,6 +141,7 @@ export const {
   updateReviewedPlan,
   updateCurrentComment,
   updateSelectedThread,
+  updateSelectedMajor,
 } = currentPlanSlice.actions;
 
 // The function below is called a selector and allows us to select a value from
@@ -157,5 +164,7 @@ export const selectReviewedPlan = (state: RootState) =>
   state.currentPlan.reviewedPlan;
 export const selectSelectedThread = (state: RootState) =>
   state.currentPlan.selectedThread;
+export const selectSelectedMajor = (state: RootState) =>
+  state.currentPlan.selectedMajor;
 
 export default currentPlanSlice.reducer;
