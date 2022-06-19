@@ -15,8 +15,8 @@ const Footer: React.FC = () => {
             <img className="w-12 h-12 mr-1 scale-x-[-1]" src="/img/logo.png" alt="logo" />
                 
             <div
-              className="text-2xl cursor-pointer text-blue-header self-center"
-              onClick={() => router.push('/login')}
+              className="text-3xl cursor-pointer text-blue-header self-center"
+              onClick={() => router.push('/')}
             >
               uCredit
             </div>

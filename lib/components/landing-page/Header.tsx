@@ -7,14 +7,14 @@ const Links: React.FC = () => {
   return (
     <div className="sm:space-x-5">
       <button
-        className="w-full sm:w-auto px-3 py-1 hover:text-blue-header hover:bg-blue-footer rounded-[13px] transition duration-100 ease-in"
+        className="w-full hover:bg-slate-300 text-lg sm:w-auto px-3 py-1 sm:hover:text-blue-header sm:hover:bg-blue-footer sm:rounded-[13px] transition duration-100 ease-in"
         onClick={() => router.push('/about')}
       >
         About
       </button>
 
       <button
-        className="w-full sm:w-auto px-3 py-1 hover:text-blue-header hover:bg-blue-footer rounded-[13px] transition duration-100 ease-in"
+        className="w-full hover:bg-slate-300 text-lg sm:w-auto px-3 py-1 sm:hover:text-blue-header sm:hover:bg-blue-footer sm:rounded-[13px] transition duration-100 ease-in"
         onClick={() => router.push('/team')}
       >
         Team
@@ -22,14 +22,14 @@ const Links: React.FC = () => {
 
       <a href="https://ucredit-docs.herokuapp.com/">
         <button 
-          className="w-full sm:w-auto px-3 py-1 hover:text-blue-header hover:bg-blue-footer rounded-[13px] transition duration-100 ease-in"
+          className="w-full hover:bg-slate-300 text-lg sm:w-auto px-3 py-1 sm:hover:text-blue-header sm:hover:bg-blue-footer sm:rounded-[13px] transition duration-100 ease-in"
         >
           Docs
         </button>
       </a>
 
       <button
-        className="w-full sm:w-auto px-3 py-1 text-blue-header bg-blue-footer border hover:text-blue-footer hover:bg-blue-header border-blue-footer rounded-[13px] transition duration-100 ease-in"
+        className="w-full hover:bg-slate-300 text-lg sm:w-auto px-3 py-1 sm:text-blue-header sm:bg-blue-footer sm:border sm:hover:text-blue-footer sm:hover:bg-blue-header sm:border-blue-footer sm:rounded-[13px] transition duration-100 ease-in"
         onClick={() => router.push('/login')}
       >
         Log in
@@ -61,8 +61,8 @@ const Header: React.FC = () => {
             <img className="w-12 h-12 mr-1 scale-x-[-1]" src="/img/logo.png" alt="logo" />
                 
             <div
-              className="text-2xl cursor-pointer text-blue-footer self-center"
-              onClick={() => router.push('/login')}
+              className="text-3xl cursor-pointer text-blue-footer self-center"
+              onClick={() => router.push("/")}
             >
               uCredit
             </div>
@@ -80,7 +80,7 @@ const Header: React.FC = () => {
           </button>
 
           {showMenu && (
-            <div className="absolute w-20 top-12 space-y-1 right-0 z-100 bg-blue-header shadow-xl rounded-[13px]">
+            <div className="absolute w-20 top-12 space-y-1 right-0 z-100 bg-white shadow-xl">
               <Links />
             </div>
           )}
