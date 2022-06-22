@@ -1,8 +1,12 @@
 const SearchBarArea: React.FC = () => {
   return (
-    <div className="flex justify-center items-center h-60 bg-yellow-200">
-      <div className="sticky top-16 h-12 bg-neutral-300">
-        Search Bar
+    <div className="flex justify-center items-center h-60 bg-white">
+      <div className="sticky top-16 w-1/2 flex justify-center items-center">
+        <input className="h-12 w-full pl-12 pr-4 rounded-3xl border-2 
+        border-solid border-gray-600"
+        type="text" placeholder="Search"/>
+        {/* This is where the icon goes */}
+        {/*<p className="absolute left-2">test</p>*/}
       </div>
     </div>
   );
