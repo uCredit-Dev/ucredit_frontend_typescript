@@ -102,6 +102,7 @@ module.exports = {
         ],
       },
       screens: {
+        ml: '850px',
         medium: '1500px',
         tight: { max: '1200px' },
         thin: { max: '820px' },
