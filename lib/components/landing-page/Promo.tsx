@@ -64,17 +64,17 @@ const Mobile: React.FC = () => {
                 <br></br><br></br><br></br><br></br>
                 <img className="rounded-md drop-shadow-2xl" alt="" src={d.img} />
 
-                <div className="flex flex-column align-middle" key={d.mobiletitle}>
-                  <div className="flex bg-gray-200 rounded-md">
+                {/* <div className="flex flex-column align-middle" key={d.mobiletitle}> */}
+                  <div className="bg-gray-200 rounded-md">
                     <img className="rounded-md" alt="" src={d.mobileimg} />
                   </div>
                   
-                  <div className="align-middle text-left">
+                  <div className="ml-20 -mt-10 align-middle text-left">
                     <div className="text-xl text-blue-footer mb-10 align-middle">{d.mobiletitle}</div>
                     <div className="text-black ">{d.mobiledesc}</div>
                   </div>
                   
-                </div>
+                {/* </div> */}
               </>
             );
           })}
