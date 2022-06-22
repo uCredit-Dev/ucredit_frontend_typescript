@@ -28,7 +28,7 @@ const Mobile: React.FC = () => {
 
     <div className="grid grid-cols-1 content-center items-center font-landingPage font-bold text-blue-footer text-left ml-20">
       <div className="text-2xl ">Our Features</div>
-      <img className="w-2/3 absolute left-[60vw] top-[75vh]" src="/img/logo.png" alt="logo" />
+      <img className="w-2/3 absolute left-[60vw] top-[65vh]" src="/img/logo.png" alt="logo" />
       <div>
         {data.map((d) => {
           return (
@@ -56,7 +56,6 @@ const Introduce: React.FC = () => {
       <div className="hidden sm:block"><Laptop /></div>
       <div className="block sm:hidden"><Mobile /></div>
     </>
-
   );
 };
 
