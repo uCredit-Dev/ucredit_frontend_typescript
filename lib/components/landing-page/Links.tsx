@@ -2,6 +2,7 @@ import { useState } from 'react';
 import { useRouter } from 'next/router';
 import 'react-responsive-carousel/lib/styles/carousel.min.css'; // requires a loader
 import ApplicationFormPopup from '../popups/ApplicationFormPopup';
+import Github from './Github.svg';
 
 /**
  * Links to Github and Docs
@@ -50,6 +51,7 @@ const Mobile: React.FC = () => {
       <div className="grid grid-rows-2 gap-2">
         <div>
           <button className=" w-80 px-12 py-3 mr-4 border-2 hover:text-white hover:bg-blue-footer rounded-[50px] font-medium text-xl">
+            {/* <Github className="scale-[90%]"/> */}
             Github
           </button>
         </div>
