@@ -10,8 +10,8 @@ const Promo: React.FC = () => {
   return (
     <>
    
-    <img src="/img/landing-page/wave2.png" alt="cartoon schedule" />
-    <div className="flex flex-col px-16 pb-8  text-center bg-blue-header text-blue-footer font-landingPage">
+    <img src="/img/landing-page/wave2.png" alt="wavy pattern" />
+    <div className="flex flex-col px-16 pb-8 text-center bg-blue-header text-blue-footer font-landingPage">
       <div>
         {data.map((d) => {
           return !d.order ? (
