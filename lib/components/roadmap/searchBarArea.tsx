@@ -1,3 +1,5 @@
+import { FiSearch } from 'react-icons/fi';
+
 const SearchBarArea: React.FC = () => {
   return (
     <div className="flex justify-center items-center h-60 bg-white">
@@ -7,6 +9,7 @@ const SearchBarArea: React.FC = () => {
         type="text" placeholder="Search"/>
         {/* This is where the icon goes */}
         {/*<p className="absolute left-2">test</p>*/}
+        <FiSearch size="28" className="absolute left-3"/>
       </div>
     </div>
   );
