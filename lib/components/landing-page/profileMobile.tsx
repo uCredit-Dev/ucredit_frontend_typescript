@@ -4,13 +4,11 @@ import 'react-responsive-carousel/lib/styles/carousel.min.css'; // requires a lo
 import ApplicationFormPopup from '../popups/ApplicationFormPopup';
 
 const ProfileMobile: React.FC = () => {
-    const [activateEmailPopup, setActivateEmailPopup] = useState<boolean>(false);
-    const router = useRouter();
   
     return (
       <>
         <div className="justify-center text-center font-landingPage flex box-border border-4 border-[#C6E8FF] h-[212px] w-[145px] p-4 rounded-[20px] bg-white ">
-			<div className="text-[18px] flex flex-col">
+            <div className="text-[18px] flex flex-col">
                 <div className="h-[55%]">
                     {/* replaced by profile photo */}
                     <svg width="74" height="75" viewBox="0 0 74 75" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -50,3 +48,4 @@ const ProfileMobile: React.FC = () => {
   };
   
   export default ProfileMobile;
+  
