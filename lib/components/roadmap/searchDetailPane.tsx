@@ -14,14 +14,13 @@ const SearchDetailPane: React.FC = () => {
         child:py-2 child:bg-white child:w-full child:text-left child:px-3
         child:outline child:outline-gray-400 child:outline-1 
         hover:child:underline hover:child:bg-gray-200">
-          <button>B.S. In Computer Science</button>
-          <button>B.A. In Computer Science</button>
-          <button>B.S. In Computer Science</button>
-          <button>B.A. In Computer Science</button>
-          <button>B.S. In Computer Science</button>
-          <button>B.A. In Computer Science</button>
-          <button>B.S. In Computer Science</button>
-          <button>B.A. In Computer Science</button>
+          <button>B.S. in Computer Science</button>
+          <button>B.A. in Computer Science</button>
+          <button>B.S. in Electrical Engineering</button>
+          <button>B.A. in Mathematics</button>
+          <button>B.S. in Public Health</button>
+          <button>B.A. in Something Else</button>
+          <button>B.S. in Something Else</button>
         </ul>
       </div>
     </div>
