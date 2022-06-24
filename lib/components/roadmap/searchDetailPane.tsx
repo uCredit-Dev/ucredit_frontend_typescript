@@ -23,6 +23,10 @@ const SearchDetailPane: React.FC = () => {
           <button>B.S. in Something Else</button>
         </ul>
       </div>
+      <p className="relative left-2 mt-4">
+        <input type="checkbox" className="mr-2"/>
+        My favorites only
+      </p>
     </div>
   );
 }
