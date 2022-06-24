@@ -19,6 +19,7 @@ import {
   updateSearchTime,
   updateSearchFilters,
   updateInspectedCourse,
+  updateCartAdd,
 } from '../../../../slices/searchSlice';
 import {
   Course,
@@ -159,6 +160,7 @@ const SisCourse: FC<{
   const addPrereq = () => {
     dispatch(updateShowingCart(false));
     dispatch(updateAddingPrereq(true));
+    dispatch(updateCartAdd(true));
     cleanup();
   };
 

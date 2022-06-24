@@ -207,7 +207,7 @@ const DistributionBarsJSX: FC<{ major: Major }> = ({ major }) => {
             (req.required_credits === 0 && req.fulfilled_credits === 0))
         ) {
           reqs[i][1][j].fulfilled_credits += parseInt(courseObj.credits);
-          if (j !== 0) inNonExclusive = true;
+          inNonExclusive = true;
         }
       }),
     );

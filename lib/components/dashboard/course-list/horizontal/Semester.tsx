@@ -10,9 +10,11 @@ import {
 import { useDispatch, useSelector } from 'react-redux';
 import {
   clearSearch,
+  selectCartAdd,
   selectInspectedCourse,
   selectPlaceholder,
   selectVersion,
+  updateCartAdd,
   updateSearchStatus,
   updateSearchTime,
 } from '../../../../slices/searchSlice';
@@ -32,6 +34,7 @@ import CourseDraggable from './CourseDraggable';
 import {
   selectAddingPrereq,
   updateAddingPrereq,
+  updateShowingCart,
 } from '../../../../slices/popupSlice';
 import { toast } from 'react-toastify';
 import { getAPI } from '../../../../resources/assets';
@@ -68,6 +71,7 @@ const Semester: FC<{
   const placeholder = useSelector(selectPlaceholder);
   const currentCourses = useSelector(selectCurrentPlanCourses);
   const inspected = useSelector(selectInspectedCourse);
+  const cartOpen = useSelector(selectCartAdd);
 
   // State used to control whether dropdown is opened or closed
   const [totalCredits, setTotalCredits] = useState<number>(0);
@@ -183,7 +187,9 @@ const Semester: FC<{
    */
   const addPrereq = () => {
     updateDistributions();
-    dispatch(clearSearch());
+    if (cartOpen) dispatch(updateShowingCart(true));
+    else dispatch(clearSearch());
+    dispatch(updateCartAdd(false));
   };
 
   /**
