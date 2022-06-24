@@ -34,6 +34,7 @@ import CourseDraggable from './CourseDraggable';
 import {
   selectAddingPrereq,
   updateAddingPrereq,
+  updateInfoPopup,
   updateShowingCart,
 } from '../../../../slices/popupSlice';
 import { toast } from 'react-toastify';
@@ -187,9 +188,6 @@ const Semester: FC<{
    */
   const addPrereq = () => {
     updateDistributions();
-    if (cartOpen) dispatch(updateShowingCart(true));
-    else dispatch(clearSearch());
-    dispatch(updateCartAdd(false));
   };
 
   /**
@@ -253,7 +251,10 @@ const Semester: FC<{
       }
       dispatch(updatePlanList(newPlanList));
       dispatch(updateAddingPrereq(false));
-      dispatch(clearSearch());
+      dispatch(updateInfoPopup(true));
+      if (cartOpen) dispatch(updateShowingCart(true));
+      else dispatch(clearSearch());
+      dispatch(updateCartAdd(false));
       toast.success(version.title + ' added!');
     } else {
       console.log('Failed to add', data.errors);

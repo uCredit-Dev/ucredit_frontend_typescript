@@ -23,6 +23,7 @@ type CurrentPlanSlice = {
   reviewedPlan: Plan | null;
   selectedThread: string | null;
   selectedMajor: Major | null;
+  selectedDistribution: [string, requirements[]];
 };
 
 export const initialPlan = {
@@ -48,6 +49,7 @@ const initialState: CurrentPlanSlice = {
   reviewedPlan: null,
   selectedThread: null,
   selectedMajor: null,
+  selectedDistribution: ['', []],
 };
 
 export const currentPlanSlice = createSlice({
@@ -56,7 +58,6 @@ export const currentPlanSlice = createSlice({
   reducers: {
     updateSelectedPlan: (state: any, action: PayloadAction<Plan>) => {
       state.plan = { ...action.payload };
-      console.log(action.payload.majors);
       const majorObj: Major | null =
         action.payload.majors.length > 0
           ? getMajorFromCommonName(action.payload.majors[0])
@@ -68,6 +69,13 @@ export const currentPlanSlice = createSlice({
       action: PayloadAction<[string, requirements[]][]>,
     ) => {
       state.distributions = [...action.payload];
+      if (state.selectedDistribution)
+        for (let distr of action.payload) {
+          if (distr[0] === state.selectedDistribution[0]) {
+            state.selectedDistribution = [...distr];
+            break;
+          }
+        }
     },
     updateCurrentPlanCourses: (
       state: any,
@@ -132,6 +140,12 @@ export const currentPlanSlice = createSlice({
     updateSelectedMajor: (state: any, action: PayloadAction<Major>) => {
       state.selectedMajor = action.payload;
     },
+    updateSelectedDistribution: (
+      state: any,
+      action: PayloadAction<[string, requirements[]]>,
+    ) => {
+      state.selectedDistribution = action.payload;
+    },
   },
 });
 
@@ -149,6 +163,7 @@ export const {
   updateCurrentComment,
   updateSelectedThread,
   updateSelectedMajor,
+  updateSelectedDistribution,
 } = currentPlanSlice.actions;
 
 // The function below is called a selector and allows us to select a value from
@@ -173,5 +188,7 @@ export const selectSelectedThread = (state: RootState) =>
   state.currentPlan.selectedThread;
 export const selectSelectedMajor = (state: RootState) =>
   state.currentPlan.selectedMajor;
+export const selectSelectedDistribution = (state: RootState) =>
+  state.currentPlan.selectedDistribution;
 
 export default currentPlanSlice.reducer;
