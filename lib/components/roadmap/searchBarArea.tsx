@@ -3,7 +3,8 @@ import { FiSearch } from 'react-icons/fi';
 const SearchBarArea: React.FC = () => {
   return (
     <div className="flex justify-center items-center h-60 bg-white">
-      <div className="sticky top-16 w-1/2 flex justify-center items-center">
+      <div className="sticky top-20 w-1/2 flex justify-center items-center
+      py-2">
         <input className="h-12 w-full pl-12 pr-4 rounded-3xl border-2 
         border-solid border-gray-600"
         type="text" placeholder="Search"/>
