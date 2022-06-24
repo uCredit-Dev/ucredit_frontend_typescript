@@ -18,10 +18,9 @@ const Laptop: React.FC = () => {
               <>
                 <br></br><br></br><br></br><br></br>
                 <div className="flex flex-row" key={d.title}>
-                  <div className="w-2/3 pt-5">
-
+                  <div className="w-2/3 pt-10 pr-10 items-center">
                     <div className="text-4xl mb-10 align-middle">{d.title}</div>
-                    <div className="text-black">{d.desc}</div>
+                    <div className="text-black text-xl">{d.desc}</div>
                   </div>
 
                   <div className="flex justify-center w-2/3 bg-gray-200 rounded-md">
@@ -36,9 +35,10 @@ const Laptop: React.FC = () => {
                   <div className="flex justify-center w-1/3 h-1/3 bg-gray-200 rounded-md">
                     <img className="rounded-md drop-shadow-2xl" alt="" src={d.img} />
                   </div>
-                  <div className="w-2/3 p-5 align-middle">
+
+                  <div className="w-2/3 p-10 align-middle items-center">
                     <div className="text-4xl mb-10">{d.title}</div>
-                    <div className="text-black text-1xl mb-8">{d.desc}</div>
+                    <div className="text-black text-xl">{d.desc}</div>
                   </div>
                 </div>
               </>
@@ -54,9 +54,9 @@ const Laptop: React.FC = () => {
 
 const Mobile: React.FC = () => {
   return (
-    <div className="grid grid-cols-1 content-center items-center font-landingPage font-bold text-blue-footer text-left">
+    <div className="grid grid-cols-1 content-center items-center font-landingPage text-blue-footer text-left">
       <img src="/img/landing-page/wave2.png" alt="wavy pattern" />
-      <div className="flex flex-col px-16 pb-8 text-center bg-blue-header text-blue-footer font-landingPage">
+      <div className="flex flex-col px-10 pb-8 text-center bg-blue-header text-blue-footer font-landingPage">
         <div>
           {data.map((d) => {
             return (
@@ -64,21 +64,33 @@ const Mobile: React.FC = () => {
                 <br></br><br></br><br></br><br></br>
                 <img className="rounded-md drop-shadow-2xl" alt="" src={d.img} />
 
-                {/* <div className="flex flex-column align-middle" key={d.mobiletitle}> */}
-                  <div className="bg-gray-200 rounded-md">
+                <div className='pt-10'>
+                  <div className="bg-gray-100 rounded-md">
                     <img className="rounded-md" alt="" src={d.mobileimg} />
                   </div>
-                  
-                  <div className="ml-20 -mt-10 align-middle text-left">
-                    <div className="text-xl text-blue-footer mb-10 align-middle">{d.mobiletitle}</div>
-                    <div className="text-black ">{d.mobiledesc}</div>
+
+                  <div className="ml-12 -mt-10 align-middle text-left items-center">
+                    <div className="text-xl font-bold text-blue-footer mb-5 align-middle">{d.mobiletitle}</div>
+                    <div className="text-black">{d.mobiledesc}</div>
                   </div>
-                  
-                {/* </div> */}
+                </div>
               </>
             );
           })}
         </div>
+
+
+        <div className='pt-10'>
+          <div className="bg-gray-100 rounded-md w-90">
+            <img className="rounded-md" alt="" src='/img/landing-page/GraduateMobile.png' />
+          </div>
+          <div className="ml-12 -mt-10 align-middle text-left items-center">
+            <div className="text-xl font-bold text-blue-footer mb-5 align-middle">Graduate with assurance</div>
+            <div className="text-black">TO BE ADDED</div>
+          </div>
+        </div>
+
+
       </div>
     </div >
 

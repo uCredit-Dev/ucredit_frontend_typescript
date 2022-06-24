@@ -1,7 +1,7 @@
 const data = [
   {
     title: 'Find a class that fits your needs',
-    desc: 'Courses and degree information are sourced from Johns Hopkins University.',
+    desc: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nam tincidunt auctor sollicitudin. Donec a pharetra lectus. Pellentesque posuere vel turpis in elementum.',
     img: '/img/landing-page/FindClass.png',
     mobileimg: '/img/landing-page/FindClassMobile.png',
     mobiletitle: 'Find the right class',
@@ -10,7 +10,7 @@ const data = [
   },
   {
     title: 'Learn about the course',
-    desc: 'Degree progress and prerequisites checks, all done for you.',
+    desc: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nam tincidunt auctor sollicitudin. Donec a pharetra lectus. Pellentesque posuere vel turpis in elementum.',
     img: '/img/landing-page/LearnCourse.png',
     mobileimg: '/img/landing-page/LearnCourseMobile.png',
     mobiletitle: 'Learn about any course',
@@ -19,7 +19,7 @@ const data = [
   },
   {
     title: 'Build a roadmap for your education',
-    desc: 'A toolbox of features to ease your academic planning process.',
+    desc: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nam tincidunt auctor sollicitudin. Donec a pharetra lectus. Pellentesque posuere vel turpis in elementum.',
     img: '/img/landing-page/RoadMap.png',
     mobileimg: '/img/landing-page/RoadMapMobile.png',
     mobiletitle: 'Build your education roadmap',

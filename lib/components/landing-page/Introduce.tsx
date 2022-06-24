@@ -26,7 +26,7 @@ const Laptop: React.FC = () => {
 const Mobile: React.FC = () => {
   return (
 
-    <div className="grid grid-cols-1 content-center items-center font-landingPage font-bold text-blue-footer text-left ml-20">
+    <div className="grid grid-cols-1 content-center items-center font-landingPage font-bold text-blue-footer text-left ml-10 py-5">
       <div className="text-2xl ">Our Features</div>
       <img className="w-2/3 absolute left-[60vw] top-[65vh]" src="/img/logo.png" alt="logo" />
       <div>
@@ -35,10 +35,10 @@ const Mobile: React.FC = () => {
             <>
             <br></br>
             <div className="flex items-center flex-column align-middle" key={d.title}>
-              <div className="flex bg-gray-200 rounded-md">
+              <div className="flex bg-gray-200 rounded-md ">
                 <img className="rounded-md" alt="" src={d.img} />
               </div>
-              <div className="flex p-3">
+              <div className="flex p-2">
                 <div className="text-l text-blue-footer">{d.title}</div>
               </div>
               
