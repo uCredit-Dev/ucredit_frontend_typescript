@@ -7,30 +7,34 @@ const Team: React.FC = () => {
   return (
     <div>
       <Header />
-      <div className="flex justify-between space-x-20 p-10 bg-white">
+      <div className="grid grid-rows-3 space-y-20 p-10 bg-white">
+        <div className="container flex space-x-20 px-24">
 
-        <Card 
-        name="dog"
-        role="software developer"
+        <Card
+        name="Dog"
+        role="Software developer"
         img="https://www.kindacode.com/wp-content/uploads/2022/05/cute.jpeg"
-        class="2025"
-        github="https://iconmonstr.com/linkedin-2-svg/"
-        linkedin="https://iconmonstr.com/linkedin-2-svg/"/>
-        <Card 
-        name="dog"
-        role="software developer"
-        img="https://www.kindacode.com/wp-content/uploads/2022/05/cute.jpeg"
-        class="2025"
+        class="2026"
         github="https://iconmonstr.com/linkedin-2-svg/"
         linkedin="https://iconmonstr.com/linkedin-2-svg/"/>
 
         <Card 
-        name="dog"
-        role="software developer"
+        name="Dog"
+        role="Software developer"
         img="https://www.kindacode.com/wp-content/uploads/2022/05/cute.jpeg"
-        class="2025"
+        class="2026"
         github="https://iconmonstr.com/linkedin-2-svg/"
         linkedin="https://iconmonstr.com/linkedin-2-svg/"/>
+
+        <Card 
+        name="Dog"
+        role="Software developer"
+        img="https://www.kindacode.com/wp-content/uploads/2022/05/cute.jpeg"
+        class="2026"
+        github="https://iconmonstr.com/linkedin-2-svg/"
+        linkedin="https://iconmonstr.com/linkedin-2-svg/"/>
+
+        </div>
 
       </div>
 
