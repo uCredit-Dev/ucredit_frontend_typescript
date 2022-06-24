@@ -196,18 +196,17 @@ const Semester: FC<{
   const updateDistributions = (): void => {
     if (version !== 'None') {
       const body = {
+        ...version,
         user_id: user._id,
         year_id: semesterYear._id,
         plan_id: currentPlan._id,
-        title: version.title,
         term: semesterName === 'All' ? 'fall' : semesterName.toLowerCase(),
         year: semesterYear._id,
         credits: version.credits === '' ? 0 : version.credits,
         distribution_ids: currentPlan.distribution_ids,
         isPlaceholder: placeholder,
-        number: version.number,
         area: inspectedArea,
-        preReq: version.preReq,
+        version: semesterName + ' ' + semesterYear.year,
         expireAt:
           user._id === 'guestUser'
             ? Date.now() + 60 * 60 * 24 * 1000
