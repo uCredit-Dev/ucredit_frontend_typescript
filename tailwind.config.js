@@ -143,5 +143,9 @@ module.exports = {
       fill: ['hover'],
     },
   },
-  plugins: [],
+  plugins: [
+    function ({ addVariant }) {
+        addVariant('child', '& > *');
+    }
+],
 };
