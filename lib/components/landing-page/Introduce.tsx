@@ -34,11 +34,14 @@ const Mobile: React.FC = () => {
           return (
             <>
             <br></br>
-            <div className="flex flex-column align-left" key={d.title}>
+            <div className="flex items-center flex-column align-middle" key={d.title}>
               <div className="flex bg-gray-200 rounded-md">
                 <img className="rounded-md" alt="" src={d.img} />
               </div>
-              <div className="text-xl text-blue-footer">{d.title}</div>
+              <div className="flex p-3">
+                <div className="text-l text-blue-footer">{d.title}</div>
+              </div>
+              
             </div>
             </>
           )
