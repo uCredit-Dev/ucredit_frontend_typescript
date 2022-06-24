@@ -10,7 +10,7 @@ const SearchDetailPane: React.FC = () => {
         <input className="w-full h-10 px-3 rounded-t-2xl outline 
         outline-gray-600 outline-2 mb-[2px]"
         type='text' placeholder="search or select major"/>
-        <ul className="flex flex-col h-32 overflow-y-scroll rounded-b-2xl
+        <ul className="flex flex-col h-40 overflow-y-scroll rounded-b-2xl
         child:py-2 child:bg-white child:w-full child:text-left child:px-3
         child:outline child:outline-gray-400 child:outline-1 
         hover:child:underline hover:child:bg-gray-200">
@@ -23,6 +23,10 @@ const SearchDetailPane: React.FC = () => {
           <button>B.S. in Something Else</button>
         </ul>
       </div>
+      <p className="relative left-2 mt-4">
+        <input type="checkbox" className="mr-2"/>
+        My favorites only
+      </p>
     </div>
   );
 }
