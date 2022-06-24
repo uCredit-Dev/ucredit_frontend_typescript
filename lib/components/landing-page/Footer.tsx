@@ -28,10 +28,15 @@ const Footer: React.FC = () => {
         
         <div className="flex flex-row space-x-5 justify-between">
           
-          <a href="#!" className="bg-blue-header w-7 h-7 rounded-full">
-            <svg xmlns="http://www.w3.org/2000/svg" className="text-blue-footer p-1" 
-              viewBox="0 0 20 20" fill="currentColor">
-              <path fill-rule="evenodd" d="M14.243 5.757a6 6 0 10-.986 9.284 1 1 0 111.087 1.678A8 8 0 1118 10a3 3 0 01-4.8 2.401A4 4 0 1114 10a1 1 0 102 0c0-1.537-.586-3.07-1.757-4.243zM12 10a2 2 0 10-4 0 2 2 0 004 0z" clip-rule="evenodd" />
+          <a href="https://www.linkedin.com/company/ucredit-jhu/about/" className="bg-blue-header w-7 h-7 rounded-full">
+
+            <svg
+              className="text-blue-footer p-1 fill-current"
+              xmlns="http://www.w3.org/2000/svg"
+              viewBox="0 0 448 512">
+              <path
+                d="M100.28 448H7.4V148.9h92.88zM53.79 108.1C24.09 108.1 0 83.5 0 53.8a53.79 53.79 0 0 1 107.58 0c0 29.7-24.1 54.3-53.79 54.3zM447.9 448h-92.68V302.4c0-34.7-.7-79.2-48.29-79.2-48.29 0-55.69 37.7-55.69 76.7V448h-92.78V148.9h89.08v40.8h1.3c12.4-23.5 42.69-48.3 87.88-48.3 94 0 111.28 61.9 111.28 142.3V448z"
+              ></path>
             </svg>
           </a>
 

@@ -7,14 +7,14 @@ const Links: React.FC = () => {
   return (
     <div className="sm:space-x-5">
       <button
-        className="w-full hover:bg-slate-300 text-lg sm:w-auto px-3 py-1 sm:hover:text-blue-header sm:hover:bg-blue-footer sm:rounded-[13px] transition duration-100 ease-in"
+        className="w-full hover:bg-slate-300 text-lg rounded-lg sm:w-auto px-3 py-1 sm:hover:text-blue-header sm:hover:bg-blue-footer sm:rounded-[13px] transition duration-100 ease-in"
         onClick={() => router.push('/about')}
       >
         About
       </button>
 
       <button
-        className="w-full hover:bg-slate-300 text-lg sm:w-auto px-3 py-1 sm:hover:text-blue-header sm:hover:bg-blue-footer sm:rounded-[13px] transition duration-100 ease-in"
+        className="w-full hover:bg-slate-300 text-lg rounded-lg sm:w-auto px-3 py-1 sm:hover:text-blue-header sm:hover:bg-blue-footer sm:rounded-[13px] transition duration-100 ease-in"
         onClick={() => router.push('/team')}
       >
         Team
@@ -22,14 +22,14 @@ const Links: React.FC = () => {
 
       <a href="https://ucredit-docs.herokuapp.com/">
         <button 
-          className="w-full hover:bg-slate-300 text-lg sm:w-auto px-3 py-1 sm:hover:text-blue-header sm:hover:bg-blue-footer sm:rounded-[13px] transition duration-100 ease-in"
+          className="w-full hover:bg-slate-300 text-lg rounded-lg sm:w-auto px-3 py-1 sm:hover:text-blue-header sm:hover:bg-blue-footer sm:rounded-[13px] transition duration-100 ease-in"
         >
           Docs
         </button>
       </a>
 
       <button
-        className="w-full hover:bg-slate-300 text-lg sm:w-auto px-3 py-1 sm:text-blue-header sm:bg-blue-footer sm:border sm:hover:text-blue-footer sm:hover:bg-blue-header sm:border-blue-footer sm:rounded-[13px] transition duration-100 ease-in"
+        className="w-full hover:bg-slate-300 text-lg rounded-lg sm:w-auto px-3 py-1 sm:text-blue-header sm:bg-blue-footer sm:border sm:hover:text-blue-footer sm:hover:bg-blue-header sm:border-blue-footer sm:rounded-[13px] transition duration-100 ease-in"
         onClick={() => router.push('/login')}
       >
         Log in
@@ -77,7 +77,7 @@ const Header: React.FC = () => {
           </button>
 
           {showMenu && (
-            <div className="absolute w-20 top-12 space-y-1 right-0 z-100 bg-white shadow-xl">
+            <div className="absolute w-20 top-12 space-y-1 right-0 z-100 bg-white shadow-xl rounded-lg">
               <Links />
             </div>
           )}
