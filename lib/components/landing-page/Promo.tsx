@@ -1,7 +1,4 @@
 import data from './promoData';
-import BgSVG from './BgSVG.svg';
-import { ReactComponent as BGSVG } from './BgSVG.svg'
-import Bird from './BlueJay.svg';
 
 /**
  * Contains features and values that our app embraces.
@@ -9,14 +6,16 @@ import Bird from './BlueJay.svg';
 const Laptop: React.FC = () => {
   return (
     <>
-
       <img src="/img/landing-page/wave2.png" alt="wavy pattern" />
       <div className="flex flex-col px-16 pb-8 text-center bg-blue-header text-blue-footer font-landingPage">
         <div>
           {data.map((d) => {
             return !d.order ? (
               <>
-                <br></br><br></br><br></br><br></br>
+                <br></br>
+                <br></br>
+                <br></br>
+                <br></br>
                 <div className="flex flex-row" key={d.title}>
                   <div className="w-2/3 pt-10 pr-10 items-center">
                     <div className="text-4xl mb-10 align-middle">{d.title}</div>
@@ -24,16 +23,27 @@ const Laptop: React.FC = () => {
                   </div>
 
                   <div className="flex justify-center w-2/3 bg-gray-200 rounded-md">
-                    <img className="rounded-md drop-shadow-2xl" alt="" src={d.img} />
+                    <img
+                      className="rounded-md drop-shadow-2xl"
+                      alt=""
+                      src={d.img}
+                    />
                   </div>
                 </div>
               </>
             ) : (
               <>
-                <br></br><br></br><br></br><br></br>
+                <br></br>
+                <br></br>
+                <br></br>
+                <br></br>
                 <div className="flex flex-row align-middle" key={d.title}>
                   <div className="flex justify-center w-1/3 h-1/3 bg-gray-200 rounded-md">
-                    <img className="rounded-md drop-shadow-2xl" alt="" src={d.img} />
+                    <img
+                      className="rounded-md drop-shadow-2xl"
+                      alt=""
+                      src={d.img}
+                    />
                   </div>
 
                   <div className="w-2/3 p-10 align-middle items-center">
@@ -46,10 +56,8 @@ const Laptop: React.FC = () => {
           })}
         </div>
       </div>
-
     </>
   );
-
 };
 
 const Mobile: React.FC = () => {
@@ -61,16 +69,25 @@ const Mobile: React.FC = () => {
           {data.map((d) => {
             return (
               <>
-                <br></br><br></br><br></br><br></br>
-                <img className="rounded-md drop-shadow-2xl" alt="" src={d.img} />
+                <br></br>
+                <br></br>
+                <br></br>
+                <br></br>
+                <img
+                  className="rounded-md drop-shadow-2xl"
+                  alt=""
+                  src={d.img}
+                />
 
-                <div className='pt-10'>
+                <div className="pt-10">
                   <div className="bg-gray-100 rounded-md">
                     <img className="rounded-md" alt="" src={d.mobileimg} />
                   </div>
 
                   <div className="ml-12 -mt-10 align-middle text-left items-center">
-                    <div className="text-xl font-bold text-blue-footer mb-5 align-middle">{d.mobiletitle}</div>
+                    <div className="text-xl font-bold text-blue-footer mb-5 align-middle">
+                      {d.mobiletitle}
+                    </div>
                     <div className="text-black">{d.mobiledesc}</div>
                   </div>
                 </div>
@@ -79,30 +96,35 @@ const Mobile: React.FC = () => {
           })}
         </div>
 
-
-        <div className='pt-10'>
+        <div className="pt-10">
           <div className="bg-gray-100 rounded-md w-90">
-            <img className="rounded-md" alt="" src='/img/landing-page/GraduateMobile.png' />
+            <img
+              className="rounded-md"
+              alt=""
+              src="/img/landing-page/GraduateMobile.png"
+            />
           </div>
           <div className="ml-12 -mt-10 align-middle text-left items-center">
-            <div className="text-xl font-bold text-blue-footer mb-5 align-middle">Graduate with assurance</div>
+            <div className="text-xl font-bold text-blue-footer mb-5 align-middle">
+              Graduate with assurance
+            </div>
             <div className="text-black">TO BE ADDED</div>
           </div>
         </div>
-
-
       </div>
-    </div >
-
+    </div>
   );
-
 };
 
 const Promo: React.FC = () => {
   return (
     <>
-      <div className="hidden sm:block"><Laptop /></div>
-      <div className="block sm:hidden"><Mobile /></div>
+      <div className="hidden sm:block">
+        <Laptop />
+      </div>
+      <div className="block sm:hidden">
+        <Mobile />
+      </div>
     </>
   );
 };

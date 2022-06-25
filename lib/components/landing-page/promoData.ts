@@ -5,7 +5,8 @@ const data = [
     img: '/img/landing-page/FindClass.png',
     mobileimg: '/img/landing-page/FindClassMobile.png',
     mobiletitle: 'Find the right class',
-    mobiledesc: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. [...] Donec a pharetra lectus. Pellentesque posuere vel turpis in elementum.',
+    mobiledesc:
+      'Lorem ipsum dolor sit amet, consectetur adipiscing elit. [...] Donec a pharetra lectus. Pellentesque posuere vel turpis in elementum.',
     order: 1,
   },
   {
