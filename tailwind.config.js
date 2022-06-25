@@ -2,6 +2,9 @@ module.exports = {
   content: ['./pages/**/*.{js,ts,jsx,tsx}', './lib/**/*.{js,ts,jsx,tsx}'],
   theme: {
     extend: {
+      borderRadius: {
+        curvy: '50% 150px',
+      },
       minWidth: {
         yearMin: '250px',
         narrowest: '710px',
@@ -59,13 +62,12 @@ module.exports = {
         background: '#83B9FF',
         emphasis: '#fad4f5',
         blue: {
-          header: "#C6E8FF",
-          footer: "#0C3A76",
+          header: '#C6E8FF',
+          footer: '#0C3A76',
         },
-        name: "#38596C",
-        slogan: "#4851AA",
-        gray: "#5F5F5F",
-  
+        name: '#38596C',
+        slogan: '#4851AA',
+        gray: '#5F5F5F',
       },
       backgroundColor: {
         gray: {
@@ -84,7 +86,7 @@ module.exports = {
         theme: '#3168AF',
       },
       fontFamily: {
-        landingPage: ['Futura', ]
+        landingPage: ['Futura'],
       },
       fontSize: {
         myplan: ['2rem'],
