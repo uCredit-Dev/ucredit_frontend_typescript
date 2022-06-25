@@ -52,7 +52,8 @@
     "start": "next dev",
     "build": "next build",
     "start:prod": "next start",
-    "lint": "next lint",
+    "prettier": "npx prettier --write lib/ pages/",
+    "lint": "eslint --fix lib/ pages/ && next lint",
     "test": "react-scripts test",
     "//": "commented out to pass sonar report: test:ci: react-scripts test --testResultsProcessor ./node_modules/jest-sonar-reporter --collectCoverage --watchAll=false",
     "coverage": "npm run test -- --coverage ."

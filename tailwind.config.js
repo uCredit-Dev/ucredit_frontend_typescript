@@ -88,6 +88,13 @@ module.exports = {
       fontFamily: {
         landingPage: ['Futura'],
       },
+      boxShadow: {
+        // eslint-disable-next-line no-multi-str
+        card: '12px 0px 10px -15px rgba(31, 73, 125, 0.8), \
+        -12px 0 10px -15px rgba(31, 73, 125, 0.8), \
+        0px 12px 10px -15px rgba(31, 73, 125, 0.8), \
+        0px -12px 10px -15px rgba(31, 73, 125, 0.8)',
+      },
       fontSize: {
         myplan: ['2rem'],
         infocard: [
