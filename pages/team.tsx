@@ -1,7 +1,7 @@
 import Header from '../lib/components/landing-page/Header';
 import Footer from '../lib/components/landing-page/Footer';
 import Card from '../lib/components/landing-page/team-page/Card'
-
+import ProfileMobile from '../lib/components/landing-page/profileMobile'
 
 const Team: React.FC = () => {
   return (
@@ -35,7 +35,7 @@ const Team: React.FC = () => {
         linkedin="https://iconmonstr.com/linkedin-2-svg/"/>
 
         </div>
-
+        <ProfileMobile />
       </div>
 
       <Footer />
