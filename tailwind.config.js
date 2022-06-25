@@ -59,13 +59,12 @@ module.exports = {
         background: '#83B9FF',
         emphasis: '#fad4f5',
         blue: {
-          header: "#C6E8FF",
-          footer: "#0C3A76",
+          header: '#C6E8FF',
+          footer: '#0C3A76',
         },
-        name: "#38596C",
-        slogan: "#4851AA",
-        gray: "#5F5F5F",
-  
+        name: '#38596C',
+        slogan: '#4851AA',
+        gray: '#5F5F5F',
       },
       backgroundColor: {
         gray: {
@@ -84,14 +83,14 @@ module.exports = {
         theme: '#3168AF',
       },
       fontFamily: {
-        landingPage: ['Futura', ]
+        landingPage: ['Futura'],
       },
       boxShadow: {
         // eslint-disable-next-line no-multi-str
-        'card': '12px 0px 10px -15px rgba(31, 73, 125, 0.8), \
+        card: '12px 0px 10px -15px rgba(31, 73, 125, 0.8), \
         -12px 0 10px -15px rgba(31, 73, 125, 0.8), \
         0px 12px 10px -15px rgba(31, 73, 125, 0.8), \
-        0px -12px 10px -15px rgba(31, 73, 125, 0.8)'
+        0px -12px 10px -15px rgba(31, 73, 125, 0.8)',
       },
       fontSize: {
         myplan: ['2rem'],

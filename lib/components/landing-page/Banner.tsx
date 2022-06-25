@@ -18,7 +18,7 @@ const Laptop: React.FC = () => {
             Your Academic Planning, <br></br> Made Simple
           </div>
           <div className="z-10 mr-1 scale-[60%]  lg:scale-75 xl:scale-100 md:top-[22%] ml:top-[25rem] lg:top-[80%] top-[20%]  md:left-[-30%] lg:left-[-10%] xl:left-0 left-[-40%] absolute">
-          <Bird/>
+            <Bird />
           </div>
           <div className="relative z-10 p-4 mb-2 text-right border-blue-footer pr-16 pt-5">
             {/* <img className=" scale-x-[-1] absolute" src="/img/logo.png" alt="logo" /> */}
