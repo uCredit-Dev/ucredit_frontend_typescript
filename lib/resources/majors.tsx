@@ -1598,7 +1598,7 @@ const bsAMS: Major = {
           description:
             '<b>Calculus I</b> <br /> AS.110.108 Calculus I (Physical Sciences & Engineering) <br /> <i>OR</i> <br /> AS.110.113 Honors Single Variable Calculus <br />',
           required_credits: 4,
-          criteria: 'AS.110.108[C]',
+          criteria: 'AS.110.108[C]^OR^AS.110.113[C]',
         },
         {
           description:
@@ -1670,8 +1670,8 @@ const bsAMS: Major = {
         'Biological Models and Simulations and Nonlinear Dynamics of Biological Systems <br /> EN.601.220 Intermediate Programming' +
         '. <br /> NOTE: Students are strongly encouraged to fulfill this element of the requirement by taking EN.500.113 Gateway Computing: Python, and to do this in their first semester at Johns Hopkins University.',
       criteria:
-        'EN.500.112[C]^OR^EN.500.113[C]^OR^EN.500.114[C]^OR^AS.250.205[C]^OR^EN.553.281[C]^OR^EN.580.242[C]^OR^EN.580.244[C]^OR^' +
-        'EN.601.220[C]',
+        'EN.500.112[C]^OR^EN.500.113[C]^OR^EN.500.114[C]^OR^AS.250.205[C]^OR^EN.553.281[C]^OR^(EN.580.242[C]^AND^EN.580.244[C])^OR^' +
+        'EN.601.220[C]^OR^AS.250.205[C]',
     },
     {
       name: 'Area of Focus',
@@ -1725,7 +1725,7 @@ const bsAMS: Major = {
           required_credits: 6,
           description: '<b>Computational Mathematics</b>',
           criteria:
-            'EN.553.481[C]^OR^AS.110.445[C]^OR^EN.553.433[C]^OR^EN.553.467[C]^OR^EN.553.493[C]',
+            'EN.553.481[C]^AND^(AS.110.445[C]^OR^EN.553.433[C]^OR^EN.553.467[C]^OR^EN.553.493[C])',
         },
       ],
     },
@@ -2266,14 +2266,14 @@ const CS_Minor_New: Minor = {
   url: 'https://www.cs.jhu.edu/2021undergraduate-advising-manual/',
   distributions: [
     {
-      name: 'Computer Science',
-      required_credits: 21,
+      name: 'Core Courses',
+      required_credits: 11,
       min_credits_per_course: 1,
       description:
         "For more information please visit the <a href=' https://www.cs.jhu.edu/undergraduate-studies/academics/cs-minor/'>" +
         'minor degree requirement</a> section on the department website.',
       criteria:
-        'EN Computer Science[D]^OR^CSCI-OTHER[T]^OR^Gateway Computing[N]',
+        'Gateway Computing[N]^OR^EN.601.220[C]^OR^EN.601.226[C]',
       fine_requirements: [
         {
           description:
@@ -2292,25 +2292,65 @@ const CS_Minor_New: Minor = {
           required_credits: 4,
           criteria: 'EN.601.226[C]',
         },
+      ],
+    },
+    {
+      name: 'Upper-Level Courses',
+      required_credits: 9,
+      min_credits_per_course: 3,
+      pathing: true,
+      description:
+            '<b>Upper Level Undergraduate: </b><p>9 upper level CS credits that form a cohesive program of study and <b>must be approved by the computer science minor advisor</b>. One way is to choose all three courses within one or two area tag classifications (CSCI-APPL, CSCI-SOFT, CSCI-THRY, CSCI-RSNG, CSCI-SYST)</p>',
+      criteria: 'EN Computer Science[D]^AND^Upper Level Undergraduate[L]',
+      fine_requirements: [
         {
-          description:
-            '<b>Elective Course. Any CS course >= 601.200 that is at least three credits</b>',
-          required_credits: 3,
+          required_credits: 6,
+          description: '<b>Software</b>',
           criteria:
-            'EN.601.2[C]^OR^EN.600.2[C]^OR^EN.601.3[C]^OR^EN.600.3[C]^OR^EN.601.4[C]^OR^EN.600.4[C]^OR^EN.601.5[C]^OR^EN.600.5[C]^OR^EN.601.6[C]^OR^EN.600.6[C]^OR^EN.601.7[C]^OR^EN.600.7[C]',
-          exclusive: true,
+            'CSCI-SOFT[T]',
         },
+        {
+          required_credits: 6,
+          description: '<b>Applications</b>',
+          criteria:
+            'CSCI-APPL[T]',
+        },
+        {
+          required_credits: 6,
+          description: '<b>Systems</b>',
+          criteria:
+            'CSCI-SYST[T]',
+        },
+        {
+          required_credits: 6,
+          description: '<b>Reasoning</b>',
+          criteria:
+            'CSCI-RSNG[T]',
+        },
+        {
+          required_credits: 6,
+          description: '<b>Theory</b>',
+          criteria:
+            'CSCI-THRY[T]',
+        },
+      ],
+    },
+    {
+      name: 'Elective Course',
+      required_credits: 3,
+      min_credits_per_course: 3,
+      description:
+        '<b>Elective Course. Any CS course >= 601.200 that is at least three credits</b>',
+      exclusive: true,
+      criteria:
+        'EN.601.2[C]^OR^EN.600.2[C]^OR^EN.601.3[C]^OR^EN.600.3[C]^OR^EN.601.4[C]^OR^EN.600.4[C]^OR^EN.601.5[C]^OR^EN.600.5[C]^OR^EN.601.6[C]^OR^EN.600.6[C]^OR^EN.601.7[C]^OR^EN.600.7[C]',
+      fine_requirements: [
         {
           description:
             '<b>Discrete Math:</b> Although not explicitly required, EN.553.171 Discrete Math is also strongly recommended for CS minors but does not count towards the minor requirements',
           required_credits: 0,
           criteria: 'EN.553.171[C]',
-        },
-        {
-          description:
-            '<b>Upper Level Undergraduate: </b><p>9 upper level CS credits that form a cohesive program of study and <b>must be approved by the computer science minor advisor</b>. One way is to choose all three courses within one or two area tag classifications (CSCI-APPL, CSCI-SOFT, CSCI-THRY, CSCI-RSNG, CSCI-SYST)</p>',
-          required_credits: 9,
-          criteria: 'EN Computer Science[D]^AND^Upper Level Undergraduate[L]',
+          exclusive: true,
         },
       ],
     },
@@ -2327,14 +2367,14 @@ const CS_Minor_Old: Minor = {
   url: 'https://www.cs.jhu.edu/2021undergraduate-advising-manual/',
   distributions: [
     {
-      name: 'Computer Science',
-      required_credits: 23,
-      min_credits_per_course: 1,
+      name: 'Core Courses',
+      required_credits: 14,
+      min_credits_per_course: 3,
       description:
         "For more information please visit the <a href=' https://www.cs.jhu.edu/undergraduate-studies/academics/cs-minor/'>" +
         'minor degree requirement</a> section on the department website.',
       criteria:
-        'EN Computer Science[D]^OR^CSCI-OTHER[T]^OR^Gateway Computing[N]',
+        'Gateway Computing[N]^OR^EN.601.220[C]^OR^EN.601.226[C]^EN.600.233[C]^OR^EN.601.229[C]^OR^EN.600.271[C]^OR^EN.601.231[C]',
       fine_requirements: [
         {
           description:
@@ -2360,18 +2400,47 @@ const CS_Minor_Old: Minor = {
           criteria:
             'EN.600.233[C]^OR^EN.601.229[C]^OR^EN.600.271[C]^OR^EN.601.231[C]',
         },
+      ],
+    },
+    {
+      name: 'Upper-Level Courses',
+      required_credits: 9,
+      min_credits_per_course: 3,
+      pathing: true,
+      exclusive: true,
+      description:
+            '<b>Upper Level Undergraduate: </b><p>9 upper level CS credits that form a cohesive program of study and <b>must be approved by the computer science minor advisor</b>. One way is to choose all three courses within one or two area tag classifications (CSCI-APPL, CSCI-SOFT, CSCI-THRY, CSCI-RSNG, CSCI-SYST)</p>',
+      criteria: 'EN Computer Science[D]^AND^Upper Level Undergraduate[L]',
+      fine_requirements: [
         {
-          description:
-            '<b>Discrete Math:</b> Although not explicitly required, EN.553.171 Discrete Math is also strongly recommended for CS minors but does not count towards the minor requirements',
-          required_credits: 0,
-          criteria: 'EN.553.171[C]',
+          required_credits: 6,
+          description: '<b>Software</b>',
+          criteria:
+            'CSCI-SOFT[T]',
         },
         {
-          description:
-            '<b>Upper Level Undergraduate: </b><p>9 upper level CS credits that form a cohesive program of study and <b>must be approved by the computer science minor advisor</b>. One way is to choose all three courses within one or two area tag classifications (CSCI-APPL, CSCI-SOFT, CSCI-THRY, CSCI-RSNG, CSCI-SYST)</p>',
-          required_credits: 9,
-          criteria: 'EN Computer Science[D]^AND^Upper Level Undergraduate[L]',
-          exclusive: true,
+          required_credits: 6,
+          description: '<b>Applications</b>',
+          criteria:
+            'CSCI-APPL[T]',
+        },
+        {
+          required_credits: 6,
+          description: '<b>Systems</b>',
+          criteria:
+            'CSCI-SYST[T]',
+        },
+        {
+          required_credits: 6,
+          description: '<b>Reasoning</b>',
+          criteria:
+            'CSCI-RSNG[T]',
+        },
+        {
+          required_credits: 6,
+          description: '<b>Theory</b>',
+          criteria:
+            'CSCI-THRY[T]',
         },
       ],
     },
