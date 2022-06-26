@@ -531,7 +531,7 @@ const bsBME: Major = {
     },
     {
       name: 'Mathematics',
-      required_credits: 19,
+      required_credits: 20,
       min_credits_per_course: 3,
       description:
         'Students who take an approved math course and receive 3 credits will have a total of 19 credits. Students are ' +
@@ -2732,7 +2732,7 @@ const no_degree: Major = {
   wi_credit: 0,
 };
 
-export function getMajorFromCommonName(name: string) {
+export function getMajorFromCommonName(name: string): Major | null {
   let out: Major | null = null;
   allMajors.forEach((major) => {
     if (major.degree_name === name) {

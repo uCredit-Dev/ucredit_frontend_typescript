@@ -16,7 +16,7 @@ type UserSlice = {
   cacheTitles: String[];
   unfoundNumbers: String[];
   retrievedAll: boolean;
-  importId: string;
+  importId: string | null;
   reviewerPlanId: string;
   loginCheck: boolean;
   loginRedirect: boolean;

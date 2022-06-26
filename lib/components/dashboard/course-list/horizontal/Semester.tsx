@@ -10,9 +10,11 @@ import {
 import { useDispatch, useSelector } from 'react-redux';
 import {
   clearSearch,
+  selectCartAdd,
   selectInspectedCourse,
   selectPlaceholder,
   selectVersion,
+  updateCartAdd,
   updateSearchStatus,
   updateSearchTime,
 } from '../../../../slices/searchSlice';
@@ -32,6 +34,8 @@ import CourseDraggable from './CourseDraggable';
 import {
   selectAddingPrereq,
   updateAddingPrereq,
+  updateInfoPopup,
+  updateShowingCart,
 } from '../../../../slices/popupSlice';
 import { toast } from 'react-toastify';
 import { getAPI } from '../../../../resources/assets';
@@ -68,6 +72,7 @@ const Semester: FC<{
   const placeholder = useSelector(selectPlaceholder);
   const currentCourses = useSelector(selectCurrentPlanCourses);
   const inspected = useSelector(selectInspectedCourse);
+  const cartOpen = useSelector(selectCartAdd);
 
   // State used to control whether dropdown is opened or closed
   const [totalCredits, setTotalCredits] = useState<number>(0);
@@ -183,7 +188,6 @@ const Semester: FC<{
    */
   const addPrereq = () => {
     updateDistributions();
-    dispatch(clearSearch());
   };
 
   /**
@@ -192,18 +196,17 @@ const Semester: FC<{
   const updateDistributions = (): void => {
     if (version !== 'None') {
       const body = {
+        ...version,
         user_id: user._id,
         year_id: semesterYear._id,
         plan_id: currentPlan._id,
-        title: version.title,
         term: semesterName === 'All' ? 'fall' : semesterName.toLowerCase(),
         year: semesterYear._id,
         credits: version.credits === '' ? 0 : version.credits,
         distribution_ids: currentPlan.distribution_ids,
         isPlaceholder: placeholder,
-        number: version.number,
         area: inspectedArea,
-        preReq: version.preReq,
+        version: semesterName + ' ' + semesterYear.year,
         expireAt:
           user._id === 'guestUser'
             ? Date.now() + 60 * 60 * 24 * 1000
@@ -247,7 +250,10 @@ const Semester: FC<{
       }
       dispatch(updatePlanList(newPlanList));
       dispatch(updateAddingPrereq(false));
-      dispatch(clearSearch());
+      dispatch(updateInfoPopup(true));
+      if (cartOpen) dispatch(updateShowingCart(true));
+      else dispatch(clearSearch());
+      dispatch(updateCartAdd(false));
       toast.success(version.title + ' added!');
     } else {
       console.log('Failed to add', data.errors);

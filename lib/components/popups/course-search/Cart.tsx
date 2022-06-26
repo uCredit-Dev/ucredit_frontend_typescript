@@ -8,11 +8,7 @@ import {
   SearchExtras,
   SISRetrievedCourse,
 } from '../../../resources/commonTypes';
-import {
-  selectSelectedDistribution,
-  updateInfoPopup,
-  updateShowingCart,
-} from '../../../slices/popupSlice';
+import { updateInfoPopup, updateShowingCart } from '../../../slices/popupSlice';
 import FineRequirementsList from './cart/FineRequirementsList';
 import CartCourseList from './cart/CartCourseList';
 import { emptyRequirements } from './cart/dummies';
@@ -20,9 +16,16 @@ import {
   requirements,
   splitRequirements,
 } from '../../dashboard/degree-info/distributionFunctions';
-import { updateRetrievedCourses } from '../../../slices/searchSlice';
+import {
+  selectCartAdd,
+  updateRetrievedCourses,
+} from '../../../slices/searchSlice';
 import axios from 'axios';
 import { getAPI } from '../../../resources/assets';
+import {
+  selectCurrentPlanCourses,
+  selectSelectedDistribution,
+} from '../../../slices/currentPlanSlice';
 
 /**
  * Search component for when someone clicks a search action.
@@ -41,13 +44,15 @@ const Cart: FC<{ allCourses: SISRetrievedCourse[] }> = (props) => {
   // Redux selectors and dispatch
   const dispatch = useDispatch();
   const distrs = useSelector(selectSelectedDistribution);
+  const currentPlanCourses = useSelector(selectCurrentPlanCourses);
+  const cartAdd = useSelector(selectCartAdd);
 
   useEffect(() => {
     if (distrs[1] && distrs[1].length > 0) {
       setSelectedRequirement(distrs[1][0]);
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [distrs]);
+  }, [distrs, currentPlanCourses, cartAdd]);
 
   // Performing searching in useEffect so as to activate searching
   useEffect(() => {
