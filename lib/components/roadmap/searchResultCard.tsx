@@ -1,6 +1,6 @@
 import React, {FC} from 'react';
 import {AiOutlineComment, AiFillEye, AiOutlineLike, AiOutlineStar} from "react-icons/ai";
-import {Avatar, Badge, Card, Divider, Tag} from "antd";
+//import {Avatar, Badge, Card, Divider, Tag} from "antd";
 
 // The parameter (planInfo) remains to be filled.
 // The input planInfo should at least include to be rendered:
@@ -16,7 +16,7 @@ import {Avatar, Badge, Card, Divider, Tag} from "antd";
 
 const SearchResultCard: React.FC = () => {
     return (
-        <div className="bg-blue-200 mx-5 mt-5 mb-5">
+        <div className="bg-blue-200 mx-5 mt-5 mb-5 rounded-2xl">
 
             <div className="grid grid-cols-2 gap-4 place-content-between h-20 ...">
                 {/*title*/}
