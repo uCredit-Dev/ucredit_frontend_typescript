@@ -31,7 +31,7 @@ const RoadmapSearch: React.FC = () => {
           w-full md:hidden ${showToolsButtonClass()}`} onClick={showAdvTools}>
             Show advanced search tools
           </button>
-          <div className={`md:block ${advToolsClass}`}>
+          <div className={`md:block md:sticky md:top-44 ${advToolsClass}`}>
             <button className="text-center underline 
             text-blue-600 w-full md:hidden" onClick={hideAdvTools}>
               Hide advanced search tools
