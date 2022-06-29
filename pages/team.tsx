@@ -24,7 +24,10 @@ const Team: React.FC = () => {
         </div>
         <div className="text-center pb-10 bg-white">
 
-          <Current />
+          <div className="hidden sm:block">
+            <Current />
+          </div>
+          
           
           {/* mobile mode*/}
           <div className="block sm:hidden">
