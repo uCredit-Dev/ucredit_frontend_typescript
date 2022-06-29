@@ -2272,8 +2272,7 @@ const CS_Minor_New: Minor = {
       description:
         "For more information please visit the <a href=' https://www.cs.jhu.edu/undergraduate-studies/academics/cs-minor/'>" +
         'minor degree requirement</a> section on the department website.',
-      criteria:
-        'Gateway Computing[N]^OR^EN.601.220[C]^OR^EN.601.226[C]',
+      criteria: 'Gateway Computing[N]^OR^EN.601.220[C]^OR^EN.601.226[C]',
       fine_requirements: [
         {
           description:
@@ -2300,38 +2299,33 @@ const CS_Minor_New: Minor = {
       min_credits_per_course: 3,
       pathing: true,
       description:
-            '<b>Upper Level Undergraduate: </b><p>9 upper level CS credits that form a cohesive program of study and <b>must be approved by the computer science minor advisor</b>. One way is to choose all three courses within one or two area tag classifications (CSCI-APPL, CSCI-SOFT, CSCI-THRY, CSCI-RSNG, CSCI-SYST)</p>',
+        '<b>Upper Level Undergraduate: </b><p>9 upper level CS credits that form a cohesive program of study and <b>must be approved by the computer science minor advisor</b>. One way is to choose all three courses within one or two area tag classifications (CSCI-APPL, CSCI-SOFT, CSCI-THRY, CSCI-RSNG, CSCI-SYST)</p>',
       criteria: 'EN Computer Science[D]^AND^Upper Level Undergraduate[L]',
       fine_requirements: [
         {
           required_credits: 6,
           description: '<b>Software</b>',
-          criteria:
-            'CSCI-SOFT[T]',
+          criteria: 'CSCI-SOFT[T]',
         },
         {
           required_credits: 6,
           description: '<b>Applications</b>',
-          criteria:
-            'CSCI-APPL[T]',
+          criteria: 'CSCI-APPL[T]',
         },
         {
           required_credits: 6,
           description: '<b>Systems</b>',
-          criteria:
-            'CSCI-SYST[T]',
+          criteria: 'CSCI-SYST[T]',
         },
         {
           required_credits: 6,
           description: '<b>Reasoning</b>',
-          criteria:
-            'CSCI-RSNG[T]',
+          criteria: 'CSCI-RSNG[T]',
         },
         {
           required_credits: 6,
           description: '<b>Theory</b>',
-          criteria:
-            'CSCI-THRY[T]',
+          criteria: 'CSCI-THRY[T]',
         },
       ],
     },
@@ -2409,38 +2403,33 @@ const CS_Minor_Old: Minor = {
       pathing: true,
       exclusive: true,
       description:
-            '<b>Upper Level Undergraduate: </b><p>9 upper level CS credits that form a cohesive program of study and <b>must be approved by the computer science minor advisor</b>. One way is to choose all three courses within one or two area tag classifications (CSCI-APPL, CSCI-SOFT, CSCI-THRY, CSCI-RSNG, CSCI-SYST)</p>',
+        '<b>Upper Level Undergraduate: </b><p>9 upper level CS credits that form a cohesive program of study and <b>must be approved by the computer science minor advisor</b>. One way is to choose all three courses within one or two area tag classifications (CSCI-APPL, CSCI-SOFT, CSCI-THRY, CSCI-RSNG, CSCI-SYST)</p>',
       criteria: 'EN Computer Science[D]^AND^Upper Level Undergraduate[L]',
       fine_requirements: [
         {
           required_credits: 6,
           description: '<b>Software</b>',
-          criteria:
-            'CSCI-SOFT[T]',
+          criteria: 'CSCI-SOFT[T]',
         },
         {
           required_credits: 6,
           description: '<b>Applications</b>',
-          criteria:
-            'CSCI-APPL[T]',
+          criteria: 'CSCI-APPL[T]',
         },
         {
           required_credits: 6,
           description: '<b>Systems</b>',
-          criteria:
-            'CSCI-SYST[T]',
+          criteria: 'CSCI-SYST[T]',
         },
         {
           required_credits: 6,
           description: '<b>Reasoning</b>',
-          criteria:
-            'CSCI-RSNG[T]',
+          criteria: 'CSCI-RSNG[T]',
         },
         {
           required_credits: 6,
           description: '<b>Theory</b>',
-          criteria:
-            'CSCI-THRY[T]',
+          criteria: 'CSCI-THRY[T]',
         },
       ],
     },
@@ -2764,7 +2753,7 @@ export const allMajors: Major[] = [
   baEcon,
   // baPsych,
   // baMolCell,
-  // baNeuro,
+  bsNeuro,
   // baSoc,
   // bsElectricEng,
   // bsEnvEng,
