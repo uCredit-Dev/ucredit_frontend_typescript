@@ -1,7 +1,8 @@
 import Header from '../lib/components/landing-page/Header';
 import Footer from '../lib/components/landing-page/Footer';
 import Card from '../lib/components/landing-page/team-page/Card';
-import ProfileMobile from '../lib/components/landing-page/profileMobile';
+import ProfileMobile from '../lib/components/landing-page/team-page/profileMobile';
+import Current from '../lib/components/landing-page/team-page/Current'
 
 const Team: React.FC = () => {
   return (
@@ -20,7 +21,9 @@ const Team: React.FC = () => {
         <div className="text-center pb-7 text-2xl text-blue-footer bg-white">
           Current Members
         </div>
-        <div className="text-center pb-10 bg-white">Cards</div>
+        <div className="text-center pb-10 bg-white">
+          <Current />
+        </div>
 
         {/* Supervisor Section */}
         <div className=" overflow-hidden bg-white">
