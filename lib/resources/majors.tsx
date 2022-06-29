@@ -2753,7 +2753,7 @@ export const allMajors: Major[] = [
   baEcon,
   // baPsych,
   // baMolCell,
-  bsNeuro,
+  // bsNeuro,
   // baSoc,
   // bsElectricEng,
   // bsEnvEng,
