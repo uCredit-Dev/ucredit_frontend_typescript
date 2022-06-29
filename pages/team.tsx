@@ -50,7 +50,9 @@ const Team: React.FC = () => {
             </div>
           </div>
         </div>
-        <div className="text-center pb-10 ">Cards</div>
+        <div className="text-center pb-10 ">
+          ALI
+        </div>
 
         <div className=" overflow-hidden bg-blue-header">
           <div className="w-[160%] rounded-t-curvy bg-white h-[120px] relative overflow-hidden left-[-30%] "></div>
