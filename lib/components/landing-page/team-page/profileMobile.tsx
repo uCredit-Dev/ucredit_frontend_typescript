@@ -1,29 +1,25 @@
 import 'react-responsive-carousel/lib/styles/carousel.min.css'; // requires a loader
 
-const ProfileMobile: React.FC = () => {
+function ProfileMobile(props){
   return (
     <>
       <div className="justify-center text-center font-landingPage flex box-border border-4 border-[#C6E8FF] h-[212px] w-[145px] p-4 rounded-[20px] bg-white ">
-        <div className="text-[18px] flex flex-col">
-          <div className="h-[55%]">
-            {/* replaced by profile photo */}
-            <svg
-              width="74"
-              height="75"
-              viewBox="0 0 74 75"
-              fill="none"
-              xmlns="http://www.w3.org/2000/svg"
-            >
-              <circle cx="37" cy="37.0746" r="37" fill="#E0E7EC" />
-            </svg>
+        <div className="text-[18px] flex flex-col ">
+          <div className="h-[55%] ml-1 mt-[-14px] mb-2">
+          <img
+        className="w-20 h-20 my-4 rounded-[40px] object-cover"
+        src={props.img}
+        alt="profile"
+      />
+
           </div>
-          <div className="h-[15%] text-[18px] font-bold">Name1</div>
-          <div className="h-[30%] text-[12px]">
-            position <br></br> class of 2023
+          <div className="h-[20%] text-[18px] font-bold">{props.name}</div>
+          <div className="h-[30%] text-[10px]">
+          {props.role} <br></br> class of {props.class}
           </div>
 
-          <div className="h-[10%] grid grid-cols-3">
-            <div>
+          <div className="ml-2 h-[10%] grid grid-cols-3">
+            <a href={props.github}>
               <svg
                 width="17"
                 height="17"
@@ -36,8 +32,8 @@ const ProfileMobile: React.FC = () => {
                   fill="#0C3A76"
                 />
               </svg>
-            </div>
-            <div>
+            </a>
+            <a href={props.linkedin}>
               <svg
                 width="18"
                 height="17"
@@ -50,8 +46,8 @@ const ProfileMobile: React.FC = () => {
                   fill="#0C3A76"
                 />
               </svg>
-            </div>
-            <div>
+            </a>
+            <a href={props.portfolio}>
               <svg
                 width="18"
                 height="17"
@@ -64,7 +60,7 @@ const ProfileMobile: React.FC = () => {
                   fill="#0C3A76"
                 />
               </svg>
-            </div>
+            </a>
           </div>
         </div>
       </div>

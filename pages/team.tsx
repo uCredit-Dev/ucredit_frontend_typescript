@@ -1,8 +1,8 @@
 import Header from '../lib/components/landing-page/Header';
 import Footer from '../lib/components/landing-page/Footer';
 import Card from '../lib/components/landing-page/team-page/Card';
-import ProfileMobile from '../lib/components/landing-page/profileMobile';
-
+import ProfileMobile from '../lib/components/landing-page/team-page/profileMobile';
+import teamList from '../lib/components/landing-page/team-page/teamList';
 const Team: React.FC = () => {
   return (
     <div className="font-landingPage">
@@ -20,7 +20,27 @@ const Team: React.FC = () => {
         <div className="text-center pb-7 text-2xl text-blue-footer bg-white">
           Current Members
         </div>
-        <div className="text-center pb-10 bg-white">Cards</div>
+        <div className="text-center pb-10 bg-white">
+          
+          {/* mobile mode*/}
+          <div className="block sm:hidden">
+            <div className="grid px-8 grid-cols-2 grid-rows-4 gap-4 place-items-center ">
+              {teamList.currentMember.map((person) => {
+          					return (
+            					<>
+									      <div> 
+                        <ProfileMobile name={person.name} role={person.role} img={person.img} 
+                          class={person.class} github={person.github} linkedin={person.linkedin} portfolio={person.portfolio} 
+                        />
+                        </div>
+							      	</>
+          					);
+        				})}	
+              
+            </div>
+          </div>
+
+        </div>
 
         {/* Supervisor Section */}
         <div className=" overflow-hidden bg-white">
@@ -34,6 +54,24 @@ const Team: React.FC = () => {
 
         <div className=" overflow-hidden bg-blue-header">
           <div className="w-[160%] rounded-t-curvy bg-white h-[120px] relative overflow-hidden left-[-30%] "></div>
+            {/* mobile mode*/}
+            <div className="text-center pb-7 text-2xl text-blue-footer bg-white">Alumni</div>
+          <div className="block sm:hidden bg-white">
+            <div className="grid px-8 grid-cols-2 grid-rows-4 gap-4 place-items-center ">
+              {teamList.alumni.map((person) => {
+          					return (
+            					<>
+									      <div> 
+                        <ProfileMobile name={person.name} role={person.role} img={person.img} 
+                          class={person.class} github={person.github} linkedin={person.linkedin} portfolio={person.portfolio} 
+                        />
+                        </div>
+							      	</>
+          					);
+        				})}	
+              
+            </div>
+          </div>
         </div>
       </div>
       <div className="text-center pb-10 bg-white">Cards</div>
