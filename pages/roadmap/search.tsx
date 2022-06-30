@@ -1,11 +1,8 @@
 import SearchHeader from "../../lib/components/roadmap/searchHeader";
 import SearchDetailPane from "../../lib/components/roadmap/searchDetailPane";
 import SearchResultCard from "../../lib/components/roadmap/searchResultCard";
-import { useState } from "react";
 
 const RoadmapSearch: React.FC = () => {
-  const [advToolsClass, setAdvToolsClass] = useState("hidden");
-
   return (
     <>
       <SearchHeader/>

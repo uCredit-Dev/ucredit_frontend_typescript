@@ -3,10 +3,12 @@ import { RootState } from '../appStore/store';
 
 type roadmapSearchStates = {
   searchText: string
+  mobileAdvSearch: boolean
 }
 
 const initialState: roadmapSearchStates = {
-  searchText: ""
+  searchText: "",
+  mobileAdvSearch: false
 }
 
 export const roadmapSearchSlice = createSlice({
@@ -15,15 +17,21 @@ export const roadmapSearchSlice = createSlice({
   reducers: {
     updateSearchText: (state: any, action: PayloadAction<String>) => {
       state.searchText = action.payload;
+    },
+    toggleMobileAdvSearch: (state: any) => {
+      state.mobileAdvSearch = !state.mobileAdvSearch;
     }
   }
 });
 
 export const {
-  updateSearchText
+  updateSearchText,
+  toggleMobileAdvSearch
 } = roadmapSearchSlice.actions;
 
 export const selectSearchText = (state: RootState) => 
   state.roadmapSearch.searchText;
+export const selectMobileAdvSearch = (state: RootState) =>
+  state.roadmapSearch.mobileAdvSearch;
 
 export default roadmapSearchSlice.reducer;

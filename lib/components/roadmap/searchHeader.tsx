@@ -1,8 +1,20 @@
 import SearchBarArea from "./searchBarArea";
+import { selectMobileAdvSearch } from "../../slices/roadmapSearchSlice";
+import { useSelector } from "react-redux";
 
 const SearchHeader: React.FC = () => {
+  const mobileAdvSearch = useSelector(selectMobileAdvSearch);
+
+  const getOuterTopClass = () => {
+    if (mobileAdvSearch) {
+      return "top-0"
+    } else {
+      return "-top-32"
+    }
+  }
+
   return (
-    <div className="sticky -top-32 md:-top-36">
+    <div className={`sticky ${getOuterTopClass()} md:-top-36`}>
       <div className="h-16 bg-sky-200 sticky top-0 flex flex-row justify-center
       items-center text-lg text-blue-900">
         <a href="/">

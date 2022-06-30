@@ -1,25 +1,29 @@
 import { useDispatch } from 'react-redux';
 import { RiMapPin2Fill } from 'react-icons/ri';
-import { updateSearchText } from '../../slices/roadmapSearchSlice';
+import { 
+  updateSearchText,
+  toggleMobileAdvSearch,
+  selectMobileAdvSearch } 
+  from '../../slices/roadmapSearchSlice';
 import SearchBar from './searchBar';
-import { useState } from 'react';
+import { useSelector } from 'react-redux';
 
 const SearchBarArea: React.FC = () => {
-  const [advToolsClass, setAdvToolsClass] = useState("hidden");
+  const mobileAdvSearch = useSelector(selectMobileAdvSearch);
 
-  const showAdvTools = () => {
-    setAdvToolsClass("");
-  }
-
-  const hideAdvTools = () => {
-    setAdvToolsClass("hidden");
-  }
-
-  const oppositeAdvToolsClass = () => {
-    if (advToolsClass === "hidden") {
+  const advToolsClass = () => {
+    if (mobileAdvSearch) {
       return "";
     } else {
       return "hidden";
+    }
+  }
+  
+  const oppositeAdvToolsClass = () => {
+    if (mobileAdvSearch) {
+      return "hidden";
+    } else {
+      return "";
     }
   }
   
@@ -27,6 +31,10 @@ const SearchBarArea: React.FC = () => {
 
   const onSearchInput = (evt: any) => {
     dispatch(updateSearchText(evt.target.value));
+  }
+
+  const onAdvSearchToggle = (evt: any) => {
+    dispatch(toggleMobileAdvSearch());
   }
 
   return (
@@ -45,10 +53,10 @@ const SearchBarArea: React.FC = () => {
         <div className="md:hidden">
           <button className={`text-center underline text-blue-600
           w-full md:hidden mb-4 ${oppositeAdvToolsClass()}`} 
-          onClick={showAdvTools}>
+          onClick={onAdvSearchToggle}>
             Show advanced search tools
           </button>
-          <div className={`${advToolsClass}`}>
+          <div className={`${advToolsClass()}`}>
             <SearchBar iconSize={28} placeHolder="Search Tags" 
             heightClass='h-10 md'iconPosition='left-2' 
             onInputProp={onSearchInput}/>
@@ -60,9 +68,8 @@ const SearchBarArea: React.FC = () => {
                 <input type="checkbox" className="mr-2"/>
                 My favorites only
               </p>
-              <button className={`text-center underline text-gray-500
-              md:hidden float-right ${advToolsClass}`} 
-              onClick={hideAdvTools}>
+              <button className="text-center underline text-gray-500
+              md:hidden float-right" onClick={onAdvSearchToggle}>
                 Collapse
               </button>
             </div>
