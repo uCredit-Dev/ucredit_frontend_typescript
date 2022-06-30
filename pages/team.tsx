@@ -41,7 +41,6 @@ const Team: React.FC = () => {
             </div>
           </div>
           
-          
           {/* mobile mode*/}
           <div className="block sm:hidden">
             <div className="grid px-8 grid-cols-2 grid-rows-4 gap-4 place-items-center ">
