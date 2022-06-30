@@ -116,6 +116,8 @@ module.exports = {
         tight: { max: '1200px' },
         thin: { max: '820px' },
         narrow: { max: '710px' },
+        tablet: {min:'800px', max:'1200px'},
+        smTablet: { max:'800px' },
       },
       scale: {
         0: '0',
