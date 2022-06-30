@@ -26,6 +26,14 @@ const SearchBarArea: React.FC = () => {
       return "";
     }
   }
+
+  const mainSearchBarPlaceholder = () => {
+    if (mobileAdvSearch) {
+      return "Search Keywords";
+    } else {
+      return "Search";
+    }
+  }
   
   const dispatch = useDispatch();
 
@@ -48,7 +56,7 @@ const SearchBarArea: React.FC = () => {
       </div>
       <div className="sticky top-20 w-5/6 md:w-1/2">
         <SearchBar iconSize={28} onInputProp={onSearchInput} 
-        placeHolder="Search" heightClass='h-10 md:h-12' 
+        placeHolder={mainSearchBarPlaceholder()} heightClass='h-10 md:h-12' 
         iconPosition='left-2 md:left-3'/>
         <div className="md:hidden">
           <button className={`text-center underline text-blue-600
