@@ -2,7 +2,7 @@ import SearchBarArea from "./searchBarArea";
 
 const SearchHeader: React.FC = () => {
   return (
-    <div className="sticky -top-36">
+    <div className="sticky -top-32 md:-top-36">
       <div className="h-16 bg-sky-200 sticky top-0 flex flex-row justify-center
       items-center text-lg text-blue-900">
         <a href="/">
