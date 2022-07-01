@@ -18,17 +18,17 @@ const SearchResultCard: React.FC = () => {
     return (
         <div className="bg-blue-200 mx-5 mt-5 mb-5 rounded-2xl">
 
-            <div className="grid grid-cols-2 gap-4 place-content-between h-20 ...">
+            <div className={"flex flex-row"
+                /*`grid grid-cols-2 gap-4 place-content-between h-20`*/}>
                 {/*title*/}
-                <div>
+                <div className="grow">
                     <h1 className="text-4xl flex-grow-0 mx-5 pt-3 pb-1 font-semibold"> Plan Name </h1>
                 </div>
-
                 <div>
                     <div className="flex justify-end mx-5 pt-3 pb-1">
                         {/*Date*/}
                         <div>
-                            <p>Uploaded on 2022-06-04</p>
+                            <p><span className="hidden md:inline">Uploaded on </span>2022-06-04</p>
                         </div>
                     </div>
 
