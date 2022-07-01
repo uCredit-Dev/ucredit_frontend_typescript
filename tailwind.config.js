@@ -2,6 +2,9 @@ module.exports = {
   content: ['./pages/**/*.{js,ts,jsx,tsx}', './lib/**/*.{js,ts,jsx,tsx}'],
   theme: {
     extend: {
+      backgroundImage: {
+        'roadmap-pattern': "url('/img/roadmap_pattern.png')",
+      },
       minWidth: {
         yearMin: '250px',
         narrowest: '710px',

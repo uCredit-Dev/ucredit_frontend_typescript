@@ -46,7 +46,8 @@ const SearchBarArea: React.FC = () => {
   }
 
   return (
-    <div className="flex flex-col justify-center items-center h-60 bg-white">
+    <div className="flex flex-col justify-center items-center h-60
+    md:bg-roadmap-pattern bg-white">
       <div className="flex flex-row">
         <RiMapPin2Fill size={36} color="#94B6CC" className='hidden md:block'/>
         <h2 className={`text-blue-900 text-4xl pl-2 md:block
