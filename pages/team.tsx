@@ -10,15 +10,16 @@ const Team: React.FC = () => {
       <Header />
       <header className="bg-blue-header overflow-hidden ">
         <div className="w-full h-28 pb-12 overflow-hidden">
-          <div className="text-center pb-7 text-2xl font-bold text-blue-footer ">
-            Meet the Team
+          <div className="text-center pb-3 py-7 text-5xl text-blue-footer ">
+
+            Meet uCredit
           </div>
 
           <div className="pt-10 w-[160%] rounded-t-curvy bg-white h-[120px] relative overflow-hidden left-[-30%]"></div>
         </div>
       </header>
       <div className="bg-blue-header">
-        <div className="text-center pb-7 text-2xl text-blue-footer bg-white">
+        <div className="text-center pb-7 py-5 text-3xl text-blue-footer bg-white">
           Current Members
         </div>
         <div className="text-center pb-10 bg-white">
@@ -65,7 +66,7 @@ const Team: React.FC = () => {
         {/* Supervisor Section */}
         <div className=" overflow-hidden bg-white">
           <div className="w-[160%] rounded-t-curvy bg-blue-header h-[120px] relative overflow-hidden left-[-30%] ">
-            <div className="text-center text-2xl pt-6 font-bold text-blue-footer">
+            <div className="text-center text-3xl pt-6 text-blue-footer">
               Supervisor
             </div>
           </div>
@@ -77,7 +78,7 @@ const Team: React.FC = () => {
         <div className=" overflow-hidden bg-blue-header">
           <div className="w-[160%] rounded-t-curvy bg-white h-[120px] relative overflow-hidden left-[-30%] "></div>
             {/* mobile mode*/}
-            <div className="text-center pb-7 text-2xl text-blue-footer bg-white">Alumni</div>
+            <div className="text-center pb-7 text-3xl text-blue-footer bg-white">Alumni</div>
           <div className="block sm:hidden bg-white">
             <div className="grid px-8 grid-cols-2 grid-rows-4 gap-4 place-items-center ">
               {teamList.alumni.map((person) => {
