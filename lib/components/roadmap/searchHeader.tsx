@@ -51,16 +51,16 @@ const SearchHeader: React.FC = () => {
         <div className="relative">
           <button className={`${oppositeMobileNavClass()}`}
           onClick={() => setMobileNavShowing(true)}>
-            <FaBars size={28} className="md:hidden mr-6"/>
+            <FaBars size={28} color="black" className="md:hidden mr-6"/>
           </button>
           <button className={`${getMobileNavClass()}`}
           onClick={() => setMobileNavShowing(false)}>
-            <GrClose size={28} className="md:hidden mr-6"/>
+            <GrClose size={28} color="black" className="md:hidden mr-6"/>
           </button>
           <div className={`absolute right-6 flex flex-col w-max outline
           outline-2 outline-black rounded-2xl overflow-hidden child:px-4 
           child:py-1 child:outline child:outline-gray-400 child:outline-1
-          ${getMobileNavClass()}`}>
+          ${getMobileNavClass()} md:hidden`}>
             <a href="/">Dashboard</a>
             <a href="/">Post a Plan</a>
           </div>
