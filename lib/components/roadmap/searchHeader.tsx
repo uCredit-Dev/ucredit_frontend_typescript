@@ -36,7 +36,7 @@ const SearchHeader: React.FC = () => {
 
   return (
     <div className={`sticky ${getOuterTopClass()} md:-top-36`}>
-      <div className="h-16 bg-white md:bg-sky-200 sticky top-0 flex flex-row
+      <div className="h-16 bg-sky-200 sticky top-0 flex flex-row
       justify-center items-center text-lg text-blue-900">
         <a href="/">
           <div className="flex flex-row">
