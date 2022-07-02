@@ -6,6 +6,7 @@ import teamList from '../lib/components/landing-page/team-page/teamList';
 
 const Team: React.FC = () => {
   return (
+<<<<<<< Updated upstream
     <div className="font-landingPage">
       <Header />
       <header className="bg-blue-header overflow-hidden ">
@@ -16,6 +17,68 @@ const Team: React.FC = () => {
           </div>
 
           <div className="pt-10 w-[160%] rounded-t-curvy bg-white h-[120px] relative overflow-hidden left-[-30%]"></div>
+=======
+
+      <div className="font-landingPage">
+      <Header />
+      <header className="bg-blue-header overflow-hidden ">
+        <div className="w-full h-28 pb-12 overflow-hidden">
+          <div className="text-center pb-7 text-2xl font-bold text-blue-footer ">
+            Meet the Team
+          </div>
+
+          <div className="pt-10 w-[160%] rounded-t-curvy bg-white h-[120px] relative overflow-hidden left-[-30%]"></div>
+        </div>
+      </header>
+      <div className="bg-blue-header">
+        <div className="text-center pb-7 text-2xl text-blue-footer bg-white">
+          Current Members
+        </div>
+        <div className="text-center pb-10 bg-white">Cards</div>
+
+        {/* Supervisor Section */}
+        <div className=" overflow-hidden bg-white">
+          <div className="w-[160%] rounded-t-curvy bg-blue-header h-[120px] relative overflow-hidden left-[-30%] ">
+            <div className="text-center text-2xl pt-6 font-bold text-blue-footer">
+              Supervisor
+            </div>
+          </div>
+        </div>
+        <div className="text-center pb-10 ">Cards</div>
+
+        <div className=" overflow-hidden bg-blue-header">
+          <div className="w-[160%] rounded-t-curvy bg-white h-[120px] relative overflow-hidden left-[-30%] "></div>
+        </div>
+      </div>
+      <div className="grid grid-rows-3 space-y-20 p-10 bg-white">
+        <div className="container flex space-x-20 px-24">
+          <Card
+            name="Dog"
+            role="Software developer"
+            img="https://www.kindacode.com/wp-content/uploads/2022/05/cute.jpeg"
+            class="2026"
+            github="https://iconmonstr.com/linkedin-2-svg/"
+            linkedin="https://iconmonstr.com/linkedin-2-svg/"
+          />
+
+          <Card
+            name="Dog"
+            role="Software developer"
+            img="https://www.kindacode.com/wp-content/uploads/2022/05/cute.jpeg"
+            class="2026"
+            github="https://iconmonstr.com/linkedin-2-svg/"
+            linkedin="https://iconmonstr.com/linkedin-2-svg/"
+          />
+
+          <Card
+            name="Dog"
+            role="Software developer"
+            img="https://www.kindacode.com/wp-content/uploads/2022/05/cute.jpeg"
+            class="2026"
+            github="https://iconmonstr.com/linkedin-2-svg/"
+            linkedin="https://iconmonstr.com/linkedin-2-svg/"
+          />
+>>>>>>> Stashed changes
         </div>
       </header>
       <div className="bg-blue-header">
@@ -99,6 +162,9 @@ const Team: React.FC = () => {
       </div>
       <Footer />
     </div>
+  
+
+
   );
 };
 
