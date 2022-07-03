@@ -4,6 +4,8 @@ import Feather from '../lib/components/feather';
 import Feather2 from '../lib/components/feather2';
 import Footprints from '../lib/components/footprints';
 import Footprints2 from '../lib/components/footprints2';
+import Path4 from '../lib/components/Paths4.svg';
+import Path5 from '../lib/components/Paths5.svg';
 
 const Team: React.FC = () => {
   return (
@@ -87,6 +89,19 @@ const Team: React.FC = () => {
           <div className="bg-[#E0E7EC] grow ml-4 md:ml-7 md:mr-14"></div>
         </div>
       </div>
+      {/* <div className="scale-[40%]  mb-[-110px]"><Path5 /></div> */}
+      <div className="relative flex flex-col items-center gap-0">
+        
+        <div className="flex flex-row h-[100px] ml-24">
+          <div className="rotate-[-53.52deg] scale-[120%]"><Feather /></div>
+          
+          <div className="text-[22px] md:text-[44px]">our future plan</div>
+          <div className="scale-[30%] md:scale-[80%]  mt-[-210px] ml-1"><Path5 /></div>
+        </div>
+        <div className="px-24 sm:px-32 md:px-64 lg:px-80 text-[12px] md:text-[24px]">place holder Micro-planning is simple. It takes a larger vision and breaks it down into yearly, quarterly, monthly, weekly, and daily check-in practices to plan and adjust as necessary. We get some of the same stabilizing effects that a five-year plan may have given us but with shorter chunks of planning that make more sense in our current economic and cultural context.</div>
+        
+      </div>
+      <div className="scale-[30%] md:scale-[80%] mt-[-100px]"><Path4 /></div>
       <Footer />
     </div>
   );
