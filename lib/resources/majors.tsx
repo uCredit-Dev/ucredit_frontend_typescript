@@ -1513,8 +1513,7 @@ const baIS: Major = {
         'International Studies students must complete 15 credits in history, including:\n\t' +
         'One introductory course at the 100-level in the JHU History Department ' +
         '(e.g., AS.100.1xx).\n\tFour courses designated INST-GLOBAL in the course description.',
-      criteria:
-        '(AS History[D]^AND^100[L])^OR^INST-GLOBAL[T]',
+      criteria: '(AS History[D]^AND^100[L])^OR^INST-GLOBAL[T]',
       fine_requirements: [
         {
           required_credits: 3,
@@ -2725,72 +2724,96 @@ const minorAMS: Minor = {
       name: 'Total Quantitative Studies(Q) Credits',
       required_credits: 18,
       min_credits_per_course: 3,
-      description: 
-      'Completion of an approved program of study containing at least 18 credits in courses coded Quantitative Studies (Q). The first two courses in calculus (AS.110.106 Calculus I (Biology and Social Sciences) and AS.110.107 Calculus II (For Biological and Social Science)), or (AS.110.108 Calculus I (Physical Sciences & Engineering) and AS.110.109 Calculus II (For Physical Sciences and Engineering)), or AS.110.113 Honors Single Variable Calculus, or their equivalents) may not be used to fulfill this requirement.<br />' +
-      '<br /> <em>**Note:</em> Within the entire minor, students may count only two of these three courses/course combinations: EN.553.310/EN.553.311; EN.553.420/620; EN.553.430/630.',
+      description:
+        'Completion of an approved program of study containing at least 18 credits in courses coded Quantitative Studies (Q). The first two courses in calculus (AS.110.106 Calculus I (Biology and Social Sciences) and AS.110.107 Calculus II (For Biological and Social Science)), or (AS.110.108 Calculus I (Physical Sciences & Engineering) and AS.110.109 Calculus II (For Physical Sciences and Engineering)), or AS.110.113 Honors Single Variable Calculus, or their equivalents) may not be used to fulfill this requirement.<br />' +
+        '<br /> <em>**Note:</em> Within the entire minor, students may count only two of these three courses/course combinations: EN.553.310/EN.553.311; EN.553.420/620; EN.553.430/630.',
       criteria:
-      'Q[A]^NOT^AS.110.106[C]^NOT^AS.110.107[C]^NOT^AS.110.108[C]^NOT^AS.110.109[C]^NOT^AS.110.113[C]',
+        'Q[A]^NOT^AS.110.106[C]^NOT^AS.110.107[C]^NOT^AS.110.108[C]^NOT^AS.110.109[C]^NOT^AS.110.113[C]',
       pathing: true,
       fine_requirements: [
         {
           required_credits: 18,
-          description: '**Only EN.553.310 Probability & Statistics for the Physical Sciences & Engineering and EN.553.420 Introduction to Probability count towards minor.',
-          criteria: 'Q[A]^NOT^AS.110.106[C]^NOT^AS.110.107[C]^NOT^AS.110.108[C]^NOT^AS.110.109[C]^NOT^AS.110.113[C]^NOT^EN.553.311[C]^NOT^EN.553.620[C]^NOT^EN.553.430[C]^NOT^EN.553.630[C]',
+          description:
+            '**Only EN.553.310 Probability & Statistics for the Physical Sciences & Engineering and EN.553.420 Introduction to Probability count towards minor.',
+          criteria:
+            'Q[A]^NOT^AS.110.106[C]^NOT^AS.110.107[C]^NOT^AS.110.108[C]^NOT^AS.110.109[C]^NOT^AS.110.113[C]^NOT^EN.553.311[C]^NOT^EN.553.620[C]^NOT^EN.553.430[C]^NOT^EN.553.630[C]',
         },
         {
           required_credits: 18,
-          description: '**Only EN.553.310 Probability & Statistics for the Physical Sciences & Engineering and EN.553.620 Introduction to Probability count towards minor.',
-          criteria: 'Q[A]^NOT^AS.110.106[C]^NOT^AS.110.107[C]^NOT^AS.110.108[C]^NOT^AS.110.109[C]^NOT^AS.110.113[C]^NOT^EN.553.311[C]^NOT^EN.553.420[C]^NOT^EN.553.430[C]^NOT^EN.553.630[C]',
+          description:
+            '**Only EN.553.310 Probability & Statistics for the Physical Sciences & Engineering and EN.553.620 Introduction to Probability count towards minor.',
+          criteria:
+            'Q[A]^NOT^AS.110.106[C]^NOT^AS.110.107[C]^NOT^AS.110.108[C]^NOT^AS.110.109[C]^NOT^AS.110.113[C]^NOT^EN.553.311[C]^NOT^EN.553.420[C]^NOT^EN.553.430[C]^NOT^EN.553.630[C]',
         },
         {
           required_credits: 18,
-          description: '**Only EN.553.311 Probability and Statistics for the Biological Sciences and Engineering and EN.553.420 Introduction to Probability count towards minor.',
-          criteria: 'Q[A]^NOT^AS.110.106[C]^NOT^AS.110.107[C]^NOT^AS.110.108[C]^NOT^AS.110.109[C]^NOT^AS.110.113[C]^NOT^EN.553.310[C]^NOT^EN.553.620[C]^NOT^EN.553.430[C]^NOT^EN.553.630[C]',
+          description:
+            '**Only EN.553.311 Probability and Statistics for the Biological Sciences and Engineering and EN.553.420 Introduction to Probability count towards minor.',
+          criteria:
+            'Q[A]^NOT^AS.110.106[C]^NOT^AS.110.107[C]^NOT^AS.110.108[C]^NOT^AS.110.109[C]^NOT^AS.110.113[C]^NOT^EN.553.310[C]^NOT^EN.553.620[C]^NOT^EN.553.430[C]^NOT^EN.553.630[C]',
         },
         {
           required_credits: 18,
-          description: '**Only EN.553.311 Probability and Statistics for the Biological Sciences and Engineering and EN.553.620 Introduction to Probability count towards minor.',
-          criteria: 'Q[A]^NOT^AS.110.106[C]^NOT^AS.110.107[C]^NOT^AS.110.108[C]^NOT^AS.110.109[C]^NOT^AS.110.113[C]^NOT^EN.553.310[C]^NOT^EN.553.420[C]^NOT^EN.553.430[C]^NOT^EN.553.630[C]',
+          description:
+            '**Only EN.553.311 Probability and Statistics for the Biological Sciences and Engineering and EN.553.620 Introduction to Probability count towards minor.',
+          criteria:
+            'Q[A]^NOT^AS.110.106[C]^NOT^AS.110.107[C]^NOT^AS.110.108[C]^NOT^AS.110.109[C]^NOT^AS.110.113[C]^NOT^EN.553.310[C]^NOT^EN.553.420[C]^NOT^EN.553.430[C]^NOT^EN.553.630[C]',
         },
         {
           required_credits: 18,
-          description: '**Only EN.553.310 Probability & Statistics for the Physical Sciences & Engineering and EN.553.430 Introduction to Statistics count towards minor.',
-          criteria: 'Q[A]^NOT^AS.110.106[C]^NOT^AS.110.107[C]^NOT^AS.110.108[C]^NOT^AS.110.109[C]^NOT^AS.110.113[C]^NOT^EN.553.311[C]^NOT^EN.553.420[C]^NOT^EN.553.620[C]^NOT^EN.553.630[C]',
+          description:
+            '**Only EN.553.310 Probability & Statistics for the Physical Sciences & Engineering and EN.553.430 Introduction to Statistics count towards minor.',
+          criteria:
+            'Q[A]^NOT^AS.110.106[C]^NOT^AS.110.107[C]^NOT^AS.110.108[C]^NOT^AS.110.109[C]^NOT^AS.110.113[C]^NOT^EN.553.311[C]^NOT^EN.553.420[C]^NOT^EN.553.620[C]^NOT^EN.553.630[C]',
         },
         {
           required_credits: 18,
-          description: '**Only EN.553.310 Probability & Statistics for the Physical Sciences & Engineering and EN.553.630 Introduction to Statistics count towards minor.',
-          criteria: 'Q[A]^NOT^AS.110.106[C]^NOT^AS.110.107[C]^NOT^AS.110.108[C]^NOT^AS.110.109[C]^NOT^AS.110.113[C]^NOT^EN.553.311[C]^NOT^EN.553.420[C]^NOT^EN.553.620[C]^NOT^EN.553.430[C]',
+          description:
+            '**Only EN.553.310 Probability & Statistics for the Physical Sciences & Engineering and EN.553.630 Introduction to Statistics count towards minor.',
+          criteria:
+            'Q[A]^NOT^AS.110.106[C]^NOT^AS.110.107[C]^NOT^AS.110.108[C]^NOT^AS.110.109[C]^NOT^AS.110.113[C]^NOT^EN.553.311[C]^NOT^EN.553.420[C]^NOT^EN.553.620[C]^NOT^EN.553.430[C]',
         },
         {
           required_credits: 18,
-          description: '**Only EN.553.311 Probability and Statistics for the Biological Sciences and Engineering and EN.553.430 Introduction to Statistics count towards minor.',
-          criteria: 'Q[A]^NOT^AS.110.106[C]^NOT^AS.110.107[C]^NOT^AS.110.108[C]^NOT^AS.110.109[C]^NOT^AS.110.113[C]^NOT^EN.553.310[C]^NOT^EN.553.420[C]^NOT^EN.553.620[C]^NOT^EN.553.630[C]',
+          description:
+            '**Only EN.553.311 Probability and Statistics for the Biological Sciences and Engineering and EN.553.430 Introduction to Statistics count towards minor.',
+          criteria:
+            'Q[A]^NOT^AS.110.106[C]^NOT^AS.110.107[C]^NOT^AS.110.108[C]^NOT^AS.110.109[C]^NOT^AS.110.113[C]^NOT^EN.553.310[C]^NOT^EN.553.420[C]^NOT^EN.553.620[C]^NOT^EN.553.630[C]',
         },
         {
           required_credits: 18,
-          description: '**Only EN.553.311 Probability and Statistics for the Biological Sciences and Engineering and EN.553.630 Introduction to Statistics count towards minor.',
-          criteria: 'Q[A]^NOT^AS.110.106[C]^NOT^AS.110.107[C]^NOT^AS.110.108[C]^NOT^AS.110.109[C]^NOT^AS.110.113[C]^NOT^EN.553.310[C]^NOT^EN.553.420[C]^NOT^EN.553.620[C]^NOT^EN.553.430[C]',
+          description:
+            '**Only EN.553.311 Probability and Statistics for the Biological Sciences and Engineering and EN.553.630 Introduction to Statistics count towards minor.',
+          criteria:
+            'Q[A]^NOT^AS.110.106[C]^NOT^AS.110.107[C]^NOT^AS.110.108[C]^NOT^AS.110.109[C]^NOT^AS.110.113[C]^NOT^EN.553.310[C]^NOT^EN.553.420[C]^NOT^EN.553.620[C]^NOT^EN.553.430[C]',
         },
         {
           required_credits: 18,
-          description: '**Only EN.553.420 Introduction to Probability and EN.553.430 Introduction to Statistics count towards minor.',
-          criteria: 'Q[A]^NOT^AS.110.106[C]^NOT^AS.110.107[C]^NOT^AS.110.108[C]^NOT^AS.110.109[C]^NOT^AS.110.113[C]^NOT^EN.553.310[C]^NOT^EN.553.311[C]^NOT^EN.553.620[C]^NOT^EN.553.630[C]',
+          description:
+            '**Only EN.553.420 Introduction to Probability and EN.553.430 Introduction to Statistics count towards minor.',
+          criteria:
+            'Q[A]^NOT^AS.110.106[C]^NOT^AS.110.107[C]^NOT^AS.110.108[C]^NOT^AS.110.109[C]^NOT^AS.110.113[C]^NOT^EN.553.310[C]^NOT^EN.553.311[C]^NOT^EN.553.620[C]^NOT^EN.553.630[C]',
         },
         {
           required_credits: 18,
-          description: '**Only EN.553.620 Introduction to Probability and EN.553.630 Introduction to Statistics count towards minor.',
-          criteria: 'Q[A]^NOT^AS.110.106[C]^NOT^AS.110.107[C]^NOT^AS.110.108[C]^NOT^AS.110.109[C]^NOT^AS.110.113[C]^NOT^EN.553.310[C]^NOT^EN.553.311[C]^NOT^EN.553.420[C]^NOT^EN.553.430[C]',
+          description:
+            '**Only EN.553.620 Introduction to Probability and EN.553.630 Introduction to Statistics count towards minor.',
+          criteria:
+            'Q[A]^NOT^AS.110.106[C]^NOT^AS.110.107[C]^NOT^AS.110.108[C]^NOT^AS.110.109[C]^NOT^AS.110.113[C]^NOT^EN.553.310[C]^NOT^EN.553.311[C]^NOT^EN.553.420[C]^NOT^EN.553.430[C]',
         },
         {
           required_credits: 18,
-          description: '**Only EN.553.620 Introduction to Probability and EN.553.430 Introduction to Statistics count towards minor.',
-          criteria: 'Q[A]^NOT^AS.110.106[C]^NOT^AS.110.107[C]^NOT^AS.110.108[C]^NOT^AS.110.109[C]^NOT^AS.110.113[C]^NOT^EN.553.310[C]^NOT^EN.553.311[C]^NOT^EN.553.420[C]^NOT^EN.553.630[C]',
+          description:
+            '**Only EN.553.620 Introduction to Probability and EN.553.430 Introduction to Statistics count towards minor.',
+          criteria:
+            'Q[A]^NOT^AS.110.106[C]^NOT^AS.110.107[C]^NOT^AS.110.108[C]^NOT^AS.110.109[C]^NOT^AS.110.113[C]^NOT^EN.553.310[C]^NOT^EN.553.311[C]^NOT^EN.553.420[C]^NOT^EN.553.630[C]',
         },
         {
           required_credits: 18,
-          description: '**Only EN.553.420 Introduction to Probability and EN.553.630 Introduction to Statistics count towards minor.',
-          criteria: 'Q[A]^NOT^AS.110.106[C]^NOT^AS.110.107[C]^NOT^AS.110.108[C]^NOT^AS.110.109[C]^NOT^AS.110.113[C]^NOT^EN.553.310[C]^NOT^EN.553.311[C]^NOT^EN.553.620[C]^NOT^EN.553.430[C]',
+          description:
+            '**Only EN.553.420 Introduction to Probability and EN.553.630 Introduction to Statistics count towards minor.',
+          criteria:
+            'Q[A]^NOT^AS.110.106[C]^NOT^AS.110.107[C]^NOT^AS.110.108[C]^NOT^AS.110.109[C]^NOT^AS.110.113[C]^NOT^EN.553.310[C]^NOT^EN.553.311[C]^NOT^EN.553.620[C]^NOT^EN.553.430[C]',
         },
       ],
     },
@@ -2798,141 +2821,166 @@ const minorAMS: Minor = {
       name: 'AMS Courses',
       required_credits: 12,
       min_credits_per_course: 3,
-      description: 
-      'Among the courses comprising the 18 Q credits, there must be at least four courses in the Department of Applied Mathematics and Statistics (each of these must be a 3- or 4-credit course).',
-      criteria:
-      'Q[A]^AND^EN Applied Mathematics & Statistics[D]',
+      description:
+        'Among the courses comprising the 18 Q credits, there must be at least four courses in the Department of Applied Mathematics and Statistics (each of these must be a 3- or 4-credit course).',
+      criteria: 'Q[A]^AND^EN Applied Mathematics & Statistics[D]',
       pathing: true,
       fine_requirements: [
         {
           required_credits: 12,
-          description: '**Only EN.553.310 Probability & Statistics for the Physical Sciences & Engineering and EN.553.420 Introduction to Probability count towards minor.',
-          criteria: 'Q[A]^AND^EN Applied Mathematics & Statistics[D]^NOT^EN.553.311[C]^NOT^EN.553.620[C]^NOT^EN.553.430[C]^NOT^EN.553.630[C]',
+          description:
+            '**Only EN.553.310 Probability & Statistics for the Physical Sciences & Engineering and EN.553.420 Introduction to Probability count towards minor.',
+          criteria:
+            'Q[A]^AND^EN Applied Mathematics & Statistics[D]^NOT^EN.553.311[C]^NOT^EN.553.620[C]^NOT^EN.553.430[C]^NOT^EN.553.630[C]',
         },
         {
           required_credits: 12,
-          description: '**Only EN.553.310 Probability & Statistics for the Physical Sciences & Engineering and EN.553.620 Introduction to Probability count towards minor.',
-          criteria: 'Q[A]^AND^EN Applied Mathematics & Statistics[D]^NOT^EN.553.311[C]^NOT^EN.553.420[C]^NOT^EN.553.430[C]^NOT^EN.553.630[C]',
+          description:
+            '**Only EN.553.310 Probability & Statistics for the Physical Sciences & Engineering and EN.553.620 Introduction to Probability count towards minor.',
+          criteria:
+            'Q[A]^AND^EN Applied Mathematics & Statistics[D]^NOT^EN.553.311[C]^NOT^EN.553.420[C]^NOT^EN.553.430[C]^NOT^EN.553.630[C]',
         },
         {
           required_credits: 12,
-          description: '**Only EN.553.311 Probability and Statistics for the Biological Sciences and Engineering and EN.553.420 Introduction to Probability count towards minor.',
-          criteria: 'Q[A]^AND^EN Applied Mathematics & Statistics[D]^NOT^AS.110.113[C]^NOT^EN.553.310[C]^NOT^EN.553.620[C]^NOT^EN.553.430[C]^NOT^EN.553.630[C]',
+          description:
+            '**Only EN.553.311 Probability and Statistics for the Biological Sciences and Engineering and EN.553.420 Introduction to Probability count towards minor.',
+          criteria:
+            'Q[A]^AND^EN Applied Mathematics & Statistics[D]^NOT^AS.110.113[C]^NOT^EN.553.310[C]^NOT^EN.553.620[C]^NOT^EN.553.430[C]^NOT^EN.553.630[C]',
         },
         {
           required_credits: 12,
-          description: '**Only EN.553.311 Probability and Statistics for the Biological Sciences and Engineering and EN.553.620 Introduction to Probability count towards minor.',
-          criteria: 'Q[A]^AND^EN Applied Mathematics & Statistics[D]^NOT^EN.553.310[C]^NOT^EN.553.420[C]^NOT^EN.553.430[C]^NOT^EN.553.630[C]',
+          description:
+            '**Only EN.553.311 Probability and Statistics for the Biological Sciences and Engineering and EN.553.620 Introduction to Probability count towards minor.',
+          criteria:
+            'Q[A]^AND^EN Applied Mathematics & Statistics[D]^NOT^EN.553.310[C]^NOT^EN.553.420[C]^NOT^EN.553.430[C]^NOT^EN.553.630[C]',
         },
         {
           required_credits: 12,
-          description: '**Only EN.553.310 Probability & Statistics for the Physical Sciences & Engineering and EN.553.430 Introduction to Statistics count towards minor.',
-          criteria: 'Q[A]^AND^EN Applied Mathematics & Statistics[D]^NOT^EN.553.311[C]^NOT^EN.553.420[C]^NOT^EN.553.620[C]^NOT^EN.553.630[C]',
+          description:
+            '**Only EN.553.310 Probability & Statistics for the Physical Sciences & Engineering and EN.553.430 Introduction to Statistics count towards minor.',
+          criteria:
+            'Q[A]^AND^EN Applied Mathematics & Statistics[D]^NOT^EN.553.311[C]^NOT^EN.553.420[C]^NOT^EN.553.620[C]^NOT^EN.553.630[C]',
         },
         {
           required_credits: 12,
-          description: '**Only EN.553.310 Probability & Statistics for the Physical Sciences & Engineering and EN.553.630 Introduction to Statistics count towards minor.',
-          criteria: 'Q[A]^AND^EN Applied Mathematics & Statistics[D]^NOT^EN.553.311[C]^NOT^EN.553.420[C]^NOT^EN.553.620[C]^NOT^EN.553.430[C]',
+          description:
+            '**Only EN.553.310 Probability & Statistics for the Physical Sciences & Engineering and EN.553.630 Introduction to Statistics count towards minor.',
+          criteria:
+            'Q[A]^AND^EN Applied Mathematics & Statistics[D]^NOT^EN.553.311[C]^NOT^EN.553.420[C]^NOT^EN.553.620[C]^NOT^EN.553.430[C]',
         },
         {
           required_credits: 12,
-          description: '**Only EN.553.311 Probability and Statistics for the Biological Sciences and Engineering and EN.553.430 Introduction to Statistics count towards minor.',
-          criteria: 'Q[A]^AND^EN Applied Mathematics & Statistics[D]^NOT^EN.553.310[C]^NOT^EN.553.420[C]^NOT^EN.553.620[C]^NOT^EN.553.630[C]',
+          description:
+            '**Only EN.553.311 Probability and Statistics for the Biological Sciences and Engineering and EN.553.430 Introduction to Statistics count towards minor.',
+          criteria:
+            'Q[A]^AND^EN Applied Mathematics & Statistics[D]^NOT^EN.553.310[C]^NOT^EN.553.420[C]^NOT^EN.553.620[C]^NOT^EN.553.630[C]',
         },
         {
           required_credits: 12,
-          description: '**Only EN.553.311 Probability and Statistics for the Biological Sciences and Engineering and EN.553.630 Introduction to Statistics count towards minor.',
-          criteria: 'Q[A]^AND^EN Applied Mathematics & Statistics[D]^NOT^EN.553.310[C]^NOT^EN.553.420[C]^NOT^EN.553.620[C]^NOT^EN.553.430[C]',
+          description:
+            '**Only EN.553.311 Probability and Statistics for the Biological Sciences and Engineering and EN.553.630 Introduction to Statistics count towards minor.',
+          criteria:
+            'Q[A]^AND^EN Applied Mathematics & Statistics[D]^NOT^EN.553.310[C]^NOT^EN.553.420[C]^NOT^EN.553.620[C]^NOT^EN.553.430[C]',
         },
         {
           required_credits: 12,
-          description: '**Only EN.553.420 Introduction to Probability and EN.553.430 Introduction to Statistics count towards minor.',
-          criteria: 'Q[A]^AND^EN Applied Mathematics & Statistics[D]^NOT^EN.553.310[C]^NOT^EN.553.311[C]^NOT^EN.553.620[C]^NOT^EN.553.630[C]',
+          description:
+            '**Only EN.553.420 Introduction to Probability and EN.553.430 Introduction to Statistics count towards minor.',
+          criteria:
+            'Q[A]^AND^EN Applied Mathematics & Statistics[D]^NOT^EN.553.310[C]^NOT^EN.553.311[C]^NOT^EN.553.620[C]^NOT^EN.553.630[C]',
         },
         {
           required_credits: 12,
-          description: '**Only EN.553.620 Introduction to Probability and EN.553.630 Introduction to Statistics count towards minor.',
-          criteria: 'Q[A]^AND^EN Applied Mathematics & Statistics[D]^NOT^EN.553.310[C]^NOT^EN.553.311[C]^NOT^EN.553.420[C]^NOT^EN.553.430[C]',
+          description:
+            '**Only EN.553.620 Introduction to Probability and EN.553.630 Introduction to Statistics count towards minor.',
+          criteria:
+            'Q[A]^AND^EN Applied Mathematics & Statistics[D]^NOT^EN.553.310[C]^NOT^EN.553.311[C]^NOT^EN.553.420[C]^NOT^EN.553.430[C]',
         },
         {
           required_credits: 12,
-          description: '**Only EN.553.620 Introduction to Probability and EN.553.430 Introduction to Statistics count towards minor.',
-          criteria: 'Q[A]^AND^EN Applied Mathematics & Statistics[D]^NOT^EN.553.310[C]^NOT^EN.553.311[C]^NOT^EN.553.420[C]^NOT^EN.553.630[C]',
+          description:
+            '**Only EN.553.620 Introduction to Probability and EN.553.430 Introduction to Statistics count towards minor.',
+          criteria:
+            'Q[A]^AND^EN Applied Mathematics & Statistics[D]^NOT^EN.553.310[C]^NOT^EN.553.311[C]^NOT^EN.553.420[C]^NOT^EN.553.630[C]',
         },
         {
           required_credits: 12,
-          description: '**Only EN.553.420 Introduction to Probability and EN.553.630 Introduction to Statistics count towards minor.',
-          criteria: 'Q[A]^AND^EN Applied Mathematics & Statistics[D]^NOT^EN.553.310[C]^NOT^EN.553.311[C]^NOT^EN.553.620[C]^NOT^EN.553.430[C]',
+          description:
+            '**Only EN.553.420 Introduction to Probability and EN.553.630 Introduction to Statistics count towards minor.',
+          criteria:
+            'Q[A]^AND^EN Applied Mathematics & Statistics[D]^NOT^EN.553.310[C]^NOT^EN.553.311[C]^NOT^EN.553.620[C]^NOT^EN.553.430[C]',
         },
       ],
-
     },
     {
       name: 'Upper-Level Courses',
       required_credits: 9,
       min_credits_per_course: 3,
-      description: 
-      'Among the courses comprising the 18 Q credits, there must be at least three (3- or 4-credit) courses at the 300-level or above, ' +
-      'of which at least two must be in the Department of Applied Mathematics and Statistics**.<br />' +
-      '</br /> **A student may count the combination of (AS.110.201 Linear Algebra or AS.110.212 Honors Linear Algebra) AND AS.110.302 Differential Equations and Applications in place of ONE of the required 300-level courses within the AMS Department',
-      criteria:
-      'Q[A]^AND^(300[L]^OR^400[L])',
+      description:
+        'Among the courses comprising the 18 Q credits, there must be at least three (3- or 4-credit) courses at the 300-level or above, ' +
+        'of which at least two must be in the Department of Applied Mathematics and Statistics**.<br />' +
+        '</br /> **A student may count the combination of (AS.110.201 Linear Algebra or AS.110.212 Honors Linear Algebra) AND AS.110.302 Differential Equations and Applications in place of ONE of the required 300-level courses within the AMS Department',
+      criteria: 'Q[A]^AND^(300[L]^OR^400[L])',
       pathing: true,
       fine_requirements: [
         {
           required_credits: 6,
-          description: 
-          '<b>AMS Courses:</b> <br />At least two upper-level courses must be in the Department of Applied Mathematics and Statistics.**',
-          criteria: '(300[L]^OR^400[L])^AND^EN Applied Mathematics & Statistics[D]',
+          description:
+            '<b>AMS Courses:</b> <br />At least two upper-level courses must be in the Department of Applied Mathematics and Statistics.**',
+          criteria:
+            '(300[L]^OR^400[L])^AND^EN Applied Mathematics & Statistics[D]',
         },
         {
           required_credits: 9,
-          description: 
-          '<b>**Alternate Route:</b> <br />One upper-level course from the Department of Applied Mathematics and Statistics, and (AS.110.201 Linear Algebra AND AS.110.302 Differential Equations and Applications).',
-          criteria: '((300[L]^OR^400[L])^AND^EN Applied Mathematics & Statistics[D])^OR^AS.110.201[C]^OR^AS.110.302[C]',
+          description:
+            '<b>**Alternate Route:</b> <br />One upper-level course from the Department of Applied Mathematics and Statistics, and (AS.110.201 Linear Algebra AND AS.110.302 Differential Equations and Applications).',
+          criteria:
+            '((300[L]^OR^400[L])^AND^EN Applied Mathematics & Statistics[D])^OR^AS.110.201[C]^OR^AS.110.302[C]',
         },
         {
           required_credits: 9,
-          description: 
-          '<b>**Alternate Route:</b> <br />One upper-level course from the Department of Applied Mathematics and Statistics, and (AS.110.212 Honors Linear Algebra AND AS.110.302 Differential Equations and Applications).',
-          criteria: '((300[L]^OR^400[L])^AND^EN Applied Mathematics & Statistics[D])^OR^AS.110.212[C]^OR^AS.110.302[C]',
+          description:
+            '<b>**Alternate Route:</b> <br />One upper-level course from the Department of Applied Mathematics and Statistics, and (AS.110.212 Honors Linear Algebra AND AS.110.302 Differential Equations and Applications).',
+          criteria:
+            '((300[L]^OR^400[L])^AND^EN Applied Mathematics & Statistics[D])^OR^AS.110.212[C]^OR^AS.110.302[C]',
         },
-      ]
+      ],
     },
     {
       name: 'Scientific Computer Course',
       required_credits: 3,
       min_credits_per_course: 3,
-      description: 
-      'Among the courses comprising the 18 Q credits, there must be ' +
-      'an approved semester course in scientific computing, chosen from 110.445, 553.385, 553.400, 553.413, 553.432, 553.433, 553.436, 553.450, 553.463, 553.467, 553.481, 553.488, 553.493, 553.494, 601.433, 601.475, 601.482 or one of the courses approved to meet the AMS Master’s/PhD Computing Requirement.',
+      description:
+        'Among the courses comprising the 18 Q credits, there must be ' +
+        'an approved semester course in scientific computing, chosen from 110.445, 553.385, 553.400, 553.413, 553.432, 553.433, 553.436, 553.450, 553.463, 553.467, 553.481, 553.488, 553.493, 553.494, 601.433, 601.475, 601.482 or one of the courses approved to meet the AMS Master’s/PhD Computing Requirement.',
       criteria:
-      'AS.110.445[C]^OR^EN.553.385[C]^OR^EN.553.400[C]^OR^EN.553.413[C]^OR^EN.553.432[C]^OR^EN.553.433[C]^OR^EN.553.436[C]^OR^EN.553.450[C]^OR^EN.553.463[C]^OR^EN.553.467[C]^OR^EN.553.481[C]^OR^EN.553.488[C]^OR^EN.553.493[C]^OR^EN.553.494[C]^OR^EN.601.433[C]^OR^EN.601.475[C]^OR^EN.601.482[C]',
+        'AS.110.445[C]^OR^EN.553.385[C]^OR^EN.553.400[C]^OR^EN.553.413[C]^OR^EN.553.432[C]^OR^EN.553.433[C]^OR^EN.553.436[C]^OR^EN.553.450[C]^OR^EN.553.463[C]^OR^EN.553.467[C]^OR^EN.553.481[C]^OR^EN.553.488[C]^OR^EN.553.493[C]^OR^EN.553.494[C]^OR^EN.601.433[C]^OR^EN.601.475[C]^OR^EN.601.482[C]',
       fine_requirements: [
         {
           required_credits: 3,
-          description: 
-          '<b>Scientific Computer Course:</b> <br /> The student must take an approved course based on a high-level computer language chosen from the list below or one of the courses approved to meet the AMS Master’s/PhD Computing Requirement.<br />' +
-          '<br /> AS.110.445, ' + 
-          '<br /> EN.553.385, ' + 
-          '<br /> EN.553.400, ' + 
-          '<br /> EN.553.413, ' + 
-          '<br /> EN.553.432, ' + 
-          '<br /> EN.553.433, ' + 
-          '<br /> EN.553.436, ' + 
-          '<br /> EN.553.450, ' + 
-          '<br /> EN.553.463, ' + 
-          '<br /> EN.553.467, ' + 
-          '<br /> EN.553.481, ' + 
-          '<br /> EN.553.488, ' + 
-          '<br /> EN.553.493, ' + 
-          '<br /> EN.553.494, ' + 
-          '<br /> EN.601.433, ' + 
-          '<br /> EN.601.475, ' + 
-          '<br /> EN.601.482 <br />',
-          criteria: 'AS.110.445[C]^OR^EN.553.385[C]^OR^EN.553.400[C]^OR^EN.553.413[C]^OR^EN.553.432[C]^OR^EN.553.433[C]^OR^EN.553.436[C]^OR^EN.553.450[C]^OR^EN.553.463[C]^OR^EN.553.467[C]^OR^EN.553.481[C]^OR^EN.553.488[C]^OR^EN.553.493[C]^OR^EN.553.494[C]^OR^EN.601.433[C]^OR^EN.601.475[C]^OR^EN.601.482[C]',
+          description:
+            '<b>Scientific Computer Course:</b> <br /> The student must take an approved course based on a high-level computer language chosen from the list below or one of the courses approved to meet the AMS Master’s/PhD Computing Requirement.<br />' +
+            '<br /> AS.110.445, ' +
+            '<br /> EN.553.385, ' +
+            '<br /> EN.553.400, ' +
+            '<br /> EN.553.413, ' +
+            '<br /> EN.553.432, ' +
+            '<br /> EN.553.433, ' +
+            '<br /> EN.553.436, ' +
+            '<br /> EN.553.450, ' +
+            '<br /> EN.553.463, ' +
+            '<br /> EN.553.467, ' +
+            '<br /> EN.553.481, ' +
+            '<br /> EN.553.488, ' +
+            '<br /> EN.553.493, ' +
+            '<br /> EN.553.494, ' +
+            '<br /> EN.601.433, ' +
+            '<br /> EN.601.475, ' +
+            '<br /> EN.601.482 <br />',
+          criteria:
+            'AS.110.445[C]^OR^EN.553.385[C]^OR^EN.553.400[C]^OR^EN.553.413[C]^OR^EN.553.432[C]^OR^EN.553.433[C]^OR^EN.553.436[C]^OR^EN.553.450[C]^OR^EN.553.463[C]^OR^EN.553.467[C]^OR^EN.553.481[C]^OR^EN.553.488[C]^OR^EN.553.493[C]^OR^EN.553.494[C]^OR^EN.601.433[C]^OR^EN.601.475[C]^OR^EN.601.482[C]',
         },
-      ]
+      ],
     },
   ],
 };
