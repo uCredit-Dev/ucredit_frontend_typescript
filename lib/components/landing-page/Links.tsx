@@ -12,19 +12,19 @@ const Laptop: React.FC = () => {
         <div className="row-start-1 row-end-2 col-span-4 text-gray text-center text-3xl md:text-4xl lg:text-5xl">
           Open Source
         </div>
-        <div className="px-48 row-span-1 col-span-4 text-center text-base md:text-lg lg:text-xl">
+        <div className="mt-[-30px] lg:mt-0 px-48 row-span-1 col-span-4 text-center text-base md:text-lg lg:text-xl">
           Ucredit is an Open Source community resource dedicated to helping open
           source projects be as successful as possible. We thrive on community
           collaboration to help us create a premier resource for open source
           software development and distribution.
         </div>
         <div className="row-span-2 col-span-1"></div>
-        <div className="row-span-2 col-span-1 pl-24 pt-5">
+        <div className="row-span-2 col-span-1 pl-14 pt-5">
           <button className="px-12 py-5 mr-4 border-4 hover:text-white hover:bg-blue-footer rounded-[50px] font-bold text-base md:text-xl xl:text-2xl">
             Github
           </button>
         </div>
-        <div className="row-span-2 col-span-1 pl-28 pt-5">
+        <div className="row-span-2 col-span-1 pl-36 pt-5">
           <button className="px-12 py-5 mr-4 border-4 hover:text-white hover:bg-blue-footer rounded-[50px] font-bold text-base md:text-xl xl:text-2xl">
             Docs
           </button>
@@ -50,7 +50,6 @@ const Mobile: React.FC = () => {
         <div className="grid grid-rows-2 gap-2">
           <div>
             <button className=" w-80 px-12 py-3 mr-4 border-2 hover:text-white hover:bg-blue-footer rounded-[50px] font-medium text-xl">
-              {/* <Github className="scale-[90%]"/> */}
               Github
             </button>
           </div>
