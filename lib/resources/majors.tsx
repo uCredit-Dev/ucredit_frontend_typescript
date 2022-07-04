@@ -2953,11 +2953,11 @@ const bsNeuro: Major = {
       ],
     },
     {
-      name: 'Elective Course', 
+      name: 'Elective Course',
       required_credits: 3,
       min_credits_per_course: 3,
       description:
-          'Three credits of 300-level or higher approved course outside of selected focus area',
+        'Three credits of 300-level or higher approved course outside of selected focus area',
       criteria: 'AS.080.3[C]',
     },
     {
