@@ -1,11 +1,11 @@
 import Header from '../lib/components/landing-page/Header';
 import Footer from '../lib/components/landing-page/Footer';
-import Feather from '../lib/components/feather';
-import Feather2 from '../lib/components/feather2';
-import Footprints from '../lib/components/footprints';
-import Footprints2 from '../lib/components/footprints2';
-import Path4 from '../lib/components/Paths4.svg';
-import Path5 from '../lib/components/Paths5.svg';
+import Feather from '../lib/components/team-page/feather';
+import Feather2 from '../lib/components/team-page/feather2';
+import Footprints from '../lib/components/team-page/footprints';
+import Footprints2 from '../lib/components/team-page/footprints2';
+import Path4 from '../lib/components/team-page/Paths4.svg';
+import Path5 from '../lib/components/team-page/Paths5.svg';
 
 const Team: React.FC = () => {
   return (
