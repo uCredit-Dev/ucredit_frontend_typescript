@@ -408,7 +408,7 @@ const PlanEditMenu: FC<{ mode: ReviewMode }> = ({ mode }) => {
                       </ul>
                     </>
                   )}
-                  {mode === ReviewMode.Edit && (
+                  {mode === ReviewMode.Edit && user._id !== 'guestUser' && (
                     <ul className="pt-2 space-y-2 border-t border-b pb-2 border-gray-200">
                       {reviewMode !== ReviewMode.View && <Reviewers />}
                     </ul>
