@@ -2711,6 +2711,308 @@ const bsMolCell: Major = {
   ],
 };
 
+const bsNeuro: Major = {
+  degree_name: 'B.S. Neuroscience',
+  abbrev: 'B.S. Neuro',
+  department: 'AS Neuroscience',
+  total_degree_credit: 120,
+  wi_credit: 12,
+  url: 'https://e-catalogue.jhu.edu/arts-sciences/full-time-residential-programs/degree-programs/neuroscience/neuroscience-bachelor-science/',
+  distributions: [
+    {
+      name: 'Neuroscience Sequence',
+      required_credits: 12,
+      min_credits_per_course: 3,
+      description:
+        'These are core neuroscience courses required for the major. ' +
+        'For more information please visit the ' +
+        "<a href='https://krieger.jhu.edu/neuroscience/bs-program/requirements/'>" +
+        'major degree requirement</a> section on the department website.',
+      criteria:
+        'AS.200.141[C]^OR^AS.050.105[C]^OR^AS.050.203[C]^OR^AS.080.250[C]^OR^AS.080.305[C]^OR^AS.080.306[C]',
+      fine_requirements: [
+        {
+          description:
+            '<b>Introductory Neuroscience</b> <br /> AS.200.141 Foundations of Brain, Behavior and Cognition' +
+            ' <br /><i>OR</i> <br />AS.050.105 Introduction to Cognitive Neuropsychology',
+          required_credits: 0,
+          criteria: 'AS.200.141[C]^OR^AS.050.105[C]',
+        },
+        {
+          description:
+            '<b>Neuroscience: Cognitive</b> <br /> AS.050.203 Neuroscience: Cognitive',
+          required_credits: 3,
+          criteria: 'AS.050.203[C]',
+        },
+        {
+          description:
+            '<b>Neuroscience Laboratory</b> <br /> AS.080.250 Neuroscience Laboratory',
+          required_credits: 3,
+          criteria: 'AS.080.250[C]',
+        },
+        {
+          description:
+            '<b>Neuroscience: Cellular and Systems I</b> <br /> AS.080.305 Neuroscience: Cellular and Systems I',
+          required_credits: 3,
+          criteria: 'AS.080.305[C]',
+        },
+        {
+          description:
+            '<b>Neuroscience: Cellular and Systems II</b> <br /> AS.080.306 Neuroscience: Cellular and Systems II',
+          required_credits: 3,
+          criteria: 'AS.080.306[C]',
+        },
+      ],
+    },
+    {
+      name: 'Math',
+      required_credits: 12,
+      min_credits_per_course: 3,
+      description:
+        'Must complete Calculus I, Calculus II, and Probability & Statistics.',
+      criteria:
+        'AS.110.10[C]^OR^AS.171.113[C]^OR^Probability and Statistics[N]^OR^Probability & Statistics[N]^OR^EN.553.111[C]^OR^EN.553.112[C]',
+      fine_requirements: [
+        {
+          description:
+            '<b>Probability and Statistics</b> <br />' +
+            'Select one of the following: <br />' +
+            'EN.553.211 ProbStat for Life Sciences <br />' +
+            'EN.553.310 ProbStat for Physical Sciences <br />' +
+            'EN.553.311 ProbStat for Biological Sciences <br />' +
+            'EN.553.111 and EN.553.112 Statistical Analysis I and II',
+          required_credits: 4,
+          criteria:
+            'EN.553.211[C]^OR^EN.553.310[C]^OR^EN.553.311[C]^OR^(EN.553.111[C]^AND^EN.553.112[C])',
+        },
+        {
+          description:
+            '<b>Calculus I</b> <br />' +
+            'AS.110.106 Calculus I (Biology and Social Sciences)' +
+            '<br /> <i>OR</i> <br />' +
+            'AS.110.108 Calculus I (Physical Sciences and Engineering)',
+          required_credits: 4,
+          criteria: 'AS.110.106[C]^OR^AS.110.108[C]',
+        },
+        {
+          description:
+            '<b>Calculus II</b> <br />' +
+            'Select one of the following: <br />' +
+            'AS.110.107 Calculus II (Biology and Social Sciences) <br />' +
+            'AS.110.109 Calculus II (Physical Sciences and Engineering) <br />' +
+            'AS.171.113 Subatomic World',
+          required_credits: 4,
+          criteria: 'AS.110.107[C]^OR^AS.110.109[C]^OR^AS.171.113[C]',
+        },
+      ],
+    },
+    {
+      name: 'Natural Sciences',
+      required_credits: 22,
+      min_credits_per_course: 1,
+      criteria: 'AS Chemistry[D]^OR^AS Physics & Astronomy[D]',
+      description:
+        'Must complete Introductory Chemistry I & II, Organic Chemistry I, and General Physics I & II with their respective labs (except Organic Chemistry).',
+      fine_requirements: [
+        {
+          description:
+            '<b>Chemistry I</b> <br /> AS.030.101 Introductory Chemistry I <br /> AS.030.105 Introductory Chemistry Laboratory I w/ AS.030.105 lab</b>',
+          required_credits: 4,
+          criteria: 'AS.030.101[C]^AND^AS.030.105[C]',
+        },
+        {
+          description:
+            '<b>Chemistry II</b> <br /> AS.030.102 Introductory Chemistry II <br /> AS.030.106 Introductory Chemistry Laboratory II w/ AS.030.106 lab <br /> <i>OR</i> <br /> AS.030.103 Applied Chemical Equilibrium and Reactivity w/ lab',
+          required_credits: 4,
+          criteria: '(AS.030.102[C]^AND^AS.030.106[C])^OR^AS.030.103[C]',
+        },
+        {
+          description:
+            '<b>Organic Chemistry I</b> <br /> AS.030.205 Introductory Organic Chemistry I',
+          required_credits: 4,
+          criteria: 'AS.030.205[C]',
+        },
+        {
+          description:
+            '<b>Physics I</b> <br />' +
+            'Select one of the following: <br />' +
+            'AS.171.101 General Physics: Physical Science Majors I <br />' +
+            'AS.171.103 General Physics: Biological Science Majors I <br />' +
+            'AS.171.107 General Physics for Physical Sciences Majors (AL)',
+          required_credits: 4,
+          criteria: 'AS.171.101[C]^OR^AS.171.103[C]^OR^AS.171.107[C]',
+        },
+        {
+          description:
+            '<b>Physics II</b> <br />' +
+            'Select one of the following: <br />' +
+            'AS.171.102 General Physics: Physical Science Majors II <br />' +
+            'AS.171.104 General Physics/Biology Majors II <br />' +
+            'AS.171.108 General Physics for Physical Science Majors (AL)',
+          required_credits: 4,
+          criteria: 'AS.171.102[C]^OR^AS.171.104[C]^OR^AS.171.108[C]',
+        },
+        {
+          description:
+            '<b>Physics Laboratory I</b> <br /> AS.173.111 General Physics Laboratory I',
+          required_credits: 1,
+          criteria: 'AS.173.111[C]',
+        },
+        {
+          description:
+            '<b>Physics Laboratory II</b> <br /> AS.173.112 General Physics Laboratory II',
+          required_credits: 1,
+          criteria: 'AS.173.112[C]',
+        },
+      ],
+    },
+    {
+      name: 'Biology Sequence',
+      required_credits: 6,
+      min_credits_per_course: 3,
+      pathing: true,
+      description:
+        'Select one biology course with lab of the following. Exam credit not applicable. For more detail please visit ' +
+        'https://krieger.jhu.edu/neuroscience/bs-program/requirements/',
+      criteria:
+        'AS.020.151[C]^OR^AS.020.153[C]^OR^' +
+        'AS.020.152[C]^OR^AS.020.154[C]^OR^' +
+        'AS.020.305[C]^OR^AS.020.315[C]^OR^AS.250.253[C]^OR^AS.250.254[C]^OR^' +
+        'AS.020.303[C]^OR^AS.020.340[C]^OR^' +
+        'AS.020.306[C]^OR^AS.020.316[C]^OR^' +
+        'AS.020.374[C]^OR^AS.020.377[C]',
+      fine_requirements: [
+        {
+          required_credits: 6,
+          description: '<b>Gen Bio I with lab</b>',
+          criteria: 'AS.020.151[C]^AND^AS.020.153[C]',
+        },
+        {
+          required_credits: 6,
+          description: '<b>Gen Bio II with lab</b>',
+          criteria: 'AS.020.152[C]^AND^AS.020.154[C]',
+        },
+        {
+          required_credits: 6,
+          description: '<b>Biochem with lab</b>',
+          criteria:
+            '(AS.020.305[C]^AND^AS.020.315[C])^OR^AS.250.253[C]^OR^AS.250.254[C]',
+        },
+        {
+          required_credits: 6,
+          description: '<b>Genetics with lab</b>',
+          criteria: 'AS.020.303[C]^AND^AS.020.340[C]',
+        },
+        {
+          required_credits: 6,
+          description: '<b>Cell Bio with lab</b>',
+          criteria: 'AS.020.306[C]^AND^AS.020.316[C]',
+        },
+        {
+          required_credits: 6,
+          description: '<b>Comparative Physiology with lab</b>',
+          criteria: 'AS.020.374[C]^AND^AS.020.377[C]',
+        },
+      ],
+    },
+    {
+      name: 'Focus Area',
+      required_credits: 9,
+      min_credits_per_course: 1,
+      pathing: true,
+      description:
+        'Nine credits of 300-level or higher approved courses from one of four focus areas: systems neuroscience, ' +
+        'cognitive neuroscience, computational neuroscience, or cellular and molecular neuroscience',
+      criteria:
+        'NEUR-ST[T]^OR^NEUR-CG[T]^OR^NEUR-CP[T]^OR^NEUR-CM[T]^OR^AS.080.3[C]^OR^AS.200.3[C]',
+      fine_requirements: [
+        {
+          required_credits: 9,
+          description: '<b>Systems neuroscience (ST)</b> <br /> ',
+          criteria: 'NEUR-ST[T]',
+        },
+        {
+          required_credits: 9,
+          description: '<b>Cognitive neuroscience (CG)</b> <br /> ',
+          criteria: 'NEUR-CG[T]',
+        },
+        {
+          required_credits: 9,
+          description:
+            '<b>Computational neuroscience (CP)</b> <br /> ' +
+            'EN.553.291 (or AS.110.201 and AS.110.302) is required in addition to the credits required of the focus area.',
+          criteria: 'NEUR-CP[T]',
+        },
+        {
+          required_credits: 9,
+          description:
+            '<b>Cellular and molecular neuroscience (CM)</b> <br /> ' +
+            'AS.020.306 and AS.020.316 must be selected as the required biology course with lab.',
+          criteria: 'NEUR-CM[T]',
+        },
+      ],
+    },
+    {
+      name: 'Elective Course', 
+      required_credits: 3,
+      min_credits_per_course: 3,
+      description:
+          'Three credits of 300-level or higher approved course outside of selected focus area',
+      criteria: 'AS.080.3[C]',
+    },
+    {
+      name: 'Research',
+      required_credits: 6,
+      min_credits_per_course: 0.5,
+      description:
+        'Six credits of neuroscience research, obtained through work in one of the neuroscience laboratories ' +
+        'participating in the program. Read more about <a href="https://krieger.jhu.edu/neuroscience/research/research-credit-requirements/">' +
+        'research credit requirements</a>.',
+      criteria: 'AS.080.500[C]^OR^AS.080.541[C]', // TODO: course # for neuro research?
+      fine_requirements: [
+        {
+          required_credits: 0.5,
+          description:
+            '<b>Scientific Communication</b> <br /> Read more about <a href="https://krieger.jhu.edu/neuroscience/research/research-credit-requirements/">' +
+            'research credit requirements</a>.',
+          criteria: 'AS.080.500[C]',
+        },
+      ],
+    },
+    {
+      name: 'Humanities (H) Distribution',
+      required_credits: 9,
+      min_credits_per_course: 3,
+      description:
+        'The distribution requirement stipulates that students must earn a minimum number of credits in academic areas outside of their primary major. ' +
+        'The student must complete at least 9 credits in the Humanities (H) area. ' +
+        'These credits fulfilling the distribution requirement may overlap with major or minor requirements and the writing-intensive requirement.',
+      criteria: 'H[A]',
+    },
+    {
+      name: 'Social Science (S) Distribution',
+      required_credits: 9,
+      min_credits_per_course: 3,
+      description:
+        'The distribution requirement stipulates that students must earn a minimum number of credits in academic areas outside of their primary major. ' +
+        'The student must complete at least 9 credits in the Social Science (S) area. ' +
+        'These credits fulfilling the distribution requirement may overlap with major or minor requirements and the writing-intensive requirement.',
+      criteria: 'S[A]',
+    },
+    {
+      name: 'Writing Intensive',
+      required_credits: 12,
+      min_credits_per_course: 3,
+      double_count: true,
+      description:
+        'To encourage excellence in writing, across disciplines, the university requires all undergraduates to take a number of writing-intensive courses. ' +
+        'All students earning a degree from the School of Arts and Sciences must complete at least 12 credits in writing-intensive courses. ' +
+        'Writing-intensive courses taken to satisfy major, minor, or distribution requirements may also count toward the writing requirement.',
+      criteria: 'Written Intensive[W]',
+    },
+  ],
+};
+
 const no_degree: Major = {
   degree_name: "Undecided Degree/My degree isn't supported yet",
   distributions: [],
