@@ -1,6 +1,10 @@
 import { Dispatch, SetStateAction, useEffect, useState } from 'react';
 import clsx from 'clsx';
-import { ClipboardListIcon, EyeIcon, TrashIcon } from '@heroicons/react/outline';
+import {
+  ClipboardListIcon,
+  EyeIcon,
+  TrashIcon,
+} from '@heroicons/react/outline';
 import { useRouter } from 'next/router';
 import { toast } from 'react-toastify';
 import { Selectable } from '@robertz65/lyte';
@@ -219,14 +223,15 @@ const Reviewee: React.FC<Props> = ({
                         }
                       </Hoverable>
                       <Hoverable
-                       as={
-                        <button
-                          className="flex items-center justify-center w-6 h-6 transition-colors duration-150 ease-in rounded-sm cursor-pointer hover:bg-gray-200 inspect-plan-button"
-                          onClick={deleteHandler}
-                        >
-                          <TrashIcon className="w-5 h-5 stroke-red-500" />
-                        </button>
-                      }>
+                        as={
+                          <button
+                            className="flex items-center justify-center w-6 h-6 transition-colors duration-150 ease-in rounded-sm cursor-pointer hover:bg-gray-200 inspect-plan-button"
+                            onClick={deleteHandler}
+                          >
+                            <TrashIcon className="w-5 h-5 stroke-red-500" />
+                          </button>
+                        }
+                      >
                         {({ hovered }) =>
                           hovered && (
                             <TooltipPrimary width={130}>
