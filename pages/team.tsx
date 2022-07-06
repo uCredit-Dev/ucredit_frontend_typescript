@@ -6,18 +6,6 @@ import teamList from '../lib/components/landing-page/team-page/teamList';
 
 const Team: React.FC = () => {
   return (
-<<<<<<< Updated upstream
-    <div className="font-landingPage">
-      <Header />
-      <header className="bg-blue-header overflow-hidden ">
-        <div className="w-full h-28 pb-12 overflow-hidden">
-          <div className="text-center pb-3 py-7 text-5xl text-blue-footer ">
-
-            Meet uCredit
-          </div>
-
-          <div className="pt-10 w-[160%] rounded-t-curvy bg-white h-[120px] relative overflow-hidden left-[-30%]"></div>
-=======
 
       <div className="font-landingPage">
       <Header />
@@ -78,9 +66,8 @@ const Team: React.FC = () => {
             github="https://iconmonstr.com/linkedin-2-svg/"
             linkedin="https://iconmonstr.com/linkedin-2-svg/"
           />
->>>>>>> Stashed changes
         </div>
-      </header>
+      </div>
       <div className="bg-blue-header">
         <div className="text-center pb-7 py-5 text-3xl text-blue-footer bg-white">
           Current Members
