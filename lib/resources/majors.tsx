@@ -2772,7 +2772,7 @@ const bsNeuro: Major = {
       description:
         'Must complete Calculus I, Calculus II, Probability & Statistics, Chemistry I & II, Organic Chemistry I, and General Physics I & II with their respective labs.',
       criteria:
-        'EN.553.211[C]^OR^EN.553.310[C]^OR^EN.553.311[C]^OR^EN.553.111[C]^OR^EN.553.112[C]^OR^AS.110.106[C]^OR^AS.110.108[C]^OR^AS.110.107[C]^OR^AS.110.109[C]^OR^AS.171.113[C]' + 
+        'EN.553.211[C]^OR^EN.553.310[C]^OR^EN.553.311[C]^OR^EN.553.111[C]^OR^EN.553.112[C]^OR^AS.110.106[C]^OR^AS.110.108[C]^OR^AS.110.107[C]^OR^AS.110.109[C]^OR^AS.171.113[C]' +
         'AS Chemistry[D]^OR^AS Physics & Astronomy[D]',
       fine_requirements: [
         {
@@ -2817,7 +2817,7 @@ const bsNeuro: Major = {
             '<b>Introductory Chemistry Lab I</b> <br />AS.030.105 Introductory Chemistry Laboratory I',
           required_credits: 1,
           criteria: 'AS.030.105[C]',
-        }, 
+        },
         {
           description:
             '<b>Introductory Chemistry II</b> <br />AS.030.102 Introductory Chemistry II',
@@ -2888,35 +2888,41 @@ const bsNeuro: Major = {
       fine_requirements: [
         {
           required_credits: 4,
-          description: '<b>General Biology I with lab</b> <br /> AS.020.151 General Biology I<br /> AS.020.153 General Biology Laboratory I',
+          description:
+            '<b>General Biology I with lab</b> <br /> AS.020.151 General Biology I<br /> AS.020.153 General Biology Laboratory I',
           criteria: 'AS.020.151[C]^OR^AS.020.153[C]',
         },
         {
           required_credits: 4,
-          description: '<b>General Biology II with lab</b> <br /> AS.020.152 General Biology II<br /> AS.020.154 General Biology Lab II',
+          description:
+            '<b>General Biology II with lab</b> <br /> AS.020.152 General Biology II<br /> AS.020.154 General Biology Lab II',
           criteria: 'AS.020.152[C]^OR^AS.020.154[C]',
         },
         {
           required_credits: 5,
-          description: '<b>Genetics with lab</b> <br /> AS.020.303 Genetics<br /> AS.020.340 Developmental Genetics Lab',
+          description:
+            '<b>Genetics with lab</b> <br /> AS.020.303 Genetics<br /> AS.020.340 Developmental Genetics Lab',
           criteria: 'AS.020.303[C]^OR^AS.020.340[C]',
         },
         {
           required_credits: 5,
-          description: '<b>Biochemistry with lab</b> <br />AS.020.305 Biochemistry<br /> <i>OR</i> <br />Select one of the following:' + 
-            '<br />AS.020.315 Biochemistry Project lab <br />AS.250.253 Protein Engineering and Biochemistry Lab ' + 
+          description:
+            '<b>Biochemistry with lab</b> <br />AS.020.305 Biochemistry<br /> <i>OR</i> <br />Select one of the following:' +
+            '<br />AS.020.315 Biochemistry Project lab <br />AS.250.253 Protein Engineering and Biochemistry Lab ' +
             '<br />AS.250.254 Protein Biochemistry and Engineering Laboratory',
           criteria:
             'AS.020.305[C]^OR^AS.020.315[C]^OR^AS.250.253[C]^OR^AS.250.254[C]',
         },
         {
           required_credits: 5,
-          description: '<b>Cell Biology with lab</b> <br />AS.020.306 Cell Biology <br />AS.020.316 Cell Biology Lab',
+          description:
+            '<b>Cell Biology with lab</b> <br />AS.020.306 Cell Biology <br />AS.020.316 Cell Biology Lab',
           criteria: 'AS.020.306[C]^OR^AS.020.316[C]',
         },
         {
           required_credits: 4,
-          description: '<b>Comparative Physiology with lab</b> <br />AS.020.374 Comparative Physiology <br />AS.020.377 Comparative Physiology Lab',
+          description:
+            '<b>Comparative Physiology with lab</b> <br />AS.020.374 Comparative Physiology <br />AS.020.377 Comparative Physiology Lab',
           criteria: 'AS.020.374[C]^OR^AS.020.377[C]',
         },
       ],
@@ -2974,7 +2980,7 @@ const bsNeuro: Major = {
         'Six credits of neuroscience research, obtained through work in one of the neuroscience laboratories ' +
         'participating in the program. Read more about <a href="https://krieger.jhu.edu/neuroscience/research/research-credit-requirements/">' +
         'research credit requirements</a>.',
-      criteria: 'AS.080.500[C]^OR^AS.080.541[C]', 
+      criteria: 'AS.080.500[C]^OR^AS.080.541[C]',
       fine_requirements: [
         {
           required_credits: 1,
