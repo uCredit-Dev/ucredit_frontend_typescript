@@ -1670,7 +1670,7 @@ const bsAMS: Major = {
         'Biological Models and Simulations and Nonlinear Dynamics of Biological Systems <br /> EN.601.220 Intermediate Programming' +
         '. <br /> NOTE: Students are strongly encouraged to fulfill this element of the requirement by taking EN.500.113 Gateway Computing: Python, and to do this in their first semester at Johns Hopkins University.',
       criteria:
-        'EN.500.112[C]^OR^EN.500.113[C]^OR^EN.500.114[C]^OR^AS.250.205[C]^OR^EN.553.281[C]^OR^(EN.580.242[C]^AND^EN.580.244[C])^OR^' +
+        'EN.500.112[C]^OR^EN.500.113[C]^OR^EN.500.114[C]^OR^AS.250.205[C]^OR^EN.553.281[C]^OR^EN.580.242[C]^OR^EN.580.244[C]^OR^' +
         'EN.601.220[C]^OR^AS.250.205[C]',
     },
     {
@@ -1725,7 +1725,7 @@ const bsAMS: Major = {
           required_credits: 6,
           description: '<b>Computational Mathematics</b>',
           criteria:
-            'EN.553.481[C]^AND^(AS.110.445[C]^OR^EN.553.433[C]^OR^EN.553.467[C]^OR^EN.553.493[C])',
+            'EN.553.481[C]^OR^AS.110.445[C]^OR^EN.553.433[C]^OR^EN.553.467[C]^OR^EN.553.493[C]',
         },
       ],
     },
@@ -1920,20 +1920,28 @@ const bsCS_Old: Major = {
     },
     {
       name: 'Science',
-      required_credits: 16,
+      required_credits: 8,
       min_credits_per_course: 1,
+      pathing: true,
       description:
         'At least two semesters of physics or two semesters of chemistry, with the associated laboratories, must be included.',
       criteria: 'N[A]',
       fine_requirements: [
         {
           description:
-            '<b>Required Courses:</b><p>Two paths:</p>' +
-            '<p>1. Two semesters of chemistry with associated lab:</p><p>030.101 Chemistry I and 030.105 Chemistry Lab I or AP equivalent</p>030.102 Chemistry II and 030.106 Chemistry Lab II or AP equivalent</p>' +
-            '<p>2. Two semesters of physics with associated lab:</p><p>171.101/103 Physics I and 173.111 Physics Lab I or AP equivalent</p>171.102/104 Physics II and 173.112 Phyusics Lab II or AP equivalent</p>',
+            '<b>Path 1: Chemistry</b>' +
+            '<p>Two semesters of chemistry with associated lab:</p><p>030.101 Chemistry I and 030.105 Chemistry Lab I or AP equivalent</p>030.102 Chemistry II and 030.106 Chemistry Lab II or AP equivalent</p>',
+          required_credits: 8,
+          criteria:
+            'AS.030.101[C]^OR^AS.030.105[C]^OR^AS.030.102[C]^OR^AS.030.106[C]',
+        },
+        {
+          description:
+            '<b>Path 2: Physics</b><p>Two paths:</p>' +
+            '<p>Two semesters of physics with associated lab:</p><p>171.101/103 Physics I and 173.111 Physics Lab I or AP equivalent</p>171.102/104 Physics II and 173.112 Phyusics Lab II or AP equivalent</p>',
           required_credits: 10,
           criteria:
-            '(AS.030.101[C]^AND^AS.030.105[C]^AND^AS.030.102[C]^AND^AS.030.106[C])^OR^((AS.171.101[C]^AND^AS.171.103[C])^AND^AS.173.11[C]^AND^(AS.171.102[C]^AND^AS.171.104[C])^AND^AS.173.112[C])',
+            'AS.171.101[C]^OR^AS.171.103[C]^OR^AS.173.11[C]^OR^AS.171.102[C]^OR^AS.171.104[C]^OR^AS.173.112[C]',
         },
       ],
     },
@@ -2729,15 +2737,8 @@ const bsNeuro: Major = {
         "<a href='https://krieger.jhu.edu/neuroscience/bs-program/requirements/'>" +
         'major degree requirement</a> section on the department website.',
       criteria:
-        'AS.200.141[C]^OR^AS.050.105[C]^OR^AS.050.203[C]^OR^AS.080.250[C]^OR^AS.080.305[C]^OR^AS.080.306[C]',
+        'AS.050.203[C]^OR^AS.080.250[C]^OR^AS.080.305[C]^OR^AS.080.306[C]',
       fine_requirements: [
-        {
-          description:
-            '<b>Introductory Neuroscience</b> <br /> AS.200.141 Foundations of Brain, Behavior and Cognition' +
-            ' <br /><i>OR</i> <br />AS.050.105 Introduction to Cognitive Neuropsychology',
-          required_credits: 0,
-          criteria: 'AS.200.141[C]^OR^AS.050.105[C]',
-        },
         {
           description:
             '<b>Neuroscience: Cognitive</b> <br /> AS.050.203 Neuroscience: Cognitive',
@@ -2765,13 +2766,14 @@ const bsNeuro: Major = {
       ],
     },
     {
-      name: 'Math',
-      required_credits: 12,
-      min_credits_per_course: 3,
+      name: 'Mathematics, Statistics, and Science Courses',
+      required_credits: 34,
+      min_credits_per_course: 1,
       description:
-        'Must complete Calculus I, Calculus II, and Probability & Statistics.',
+        'Must complete Calculus I, Calculus II, Probability & Statistics, Chemistry I & II, Organic Chemistry I, and General Physics I & II with their respective labs.',
       criteria:
-        'AS.110.10[C]^OR^AS.171.113[C]^OR^Probability and Statistics[N]^OR^Probability & Statistics[N]^OR^EN.553.111[C]^OR^EN.553.112[C]',
+        'EN.553.211[C]^OR^EN.553.310[C]^OR^EN.553.311[C]^OR^EN.553.111[C]^OR^EN.553.112[C]^OR^AS.110.106[C]^OR^AS.110.108[C]^OR^AS.110.107[C]^OR^AS.110.109[C]^OR^AS.171.113[C]' + 
+        'AS Chemistry[D]^OR^AS Physics & Astronomy[D]',
       fine_requirements: [
         {
           description:
@@ -2783,7 +2785,7 @@ const bsNeuro: Major = {
             'EN.553.111 and EN.553.112 Statistical Analysis I and II',
           required_credits: 4,
           criteria:
-            'EN.553.211[C]^OR^EN.553.310[C]^OR^EN.553.311[C]^OR^(EN.553.111[C]^AND^EN.553.112[C])',
+            'EN.553.211[C]^OR^EN.553.310[C]^OR^EN.553.311[C]^OR^EN.553.111[C]^OR^EN.553.112[C]',
         },
         {
           description:
@@ -2804,27 +2806,29 @@ const bsNeuro: Major = {
           required_credits: 4,
           criteria: 'AS.110.107[C]^OR^AS.110.109[C]^OR^AS.171.113[C]',
         },
-      ],
-    },
-    {
-      name: 'Natural Sciences',
-      required_credits: 22,
-      min_credits_per_course: 1,
-      criteria: 'AS Chemistry[D]^OR^AS Physics & Astronomy[D]',
-      description:
-        'Must complete Introductory Chemistry I & II, Organic Chemistry I, and General Physics I & II with their respective labs (except Organic Chemistry).',
-      fine_requirements: [
         {
           description:
-            '<b>Chemistry I</b> <br /> AS.030.101 Introductory Chemistry I <br /> AS.030.105 Introductory Chemistry Laboratory I w/ AS.030.105 lab</b>',
-          required_credits: 4,
-          criteria: 'AS.030.101[C]^AND^AS.030.105[C]',
+            '<b>Introductory Chemistry I</b> <br /> AS.030.101 Introductory Chemistry I',
+          required_credits: 3,
+          criteria: 'AS.030.101[C]',
         },
         {
           description:
-            '<b>Chemistry II</b> <br /> AS.030.102 Introductory Chemistry II <br /> AS.030.106 Introductory Chemistry Laboratory II w/ AS.030.106 lab <br /> <i>OR</i> <br /> AS.030.103 Applied Chemical Equilibrium and Reactivity w/ lab',
-          required_credits: 4,
-          criteria: '(AS.030.102[C]^AND^AS.030.106[C])^OR^AS.030.103[C]',
+            '<b>Introductory Chemistry Lab I</b> <br />AS.030.105 Introductory Chemistry Laboratory I',
+          required_credits: 1,
+          criteria: 'AS.030.105[C]',
+        }, 
+        {
+          description:
+            '<b>Introductory Chemistry II</b> <br />AS.030.102 Introductory Chemistry II',
+          required_credits: 3,
+          criteria: 'AS.030.102[C]',
+        },
+        {
+          description:
+            '<b>Introductory Chemistry Lab II</b> <br />AS.030.106 Introductory Chemistry Laboratory II <br /> <i>OR</i> <br />AS.030.103 Applied Chemical Equilibrium and Reactivity lab',
+          required_credits: 1,
+          criteria: '^OR^AS.030.106[C]^OR^AS.030.103[C]',
         },
         {
           description:
@@ -2844,6 +2848,12 @@ const bsNeuro: Major = {
         },
         {
           description:
+            '<b>Physics Laboratory I</b> <br /> AS.173.111 General Physics Laboratory I',
+          required_credits: 1,
+          criteria: 'AS.173.111[C]',
+        },
+        {
+          description:
             '<b>Physics II</b> <br />' +
             'Select one of the following: <br />' +
             'AS.171.102 General Physics: Physical Science Majors II <br />' +
@@ -2851,12 +2861,6 @@ const bsNeuro: Major = {
             'AS.171.108 General Physics for Physical Science Majors (AL)',
           required_credits: 4,
           criteria: 'AS.171.102[C]^OR^AS.171.104[C]^OR^AS.171.108[C]',
-        },
-        {
-          description:
-            '<b>Physics Laboratory I</b> <br /> AS.173.111 General Physics Laboratory I',
-          required_credits: 1,
-          criteria: 'AS.173.111[C]',
         },
         {
           description:
@@ -2883,35 +2887,37 @@ const bsNeuro: Major = {
         'AS.020.374[C]^OR^AS.020.377[C]',
       fine_requirements: [
         {
-          required_credits: 6,
-          description: '<b>Gen Bio I with lab</b>',
-          criteria: 'AS.020.151[C]^AND^AS.020.153[C]',
+          required_credits: 4,
+          description: '<b>General Biology I with lab</b> <br /> AS.020.151 General Biology I<br /> AS.020.153 General Biology Laboratory I',
+          criteria: 'AS.020.151[C]^OR^AS.020.153[C]',
         },
         {
-          required_credits: 6,
-          description: '<b>Gen Bio II with lab</b>',
-          criteria: 'AS.020.152[C]^AND^AS.020.154[C]',
+          required_credits: 4,
+          description: '<b>General Biology II with lab</b> <br /> AS.020.152 General Biology II<br /> AS.020.154 General Biology Lab II',
+          criteria: 'AS.020.152[C]^OR^AS.020.154[C]',
         },
         {
-          required_credits: 6,
-          description: '<b>Biochem with lab</b>',
+          required_credits: 5,
+          description: '<b>Genetics with lab</b> <br /> AS.020.303 Genetics<br /> AS.020.340 Developmental Genetics Lab',
+          criteria: 'AS.020.303[C]^OR^AS.020.340[C]',
+        },
+        {
+          required_credits: 5,
+          description: '<b>Biochemistry with lab</b> <br />AS.020.305 Biochemistry<br /> <i>OR</i> <br />Select one of the following:' + 
+            '<br />AS.020.315 Biochemistry Project lab <br />AS.250.253 Protein Engineering and Biochemistry Lab ' + 
+            '<br />AS.250.254 Protein Biochemistry and Engineering Laboratory',
           criteria:
-            '(AS.020.305[C]^AND^AS.020.315[C])^OR^AS.250.253[C]^OR^AS.250.254[C]',
+            'AS.020.305[C]^OR^AS.020.315[C]^OR^AS.250.253[C]^OR^AS.250.254[C]',
         },
         {
-          required_credits: 6,
-          description: '<b>Genetics with lab</b>',
-          criteria: 'AS.020.303[C]^AND^AS.020.340[C]',
+          required_credits: 5,
+          description: '<b>Cell Biology with lab</b> <br />AS.020.306 Cell Biology <br />AS.020.316 Cell Biology Lab',
+          criteria: 'AS.020.306[C]^OR^AS.020.316[C]',
         },
         {
-          required_credits: 6,
-          description: '<b>Cell Bio with lab</b>',
-          criteria: 'AS.020.306[C]^AND^AS.020.316[C]',
-        },
-        {
-          required_credits: 6,
-          description: '<b>Comparative Physiology with lab</b>',
-          criteria: 'AS.020.374[C]^AND^AS.020.377[C]',
+          required_credits: 4,
+          description: '<b>Comparative Physiology with lab</b> <br />AS.020.374 Comparative Physiology <br />AS.020.377 Comparative Physiology Lab',
+          criteria: 'AS.020.374[C]^OR^AS.020.377[C]',
         },
       ],
     },
@@ -2921,32 +2927,32 @@ const bsNeuro: Major = {
       min_credits_per_course: 1,
       pathing: true,
       description:
-        'Nine credits of 300-level or higher approved courses from one of four focus areas: systems neuroscience, ' +
-        'cognitive neuroscience, computational neuroscience, or cellular and molecular neuroscience',
+        'Nine credits of 300-level or higher approved courses from one of four focus areas: Systems Neuroscience, ' +
+        'Cognitive Neuroscience, Computational Neuroscience, or Cellular and Molecular Neuroscience',
       criteria:
-        'NEUR-ST[T]^OR^NEUR-CG[T]^OR^NEUR-CP[T]^OR^NEUR-CM[T]^OR^AS.080.3[C]^OR^AS.200.3[C]',
+        'NEUR-ST[T]^OR^NEUR-CG[T]^OR^NEUR-CP[T]^OR^NEUR-CM[T])^AND^(Upper Level[L])',
       fine_requirements: [
         {
           required_credits: 9,
-          description: '<b>Systems neuroscience (ST)</b> <br /> ',
+          description: '<b>Systems Neuroscience (ST)</b> <br /> ',
           criteria: 'NEUR-ST[T]',
         },
         {
           required_credits: 9,
-          description: '<b>Cognitive neuroscience (CG)</b> <br /> ',
+          description: '<b>Cognitive Neuroscience (CG)</b> <br /> ',
           criteria: 'NEUR-CG[T]',
         },
         {
           required_credits: 9,
           description:
-            '<b>Computational neuroscience (CP)</b> <br /> ' +
+            '<b>Computational Neuroscience (CP)</b> <br /> ' +
             'EN.553.291 (or AS.110.201 and AS.110.302) is required in addition to the credits required of the focus area.',
           criteria: 'NEUR-CP[T]',
         },
         {
           required_credits: 9,
           description:
-            '<b>Cellular and molecular neuroscience (CM)</b> <br /> ' +
+            '<b>Cellular and Molecular Neuroscience (CM)</b> <br /> ' +
             'AS.020.306 and AS.020.316 must be selected as the required biology course with lab.',
           criteria: 'NEUR-CM[T]',
         },
@@ -2958,7 +2964,7 @@ const bsNeuro: Major = {
       min_credits_per_course: 3,
       description:
         'Three credits of 300-level or higher approved course outside of selected focus area',
-      criteria: 'AS.080.3[C]',
+      criteria: 'AS Neuroscience[D]^AND^Upper Level[L]',
     },
     {
       name: 'Research',
@@ -2968,10 +2974,10 @@ const bsNeuro: Major = {
         'Six credits of neuroscience research, obtained through work in one of the neuroscience laboratories ' +
         'participating in the program. Read more about <a href="https://krieger.jhu.edu/neuroscience/research/research-credit-requirements/">' +
         'research credit requirements</a>.',
-      criteria: 'AS.080.500[C]^OR^AS.080.541[C]', // TODO: course # for neuro research?
+      criteria: 'AS.080.500[C]^OR^AS.080.541[C]', 
       fine_requirements: [
         {
-          required_credits: 0.5,
+          required_credits: 1,
           description:
             '<b>Scientific Communication</b> <br /> Read more about <a href="https://krieger.jhu.edu/neuroscience/research/research-credit-requirements/">' +
             'research credit requirements</a>.',
@@ -2998,6 +3004,16 @@ const bsNeuro: Major = {
         'The student must complete at least 9 credits in the Social Science (S) area. ' +
         'These credits fulfilling the distribution requirement may overlap with major or minor requirements and the writing-intensive requirement.',
       criteria: 'S[A]',
+    },
+    {
+      name: 'Other (N/E/Q) Distribution',
+      required_credits: 9,
+      min_credits_per_course: 3,
+      description:
+        'The distribution requirement stipulates that students must earn a minimum number of credits in academic areas outside of their primary major. ' +
+        'The student must complete at least 9 credits in any of the other areas: Natural Sciences (N), Engineering (E) and/or Quantitative (Q). ' +
+        'These credits fulfilling the distribution requirement may overlap with major or minor requirements and the writing-intensive requirement.',
+      criteria: 'N[A]^OR^E[A]^OR^Q[A]',
     },
     {
       name: 'Writing Intensive',
