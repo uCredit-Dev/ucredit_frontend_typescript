@@ -1,24 +1,28 @@
 import 'react-responsive-carousel/lib/styles/carousel.min.css'; // requires a loader
 
-function ProfileMobile(props){
+function ProfileMobile(props) {
   return (
     <>
-      <div className="justify-center text-center font-landingPage flex box-border border-4 border-[#C6E8FF] h-[212px] w-[145px] p-4 rounded-[20px] bg-white ">
-        <div className="text-[18px] flex flex-col ">
-          <div className="h-[55%] ml-1 mt-[-14px] mb-2">
-          <img
-        className="w-20 h-20 my-4 rounded-[40px] object-cover"
-        src={props.img}
-        alt="profile"
-      />
+      <div className="justify-center text-center font-landingPage flex box-border border-4 border-[#C6E8FF] h-[212px] w-[145px] px-1 py-4 rounded-[20px] bg-white ">
+        <div className=" flex items-center flex-col ">
 
-          </div>
-          <div className="h-[20%] text-[18px] font-bold">{props.name}</div>
-          <div className="h-[30%] text-[10px]">
-          {props.role} <br></br> class of {props.class}
+          <div className="h-[55%] px-1 mt-[-14px] mb-2">
+            <img
+              className="w-20 h-20 my-4 rounded-[40px] object-cover"
+              src={props.img}
+              alt="profile"
+            />
           </div>
 
-          <div className="ml-2 h-[10%] grid grid-cols-3">
+          <div className="text-[16px] font-bold">{props.name}</div>
+          <div className="h-[30%] text-[11px]">
+            {props.role}           
+            {props.class && (
+              <p>{`Class of ${props.class}`}</p>
+            )}
+          </div>
+          
+          <div className="ml-2 h-[6%] grid grid-cols-3">
             <a href={props.github}>
               <svg
                 width="17"
