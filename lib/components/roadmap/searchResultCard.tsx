@@ -28,14 +28,14 @@ const SearchResultCard: React.FC = () => {
                     <div className="flex justify-end mx-5 pt-3 pb-1">
                         {/*Date*/}
                         <div>
-                            <p><span className="hidden md:inline">Uploaded on </span>2022-06-04</p>
+                            <p><span className="hidden lg:inline">Uploaded on </span>2022-06-04</p>
                         </div>
                     </div>
 
                     {/*watchNum*/}
                     <div className="flex justify-end mx-5 pt-3 pb-1">
                         <a className="flex-grow-0 pb-1bg-blue-900">
-                            <div className="flex flex-row">
+                            <div className="flex flex-row items-center">
                                 <AiFillEye/>
                                 <p>324</p>
                             </div>
@@ -69,29 +69,29 @@ const SearchResultCard: React.FC = () => {
 
             {/*Contents*/}
             <div className="flex-grow-0 mx-2 px-3 pt-3 pb-3">
-                <p className="flex-grow font-semibold text-left">a brief description of this plan,
+                <p className="flex-grow font-semibold text-left max-h-12 overflow-y-hidden">a brief description of this plan,
                     such as the main purpose and concentration.
                     two lines of preview in total ...
                 </p>
             </div>
 
-            <div className="flex justify-end">
+            <div className="flex justify-end pb-1">
                 {/*Stars*/}
-                <a href="/" className="flex-grow-0 mx-2 px-3 pt-0.5 pb-1bg-blue-900">
-                    <div className="flex flex-row">
+                <a href="/" className="flex-grow-0 mx-2 px-3 pt-0.5">
+                    <div className="flex flex-row items-center h-full">
                         <AiOutlineStar/>
                     </div>
                 </a>
                 {/*Likes*/}
-                <a href="/" className="flex-grow-0 mx-2 px-3 pt-0.5 pb-1bg-blue-900">
-                    <div className="flex flex-row">
+                <a href="/" className="flex-grow-0 mx-2 px-3 pt-0.5">
+                    <div className="flex flex-row items-center">
                         <AiOutlineLike/>
                         <p>102</p>
                     </div>
                 </a>
                 {/*Comments*/}
-                <a href="/" className="flex-grow-0 mx-2 px-3 pt-0.5 pb-1bg-blue-900">
-                    <div className="flex flex-row">
+                <a href="/" className="flex-grow-0 mx-2 px-3 pt-0.5">
+                    <div className="flex flex-row items-center">
                         <AiOutlineComment/>
                         <p>12</p>
                     </div>
