@@ -3,9 +3,9 @@ import clsx from 'clsx';
 function footprints() {
   return (
     <svg
-    className={clsx("z-10 h-[263px] mr-[90px] mt-[-160px]"
-    )}
-    
+      className={clsx(
+        'z-10 h-[290px] sm:h-[330px] mr-[450px] sm:mr-[90px] mt-[-720px] sm:mt-[-250px]',
+      )}
       width="246"
       height="267"
       viewBox="0 0 246 267"

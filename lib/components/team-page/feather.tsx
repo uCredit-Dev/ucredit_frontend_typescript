@@ -1,7 +1,7 @@
 function feather() {
   return (
     <svg
-    className="md:h-[72px] md:w-[72px] pt-1 h-[42px] w-[42px]"
+      className="sm:h-[72px] sm:w-[72px] pt-1 h-[42px] w-[42px]"
       width="72"
       height="72"
       viewBox="0 0 72 72"
