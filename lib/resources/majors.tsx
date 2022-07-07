@@ -2959,12 +2959,12 @@ const minorAMS_Old: Minor = {
           required_credits: 3,
           description:
             '<b>Scientific Computer Course:</b> <br /> The student must take an approved course based on a high-level computer language chosen from the list below or one of the courses approved to meet the AMS Master’s/PhD Computing Requirement.<br />' +
-            '<br /> AS.171.426, ' + 
-            '<br /> AS.250.205, ' + 
-            '<br /> EN.500.200, ' + 
-            '<br /> EN.510.202, ' + 
-            '<br /> EN.530.371, ' + 
-            '<br /> EN.540.305, ' + 
+            '<br /> AS.171.426, ' +
+            '<br /> AS.250.205, ' +
+            '<br /> EN.500.200, ' +
+            '<br /> EN.510.202, ' +
+            '<br /> EN.530.371, ' +
+            '<br /> EN.540.305, ' +
             '<br /> EN.553.281, ' +
             '<br /> EN.553.383, ' +
             '<br /> EN.553.385, ' +
