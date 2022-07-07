@@ -20,7 +20,7 @@ function Card(props: TeamMemberType) {
         src={img}
         alt="profile"
       />
-      <div className="w-48 px-4 py-7 relative">
+      <div className="relative w-48 px-4 py-7">
         <div className="flex flex-col">
           <div>
             <p className="text-2xl text-left">{name}</p>
@@ -30,7 +30,8 @@ function Card(props: TeamMemberType) {
             )}
           </div>
 
-          <div className="x-2 y-7">
+
+          <div className="absolute bottom-0 right-0 h-10">
             <Links linkedin={`${props.linkedin}`} github={`${props.github}`} portfolio={`${props.portfolio}`} />
           </div>
         </div>
