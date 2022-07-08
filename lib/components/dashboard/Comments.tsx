@@ -4,6 +4,7 @@ import {
   PaperAirplaneIcon,
   AnnotationIcon,
   ChatAlt2Icon,
+  TrashIcon,
 } from '@heroicons/react/outline';
 import clsx from 'clsx';
 import Select from 'react-select';
@@ -174,6 +175,12 @@ const Comments: FC<{
                 addSuffix: true,
               })}
             </p>
+            <button
+              className="flex items-center justify-center w-6 h-6 transition-colors duration-150 ease-in rounded-sm cursor-pointer hover:bg-gray-200 inspect-plan-button"
+              onClick={() => deleteHandler(c._id)}
+            >
+              <TrashIcon className="w-5 h-5 stroke-red-500" />
+            </button>
           </div>
           <p className="px-2 py-1">{c.message}</p>
         </div>
@@ -231,6 +238,28 @@ const Comments: FC<{
   };
   const updateVisibleUsers = (event) => {
     setVisibleUsers(event.map((el) => el.value));
+  };
+
+  const deleteHandler = async (key) => {
+    setComments((prevState) => {
+      const updatedState = prevState.filter(
+        (comment) => comment.key !== key,
+      );
+      console.log(updatedState)
+      return updatedState;
+    });
+    // try {
+    //   let review_id: string = '';
+    //   const reviewees = await userService.getReviewerPlans(user._id);
+    //   for (let review of reviewees.data) {
+    //     if (comment.comment._id === commentID) {
+    //       review_id = review._id;
+    //     }
+    //   }
+    //   await userService.removeComment(comment_id);
+    // } catch (err) {
+    //   console.log(err);
+    // }
   };
 
   return (
