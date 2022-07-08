@@ -9,7 +9,7 @@ import Path5 from '../lib/components/team-page/Paths5.svg';
 
 const Team: React.FC = () => {
   return (
-    <div className="font-landingPage bg-white ">
+    <div className="font-landingPage bg-white  overflow-y-auto">
       <Header />
 
       <header className="overflow-hidden ">
@@ -136,7 +136,7 @@ const Team: React.FC = () => {
       </div>
 
       {/*Future plan*/}
-      <div className="relative flex flex-col items-center">
+      <div className="relative flex flex-col items-center ">
         {/*Row 1*/}
         <div className="flex flex-row h-[100px] ml-24">
           <div className="rotate-[-53.52deg] w-[15%] scale-[120%]">
@@ -145,7 +145,7 @@ const Team: React.FC = () => {
           <div className="text-[22px] w-[60%] sm:text-[44px]">
             our future plan
           </div>
-          <div className="scale-[30%] sm:scale-[80%]  w-[30%] mt-[-210px] ml-1 ">
+          <div className="scale-[30%] sm:scale-[80%]  w-[30%] mt-[-210px] mr-3">
             <Path5 />
           </div>
         </div>
