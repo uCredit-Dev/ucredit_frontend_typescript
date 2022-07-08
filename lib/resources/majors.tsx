@@ -86,14 +86,136 @@ import { Major, Minor } from './commonTypes';
 //   distributions: [],
 // };
 
-// // https://cogsci.jhu.edu/undergraduate/cognitive-science-major/
-// const bsCogSci: Major = {
-//   degree_name: "B.S. Cognitive Science",
-//   department: "AS Cognitive Science",
-//   total_degree_credit: 120,
-//   wi_credit: 6,
-//   distributions: [],
-// };
+// https://cogsci.jhu.edu/undergraduate/cognitive-science-major/
+const baCogSci: Major = {
+  degree_name: 'B.A. Cognitive Science',
+  abbrev: 'B.A. Cog Sci',
+  department: 'AS Cognitive Science',
+  total_degree_credit: 87,
+  wi_credit: 12,
+  url: 'https://cogsci.jhu.edu/undergraduate/cognitive-science-major/',
+  distributions: [
+    {
+      name: 'Two Focal Areas',
+      required_credits: 24, // TODO: Ask about this...keeping this 12 does not agree with the number of courses needed to satisfy this requirement.
+      min_credits_per_course: 3,
+      description:
+        'Four courses in each of the two chosen focal areas. Research, readings, and practica courses do not qualify.',
+      criteria:
+        'COGS-COGPSY[T]^OR^COGS-LING[T]^OR^COGS-COMPCG[T]^OR^COGS-NEURO[T]^OR^COGS-PHLMND[T]',
+      fine_requirements: [
+        {
+          description:
+            '<b>Upper Level Core</b> <br /> At least two courses in each focus area must be at the 300-600 level.',
+          required_credits: 12, // TODO: Same as above
+          criteria:
+            '(COGS-COGPSY[T]^OR^COGS-LING[T]^OR^COGS-COMPCG[T]^OR^COGS-NEURO[T]^OR^COGS-PHLMND[T])^AND^(Upper Level[L])',
+        },
+      ],
+    },
+    {
+      // TODO: How to exclude courses from focus areas the student has already taken?
+      name: "Three 'Non-Focal' Areas",
+      required_credits: 9,
+      min_credits_per_course: 3,
+      description:
+        'One course at any level from each of the three non-focal areas. Research, readings, and practica courses do not qualify.',
+      criteria:
+        'COGS-COGPSY[T]^OR^COGS-LING[T]^OR^COGS-COMPCG[T]^OR^COGS-NEURO[T]^OR^COGS-PHLMND[T]',
+    },
+    {
+      name: 'Upper Level Electives',
+      required_credits: 9,
+      min_credits_per_course: 1,
+      description:
+        'Nine credits at the 300-600 level chosen from any of the five areas or other cognitive science courses.' +
+        'Up to three credits of cognitive science research, readings, or practica may apply.',
+      criteria: 'AS Cognitive Science[D]^AND^Upper Level[L]',
+      exclusive: true,
+    },
+    {
+      name: 'Math',
+      required_credits: 6,
+      min_credits_per_course: 3,
+      description: 'Select Math Option A or B.',
+      criteria:
+        'AS.110.106[C]^OR^AS.110.108[C]^OR^AS.110.107[C]^OR^AS.110.109[C]^OR^AS.110.113[C]^OR^' +
+        'AS.110.201[C]^OR^AS.110.212[C]^OR^EN.553.291[C]^OR^AS.150.118[C]^OR^AS.150.420[C]^OR^AS.050.370[C]^OR^' +
+        'AS.050.371[C]^OR^AS.050.372[C]^OR^EN.553.171[C]^OR^AS.200.200[C]^AS.200.201[C]',
+      pathing: true,
+      fine_requirements: [
+        {
+          description:
+            '<b>Option A</b> <br /> Select two of the following: <br />' +
+            'AS.110.106 Calculus I (Biological and Social Sciences) OR AS.110.108 Calculus I (Physical Sciences and Engineering <br />' +
+            'AS.110.107 Calculus II (Biological and Social Sciences) OR AS.110.109 Calculus II (Physical Sciences and Engineering OR AS.110.113 Honors Single Variable Calculus<br />' +
+            'AS.110.201/212 Linear Algebra OR EN.553.291 Linear Algebra and Differential Equations <br />' +
+            'AS.150.118 Introduction to Formal Logic <br />' +
+            'AS.150.420 Mathematical Logic I <br />' +
+            'AS.050.370 Mathematical Models of Language <br />' +
+            'AS.050.371 Bayseian Inference <br />' +
+            'AS.050.372 Foundations of Neural Network Theory <br />' +
+            'EN.553.171 Discrete Mathematics',
+          required_credits: 6,
+          criteria:
+            'AS.110.106[C]^OR^AS.110.108[C]^OR^AS.110.107[C]^OR^AS.110.109[C]^OR^AS.110.113[C]^OR^' +
+            'AS.110.201[C]^OR^AS.110.212[C]^OR^EN.553.291[C]^OR^AS.150.118[C]^OR^AS.150.420[C]^OR^AS.050.370[C]^OR^' +
+            'AS.050.371[C]^OR^AS.050.372[C]^OR^EN.553.171[C]',
+        },
+        {
+          description:
+            '<b>Option B</b> <br /> Select both of the following: <br />' +
+            'AS.200.200 Research Methods in Psychology <br />' +
+            'AS.200.201 Design and Statistical Analysis for Psychology',
+          required_credits: 6,
+          criteria: 'AS.200.200[C]^AS.200.201[C]',
+        },
+      ],
+    },
+    {
+      // TODO: A course which is H, N, S satisfies all distribution requirements when it should satisfy just one. What to do?
+      name: 'Humanities (H) Distribution',
+      required_credits: 9,
+      min_credits_per_course: 3,
+      description:
+        'The distribution requirement stipulates that students must earn a minimum number of credits in academic areas outside of their primary major. ' +
+        'The student must complete at least 9 credits in the Humanities (H) area. ' +
+        'These credits fulfilling the distribution requirement may overlap with major or minor requirements and the writing-intensive requirement.',
+      criteria: 'H[A]',
+    },
+    {
+      name: 'Social Science (S) Distribution',
+      required_credits: 9,
+      min_credits_per_course: 3,
+      description:
+        'The distribution requirement stipulates that students must earn a minimum number of credits in academic areas outside of their primary major. ' +
+        'The student must complete at least 9 credits in the Social Science (S) area. ' +
+        'These credits fulfilling the distribution requirement may overlap with major or minor requirements and the writing-intensive requirement.',
+      criteria: 'S[A]',
+    },
+    {
+      name: 'Other (N/E/Q) Distribution',
+      required_credits: 9,
+      min_credits_per_course: 3,
+      description:
+        'The distribution requirement stipulates that students must earn a minimum number of credits in academic areas outside of their primary major. ' +
+        'The student must complete at least 9 credits in any of the other areas: Natural Sciences (N), Engineering (E) and/or Quantitative (Q). ' +
+        'These credits fulfilling the distribution requirement may overlap with major or minor requirements and the writing-intensive requirement.',
+      criteria: 'N[A]^OR^E[A]^OR^Q[A]',
+    },
+    {
+      name: 'Writing Intensive',
+      required_credits: 12,
+      min_credits_per_course: 3,
+      double_count: true,
+      description:
+        'To encourage excellence in writing, across disciplines, the university requires all undergraduates to take a number of writing-intensive courses. ' +
+        'All students earning a degree from the School of Arts and Sciences must complete at least 12 credits in writing-intensive courses. ' +
+        'Writing-intensive courses taken to satisfy major, minor, or distribution requirements may also count toward the writing requirement.',
+      criteria: 'Written Intensive[W]',
+    },
+  ],
+};
 
 // // https://me.jhu.edu/undergraduate-studies/academic-advising-undergraduate/
 // const bsME: Major = {
@@ -1822,50 +1944,89 @@ const bsCS_Old: Major = {
       description:
         "For more information please visit the <a href='https://www.cs.jhu.edu/undergraduate-studies/academics/ugrad-advising-manual/'>" +
         'major degree requirement</a> section on the department website.',
-      criteria: 'EN Computer Science[D]^OR^CSCI-OTHER[T]',
+      criteria: '', // TODO: Implement this
       fine_requirements: [
         {
+          // TODO: Bug here: Cannot add this class through the cart
           description:
-            '<b>Computer Ethics(601.104).</b><p>Practical Ethics for Future Leaders (660.400/406) may be used as a substitute for the computer ethics requirement for the BS program, but does not count towards the CS total credits at all.</p>',
+            '<b>Computer Ethics</b> <br /> Select one of the following courses: <br /> ' +
+            'EN.601.104 Computer Ethics <br /> ' +
+            'EN.660.400 Practical Ethics for Future Leaders',
           required_credits: 1,
-          criteria: 'EN.600.104[C]^OR^EN.601.104[C]^OR^EN.660.400[C]',
+          criteria: 'EN.601.104[C]^OR^EN.660.400[C]',
         },
         {
           description:
-            '<b>Lower Level Undergraduate:</b><p>500.112/113/114 Gateway Computing or AP Comp Sci A or ' +
-            'equivalent<p>601.220 Intermediate Programming</p><p>601.226 Data Structures</p><p>601.229 ' +
-            'Computer System Fundamentals</p><p>601.231/271 Automata and Computation Theory</p><p>601.433 Algorithms</p>',
-          required_credits: 20,
-          criteria:
-            'EN.500.112[C]^OR^EN.500.113[C]^OR^EN.500.114[C]^OR^EN.601.220[C]^OR^EN.601.226[C]' +
-            '^OR^EN.601.229[C]^OR^EN.601.231[C]^OR^EN.601.271[C]^OR^EN.601.443[C]',
+            '<b>Gateway Computing: JAVA</b> <br /> ' +
+            'EN.500.112 Gateway Computing: JAVA <br /> ' +
+            'For equivalent ways to satisfy this requirement, contact your advisor and create a custom course which satisfies this requirement.',
+          required_credits: 3,
+          criteria: 'EN.500.112[C]',
         },
         {
           description:
-            '<b>Upper Level Undergraduate: </b><p>12 upper level CS credits in addition to the required Algorithms course</p>',
+            '<b>Intermediate Programming</b> <br /> ' +
+            'EN.601.220 Intermediate Programming',
+          required_credits: 4,
+          criteria: 'EN.601.220[C]',
+        },
+        {
+          description:
+            '<b>Data Structures</b> <br /> EN.601.226 Data Structures',
+          required_credits: 4,
+          criteria: 'EN.601.226[C]',
+        },
+        {
+          description:
+            '<b>Computer System Fundamentals</b> <br /> ' +
+            'EN.601.229 Computer System Fundamentals',
+          required_credits: 3,
+          criteria: 'EN.601.229[C]',
+        },
+        {
+          description:
+            '<b>Automata & Computation Theory</b> <br /> ' +
+            'EN.601.231 Automata & Computation Theory',
+          required_credits: 3,
+          criteria: 'EN.601.231[C]',
+        },
+        {
+          description:
+            '<b>Intro Algorithms</b> <br /> EN.601.433 Intro Algorithms',
+          required_credits: 3,
+          criteria: 'EN.601.433[C]',
+        },
+        {
+          description:
+            '<b>Upper Level CS Credits</b> <br /> ' +
+            'At least 13 more upper level CS credits are required. ' +
+            'At least one course in two different classification areas (Applications, Reasoning, Software, Systems) must be chosen in addition to Theory (Algorithms).', // TODO: Question: How to include this requirement?
           required_credits: 13,
-          criteria: 'EN Computer Science[D]^AND^Upper Level Undergraduate[L]',
+          criteria: 'EN Computer Science[D]^AND^(Upper Level[L])', // TODO: There is a bug in the Cart implementation which does not parse the criteria string correctly.
+        },
+        {
+          // TODO: Issue here: Marking this as exclusive excludes courses from the team requirement (which allows double count). Removing exclusive from here clashes with the upper level CS credits, where courses should satisfy either of the requirements
+          description:
+            '<b>CS Electives</b> <br /> ' +
+            'Eight additional credits of Computer Science are required.' +
+            'For an approved list of courses from other departments (maximum of 6 credits allowed), visit https://www.cs.jhu.edu/computer-science-other-courses-for-bs-degree/ ' +
+            'and create a custom course to satisfy this requirement.',
+          required_credits: 8,
+          criteria: 'EN Computer Science[D]',
+          exclusive: true,
         },
         {
           description:
-            '<b>2 Upper Level Classifications:</b><p>At least one upper level course in two of these four different classification</p> ' +
-            'areas: Applications(CSCI-APPL), Systems(CSCI-SYST), Software(CSCI-SOFT) and Reasoning(CSCI-RSNG)',
-          required_credits: 6,
-          criteria:
-            'CSCI-APPL[T]^OR^CSCI-SYST[T]^OR^CSCI-SOFT[T]^OR^CSCI-RSNG[T]',
-        },
-        {
-          description:
-            '<b>One Team(CSCI-TEAM) designated course.</b><p> This Team course may overlap other course ' +
-            'requirements, for example to count as both Team and Software.</p>',
+            '<b>Team Requirement</b> <br /> ' +
+            'Select one course with Program of Study Tag CSCI-TEAM.',
           required_credits: 3,
           criteria: 'CSCI-TEAM[T]',
         },
       ],
     },
     {
-      name: 'Math',
-      required_credits: 16,
+      name: 'Mathematics',
+      required_credits: 24,
       min_credits_per_course: 3,
       description:
         'All courses in this category must be from one of the two math departments on ' +
@@ -1873,72 +2034,48 @@ const bsCS_Old: Major = {
         'may not count towards these math requirements. Other than Calculus I and II, all the ' +
         'remaining courses must be 200-level or above.',
       criteria: 'AS Mathematics[D]^OR^EN Applied Mathematics & Statistics[D]',
-      exception: 'EN.553.171[C]',
       fine_requirements: [
         {
           description:
-            '<b>Required Courses:</b><p>110.108 Calculus I or AP equivalent</p>110.109 Calculus II or AP equivalent</p>' +
-            '<p>550.171/553.171 Discrete Mathematics if grandfathered into old major</p>',
-          required_credits: 8,
-          criteria: 'AS.110.108[C]^OR^AS.110.109[C]',
+            '<b>Calculus I</b> <br /> AS.110.108 Calculus I (Physical Sciences & Engineering)',
+          required_credits: 4,
+          criteria: 'AS.110.108[C]',
         },
         {
           description:
-            '<b>Math Elective:</b><p>This must be 200-level or above, chosen from Mathematics (AS.110.xxx) or Applied Math and Statistics (EN.553.xxx)</p>',
+            '<b>Calculus II</b> <br /> AS.110.109 Calculus II (Physical Sciences & Engineering)',
           required_credits: 4,
-          criteria: 'AS.110.[C]^OR^EN.553.[C]',
+          criteria: 'AS.110.109[C]',
         },
-      ],
-    },
-    {
-      name: 'Probability and Statistics Requirements',
-      required_credits: 4,
-      min_credits_per_course: 3,
-      description:
-        '<p> The BS math courses must include coverage ' +
-        'of both probability and statistics, which can be satisfied in many ways, including ' +
-        'taking any of the 553.3xx combined Probability & Statistics courses. Probability and Statistics:</p><p>Two paths:</p>',
-      criteria: 'AS Mathematics[D]^OR^EN Applied Mathematics & Statistics[D]',
-      exception:
-        '(Probability & Statistics[N]^OR^Probability and Statistics[N]^OR^EN.553.211[C]^OR^EN.553.310[C]^OR^EN.553.311[C]^OR^EN.553.420[C]^OR^EN.553.430[C])',
-      pathing: true,
-      fine_requirements: [
         {
           description:
-            '<p>1. Any of the three courses below:</p><p>EN.553.211</p><p>EN.553.310</p><p>EN.553.311</p> ',
+            '<b>Discrete Mathematics</b> <br /> EN.553.171 Discrete Mathematics',
           required_credits: 4,
+          criteria: 'EN.553.171[C]',
+        },
+        {
+          // TODO: How to account for prob/stats coverage requirement?
+          description:
+            '<b>Electives</b> <br /> At least 3 more courses must be taken at the 200 or above level, ' +
+            'and must include coverage of both Probability and Statistics.',
+          required_credits: 12,
           criteria:
-            'Probability & Statistics[N]^OR^Probability and Statistics[N]^OR^EN.553.211[C]^OR^EN.553.310[C]^OR^EN.553.311[C]',
-        },
-        {
-          description:
-            '<p>2. Both Intro to Probability and Intro to Statistics</p><p>EN.553.420</p><p>EN.553.430</p> ',
-          required_credits: 8,
-          criteria: 'EN.553.420[C]^OR^EN.553.430[C]',
+            '(AS Mathematics[D]^OR^EN Applied Mathematics & Statistics[D])^AND^(200[L]^OR^Upper Level[L])',
         },
       ],
     },
     {
-      name: 'Science',
+      name: 'Basic Sciences', // TODO: How to account for language/linguistic courses?
       required_credits: 16,
       min_credits_per_course: 1,
       description:
         'At least two semesters of physics or two semesters of chemistry, with the associated laboratories, must be included.',
       criteria: 'N[A]',
-      fine_requirements: [
-        {
-          description:
-            '<b>Required Courses:</b><p>Two paths:</p>' +
-            '<p>1. Two semesters of chemistry with associated lab:</p><p>030.101 Chemistry I and 030.105 Chemistry Lab I or AP equivalent</p>030.102 Chemistry II and 030.106 Chemistry Lab II or AP equivalent</p>' +
-            '<p>2. Two semesters of physics with associated lab:</p><p>171.101/103 Physics I and 173.111 Physics Lab I or AP equivalent</p>171.102/104 Physics II and 173.112 Phyusics Lab II or AP equivalent</p>',
-          required_credits: 10,
-          criteria:
-            '(AS.030.101[C]^AND^AS.030.105[C]^AND^AS.030.102[C]^AND^AS.030.106[C])^OR^((AS.171.101[C]^AND^AS.171.103[C])^AND^AS.173.11[C]^AND^(AS.171.102[C]^AND^AS.171.104[C])^AND^AS.173.112[C])',
-        },
-      ],
+      exception:
+        'EN Computer Science[D]^OR^AS Center for Language Education[D]^OR^EN Applied Mathematics & Statistics[D]',
     },
     {
-      name: 'Liberal Arts',
+      name: 'Humanities/Social Sciences',
       required_credits: 18,
       min_credits_per_course: 3,
       description:
@@ -1946,14 +2083,12 @@ const bsCS_Old: Major = {
         'from any department. At most 2 of these courses may be taken S/U (if not counted towards ' +
         'the writing requirement). Foreign language courses can be counted as well, even if ' +
         'they don’t carry an ‘H’ or ‘S’ designator.',
-      criteria:
-        'AS Center for Language Education[D]^OR^AS Modern Languages and Literatures[D]^OR^H[A]^OR^S[A]',
+      criteria: 'H[A]^OR^S[A]',
     },
     {
       name: 'Writing Intensive',
       required_credits: 6,
       min_credits_per_course: 3,
-      double_count: true,
       description:
         'Students are required to fulfill the university’s requirement of two writing intensive courses, ' +
         'each at least 3 credits. Students must receive at least a C- grade or better in these writing courses. ',
@@ -1961,13 +2096,21 @@ const bsCS_Old: Major = {
       fine_requirements: [
         {
           description:
-            '<b>Writing-focused WI</b><p>At least one course must be explicitly focused on writing skills in English (eg, courses in professional, ' +
-            'fiction or expository writing). These courses may overlap with other requirements.</p><p>Any of the courses below would be satisfactory:</p><p>AS.060.100</p><p>AS.060.113</p><p>AS.060.114</p><p>AS.180.248</p><p>AS.220.105</p><p>AS.220.106</p><p>AS.220.108</p><p>AS.290.303</p><p>AS.360.133</p><p>EN.661.110</p><p>EN.661.111</p><p>EN.661.250</p><p>EN.661.251</p><p>EN.661.315</p>',
+            'At least one course with a primary focus on writing in English must be chosen.',
           required_credits: 3,
           criteria:
-            'AS.060.100[C]^OR^AS.060.113[C]^OR^AS.060.114[C]^OR^AS.180.248[C]^OR^AS.220.105[C]^OR^AS.220.106[C]^OR^AS.220.108[C]^OR^AS.290.303[C]^OR^AS.360.133[C]^OR^EN.661.110[C]^OR^EN.661.111[C]^OR^EN.661.250[C]^OR^EN.661.251[C]^OR^EN.661.315[C]',
+            'EN.661.110[C]^OR^EN.661.111[C]^OR^EN.661.250[C]^OR^EN.661.251[C]^OR^EN.661.315[C]^OR^AS.060.100[C]^OR^AS.060.113[C]^OR^AS.220.105[C]^OR^AS.180.248[C]^OR^AS.290.303[C]^OR^AS.360.133[C]',
         },
       ],
+    },
+    {
+      // TODO: exclusive does not work here...
+      name: 'Electives',
+      required_credits: 26,
+      min_credits_per_course: 1,
+      description: 'These can be any credit bearing courses taken at JHU.',
+      criteria: '',
+      exclusive: true,
     },
   ],
 };
@@ -2653,6 +2796,256 @@ const bsMolCell: Major = {
   ],
 };
 
+// https://e-catalogue.jhu.edu/engineering/full-time-residential-programs/degree-programs/mechanical-engineering/mechanical-engineering-bachelor-science/#requirementstext
+const bsMechE: Major = {
+  degree_name: 'B.S. Mechanical Engineering',
+  abbrev: 'B.S. MechE',
+  department: 'EN Mechanical Engineering',
+  total_degree_credit: 126,
+  wi_credit: 6,
+  url: 'https://e-catalogue.jhu.edu/engineering/full-time-residential-programs/degree-programs/mechanical-engineering/mechanical-engineering-bachelor-science/#requirementstext',
+  distributions: [
+    {
+      name: 'Mathematics',
+      required_credits: 16,
+      min_credits_per_course: 4,
+      description:
+        'The student must complete all the required mathematics courses, offered ' +
+        'either by the Mathematics department in the Kreiger School of Arts and Sciences ' +
+        'or the Applied Mathematics and Statistics department in the Whiting School of Engineering.',
+      criteria:
+        'AS.110.108[C]^OR^AS.110.109[C]^OR^AS.110.202[C]^OR^AS.110.211[C]^OR^EN.553.291[C]',
+      fine_requirements: [
+        {
+          description:
+            '<b>Calculus I</b> <br /> AS.110.108 Calculus I (Physical Sciences & Engineering)',
+          required_credits: 4,
+          criteria: 'AS.110.108[C]',
+        },
+        {
+          description:
+            '<b>Calculus II</b> <br /> AS.110.109 Calculus II (Physical Sciences & Engineering)',
+          required_credits: 4,
+          criteria: 'AS.110.109[C]',
+        },
+        {
+          description:
+            '<b>Calculus III</b> <br /> Select one of the following: <br />' +
+            'AS.110.202 Calculus III <br />' +
+            'AS.110.211 Honors Multivariable Calculus',
+          required_credits: 4,
+          criteria: 'AS.110.202[C]^OR^AS.110.211[C]',
+        },
+        {
+          description:
+            '<b>Linear Algebra and Differential Equations</b> <br /> ' +
+            'EN.553.291 Linear Algebra and Differential Equations',
+          required_credits: 4,
+          criteria: 'EN.553.291[C]',
+        },
+      ],
+    },
+    {
+      name: 'Statistics Elective',
+      required_credits: 4,
+      min_credits_per_course: 4,
+      description:
+        'Select one of the following statistics courses: <br />' +
+        'EN.553.310 Probability & Statistics for the Physical Sciences & Engineering <br />' +
+        'EN.553.311 Probability and Statistics for the Biological Sciences and Engineering',
+      criteria: 'EN.553.310[C]^OR^EN.553.311[C]',
+    },
+    {
+      name: 'Science',
+      required_credits: 13,
+      min_credits_per_course: 1,
+      description:
+        'The student must complete all the required science courses.',
+      criteria:
+        'AS.030.101[C]^OR^EN.530.123[C]^OR^EN.530.124[C]^OR^AS.171.102[C]^OR^AS.171.108[C]^OR^AS.173.112[C]',
+      fine_requirements: [
+        {
+          description:
+            '<b>Introductory Chemistry I</b> <br /> AS.030.101 Introductory Chemistry I',
+          required_credits: 3,
+          criteria: 'AS.030.101[C]',
+        },
+        {
+          description:
+            '<b>Introduction to Mechanics I</b> <br /> EN.530.123 Introduction to Mechanics I',
+          required_credits: 3,
+          criteria: 'EN.530.123[C]',
+        },
+        {
+          description:
+            '<b>Introduction to Mechanics II</b> <br /> EN.530.124 Introduction to Mechanics II',
+          required_credits: 2,
+          criteria: 'EN.530.124[C]',
+        },
+        {
+          description:
+            '<b>General Physics II</b> <br /> Select one of the following courses: <br />' +
+            'AS.171.102 General Physics: Physical Science Majors II <br />' +
+            'AS.171.108 General Physics: Physical Science Majors II (AL)',
+          required_credits: 4,
+          criteria: 'AS.171.102[C]^OR^AS.171.108[C]',
+        },
+        {
+          description:
+            '<b>General Physics Laboratory II</b> <br /> AS.173.112 General Physics Laboratory II',
+          required_credits: 1,
+          criteria: 'AS.173.112[C]',
+        },
+      ],
+    },
+    {
+      name: 'Core Engineering',
+      required_credits: 50, // TODO: Might need to change depending on EN.530.243
+      min_credits_per_course: 1,
+      description: 'The following core courses are required for the major.',
+      criteria:
+        'EN.530.107[C]^OR^EN.530.108[C]^OR^EN.530.111[C]^OR^EN.530.115[C]^OR^' +
+        'EN.500.114[C]^OR^EN.530.116[C]^OR^EN.530.202[C]^OR^EN.530.212[C]^OR^' +
+        'EN.530.215[C]^OR^EN.530.216[C]^OR^EN.530.231[C]^OR^EN.530.232[C]^OR^' +
+        'EN.530.241[C]^OR^EN.520.230[C]^OR^EN.520.231[C]^OR^EN.530.243[C]^OR^' + // TODO: Ask about whether to include EN.530.243 in the required classes (different in degree audit vs. website)
+        'EN.530.254[C]^OR^EN.530.327[C]^OR^EN.530.329[C]^OR^EN.530.334[C]^OR^' +
+        'EN.530.335[C]^OR^EN.530.343[C]^OR^EN.530.344[C]^OR^EN.530.352[C]^OR^' +
+        'EN.560.201[C]^OR^EN.560.211[C]^OR^EN.660.361[C]',
+      fine_requirements: [
+        {
+          description:
+            '<b>Mechanical Engineering Undergraduate Seminar I</b> <br /> EN.530.107 Mechanical Engineering Undergraduate Seminar I',
+          required_credits: 0.5,
+          criteria: 'EN.530.107[C]',
+        },
+        {
+          description:
+            '<b>Mechanical Engineering Undergraduate Seminar II</b> <br /> EN.530.108 Mechanical Engineering Undergraduate Seminar II',
+          required_credits: 2,
+          criteria: 'EN.530.108[C]',
+        },
+        {
+          description:
+            '<b>Introduction to Mechanical Engineering and CAD</b> <br /> EN.530.111 Introduction to Mechanical Engineering and CAD',
+          required_credits: 1,
+          criteria: 'EN.530.111[C]',
+        },
+        {
+          description:
+            '<b>Gateway Computing: MATLAB</b> <br /> EN.500.114 Gateway Computing: MATLAB',
+          required_credits: 3,
+          criteria: 'EN.500.114[C]',
+        },
+        {
+          description:
+            '<b>Mechanical Engineering Freshman Lab II</b> <br /> EN.530.116 Mechanical Engineering Freshman Lab II',
+          required_credits: 1,
+          criteria: 'EN.530.116[C]',
+        },
+        {
+          description:
+            '<b>Mechanical Engineering Dynamics</b> <br /> EN.530.202 Mechanical Engineering Dynamics',
+          required_credits: 3,
+          criteria: 'EN.530.202[C]',
+        },
+        {
+          description:
+            '<b>Mechanical Engineering Dynamics Lab</b> <br /> EN.530.212 Mechanical Engineering Dynamics Lab',
+          required_credits: 1,
+          criteria: 'EN.530.212[C]',
+        },
+        {
+          description:
+            '<b>Mechanics Based Design</b> <br /> EN.530.215 Mechanics Based Design',
+          required_credits: 3,
+          criteria: 'EN.530.215[C]',
+        },
+        {
+          description:
+            '<b>Mechanics Based Design Lab</b> <br /> EN.530.216 Mechanics Based Design Lab',
+          required_credits: 1,
+          criteria: 'EN.530.216[C]',
+        },
+        {
+          description:
+            '<b>Mechanical Engineering Thermodynamics</b> <br /> EN.530.231 Mechanical Engineering Thermodynamics',
+          required_credits: 3,
+          criteria: 'EN.530.231[C]',
+        },
+        {
+          description:
+            '<b>Mechanical Engineering Thermodynamics Lab</b> <br /> EN.530.232 Mechanical Engineering Thermodynamics Lab',
+          required_credits: 1,
+          criteria: 'EN.530.232[C]',
+        },
+        {
+          description:
+            '<b>Electronics</b> <br /> Select one of the following: <br />' +
+            'EN.530.241 Electonics & Instrumentation <br /> <i> OR </i> <br />' +
+            'EN.520.230 Mastering Electronics <i>AND</i> EN.520.231 Mastering Electronics Lab',
+          required_credits: 3,
+          criteria: 'EN.530.241[C]^OR^EN.520.230[C]^OR^EN.520.231[C]',
+        },
+        {
+          // TODO: Remove based on advice for above
+          description:
+            '<b>Electronics and Instrumentation Lab</b> EN.530.243 Electronics and Instrumentation Lab',
+          required_credits: 1,
+          criteria: 'EN.530.243[C]',
+        },
+        {
+          description:
+            '<b>Manufacturing Engineering</b> <br /> Select one of the following:' +
+            'EN.530.254 Manufacturing Engineering <br /> <i> OR </i> <br />' +
+            'EN.530.204 Manufacturing Engineering Theory <i>AND</i> EN.530.205 Manufacturing Engineering Lab',
+          required_credits: 3,
+          criteria: 'EN.530.254[C]^OR^EN.530.204[C]^OR^EN.530.205[C]',
+        },
+        {
+          description:
+            '<b>Introduction to Fluid Mechanics</b> <br /> EN.530.327 Introduction to Fluid Mechanics',
+          required_credits: 3,
+          criteria: 'EN.530.327[C]',
+        },
+        {
+          description:
+            '<b>Introduction to Fluid Mechanics Lab</b> <br /> EN.530.329 Introduction to Fluid Mechanics Lab',
+          required_credits: 1,
+          criteria: 'EN.530.329[C]',
+        },
+        // TODO: Add rest of the fine requirements here
+      ],
+    },
+    // TODO: Add rest of the distributions here
+    {
+      name: 'Humanities and Social Sciences',
+      required_credits: 18,
+      min_credits_per_course: 3,
+      description:
+        'Select courses to form a coherent program, relevant to the student’s goals. One course in which ethical and social ' +
+        'issues related to technology or medicine is recommended.',
+      criteria: 'H[A]^OR^S[A]',
+      fine_requirements: [
+        {
+          description:
+            '<b>Writing Intensive Class</b> <br /> Select one Humanities and/or Social Science class that is also Writing Intensive.',
+          required_credits: 3,
+          criteria: '(H[A]^OR^S[A])^AND^(Written Intensive[W])',
+        },
+      ],
+    },
+    {
+      name: 'Writing Intensive',
+      required_credits: 6,
+      min_credits_per_course: 3,
+      description:
+        'Students are required to fulfill the university’s requirement of two writing intensive courses, ' +
+        'each at least 3 credits. Students must receive at least a C- grade or better in these writing courses.',
+      criteria: 'Written Intensive[W]',
+    },
+  ],
+};
+
 const no_degree: Major = {
   degree_name: "Undecided Degree/My degree isn't supported yet",
   distributions: [],
@@ -2686,6 +3079,7 @@ export const allMajors: Major[] = [
   bsMolCell,
   bsAMS,
   baIS,
+  bsMechE,
   // baPH,
   bsBME,
   // baHistory,
@@ -2706,7 +3100,7 @@ export const allMajors: Major[] = [
   // bsBioPhysics,
   // bsChem,
   // bsME,
-  // bsCogSci,
+  baCogSci,
   // bsMatSci,
   // bsBBio,
   // baHistArt,
