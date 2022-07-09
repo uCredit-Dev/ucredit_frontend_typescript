@@ -1,6 +1,7 @@
 import SearchHeader from "../../lib/components/roadmap/searchHeader";
 import SearchDetailPane from "../../lib/components/roadmap/searchDetailPane";
 import SearchResultCard from "../../lib/components/roadmap/searchResultCard";
+import React from "react";
 
 const RoadmapSearch: React.FC = () => {
   return (

@@ -7,6 +7,7 @@ import {
   from '../../slices/roadmapSearchSlice';
 import SearchBar from './searchBar';
 import { useSelector } from 'react-redux';
+import React from 'react';
 
 const SearchBarArea: React.FC = () => {
   const mobileAdvSearch = useSelector(selectMobileAdvSearch);

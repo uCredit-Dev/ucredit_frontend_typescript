@@ -1,5 +1,6 @@
 import SearchBar from "./searchBar";
 import {useState} from "react";
+import React from "react";
 
 const SearchDetailPane: React.FC = () => {
     const [selectedMajor, setselectedMajor] = useState("");
