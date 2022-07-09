@@ -50,14 +50,243 @@ import { Major, Minor } from './commonTypes';
 //   distributions: [],
 // };
 
-// // https://engineering.jhu.edu/ece/undergraduate-studies/degree-options/
-// const bsCompEng: Major = {
-//   degree_name: "B.S. Computer Engineering",
-//   department: "AS Electrical & Computer Engineering",
-//   total_degree_credit: 120,
-//   wi_credit: 6,
-//   distributions: [],
-// };
+// https://e-catalogue.jhu.edu/engineering/full-time-residential-programs/degree-programs/electrical-computer-engineering/electrical-engineering-bachelor-science/#requirementstext
+const bsECE: Major = {
+  degree_name: "B.S. Electrical Engineering",
+  department: "EN Electrical & Computer Engineering",
+  total_degree_credit: 126,
+  wi_credit: 6,
+  abbrev: "ECE",
+  url: "https://e-catalogue.jhu.edu/engineering/full-time-residential-programs/degree-programs/electrical-computer-engineering/electrical-engineering-bachelor-science/#requirementstext",
+  distributions: [ {
+    name: 'ECE Core',
+    required_credits: 17,
+    min_credits_per_course: 2,
+    description:
+      'For more information please visit the' +
+      "<a href='https://e-catalogue.jhu.edu/engineering/full-time-residential-programs/degree-programs/electrical-computer-engineering/electrical-engineering-bachelor-science/#requirementstext'>" +
+      'major degree requirement</a> on the academic catalogue.',
+    criteria:
+      'EN.520.123[C]^OR^EN.520.142[C]^OR^EN.520.214[C]^OR^EN.520.219[C]^OR^EN.520.230[C]^OR^EN.520.231[C]',
+    fine_requirements: [
+      {
+        description:
+          '<b>Computational Modeling for Electrical and Computer Engineering</b> <br /> EN.520.123',
+        required_credits: 3,
+        criteria: 'EN.520.123[C]'
+      },
+      {
+        description:
+          '<b>Digital Systems Fundamentals</b> <br /> EN.520.142',
+        required_credits: 3,
+        criteria: 'EN.520.142[C]'
+      },
+      {
+        description:
+          '<b>Signals and Systems</b> <br /> EN.520.214',
+        required_credits: 4,
+        criteria: 'EN.520.214[C]'
+      },
+      {
+        description:
+          '<b>Introduction to Electromagnetics</b> <br /> EN.520.219',
+        required_credits: 3,
+        criteria: 'EN.520.219[C]'
+      },
+      {
+        description:
+          '<b>Mastering Electronics</b> <br /> EN.520.230',
+        required_credits: 2,
+        criteria: 'EN.520.230[C]'
+      },
+      {
+        description:
+          '<b>Mastering Electronics Laboratory</b> <br /> EN.520.231',
+        required_credits: 2,
+        criteria: 'EN.520.231[C]'
+      }
+    ]
+  },
+  {
+    name: 'ECE Electives',
+    required_credits: 16,
+    min_credits_per_course: 1,
+    description:
+      'Up to six (6) credits of computer science courses may be used to satisfy this requirement.',
+    criteria:
+      'EN Computer Science[D]^OR^EN Electrical & Computer Engineering[D]',
+    exception: 'EN.520.123[C]^OR^EN.520.142[C]^OR^EN.520.214[C]^OR^EN.520.219[C]^OR^EN.520.230[C]^OR^EN.520.231[C]',
+    fine_requirements: [
+      {
+        description:
+          'At least 10 credits of ECE electives',
+        required_credits: 10,
+        criteria: 'EN Electrical & Computer Engineering[D]'
+      },
+      {
+        description: '<b>Intermediate Programming</b><br />EN.601.220<br />Can also be satisfied in Other Engineering.',
+        required_credits: 4,
+        criteria:'EN.601.220[C]'
+      }
+    ]
+  },
+  {
+    name: 'ECE Labs',
+    required_credits: 12,
+    min_credits_per_course: 1,
+    description:
+      'Students must take a total of 12 credits of advanced laboratory, design intensive, or senior design project courses. A minimum of six (6) credits must come from ECE. The remaining 6 credits of advanced lab can come from any department, as long as the class is listed as an option in this section of the degree audit and degree checksheet.',
+    criteria:
+      'EN Computer Science[D]^OR^EN Electrical & Computer Engineering[D]',
+    fine_requirements: [
+      {
+        description:
+          'Advanced Laboratory Courses in ECE',
+        required_credits: 6,
+        criteria: 'EN.520.412[C]^OR^EN.520.424[C]^OR^EN.520.427[C]^OR^EN.520.433[C]^OR^EN.520.440[C]^OR^EN.520.448[C]^OR^EN.520.450[C]^OR^EN.520.452[C]^OR^EN.520.453[C]^OR^EN.520.454[C]^OR^EN.520.462[C]^OR^EN.520.463[C]^OR^EN.520.483[C]^OR^EN.520.491[C]^OR^EN.520.492[C]^OR^EN.495[C]^OR^EN.520.498[C]^OR^EN.520.499[C]'
+      },
+      {
+        description:
+          'Advanced Lab Credits from Approved List',
+        required_credits: 6,
+        criteria: 'EN.510.433[C]^OR^EN.510.434[C]^OR^EN.530.420[C]^OR^EN.530.421[C]^OR^EN.530.474[C]^OR^EN.530.495[C]^OR^EN.540.400[C]^OR^EN.540.421[C]^OR^EN.540.418[C]^OR^EN.540.419[C]^OR^EN.580.437[C]^OR^EN.580.438[C]^OR^EN.580.311[C]^OR^EN.580.312[C]^OR^EN.580.411[C]^OR^EN.580.412[C]^OR^EN.580.457[C]^OR^EN.580.471[C]^OR^EN.580.480[C]^OR^EN.580.481[C]^OR^EN.580.493[C]^OR^EN.601.411[C]^OR^EN.601.315[C]^OR^EN.601.415[C]^OR^EN.601.317[C]^OR^EN.601.417[C]^OR^EN.601.421[C]^OR^EN.601.443[C]^OR^EN.601.447[C]^OR^EN.601.454[C]^OR^EN.601.456[C]^OR^EN.601.461[C]^OR^EN.601.466[C]^OR^EN.601.468[C]^OR^EN.601.476[C]^OR^EN.601.482[C]^OR^EN.601.496[C]'
+      }
+    ]
+  },
+  {
+    name: 'Other Engineering',
+    required_credits: 6,
+    min_credits_per_course: 1,
+    description:
+      'Six (6) credits of "other engineering" courses (with an E designation) from KSAS or School of Engineering departments other than ECE or Applied Mathematics and Statistics or General Engineering (Note: Entrepreneurship and Management courses in the Center for Leadership Education CANNOT be counted as “other engineering courses”).',
+    criteria:
+      'E[A]',
+    exception: 'EN Electrical & Computer Engineering[D]^OR^EN Applied Mathematics & Statistics[D]^OR^EN General Engineering[D]',
+    fine_requirements: [{
+      description: '<b>Intermediate Programming</b><br />EN.601.220<br />Can also be satisfied in ECE Electives.',
+      required_credits: 4,
+      criteria:'EN.601.220[C]'
+    }]
+  },
+  {
+    name: 'Math',
+    required_credits: 20,
+    min_credits_per_course: 4,
+    description:
+      'Courses in this group may not be taken Satisfactory/Unsatisfactory. Elementary or precalculus courses such as AS.110.105 Precalculus or EN.553.111 Statistical Analysis I - are not acceptable.',
+    criteria:
+      'AS.110.109[C]^OR^AS.110.202[C]^OR^AS.110.211[C]^OR^AS.110.201[C]^OR^AS.110.212[C]^OR^AS.110.302[C]^OR^EN.553.310[C]^OR^EN.553.311[C]^OR^EN.553.420[C]',
+    fine_requirements: [
+      {
+        description:
+          '<b>Calculus II (For Physical Sciences and Engineering)</b><br /> AS.110.109',
+        required_credits: 4,
+        criteria: 'AS.110.109[C]'
+      },
+      {
+        description:
+          '<b>Linear Algebra</b> or <b>Honors Linear Algebra</b><br /> AS.110.201 or AS.110.212',
+        required_credits: 4,
+        criteria: 'AS.110.202[C]^OR^AS.110.211[C]'
+      },
+      {
+        description:
+          '<b>Calculus III</b> or <b>Honors Multivariable Calculus</b><br /> AS.110.201 or AS.110.212',
+        required_credits: 4,
+        criteria: 'AS.110.201[C]^OR^AS.110.212[C]'
+      },
+      {
+        description:
+          '<b>Differential Equations and Applications</b><br /> AS.110.302',
+        required_credits: 4,
+        criteria: 'AS.110.302[C]'
+      },
+      {
+        description:
+          '<b>Probability & Statistics</b> or <b>Introduction to Probability</b><br /> AS.553.310 or AS.553.311 or AS.553.420',
+        required_credits: 4,
+        criteria: 'EN.553.310[C]^OR^EN.553.311[C]^OR^EN.553.420[C]'
+      }
+    ]
+  },
+  {
+    name: 'Basic Sciences',
+    required_credits: 16,
+    min_credits_per_course: 1,
+    description:
+      'Courses in this group may not be taken Satisfactory/Unsatisfactory. Must include AS.171.101 General Physics: Physical Science Major I-AS.171.102 General Physics: Physical Science Major II, AS.173.111 General Physics Laboratory I-AS.173.112 General Physics Laboratory II.',
+    criteria:
+      'N[A]',
+    fine_requirements: [
+      {
+        description:
+          '<b>General Physics I</b><br /> AS.171.101 or AS.171.107',
+        required_credits: 4,
+        criteria: 'AS.171.101[C]^OR^AS.171.107[C]'
+      },
+      {
+        description:
+          '<b>General Physics II</b><br /> AS.171.102 or AS.171.108',
+        required_credits: 4,
+        criteria: 'AS.171.102[C]^OR^AS.171.108[C]'
+      },
+      {
+        description:
+          '<b>General Physics Laboratory I</b><br /> AS.173.111',
+        required_credits: 1,
+        criteria: 'AS.173.111[C]'
+      },
+      {
+        description:
+          '<b>General Physics Laboratory II</b><br /> AS.173.112',
+        required_credits: 1,
+        criteria: 'AS.173.111[C]'
+      },
+      {
+        description:
+          '<b>Introductory Chemistry</b><br /> AS.030.101',
+        required_credits: 4,
+        criteria: 'AS.030.101[C]'
+      },
+      {
+        description:
+          '<b>Additional N credits</b>',
+        required_credits: 3,
+        criteria: 'N[A]'
+      }
+    ]
+  },
+  {
+    name: 'Humanity & Social Sciences',
+    required_credits: 15,
+    min_credits_per_course: 3,
+    description:
+      'At least five (5), three-credit courses in humanities and social sciences.',
+    criteria:
+      'H[A]^OR^S[A]',
+    exception: 'EN.660.400[C]^OR^EN.520.404[C]'
+  },
+  {
+    name: 'Ethics',
+    required_credits: 3,
+    min_credits_per_course: 1,
+    description:
+      'Two (2) credits in EN.660.400 Practical Ethics for Future Leaders and one (1) credit EN.520.404 Engineering solutions in a global, economic, environmental, and societal context.',
+    criteria:
+      'EN.660.400[C]^OR^EN.520.404[C]'
+  },
+  {
+    name: 'Writing Intensive',
+    required_credits: 6,
+    min_credits_per_course: 3,
+    description:
+      'Two (2) writing-intensive courses (at least 3 credits each) are required. The writing-intensive courses may not be taken Satisfactory/Unsatisfactory and require a C- or better grade.',
+    criteria:
+      'Written Intensive[W]',
+    double_count: true
+  }
+  ]
+};
 
 // // https://arthist.jhu.edu/undergraduate/requirements/
 // const baHistArt: Major = {
@@ -3317,7 +3546,7 @@ export const allMajors: Major[] = [
   // baMolCell,
   // bsNeuro,
   // baSoc,
-  // bsElectricEng,
+  bsECE,
   // bsEnvEng,
   // baWritingSems,
   // bsMath,
