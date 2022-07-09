@@ -242,24 +242,23 @@ const Comments: FC<{
 
   const deleteHandler = async (key) => {
     setComments((prevState) => {
-      const updatedState = prevState.filter(
-        (comment) => comment.key !== key,
-      );
-      console.log(updatedState)
+      const updatedState = prevState.filter((comment) => comment.key !== key);
       return updatedState;
     });
-    // try {
-    //   let review_id: string = '';
-    //   const reviewees = await userService.getReviewerPlans(user._id);
-    //   for (let review of reviewees.data) {
-    //     if (comment.comment._id === commentID) {
-    //       review_id = review._id;
-    //     }
-    //   }
-    //   await userService.removeComment(comment_id);
-    // } catch (err) {
-    //   console.log(err);
-    // }
+    try {
+      let comment_id: string = '';
+      const threads = await userService.getThreads(plan._id);
+      for (let thread of threads.data) {
+        for (let comment of thread.comments) {
+          if (comment._id === key) {
+            comment_id = comment._id;
+          }
+        }
+      }
+      await userService.removeComment(comment_id);
+    } catch (err) {
+      console.log(err);
+    }
   };
 
   return (
