@@ -91,23 +91,23 @@ const baCogSci: Major = {
   degree_name: 'B.A. Cognitive Science',
   abbrev: 'B.A. Cog Sci',
   department: 'AS Cognitive Science',
-  total_degree_credit: 87,
+  total_degree_credit: 120,
   wi_credit: 12,
   url: 'https://cogsci.jhu.edu/undergraduate/cognitive-science-major/',
   distributions: [
     {
       name: 'Two Focal Areas',
-      required_credits: 24, // TODO: Ask about this...keeping this 12 does not agree with the number of courses needed to satisfy this requirement.
+      required_credits: 12, 
       min_credits_per_course: 3,
       description:
-        'Four courses in each of the two chosen focal areas. Research, readings, and practica courses do not qualify.',
+        'Four courses, two in each of the two chosen focal areas. Research, readings, and practica courses do not qualify.',
       criteria:
         'COGS-COGPSY[T]^OR^COGS-LING[T]^OR^COGS-COMPCG[T]^OR^COGS-NEURO[T]^OR^COGS-PHLMND[T]',
       fine_requirements: [
         {
           description:
-            '<b>Upper Level Core</b> <br /> At least two courses in each focus area must be at the 300-600 level.',
-          required_credits: 12, // TODO: Same as above
+            '<b>Upper Level Core</b> <br /> At least two courses, one in each focal area must be at the 300-600 level.',
+          required_credits: 6, 
           criteria:
             '(COGS-COGPSY[T]^OR^COGS-LING[T]^OR^COGS-COMPCG[T]^OR^COGS-NEURO[T]^OR^COGS-PHLMND[T])^AND^(Upper Level[L])',
         },
@@ -123,6 +123,7 @@ const baCogSci: Major = {
       criteria:
         'COGS-COGPSY[T]^OR^COGS-LING[T]^OR^COGS-COMPCG[T]^OR^COGS-NEURO[T]^OR^COGS-PHLMND[T]',
     },
+    // Upper Level Electives start filling up only after the first two distributions are fulfilled  
     {
       name: 'Upper Level Electives',
       required_credits: 9,
@@ -137,11 +138,11 @@ const baCogSci: Major = {
       name: 'Math',
       required_credits: 6,
       min_credits_per_course: 3,
-      description: 'Select Math Option A or B.',
+      description: 'Select Math Option A or B. For students with Cognitive Psychology/Neuropsychology as one of their focal areas, Math Option B is required',
       criteria:
         'AS.110.106[C]^OR^AS.110.108[C]^OR^AS.110.107[C]^OR^AS.110.109[C]^OR^AS.110.113[C]^OR^' +
         'AS.110.201[C]^OR^AS.110.212[C]^OR^EN.553.291[C]^OR^AS.150.118[C]^OR^AS.150.420[C]^OR^AS.050.370[C]^OR^' +
-        'AS.050.371[C]^OR^AS.050.372[C]^OR^EN.553.171[C]^OR^AS.200.200[C]^AS.200.201[C]',
+        'AS.050.371[C]^OR^AS.050.372[C]^OR^EN.553.171[C]^OR^AS.200.200[C]^OR^AS.200.201[C]',
       pathing: true,
       fine_requirements: [
         {
@@ -164,11 +165,11 @@ const baCogSci: Major = {
         },
         {
           description:
-            '<b>Option B</b> <br /> Select both of the following: <br />' +
+            '<b>Option B</b> <br />' +
             'AS.200.200 Research Methods in Psychology <br />' +
             'AS.200.201 Design and Statistical Analysis for Psychology',
-          required_credits: 6,
-          criteria: 'AS.200.200[C]^AS.200.201[C]',
+          required_credits: 8,
+          criteria: 'AS.200.200[C]^OR^AS.200.201[C]',
         },
       ],
     },
