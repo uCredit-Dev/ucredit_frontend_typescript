@@ -21,16 +21,16 @@ const Laptop: React.FC = () => {
         <div className="row-span-2 col-span-1"></div>
         <div className="row-span-2 col-span-1 pl-14 pt-5">
           <a href="https://github.com/uCredit-Dev">
-          <button className="px-12 py-5 mr-4 border-4 hover:text-white hover:bg-blue-footer rounded-[50px] font-bold text-base md:text-xl xl:text-2xl">
-            Github
-          </button>
+            <button className="px-12 py-5 mr-4 border-4 hover:text-white hover:bg-blue-footer rounded-[50px] font-bold text-base md:text-xl xl:text-2xl">
+              Github
+            </button>
           </a>
         </div>
         <div className="row-span-2 col-span-1 pl-36 pt-5">
-        <a href="https://ucredit-docs.herokuapp.com/">
-          <button className="px-12 py-5 mr-4 border-4 hover:text-white hover:bg-blue-footer rounded-[50px] font-bold text-base md:text-xl xl:text-2xl">
-            Docs
-          </button>
+          <a href="https://ucredit-docs.herokuapp.com/">
+            <button className="px-12 py-5 mr-4 border-4 hover:text-white hover:bg-blue-footer rounded-[50px] font-bold text-base md:text-xl xl:text-2xl">
+              Docs
+            </button>
           </a>
         </div>
         <div className="row-span-2 col-span-1 pl-96 pt-5"></div>
@@ -52,7 +52,7 @@ const Mobile: React.FC = () => {
         </div>
         <br></br>
         <div className="grid grid-rows-2 gap-2">
-        <a href="https://github.com/uCredit-Dev">
+          <a href="https://github.com/uCredit-Dev">
             <button className=" w-80 px-12 py-3 mr-4 border-2 hover:text-white hover:bg-blue-footer rounded-[50px] font-medium text-xl">
               Github
             </button>

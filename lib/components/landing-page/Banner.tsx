@@ -5,10 +5,9 @@ import ApplicationFormPopup from '../popups/ApplicationFormPopup';
 import Bird from './BlueJay.svg';
 
 const Laptop: React.FC = () => {
-  const router = useRouter();
-
   return (
-    <div className="grid flex grid-cols-9 h-30 bg-blue-header items-stretch font-landingPage">
+    <div>
+    <div className="grid grid-cols-9 bg-blue-header items-stretch font-landingPage">
       <div className="p-35 col-span-4">
         <div className="grid grid-flow-row rows">
           <div className="p-8 mb-2 font-medium m-5 text-3xl sm:text-5xl md:text-7xl lg:text-8xl xl:text-9xl text-right text-name">
@@ -17,10 +16,11 @@ const Laptop: React.FC = () => {
           <div className="p-3 mb-2 font-normal m-2 text-sm sm:text-lg md:text-xl lg:text-2xl xl:text-4xl text-right pr-10 text-slogan text-opacity-70">
             Your Academic Planning, <br></br> Made Simple
           </div>
+          
           <div className="z-10 mr-1 scale-[60%]  lg:scale-75 xl:scale-100 md:top-[22%] ml:top-[25rem] lg:top-[80%] top-[20%]  md:left-[-30%] lg:left-[-10%] xl:left-0 left-[-40%] absolute">
             <Bird />
           </div>
-          <div className="relative z-10 p-4 mb-2 text-right border-blue-footer pr-16 pt-5">
+          <div className="relative z-10 p-4 mb-2 text-right border-blue-footer pr-16 pt-5 h-[150px]">
             {/* <img className=" scale-x-[-1] absolute" src="/img/logo.png" alt="logo" /> */}
             <button
               className="z-40 bg-blue-footer text-white absolute font-normal text-sm py-4 px-10 sm:text-base md:text-lg lg:text-xl xl:text-2xl rounded-full right-8"
@@ -31,23 +31,214 @@ const Laptop: React.FC = () => {
           </div>
         </div>
       </div>
-      <div className="p-4 col-span-5 w-5/6">
-        <img src="/img/landing-page/cartoon.png" alt="cartoon schedule" />
-        <div className="flex items-right justify-end mt-2 text-gray-600 select-none sm:text-base md:text-lg lg:text-xl xl:text-2xl">
-          Partnered with Semesterly
-          <img
-            src="/img/semlylogo.png"
-            alt="semesterly"
-            className="w-8 h-8 ml-1"
-          />
+      <div className="p-4 col-span-5 w-5/6 h-full mt-5">
+
+        {/* coded in schedule */}
+        <div class="flex flex-row rounded-t-[30px] bg-[#B1CEFF] w-[94%] h-[13%] gap-4">
+          <div class="w-[70%]"></div>
+          <div class="rounded-[10px] bg-[#FFFFFF] w-[30px] h-[50%] mt-4"></div>
+          <div class="rounded-[10px] bg-[#FFFFFF] w-[30px] h-[50%] mt-4"></div>
+          <div class="rounded-[10px] bg-[#FFFFFF] w-[30px] h-[50%] mt-4"></div>
+          <div class="w-[5%]"></div>
         </div>
+        
+        <div class="flex flex-col rounded-b-[30px] bg-[#FFFFFF] w-[94%] h-[78%] gap-0 pl-[8%] pr-[8%] pb-[3%]">
+          <div class="h-[14%]"></div>
+          {/* first collapse bar */}
+          <div class="h-[60%] flex flex-col gap-2 justify-center ">
+             {/* little triangle bar */}
+            <div class="h-[10%] flex flex-row gap-4">
+              <div class="w-0 h-0 
+    border-t-[7px] border-t-transparent
+    border-r-[12px] border-r-[#6DACFF]
+    border-b-[7px] border-b-transparent
+    -rotate-90 mb-2
+    "></div>
+              <div class="bg-[#D9D9D9] w-[70%] h-[12px] "></div>
+              <div class="bg-[#FFE0CB] w-[10px] h-[55%] "></div>
+              <div class="bg-[#D1FDCD] w-[10px] h-[55%] "></div>
+              <div class="bg-[#83B9FF] w-[10px] h-[55%] "></div>
+              <div class="bg-[#FFDBDB] w-[10px] h-[55%] "></div>
+              <div class="bg-[#FFF9A3] w-[10px] h-[55%] "></div>
+            </div>
+
+            {/* first row of courses */}
+            <div class="h-[20%] flex flex-row gap-[3%]">
+              <div class="bg-[#E0E7EC] rounded-[5px] w-[22%] h-[30px] flex flex-row pt-[5px] pb-[5px] pl-[4px] ">
+                <div class="w-[6px] bg-[#FFE0CB] rounded-[30px]"></div>
+                <div class="w-[80%] flex flex-col gap-1 ml-1 mt-[2px] pr-2">
+                  <div class="h-[6px] w-[110%] bg-[#FFFFFF] rounded-[2px]"></div>
+                  <div class="h-[6px] w-[85%] bg-[#FFFFFF] rounded-[2px]"></div>
+                </div>
+              </div>
+              <div class="bg-[#E0E7EC] rounded-[5px] w-[22%] h-[30px] flex flex-row pt-[5px] pb-[5px] pl-[4px] ">
+                <div class="w-[6px] bg-[#FFF9A3] rounded-[30px]"></div>
+                <div class="w-[80%] flex flex-col gap-1 ml-1 mt-[2px] pr-2">
+                  <div class="h-[6px] w-[110%] bg-[#FFFFFF] rounded-[2px]"></div>
+                  <div class="h-[6px] w-[85%] bg-[#FFFFFF] rounded-[2px]"></div>
+                </div>
+              </div>
+              <div class="bg-[#E0E7EC] rounded-[5px] w-[22%] h-[30px] flex flex-row pt-[5px] pb-[5px] pl-[4px] ">
+                <div class="w-[6px] bg-[#D1FDCD] rounded-[30px]"></div>
+                <div class="w-[80%] flex flex-col gap-1 ml-1 mt-[2px] pr-2">
+                  <div class="h-[6px] w-[110%] bg-[#FFFFFF] rounded-[2px]"></div>
+                  <div class="h-[6px] w-[85%] bg-[#FFFFFF] rounded-[2px]"></div>
+                </div>
+              </div>
+              <div class="bg-[#E0E7EC] rounded-[5px] w-[22%] h-[30px] flex flex-row pt-[5px] pb-[5px] pl-[4px] ">
+                <div class="w-[6px] bg-[#83B9FF] rounded-[30px]"></div>
+                <div class="w-[80%] flex flex-col gap-1 ml-1 mt-[2px] pr-2">
+                  <div class="h-[6px] w-[110%] bg-[#FFFFFF] rounded-[2px]"></div>
+                  <div class="h-[6px] w-[85%] bg-[#FFFFFF] rounded-[2px]"></div>
+                </div>
+              </div>
+            </div>
+
+            {/* second row of courses */}
+            <div class="h-[20%] flex flex-row gap-[3%]">
+              <div class="bg-[#E0E7EC] rounded-[5px] w-[22%] h-[30px] flex flex-row pt-[5px] pb-[5px] pl-[4px] ">
+                <div class="w-[6px] bg-[#D1FDCD] rounded-[30px]"></div>
+                <div class="w-[80%] flex flex-col gap-1 ml-1 mt-[2px] pr-2">
+                  <div class="h-[6px] w-[110%] bg-[#FFFFFF] rounded-[2px]"></div>
+                  <div class="h-[6px] w-[85%] bg-[#FFFFFF] rounded-[2px]"></div>
+                </div>
+              </div>
+              <div class="bg-[#E0E7EC] rounded-[5px] w-[22%] h-[30px] flex flex-row pt-[5px] pb-[5px] pl-[4px] ">
+                <div class="w-[6px] bg-[#FFF9A3] rounded-[30px]"></div>
+                <div class="w-[80%] flex flex-col gap-1 ml-1 mt-[2px] pr-2">
+                  <div class="h-[6px] w-[110%] bg-[#FFFFFF] rounded-[2px]"></div>
+                  <div class="h-[6px] w-[85%] bg-[#FFFFFF] rounded-[2px]"></div>
+                </div>
+              </div>
+              <div class="bg-[#E0E7EC] rounded-[5px] w-[22%] h-[30px] flex flex-row pt-[5px] pb-[5px] pl-[4px] ">
+                <div class="w-[6px] bg-[#D1FDCD] rounded-[30px]"></div>
+                <div class="w-[80%] flex flex-col gap-1 ml-1 mt-[2px] pr-2">
+                  <div class="h-[6px] w-[110%] bg-[#FFFFFF] rounded-[2px]"></div>
+                  <div class="h-[6px] w-[85%] bg-[#FFFFFF] rounded-[2px]"></div>
+                </div>
+              </div>
+              <div class="bg-[#E0E7EC] rounded-[5px] w-[22%] h-[30px] flex flex-row pt-[5px] pb-[5px] pl-[4px] ">
+                <div class="w-[6px] bg-[#83B9FF] rounded-[30px]"></div>
+                <div class="w-[80%] flex flex-col gap-1 ml-1 mt-[2px] pr-2">
+                  <div class="h-[6px] w-[110%] bg-[#FFFFFF] rounded-[2px]"></div>
+                  <div class="h-[6px] w-[85%] bg-[#FFFFFF] rounded-[2px]"></div>
+                </div>
+              </div>
+            </div>
+
+
+            {/* third row of courses */}
+            <div class="h-[20%] flex flex-row gap-[3%]">
+              <div class="bg-[#E0E7EC] rounded-[5px] w-[22%] h-[30px] flex flex-row pt-[5px] pb-[5px] pl-[4px] ">
+                <div class="w-[6px] bg-[#FFE0CB] rounded-[30px]"></div>
+                <div class="w-[80%] flex flex-col gap-1 ml-1 mt-[2px] pr-2">
+                  <div class="h-[6px] w-[110%] bg-[#FFFFFF] rounded-[2px]"></div>
+                  <div class="h-[6px] w-[85%] bg-[#FFFFFF] rounded-[2px]"></div>
+                </div>
+              </div>
+              <div class="rounded-[5px] w-[22%] h-[30px] flex flex-row pt-[5px] pb-[5px] pl-[4px] ">
+              </div>
+              <div class="bg-[#E0E7EC] rounded-[5px] w-[22%] h-[30px] flex flex-row pt-[5px] pb-[5px] pl-[4px] ">
+                <div class="w-[6px] bg-[#FFE0CB] rounded-[30px]"></div>
+                <div class="w-[80%] flex flex-col gap-1 ml-1 mt-[2px] pr-2">
+                  <div class="h-[6px] w-[110%] bg-[#FFFFFF] rounded-[2px]"></div>
+                  <div class="h-[6px] w-[85%] bg-[#FFFFFF] rounded-[2px]"></div>
+                </div>
+              </div>
+              <div class="bg-[#E0E7EC] rounded-[5px] w-[22%] h-[30px] flex flex-row pt-[5px] pb-[5px] pl-[4px] ">
+                <div class="w-[6px] bg-[#FFE0CB] rounded-[30px]"></div>
+                <div class="w-[80%] flex flex-col gap-1 ml-1 mt-[2px] pr-2">
+                  <div class="h-[6px] w-[110%] bg-[#FFFFFF] rounded-[2px]"></div>
+                  <div class="h-[6px] w-[85%] bg-[#FFFFFF] rounded-[2px]"></div>
+                </div>
+              </div>
+            </div>
+
+            {/* fourth row of courses */}
+            <div class="h-[20%] flex flex-row gap-[3%]">
+              <div class="bg-[#E0E7EC] rounded-[5px] w-[22%] h-[30px] flex flex-row pt-[5px] pb-[5px] pl-[4px] ">
+                <div class="w-[6px] bg-[#83B9FF] rounded-[30px]"></div>
+                <div class="w-[80%] flex flex-col gap-1 ml-1 mt-[2px] pr-2">
+                  <div class="h-[6px] w-[110%] bg-[#FFFFFF] rounded-[2px]"></div>
+                  <div class="h-[6px] w-[85%] bg-[#FFFFFF] rounded-[2px]"></div>
+                </div>
+              </div>
+              <div class="rounded-[5px] w-[22%] h-[30px] flex flex-row pt-[5px] pb-[5px] pl-[4px] ">
+              </div>
+              <div class="bg-[#E0E7EC] rounded-[5px] w-[22%] h-[30px] flex flex-row pt-[5px] pb-[5px] pl-[4px] ">
+                <div class="w-[6px] bg-[#FFF9A3] rounded-[30px]"></div>
+                <div class="w-[80%] flex flex-col gap-1 ml-1 mt-[2px] pr-2">
+                  <div class="h-[6px] w-[110%] bg-[#FFFFFF] rounded-[2px]"></div>
+                  <div class="h-[6px] w-[85%] bg-[#FFFFFF] rounded-[2px]"></div>
+                </div>
+              </div>
+            </div>
+
+            {/* fifth row of courses */}
+            <div class="h-[20%] flex flex-row gap-[3%]">
+              <div class="w-[22%]">
+              </div>
+              <div class="w-[22%]">
+              </div>
+              <div class="bg-[#E0E7EC] rounded-[5px] w-[22%] h-[30px] flex flex-row pt-[5px] pb-[5px] pl-[4px] ">
+                <div class="w-[6px] bg-[#FFF9A3] rounded-[30px]"></div>
+                <div class="w-[80%] flex flex-col gap-1 ml-1 mt-[2px] pr-2">
+                  <div class="h-[6px] w-[110%] bg-[#FFFFFF] rounded-[2px]"></div>
+                  <div class="h-[6px] w-[85%] bg-[#FFFFFF] rounded-[2px]"></div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          {/* second collapse bar */}
+          <div class="h-[40%]  flex flex-col gap-2 justify-center">
+            {/* little triangle bar */}
+            <div class="h-[15%] flex flex-row gap-4">
+              <div class="w-0 h-0 
+    border-t-[7px] border-t-transparent
+    border-r-[12px] border-r-[#6DACFF]
+    border-b-[7px] border-b-transparent
+    -rotate-90 mb-2
+    "></div>
+              <div class="bg-[#D9D9D9] w-[70%] h-[12px] "></div>
+              <div class="bg-[#FFE0CB] w-[10px] h-[70%] "></div>
+              <div class="bg-[#D1FDCD] w-[10px] h-[70%] "></div>
+              <div class="bg-[#83B9FF] w-[10px] h-[70%] "></div>
+              <div class="bg-[#FFDBDB] w-[10px] h-[70%] "></div>
+              <div class="bg-[#FFF9A3] w-[10px] h-[70%] "></div>
+            </div>
+
+            {/* first row of courses */}
+            <div class="h-[20%] flex flex-row">
+              <div class="bg-[#E0E7EC] rounded-[5px] w-[22%] h-[30px] flex flex-row pt-[5px] pb-[5px] pl-[4px] ">
+                <div class="w-[6px] bg-[#FFE0CB] rounded-[30px]"></div>
+                <div class="w-[80%] flex flex-col gap-1 ml-1 mt-[2px] pr-2">
+                  <div class="h-[6px] w-[110%] bg-[#FFFFFF] rounded-[2px]"></div>
+                  <div class="h-[6px] w-[85%] bg-[#FFFFFF] rounded-[2px]"></div>
+                </div>
+              </div>
+              
+            </div>
+
+          </div>
+        </div>
+
+        
       </div>
+    </div>
+    <div className="font-landingPage z-30 flex items-right justify-end text-gray-600 select-none sm:text-base md:text-lg lg:text-xl xl:text-2xl mr-[13%]">
+      Partnered with Semesterly
+      <img
+        src="/img/semlylogo.png"
+        alt="semesterly"
+        className="w-8 h-8 ml-1"
+      />
+    </div>
     </div>
   );
 };
 
 const Mobile: React.FC = () => {
-  const router = useRouter();
 
   return (
     <div className="bg-blue-header content-center items-center font-landingPage text-center">
@@ -87,7 +278,7 @@ const Banner: React.FC = () => {
       {activateEmailPopup && (
         <ApplicationFormPopup setActivateEmailPopup={setActivateEmailPopup} />
       )}
-      <div className=" bg-blue-header ">
+      <div className=" bg-blue-header">
         <br></br>
         <br></br>
 
