@@ -3274,7 +3274,7 @@ const minorAMS_New: Minor = {
 // https://e-catalogue.jhu.edu/arts-sciences/full-time-residential-programs/degree-programs/economics/economics-minor/
 // https://econ.jhu.edu/undergraduate/minor-requirements/
 const minorEcon: Minor = {
-  degree_name: "Minor Economics",
+  degree_name: 'Minor Economics',
   abbrev: 'Minor Econ',
   department: 'AS Economics',
   total_degree_credit: 18,
@@ -3285,8 +3285,9 @@ const minorEcon: Minor = {
       name: 'Core Courses',
       required_credits: 6,
       min_credits_per_course: 3,
-      description: 'Students must take 180.101 Elements of Macroeconomics and 180.102 Elements of Microeconomics.**<br />' +
-                   '<br />**Students who use exam credits to satisfy the AS.180.101 Elements of Macroeconomics and/or AS.180.102 Elements of Microeconomics requirements must take additional courses in the department to reach a total of 6 courses.',
+      description:
+        'Students must take 180.101 Elements of Macroeconomics and 180.102 Elements of Microeconomics.**<br />' +
+        '<br />**Students who use exam credits to satisfy the AS.180.101 Elements of Macroeconomics and/or AS.180.102 Elements of Microeconomics requirements must take additional courses in the department to reach a total of 6 courses.',
       criteria: 'AS.180.101[C]^OR^AS.180.102[C]',
       fine_requirements: [
         {
@@ -3301,16 +3302,18 @@ const minorEcon: Minor = {
         },
         {
           required_credits: 1,
-          description: '<b>**PLEASE NOTE:</b> <br />Students who use exam credits to satisfy the AS.180.101 Elements of Macroeconomics and/or AS.180.102 Elements of Microeconomics requirements must take additional courses in the department to reach a total of 6 courses!',
-          criteria: 'asdalhsdkjf[N]'
+          description:
+            '<b>**PLEASE NOTE:</b> <br />Students who use exam credits to satisfy the AS.180.101 Elements of Macroeconomics and/or AS.180.102 Elements of Microeconomics requirements must take additional courses in the department to reach a total of 6 courses!',
+          criteria: 'asdalhsdkjf[N]',
         },
-    ],
+      ],
     },
     {
       name: 'Elective Courses',
       required_credits: 12,
       min_credits_per_course: 3,
-      description: 'Students must take four other economics courses at the 200- or 300-level.',
+      description:
+        'Students must take four other economics courses at the 200- or 300-level.',
       criteria: 'AS Economics[D]^AND^(200[L]^OR^300[L])^NOT^AS.180.203[C]',
     },
   ],
