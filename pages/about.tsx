@@ -143,20 +143,23 @@ const Team: React.FC = () => {
             <Feather />
           </div>
           <div className="text-[22px] w-[60%] sm:text-[44px]">
-            our future plan
+            Our Future Plan
           </div>
-          <div className="scale-[30%] sm:scale-[80%]  w-[30%] mt-[-210px] mr-3">
+          <div className="scale-[30%] sm:scale-[80%]  w-[30%] mt-[-210px] mr-3 mb-8">
             <Path5 />
           </div>
         </div>
         {/*Row 2*/}
         <div className="w-[70%] text-[12px] sm:text-[24px] mt-[-20px] sm:mt-0">
-          place holder Micro-planning is simple. It takes a larger vision and
-          breaks it down into yearly, quarterly, monthly, weekly, and daily
-          check-in practices to plan and adjust as necessary. We get some of the
-          same stabilizing effects that a five-year plan may have given us but
-          with shorter chunks of planning that make more sense in our current
-          economic and cultural context.
+        We plan on continuing moving towards the mission of making uCredit a tool that benefits a student’s career through the power of community. 
+         <br></br><br></br>To do so, here are some features on our roadmap:<br></br><br></br>
+          <li>Expanding the Roadmap Forum, making a general forum where students can ask each other career-related questions to peers and faculty or where they can interact and find opportunities with alumni and professionals.</li>
+          <li>Incorporate ways to interact with other apps, such as Semester.ly.
+</li>
+          <li>Adapting to <a class="underline text-blue-600" href="https://hub.jhu.edu/2021/11/18/johns-hopkins-second-diversity-equity-inclusion-roadmap-draft/"> the university’s move towards By2</a> for planning degrees.
+</li>
+          <li>Continue to refine our user experience for all our stakeholders!
+</li>
         </div>
       </div>
       {/*Row 3*/}

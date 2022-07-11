@@ -19,10 +19,10 @@ const Laptop: React.FC = () => {
         <div className="row-start-1 row-end-2 col-span-4 text-blue-footer text-center text-5xl">
           Introducing uCredit
         </div>
-        <div className="px-60 row-span-1 col-span-4 text-center text-xl z-20">
-          A student-centered application packed with features like prereq
-          checks, degree trackers, and beautiful UI that is easily shareable and
-          accessible.
+        <div className="px-60 row-span-1 col-span-4 text-center text-2xl z-20">
+          A student-centric application packed with features like prereq checks,
+          degree trackers, and a beautiful UI that is easily shareable and
+          intuitive.
         </div>
       </div>
     </div>
