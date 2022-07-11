@@ -40,6 +40,7 @@ const Laptop: React.FC = () => {
 };
 
 const Mobile: React.FC = () => {
+  
   return (
     <>
       <div className="font-landingPage items-stretch  text-center">
