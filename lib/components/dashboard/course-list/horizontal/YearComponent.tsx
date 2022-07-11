@@ -498,7 +498,9 @@ const YearComponent: FC<{
                     </div>
                   </div>
                 )}
-                <div className="font-bold text-sm	">{totalCredits} Credits</div>
+                <div className="font-bold smMobile:text-sm	text-xs">
+                  {totalCredits} Credits
+                </div>
               </div>
               {(!mode || mode !== ReviewMode.View) && (
                 <DotsVerticalIcon

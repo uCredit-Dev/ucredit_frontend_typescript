@@ -86,7 +86,7 @@ module.exports = {
         theme: '#3168AF',
       },
       fontFamily: {
-        landingPage: ['Futura',]
+        landingPage: ['Futura'],
       },
       boxShadow: {
         // eslint-disable-next-line no-multi-str
@@ -116,8 +116,9 @@ module.exports = {
         tight: { max: '1200px' },
         thin: { max: '820px' },
         narrow: { max: '710px' },
-        tablet: {min:'800px', max:'1200px'},
-        smTablet: { max:'800px' },
+        tablet: { min: '800px', max: '1200px' },
+        smTablet: { max: '800px' },
+        smMobile: '500px',
       },
       scale: {
         0: '0',

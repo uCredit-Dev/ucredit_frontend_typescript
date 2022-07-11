@@ -1,6 +1,7 @@
 import { useState, useCallback, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import Header from './Header';
+
 import FeedbackPopup from '../popups/FeedbackPopup';
 import FeedbackNotification from '../popups/FeedbackNotification';
 import {
@@ -80,6 +81,7 @@ const Dashboard: React.FC<Props> = ({ mode }) => {
   // State Setup
   const [showNotif, setShowNotif] = useState<boolean>(true);
   const [formPopup, setFormPopup] = useState<boolean>(false);
+  const [showMobileMenu, setShowMobMenu] = useState(false);
   // const [experimentPopup] = useState<boolean>(false);
   // const [displayedNumber, setDisplayedNumber] = useState<number>(3);
   // const [crement, setCrement] = useState<number>(0);
@@ -184,12 +186,14 @@ const Dashboard: React.FC<Props> = ({ mode }) => {
             />
           )}
           <Header />
-          <div className="flex-grow w-full">
+          <div className="flex-grow w-full ">
             <div className="flex flex-col w-full">
               <div className="flex flex-row thin:flex-wrap-reverse mt-[5rem] w-full h-full">
                 <div className="flex flex-col w-full overflow-hidden">
-                  <div className="mx-auto md:mx-[100px] ">
-                    <CourseList mode={mode} />
+                  <div className="mx-auto  md:mx-[100px] ">
+                    <div className="ml-[5%] md:ml-[0px]">
+                      <CourseList mode={mode} />
+                    </div>
                   </div>
                 </div>
               </div>
@@ -211,11 +215,51 @@ const Dashboard: React.FC<Props> = ({ mode }) => {
       <GenerateNewPlan />
       {mode === ReviewMode.Edit && <HandleUserInfoSetupDummy mode={mode} />}
       <HandlePlanShareDummy />
-      <CommentsOverview />
-      {/* Menus*/}
-      <Notification userID={user._id} />
-      <PlanEditMenu mode={mode} />
-      <HamburgerMenu mode={DashboardMode.Planning} />
+      <div className="invisible h-0 md:h-[] md:visible">
+        <PlanEditMenu mode={mode} />
+        {/*Graph*/}
+
+        {/* Menus*/}
+        <Notification userID={user._id} />
+        {/*Bell*/}
+        <CommentsOverview />
+        {/*Comments*/}
+        <HamburgerMenu mode={DashboardMode.Planning} />
+        {/*Dashes*/}
+      </div>
+      <div
+        className="md:hidden z-40 p-[0.53rem] pt-[0.6rem] space-y-1 rounded  h-9 w-9 cursor-pointer absolute top-3 right-4 "
+        id="mobile-menu"
+        onClick={() => setShowMobMenu(!showMobileMenu)}
+      >
+        {' '}
+        <span className="block w-6 h-[0.2rem] bg-black border rounded"></span>
+        <span className="block w-6 h-[0.2rem] bg-black border rounded"></span>
+        <span className="block w-6 h-[0.2rem] bg-black border rounded"></span>
+        {showMobileMenu ? (
+          <div className="px-2 pt-2 pb-3 space-y-1 bg-gray-200 grid-rows-3 ">
+            {/* Menus*/}
+            <div className="relative inline-block right-[5px] top-[-15px] drop-shadow-xl">
+              <Notification userID={user._id} />
+            </div>
+            {/*Bell*/}
+            <div className="relative inline-block left-[8px] top-[-15px] drop-shadow-xl">
+              <CommentsOverview />{' '}
+            </div>
+            {/*Comments*/}
+            <div className="relative inline-block right-[15px] top-[-15px] drop-shadow-xl">
+              <HamburgerMenu mode={DashboardMode.Planning} />{' '}
+            </div>
+            {/*Dashes*/}{' '}
+            <div className="relative inline-block right-[-35px] top-[-110px] drop-shadow-xl">
+              <PlanEditMenu mode={mode} />{' '}
+            </div>
+            {/*Graph*/}
+          </div>
+        ) : (
+          <div></div>
+        )}
+      </div>
     </>
   );
 };
