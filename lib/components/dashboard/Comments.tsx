@@ -235,7 +235,7 @@ const Comments: FC<{
 
   return (
     <div
-      className={clsx('absolute z-50 h-12 cursor-default translate-x-60', {
+      className={clsx('absolute z-50 h-12 cursor-default md:translate-x-60 ', {
         'translate-y-[12px]': location.split(' ')[0] === 'Course',
         '-left-[125px] translate-y-7': location.split(' ')[0] === 'Year',
         'z-0': !expanded && (hovered || thisThread),

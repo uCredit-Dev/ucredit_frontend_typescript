@@ -9,7 +9,7 @@ import Path5 from '../lib/components/team-page/Paths5.svg';
 
 const Team: React.FC = () => {
   return (
-    <div className="font-landingPage bg-white  overflow-y-auto">
+    <div className="font-landingPage bg-white ">
       <Header />
 
       <header className="overflow-hidden ">
@@ -23,7 +23,7 @@ const Team: React.FC = () => {
       <div className="mt-14 grid grid-cols-1 sm:grid-cols-2 mb-40 max-w-7xl sm:mx-auto mx-4 py-6 px-4 sm:px-6 lg:px-16 justify-items-end">
         {/*Mobile Row 1, Disappears*/}
         <div className="flex w-full mt-3 sm:col-span-2 overflow-hidden sm:invisible sm:h-0 place-content-center">
-          <div className=".object-scale-down sm:ml-4 sm:ml-7 sm:mr-14">
+          <div className=".object-scale-down sm:ml-7 sm:mr-14">
             <svg
               width="483"
               height="324"
@@ -36,7 +36,7 @@ const Team: React.FC = () => {
           </div>
         </div>
         {/*Col 1, Mobile Row 2*/}
-        <div className="flex justify-items-end grid sm:grid-rows-2 w-[100%] sm:w-auto mb-20 sm:mb-32 overflow-visible sm:mr-4 sm:mr-7">
+        <div className=" justify-items-end grid sm:grid-rows-2 w-[100%] sm:w-auto mb-20 sm:mb-32 overflow-visible sm:mr-7">
           <div className="absolute sm:relative overflow-visible ">
             <Footprints />
           </div>
@@ -62,7 +62,7 @@ const Team: React.FC = () => {
         </div>
         {/*Col 2, Mobile Row 2*/}
         <div className="flex sm:h-full w-full mt-3 mb-22 overflow-hidden invisible sm:visible h-0 place-content-center">
-          <div className="grow sm:ml-4 sm:ml-7 sm:mr-14">
+          <div className="grow sm:ml-7 sm:mr-14">
             <div>
               <svg
                 width="483"
@@ -79,7 +79,7 @@ const Team: React.FC = () => {
         {/*Row 2*/}
         {/*Mobile, Disappears*/}
         <div className="flex w-full mt-3 sm:col-span-2 overflow-hidden sm:invisible sm:h-0 justify-center">
-          <div className=".object-scale-down justify-center sm:ml-4 sm:ml-7 sm:mr-14 mx-auto">
+          <div className=".object-scale-down justify-center sm:ml-7 sm:mr-14 mx-auto">
             <svg
               width="483"
               height="324"
@@ -92,7 +92,7 @@ const Team: React.FC = () => {
           </div>
         </div>
         {/*Col 1*/}
-        <div className="flex justify-items-end grid sm:grid-rows-2 sm:mt-20 w-[100%] sm:w-auto mt-28 mb-32 overflow:visible sm:mr-4 sm:mr-7">
+        <div className=" justify-items-end grid sm:grid-rows-2 sm:mt-20 w-[100%] sm:w-auto mt-28 mb-32 overflow:visible sm:mr-7">
           <div className="absolute sm:relative overflow-visible">
             <Footprints2 />
           </div>

@@ -187,8 +187,8 @@ const Dashboard: React.FC<Props> = ({ mode }) => {
           <div className="flex-grow w-full">
             <div className="flex flex-col w-full">
               <div className="flex flex-row thin:flex-wrap-reverse mt-[5rem] w-full h-full">
-                <div className="flex flex-col w-full">
-                  <div className="px-[100px]">
+                <div className="flex flex-col w-full overflow-hidden">
+                  <div className="mx-auto md:mx-[100px] ">
                     <CourseList mode={mode} />
                   </div>
                 </div>

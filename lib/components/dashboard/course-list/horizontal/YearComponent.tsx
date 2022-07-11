@@ -431,7 +431,7 @@ const YearComponent: FC<{
               </div>
             )}
             <div className="flex flex-row gap-8">
-              <div className="flex flex-row gap-3 mt-2 text-sm font-medium h-7">
+              <div className="flex flex-row gap-3 mt-2 text-sm md:font-medium h-7 overflow-visible">
                 {areaCredits.N > 0 && (
                   <div className="flex flex-row gap-1">
                     {areaCredits.N}
@@ -498,7 +498,7 @@ const YearComponent: FC<{
                     </div>
                   </div>
                 )}
-                <div className="font-bold">{totalCredits} Credits</div>
+                <div className="font-bold text-sm	">{totalCredits} Credits</div>
               </div>
               {(!mode || mode !== ReviewMode.View) && (
                 <DotsVerticalIcon
@@ -529,7 +529,7 @@ const YearComponent: FC<{
           </div>
         ) : (
           <div
-            className="px-6 py-2 bg-white rounded cursor-default"
+            className="px-6 py-2 bg-white rounded cursor-default "
             onMouseLeave={() => setDraggable(false)}
             onMouseEnter={() => setDraggable(true)}
           >
