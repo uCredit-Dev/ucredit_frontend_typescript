@@ -88,7 +88,7 @@ const postNewComment = (data: any, cb = undefined) => {
 
 const removeComment = (comment_id: string, cb = undefined) => {
   return fetchWrapper
-    .delete(`${getAPI(window)}/comment?comment_id=${comment_id}`, )
+    .delete(`${getAPI(window)}/comment?comment_id=${comment_id}`)
     .then((res) => handleResponse(res, cb));
 };
 
