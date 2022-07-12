@@ -3578,6 +3578,54 @@ const bsNeuro: Major = {
   ],
 };
 
+// https://e-catalogue.jhu.edu/arts-sciences/full-time-residential-programs/degree-programs/economics/economics-minor/
+// https://econ.jhu.edu/undergraduate/minor-requirements/
+const minorEcon: Minor = {
+  degree_name: 'Minor Economics',
+  abbrev: 'Minor Econ',
+  department: 'AS Economics',
+  total_degree_credit: 18,
+  url: 'https://e-catalogue.jhu.edu/arts-sciences/full-time-residential-programs/degree-programs/economics/economics-minor/',
+  wi_credit: 0,
+  distributions: [
+    {
+      name: 'Core Courses',
+      required_credits: 6,
+      min_credits_per_course: 3,
+      description:
+        'Students must take 180.101 Elements of Macroeconomics and 180.102 Elements of Microeconomics.**<br />' +
+        '<br />**Students who use exam credits to satisfy the AS.180.101 Elements of Macroeconomics and/or AS.180.102 Elements of Microeconomics requirements must take additional courses in the department to reach a total of 6 courses.',
+      criteria: 'AS.180.101[C]^OR^AS.180.102[C]',
+      fine_requirements: [
+        {
+          required_credits: 3,
+          description: '<b>AS.180.101</b> <br />Elements of Macroeconomics**',
+          criteria: 'AS.180.101[C]',
+        },
+        {
+          required_credits: 3,
+          description: '<b>AS.180.102</b> <br />Elements of Microeconomics**',
+          criteria: 'AS.180.102[C]',
+        },
+        {
+          required_credits: 1,
+          description:
+            '<b>**PLEASE NOTE:</b> <br />Students who use exam credits to satisfy the AS.180.101 Elements of Macroeconomics and/or AS.180.102 Elements of Microeconomics requirements must take additional courses in the department to reach a total of 6 courses!',
+          criteria: 'asdalhsdkjf[N]',
+        },
+      ],
+    },
+    {
+      name: 'Elective Courses',
+      required_credits: 12,
+      min_credits_per_course: 3,
+      description:
+        'Students must take four other economics courses at the 200- or 300-level.',
+      criteria: 'AS Economics[D]^AND^(200[L]^OR^300[L])^NOT^AS.180.203[C]',
+    },
+  ],
+};
+
 const no_degree: Major = {
   degree_name: "Undecided Degree/My degree isn't supported yet",
   distributions: [],
@@ -3620,6 +3668,7 @@ export const allMajors: Major[] = [
   bsCBE,
 
   baEcon,
+  minorEcon,
   // baPsych,
   // baMolCell,
   bsNeuro,
