@@ -66,6 +66,27 @@ const Reviewer: React.FC = () => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [user, refreshReviews]);
 
+  const deleteHandler = async (revieweeID) => {
+    setFiltered((prevState) => {
+      const updatedState = prevState.filter(
+        (reviewee) => reviewee.reviewee._id !== revieweeID,
+      );
+      return updatedState;
+    });
+    try {
+      let review_id: string = '';
+      const reviewees = await userService.getReviewerPlans(user._id);
+      for (let review of reviewees.data) {
+        if (review.reviewee_id._id === revieweeID) {
+          review_id = review._id;
+        }
+      }
+      await userService.removeReview(review_id);
+    } catch (err) {
+      console.log(err);
+    }
+  };
+
   return (
     <div>
       <Header />
@@ -86,6 +107,7 @@ const Reviewer: React.FC = () => {
             reviewee={tuple.reviewee}
             expanded={index === 0}
             setRefreshReviews={setRefreshReviews}
+            onDeleteItem={deleteHandler}
           />
         ))}
       </div>
