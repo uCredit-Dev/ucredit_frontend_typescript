@@ -2903,6 +2903,40 @@ const minorAMS_Old: Minor = {
       ],
     },
     {
+      name: 'Upper-Level Courses',
+      required_credits: 9,
+      min_credits_per_course: 3,
+      description:
+        'Among the courses comprising the 18 Q credits, there must be at least three (3- or 4-credit) courses at the 300-level or above, ' +
+        'of which at least two must be in the Department of Applied Mathematics and Statistics**.<br />' +
+        '</br /> **A student may count the combination of (AS.110.201 Linear Algebra or AS.110.212 Honors Linear Algebra) AND AS.110.302 Differential Equations and Applications in place of ONE of the required 300-level courses within the AMS Department',
+      criteria: 'Q[A]^AND^(300[L]^OR^400[L])',
+      pathing: true,
+      fine_requirements: [
+        {
+          required_credits: 6,
+          description:
+            '<b>AMS Courses:</b> <br />At least two upper-level courses must be in the Department of Applied Mathematics and Statistics.**',
+          criteria:
+            '(300[L]^OR^400[L])^AND^EN Applied Mathematics & Statistics[D]',
+        },
+        {
+          required_credits: 9,
+          description:
+            '<b>**Alternate Route:</b> <br />One upper-level course from the Department of Applied Mathematics and Statistics, and (AS.110.201 Linear Algebra AND AS.110.302 Differential Equations and Applications).',
+          criteria:
+            '((300[L]^OR^400[L])^AND^EN Applied Mathematics & Statistics[D])^OR^AS.110.201[C]^OR^AS.110.302[C]',
+        },
+        {
+          required_credits: 9,
+          description:
+            '<b>**Alternate Route:</b> <br />One upper-level course from the Department of Applied Mathematics and Statistics, and (AS.110.212 Honors Linear Algebra AND AS.110.302 Differential Equations and Applications).',
+          criteria:
+            '((300[L]^OR^400[L])^AND^EN Applied Mathematics & Statistics[D])^OR^AS.110.212[C]^OR^AS.110.302[C]',
+        },
+      ],
+    },
+    {
       name: 'Scientific Computer Course',
       required_credits: 3,
       min_credits_per_course: 3,
@@ -3470,40 +3504,6 @@ const bsNeuro: Major = {
             '<b>Cellular and Molecular Neuroscience (CM)</b> <br /> ' +
             'AS.020.306 and AS.020.316 must be selected as the required biology course with lab.',
           criteria: 'NEUR-CM[T]',
-        },
-      ],
-    },
-    {
-      name: 'Upper-Level Courses',
-      required_credits: 9,
-      min_credits_per_course: 3,
-      description:
-        'Among the courses comprising the 18 Q credits, there must be at least three (3- or 4-credit) courses at the 300-level or above, ' +
-        'of which at least two must be in the Department of Applied Mathematics and Statistics**.<br />' +
-        '</br /> **A student may count the combination of (AS.110.201 Linear Algebra or AS.110.212 Honors Linear Algebra) AND AS.110.302 Differential Equations and Applications in place of ONE of the required 300-level courses within the AMS Department',
-      criteria: 'Q[A]^AND^(300[L]^OR^400[L])',
-      pathing: true,
-      fine_requirements: [
-        {
-          required_credits: 6,
-          description:
-            '<b>AMS Courses:</b> <br />At least two upper-level courses must be in the Department of Applied Mathematics and Statistics.**',
-          criteria:
-            '(300[L]^OR^400[L])^AND^EN Applied Mathematics & Statistics[D]',
-        },
-        {
-          required_credits: 9,
-          description:
-            '<b>**Alternate Route:</b> <br />One upper-level course from the Department of Applied Mathematics and Statistics, and (AS.110.201 Linear Algebra AND AS.110.302 Differential Equations and Applications).',
-          criteria:
-            '((300[L]^OR^400[L])^AND^EN Applied Mathematics & Statistics[D])^OR^AS.110.201[C]^OR^AS.110.302[C]',
-        },
-        {
-          required_credits: 9,
-          description:
-            '<b>**Alternate Route:</b> <br />One upper-level course from the Department of Applied Mathematics and Statistics, and (AS.110.212 Honors Linear Algebra AND AS.110.302 Differential Equations and Applications).',
-          criteria:
-            '((300[L]^OR^400[L])^AND^EN Applied Mathematics & Statistics[D])^OR^AS.110.212[C]^OR^AS.110.302[C]',
         },
       ],
     },
