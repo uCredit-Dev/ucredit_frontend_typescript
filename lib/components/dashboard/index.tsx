@@ -237,7 +237,7 @@ const Dashboard: React.FC<Props> = ({ mode }) => {
         <span className="block w-6 h-[0.2rem] bg-black border rounded"></span>
         <span className="block w-6 h-[0.2rem] bg-black border rounded"></span>
         {showMobileMenu ? (
-          <div className="px-2 pt-2 pb-3 space-y-1 bg-gray-200 grid-rows-3 ">
+          <div className="px-2 pt-2 pb-3 space-y-1 grid-rows-3 ">
             {/* Menus*/}
             <div className="relative inline-block right-[5px] top-[-15px] drop-shadow-xl">
               <Notification userID={user._id} />
