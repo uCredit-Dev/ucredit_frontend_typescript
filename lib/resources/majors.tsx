@@ -3319,6 +3319,36 @@ const minorEcon: Minor = {
   ],
 };
 
+// https://e-catalogue.jhu.edu/arts-sciences/full-time-residential-programs/degree-programs/physics-astronomy/physics-minor/ 
+// https://physics-astronomy.jhu.edu/undergraduate/minors/
+const minorPhysics: Minor = {
+  degree_name: 'Minor Physics',
+  abbrev: 'Physics Minor',
+  department: 'AS Physics & Astronomy',
+  total_degree_credit: 13,
+  url: 'https://physics-astronomy.jhu.edu/undergraduate/minors/',
+  wi_credit: 0,
+  distributions: [
+    // NOTE: not sure if students need introductory physics sequence? (according to https://physics-astronomy.jhu.edu/undergraduate/minors/)
+    // "A student may earn a minor in physics by completing one of the introductory physics sequences (171.101-102, 171.103-104, or 171.105-106 and associated lab)"
+    // degree audit doesn't mention it and neither does e-catalogue
+    {
+      name: 'Contemporary Physics Seminar',
+      required_credits: 1,
+      min_credits_per_course: 1,
+      description: 'The student must take AS.172.203 Contemporary Physics Seminar.',
+      criteria: 'AS.172.203[C]',
+    },
+    {
+      name: '200-Level (or above) Courses',
+      required_credits: 12,
+      min_credits_per_course: 3,
+      description: 'The student must complete four (4) courses (at least 3 credits each) at the 200-level or above.',
+      criteria: 'AS Physics & Astronomy[D]^AND^(200[L]^OR^300[L]^OR^400[L]^OR^500[L])^NOT^AS.172.203[C]',
+    },
+  ],
+}
+
 const no_degree: Major = {
   degree_name: "Undecided Degree/My degree isn't supported yet",
   distributions: [],
@@ -3362,6 +3392,7 @@ export const allMajors: Major[] = [
 
   baEcon,
   minorEcon,
+  minorPhysics,
   // baPsych,
   // baMolCell,
   // bsNeuro,
