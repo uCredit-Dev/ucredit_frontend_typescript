@@ -87,43 +87,107 @@ import { Major, Minor } from './commonTypes';
 // };
 
 // https://cogsci.jhu.edu/undergraduate/cognitive-science-major/
+/**
+ * Problem 1: Upper level electives double count with focal area if not marked exclusive, doesnt work at all if marked exclusive.
+ * Problem 2: Classes with multiple areas satisfy all distribution requirements whereas they should satisfy only one of them.
+ * Solution: Exclusivity should be relative to distributions and individual fine requirements rather than just be a boolean. This solves Problem 1 and Problem 2
+ */
 const baCogSci: Major = {
   degree_name: 'B.A. Cognitive Science',
   abbrev: 'B.A. Cog Sci',
   department: 'AS Cognitive Science',
-  total_degree_credit: 120,
+  total_degree_credit: 81,
   wi_credit: 12,
   url: 'https://cogsci.jhu.edu/undergraduate/cognitive-science-major/',
   distributions: [
     {
-      name: 'Two Focal Areas',
-      required_credits: 12, 
+      name: 'One Course from each Focal Area',
+      required_credits: 15,
       min_credits_per_course: 3,
       description:
-        'Four courses, two in each of the two chosen focal areas. Research, readings, and practica courses do not qualify.',
+        'One course is required from each focal area offered by the department: <br />' +
+        'Cognitive Psychology/Cognitive Neuropsychology <br />' +
+        'Linguistics <br />' +
+        'Computational Approaches to Cognition <br />' +
+        'Philosophy of Mind <br />' +
+        'Neuroscience',
       criteria:
         'COGS-COGPSY[T]^OR^COGS-LING[T]^OR^COGS-COMPCG[T]^OR^COGS-NEURO[T]^OR^COGS-PHLMND[T]',
       fine_requirements: [
         {
-          description:
-            '<b>Upper Level Core</b> <br /> At least two courses, one in each focal area must be at the 300-600 level.',
-          required_credits: 6, 
-          criteria:
-            '(COGS-COGPSY[T]^OR^COGS-LING[T]^OR^COGS-COMPCG[T]^OR^COGS-NEURO[T]^OR^COGS-PHLMND[T])^AND^(Upper Level[L])',
+          description: '<b>Cognitive Psychology/Cognitive Neuropsychology</b>',
+          required_credits: 3,
+          criteria: 'COGS-COGPSY[T]',
+        },
+        {
+          description: '<b>Linguistics</b>',
+          required_credits: 3,
+          criteria: 'COGS-LING[T]',
+        },
+        {
+          description: '<b>Computational Approaches to Cognition</b>',
+          required_credits: 3,
+          criteria: 'COGS-COMPCG[T]',
+        },
+        {
+          description: '<b>Philosophy of Mind</b>',
+          required_credits: 3,
+          criteria: 'COGS-PHLMND[T]',
+        },
+        {
+          description: '<b>Neuroscience</b>',
+          required_credits: 3,
+          criteria: 'COGS-NEURO[T]',
         },
       ],
     },
     {
-      // TODO: How to exclude courses from focus areas the student has already taken?
-      name: "Three 'Non-Focal' Areas",
-      required_credits: 9,
+      name: 'Two Focal Areas',
+      required_credits: 12,
       min_credits_per_course: 3,
       description:
-        'One course at any level from each of the three non-focal areas. Research, readings, and practica courses do not qualify.',
+        'Four courses in each of the two chosen focal areas. Research, readings, and practica courses do not qualify.',
       criteria:
         'COGS-COGPSY[T]^OR^COGS-LING[T]^OR^COGS-COMPCG[T]^OR^COGS-NEURO[T]^OR^COGS-PHLMND[T]',
+      pathing: 2,
+      fine_requirements: [
+        {
+          description:
+            '<b>Cognitive Psychology/Cognitive Neuropsychology</b> <br />' +
+            'At least 2 courses must be at the 300 level or above.',
+          required_credits: 12,
+          criteria: 'COGS-COGPSY[T]',
+        },
+        {
+          description:
+            '<b>Linguistics</b> <br />' +
+            'At least 2 courses must be at the 300 level or above.',
+          required_credits: 12,
+          criteria: 'COGS-LING[T]',
+        },
+        {
+          description:
+            '<b>Computational Approaches to Cognition</b> <br />' +
+            'At least 2 courses must be at the 300 level or above.',
+          required_credits: 12,
+          criteria: 'COGS-COMPCG[T]',
+        },
+        {
+          description:
+            '<b>Philosophy of Mind</b> <br />' +
+            'At least 2 courses must be at the 300 level or above.',
+          required_credits: 12,
+          criteria: 'COGS-PHLMND[T]',
+        },
+        {
+          description:
+            '<b>Neuroscience</b> <br />' +
+            'At least 2 courses must be at the 300 level or above.',
+          required_credits: 12,
+          criteria: 'COGS-NEURO[T]',
+        },
+      ],
     },
-    // Upper Level Electives start filling up only after the first two distributions are fulfilled  
     {
       name: 'Upper Level Electives',
       required_credits: 9,
@@ -131,19 +195,21 @@ const baCogSci: Major = {
       description:
         'Nine credits at the 300-600 level chosen from any of the five areas or other cognitive science courses.' +
         'Up to three credits of cognitive science research, readings, or practica may apply.',
-      criteria: 'AS Cognitive Science[D]^AND^Upper Level[L]',
+      criteria:
+        '(COGS-COGPSY[T]^OR^COGS-LING[T]^OR^COGS-COMPCG[T]^OR^COGS-NEURO[T]^OR^COGS-PHLMND[T])^AND^(Upper Level[L])',
       exclusive: true,
     },
     {
       name: 'Math',
       required_credits: 6,
       min_credits_per_course: 3,
-      description: 'Select Math Option A or B. For students with Cognitive Psychology/Neuropsychology as one of their focal areas, Math Option B is required',
+      description:
+        'Select Math Option A or B. For students with Cognitive Psychology/Neuropsychology as one of their focal areas, Math Option B is required',
       criteria:
         'AS.110.106[C]^OR^AS.110.108[C]^OR^AS.110.107[C]^OR^AS.110.109[C]^OR^AS.110.113[C]^OR^' +
         'AS.110.201[C]^OR^AS.110.212[C]^OR^EN.553.291[C]^OR^AS.150.118[C]^OR^AS.150.420[C]^OR^AS.050.370[C]^OR^' +
         'AS.050.371[C]^OR^AS.050.372[C]^OR^EN.553.171[C]^OR^AS.200.200[C]^OR^AS.200.201[C]',
-      pathing: true,
+      pathing: 1,
       fine_requirements: [
         {
           description:
@@ -174,7 +240,6 @@ const baCogSci: Major = {
       ],
     },
     {
-      // TODO: A course which is H, N, S satisfies all distribution requirements when it should satisfy just one. What to do?
       name: 'Humanities (H) Distribution',
       required_credits: 9,
       min_credits_per_course: 3,
@@ -719,7 +784,7 @@ const bsBME: Major = {
       name: 'Focus Area',
       required_credits: 21,
       min_credits_per_course: 1,
-      pathing: true,
+      pathing: 1,
       description:
         'The student must select at least 21 credits from the approved list of courses for a specific focus area. Coordinate with your advisor to' +
         ' determine the best combination of classes for you:',
@@ -775,7 +840,7 @@ const bsBME: Major = {
         '(EN.580.456[C]^OR^EN.580.457[C])^OR^(EN.580.471[C]^OR^EN.580.571[C])^OR^' +
         '(EN.580.480[C]^OR^EN.580.481[C])^OR^(EN.580.580[C]^OR^EN.580.581[C])^OR^' +
         '(EN.601.455[C]^OR^EN.601.456[C])^OR^(EN.580.437[C]^OR^EN.580.438[C])',
-      pathing: true,
+      pathing: 1,
       fine_requirements: [
         {
           description:
@@ -1313,7 +1378,7 @@ const bsCBE: Major = {
       description:
         'Take one of the following course options for Product Design.',
       criteria: '',
-      pathing: true,
+      pathing: 1,
       fine_requirements: [
         {
           description:
@@ -1800,7 +1865,7 @@ const bsAMS: Major = {
       name: 'Area of Focus',
       required_credits: 6,
       min_credits_per_course: 3,
-      pathing: true,
+      pathing: 1,
       description:
         'Two courses must be taken within a coherent field of interest. For more detail please visit ' +
         'https://e-catalogue.jhu.edu/engineering/full-time-residential-programs/degree-programs/applied-mathematics-statistics/applied-mathematics-statistics-bs/#requirementstext',
@@ -1945,10 +2010,9 @@ const bsCS_Old: Major = {
       description:
         "For more information please visit the <a href='https://www.cs.jhu.edu/undergraduate-studies/academics/ugrad-advising-manual/'>" +
         'major degree requirement</a> section on the department website.',
-      criteria: '', // TODO: Implement this
+      criteria: 'EN Computer Science[D]^OR^EN.500.112[C]^OR^EN.660.400[C]',
       fine_requirements: [
         {
-          // TODO: Bug here: Cannot add this class through the cart
           description:
             '<b>Computer Ethics</b> <br /> Select one of the following courses: <br /> ' +
             'EN.601.104 Computer Ethics <br /> ' +
@@ -2001,12 +2065,12 @@ const bsCS_Old: Major = {
           description:
             '<b>Upper Level CS Credits</b> <br /> ' +
             'At least 13 more upper level CS credits are required. ' +
-            'At least one course in two different classification areas (Applications, Reasoning, Software, Systems) must be chosen in addition to Theory (Algorithms).', // TODO: Question: How to include this requirement?
+            'At least one course in two different classification areas (Applications, Reasoning, Software, Systems) must be chosen in addition to Theory (Algorithms).', // TODO: Question: How to include this requirement?: SEPARATE DISTRIBUTION PATHING
           required_credits: 13,
-          criteria: 'EN Computer Science[D]^AND^(Upper Level[L])', // TODO: There is a bug in the Cart implementation which does not parse the criteria string correctly.
+          criteria: 'EN Computer Science[D]^AND^Upper Level Undergraduate[L]',
         },
         {
-          // TODO: Issue here: Marking this as exclusive excludes courses from the team requirement (which allows double count). Removing exclusive from here clashes with the upper level CS credits, where courses should satisfy either of the requirements
+          // TODO: Issue here: Marking this as exclusive excludes courses from the team requirement (which allows double count). Removing exclusive from here clashes with the upper level CS credits, where courses should satisfy either of the requirements: SEPARATE DISTRIBUTION, PATHING
           description:
             '<b>CS Electives</b> <br /> ' +
             'Eight additional credits of Computer Science are required.' +
@@ -2055,7 +2119,7 @@ const bsCS_Old: Major = {
           criteria: 'EN.553.171[C]',
         },
         {
-          // TODO: How to account for prob/stats coverage requirement?
+          // TODO: How to account for prob/stats coverage requirement?: MATH ELECTIVES DISTRIBUTION WITH PATHING FOR PROB STATS
           description:
             '<b>Electives</b> <br /> At least 3 more courses must be taken at the 200 or above level, ' +
             'and must include coverage of both Probability and Statistics.',
@@ -2105,7 +2169,7 @@ const bsCS_Old: Major = {
       ],
     },
     {
-      // TODO: exclusive does not work here...
+      // TODO: exclusive does not work here...me problem...
       name: 'Electives',
       required_credits: 26,
       min_credits_per_course: 1,
@@ -2214,7 +2278,7 @@ const bsCS_New: Major = {
       criteria: 'AS Mathematics[D]^OR^EN Applied Mathematics & Statistics[D]',
       exception:
         '(Probability & Statistics[N]^OR^Probability and Statistics[N]^OR^EN.553.211[C]^OR^EN.553.310[C]^OR^EN.553.311[C]^OR^EN.553.420[C]^OR^EN.553.430[C])',
-      pathing: true,
+      pathing: 1,
       fine_requirements: [
         {
           description:

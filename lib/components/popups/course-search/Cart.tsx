@@ -136,11 +136,12 @@ const Cart: FC<{ allCourses: SISRetrievedCourse[] }> = (props) => {
         // TODO : figure out levels ? factor from distrubitionFunctions.tsx
         // also why is distributionFunctions a tsx file....
         // updatedConcat = handleLCase(splitArr, index, course);
-        extras.query = 'djaskdlfjaslkdfjsaodkfjasoidf jasdkflajsdlfksa';
+        extras.levels = splitArr[index];
         break;
       default:
         extras.query = splitArr[index];
     }
+    console.log(extras);
     return extras;
   };
 
