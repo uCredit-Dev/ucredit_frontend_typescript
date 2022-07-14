@@ -95,7 +95,6 @@ const CourseDisplay: FC<{ cart: boolean }> = ({ cart }) => {
       term: semester === 'All' ? 'fall' : semester.toLowerCase(),
       year: addingYear !== null ? addingYear.name : '',
       credits: version.credits === '' ? 0 : version.credits,
-      distribution_ids: currentPlan.distribution_ids,
       isPlaceholder: placeholder,
       number: version.number,
       area: version.areas,
