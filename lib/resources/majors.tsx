@@ -90,7 +90,7 @@ import { Major, Minor } from './commonTypes';
 /**
  * Problem 1: Upper level electives double count with focal area if not marked exclusive, doesnt work at all if marked exclusive.
  * Problem 2: Classes with multiple areas satisfy all distribution requirements whereas they should satisfy only one of them.
- * Solution: Exclusivity should be relative to distributions and individual fine requirements rather than just be a boolean. This solves Problem 1 and Problem 2
+ * Solution: Exclusivity should be relative to distributions and individual fine requirements rather than just be a boolean. Also, when a distribution is satisfied, it should no longer be considered in the exclusivity check. This solves Problem 1 and Problem 2
  */
 const baCogSci: Major = {
   degree_name: 'B.A. Cognitive Science',
@@ -2320,7 +2320,6 @@ const bsCS_New: Major = {
       name: 'Writing Intensive',
       required_credits: 6,
       min_credits_per_course: 3,
-      double_count: true,
       description:
         'Students are required to fulfill the university’s requirement of two writing intensive courses, ' +
         'each at least 3 credits. Students must receive at least a C- grade or better in these writing courses. ',
@@ -2862,6 +2861,10 @@ const bsMolCell: Major = {
 };
 
 // https://e-catalogue.jhu.edu/engineering/full-time-residential-programs/degree-programs/mechanical-engineering/mechanical-engineering-bachelor-science/#requirementstext
+/**
+ * Problem 1: Same issue with relative exclusivity
+ * Solution: Exclusivity should be relative to distributions and individual fine requirements rather than just be a boolean. Also, when a distribution is satisfied, it should no longer be considered in the exclusivity check.
+ */
 const bsMechE: Major = {
   degree_name: 'B.S. Mechanical Engineering',
   abbrev: 'B.S. MechE',
@@ -2875,50 +2878,50 @@ const bsMechE: Major = {
       required_credits: 16,
       min_credits_per_course: 4,
       description:
-        'The student must complete all the required mathematics courses, offered ' +
+        'The student must complete one of the tracks of mathematics courses, offered ' +
         'either by the Mathematics department in the Kreiger School of Arts and Sciences ' +
         'or the Applied Mathematics and Statistics department in the Whiting School of Engineering.',
       criteria:
-        'AS.110.108[C]^OR^AS.110.109[C]^OR^AS.110.202[C]^OR^AS.110.211[C]^OR^EN.553.291[C]',
+        'AS.110.108[C]^OR^AS.110.109[C]^OR^AS.110.113[C]^OR^AS.110.202[C]^OR^EN.553.291[C]^OR^AS.110.201[C]^OR^AS.110.212[C]^OR^AS.110.302[C]',
+      pathing: 1,
       fine_requirements: [
         {
           description:
-            '<b>Calculus I</b> <br /> AS.110.108 Calculus I (Physical Sciences & Engineering)',
-          required_credits: 4,
-          criteria: 'AS.110.108[C]',
-        },
-        {
-          description:
-            '<b>Calculus II</b> <br /> AS.110.109 Calculus II (Physical Sciences & Engineering)',
-          required_credits: 4,
-          criteria: 'AS.110.109[C]',
-        },
-        {
-          description:
-            '<b>Calculus III</b> <br /> Select one of the following: <br />' +
+            '<b>4 Math Courses</b> <br />' +
+            'Complete all of the following: <br />' +
+            'AS.110.108 Calculus I (Physical Sciences & Engineering) <br />' +
+            'AS.110.109 Calculus II (Physical Sciences & Engineering) <i>OR</i> AS.110.113 Honors Single Variable Calculus <br />' +
             'AS.110.202 Calculus III <br />' +
-            'AS.110.211 Honors Multivariable Calculus',
-          required_credits: 4,
-          criteria: 'AS.110.202[C]^OR^AS.110.211[C]',
+            'EN.553.291 Linear Algebra and Differential Equations',
+          required_credits: 16,
+          criteria:
+            'AS.110.108[C]^OR^AS.110.109[C]^OR^AS.110.113[C]^OR^AS.110.202[C]^OR^EN.553.291[C]',
         },
         {
           description:
-            '<b>Linear Algebra and Differential Equations</b> <br /> ' +
-            'EN.553.291 Linear Algebra and Differential Equations',
-          required_credits: 4,
-          criteria: 'EN.553.291[C]',
+            '<b>5 Math Courses</b> <br />' +
+            'Complete all of the following: <br />' +
+            'AS.110.108 Calculus I (Physical Sciences & Engineering) <br />' +
+            'AS.110.109 Calculus II (Physical Sciences & Engineering) <i>OR</i> AS.110.113 Honors Single Variable Calculus <br />' +
+            'AS.110.202 Calculus III <br />' +
+            'AS.110.201 Linear Algebra <i>OR</i> AS.110.212 Honors Linear Algebra <br />' +
+            'AS.110.302 Differential Equations and Applications',
+          required_credits: 20,
+          criteria:
+            'AS.110.108[C]^OR^AS.110.109[C]^OR^AS.110.113[C]^OR^AS.110.202[C]^OR^AS.110.201[C]^OR^AS.110.212[C]^OR^AS.110.302[C]',
         },
       ],
     },
     {
       name: 'Statistics Elective',
-      required_credits: 4,
-      min_credits_per_course: 4,
+      required_credits: 3,
+      min_credits_per_course: 3,
       description:
         'Select one of the following statistics courses: <br />' +
         'EN.553.310 Probability & Statistics for the Physical Sciences & Engineering <br />' +
-        'EN.553.311 Probability and Statistics for the Biological Sciences and Engineering',
-      criteria: 'EN.553.310[C]^OR^EN.553.311[C]',
+        'EN.553.311 Probability and Statistics for the Biological Sciences and Engineering <br />' +
+        'EN.560.348 Probability and Statistics for Civil Engineering',
+      criteria: 'EN.553.310[C]^OR^EN.553.311[C]^OR^EN.560.348[C]',
     },
     {
       name: 'Science',
@@ -2927,7 +2930,7 @@ const bsMechE: Major = {
       description:
         'The student must complete all the required science courses.',
       criteria:
-        'AS.030.101[C]^OR^EN.530.123[C]^OR^EN.530.124[C]^OR^AS.171.102[C]^OR^AS.171.108[C]^OR^AS.173.112[C]',
+        'AS.030.101[C]^OR^EN.171.101[C]^OR^AS.173.111[C]^OR^AS.171.102[C]^OR^AS.173.112[C]',
       fine_requirements: [
         {
           description:
@@ -2937,23 +2940,21 @@ const bsMechE: Major = {
         },
         {
           description:
-            '<b>Introduction to Mechanics I</b> <br /> EN.530.123 Introduction to Mechanics I',
-          required_credits: 3,
-          criteria: 'EN.530.123[C]',
-        },
-        {
-          description:
-            '<b>Introduction to Mechanics II</b> <br /> EN.530.124 Introduction to Mechanics II',
-          required_credits: 2,
-          criteria: 'EN.530.124[C]',
-        },
-        {
-          description:
-            '<b>General Physics II</b> <br /> Select one of the following courses: <br />' +
-            'AS.171.102 General Physics: Physical Science Majors II <br />' +
-            'AS.171.108 General Physics: Physical Science Majors II (AL)',
+            '<b>General Physics I</b> <br /> AS.171.101 General Physics: Physical Science Majors I',
           required_credits: 4,
-          criteria: 'AS.171.102[C]^OR^AS.171.108[C]',
+          criteria: 'EN.171.101[C]',
+        },
+        {
+          description:
+            '<b>General Physics Laboratory I</b> <br /> AS.173.111 General Physics Laboratory I',
+          required_credits: 1,
+          criteria: 'AS.173.111[C]',
+        },
+        {
+          description:
+            '<b>General Physics II</b> <br /> AS.171.102 General Physics: Physical Science Majors II',
+          required_credits: 4,
+          criteria: 'AS.171.102[C]',
         },
         {
           description:
@@ -2965,17 +2966,18 @@ const bsMechE: Major = {
     },
     {
       name: 'Core Engineering',
-      required_credits: 50, // TODO: Might need to change depending on EN.530.243
-      min_credits_per_course: 1,
+      required_credits: 50,
+      min_credits_per_course: 0.5,
       description: 'The following core courses are required for the major.',
       criteria:
         'EN.530.107[C]^OR^EN.530.108[C]^OR^EN.530.111[C]^OR^EN.530.115[C]^OR^' +
-        'EN.500.114[C]^OR^EN.530.116[C]^OR^EN.530.202[C]^OR^EN.530.212[C]^OR^' +
-        'EN.530.215[C]^OR^EN.530.216[C]^OR^EN.530.231[C]^OR^EN.530.232[C]^OR^' +
-        'EN.530.241[C]^OR^EN.520.230[C]^OR^EN.520.231[C]^OR^EN.530.243[C]^OR^' + // TODO: Ask about whether to include EN.530.243 in the required classes (different in degree audit vs. website)
-        'EN.530.254[C]^OR^EN.530.327[C]^OR^EN.530.329[C]^OR^EN.530.334[C]^OR^' +
-        'EN.530.335[C]^OR^EN.530.343[C]^OR^EN.530.344[C]^OR^EN.530.352[C]^OR^' +
-        'EN.560.201[C]^OR^EN.560.211[C]^OR^EN.660.361[C]',
+        'EN.500.114[C]^OR^EN.530.116[C]^OR^EN.530.202[C]^OR^EN.530.204[C]^OR^' +
+        'EN.530.205[C]^OR^EN.530.212[C]^OR^EN.530.215[C]^OR^EN.530.216[C]^OR^' +
+        'EN.530.231[C]^OR^EN.530.232[C]^OR^EN.530.241[C]^OR^EN.520.230[C]^OR^' +
+        'EN.520.231[C]^OR^EN.530.254[C]^OR^EN.530.327[C]^OR^EN.530.329[C]^OR^' +
+        'EN.530.334[C]^OR^EN.530.335[C]^OR^EN.530.343[C]^OR^EN.530.344[C]^OR^' +
+        'EN.530.352[C]^OR^EN.560.201[C]^OR^EN.560.211[C]^OR^EN.660.361[C]^OR^' +
+        'EN Computer Science[D]',
       fine_requirements: [
         {
           description:
@@ -2986,13 +2988,13 @@ const bsMechE: Major = {
         {
           description:
             '<b>Mechanical Engineering Undergraduate Seminar II</b> <br /> EN.530.108 Mechanical Engineering Undergraduate Seminar II',
-          required_credits: 2,
+          required_credits: 0.5,
           criteria: 'EN.530.108[C]',
         },
         {
           description:
             '<b>Introduction to Mechanical Engineering and CAD</b> <br /> EN.530.111 Introduction to Mechanical Engineering and CAD',
-          required_credits: 1,
+          required_credits: 2,
           criteria: 'EN.530.111[C]',
         },
         {
@@ -3003,9 +3005,21 @@ const bsMechE: Major = {
         },
         {
           description:
+            '<b>Mechanical Engineering Freshman Lab I</b> <br /> EN.530.115 Mechanical Engineering Freshman Lab I',
+          required_credits: 1,
+          criteria: 'EN.530.115[C]',
+        },
+        {
+          description:
             '<b>Mechanical Engineering Freshman Lab II</b> <br /> EN.530.116 Mechanical Engineering Freshman Lab II',
           required_credits: 1,
           criteria: 'EN.530.116[C]',
+        },
+        {
+          description:
+            '<b>Additional Computing Course</b> <br /> One more course from the Computer Science department is required.',
+          required_credits: 3,
+          criteria: 'EN Computer Science[D]',
         },
         {
           description:
@@ -3045,29 +3059,6 @@ const bsMechE: Major = {
         },
         {
           description:
-            '<b>Electronics</b> <br /> Select one of the following: <br />' +
-            'EN.530.241 Electonics & Instrumentation <br /> <i> OR </i> <br />' +
-            'EN.520.230 Mastering Electronics <i>AND</i> EN.520.231 Mastering Electronics Lab',
-          required_credits: 3,
-          criteria: 'EN.530.241[C]^OR^EN.520.230[C]^OR^EN.520.231[C]',
-        },
-        {
-          // TODO: Remove based on advice for above
-          description:
-            '<b>Electronics and Instrumentation Lab</b> EN.530.243 Electronics and Instrumentation Lab',
-          required_credits: 1,
-          criteria: 'EN.530.243[C]',
-        },
-        {
-          description:
-            '<b>Manufacturing Engineering</b> <br /> Select one of the following:' +
-            'EN.530.254 Manufacturing Engineering <br /> <i> OR </i> <br />' +
-            'EN.530.204 Manufacturing Engineering Theory <i>AND</i> EN.530.205 Manufacturing Engineering Lab',
-          required_credits: 3,
-          criteria: 'EN.530.254[C]^OR^EN.530.204[C]^OR^EN.530.205[C]',
-        },
-        {
-          description:
             '<b>Introduction to Fluid Mechanics</b> <br /> EN.530.327 Introduction to Fluid Mechanics',
           required_credits: 3,
           criteria: 'EN.530.327[C]',
@@ -3078,10 +3069,112 @@ const bsMechE: Major = {
           required_credits: 1,
           criteria: 'EN.530.329[C]',
         },
-        // TODO: Add rest of the fine requirements here
+        {
+          description: '<b>Heat Transfer</b> <br /> EN.530.334 Heat Transfer',
+          required_credits: 3,
+          criteria: 'EN.530.334[C]',
+        },
+        {
+          description:
+            '<b>Heat Transfer Lab</b> <br /> EN.530.335 Heat Transfer Lab',
+          required_credits: 1,
+          criteria: 'EN.530.335[C]',
+        },
+        {
+          description:
+            '<b>Design and Analysis of Dynamical Systems</b> <br /> EN.530.343 Design and Analysis of Dynamical Systems',
+          required_credits: 3,
+          criteria: 'EN.530.343[C]',
+        },
+        {
+          description:
+            '<b>Design and Analysis of Dynamical Systems Lab</b> <br /> EN.530.344 Design and Analysis of Dynamical Systems Lab',
+          required_credits: 1,
+          criteria: 'EN.530.344[C]',
+        },
+        {
+          description:
+            '<b>Materials Selection</b> <br /> EN.530.352 Materials Selection',
+          required_credits: 4,
+          criteria: 'EN.530.352[C]',
+        },
+        {
+          description:
+            '<b>Statics and Mechanics of Materials</b> <br /> EN.560.201 Statics and Mechanics of Materials',
+          required_credits: 3,
+          criteria: 'EN.560.201[C]',
+        },
+        {
+          description:
+            '<b>Statics and Mechanics of Materials Lab</b> <br /> EN.560.211 Statics and Mechanics of Materials Lab',
+          required_credits: 1,
+          criteria: 'EN.560.211[C]',
+        },
+        {
+          description:
+            '<b>Manufacturing Engineering</b> <br /> Select one of the following:' +
+            'EN.530.254 Manufacturing Engineering <br /> <i>OR</i> <br />' +
+            'EN.530.204 Manufacturing Engineering Theory <i>AND</i> EN.530.205 Manufacturing Engineering Lab',
+          required_credits: 3,
+          criteria: 'EN.530.254[C]^OR^EN.530.204[C]^OR^EN.530.205[C]',
+        },
+        {
+          description:
+            '<b>Electronics</b> <br /> Select one of the following: <br />' +
+            'EN.530.241 Electonics & Instrumentation <br /> <i> OR </i> <br />' +
+            'EN.520.230 Mastering Electronics <i>AND</i> EN.520.231 Mastering Electronics Lab',
+          required_credits: 3,
+          criteria: 'EN.530.241[C]^OR^EN.520.230[C]^OR^EN.520.231[C]',
+        },
+        {
+          description:
+            '<b>Engineering Management and Leadership</b> <br /> EN.660.361 Engineering Management and Leadership',
+          required_credits: 3,
+          criteria: 'EN.660.361[C]',
+        },
       ],
     },
-    // TODO: Add rest of the distributions here
+    {
+      name: 'Capstone Design',
+      required_credits: 8,
+      min_credits_per_course: 4,
+      description:
+        'The student is required to take part in a capstone design project.',
+      criteria: 'EN.530.403[C]^OR^EN.530.404[C]',
+      fine_requirements: [
+        {
+          description:
+            '<b>Mechanical Engineering Senior Design Project I</b> <br /> EN.530.403 Mechanical Engineering Senior Design Project I',
+          required_credits: 4,
+          criteria: 'EN.530.403[C]',
+        },
+        {
+          description:
+            '<b>Mechanical Engineering Senior Design Project II</b> <br /> EN.530.404 Mechanical Engineering Senior Design Project II',
+          required_credits: 4,
+          criteria: 'EN.530.404[C]',
+        },
+      ],
+    },
+    {
+      name: 'Mechanical Engineering Electives',
+      required_credits: 9,
+      min_credits_per_course: 3,
+      description:
+        'Select three courses (300-level or higher) in mechanical engineering',
+      criteria: '(EN Mechanical Engineering[D])^AND^(Upper Level[L])',
+      exclusive: true,
+    },
+    {
+      name: 'Technical Electives',
+      required_credits: 9,
+      min_credits_per_course: 3,
+      description:
+        'Select three engineering, quantitative studies, or natural sciences courses at or above the 300-level,' +
+        "chosen from any combination of courses in engineering, basic sciences, or mathematics selected in consultation with the student's advisor.",
+      criteria: '(N[A]^OR^E[A]^OR^Q[A])^AND^(Upper Level[L])',
+      exclusive: true,
+    },
     {
       name: 'Humanities and Social Sciences',
       required_credits: 18,
