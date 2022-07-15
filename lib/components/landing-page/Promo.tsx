@@ -96,6 +96,12 @@ const Mobile: React.FC = () => {
           })}
         </div>
 
+        <img
+                  className="rounded-md drop-shadow-2xl mt-20"
+                  alt=""
+                  src="/img/landing-page/trustworthy.png"
+        />
+
         <div className="pt-10">
           <div className="bg-gray-100 rounded-md w-90">
             <img
@@ -108,7 +114,7 @@ const Mobile: React.FC = () => {
             <div className="text-xl font-bold text-blue-footer mb-5 align-middle">
               Graduate with assurance
             </div>
-            <div className="text-black">TO BE ADDED</div>
+            <div className="text-black">Share your course plan with academic advisor to make sure you graduate on time without missing any requirement!</div>
           </div>
         </div>
       </div>
