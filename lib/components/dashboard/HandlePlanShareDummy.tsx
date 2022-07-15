@@ -334,6 +334,7 @@ const HandlePlanShareDummy = () => {
             term: course.term,
             year: addingYear.name,
             credits: course.credits,
+            distribution_ids: currentPlan.distribution_ids,
             isPlaceholder: false,
             number: course.number,
             area: course.area,

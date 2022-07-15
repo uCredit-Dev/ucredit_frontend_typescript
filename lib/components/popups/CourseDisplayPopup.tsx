@@ -122,6 +122,7 @@ const CourseDisplayPopup: FC = () => {
         year: addingYear !== null ? addingYear.name : '',
         term: courseToShow.term,
         credits: version.credits === '' ? 0 : version.credits,
+        distribution_ids: plan.distribution_ids,
         isPlaceholder: placeholder,
         number: version.number,
         area: placeholder ? version.areas : inspectedArea,
