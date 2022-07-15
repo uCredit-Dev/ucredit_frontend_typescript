@@ -158,7 +158,6 @@ const VSemester: React.FC<{
         term: semesterName === 'All' ? 'fall' : semesterName.toLowerCase(),
         year: semesterYear._id,
         credits: version.credits === '' ? 0 : version.credits,
-        distribution_ids: currentPlan.distribution_ids,
         isPlaceholder: placeholder,
         number: version.number,
         area: inspectedArea,

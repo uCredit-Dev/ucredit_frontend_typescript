@@ -203,7 +203,6 @@ const Semester: FC<{
         term: semesterName === 'All' ? 'fall' : semesterName.toLowerCase(),
         year: semesterYear._id,
         credits: version.credits === '' ? 0 : version.credits,
-        distribution_ids: currentPlan.distribution_ids,
         isPlaceholder: placeholder,
         area: inspectedArea,
         version: semesterName + ' ' + semesterYear.year,
