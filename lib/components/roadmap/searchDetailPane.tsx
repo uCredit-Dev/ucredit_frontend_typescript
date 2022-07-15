@@ -51,7 +51,13 @@ const SearchDetailPane: React.FC = () => {
         >
           {majorArray.map((item) => {
             if (item.includes(selectedMajor)) {
-              return <button onClick={changeSelectedMajor}>{item}</button>;
+              return (
+                <button key={item} onClick={changeSelectedMajor}>
+                  {item}
+                </button>
+              );
+            } else {
+              return <></>;
             }
           })}
         </ul>

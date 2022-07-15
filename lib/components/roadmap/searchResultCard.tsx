@@ -1,4 +1,4 @@
-import React, { FC } from 'react';
+import React from 'react';
 import {
   AiOutlineComment,
   AiFillEye,
@@ -47,12 +47,12 @@ const SearchResultCard: React.FC = () => {
 
           {/*watchNum*/}
           <div className="flex justify-end mx-5 pt-3 pb-1">
-            <a className="flex-grow-0 pb-1bg-blue-900">
+            <button className="flex-grow-0 pb-1bg-blue-900">
               <div className="flex flex-row items-center">
                 <AiFillEye />
                 <p>324</p>
               </div>
-            </a>
+            </button>
           </div>
         </div>
       </div>
@@ -60,29 +60,29 @@ const SearchResultCard: React.FC = () => {
       {/*tagsList*/}
       <div className="flex flex-row">
         <div>
-          <a
+          <button
             className="flex-grow-0 mx-2 px-3 pt-0.5 pb-1 rounded-3xl
-        text-blue bg-yellow-300"
+          text-blue bg-yellow-300"
           >
             English
-          </a>
+          </button>
         </div>
         <div>
-          <a
+          <button
             className="flex-grow-0 mx-2 px-3 pt-0.5 pb-1 rounded-3xl
-        text-blue bg-green-300"
+          text-blue bg-green-300"
           >
             Humanity
-          </a>
+          </button>
         </div>
 
         <div>
-          <a
+          <button
             className="flex-grow-0 mx-2 px-3 pt-0.5 pb-1 rounded-3xl
-        text-blue bg-pink-300"
+          text-blue bg-pink-300"
           >
             Pre-law
-          </a>
+          </button>
         </div>
       </div>
 
