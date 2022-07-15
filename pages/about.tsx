@@ -44,20 +44,23 @@ const Team: React.FC = () => {
             <div className="inline-block mt-1">
               <Feather />
             </div>
-            <div className="inline-block text-2xl sm:text-3xl ">feature 1</div>
+            <div className="inline-block text-2xl sm:text-3xl ">Degree Checking</div>
           </div>
 
-          <div className="overflow-hidden w-[100%] sm:mt-[-140px]">
+          <div className="overflow-hidden w-[100%] sm:mt-[-140px] text-black">
             <svg
               className="sm:w-[436px] sm:h-[115px]"
               viewBox="0 0 436 115"
               fill="none"
               xmlns="http://www.w3.org/2000/svg"
             >
-              <rect width="436" height="27" fill="#D9D9D9" />
-              <rect y="44" width="436" height="27" fill="#D9D9D9" />
-              <rect y="88" width="436" height="27" fill="#D9D9D9" />
             </svg>
+            <div>
+              <div className="mt-[-100px]">
+                Founded in the winter of 2020 by two Hopkins sophomores, this was our first step. We were frustrated by the SIS Degree Audit and Advising Spreadsheets and knew we could do better. This grew to a core group of 5 students in the summer of 2021.
+              </div>
+              <div><br></br>We put a heavy emphasis on <b>user research</b>. By the end of summer, we made sure our users were able to intuitively <b>create a degree roadmap</b> by searching for courses on SIS, <b>adding, deleting, and moving courses</b> around the plan, and being able to <b>check degree progress for their selected degree</b>.</div>
+            </div>
           </div>
         </div>
         {/*Col 2, Mobile Row 2*/}
@@ -102,7 +105,7 @@ const Team: React.FC = () => {
                 <Feather2 />
               </div>
               <div className="inline-block text-2xl sm:text-3xl ">
-                feature 2
+                Build and Share Roadmap
               </div>
             </div>
           </div>
@@ -113,10 +116,19 @@ const Team: React.FC = () => {
               fill="none"
               xmlns="http://www.w3.org/2000/svg"
             >
-              <rect width="436" height="27" fill="#D9D9D9" />
-              <rect y="44" width="436" height="27" fill="#D9D9D9" />
-              <rect y="88" width="436" height="27" fill="#D9D9D9" />
             </svg>
+            <div>
+              <div className="mt-[-100px]">
+              <b>uCredit is more than degree checking</b>, and we decided that we wanted to broaden our scope and make uCredit <b>a tool for a student’s career and harness the power of community to reach this goal. </b>
+              </div>
+              <div><br></br>Our 2022 spring and summer was focused on laying the groundworks and blueprints for this new goal. Here are some  features we’ve implemented: </div>
+              <br></br><li>Plan sharing, allowing users to easily share a copy of their plan.
+</li>
+<li>Plan reviewer system, where you can allow your friends or advisors to comment, approve, and review your own plan. 
+
+</li>
+              <li>Roadmap forum, a feature currently in the works where users will be able to share and search for others’ plans as templates based on degree, tracks, or career tags.</li>
+            </div>
           </div>
         </div>
         {/*Col 2*/}
