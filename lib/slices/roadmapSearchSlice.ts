@@ -2,14 +2,14 @@ import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { RootState } from '../appStore/store';
 
 type roadmapSearchStates = {
-  searchText: string
-  mobileAdvSearch: boolean
-}
+  searchText: string;
+  mobileAdvSearch: boolean;
+};
 
 const initialState: roadmapSearchStates = {
-  searchText: "",
-  mobileAdvSearch: false
-}
+  searchText: '',
+  mobileAdvSearch: false,
+};
 
 export const roadmapSearchSlice = createSlice({
   name: 'roadmapSearch',
@@ -20,16 +20,14 @@ export const roadmapSearchSlice = createSlice({
     },
     toggleMobileAdvSearch: (state: any) => {
       state.mobileAdvSearch = !state.mobileAdvSearch;
-    }
-  }
+    },
+  },
 });
 
-export const {
-  updateSearchText,
-  toggleMobileAdvSearch
-} = roadmapSearchSlice.actions;
+export const { updateSearchText, toggleMobileAdvSearch } =
+  roadmapSearchSlice.actions;
 
-export const selectSearchText = (state: RootState) => 
+export const selectSearchText = (state: RootState) =>
   state.roadmapSearch.searchText;
 export const selectMobileAdvSearch = (state: RootState) =>
   state.roadmapSearch.mobileAdvSearch;
