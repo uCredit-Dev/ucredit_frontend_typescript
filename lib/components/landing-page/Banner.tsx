@@ -11,10 +11,10 @@ const Laptop: React.FC = () => {
     <div className="grid grid-cols-9 bg-blue-header items-stretch font-landingPage">
       <div className="p-35 col-span-4">
         <div className="grid grid-flow-row rows">
-          <div className="p-8 mb-2 font-medium m-5 text-3xl sm:text-5xl md:text-7xl lg:text-8xl xl:text-9xl text-right text-name">
+          <div className="p-8 mb-2 font-medium m-5 text-3xl sm:text-5xl md:text-7xl lg:text-8xl xl:text-9xl xxxl:text-[180px] text-right text-name">
             uCredit
           </div>
-          <div className="p-3 mb-2 font-normal m-2 text-sm sm:text-lg md:text-xl lg:text-2xl xl:text-4xl text-right pr-10 text-slogan text-opacity-70">
+          <div className="p-3 mb-2 xxxl:text-[50px] xxxl:leading-[70px] font-normal m-2 text-sm sm:text-lg md:text-xl lg:text-2xl xl:text-4xl text-right pr-10 text-slogan text-opacity-70">
             Your Academic Planning, <br></br> Made Simple
           </div>
           
@@ -24,7 +24,7 @@ const Laptop: React.FC = () => {
           <div className="relative z-10 p-4 mb-2 text-right border-blue-footer pr-16 pt-5 h-[150px]">
             {/* <img className=" scale-x-[-1] absolute" src="/img/logo.png" alt="logo" /> */}
             <button
-              className="z-40 bg-blue-footer text-white absolute font-normal text-sm py-4 px-10 sm:text-base md:text-lg lg:text-xl xl:text-2xl rounded-full right-8"
+              className="xxxl:text-[40px] xxxl:py-[30px] z-40 bg-blue-footer text-white absolute font-normal text-sm py-4 px-10 sm:text-base md:text-lg lg:text-xl xl:text-2xl rounded-full right-8"
               onClick={() => router.push('/login')}
             >
               Start
@@ -32,7 +32,7 @@ const Laptop: React.FC = () => {
           </div>
         </div>
       </div>
-      <div className="p-4 col-span-5 w-[90%] lg:w-[600px] xl:w-[700px] 2xl:w-[800px] h-full mt-5">
+      <div className="p-4 col-span-5 w-[90%] lg:w-[600px] xl:w-[750px] monitor:w-[740px] xxxl:ml-24 xxxl:w-[920px]  xxxl:h-[580px] h-full mt-5">
 
         {/* coded in schedule */}
         <div className="flex flex-row rounded-t-[30px] bg-[#B1CEFF] w-[94%] h-[13%] gap-4">
