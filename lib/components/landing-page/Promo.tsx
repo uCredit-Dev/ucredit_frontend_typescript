@@ -6,7 +6,8 @@ import data from './promoData';
 const Laptop: React.FC = () => {
   return (
     <>
-      <img src="/img/landing-page/wave2.png" alt="wavy pattern" />
+      <img src="/img/landing-page/wave2.png" alt="wavy pattern" className='w-screen' />
+
       <div className="flex flex-col px-16 pb-8 text-center bg-blue-header text-blue-footer font-landingPage">
         <div>
           {data.map((d) => {
@@ -97,9 +98,9 @@ const Mobile: React.FC = () => {
         </div>
 
         <img
-                  className="rounded-md drop-shadow-2xl mt-20"
-                  alt=""
-                  src="/img/landing-page/trustworthy.png"
+          className="rounded-md drop-shadow-2xl mt-20"
+          alt=""
+          src="/img/landing-page/trustworthy.png"
         />
 
         <div className="pt-10">
@@ -114,7 +115,10 @@ const Mobile: React.FC = () => {
             <div className="text-xl font-bold text-blue-footer mb-5 align-middle">
               Graduate with assurance
             </div>
-            <div className="text-black">Share your course plan with academic advisor to make sure you graduate on time without missing any requirement!</div>
+            <div className="text-black">
+              Share your course plan with academic advisor to make sure you
+              graduate on time without missing any requirement!
+            </div>
           </div>
         </div>
       </div>
