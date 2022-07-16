@@ -264,7 +264,9 @@ const Cart: FC<{ allCourses: SISRetrievedCourse[] }> = (props) => {
                 textFilter={textFilterInputValue.toLowerCase()}
               />
             </div>
-
+            <div className="h-full md:h-[0px] overflow-y-auto w-full md:invisible bg-gray-200">
+              <CourseDisplay cart={true} />
+            </div>
             <div
               className="flex flex-row items-center justify-center w-full h-8 p-1 transition duration-200 ease-in transform hover:scale-125"
               onMouseEnter={() => setSearchOpacity(50)}
@@ -276,10 +278,11 @@ const Cart: FC<{ allCourses: SISRetrievedCourse[] }> = (props) => {
               <EyeOffIcon className="w-6 h-6 text-gray-500 stroke-2" />
             </div>
           </div>
-          <div className="h-full overflow-y-auto w-full bg-gray-200">
+          <div className="md:h-full h-[0px] overflow-y-auto w-full invisible md:visible bg-gray-200">
             <CourseDisplay cart={true} />
           </div>
           {/** */}
+
           <div
             className={
               // todo: check styles?

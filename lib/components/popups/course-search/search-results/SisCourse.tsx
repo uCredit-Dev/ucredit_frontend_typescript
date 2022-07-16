@@ -341,7 +341,7 @@ const SisCourse: FC<{
             'bg-slate-300 hover:bg-slate-300':
               cartInvokedBySemester && reviewMode === ReviewMode.View,
           },
-          'w-auto h-10 p-2 mt-2 text-white transition duration-200 ease-in transform rounded hover:bg-secondary bg-primary focus:outline-none hover:scale-105',
+          'w-auto h-10 p-2 mt-2 mx-auto text-white transition duration-200 ease-in transform rounded md:hover:bg-secondary md:bg-primary focus:outline-none hover:scale-105 bg-secondary',
         )}
         onClick={() => {
           if (props.cart) {

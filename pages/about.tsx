@@ -6,8 +6,18 @@ import Footprints from '../lib/components/team-page/footprints';
 import Footprints2 from '../lib/components/team-page/footprints2';
 import Path4 from '../lib/components/team-page/Paths4.svg';
 import Path5 from '../lib/components/team-page/Paths5.svg';
-
-const Team: React.FC = () => {
+import Frontpage from '../lib/components/landing-page/Frontpage.svg';
+import Roadmap from '../lib/components/landing-page/Roadmap.svg';
+function checkMobile() {
+  if (
+    /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(
+      navigator.userAgent,
+    )
+  ) {
+    return true;
+  }
+}
+const About: React.FC = () => {
   return (
     <div className="font-landingPage bg-white ">
       <Header />
@@ -22,16 +32,15 @@ const Team: React.FC = () => {
 
       <div className="mt-14 grid grid-cols-1 sm:grid-cols-2 mb-40 max-w-7xl sm:mx-auto mx-4 py-6 px-4 sm:px-6 lg:px-16 justify-items-end">
         {/*Mobile Row 1, Disappears*/}
-        <div className="flex w-full mt-3 sm:col-span-2 overflow-hidden sm:invisible sm:h-0 place-content-center">
-          <div className=".object-scale-down sm:ml-7 sm:mr-14">
+        <div className="flex w-full mt-3 overflow-hidden sm:h-0 sm:hidden sm:invisible sm:mt-0 sm:w-0 place-content-center">
+          <div className="grow ">
             <svg
-              width="483"
-              height="324"
-              viewBox="0 0 483 324"
+              viewBox="0 0 1400 1200"
               fill="none"
               xmlns="http://www.w3.org/2000/svg"
+              className="scale-[100%]"
             >
-              <rect width="483" height="324" fill="#E0E7EC" />
+              {checkMobile() ? <Frontpage /> : <></>}
             </svg>
           </div>
         </div>
@@ -44,54 +53,59 @@ const Team: React.FC = () => {
             <div className="inline-block mt-1">
               <Feather />
             </div>
-            <div className="inline-block text-2xl sm:text-3xl ">Degree Checking</div>
+            <div className="inline-block text-2xl sm:text-3xl ">
+              Degree Checking
+            </div>
           </div>
 
-          <div className="overflow-hidden w-[100%] sm:mt-[-140px] text-black">
-            <svg
-              className="sm:w-[436px] sm:h-[115px]"
-              viewBox="0 0 436 115"
-              fill="none"
-              xmlns="http://www.w3.org/2000/svg"
-            >
-            </svg>
+          <div className="overflow-hidden w-[100%] sm:mt-[-190px] text-black mb-12">
             <div>
-              <div className="mt-[-100px]">
-                Founded in the winter of 2020 by two Hopkins sophomores, this was our first step. We were frustrated by the SIS Degree Audit and Advising Spreadsheets and knew we could do better. This grew to a core group of 5 students in the summer of 2021.
+              <div>
+                Founded in the winter of 2020 by two Hopkins sophomores, this
+                was our first step. We were frustrated by the SIS Degree Audit
+                and Advising Spreadsheets and knew we could do better. This grew
+                to a core group of 5 students in the summer of 2021.
               </div>
-              <div><br></br>We put a heavy emphasis on <b>user research</b>. By the end of summer, we made sure our users were able to intuitively <b>create a degree roadmap</b> by searching for courses on SIS, <b>adding, deleting, and moving courses</b> around the plan, and being able to <b>check degree progress for their selected degree</b>.</div>
+              <div>
+                <br></br>We put a heavy emphasis on <b>user research</b>. By the
+                end of summer, we made sure our users were able to intuitively{' '}
+                <b>create a degree roadmap</b> by searching for courses on SIS,{' '}
+                <b>adding, deleting, and moving courses</b> around the plan, and
+                being able to{' '}
+                <b>check degree progress for their selected degree</b>.
+              </div>
             </div>
           </div>
         </div>
         {/*Col 2, Mobile Row 2*/}
-        <div className="flex sm:h-full w-full mt-3 mb-22 overflow-hidden invisible sm:visible h-0 place-content-center">
-          <div className="grow sm:ml-7 sm:mr-14">
-            <div>
-              <svg
-                width="483"
-                height="324"
-                viewBox="0 0 483 324"
-                fill="none"
-                xmlns="http://www.w3.org/2000/svg"
-              >
-                <rect width="483" height="324" fill="#E0E7EC" />
-              </svg>
-            </div>
-          </div>
-        </div>
-        {/*Row 2*/}
-        {/*Mobile, Disappears*/}
-        <div className="flex w-full mt-3 sm:col-span-2 overflow-hidden sm:invisible sm:h-0 justify-center">
-          <div className=".object-scale-down justify-center sm:ml-7 sm:mr-14 mx-auto">
+        <div className="flex sm:h-full w-full sm:mt-10 overflow-hidden invisible sm:visible h-0 place-content-center sm:place-content-start">
+          <div className="grow ml-4 sm:ml-7">
             <svg
-              width="483"
-              height="324"
-              viewBox="0 0 483 324"
+              viewBox="0 0 1400 1200"
               fill="none"
               xmlns="http://www.w3.org/2000/svg"
+              className="scale-[100%]"
             >
-              <rect width="483" height="324" fill="#E0E7EC" />
+              <Frontpage />
             </svg>
+          </div>
+        </div>
+
+        {/*Row 2*/}
+
+        {/*Mobile, Disappears*/}
+        <div className="flex w-full mt-3 overflow-hidden sm:h-[0px] sm:hidden sm:invisible place-content-center">
+          <div className="grow sm:ml-7 ">
+            <div>
+              <svg
+                viewBox="0 0 1450 1200"
+                fill="none"
+                xmlns="http://www.w3.org/2000/svg"
+                className="scale-[100%]"
+              >
+                {checkMobile() ? <Roadmap /> : <></>}
+              </svg>
+            </div>
           </div>
         </div>
         {/*Col 1*/}
@@ -110,38 +124,47 @@ const Team: React.FC = () => {
             </div>
           </div>
           <div className="overflow-hidden w-[100%] mt-[-30px] sm:mt-[-150px]">
-            <svg
-              className="sm:w-[436px] sm:h-[115px]"
-              viewBox="0 0 436 115"
-              fill="none"
-              xmlns="http://www.w3.org/2000/svg"
-            >
-            </svg>
             <div>
-              <div className="mt-[-100px]">
-              <b>uCredit is more than degree checking</b>, and we decided that we wanted to broaden our scope and make uCredit <b>a tool for a student’s career and harness the power of community to reach this goal. </b>
+              <div>
+                <b>uCredit is more than degree checking</b>, and we decided that
+                we wanted to broaden our scope and make uCredit{' '}
+                <b>
+                  a tool for a student’s career and harness the power of
+                  community to reach this goal.{' '}
+                </b>
               </div>
-              <div><br></br>Our 2022 spring and summer was focused on laying the groundworks and blueprints for this new goal. Here are some  features we’ve implemented: </div>
-              <br></br><li>Plan sharing, allowing users to easily share a copy of their plan.
-</li>
-<li>Plan reviewer system, where you can allow your friends or advisors to comment, approve, and review your own plan. 
-
-</li>
-              <li>Roadmap forum, a feature currently in the works where users will be able to share and search for others’ plans as templates based on degree, tracks, or career tags.</li>
+              <div>
+                <br></br>Our 2022 spring and summer was focused on laying the
+                groundworks and blueprints for this new goal. Here are some
+                features we’ve implemented:{' '}
+              </div>
+              <br></br>
+              <li>
+                Plan sharing, allowing users to easily share a copy of their
+                plan.
+              </li>
+              <li>
+                Plan reviewer system, where you can allow your friends or
+                advisors to comment, approve, and review your own plan.
+              </li>
+              <li>
+                Roadmap forum, a feature currently in the works where users will
+                be able to share and search for others’ plans as templates based
+                on degree, tracks, or career tags.
+              </li>
             </div>
           </div>
         </div>
         {/*Col 2*/}
         <div className="flex sm:h-full w-full sm:mt-10 overflow-hidden invisible sm:visible h-0 place-content-center sm:place-content-start">
-          <div className=" ml-4 sm:ml-7 sm:mr-14">
+          <div className="w-[100%] h-auto ml-4 sm:ml-7">
             <svg
-              width="483"
-              height="324"
-              viewBox="0 0 483 324"
+              viewBox="0 0 1450 1200"
               fill="none"
               xmlns="http://www.w3.org/2000/svg"
+              className="scale-[100%]"
             >
-              <rect width="483" height="324" fill="#E0E7EC" />
+              <Roadmap />
             </svg>
           </div>
         </div>
@@ -163,15 +186,34 @@ const Team: React.FC = () => {
         </div>
         {/*Row 2*/}
         <div className="w-[70%] text-[12px] sm:text-[24px] mt-[-20px] sm:mt-0">
-        We plan on continuing moving towards the mission of making uCredit a tool that benefits a student’s career through the power of community. 
-         <br></br><br></br>To do so, here are some features on our roadmap:<br></br><br></br>
-          <li>Expanding the Roadmap Forum, making a general forum where students can ask each other career-related questions to peers and faculty or where they can interact and find opportunities with alumni and professionals.</li>
-          <li>Incorporate ways to interact with other apps, such as Semester.ly.
-</li>
-          <li>Adapting to <a class="underline text-blue-600" href="https://hub.jhu.edu/2021/11/18/johns-hopkins-second-diversity-equity-inclusion-roadmap-draft/"> the university’s move towards By2</a> for planning degrees.
-</li>
-          <li>Continue to refine our user experience for all our stakeholders!
-</li>
+          We plan on continuing moving towards the mission of making uCredit a
+          tool that benefits a student’s career through the power of community.
+          <br></br>
+          <br></br>To do so, here are some features on our roadmap:<br></br>
+          <br></br>
+          <li>
+            Expanding the Roadmap Forum, making a general forum where students
+            can ask each other career-related questions to peers and faculty or
+            where they can interact and find opportunities with alumni and
+            professionals.
+          </li>
+          <li>
+            Incorporate ways to interact with other apps, such as Semester.ly.
+          </li>
+          <li>
+            Adapting to{' '}
+            <a
+              class="underline text-blue-600"
+              href="https://hub.jhu.edu/2021/11/18/johns-hopkins-second-diversity-equity-inclusion-roadmap-draft/"
+            >
+              {' '}
+              the university’s move towards By2
+            </a>{' '}
+            for planning degrees.
+          </li>
+          <li>
+            Continue to refine our user experience for all our stakeholders!
+          </li>
         </div>
       </div>
       {/*Row 3*/}
@@ -184,4 +226,4 @@ const Team: React.FC = () => {
   );
 };
 
-export default Team;
+export default About;

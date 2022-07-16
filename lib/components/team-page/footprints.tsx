@@ -4,7 +4,7 @@ function footprints() {
   return (
     <svg
       className={clsx(
-        'z-10 h-[300px] sm:mr-[120px] mr-[390px] mt-[-510px] sm:mt-[-170px]',
+        'z-10 h-[330px] sm:mr-[170px] mr-[390px] mt-[-510px] sm:mt-[-150px]',
       )}
       width="194"
       height="263"
