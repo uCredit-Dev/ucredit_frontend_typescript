@@ -2,6 +2,7 @@
  * Contains features and values that our app embraces.
  */
 import data from './introduceData';
+import Bird from './BlueJayIntro.svg';
 
 const Laptop: React.FC = () => {
   return (
@@ -10,11 +11,14 @@ const Laptop: React.FC = () => {
       <br></br>
       <br></br>
       <br></br>
-      <img
+      {/* <img
         className="w-2/3 absolute left-[70vw] top-[115vh] z-[0]"
         src="/img/logo.png"
         alt="logo"
-      />
+      /> */}
+      <div className="w-2/3 absolute left-[73vw] top-[115vh] z-[20vh]">
+        <Bird/>
+      </div>
       <div className="font-landingPage grid grid-rows-5 grid-cols-3 grid-flow-col gap-4 items-stretch">
         <div className="row-start-1 row-end-2 col-span-4 text-blue-footer text-center text-5xl">
           Introducing uCredit
