@@ -2358,7 +2358,7 @@ const CS_Minor_Old: Minor = {
         "For more information please visit the <a href=' https://www.cs.jhu.edu/undergraduate-studies/academics/cs-minor/'>" +
         'minor degree requirement</a> section on the department website.',
       criteria:
-        'Gateway Computing[N]^OR^EN.601.220[C]^OR^EN.601.226[C]^EN.600.233[C]^OR^EN.601.229[C]^OR^EN.600.271[C]^OR^EN.601.231[C]',
+        'Gateway Computing[N]^OR^EN.601.220[C]^OR^EN.601.226[C]^OR^EN.600.233[C]^OR^EN.601.229[C]^OR^EN.600.271[C]^OR^EN.601.231[C]',
       fine_requirements: [
         {
           description:
@@ -3315,8 +3315,9 @@ const bsNeuro: Major = {
       description:
         'Must complete Calculus I, Calculus II, Probability & Statistics, Chemistry I & II, Organic Chemistry I, and General Physics I & II with their respective labs.',
       criteria:
-        'EN.553.211[C]^OR^EN.553.310[C]^OR^EN.553.311[C]^OR^EN.553.111[C]^OR^EN.553.112[C]^OR^AS.110.106[C]^OR^AS.110.108[C]^OR^AS.110.107[C]^OR^AS.110.109[C]^OR^AS.171.113[C]' +
-        'AS Chemistry[D]^OR^AS Physics & Astronomy[D]',
+        'EN.553.211[C]^OR^EN.553.310[C]^OR^EN.553.311[C]^OR^EN.553.111[C]^OR^EN.553.112[C]^OR^AS.110.106[C]^OR^AS.110.108[C]^OR^AS.110.107[C]^OR^AS.110.109[C]^OR^AS.171.113[C]^OR^' +
+        'AS.030.101[C]^OR^AS.030.102[C]^OR^AS.030.103[C]^OR^AS.030.105[C]^OR^AS.030.106[C]^OR^AS.030.305[C]^OR^' + 
+        'AS.171.101[C]^OR^AS.171.103[C]^OR^AS.171.107[C]^OR^AS.171.102[C]^OR^AS.171.104[C]^OR^AS.171.108[C]^OR^AS.173.111[C]^OR^AS.173.112[C]',
       fine_requirements: [
         {
           description:
@@ -3371,7 +3372,7 @@ const bsNeuro: Major = {
           description:
             '<b>Introductory Chemistry Lab II</b> <br />AS.030.106 Introductory Chemistry Laboratory II <br /> <i>OR</i> <br />AS.030.103 Applied Chemical Equilibrium and Reactivity lab',
           required_credits: 1,
-          criteria: '^OR^AS.030.106[C]^OR^AS.030.103[C]',
+          criteria: 'AS.030.106[C]^OR^AS.030.103[C]',
         },
         {
           description:
@@ -3422,11 +3423,9 @@ const bsNeuro: Major = {
         'Select one biology course with lab of the following. Exam credit not applicable. For more detail please visit ' +
         'https://krieger.jhu.edu/neuroscience/bs-program/requirements/',
       criteria:
-        'AS.020.151[C]^OR^AS.020.153[C]^OR^' +
-        'AS.020.152[C]^OR^AS.020.154[C]^OR^' +
+        'AS.020.151[C]^OR^AS.020.153[C]^OR^AS.020.152[C]^OR^AS.020.154[C]^OR^' +
         'AS.020.305[C]^OR^AS.020.315[C]^OR^AS.250.253[C]^OR^AS.250.254[C]^OR^' +
-        'AS.020.303[C]^OR^AS.020.340[C]^OR^' +
-        'AS.020.306[C]^OR^AS.020.316[C]^OR^' +
+        'AS.020.303[C]^OR^AS.020.340[C]^OR^AS.020.306[C]^OR^AS.020.316[C]^OR^' +
         'AS.020.374[C]^OR^AS.020.377[C]',
       fine_requirements: [
         {
@@ -3450,7 +3449,7 @@ const bsNeuro: Major = {
         {
           required_credits: 5,
           description:
-            '<b>Biochemistry with lab</b> <br />AS.020.305 Biochemistry<br /> <i>OR</i> <br />Select one of the following:' +
+            '<b>Biochemistry with lab</b> <br />AS.020.305 Biochemistry<br /> <i>AND</i> <br />Select one of the following:' +
             '<br />AS.020.315 Biochemistry Project lab <br />AS.250.253 Protein Engineering and Biochemistry Lab ' +
             '<br />AS.250.254 Protein Biochemistry and Engineering Laboratory',
           criteria:
@@ -3479,7 +3478,7 @@ const bsNeuro: Major = {
         'Nine credits of 300-level or higher approved courses from one of four focus areas: Systems Neuroscience, ' +
         'Cognitive Neuroscience, Computational Neuroscience, or Cellular and Molecular Neuroscience',
       criteria:
-        'NEUR-ST[T]^OR^NEUR-CG[T]^OR^NEUR-CP[T]^OR^NEUR-CM[T])^AND^(Upper Level[L])',
+        '(NEUR-ST[T]^OR^NEUR-CG[T]^OR^NEUR-CP[T]^OR^NEUR-CM[T])^AND^Upper Level[L]',
       fine_requirements: [
         {
           required_credits: 9,
@@ -3509,27 +3508,33 @@ const bsNeuro: Major = {
     },
     {
       name: 'Elective Course',
+      exclusive: true, 
       required_credits: 3,
       min_credits_per_course: 3,
       description:
         'Three credits of 300-level or higher approved course outside of selected focus area',
-      criteria: 'AS Neuroscience[D]^AND^Upper Level[L]',
+      criteria: '(NEUR-ST[T]^OR^NEUR-CG[T]^OR^NEUR-CP[T]^OR^NEUR-CM[T])^AND^Upper Level[L]',
     },
     {
       name: 'Research',
-      required_credits: 6,
+      required_credits: 7,
       min_credits_per_course: 0.5,
       description:
         'Six credits of neuroscience research, obtained through work in one of the neuroscience laboratories ' +
-        'participating in the program. Read more about <a href="https://krieger.jhu.edu/neuroscience/research/research-credit-requirements/">' +
+        'participating in the program. One credit of Scientific Communication across two semesters. Read more about <a href="https://krieger.jhu.edu/neuroscience/research/research-credit-requirements/">' +
         'research credit requirements</a>.',
       criteria: 'AS.080.500[C]^OR^AS.080.541[C]',
       fine_requirements: [
         {
+          required_credits: 6,
+          description:
+            '<b>Neuroscience Research</b> <br /> Six credits of AS.080.541 Research Neuroscience - Neuroscience Majors.',
+          criteria: 'AS.080.541[C]',
+        },
+        {
           required_credits: 1,
           description:
-            '<b>Scientific Communication</b> <br /> Read more about <a href="https://krieger.jhu.edu/neuroscience/research/research-credit-requirements/">' +
-            'research credit requirements</a>.',
+            '<b>Scientific Communication</b> <br /> One credit of AS.080.541 Scientific Communication: Neuroscience.',
           criteria: 'AS.080.500[C]',
         },
       ],
