@@ -6,8 +6,10 @@ import Footprints from '../lib/components/team-page/footprints';
 import Footprints2 from '../lib/components/team-page/footprints2';
 import Path4 from '../lib/components/team-page/Paths4.svg';
 import Path5 from '../lib/components/team-page/Paths5.svg';
+import Frontpage from '../lib/components/landing-page/Frontpage.svg';
+import Roadmap from '../lib/components/landing-page/Roadmap.svg';
 
-const Team: React.FC = () => {
+const About: React.FC = () => {
   return (
     <div className="font-landingPage bg-white ">
       <Header />
@@ -68,13 +70,14 @@ const Team: React.FC = () => {
           <div className="grow sm:ml-7 sm:mr-14">
             <div>
               <svg
-                width="483"
-                height="324"
-                viewBox="0 0 483 324"
+                
+                viewBox="0 0 1200 1200"
                 fill="none"
                 xmlns="http://www.w3.org/2000/svg"
+                className="scale-[100%]"
               >
-                <rect width="483" height="324" fill="#E0E7EC" />
+                <Frontpage />
+                {/* <rect width="483" height="324" fill="#E0E7EC" /> */}
               </svg>
             </div>
           </div>
@@ -184,4 +187,4 @@ const Team: React.FC = () => {
   );
 };
 
-export default Team;
+export default About;
