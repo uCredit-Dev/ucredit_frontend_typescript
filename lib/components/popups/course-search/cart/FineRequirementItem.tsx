@@ -23,8 +23,10 @@ const FineRequirementListItem: FC<{
         'mb-2 p-2 w-full h-auto rounded cursor-pointer transition duration-200 ease-in-out',
         {
           'bg-green-100':
-            props.itemRequirement.fulfilled_credits >=
-            props.itemRequirement.required_credits,
+            props.itemRequirement.required_credits > 0
+              ? props.itemRequirement.fulfilled_credits >=
+                props.itemRequirement.required_credits
+              : props.itemRequirement.fulfilled_credits > 0,
         },
       )}
       onClick={handleFineReqClick}

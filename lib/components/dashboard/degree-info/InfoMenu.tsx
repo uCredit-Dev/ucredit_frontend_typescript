@@ -1,13 +1,16 @@
-import { FC, useEffect, useState } from 'react';
+import React, { FC, useEffect } from 'react';
 import Distributions from './Distributions';
 import { useSelector } from 'react-redux';
 import {
   selectCurrentPlanCourses,
   selectPlan,
+  selectSelectedMajor,
+  updateSelectedMajor,
 } from '../../../slices/currentPlanSlice';
 import { getMajor } from '../../../resources/assets';
 import { Major, Plan, ReviewMode } from '../../../resources/commonTypes';
 import { allMajors } from '../../../resources/majors';
+import { useDispatch } from 'react-redux';
 
 interface Props {
   mode: ReviewMode;
@@ -20,17 +23,20 @@ interface Props {
 const InfoMenu: FC<Props> = () => {
   const currentPlan: Plan = useSelector(selectPlan);
   const currPlanCourses = useSelector(selectCurrentPlanCourses);
-  const [major, setMajor] = useState<Major | null>(null);
+  const major = useSelector(selectSelectedMajor);
+  const dispatch = useDispatch();
 
   // Update major when plan changes
   useEffect(() => {
-    let firstMajor: string | undefined = currentPlan.majors[0];
-    if (firstMajor === undefined) {
-      return;
-    }
-    let majorObj: Major | undefined = getMajor(firstMajor);
-    if (majorObj !== undefined) {
-      setMajor(majorObj);
+    if (!major) {
+      let firstMajor: string | undefined = currentPlan.majors[0];
+      if (firstMajor === undefined) {
+        return;
+      }
+      let majorObj: Major | undefined = getMajor(firstMajor);
+      if (majorObj) {
+        dispatch(updateSelectedMajor(majorObj));
+      }
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [currentPlan._id, currentPlan.majors, currPlanCourses]);
@@ -44,7 +50,7 @@ const InfoMenu: FC<Props> = () => {
     const newMajor = allMajors.find(
       (majorObj) => majorObj.degree_name === selected,
     );
-    setMajor(newMajor || null);
+    dispatch(updateSelectedMajor(newMajor ? newMajor : allMajors[0]));
   };
   return (
     <div className="z-[60] flex flex-col justify-between w-10 bg-red-100 h-min w-96 right-0 fixed mt-14">
@@ -52,7 +58,6 @@ const InfoMenu: FC<Props> = () => {
         {/* <InfoCards /> */}
         <div className="w-96 h-full">
           <Distributions
-            major={major}
             userMajors={currentPlan.majors}
             changeDisplayMajor={changeDisplayMajor}
           />

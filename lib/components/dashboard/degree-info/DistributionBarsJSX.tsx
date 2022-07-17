@@ -72,7 +72,10 @@ const DistributionBarsJSX: FC<{ major: Major }> = ({ major }) => {
       (pair: [string, requirements[]], i: number) => {
         let completed = true;
         pair[1].forEach((req: requirements) => {
-          if (req.fulfilled_credits < req.required_credits) {
+          if (
+            req.fulfilled_credits < req.required_credits ||
+            (req.required_credits === 0 && req.fulfilled_credits === 0)
+          ) {
             completed = false;
           }
         });
@@ -200,10 +203,11 @@ const DistributionBarsJSX: FC<{ major: Major }> = ({ major }) => {
           courseObj !== null &&
           checkRequirementSatisfied(req, courseObj) &&
           (req.exclusive === undefined || !req.exclusive) &&
-          req.fulfilled_credits < req.required_credits
+          (req.fulfilled_credits < req.required_credits ||
+            (req.required_credits === 0 && req.fulfilled_credits === 0))
         ) {
           reqs[i][1][j].fulfilled_credits += parseInt(courseObj.credits);
-          if (j !== 0) inNonExclusive = true;
+          inNonExclusive = true;
         }
       }),
     );
@@ -211,10 +215,11 @@ const DistributionBarsJSX: FC<{ major: Major }> = ({ major }) => {
       reqGroup[1].forEach((req: requirements, j: number) => {
         if (
           courseObj !== null &&
-          checkRequirementSatisfied(req, courseObj) &&
-          req.exclusive &&
-          req.fulfilled_credits < req.required_credits &&
-          !inNonExclusive
+          ((checkRequirementSatisfied(req, courseObj) &&
+            req.exclusive &&
+            req.fulfilled_credits < req.required_credits &&
+            !inNonExclusive) ||
+            (req.required_credits === 0 && req.fulfilled_credits === 0))
         ) {
           reqs[i][1][j].fulfilled_credits += parseInt(courseObj.credits);
         }

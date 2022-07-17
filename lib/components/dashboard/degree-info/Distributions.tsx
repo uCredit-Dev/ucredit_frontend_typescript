@@ -1,8 +1,9 @@
 import { XIcon } from '@heroicons/react/solid';
-import { FC, useState } from 'react';
-import { useDispatch } from 'react-redux';
+import React, { FC, useState } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
 import Select from 'react-select';
-import { Major } from '../../../resources/commonTypes';
+import { allMajors } from '../../../resources/majors';
+import { selectSelectedMajor } from '../../../slices/currentPlanSlice';
 import { updateInfoPopup } from '../../../slices/popupSlice';
 import DistributionBarsJSX from './DistributionBarsJSX';
 
@@ -10,13 +11,13 @@ import DistributionBarsJSX from './DistributionBarsJSX';
  * Area in the right hand plan information that shows various elements of degree progression.
  */
 const Distributions: FC<{
-  major: Major | null;
   userMajors: string[];
   changeDisplayMajor: Function;
-}> = ({ major, userMajors, changeDisplayMajor }) => {
+}> = ({ userMajors, changeDisplayMajor }) => {
   // Component state setup.
   const [disclaimer, setDisclaimer] = useState<boolean>(true);
   const dispatch = useDispatch();
+  const major = useSelector(selectSelectedMajor);
 
   const majorOptions = userMajors.map((m, index) => ({
     value: index,
@@ -51,7 +52,7 @@ const Distributions: FC<{
           hideSelectedOptions
         />
       )}
-      <DistributionBarsJSX major={major} />
+      <DistributionBarsJSX major={major ? major : allMajors[0]} />
       {disclaimer && (
         <div
           id="dropdown-cta"

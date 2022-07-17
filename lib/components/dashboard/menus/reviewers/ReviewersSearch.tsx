@@ -1,7 +1,7 @@
 import axios from 'axios';
-import { useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { getAPI } from '../../../../resources/assets';
-import ReviewersSearchResults from './ReviewerSearchResults';
+import ReviewerSearchResults from './ReviewerSearchResults';
 
 const ReviewersSearch = () => {
   const [searchState, setSearchState] = useState('');
@@ -47,7 +47,7 @@ const ReviewersSearch = () => {
         value={searchState}
         onChange={handleChange}
       ></input>
-      <ReviewersSearchResults users={searchData} />
+      <ReviewerSearchResults users={searchData} />
     </div>
   );
 };

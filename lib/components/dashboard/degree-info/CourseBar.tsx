@@ -4,6 +4,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import {
   selectCurrentPlanCourses,
   selectDistributions,
+  updateSelectedDistribution,
 } from '../../../slices/currentPlanSlice';
 import { requirements } from './distributionFunctions';
 import { CheckCircleIcon, ExclamationIcon } from '@heroicons/react/solid';
@@ -11,7 +12,6 @@ import ReactTooltip from 'react-tooltip';
 import {
   updateAddingPrereq,
   updateInfoPopup,
-  updateSelectedDistribution,
   updateShowingCart,
 } from '../../../slices/popupSlice';
 import { clearSearch, updatePlaceholder } from '../../../slices/searchSlice';
@@ -131,7 +131,7 @@ const CourseBar: FC<{
           location={'Distribution ' + distribution.name.replace(/\s/g, '')}
           hovered={hovered}
           left={true}
-          mode={mode}
+          mode={mode ? mode : ReviewMode.None}
         />
         <div className="truncate">{section}</div>
         <div>

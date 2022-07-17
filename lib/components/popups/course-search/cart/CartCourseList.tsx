@@ -40,19 +40,22 @@ const CartCourseList: FC<{
 
   // Updates pagination every time the searched courses change.
   useEffect(() => {
-    const filtered: SISRetrievedCourse[] = courses.filter(
-      (course: SISRetrievedCourse) => {
-        if (!course.title.toLowerCase().includes(props.textFilter))
-          return false;
-        return true;
-      },
-    );
+    const filteredCourses: SISRetrievedCourse[] = [];
+    courses.forEach((course: SISRetrievedCourse) => {
+      for (let c of filteredCourses) {
+        if (c.number === course.number) {
+          return;
+        }
+      }
+      if (!course.title.toLowerCase().includes(props.textFilter)) return;
+      filteredCourses.push(course);
+    });
     // If coursesPerPage doesn't divide perfectly into total courses, we need one more page.
-    const division = Math.floor(filtered.length / coursesPerPage);
+    const division = Math.floor(filteredCourses.length / coursesPerPage);
     const pages =
-      filtered.length % coursesPerPage === 0 ? division : division + 1;
+      filteredCourses.length % coursesPerPage === 0 ? division : division + 1;
     setPageCount(pages);
-    setFilteredCourses(filtered);
+    setFilteredCourses(filteredCourses);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [courses, props.textFilter]);
 
