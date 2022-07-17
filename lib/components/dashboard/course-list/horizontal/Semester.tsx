@@ -195,7 +195,6 @@ const Semester: FC<{
    */
   const updateDistributions = (): void => {
     if (version !== 'None') {
-      console.log(version);
       const body = {
         ...version,
         _id: undefined,
