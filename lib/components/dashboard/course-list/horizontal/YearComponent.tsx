@@ -1,4 +1,4 @@
-import { useState, useEffect, FC } from 'react';
+import React, { useState, useEffect, FC } from 'react';
 import Semester from './Semester';
 import {
   ReviewMode,
@@ -44,11 +44,6 @@ const YearComponent: FC<{
   setDraggable: (draggable: boolean) => void;
   mode: ReviewMode;
 }> = ({ id, year, courses, setDraggable, mode }) => {
-  // Component state setup.
-  // console.log("id is: " + id);
-  // console.log("year is: " + year);
-  // console.log(courses);
-  // console.log("mode is: " + mode);
   const [fallCourses, setFallCourses] = useState<UserCourse[]>([]);
   const [springCourses, setSpringCourses] = useState<UserCourse[]>([]);
   const [winterCourses, setWinterCourses] = useState<UserCourse[]>([]);
@@ -258,7 +253,7 @@ const YearComponent: FC<{
       semesters.push(
         <div
           key={'Fall' + year._id}
-          className={clsx(`mb-3 h-auto pr-1 rounded`, {
+          className={clsx(`mb-3 h-auto rounded`, {
             'z-50': addingPrereqStatus && checkSemester('Fall'),
           })}
         >
@@ -275,7 +270,7 @@ const YearComponent: FC<{
       semesters.push(
         <div
           key={'Winter' + year._id}
-          className={clsx(`mb-3 h-auto pr-1 rounded`, {
+          className={clsx(`mb-3 h-auto rounded`, {
             'z-50': addingPrereqStatus && checkSemester('Winter'),
           })}
         >
@@ -292,7 +287,7 @@ const YearComponent: FC<{
       semesters.push(
         <div
           key={'Spring' + year._id}
-          className={clsx(`mb-3 h-auto pr-1 rounded`, {
+          className={clsx(`mb-3 h-auto rounded`, {
             'z-50': addingPrereqStatus && checkSemester('Spring'),
           })}
         >
@@ -309,7 +304,7 @@ const YearComponent: FC<{
       semesters.push(
         <div
           key={'Summer' + year._id}
-          className={clsx(`mb-3 h-auto pr-1 rounded`, {
+          className={clsx(`mb-3 h-auto rounded`, {
             'z-50': addingPrereqStatus && checkSemester('Summer'),
           })}
         >
@@ -332,13 +327,13 @@ const YearComponent: FC<{
     return (
       <>
         {id !== 0 ? (
-          <div className="flex flex-row flex-wrap w-full thin:flex-col">
+          <div className="flex flex-row overflow-x-auto w-full thin:flex-col">
             {getDisplayedSemesters(collapse)}
           </div>
         ) : (
           <div
             key={'AP' + year._id}
-            className={clsx(`relative mb-3 w-full h-auto pr-1 rounded`, {
+            className={clsx(`relative mb-3 w-full h-auto rounded`, {
               'z-50': addingPrereqStatus,
             })}
           >
@@ -367,177 +362,175 @@ const YearComponent: FC<{
   );
 
   return (
-    <>
-      <div
-        id={id.toString()}
-        className={clsx(
-          'py-2 max-w-year-heading w-full min-w-[14rem] border-b-[2px]',
-          { 'cursor-move': !mode || mode !== ReviewMode.View },
-          { 'z-30': addingPrereqStatus },
-        )}
-        onMouseLeave={() => {
-          setDraggable(true);
-          setDisplay(false);
-          setHovered(false);
-        }}
-        onMouseEnter={() => {
-          setDraggable(false);
-          setHovered(true);
-        }}
-      >
-        <div className="flex flex-col w-full mt-1 font-medium h-yearheading">
-          <div className="flex flex-row w-full gap-2 text-zinc-700">
-            <div className="flex mr-1 text-lg font-thin">
-              <Comments
-                location={'Year ' + year._id}
-                hovered={hovered}
-                mode={mode}
-              />
-              {collapse ? (
-                <button
-                  className="mt-2 text-sky-500"
-                  onClick={() => setCollapse(!collapse)}
-                >
-                  ▶
-                </button>
-              ) : (
-                <button
-                  className="mt-2 text-sky-500"
-                  onClick={() => setCollapse(!collapse)}
-                >
-                  ▼
-                </button>
-              )}
-            </div>
-            {edittingName ? (
-              <input
-                id={year._id + 'input'}
-                value={yearName}
-                className={clsx(
-                  { 'cursor-move': !mode || mode !== ReviewMode.View },
-                  'flex-grow w-auto mt-auto font-semibold bg-transparent border-b border-transparent select-none text-md focus:border-gray-400 focus:outline-none',
-                )}
-                onChange={handleYearNameChange}
-                onBlur={() => setEdittingName(false)}
-              />
+    <div
+      id={id.toString()}
+      className={clsx(
+        'py-2 max-w-year-heading w-full min-w-[14rem] border-b-[2px]',
+        { 'cursor-move': !mode || mode !== ReviewMode.View },
+        { 'z-30': addingPrereqStatus },
+      )}
+      onMouseLeave={() => {
+        setDraggable(true);
+        setDisplay(false);
+        setHovered(false);
+      }}
+      onMouseEnter={() => {
+        setDraggable(false);
+        setHovered(true);
+      }}
+    >
+      <div className="relative -top-5 -left-[8rem]">
+        <Comments location={'Year ' + year._id} hovered={hovered} mode={mode} />
+      </div>
+      <div className="flex flex-col w-full mt-1 font-medium h-yearheading">
+        <div className="flex flex-row w-full gap-2 text-zinc-700">
+          <div className="flex mr-1 text-lg font-thin">
+            {collapse ? (
+              <button
+                className="my-auto text-sky-500"
+                onClick={() => setCollapse(!collapse)}
+              >
+                ▶
+              </button>
             ) : (
+              <button
+                className="my-auto text-sky-500"
+                onClick={() => setCollapse(!collapse)}
+              >
+                ▼
+              </button>
+            )}
+          </div>
+          {edittingName ? (
+            <input
+              id={year._id + 'input'}
+              value={yearName}
+              className={clsx(
+                { 'cursor-move': !mode || mode !== ReviewMode.View },
+                'flex-grow w-auto mt-auto font-semibold bg-transparent border-b border-transparent select-none text-md focus:border-gray-400 focus:outline-none',
+              )}
+              onChange={handleYearNameChange}
+              onBlur={() => setEdittingName(false)}
+            />
+          ) : (
+            <div className="flex-grow my-auto">
               <div
                 className={clsx(
                   { 'cursor-move': !mode || mode !== ReviewMode.View },
-                  'flex-grow w-auto mt-auto text-xl font-semibold bg-transparent border-b border-transparent select-none focus:border-gray-400 focus:outline-none',
+                  'w-auto text-xl font-semibold bg-transparent border-b border-transparent select-none focus:border-gray-400 focus:outline-none',
                 )}
               >
                 {yearName}
               </div>
-            )}
-            <div className="flex flex-row gap-8">
-              <div className="flex flex-row gap-3 mt-2 text-sm font-medium h-7">
-                {areaCredits.N > 0 && (
-                  <div className="flex flex-row gap-1">
-                    {areaCredits.N}
-                    <div
-                      className="w-4 mb-2 font-bold text-center rounded"
-                      style={{ backgroundColor: getColors('N', false) }}
-                    >
-                      N
-                    </div>
-                  </div>
-                )}
-                {areaCredits.Q > 0 && (
-                  <div className="flex flex-row gap-1">
-                    {areaCredits.Q}
-                    <div
-                      className="w-4 mb-2 font-bold text-center rounded"
-                      style={{ backgroundColor: getColors('Q', false) }}
-                    >
-                      Q
-                    </div>
-                  </div>
-                )}
-                {areaCredits.E > 0 && (
-                  <div className="flex flex-row gap-1">
-                    {areaCredits.E}
-                    <div
-                      className="w-4 mb-2 font-bold text-center rounded"
-                      style={{ backgroundColor: getColors('E', false) }}
-                    >
-                      E
-                    </div>
-                  </div>
-                )}
-                {areaCredits.H > 0 && (
-                  <div className="flex flex-row gap-1">
-                    {areaCredits.H}
-                    <div
-                      className="w-4 mb-2 font-bold text-center rounded"
-                      style={{ backgroundColor: getColors('H', false) }}
-                    >
-                      H
-                    </div>
-                  </div>
-                )}
-                {areaCredits.S > 0 && (
-                  <div className="flex flex-row gap-1">
-                    {areaCredits.S}
-                    <div
-                      className="w-4 mb-2 font-bold text-center rounded"
-                      style={{ backgroundColor: getColors('S', false) }}
-                    >
-                      S
-                    </div>
-                  </div>
-                )}
-                {areaCredits.W > 0 && (
-                  <div className="flex flex-row gap-1">
-                    {areaCredits.W}
-                    <div
-                      className="mb-2 font-bold text-center rounded w-4"
-                      style={{ backgroundColor: getColors('None', true) }}
-                    >
-                      W
-                    </div>
-                  </div>
-                )}
-                <div className="font-bold">{totalCredits} Credits</div>
-              </div>
-              {(!mode || mode !== ReviewMode.View) && (
-                <DotsVerticalIcon
-                  onClick={() => setDisplay(!display)}
-                  className="cursor-pointer stroke-2 w-7"
-                />
-              )}
             </div>
-          </div>
-          {display && (
-            <YearSettingsDropdown
-              year={year}
-              setToShow={setToShow}
-              setDisplay={setDisplay}
-              toShow={toShow}
-              setEdittingName={setEdittingName}
-              id={id}
-            />
           )}
+          <div className="flex flex-row gap-8">
+            <div className="flex flex-row gap-3 mt-2 text-sm font-medium h-7">
+              {areaCredits.N > 0 && (
+                <div className="flex flex-row gap-1">
+                  {areaCredits.N}
+                  <div
+                    className="w-4 mb-2 font-bold text-center rounded"
+                    style={{ backgroundColor: getColors('N', false) }}
+                  >
+                    N
+                  </div>
+                </div>
+              )}
+              {areaCredits.Q > 0 && (
+                <div className="flex flex-row gap-1">
+                  {areaCredits.Q}
+                  <div
+                    className="w-4 mb-2 font-bold text-center rounded"
+                    style={{ backgroundColor: getColors('Q', false) }}
+                  >
+                    Q
+                  </div>
+                </div>
+              )}
+              {areaCredits.E > 0 && (
+                <div className="flex flex-row gap-1">
+                  {areaCredits.E}
+                  <div
+                    className="w-4 mb-2 font-bold text-center rounded"
+                    style={{ backgroundColor: getColors('E', false) }}
+                  >
+                    E
+                  </div>
+                </div>
+              )}
+              {areaCredits.H > 0 && (
+                <div className="flex flex-row gap-1">
+                  {areaCredits.H}
+                  <div
+                    className="w-4 mb-2 font-bold text-center rounded"
+                    style={{ backgroundColor: getColors('H', false) }}
+                  >
+                    H
+                  </div>
+                </div>
+              )}
+              {areaCredits.S > 0 && (
+                <div className="flex flex-row gap-1">
+                  {areaCredits.S}
+                  <div
+                    className="w-4 mb-2 font-bold text-center rounded"
+                    style={{ backgroundColor: getColors('S', false) }}
+                  >
+                    S
+                  </div>
+                </div>
+              )}
+              {areaCredits.W > 0 && (
+                <div className="flex flex-row gap-1">
+                  {areaCredits.W}
+                  <div
+                    className="mb-2 font-bold text-center rounded w-4"
+                    style={{ backgroundColor: getColors('None', true) }}
+                  >
+                    W
+                  </div>
+                </div>
+              )}
+              <div className="font-bold">{totalCredits} Credits</div>
+            </div>
+            {(!mode || mode !== ReviewMode.View) && (
+              <DotsVerticalIcon
+                onClick={() => setDisplay(!display)}
+                className="cursor-pointer stroke-2 w-7"
+              />
+            )}
+          </div>
         </div>
-        {collapse ? (
-          <div
-            className="bg-white rounded cursor-default"
-            onMouseLeave={() => setDraggable(false)}
-            onMouseEnter={() => setDraggable(true)}
-          >
-            {getSemesterWNull()}
-          </div>
-        ) : (
-          <div
-            className="px-6 py-2 bg-white rounded cursor-default"
-            onMouseLeave={() => setDraggable(false)}
-            onMouseEnter={() => setDraggable(true)}
-          >
-            {getSemester()}
-          </div>
+        {display && (
+          <YearSettingsDropdown
+            year={year}
+            setToShow={setToShow}
+            setDisplay={setDisplay}
+            toShow={toShow}
+            setEdittingName={setEdittingName}
+            id={id}
+          />
         )}
       </div>
-    </>
+      {collapse ? (
+        <div
+          className="bg-white rounded cursor-default"
+          onMouseLeave={() => setDraggable(false)}
+          onMouseEnter={() => setDraggable(true)}
+        >
+          {getSemesterWNull()}
+        </div>
+      ) : (
+        <div
+          className="py-2 bg-white rounded cursor-default"
+          onMouseLeave={() => setDraggable(false)}
+          onMouseEnter={() => setDraggable(true)}
+        >
+          {getSemester()}
+        </div>
+      )}
+    </div>
   );
 };
 

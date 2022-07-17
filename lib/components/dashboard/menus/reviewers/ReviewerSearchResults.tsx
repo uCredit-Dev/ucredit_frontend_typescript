@@ -1,6 +1,6 @@
 import { useSelector } from 'react-redux';
-import { FC, useEffect, useState } from 'react';
-import emailjs from 'emailjs-com';
+import React, { FC, useEffect, useState } from 'react';
+import emailjs from '@emailjs/browser';
 import clsx from 'clsx';
 import { CheckIcon } from '@heroicons/react/outline';
 import { toast } from 'react-toastify';
@@ -15,12 +15,12 @@ emailjs.init('Q-AuEay-7tGmmVaNw');
 const { publicRuntimeConfig } = getConfig();
 const baseUrl = publicRuntimeConfig.baseUrl;
 
-const ReviewersSearchResults: FC<{
+const ReviewerSearchResults: FC<{
   users: User[];
 }> = ({ users }) => {
   const currentPlan = useSelector(selectPlan);
   const currentUser = useSelector(selectUser);
-  const [planReviewers, setPlanReviewers] = useState([]);
+  const [planReviewers, setPlanReviewers] = useState<any>([]);
 
   useEffect(() => {
     (async () => {
@@ -94,4 +94,4 @@ const ReviewersSearchResults: FC<{
   return <div>{getElements(users)}</div>;
 };
 
-export default ReviewersSearchResults;
+export default ReviewerSearchResults;
