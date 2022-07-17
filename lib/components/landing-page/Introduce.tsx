@@ -12,10 +12,10 @@ const Laptop: React.FC = () => {
         <Bird />
       </div>
       <div className="font-landingPage grid grid-rows-5 grid-cols-3 grid-flow-col gap-4 items-stretch xxxl:gap-[200px]">
-        <div className="xxxl:text-[100px] row-start-1 row-end-2 col-span-4 text-blue-footer text-center text-5xl">
+        <div className="row-start-1 row-end-2 col-span-4 text-blue-footer text-center text-5xl">
           Introducing uCredit
         </div>
-        <div className="px-60 row-span-1 col-span-4 text-center text-2xl z-20 xxxl:text-[50px] xxxl:leading-[70px] xxxl:px-[450px]">
+        <div className="mt-2 px-72 leading-10 row-span-1 col-span-4 text-center z-20 text-2xl xxxl:text-[50px] xxxl:leading-[70px] xxxl:px-[450px]">
           A student-centric application packed with features like prereq checks,
           degree trackers, and a beautiful UI that is easily shareable and
           intuitive.

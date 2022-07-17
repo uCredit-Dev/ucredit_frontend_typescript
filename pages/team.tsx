@@ -2,7 +2,11 @@ import Header from '../lib/components/landing-page/Header';
 import Footer from '../lib/components/landing-page/Footer';
 import Card from '../lib/components/landing-page/team-page/Card';
 import ProfileMobile from '../lib/components/landing-page/team-page/profileMobile';
-import teamList from '../lib/components/landing-page/team-page/teamList';
+import {
+  currentMembers,
+  supervisors,
+  alumnis,
+} from '../lib/components/landing-page/team-page/teamList';
 
 const Team: React.FC = () => {
   return (
@@ -26,7 +30,7 @@ const Team: React.FC = () => {
           <div className="hidden sm:block">
             <div className="container mx-auto px-8">
               <div className="grid smTablet:grid-cols-1 tablet:grid-cols-2 grid-cols-3 object-contain">
-                {teamList.currentMember.map((person) => {
+                {currentMembers.map((person) => {
                   return (
                     <>
                       <div className="flex-initial justify-self-center px-4 py-4">
@@ -50,7 +54,7 @@ const Team: React.FC = () => {
           {/* mobile mode*/}
           <div className="block sm:hidden">
             <div className="grid px-8 grid-cols-2 grid-rows-4 gap-4 place-items-center ">
-              {teamList.currentMember.map((person) => {
+              {currentMembers.map((person) => {
                 return (
                   <>
                     <div>
@@ -81,7 +85,7 @@ const Team: React.FC = () => {
               <div className="hidden sm:block">
                 <div className="container mx-auto py-5 w-[0%]">
                   <div className="grid smTablet:grid-cols-1 tablet:grid-cols-2 grid-cols-3 object-contain">
-                    {teamList.supervisor?.map((person) => {
+                    {supervisors?.map((person) => {
                       return (
                         <>
                           <div className="flex-initial justify-self-center px-4 py-4">
@@ -105,7 +109,7 @@ const Team: React.FC = () => {
               {/* mobile mode*/}
               <div className="block sm:hidden">
                 <div className="grid py-5 w-[200%] grid-cols-2 grid-rows-4 gap-4 place-items-center ">
-                  {teamList.supervisor?.map((person) => {
+                  {supervisors?.map((person) => {
                     return (
                       <>
                         <div>
@@ -139,7 +143,7 @@ const Team: React.FC = () => {
             <div className="hidden sm:block">
               <div className="container mx-auto px-8">
                 <div className="grid smTablet:grid-cols-1 tablet:grid-cols-2 grid-cols-3 object-contain pb-10">
-                  {teamList.alumni.map((person) => {
+                  {alumnis.map((person) => {
                     return (
                       <>
                         <div className="flex-initial justify-self-center px-4 py-4">
@@ -163,7 +167,7 @@ const Team: React.FC = () => {
             {/* mobile mode*/}
             <div className="block sm:hidden bg-white">
               <div className="grid px-8 grid-cols-2 grid-rows-4 gap-4 place-items-center">
-                {teamList.alumni.map((person) => {
+                {alumnis.map((person) => {
                   return (
                     <>
                       <div>

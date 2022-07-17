@@ -14,7 +14,7 @@ const Laptop: React.FC = () => {
           Open Source
         </div>
         <div className="mt-[-30px] lg:mt-0 px-48 row-span-1 col-span-4 text-center text-base md:text-lg lg:text-xl  xxxl:text-[45px]  xxxl:leading-[65px]">
-          Ucredit is an Open Source community resource dedicated to helping open
+          uCredit is an Open Source community resource dedicated to helping open
           source projects be as successful as possible. We thrive on community
           collaboration to help us create a premier resource for open source
           software development and distribution.

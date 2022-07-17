@@ -1,4 +1,4 @@
-const currentMember = [
+export const currentMembers = [
   {
     name: 'Xuhua Sun',
     role: 'Software Engineer',
@@ -189,7 +189,7 @@ const currentMember = [
   },
 ];
 
-const supervisor = [
+export const supervisors = [
   {
     name: 'Ali Madooei',
     role: 'Faculty Advisor',
@@ -201,7 +201,7 @@ const supervisor = [
   },
 ];
 
-const alumni = [
+export const alumnis = [
   {
     name: 'Erica Hwang',
     role: 'Software Engineer',
@@ -292,5 +292,3 @@ const alumni = [
     portfolio: '',
   },
 ];
-
-export default { currentMember, supervisor, alumni };
