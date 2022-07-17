@@ -78,7 +78,7 @@ const Dashboard: React.FC<Props> = ({ mode }) => {
   // State Setup
   const [showNotif, setShowNotif] = useState<boolean>(true);
   const [formPopup, setFormPopup] = useState<boolean>(false);
-  const [showMobileMenu, setShowMobMenu] = useState(false);
+  // const [showMobileMenu, setShowMobMenu] = useState(false);
   // const [experimentPopup] = useState<boolean>(false);
   // const [displayedNumber, setDisplayedNumber] = useState<number>(3);
   // const [crement, setCrement] = useState<number>(0);

@@ -1,12 +1,13 @@
 import Header from '../lib/components/landing-page/Header';
 import Footer from '../lib/components/landing-page/Footer';
 import Card from '../lib/components/landing-page/team-page/Card';
-import ProfileMobile from '../lib/components/landing-page/team-page/profileMobile';
+import ProfileMobile from '../lib/components/landing-page/team-page/ProfileMobile';
 import {
   currentMembers,
   supervisors,
   alumnis,
-} from '../lib/components/landing-page/team-page/teamList';
+} from '../lib/components/landing-page/assets/data/teamList';
+import React from 'react';
 
 const Team: React.FC = () => {
   return (

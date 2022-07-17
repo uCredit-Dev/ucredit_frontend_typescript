@@ -1,7 +1,7 @@
-import { useState } from 'react';
+import React, { useState } from 'react';
 import 'react-responsive-carousel/lib/styles/carousel.min.css'; // requires a loader
 import ApplicationFormPopup from '../popups/ApplicationFormPopup';
-import Wave1 from './wave1.svg';
+import Wave1 from './assets/svg/wave1.svg';
 
 /**
  * Links to Github and Docs

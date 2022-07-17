@@ -1,3 +1,4 @@
+import React from 'react';
 interface linksType {
   github?: string;
   linkedin?: string;

@@ -1,5 +1,6 @@
-import data from './promoData';
-import Wave2 from './wave2.svg';
+import React from 'react';
+import data from './assets/data/promoData';
+import Wave2 from './assets/svg/wave2.svg';
 
 /**
  * Contains features and values that our app embraces.

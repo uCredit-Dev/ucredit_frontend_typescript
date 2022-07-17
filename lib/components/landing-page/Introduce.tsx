@@ -2,8 +2,8 @@
  * Contains features and values that our app embraces.
  */
 import React from 'react';
-import data from './introduceData';
-import Bird from './BlueJayIntro.svg';
+import data from './assets/data/introduceData';
+import Bird from './assets/svg/BlueJayIntro.svg';
 
 const Laptop: React.FC = () => {
   return (

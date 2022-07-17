@@ -187,6 +187,24 @@ export const currentMembers = [
     linkedin: 'https://www.linkedin.com/in/kevin-liu-2495b6205/',
     portfolio: '',
   },
+  {
+    name: 'William Tong',
+    role: 'Software Engineer',
+    img: '/img/team-page/William_Tong.png',
+    class: '2024',
+    github: '',
+    linkedin: 'https://www.linkedin.com/in/tong-william/',
+    portfolio: '',
+  },
+  {
+    name: 'Mark Tiavises',
+    role: 'Software Engineer',
+    img: '/img/team-page/Mark_Tiavises.png',
+    class: '2023',
+    github: 'https://github.com/mtiavis1',
+    linkedin: 'https://www.linkedin.com/in/mark-tiavises-16280a240',
+    portfolio: '',
+  },
 ];
 
 export const supervisors = [
@@ -233,16 +251,6 @@ export const alumnis = [
   },
 
   {
-    name: 'Mark Tiavises',
-    role: 'Software Engineer',
-    img: '/img/team-page/Mark_Tiavises.png',
-    class: '2023',
-    github: 'https://github.com/mtiavis1',
-    linkedin: 'https://www.linkedin.com/in/mark-tiavises-16280a240',
-    portfolio: '',
-  },
-
-  {
     name: 'Chinat Yu',
     role: 'Project Manager',
     img: '/img/team-page/Chinat_Yu.png',
@@ -269,16 +277,6 @@ export const alumnis = [
     class: '2023',
     github: '',
     linkedin: 'https://www.linkedin.com/in/lmao/',
-    portfolio: '',
-  },
-
-  {
-    name: 'William Tong',
-    role: 'Software Engineer',
-    img: '/img/team-page/William_Tong.png',
-    class: '2024',
-    github: '',
-    linkedin: 'https://www.linkedin.com/in/tong-william/',
     portfolio: '',
   },
 
