@@ -18,9 +18,19 @@ const Laptop: React.FC = () => {
       </div>
       <div className="font-landingPage grid grid-rows-5 grid-cols-3 grid-flow-col gap-4 items-stretch">
         <div className="row-start-1 row-end-2 col-span-4 text-blue-footer text-center text-5xl ">
+    <div className="">
+      <br></br>
+      <br></br>
+      <br></br>
+      <br></br>
+      <div className="w-2/3 absolute left-[73vw] top-[115vh] z-[20vh]">
+        <Bird/>
+      </div>
+      <div className="font-landingPage grid grid-rows-5 grid-cols-3 grid-flow-col gap-4 items-stretch xxxl:gap-[200px]">
+        <div className="xxxl:text-[100px] row-start-1 row-end-2 col-span-4 text-blue-footer text-center text-5xl">
           Introducing uCredit
         </div>
-        <div className="px-60 row-span-1 col-span-4 text-center text-2xl z-20">
+        <div className="px-60 row-span-1 col-span-4 text-center text-2xl z-20 xxxl:text-[50px] xxxl:leading-[70px] xxxl:px-[450px]">
           A student-centric application packed with features like prereq checks,
           degree trackers, and a beautiful UI that is easily shareable and
           intuitive.

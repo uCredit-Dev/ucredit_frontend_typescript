@@ -112,6 +112,8 @@ module.exports = {
       },
       screens: {
         ml: '850px',
+        monitor: '1300px',
+        xxxl: '2000px',
         medium: '1500px',
         tight: { max: '1200px' },
         thin: { max: '820px' },
