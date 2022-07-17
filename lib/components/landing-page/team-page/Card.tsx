@@ -30,9 +30,12 @@ function Card(props: TeamMemberType) {
             )}
           </div>
 
-
           <div className="absolute bottom-0 right-0 h-10">
-            <Links linkedin={`${props.linkedin}`} github={`${props.github}`} portfolio={`${props.portfolio}`} />
+            <Links
+              linkedin={`${props.linkedin}`}
+              github={`${props.github}`}
+              portfolio={`${props.portfolio}`}
+            />
           </div>
         </div>
       </div>

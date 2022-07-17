@@ -6,7 +6,11 @@ import data from './promoData';
 const Laptop: React.FC = () => {
   return (
     <>
-      <img src="/img/landing-page/wave2.png" alt="wavy pattern" className='w-screen' />
+      <img
+        src="/img/landing-page/wave2.png"
+        alt="wavy pattern"
+        className="w-screen"
+      />
 
       <div className="flex flex-col px-16 pb-8 text-center bg-blue-header text-blue-footer font-landingPage">
         <div>
@@ -19,8 +23,12 @@ const Laptop: React.FC = () => {
                 <br></br>
                 <div className="flex flex-row" key={d.title}>
                   <div className="w-2/3 pt-10 pr-10 items-center">
-                    <div className="text-4xl mb-10 align-middle xxxl:text-[60px] xxxl:w-[1200px] xxxl:leading-[80px]">{d.title}</div>
-                    <div className="text-black text-2xl xxxl:text-[35px] xxxl:w-[1400px] xxxl:mt-[60px] xxxl:leading-[60px]">{d.desc}</div>
+                    <div className="text-4xl mb-10 align-middle xxxl:text-[60px] xxxl:w-[1200px] xxxl:leading-[80px]">
+                      {d.title}
+                    </div>
+                    <div className="text-black text-2xl xxxl:text-[35px] xxxl:w-[1400px] xxxl:mt-[60px] xxxl:leading-[60px]">
+                      {d.desc}
+                    </div>
                   </div>
 
                   <div className="flex justify-center w-2/3 bg-gray-200 rounded-md">
@@ -48,8 +56,12 @@ const Laptop: React.FC = () => {
                   </div>
 
                   <div className="w-2/3 p-10 align-middle items-center ">
-                    <div className="text-4xl mb-10 xxxl:text-[60px] xxxl:w-[1200px] xxxl:leading-[80px]">{d.title}</div>
-                    <div className="text-black text-2xl xxxl:text-[35px] xxxl:w-[1400px] xxxl:mt-[100px] xxxl:leading-[60px]">{d.desc}</div>
+                    <div className="text-4xl mb-10 xxxl:text-[60px] xxxl:w-[1200px] xxxl:leading-[80px]">
+                      {d.title}
+                    </div>
+                    <div className="text-black text-2xl xxxl:text-[35px] xxxl:w-[1400px] xxxl:mt-[100px] xxxl:leading-[60px]">
+                      {d.desc}
+                    </div>
                   </div>
                 </div>
               </>

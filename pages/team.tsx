@@ -30,8 +30,14 @@ const Team: React.FC = () => {
                   return (
                     <>
                       <div className="flex-initial justify-self-center px-4 py-4">
-                        <Card name={person.name} role={person.role} img={person.img}
-                          class={person.class} github={person.github} linkedin={person.linkedin} portfolio={person.portfolio}
+                        <Card
+                          name={person.name}
+                          role={person.role}
+                          img={person.img}
+                          class={person.class}
+                          github={person.github}
+                          linkedin={person.linkedin}
+                          portfolio={person.portfolio}
                         />
                       </div>
                     </>
@@ -48,8 +54,14 @@ const Team: React.FC = () => {
                 return (
                   <>
                     <div>
-                      <ProfileMobile name={person.name} role={person.role} img={person.img}
-                        class={person.class} github={person.github} linkedin={person.linkedin} portfolio={person.portfolio}
+                      <ProfileMobile
+                        name={person.name}
+                        role={person.role}
+                        img={person.img}
+                        class={person.class}
+                        github={person.github}
+                        linkedin={person.linkedin}
+                        portfolio={person.portfolio}
                       />
                     </div>
                   </>
@@ -57,7 +69,6 @@ const Team: React.FC = () => {
               })}
             </div>
           </div>
-
         </div>
 
         <div className="overflow-hidden bg-white">
@@ -74,8 +85,14 @@ const Team: React.FC = () => {
                       return (
                         <>
                           <div className="flex-initial justify-self-center px-4 py-4">
-                            <Card name={person.name} role={person.role} img={person.img}
-                              class={person.class} github={person.github} linkedin={person.linkedin} portfolio={person.portfolio}
+                            <Card
+                              name={person.name}
+                              role={person.role}
+                              img={person.img}
+                              class={person.class}
+                              github={person.github}
+                              linkedin={person.linkedin}
+                              portfolio={person.portfolio}
                             />
                           </div>
                         </>
@@ -92,8 +109,14 @@ const Team: React.FC = () => {
                     return (
                       <>
                         <div>
-                          <ProfileMobile name={person.name} role={person.role} img={person.img}
-                            class={person.class} github={person.github} linkedin={person.linkedin} portfolio={person.portfolio}
+                          <ProfileMobile
+                            name={person.name}
+                            role={person.role}
+                            img={person.img}
+                            class={person.class}
+                            github={person.github}
+                            linkedin={person.linkedin}
+                            portfolio={person.portfolio}
                           />
                         </div>
                       </>
@@ -101,7 +124,6 @@ const Team: React.FC = () => {
                   })}
                 </div>
               </div>
-
             </div>
           </div>
         </div>
@@ -121,8 +143,14 @@ const Team: React.FC = () => {
                     return (
                       <>
                         <div className="flex-initial justify-self-center px-4 py-4">
-                          <Card name={person.name} role={person.role} img={person.img}
-                            class={person.class} github={person.github} linkedin={person.linkedin} portfolio={person.portfolio}
+                          <Card
+                            name={person.name}
+                            role={person.role}
+                            img={person.img}
+                            class={person.class}
+                            github={person.github}
+                            linkedin={person.linkedin}
+                            portfolio={person.portfolio}
                           />
                         </div>
                       </>
@@ -139,8 +167,14 @@ const Team: React.FC = () => {
                   return (
                     <>
                       <div>
-                        <ProfileMobile name={person.name} role={person.role} img={person.img}
-                          class={person.class} github={person.github} linkedin={person.linkedin} portfolio={person.portfolio}
+                        <ProfileMobile
+                          name={person.name}
+                          role={person.role}
+                          img={person.img}
+                          class={person.class}
+                          github={person.github}
+                          linkedin={person.linkedin}
+                          portfolio={person.portfolio}
                         />
                       </div>
                     </>
@@ -148,15 +182,11 @@ const Team: React.FC = () => {
                 })}
               </div>
             </div>
-
           </div>
         </div>
       </div>
       <Footer />
     </div>
-
-
-
   );
 };
 

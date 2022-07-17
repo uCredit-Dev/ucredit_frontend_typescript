@@ -9,7 +9,7 @@ const Laptop: React.FC = () => {
   return (
     <div className="pt-32">
       <div className="w-2/3 left-[73vw] top-[115vh] z-[0vh] md:left-[60vw] top-[75rem] lg:left-[70vw] top-[65rem] xxxl:scale-[140%] left-[85rem] top-[115vh] absolute">
-        <Bird/>
+        <Bird />
       </div>
       <div className="font-landingPage grid grid-rows-5 grid-cols-3 grid-flow-col gap-4 items-stretch xxxl:gap-[200px]">
         <div className="xxxl:text-[100px] row-start-1 row-end-2 col-span-4 text-blue-footer text-center text-5xl">
