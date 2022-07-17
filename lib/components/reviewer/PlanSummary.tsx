@@ -6,7 +6,7 @@ import {
   UserCourse,
   Year,
 } from '../../resources/commonTypes';
-import { FC, useEffect, useState } from 'react';
+import React, { FC, useEffect, useState } from 'react';
 import { toast } from 'react-toastify';
 import { Selectable } from '@robertz65/lyte';
 import Semester from '../dashboard/course-list/horizontal/Semester';
@@ -37,23 +37,27 @@ const PlanSummary: FC<{
       for (let y of plan.years) {
         if (y.year === getNextSem().year) return y;
       }
+      return plan.years[0];
     })(),
   );
   const [courses, setCourses] = useState<UserCourse[]>(plan.years[0].courses);
   const [majors, setMajors] = useState<Major[]>([]);
   const [selectedMajor, setSelectedMajor] = useState<Major>(allMajors[0]);
-  const [semesters, setSemesters] = useState([]);
+  const [semesters, setSemesters] = useState<
+    { label: string; content: string }[]
+  >([]);
 
   useEffect(() => {
     const { year, semester } = getNextSem();
-    const majorAcc = [];
+    const majorAcc: Major[] = [];
     plan.majors.forEach((m) => {
       allMajors.forEach((ma) => {
         if (ma.degree_name === m) majorAcc.push(ma);
       });
     });
     setMajors(majorAcc);
-    const semesterAcc = [];
+    setSelectedMajor(majorAcc[0]);
+    const semesterAcc: { label: string; content: string }[] = [];
     plan.years.forEach((y) => {
       if (y.year === 0) {
         semesterAcc.push({
@@ -81,7 +85,7 @@ const PlanSummary: FC<{
       if (y.year === year) {
         setYear(y);
         setSemester(semester);
-        const semesterCourses = [];
+        const semesterCourses: UserCourse[] = [];
         y.courses.forEach((c) => {
           if (c.term === semester.toLowerCase()) semesterCourses.push(c);
         });
@@ -94,10 +98,10 @@ const PlanSummary: FC<{
 
   useEffect(() => {
     plan.years.forEach((y) => {
-      if (y.year === year.year) {
+      if (year && y.year === year.year) {
         setYear(y);
         setSemester(semester);
-        const semesterCourses = [];
+        const semesterCourses: UserCourse[] = [];
         y.courses.forEach((c) => {
           if (c.term === semester.toLowerCase()) semesterCourses.push(c);
         });

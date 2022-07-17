@@ -39,7 +39,7 @@ const Comments: FC<{
 }> = ({ location, hovered, mode }) => {
   const [expanded, setExpanded] = useState(false);
   const [replyText, setReplyText] = useState('');
-  const [thisThread, setThisThread] = useState<ThreadType>(null);
+  const [thisThread, setThisThread] = useState<ThreadType | null>(null);
   const dispatch = useDispatch();
   const threads = useSelector(selectFilteredThreads); // threads filtered by commenter toggle
   const user = useSelector(selectUser);
@@ -54,7 +54,7 @@ const Comments: FC<{
   useEffect(() => {
     if (selectedThread === location) {
       setExpanded(true);
-      dispatch(updateSelectedThread(null));
+      dispatch(updateSelectedThread(''));
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [selectedThread]);
@@ -88,7 +88,8 @@ const Comments: FC<{
         (e.target.tagName === 'DIV' && e.target.className.includes('css'))
       )
         return;
-      if (wrapperRef.current && !wrapperRef.current.contains(e.target))
+      const currentWrapperRef: any = wrapperRef.current;
+      if (currentWrapperRef && !currentWrapperRef.contains(e.target))
         setExpanded(false);
     };
     document.addEventListener('click', handleClickOutside);
@@ -191,7 +192,7 @@ const Comments: FC<{
 
   // TODO: Handle more elegantly
   const getOptions = () => {
-    let ids = [];
+    let ids: string[] = [];
     if (thisThread) {
       // if there are already comments here, we need to do one of the following
       // 1. if the user is the commenter, show all reviewers
@@ -214,8 +215,9 @@ const Comments: FC<{
         const reviewers = plan.reviewers;
         if (!reviewers) return [];
         for (const r of reviewers) {
-          if (r.status !== ReviewRequestStatus.Pending)
-            ids.push(r.reviewer_id._id);
+          let reviewer: any = r;
+          if (reviewer.status !== ReviewRequestStatus.Pending)
+            ids.push(reviewer.reviewer_id._id);
         }
       }
     } else if (mode === ReviewMode.View) {
@@ -230,7 +232,7 @@ const Comments: FC<{
       }
     }
     ids = ids.filter((el, i) => !ids.slice(i + 1, ids.length).includes(el));
-    let options = [];
+    let options: { value: string; label: string }[] = [];
     for (const s of ids) {
       if (s !== user._id) options.push({ value: s, label: s });
     }

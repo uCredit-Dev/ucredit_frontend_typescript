@@ -44,6 +44,7 @@ const DistributionBarsJSX: FC<{ major: Major }> = ({ major }) => {
   // Gets distribution everytime a plan changes.
   useEffect(() => {
     const distr = getDistributions();
+    console.log(distr);
     if (distr && distr.length > 0) {
       let tot = 0;
       currentPlan.years.forEach((year) => {
