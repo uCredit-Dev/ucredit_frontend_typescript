@@ -133,21 +133,21 @@ import { Major, Minor } from './commonTypes';
 
 // https://physics-astronomy.jhu.edu/undergraduate/major-requirements/
 const bsPhysics: Major = {
-  degree_name: "B.S. Physics",
-  abbrev: "B.S. Phys", 
-  url: "https://e-catalogue.jhu.edu/arts-sciences/full-time-residential-programs/degree-programs/physics-astronomy/physics-bachelor-science/",
-  department: "AS Physics & Astronomy",
+  degree_name: 'B.S. Physics',
+  abbrev: 'B.S. Phys',
+  url: 'https://e-catalogue.jhu.edu/arts-sciences/full-time-residential-programs/degree-programs/physics-astronomy/physics-bachelor-science/',
+  department: 'AS Physics & Astronomy',
   total_degree_credit: 126,
   wi_credit: 12,
   distributions: [
     {
-      name: "Mathematics", 
-      required_credits: 20, 
-      min_credits_per_course: 4, 
-      description: 
-        "All Physics majors must Calculus I, Calculus II, Calculus III, Differential Equations, and Linear Algebra (or equivalent courses).",
-      criteria: 
-        'AS.110.108[C]^OR^AS.110.109[C]^OR^AS.110.113[C]^OR^AS.110.202[C]^OR^AS.110.211[C]^OR^' + 
+      name: 'Mathematics',
+      required_credits: 20,
+      min_credits_per_course: 4,
+      description:
+        'All Physics majors must Calculus I, Calculus II, Calculus III, Differential Equations, and Linear Algebra (or equivalent courses).',
+      criteria:
+        'AS.110.108[C]^OR^AS.110.109[C]^OR^AS.110.113[C]^OR^AS.110.202[C]^OR^AS.110.211[C]^OR^' +
         'AS.110.302[C]^OR^AS.110.201[C]^OR^AS.110.212[C]',
       fine_requirements: [
         {
@@ -158,14 +158,14 @@ const bsPhysics: Major = {
         },
         {
           description:
-            '<b>Calculus II</b> <br /> AS.110.109 Calculus II (Physical Sciences & Engineering)' + 
+            '<b>Calculus II</b> <br /> AS.110.109 Calculus II (Physical Sciences & Engineering)' +
             '<br /> <i>OR</i> <br /> AS.110.113 Honors Single Variable Calculus',
           required_credits: 4,
           criteria: 'AS.110.109[C]^OR^AS.110.113[C]',
         },
         {
           description:
-            '<b>Calculus III</b> <br /> AS.110.202 Calculus III<br /> <i>OR</i> ' + 
+            '<b>Calculus III</b> <br /> AS.110.202 Calculus III<br /> <i>OR</i> ' +
             '<br /> AS.110.211 Honors Multivariable Calculus',
           required_credits: 4,
           criteria: 'AS.110.202[C]^OR^AS.110.211[C]',
@@ -178,51 +178,53 @@ const bsPhysics: Major = {
         },
         {
           description:
-            '<b>Linear Algebra</b> <br /> AS.110.201 Linear Algebra<br /> <i>OR</i> ' + 
+            '<b>Linear Algebra</b> <br /> AS.110.201 Linear Algebra<br /> <i>OR</i> ' +
             '<br /> AS.110.212 Honors Linear Algebra',
           required_credits: 4,
           criteria: 'AS.110.201[C]^OR^AS.110.212[C]',
         },
-      ]
+      ],
     },
     {
-      name: "Physics", 
-      required_credits: 38, 
-      min_credits_per_course: 1, 
-      description: 
-        "The standard physics requirements for all physics majors matriculating on or after September 2020 consist of",
-      criteria: 
-        'AS.171.105[C]^OR^AS.171.101[C]^OR^AS.171.103[C]^OR^AS.171.107[C]^OR^AS.173.115[C]^OR^AS.173.111[C]^OR^' + 
+      name: 'Physics',
+      required_credits: 38,
+      min_credits_per_course: 1,
+      description:
+        'The standard physics requirements for all physics majors matriculating on or after September 2020 consist of',
+      criteria:
+        'AS.171.105[C]^OR^AS.171.101[C]^OR^AS.171.103[C]^OR^AS.171.107[C]^OR^AS.173.115[C]^OR^AS.173.111[C]^OR^' +
         'AS.171.106[C]^OR^AS.171.102[C]^OR^AS.171.104[C]^OR^AS.171.108[C]^OR^AS.173.116[C]^OR^AS.173.112[C]^OR^' +
-        'AS.171.201[C]^OR^AS.171.204[C]^OR^AS.171.312[C]^OR^AS.172.203[C]^OR^AS.171.301[C]^OR^AS.171.303[C]^OR^' + 
+        'AS.171.201[C]^OR^AS.171.204[C]^OR^AS.171.312[C]^OR^AS.172.203[C]^OR^AS.171.301[C]^OR^AS.171.303[C]^OR^' +
         'AS.171.304[C]^OR^AS.173.308[C]',
       fine_requirements: [
         {
           description:
-            '<b>Classical Mechanics I</b> <br /> Select one of the following: <br /> AS.171.105 Classical Mechanics I' + 
-            '<br /> AS.171.101 General Physics: Physical Science Major I <br />AS.171.103 General Physics I for Biological Science Majors' + 
+            '<b>Classical Mechanics I</b> <br /> Select one of the following: <br /> AS.171.105 Classical Mechanics I' +
+            '<br /> AS.171.101 General Physics: Physical Science Major I <br />AS.171.103 General Physics I for Biological Science Majors' +
             '<br /> AS.171.107 General Physics for Physical Sciences Majors (AL)',
           required_credits: 4,
-          criteria: 'AS.171.105[C]^OR^AS.171.101[C]^OR^AS.171.103[C]^OR^AS.171.107[C]',
+          criteria:
+            'AS.171.105[C]^OR^AS.171.101[C]^OR^AS.171.103[C]^OR^AS.171.107[C]',
         },
         {
           description:
-            '<b>Classical Mechanics Laboratory</b> <br /> AS.173.115 Classical Mechanics Laboratory' + 
+            '<b>Classical Mechanics Laboratory</b> <br /> AS.173.115 Classical Mechanics Laboratory' +
             '<br /> <i>OR</i> <br /> AS.173.111 General Physics Laboratory I',
           required_credits: 1,
           criteria: 'AS.173.115[C]^OR^AS.173.111[C]',
         },
         {
           description:
-            '<b>Electricity and Magnetism I</b> <br /> Select one of the following: <br /> AS.171.106 Electricity and Magnetism I' + 
-            '<br /> AS.171.102 General Physics: Physical Science Major II <br />AS.171.104 General Physics/Biology Majors II' + 
+            '<b>Electricity and Magnetism I</b> <br /> Select one of the following: <br /> AS.171.106 Electricity and Magnetism I' +
+            '<br /> AS.171.102 General Physics: Physical Science Major II <br />AS.171.104 General Physics/Biology Majors II' +
             '<br /> AS.171.108 General Physics for Physical Science Majors (AL)',
           required_credits: 4,
-          criteria: 'AS.171.106[C]^OR^AS.171.102[C]^OR^AS.171.104[C]^OR^AS.171.108[C]',
+          criteria:
+            'AS.171.106[C]^OR^AS.171.102[C]^OR^AS.171.104[C]^OR^AS.171.108[C]',
         },
         {
           description:
-            '<b>Electricity and Magnetism Laboratory</b> <br /> AS.173.116 Electricity and Magnetism Laboratory' + 
+            '<b>Electricity and Magnetism Laboratory</b> <br /> AS.173.116 Electricity and Magnetism Laboratory' +
             '<br /> <i>OR</i> <br /> AS.173.112 General Physics Laboratory II',
           required_credits: 1,
           criteria: 'AS.173.116[C]^OR^AS.173.112[C]',
@@ -275,69 +277,69 @@ const bsPhysics: Major = {
           required_credits: 3,
           criteria: 'AS.173.308[C]',
         },
-      ]
+      ],
     },
     {
-      name: "Electives", 
-      required_credits: 15, 
-      min_credits_per_course: 3, 
-      exclusive: true, 
-      pathing: true, 
-      description: 
-        'Five elective courses must be taken at the 200-600 level. Four courses must be within a single department or program in KSAS or WSE: ' + 
-        'Physics and Astronomy, Biology, Biophysics, Chemistry, Cognitive Science, Earth and Planetary Sciences, ' + 
-        'Mathematics, Neuroscience and/or the School of Engineering (excluding courses listed as 500.xxx, 660.xxx, 551.xxx and 661.xxx). ' + 
+      name: 'Electives',
+      required_credits: 15,
+      min_credits_per_course: 3,
+      exclusive: true,
+      pathing: true,
+      description:
+        'Five elective courses must be taken at the 200-600 level. Four courses must be within a single department or program in KSAS or WSE: ' +
+        'Physics and Astronomy, Biology, Biophysics, Chemistry, Cognitive Science, Earth and Planetary Sciences, ' +
+        'Mathematics, Neuroscience and/or the School of Engineering (excluding courses listed as 500.xxx, 660.xxx, 551.xxx and 661.xxx). ' +
         'These courses must constitute a coherent and rigorous program of study.',
-      criteria: 
-        '(AS Physics & Astronomy[D]^OR^AS Biology[D]^OR^AS Biophysics[D]^OR^AS Chemistry[D]^OR^AS Cognitive Science[D]^OR^' + 
-        'AS Earth & Planetary Sciences[D]^OR^AS Mathematics[D]^OR^AS Neuroscience[D])^AND^(200[L]^OR^Upper Level[L])', // TODO: add wse 
+      criteria:
+        '(AS Physics & Astronomy[D]^OR^AS Biology[D]^OR^AS Biophysics[D]^OR^AS Chemistry[D]^OR^AS Cognitive Science[D]^OR^' +
+        'AS Earth & Planetary Sciences[D]^OR^AS Mathematics[D]^OR^AS Neuroscience[D])^AND^(200[L]^OR^Upper Level[L])', // TODO: add wse
       fine_requirements: [
         {
           description: '<b>Physics and Astronomy</b>',
-          required_credits: 12, 
-          criteria: "AS Physics & Astronomy[D]",
-        }, 
+          required_credits: 12,
+          criteria: 'AS Physics & Astronomy[D]',
+        },
         {
           description: '<b>Biology</b>',
-          required_credits: 12, 
-          criteria: "AS Biology[D]",
-        }, 
+          required_credits: 12,
+          criteria: 'AS Biology[D]',
+        },
         {
           description: '<b>Biophysics</b>',
-          required_credits: 12, 
-          criteria: "AS Biophysics[D]",
+          required_credits: 12,
+          criteria: 'AS Biophysics[D]',
         },
         {
           description: '<b>Chemistry</b>',
-          required_credits: 12, 
-          criteria: "AS Chemistry[D]",
-        }, 
+          required_credits: 12,
+          criteria: 'AS Chemistry[D]',
+        },
         {
           description: '<b>Cognitive Science</b>',
-          required_credits: 12, 
-          criteria: "AS Cognitive Science[D]",
+          required_credits: 12,
+          criteria: 'AS Cognitive Science[D]',
         },
         {
           description: '<b>Earth and Planetary Sciences</b>',
-          required_credits: 12, 
-          criteria: "AS Earth & Planetary Sciences[D]",
+          required_credits: 12,
+          criteria: 'AS Earth & Planetary Sciences[D]',
         },
         {
           description: '<b>Mathematics</b>',
-          required_credits: 12, 
-          criteria: "AS Mathematics[D]",
+          required_credits: 12,
+          criteria: 'AS Mathematics[D]',
         },
         {
           description: '<b>Neuroscience</b>',
-          required_credits: 12, 
-          criteria: "AS Neuroscience[D]",
+          required_credits: 12,
+          criteria: 'AS Neuroscience[D]',
         },
         {
           description: '<b>Engineering</b>',
-          required_credits: 12, 
-          criteria: "", // TODO: add WSE 
+          required_credits: 12,
+          criteria: '', // TODO: add WSE
         },
-      ]
+      ],
     },
     {
       name: 'Humanities (H) Distribution',
@@ -385,21 +387,21 @@ const bsPhysics: Major = {
 
 // https://physics-astronomy.jhu.edu/undergraduate/major-requirements/
 const baPhysics: Major = {
-  degree_name: "B.A. Physics",
-  abbrev: "B.A. Phys",
-  department: "AS Physics & Astronomy",
+  degree_name: 'B.A. Physics',
+  abbrev: 'B.A. Phys',
+  department: 'AS Physics & Astronomy',
   total_degree_credit: 120,
   wi_credit: 12,
-  url: "https://e-catalogue.jhu.edu/arts-sciences/full-time-residential-programs/degree-programs/physics-astronomy/physics-astronomy-bachelor-arts/",
+  url: 'https://e-catalogue.jhu.edu/arts-sciences/full-time-residential-programs/degree-programs/physics-astronomy/physics-astronomy-bachelor-arts/',
   distributions: [
     {
-      name: "Mathematics", 
-      required_credits: 20, 
-      min_credits_per_course: 4, 
-      description: 
-        "All Physics majors must Calculus I, Calculus II, Calculus III, Differential Equations, and Linear Algebra (or equivalent courses).",
-      criteria: 
-        'AS.110.108[C]^OR^AS.110.109[C]^OR^AS.110.113[C]^OR^AS.110.202[C]^OR^AS.110.211[C]^OR^' + 
+      name: 'Mathematics',
+      required_credits: 20,
+      min_credits_per_course: 4,
+      description:
+        'All Physics majors must Calculus I, Calculus II, Calculus III, Differential Equations, and Linear Algebra (or equivalent courses).',
+      criteria:
+        'AS.110.108[C]^OR^AS.110.109[C]^OR^AS.110.113[C]^OR^AS.110.202[C]^OR^AS.110.211[C]^OR^' +
         'AS.110.302[C]^OR^AS.110.201[C]^OR^AS.110.212[C]',
       fine_requirements: [
         {
@@ -410,14 +412,14 @@ const baPhysics: Major = {
         },
         {
           description:
-            '<b>Calculus II</b> <br /> AS.110.109 Calculus II (Physical Sciences & Engineering)' + 
+            '<b>Calculus II</b> <br /> AS.110.109 Calculus II (Physical Sciences & Engineering)' +
             '<br /> <i>OR</i> <br /> AS.110.113 Honors Single Variable Calculus',
           required_credits: 4,
           criteria: 'AS.110.109[C]^OR^AS.110.113[C]',
         },
         {
           description:
-            '<b>Calculus III</b> <br /> AS.110.202 Calculus III<br /> <i>OR</i> ' + 
+            '<b>Calculus III</b> <br /> AS.110.202 Calculus III<br /> <i>OR</i> ' +
             '<br /> AS.110.211 Honors Multivariable Calculus',
           required_credits: 4,
           criteria: 'AS.110.202[C]^OR^AS.110.211[C]',
@@ -430,51 +432,53 @@ const baPhysics: Major = {
         },
         {
           description:
-            '<b>Linear Algebra</b> <br /> AS.110.201 Linear Algebra<br /> <i>OR</i> ' + 
+            '<b>Linear Algebra</b> <br /> AS.110.201 Linear Algebra<br /> <i>OR</i> ' +
             '<br /> AS.110.212 Honors Linear Algebra',
           required_credits: 4,
           criteria: 'AS.110.201[C]^OR^AS.110.212[C]',
         },
-      ]
+      ],
     },
     {
-      name: "Physics", 
-      required_credits: 38, 
-      min_credits_per_course: 1, 
-      description: 
-        "The standard physics requirements for all physics majors consist of:",
-      criteria: 
-        'AS.171.105[C]^OR^AS.171.101[C]^OR^AS.171.103[C]^OR^AS.171.107[C]^OR^AS.173.115[C]^OR^AS.173.111[C]^OR^' + 
+      name: 'Physics',
+      required_credits: 38,
+      min_credits_per_course: 1,
+      description:
+        'The standard physics requirements for all physics majors consist of:',
+      criteria:
+        'AS.171.105[C]^OR^AS.171.101[C]^OR^AS.171.103[C]^OR^AS.171.107[C]^OR^AS.173.115[C]^OR^AS.173.111[C]^OR^' +
         'AS.171.106[C]^OR^AS.171.102[C]^OR^AS.171.104[C]^OR^AS.171.108[C]^OR^AS.173.116[C]^OR^AS.173.112[C]^OR^' +
-        'AS.171.201[C]^OR^AS.171.204[C]^OR^AS.171.312[C]^OR^AS.172.203[C]^OR^AS.171.301[C]^OR^AS.171.303[C]^OR^' + 
+        'AS.171.201[C]^OR^AS.171.204[C]^OR^AS.171.312[C]^OR^AS.172.203[C]^OR^AS.171.301[C]^OR^AS.171.303[C]^OR^' +
         'AS.171.304[C]^OR^AS.173.308[C]',
       fine_requirements: [
         {
           description:
-            '<b>Classical Mechanics I</b> <br /> Select one of the following: <br /> AS.171.105 Classical Mechanics I' + 
-            '<br /> AS.171.101 General Physics: Physical Science Major I <br />AS.171.103 General Physics I for Biological Science Majors' + 
+            '<b>Classical Mechanics I</b> <br /> Select one of the following: <br /> AS.171.105 Classical Mechanics I' +
+            '<br /> AS.171.101 General Physics: Physical Science Major I <br />AS.171.103 General Physics I for Biological Science Majors' +
             '<br /> AS.171.107 General Physics for Physical Sciences Majors (AL)',
           required_credits: 4,
-          criteria: 'AS.171.105[C]^OR^AS.171.101[C]^OR^AS.171.103[C]^OR^AS.171.107[C]',
+          criteria:
+            'AS.171.105[C]^OR^AS.171.101[C]^OR^AS.171.103[C]^OR^AS.171.107[C]',
         },
         {
           description:
-            '<b>Classical Mechanics Laboratory</b> <br /> AS.173.115 Classical Mechanics Laboratory' + 
+            '<b>Classical Mechanics Laboratory</b> <br /> AS.173.115 Classical Mechanics Laboratory' +
             '<br /> <i>OR</i> <br /> AS.173.111 General Physics Laboratory I',
           required_credits: 1,
           criteria: 'AS.173.115[C]^OR^AS.173.111[C]',
         },
         {
           description:
-            '<b>Electricity and Magnetism I</b> <br /> Select one of the following: <br /> AS.171.106 Electricity and Magnetism I' + 
-            '<br /> AS.171.102 General Physics: Physical Science Major II <br />AS.171.104 General Physics/Biology Majors II' + 
+            '<b>Electricity and Magnetism I</b> <br /> Select one of the following: <br /> AS.171.106 Electricity and Magnetism I' +
+            '<br /> AS.171.102 General Physics: Physical Science Major II <br />AS.171.104 General Physics/Biology Majors II' +
             '<br /> AS.171.108 General Physics for Physical Science Majors (AL)',
           required_credits: 4,
-          criteria: 'AS.171.106[C]^OR^AS.171.102[C]^OR^AS.171.104[C]^OR^AS.171.108[C]',
+          criteria:
+            'AS.171.106[C]^OR^AS.171.102[C]^OR^AS.171.104[C]^OR^AS.171.108[C]',
         },
         {
           description:
-            '<b>Electricity and Magnetism Laboratory</b> <br /> AS.173.116 Electricity and Magnetism Laboratory' + 
+            '<b>Electricity and Magnetism Laboratory</b> <br /> AS.173.116 Electricity and Magnetism Laboratory' +
             '<br /> <i>OR</i> <br /> AS.173.112 General Physics Laboratory II',
           required_credits: 1,
           criteria: 'AS.173.116[C]^OR^AS.173.112[C]',
@@ -527,17 +531,16 @@ const baPhysics: Major = {
           required_credits: 3,
           criteria: 'AS.173.308[C]',
         },
-      ]
+      ],
     },
     {
-      name: "Upper Electives", 
-      required_credits: 6, 
-      min_credits_per_course: 3, 
-      exclusive: true, 
-      description: 
+      name: 'Upper Electives',
+      required_credits: 6,
+      min_credits_per_course: 3,
+      exclusive: true,
+      description:
         'Students must take two additional courses (at least 3 credits each) at the 300-600 level in the Department of Physics and Astronomy or approved physics-related courses in other departments.',
-      criteria: 
-        'AS Physics & Astronomy[D]^AND^Upper Level[L]',  
+      criteria: 'AS Physics & Astronomy[D]^AND^Upper Level[L]',
     },
     {
       name: 'Humanities (H) Distribution',
