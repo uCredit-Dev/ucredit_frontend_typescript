@@ -8,11 +8,11 @@ import Bird from './assets/svg/BlueJayIntro.svg';
 const Laptop: React.FC = () => {
   return (
     <div className="pt-32">
-      <div className="w-2/3 left-[73vw] top-[115vh] z-[0vh] md:left-[60vw] top-[75rem] lg:left-[70vw] top-[65rem] xxxl:scale-[140%] left-[85rem] top-[115vh] absolute">
+      <div className="absolute scale-[80%] left-[75%] top-[73%] z-[0vh] lg:scale-[110%] left-[58vw] top-[98vh] xl:scale-[130%] left-[75%] top-[95%] md:scale-[80%] left-[65%]">
         <Bird />
       </div>
       <div className="grid grid-rows-5 grid-cols-3 grid-flow-col gap-4 items-stretch xxxl:gap-[200px]">
-        <div className="row-start-1 row-end-2 col-span-4 text-blue-footer text-center text-5xl">
+        <div className="row-start-1 row-end-2 col-span-4 text-blue-footer text-center text-5xl xxxl:text-[100px]">
           Introducing uCredit
         </div>
         <div className="mt-2 px-72 leading-10 row-span-1 col-span-4 text-center z-20 text-2xl xxxl:text-[50px] xxxl:leading-[70px] xxxl:px-[450px]">
