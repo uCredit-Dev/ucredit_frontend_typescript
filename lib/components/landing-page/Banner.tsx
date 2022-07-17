@@ -3,6 +3,7 @@ import { useRouter } from 'next/router';
 import 'react-responsive-carousel/lib/styles/carousel.min.css'; // requires a loader
 import ApplicationFormPopup from '../popups/ApplicationFormPopup';
 import Bird from './BlueJay.svg';
+import Wave1 from './wave1.svg';
 
 const Laptop: React.FC = () => {
   const router = useRouter();
@@ -345,8 +346,9 @@ const Banner: React.FC = () => {
         <br></br>
         <br></br>
       </div>
-      <img src="/img/landing-page/wave.png" alt="cartoon schedule" />
-
+      <div>
+        <Wave1 />
+      </div>
       <div
         className="w-full cursor-pointer"
         onClick={() => window.scrollTo(0, 575)}

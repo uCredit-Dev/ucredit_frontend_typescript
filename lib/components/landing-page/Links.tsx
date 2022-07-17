@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import 'react-responsive-carousel/lib/styles/carousel.min.css'; // requires a loader
 import ApplicationFormPopup from '../popups/ApplicationFormPopup';
+import Wave1 from './wave1.svg';
 
 /**
  * Links to Github and Docs
@@ -78,7 +79,9 @@ const Links: React.FC = () => {
       {activateEmailPopup && (
         <ApplicationFormPopup setActivateEmailPopup={setActivateEmailPopup} />
       )}
-      <img src="/img/landing-page/wave.png" alt="cartoon schedule" />
+      <div>
+        <Wave1 />
+      </div>
       <div className="hidden sm:block">
         <Laptop />
       </div>
