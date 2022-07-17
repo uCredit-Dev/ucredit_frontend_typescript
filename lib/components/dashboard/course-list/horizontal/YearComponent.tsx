@@ -379,24 +379,22 @@ const YearComponent: FC<{
         setHovered(true);
       }}
     >
+      <div className="relative -top-5 -left-[8rem]">
+        <Comments location={'Year ' + year._id} hovered={hovered} mode={mode} />
+      </div>
       <div className="flex flex-col w-full mt-1 font-medium h-yearheading">
         <div className="flex flex-row w-full gap-2 text-zinc-700">
           <div className="flex mr-1 text-lg font-thin">
-            <Comments
-              location={'Year ' + year._id}
-              hovered={hovered}
-              mode={mode}
-            />
             {collapse ? (
               <button
-                className="mt-2 text-sky-500"
+                className="my-auto text-sky-500"
                 onClick={() => setCollapse(!collapse)}
               >
                 ▶
               </button>
             ) : (
               <button
-                className="mt-2 text-sky-500"
+                className="my-auto text-sky-500"
                 onClick={() => setCollapse(!collapse)}
               >
                 ▼
@@ -415,13 +413,15 @@ const YearComponent: FC<{
               onBlur={() => setEdittingName(false)}
             />
           ) : (
-            <div
-              className={clsx(
-                { 'cursor-move': !mode || mode !== ReviewMode.View },
-                'flex-grow w-auto mt-auto text-xl font-semibold bg-transparent border-b border-transparent select-none focus:border-gray-400 focus:outline-none',
-              )}
-            >
-              {yearName}
+            <div className="flex-grow my-auto">
+              <div
+                className={clsx(
+                  { 'cursor-move': !mode || mode !== ReviewMode.View },
+                  'w-auto text-xl font-semibold bg-transparent border-b border-transparent select-none focus:border-gray-400 focus:outline-none',
+                )}
+              >
+                {yearName}
+              </div>
             </div>
           )}
           <div className="flex flex-row gap-8">
