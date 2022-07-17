@@ -61,7 +61,7 @@ const bsECE: Major = {
   distributions: [
     {
       name: 'ECE Core',
-      required_credits: 17,
+      required_credits: 18,
       min_credits_per_course: 2,
       description:
         'For more information please visit the' +
@@ -69,6 +69,7 @@ const bsECE: Major = {
         'major degree requirement</a> on the academic catalogue.',
       criteria:
         'EN.520.123[C]^OR^EN.520.142[C]^OR^EN.520.214[C]^OR^EN.520.219[C]^OR^EN.520.230[C]^OR^EN.520.231[C]',
+      exclusive: true,
       fine_requirements: [
         {
           description:
@@ -94,7 +95,7 @@ const bsECE: Major = {
         },
         {
           description: '<b>Mastering Electronics</b> <br /> EN.520.230',
-          required_credits: 2,
+          required_credits: 3,
           criteria: 'EN.520.230[C]',
         },
         {
@@ -107,7 +108,7 @@ const bsECE: Major = {
     },
     {
       name: 'ECE Electives',
-      required_credits: 16,
+      required_credits: 15,
       min_credits_per_course: 1,
       description:
         'Up to six (6) credits of computer science courses may be used to satisfy this requirement.',
@@ -115,10 +116,11 @@ const bsECE: Major = {
         'EN Computer Science[D]^OR^EN Electrical & Computer Engineering[D]',
       exception:
         'EN.520.123[C]^OR^EN.520.142[C]^OR^EN.520.214[C]^OR^EN.520.219[C]^OR^EN.520.230[C]^OR^EN.520.231[C]',
+      exclusive: true,
       fine_requirements: [
         {
-          description: 'At least 10 credits of ECE electives',
-          required_credits: 10,
+          description: 'At least 9 credits of ECE electives',
+          required_credits: 9,
           criteria: 'EN Electrical & Computer Engineering[D]',
         },
         {
@@ -137,6 +139,7 @@ const bsECE: Major = {
         'Students must take a total of 12 credits of advanced laboratory, design intensive, or senior design project courses. A minimum of six (6) credits must come from ECE. The remaining 6 credits of advanced lab can come from any department, as long as the class is listed as an option in this section of the degree audit and degree checksheet.',
       criteria:
         'EN Computer Science[D]^OR^EN Electrical & Computer Engineering[D]',
+      exclusive: true,
       fine_requirements: [
         {
           description: 'Advanced Laboratory Courses in ECE',
@@ -254,6 +257,15 @@ const bsECE: Major = {
       ],
     },
     {
+      name: 'Ethics',
+      required_credits: 3,
+      min_credits_per_course: 1,
+      exclusive: true,
+      description:
+        'Two (2) credits in EN.660.400 Practical Ethics for Future Leaders and one (1) credit EN.520.404 Engineering solutions in a global, economic, environmental, and societal context.',
+      criteria: 'EN.660.400[C]^OR^EN.520.404[C]',
+    },
+    {
       name: 'Humanity & Social Sciences',
       required_credits: 15,
       min_credits_per_course: 3,
@@ -261,14 +273,6 @@ const bsECE: Major = {
         'At least five (5), three-credit courses in humanities and social sciences.',
       criteria: 'H[A]^OR^S[A]',
       exception: 'EN.660.400[C]^OR^EN.520.404[C]',
-    },
-    {
-      name: 'Ethics',
-      required_credits: 3,
-      min_credits_per_course: 1,
-      description:
-        'Two (2) credits in EN.660.400 Practical Ethics for Future Leaders and one (1) credit EN.520.404 Engineering solutions in a global, economic, environmental, and societal context.',
-      criteria: 'EN.660.400[C]^OR^EN.520.404[C]',
     },
     {
       name: 'Writing Intensive',
