@@ -1,6 +1,10 @@
-import { Dispatch, SetStateAction, useEffect, useState } from 'react';
+import React, { Dispatch, SetStateAction, useEffect, useState } from 'react';
 import clsx from 'clsx';
-import { ClipboardListIcon, EyeIcon } from '@heroicons/react/outline';
+import {
+  ClipboardListIcon,
+  EyeIcon,
+  TrashIcon,
+} from '@heroicons/react/outline';
 import { useRouter } from 'next/router';
 import { toast } from 'react-toastify';
 import { Selectable } from '@robertz65/lyte';
@@ -9,6 +13,7 @@ import {
   ReviewRequestStatus,
   StatusPlan,
   User,
+  UserCourse,
 } from '../../resources/commonTypes';
 import { Hoverable } from '../utils';
 import { TooltipPrimary } from '../utils/TooltipPrimary';
@@ -28,6 +33,7 @@ interface Props {
   reviewee: User;
   expanded?: boolean;
   setRefreshReviews: Dispatch<SetStateAction<boolean>>;
+  onDeleteItem: Function;
 }
 
 const dropdownOptions = [
@@ -50,12 +56,13 @@ const Reviewee: React.FC<Props> = ({
   reviewee,
   expanded = false,
   setRefreshReviews,
+  onDeleteItem,
 }) => {
   const [showPlans, setShowPlans] = useState(expanded);
   const [majors, setMajors] = useState<string[]>([]);
   const [notifState, setNotifState] = useState(false);
   const [summaryReviewID, setSummaryReviewID] = useState('');
-  const [summaryPlan, setSummaryPlan] = useState<Plan>(null);
+  const [summaryPlan, setSummaryPlan] = useState<Plan>(plans[0]);
   const router = useRouter();
   const dispatch = useDispatch();
 
@@ -71,6 +78,11 @@ const Reviewee: React.FC<Props> = ({
     e.stopPropagation();
     router.push(`/dashboard?plan=${plan._id}&mode=view`);
   };
+
+  const deleteHandler = () => {
+    onDeleteItem(reviewee._id);
+  };
+
   return (
     reviewee && (
       <div className="w-full p-3 bg-white border border-gray-300 rounded-md">
@@ -99,7 +111,7 @@ const Reviewee: React.FC<Props> = ({
         ) : null}
         {showPlans && (
           <div className="divide-y">
-            {plans.map((p) => {
+            {plans.map((p, i) => {
               const { _id, name, status, review_id } = p;
               return (
                 <div key={_id}>
@@ -123,13 +135,15 @@ const Reviewee: React.FC<Props> = ({
                             />
                           }
                         >
-                          {({ hovered }) =>
-                            hovered && (
-                              <TooltipPrimary width={140}>
-                                {statusReadable[status]}
-                              </TooltipPrimary>
-                            )
-                          }
+                          {({ hovered }) => (
+                            <>
+                              {hovered && (
+                                <TooltipPrimary width={140}>
+                                  {statusReadable[status]}
+                                </TooltipPrimary>
+                              )}
+                            </>
+                          )}
                         </Hoverable>
                       )}
                       <p>{name}</p>
@@ -146,8 +160,8 @@ const Reviewee: React.FC<Props> = ({
                               review_id,
                               value.label,
                             );
-                            window.location.href = '/reviewer';
-                            // setRefreshReviews(true);
+                            // window.location.href = '/reviewer';
+                            setRefreshReviews(true);
                             toast.success(
                               `Status changed to ${
                                 statusReadable[value.label]
@@ -169,13 +183,15 @@ const Reviewee: React.FC<Props> = ({
                           </div>
                         }
                       >
-                        {({ hovered }) =>
-                          hovered && (
-                            <TooltipPrimary width={120}>
-                              Inspect plan
-                            </TooltipPrimary>
-                          )
-                        }
+                        {({ hovered }) => (
+                          <>
+                            {hovered && (
+                              <TooltipPrimary width={120}>
+                                Inspect plan
+                              </TooltipPrimary>
+                            )}
+                          </>
+                        )}
                       </Hoverable>
                       <Hoverable
                         as={
@@ -187,7 +203,7 @@ const Reviewee: React.FC<Props> = ({
                               setSummaryPlan(p);
                               setNotifState(!notifState);
                               dispatch(updateSelectedPlan(p));
-                              let allCourses = [];
+                              let allCourses: UserCourse[] = [];
                               let totCredits = 0;
                               p.years.forEach((y) => {
                                 y.courses.forEach((c) => {
@@ -203,13 +219,36 @@ const Reviewee: React.FC<Props> = ({
                           </button>
                         }
                       >
-                        {({ hovered }) =>
-                          hovered && (
-                            <TooltipPrimary width={120}>
-                              View Summary
-                            </TooltipPrimary>
-                          )
+                        {({ hovered }) => (
+                          <>
+                            {hovered && (
+                              <TooltipPrimary width={120}>
+                                View Summary
+                              </TooltipPrimary>
+                            )}
+                          </>
+                        )}
+                      </Hoverable>
+                      <Hoverable
+                        as={
+                          <button
+                            className="flex items-center justify-center w-6 h-6 transition-colors duration-150 ease-in rounded-sm cursor-pointer hover:bg-gray-200 inspect-plan-button"
+                            onClick={deleteHandler}
+                          >
+                            <TrashIcon className="w-5 h-5 stroke-red-500" />
+                          </button>
                         }
+                      >
+                        {({ hovered }) => (
+                          <>
+                            {' '}
+                            {hovered && (
+                              <TooltipPrimary width={130}>
+                                Delete Reviewee
+                              </TooltipPrimary>
+                            )}
+                          </>
+                        )}
                       </Hoverable>
                     </div>
                   </div>

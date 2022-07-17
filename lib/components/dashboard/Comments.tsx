@@ -4,14 +4,13 @@ import {
   PaperAirplaneIcon,
   AnnotationIcon,
   ChatAlt2Icon,
+  TrashIcon,
 } from '@heroicons/react/outline';
 import clsx from 'clsx';
-import Select from 'react-select';
 import { formatDistanceToNow } from 'date-fns';
 import {
   CommentType,
   ReviewMode,
-  ReviewRequestStatus,
   ThreadType,
 } from '../../resources/commonTypes';
 import {
@@ -35,10 +34,10 @@ const Comments: FC<{
   hovered: boolean;
   mode: ReviewMode;
   left?: boolean;
-}> = ({ location, hovered, mode }) => {
+}> = ({ location, hovered }) => {
   const [expanded, setExpanded] = useState(false);
   const [replyText, setReplyText] = useState('');
-  const [thisThread, setThisThread] = useState<ThreadType>(null);
+  const [thisThread, setThisThread] = useState<ThreadType | null>(null);
   const dispatch = useDispatch();
   const threads = useSelector(selectFilteredThreads); // threads filtered by commenter toggle
   const user = useSelector(selectUser);
@@ -48,12 +47,12 @@ const Comments: FC<{
   const commenters = useSelector(selectCommenters);
   let wrapperRef = useRef(null);
   const [comments, setComments] = useState<JSX.Element[]>([]);
-  const [visibleUsers, setVisibleUsers] = useState<String[]>([]);
+  // const [visibleUsers, setVisibleUsers] = useState<String[]>([]);
 
   useEffect(() => {
     if (selectedThread === location) {
       setExpanded(true);
-      dispatch(updateSelectedThread(null));
+      dispatch(updateSelectedThread(''));
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [selectedThread]);
@@ -87,7 +86,8 @@ const Comments: FC<{
         (e.target.tagName === 'DIV' && e.target.className.includes('css'))
       )
         return;
-      if (wrapperRef.current && !wrapperRef.current.contains(e.target))
+      const currentWrapperRef: any = wrapperRef.current;
+      if (currentWrapperRef && !currentWrapperRef.contains(e.target))
         setExpanded(false);
     };
     document.addEventListener('click', handleClickOutside);
@@ -100,9 +100,15 @@ const Comments: FC<{
       return;
     }
     const planToAdd = reviewedPlan ? reviewedPlan : plan;
-    visibleUsers.push(user._id);
-    visibleUsers.push(planToAdd.user_id);
-    const visibleUsersBody = [...visibleUsers];
+    // visibleUsers.push(user._id);
+    // if (planToAdd.user_id !== user._id) visibleUsers.push(planToAdd.user_id);
+    const visibleUsersBody = plan.reviewers.map(
+      (reviewer) => reviewer.reviewer_id._id,
+    );
+    visibleUsersBody.push(user._id);
+    if (planToAdd.user_id !== user._id)
+      visibleUsersBody.push(planToAdd.user_id);
+    //= [...visibleUsers];
     if (thisThread) {
       const body = {
         comment: {
@@ -157,9 +163,9 @@ const Comments: FC<{
   const getComments = (thisThread): JSX.Element[] => {
     if (!thisThread) return [];
     const divs = thisThread.comments.map((c: CommentType) => {
-      if (!c.visible_user_id.includes(user._id)) {
-        return null;
-      }
+      // if (!c.visible_user_id.includes(user._id)) {
+      //   return null;
+      // }
       return (
         <div
           key={c._id}
@@ -174,6 +180,14 @@ const Comments: FC<{
                 addSuffix: true,
               })}
             </p>
+            {c.commenter_id._id === user._id && (
+              <button
+                className="flex items-center justify-center w-6 h-6 transition-colors duration-150 ease-in rounded-sm cursor-pointer hover:bg-gray-200 inspect-plan-button"
+                onClick={() => deleteHandler(c._id)}
+              >
+                <TrashIcon className="w-5 h-5 stroke-red-500" />
+              </button>
+            )}
           </div>
           <p className="px-2 py-1">{c.message}</p>
         </div>
@@ -183,54 +197,76 @@ const Comments: FC<{
   };
 
   // TODO: Handle more elegantly
-  const getOptions = () => {
-    let ids = [];
-    if (thisThread) {
-      // if there are already comments here, we need to do one of the following
-      // 1. if the user is the commenter, show all reviewers
-      // 2. if the user is a reviewer, show the below
-      //     a. if one of the comments contains the user, show the max of all the reviewers included in the comments
-      //     b. if none of the comments contain the user, show only the user
-      if (mode === ReviewMode.View) {
-        thisThread.comments.forEach((comment) => {
-          if (comment.visible_user_id.includes(user._id)) {
-            comment.visible_user_id.forEach((uID) => {
-              if (!ids.includes(uID)) ids = [...ids, uID];
-            });
+  // const getOptions = () => {
+  //   let ids: string[] = [];
+  //   if (thisThread) {
+  //     // if there are already comments here, we need to do one of the following
+  //     // 1. if the user is the commenter, show all reviewers
+  //     // 2. if the user is a reviewer, show the below
+  //     //     a. if one of the comments contains the user, show the max of all the reviewers included in the comments
+  //     //     b. if none of the comments contain the user, show only the user
+  //     if (mode === ReviewMode.View) {
+  //       thisThread.comments.forEach((comment) => {
+  //         if (comment.visible_user_id.includes(user._id)) {
+  //           comment.visible_user_id.forEach((uID) => {
+  //             if (!ids.includes(uID)) ids = [...ids, uID];
+  //           });
+  //         }
+  //       });
+  //       if (ids.length === 0) {
+  //         if (reviewedPlan && ReviewMode.View) ids.push(reviewedPlan.user_id);
+  //         if (ReviewMode.Edit) ids.push(user._id);
+  //       }
+  //     } else {
+  //       const reviewers = plan.reviewers;
+  //       if (!reviewers) return [];
+  //       for (const r of reviewers) {
+  //         let reviewer: any = r;
+  //         if (reviewer.status !== ReviewRequestStatus.Pending)
+  //           ids.push(reviewer.reviewer_id._id);
+  //       }
+  //     }
+  //   } else if (mode === ReviewMode.View) {
+  //     ids = [user._id];
+  //     if (reviewedPlan) ids.push(reviewedPlan.user_id);
+  //   } else {
+  //     const reviewers = plan.reviewers;
+  //     if (reviewers === undefined) return [];
+  //     for (const r of reviewers) {
+  //       if (r.status !== ReviewRequestStatus.Pending)
+  //         ids.push(r.reviewer_id._id);
+  //     }
+  //   }
+  //   ids = ids.filter((el, i) => !ids.slice(i + 1, ids.length).includes(el));
+  //   let options: { value: string; label: string }[] = [];
+  //   for (const s of ids) {
+  //     if (s !== user._id) options.push({ value: s, label: s });
+  //   }
+  //   return options;
+  // };
+  // const updateVisibleUsers = (event) => {
+  //   setVisibleUsers(event.map((el) => el.value));
+  // };
+
+  const deleteHandler = async (key) => {
+    setComments((prevState) => {
+      const updatedState = prevState.filter((comment) => comment.key !== key);
+      return updatedState;
+    });
+    try {
+      let comment_id: string = '';
+      const threads = await userService.getThreads(plan._id);
+      for (let thread of threads.data) {
+        for (let comment of thread.comments) {
+          if (comment._id === key) {
+            comment_id = comment._id;
           }
-        });
-        if (ids.length === 0) {
-          if (reviewedPlan && ReviewMode.View) ids.push(reviewedPlan.user_id);
-          if (ReviewMode.Edit) ids.push(user._id);
-        }
-      } else {
-        const reviewers = plan.reviewers;
-        if (!reviewers) return [];
-        for (const r of reviewers) {
-          if (r.status !== ReviewRequestStatus.Pending)
-            ids.push(r.reviewer_id._id);
         }
       }
-    } else if (mode === ReviewMode.View) {
-      ids = [user._id];
-      if (reviewedPlan) ids.push(reviewedPlan.user_id);
-    } else {
-      const reviewers = plan.reviewers;
-      if (reviewers === undefined) return [];
-      for (const r of reviewers) {
-        if (r.status !== ReviewRequestStatus.Pending)
-          ids.push(r.reviewer_id._id);
-      }
+      await userService.removeComment(comment_id);
+    } catch (err) {
+      console.log(err);
     }
-    ids = ids.filter((el, i) => !ids.slice(i + 1, ids.length).includes(el));
-    let options = [];
-    for (const s of ids) {
-      if (s !== user._id) options.push({ value: s, label: s });
-    }
-    return options;
-  };
-  const updateVisibleUsers = (event) => {
-    setVisibleUsers(event.map((el) => el.value));
   };
 
   return (
@@ -263,12 +299,12 @@ const Comments: FC<{
                 autoFocus
               />
             </form>
-            <Select
+            {/* <Select
               options={getOptions()}
               isMulti={true}
               onChange={updateVisibleUsers}
               className="select-reviewers-input"
-            />
+            /> */}
             <div
               className="flex items-center self-end justify-center gap-1 mt-2 text-sm transition-colors duration-150 ease-in transform rounded cursor-pointer hover:text-sky-600"
               onClick={submitReply}
