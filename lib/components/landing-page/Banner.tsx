@@ -4,23 +4,23 @@ import 'react-responsive-carousel/lib/styles/carousel.min.css'; // requires a lo
 import ApplicationFormPopup from '../popups/ApplicationFormPopup';
 import Bird from './assets/svg/BlueJay.svg';
 import Wave1 from './assets/svg/wave1.svg';
-import ScheduleGraphic from './assets/ScheduleGraphic';
+import ScheduleGraphic from './assets/components/ScheduleGraphic';
 
 const Laptop: React.FC = () => {
   const router = useRouter();
   return (
     <div>
-      <div className="grid grid-cols-9 bg-blue-header items-stretch font-landingPage">
-        <div className="p-35 col-span-4">
+      <div className="grid grid-cols-9 bg-blue-header items-stretch">
+        <div className="col-span-4">
           <div className="grid grid-flow-row rows">
-            <div className="p-8 mb-2 font-medium m-5 text-3xl sm:text-5xl md:text-7xl lg:text-8xl xl:text-9xl xxxl:text-[180px] text-right text-name">
+            <div className="px-8 mb-2 font-medium m-5 text-3xl sm:text-5xl md:text-7xl lg:text-8xl xl:text-9xl xxxl:text-[180px] text-right text-name">
               uCredit
             </div>
             <div className="p-3 mb-2 xxxl:text-[50px] xxxl:leading-[70px] font-normal m-2 text-sm sm:text-lg md:text-xl lg:text-2xl xl:text-4xl text-right pr-10 text-slogan text-opacity-70">
               Your Academic Planning, <br></br> Made Simple
             </div>
 
-            <div className="z-10 mr-1 scale-[60%]  lg:scale-75 xl:scale-100 md:top-[22%] ml:top-[25rem] lg:top-[80%] top-[20%]  md:left-[-30%] lg:left-[-10%] xl:left-0 left-[-40%] absolute">
+            <div className="z-0 mr-1 scale-[60%]  lg:scale-75 xl:scale-100 md:top-[22%] ml:top-[25rem] lg:top-[80%] top-[20%]  md:left-[-30%] lg:left-[-10%] xl:left-0 left-[-40%] absolute">
               <Bird />
             </div>
             <div className="relative z-10 p-4 mb-2 text-right border-blue-footer pr-16 pt-5 h-[150px]">
@@ -38,7 +38,7 @@ const Laptop: React.FC = () => {
           <ScheduleGraphic />
         </div>
       </div>
-      <div className="font-landingPage z-30 flex items-right justify-end text-gray-600 select-none sm:text-base md:text-lg lg:text-xl xl:text-2xl mr-[13%]">
+      <div className="z-30 flex items-right justify-end text-gray-600 select-none sm:text-base md:text-lg lg:text-xl xl:text-2xl mr-[13%]">
         Partnered with Semesterly
         <img
           src="/img/semlylogo.png"
@@ -54,7 +54,7 @@ const Mobile: React.FC = () => {
   const router = useRouter();
 
   return (
-    <div className="bg-blue-header content-center items-center font-landingPage text-center">
+    <div className="bg-blue-header content-center items-center text-center">
       <div className="text-2xl font-bold text-blue-footer">
         Your Academic Planning <br></br> Made Simple
       </div>

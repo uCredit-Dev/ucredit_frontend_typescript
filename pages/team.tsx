@@ -11,7 +11,7 @@ import React from 'react';
 
 const Team: React.FC = () => {
   return (
-    <div className="font-landingPage">
+    <div>
       <Header />
       <header className="bg-blue-header overflow-hidden ">
         <div className="w-full h-28 pb-12 overflow-hidden">

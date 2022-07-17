@@ -8,7 +8,7 @@ const Footer: React.FC = () => {
   const router = useRouter();
 
   return (
-    <div className="w-full h-1/4 flex flex-row px-10 pt-5 pb-3 justify-between items-end text-blue-header bg-blue-footer font-landingPage">
+    <div className="w-full h-1/4 flex flex-row px-10 pt-5 pb-3 justify-between items-end text-blue-header bg-blue-footer">
       <div className="flex-col space-y-4">
         <div className="inline-flex">
           <img

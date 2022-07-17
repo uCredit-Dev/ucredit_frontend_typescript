@@ -44,7 +44,7 @@ const Header: React.FC = () => {
   const [showMenu, setShowMenu] = useState<Boolean>(false);
 
   return (
-    <div className="sticky top-0 z-40 flex justify-between items-center py-1 px-4 h-1/6 bg-blue-header font-landingPage">
+    <div className="sticky top-0 z-40 flex justify-between items-center py-1 px-4 h-1/6 bg-blue-header">
       <div className="flex-grow">
         <div className="inline-flex">
           <img

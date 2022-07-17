@@ -15,7 +15,7 @@ function Card(props: TeamMemberType) {
   const { img, name, role } = props;
 
   return (
-    <div className="flex w-[350px] h-[200px] bg-white shadow-lg rounded-lg py-1 pl-3 text-black font-landingPage">
+    <div className="flex w-[350px] h-[200px] bg-white shadow-lg rounded-lg py-1 pl-3 text-black">
       <img
         className="w-[125px] my-4 mx-2 rounded-[30px] object-cover"
         src={img}

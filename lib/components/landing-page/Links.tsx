@@ -9,7 +9,7 @@ import Wave1 from './assets/svg/wave1.svg';
 const Laptop: React.FC = () => {
   return (
     <>
-      <div className="font-landingPage grid grid-rows-5 grid-cols-3 grid-flow-col gap-4 items-stretch">
+      <div className="grid grid-rows-5 grid-cols-3 grid-flow-col gap-4 items-stretch">
         <div className="row-start-1 row-end-2 col-span-4 text-gray text-center text-3xl md:text-4xl lg:text-5xl xxxl:text-[95px]">
           Open Source
         </div>
@@ -43,7 +43,7 @@ const Laptop: React.FC = () => {
 const Mobile: React.FC = () => {
   return (
     <>
-      <div className="font-landingPage items-stretch  text-center">
+      <div className="items-stretch  text-center">
         <div className="text-4xl font-normal text-black">Open Source</div>
         <br></br>
         <div className="text-xs text-black px-12">

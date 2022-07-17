@@ -1,13 +1,15 @@
 import Header from '../lib/components/landing-page/Header';
 import Footer from '../lib/components/landing-page/Footer';
-import Feather from '../lib/components/team-page/feather';
-import Feather2 from '../lib/components/team-page/feather2';
-import Footprints from '../lib/components/team-page/footprints';
-import Footprints2 from '../lib/components/team-page/footprints2';
-import Path4 from '../lib/components/team-page/Paths4.svg';
-import Path5 from '../lib/components/team-page/Paths5.svg';
-import Frontpage from '../lib/components/landing-page/Frontpage.svg';
-import Roadmap from '../lib/components/landing-page/Roadmap.svg';
+import Feather from '../lib/components/landing-page/assets/components/feather';
+import Feather2 from '../lib/components/landing-page/assets/components/feather2';
+import Footprints from '../lib/components/landing-page/assets/components/footprints';
+import Footprints2 from '../lib/components/landing-page/assets/components/footprints2';
+import Path4 from '../lib/components/landing-page/assets/svg/Paths4.svg';
+import Path5 from '../lib/components/landing-page/assets/svg/Paths5.svg';
+import Frontpage from '../lib/components/landing-page/assets/svg/Frontpage.svg';
+import Roadmap from '../lib/components/landing-page/assets/svg/Roadmap.svg';
+import React from 'react';
+
 function checkMobile() {
   if (
     /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(
@@ -19,12 +21,12 @@ function checkMobile() {
 }
 const About: React.FC = () => {
   return (
-    <div className="font-landingPage bg-white ">
+    <div className="bg-white ">
       <Header />
 
       <header className="overflow-hidden ">
         <div className="bg-blue-header w-[160%] rounded-b-curvy h-[150px] relative overflow-hidden left-[-30%]">
-          <div className="text-center pt-12 text-3xl sm:text-4xl font-bold font-landingPage  text-blue-footer ">
+          <div className="text-center pt-12 text-3xl sm:text-4xl font-bold text-blue-footer ">
             about uCredit
           </div>
         </div>
@@ -203,7 +205,7 @@ const About: React.FC = () => {
           <li>
             Adapting to{' '}
             <a
-              class="underline text-blue-600"
+              className="underline text-blue-600"
               href="https://hub.jhu.edu/2021/11/18/johns-hopkins-second-diversity-equity-inclusion-roadmap-draft/"
             >
               {' '}

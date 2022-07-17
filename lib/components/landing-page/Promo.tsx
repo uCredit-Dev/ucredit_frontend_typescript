@@ -11,7 +11,7 @@ const Laptop: React.FC = () => {
       <div>
         <Wave2 />
       </div>
-      <div className="flex flex-col px-16 pb-8 text-center bg-blue-header text-blue-footer font-landingPage mt-[-2px]">
+      <div className="flex flex-col px-16 pb-8 text-center bg-blue-header text-blue-footer mt-[-2px]">
         <div>
           {data.map((d) => {
             return !d.order ? (
@@ -74,11 +74,11 @@ const Laptop: React.FC = () => {
 
 const Mobile: React.FC = () => {
   return (
-    <div className="grid grid-cols-1 content-center items-center font-landingPage text-blue-footer text-left">
+    <div className="grid grid-cols-1 content-center items-center text-blue-footer text-left">
       <div>
         <Wave2 />
       </div>
-      <div className="flex flex-col px-10 pb-8 text-center bg-blue-header text-blue-footer font-landingPage">
+      <div className="flex flex-col px-10 pb-8 text-center bg-blue-header text-blue-footer">
         <div>
           {data.map((d) => {
             return (

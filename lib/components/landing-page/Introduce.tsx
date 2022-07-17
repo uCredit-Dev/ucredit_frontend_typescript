@@ -11,7 +11,7 @@ const Laptop: React.FC = () => {
       <div className="w-2/3 left-[73vw] top-[115vh] z-[0vh] md:left-[60vw] top-[75rem] lg:left-[70vw] top-[65rem] xxxl:scale-[140%] left-[85rem] top-[115vh] absolute">
         <Bird />
       </div>
-      <div className="font-landingPage grid grid-rows-5 grid-cols-3 grid-flow-col gap-4 items-stretch xxxl:gap-[200px]">
+      <div className="grid grid-rows-5 grid-cols-3 grid-flow-col gap-4 items-stretch xxxl:gap-[200px]">
         <div className="row-start-1 row-end-2 col-span-4 text-blue-footer text-center text-5xl">
           Introducing uCredit
         </div>
@@ -27,7 +27,7 @@ const Laptop: React.FC = () => {
 
 const Mobile: React.FC = () => {
   return (
-    <div className="grid grid-cols-1 content-center items-center font-landingPage font-bold text-blue-footer text-left ml-10 py-5">
+    <div className="grid grid-cols-1 content-center items-center font-bold text-blue-footer text-left ml-10 py-5">
       <div className="text-2xl ">Our Features</div>
       <img
         className="w-2/3 absolute left-[60vw] top-[65vh]"

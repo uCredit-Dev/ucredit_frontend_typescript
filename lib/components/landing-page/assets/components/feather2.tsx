@@ -1,3 +1,4 @@
+import React from 'react';
 function feather2() {
   return (
     <svg

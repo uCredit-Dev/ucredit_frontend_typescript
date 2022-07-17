@@ -1,139 +1,122 @@
 import clsx from 'clsx';
+import React from 'react';
 
 function footprints() {
   return (
     <svg
       className={clsx(
-        'z-10 h-[330px] sm:mr-[170px] mr-[390px] mt-[-510px] sm:mt-[-150px]',
+        'z-10 h-[290px] sm:h-[330px] mr-[450px] sm:mr-[280px] mt-[-720px] sm:mt-[-265px]',
       )}
-      width="194"
-      height="263"
-      viewBox="0 0 194 263"
+      width="246"
+      height="267"
+      viewBox="0 0 246 267"
       fill="none"
       xmlns="http://www.w3.org/2000/svg"
     >
       <path
-        d="M173.727 18.4091L191.864 2"
+        d="M62.6039 28.5707L49.6845 7.80356"
         stroke="#93C1FE"
         stroke-width="3"
         stroke-linecap="round"
       />
       <path
-        d="M172 7.18164L185.164 8.51336"
+        d="M51.2485 28.2725L54.9018 15.5555"
         stroke="#93C1FE"
         stroke-width="3"
         stroke-linecap="round"
       />
       <path
-        d="M185.164 9.30615L184.954 20.9998"
+        d="M55.6819 15.6963L67.1516 17.9837"
         stroke="#93C1FE"
         stroke-width="3"
         stroke-linecap="round"
       />
       <path
-        d="M149.672 66.424L164.535 47.0001"
+        d="M71.5845 85.1053L63.7241 61.9449"
         stroke="#93C1FE"
         stroke-width="3"
         stroke-linecap="round"
       />
       <path
-        d="M145.939 55.6958L159.126 54.62"
+        d="M60.594 82.2334L67.0424 70.6799"
         stroke="#93C1FE"
         stroke-width="3"
         stroke-linecap="round"
       />
       <path
-        d="M159.27 55.3994L161.183 66.9375"
+        d="M67.7703 70.9946L78.4197 75.8294"
         stroke="#93C1FE"
         stroke-width="3"
         stroke-linecap="round"
       />
       <path
-        d="M98.9905 79.698L116.861 62.9998"
+        d="M115.837 128.251L102.431 107.795"
         stroke="#93C1FE"
         stroke-width="3"
         stroke-linecap="round"
       />
       <path
-        d="M97.0833 68.5L110.267 69.6202"
+        d="M104.478 128.221L107.83 115.421"
         stroke="#93C1FE"
         stroke-width="3"
         stroke-linecap="round"
       />
       <path
-        d="M110.28 70.4131L110.258 82.1086"
+        d="M108.613 115.544L120.134 117.56"
         stroke="#93C1FE"
         stroke-width="3"
         stroke-linecap="round"
       />
       <path
-        d="M89.7053 133.977L100.439 112"
+        d="M123.83 180.275L115.572 157.253"
         stroke="#93C1FE"
         stroke-width="3"
         stroke-linecap="round"
       />
       <path
-        d="M83.9268 124.196L96.6421 120.537"
+        d="M112.791 177.592L119.04 165.93"
         stroke="#93C1FE"
         stroke-width="3"
         stroke-linecap="round"
       />
       <path
-        d="M96.937 121.273L101.091 132.207"
+        d="M119.773 166.231L130.504 170.882"
         stroke="#93C1FE"
         stroke-width="3"
         stroke-linecap="round"
       />
       <path
-        d="M42.7273 163.409L60.8637 147"
+        d="M168.706 205.7L152.919 187.02"
         stroke="#93C1FE"
         stroke-width="3"
         stroke-linecap="round"
       />
       <path
-        d="M41 152.182L54.1641 153.513"
+        d="M157.427 207.047L159.203 193.935"
         stroke="#93C1FE"
         stroke-width="3"
         stroke-linecap="round"
       />
       <path
-        d="M54.1641 154.306L53.9545 166"
+        d="M159.995 193.962L171.675 194.567"
         stroke="#93C1FE"
         stroke-width="3"
         stroke-linecap="round"
       />
       <path
-        d="M43.2905 216.394L53.1248 194"
+        d="M197.262 253.474L178.821 237.409"
         stroke="#93C1FE"
         stroke-width="3"
         stroke-linecap="round"
       />
       <path
-        d="M37.1204 206.856L49.6769 202.685"
+        d="M186.319 256.519L186.082 243.29"
         stroke="#93C1FE"
         stroke-width="3"
         stroke-linecap="round"
       />
       <path
-        d="M50.0012 203.408L54.5948 214.164"
-        stroke="#93C1FE"
-        stroke-width="3"
-        stroke-linecap="round"
-      />
-      <path
-        d="M10.5237 259.706L16.5409 236"
-        stroke="#93C1FE"
-        stroke-width="3"
-        stroke-linecap="round"
-      />
-      <path
-        d="M2.86914 251.313L14.5686 245.133"
-        stroke="#93C1FE"
-        stroke-width="3"
-        stroke-linecap="round"
-      />
-      <path
-        d="M15.0076 245.793L21.3076 255.647"
+        d="M186.869 243.196L198.506 242.02"
         stroke="#93C1FE"
         stroke-width="3"
         stroke-linecap="round"
