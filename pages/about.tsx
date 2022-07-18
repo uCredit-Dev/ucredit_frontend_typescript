@@ -12,12 +12,14 @@ import React from 'react';
 
 function checkMobile() {
   if (
+    navigator &&
     /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(
       navigator.userAgent,
     )
   ) {
     return true;
   }
+  return false;
 }
 const About: React.FC = () => {
   return (
