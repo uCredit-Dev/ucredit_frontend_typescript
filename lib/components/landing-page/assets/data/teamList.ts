@@ -40,7 +40,7 @@ export const currentMembers = [
 
   {
     name: 'Robert Zhang',
-    role: 'Software Engineer',
+    role: 'Tech Lead',
     img: '/img/team-page/Robert_Zhang.png',
     class: '2023',
     github: 'https://github.com/robertzhidealx',
