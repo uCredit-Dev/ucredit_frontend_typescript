@@ -1,17 +1,17 @@
 import axios from 'axios';
 import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { toast } from 'react-toastify';
+// import { toast } from 'react-toastify';
 import { getAPI } from '../lib/resources/assets';
 import {
   selectCourseCache,
   selectUser,
-  updateAllCoursesCached,
+  // updateAllCoursesCached,
   updateCourseCache,
-  updateRetrievedAll,
+  // updateRetrievedAll,
 } from '../lib/slices/userSlice';
 import {
-  SISRetrievedCourse,
+  // SISRetrievedCourse,
   UserCourse,
   Year,
 } from '../lib/resources/commonTypes';
