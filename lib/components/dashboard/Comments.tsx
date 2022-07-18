@@ -157,6 +157,7 @@ const Comments: FC<{
       };
       dispatch(updateThreads(Object.values(threadCopy)));
       setThisThread(threadCopy[location]);
+      setReplyText('');
     }
   };
 
