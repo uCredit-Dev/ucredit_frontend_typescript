@@ -11,15 +11,15 @@ import Roadmap from '../lib/components/landing-page/assets/svg/Roadmap.svg';
 import React from 'react';
 
 function checkMobile() {
-  if (
-    navigator &&
-    /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(
-      navigator.userAgent,
-    )
-  ) {
-    return true;
-  }
-  return false;
+  // if (
+  //   navigator &&
+  //   /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(
+  //     navigator.userAgent,
+  //   )
+  // ) {
+  //   return true;
+  // } else
+  return false; // commenting this out due to vercel build fails. Browser objects such as these don't seem to be available when building.
 }
 const About: React.FC = () => {
   return (
