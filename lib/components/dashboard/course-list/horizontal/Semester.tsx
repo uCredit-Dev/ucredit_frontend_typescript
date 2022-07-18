@@ -196,7 +196,6 @@ const Semester: FC<{
   const updateDistributions = (): void => {
     if (version !== 'None') {
       const body = {
-        _id: undefined,
         ...version,
         user_id: user._id,
         year_id: semesterYear._id,
@@ -212,6 +211,7 @@ const Semester: FC<{
           user._id === 'guestUser'
             ? Date.now() + 60 * 60 * 24 * 1000
             : undefined,
+        _id: undefined,
       };
 
       fetch(getAPI(window) + '/courses', {
