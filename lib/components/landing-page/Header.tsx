@@ -20,7 +20,7 @@ const Links: React.FC = () => {
         Team
       </button>
 
-      <a href="https://ucredit-docs.herokuapp.com/">
+      <a href="https://ucredit-docs.vercel.app/">
         <button className="w-full hover:bg-slate-300 text-lg rounded-lg sm:w-auto px-3 py-1 sm:hover:text-blue-header sm:hover:bg-blue-footer sm:rounded-[13px] transition duration-100 ease-in">
           Docs
         </button>

@@ -43,7 +43,7 @@ const Laptop: React.FC = () => {
             </button>
           </div>
           <div className="mr-auto pt-5">
-            <a href="https://ucredit-docs.herokuapp.com/">
+            <a href="https://ucredit-docs.vercel.app/">
               <button className="  xxxl:text-[55px] xxxl:px-[70px] xxxl:py-[40px] xxxl:border-[8px] xxxl:mt-[60px] px-12 py-5 mr-4 border-4 hover:text-white hover:bg-blue-footer rounded-[50px] font-bold text-base md:text-xl xl:text-2xl">
                 Docs
               </button>
@@ -85,7 +85,7 @@ const Mobile: React.FC = () => {
               About Us
             </button>
           </div>
-          <a href="https://ucredit-docs.herokuapp.com/">
+          <a href="https://ucredit-docs.vercel.app/">
             <button className=" w-80 px-12 py-3 mr-4 border-2 hover:text-white hover:bg-blue-footer rounded-[50px] font-medium text-xl">
               Read Docs
             </button>
