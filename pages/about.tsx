@@ -8,20 +8,29 @@ import Path4 from '../lib/components/landing-page/assets/svg/Paths4.svg';
 import Path5 from '../lib/components/landing-page/assets/svg/Paths5.svg';
 import Frontpage from '../lib/components/landing-page/assets/svg/Frontpage.svg';
 import Roadmap from '../lib/components/landing-page/assets/svg/Roadmap.svg';
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 
-function checkMobile() {
-  // if (
-  //   navigator &&
-  //   /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(
-  //     navigator.userAgent,
-  //   )
-  // ) {
-  //   return true;
-  // } else
-  return false; // commenting this out due to vercel build fails. Browser objects such as these don't seem to be available when building.
-}
 const About: React.FC = () => {
+  const [pageURL, setPageURL] = useState('');
+  const [isMobile, setMobile] = useState(false);
+  useEffect(() => {
+    setPageURL(window.location.href);
+    if (navigator.share) {
+      if (
+        /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(
+          navigator.userAgent,
+        )
+      ) {
+        setMobile(true);
+      }
+    }
+  }, []);
+  /*This solution will check if the app is in mobile every re render.
+  This means that it will not work if you simply switch from desktop to mobile in the inspect element,
+  you must switch it first and then reload to cause the re-render.
+  This won't be an issue for mobile devices, because they will already be on mobile, and
+  the initial render will indicate to the state that it's a mobile device.*/
+
   return (
     <div className="bg-white ">
       <Header />
@@ -44,7 +53,7 @@ const About: React.FC = () => {
               xmlns="http://www.w3.org/2000/svg"
               className="scale-[100%]"
             >
-              {checkMobile() ? <Frontpage /> : <></>}
+              {isMobile ? <Frontpage /> : <></>}
             </svg>
           </div>
         </div>
@@ -107,7 +116,7 @@ const About: React.FC = () => {
                 xmlns="http://www.w3.org/2000/svg"
                 className="scale-[100%]"
               >
-                {checkMobile() ? <Roadmap /> : <></>}
+                {isMobile ? <Roadmap /> : <></>}
               </svg>
             </div>
           </div>
