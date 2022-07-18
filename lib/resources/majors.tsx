@@ -3648,6 +3648,203 @@ const bsNeuro: Major = {
   ],
 };
 
+// https://cogsci.jhu.edu/undergraduate/cognitive-science-major/
+/**
+ * Problem 1: Upper level electives double count with focal area if not marked exclusive, doesnt work at all if marked exclusive.
+ * Problem 2: Classes with multiple areas satisfy all distribution requirements whereas they should satisfy only one of them.
+ * Solution: Exclusivity should be relative to distributions and individual fine requirements rather than just be a boolean. Also, when a distribution is satisfied, it should no longer be considered in the exclusivity check. This solves Problem 1 and Problem 2
+ */
+ const baCogSci: Major = {
+  degree_name: 'B.A. Cognitive Science',
+  abbrev: 'B.A. Cog Sci',
+  department: 'AS Cognitive Science',
+  total_degree_credit: 81,
+  wi_credit: 12,
+  url: 'https://cogsci.jhu.edu/undergraduate/cognitive-science-major/',
+  distributions: [
+    {
+      name: 'One Course from each Focal Area',
+      required_credits: 15,
+      min_credits_per_course: 3,
+      description:
+        'One course is required from each focal area offered by the department: <br />' +
+        'Cognitive Psychology/Cognitive Neuropsychology <br />' +
+        'Linguistics <br />' +
+        'Computational Approaches to Cognition <br />' +
+        'Philosophy of Mind <br />' +
+        'Neuroscience',
+      criteria:
+        'COGS-COGPSY[T]^OR^COGS-LING[T]^OR^COGS-COMPCG[T]^OR^COGS-NEURO[T]^OR^COGS-PHLMND[T]',
+      fine_requirements: [
+        {
+          description: '<b>Cognitive Psychology/Cognitive Neuropsychology</b>',
+          required_credits: 3,
+          criteria: 'COGS-COGPSY[T]',
+        },
+        {
+          description: '<b>Linguistics</b>',
+          required_credits: 3,
+          criteria: 'COGS-LING[T]',
+        },
+        {
+          description: '<b>Computational Approaches to Cognition</b>',
+          required_credits: 3,
+          criteria: 'COGS-COMPCG[T]',
+        },
+        {
+          description: '<b>Philosophy of Mind</b>',
+          required_credits: 3,
+          criteria: 'COGS-PHLMND[T]',
+        },
+        {
+          description: '<b>Neuroscience</b>',
+          required_credits: 3,
+          criteria: 'COGS-NEURO[T]',
+        },
+      ],
+    },
+    {
+      name: 'Two Focal Areas',
+      required_credits: 12,
+      min_credits_per_course: 3,
+      description:
+        'Four courses in each of the two chosen focal areas. Research, readings, and practica courses do not qualify.',
+      criteria:
+        'COGS-COGPSY[T]^OR^COGS-LING[T]^OR^COGS-COMPCG[T]^OR^COGS-NEURO[T]^OR^COGS-PHLMND[T]',
+      pathing: 2,
+      fine_requirements: [
+        {
+          description:
+            '<b>Cognitive Psychology/Cognitive Neuropsychology</b> <br />' +
+            'At least 2 courses must be at the 300 level or above.',
+          required_credits: 12,
+          criteria: 'COGS-COGPSY[T]',
+        },
+        {
+          description:
+            '<b>Linguistics</b> <br />' +
+            'At least 2 courses must be at the 300 level or above.',
+          required_credits: 12,
+          criteria: 'COGS-LING[T]',
+        },
+        {
+          description:
+            '<b>Computational Approaches to Cognition</b> <br />' +
+            'At least 2 courses must be at the 300 level or above.',
+          required_credits: 12,
+          criteria: 'COGS-COMPCG[T]',
+        },
+        {
+          description:
+            '<b>Philosophy of Mind</b> <br />' +
+            'At least 2 courses must be at the 300 level or above.',
+          required_credits: 12,
+          criteria: 'COGS-PHLMND[T]',
+        },
+        {
+          description:
+            '<b>Neuroscience</b> <br />' +
+            'At least 2 courses must be at the 300 level or above.',
+          required_credits: 12,
+          criteria: 'COGS-NEURO[T]',
+        },
+      ],
+    },
+    {
+      name: 'Upper Level Electives',
+      required_credits: 9,
+      min_credits_per_course: 1,
+      description:
+        'Nine credits at the 300-600 level chosen from any of the five areas or other cognitive science courses.' +
+        'Up to three credits of cognitive science research, readings, or practica may apply.',
+      criteria:
+        '(COGS-COGPSY[T]^OR^COGS-LING[T]^OR^COGS-COMPCG[T]^OR^COGS-NEURO[T]^OR^COGS-PHLMND[T])^AND^(Upper Level[L])',
+      // exclusive: true, 
+    },
+    {
+      name: 'Math',
+      required_credits: 6,
+      min_credits_per_course: 3,
+      description:
+        'Select Math Option A or B. For students with Cognitive Psychology/Neuropsychology as one of their focal areas, Math Option B is required',
+      criteria:
+        'AS.110.106[C]^OR^AS.110.108[C]^OR^AS.110.107[C]^OR^AS.110.109[C]^OR^AS.110.113[C]^OR^' +
+        'AS.110.201[C]^OR^AS.110.212[C]^OR^EN.553.291[C]^OR^AS.150.118[C]^OR^AS.150.420[C]^OR^AS.050.370[C]^OR^' +
+        'AS.050.371[C]^OR^AS.050.372[C]^OR^EN.553.171[C]^OR^AS.200.200[C]^OR^AS.200.201[C]',
+      pathing: 1,
+      fine_requirements: [
+        {
+          description:
+            '<b>Option A</b> <br /> Select two of the following: <br />' +
+            'AS.110.106 Calculus I (Biological and Social Sciences) OR AS.110.108 Calculus I (Physical Sciences and Engineering <br />' +
+            'AS.110.107 Calculus II (Biological and Social Sciences) OR AS.110.109 Calculus II (Physical Sciences and Engineering OR AS.110.113 Honors Single Variable Calculus<br />' +
+            'AS.110.201/212 Linear Algebra OR EN.553.291 Linear Algebra and Differential Equations <br />' +
+            'AS.150.118 Introduction to Formal Logic <br />' +
+            'AS.150.420 Mathematical Logic I <br />' +
+            'AS.050.370 Mathematical Models of Language <br />' +
+            'AS.050.371 Bayseian Inference <br />' +
+            'AS.050.372 Foundations of Neural Network Theory <br />' +
+            'EN.553.171 Discrete Mathematics',
+          required_credits: 6,
+          criteria:
+            'AS.110.106[C]^OR^AS.110.108[C]^OR^AS.110.107[C]^OR^AS.110.109[C]^OR^AS.110.113[C]^OR^' +
+            'AS.110.201[C]^OR^AS.110.212[C]^OR^EN.553.291[C]^OR^AS.150.118[C]^OR^AS.150.420[C]^OR^AS.050.370[C]^OR^' +
+            'AS.050.371[C]^OR^AS.050.372[C]^OR^EN.553.171[C]',
+        },
+        {
+          description:
+            '<b>Option B</b> <br />' +
+            'AS.200.200 Research Methods in Psychology <br />' +
+            'AS.200.201 Design and Statistical Analysis for Psychology',
+          required_credits: 8,
+          criteria: 'AS.200.200[C]^OR^AS.200.201[C]',
+        },
+      ],
+    },
+    {
+      name: 'Humanities (H) Distribution',
+      required_credits: 9,
+      min_credits_per_course: 3,
+      description:
+        'The distribution requirement stipulates that students must earn a minimum number of credits in academic areas outside of their primary major. ' +
+        'The student must complete at least 9 credits in the Humanities (H) area. ' +
+        'These credits fulfilling the distribution requirement may overlap with major or minor requirements and the writing-intensive requirement.',
+      criteria: 'H[A]',
+    },
+    {
+      name: 'Social Science (S) Distribution',
+      required_credits: 9,
+      min_credits_per_course: 3,
+      description:
+        'The distribution requirement stipulates that students must earn a minimum number of credits in academic areas outside of their primary major. ' +
+        'The student must complete at least 9 credits in the Social Science (S) area. ' +
+        'These credits fulfilling the distribution requirement may overlap with major or minor requirements and the writing-intensive requirement.',
+      criteria: 'S[A]',
+    },
+    {
+      name: 'Other (N/E/Q) Distribution',
+      required_credits: 9,
+      min_credits_per_course: 3,
+      description:
+        'The distribution requirement stipulates that students must earn a minimum number of credits in academic areas outside of their primary major. ' +
+        'The student must complete at least 9 credits in any of the other areas: Natural Sciences (N), Engineering (E) and/or Quantitative (Q). ' +
+        'These credits fulfilling the distribution requirement may overlap with major or minor requirements and the writing-intensive requirement.',
+      criteria: 'N[A]^OR^E[A]^OR^Q[A]',
+    },
+    {
+      name: 'Writing Intensive',
+      required_credits: 12,
+      min_credits_per_course: 3,
+      double_count: true,
+      description:
+        'To encourage excellence in writing, across disciplines, the university requires all undergraduates to take a number of writing-intensive courses. ' +
+        'All students earning a degree from the School of Arts and Sciences must complete at least 12 credits in writing-intensive courses. ' +
+        'Writing-intensive courses taken to satisfy major, minor, or distribution requirements may also count toward the writing requirement.',
+      criteria: 'Written Intensive[W]',
+    },
+  ],
+};
+
 const no_degree: Major = {
   degree_name: "Undecided Degree/My degree isn't supported yet",
   distributions: [],
@@ -3688,7 +3885,6 @@ export const allMajors: Major[] = [
   // baHistory,
   // baBiology,
   // bsCBE,
-
   // baEcon,
   // minorEcon,
   // baPsych,
@@ -3704,7 +3900,7 @@ export const allMajors: Major[] = [
   // bsBioPhysics,
   // bsChem,
   // bsME,
-  // bsCogSci,
+  baCogSci,
   // bsMatSci,
   // bsBBio,
   // baHistArt,
