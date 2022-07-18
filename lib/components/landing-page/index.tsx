@@ -13,8 +13,12 @@ const LandingPage: React.FC = () => {
   return (
     <div className="flex flex-col w-screen h-full bg-white fixed overflow-y-auto overflow-x-hidden">
       <Header />
-      <Banner />
-      <Introduce />
+      <div>
+        <Banner />
+      </div>
+      <div className="z-30">
+        <Introduce />
+      </div>
       <Promo />
       <Links />
       <Footer />

@@ -30,7 +30,7 @@ const Laptop: React.FC = () => {
                     </div>
                   </div>
 
-                  <div className="flex justify-center w-2/3 bg-gray-200 rounded-md">
+                  <div className="flex justify-center w-2/3 rounded-md">
                     <img
                       className="rounded-md drop-shadow-2xl"
                       alt=""
@@ -46,7 +46,7 @@ const Laptop: React.FC = () => {
                 <br></br>
                 <br></br>
                 <div className="flex flex-row align-middle" key={d.title}>
-                  <div className="flex justify-center w-1/3 h-1/3 bg-gray-200 rounded-md">
+                  <div className="flex justify-center w-1/3 h-1/3 rounded-md">
                     <img
                       className="rounded-md drop-shadow-2xl"
                       alt=""

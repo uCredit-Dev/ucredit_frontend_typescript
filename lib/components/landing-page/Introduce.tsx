@@ -7,10 +7,7 @@ import Bird from './assets/svg/BlueJayIntro.svg';
 
 const Laptop: React.FC = () => {
   return (
-    <div className="pt-32">
-      <div className="absolute scale-[80%] left-[75%] top-[73%] z-[0vh] lg:scale-[110%] left-[58vw] top-[98vh] xl:scale-[130%] left-[75%] top-[95%] md:scale-[80%] left-[65%]">
-        <Bird />
-      </div>
+    <div className="mt-40 relative">
       <div className="grid grid-rows-5 grid-cols-3 grid-flow-col gap-4 items-stretch xxxl:gap-[200px]">
         <div className="row-start-1 row-end-2 col-span-4 text-blue-footer text-center text-5xl xxxl:text-[100px]">
           Introducing uCredit
@@ -20,6 +17,9 @@ const Laptop: React.FC = () => {
           degree trackers, and a beautiful UI that is easily shareable and
           intuitive.
         </div>
+      </div>
+      <div className="absolute scale-[80%] left-[75%] z-[0vh] lg:scale-[110%] left-[58vw] xl:scale-[130%] md:scale-[80%] left-[65%] top-20 xxxl:top-[30vh] xxxl:left-[70%]">
+        <Bird />
       </div>
     </div>
   );
@@ -35,9 +35,9 @@ const Mobile: React.FC = () => {
         alt="logo"
       />
       <div>
-        {data.map((d) => {
+        {data.map((d, i) => {
           return (
-            <>
+            <div key={`mobile-feature-${i}`}>
               <br></br>
               <div
                 className="flex items-center flex-column align-middle"
@@ -50,7 +50,7 @@ const Mobile: React.FC = () => {
                   <div className="text-l text-blue-footer">{d.title}</div>
                 </div>
               </div>
-            </>
+            </div>
           );
         })}
       </div>

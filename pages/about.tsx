@@ -27,12 +27,12 @@ const About: React.FC = () => {
       <header className="overflow-hidden ">
         <div className="bg-blue-header w-[160%] rounded-b-curvy h-[150px] relative overflow-hidden left-[-30%]">
           <div className="text-center pt-12 text-3xl sm:text-4xl font-bold text-blue-footer ">
-            about uCredit
+            About uCredit
           </div>
         </div>
       </header>
 
-      <div className="mt-14 grid grid-cols-1 sm:grid-cols-2 mb-40 max-w-7xl sm:mx-auto mx-4 py-6 px-4 sm:px-6 lg:px-16 justify-items-end">
+      <div className="mt-14 grid grid-cols-1 sm:grid-cols-2 max-w-7xl sm:mx-auto mx-4 py-6 px-4 sm:px-6 lg:px-16 justify-items-end">
         {/*Mobile Row 1, Disappears*/}
         <div className="flex w-full mt-3 overflow-hidden sm:h-0 sm:hidden sm:invisible sm:mt-0 sm:w-0 place-content-center">
           <div className="grow ">
@@ -120,7 +120,7 @@ const About: React.FC = () => {
               <div className="inline-block mt-1">
                 <Feather2 />
               </div>
-              <div className="inline-block text-2xl sm:text-3xl ">
+              <div className="inline-block text-2xl sm:text-3xl">
                 Build and Share Roadmap
               </div>
             </div>
@@ -200,7 +200,8 @@ const About: React.FC = () => {
             professionals.
           </li>
           <li>
-            Incorporate ways to interact with other apps, such as Semester.ly.
+            Incorporate ways to interact with other apps, such as{' '}
+            <a href="https://semester.ly/">Semester.ly</a>.
           </li>
           <li>
             Adapting to{' '}

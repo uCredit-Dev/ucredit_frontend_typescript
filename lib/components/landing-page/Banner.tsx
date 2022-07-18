@@ -4,41 +4,36 @@ import 'react-responsive-carousel/lib/styles/carousel.min.css'; // requires a lo
 import ApplicationFormPopup from '../popups/ApplicationFormPopup';
 import Bird from './assets/svg/BlueJay.svg';
 import Wave1 from './assets/svg/wave1.svg';
-import ScheduleGraphic from './assets/components/ScheduleGraphic';
+import ScheduleGraphic from './assets/svg/ScheduleGraphic.svg';
 
 const Laptop: React.FC = () => {
   const router = useRouter();
   return (
-    <div>
-      <div className="grid grid-cols-9 bg-blue-header items-stretch">
-        <div className="col-span-4">
-          <div className="grid grid-flow-row rows">
-            <div className="px-8 mb-2 font-medium m-5 text-3xl sm:text-5xl md:text-7xl lg:text-8xl xl:text-9xl xxxl:text-[180px] text-right text-name">
-              uCredit
-            </div>
-            <div className="p-3 mb-2 xxxl:text-[50px] xxxl:leading-[70px] font-normal m-2 text-sm sm:text-lg md:text-xl lg:text-2xl xl:text-4xl text-right pr-10 text-slogan text-opacity-70">
-              Your Academic Planning, <br></br> Made Simple
-            </div>
-
-            <div className="z-0 mr-1 scale-[60%]  lg:scale-75 xl:scale-100 md:top-[22%] ml:top-[25rem] lg:top-[80%] top-[20%]  md:left-[-30%] lg:left-[-10%] xl:left-0 left-[-40%] absolute">
-              <Bird />
-            </div>
-            <div className="relative z-10 p-4 mb-2 text-right border-blue-footer pr-16 pt-5 h-[150px]">
-              {/* <img className=" scale-x-[-1] absolute" src="/img/logo.png" alt="logo" /> */}
-              <button
-                className="xxxl:text-[40px] xxxl:py-[30px] z-40 bg-blue-footer text-white absolute font-normal text-sm py-4 px-10 sm:text-base md:text-lg lg:text-xl xl:text-2xl rounded-full right-8"
-                onClick={() => router.push('/login')}
-              >
-                Start
-              </button>
-            </div>
+    <div className="h-screen">
+      <div className="z-0 mr-1 md:top-[22%] ml:top-[25rem] lg:top-[80%] top-[90%] absolute">
+        <Bird />
+      </div>
+      <div className="flex flex-row bg-blue-header items-stretch h-[80%] w-full">
+        <div className="m-auto mr-0">
+          <div className="px-8 mb-2 font-medium m-5 text-3xl sm:text-5xl md:text-7xl lg:text-8xl xl:text-9xl xxxl:text-[180px] text-right text-name mt-[20%]">
+            uCredit
+          </div>
+          <div className="p-3 mb-2 xxxl:text-[50px] xxxl:leading-[70px] font-normal m-2 text-sm sm:text-lg md:text-xl lg:text-2xl xl:text-4xl text-right pr-10 text-slogan text-opacity-70">
+            Your Academic Planning, <br></br> Made Simple
+          </div>
+          <div className="relative z-10 p-4 mb-2 text-right border-blue-footer pr-16 pt-5 h-[150px]">
+            {/* <img className=" scale-x-[-1] absolute" src="/img/logo.png" alt="logo" /> */}
+            <button
+              className="xxxl:text-[40px] xxxl:py-[30px] z-40 bg-blue-footer text-white absolute font-normal text-sm py-4 px-10 sm:text-base md:text-lg lg:text-xl xl:text-2xl rounded-full right-8"
+              onClick={() => router.push('/login')}
+            >
+              Start
+            </button>
           </div>
         </div>
-        <div className="p-4 col-span-5 w-[90%] lg:w-[600px] xl:w-[750px] monitor:w-[740px] xxxl:ml-24 xxxl:w-[920px]  xxxl:h-[580px] h-full mt-5">
-          <ScheduleGraphic />
-        </div>
+        <ScheduleGraphic className="scale-[60vh] m-auto ml-12" />
       </div>
-      <div className="z-30 flex items-right justify-end text-gray-600 select-none sm:text-base md:text-lg lg:text-xl xl:text-2xl mr-[13%]">
+      <div className="z-30 flex items-right justify-end text-gray-600 select-none sm:text-base md:text-lg lg:text-xl xl:text-2xl mr-[10%]">
         Partnered with Semesterly
         <img
           src="/img/semlylogo.png"
@@ -150,9 +145,6 @@ const Banner: React.FC = () => {
         <ApplicationFormPopup setActivateEmailPopup={setActivateEmailPopup} />
       )}
       <div className=" bg-blue-header">
-        <br></br>
-        <br></br>
-
         <div className="hidden sm:block">
           <Laptop />
         </div>
