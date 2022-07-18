@@ -3319,7 +3319,7 @@ const minorEcon: Minor = {
   ],
 };
 
-// https://e-catalogue.jhu.edu/arts-sciences/full-time-residential-programs/degree-programs/physics-astronomy/physics-minor/ 
+// https://e-catalogue.jhu.edu/arts-sciences/full-time-residential-programs/degree-programs/physics-astronomy/physics-minor/
 // https://physics-astronomy.jhu.edu/undergraduate/minors/
 const minorPhysics: Minor = {
   degree_name: 'Minor Physics',
@@ -3336,18 +3336,21 @@ const minorPhysics: Minor = {
       name: 'Contemporary Physics Seminar',
       required_credits: 1,
       min_credits_per_course: 1,
-      description: 'The student must take AS.172.203 Contemporary Physics Seminar.',
+      description:
+        'The student must take AS.172.203 Contemporary Physics Seminar.',
       criteria: 'AS.172.203[C]',
     },
     {
       name: '200-Level (or above) Courses',
       required_credits: 12,
       min_credits_per_course: 3,
-      description: 'The student must complete four (4) courses (at least 3 credits each) at the 200-level or above.',
-      criteria: 'AS Physics & Astronomy[D]^AND^(200[L]^OR^300[L]^OR^400[L]^OR^500[L])^NOT^AS.172.203[C]',
+      description:
+        'The student must complete four (4) courses (at least 3 credits each) at the 200-level or above.',
+      criteria:
+        'AS Physics & Astronomy[D]^AND^(200[L]^OR^300[L]^OR^400[L]^OR^500[L])^NOT^AS.172.203[C]',
     },
   ],
-}
+};
 
 const no_degree: Major = {
   degree_name: "Undecided Degree/My degree isn't supported yet",
