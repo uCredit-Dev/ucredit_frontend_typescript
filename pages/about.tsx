@@ -11,10 +11,8 @@ import Roadmap from '../lib/components/landing-page/assets/svg/Roadmap.svg';
 import React, { useState, useEffect } from 'react';
 
 const About: React.FC = () => {
-  const [pageURL, setPageURL] = useState('');
   const [isMobile, setMobile] = useState(false);
   useEffect(() => {
-    setPageURL(window.location.href);
     if (navigator.share) {
       if (
         /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(
