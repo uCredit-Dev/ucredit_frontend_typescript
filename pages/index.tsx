@@ -29,27 +29,27 @@ const Home: React.FC = () => {
   const [welcomeScreen, setWelcomeScreen] = useState<boolean>(false);
   const [needsToLoad, setNeedsToLoad] = useState<boolean>(false);
 
-  const retrieveData = (counter: number, retrieved: SISRetrievedCourse[]) => {
-    setNeedsToLoad(true);
-    axios
-      .get(getAPI(window) + '/search/skip/' + counter + '?mod=' + 450)
-      .then((courses: any) => {
-        if (courses.data.data.length > 0) {
-          retrieveData(counter + 1, [...retrieved, ...courses.data.data]);
-        } else {
-          toast.dismiss();
-          toast.success('SIS Courses Cached!');
-          setWelcomeScreen(false);
-          dispatch(updateAllCoursesCached(retrieved));
-          dispatch(updateRetrievedAll(true));
-        }
-      })
-      .catch((err) => {
-        // eslint-disable-next-line @typescript-eslint/no-unused-vars
-        retrieveData(counter, retrieved);
-        console.log('err is ', err.message);
-      });
-  };
+  // const retrieveData = (counter: number, retrieved: SISRetrievedCourse[]) => {
+  //   setNeedsToLoad(true);
+  //   axios
+  //     .get(getAPI(window) + '/search/skip/' + counter + '?mod=' + 450)
+  //     .then((courses: any) => {
+  //       if (courses.data.data.length > 0) {
+  //         retrieveData(counter + 1, [...retrieved, ...courses.data.data]);
+  //       } else {
+  //         toast.dismiss();
+  //         toast.success('SIS Courses Cached!');
+  //         setWelcomeScreen(false);
+  //         dispatch(updateAllCoursesCached(retrieved));
+  //         dispatch(updateRetrievedAll(true));
+  //       }
+  //     })
+  //     .catch((err) => {
+  //       // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  //       retrieveData(counter, retrieved);
+  //       console.log('err is ', err.message);
+  //     });
+  // };
 
   useEffect(() => {
     if (user._id === 'noUser') {
