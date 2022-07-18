@@ -365,7 +365,7 @@ const YearComponent: FC<{
     <div
       id={id.toString()}
       className={clsx(
-        'py-2 max-w-year-heading w-full min-w-[14rem] border-b-[2px]',
+        'max-w-year-heading w-full min-w-[14rem]',
         { 'cursor-move': !mode || mode !== ReviewMode.View },
         { 'z-30': addingPrereqStatus },
       )}
