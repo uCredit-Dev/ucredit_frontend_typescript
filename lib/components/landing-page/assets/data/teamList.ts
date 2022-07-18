@@ -51,7 +51,7 @@ export const currentMembers = [
   {
     name: 'Aryaman Shodhan',
     role: 'Software Engineer',
-    img: '/img/team-page/Aryaman_Shodhan.png',
+    img: '/img/team-page/Aryaman.svg',
     class: '2023',
     github: '',
     linkedin: 'https://www.linkedin.com/in/aryaman-shodhan',
