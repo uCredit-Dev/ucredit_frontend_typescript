@@ -8,7 +8,7 @@ import Bird from './assets/svg/BlueJayIntro.svg';
 const Laptop: React.FC = () => {
   return (
     <div className="relative pt-32">
-      <div className="scale-[120%] absolute right-[-430px] top-[33px] z-0">
+      <div className="scale-[120%] absolute right-[-430px] top-[-13px] z-0">
         <Bird />
       </div>
       <div className="grid grid-rows-5 grid-cols-3 grid-flow-col gap-4 items-stretch xxxl:gap-[200px]">
