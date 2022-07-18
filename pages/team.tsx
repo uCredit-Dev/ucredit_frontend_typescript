@@ -34,7 +34,10 @@ const Team: React.FC = () => {
                 {currentMembers.map((person) => {
                   return (
                     <>
-                      <div className="flex-initial justify-self-center px-4 py-4">
+                      <div
+                        className="flex-initial justify-self-center px-4 py-4"
+                        key={person.name}
+                      >
                         <Card
                           name={person.name}
                           role={person.role}

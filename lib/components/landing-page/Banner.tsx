@@ -10,7 +10,7 @@ const Laptop: React.FC = () => {
   const router = useRouter();
   return (
     <div className="h-screen">
-      <div className="z-0 mr-1 md:top-[22%] ml:top-[25rem] lg:top-[80%] top-[90%] absolute">
+      <div className="z-0 mr-1 scale-[90%] md:top-[-20%] ml:top-[50%] lg:top-[50%] top-[50%] absolute left-[-10%]">
         <Bird />
       </div>
       <div className="flex flex-row bg-blue-header items-stretch h-[80%] w-full">

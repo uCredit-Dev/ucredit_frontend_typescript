@@ -15,12 +15,8 @@ const Laptop: React.FC = () => {
         <div>
           {data.map((d) => {
             return !d.order ? (
-              <>
-                <br></br>
-                <br></br>
-                <br></br>
-                <br></br>
-                <div className="flex flex-row" key={d.title}>
+              <div key={d.title}>
+                <div className="py-20 flex flex-row" key={d.title}>
                   <div className="w-2/3 pt-10 pr-10 items-center">
                     <div className="text-4xl mb-10 align-middle xxxl:text-[60px] xxxl:w-[1200px] xxxl:leading-[80px]">
                       {d.title}
@@ -38,14 +34,10 @@ const Laptop: React.FC = () => {
                     />
                   </div>
                 </div>
-              </>
+              </div>
             ) : (
               <>
-                <br></br>
-                <br></br>
-                <br></br>
-                <br></br>
-                <div className="flex flex-row align-middle" key={d.title}>
+                <div className="py-20 flex flex-row align-middle" key={d.title}>
                   <div className="flex justify-center w-1/3 h-1/3 rounded-md">
                     <img
                       className="rounded-md drop-shadow-2xl"
@@ -82,19 +74,15 @@ const Mobile: React.FC = () => {
         <div>
           {data.map((d) => {
             return (
-              <>
-                <br></br>
-                <br></br>
-                <br></br>
-                <br></br>
+              <div key={d.img}>
                 <img
-                  className="rounded-md drop-shadow-2xl"
+                  className="rounded-md drop-shadow-2xl pt-20"
                   alt=""
                   src={d.img}
                 />
 
                 <div className="pt-10">
-                  <div className="bg-gray-100 rounded-md">
+                  <div className="rounded-md">
                     <img className="rounded-md" alt="" src={d.mobileimg} />
                   </div>
 
@@ -105,7 +93,7 @@ const Mobile: React.FC = () => {
                     <div className="text-black">{d.mobiledesc}</div>
                   </div>
                 </div>
-              </>
+              </div>
             );
           })}
         </div>
@@ -117,7 +105,7 @@ const Mobile: React.FC = () => {
         />
 
         <div className="pt-10">
-          <div className="bg-gray-100 rounded-md w-90">
+          <div className="rounded-md w-90">
             <img
               className="rounded-md"
               alt=""
