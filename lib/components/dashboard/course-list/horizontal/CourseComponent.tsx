@@ -1,4 +1,4 @@
-import { useState, useEffect, FC, useRef } from 'react';
+import React, { useState, useEffect, FC, useRef } from 'react';
 import ReactTooltip from 'react-tooltip';
 import { useDispatch, useSelector } from 'react-redux';
 import { MinusIcon, ExclamationIcon } from '@heroicons/react/outline';
@@ -124,15 +124,15 @@ const CourseComponent: FC<{
 
   return (
     <div
-      className="flex flex-row"
+      className="flex flex-row h-12"
       onMouseEnter={activate}
       onMouseLeave={deactivate}
     >
       <div className="absolute">
         {hovered && mode !== ReviewMode.View && (
-          <div className="flex flex-row">
+          <div className="flex flex-row h-14">
             <MinusIcon
-              className=" z-20 -ml-6 mt-3 flex flex-row items-center justify-center p-0.5 w-6 h-6 text-white bg-red-300 hover:bg-red-600 rounded-md outline-none stroke-2 cursor-pointer transform hover:scale-110 transition duration-150 ease-in"
+              className="z-20 -ml-6 flex flex-row items-center my-auto justify-center p-0.5 w-6 h-6 text-white bg-red-300 hover:bg-red-600 rounded-md outline-none stroke-2 cursor-pointer transform hover:scale-110 transition duration-150 ease-in"
               onClick={deleteCourse}
             />
           </div>
