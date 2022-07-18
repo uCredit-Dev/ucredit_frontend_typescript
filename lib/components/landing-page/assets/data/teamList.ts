@@ -254,6 +254,15 @@ export const alumnis = [
     portfolio: '',
   },
   {
+    name: 'Connie Chang-Chien',
+    role: 'UI/UX Designer',
+    img: '/img/team-page/Connie_CC.jpg',
+    class: '2023',
+    github: '',
+    linkedin: 'https://www.linkedin.com/in/connie-chang-chien-3b2015101/',
+    portfolio: '',
+  },
+  {
     name: 'Alan Zhang',
     role: 'Software Engineer',
     img: '/img/team-page/Alan_Zhang.jpg',
