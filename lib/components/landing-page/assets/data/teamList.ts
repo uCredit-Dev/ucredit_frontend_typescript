@@ -1,15 +1,5 @@
 export const currentMembers = [
   {
-    name: 'Xuhua Sun',
-    role: 'Software Engineer',
-    img: '/img/team-page/Xuhua_Sun.png',
-    class: '2022',
-    github: 'https://github.com/Cloud9-ine',
-    linkedin: 'https://www.linkedin.com/in/xuhua-sun-955804222/',
-    portfolio: '',
-  },
-
-  {
     name: 'Matthew Liu',
     role: 'Co-founder/Project Manager/Tech Lead',
     img: '/img/team-page/Matthew_Liu.png',
@@ -27,17 +17,6 @@ export const currentMembers = [
     linkedin: 'https://www.linkedin.com/in/qinyuan-wu-1018641a3/',
     portfolio: '',
   },
-
-  {
-    name: 'Andy Qin',
-    role: 'Team Manager',
-    img: '/img/team-page/Andy_Qin.png',
-    class: '2023',
-    github: 'https://github.com/qin-andy',
-    linkedin: 'https://www.linkedin.com/in/andy-qin-86b00285/',
-    portfolio: '',
-  },
-
   {
     name: 'Robert Zhang',
     role: 'Tech Lead',
@@ -49,12 +28,12 @@ export const currentMembers = [
   },
 
   {
-    name: 'Aryaman Shodhan',
-    role: 'Software Engineer',
-    img: '/img/team-page/Aryaman_Shodhan.png',
-    class: '2023',
-    github: '',
-    linkedin: 'https://www.linkedin.com/in/aryaman-shodhan',
+    name: 'Andy Qin',
+    role: 'Team Manager',
+    img: '/img/team-page/Andy_Qin.png',
+    class: 'UW 2023',
+    github: 'https://github.com/qin-andy',
+    linkedin: 'https://www.linkedin.com/in/andy-qin-86b00285/',
     portfolio: '',
   },
 
@@ -79,12 +58,49 @@ export const currentMembers = [
   },
 
   {
-    name: 'Matthew Flynn',
-    role: 'Software Engineer',
-    img: '/img/team-page/Matthew_Flynn.png',
+    name: 'Sean Pak',
+    role: 'UI/UX Designer',
+    img: '/img/team-page/Sean_Pak.png',
+    class: '2023',
+    github: '',
+    linkedin: 'https://www.linkedin.com/in/seanpak05',
+    portfolio: '',
+  },
+  {
+    name: 'Astrid Jiang',
+    role: 'UI/UX Designer',
+    img: '/img/team-page/Astrid_Jiang.png',
     class: '2024',
     github: '',
-    linkedin: 'https://www.linkedin.com/in/matthew-flynn-114aa3243/',
+    linkedin: 'www.linkedin.com/in/astrid-k-jiang',
+    portfolio: '',
+  },
+
+  {
+    name: 'Xuhua Sun',
+    role: 'Software Engineer',
+    img: '/img/team-page/Xuhua_Sun.png',
+    class: '2022',
+    github: 'https://github.com/Cloud9-ine',
+    linkedin: 'https://www.linkedin.com/in/xuhua-sun-955804222/',
+    portfolio: '',
+  },
+  {
+    name: 'Aryaman Shodhan',
+    role: 'Software Engineer',
+    img: '/img/team-page/Aryaman_shodhan.png',
+    class: '2023',
+    github: 'https://github.com/aryamanshodhan',
+    linkedin: 'https://www.linkedin.com/in/aryaman-shodhan',
+    portfolio: '',
+  },
+  {
+    name: 'Mark Tiavises',
+    role: 'Software Engineer',
+    img: '/img/team-page/Mark_Tiavises.png',
+    class: '2023',
+    github: 'https://github.com/mtiavis1',
+    linkedin: 'https://www.linkedin.com/in/mark-tiavises-16280a240',
     portfolio: '',
   },
 
@@ -107,24 +123,22 @@ export const currentMembers = [
     linkedin: 'https://www.linkedin.com/in/qifan-sun-797ab4224/',
     portfolio: '',
   },
-
   {
-    name: 'Astrid Jiang',
-    role: 'UI/UX Designer',
-    img: '/img/team-page/Astrid_Jiang.png',
+    name: 'Matthew Flynn',
+    role: 'Software Engineer',
+    img: '/img/team-page/Matthew_Flynn.png',
     class: '2024',
     github: '',
-    linkedin: 'www.linkedin.com/in/astrid-k-jiang',
+    linkedin: 'https://www.linkedin.com/in/matthew-flynn-114aa3243/',
     portfolio: '',
   },
-
   {
-    name: 'Sean Pak',
-    role: 'UI/UX Designer',
-    img: '/img/team-page/Sean_Pak.png',
+    name: 'William Tong',
+    role: 'Software Engineer',
+    img: '/img/team-page/William_Tong.png',
     class: '2024',
     github: '',
-    linkedin: 'https://www.linkedin.com/in/seanpak05',
+    linkedin: 'https://www.linkedin.com/in/tong-william/',
     portfolio: '',
   },
 
@@ -187,24 +201,6 @@ export const currentMembers = [
     linkedin: 'https://www.linkedin.com/in/kevin-liu-2495b6205/',
     portfolio: '',
   },
-  {
-    name: 'William Tong',
-    role: 'Software Engineer',
-    img: '/img/team-page/William_Tong.png',
-    class: '2024',
-    github: '',
-    linkedin: 'https://www.linkedin.com/in/tong-william/',
-    portfolio: '',
-  },
-  {
-    name: 'Mark Tiavises',
-    role: 'Software Engineer',
-    img: '/img/team-page/Mark_Tiavises.png',
-    class: '2023',
-    github: 'https://github.com/mtiavis1',
-    linkedin: 'https://www.linkedin.com/in/mark-tiavises-16280a240',
-    portfolio: '',
-  },
 ];
 
 export const supervisors = [
@@ -239,6 +235,24 @@ export const alumnis = [
     linkedin: 'https://www.linkedin.com/in/elizabeth-c-cho',
     portfolio: 'https://elizabeth-cho.github.io/',
   },
+  {
+    name: 'Jeanie Fung',
+    role: 'UI/UX Designer',
+    img: '/img/team-page/Jeanie_Fung.jpg',
+    class: '2022',
+    github: '',
+    linkedin: 'https://www.linkedin.com/in/jeanie-fung/',
+    portfolio: '',
+  },
+  {
+    name: 'Pamela Li',
+    role: 'UI/UX Designer',
+    img: '/img/team-page/Pamela_Li.png',
+    class: '2023',
+    github: '',
+    linkedin: 'https://www.linkedin.com/in/pamela-li626/',
+    portfolio: '',
+  },
 
   {
     name: 'James S. Wang',
@@ -252,22 +266,12 @@ export const alumnis = [
 
   {
     name: 'Chinat Yu',
-    role: 'Project Manager',
+    role: 'Software Engineer',
     img: '/img/team-page/Chinat_Yu.png',
     class: '2023',
     github: 'https://github.com/cyu60',
     linkedin: 'https://www.linkedin.com/in/chinat-yu/',
     portfolio: 'chinatyu.me',
-  },
-
-  {
-    name: 'Pamela Li',
-    role: 'UI/UX Designer',
-    img: '/img/team-page/Pamela_Li.png',
-    class: '2023',
-    github: '',
-    linkedin: 'https://www.linkedin.com/in/pamela-li626/',
-    portfolio: '',
   },
 
   {
