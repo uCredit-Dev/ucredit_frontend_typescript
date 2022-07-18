@@ -253,6 +253,15 @@ export const alumnis = [
     linkedin: 'https://www.linkedin.com/in/pamela-li626/',
     portfolio: '',
   },
+  {
+    name: 'Alan Zhang',
+    role: 'Software Engineer',
+    img: '/img/team-page/Alan_Zhang.jpg',
+    class: '2023',
+    github: 'https://github.com/alanz132',
+    linkedin: 'https://www.linkedin.com/in/alan-zhang-6b89281a1/',
+    portfolio: '',
+  },
 
   {
     name: 'James S. Wang',
