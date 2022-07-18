@@ -76,12 +76,9 @@ const Mobile: React.FC = () => {
           {data.map((d) => {
             return (
               <>
-                <br></br>
-                <br></br>
-                <br></br>
-                <br></br>
+
                 <img
-                  className="rounded-md drop-shadow-2xl"
+                  className="rounded-md drop-shadow-2xl pt-20"
                   alt=""
                   src={d.img}
                 />
