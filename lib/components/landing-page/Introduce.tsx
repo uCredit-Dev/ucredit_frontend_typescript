@@ -7,15 +7,15 @@ import Bird from './assets/svg/BlueJayIntro.svg';
 
 const Laptop: React.FC = () => {
   return (
-    <div className="relative pt-32">
-      <div className="scale-[120%] absolute right-[-430px] top-[-13px] z-0">
+    <div className="relative pt-8 pb-20">
+      <div className="scale-[120%] absolute right-[-430px] top-[-55%] z-0">
         <Bird />
       </div>
-      <div className="grid grid-rows-5 grid-cols-3 grid-flow-col gap-4 items-stretch xxxl:gap-[200px]">
-        <div className="z-10 row-start-1 row-end-2 col-span-4 text-blue-footer text-center text-5xl xxxl:text-[100px]">
+      <div className=" gap-4 items-stretch xxxl:gap-[200px] flex flex-col w-full">
+        <div className="z-10 text-blue-footer text-center text-5xl xxxl:text-[100px] bg-white rounded-xl w-max p-2 mx-auto">
           Introducing uCredit
         </div>
-        <div className="mt-2 px-20 lg:px-40 leading-10 row-span-1 col-span-4 text-center z-20 text-2xl xxxl:text-[50px] xxxl:leading-[70px] xxxl:px-[450px]">
+        <div className="bg-white rounded-xl w-[66%] ml-[18%] px-2 lg:px-2 leading-10 row-span-1 col-span-4 text-center z-20 text-2xl xxxl:text-[50px] xxxl:leading-[70px] xxxl:px-[450px]">
           A student-centric application packed with features like prereq checks,
           degree trackers, and a beautiful UI that is easily shareable and
           intuitive.

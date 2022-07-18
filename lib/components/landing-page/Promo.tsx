@@ -15,8 +15,7 @@ const Laptop: React.FC = () => {
         <div>
           {data.map((d) => {
             return !d.order ? (
-              <>
-
+              <div key={d.title}>
                 <div className="py-20 flex flex-row" key={d.title}>
                   <div className="w-2/3 pt-10 pr-10 items-center">
                     <div className="text-4xl mb-10 align-middle xxxl:text-[60px] xxxl:w-[1200px] xxxl:leading-[80px]">
@@ -35,7 +34,7 @@ const Laptop: React.FC = () => {
                     />
                   </div>
                 </div>
-              </>
+              </div>
             ) : (
               <>
                 <div className="py-20 flex flex-row align-middle" key={d.title}>
@@ -75,8 +74,7 @@ const Mobile: React.FC = () => {
         <div>
           {data.map((d) => {
             return (
-              <>
-
+              <div key={d.img}>
                 <img
                   className="rounded-md drop-shadow-2xl pt-20"
                   alt=""
@@ -95,7 +93,7 @@ const Mobile: React.FC = () => {
                     <div className="text-black">{d.mobiledesc}</div>
                   </div>
                 </div>
-              </>
+              </div>
             );
           })}
         </div>
