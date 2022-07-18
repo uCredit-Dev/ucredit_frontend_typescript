@@ -3316,7 +3316,7 @@ const bsNeuro: Major = {
         'Must complete Calculus I, Calculus II, Probability & Statistics, Chemistry I & II, Organic Chemistry I, and General Physics I & II with their respective labs.',
       criteria:
         'EN.553.211[C]^OR^EN.553.310[C]^OR^EN.553.311[C]^OR^EN.553.111[C]^OR^EN.553.112[C]^OR^AS.110.106[C]^OR^AS.110.108[C]^OR^AS.110.107[C]^OR^AS.110.109[C]^OR^AS.171.113[C]^OR^' +
-        'AS.030.101[C]^OR^AS.030.102[C]^OR^AS.030.103[C]^OR^AS.030.105[C]^OR^AS.030.106[C]^OR^AS.030.305[C]^OR^' + 
+        'AS.030.101[C]^OR^AS.030.102[C]^OR^AS.030.103[C]^OR^AS.030.105[C]^OR^AS.030.106[C]^OR^AS.030.305[C]^OR^' +
         'AS.171.101[C]^OR^AS.171.103[C]^OR^AS.171.107[C]^OR^AS.171.102[C]^OR^AS.171.104[C]^OR^AS.171.108[C]^OR^AS.173.111[C]^OR^AS.173.112[C]',
       fine_requirements: [
         {
@@ -3508,12 +3508,13 @@ const bsNeuro: Major = {
     },
     {
       name: 'Elective Course',
-      exclusive: true, 
+      exclusive: true,
       required_credits: 3,
       min_credits_per_course: 3,
       description:
         'Three credits of 300-level or higher approved course outside of selected focus area',
-      criteria: '(NEUR-ST[T]^OR^NEUR-CG[T]^OR^NEUR-CP[T]^OR^NEUR-CM[T])^AND^Upper Level[L]',
+      criteria:
+        '(NEUR-ST[T]^OR^NEUR-CG[T]^OR^NEUR-CP[T]^OR^NEUR-CM[T])^AND^Upper Level[L]',
     },
     {
       name: 'Research',
