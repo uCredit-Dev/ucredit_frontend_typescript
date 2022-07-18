@@ -87,7 +87,7 @@ const Mobile: React.FC = () => {
                 />
 
                 <div className="pt-10">
-                  <div className="bg-gray-100 rounded-md">
+                  <div className="rounded-md">
                     <img className="rounded-md" alt="" src={d.mobileimg} />
                   </div>
 
@@ -110,7 +110,7 @@ const Mobile: React.FC = () => {
         />
 
         <div className="pt-10">
-          <div className="bg-gray-100 rounded-md w-90">
+          <div className="rounded-md w-90">
             <img
               className="rounded-md"
               alt=""
