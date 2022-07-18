@@ -236,7 +236,7 @@ const PlanEditMenu: FC<{ mode: ReviewMode }> = ({ mode }) => {
         <>
           <Popover.Button
             className={clsx(
-              'flex items-center p-2 text-base font-normal text-black rounded-lg bg-white w-min z-20 top-20 right-9 shadow-lg',
+              'flex items-center p-2 text-base font-normal text-black rounded-lg  w-min z-20 top-20 right-9 focus:outline-none bg-slate-100 shadow-sm',
               {
                 'fixed ': searchStatus,
                 ' absolute': !searchStatus,
@@ -258,14 +258,14 @@ const PlanEditMenu: FC<{ mode: ReviewMode }> = ({ mode }) => {
           >
             <Popover.Panel
               className={clsx(
-                'w-80 top-28 z-50 right-0 overflow-y-auto max-h-[75%]',
+                'w-80 top-28 z-50 right-0 overflow-x-none overflow-y-auto max-h-[75%]',
                 {
                   ' fixed': searchStatus,
                   ' absolute': !searchStatus,
                 },
               )}
             >
-              <div className="overflow-y-auto py-4 px-3 bg-white rounded mr-5 mt-3 shadow-lg z-50">
+              <div className="overflow-y-auto py-4 px-3 bg-slate-100 shadow-md rounded mr-5 mt-3 z-50">
                 <ul className="space-y-2">
                   {mode === ReviewMode.Edit && (
                     <li>
@@ -288,7 +288,7 @@ const PlanEditMenu: FC<{ mode: ReviewMode }> = ({ mode }) => {
                       onClick={() => {
                         dispatch(updateInfoPopup(!infoPopup));
                       }}
-                      className="flex items-center p-2 text-base font-normal text-gray-900 rounded-lg hover:bg-gray-100 w-full"
+                      className="flex items-center p-2 text-base font-normal text-gray-900 rounded-lg hover:bg-gray-200 w-full bg-white"
                     >
                       <svg
                         className="flex-shrink-0 w-6 h-6 text-gray-500 transition duration-75 group-hover:text-gray-900"
@@ -312,10 +312,10 @@ const PlanEditMenu: FC<{ mode: ReviewMode }> = ({ mode }) => {
                     <li>
                       <button
                         onClick={() => setOpenEditArea(!openEditArea)}
-                        className="flex items-center p-2 text-base font-normal text-gray-900 rounded-lg hover:bg-gray-100 w-full"
+                        className="flex items-center p-2 text-base font-normal text-gray-900 rounded-lg hover:bg-gray-200 w-full bg-white"
                       >
                         <span className="flex-1 ml-0.5 whitespace-nowrap w-full text-left flex flex-row">
-                          <PencilAltIcon className="bg-gray-100 w-[1.4rem] text-gray-500 mr-3" />{' '}
+                          <PencilAltIcon className="w-[1.4rem] text-gray-500 mr-3" />{' '}
                           Edit Plan
                         </span>
                       </button>
@@ -360,7 +360,7 @@ const PlanEditMenu: FC<{ mode: ReviewMode }> = ({ mode }) => {
                         </li>
                         <li className="flex flex-row">
                           <button
-                            className="flex flex-row items-center h-10 px-2 my-1 ml-1 mr-2 transition duration-200 ease-in border border-gray-300 rounded hover:underline hover:bg-primary"
+                            className="flex flex-row items-center h-10 px-2 my-1 ml-1 mr-2 transition duration-200 ease-in border border-gray-300 bg-blue-100 rounded hover:underline hover:bg-primary"
                             onClick={onShareClick}
                           >
                             <svg
@@ -381,7 +381,7 @@ const PlanEditMenu: FC<{ mode: ReviewMode }> = ({ mode }) => {
                           </button>
                           <div
                             onClick={() => addNewYear(false)}
-                            className=" thin:mx-auto flex mr-2 flex-row items-center text-left w-full h-10 my-1 transition duration-200 ease-in border border-gray-300 rounded cursor-pointer hover:underline hover:bg-green-300 focus:outline-none"
+                            className=" thin:mx-auto flex mr-2 flex-row items-center text-left w-full h-10 my-1 transition duration-200 ease-in border bg-green-100 border-gray-300 rounded cursor-pointer hover:underline hover:bg-green-300 focus:outline-none"
                           >
                             <PlusIcon
                               data-tip={`Add a new year!`}
@@ -391,7 +391,7 @@ const PlanEditMenu: FC<{ mode: ReviewMode }> = ({ mode }) => {
                             <div className="w-full ml-1">{' Add Year'}</div>
                           </div>
                           <button
-                            className="flex flex-row items-center h-10 px-2 my-1 mr-2 transition duration-200 ease-in border border-gray-300 rounded hover:underline hover:bg-red-300"
+                            className="flex flex-row items-center h-10 px-2 my-1 mr-2 transition duration-200 ease-in border border-gray-300 rounded hover:underline hover:bg-red-300 bg-red-100"
                             onClick={activateDeletePlan}
                           >
                             <TrashIcon className="w-5 my-auto transition duration-200 ease-in transform cursor-pointer select-none stroke-2 hover:scale-110" />{' '}
@@ -409,7 +409,7 @@ const PlanEditMenu: FC<{ mode: ReviewMode }> = ({ mode }) => {
                     </>
                   )}
                   {mode === ReviewMode.Edit && user._id !== 'guestUser' && (
-                    <ul className="pt-2 space-y-2 border-t border-b pb-2 border-gray-200">
+                    <ul className="pt-2 space-y-2 border-t border-b pb-2 border-gray-200 bg-white">
                       {reviewMode !== ReviewMode.View && <Reviewers />}
                     </ul>
                   )}

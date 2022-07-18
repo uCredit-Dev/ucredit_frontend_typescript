@@ -1,5 +1,5 @@
-import { useState } from 'react';
-import { DotsVerticalIcon, ExclamationIcon } from '@heroicons/react/outline';
+import React, { useState } from 'react';
+import { ExclamationIcon } from '@heroicons/react/outline';
 import CurrentReviewers from './CurrentReviewers';
 import ReviewersSearch from './ReviewersSearch';
 import { Hoverable, TooltipPrimary } from '../../../utils';
@@ -11,11 +11,11 @@ const Reviewers = () => {
 
   return (
     <div className="flex flex-col">
-      <div className="flex flex-row items-center justify-between pb-1 text-xl cursor-pointer  hover:bg-gray-100 rounded p-2">
+      <div className="flex flex-row items-center justify-between pb-1 text-xl cursor-pointer rounded p-2">
         <div className="flex items-center gap-1" onClick={() => setShow(!show)}>
-          <p className="flex flex-row">
+          <p className="flex flex-row h-full">
             <svg
-              className={clsx('w-6 h-6 mt-1 rotate-180', {
+              className={clsx('w-6 h-6 rotate-180 my-auto', {
                 'rotate-0': show,
               })}
               fill="currentColor"
@@ -32,31 +32,35 @@ const Reviewers = () => {
           </p>
           {process.env.NODE_ENV === 'development' && (
             <Hoverable
-              as={
-                <ExclamationIcon className="text-red-400 w-5 h-5 translate-y-[1.5px]" />
-              }
+              as={<ExclamationIcon className="text-red-400 w-5 h-5 relative" />}
             >
               {({ hovered }) => {
                 return (
-                  hovered && (
-                    <TooltipPrimary width={300}>
-                      It looks like you are in dev mode! You will only be able
-                      to add or move the following reviewers: freshmanDev,
-                      sophomoreDev, juniorDev, seniorDev
-                    </TooltipPrimary>
-                  )
+                  <>
+                    {hovered && (
+                      <div className="absolute -left-[108rem] -top-[6rem]">
+                        <TooltipPrimary width={200}>
+                          It looks like you are in dev mode! You will only be
+                          able to add or move the following reviewers:
+                          freshmanDev, sophomoreDev, juniorDev, seniorDev
+                        </TooltipPrimary>
+                      </div>
+                    )}
+                  </>
                 );
               }}
             </Hoverable>
           )}
         </div>
-        <DotsVerticalIcon
-          className="h-6 add-reviewer-button"
+        <div
+          className="text-sm add-reviewer-button mr-1 underline"
           onClick={() => {
             updateAddingReviewer(!addingReviewer);
             setShow(true);
           }}
-        />
+        >
+          {addingReviewer ? 'View' : 'Edit'}
+        </div>
       </div>
       {show && (
         <>
@@ -65,7 +69,9 @@ const Reviewers = () => {
               <ReviewersSearch />
             </div>
           ) : (
-            <CurrentReviewers />
+            <div className="px-2">
+              <CurrentReviewers />
+            </div>
           )}
         </>
       )}

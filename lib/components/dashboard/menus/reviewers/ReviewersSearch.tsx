@@ -36,7 +36,7 @@ const ReviewersSearch = () => {
   };
 
   return (
-    <div className="flex flex-col pr-1 bg-gray-100 rounded-lg">
+    <div className="flex flex-col pr-1 bg-slate-100 mx-1 rounded-lg">
       <div className="ml-2 py-2">
         <p className="text-gray-500">Add or remove reviewers</p>
       </div>

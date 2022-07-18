@@ -196,6 +196,7 @@ const Semester: FC<{
   const updateDistributions = (): void => {
     if (version !== 'None') {
       const body = {
+        _id: undefined,
         ...version,
         user_id: user._id,
         year_id: semesterYear._id,
@@ -470,13 +471,15 @@ const Semester: FC<{
           onMouseEnter={() => setHovered(true)}
           className="min-w-[15rem] max-w-[40rem] w-min mx-3"
         >
-          <Comments
-            location={'Semester ' + semesterYear._id + semesterName}
-            hovered={hovered}
-            mode={mode}
-          />
-          <div className="flex flex-col font-medium max-w-yearheading h-yearheading">
-            <div className="flex flex-row items-center justify-between px-2 py-1 bg-white h-yearheading1">
+          <div className="relative">
+            <Comments
+              location={'Semester ' + semesterYear._id + semesterName}
+              hovered={hovered}
+              mode={mode}
+            />
+          </div>
+          <div className="flex flex-col font-medium h-yearheading">
+            <div className="flex flex-row items-center justify-between pr-2 py-1 bg-white h-yearheading1">
               <div className="flex flex-row items-center h-auto gap-3 font-normal">
                 {getSemesterTitle()}
               </div>
@@ -519,6 +522,7 @@ const Semester: FC<{
 
 const getListStyle = (isDraggingOver: boolean) => ({
   background: isDraggingOver ? '#F3F3F3' : 'transparent',
+  minHeight: '1rem',
 });
 
 export default Semester;
