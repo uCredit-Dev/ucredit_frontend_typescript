@@ -20,7 +20,7 @@ const data = [
     order: 0,
   },
   {
-    title: 'Build a Roadmap for your Education and the community',
+    title: 'Build a roadmap for your education and the community',
     desc: 'Build your college roadmap! Then easily use uCredit to share your roadmap with your advisors and friends!',
     img: '/img/landing-page/roadMap.svg',
     mobileimg: '/img/landing-page/roadMapMobile.svg',
