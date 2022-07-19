@@ -240,7 +240,7 @@ export const alumnis = [
     role: 'UI/UX Designer',
     img: '/img/team-page/Jeanie_Fung.jpg',
     class: '2022',
-    github: '',
+    github: 'https://github.com/jwfung',
     linkedin: 'https://www.linkedin.com/in/jeanie-fung/',
     portfolio: '',
   },
