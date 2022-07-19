@@ -1,10 +1,10 @@
 import React, { useState } from "react";
 import CommentIcon from "../lib/components/roadmap-page/commentEditor/CommentIcon";
-import CommentEditor from "../lib/components/roadmap-page/commentEditor/Editor";
+import Editor from "../lib/components/roadmap-page/commentEditor/Editor";
 
 
 const RoadMap: React.FC = () => {
-  const [editorPopup, setEditorPopup] = useState(true);
+  const [editorPopup, setEditorPopup] = useState(false);
   const [comments, setComments] = useState<string[]>([]);
   console.log(comments)
 
@@ -22,7 +22,7 @@ const RoadMap: React.FC = () => {
         <CommentIcon onClickBtn={onClickBtn}/>
       </div>
 
-      {editorPopup && <CommentEditor addComments={addComments}/>}
+      {editorPopup && <Editor addComments={addComments}/>}
       
     </>
   )

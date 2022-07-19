@@ -5,7 +5,7 @@ interface Props {
   addComments: (newComment: string) => void;
 }
 
-const CommentEditor: React.FC<Props> = (props) => {
+const Editor: React.FC<Props> = (props) => {
   const addComments = props.addComments;
   const [text, setText] = useState("");
 
@@ -38,4 +38,4 @@ const CommentEditor: React.FC<Props> = (props) => {
 
 }
 
-export default CommentEditor;
+export default Editor;
