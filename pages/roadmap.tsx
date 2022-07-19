@@ -6,23 +6,30 @@ import Editor from "../lib/components/roadmap-page/commentEditor/Editor";
 const RoadMap: React.FC = () => {
   const [editorPopup, setEditorPopup] = useState(false);
   const [comments, setComments] = useState<string[]>([]);
-  console.log(comments)
 
-  const onClickBtn = () => {
+  
+  const openEditor = () => {
     setEditorPopup(true);
   }
+
+  const closeEditor = () => {
+    setEditorPopup(false);
+  }
+
 
   const addComments = (newComment: string) => {
     setComments([...comments, newComment]);
   }
-  
+
   return (
     <>
       <div className="absolute bottom-10 right-10">
-        <CommentIcon onClickBtn={onClickBtn}/>
+        <CommentIcon openEditor={openEditor}/>
       </div>
 
-      {editorPopup && <Editor addComments={addComments}/>}
+      <div>
+        {editorPopup && <Editor addComments={addComments} closeEditor={closeEditor}/>}
+      </div>
       
     </>
   )
