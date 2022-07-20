@@ -205,8 +205,8 @@ const DistributionBarsJSX: FC<{ major: Major }> = ({ major }) => {
       if (
         (distExclusive === undefined || distExclusive.includes(req.name)) && 
         (req.fulfilled_credits < req.required_credits ||
-        (req.required_credits === 0 && req.fulfilled_credits === 0) && 
-        checkRequirementSatisfied(req, courseObj))
+        (req.required_credits === 0 && req.fulfilled_credits === 0)) && 
+        checkRequirementSatisfied(req, courseObj)
       ) {
         reqs[i][1][0].fulfilled_credits += parseInt(courseObj.credits);
         distExclusive = req.exclusive; // set exclusive, if any
@@ -217,8 +217,8 @@ const DistributionBarsJSX: FC<{ major: Major }> = ({ major }) => {
             if (
               (fineExclusive === undefined || fineExclusive.includes(fineReq.name)) &&
               (fineReq.fulfilled_credits < fineReq.required_credits ||
-              (fineReq.required_credits === 0 && fineReq.fulfilled_credits === 0) && 
-              checkRequirementSatisfied(fineReq, courseObj))
+              (fineReq.required_credits === 0 && fineReq.fulfilled_credits === 0)) && 
+              checkRequirementSatisfied(fineReq, courseObj)
             ) {
               reqs[i][1][j].fulfilled_credits += parseInt(courseObj.credits);
               fineExclusive = fineReq.exclusive; 
