@@ -194,7 +194,7 @@ export type FineReq = {
   required_credits: number;
   description: string;
   criteria: string;
-  exclusive?: string[];
+  exclusive?: boolean;
 };
 
 export type DistributionObj = {
@@ -207,8 +207,8 @@ export type DistributionObj = {
   user_select?: boolean;
   double_count?: boolean;
   exception?: string;
-  exclusive?: string[];
-  pathing?: number;
+  exclusive?: boolean;
+  pathing?: boolean;
 };
 
 export type Major = {
