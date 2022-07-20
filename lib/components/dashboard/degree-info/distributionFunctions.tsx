@@ -6,7 +6,7 @@ export type requirements = {
   required_credits: number;
   fulfilled_credits: number;
   description: string;
-  exclusive?: boolean;
+  exclusive?: string[];
   pathing?: boolean;
   wi?: boolean;
 };
