@@ -141,7 +141,6 @@ const Cart: FC<{ allCourses: SISRetrievedCourse[] }> = (props) => {
       default:
         extras.query = splitArr[index];
     }
-    console.log(extras);
     return extras;
   };
 

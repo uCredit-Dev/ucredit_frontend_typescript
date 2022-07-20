@@ -237,7 +237,7 @@ const DistributionBarsJSX: FC<{ major: Major }> = ({ major }) => {
     req: requirements,
     reqGroup: [string, requirements[]],
   ) => {
-    if (req.pathing !== undefined) {
+    if (req.pathing) {
       let numPaths = req.pathing;
       let [requirement, ...paths] = reqGroup[1];
       let satisfiedFineRequirements = [requirement];

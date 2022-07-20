@@ -197,7 +197,6 @@ const Semester: FC<{
     if (version !== 'None') {
       const body = {
         ...version,
-        _id: undefined,
         user_id: user._id,
         year_id: semesterYear._id,
         plan_id: currentPlan._id,
