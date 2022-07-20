@@ -1,16 +1,99 @@
+import { DashboardMode } from '../../resources/commonTypes';
+import CommentsOverview from './menus/comments/CommentsOverview';
+import HamburgerMenu from './menus/HamburgerMenu';
+import Notification from './menus/Notification';
+import { useRouter } from 'next/router';
+import React, { useState } from 'react';
+
 /**
- * User login/logout buttons.
+ * Header components.
+ */
+const Links: React.FC = () => {
+  const router = useRouter();
+
+  return (
+    <div className="sm:space-x-5">
+      <button
+        className="w-full hover:bg-slate-300 text-lg rounded-lg sm:w-auto px-3 py-1 sm:hover:text-blue-header sm:hover:bg-blue-footer sm:rounded-[13px] transition duration-100 ease-in"
+        // onClick={() => router.push('/post')}
+      >
+        post
+      </button>
+
+      <button
+        className="w-full hover:bg-slate-300 text-lg rounded-lg sm:w-auto px-3 py-1 sm:hover:text-blue-header sm:hover:bg-blue-footer sm:rounded-[13px] transition duration-100 ease-in"
+        // onClick={() => router.push('/saved')}
+      >
+        saved
+      </button>
+
+      <button className="w-full hover:bg-slate-300 text-lg rounded-lg sm:w-auto px-3 py-1 sm:hover:text-blue-header sm:hover:bg-blue-footer sm:rounded-[13px] transition duration-100 ease-in">
+        my plan
+      </button>
+    </div>
+  );
+};
+
+/**
+ * Header of road map.
  */
 const Header: React.FC = () => {
+  const router = useRouter();
+  const [showMenu, setShowMenu] = useState<Boolean>(false);
+
   return (
-    <div className="absolute z-20 w-full h-16 p-3 px-6 select-none bg-primary">
-      <div className="flex flex-row items-center justify-end w-full h-full">
-        {/* <div className="flex flex-row items-center justify-center mr-3 bg-white rounded-full w-11 h-11"> */}
-        {/* <UserSvg className="w-6 h-6 stroke-2" /> */}
-        {/* </div> */}
-        <div className="flex flex-row items-center flex-grow ml-5 text-3xl font-bold text-white">
-          <img src="/img/logo-darker.png" alt="logo" className="mr-3 h-9"></img>
-          <div>uCredit</div>
+    <div className="sticky top-0 z-40 flex justify-between items-center py-1 px-4 h-1/6 bg-blue-header">
+      <div className="flex-grow">
+        <div className="inline-flex">
+          <img
+            className="w-12 h-12 mr-1 scale-x-[-1]"
+            src="/img/logo.png"
+            alt="logo"
+          />
+
+          <div
+            className="text-3xl cursor-pointer text-blue-footer self-center"
+            onClick={() => router.push('/')}
+          >
+            uCredit
+          </div>
+        </div>
+      </div>
+      <div>
+        <div className="relative sm:hidden">
+          <button
+            type="button"
+            className="inline-flex items-center justify-center p-2 rounded-md text-gray-400 hover:text-white hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-white"
+            aria-controls="mobile-menu"
+            aria-expanded="false"
+            onClick={() => setShowMenu(!showMenu)}
+          >
+            <svg
+              className="h-6 w-6"
+              xmlns="http://www.w3.org/2000/svg"
+              fill="none"
+              viewBox="0 0 24 24"
+              strokeWidth="2"
+              stroke="currentColor"
+              aria-hidden="true"
+            >
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                d="M4 6h16M4 12h16M4 18h16"
+              />
+            </svg>
+          </button>
+
+          {showMenu && (
+            <div className="absolute w-20 top-12 space-y-1 right-0 z-100 bg-white shadow-xl rounded-lg">
+              <Links />
+            </div>
+          )}
+        </div>
+
+        <div className="hidden sm:block">
+          <Links />
         </div>
       </div>
     </div>
