@@ -90,7 +90,7 @@ const CommentsOverview: React.FC = () => {
               <Popover.Button
                 className={`
                             ${open ? '' : 'text-opacity-90'}
-                            text-white group bg-white px-2 py-1.5 rounded-md inline-flex items-center text-base font-medium hover:text-opacity-100 focus:outline-none focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-opacity-75`}
+                            text-white group bg-white px-2 py-1.5 rounded-md inline-flex items-center text-base font-medium hover:text-opacity-100 focus:outline-none focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-opacity-75 focus:outline-none`}
               >
                 <span>
                   <AnnotationIcon className="h-6 text-black" />

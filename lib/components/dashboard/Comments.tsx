@@ -157,6 +157,7 @@ const Comments: FC<{
       };
       dispatch(updateThreads(Object.values(threadCopy)));
       setThisThread(threadCopy[location]);
+      setReplyText('');
     }
   };
 
@@ -169,7 +170,7 @@ const Comments: FC<{
       return (
         <div
           key={c._id}
-          className="bg-white border divide-y rounded select-text cursor-text"
+          className="bg-white divide-y rounded select-text cursor-text"
         >
           <div className="flex items-center justify-between w-full px-2 py-1 text-sm">
             <p className="w-[50%] font-medium truncate">
@@ -189,7 +190,7 @@ const Comments: FC<{
               </button>
             )}
           </div>
-          <p className="px-2 py-1">{c.message}</p>
+          <p className="px-2 py-1 border-top-1 border-slate-300">{c.message}</p>
         </div>
       );
     });
@@ -271,7 +272,7 @@ const Comments: FC<{
 
   return (
     <div
-      className={clsx('absolute z-50 h-12 cursor-default translate-x-60', {
+      className={clsx('absolute z-50 h-12 cursor-default md:translate-x-60 ', {
         'translate-y-[12px]': location.split(' ')[0] === 'Course',
         '-left-[125px] translate-y-7': location.split(' ')[0] === 'Year',
         'z-0': !expanded && (hovered || thisThread),
@@ -279,7 +280,7 @@ const Comments: FC<{
     >
       {expanded ? (
         <div
-          className="w-[300px] relative z-90 left-2 top-2 flex flex-col gap-2 p-2 border rounded shadow cursor-default bg-slate-100"
+          className="w-[300px] relative z-90 left-2 top-2 flex flex-col gap-2 p-2 rounded shadow cursor-default bg-slate-200"
           ref={wrapperRef}
         >
           {comments && comments.length ? (
@@ -294,7 +295,7 @@ const Comments: FC<{
                 value={replyText}
                 onChange={handleChange}
                 placeholder="Add a reply..."
-                className="w-full px-2 py-1 border rounded outline-none"
+                className="w-full px-2 py-1 rounded outline-none"
                 rows={3}
                 autoFocus
               />
