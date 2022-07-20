@@ -1920,9 +1920,7 @@ const bsCS_Old: Major = {
         '<p> The BS math courses must include coverage ' +
         'of both probability and statistics, which can be satisfied in many ways, including ' +
         'taking any of the 553.3xx combined Probability & Statistics courses. Probability and Statistics:</p><p>Two paths:</p>',
-      criteria: 'AS Mathematics[D]^OR^EN Applied Mathematics & Statistics[D]',
-      exception:
-        '(Probability & Statistics[N]^OR^Probability and Statistics[N]^OR^EN.553.211[C]^OR^EN.553.310[C]^OR^EN.553.311[C]^OR^EN.553.420[C]^OR^EN.553.430[C])',
+      criteria: 'Probability & Statistics[N]^OR^Probability and Statistics[N]^OR^EN.553.211[C]^OR^EN.553.310[C]^OR^EN.553.311[C]^OR^EN.553.420[C]^OR^EN.553.430[C]',
       pathing: true,
       fine_requirements: [
         {
@@ -1930,7 +1928,7 @@ const bsCS_Old: Major = {
             '<p>1. Any of the three courses below:</p><p>EN.553.211</p><p>EN.553.310</p><p>EN.553.311</p> ',
           required_credits: 4,
           criteria:
-            'Probability & Statistics[N]^OR^Probability and Statistics[N]^OR^EN.553.211[C]^OR^EN.553.310[C]^OR^EN.553.311[C]',
+            'EN.553.211[C]^OR^EN.553.310[C]^OR^EN.553.311[C]',
         },
         {
           description:
@@ -2056,15 +2054,14 @@ const bsCS_New: Major = {
     },
     {
       name: 'Math',
-      required_credits: 12,
+      required_credits: 16,
       min_credits_per_course: 3,
       description:
         'All courses in this category must be from one of the two math departments on ' +
         'campus: Mathematics or Applied Math and Statistics. However, 553.171 Discrete Mathematics ' +
         'may not count towards these math requirements. Other than Calculus I and II, all the ' +
         'remaining courses must be 200-level or above.',
-      criteria: 'AS Mathematics[D]^OR^EN Applied Mathematics & Statistics[D]^AND^NOT^EN.553.211[C]^AND^NOT^EN.553.310[C]^AND^NOT^EN.553.311[C]^AND^NOT^EN.553.420[C]^AND^NOT^EN.553.430[C]',
-      exclusive: ['Computer Science', 'Science', 'Liberal Arts', "Writing Intensive"],
+      criteria: 'AS Mathematics[D]^OR^EN Applied Mathematics & Statistics[D]',
       exception: 'EN.553.171[C]',
       fine_requirements: [
         {
@@ -2091,7 +2088,6 @@ const bsCS_New: Major = {
         'of both probability and statistics, which can be satisfied in many ways, including ' +
         'taking any of the 553.3xx combined Probability & Statistics courses. Probability and Statistics:</p><p>Two paths:</p>',
       criteria: 'Probability & Statistics[N]^OR^Probability and Statistics[N]^OR^EN.553.211[C]^OR^EN.553.310[C]^OR^EN.553.311[C]^OR^EN.553.420[C]^OR^EN.553.430[C]',
-      exclusive: ['Computer Science', 'Science', 'Liberal Arts', "Writing Intensive"],
       pathing: true,
       fine_requirements: [
         {
@@ -2099,7 +2095,7 @@ const bsCS_New: Major = {
             '<p>1. Any of the three courses below:</p><p>EN.553.211</p><p>EN.553.310</p><p>EN.553.311</p> ',
           required_credits: 4,
           criteria:
-            'Probability & Statistics[N]^OR^Probability and Statistics[N]^OR^EN.553.211[C]^OR^EN.553.310[C]^OR^EN.553.311[C]',
+            'EN.553.211[C]^OR^EN.553.310[C]^OR^EN.553.311[C]',
         },
         {
           description:
