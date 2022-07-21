@@ -1,10 +1,7 @@
+import React from 'react';
 import { useState, useCallback, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import Header from './Header';
-import DashboardComment from './DashboardComment';
-import Banner from './Banner';
-import React from 'react';
-
 import FeedbackPopup from '../popups/FeedbackPopup';
 import FeedbackNotification from '../popups/FeedbackNotification';
 import {
@@ -187,12 +184,7 @@ const Dashboard: React.FC<Props> = ({ mode }) => {
               notifHandler={setShowNotif}
             />
           )}
-          <PlanEditMenu mode={mode} />
-          <Header
-            //userID={user._id}
-            //dashboardSwitchMode={DashboardMode.Planning}
-          />
-          <Banner />
+          <Header />
           <div className="flex-grow w-full">
             <div className="flex flex-col w-full">
               <div className="flex flex-row thin:flex-wrap-reverse mt-[5rem] w-full h-full">
@@ -202,7 +194,6 @@ const Dashboard: React.FC<Props> = ({ mode }) => {
                   </div>
                 </div>
               </div>
-              <DashboardComment />
               {infoPopup && <InfoMenu mode={mode} />}
             </div>
             {/* Global popups */}
