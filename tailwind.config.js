@@ -64,7 +64,19 @@ module.exports = {
         blue: {
           header: "#C6E8FF",
           footer: "#0C3A76",
+          tag: "#83B9FF",
         },
+        green: {
+          tag: '#D1FDCD',
+        },
+        red: {
+          tag: '#FFDBDB',
+        },
+        yellow: {
+          tag: '#FFF9A3',
+        },
+        
+
       },
       backgroundColor: {
         gray: {
