@@ -61,6 +61,10 @@ module.exports = {
         W: '#D0D0FF',
         background: '#83B9FF',
         emphasis: '#fad4f5',
+        blue: {
+          header: "#C6E8FF",
+          footer: "#0C3A76",
+        },
       },
       backgroundColor: {
         gray: {
@@ -92,6 +96,9 @@ module.exports = {
             lineHeight: '1rem',
           },
         ],
+      },
+      fontFamily: {
+        roadMapPage: ['Futura', ]
       },
       screens: {
         medium: '1500px',
