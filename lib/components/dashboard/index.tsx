@@ -1,7 +1,7 @@
 import { useState, useCallback, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import Header from './Header';
-//import Comment from './DashboardComment';
+import DashboardComment from './DashboardComment';
 import Banner from './Banner';
 import React from 'react';
 
@@ -202,6 +202,7 @@ const Dashboard: React.FC<Props> = ({ mode }) => {
                   </div>
                 </div>
               </div>
+              <DashboardComment />
               {infoPopup && <InfoMenu mode={mode} />}
             </div>
             {/* Global popups */}
