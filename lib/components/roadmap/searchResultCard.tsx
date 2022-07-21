@@ -62,7 +62,7 @@ const SearchResultCard: React.FC = () => {
         <div>
           <button
             className="flex-grow-0 mx-2 px-3 pt-0.5 pb-1 rounded-3xl
-          text-blue bg-yellow-300"
+          text-blue bg-yellow-tag"
           >
             English
           </button>
@@ -70,7 +70,7 @@ const SearchResultCard: React.FC = () => {
         <div>
           <button
             className="flex-grow-0 mx-2 px-3 pt-0.5 pb-1 rounded-3xl
-          text-blue bg-green-300"
+          text-blue bg-green-tag"
           >
             Humanity
           </button>
@@ -79,7 +79,7 @@ const SearchResultCard: React.FC = () => {
         <div>
           <button
             className="flex-grow-0 mx-2 px-3 pt-0.5 pb-1 rounded-3xl
-          text-blue bg-pink-300"
+          text-blue bg-red-tag"
           >
             Pre-law
           </button>
