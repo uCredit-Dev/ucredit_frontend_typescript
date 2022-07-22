@@ -92,7 +92,7 @@ import { Major, Minor } from './commonTypes';
  * Problem 2: Classes with multiple areas satisfy all distribution requirements whereas they should satisfy only one of them.
  * Solution: Exclusivity should be relative to distributions and individual fine requirements rather than just be a boolean. Also, when a distribution is satisfied, it should no longer be considered in the exclusivity check. This solves Problem 1 and Problem 2
  */
-const baCogSci: Major = { // Todo: exclusive 
+const baCogSci: Major = { 
   degree_name: 'B.A. Cognitive Science',
   abbrev: 'B.A. Cog Sci',
   department: 'AS Cognitive Science',
@@ -113,6 +113,7 @@ const baCogSci: Major = { // Todo: exclusive
         'Neuroscience',
       criteria:
         'COGS-COGPSY[T]^OR^COGS-LING[T]^OR^COGS-COMPCG[T]^OR^COGS-NEURO[T]^OR^COGS-PHLMND[T]',
+      exclusive: ['Two Focal Areas', 'Math', 'Humanities (H) Distribution', 'Social Sciences (S) Distribution', 'Other (N/E/Q) Distribution', 'Writing Intensive'],
       fine_requirements: [
         {
           description: '<b>Cognitive Psychology/Cognitive Neuropsychology</b>',
@@ -149,6 +150,7 @@ const baCogSci: Major = { // Todo: exclusive
         'Four courses in each of the two chosen focal areas. Research, readings, and practica courses do not qualify.',
       criteria:
         'COGS-COGPSY[T]^OR^COGS-LING[T]^OR^COGS-COMPCG[T]^OR^COGS-NEURO[T]^OR^COGS-PHLMND[T]',
+      exclusive: ['One Course from each Focal Area', 'Math', 'Humanities (H) Distribution', 'Social Sciences (S) Distribution', 'Other (N/E/Q) Distribution', 'Writing Intensive'],
       pathing: 2,
       fine_requirements: [
         {
@@ -197,8 +199,8 @@ const baCogSci: Major = { // Todo: exclusive
         'Up to three credits of cognitive science research, readings, or practica may apply.',
       criteria:
         '(COGS-COGPSY[T]^OR^COGS-LING[T]^OR^COGS-COMPCG[T]^OR^COGS-NEURO[T]^OR^COGS-PHLMND[T])^AND^(Upper Level[L])',
-      exclusive: true,
-    },
+      exclusive: ['Math', 'Humanities (H) Distribution', 'Social Sciences (S) Distribution', 'Other (N/E/Q) Distribution', 'Writing Intensive'],
+      },
     {
       name: 'Math',
       required_credits: 6,
@@ -248,6 +250,7 @@ const baCogSci: Major = { // Todo: exclusive
         'The student must complete at least 9 credits in the Humanities (H) area. ' +
         'These credits fulfilling the distribution requirement may overlap with major or minor requirements and the writing-intensive requirement.',
       criteria: 'H[A]',
+      exclusive: ['One Course from each Focal Area', 'Two Focal Areas', 'Upper Level Electives', 'Math', 'Writing Intensive'],
     },
     {
       name: 'Social Science (S) Distribution',
@@ -258,6 +261,7 @@ const baCogSci: Major = { // Todo: exclusive
         'The student must complete at least 9 credits in the Social Science (S) area. ' +
         'These credits fulfilling the distribution requirement may overlap with major or minor requirements and the writing-intensive requirement.',
       criteria: 'S[A]',
+      exclusive: ['One Course from each Focal Area', 'Two Focal Areas', 'Upper Level Electives', 'Math', 'Writing Intensive'],
     },
     {
       name: 'Other (N/E/Q) Distribution',
@@ -268,6 +272,7 @@ const baCogSci: Major = { // Todo: exclusive
         'The student must complete at least 9 credits in any of the other areas: Natural Sciences (N), Engineering (E) and/or Quantitative (Q). ' +
         'These credits fulfilling the distribution requirement may overlap with major or minor requirements and the writing-intensive requirement.',
       criteria: 'N[A]^OR^E[A]^OR^Q[A]',
+      exclusive: ['One Course from each Focal Area', 'Two Focal Areas', 'Upper Level Electives', 'Math', 'Writing Intensive'],
     },
     {
       name: 'Writing Intensive',
@@ -2033,6 +2038,7 @@ const bsCS_Old: Major = {
         "For more information please visit the <a href='https://www.cs.jhu.edu/undergraduate-studies/academics/ugrad-advising-manual/'>" +
         'major degree requirement</a> section on the department website.',
       criteria: 'EN Computer Science[D]^OR^EN.500.112[C]^OR^EN.660.400[C]',
+      exclusive: ['Mathematics', 'Humanities/Social Sciences', 'Writing Intensive'],
       fine_requirements: [
         {
           description:
@@ -2041,6 +2047,7 @@ const bsCS_Old: Major = {
             'EN.660.400 Practical Ethics for Future Leaders',
           required_credits: 1,
           criteria: 'EN.601.104[C]^OR^EN.660.400[C]',
+          exclusive: ['N/A'],
         },
         {
           description:
@@ -2082,6 +2089,7 @@ const bsCS_Old: Major = {
             '<b>Intro Algorithms</b> <br /> EN.601.433 Intro Algorithms',
           required_credits: 3,
           criteria: 'EN.601.433[C]',
+          exclusive: ['N/A'],
         },
         {
           description:
@@ -2090,9 +2098,12 @@ const bsCS_Old: Major = {
             'At least one course in two different classification areas (Applications, Reasoning, Software, Systems) must be chosen in addition to Theory (Algorithms).', // TODO: Question: How to include this requirement?: SEPARATE DISTRIBUTION PATHING
           required_credits: 13,
           criteria: 'EN Computer Science[D]^AND^Upper Level Undergraduate[L]',
+          exclusive: [
+            '<b>Team Requirement</b> <br /> ' +
+            'Select one course with Program of Study Tag CSCI-TEAM.', 
+          ],
         },
         {
-          // TODO: Issue here: Marking this as exclusive excludes courses from the team requirement (which allows double count). Removing exclusive from here clashes with the upper level CS credits, where courses should satisfy either of the requirements: SEPARATE DISTRIBUTION, PATHING
           description:
             '<b>CS Electives</b> <br /> ' +
             'Eight additional credits of Computer Science are required.' +
@@ -2100,7 +2111,10 @@ const bsCS_Old: Major = {
             'and create a custom course to satisfy this requirement.',
           required_credits: 8,
           criteria: 'EN Computer Science[D]',
-          exclusive: true, // todo 
+          exclusive: [
+            '<b>Team Requirement</b> <br /> ' +
+            'Select one course with Program of Study Tag CSCI-TEAM.', 
+          ], 
         },
         {
           description:
@@ -2108,6 +2122,16 @@ const bsCS_Old: Major = {
             'Select one course with Program of Study Tag CSCI-TEAM.',
           required_credits: 3,
           criteria: 'CSCI-TEAM[T]',
+          exclusive: [
+            '<b>Upper Level CS Credits</b> <br /> ' +
+            'At least 13 more upper level CS credits are required. ' +
+            'At least one course in two different classification areas (Applications, ' + 
+            'Reasoning, Software, Systems) must be chosen in addition to Theory (Algorithms).',
+            '<b>CS Electives</b> <br /> ' +
+            'Eight additional credits of Computer Science are required.' +
+            'For an approved list of courses from other departments (maximum of 6 credits allowed), visit https://www.cs.jhu.edu/computer-science-other-courses-for-bs-degree/ ' +
+            'and create a custom course to satisfy this requirement.',
+          ], 
         },
       ],
     },
@@ -2121,6 +2145,7 @@ const bsCS_Old: Major = {
         'may not count towards these math requirements. Other than Calculus I and II, all the ' +
         'remaining courses must be 200-level or above.',
       criteria: 'AS Mathematics[D]^OR^EN Applied Mathematics & Statistics[D]',
+      exclusive: ['Computer Science', 'Humanities/Social Sciences', 'Writing Intensive'],
       fine_requirements: [
         {
           description:
@@ -2158,6 +2183,7 @@ const bsCS_Old: Major = {
       description:
         'At least two semesters of physics or two semesters of chemistry, with the associated laboratories, must be included.',
       criteria: 'N[A]',
+      exclusive: ['Humanities/Social Sciences', 'Writing Intensive'],
       exception:
         'EN Computer Science[D]^OR^AS Center for Language Education[D]^OR^EN Applied Mathematics & Statistics[D]',
     },
@@ -2171,6 +2197,7 @@ const bsCS_Old: Major = {
         'the writing requirement). Foreign language courses can be counted as well, even if ' +
         'they don’t carry an ‘H’ or ‘S’ designator.',
       criteria: 'H[A]^OR^S[A]',
+      exclusive: ['Computer Science', 'Mathematics', 'Basic Sciences', 'Writing Intensive'],
     },
     {
       name: 'Writing Intensive',
@@ -2180,6 +2207,7 @@ const bsCS_Old: Major = {
         'Students are required to fulfill the university’s requirement of two writing intensive courses, ' +
         'each at least 3 credits. Students must receive at least a C- grade or better in these writing courses. ',
       criteria: 'Written Intensive[W]',
+      exclusive: ['Computer Science', 'Mathematics', 'Basic Sciences', 'Humanities/Social Sciences'],
       fine_requirements: [
         {
           description:
@@ -2191,13 +2219,12 @@ const bsCS_Old: Major = {
       ],
     },
     {
-      // TODO: exclusive does not work here...me problem...
       name: 'Electives',
       required_credits: 26,
       min_credits_per_course: 1,
       description: 'These can be any credit bearing courses taken at JHU.',
       criteria: '',
-      exclusive: true, // todo
+      exclusive: ['Writing Intensive'],
     },
   ],
 };
@@ -2226,6 +2253,7 @@ const bsCS_New: Major = {
             '<b>Computer Ethics(601.104).</b><p>Practical Ethics for Future Leaders (660.400/406) may be used as a substitute for the computer ethics requirement for the BS program, but does not count towards the CS total credits at all.</p>',
           required_credits: 1,
           criteria: 'EN.600.104[C]^OR^EN.601.104[C]^OR^EN.660.400[C]',
+          exclusive: ['N/A'],
         },
         {
           description:
@@ -2236,14 +2264,18 @@ const bsCS_New: Major = {
           criteria:
             'EN.500.112[C]^OR^EN.500.113[C]^OR^EN.500.114[C]^OR^EN.601.220[C]^OR^EN.601.226[C]' +
             '^OR^EN.601.229[C]^OR^EN.601.230[C]^OR^EN.601.433[C]^OR^EN.601.231',
+          exclusive: ['N/A'],
         },
         {
           description:
             '<b>Upper Level Undergraduate: </b><p>12 upper level CS credits in addition to the required Algorithms course</p>',
-
           required_credits: 12,
           criteria:
             'EN Computer Science[D]^AND^Upper Level Undergraduate[L]^NOT^EN.601.433[C]^NOT^EN.601.633[C]',
+          exclusive: [
+            '<b>One Team(CSCI-TEAM) designated course.</b><p> This Team course may overlap other course ' +
+            'requirements, for example to count as both Team and Software.</p>',
+          ],
         },
         {
           description:
@@ -2252,6 +2284,10 @@ const bsCS_New: Major = {
           required_credits: 6,
           criteria:
             'CSCI-APPL[T]^OR^CSCI-SYST[T]^OR^CSCI-SOFT[T]^OR^CSCI-RSNG[T]',
+          exclusive: [
+            '<b>One Team(CSCI-TEAM) designated course.</b><p> This Team course may overlap other course ' +
+            'requirements, for example to count as both Team and Software.</p>',
+          ],
         },
         {
           description:
@@ -2259,6 +2295,11 @@ const bsCS_New: Major = {
             'requirements, for example to count as both Team and Software.</p>',
           required_credits: 3,
           criteria: 'CSCI-TEAM[T]',
+          exclusive: [
+            '<b>Upper Level Undergraduate: </b><p>12 upper level CS credits in addition to the required Algorithms course</p>',
+            '<b>2 Upper Level Classifications:</b><p>At least one upper level course in two of these four different classification</p> ' +
+            'areas: Applications(CSCI-APPL), Systems(CSCI-SYST), Software(CSCI-SOFT) and Reasoning(CSCI-RSNG)',
+          ],
         },
       ],
     },
@@ -2297,9 +2338,7 @@ const bsCS_New: Major = {
         '<p> The BS math courses must include coverage ' +
         'of both probability and statistics, which can be satisfied in many ways, including ' +
         'taking any of the 553.3xx combined Probability & Statistics courses. Probability and Statistics:</p><p>Two paths:</p>',
-      criteria: 'AS Mathematics[D]^OR^EN Applied Mathematics & Statistics[D]',
-      exception:
-        '(Probability & Statistics[N]^OR^Probability and Statistics[N]^OR^EN.553.211[C]^OR^EN.553.310[C]^OR^EN.553.311[C]^OR^EN.553.420[C]^OR^EN.553.430[C])',
+      criteria: 'EN.553.211[C]^OR^EN.553.310[C]^OR^EN.553.311[C]^OR^EN.553.420[C]^OR^EN.553.430[C]',
       pathing: 1,
       fine_requirements: [
         {
@@ -2973,6 +3012,7 @@ const bsMechE: Major = {
         'or the Applied Mathematics and Statistics department in the Whiting School of Engineering.',
       criteria:
         'AS.110.108[C]^OR^AS.110.109[C]^OR^AS.110.113[C]^OR^AS.110.202[C]^OR^EN.553.291[C]^OR^AS.110.201[C]^OR^AS.110.212[C]^OR^AS.110.302[C]',
+      exclusive: ['N/A'],
       pathing: 1,
       fine_requirements: [
         {
@@ -3012,6 +3052,7 @@ const bsMechE: Major = {
         'EN.553.311 Probability and Statistics for the Biological Sciences and Engineering <br />' +
         'EN.560.348 Probability and Statistics for Civil Engineering',
       criteria: 'EN.553.310[C]^OR^EN.553.311[C]^OR^EN.560.348[C]',
+      exclusive: ['N/A'],
     },
     {
       name: 'Science',
@@ -3021,6 +3062,7 @@ const bsMechE: Major = {
         'The student must complete all the required science courses.',
       criteria:
         'AS.030.101[C]^OR^EN.171.101[C]^OR^AS.173.111[C]^OR^AS.171.102[C]^OR^AS.173.112[C]',
+      exclusive: ['N/A'],
       fine_requirements: [
         {
           description:
@@ -3068,6 +3110,7 @@ const bsMechE: Major = {
         'EN.530.334[C]^OR^EN.530.335[C]^OR^EN.530.343[C]^OR^EN.530.344[C]^OR^' +
         'EN.530.352[C]^OR^EN.560.201[C]^OR^EN.560.211[C]^OR^EN.660.361[C]^OR^' +
         'EN Computer Science[D]',
+      exclusive: ['Humanities and Social Sciences', 'Writing Intensive'],
       fine_requirements: [
         {
           description:
@@ -3231,6 +3274,7 @@ const bsMechE: Major = {
       description:
         'The student is required to take part in a capstone design project.',
       criteria: 'EN.530.403[C]^OR^EN.530.404[C]',
+      exclusive: ['Humanities and Social Sciences', 'Writing Intensive'],
       fine_requirements: [
         {
           description:
@@ -3253,7 +3297,7 @@ const bsMechE: Major = {
       description:
         'Select three courses (300-level or higher) in mechanical engineering',
       criteria: '(EN Mechanical Engineering[D])^AND^(Upper Level[L])',
-      exclusive: true, // todo 
+      exclusive: ['Humanities and Social Sciences', 'Writing Intensive'], 
     },
     {
       name: 'Technical Electives',
@@ -3263,7 +3307,7 @@ const bsMechE: Major = {
         'Select three engineering, quantitative studies, or natural sciences courses at or above the 300-level,' +
         "chosen from any combination of courses in engineering, basic sciences, or mathematics selected in consultation with the student's advisor.",
       criteria: '(N[A]^OR^E[A]^OR^Q[A])^AND^(Upper Level[L])',
-      exclusive: true, // todo 
+      exclusive: ['Humanities and Social Sciences', 'Writing Intensive'],  
     },
     {
       name: 'Humanities and Social Sciences',
@@ -3273,6 +3317,7 @@ const bsMechE: Major = {
         'Select courses to form a coherent program, relevant to the student’s goals. One course in which ethical and social ' +
         'issues related to technology or medicine is recommended.',
       criteria: 'H[A]^OR^S[A]',
+      exclusive: ['Core Engineering', 'Capstone Design', 'Mechanical Engineering Electives', 'Technical Electives', 'Writing Intensive'],
       fine_requirements: [
         {
           description:
