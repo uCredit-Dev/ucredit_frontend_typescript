@@ -194,40 +194,52 @@ const DistributionBarsJSX: FC<{ major: Major }> = ({ major }) => {
   };
 
   const updateReqs = (reqs: [string, requirements[]][], courseObj) => {
-    // exclusive check: 
-    // If exclusive is undefined, the course may double count for any number of distributions 
+    // exclusive check:
+    // If exclusive is undefined, the course may double count for any number of distributions
     // If exclusive is string[], the specified distributions / fine requirements are 'whitelisted'
-    // When a course satisfies a distribution, exclusive takes the value of distribution.exclusive 
-    if (!courseObj) return; 
-    let distExclusive: string[] | undefined = undefined; // initial value 
+    // When a course satisfies a distribution, exclusive takes the value of distribution.exclusive
+    if (!courseObj) return;
+    let distExclusive: string[] | undefined = undefined; // initial value
     reqs.forEach((reqGroup, i) => {
-      let req = reqGroup[1][0]; // general distribution 
-      console.log(req, courseObj.title, checkRequirementSatisfied(req, courseObj), distExclusive); 
+      let req = reqGroup[1][0]; // general distribution
+      console.log(
+        req,
+        courseObj.title,
+        checkRequirementSatisfied(req, courseObj),
+        distExclusive,
+      );
       if (
-        (!distExclusive || distExclusive.includes(req.name)) && 
+        (!distExclusive || distExclusive.includes(req.name)) &&
         (req.fulfilled_credits < req.required_credits ||
-        (req.required_credits === 0 && req.fulfilled_credits === 0)) && 
+          (req.required_credits === 0 && req.fulfilled_credits === 0)) &&
         checkRequirementSatisfied(req, courseObj)
       ) {
         reqs[i][1][0].fulfilled_credits += parseInt(courseObj.credits);
         distExclusive = req.exclusive; // set exclusive, if any
         let fineExclusive: string[] | undefined = undefined;
-        reqGroup[1].forEach((req: requirements, j: number) => { // fine reqs 
-          if (j !== 0) { // 0 is the general distribution, not fine req
-            let fineReq = reqGroup[1][j];  
-            console.log(fineReq, courseObj.title, checkRequirementSatisfied(fineReq, courseObj));
+        reqGroup[1].forEach((req: requirements, j: number) => {
+          // fine reqs
+          if (j !== 0) {
+            // 0 is the general distribution, not fine req
+            let fineReq = reqGroup[1][j];
+            console.log(
+              fineReq,
+              courseObj.title,
+              checkRequirementSatisfied(fineReq, courseObj),
+            );
             if (
               (!fineExclusive || fineExclusive.includes(fineReq.name)) &&
               (fineReq.fulfilled_credits < fineReq.required_credits ||
-              (fineReq.required_credits === 0 && fineReq.fulfilled_credits === 0)) && 
+                (fineReq.required_credits === 0 &&
+                  fineReq.fulfilled_credits === 0)) &&
               checkRequirementSatisfied(fineReq, courseObj)
             ) {
               reqs[i][1][j].fulfilled_credits += parseInt(courseObj.credits);
-              fineExclusive = fineReq.exclusive; 
+              fineExclusive = fineReq.exclusive;
             }
-          } 
-        }); 
-      }    
+          }
+        });
+      }
     });
     // Pathing check
     reqs.forEach((reqGroup: [string, requirements[]]) =>
