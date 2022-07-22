@@ -14,27 +14,27 @@ const Laptop: React.FC = () => {
   const router = useRouter();
   return (
     <>
-      <div className="flex flex-row bg-sky-100 items-stretch w-full">
+      <div className="flex bg-sky-100 items-stretch w-full">
         <div className="mx-24 my-9 text-left">
-          <div className="felx flex-row">
+          <div className="felx flex-row justify-end">
             {/* plan Name */}
             <div className="flex flex-row text-3xl sm: md:text- lg: xl: xxxl: ">
               The Best Plan for CS majors (plan name)
             </div>
             <div className="flex flex-row ml-6">
               {/*Stars*/}
-              <button className="flex flex-grow-0 items-center mx-2 px-3">
+              <button className="flex items-center mx-2 px-3">
                 <Star />
               </button>
 
               {/*Likes*/}
-              <button className="flex flex-grow-0 items-center mx-2 px-3">
+              <button className="flex items-center mx-2 px-3">
                 <Like />
                 <p>102</p>
               </button>
 
               {/*Comments*/}
-              <div className="flex flex-row items-center mx-2 px-3">
+              <div className="flex items-center mx-2 px-3">
                 <View />
                 <p>324</p>
               </div>
