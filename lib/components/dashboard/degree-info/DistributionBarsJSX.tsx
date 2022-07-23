@@ -207,7 +207,7 @@ const DistributionBarsJSX: FC<{ major: Major }> = ({ major }) => {
             (req.required_credits === 0 && req.fulfilled_credits === 0))
         ) {
           reqs[i][1][j].fulfilled_credits += parseInt(courseObj.credits);
-          inNonExclusive = true;
+          if (j !== 0) inNonExclusive = true;
         }
       }),
     );
@@ -238,17 +238,11 @@ const DistributionBarsJSX: FC<{ major: Major }> = ({ major }) => {
     reqGroup: [string, requirements[]],
   ) => {
     if (req.pathing) {
-      let numPaths = req.pathing;
-      let [requirement, ...paths] = reqGroup[1];
-      let satisfiedFineRequirements = [requirement];
-      for (let path of paths) {
-        if (path.fulfilled_credits >= path.required_credits) {
-          satisfiedFineRequirements.push(path);
-          numPaths -= 1;
+      let [requirement, ...focus_areas] = reqGroup[1];
+      for (let focus_area of focus_areas) {
+        if (focus_area.fulfilled_credits >= focus_area.required_credits) {
+          reqGroup[1] = [requirement, focus_area];
         }
-      }
-      if (numPaths === 0) {
-        reqGroup[1] = satisfiedFineRequirements;
       }
     }
   };

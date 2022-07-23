@@ -1,6 +1,6 @@
 import { Popover, Transition } from '@headlessui/react';
 import { AnnotationIcon } from '@heroicons/react/outline';
-import React, { Fragment, useEffect, useState } from 'react';
+import { Fragment, useEffect, useState } from 'react';
 import {
   selectFilteredThreads,
   updateSelectedThread,
@@ -24,7 +24,7 @@ const CommentsOverview: React.FC = () => {
   };
 
   useEffect(() => {
-    const temp: ThreadType[] = [];
+    const temp = [];
     for (let k in threadObjs) {
       temp.push(threadObjs[k]);
     }
@@ -34,13 +34,13 @@ const CommentsOverview: React.FC = () => {
   }, [threadObjs]);
 
   const getComments = (thisThread: ThreadType): JSX.Element => {
-    if (!thisThread) return <></>;
+    if (!thisThread) return null;
     let divs = thisThread.comments.map((c: CommentType) => {
       if (
         !c.visible_user_id.includes(user._id) &&
         user._id !== c.commenter_id._id
       ) {
-        return <></>;
+        return null;
       }
       return (
         <div
@@ -72,9 +72,7 @@ const CommentsOverview: React.FC = () => {
         <p className="px-2 py-1 text-sm font-medium">Go To</p>
       </div>
     );
-    return divs.length === 0 ? (
-      <></>
-    ) : (
+    return divs.length === 0 ? null : (
       <div className="mb-2 bg-gray-200 rounded">
         {divs} {jump}
       </div>
@@ -82,7 +80,7 @@ const CommentsOverview: React.FC = () => {
   };
 
   return (
-    <div className="z-40 flex flex-row text-xl">
+    <div className="absolute right-[146px] z-40 flex flex-row px-4 text-xl top-[12px]">
       <div className="w-full h-full max-w-sm">
         <Popover className="h-full">
           {({ open }) => (
@@ -90,7 +88,7 @@ const CommentsOverview: React.FC = () => {
               <Popover.Button
                 className={`
                             ${open ? '' : 'text-opacity-90'}
-                            text-white group bg-white px-2 py-1.5 rounded-md inline-flex items-center text-base font-medium hover:text-opacity-100 focus:outline-none focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-opacity-75 focus:outline-none`}
+                            text-white group bg-white px-2 py-1.5 rounded-md inline-flex items-center text-base font-medium hover:text-opacity-100 focus:outline-none focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-opacity-75`}
               >
                 <span>
                   <AnnotationIcon className="h-6 text-black" />
@@ -106,7 +104,7 @@ const CommentsOverview: React.FC = () => {
                 leaveFrom="opacity-100 translate-y-0"
                 leaveTo="opacity-0 translate-y-1"
               >
-                <Popover.Panel className="absolute z-40 transform translate-x-[-140px] bg-white rounded-lg translate-y-[8px] w-80 max-w-none sm:px-0 lg:max-w-3xl h-[70vh]">
+                <Popover.Panel className="absolute z-10 transform translate-x-[-140px] bg-white rounded-lg translate-y-[8px] w-80 max-w-none sm:px-0 lg:max-w-3xl h-[600px]">
                   <div className="h-full rounded-lg shadow-lg ring-1 ring-black ring-opacity-5">
                     <div className="z-30 grid max-h-full overflow-y-auto bg-white rounded-lg p-7 lg:grid-cols-1">
                       {threadJSX.length !== 0 ? (

@@ -4,7 +4,6 @@ import { useDispatch, useSelector } from 'react-redux';
 import {
   selectCurrentPlanCourses,
   selectDistributions,
-  updateSelectedDistribution,
 } from '../../../slices/currentPlanSlice';
 import { requirements } from './distributionFunctions';
 import { CheckCircleIcon, ExclamationIcon } from '@heroicons/react/solid';
@@ -12,6 +11,7 @@ import ReactTooltip from 'react-tooltip';
 import {
   updateAddingPrereq,
   updateInfoPopup,
+  updateSelectedDistribution,
   updateShowingCart,
 } from '../../../slices/popupSlice';
 import { clearSearch, updatePlaceholder } from '../../../slices/searchSlice';

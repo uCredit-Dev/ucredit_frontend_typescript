@@ -40,22 +40,19 @@ const CartCourseList: FC<{
 
   // Updates pagination every time the searched courses change.
   useEffect(() => {
-    const filteredCourses: SISRetrievedCourse[] = [];
-    courses.forEach((course: SISRetrievedCourse) => {
-      for (let c of filteredCourses) {
-        if (c.number === course.number) {
-          return;
-        }
-      }
-      if (!course.title.toLowerCase().includes(props.textFilter)) return;
-      filteredCourses.push(course);
-    });
+    const filtered: SISRetrievedCourse[] = courses.filter(
+      (course: SISRetrievedCourse) => {
+        if (!course.title.toLowerCase().includes(props.textFilter))
+          return false;
+        return true;
+      },
+    );
     // If coursesPerPage doesn't divide perfectly into total courses, we need one more page.
-    const division = Math.floor(filteredCourses.length / coursesPerPage);
+    const division = Math.floor(filtered.length / coursesPerPage);
     const pages =
-      filteredCourses.length % coursesPerPage === 0 ? division : division + 1;
+      filtered.length % coursesPerPage === 0 ? division : division + 1;
     setPageCount(pages);
-    setFilteredCourses(filteredCourses);
+    setFilteredCourses(filtered);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [courses, props.textFilter]);
 
@@ -194,7 +191,7 @@ const CartCourseList: FC<{
     <>
       {(!hideResults || window.innerWidth > 700) && (
         <div className="w-full px-5 bg-gray-200 select-none py">
-          <div className="w-full h-max">{getResultListUI()}</div>
+          <div className="w-full h-full">{getResultListUI()}</div>
         </div>
       )}
     </>

@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { Provider } from 'react-redux';
 import { CookiesProvider } from 'react-cookie';
 import { NextComponentType } from 'next';
@@ -56,10 +56,6 @@ const MyApp: React.FC<{
             <meta
               name="description"
               content="Quick accessible degree planning."
-            />
-            <meta
-              name="viewport"
-              content="initial-scale=1.0, width=device-width"
             />
           </Head>
           {/* {screenWidth < 474 ? (

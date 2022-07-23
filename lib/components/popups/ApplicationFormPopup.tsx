@@ -1,6 +1,6 @@
-import React, { FC, useState } from 'react';
+import { FC, useState } from 'react';
 import { toast } from 'react-toastify';
-import emailjs from '@emailjs/browser';
+import emailjs from 'emailjs-com';
 emailjs.init('OYZ6l2hEt-shlZ7K1');
 
 /**

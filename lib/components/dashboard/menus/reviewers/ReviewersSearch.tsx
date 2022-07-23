@@ -1,7 +1,7 @@
 import axios from 'axios';
-import React, { useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { getAPI } from '../../../../resources/assets';
-import ReviewerSearchResults from './ReviewerSearchResults';
+import ReviewersSearchResults from './ReviewerSearchResults';
 
 const ReviewersSearch = () => {
   const [searchState, setSearchState] = useState('');
@@ -36,7 +36,7 @@ const ReviewersSearch = () => {
   };
 
   return (
-    <div className="flex flex-col pr-1 bg-slate-100 mx-1 rounded-lg">
+    <div className="flex flex-col pr-1 bg-gray-100 rounded-lg">
       <div className="ml-2 py-2">
         <p className="text-gray-500">Add or remove reviewers</p>
       </div>
@@ -47,7 +47,7 @@ const ReviewersSearch = () => {
         value={searchState}
         onChange={handleChange}
       ></input>
-      <ReviewerSearchResults users={searchData} />
+      <ReviewersSearchResults users={searchData} />
     </div>
   );
 };

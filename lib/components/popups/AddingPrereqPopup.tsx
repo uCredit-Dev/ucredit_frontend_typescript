@@ -1,7 +1,6 @@
 import { FC } from 'react';
 import { useDispatch } from 'react-redux';
 import { updateAddingPrereq } from '../../slices/popupSlice';
-import { updateCartAdd } from '../../slices/searchSlice';
 
 /**
  * This is the confirmation popup that appears when users press the button to delete a plan.
@@ -14,10 +13,7 @@ const AddingPrereqPopup: FC = () => {
       {/* Background Grey */}
       <div
         className="fixed left-0 top-0 m-0 w-full h-screen bg-black opacity-50 z-20"
-        onClick={() => {
-          dispatch(updateAddingPrereq(false));
-          dispatch(updateCartAdd(false));
-        }}
+        onClick={() => dispatch(updateAddingPrereq(false))}
       ></div>
     </>
   );

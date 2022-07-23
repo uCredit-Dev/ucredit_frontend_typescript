@@ -1,4 +1,4 @@
-import React, { FC, useEffect } from 'react';
+import { FC, useEffect } from 'react';
 import axios from 'axios';
 import { useDispatch, useSelector } from 'react-redux';
 import { Plan } from './commonTypes';
@@ -50,7 +50,7 @@ const GenerateNewPlan: FC = () => {
         user._id === 'guestUser' ? Date.now() + 60 * 60 * 24 * 1000 : undefined,
     };
     planBody.name = !importing ? toAddName : 'Imported ' + toAddName;
-    dispatch(updateImportID(''));
+    dispatch(updateImportID(null));
 
     let newPlan: Plan;
     const getData = async () => {

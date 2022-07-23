@@ -4,8 +4,6 @@ module.exports = {
     extend: {
       backgroundImage: {
         'roadmap-pattern': "url('/img/roadmap_pattern.png')",
-      borderRadius: {
-        curvy: '50% 150px',
       },
       minWidth: {
         yearMin: '250px',
@@ -96,16 +94,6 @@ module.exports = {
         },
         theme: '#3168AF',
       },
-      fontFamily: {
-        landingPage: ['Futura'],
-      },
-      boxShadow: {
-        // eslint-disable-next-line no-multi-str
-        card: '12px 0px 10px -15px rgba(31, 73, 125, 0.8), \
-        -12px 0 10px -15px rgba(31, 73, 125, 0.8), \
-        0px 12px 10px -15px rgba(31, 73, 125, 0.8), \
-        0px -12px 10px -15px rgba(31, 73, 125, 0.8)',
-      },
       fontSize: {
         myplan: ['2rem'],
         infocard: [
@@ -125,16 +113,10 @@ module.exports = {
         roadMapPage: ['Futura', ]
       },
       screens: {
-        ml: '850px',
-        monitor: '1300px',
-        xxxl: '2000px',
         medium: '1500px',
         tight: { max: '1200px' },
         thin: { max: '820px' },
         narrow: { max: '710px' },
-        tablet: { min: '800px', max: '1200px' },
-        smTablet: { max: '800px' },
-        smMobile: '500px',
       },
       scale: {
         0: '0',

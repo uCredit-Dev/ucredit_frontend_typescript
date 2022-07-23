@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import { useEffect } from 'react';
 import axios from 'axios';
 import { useDispatch, useSelector } from 'react-redux';
 import { toast } from 'react-toastify';
@@ -19,7 +19,7 @@ import { updateAddingPlanStatus } from '../../slices/popupSlice';
 /**
  * Handles dashboard user entry and login logic.
  */
-const HandleUserInfoSetupDummy: React.FC = () => {
+const HandleUserInfoSetupDummy: React.FC<{ mode: ReviewMode }> = ({ mode }) => {
   // Redux setup
   const dispatch = useDispatch();
   const user = useSelector(selectUser);

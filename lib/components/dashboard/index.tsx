@@ -1,7 +1,7 @@
-import React, { useState, useCallback, useEffect } from 'react';
+import React from 'react';
+import { useState, useCallback, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import Header from './Header';
-
 import FeedbackPopup from '../popups/FeedbackPopup';
 import FeedbackNotification from '../popups/FeedbackNotification';
 import {
@@ -48,7 +48,10 @@ import HandlePlanShareDummy from './HandlePlanShareDummy';
 import HandleUserInfoSetupDummy from './HandleUserInfoSetupDummy';
 import { DashboardMode, ReviewMode } from '../../resources/commonTypes';
 import { userService } from '../../services';
+import HamburgerMenu from './menus/HamburgerMenu';
+import Notification from './menus/Notification';
 import PlanEditMenu from './menus/PlanEditMenu';
+import CommentsOverview from './menus/comments/CommentsOverview';
 
 interface Props {
   mode: ReviewMode;
@@ -78,7 +81,6 @@ const Dashboard: React.FC<Props> = ({ mode }) => {
   // State Setup
   const [showNotif, setShowNotif] = useState<boolean>(true);
   const [formPopup, setFormPopup] = useState<boolean>(false);
-  // const [showMobileMenu, setShowMobMenu] = useState(false);
   // const [experimentPopup] = useState<boolean>(false);
   // const [displayedNumber, setDisplayedNumber] = useState<number>(3);
   // const [crement, setCrement] = useState<number>(0);
@@ -182,19 +184,13 @@ const Dashboard: React.FC<Props> = ({ mode }) => {
               notifHandler={setShowNotif}
             />
           )}
-          <PlanEditMenu mode={mode} />
-          <Header
-            userID={user._id}
-            dashboardSwitchMode={DashboardMode.Planning}
-          />
+          <Header />
           <div className="flex-grow w-full">
             <div className="flex flex-col w-full">
               <div className="flex flex-row thin:flex-wrap-reverse mt-[5rem] w-full h-full">
-                <div className="flex flex-col w-full overflow-hidden">
-                  <div className="mx-auto  md:mx-[100px] ">
-                    <div className="ml-[5%] md:ml-[0px]">
-                      <CourseList mode={mode} />
-                    </div>
+                <div className="flex flex-col w-full">
+                  <div className="px-[100px]">
+                    <CourseList mode={mode} />
                   </div>
                 </div>
               </div>
@@ -214,8 +210,13 @@ const Dashboard: React.FC<Props> = ({ mode }) => {
       )}
       {/* Dummy components used to generate state information */}
       <GenerateNewPlan />
-      {mode === ReviewMode.Edit && <HandleUserInfoSetupDummy />}
+      {mode === ReviewMode.Edit && <HandleUserInfoSetupDummy mode={mode} />}
       <HandlePlanShareDummy />
+      <CommentsOverview />
+      {/* Menus*/}
+      <Notification userID={user._id} />
+      <PlanEditMenu mode={mode} />
+      <HamburgerMenu mode={DashboardMode.Planning} />
     </>
   );
 };

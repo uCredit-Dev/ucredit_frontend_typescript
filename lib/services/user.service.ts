@@ -85,13 +85,6 @@ const postNewComment = (data: any, cb = undefined) => {
     .post(`${getAPI(window)}/thread/reply`, data)
     .then(handleResponse);
 };
-
-const removeComment = (comment_id: string, cb = undefined) => {
-  return fetchWrapper
-    .delete(`${getAPI(window)}/comment`, { comment_id })
-    .then((res) => handleResponse(res, cb));
-};
-
 const changeReviewStatus = (review_id, status, cb = undefined) => {
   return fetchWrapper
     .post(`${getAPI(window)}/planReview/changeStatus`, {
@@ -107,7 +100,7 @@ const getNotifications = (userID: string) => {
     .then(handleResponse);
 };
 
-const handleResponse = (res, cb: any = undefined) => {
+const handleResponse = (res, cb = undefined) => {
   if (!res) return;
   return res.text().then((text) => {
     const data = text && JSON.parse(text);
@@ -132,7 +125,6 @@ export const userService = {
   postNewThread,
   getThreads,
   postNewComment,
-  removeComment,
   changeReviewStatus,
   getNotifications,
 };

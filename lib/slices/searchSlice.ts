@@ -42,7 +42,6 @@ type searchStates = {
   inspectedCourse: SISRetrievedCourse | 'None';
   placeholder: boolean;
   searchStack: { sis: SISRetrievedCourse; ver: Course }[];
-  cartAdd: boolean;
 };
 
 type searchStackUpdate = {
@@ -74,7 +73,6 @@ const initialState: searchStates = {
   inspectedVersion: 'None',
   placeholder: false,
   searchStack: [],
-  cartAdd: false,
 };
 
 export const searchSlice = createSlice({
@@ -176,9 +174,6 @@ export const searchSlice = createSlice({
       state.inspectedCourse = oldBundle.sis;
       state.inspectedVersion = oldBundle.ver;
     },
-    updateCartAdd: (state: any, action: PayloadAction<boolean>) => {
-      state.cartAdd = action.payload;
-    },
   },
 });
 
@@ -194,7 +189,6 @@ export const {
   updateInspectedVersion,
   clearSearch,
   popSearchStack,
-  updateCartAdd,
 } = searchSlice.actions;
 
 // The function below is called a selector and allows us to select a value from
@@ -214,6 +208,5 @@ export const selectPlaceholder = (state: RootState) => state.search.placeholder;
 export const selectSearchStack = (state: RootState) => state.search.searchStack;
 export const selectVersion = (state: RootState) =>
   state.search.inspectedVersion;
-export const selectCartAdd = (state: RootState) => state.search.cartAdd;
 
 export default searchSlice.reducer;

@@ -1,5 +1,5 @@
 import { useRouter } from 'next/router';
-import React, { useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useSelector } from 'react-redux';
 import Header from '../../lib/components/dashboard/Header';
 import { userService } from '../../lib/services';
@@ -10,6 +10,8 @@ import {
   RevieweePlans,
   ReviewRequestStatus,
 } from '../../lib/resources/commonTypes';
+import HamburgerMenu from '../../lib/components/dashboard/menus/HamburgerMenu';
+import Notification from '../../lib/components/dashboard/menus/Notification';
 
 export const statusReadable = {
   [ReviewRequestStatus.UnderReview]: 'Under Review',
@@ -53,7 +55,7 @@ const Reviewer: React.FC = () => {
         const plans = plansByUser.get(revieweeString) || [];
         plansByUser.set(revieweeString, [...plans, plan]);
       }
-      const revieweePlansArr: RevieweePlans[] = [];
+      const revieweePlansArr = [];
       for (const [k, v] of plansByUser) {
         revieweePlansArr.push({ reviewee: JSON.parse(k), plans: v });
       }
@@ -64,30 +66,9 @@ const Reviewer: React.FC = () => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [user, refreshReviews]);
 
-  const deleteHandler = async (revieweeID) => {
-    setFiltered((prevState) => {
-      const updatedState = prevState.filter(
-        (reviewee) => reviewee.reviewee._id !== revieweeID,
-      );
-      return updatedState;
-    });
-    try {
-      let review_id: string = '';
-      const reviewees = await userService.getReviewerPlans(user._id);
-      for (let review of reviewees.data) {
-        if (review.reviewee_id._id === revieweeID) {
-          review_id = review._id;
-        }
-      }
-      await userService.removeReview(review_id);
-    } catch (err) {
-      console.log(err);
-    }
-  };
-
   return (
     <div>
-      <Header userID={user._id} dashboardSwitchMode={DashboardMode.Reviewer} />
+      <Header />
       <div className="pt-24 text-black bg-[#eff2f5] font-bold text-xl md:px-[250px] pb-4">
         Reviewees
       </div>
@@ -105,10 +86,11 @@ const Reviewer: React.FC = () => {
             reviewee={tuple.reviewee}
             expanded={index === 0}
             setRefreshReviews={setRefreshReviews}
-            onDeleteItem={deleteHandler}
           />
         ))}
       </div>
+      <HamburgerMenu mode={DashboardMode.Reviewer} />
+      <Notification userID={user._id} />
     </div>
   );
 };
