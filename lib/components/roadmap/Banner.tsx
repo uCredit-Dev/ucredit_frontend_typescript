@@ -1,17 +1,9 @@
-import React, { useState } from 'react';
-import { useRouter } from 'next/router';
-import {
-  AiOutlineComment,
-  AiFillEye,
-  AiOutlineLike,
-  AiOutlineStar,
-} from 'react-icons/ai';
-import Star from './assets/Star.svg'; 
+import React from 'react';
+import Star from './assets/Star.svg';
 import Like from './assets/Like.svg';
 import View from './assets/View.svg';
 
 const Laptop: React.FC = () => {
-  const router = useRouter();
   return (
     <>
       <div className="flex bg-sky-100 items-stretch w-full">
@@ -52,15 +44,13 @@ const Laptop: React.FC = () => {
                 </button>
               </div>
               <div>
-                <button
-                  className="flex-grow-0 mx-2 px-3 pt-0.5 pb-1 rounded-3xl text-blue bg-green-tag">
+                <button className="flex-grow-0 mx-2 px-3 pt-0.5 pb-1 rounded-3xl text-blue bg-green-tag">
                   Humanity
                 </button>
               </div>
 
               <div>
-                <button
-                  className="flex-grow-0 mx-2 px-3 pt-0.5 pb-1 rounded-3xl text-blue bg-red-tag">
+                <button className="flex-grow-0 mx-2 px-3 pt-0.5 pb-1 rounded-3xl text-blue bg-red-tag">
                   Pre-law
                 </button>
               </div>

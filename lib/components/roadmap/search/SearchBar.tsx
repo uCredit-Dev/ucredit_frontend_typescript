@@ -1,7 +1,7 @@
 import { FiSearch } from 'react-icons/fi';
 import React from 'react';
 
-type searchBarProps = {
+type SearchBarProps = {
   onInputProp: Function;
   iconSize: number;
   placeHolder: string;
@@ -9,7 +9,7 @@ type searchBarProps = {
   iconPosition: string;
 };
 
-const SearchBar: React.FC<searchBarProps> = (props) => {
+const SearchBar: React.FC<SearchBarProps> = (props) => {
   const onInputChange = (evt: any) => {
     props.onInputProp(evt);
   };
@@ -23,10 +23,9 @@ const SearchBar: React.FC<searchBarProps> = (props) => {
         placeholder={props.placeHolder}
         onInput={onInputChange}
       />
-      <FiSearch
-        size={props.iconSize}
-        className={`absolute ${props.iconPosition}`}
-      />
+      <div className={`absolute ${props.iconPosition}`}>
+        <FiSearch size={props.iconSize} />
+      </div>
     </div>
   );
 };

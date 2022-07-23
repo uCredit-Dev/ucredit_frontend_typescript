@@ -1,5 +1,5 @@
 import SearchBarArea from './searchBarArea';
-import { selectMobileAdvSearch } from '../../slices/roadmapSearchSlice';
+import { selectMobileAdvSearch } from '../../../slices/roadmapSearchSlice';
 import { useState } from 'react';
 import { useSelector } from 'react-redux';
 import { FaBars } from 'react-icons/fa';
@@ -7,25 +7,24 @@ import { GrClose } from 'react-icons/gr';
 import React from 'react';
 
 const SearchHeader: React.FC = () => {
-  const [mobileNavShowing, setMobileNavShowing] = useState(false);
-
-  const getMobileNavClass = () => {
-    if (mobileNavShowing) {
-      return '';
-    } else {
-      return 'hidden';
-    }
-  };
-
-  const oppositeMobileNavClass = () => {
-    if (mobileNavShowing) {
-      return 'hidden';
-    } else {
-      return '';
-    }
-  };
-
   const mobileAdvSearch = useSelector(selectMobileAdvSearch);
+  const [mobileNavShowing, setMobileNavShowing] = useState<boolean>(false);
+
+  const getMobileNavClass = (): string => {
+    if (mobileNavShowing) {
+      return '';
+    } else {
+      return 'hidden';
+    }
+  };
+
+  const oppositeMobileNavClass = (): string => {
+    if (mobileNavShowing) {
+      return 'hidden';
+    } else {
+      return '';
+    }
+  };
 
   const getOuterTopClass = () => {
     if (mobileAdvSearch) {
@@ -58,13 +57,17 @@ const SearchHeader: React.FC = () => {
             className={`${oppositeMobileNavClass()}`}
             onClick={() => setMobileNavShowing(true)}
           >
-            <FaBars size={28} color="black" className="md:hidden mr-6" />
+            <div className="md:hidden mr-6">
+              <FaBars size={28} color="black" />
+            </div>
           </button>
           <button
             className={`${getMobileNavClass()}`}
             onClick={() => setMobileNavShowing(false)}
           >
-            <GrClose size={28} color="black" className="md:hidden mr-6" />
+            <div className="md:hidden mr-6">
+              <GrClose size={28} color="black" />
+            </div>
           </button>
           <div
             className={`absolute right-6 flex flex-col w-max outline

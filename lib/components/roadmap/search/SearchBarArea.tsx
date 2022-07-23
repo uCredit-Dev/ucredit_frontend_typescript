@@ -4,12 +4,13 @@ import {
   updateSearchText,
   toggleMobileAdvSearch,
   selectMobileAdvSearch,
-} from '../../slices/roadmapSearchSlice';
+} from '../../../slices/roadmapSearchSlice';
 import SearchBar from './searchBar';
 import { useSelector } from 'react-redux';
 import React from 'react';
 
 const SearchBarArea: React.FC = () => {
+  const dispatch = useDispatch();
   const mobileAdvSearch = useSelector(selectMobileAdvSearch);
 
   const advToolsClass = () => {
@@ -36,8 +37,6 @@ const SearchBarArea: React.FC = () => {
     }
   };
 
-  const dispatch = useDispatch();
-
   const onSearchInput = (evt: any) => {
     dispatch(updateSearchText(evt.target.value));
   };
@@ -52,7 +51,9 @@ const SearchBarArea: React.FC = () => {
     md:bg-roadmap-pattern bg-white"
     >
       <div className="flex flex-row">
-        <RiMapPin2Fill size={36} color="#94B6CC" className="hidden md:block" />
+        <div className="hidden md:block">
+          <RiMapPin2Fill size={36} color="#94B6CC" />
+        </div>
         <h2
           className={`text-blue-900 text-4xl pl-2 md:block
         ${oppositeAdvToolsClass()}`}

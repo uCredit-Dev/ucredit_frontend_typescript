@@ -1,7 +1,3 @@
-import { DashboardMode } from '../../resources/commonTypes';
-import CommentsOverview from '../dashboard/menus/comments/CommentsOverview';
-import HamburgerMenu from '../dashboard/menus/HamburgerMenu';
-import Notification from '../dashboard/menus/Notification';
 import { useRouter } from 'next/router';
 import React, { useState } from 'react';
 
@@ -9,21 +5,13 @@ import React, { useState } from 'react';
  * Header components.
  */
 const Links: React.FC = () => {
-  const router = useRouter();
-
   return (
     <div className="sm:space-x-5">
-      <button
-        className="w-full hover:bg-slate-300 text-lg rounded-lg sm:w-auto px-3 py-1 sm:hover:text-blue-header sm:hover:bg-blue-footer sm:rounded-[13px] transition duration-100 ease-in"
-        // onClick={() => router.push('/post')}
-      >
+      <button className="w-full hover:bg-slate-300 text-lg rounded-lg sm:w-auto px-3 py-1 sm:hover:text-blue-header sm:hover:bg-blue-footer sm:rounded-[13px] transition duration-100 ease-in">
         post
       </button>
 
-      <button
-        className="w-full hover:bg-slate-300 text-lg rounded-lg sm:w-auto px-3 py-1 sm:hover:text-blue-header sm:hover:bg-blue-footer sm:rounded-[13px] transition duration-100 ease-in"
-        // onClick={() => router.push('/saved')}
-      >
+      <button className="w-full hover:bg-slate-300 text-lg rounded-lg sm:w-auto px-3 py-1 sm:hover:text-blue-header sm:hover:bg-blue-footer sm:rounded-[13px] transition duration-100 ease-in">
         saved
       </button>
 
@@ -39,7 +27,7 @@ const Links: React.FC = () => {
  */
 const Header: React.FC = () => {
   const router = useRouter();
-  const [showMenu, setShowMenu] = useState<Boolean>(false);
+  const [showMenu, setShowMenu] = useState<boolean>(false);
 
   return (
     <div className="sticky top-0 z-40 flex justify-between items-center py-1 px-4 h-1/6 bg-blue-header">

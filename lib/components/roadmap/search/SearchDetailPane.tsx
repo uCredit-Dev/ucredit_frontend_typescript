@@ -3,8 +3,8 @@ import { useState } from 'react';
 import React from 'react';
 
 const SearchDetailPane: React.FC = () => {
-  const [selectedMajor, setselectedMajor] = useState('');
-  const majorArray = [
+  const [selectedMajor, setselectedMajor] = useState<string>('');
+  const majorArray: string[] = [
     'B.S. in Computer Science',
     'B.A. in Computer Science',
     'B.S. in Electrical Engineering',

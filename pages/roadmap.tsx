@@ -1,78 +1,32 @@
 import React, { useState } from 'react';
 import CommentIcon from '../lib/components/roadmap-page/commentEditor/CommentIcon';
 import Editor from '../lib/components/roadmap-page/commentEditor/Editor';
-import Header from '../lib/components/roadmap/roadMapHeader';
-import RoadMapComment from '../lib/components/roadmap/roadMapComment';
-import Banner from '../lib/components/roadmap/roadMapBanner';
-
-import { DashboardMode, ReviewMode } from '../lib/resources/commonTypes';
+import Header from '../lib/components/roadmap/Header';
+import RoadMapComment from '../lib/components/roadmap/comments/RoadMapComment';
+import Banner from '../lib/components/roadmap/Banner';
+import { ReviewMode } from '../lib/resources/commonTypes';
 import { useDispatch, useSelector } from 'react-redux';
-import CourseList from '../lib/components/dashboard/course-list/horizontal/CourseList';
-import InfoMenu from '../lib/components/dashboard/degree-info/InfoMenu';
-import {
-  selectDeletePlanStatus,
-  selectAddingPlanStatus,
-  selectDeleteYearStatus,
-  selectCourseToDelete,
-  selectShowCourseInfo,
-  selectAddingPrereq,
-  selectShowingCart,
-  selectInfoPopup,
-} from '../lib/slices/popupSlice';
 import { useCallback, useEffect } from 'react';
-import {
-  selectImportingStatus,
-  selectPlan,
-  updateThreads,
-} from '../lib/slices/currentPlanSlice';
+import { selectPlan, updateThreads } from '../lib/slices/currentPlanSlice';
 import {
   selectExperimentList,
   setExperiments,
   toggleExperimentStatus,
 } from '../lib/slices/experimentSlice';
-import { selectSearchStatus } from '../lib/slices/searchSlice';
-import {
-  selectLoginCheck,
-  selectUser,
-  updateCommenters,
-} from '../lib/slices/userSlice';
+import { selectUser, updateCommenters } from '../lib/slices/userSlice';
 import axios from 'axios';
 import { getAPI } from '../lib/resources/assets';
-import Cart from '../lib/components/popups/course-search/Cart';
-import GenerateNewPlan from '../lib/resources/GenerateNewPlan';
-import LoadingPage from '../lib/components/LoadingPage';
-import HandlePlanShareDummy from '../lib/components/dashboard/HandlePlanShareDummy';
-import HandleUserInfoSetupDummy from '../lib/components/dashboard/HandleUserInfoSetupDummy';
 import { userService } from '../lib/services';
-import HamburgerMenu from '../lib/components/dashboard/menus/HamburgerMenu';
-import Notification from '../lib/components/dashboard/menus/Notification';
-import PlanEditMenu from '../lib/components/dashboard/menus/PlanEditMenu';
-import CommentsOverview from '../lib/components/dashboard/menus/comments/CommentsOverview';
 
 interface Props {
   mode: ReviewMode;
 }
 
 const RoadMap: React.FC<Props> = ({ mode }) => {
-  const infoPopup = useSelector(selectInfoPopup);
   const user = useSelector(selectUser);
-  const loginCheck = useSelector(selectLoginCheck);
-  const searchStatus = useSelector(selectSearchStatus);
-  const deletePlanStatus = useSelector(selectDeletePlanStatus);
-  const addPlanStatus = useSelector(selectAddingPlanStatus);
-  const deleteYearStatus = useSelector(selectDeleteYearStatus);
-  const deleteCourseStatus = useSelector(selectCourseToDelete);
-  const importingStatus = useSelector(selectImportingStatus);
-  const courseInfoStatus = useSelector(selectShowCourseInfo);
-  const addingPrereqStatus = useSelector(selectAddingPrereq);
-  const cartStatus = useSelector(selectShowingCart);
   const experimentList = useSelector(selectExperimentList);
   const dispatch = useDispatch();
   const currPlan = useSelector(selectPlan);
-
-  // State Setup
-  const [showNotif, setShowNotif] = useState<boolean>(true);
-  const [formPopup, setFormPopup] = useState<boolean>(false);
 
   const updateExperimentsForUser = useCallback(() => {
     axios
@@ -114,8 +68,6 @@ const RoadMap: React.FC<Props> = ({ mode }) => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [mode, currPlan._id]);
 
-
-
   const [editorPopup, setEditorPopup] = useState(false);
   const [comments, setComments] = useState<string[]>([]);
 
@@ -133,27 +85,23 @@ const RoadMap: React.FC<Props> = ({ mode }) => {
 
   return (
     <>
-    <div className="flex flex-col w-full h-full font-roadMapPage bg-white">
-      <Header/>
-      <Banner/>
-      <RoadMapComment/>
+      <div className="flex flex-col w-full h-full font-roadMapPage bg-white">
+        <Header />
+        <Banner />
+        <RoadMapComment />
 
-      <div className="absolute bottom-10 right-10">
-        <CommentIcon openEditor={openEditor}/>
-      </div>
+        <div className="absolute bottom-10 right-10">
+          <CommentIcon openEditor={openEditor} />
+        </div>
 
-      
-
-      <div>
-        {editorPopup && <Editor addComments={addComments} closeEditor={closeEditor}/>}
+        <div>
+          {editorPopup && (
+            <Editor addComments={addComments} closeEditor={closeEditor} />
+          )}
+        </div>
       </div>
-      </div>
-      
     </>
-  )
-
-}
-
-
+  );
+};
 
 export default RoadMap;
