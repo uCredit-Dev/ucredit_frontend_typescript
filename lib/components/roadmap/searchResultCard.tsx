@@ -14,7 +14,19 @@ import {AiOutlineComment, AiFillEye, AiOutlineLike, AiOutlineStar} from "react-i
 // starNum,
 // commentNum".
 
-const SearchResultCard: React.FC = () => {
+type planCardProps = {
+  id: string,
+  planName: string,
+  uploadDate: string,
+  content: string,
+  tagsList: string[],
+  watchNum: number,
+  likeNum: number,
+  starNum: number,
+  commentNum: number
+}
+
+const SearchResultCard: React.FC<planCardProps> = (props) => {
     return (
         <div className="bg-blue-200 mx-5 mt-5 mb-5 rounded-2xl">
 
@@ -22,13 +34,13 @@ const SearchResultCard: React.FC = () => {
                 /*`grid grid-cols-2 gap-4 place-content-between h-20`*/}>
                 {/*title*/}
                 <div className="grow">
-                    <h1 className="text-4xl flex-grow-0 mx-5 pt-3 pb-1 font-semibold"> Plan Name </h1>
+                    <h1 className="text-4xl flex-grow-0 mx-5 pt-3 pb-1 font-semibold">{props.planName}</h1>
                 </div>
                 <div>
                     <div className="flex justify-end mx-5 pt-3 pb-1">
                         {/*Date*/}
                         <div>
-                            <p><span className="hidden md:inline">Uploaded on </span>2022-06-04</p>
+                            <p><span className="hidden md:inline">Uploaded on </span>{props.uploadDate}</p>
                         </div>
                     </div>
 
@@ -37,7 +49,7 @@ const SearchResultCard: React.FC = () => {
                         <a className="flex-grow-0 pb-1bg-blue-900">
                             <div className="flex flex-row">
                                 <AiFillEye/>
-                                <p>324</p>
+                                <p>{props.watchNum}</p>
                             </div>
                         </a>
                     </div>
@@ -46,32 +58,31 @@ const SearchResultCard: React.FC = () => {
 
             {/*tagsList*/}
             <div className="flex flex-row">
+            {props.tagsList.map((item, index) => {
+                let reminder = index % 3;
+                let className = "flex-grow-0 mx-2 px-3 pt-0.5 pb-1 rounded-3xl text-blue ";
+                if (reminder === 0){
+                    className += "bg-yellow-300";
+                }
+                else if (reminder === 1){
+                    className += "bg-pink-300";
+                }
+                else {
+                    className += "bg-green-300";
+                }
+                return (
                 <div>
-                    <a className="flex-grow-0 mx-2 px-3 pt-0.5 pb-1 rounded-3xl
-        text-blue bg-yellow-300">
-                        English
+                    <a className={className}>
+                        {item}
                     </a>
-                </div>
-                <div>
-                    <a className="flex-grow-0 mx-2 px-3 pt-0.5 pb-1 rounded-3xl
-        text-blue bg-green-300">
-                        Humanity
-                    </a>
-                </div>
-
-                <div>
-                    <a className="flex-grow-0 mx-2 px-3 pt-0.5 pb-1 rounded-3xl
-        text-blue bg-pink-300">
-                        Pre-law
-                    </a>
-                </div>
+                </div>);
+            })}
             </div>
 
             {/*Contents*/}
             <div className="flex-grow-0 mx-2 px-3 pt-3 pb-3">
-                <p className="flex-grow font-semibold text-left">a brief description of this plan,
-                    such as the main purpose and concentration.
-                    two lines of preview in total ...
+                <p className="flex-grow font-semibold text-left">
+                    {props.content}
                 </p>
             </div>
 
@@ -86,14 +97,14 @@ const SearchResultCard: React.FC = () => {
                 <a href="/" className="flex-grow-0 mx-2 px-3 pt-0.5 pb-1bg-blue-900">
                     <div className="flex flex-row">
                         <AiOutlineLike/>
-                        <p>102</p>
+                        <p>{props.likeNum}</p>
                     </div>
                 </a>
                 {/*Comments*/}
                 <a href="/" className="flex-grow-0 mx-2 px-3 pt-0.5 pb-1bg-blue-900">
                     <div className="flex flex-row">
                         <AiOutlineComment/>
-                        <p>12</p>
+                        <p>{props.commentNum}</p>
                     </div>
                 </a>
             </div>

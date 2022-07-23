@@ -3,6 +3,7 @@ import {useState} from "react";
 
 const SearchDetailPane: React.FC = () => {
     const [selectedMajor, setselectedMajor] = useState("");
+    // needs fetch potential major lists from api
     const majorArray = [
         "B.S. in Computer Science",
         "B.A. in Computer Science",
@@ -36,7 +37,7 @@ const SearchDetailPane: React.FC = () => {
         child:outline child:outline-gray-400 child:outline-1 
         hover:child:underline hover:child:bg-gray-200">
           {majorArray.map((item) => {
-              if (item.includes(selectedMajor)) {
+              if (item.toLowerCase().includes(selectedMajor.toLowerCase())) {
                   return (<button onClick={changeSelectedMajor}>{item}</button>);
               }
           })}
