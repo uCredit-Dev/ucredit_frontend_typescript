@@ -2,8 +2,8 @@ import SearchBarArea from './searchBarArea';
 import { selectMobileAdvSearch } from '../../slices/roadmapSearchSlice';
 import { useState } from 'react';
 import { useSelector } from 'react-redux';
-// import { FaBars } from 'react-icons/fa';
-// import { GrClose } from 'react-icons/gr';
+import { FaBars } from 'react-icons/fa';
+import { GrClose } from 'react-icons/gr';
 import React from 'react';
 
 const SearchHeader: React.FC = () => {
@@ -53,27 +53,52 @@ const SearchHeader: React.FC = () => {
           </div>
         </a>
         <p className="flex-grow"></p>
-        <a
-          href="/"
-          className="flex-grow-0 mx-2 px-3 pb-0.5 underline
-        rounded-3xl hover:bg-blue-900 hover:text-white"
-        >
-          Dashboard
-        </a>
-        <a
-          href="/"
-          className="flex-grow-0 mx-2 px-3 pb-0.5 rounded-3xl 
-        text-white bg-blue-900"
-        >
-          Search
-        </a>
-        <a
-          href="/"
-          className="flex-grow-0 ml-2 mr-5 px-3 pb-0.5 underline
-        rounded-3xl hover:bg-blue-900 hover:text-white"
-        >
-          Post
-        </a>
+        <div className="relative">
+          <button
+            className={`${oppositeMobileNavClass()}`}
+            onClick={() => setMobileNavShowing(true)}
+          >
+            <FaBars size={28} color="black" className="md:hidden mr-6" />
+          </button>
+          <button
+            className={`${getMobileNavClass()}`}
+            onClick={() => setMobileNavShowing(false)}
+          >
+            <GrClose size={28} color="black" className="md:hidden mr-6" />
+          </button>
+          <div
+            className={`absolute right-6 flex flex-col w-max outline
+          outline-2 outline-black rounded-2xl overflow-hidden child:px-4 
+          child:py-1 child:outline child:outline-gray-400 child:outline-1
+          ${getMobileNavClass()} md:hidden`}
+          >
+            <a href="/">Dashboard</a>
+            <a href="/">Post a Plan</a>
+          </div>
+        </div>
+        <div className="hidden md:block flex-grow-0">
+          <a
+            href="/"
+            className="mx-2 px-3 pb-0.5 underline rounded-3xl 
+          hover:bg-blue-900 hover:text-white"
+          >
+            Dashboard
+          </a>
+          <a
+            href="/"
+            className="mx-2 px-3 pb-0.5 rounded-3xl text-white 
+          bg-blue-900"
+          >
+            Search
+          </a>
+          <a
+            href="/"
+            className="ml-2 mr-5 px-3 pb-0.5 underline rounded-3xl 
+          hover:bg-blue-900 hover:text-white"
+          >
+            Post
+          </a>
+        </div>
       </div>
       <SearchBarArea />
     </div>
