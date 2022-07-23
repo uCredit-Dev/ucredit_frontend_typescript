@@ -23,13 +23,13 @@ const SearchDetailPane: React.FC = () => {
   };
 
   return (
-    <div className="mx-8 my-5 px-6 py-4 bg-sky-100 rounded-xl">
+    <div className="m-8 px-6 py-4 bg-sky-100 sticky top-44 rounded-xl">
       <SearchBar
         iconSize={24}
         onInputProp={() => {}}
         placeHolder="Search tags"
         heightClass="h-10"
-        iconPosition="left-16"
+        iconPosition="left-9"
       />
       <div
         className="w-full my-2 outline outline-gray-600 outline-2
@@ -60,6 +60,13 @@ const SearchDetailPane: React.FC = () => {
               return <></>;
             }
           })}
+          <button>B.S. in Computer Science</button>
+          <button>B.A. in Computer Science</button>
+          <button>B.S. in Electrical Engineering</button>
+          <button>B.A. in Mathematics</button>
+          <button>B.S. in Public Health</button>
+          <button>B.A. in Something Else</button>
+          <button>B.S. in Something Else</button>
         </ul>
       </div>
       <p className="relative left-2 mt-4">
