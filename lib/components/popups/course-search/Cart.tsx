@@ -8,11 +8,7 @@ import {
   SearchExtras,
   SISRetrievedCourse,
 } from '../../../resources/commonTypes';
-import {
-  selectSelectedDistribution,
-  updateInfoPopup,
-  updateShowingCart,
-} from '../../../slices/popupSlice';
+import { updateInfoPopup, updateShowingCart } from '../../../slices/popupSlice';
 import FineRequirementsList from './cart/FineRequirementsList';
 import CartCourseList from './cart/CartCourseList';
 import { emptyRequirements } from './cart/dummies';
@@ -20,9 +16,16 @@ import {
   requirements,
   splitRequirements,
 } from '../../dashboard/degree-info/distributionFunctions';
-import { updateRetrievedCourses } from '../../../slices/searchSlice';
+import {
+  selectCartAdd,
+  updateRetrievedCourses,
+} from '../../../slices/searchSlice';
 import axios from 'axios';
 import { getAPI } from '../../../resources/assets';
+import {
+  selectCurrentPlanCourses,
+  selectSelectedDistribution,
+} from '../../../slices/currentPlanSlice';
 
 /**
  * Search component for when someone clicks a search action.
@@ -41,13 +44,15 @@ const Cart: FC<{ allCourses: SISRetrievedCourse[] }> = (props) => {
   // Redux selectors and dispatch
   const dispatch = useDispatch();
   const distrs = useSelector(selectSelectedDistribution);
+  const currentPlanCourses = useSelector(selectCurrentPlanCourses);
+  const cartAdd = useSelector(selectCartAdd);
 
   useEffect(() => {
     if (distrs[1] && distrs[1].length > 0) {
       setSelectedRequirement(distrs[1][0]);
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [distrs]);
+  }, [distrs, currentPlanCourses, cartAdd]);
 
   // Performing searching in useEffect so as to activate searching
   useEffect(() => {
@@ -131,7 +136,7 @@ const Cart: FC<{ allCourses: SISRetrievedCourse[] }> = (props) => {
         // TODO : figure out levels ? factor from distrubitionFunctions.tsx
         // also why is distributionFunctions a tsx file....
         // updatedConcat = handleLCase(splitArr, index, course);
-        extras.query = 'djaskdlfjaslkdfjsaodkfjasoidf jasdkflajsdlfksa';
+        extras.levels = splitArr[index];
         break;
       default:
         extras.query = splitArr[index];
@@ -214,10 +219,10 @@ const Cart: FC<{ allCourses: SISRetrievedCourse[] }> = (props) => {
   });
 
   return (
-    <div className="absolute top-0">
+    <div className="absolute top-0 ">
       {/* Background Grey */}
       <div
-        className="fixed top-0 left-0 z-40 w-full h-screen m-0 transition duration-700 ease-in transform bg-black"
+        className="fixed top-0 left-0 z-40 w-full h-screen m-0 transition duration-700 ease-in transform bg-black "
         style={{
           opacity: searchOpacity === 100 ? 0.5 : 0,
         }}
@@ -230,7 +235,7 @@ const Cart: FC<{ allCourses: SISRetrievedCourse[] }> = (props) => {
       {/* Search area */}
       <div
         className={
-          'fixed flex flex-col bg-primary select-none rounded z-40 min-w-[70rem] tight:overflow-y-none h-5/6 top-1/3 left-1/2 transform -translate-x-1/2 -translate-y-1/3 tight:h-auto'
+          'fixed flex flex-col bg-primary select-none rounded z-40 lg:w-[70rem] w-[85%] tight:overflow-y-none h-5/6 top-1/3 left-1/2 transform -translate-x-1/2 -translate-y-1/3 tight:h-auto overflow-hidden'
         }
         style={{ opacity: searchOpacity === 100 ? 1 : 0.1 }}
       >
@@ -238,7 +243,7 @@ const Cart: FC<{ allCourses: SISRetrievedCourse[] }> = (props) => {
           {distrs[0]}
           {/** This is the popup header. */}
         </div>
-        <div className="flex flex-row w-full h-full tight:flex-col tight:h-auto tight:max-h-mobileSearch text-coursecard tight:overflow-y-scroll">
+        <div className="flex flex-row w-full h-full tight:flex-col tight:h-auto tight:max-h-mobileSearch text-coursecard tight:overflow-y-scroll overflow-hidden">
           <div
             className={
               'flex flex-col rounded-l bg-gray-200 flex-none border-r-2 tight:border-0 border-gray-300 tight:w-auto w-80'
@@ -264,7 +269,9 @@ const Cart: FC<{ allCourses: SISRetrievedCourse[] }> = (props) => {
                 textFilter={textFilterInputValue.toLowerCase()}
               />
             </div>
-
+            <div className="h-full md:h-[0px] overflow-y-auto w-full md:invisible bg-gray-200">
+              <CourseDisplay cart={true} />
+            </div>
             <div
               className="flex flex-row items-center justify-center w-full h-8 p-1 transition duration-200 ease-in transform hover:scale-125"
               onMouseEnter={() => setSearchOpacity(50)}
@@ -276,10 +283,11 @@ const Cart: FC<{ allCourses: SISRetrievedCourse[] }> = (props) => {
               <EyeOffIcon className="w-6 h-6 text-gray-500 stroke-2" />
             </div>
           </div>
-          <div className="h-full overflow-y-auto w-full bg-gray-200">
+          <div className="md:h-full h-[0px] overflow-y-auto w-full invisible md:visible bg-gray-200">
             <CourseDisplay cart={true} />
           </div>
           {/** */}
+
           <div
             className={
               // todo: check styles?

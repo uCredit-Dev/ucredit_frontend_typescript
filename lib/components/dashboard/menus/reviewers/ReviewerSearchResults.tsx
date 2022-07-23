@@ -1,8 +1,8 @@
 import { useSelector } from 'react-redux';
-import { FC, useEffect, useState } from 'react';
-import emailjs from 'emailjs-com';
+import React, { FC, useEffect, useState } from 'react';
+import emailjs from '@emailjs/browser';
 import clsx from 'clsx';
-import { CheckIcon } from '@heroicons/react/outline';
+import { XIcon } from '@heroicons/react/outline';
 import { toast } from 'react-toastify';
 import { ReviewRequestStatus, User } from '../../../../resources/commonTypes';
 import { selectPlan } from '../../../../slices/currentPlanSlice';
@@ -15,12 +15,12 @@ emailjs.init('Q-AuEay-7tGmmVaNw');
 const { publicRuntimeConfig } = getConfig();
 const baseUrl = publicRuntimeConfig.baseUrl;
 
-const ReviewersSearchResults: FC<{
+const ReviewerSearchResults: FC<{
   users: User[];
 }> = ({ users }) => {
   const currentPlan = useSelector(selectPlan);
   const currentUser = useSelector(selectUser);
-  const [planReviewers, setPlanReviewers] = useState([]);
+  const [planReviewers, setPlanReviewers] = useState<any>([]);
 
   useEffect(() => {
     (async () => {
@@ -80,8 +80,10 @@ const ReviewersSearchResults: FC<{
           onClick={() => changeReviewer(user)}
           key={user._id}
         >
-          <CheckIcon
-            className={clsx('w-5 h-5', { 'opacity-0': !isReviewer(user._id) })}
+          <XIcon
+            className={clsx('w-[1.25rem] my-auto', {
+              'opacity-0': !isReviewer(user._id),
+            })}
           />
           <p>
             {user.name} - {user._id}
@@ -94,4 +96,4 @@ const ReviewersSearchResults: FC<{
   return <div>{getElements(users)}</div>;
 };
 
-export default ReviewersSearchResults;
+export default ReviewerSearchResults;

@@ -5,6 +5,9 @@ module.exports = {
       backgroundImage: {
         'roadmap-pattern': "url('/img/roadmap_pattern.png')",
       },
+      borderRadius: {
+        curvy: '50% 150px',
+      },
       minWidth: {
         yearMin: '250px',
         narrowest: '710px',
@@ -62,9 +65,9 @@ module.exports = {
         background: '#83B9FF',
         emphasis: '#fad4f5',
         blue: {
-          header: "#C6E8FF",
-          footer: "#0C3A76",
-          tag: "#83B9FF",
+          header: '#C6E8FF',
+          footer: '#0C3A76',
+          tag: '#83B9FF',
         },
         green: {
           tag: '#D1FDCD',
@@ -75,8 +78,9 @@ module.exports = {
         yellow: {
           tag: '#FFF9A3',
         },
-        
-
+        name: '#38596C',
+        slogan: '#4851AA',
+        // gray: '#5F5F5F',
       },
       backgroundColor: {
         gray: {
@@ -94,6 +98,16 @@ module.exports = {
         },
         theme: '#3168AF',
       },
+      fontFamily: {
+        landingPage: ['Futura'],
+      },
+      boxShadow: {
+        // eslint-disable-next-line no-multi-str
+        card: '12px 0px 10px -15px rgba(31, 73, 125, 0.8), \
+        -12px 0 10px -15px rgba(31, 73, 125, 0.8), \
+        0px 12px 10px -15px rgba(31, 73, 125, 0.8), \
+        0px -12px 10px -15px rgba(31, 73, 125, 0.8)',
+      },
       fontSize: {
         myplan: ['2rem'],
         infocard: [
@@ -109,14 +123,17 @@ module.exports = {
           },
         ],
       },
-      fontFamily: {
-        roadMapPage: ['Futura', ]
-      },
       screens: {
+        ml: '850px',
+        monitor: '1300px',
+        xxxl: '2000px',
         medium: '1500px',
         tight: { max: '1200px' },
         thin: { max: '820px' },
         narrow: { max: '710px' },
+        tablet: { min: '800px', max: '1200px' },
+        smTablet: { max: '800px' },
+        smMobile: '500px',
       },
       scale: {
         0: '0',

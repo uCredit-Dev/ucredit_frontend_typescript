@@ -1,5 +1,5 @@
 import { CheckIcon, BellIcon } from '@heroicons/react/outline';
-import { useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useSelector } from 'react-redux';
 import ReactTooltip from 'react-tooltip';
 import { ReviewRequestStatus } from '../../../../resources/commonTypes';
@@ -8,10 +8,11 @@ import { selectPlan } from '../../../../slices/currentPlanSlice';
 import { toast } from 'react-toastify';
 import emailjs from '@emailjs/browser';
 import { getAPI } from '../../../../resources/assets';
+import clsx from 'clsx';
 
 const CurrentReviewers = () => {
   const currentPlan = useSelector(selectPlan);
-  const [jsx, setJsx] = useState([]);
+  const [jsx, setJsx] = useState<JSX.Element[]>([]);
 
   const sendEmail = (fromName, toEmail, toName, reviewID) => {
     var form = {
@@ -66,7 +67,8 @@ const CurrentReviewers = () => {
     (async () => {
       const reviewers = (await userService.getPlanReviewers(currentPlan._id))
         .data;
-      setJsx(await getElements(reviewers));
+      const elements: JSX.Element[] = await getElements(reviewers);
+      setJsx(elements);
       // dispatch(updateSelectedPlan({ ...currentPlan, reviewers: reviewers }));
     })();
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -89,7 +91,7 @@ const CurrentReviewers = () => {
     sendEmail(reviewee_name, email, name, review_id); // Saves temporal values
 
   const getElements = async (data: any[]) => {
-    const elements = [];
+    const elements: JSX.Element[] = [];
     for (const { reviewer_id, status, reviewee_id, _id } of data) {
       const reviewer = (await userService.getUser(reviewer_id._id)).data[0];
       const reviewee = (await userService.getUser(reviewee_id)).data[0];
@@ -112,6 +114,23 @@ const CurrentReviewers = () => {
             </div>
           </div>
           <p className="pl-2 justify-start">{reviewer.name}</p>
+          {status !== ReviewRequestStatus.Pending && (
+            <div
+              className={clsx('ml-1 text-sm', {
+                'text-sky-500': status === ReviewRequestStatus.UnderReview,
+                'text-emerald-500': status === ReviewRequestStatus.Approved,
+                'text-red-500': status === ReviewRequestStatus.Rejected,
+              })}
+            >
+              {status === ReviewRequestStatus.Approved
+                ? 'Approved'
+                : status === ReviewRequestStatus.Rejected
+                ? 'Rejected'
+                : status === ReviewRequestStatus.UnderReview
+                ? 'Reviewing'
+                : null}
+            </div>
+          )}
           {status !== 'PENDING' ? (
             <button className="ml-auto">
               <BellIcon

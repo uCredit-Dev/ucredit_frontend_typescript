@@ -5,7 +5,6 @@ import {
   UserCourse,
   Year,
 } from '../components/../resources/commonTypes';
-import { requirements } from '../components/dashboard/degree-info/distributionFunctions';
 
 type PopupSlice = {
   deletePlan: boolean;
@@ -21,7 +20,6 @@ type PopupSlice = {
   courseToShow: UserCourse | null;
   addingPrereq: boolean;
   showingCart: boolean;
-  selectedDistribution: [string, requirements[]];
   infoPopup: boolean;
 };
 
@@ -39,7 +37,6 @@ const initialState: PopupSlice = {
   courseToShow: null,
   addingPrereq: false,
   showingCart: false,
-  selectedDistribution: ['', []],
   infoPopup: false,
 };
 
@@ -99,12 +96,6 @@ export const popupSlice = createSlice({
     updateShowingCart: (state: any, action: PayloadAction<boolean>) => {
       state.showingCart = action.payload;
     },
-    updateSelectedDistribution: (
-      state: any,
-      action: PayloadAction<[string, requirements[]]>,
-    ) => {
-      state.selectedDistribution = action.payload;
-    },
     updateInfoPopup: (state: any, action: PayloadAction<boolean>) => {
       // TODO: compress to one update function
       state.infoPopup = action.payload;
@@ -127,7 +118,6 @@ export const {
   updateCourseToShow,
   updateAddingPrereq,
   updateShowingCart,
-  updateSelectedDistribution,
   updateInfoPopup,
 } = popupSlice.actions;
 
@@ -155,8 +145,6 @@ export const selectCourseToShow = (state: RootState) =>
 export const selectAddingPrereq = (state: RootState) =>
   state.popup.addingPrereq;
 export const selectShowingCart = (state: RootState) => state.popup.showingCart;
-export const selectSelectedDistribution = (state: RootState) =>
-  state.popup.selectedDistribution;
 export const selectInfoPopup = (state: RootState) => state.popup.infoPopup;
 
 export default popupSlice.reducer;

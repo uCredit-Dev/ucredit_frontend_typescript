@@ -86,14 +86,202 @@ import { Major, Minor } from './commonTypes';
 //   distributions: [],
 // };
 
-// // https://cogsci.jhu.edu/undergraduate/cognitive-science-major/
-// const bsCogSci: Major = {
-//   degree_name: "B.S. Cognitive Science",
-//   department: "AS Cognitive Science",
-//   total_degree_credit: 120,
-//   wi_credit: 6,
-//   distributions: [],
-// };
+// https://cogsci.jhu.edu/undergraduate/cognitive-science-major/
+/**
+ * Problem 1: Upper level electives double count with focal area if not marked exclusive, doesnt work at all if marked exclusive.
+ * Problem 2: Classes with multiple areas satisfy all distribution requirements whereas they should satisfy only one of them.
+ * Solution: Exclusivity should be relative to distributions and individual fine requirements rather than just be a boolean. Also, when a distribution is satisfied, it should no longer be considered in the exclusivity check. This solves Problem 1 and Problem 2
+ */
+const baCogSci: Major = {
+  degree_name: 'B.A. Cognitive Science',
+  abbrev: 'B.A. Cog Sci',
+  department: 'AS Cognitive Science',
+  total_degree_credit: 81,
+  wi_credit: 12,
+  url: 'https://cogsci.jhu.edu/undergraduate/cognitive-science-major/',
+  distributions: [
+    {
+      name: 'One Course from each Focal Area',
+      required_credits: 15,
+      min_credits_per_course: 3,
+      description:
+        'One course is required from each focal area offered by the department: <br />' +
+        'Cognitive Psychology/Cognitive Neuropsychology <br />' +
+        'Linguistics <br />' +
+        'Computational Approaches to Cognition <br />' +
+        'Philosophy of Mind <br />' +
+        'Neuroscience',
+      criteria:
+        'COGS-COGPSY[T]^OR^COGS-LING[T]^OR^COGS-COMPCG[T]^OR^COGS-NEURO[T]^OR^COGS-PHLMND[T]',
+      fine_requirements: [
+        {
+          description: '<b>Cognitive Psychology/Cognitive Neuropsychology</b>',
+          required_credits: 3,
+          criteria: 'COGS-COGPSY[T]',
+        },
+        {
+          description: '<b>Linguistics</b>',
+          required_credits: 3,
+          criteria: 'COGS-LING[T]',
+        },
+        {
+          description: '<b>Computational Approaches to Cognition</b>',
+          required_credits: 3,
+          criteria: 'COGS-COMPCG[T]',
+        },
+        {
+          description: '<b>Philosophy of Mind</b>',
+          required_credits: 3,
+          criteria: 'COGS-PHLMND[T]',
+        },
+        {
+          description: '<b>Neuroscience</b>',
+          required_credits: 3,
+          criteria: 'COGS-NEURO[T]',
+        },
+      ],
+    },
+    {
+      name: 'Two Focal Areas',
+      required_credits: 12,
+      min_credits_per_course: 3,
+      description:
+        'Four courses in each of the two chosen focal areas. Research, readings, and practica courses do not qualify.',
+      criteria:
+        'COGS-COGPSY[T]^OR^COGS-LING[T]^OR^COGS-COMPCG[T]^OR^COGS-NEURO[T]^OR^COGS-PHLMND[T]',
+      pathing: 2,
+      fine_requirements: [
+        {
+          description:
+            '<b>Cognitive Psychology/Cognitive Neuropsychology</b> <br />' +
+            'At least 2 courses must be at the 300 level or above.',
+          required_credits: 12,
+          criteria: 'COGS-COGPSY[T]',
+        },
+        {
+          description:
+            '<b>Linguistics</b> <br />' +
+            'At least 2 courses must be at the 300 level or above.',
+          required_credits: 12,
+          criteria: 'COGS-LING[T]',
+        },
+        {
+          description:
+            '<b>Computational Approaches to Cognition</b> <br />' +
+            'At least 2 courses must be at the 300 level or above.',
+          required_credits: 12,
+          criteria: 'COGS-COMPCG[T]',
+        },
+        {
+          description:
+            '<b>Philosophy of Mind</b> <br />' +
+            'At least 2 courses must be at the 300 level or above.',
+          required_credits: 12,
+          criteria: 'COGS-PHLMND[T]',
+        },
+        {
+          description:
+            '<b>Neuroscience</b> <br />' +
+            'At least 2 courses must be at the 300 level or above.',
+          required_credits: 12,
+          criteria: 'COGS-NEURO[T]',
+        },
+      ],
+    },
+    {
+      name: 'Upper Level Electives',
+      required_credits: 9,
+      min_credits_per_course: 1,
+      description:
+        'Nine credits at the 300-600 level chosen from any of the five areas or other cognitive science courses.' +
+        'Up to three credits of cognitive science research, readings, or practica may apply.',
+      criteria:
+        '(COGS-COGPSY[T]^OR^COGS-LING[T]^OR^COGS-COMPCG[T]^OR^COGS-NEURO[T]^OR^COGS-PHLMND[T])^AND^(Upper Level[L])',
+      exclusive: true,
+    },
+    {
+      name: 'Math',
+      required_credits: 6,
+      min_credits_per_course: 3,
+      description:
+        'Select Math Option A or B. For students with Cognitive Psychology/Neuropsychology as one of their focal areas, Math Option B is required',
+      criteria:
+        'AS.110.106[C]^OR^AS.110.108[C]^OR^AS.110.107[C]^OR^AS.110.109[C]^OR^AS.110.113[C]^OR^' +
+        'AS.110.201[C]^OR^AS.110.212[C]^OR^EN.553.291[C]^OR^AS.150.118[C]^OR^AS.150.420[C]^OR^AS.050.370[C]^OR^' +
+        'AS.050.371[C]^OR^AS.050.372[C]^OR^EN.553.171[C]^OR^AS.200.200[C]^OR^AS.200.201[C]',
+      pathing: 1,
+      fine_requirements: [
+        {
+          description:
+            '<b>Option A</b> <br /> Select two of the following: <br />' +
+            'AS.110.106 Calculus I (Biological and Social Sciences) OR AS.110.108 Calculus I (Physical Sciences and Engineering <br />' +
+            'AS.110.107 Calculus II (Biological and Social Sciences) OR AS.110.109 Calculus II (Physical Sciences and Engineering OR AS.110.113 Honors Single Variable Calculus<br />' +
+            'AS.110.201/212 Linear Algebra OR EN.553.291 Linear Algebra and Differential Equations <br />' +
+            'AS.150.118 Introduction to Formal Logic <br />' +
+            'AS.150.420 Mathematical Logic I <br />' +
+            'AS.050.370 Mathematical Models of Language <br />' +
+            'AS.050.371 Bayseian Inference <br />' +
+            'AS.050.372 Foundations of Neural Network Theory <br />' +
+            'EN.553.171 Discrete Mathematics',
+          required_credits: 6,
+          criteria:
+            'AS.110.106[C]^OR^AS.110.108[C]^OR^AS.110.107[C]^OR^AS.110.109[C]^OR^AS.110.113[C]^OR^' +
+            'AS.110.201[C]^OR^AS.110.212[C]^OR^EN.553.291[C]^OR^AS.150.118[C]^OR^AS.150.420[C]^OR^AS.050.370[C]^OR^' +
+            'AS.050.371[C]^OR^AS.050.372[C]^OR^EN.553.171[C]',
+        },
+        {
+          description:
+            '<b>Option B</b> <br />' +
+            'AS.200.200 Research Methods in Psychology <br />' +
+            'AS.200.201 Design and Statistical Analysis for Psychology',
+          required_credits: 8,
+          criteria: 'AS.200.200[C]^OR^AS.200.201[C]',
+        },
+      ],
+    },
+    {
+      name: 'Humanities (H) Distribution',
+      required_credits: 9,
+      min_credits_per_course: 3,
+      description:
+        'The distribution requirement stipulates that students must earn a minimum number of credits in academic areas outside of their primary major. ' +
+        'The student must complete at least 9 credits in the Humanities (H) area. ' +
+        'These credits fulfilling the distribution requirement may overlap with major or minor requirements and the writing-intensive requirement.',
+      criteria: 'H[A]',
+    },
+    {
+      name: 'Social Science (S) Distribution',
+      required_credits: 9,
+      min_credits_per_course: 3,
+      description:
+        'The distribution requirement stipulates that students must earn a minimum number of credits in academic areas outside of their primary major. ' +
+        'The student must complete at least 9 credits in the Social Science (S) area. ' +
+        'These credits fulfilling the distribution requirement may overlap with major or minor requirements and the writing-intensive requirement.',
+      criteria: 'S[A]',
+    },
+    {
+      name: 'Other (N/E/Q) Distribution',
+      required_credits: 9,
+      min_credits_per_course: 3,
+      description:
+        'The distribution requirement stipulates that students must earn a minimum number of credits in academic areas outside of their primary major. ' +
+        'The student must complete at least 9 credits in any of the other areas: Natural Sciences (N), Engineering (E) and/or Quantitative (Q). ' +
+        'These credits fulfilling the distribution requirement may overlap with major or minor requirements and the writing-intensive requirement.',
+      criteria: 'N[A]^OR^E[A]^OR^Q[A]',
+    },
+    {
+      name: 'Writing Intensive',
+      required_credits: 12,
+      min_credits_per_course: 3,
+      double_count: true,
+      description:
+        'To encourage excellence in writing, across disciplines, the university requires all undergraduates to take a number of writing-intensive courses. ' +
+        'All students earning a degree from the School of Arts and Sciences must complete at least 12 credits in writing-intensive courses. ' +
+        'Writing-intensive courses taken to satisfy major, minor, or distribution requirements may also count toward the writing requirement.',
+      criteria: 'Written Intensive[W]',
+    },
+  ],
+};
 
 // // https://me.jhu.edu/undergraduate-studies/academic-advising-undergraduate/
 // const bsME: Major = {
@@ -531,7 +719,7 @@ const bsBME: Major = {
     },
     {
       name: 'Mathematics',
-      required_credits: 19,
+      required_credits: 20,
       min_credits_per_course: 3,
       description:
         'Students who take an approved math course and receive 3 credits will have a total of 19 credits. Students are ' +
@@ -596,7 +784,7 @@ const bsBME: Major = {
       name: 'Focus Area',
       required_credits: 21,
       min_credits_per_course: 1,
-      pathing: true,
+      pathing: 1,
       description:
         'The student must select at least 21 credits from the approved list of courses for a specific focus area. Coordinate with your advisor to' +
         ' determine the best combination of classes for you:',
@@ -652,7 +840,7 @@ const bsBME: Major = {
         '(EN.580.456[C]^OR^EN.580.457[C])^OR^(EN.580.471[C]^OR^EN.580.571[C])^OR^' +
         '(EN.580.480[C]^OR^EN.580.481[C])^OR^(EN.580.580[C]^OR^EN.580.581[C])^OR^' +
         '(EN.601.455[C]^OR^EN.601.456[C])^OR^(EN.580.437[C]^OR^EN.580.438[C])',
-      pathing: true,
+      pathing: 1,
       fine_requirements: [
         {
           description:
@@ -1190,7 +1378,7 @@ const bsCBE: Major = {
       description:
         'Take one of the following course options for Product Design.',
       criteria: '',
-      pathing: true,
+      pathing: 1,
       fine_requirements: [
         {
           description:
@@ -1471,7 +1659,7 @@ const baIS: Major = {
           required_credits: 3,
           description:
             '<b>One other Economics Course</b> <br /> One course (student’s choice) taken in the JHU Department of Economics (e.g., AS.180.xxx).',
-          criteria: 'AS Economics[D]',
+          criteria: 'AS Economics[D]^NOT^AS.180.101[C]^NOT^AS.180.102[C]',
         },
       ],
     },
@@ -1502,7 +1690,7 @@ const baIS: Major = {
       description:
         'Four courses within a coherent field of interest. For more detail please visit ' +
         'https://krieger.jhu.edu/internationalstudies/undergraduate/requirements/',
-      criteria: '',
+      criteria: '^NOT^AS.180.101[C]^NOT^AS.180.102[C]',
       user_select: true,
     },
     {
@@ -1513,14 +1701,13 @@ const baIS: Major = {
         'International Studies students must complete 15 credits in history, including:\n\t' +
         'One introductory course at the 100-level in the JHU History Department ' +
         '(e.g., AS.100.1xx).\n\tFour courses designated INST-GLOBAL in the course description.',
-      criteria:
-        '(AS History[D]^AND^Lower Level Undergraduate[L])^OR^INST-GLOBAL[T]',
+      criteria: '(AS History[D]^AND^100[L])^OR^INST-GLOBAL[T]',
       fine_requirements: [
         {
           required_credits: 3,
           description:
             '<b>Introductory History Course</b> One introductory course at the 100-level in the JHU History Department (e.g., AS.100.1xx)',
-          criteria: 'AS History[D]^AND^Lower Level Undergraduate[L]',
+          criteria: 'AS History[D]^AND^100[L]',
         },
         {
           required_credits: 12,
@@ -1598,7 +1785,7 @@ const bsAMS: Major = {
           description:
             '<b>Calculus I</b> <br /> AS.110.108 Calculus I (Physical Sciences & Engineering) <br /> <i>OR</i> <br /> AS.110.113 Honors Single Variable Calculus <br />',
           required_credits: 4,
-          criteria: 'AS.110.108[C]',
+          criteria: 'AS.110.108[C]^OR^AS.110.113[C]',
         },
         {
           description:
@@ -1670,14 +1857,14 @@ const bsAMS: Major = {
         'Biological Models and Simulations and Nonlinear Dynamics of Biological Systems <br /> EN.601.220 Intermediate Programming' +
         '. <br /> NOTE: Students are strongly encouraged to fulfill this element of the requirement by taking EN.500.113 Gateway Computing: Python, and to do this in their first semester at Johns Hopkins University.',
       criteria:
-        'EN.500.112[C]^OR^EN.500.113[C]^OR^EN.500.114[C]^OR^AS.250.205[C]^OR^EN.553.281[C]^OR^EN.580.242[C]^OR^EN.580.244[C]^OR^' +
-        'EN.601.220[C]',
+        'EN.500.112[C]^OR^EN.500.113[C]^OR^EN.500.114[C]^OR^AS.250.205[C]^OR^EN.553.281[C]^OR^(EN.580.242[C]^AND^EN.580.244[C])^OR^' +
+        'EN.601.220[C]^OR^AS.250.205[C]',
     },
     {
       name: 'Area of Focus',
       required_credits: 6,
       min_credits_per_course: 3,
-      pathing: true,
+      pathing: 1,
       description:
         'Two courses must be taken within a coherent field of interest. For more detail please visit ' +
         'https://e-catalogue.jhu.edu/engineering/full-time-residential-programs/degree-programs/applied-mathematics-statistics/applied-mathematics-statistics-bs/#requirementstext',
@@ -1725,7 +1912,7 @@ const bsAMS: Major = {
           required_credits: 6,
           description: '<b>Computational Mathematics</b>',
           criteria:
-            'EN.553.481[C]^OR^AS.110.445[C]^OR^EN.553.433[C]^OR^EN.553.467[C]^OR^EN.553.493[C]',
+            'EN.553.481[C]^AND^(AS.110.445[C]^OR^EN.553.433[C]^OR^EN.553.467[C]^OR^EN.553.493[C])',
         },
       ],
     },
@@ -1822,50 +2009,88 @@ const bsCS_Old: Major = {
       description:
         "For more information please visit the <a href='https://www.cs.jhu.edu/undergraduate-studies/academics/ugrad-advising-manual/'>" +
         'major degree requirement</a> section on the department website.',
-      criteria: 'EN Computer Science[D]^OR^CSCI-OTHER[T]',
+      criteria: 'EN Computer Science[D]^OR^EN.500.112[C]^OR^EN.660.400[C]',
       fine_requirements: [
         {
           description:
-            '<b>Computer Ethics(601.104).</b><p>Practical Ethics for Future Leaders (660.400/406) may be used as a substitute for the computer ethics requirement for the BS program, but does not count towards the CS total credits at all.</p>',
+            '<b>Computer Ethics</b> <br /> Select one of the following courses: <br /> ' +
+            'EN.601.104 Computer Ethics <br /> ' +
+            'EN.660.400 Practical Ethics for Future Leaders',
           required_credits: 1,
-          criteria: 'EN.600.104[C]^OR^EN.601.104[C]^OR^EN.660.400[C]',
+          criteria: 'EN.601.104[C]^OR^EN.660.400[C]',
         },
         {
           description:
-            '<b>Lower Level Undergraduate:</b><p>500.112/113/114 Gateway Computing or AP Comp Sci A or ' +
-            'equivalent<p>601.220 Intermediate Programming</p><p>601.226 Data Structures</p><p>601.229 ' +
-            'Computer System Fundamentals</p><p>601.231/271 Automata and Computation Theory</p><p>601.433 Algorithms</p>',
-          required_credits: 20,
-          criteria:
-            'EN.500.112[C]^OR^EN.500.113[C]^OR^EN.500.114[C]^OR^EN.601.220[C]^OR^EN.601.226[C]' +
-            '^OR^EN.601.229[C]^OR^EN.601.231[C]^OR^EN.601.271[C]^OR^EN.601.443[C]',
+            '<b>Gateway Computing: JAVA</b> <br /> ' +
+            'EN.500.112 Gateway Computing: JAVA <br /> ' +
+            'For equivalent ways to satisfy this requirement, contact your advisor and create a custom course which satisfies this requirement.',
+          required_credits: 3,
+          criteria: 'EN.500.112[C]',
         },
         {
           description:
-            '<b>Upper Level Undergraduate: </b><p>12 upper level CS credits in addition to the required Algorithms course</p>',
+            '<b>Intermediate Programming</b> <br /> ' +
+            'EN.601.220 Intermediate Programming',
+          required_credits: 4,
+          criteria: 'EN.601.220[C]',
+        },
+        {
+          description:
+            '<b>Data Structures</b> <br /> EN.601.226 Data Structures',
+          required_credits: 4,
+          criteria: 'EN.601.226[C]',
+        },
+        {
+          description:
+            '<b>Computer System Fundamentals</b> <br /> ' +
+            'EN.601.229 Computer System Fundamentals',
+          required_credits: 3,
+          criteria: 'EN.601.229[C]',
+        },
+        {
+          description:
+            '<b>Automata & Computation Theory</b> <br /> ' +
+            'EN.601.231 Automata & Computation Theory',
+          required_credits: 3,
+          criteria: 'EN.601.231[C]',
+        },
+        {
+          description:
+            '<b>Intro Algorithms</b> <br /> EN.601.433 Intro Algorithms',
+          required_credits: 3,
+          criteria: 'EN.601.433[C]',
+        },
+        {
+          description:
+            '<b>Upper Level CS Credits</b> <br /> ' +
+            'At least 13 more upper level CS credits are required. ' +
+            'At least one course in two different classification areas (Applications, Reasoning, Software, Systems) must be chosen in addition to Theory (Algorithms).', // TODO: Question: How to include this requirement?: SEPARATE DISTRIBUTION PATHING
           required_credits: 13,
           criteria: 'EN Computer Science[D]^AND^Upper Level Undergraduate[L]',
         },
         {
+          // TODO: Issue here: Marking this as exclusive excludes courses from the team requirement (which allows double count). Removing exclusive from here clashes with the upper level CS credits, where courses should satisfy either of the requirements: SEPARATE DISTRIBUTION, PATHING
           description:
-            '<b>2 Upper Level Classifications:</b><p>At least one upper level course in two of these four different classification</p> ' +
-            'areas: Applications(CSCI-APPL), Systems(CSCI-SYST), Software(CSCI-SOFT) and Reasoning(CSCI-RSNG)',
-          required_credits: 6,
-          criteria:
-            'CSCI-APPL[T]^OR^CSCI-SYST[T]^OR^CSCI-SOFT[T]^OR^CSCI-RSNG[T]',
+            '<b>CS Electives</b> <br /> ' +
+            'Eight additional credits of Computer Science are required.' +
+            'For an approved list of courses from other departments (maximum of 6 credits allowed), visit https://www.cs.jhu.edu/computer-science-other-courses-for-bs-degree/ ' +
+            'and create a custom course to satisfy this requirement.',
+          required_credits: 8,
+          criteria: 'EN Computer Science[D]',
+          exclusive: true,
         },
         {
           description:
-            '<b>One Team(CSCI-TEAM) designated course.</b><p> This Team course may overlap other course ' +
-            'requirements, for example to count as both Team and Software.</p>',
+            '<b>Team Requirement</b> <br /> ' +
+            'Select one course with Program of Study Tag CSCI-TEAM.',
           required_credits: 3,
           criteria: 'CSCI-TEAM[T]',
         },
       ],
     },
     {
-      name: 'Math',
-      required_credits: 16,
+      name: 'Mathematics',
+      required_credits: 24,
       min_credits_per_course: 3,
       description:
         'All courses in this category must be from one of the two math departments on ' +
@@ -1873,72 +2098,48 @@ const bsCS_Old: Major = {
         'may not count towards these math requirements. Other than Calculus I and II, all the ' +
         'remaining courses must be 200-level or above.',
       criteria: 'AS Mathematics[D]^OR^EN Applied Mathematics & Statistics[D]',
-      exception: 'EN.553.171[C]',
       fine_requirements: [
         {
           description:
-            '<b>Required Courses:</b><p>110.108 Calculus I or AP equivalent</p>110.109 Calculus II or AP equivalent</p>' +
-            '<p>550.171/553.171 Discrete Mathematics if grandfathered into old major</p>',
-          required_credits: 8,
-          criteria: 'AS.110.108[C]^OR^AS.110.109[C]',
+            '<b>Calculus I</b> <br /> AS.110.108 Calculus I (Physical Sciences & Engineering)',
+          required_credits: 4,
+          criteria: 'AS.110.108[C]',
         },
         {
           description:
-            '<b>Math Elective:</b><p>This must be 200-level or above, chosen from Mathematics (AS.110.xxx) or Applied Math and Statistics (EN.553.xxx)</p>',
+            '<b>Calculus II</b> <br /> AS.110.109 Calculus II (Physical Sciences & Engineering)',
           required_credits: 4,
-          criteria: 'AS.110.[C]^OR^EN.553.[C]',
+          criteria: 'AS.110.109[C]',
         },
-      ],
-    },
-    {
-      name: 'Probability and Statistics Requirements',
-      required_credits: 4,
-      min_credits_per_course: 3,
-      description:
-        '<p> The BS math courses must include coverage ' +
-        'of both probability and statistics, which can be satisfied in many ways, including ' +
-        'taking any of the 553.3xx combined Probability & Statistics courses. Probability and Statistics:</p><p>Two paths:</p>',
-      criteria: 'AS Mathematics[D]^OR^EN Applied Mathematics & Statistics[D]',
-      exception:
-        '(Probability & Statistics[N]^OR^Probability and Statistics[N]^OR^EN.553.211[C]^OR^EN.553.310[C]^OR^EN.553.311[C]^OR^EN.553.420[C]^OR^EN.553.430[C])',
-      pathing: true,
-      fine_requirements: [
         {
           description:
-            '<p>1. Any of the three courses below:</p><p>EN.553.211</p><p>EN.553.310</p><p>EN.553.311</p> ',
+            '<b>Discrete Mathematics</b> <br /> EN.553.171 Discrete Mathematics',
           required_credits: 4,
+          criteria: 'EN.553.171[C]',
+        },
+        {
+          // TODO: How to account for prob/stats coverage requirement?: MATH ELECTIVES DISTRIBUTION WITH PATHING FOR PROB STATS
+          description:
+            '<b>Electives</b> <br /> At least 3 more courses must be taken at the 200 or above level, ' +
+            'and must include coverage of both Probability and Statistics.',
+          required_credits: 12,
           criteria:
-            'Probability & Statistics[N]^OR^Probability and Statistics[N]^OR^EN.553.211[C]^OR^EN.553.310[C]^OR^EN.553.311[C]',
-        },
-        {
-          description:
-            '<p>2. Both Intro to Probability and Intro to Statistics</p><p>EN.553.420</p><p>EN.553.430</p> ',
-          required_credits: 8,
-          criteria: 'EN.553.420[C]^OR^EN.553.430[C]',
+            '(AS Mathematics[D]^OR^EN Applied Mathematics & Statistics[D])^AND^(200[L]^OR^Upper Level[L])',
         },
       ],
     },
     {
-      name: 'Science',
+      name: 'Basic Sciences', // TODO: How to account for language/linguistic courses?
       required_credits: 16,
       min_credits_per_course: 1,
       description:
         'At least two semesters of physics or two semesters of chemistry, with the associated laboratories, must be included.',
       criteria: 'N[A]',
-      fine_requirements: [
-        {
-          description:
-            '<b>Required Courses:</b><p>Two paths:</p>' +
-            '<p>1. Two semesters of chemistry with associated lab:</p><p>030.101 Chemistry I and 030.105 Chemistry Lab I or AP equivalent</p>030.102 Chemistry II and 030.106 Chemistry Lab II or AP equivalent</p>' +
-            '<p>2. Two semesters of physics with associated lab:</p><p>171.101/103 Physics I and 173.111 Physics Lab I or AP equivalent</p>171.102/104 Physics II and 173.112 Phyusics Lab II or AP equivalent</p>',
-          required_credits: 10,
-          criteria:
-            '(AS.030.101[C]^AND^AS.030.105[C]^AND^AS.030.102[C]^AND^AS.030.106[C])^OR^((AS.171.101[C]^AND^AS.171.103[C])^AND^AS.173.11[C]^AND^(AS.171.102[C]^AND^AS.171.104[C])^AND^AS.173.112[C])',
-        },
-      ],
+      exception:
+        'EN Computer Science[D]^OR^AS Center for Language Education[D]^OR^EN Applied Mathematics & Statistics[D]',
     },
     {
-      name: 'Liberal Arts',
+      name: 'Humanities/Social Sciences',
       required_credits: 18,
       min_credits_per_course: 3,
       description:
@@ -1946,14 +2147,12 @@ const bsCS_Old: Major = {
         'from any department. At most 2 of these courses may be taken S/U (if not counted towards ' +
         'the writing requirement). Foreign language courses can be counted as well, even if ' +
         'they don’t carry an ‘H’ or ‘S’ designator.',
-      criteria:
-        'AS Center for Language Education[D]^OR^AS Modern Languages and Literatures[D]^OR^H[A]^OR^S[A]',
+      criteria: 'H[A]^OR^S[A]',
     },
     {
       name: 'Writing Intensive',
       required_credits: 6,
       min_credits_per_course: 3,
-      double_count: true,
       description:
         'Students are required to fulfill the university’s requirement of two writing intensive courses, ' +
         'each at least 3 credits. Students must receive at least a C- grade or better in these writing courses. ',
@@ -1961,13 +2160,21 @@ const bsCS_Old: Major = {
       fine_requirements: [
         {
           description:
-            '<b>Writing-focused WI</b><p>At least one course must be explicitly focused on writing skills in English (eg, courses in professional, ' +
-            'fiction or expository writing). These courses may overlap with other requirements.</p><p>Any of the courses below would be satisfactory:</p><p>AS.060.100</p><p>AS.060.113</p><p>AS.060.114</p><p>AS.180.248</p><p>AS.220.105</p><p>AS.220.106</p><p>AS.220.108</p><p>AS.290.303</p><p>AS.360.133</p><p>EN.661.110</p><p>EN.661.111</p><p>EN.661.250</p><p>EN.661.251</p><p>EN.661.315</p>',
+            'At least one course with a primary focus on writing in English must be chosen.',
           required_credits: 3,
           criteria:
-            'AS.060.100[C]^OR^AS.060.113[C]^OR^AS.060.114[C]^OR^AS.180.248[C]^OR^AS.220.105[C]^OR^AS.220.106[C]^OR^AS.220.108[C]^OR^AS.290.303[C]^OR^AS.360.133[C]^OR^EN.661.110[C]^OR^EN.661.111[C]^OR^EN.661.250[C]^OR^EN.661.251[C]^OR^EN.661.315[C]',
+            'EN.661.110[C]^OR^EN.661.111[C]^OR^EN.661.250[C]^OR^EN.661.251[C]^OR^EN.661.315[C]^OR^AS.060.100[C]^OR^AS.060.113[C]^OR^AS.220.105[C]^OR^AS.180.248[C]^OR^AS.290.303[C]^OR^AS.360.133[C]',
         },
       ],
+    },
+    {
+      // TODO: exclusive does not work here...me problem...
+      name: 'Electives',
+      required_credits: 26,
+      min_credits_per_course: 1,
+      description: 'These can be any credit bearing courses taken at JHU.',
+      criteria: '',
+      exclusive: true,
     },
   ],
 };
@@ -2070,7 +2277,7 @@ const bsCS_New: Major = {
       criteria: 'AS Mathematics[D]^OR^EN Applied Mathematics & Statistics[D]',
       exception:
         '(Probability & Statistics[N]^OR^Probability and Statistics[N]^OR^EN.553.211[C]^OR^EN.553.310[C]^OR^EN.553.311[C]^OR^EN.553.420[C]^OR^EN.553.430[C])',
-      pathing: true,
+      pathing: 1,
       fine_requirements: [
         {
           description:
@@ -2112,7 +2319,6 @@ const bsCS_New: Major = {
       name: 'Writing Intensive',
       required_credits: 6,
       min_credits_per_course: 3,
-      double_count: true,
       description:
         'Students are required to fulfill the university’s requirement of two writing intensive courses, ' +
         'each at least 3 credits. Students must receive at least a C- grade or better in these writing courses. ',
@@ -2266,14 +2472,13 @@ const CS_Minor_New: Minor = {
   url: 'https://www.cs.jhu.edu/2021undergraduate-advising-manual/',
   distributions: [
     {
-      name: 'Computer Science',
-      required_credits: 21,
+      name: 'Core Courses',
+      required_credits: 11,
       min_credits_per_course: 1,
       description:
         "For more information please visit the <a href=' https://www.cs.jhu.edu/undergraduate-studies/academics/cs-minor/'>" +
         'minor degree requirement</a> section on the department website.',
-      criteria:
-        'EN Computer Science[D]^OR^CSCI-OTHER[T]^OR^Gateway Computing[N]',
+      criteria: 'Gateway Computing[N]^OR^EN.601.220[C]^OR^EN.601.226[C]',
       fine_requirements: [
         {
           description:
@@ -2292,25 +2497,60 @@ const CS_Minor_New: Minor = {
           required_credits: 4,
           criteria: 'EN.601.226[C]',
         },
+      ],
+    },
+    {
+      name: 'Upper-Level Courses',
+      required_credits: 9,
+      min_credits_per_course: 3,
+      pathing: 1,
+      description:
+        '<b>Upper Level Undergraduate: </b><p>9 upper level CS credits that form a cohesive program of study and <b>must be approved by the computer science minor advisor</b>. One way is to choose all three courses within one or two area tag classifications (CSCI-APPL, CSCI-SOFT, CSCI-THRY, CSCI-RSNG, CSCI-SYST)</p>',
+      criteria: 'EN Computer Science[D]^AND^Upper Level Undergraduate[L]',
+      fine_requirements: [
         {
-          description:
-            '<b>Elective Course. Any CS course >= 601.200 that is at least three credits</b>',
-          required_credits: 3,
-          criteria:
-            'EN.601.2[C]^OR^EN.600.2[C]^OR^EN.601.3[C]^OR^EN.600.3[C]^OR^EN.601.4[C]^OR^EN.600.4[C]^OR^EN.601.5[C]^OR^EN.600.5[C]^OR^EN.601.6[C]^OR^EN.600.6[C]^OR^EN.601.7[C]^OR^EN.600.7[C]',
-          exclusive: true,
+          required_credits: 6,
+          description: '<b>Software</b>',
+          criteria: 'CSCI-SOFT[T]',
         },
+        {
+          required_credits: 6,
+          description: '<b>Applications</b>',
+          criteria: 'CSCI-APPL[T]',
+        },
+        {
+          required_credits: 6,
+          description: '<b>Systems</b>',
+          criteria: 'CSCI-SYST[T]',
+        },
+        {
+          required_credits: 6,
+          description: '<b>Reasoning</b>',
+          criteria: 'CSCI-RSNG[T]',
+        },
+        {
+          required_credits: 6,
+          description: '<b>Theory</b>',
+          criteria: 'CSCI-THRY[T]',
+        },
+      ],
+    },
+    {
+      name: 'Elective Course',
+      required_credits: 3,
+      min_credits_per_course: 3,
+      description:
+        '<b>Elective Course. Any CS course >= 601.200 that is at least three credits</b>',
+      exclusive: true,
+      criteria:
+        'EN.601.2[C]^OR^EN.600.2[C]^OR^EN.601.3[C]^OR^EN.600.3[C]^OR^EN.601.4[C]^OR^EN.600.4[C]^OR^EN.601.5[C]^OR^EN.600.5[C]^OR^EN.601.6[C]^OR^EN.600.6[C]^OR^EN.601.7[C]^OR^EN.600.7[C]',
+      fine_requirements: [
         {
           description:
             '<b>Discrete Math:</b> Although not explicitly required, EN.553.171 Discrete Math is also strongly recommended for CS minors but does not count towards the minor requirements',
           required_credits: 0,
           criteria: 'EN.553.171[C]',
-        },
-        {
-          description:
-            '<b>Upper Level Undergraduate: </b><p>9 upper level CS credits that form a cohesive program of study and <b>must be approved by the computer science minor advisor</b>. One way is to choose all three courses within one or two area tag classifications (CSCI-APPL, CSCI-SOFT, CSCI-THRY, CSCI-RSNG, CSCI-SYST)</p>',
-          required_credits: 9,
-          criteria: 'EN Computer Science[D]^AND^Upper Level Undergraduate[L]',
+          exclusive: true,
         },
       ],
     },
@@ -2327,14 +2567,14 @@ const CS_Minor_Old: Minor = {
   url: 'https://www.cs.jhu.edu/2021undergraduate-advising-manual/',
   distributions: [
     {
-      name: 'Computer Science',
-      required_credits: 23,
-      min_credits_per_course: 1,
+      name: 'Core Courses',
+      required_credits: 14,
+      min_credits_per_course: 3,
       description:
         "For more information please visit the <a href=' https://www.cs.jhu.edu/undergraduate-studies/academics/cs-minor/'>" +
         'minor degree requirement</a> section on the department website.',
       criteria:
-        'EN Computer Science[D]^OR^CSCI-OTHER[T]^OR^Gateway Computing[N]',
+        'Gateway Computing[N]^OR^EN.601.220[C]^OR^EN.601.226[C]^EN.600.233[C]^OR^EN.601.229[C]^OR^EN.600.271[C]^OR^EN.601.231[C]',
       fine_requirements: [
         {
           description:
@@ -2360,18 +2600,42 @@ const CS_Minor_Old: Minor = {
           criteria:
             'EN.600.233[C]^OR^EN.601.229[C]^OR^EN.600.271[C]^OR^EN.601.231[C]',
         },
+      ],
+    },
+    {
+      name: 'Upper-Level Courses',
+      required_credits: 9,
+      min_credits_per_course: 3,
+      pathing: 1,
+      exclusive: true,
+      description:
+        '<b>Upper Level Undergraduate: </b><p>9 upper level CS credits that form a cohesive program of study and <b>must be approved by the computer science minor advisor</b>. One way is to choose all three courses within one or two area tag classifications (CSCI-APPL, CSCI-SOFT, CSCI-THRY, CSCI-RSNG, CSCI-SYST)</p>',
+      criteria: 'EN Computer Science[D]^AND^Upper Level Undergraduate[L]',
+      fine_requirements: [
         {
-          description:
-            '<b>Discrete Math:</b> Although not explicitly required, EN.553.171 Discrete Math is also strongly recommended for CS minors but does not count towards the minor requirements',
-          required_credits: 0,
-          criteria: 'EN.553.171[C]',
+          required_credits: 6,
+          description: '<b>Software</b>',
+          criteria: 'CSCI-SOFT[T]',
         },
         {
-          description:
-            '<b>Upper Level Undergraduate: </b><p>9 upper level CS credits that form a cohesive program of study and <b>must be approved by the computer science minor advisor</b>. One way is to choose all three courses within one or two area tag classifications (CSCI-APPL, CSCI-SOFT, CSCI-THRY, CSCI-RSNG, CSCI-SYST)</p>',
-          required_credits: 9,
-          criteria: 'EN Computer Science[D]^AND^Upper Level Undergraduate[L]',
-          exclusive: true,
+          required_credits: 6,
+          description: '<b>Applications</b>',
+          criteria: 'CSCI-APPL[T]',
+        },
+        {
+          required_credits: 6,
+          description: '<b>Systems</b>',
+          criteria: 'CSCI-SYST[T]',
+        },
+        {
+          required_credits: 6,
+          description: '<b>Reasoning</b>',
+          criteria: 'CSCI-RSNG[T]',
+        },
+        {
+          required_credits: 6,
+          description: '<b>Theory</b>',
+          criteria: 'CSCI-THRY[T]',
         },
       ],
     },
@@ -2653,6 +2917,992 @@ const bsMolCell: Major = {
   ],
 };
 
+// https://e-catalogue.jhu.edu/engineering/full-time-residential-programs/degree-programs/mechanical-engineering/mechanical-engineering-bachelor-science/#requirementstext
+/**
+ * Problem 1: Same issue with relative exclusivity
+ * Solution: Exclusivity should be relative to distributions and individual fine requirements rather than just be a boolean. Also, when a distribution is satisfied, it should no longer be considered in the exclusivity check.
+ */
+const bsMechE: Major = {
+  degree_name: 'B.S. Mechanical Engineering',
+  abbrev: 'B.S. MechE',
+  department: 'EN Mechanical Engineering',
+  total_degree_credit: 126,
+  wi_credit: 6,
+  url: 'https://e-catalogue.jhu.edu/engineering/full-time-residential-programs/degree-programs/mechanical-engineering/mechanical-engineering-bachelor-science/#requirementstext',
+  distributions: [
+    {
+      name: 'Mathematics',
+      required_credits: 16,
+      min_credits_per_course: 4,
+      description:
+        'The student must complete one of the tracks of mathematics courses, offered ' +
+        'either by the Mathematics department in the Kreiger School of Arts and Sciences ' +
+        'or the Applied Mathematics and Statistics department in the Whiting School of Engineering.',
+      criteria:
+        'AS.110.108[C]^OR^AS.110.109[C]^OR^AS.110.113[C]^OR^AS.110.202[C]^OR^EN.553.291[C]^OR^AS.110.201[C]^OR^AS.110.212[C]^OR^AS.110.302[C]',
+      pathing: 1,
+      fine_requirements: [
+        {
+          description:
+            '<b>4 Math Courses</b> <br />' +
+            'Complete all of the following: <br />' +
+            'AS.110.108 Calculus I (Physical Sciences & Engineering) <br />' +
+            'AS.110.109 Calculus II (Physical Sciences & Engineering) <i>OR</i> AS.110.113 Honors Single Variable Calculus <br />' +
+            'AS.110.202 Calculus III <br />' +
+            'EN.553.291 Linear Algebra and Differential Equations',
+          required_credits: 16,
+          criteria:
+            'AS.110.108[C]^OR^AS.110.109[C]^OR^AS.110.113[C]^OR^AS.110.202[C]^OR^EN.553.291[C]',
+        },
+        {
+          description:
+            '<b>5 Math Courses</b> <br />' +
+            'Complete all of the following: <br />' +
+            'AS.110.108 Calculus I (Physical Sciences & Engineering) <br />' +
+            'AS.110.109 Calculus II (Physical Sciences & Engineering) <i>OR</i> AS.110.113 Honors Single Variable Calculus <br />' +
+            'AS.110.202 Calculus III <br />' +
+            'AS.110.201 Linear Algebra <i>OR</i> AS.110.212 Honors Linear Algebra <br />' +
+            'AS.110.302 Differential Equations and Applications',
+          required_credits: 20,
+          criteria:
+            'AS.110.108[C]^OR^AS.110.109[C]^OR^AS.110.113[C]^OR^AS.110.202[C]^OR^AS.110.201[C]^OR^AS.110.212[C]^OR^AS.110.302[C]',
+        },
+      ],
+    },
+    {
+      name: 'Statistics Elective',
+      required_credits: 3,
+      min_credits_per_course: 3,
+      description:
+        'Select one of the following statistics courses: <br />' +
+        'EN.553.310 Probability & Statistics for the Physical Sciences & Engineering <br />' +
+        'EN.553.311 Probability and Statistics for the Biological Sciences and Engineering <br />' +
+        'EN.560.348 Probability and Statistics for Civil Engineering',
+      criteria: 'EN.553.310[C]^OR^EN.553.311[C]^OR^EN.560.348[C]',
+    },
+    {
+      name: 'Science',
+      required_credits: 13,
+      min_credits_per_course: 1,
+      description:
+        'The student must complete all the required science courses.',
+      criteria:
+        'AS.030.101[C]^OR^EN.171.101[C]^OR^AS.173.111[C]^OR^AS.171.102[C]^OR^AS.173.112[C]',
+      fine_requirements: [
+        {
+          description:
+            '<b>Introductory Chemistry I</b> <br /> AS.030.101 Introductory Chemistry I',
+          required_credits: 3,
+          criteria: 'AS.030.101[C]',
+        },
+        {
+          description:
+            '<b>General Physics I</b> <br /> AS.171.101 General Physics: Physical Science Majors I',
+          required_credits: 4,
+          criteria: 'EN.171.101[C]',
+        },
+        {
+          description:
+            '<b>General Physics Laboratory I</b> <br /> AS.173.111 General Physics Laboratory I',
+          required_credits: 1,
+          criteria: 'AS.173.111[C]',
+        },
+        {
+          description:
+            '<b>General Physics II</b> <br /> AS.171.102 General Physics: Physical Science Majors II',
+          required_credits: 4,
+          criteria: 'AS.171.102[C]',
+        },
+        {
+          description:
+            '<b>General Physics Laboratory II</b> <br /> AS.173.112 General Physics Laboratory II',
+          required_credits: 1,
+          criteria: 'AS.173.112[C]',
+        },
+      ],
+    },
+    {
+      name: 'Core Engineering',
+      required_credits: 50,
+      min_credits_per_course: 0.5,
+      description: 'The following core courses are required for the major.',
+      criteria:
+        'EN.530.107[C]^OR^EN.530.108[C]^OR^EN.530.111[C]^OR^EN.530.115[C]^OR^' +
+        'EN.500.114[C]^OR^EN.530.116[C]^OR^EN.530.202[C]^OR^EN.530.204[C]^OR^' +
+        'EN.530.205[C]^OR^EN.530.212[C]^OR^EN.530.215[C]^OR^EN.530.216[C]^OR^' +
+        'EN.530.231[C]^OR^EN.530.232[C]^OR^EN.530.241[C]^OR^EN.520.230[C]^OR^' +
+        'EN.520.231[C]^OR^EN.530.254[C]^OR^EN.530.327[C]^OR^EN.530.329[C]^OR^' +
+        'EN.530.334[C]^OR^EN.530.335[C]^OR^EN.530.343[C]^OR^EN.530.344[C]^OR^' +
+        'EN.530.352[C]^OR^EN.560.201[C]^OR^EN.560.211[C]^OR^EN.660.361[C]^OR^' +
+        'EN Computer Science[D]',
+      fine_requirements: [
+        {
+          description:
+            '<b>Mechanical Engineering Undergraduate Seminar I</b> <br /> EN.530.107 Mechanical Engineering Undergraduate Seminar I',
+          required_credits: 0.5,
+          criteria: 'EN.530.107[C]',
+        },
+        {
+          description:
+            '<b>Mechanical Engineering Undergraduate Seminar II</b> <br /> EN.530.108 Mechanical Engineering Undergraduate Seminar II',
+          required_credits: 0.5,
+          criteria: 'EN.530.108[C]',
+        },
+        {
+          description:
+            '<b>Introduction to Mechanical Engineering and CAD</b> <br /> EN.530.111 Introduction to Mechanical Engineering and CAD',
+          required_credits: 2,
+          criteria: 'EN.530.111[C]',
+        },
+        {
+          description:
+            '<b>Gateway Computing: MATLAB</b> <br /> EN.500.114 Gateway Computing: MATLAB',
+          required_credits: 3,
+          criteria: 'EN.500.114[C]',
+        },
+        {
+          description:
+            '<b>Mechanical Engineering Freshman Lab I</b> <br /> EN.530.115 Mechanical Engineering Freshman Lab I',
+          required_credits: 1,
+          criteria: 'EN.530.115[C]',
+        },
+        {
+          description:
+            '<b>Mechanical Engineering Freshman Lab II</b> <br /> EN.530.116 Mechanical Engineering Freshman Lab II',
+          required_credits: 1,
+          criteria: 'EN.530.116[C]',
+        },
+        {
+          description:
+            '<b>Additional Computing Course</b> <br /> One more course from the Computer Science department is required.',
+          required_credits: 3,
+          criteria: 'EN Computer Science[D]',
+        },
+        {
+          description:
+            '<b>Mechanical Engineering Dynamics</b> <br /> EN.530.202 Mechanical Engineering Dynamics',
+          required_credits: 3,
+          criteria: 'EN.530.202[C]',
+        },
+        {
+          description:
+            '<b>Mechanical Engineering Dynamics Lab</b> <br /> EN.530.212 Mechanical Engineering Dynamics Lab',
+          required_credits: 1,
+          criteria: 'EN.530.212[C]',
+        },
+        {
+          description:
+            '<b>Mechanics Based Design</b> <br /> EN.530.215 Mechanics Based Design',
+          required_credits: 3,
+          criteria: 'EN.530.215[C]',
+        },
+        {
+          description:
+            '<b>Mechanics Based Design Lab</b> <br /> EN.530.216 Mechanics Based Design Lab',
+          required_credits: 1,
+          criteria: 'EN.530.216[C]',
+        },
+        {
+          description:
+            '<b>Mechanical Engineering Thermodynamics</b> <br /> EN.530.231 Mechanical Engineering Thermodynamics',
+          required_credits: 3,
+          criteria: 'EN.530.231[C]',
+        },
+        {
+          description:
+            '<b>Mechanical Engineering Thermodynamics Lab</b> <br /> EN.530.232 Mechanical Engineering Thermodynamics Lab',
+          required_credits: 1,
+          criteria: 'EN.530.232[C]',
+        },
+        {
+          description:
+            '<b>Introduction to Fluid Mechanics</b> <br /> EN.530.327 Introduction to Fluid Mechanics',
+          required_credits: 3,
+          criteria: 'EN.530.327[C]',
+        },
+        {
+          description:
+            '<b>Introduction to Fluid Mechanics Lab</b> <br /> EN.530.329 Introduction to Fluid Mechanics Lab',
+          required_credits: 1,
+          criteria: 'EN.530.329[C]',
+        },
+        {
+          description: '<b>Heat Transfer</b> <br /> EN.530.334 Heat Transfer',
+          required_credits: 3,
+          criteria: 'EN.530.334[C]',
+        },
+        {
+          description:
+            '<b>Heat Transfer Lab</b> <br /> EN.530.335 Heat Transfer Lab',
+          required_credits: 1,
+          criteria: 'EN.530.335[C]',
+        },
+        {
+          description:
+            '<b>Design and Analysis of Dynamical Systems</b> <br /> EN.530.343 Design and Analysis of Dynamical Systems',
+          required_credits: 3,
+          criteria: 'EN.530.343[C]',
+        },
+        {
+          description:
+            '<b>Design and Analysis of Dynamical Systems Lab</b> <br /> EN.530.344 Design and Analysis of Dynamical Systems Lab',
+          required_credits: 1,
+          criteria: 'EN.530.344[C]',
+        },
+        {
+          description:
+            '<b>Materials Selection</b> <br /> EN.530.352 Materials Selection',
+          required_credits: 4,
+          criteria: 'EN.530.352[C]',
+        },
+        {
+          description:
+            '<b>Statics and Mechanics of Materials</b> <br /> EN.560.201 Statics and Mechanics of Materials',
+          required_credits: 3,
+          criteria: 'EN.560.201[C]',
+        },
+        {
+          description:
+            '<b>Statics and Mechanics of Materials Lab</b> <br /> EN.560.211 Statics and Mechanics of Materials Lab',
+          required_credits: 1,
+          criteria: 'EN.560.211[C]',
+        },
+        {
+          description:
+            '<b>Manufacturing Engineering</b> <br /> Select one of the following:' +
+            'EN.530.254 Manufacturing Engineering <br /> <i>OR</i> <br />' +
+            'EN.530.204 Manufacturing Engineering Theory <i>AND</i> EN.530.205 Manufacturing Engineering Lab',
+          required_credits: 3,
+          criteria: 'EN.530.254[C]^OR^EN.530.204[C]^OR^EN.530.205[C]',
+        },
+        {
+          description:
+            '<b>Electronics</b> <br /> Select one of the following: <br />' +
+            'EN.530.241 Electonics & Instrumentation <br /> <i> OR </i> <br />' +
+            'EN.520.230 Mastering Electronics <i>AND</i> EN.520.231 Mastering Electronics Lab',
+          required_credits: 3,
+          criteria: 'EN.530.241[C]^OR^EN.520.230[C]^OR^EN.520.231[C]',
+        },
+        {
+          description:
+            '<b>Engineering Management and Leadership</b> <br /> EN.660.361 Engineering Management and Leadership',
+          required_credits: 3,
+          criteria: 'EN.660.361[C]',
+        },
+      ],
+    },
+    {
+      name: 'Capstone Design',
+      required_credits: 8,
+      min_credits_per_course: 4,
+      description:
+        'The student is required to take part in a capstone design project.',
+      criteria: 'EN.530.403[C]^OR^EN.530.404[C]',
+      fine_requirements: [
+        {
+          description:
+            '<b>Mechanical Engineering Senior Design Project I</b> <br /> EN.530.403 Mechanical Engineering Senior Design Project I',
+          required_credits: 4,
+          criteria: 'EN.530.403[C]',
+        },
+        {
+          description:
+            '<b>Mechanical Engineering Senior Design Project II</b> <br /> EN.530.404 Mechanical Engineering Senior Design Project II',
+          required_credits: 4,
+          criteria: 'EN.530.404[C]',
+        },
+      ],
+    },
+    {
+      name: 'Mechanical Engineering Electives',
+      required_credits: 9,
+      min_credits_per_course: 3,
+      description:
+        'Select three courses (300-level or higher) in mechanical engineering',
+      criteria: '(EN Mechanical Engineering[D])^AND^(Upper Level[L])',
+      exclusive: true,
+    },
+    {
+      name: 'Technical Electives',
+      required_credits: 9,
+      min_credits_per_course: 3,
+      description:
+        'Select three engineering, quantitative studies, or natural sciences courses at or above the 300-level,' +
+        "chosen from any combination of courses in engineering, basic sciences, or mathematics selected in consultation with the student's advisor.",
+      criteria: '(N[A]^OR^E[A]^OR^Q[A])^AND^(Upper Level[L])',
+      exclusive: true,
+    },
+    {
+      name: 'Humanities and Social Sciences',
+      required_credits: 18,
+      min_credits_per_course: 3,
+      description:
+        'Select courses to form a coherent program, relevant to the student’s goals. One course in which ethical and social ' +
+        'issues related to technology or medicine is recommended.',
+      criteria: 'H[A]^OR^S[A]',
+      fine_requirements: [
+        {
+          description:
+            '<b>Writing Intensive Class</b> <br /> Select one Humanities and/or Social Science class that is also Writing Intensive.',
+          required_credits: 3,
+          criteria: '(H[A]^OR^S[A])^AND^(Written Intensive[W])',
+        },
+      ],
+    },
+    {
+      name: 'Writing Intensive',
+      required_credits: 6,
+      min_credits_per_course: 3,
+      description:
+        'Students are required to fulfill the university’s requirement of two writing intensive courses, ' +
+        'each at least 3 credits. Students must receive at least a C- grade or better in these writing courses.',
+      criteria: 'Written Intensive[W]',
+    },
+  ],
+};
+
+// https://engineering.jhu.edu/ams/academics/undergraduate-studies/undergraduate-minor/
+const minorAMS_Old: Minor = {
+  degree_name: 'Minor Applied Mathematics & Statistics (OLD - Pre-2021)',
+  abbrev: 'Minor AMS (old)',
+  department: 'EN Applied Mathematics & Statistics',
+  total_degree_credit: 18,
+  wi_credit: 0,
+  url: '',
+  distributions: [
+    {
+      name: 'Total Quantitative Studies(Q) Credits',
+      required_credits: 18,
+      min_credits_per_course: 3,
+      description:
+        'Completion of an approved program of study containing at least 18 credits in courses coded Quantitative Studies (Q). The first two courses in calculus (AS.110.106 Calculus I (Biology and Social Sciences) and AS.110.107 Calculus II (For Biological and Social Science)), or (AS.110.108 Calculus I (Physical Sciences & Engineering) and AS.110.109 Calculus II (For Physical Sciences and Engineering)), or AS.110.113 Honors Single Variable Calculus, or their equivalents) may not be used to fulfill this requirement.<br />' +
+        '<br /> <em>**Note:</em> Within the entire minor, students may count only two of these three courses/course combinations: EN.553.310/EN.553.311; EN.553.420/620; EN.553.430/630.',
+      criteria:
+        'Q[A]^NOT^AS.110.106[C]^NOT^AS.110.107[C]^NOT^AS.110.108[C]^NOT^AS.110.109[C]^NOT^AS.110.113[C]',
+      pathing: 1,
+      fine_requirements: [
+        {
+          required_credits: 18,
+          description:
+            '**Only EN.553.310 Probability & Statistics for the Physical Sciences & Engineering and EN.553.420 Introduction to Probability count towards minor.',
+          criteria:
+            'Q[A]^NOT^AS.110.106[C]^NOT^AS.110.107[C]^NOT^AS.110.108[C]^NOT^AS.110.109[C]^NOT^AS.110.113[C]^NOT^EN.553.311[C]^NOT^EN.553.620[C]^NOT^EN.553.430[C]^NOT^EN.553.630[C]',
+        },
+        {
+          required_credits: 18,
+          description:
+            '**Only EN.553.310 Probability & Statistics for the Physical Sciences & Engineering and EN.553.620 Introduction to Probability count towards minor.',
+          criteria:
+            'Q[A]^NOT^AS.110.106[C]^NOT^AS.110.107[C]^NOT^AS.110.108[C]^NOT^AS.110.109[C]^NOT^AS.110.113[C]^NOT^EN.553.311[C]^NOT^EN.553.420[C]^NOT^EN.553.430[C]^NOT^EN.553.630[C]',
+        },
+        {
+          required_credits: 18,
+          description:
+            '**Only EN.553.311 Probability and Statistics for the Biological Sciences and Engineering and EN.553.420 Introduction to Probability count towards minor.',
+          criteria:
+            'Q[A]^NOT^AS.110.106[C]^NOT^AS.110.107[C]^NOT^AS.110.108[C]^NOT^AS.110.109[C]^NOT^AS.110.113[C]^NOT^EN.553.310[C]^NOT^EN.553.620[C]^NOT^EN.553.430[C]^NOT^EN.553.630[C]',
+        },
+        {
+          required_credits: 18,
+          description:
+            '**Only EN.553.311 Probability and Statistics for the Biological Sciences and Engineering and EN.553.620 Introduction to Probability count towards minor.',
+          criteria:
+            'Q[A]^NOT^AS.110.106[C]^NOT^AS.110.107[C]^NOT^AS.110.108[C]^NOT^AS.110.109[C]^NOT^AS.110.113[C]^NOT^EN.553.310[C]^NOT^EN.553.420[C]^NOT^EN.553.430[C]^NOT^EN.553.630[C]',
+        },
+        {
+          required_credits: 18,
+          description:
+            '**Only EN.553.310 Probability & Statistics for the Physical Sciences & Engineering and EN.553.430 Introduction to Statistics count towards minor.',
+          criteria:
+            'Q[A]^NOT^AS.110.106[C]^NOT^AS.110.107[C]^NOT^AS.110.108[C]^NOT^AS.110.109[C]^NOT^AS.110.113[C]^NOT^EN.553.311[C]^NOT^EN.553.420[C]^NOT^EN.553.620[C]^NOT^EN.553.630[C]',
+        },
+        {
+          required_credits: 18,
+          description:
+            '**Only EN.553.310 Probability & Statistics for the Physical Sciences & Engineering and EN.553.630 Introduction to Statistics count towards minor.',
+          criteria:
+            'Q[A]^NOT^AS.110.106[C]^NOT^AS.110.107[C]^NOT^AS.110.108[C]^NOT^AS.110.109[C]^NOT^AS.110.113[C]^NOT^EN.553.311[C]^NOT^EN.553.420[C]^NOT^EN.553.620[C]^NOT^EN.553.430[C]',
+        },
+        {
+          required_credits: 18,
+          description:
+            '**Only EN.553.311 Probability and Statistics for the Biological Sciences and Engineering and EN.553.430 Introduction to Statistics count towards minor.',
+          criteria:
+            'Q[A]^NOT^AS.110.106[C]^NOT^AS.110.107[C]^NOT^AS.110.108[C]^NOT^AS.110.109[C]^NOT^AS.110.113[C]^NOT^EN.553.310[C]^NOT^EN.553.420[C]^NOT^EN.553.620[C]^NOT^EN.553.630[C]',
+        },
+        {
+          required_credits: 18,
+          description:
+            '**Only EN.553.311 Probability and Statistics for the Biological Sciences and Engineering and EN.553.630 Introduction to Statistics count towards minor.',
+          criteria:
+            'Q[A]^NOT^AS.110.106[C]^NOT^AS.110.107[C]^NOT^AS.110.108[C]^NOT^AS.110.109[C]^NOT^AS.110.113[C]^NOT^EN.553.310[C]^NOT^EN.553.420[C]^NOT^EN.553.620[C]^NOT^EN.553.430[C]',
+        },
+        {
+          required_credits: 18,
+          description:
+            '**Only EN.553.420 Introduction to Probability and EN.553.430 Introduction to Statistics count towards minor.',
+          criteria:
+            'Q[A]^NOT^AS.110.106[C]^NOT^AS.110.107[C]^NOT^AS.110.108[C]^NOT^AS.110.109[C]^NOT^AS.110.113[C]^NOT^EN.553.310[C]^NOT^EN.553.311[C]^NOT^EN.553.620[C]^NOT^EN.553.630[C]',
+        },
+        {
+          required_credits: 18,
+          description:
+            '**Only EN.553.620 Introduction to Probability and EN.553.630 Introduction to Statistics count towards minor.',
+          criteria:
+            'Q[A]^NOT^AS.110.106[C]^NOT^AS.110.107[C]^NOT^AS.110.108[C]^NOT^AS.110.109[C]^NOT^AS.110.113[C]^NOT^EN.553.310[C]^NOT^EN.553.311[C]^NOT^EN.553.420[C]^NOT^EN.553.430[C]',
+        },
+        {
+          required_credits: 18,
+          description:
+            '**Only EN.553.620 Introduction to Probability and EN.553.430 Introduction to Statistics count towards minor.',
+          criteria:
+            'Q[A]^NOT^AS.110.106[C]^NOT^AS.110.107[C]^NOT^AS.110.108[C]^NOT^AS.110.109[C]^NOT^AS.110.113[C]^NOT^EN.553.310[C]^NOT^EN.553.311[C]^NOT^EN.553.420[C]^NOT^EN.553.630[C]',
+        },
+        {
+          required_credits: 18,
+          description:
+            '**Only EN.553.420 Introduction to Probability and EN.553.630 Introduction to Statistics count towards minor.',
+          criteria:
+            'Q[A]^NOT^AS.110.106[C]^NOT^AS.110.107[C]^NOT^AS.110.108[C]^NOT^AS.110.109[C]^NOT^AS.110.113[C]^NOT^EN.553.310[C]^NOT^EN.553.311[C]^NOT^EN.553.620[C]^NOT^EN.553.430[C]',
+        },
+      ],
+    },
+    {
+      name: 'AMS Courses',
+      required_credits: 12,
+      min_credits_per_course: 3,
+      description:
+        'Among the courses comprising the 18 Q credits, there must be at least four courses in the Department of Applied Mathematics and Statistics (each of these must be a 3- or 4-credit course).',
+      criteria: 'Q[A]^AND^EN Applied Mathematics & Statistics[D]',
+      pathing: 1,
+      fine_requirements: [
+        {
+          required_credits: 12,
+          description:
+            '**Only EN.553.310 Probability & Statistics for the Physical Sciences & Engineering and EN.553.420 Introduction to Probability count towards minor.',
+          criteria:
+            'Q[A]^AND^EN Applied Mathematics & Statistics[D]^NOT^EN.553.311[C]^NOT^EN.553.620[C]^NOT^EN.553.430[C]^NOT^EN.553.630[C]',
+        },
+        {
+          required_credits: 12,
+          description:
+            '**Only EN.553.310 Probability & Statistics for the Physical Sciences & Engineering and EN.553.620 Introduction to Probability count towards minor.',
+          criteria:
+            'Q[A]^AND^EN Applied Mathematics & Statistics[D]^NOT^EN.553.311[C]^NOT^EN.553.420[C]^NOT^EN.553.430[C]^NOT^EN.553.630[C]',
+        },
+        {
+          required_credits: 12,
+          description:
+            '**Only EN.553.311 Probability and Statistics for the Biological Sciences and Engineering and EN.553.420 Introduction to Probability count towards minor.',
+          criteria:
+            'Q[A]^AND^EN Applied Mathematics & Statistics[D]^NOT^AS.110.113[C]^NOT^EN.553.310[C]^NOT^EN.553.620[C]^NOT^EN.553.430[C]^NOT^EN.553.630[C]',
+        },
+        {
+          required_credits: 12,
+          description:
+            '**Only EN.553.311 Probability and Statistics for the Biological Sciences and Engineering and EN.553.620 Introduction to Probability count towards minor.',
+          criteria:
+            'Q[A]^AND^EN Applied Mathematics & Statistics[D]^NOT^EN.553.310[C]^NOT^EN.553.420[C]^NOT^EN.553.430[C]^NOT^EN.553.630[C]',
+        },
+        {
+          required_credits: 12,
+          description:
+            '**Only EN.553.310 Probability & Statistics for the Physical Sciences & Engineering and EN.553.430 Introduction to Statistics count towards minor.',
+          criteria:
+            'Q[A]^AND^EN Applied Mathematics & Statistics[D]^NOT^EN.553.311[C]^NOT^EN.553.420[C]^NOT^EN.553.620[C]^NOT^EN.553.630[C]',
+        },
+        {
+          required_credits: 12,
+          description:
+            '**Only EN.553.310 Probability & Statistics for the Physical Sciences & Engineering and EN.553.630 Introduction to Statistics count towards minor.',
+          criteria:
+            'Q[A]^AND^EN Applied Mathematics & Statistics[D]^NOT^EN.553.311[C]^NOT^EN.553.420[C]^NOT^EN.553.620[C]^NOT^EN.553.430[C]',
+        },
+        {
+          required_credits: 12,
+          description:
+            '**Only EN.553.311 Probability and Statistics for the Biological Sciences and Engineering and EN.553.430 Introduction to Statistics count towards minor.',
+          criteria:
+            'Q[A]^AND^EN Applied Mathematics & Statistics[D]^NOT^EN.553.310[C]^NOT^EN.553.420[C]^NOT^EN.553.620[C]^NOT^EN.553.630[C]',
+        },
+        {
+          required_credits: 12,
+          description:
+            '**Only EN.553.311 Probability and Statistics for the Biological Sciences and Engineering and EN.553.630 Introduction to Statistics count towards minor.',
+          criteria:
+            'Q[A]^AND^EN Applied Mathematics & Statistics[D]^NOT^EN.553.310[C]^NOT^EN.553.420[C]^NOT^EN.553.620[C]^NOT^EN.553.430[C]',
+        },
+        {
+          required_credits: 12,
+          description:
+            '**Only EN.553.420 Introduction to Probability and EN.553.430 Introduction to Statistics count towards minor.',
+          criteria:
+            'Q[A]^AND^EN Applied Mathematics & Statistics[D]^NOT^EN.553.310[C]^NOT^EN.553.311[C]^NOT^EN.553.620[C]^NOT^EN.553.630[C]',
+        },
+        {
+          required_credits: 12,
+          description:
+            '**Only EN.553.620 Introduction to Probability and EN.553.630 Introduction to Statistics count towards minor.',
+          criteria:
+            'Q[A]^AND^EN Applied Mathematics & Statistics[D]^NOT^EN.553.310[C]^NOT^EN.553.311[C]^NOT^EN.553.420[C]^NOT^EN.553.430[C]',
+        },
+        {
+          required_credits: 12,
+          description:
+            '**Only EN.553.620 Introduction to Probability and EN.553.430 Introduction to Statistics count towards minor.',
+          criteria:
+            'Q[A]^AND^EN Applied Mathematics & Statistics[D]^NOT^EN.553.310[C]^NOT^EN.553.311[C]^NOT^EN.553.420[C]^NOT^EN.553.630[C]',
+        },
+        {
+          required_credits: 12,
+          description:
+            '**Only EN.553.420 Introduction to Probability and EN.553.630 Introduction to Statistics count towards minor.',
+          criteria:
+            'Q[A]^AND^EN Applied Mathematics & Statistics[D]^NOT^EN.553.310[C]^NOT^EN.553.311[C]^NOT^EN.553.620[C]^NOT^EN.553.430[C]',
+        },
+      ],
+    },
+    {
+      name: 'Upper-Level Courses',
+      required_credits: 9,
+      min_credits_per_course: 3,
+      description:
+        'Among the courses comprising the 18 Q credits, there must be at least three (3- or 4-credit) courses at the 300-level or above, ' +
+        'of which at least two must be in the Department of Applied Mathematics and Statistics**.<br />' +
+        '</br /> **A student may count the combination of (AS.110.201 Linear Algebra or AS.110.212 Honors Linear Algebra) AND AS.110.302 Differential Equations and Applications in place of ONE of the required 300-level courses within the AMS Department',
+      criteria: 'Q[A]^AND^(300[L]^OR^400[L])',
+      pathing: 1,
+      fine_requirements: [
+        {
+          required_credits: 6,
+          description:
+            '<b>AMS Courses:</b> <br />At least two upper-level courses must be in the Department of Applied Mathematics and Statistics.**',
+          criteria:
+            '(300[L]^OR^400[L])^AND^EN Applied Mathematics & Statistics[D]',
+        },
+        {
+          required_credits: 9,
+          description:
+            '<b>**Alternate Route:</b> <br />One upper-level course from the Department of Applied Mathematics and Statistics, and (AS.110.201 Linear Algebra AND AS.110.302 Differential Equations and Applications).',
+          criteria:
+            '((300[L]^OR^400[L])^AND^EN Applied Mathematics & Statistics[D])^OR^AS.110.201[C]^OR^AS.110.302[C]',
+        },
+        {
+          required_credits: 9,
+          description:
+            '<b>**Alternate Route:</b> <br />One upper-level course from the Department of Applied Mathematics and Statistics, and (AS.110.212 Honors Linear Algebra AND AS.110.302 Differential Equations and Applications).',
+          criteria:
+            '((300[L]^OR^400[L])^AND^EN Applied Mathematics & Statistics[D])^OR^AS.110.212[C]^OR^AS.110.302[C]',
+        },
+      ],
+    },
+    {
+      name: 'Scientific Computer Course',
+      required_credits: 3,
+      min_credits_per_course: 3,
+      description:
+        'Among the courses comprising the 18 Q credits, there must be ' +
+        'an approved semester course in scientific computing, chosen from 171.426, 250.205, 500.200, 510.202, 530.371, 540.305, 553.281, 553.383, 553.385, 553.386, 553.388, 553.400, 553.413, 553.433, 553.436, 553.443, 553.450, 553.488, 553.489, 553.493, 560.220, 570.210, 580.200, 580.223, 580.242, 580.244, 601.433, 601.475, 601.482 or one of the courses approved to meet the AMS Master’s/PhD Computing Requirement.',
+      criteria:
+        'AS.171.426[C]^OR^AS.250.205[C]^OR^EN.500.200[C]^OR^EN.510.202[C]^OR^EN.530.371[C]^OR^EN.540.305[C]^OR^EN.553.281[C]^OR^EN.553.383[C]^OR^EN.553.385[C]^OR^EN.553.386[C]^OR^EN.553.388[C]^OR^EN.553.400[C]^OR^EN.553.413[C]^OR^EN.553.433[C]^OR^EN.553.436[C]^OR^EN.553.443[C]^OR^EN.553.450[C]^OR^EN.553.488[C]^OR^EN.553.489[C]^OR^EN.553.493[C]^OR^EN.560.220[C]^OR^EN.570.210[C]^OR^EN.580.200[C]^OR^EN.580.223[C]^OR^EN.580.242[C]^OR^EN.580.244[C]^OR^EN.601.433[C]^OR^EN.601.475[C]^OR^EN.601.482',
+      fine_requirements: [
+        {
+          required_credits: 3,
+          description:
+            '<b>Scientific Computer Course:</b> <br /> The student must take an approved course based on a high-level computer language chosen from the list below or one of the courses approved to meet the AMS Master’s/PhD Computing Requirement.<br />' +
+            '<br /> AS.171.426, ' +
+            '<br /> AS.250.205, ' +
+            '<br /> EN.500.200, ' +
+            '<br /> EN.510.202, ' +
+            '<br /> EN.530.371, ' +
+            '<br /> EN.540.305, ' +
+            '<br /> EN.553.281, ' +
+            '<br /> EN.553.383, ' +
+            '<br /> EN.553.385, ' +
+            '<br /> EN.553.386, ' +
+            '<br /> EN.553.388, ' +
+            '<br /> EN.553.400, ' +
+            '<br /> EN.553.413, ' +
+            '<br /> EN.553.433, ' +
+            '<br /> EN.553.436, ' +
+            '<br /> EN.553.443, ' +
+            '<br /> EN.553.450, ' +
+            '<br /> EN.553.488, ' +
+            '<br /> EN.553.489, ' +
+            '<br /> EN.553.493, ' +
+            '<br /> EN.560.220, ' +
+            '<br /> EN.570.210, ' +
+            '<br /> EN.580.200, ' +
+            '<br /> EN.580.223, ' +
+            '<br /> EN.580.242, ' +
+            '<br /> EN.580.244, ' +
+            '<br /> EN.601.433, ' +
+            '<br /> EN.601.475, ' +
+            '<br /> EN.601.482 <br /> ',
+          criteria:
+            'AS.110.445[C]^OR^EN.553.385[C]^OR^EN.553.400[C]^OR^EN.553.413[C]^OR^EN.553.432[C]^OR^EN.553.433[C]^OR^EN.553.436[C]^OR^EN.553.450[C]^OR^EN.553.463[C]^OR^EN.553.467[C]^OR^EN.553.481[C]^OR^EN.553.488[C]^OR^EN.553.493[C]^OR^EN.553.494[C]^OR^EN.601.433[C]^OR^EN.601.475[C]^OR^EN.601.482[C]',
+        },
+      ],
+    },
+  ],
+};
+
+// https://e-catalogue.jhu.edu/engineering/full-time-residential-programs/degree-programs/applied-mathematics-statistics/applied-mathematics-statistics-minor/#requirementstext
+// https://engineering.jhu.edu/ams/academics/undergraduate-studies/undergraduate-minor/
+const minorAMS_New: Minor = {
+  degree_name: 'Minor Applied Mathematics & Statistics (NEW - 2021 & after)',
+  abbrev: 'Minor AMS (new)',
+  department: 'EN Applied Mathematics & Statistics',
+  total_degree_credit: 18,
+  wi_credit: 0,
+  url: '',
+  distributions: [
+    {
+      name: 'Total Quantitative Studies(Q) Credits',
+      required_credits: 18,
+      min_credits_per_course: 3,
+      description:
+        'Completion of an approved program of study containing at least 18 credits in courses coded Quantitative Studies (Q). The first two courses in calculus (AS.110.106 Calculus I (Biology and Social Sciences) and AS.110.107 Calculus II (For Biological and Social Science)), or (AS.110.108 Calculus I (Physical Sciences & Engineering) and AS.110.109 Calculus II (For Physical Sciences and Engineering)), or AS.110.113 Honors Single Variable Calculus, or their equivalents) may not be used to fulfill this requirement.<br />' +
+        '<br /> <em>**Note:</em> Within the entire minor, students may count only two of these three courses/course combinations: EN.553.310/EN.553.311; EN.553.420/620; EN.553.430/630.',
+      criteria:
+        'Q[A]^NOT^AS.110.106[C]^NOT^AS.110.107[C]^NOT^AS.110.108[C]^NOT^AS.110.109[C]^NOT^AS.110.113[C]',
+      pathing: 1,
+      fine_requirements: [
+        {
+          required_credits: 18,
+          description:
+            '**Only EN.553.310 Probability & Statistics for the Physical Sciences & Engineering and EN.553.420 Introduction to Probability count towards minor.',
+          criteria:
+            'Q[A]^NOT^AS.110.106[C]^NOT^AS.110.107[C]^NOT^AS.110.108[C]^NOT^AS.110.109[C]^NOT^AS.110.113[C]^NOT^EN.553.311[C]^NOT^EN.553.620[C]^NOT^EN.553.430[C]^NOT^EN.553.630[C]',
+        },
+        {
+          required_credits: 18,
+          description:
+            '**Only EN.553.310 Probability & Statistics for the Physical Sciences & Engineering and EN.553.620 Introduction to Probability count towards minor.',
+          criteria:
+            'Q[A]^NOT^AS.110.106[C]^NOT^AS.110.107[C]^NOT^AS.110.108[C]^NOT^AS.110.109[C]^NOT^AS.110.113[C]^NOT^EN.553.311[C]^NOT^EN.553.420[C]^NOT^EN.553.430[C]^NOT^EN.553.630[C]',
+        },
+        {
+          required_credits: 18,
+          description:
+            '**Only EN.553.311 Probability and Statistics for the Biological Sciences and Engineering and EN.553.420 Introduction to Probability count towards minor.',
+          criteria:
+            'Q[A]^NOT^AS.110.106[C]^NOT^AS.110.107[C]^NOT^AS.110.108[C]^NOT^AS.110.109[C]^NOT^AS.110.113[C]^NOT^EN.553.310[C]^NOT^EN.553.620[C]^NOT^EN.553.430[C]^NOT^EN.553.630[C]',
+        },
+        {
+          required_credits: 18,
+          description:
+            '**Only EN.553.311 Probability and Statistics for the Biological Sciences and Engineering and EN.553.620 Introduction to Probability count towards minor.',
+          criteria:
+            'Q[A]^NOT^AS.110.106[C]^NOT^AS.110.107[C]^NOT^AS.110.108[C]^NOT^AS.110.109[C]^NOT^AS.110.113[C]^NOT^EN.553.310[C]^NOT^EN.553.420[C]^NOT^EN.553.430[C]^NOT^EN.553.630[C]',
+        },
+        {
+          required_credits: 18,
+          description:
+            '**Only EN.553.310 Probability & Statistics for the Physical Sciences & Engineering and EN.553.430 Introduction to Statistics count towards minor.',
+          criteria:
+            'Q[A]^NOT^AS.110.106[C]^NOT^AS.110.107[C]^NOT^AS.110.108[C]^NOT^AS.110.109[C]^NOT^AS.110.113[C]^NOT^EN.553.311[C]^NOT^EN.553.420[C]^NOT^EN.553.620[C]^NOT^EN.553.630[C]',
+        },
+        {
+          required_credits: 18,
+          description:
+            '**Only EN.553.310 Probability & Statistics for the Physical Sciences & Engineering and EN.553.630 Introduction to Statistics count towards minor.',
+          criteria:
+            'Q[A]^NOT^AS.110.106[C]^NOT^AS.110.107[C]^NOT^AS.110.108[C]^NOT^AS.110.109[C]^NOT^AS.110.113[C]^NOT^EN.553.311[C]^NOT^EN.553.420[C]^NOT^EN.553.620[C]^NOT^EN.553.430[C]',
+        },
+        {
+          required_credits: 18,
+          description:
+            '**Only EN.553.311 Probability and Statistics for the Biological Sciences and Engineering and EN.553.430 Introduction to Statistics count towards minor.',
+          criteria:
+            'Q[A]^NOT^AS.110.106[C]^NOT^AS.110.107[C]^NOT^AS.110.108[C]^NOT^AS.110.109[C]^NOT^AS.110.113[C]^NOT^EN.553.310[C]^NOT^EN.553.420[C]^NOT^EN.553.620[C]^NOT^EN.553.630[C]',
+        },
+        {
+          required_credits: 18,
+          description:
+            '**Only EN.553.311 Probability and Statistics for the Biological Sciences and Engineering and EN.553.630 Introduction to Statistics count towards minor.',
+          criteria:
+            'Q[A]^NOT^AS.110.106[C]^NOT^AS.110.107[C]^NOT^AS.110.108[C]^NOT^AS.110.109[C]^NOT^AS.110.113[C]^NOT^EN.553.310[C]^NOT^EN.553.420[C]^NOT^EN.553.620[C]^NOT^EN.553.430[C]',
+        },
+        {
+          required_credits: 18,
+          description:
+            '**Only EN.553.420 Introduction to Probability and EN.553.430 Introduction to Statistics count towards minor.',
+          criteria:
+            'Q[A]^NOT^AS.110.106[C]^NOT^AS.110.107[C]^NOT^AS.110.108[C]^NOT^AS.110.109[C]^NOT^AS.110.113[C]^NOT^EN.553.310[C]^NOT^EN.553.311[C]^NOT^EN.553.620[C]^NOT^EN.553.630[C]',
+        },
+        {
+          required_credits: 18,
+          description:
+            '**Only EN.553.620 Introduction to Probability and EN.553.630 Introduction to Statistics count towards minor.',
+          criteria:
+            'Q[A]^NOT^AS.110.106[C]^NOT^AS.110.107[C]^NOT^AS.110.108[C]^NOT^AS.110.109[C]^NOT^AS.110.113[C]^NOT^EN.553.310[C]^NOT^EN.553.311[C]^NOT^EN.553.420[C]^NOT^EN.553.430[C]',
+        },
+        {
+          required_credits: 18,
+          description:
+            '**Only EN.553.620 Introduction to Probability and EN.553.430 Introduction to Statistics count towards minor.',
+          criteria:
+            'Q[A]^NOT^AS.110.106[C]^NOT^AS.110.107[C]^NOT^AS.110.108[C]^NOT^AS.110.109[C]^NOT^AS.110.113[C]^NOT^EN.553.310[C]^NOT^EN.553.311[C]^NOT^EN.553.420[C]^NOT^EN.553.630[C]',
+        },
+        {
+          required_credits: 18,
+          description:
+            '**Only EN.553.420 Introduction to Probability and EN.553.630 Introduction to Statistics count towards minor.',
+          criteria:
+            'Q[A]^NOT^AS.110.106[C]^NOT^AS.110.107[C]^NOT^AS.110.108[C]^NOT^AS.110.109[C]^NOT^AS.110.113[C]^NOT^EN.553.310[C]^NOT^EN.553.311[C]^NOT^EN.553.620[C]^NOT^EN.553.430[C]',
+        },
+      ],
+    },
+    {
+      name: 'AMS Courses',
+      required_credits: 12,
+      min_credits_per_course: 3,
+      description:
+        'Among the courses comprising the 18 Q credits, there must be at least four courses in the Department of Applied Mathematics and Statistics (each of these must be a 3- or 4-credit course).',
+      criteria: 'Q[A]^AND^EN Applied Mathematics & Statistics[D]',
+      pathing: 1,
+      fine_requirements: [
+        {
+          required_credits: 12,
+          description:
+            '**Only EN.553.310 Probability & Statistics for the Physical Sciences & Engineering and EN.553.420 Introduction to Probability count towards minor.',
+          criteria:
+            'Q[A]^AND^EN Applied Mathematics & Statistics[D]^NOT^EN.553.311[C]^NOT^EN.553.620[C]^NOT^EN.553.430[C]^NOT^EN.553.630[C]',
+        },
+        {
+          required_credits: 12,
+          description:
+            '**Only EN.553.310 Probability & Statistics for the Physical Sciences & Engineering and EN.553.620 Introduction to Probability count towards minor.',
+          criteria:
+            'Q[A]^AND^EN Applied Mathematics & Statistics[D]^NOT^EN.553.311[C]^NOT^EN.553.420[C]^NOT^EN.553.430[C]^NOT^EN.553.630[C]',
+        },
+        {
+          required_credits: 12,
+          description:
+            '**Only EN.553.311 Probability and Statistics for the Biological Sciences and Engineering and EN.553.420 Introduction to Probability count towards minor.',
+          criteria:
+            'Q[A]^AND^EN Applied Mathematics & Statistics[D]^NOT^AS.110.113[C]^NOT^EN.553.310[C]^NOT^EN.553.620[C]^NOT^EN.553.430[C]^NOT^EN.553.630[C]',
+        },
+        {
+          required_credits: 12,
+          description:
+            '**Only EN.553.311 Probability and Statistics for the Biological Sciences and Engineering and EN.553.620 Introduction to Probability count towards minor.',
+          criteria:
+            'Q[A]^AND^EN Applied Mathematics & Statistics[D]^NOT^EN.553.310[C]^NOT^EN.553.420[C]^NOT^EN.553.430[C]^NOT^EN.553.630[C]',
+        },
+        {
+          required_credits: 12,
+          description:
+            '**Only EN.553.310 Probability & Statistics for the Physical Sciences & Engineering and EN.553.430 Introduction to Statistics count towards minor.',
+          criteria:
+            'Q[A]^AND^EN Applied Mathematics & Statistics[D]^NOT^EN.553.311[C]^NOT^EN.553.420[C]^NOT^EN.553.620[C]^NOT^EN.553.630[C]',
+        },
+        {
+          required_credits: 12,
+          description:
+            '**Only EN.553.310 Probability & Statistics for the Physical Sciences & Engineering and EN.553.630 Introduction to Statistics count towards minor.',
+          criteria:
+            'Q[A]^AND^EN Applied Mathematics & Statistics[D]^NOT^EN.553.311[C]^NOT^EN.553.420[C]^NOT^EN.553.620[C]^NOT^EN.553.430[C]',
+        },
+        {
+          required_credits: 12,
+          description:
+            '**Only EN.553.311 Probability and Statistics for the Biological Sciences and Engineering and EN.553.430 Introduction to Statistics count towards minor.',
+          criteria:
+            'Q[A]^AND^EN Applied Mathematics & Statistics[D]^NOT^EN.553.310[C]^NOT^EN.553.420[C]^NOT^EN.553.620[C]^NOT^EN.553.630[C]',
+        },
+        {
+          required_credits: 12,
+          description:
+            '**Only EN.553.311 Probability and Statistics for the Biological Sciences and Engineering and EN.553.630 Introduction to Statistics count towards minor.',
+          criteria:
+            'Q[A]^AND^EN Applied Mathematics & Statistics[D]^NOT^EN.553.310[C]^NOT^EN.553.420[C]^NOT^EN.553.620[C]^NOT^EN.553.430[C]',
+        },
+        {
+          required_credits: 12,
+          description:
+            '**Only EN.553.420 Introduction to Probability and EN.553.430 Introduction to Statistics count towards minor.',
+          criteria:
+            'Q[A]^AND^EN Applied Mathematics & Statistics[D]^NOT^EN.553.310[C]^NOT^EN.553.311[C]^NOT^EN.553.620[C]^NOT^EN.553.630[C]',
+        },
+        {
+          required_credits: 12,
+          description:
+            '**Only EN.553.620 Introduction to Probability and EN.553.630 Introduction to Statistics count towards minor.',
+          criteria:
+            'Q[A]^AND^EN Applied Mathematics & Statistics[D]^NOT^EN.553.310[C]^NOT^EN.553.311[C]^NOT^EN.553.420[C]^NOT^EN.553.430[C]',
+        },
+        {
+          required_credits: 12,
+          description:
+            '**Only EN.553.620 Introduction to Probability and EN.553.430 Introduction to Statistics count towards minor.',
+          criteria:
+            'Q[A]^AND^EN Applied Mathematics & Statistics[D]^NOT^EN.553.310[C]^NOT^EN.553.311[C]^NOT^EN.553.420[C]^NOT^EN.553.630[C]',
+        },
+        {
+          required_credits: 12,
+          description:
+            '**Only EN.553.420 Introduction to Probability and EN.553.630 Introduction to Statistics count towards minor.',
+          criteria:
+            'Q[A]^AND^EN Applied Mathematics & Statistics[D]^NOT^EN.553.310[C]^NOT^EN.553.311[C]^NOT^EN.553.620[C]^NOT^EN.553.430[C]',
+        },
+      ],
+    },
+    {
+      name: 'Upper-Level Courses',
+      required_credits: 9,
+      min_credits_per_course: 3,
+      description:
+        'Among the courses comprising the 18 Q credits, there must be at least three (3- or 4-credit) courses at the 300-level or above, ' +
+        'of which at least two must be in the Department of Applied Mathematics and Statistics**.<br />' +
+        '</br /> **A student may count the combination of (AS.110.201 Linear Algebra or AS.110.212 Honors Linear Algebra) AND AS.110.302 Differential Equations and Applications in place of ONE of the required 300-level courses within the AMS Department',
+      criteria: 'Q[A]^AND^(300[L]^OR^400[L])',
+      pathing: 1,
+      fine_requirements: [
+        {
+          required_credits: 6,
+          description:
+            '<b>AMS Courses:</b> <br />At least two upper-level courses must be in the Department of Applied Mathematics and Statistics.**',
+          criteria:
+            '(300[L]^OR^400[L])^AND^EN Applied Mathematics & Statistics[D]',
+        },
+        {
+          required_credits: 9,
+          description:
+            '<b>**Alternate Route:</b> <br />One upper-level course from the Department of Applied Mathematics and Statistics, and (AS.110.201 Linear Algebra AND AS.110.302 Differential Equations and Applications).',
+          criteria:
+            '((300[L]^OR^400[L])^AND^EN Applied Mathematics & Statistics[D])^OR^AS.110.201[C]^OR^AS.110.302[C]',
+        },
+        {
+          required_credits: 9,
+          description:
+            '<b>**Alternate Route:</b> <br />One upper-level course from the Department of Applied Mathematics and Statistics, and (AS.110.212 Honors Linear Algebra AND AS.110.302 Differential Equations and Applications).',
+          criteria:
+            '((300[L]^OR^400[L])^AND^EN Applied Mathematics & Statistics[D])^OR^AS.110.212[C]^OR^AS.110.302[C]',
+        },
+      ],
+    },
+    {
+      name: 'Scientific Computer Course',
+      required_credits: 3,
+      min_credits_per_course: 3,
+      description:
+        'Among the courses comprising the 18 Q credits, there must be ' +
+        'an approved semester course in scientific computing, chosen from 110.445, 553.385, 553.400, 553.413, 553.432, 553.433, 553.436, 553.450, 553.463, 553.467, 553.481, 553.488, 553.493, 553.494, 601.433, 601.475, 601.482 or one of the courses approved to meet the AMS Master’s/PhD Computing Requirement.',
+      criteria:
+        'AS.110.445[C]^OR^EN.553.385[C]^OR^EN.553.400[C]^OR^EN.553.413[C]^OR^EN.553.432[C]^OR^EN.553.433[C]^OR^EN.553.436[C]^OR^EN.553.450[C]^OR^EN.553.463[C]^OR^EN.553.467[C]^OR^EN.553.481[C]^OR^EN.553.488[C]^OR^EN.553.493[C]^OR^EN.553.494[C]^OR^EN.601.433[C]^OR^EN.601.475[C]^OR^EN.601.482[C]',
+      fine_requirements: [
+        {
+          required_credits: 3,
+          description:
+            '<b>Scientific Computer Course:</b> <br /> The student must take an approved course based on a high-level computer language chosen from the list below or one of the courses approved to meet the AMS Master’s/PhD Computing Requirement.<br />' +
+            '<br /> AS.110.445, ' +
+            '<br /> EN.553.385, ' +
+            '<br /> EN.553.400, ' +
+            '<br /> EN.553.413, ' +
+            '<br /> EN.553.432, ' +
+            '<br /> EN.553.433, ' +
+            '<br /> EN.553.436, ' +
+            '<br /> EN.553.450, ' +
+            '<br /> EN.553.463, ' +
+            '<br /> EN.553.467, ' +
+            '<br /> EN.553.481, ' +
+            '<br /> EN.553.488, ' +
+            '<br /> EN.553.493, ' +
+            '<br /> EN.553.494, ' +
+            '<br /> EN.601.433, ' +
+            '<br /> EN.601.475, ' +
+            '<br /> EN.601.482 <br />',
+          criteria:
+            'AS.110.445[C]^OR^EN.553.385[C]^OR^EN.553.400[C]^OR^EN.553.413[C]^OR^EN.553.432[C]^OR^EN.553.433[C]^OR^EN.553.436[C]^OR^EN.553.450[C]^OR^EN.553.463[C]^OR^EN.553.467[C]^OR^EN.553.481[C]^OR^EN.553.488[C]^OR^EN.553.493[C]^OR^EN.553.494[C]^OR^EN.601.433[C]^OR^EN.601.475[C]^OR^EN.601.482[C]',
+        },
+      ],
+    },
+  ],
+};
+
+// https://e-catalogue.jhu.edu/arts-sciences/full-time-residential-programs/degree-programs/economics/economics-minor/
+// https://econ.jhu.edu/undergraduate/minor-requirements/
+const minorEcon: Minor = {
+  degree_name: 'Minor Economics',
+  abbrev: 'Minor Econ',
+  department: 'AS Economics',
+  total_degree_credit: 18,
+  url: 'https://e-catalogue.jhu.edu/arts-sciences/full-time-residential-programs/degree-programs/economics/economics-minor/',
+  wi_credit: 0,
+  distributions: [
+    {
+      name: 'Core Courses',
+      required_credits: 6,
+      min_credits_per_course: 3,
+      description:
+        'Students must take 180.101 Elements of Macroeconomics and 180.102 Elements of Microeconomics.**<br />' +
+        '<br />**Students who use exam credits to satisfy the AS.180.101 Elements of Macroeconomics and/or AS.180.102 Elements of Microeconomics requirements must take additional courses in the department to reach a total of 6 courses.',
+      criteria: 'AS.180.101[C]^OR^AS.180.102[C]',
+      fine_requirements: [
+        {
+          required_credits: 3,
+          description: '<b>AS.180.101</b> <br />Elements of Macroeconomics**',
+          criteria: 'AS.180.101[C]',
+        },
+        {
+          required_credits: 3,
+          description: '<b>AS.180.102</b> <br />Elements of Microeconomics**',
+          criteria: 'AS.180.102[C]',
+        },
+        {
+          required_credits: 1,
+          description:
+            '<b>**PLEASE NOTE:</b> <br />Students who use exam credits to satisfy the AS.180.101 Elements of Macroeconomics and/or AS.180.102 Elements of Microeconomics requirements must take additional courses in the department to reach a total of 6 courses!',
+          criteria: 'asdalhsdkjf[N]',
+        },
+      ],
+    },
+    {
+      name: 'Elective Courses',
+      required_credits: 12,
+      min_credits_per_course: 3,
+      description:
+        'Students must take four other economics courses at the 200- or 300-level.',
+      criteria: 'AS Economics[D]^AND^(200[L]^OR^300[L])^NOT^AS.180.203[C]',
+    },
+  ],
+};
+
+// https://e-catalogue.jhu.edu/arts-sciences/full-time-residential-programs/degree-programs/physics-astronomy/physics-minor/
+// https://physics-astronomy.jhu.edu/undergraduate/minors/
+const minorPhysics: Minor = {
+  degree_name: 'Minor Physics',
+  abbrev: 'Physics Minor',
+  department: 'AS Physics & Astronomy',
+  total_degree_credit: 13,
+  url: 'https://physics-astronomy.jhu.edu/undergraduate/minors/',
+  wi_credit: 0,
+  distributions: [
+    // NOTE: not sure if students need introductory physics sequence? (according to https://physics-astronomy.jhu.edu/undergraduate/minors/)
+    // "A student may earn a minor in physics by completing one of the introductory physics sequences (171.101-102, 171.103-104, or 171.105-106 and associated lab)"
+    // degree audit doesn't mention it and neither does e-catalogue
+    {
+      name: 'Contemporary Physics Seminar',
+      required_credits: 1,
+      min_credits_per_course: 1,
+      description:
+        'The student must take AS.172.203 Contemporary Physics Seminar.',
+      criteria: 'AS.172.203[C]',
+    },
+    {
+      name: '200-Level (or above) Courses',
+      required_credits: 12,
+      min_credits_per_course: 3,
+      description:
+        'The student must complete four (4) courses (at least 3 credits each) at the 200-level or above.',
+      criteria:
+        'AS Physics & Astronomy[D]^AND^(200[L]^OR^300[L]^OR^400[L]^OR^500[L])^NOT^AS.172.203[C]',
+    },
+  ],
+};
+
 const no_degree: Major = {
   degree_name: "Undecided Degree/My degree isn't supported yet",
   distributions: [],
@@ -2663,7 +3913,7 @@ const no_degree: Major = {
   wi_credit: 0,
 };
 
-export function getMajorFromCommonName(name: string) {
+export function getMajorFromCommonName(name: string): Major | null {
   let out: Major | null = null;
   allMajors.forEach((major) => {
     if (major.degree_name === name) {
@@ -2685,7 +3935,10 @@ export const allMajors: Major[] = [
   CS_Minor_Old,
   bsMolCell,
   bsAMS,
+  minorAMS_Old,
+  minorAMS_New,
   baIS,
+  bsMechE,
   // baPH,
   bsBME,
   // baHistory,
@@ -2693,9 +3946,11 @@ export const allMajors: Major[] = [
   bsCBE,
 
   baEcon,
+  minorEcon,
+  minorPhysics,
   // baPsych,
   // baMolCell,
-  // baNeuro,
+  // bsNeuro,
   // baSoc,
   // bsElectricEng,
   // bsEnvEng,
@@ -2706,7 +3961,7 @@ export const allMajors: Major[] = [
   // bsBioPhysics,
   // bsChem,
   // bsME,
-  // bsCogSci,
+  baCogSci,
   // bsMatSci,
   // bsBBio,
   // baHistArt,
