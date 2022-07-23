@@ -202,12 +202,6 @@ const DistributionBarsJSX: FC<{ major: Major }> = ({ major }) => {
     let distExclusive: string[] | undefined = undefined; // initial value
     reqs.forEach((reqGroup, i) => {
       let req = reqGroup[1][0]; // general distribution
-      console.log(
-        req,
-        courseObj.title,
-        checkRequirementSatisfied(req, courseObj),
-        distExclusive,
-      );
       if (
         (!distExclusive || distExclusive.includes(req.name)) &&
         (req.fulfilled_credits < req.required_credits ||
@@ -222,11 +216,6 @@ const DistributionBarsJSX: FC<{ major: Major }> = ({ major }) => {
           if (j !== 0) {
             // 0 is the general distribution, not fine req
             let fineReq = reqGroup[1][j];
-            console.log(
-              fineReq,
-              courseObj.title,
-              checkRequirementSatisfied(fineReq, courseObj),
-            );
             if (
               (!fineExclusive || fineExclusive.includes(fineReq.name)) &&
               (fineReq.fulfilled_credits < fineReq.required_credits ||

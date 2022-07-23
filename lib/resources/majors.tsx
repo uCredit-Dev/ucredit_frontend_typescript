@@ -2456,6 +2456,8 @@ const bsCS_New: Major = {
           exclusive: [
             '<b>One Team(CSCI-TEAM) designated course.</b><p> This Team course may overlap other course ' +
               'requirements, for example to count as both Team and Software.</p>',
+            '<b>2 Upper Level Classifications:</b><p>At least one upper level course in two of these four different classification</p> ' +
+              'areas: Applications(CSCI-APPL), Systems(CSCI-SYST), Software(CSCI-SOFT) and Reasoning(CSCI-RSNG)',
           ],
         },
         {
@@ -2466,6 +2468,9 @@ const bsCS_New: Major = {
           criteria:
             'CSCI-APPL[T]^OR^CSCI-SYST[T]^OR^CSCI-SOFT[T]^OR^CSCI-RSNG[T]',
           exclusive: [
+            '<b>Lower Level Undergraduate:</b><p>500.112/113/114 Gateway Computing or AP Comp Sci A or ' +
+              'equivalent<p>601.220 Intermediate Programming</p><p>601.226 Data Structures</p><p>601.229 ' +
+              'Computer System Fundamentals</p><p>601.230 Mathematical Foundations for Computer Science, or 601.231 Automata for those grandfathered into the old major</p><p>601.433 Algorithms</p>',
             '<b>One Team(CSCI-TEAM) designated course.</b><p> This Team course may overlap other course ' +
               'requirements, for example to count as both Team and Software.</p>',
           ],
