@@ -1,4 +1,4 @@
-import { useState, useEffect, FC } from 'react';
+import React, { useState, useEffect, FC } from 'react';
 import {
   DroppableType,
   Plan,
@@ -10,9 +10,11 @@ import {
 import { useDispatch, useSelector } from 'react-redux';
 import {
   clearSearch,
+  selectCartAdd,
   selectInspectedCourse,
   selectPlaceholder,
   selectVersion,
+  updateCartAdd,
   updateSearchStatus,
   updateSearchTime,
 } from '../../../../slices/searchSlice';
@@ -32,6 +34,8 @@ import CourseDraggable from './CourseDraggable';
 import {
   selectAddingPrereq,
   updateAddingPrereq,
+  updateInfoPopup,
+  updateShowingCart,
 } from '../../../../slices/popupSlice';
 import { toast } from 'react-toastify';
 import { getAPI } from '../../../../resources/assets';
@@ -68,6 +72,7 @@ const Semester: FC<{
   const placeholder = useSelector(selectPlaceholder);
   const currentCourses = useSelector(selectCurrentPlanCourses);
   const inspected = useSelector(selectInspectedCourse);
+  const cartOpen = useSelector(selectCartAdd);
 
   // State used to control whether dropdown is opened or closed
   const [totalCredits, setTotalCredits] = useState<number>(0);
@@ -183,7 +188,6 @@ const Semester: FC<{
    */
   const addPrereq = () => {
     updateDistributions();
-    dispatch(clearSearch());
   };
 
   /**
@@ -192,22 +196,22 @@ const Semester: FC<{
   const updateDistributions = (): void => {
     if (version !== 'None') {
       const body = {
+        ...version,
         user_id: user._id,
         year_id: semesterYear._id,
         plan_id: currentPlan._id,
-        title: version.title,
         term: semesterName === 'All' ? 'fall' : semesterName.toLowerCase(),
         year: semesterYear._id,
         credits: version.credits === '' ? 0 : version.credits,
         distribution_ids: currentPlan.distribution_ids,
         isPlaceholder: placeholder,
-        number: version.number,
         area: inspectedArea,
-        preReq: version.preReq,
+        version: semesterName + ' ' + semesterYear.year,
         expireAt:
           user._id === 'guestUser'
             ? Date.now() + 60 * 60 * 24 * 1000
             : undefined,
+        _id: undefined,
       };
 
       fetch(getAPI(window) + '/courses', {
@@ -247,7 +251,10 @@ const Semester: FC<{
       }
       dispatch(updatePlanList(newPlanList));
       dispatch(updateAddingPrereq(false));
-      dispatch(clearSearch());
+      dispatch(updateInfoPopup(true));
+      if (cartOpen) dispatch(updateShowingCart(true));
+      else dispatch(clearSearch());
+      dispatch(updateCartAdd(false));
       toast.success(version.title + ' added!');
     } else {
       console.log('Failed to add', data.errors);
@@ -306,26 +313,24 @@ const Semester: FC<{
         <div className="text-md">{getSemesterName()}</div>
       )}{' '}
       {courses.length !== 0 && totalCredits !== 0 && (
-        <>
-          <div
-            className={clsx(
-              {
-                'bg-red-200': colorCheck('bg-red-200'),
-              },
-              {
-                'bg-yellow-200': colorCheck('bg-yellow-200'),
-              },
-              {
-                'bg-green-200': colorCheck('bg-green-200'),
-              },
-              ' flex flex-row items-center justify-center ml-1 px-1 w-auto text-black text-xs bg-white rounded',
-            )}
-            data-tip={getCreditString()}
-            data-for="godTip"
-          >
-            {totalCredits}
-          </div>
-        </>
+        <div
+          className={clsx(
+            {
+              'bg-red-200': colorCheck('bg-red-200'),
+            },
+            {
+              'bg-yellow-200': colorCheck('bg-yellow-200'),
+            },
+            {
+              'bg-green-200': colorCheck('bg-green-200'),
+            },
+            'flex flex-row items-center justify-center mt-0.5 -ml-2 px-1 w-auto text-black text-xs bg-white rounded',
+          )}
+          data-tip={getCreditString()}
+          data-for="godTip"
+        >
+          {totalCredits}
+        </div>
       )}
     </>
   );
@@ -437,7 +442,7 @@ const Semester: FC<{
   const getAPInfoBox = (): JSX.Element => (
     <>
       {openAPInfoBox && (
-        <div className="absolute p-2 -mt-12 -ml-6 bg-gray-100 rounded select-text w-72">
+        <div className="absolute top-6 p-2 -ml-6 bg-gray-100 rounded select-text w-72">
           These are courses transferred over from AP tests and other college
           courses that you've taken! Find out equivalent courses your scores
           cover for{' '}
@@ -464,22 +469,24 @@ const Semester: FC<{
             setHovered(false);
           }}
           onMouseEnter={() => setHovered(true)}
-          className="min-w-[15rem] max-w-[40rem] w-min mx-4"
+          className="min-w-[15rem] max-w-[40rem] w-min mx-3"
         >
-          <Comments
-            location={'Semester ' + semesterYear._id + semesterName}
-            hovered={hovered}
-            mode={mode}
-          />
-          <div className="flex flex-col font-medium max-w-yearheading h-yearheading">
-            <div className="flex flex-row items-center justify-between px-2 py-1 bg-white h-yearheading1">
+          <div className="relative">
+            <Comments
+              location={'Semester ' + semesterYear._id + semesterName}
+              hovered={hovered}
+              mode={mode}
+            />
+          </div>
+          <div className="flex flex-col font-medium h-yearheading">
+            <div className="flex flex-row items-center justify-between pr-2 py-1 bg-white h-yearheading1">
               <div className="flex flex-row items-center h-auto gap-3 font-normal">
                 {getSemesterTitle()}
               </div>
               {getSemesterAddButton()}
             </div>
-            <div className="w-full h-px bg-primary"></div>
           </div>
+          <div className="w-full h-px bg-primary"></div>
           <div
             id={semesterName + '|' + semesterYear._id}
             // className="pr-11"
@@ -515,6 +522,7 @@ const Semester: FC<{
 
 const getListStyle = (isDraggingOver: boolean) => ({
   background: isDraggingOver ? '#F3F3F3' : 'transparent',
+  minHeight: '1rem',
 });
 
 export default Semester;
