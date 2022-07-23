@@ -2268,6 +2268,10 @@ const bsCS_Old: Major = {
           exclusive: [
             '<b>Team Requirement</b> <br /> ' +
               'Select one course with Program of Study Tag CSCI-TEAM.',
+            '<b>CS Electives</b> <br /> ' +
+              'Eight additional credits of Computer Science are required.' +
+              'For an approved list of courses from other departments (maximum of 6 credits allowed), visit https://www.cs.jhu.edu/computer-science-other-courses-for-bs-degree/ ' +
+              'and create a custom course to satisfy this requirement.',
           ],
         },
         {
@@ -2281,6 +2285,9 @@ const bsCS_Old: Major = {
           exclusive: [
             '<b>Team Requirement</b> <br /> ' +
               'Select one course with Program of Study Tag CSCI-TEAM.',
+            '<b>Upper Level CS Credits</b> <br /> ' +
+              'At least 13 more upper level CS credits are required. ' +
+              'At least one course in two different classification areas (Applications, Reasoning, Software, Systems) must be chosen in addition to Theory (Algorithms).',
           ],
         },
         {
