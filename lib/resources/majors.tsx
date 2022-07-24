@@ -161,9 +161,7 @@ const bsECE: Major = {
       min_credits_per_course: 1,
       description:
         'Six (6) credits of "other engineering" courses (with an E designation) from KSAS or School of Engineering departments other than ECE or Applied Mathematics and Statistics or General Engineering (Note: Entrepreneurship and Management courses in the Center for Leadership Education CANNOT be counted as “other engineering courses”).',
-      criteria: 'E[A]',
-      exception:
-        'EN Electrical & Computer Engineering[D]^OR^EN Applied Mathematics & Statistics[D]^OR^EN General Engineering[D]',
+      criteria: 'E[A]^NOT^(EN Electrical & Computer Engineering[D]^OR^EN Applied Mathematics & Statistics[D]^OR^EN General Engineering[D])',
       fine_requirements: [
         {
           description:
@@ -260,7 +258,6 @@ const bsECE: Major = {
       name: 'Ethics',
       required_credits: 3,
       min_credits_per_course: 1,
-      exclusive: true,
       description:
         'Two (2) credits in EN.660.400 Practical Ethics for Future Leaders and one (1) credit EN.520.404 Engineering solutions in a global, economic, environmental, and societal context.',
       criteria: 'EN.660.400[C]^OR^EN.520.404[C]',
@@ -271,8 +268,7 @@ const bsECE: Major = {
       min_credits_per_course: 3,
       description:
         'At least five (5), three-credit courses in humanities and social sciences.',
-      criteria: 'H[A]^OR^S[A]',
-      exception: 'EN.660.400[C]^OR^EN.520.404[C]',
+      criteria: '(H[A]^OR^S[A])^NOT^(EN.660.400[C]^OR^EN.520.404[C])',
     },
     {
       name: 'Writing Intensive',
@@ -281,7 +277,7 @@ const bsECE: Major = {
       description:
         'Two (2) writing-intensive courses (at least 3 credits each) are required. The writing-intensive courses may not be taken Satisfactory/Unsatisfactory and require a C- or better grade.',
       criteria: 'Written Intensive[W]',
-      double_count: true,
+      double_count: ['Humanity & Social Science'],
     },
   ],
 };
@@ -367,14 +363,122 @@ const bsECE: Major = {
 //   distributions: [],
 // };
 
-// // https://mathematics.jhu.edu/undergraduate/major-in-mathematics/
-// const bsMath: Major = {
-//   degree_name: "B.S. Mathematics",
-//   department: "AS Mathematics",
-//   total_degree_credit: 120,
-//   wi_credit: 6,
-//   distributions: [],
-// };
+// https://e-catalogue.jhu.edu/arts-sciences/full-time-residential-programs/degree-programs/mathematics/mathematics-bachelor-arts/#requirementstext
+const baMath: Major = {
+  degree_name: "B.A. Mathematics",
+  department: "AS Mathematics",
+  total_degree_credit: 120,
+  wi_credit: 15,
+  distributions: [
+    {
+      name: 'Major Requirement',
+      required_credits: 44,
+      min_credits_per_course: 1,
+      description:
+        'For more information please visit https://e-catalogue.jhu.edu/arts-sciences/full-time-residential-programs/degree-programs/mathematics/mathematics-bachelor-arts/#requirementstext.',
+      criteria: 'AS Mathematics[D]',
+      fine_requirements: [
+        {
+          description:
+            '<b>Calculus I</b><br />AS.110.106 or AS.110.108',
+          required_credits: 4,
+          criteria: 'AS.110.106[C]^OR^AS.110.108[C]',
+        },
+        {
+          description:
+            '<b>Calculus II</b> or <b>Honors Single Variable Calculus</b><br />AS.110.107 or AS.110.113 or AS.110.109',
+          required_credits: 4,
+          criteria: 'AS.110.107[C]^OR^AS.110.113[C]^OR^AS.110.109[C]',
+        },
+        {
+          description:
+            '<b>Calculus III</b> or <b>Honors Multivariable Calculus</b><br />AS.110.202 or AS.110.211',
+          required_credits: 4,
+          criteria: 'AS.110.202[C]^OR^AS.110.211[C]',
+        },
+        {
+          description:
+            '<b>Introduction to Abstract Algebra</b> or <b>Honors Algebra I</b><br />AS.110.401 or AS.110.411',
+          required_credits: 4,
+          criteria: 'AS.110.401[C]^OR^AS.110.411[C]',
+        },
+        {
+          description:
+            '<b>Elementary Number Theory</b> or <b>Honors Algebra II</b> or <b>Introduction To Topology</b> or <b>Representation Theory</b> or <b>Introduction to Algebraic Geometry</b>',
+          required_credits: 4,
+          criteria: 'AS.110.304[C]^OR^AS.110.412[C]^OR^AS.110.413[C]^OR^AS.110.422[C]^OR^AS.110.435[C]',
+        },
+        {
+          description:
+            '<b>Real Analysis I</b> or <b>Honors Real Analysis I</b><br />AS.110.405 or AS.110.415',
+          required_credits: 4,
+          criteria: 'AS.110.405[C]^OR^AS.110.415[C]',
+        },
+        {
+          description:
+            '<b>Methods of Complex Analysis</b> or <b>Real Analysis II</b> or <b>Honors Complex Analysis</b> or <b>Introduction To Topology</b> or <b>Honors Analysis II</b> or <b>Partial Differential Equations</b> or <b>Dynamical Systems</b> or <b>Introduction To Differential Geometry</b> or <b>Calculus on Manifolds</b> or <b>Fourier Analysis</b>',
+          required_credits: 4,
+          criteria: 'AS.110.311[C]^OR^AS.110.406[C]^OR^AS.110.407[C]^OR^AS.110.413[C]^OR^AS.110.416[C]^OR^AS.110.417[C]^OR^AS.110.421[C]^OR^AS.110.439[C]^OR^AS.110.441[C]^OR^AS.110.443[C]',
+        },
+        {
+          description:
+            'One 300-level or higher math course',
+          required_credits: 4,
+          criteria: 'Upper Level[L]',
+        },
+        {
+          description:
+            'Two courses in any one of the approved applications of mathematics or other courses approved by the Director of Undergraduate Studies.',
+          required_credits: 8,
+          criteria: 'AS.171.204[C]^OR^AS.171.301[C]^OR^AS.171.303[C]^OR^AS.171.304[C]^OR^AS.171.312[C]^OR^AS.030.302[C]^OR^AS.030.453[C]^OR^AS.180.301[C]^OR^AS.180.302[C]^OR^AS.180.334[C]^OR^AS.180.434[C]^OR^EN.601.231[C]^OR^EN.601.433[C]^OR^EN.601.442[C]^OR^EN.601.457[C]^OR^EN.601.461[C]^OR^EN.601.464[C]^OR^EN.601.475[C]^OR^EN.601.476[C]^OR^EN.553.361[C]^OR^EN.553.362[C]^OR^EN.553.391[C]^OR^EN.553.420[C]^OR^EN.553.426[C]^OR^EN.553.430[C]^OR^EN.553.453[C]^OR^EN.553.465[C]^OR^EN.553.471[C]^OR^EN.553.472[C]^OR^EN.553.481[C]^OR^EN.553.492[C]^OR^EN.553.493[C]^OR^AS.150.420[C]^OR^AS.150.421[C]^OR^AS.150.422[C]',
+        },
+      ],
+    },
+    {
+      name: 'Humanities',
+      required_credits: 9,
+      min_credits_per_course: 1,
+      description:
+        'These credits fulfilling the distribution requirement may overlap with major or minor requirements and the writing-intensive requirement.',
+      criteria: 'H[A]',
+      double_count: ['Writing Intensive', 'Major Requirement'],
+    },
+    {
+      name: 'Social Sciences',
+      required_credits: 9,
+      min_credits_per_course: 1,
+      description:
+        'These credits fulfilling the distribution requirement may overlap with major or minor requirements and the writing-intensive requirement.',
+      criteria: 'S[A]',
+      double_count: ['Writing Intensive', 'Major Requirement'],
+    },
+    {
+      name: 'Natural Sciences/Quantitative/Engineering',
+      required_credits: 9,
+      min_credits_per_course: 1,
+      description:
+        'These credits fulfilling the distribution requirement may overlap with major or minor requirements and the writing-intensive requirement.',
+      criteria: 'N[A]^OR^Q[A]^OR^E[A]',
+      double_count: ['Writing Intensive', 'Major Requirement'],
+    },
+    {
+      name: 'Writing Intensive',
+      required_credits: 15,
+      min_credits_per_course: 1,
+      description:
+        'Effective Fall 2022, all students earning a degree from the School of Arts and Sciences must complete Reintroduction to Writing in their first year at Hopkins plus an additional 12 credits in writing-intensive courses through their undergraduate experience for a minimum of 15 writing-intensive credits.',
+      criteria: 'Written Intensive[W]',
+      fine_requirements:[
+        {
+          description:
+            'Reintroduction to Writing',
+          required_credits: 4,
+          criteria: 'AS.004.100[C]',
+        }
+      ]
+    },
+  ],
+};
 
 // // https://writingseminars.jhu.edu/undergraduate/requirements/
 // const baWritingSems: Major = {
@@ -3547,7 +3651,7 @@ export const allMajors: Major[] = [
   bsECE,
   // bsEnvEng,
   // baWritingSems,
-  // bsMath,
+  baMath,
   // bsPhysics,
   // baMSH,
   // bsBioPhysics,
