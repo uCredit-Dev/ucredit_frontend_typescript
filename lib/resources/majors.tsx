@@ -113,7 +113,7 @@ const baCogSci: Major = {
         'Neuroscience',
       criteria:
         'COGS-COGPSY[T]^OR^COGS-LING[T]^OR^COGS-COMPCG[T]^OR^COGS-NEURO[T]^OR^COGS-PHLMND[T]',
-        double_count: [
+      double_count: [
         'Two Focal Areas',
         'Math',
         'Humanities (H) Distribution',
