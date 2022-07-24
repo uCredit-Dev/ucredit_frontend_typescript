@@ -316,7 +316,6 @@ const baCogSci: Major = {
       name: 'Writing Intensive',
       required_credits: 12,
       min_credits_per_course: 3,
-      double_count: true,
       description:
         'To encourage excellence in writing, across disciplines, the university requires all undergraduates to take a number of writing-intensive courses. ' +
         'All students earning a degree from the School of Arts and Sciences must complete at least 12 credits in writing-intensive courses. ' +
@@ -606,7 +605,6 @@ const baEcon: Major = {
       name: 'Writing Intensive',
       required_credits: 12,
       min_credits_per_course: 3,
-      double_count: true,
       description:
         'To encourage excellence in writing, across disciplines, the university requires all undergraduates to take a number of writing-intensive courses. ' +
         'All students earning a degree from the School of Arts and Sciences must complete at least 12 credits in writing-intensive courses. ' +
@@ -1070,7 +1068,6 @@ const bsBME: Major = {
       name: 'Writing Intensive',
       required_credits: 6,
       min_credits_per_course: 3,
-      double_count: true,
       description:
         'Students are required to fulfill the university’s requirement of two writing intensive courses, ' +
         'each at least 3 credits. Students must receive at least a C- grade or better in these writing courses.',
@@ -1686,7 +1683,6 @@ const bsCBE: Major = {
       name: 'Writing Intensive',
       required_credits: 6,
       min_credits_per_course: 3,
-      double_count: true,
       description:
         'Students are required to fulfill the university’s requirement of two writing intensive courses, ' +
         'each at least 3 credits. Students must receive at least a C- grade or better in these writing courses.',
@@ -1942,7 +1938,6 @@ const baIS: Major = {
       name: 'Writing Intensive',
       required_credits: 12,
       min_credits_per_course: 3,
-      double_count: true,
       description:
         'To encourage excellence in writing, across disciplines, the university requires all undergraduates to take a number of writing-intensive courses. ' +
         'All students earning a degree from the School of Arts and Sciences must complete at least 12 credits in writing-intensive courses. ' +
@@ -2165,7 +2160,6 @@ const bsAMS: Major = {
       name: 'Writing Intensive',
       required_credits: 6,
       min_credits_per_course: 3,
-      double_count: true,
       description:
         'Students are required to fulfill the university’s requirement of two writing intensive courses, ' +
         'each at least 3 credits. Students must receive at least a C- grade or better in these writing courses. ',
@@ -2697,7 +2691,6 @@ const baCS_New: Major = {
       name: 'Writing Intensive',
       required_credits: 12,
       min_credits_per_course: 3,
-      double_count: true,
       description:
         'Students are required to fulfill the university’s requirement of four writing intensive courses, ' +
         'each at least 3 credits. Students must receive at least a C- grade or better in these writing courses. ',
@@ -3212,7 +3205,6 @@ const bsMolCell: Major = {
       name: 'Writing Intensive',
       required_credits: 12,
       min_credits_per_course: 3,
-      double_count: true,
       description:
         'To encourage excellence in writing, across disciplines, the university requires all undergraduates to take a number of writing-intensive courses. ' +
         'All students earning a degree from the School of Arts and Sciences must complete at least 12 credits in writing-intensive courses. ' +
