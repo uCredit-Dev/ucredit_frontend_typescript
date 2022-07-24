@@ -14,9 +14,13 @@ const post = (url: string, data: Object) => {
   });
 };
 
-const _delete = (url: string) => {
+const _delete = (url: string, data: Object | undefined = undefined) => {
   return fetch(url, {
     method: 'DELETE',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify(data),
   });
 };
 
