@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
-import CommentIcon from '../lib/components/roadmap-page/commentEditor/CommentIcon';
-import Editor from '../lib/components/roadmap-page/commentEditor/Editor';
+import CommentIcon from '../lib/components/roadmap/comments/commentEditor/CommentIcon';
+import Editor from '../lib/components/roadmap/comments/commentEditor/Editor';
 import Header from '../lib/components/roadmap/Header';
 import RoadMapComment from '../lib/components/roadmap/comments/RoadMapComment';
 import Banner from '../lib/components/roadmap/Banner';
@@ -73,10 +73,12 @@ const RoadMap: React.FC<Props> = ({ mode }) => {
 
   const openEditor = () => {
     setEditorPopup(true);
+    console.log(editorPopup)
   };
 
   const closeEditor = () => {
     setEditorPopup(false);
+    console.log(editorPopup)
   };
 
   const addComments = (newComment: string) => {
@@ -90,15 +92,12 @@ const RoadMap: React.FC<Props> = ({ mode }) => {
         <Banner />
         <RoadMapComment />
 
-        <div className="absolute bottom-10 right-10">
-          <CommentIcon openEditor={openEditor} />
-        </div>
+        <CommentIcon openEditor={openEditor} />
 
-        <div>
-          {editorPopup && (
-            <Editor addComments={addComments} closeEditor={closeEditor} />
-          )}
-        </div>
+        { editorPopup && 
+        <Editor addComments={addComments} closeEditor={closeEditor} editorPopup={editorPopup}/>
+        }
+        
       </div>
     </>
   );

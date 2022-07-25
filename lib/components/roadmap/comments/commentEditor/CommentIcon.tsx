@@ -1,3 +1,4 @@
+
 import React from 'react';
 
 interface Props {
@@ -6,6 +7,7 @@ interface Props {
 
 const CommentIcon: React.FC<Props> = ({ openEditor }) => {
   return (
+    <div className="fixed bottom-5 right-5">
     <button onClick={() => openEditor()}>
       <svg
         width="63"
@@ -22,6 +24,7 @@ const CommentIcon: React.FC<Props> = ({ openEditor }) => {
         />
       </svg>
     </button>
+    </div>
   );
 };
 
