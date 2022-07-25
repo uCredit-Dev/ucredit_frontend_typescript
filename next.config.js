@@ -1,3 +1,4 @@
+
 module.exports = {
   reactStrictMode: true,
   pageExtensions: ['js', 'jsx', 'ts', 'tsx'],
@@ -15,4 +16,7 @@ module.exports = {
 
     return config;
   },
+
+
+  
 };
