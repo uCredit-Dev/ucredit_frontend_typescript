@@ -1,9 +1,8 @@
-import React, { useState } from 'react';
-import CommentIcon from '../lib/components/roadmap/comments/commentEditor/CommentIcon';
-import Editor from '../lib/components/roadmap/comments/commentEditor/Editor';
+import React from 'react';
 import Header from '../lib/components/roadmap/Header';
 import RoadMapComment from '../lib/components/roadmap/comments/RoadMapComment';
 import Banner from '../lib/components/roadmap/Banner';
+import EditorSection from '../lib/components/roadmap/comments/commentEditor/EditorSection';
 import { ReviewMode } from '../lib/resources/commonTypes';
 import { useDispatch, useSelector } from 'react-redux';
 import { useCallback, useEffect } from 'react';
@@ -68,36 +67,13 @@ const RoadMap: React.FC<Props> = ({ mode }) => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [mode, currPlan._id]);
 
-  const [editorPopup, setEditorPopup] = useState(false);
-  const [comments, setComments] = useState<string[]>([]);
-
-  const openEditor = () => {
-    setEditorPopup(true);
-    console.log(editorPopup)
-  };
-
-  const closeEditor = () => {
-    setEditorPopup(false);
-    console.log(editorPopup)
-  };
-
-  const addComments = (newComment: string) => {
-    setComments([...comments, newComment]);
-  };
-
   return (
     <>
       <div className="flex flex-col w-full h-full font-roadMapPage bg-white">
         <Header />
         <Banner />
         <RoadMapComment />
-
-        <CommentIcon openEditor={openEditor} />
-
-        { editorPopup && 
-        <Editor addComments={addComments} closeEditor={closeEditor} editorPopup={editorPopup}/>
-        }
-        
+        <EditorSection />
       </div>
     </>
   );

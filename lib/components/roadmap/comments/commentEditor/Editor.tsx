@@ -1,37 +1,22 @@
-import React, { useState, useRef, useEffect } from 'react';
+import React, { FC, useState, useRef, useEffect } from 'react';
 import MdEditor from 'md-editor-rt';
 import 'md-editor-rt/lib/style.css';
+import clsx from 'clsx';
 
 interface Props {
   addComments: (newComment: string) => void;
-  closeEditor: () => void;
+  toggleEditor: () => void;
   editorPopup: boolean
 }
 
-const Editor: React.FC<Props> = ({ addComments, closeEditor, editorPopup }) => {
+const Editor: FC<Props> = ({ addComments, toggleEditor, editorPopup }) => {
   const [text, setText] = useState('');
-  const divEditorRef = useRef<HTMLDivElement>(null);
 
-  useEffect(() => {
-    function handleClickOutside(event) {
-      if (
-        divEditorRef.current &&
-        !divEditorRef.current.contains(event.target)
-      ) {
-        closeEditor();
-      }
-    }
-
-    document.addEventListener('click', handleClickOutside);
-    return () => {
-      document.removeEventListener('click', handleClickOutside);
-    };
-
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [divEditorRef]);
-
-  return (
-    <div className="flex space-y-2 fixed bottom-0 z-50 w-[100%] h-60 font-['Futura']" ref={divEditorRef}>
+  return ( 
+    <div 
+    className={clsx("fixed bottom-0 z-50 w-[100%] h-60 font-['Futura'] transition-all duration-500 ease-in-out", {
+      "translate-y-full" : !editorPopup
+    })}> 
       <div className="absolute bottom-0 w-[100%]">
         <MdEditor
           modelValue={text}
@@ -75,12 +60,13 @@ const Editor: React.FC<Props> = ({ addComments, closeEditor, editorPopup }) => {
         onClick={() => {
           addComments(text);
           setText('');
+          toggleEditor();
         }}
       >
         send
       </button>
     </div>
-  );
+    );
 };
 
 export default Editor;
