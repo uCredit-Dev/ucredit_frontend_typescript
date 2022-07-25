@@ -6,51 +6,53 @@ import clsx from 'clsx';
 interface Props {
   addComments: (newComment: string) => void;
   toggleEditor: () => void;
-  editorPopup: boolean
+  editorPopup: boolean;
 }
 
 const Editor: FC<Props> = ({ addComments, toggleEditor, editorPopup }) => {
   const [text, setText] = useState('');
 
-  return ( 
-    <div 
-    className={clsx("fixed bottom-0 z-50 w-[100%] h-[425px] font-['Futura'] transition-all duration-300 ease-in", {
-      "translate-y-full" : !editorPopup
-    })}> 
+  return (
+    <div
+      className={clsx(
+        "fixed bottom-0 z-50 w-[100%] h-[425px] font-['Futura'] transition-all duration-300 ease-in",
+        {
+          'translate-y-full': !editorPopup,
+        },
+      )}
+    >
       <div className="absolute bottom-0 w-[100%]">
         <MdEditor
           modelValue={text}
           placeholder="comment here..."
           onChange={setText}
-          toolbars={
-            [
-              'bold',
-              'underline',
-              'italic',
-              '-',
-              'strikeThrough',
-              'sub',
-              'sup',
-              'quote',
-              'unorderedList',
-              'orderedList',
-              '-',
-              'codeRow',
-              'code',
-              'link',
-              'image',
-              'table',
-              'katex',
-              '-',
-              'revoke',
-              'next',
-              'save',
-              '=',
-              'pageFullscreen',
-              'fullscreen',
-              'preview',
-            ]
-          }
+          toolbars={[
+            'bold',
+            'underline',
+            'italic',
+            '-',
+            'strikeThrough',
+            'sub',
+            'sup',
+            'quote',
+            'unorderedList',
+            'orderedList',
+            '-',
+            'codeRow',
+            'code',
+            'link',
+            'image',
+            'table',
+            'katex',
+            '-',
+            'revoke',
+            'next',
+            'save',
+            '=',
+            'pageFullscreen',
+            'fullscreen',
+            'preview',
+          ]}
           language="en-US"
         />
       </div>
@@ -66,7 +68,7 @@ const Editor: FC<Props> = ({ addComments, toggleEditor, editorPopup }) => {
         send
       </button>
     </div>
-    );
+  );
 };
 
 export default Editor;
