@@ -1,4 +1,4 @@
-import React, { FC, useState, useRef, useEffect } from 'react';
+import React, { FC, useState } from 'react';
 import MdEditor from 'md-editor-rt';
 import 'md-editor-rt/lib/style.css';
 import clsx from 'clsx';
@@ -14,7 +14,7 @@ const Editor: FC<Props> = ({ addComments, toggleEditor, editorPopup }) => {
 
   return ( 
     <div 
-    className={clsx("fixed bottom-0 z-50 w-[100%] h-60 font-['Futura'] transition-all duration-500 ease-in-out", {
+    className={clsx("fixed bottom-0 z-50 w-[100%] h-[425px] font-['Futura'] transition-all duration-300 ease-in", {
       "translate-y-full" : !editorPopup
     })}> 
       <div className="absolute bottom-0 w-[100%]">
