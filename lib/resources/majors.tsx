@@ -3917,19 +3917,20 @@ const minorMath: Minor = {
       name: 'Calculus Courses',
       required_credits: 12,
       min_credits_per_course: 4,
-      description: 
-      'Students must take Calculus I, II, and III.',
-      criteria: 
-      'AS.110.106[C]^OR^AS.110.108[C]^OR^AS.110.107[C]^OR^AS.110.109[C]^OR^AS.110.113[C]^OR^AS.110.202[C]',
+      description: 'Students must take Calculus I, II, and III.',
+      criteria:
+        'AS.110.106[C]^OR^AS.110.108[C]^OR^AS.110.107[C]^OR^AS.110.109[C]^OR^AS.110.113[C]^OR^AS.110.202[C]',
       fine_requirements: [
         {
           required_credits: 4,
-          description: '<b>Calculus I</b> <br/>(Biology and Social Sciences) or (Physical Sciences & Engineering)',
+          description:
+            '<b>Calculus I</b> <br/>(Biology and Social Sciences) or (Physical Sciences & Engineering)',
           criteria: 'AS.110.106[C]^OR^AS.110.108[C]',
         },
         {
           required_credits: 4,
-          description: '<b>Calculus II</b> <br/>(Biology and Social Sciences) or (Physical Sciences & Engineering) or Honors Single Variable Calculus',
+          description:
+            '<b>Calculus II</b> <br/>(Biology and Social Sciences) or (Physical Sciences & Engineering) or Honors Single Variable Calculus',
           criteria: 'AS.110.107[C]^OR^AS.110.109[C]^OR^AS.110.113[C]',
         },
         {
@@ -3943,36 +3944,46 @@ const minorMath: Minor = {
       name: '200- or 300-Level Course',
       required_credits: 4,
       min_credits_per_course: 4,
-      description: 'Students must take one 200-level or above math course (excluding AS.110.202 Calculus III and the 2-credit 225).',
-      criteria: 'AS Mathematics[D]^AND^(200[L]^OR^300[L])^NOT^AS.110.202[C]^NOT^AS.110.225[C]',
+      description:
+        'Students must take one 200-level or above math course (excluding AS.110.202 Calculus III and the 2-credit 225).',
+      criteria:
+        'AS Mathematics[D]^AND^(200[L]^OR^300[L])^NOT^AS.110.202[C]^NOT^AS.110.225[C]',
     },
     {
       name: '300-Level or Above Courses',
       required_credits: 12,
       min_credits_per_course: 4,
-      description: 'Students must take three mathematics courses at the 300-level or above (excluding the 1-credit seminar 345). <br /> <br /> ** A course in the Department of Applied Mathematics and Statistics (AMS), at the corresponding level, may be substituted for one of the 300-level or above courses. However, only a course from AMS can serve as a substitute.',
-      criteria: '(AS Mathematics[D]^OR^EN Applied Mathematics & Statistics[D])^AND^(300[L]^OR^400[L]^OR^500[L])^NOT^AS.110.345[C]',
+      description:
+        'Students must take three mathematics courses at the 300-level or above (excluding the 1-credit seminar 345). <br /> <br /> ** A course in the Department of Applied Mathematics and Statistics (AMS), at the corresponding level, may be substituted for one of the 300-level or above courses. However, only a course from AMS can serve as a substitute.',
+      criteria:
+        '(AS Mathematics[D]^OR^EN Applied Mathematics & Statistics[D])^AND^(300[L]^OR^400[L]^OR^500[L])^NOT^AS.110.345[C]',
       pathing: 2,
       fine_requirements: [
         {
           required_credits: 12,
-          description: 'Students must take three mathematics courses at the 300-level or above (excluding the 1-credit seminar 345).**',
-          criteria: 'AS Mathematics[D]^AND^(300[L]^OR^400[L]^OR^500[L])^NOT^AS.110.345[C]',
+          description:
+            'Students must take three mathematics courses at the 300-level or above (excluding the 1-credit seminar 345).**',
+          criteria:
+            'AS Mathematics[D]^AND^(300[L]^OR^400[L]^OR^500[L])^NOT^AS.110.345[C]',
         },
         {
           required_credits: 4,
-          description: '** A course in the Department of Applied Mathematics and Statistics (AMS), at the corresponding level, may be substituted for one of the 300-level or above courses. ',
-          criteria: 'EN Applied Mathematics & Statistics[D]^AND^(300[L]^OR^400[L]^OR^500[L])',
+          description:
+            '** A course in the Department of Applied Mathematics and Statistics (AMS), at the corresponding level, may be substituted for one of the 300-level or above courses. ',
+          criteria:
+            'EN Applied Mathematics & Statistics[D]^AND^(300[L]^OR^400[L]^OR^500[L])',
         },
         {
           required_credits: 8,
-          description: '** With an AMS course substitution, students must take two mathematics courses at the 300-level or above (excluding the 1-credit seminar 345).',
-          criteria: 'AS Mathematics[D]^AND^(300[L]^OR^400[L]^OR^500[L])^NOT^AS.110.345[C]',
+          description:
+            '** With an AMS course substitution, students must take two mathematics courses at the 300-level or above (excluding the 1-credit seminar 345).',
+          criteria:
+            'AS Mathematics[D]^AND^(300[L]^OR^400[L]^OR^500[L])^NOT^AS.110.345[C]',
         },
       ],
     },
-  ]
-}
+  ],
+};
 
 const no_degree: Major = {
   degree_name: "Undecided Degree/My degree isn't supported yet",
