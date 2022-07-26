@@ -379,6 +379,12 @@ const bsPhysics: Major = {
       criteria:
         'AS.110.108[C]^OR^AS.110.109[C]^OR^AS.110.113[C]^OR^AS.110.202[C]^OR^AS.110.211[C]^OR^' +
         'AS.110.302[C]^OR^AS.110.201[C]^OR^AS.110.212[C]',
+      double_count: [
+        'Humanities (H) Distribution',
+        'Social Science (S) Distribution',
+        'Other (N/E/Q) Distribution',
+        'Writing Intensive',
+      ],
       fine_requirements: [
         {
           description:
@@ -426,6 +432,12 @@ const bsPhysics: Major = {
         'AS.171.106[C]^OR^AS.171.102[C]^OR^AS.171.104[C]^OR^AS.171.108[C]^OR^AS.173.116[C]^OR^AS.173.112[C]^OR^' +
         'AS.171.201[C]^OR^AS.171.204[C]^OR^AS.171.312[C]^OR^AS.172.203[C]^OR^AS.171.301[C]^OR^AS.171.303[C]^OR^' +
         'AS.171.304[C]^OR^AS.173.308[C]',
+      double_count: [
+        'Humanities (H) Distribution',
+        'Social Science (S) Distribution',
+        'Other (N/E/Q) Distribution',
+        'Writing Intensive',
+      ],
       fine_requirements: [
         {
           description:
@@ -513,8 +525,7 @@ const bsPhysics: Major = {
       name: 'Electives',
       required_credits: 15,
       min_credits_per_course: 3,
-      exclusive: true,
-      pathing: true,
+      pathing: 1,
       description:
         'Five elective courses must be taken at the 200-600 level. Four courses must be within a single department or program in KSAS or WSE: ' +
         'Physics and Astronomy, Biology, Biophysics, Chemistry, Cognitive Science, Earth and Planetary Sciences, ' +
@@ -523,6 +534,12 @@ const bsPhysics: Major = {
       criteria:
         '(AS Physics & Astronomy[D]^OR^AS Biology[D]^OR^AS Biophysics[D]^OR^AS Chemistry[D]^OR^AS Cognitive Science[D]^OR^' +
         'AS Earth & Planetary Sciences[D]^OR^AS Mathematics[D]^OR^AS Neuroscience[D])^AND^(200[L]^OR^Upper Level[L])', // TODO: add wse
+      double_count: [
+        'Humanities (H) Distribution',
+        'Social Science (S) Distribution',
+        'Other (N/E/Q) Distribution',
+        'Writing Intensive',
+      ],
       fine_requirements: [
         {
           description: '<b>Physics and Astronomy</b>',
@@ -580,6 +597,12 @@ const bsPhysics: Major = {
         'The student must complete at least 9 credits in the Humanities (H) area. ' +
         'These credits fulfilling the distribution requirement may overlap with major or minor requirements and the writing-intensive requirement.',
       criteria: 'H[A]',
+      double_count: [
+        'Mathematics',
+        'Physics',
+        'Electives',
+        'Writing Intensive',
+      ],
     },
     {
       name: 'Social Science (S) Distribution',
@@ -590,6 +613,12 @@ const bsPhysics: Major = {
         'The student must complete at least 9 credits in the Social Science (S) area. ' +
         'These credits fulfilling the distribution requirement may overlap with major or minor requirements and the writing-intensive requirement.',
       criteria: 'S[A]',
+      double_count: [
+        'Mathematics',
+        'Physics',
+        'Electives',
+        'Writing Intensive',
+      ],
     },
     {
       name: 'Other (N/E/Q) Distribution',
@@ -600,12 +629,17 @@ const bsPhysics: Major = {
         'The student must complete at least 9 credits in any of the other areas: Natural Sciences (N), Engineering (E) and/or Quantitative (Q). ' +
         'These credits fulfilling the distribution requirement may overlap with major or minor requirements and the writing-intensive requirement.',
       criteria: 'N[A]^OR^E[A]^OR^Q[A]',
+      double_count: [
+        'Mathematics',
+        'Physics',
+        'Electives',
+        'Writing Intensive',
+      ],
     },
     {
       name: 'Writing Intensive',
       required_credits: 12,
       min_credits_per_course: 3,
-      double_count: true,
       description:
         'To encourage excellence in writing, across disciplines, the university requires all undergraduates to take a number of writing-intensive courses. ' +
         'All students earning a degree from the School of Arts and Sciences must complete at least 12 credits in writing-intensive courses. ' +
@@ -633,6 +667,12 @@ const baPhysics: Major = {
       criteria:
         'AS.110.108[C]^OR^AS.110.109[C]^OR^AS.110.113[C]^OR^AS.110.202[C]^OR^AS.110.211[C]^OR^' +
         'AS.110.302[C]^OR^AS.110.201[C]^OR^AS.110.212[C]',
+      double_count: [
+        'Humanities (H) Distribution',
+        'Social Science (S) Distribution',
+        'Other (N/E/Q) Distribution',
+        'Writing Intensive',
+      ],
       fine_requirements: [
         {
           description:
@@ -680,6 +720,12 @@ const baPhysics: Major = {
         'AS.171.106[C]^OR^AS.171.102[C]^OR^AS.171.104[C]^OR^AS.171.108[C]^OR^AS.173.116[C]^OR^AS.173.112[C]^OR^' +
         'AS.171.201[C]^OR^AS.171.204[C]^OR^AS.171.312[C]^OR^AS.172.203[C]^OR^AS.171.301[C]^OR^AS.171.303[C]^OR^' +
         'AS.171.304[C]^OR^AS.173.308[C]',
+      double_count: [
+        'Humanities (H) Distribution',
+        'Social Science (S) Distribution',
+        'Other (N/E/Q) Distribution',
+        'Writing Intensive',
+      ],
       fine_requirements: [
         {
           description:
@@ -767,10 +813,15 @@ const baPhysics: Major = {
       name: 'Upper Electives',
       required_credits: 6,
       min_credits_per_course: 3,
-      exclusive: true,
       description:
         'Students must take two additional courses (at least 3 credits each) at the 300-600 level in the Department of Physics and Astronomy or approved physics-related courses in other departments.',
       criteria: 'AS Physics & Astronomy[D]^AND^Upper Level[L]',
+      double_count: [
+        'Humanities (H) Distribution',
+        'Social Science (S) Distribution',
+        'Other (N/E/Q) Distribution',
+        'Writing Intensive',
+      ],
     },
     {
       name: 'Humanities (H) Distribution',
@@ -781,6 +832,12 @@ const baPhysics: Major = {
         'The student must complete at least 9 credits in the Humanities (H) area. ' +
         'These credits fulfilling the distribution requirement may overlap with major or minor requirements and the writing-intensive requirement.',
       criteria: 'H[A]',
+      double_count: [
+        'Mathematics',
+        'Physics',
+        'Electives',
+        'Writing Intensive',
+      ],
     },
     {
       name: 'Social Science (S) Distribution',
@@ -791,6 +848,12 @@ const baPhysics: Major = {
         'The student must complete at least 9 credits in the Social Science (S) area. ' +
         'These credits fulfilling the distribution requirement may overlap with major or minor requirements and the writing-intensive requirement.',
       criteria: 'S[A]',
+      double_count: [
+        'Mathematics',
+        'Physics',
+        'Electives',
+        'Writing Intensive',
+      ],
     },
     {
       name: 'Other (N/E/Q) Distribution',
@@ -801,12 +864,17 @@ const baPhysics: Major = {
         'The student must complete at least 9 credits in any of the other areas: Natural Sciences (N), Engineering (E) and/or Quantitative (Q). ' +
         'These credits fulfilling the distribution requirement may overlap with major or minor requirements and the writing-intensive requirement.',
       criteria: 'N[A]^OR^E[A]^OR^Q[A]',
+      double_count: [
+        'Mathematics',
+        'Physics',
+        'Electives',
+        'Writing Intensive',
+      ],
     },
     {
       name: 'Writing Intensive',
       required_credits: 12,
       min_credits_per_course: 3,
-      double_count: true,
       description:
         'To encourage excellence in writing, across disciplines, the university requires all undergraduates to take a number of writing-intensive courses. ' +
         'All students earning a degree from the School of Arts and Sciences must complete at least 12 credits in writing-intensive courses. ' +
