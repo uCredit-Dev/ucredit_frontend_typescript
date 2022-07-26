@@ -88,7 +88,7 @@ const postNewComment = (data: any, cb = undefined) => {
 
 const removeComment = (comment_id: string, cb = undefined) => {
   return fetchWrapper
-    .delete(`${getAPI(window)}/comment?comment_id=${comment_id}`)
+    .delete(`${getAPI(window)}/comment`, { comment_id })
     .then((res) => handleResponse(res, cb));
 };
 
@@ -107,7 +107,7 @@ const getNotifications = (userID: string) => {
     .then(handleResponse);
 };
 
-const handleResponse = (res, cb = undefined) => {
+const handleResponse = (res, cb: any = undefined) => {
   if (!res) return;
   return res.text().then((text) => {
     const data = text && JSON.parse(text);

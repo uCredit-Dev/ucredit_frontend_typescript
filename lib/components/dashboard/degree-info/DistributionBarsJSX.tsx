@@ -192,39 +192,44 @@ const DistributionBarsJSX: FC<{ major: Major }> = ({ major }) => {
       }
     }
   };
+
   const updateReqs = (reqs: [string, requirements[]][], courseObj) => {
-    let inNonExclusive: boolean = false;
-    // Exclusive check:
-    // If the requirement is exclusive, this means that if a course fulfills the requirement,
-    // it cannot fulfill any other requirements. Alternatively, if a course fulfills any other requirement, it cannot fulfill this one.
-    reqs.forEach((reqGroup, i) =>
-      reqGroup[1].forEach((req: requirements, j: number) => {
-        if (
-          courseObj !== null &&
-          checkRequirementSatisfied(req, courseObj) &&
-          (req.exclusive === undefined || !req.exclusive) &&
-          (req.fulfilled_credits < req.required_credits ||
-            (req.required_credits === 0 && req.fulfilled_credits === 0))
-        ) {
-          reqs[i][1][j].fulfilled_credits += parseInt(courseObj.credits);
-          inNonExclusive = true;
-        }
-      }),
-    );
-    reqs.forEach((reqGroup, i) =>
-      reqGroup[1].forEach((req: requirements, j: number) => {
-        if (
-          courseObj !== null &&
-          ((checkRequirementSatisfied(req, courseObj) &&
-            req.exclusive &&
-            req.fulfilled_credits < req.required_credits &&
-            !inNonExclusive) ||
-            (req.required_credits === 0 && req.fulfilled_credits === 0))
-        ) {
-          reqs[i][1][j].fulfilled_credits += parseInt(courseObj.credits);
-        }
-      }),
-    );
+    // double_count check:
+    // If double_count is undefined, the course may double count for any number of distributions
+    // If double_count is string[], the specified distributions / fine requirements are 'whitelisted'
+    // When a course satisfies a distribution, double_count takes the value of distribution.double_count
+    if (!courseObj) return;
+    let distDoubleCount: string[] | undefined = undefined; // initial value
+    reqs.forEach((reqGroup, i) => {
+      let req = reqGroup[1][0]; // general distribution
+      if (
+        (!distDoubleCount || distDoubleCount.includes(req.name)) &&
+        (req.fulfilled_credits < req.required_credits ||
+          (req.required_credits === 0 && req.fulfilled_credits === 0)) &&
+        checkRequirementSatisfied(req, courseObj)
+      ) {
+        reqs[i][1][0].fulfilled_credits += parseInt(courseObj.credits);
+        distDoubleCount = req.double_count; // set double_count, if any
+        let fineDoubleCount: string[] | undefined = undefined;
+        reqGroup[1].forEach((req: requirements, j: number) => {
+          // fine reqs
+          if (j !== 0) {
+            // 0 is the general distribution, not fine req
+            let fineReq = reqGroup[1][j];
+            if (
+              (!fineDoubleCount || fineDoubleCount.includes(fineReq.name)) &&
+              (fineReq.fulfilled_credits < fineReq.required_credits ||
+                (fineReq.required_credits === 0 &&
+                  fineReq.fulfilled_credits === 0)) &&
+              checkRequirementSatisfied(fineReq, courseObj)
+            ) {
+              reqs[i][1][j].fulfilled_credits += parseInt(courseObj.credits);
+              fineDoubleCount = fineReq.double_count;
+            }
+          }
+        });
+      }
+    });
     // Pathing check
     reqs.forEach((reqGroup: [string, requirements[]]) =>
       reqGroup[1].forEach((req: requirements) => {
@@ -238,11 +243,17 @@ const DistributionBarsJSX: FC<{ major: Major }> = ({ major }) => {
     reqGroup: [string, requirements[]],
   ) => {
     if (req.pathing) {
-      let [requirement, ...focus_areas] = reqGroup[1];
-      for (let focus_area of focus_areas) {
-        if (focus_area.fulfilled_credits >= focus_area.required_credits) {
-          reqGroup[1] = [requirement, focus_area];
+      let numPaths = req.pathing;
+      let [requirement, ...paths] = reqGroup[1];
+      let satisfiedFineRequirements = [requirement];
+      for (let path of paths) {
+        if (path.fulfilled_credits >= path.required_credits) {
+          satisfiedFineRequirements.push(path);
+          numPaths -= 1;
         }
+      }
+      if (numPaths === 0) {
+        reqGroup[1] = satisfiedFineRequirements;
       }
     }
   };

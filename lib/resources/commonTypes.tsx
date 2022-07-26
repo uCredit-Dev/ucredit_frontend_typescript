@@ -159,7 +159,6 @@ export type Distribution = {
   criteria: string;
   fine_requirements?: FineReq[];
   user_select?: boolean;
-  double_count?: boolean;
   exception?: string;
   planned_credits: number;
   courses: string[];
@@ -194,7 +193,7 @@ export type FineReq = {
   required_credits: number;
   description: string;
   criteria: string;
-  exclusive?: boolean;
+  double_count?: string[];
 };
 
 export type DistributionObj = {
@@ -205,10 +204,9 @@ export type DistributionObj = {
   criteria: string;
   fine_requirements?: FineReq[];
   user_select?: boolean;
-  double_count?: boolean;
+  double_count?: string[];
   exception?: string;
-  exclusive?: boolean;
-  pathing?: boolean;
+  pathing?: number;
 };
 
 export type Major = {

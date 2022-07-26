@@ -1,7 +1,7 @@
 import { Popover, Transition } from '@headlessui/react';
 import axios from 'axios';
 import { useRouter } from 'next/router';
-import { FC, Fragment } from 'react';
+import React, { FC, Fragment } from 'react';
 import { useCookies } from 'react-cookie';
 import { useDispatch, useSelector } from 'react-redux';
 import { getLoginCookieVal, getAPI } from '../../../resources/assets';
@@ -44,7 +44,7 @@ const HamburgerMenu: FC<{
             <Popover.Button
               className={`
                             ${open ? '' : 'text-opacity-90'}
-                            z-40 p-[0.53rem] pt-[0.6rem] space-y-1 bg-white rounded shadow h-9 w-9 mx-2 cursor-pointer absolute top-3 right-7 hamburger-menu`}
+                            z-40 p-[0.53rem] pt-[0.6rem] space-y-1 bg-white rounded shadow h-9 w-9 mx-2 cursor-pointer hamburger-menu focus:outline-none`}
             >
               <span className="block w-5 h-[0.2rem] bg-black"></span>
               <span className="block w-5 h-[0.2rem] bg-black"></span>
