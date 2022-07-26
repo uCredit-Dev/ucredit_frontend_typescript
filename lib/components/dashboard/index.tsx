@@ -3,6 +3,8 @@ import { useDispatch, useSelector } from 'react-redux';
 import Header from './Header';
 import FeedbackPopup from '../popups/FeedbackPopup';
 import FeedbackNotification from '../popups/FeedbackNotification';
+import Roadmap from '../roadmap/comments/RoadmapComment';
+
 import {
   selectImportingStatus,
   selectPlan,
@@ -209,6 +211,7 @@ const Dashboard: React.FC<Props> = ({ mode }) => {
             {courseInfoStatus && <CourseDisplayPopup />}
             {cartStatus && <Cart allCourses={[]} />}
           </div>
+          <Roadmap />
         </div>
       )}
       {/* Dummy components used to generate state information */}

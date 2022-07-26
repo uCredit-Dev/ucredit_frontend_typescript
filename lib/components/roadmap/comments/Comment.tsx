@@ -1,28 +1,82 @@
-import React, { FC, useState } from 'react';
-import SubComment from './SubComment';
+import React, { FC, useEffect, useState } from 'react';
+import axios from 'axios';
+import { getAPI } from './../../../resources/assets';
+import { useSelector } from 'react-redux';
+import { selectUser } from '../../../slices/userSlice';
+import { ThreadType, CommentType } from '../../../resources/commonTypes';
 
-type CommentProps = {
+interface CommentBodyType {
+  commenter_id: string;
+  visible_user_id: string[];
+  message: string;
+  thread_id: any;
+  date: string;
+}
+
+const Comment: FC<{
   upvote: number;
   username: string;
   content: string;
+  threadID: any;
   date: string;
-};
-
-const Comment: FC<CommentProps> = ({ upvote, username, content, date }) => {
+  subcomments: CommentType[];
+  updateRoadmapThreads: (thread: ThreadType) => void;
+}> = ({
+  upvote,
+  username,
+  content,
+  threadID,
+  date,
+  subcomments,
+  updateRoadmapThreads,
+}) => {
   const [isShown, setIsShown] = useState<boolean>(false);
+  const [commentContent, setContent] = useState<string>('');
+  const [subcommentContent, setSubCommentContent] = useState<CommentType[]>([]);
+
+  const user = useSelector(selectUser);
+  useEffect(() => {
+    setSubCommentContent(subcomments);
+  }, [subcomments]);
 
   const handleClick = () => {
     setIsShown((current) => !current);
   };
-  const allSubComments = [
-    {
-      upvote: 38,
-      username: 'name',
-      date: '2022-07-08',
-      content: 'Thank you for the plan.',
-      id: '',
-    },
-  ];
+  const replyHandler = () => {
+    setIsShown(!isShown);
+
+    const comment: CommentBodyType = {
+      commenter_id: username,
+      message: commentContent,
+      visible_user_id: [user._id],
+      thread_id: threadID,
+      date: new Date(Date.now()).toISOString().slice(0, 10),
+    };
+
+    axios
+      .post(getAPI(window) + '/thread/reply', {
+        comment,
+      })
+      .then((res) => {
+        setSubCommentContent([
+          ...subcomments,
+          {
+            commenter_id: {
+              name: res.data.data.commenter_id,
+              _id: res.data.data.commenter_id,
+            },
+            visible_user_id: res.data.data.visible_user_id,
+            thread_id: res.data.data.thread_id,
+            message: res.data.data.message,
+            date: res.data.data.date,
+            _id: res.data.data._id,
+          },
+        ]);
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  };
   return (
     <div>
       <div className="mx-16 flex flex-col">
@@ -72,7 +126,7 @@ const Comment: FC<CommentProps> = ({ upvote, username, content, date }) => {
               {content}
             </div>
             <div className="h-[20px] text-[20px] text-[#797877] font-medium flex flex-row">
-              <div>{date}</div>
+              <div>{new Date(date).toISOString().slice(0, 10)}</div>
               <div
                 className="ml-[50px] underline mt-[-2px] "
                 onClick={handleClick}
@@ -110,9 +164,10 @@ const Comment: FC<CommentProps> = ({ upvote, username, content, date }) => {
               <textarea
                 className="w-[95%]  m-4 h-[80px]"
                 placeholder="reply here"
+                onChange={(e) => setContent(e.target.value)}
               ></textarea>
               <button
-                onClick={() => setIsShown(!isShown)}
+                onClick={() => replyHandler()}
                 className="w-[75px] h-[32px] rounded-[100px] bg-[#0C3A76] text-white"
               >
                 {' '}
@@ -122,14 +177,24 @@ const Comment: FC<CommentProps> = ({ upvote, username, content, date }) => {
           </div>
         </div>
       )}
-      {allSubComments.map((comments) => (
-        <SubComment
-          username={comments.username}
-          upvote={comments.upvote}
-          content={comments.content}
-          date={comments.date}
-        ></SubComment>
-      ))}
+      <div className="lg:ml-[5%] ml-[15%]">
+        {subcommentContent.map((subs) =>
+          subs.thread_id === threadID ? (
+            <Comment
+              key={subs.commenter_id.name + subs.message}
+              username={subs.commenter_id.name}
+              upvote={0}
+              content={subs.message}
+              date={new Date(subs.date).toISOString().slice(0, 10)}
+              threadID={subs.thread_id}
+              subcomments={[]}
+              updateRoadmapThreads={updateRoadmapThreads}
+            ></Comment>
+          ) : (
+            <></>
+          ),
+        )}
+      </div>
     </div>
   );
 };

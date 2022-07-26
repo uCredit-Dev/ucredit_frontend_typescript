@@ -265,14 +265,14 @@ export enum ReviewMode {
   None = '',
 }
 
-export type ThreadType = {
+export interface ThreadType {
   plan_id: string;
   resolved: boolean;
   location_type: string;
   location_id: string;
-  comments: CommentType[];
-  _id: string;
-};
+  comments?: CommentType[];
+  _id?: string;
+}
 
 export type CommentType = {
   commenter_id: {
