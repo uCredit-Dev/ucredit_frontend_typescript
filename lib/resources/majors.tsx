@@ -533,10 +533,10 @@ const bsPhysics: Major = {
         'These courses must constitute a coherent and rigorous program of study.',
       criteria:
         '(AS Physics & Astronomy[D]^OR^AS Biology[D]^OR^AS Biophysics[D]^OR^AS Chemistry[D]^OR^AS Cognitive Science[D]^OR^' +
-        'AS Earth & Planetary Sciences[D]^OR^AS Mathematics[D]^OR^AS Neuroscience[D]^OR^EN Applied Mathematics & Statistics^OR^' + 
-        'EN Biomedical Engineering^OR^EN Chemical & Biomolecular Engineering^OR^EN Electrical & Computer Engineering^OR^' + 
-        'EN Computer Science^OR^EN Environment Health and Engineering^OR^EN Material Science & Engineering^OR^' + 
-        'EN Mechanical Engineering)^AND^(200[L]^OR^Upper Level[L])',
+        'AS Earth & Planetary Sciences[D]^OR^AS Mathematics[D]^OR^AS Neuroscience[D]^OR^EN Applied Mathematics & Statistics[D]^OR^' + 
+        'EN Biomedical Engineering[D]^OR^EN Chemical & Biomolecular Engineering[D]^OR^EN Electrical & Computer Engineering[D]^OR^' + 
+        'EN Computer Science[D]^OR^EN Environment Health and Engineering[D]^OR^EN Material Science & Engineering[D]^OR^' + 
+        'EN Mechanical Engineering[D])^AND^(200[L]^OR^Upper Level[L])',
       double_count: [
         'Humanities (H) Distribution',
         'Social Science (S) Distribution',
