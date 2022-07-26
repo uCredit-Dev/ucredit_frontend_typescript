@@ -1,6 +1,6 @@
 import { BellIcon, ExclamationCircleIcon } from '@heroicons/react/solid';
 import { Popover, Transition } from '@headlessui/react';
-import { FC, Fragment, useEffect, useState } from 'react';
+import React, { FC, Fragment, useEffect, useState } from 'react';
 import { userService } from '../../../services';
 import axios from 'axios';
 import { compareDesc } from 'date-fns';
@@ -9,7 +9,7 @@ import { getAPI } from '../../../resources/assets';
 const Notification: FC<{
   userID: string;
 }> = ({ userID }) => {
-  const [notifications, setNotifications] = useState([]);
+  const [notifications, setNotifications] = useState<any[]>([]);
 
   useEffect(() => {
     (async () => {
@@ -23,7 +23,7 @@ const Notification: FC<{
   }, []);
 
   return (
-    <div className="absolute z-[100] flex flex-row items-center justify-between px-4 text-xl top-3 right-20">
+    <div className="z-[100] flex flex-row items-center justify-between px-4 text-xl">
       {notifications.length !== 0 ? (
         <ExclamationCircleIcon className="relative z-50 w-5 h-4 text-red-500 bg-white rounded-full -right-12 -top-4"></ExclamationCircleIcon>
       ) : null}
@@ -34,7 +34,7 @@ const Notification: FC<{
               <Popover.Button
                 className={`
                             ${open ? '' : 'text-opacity-90'}
-                            text-white group bg-white px-2 py-1.5 rounded-md inline-flex items-center text-base font-medium hover:text-opacity-100 focus:outline-none focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-opacity-75`}
+                            text-white group bg-white px-2 py-1.5 rounded-md inline-flex items-center text-base font-medium hover:text-opacity-100 focus:outline-none focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-opacity-75 focus:outline-none`}
               >
                 <span>
                   <BellIcon className="h-6 text-black"></BellIcon>
@@ -58,7 +58,7 @@ const Notification: FC<{
                           <button
                             className="text-sm underline transition-colors duration-150 ease-in underline-offset-1 text-slate-500 hover:text-slate-800"
                             onClick={async () => {
-                              const notifs = [...notifications];
+                              const notifs: any[] = [...notifications];
                               setNotifications(
                                 notifications
                                   .reverse()

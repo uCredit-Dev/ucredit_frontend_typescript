@@ -1,4 +1,4 @@
-import { Dispatch, SetStateAction, useEffect, useState } from 'react';
+import React, { Dispatch, SetStateAction, useEffect, useState } from 'react';
 import clsx from 'clsx';
 import {
   ClipboardListIcon,
@@ -13,6 +13,7 @@ import {
   ReviewRequestStatus,
   StatusPlan,
   User,
+  UserCourse,
 } from '../../resources/commonTypes';
 import { Hoverable } from '../utils';
 import { TooltipPrimary } from '../utils/TooltipPrimary';
@@ -61,7 +62,7 @@ const Reviewee: React.FC<Props> = ({
   const [majors, setMajors] = useState<string[]>([]);
   const [notifState, setNotifState] = useState(false);
   const [summaryReviewID, setSummaryReviewID] = useState('');
-  const [summaryPlan, setSummaryPlan] = useState<Plan>(null);
+  const [summaryPlan, setSummaryPlan] = useState<Plan>(plans[0]);
   const router = useRouter();
   const dispatch = useDispatch();
 
@@ -110,7 +111,7 @@ const Reviewee: React.FC<Props> = ({
         ) : null}
         {showPlans && (
           <div className="divide-y">
-            {plans.map((p) => {
+            {plans.map((p, i) => {
               const { _id, name, status, review_id } = p;
               return (
                 <div key={_id}>
@@ -134,13 +135,15 @@ const Reviewee: React.FC<Props> = ({
                             />
                           }
                         >
-                          {({ hovered }) =>
-                            hovered && (
-                              <TooltipPrimary width={140}>
-                                {statusReadable[status]}
-                              </TooltipPrimary>
-                            )
-                          }
+                          {({ hovered }) => (
+                            <>
+                              {hovered && (
+                                <TooltipPrimary width={140}>
+                                  {statusReadable[status]}
+                                </TooltipPrimary>
+                              )}
+                            </>
+                          )}
                         </Hoverable>
                       )}
                       <p>{name}</p>
@@ -157,8 +160,8 @@ const Reviewee: React.FC<Props> = ({
                               review_id,
                               value.label,
                             );
-                            window.location.href = '/reviewer';
-                            // setRefreshReviews(true);
+                            // window.location.href = '/reviewer';
+                            setRefreshReviews(true);
                             toast.success(
                               `Status changed to ${
                                 statusReadable[value.label]
@@ -180,13 +183,15 @@ const Reviewee: React.FC<Props> = ({
                           </div>
                         }
                       >
-                        {({ hovered }) =>
-                          hovered && (
-                            <TooltipPrimary width={120}>
-                              Inspect plan
-                            </TooltipPrimary>
-                          )
-                        }
+                        {({ hovered }) => (
+                          <>
+                            {hovered && (
+                              <TooltipPrimary width={120}>
+                                Inspect plan
+                              </TooltipPrimary>
+                            )}
+                          </>
+                        )}
                       </Hoverable>
                       <Hoverable
                         as={
@@ -198,7 +203,7 @@ const Reviewee: React.FC<Props> = ({
                               setSummaryPlan(p);
                               setNotifState(!notifState);
                               dispatch(updateSelectedPlan(p));
-                              let allCourses = [];
+                              let allCourses: UserCourse[] = [];
                               let totCredits = 0;
                               p.years.forEach((y) => {
                                 y.courses.forEach((c) => {
@@ -214,13 +219,15 @@ const Reviewee: React.FC<Props> = ({
                           </button>
                         }
                       >
-                        {({ hovered }) =>
-                          hovered && (
-                            <TooltipPrimary width={120}>
-                              View Summary
-                            </TooltipPrimary>
-                          )
-                        }
+                        {({ hovered }) => (
+                          <>
+                            {hovered && (
+                              <TooltipPrimary width={120}>
+                                View Summary
+                              </TooltipPrimary>
+                            )}
+                          </>
+                        )}
                       </Hoverable>
                       <Hoverable
                         as={
@@ -232,13 +239,16 @@ const Reviewee: React.FC<Props> = ({
                           </button>
                         }
                       >
-                        {({ hovered }) =>
-                          hovered && (
-                            <TooltipPrimary width={130}>
-                              Delete Reviewee
-                            </TooltipPrimary>
-                          )
-                        }
+                        {({ hovered }) => (
+                          <>
+                            {' '}
+                            {hovered && (
+                              <TooltipPrimary width={130}>
+                                Delete Reviewee
+                              </TooltipPrimary>
+                            )}
+                          </>
+                        )}
                       </Hoverable>
                     </div>
                   </div>

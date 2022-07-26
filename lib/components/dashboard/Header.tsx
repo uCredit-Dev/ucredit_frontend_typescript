@@ -1,7 +1,15 @@
+import React from 'react';
+import { DashboardMode } from '../../resources/commonTypes';
+import CommentsOverview from './menus/comments/CommentsOverview';
+import HamburgerMenu from './menus/HamburgerMenu';
+import Notification from './menus/Notification';
 /**
  * User login/logout buttons.
  */
-const Header: React.FC = () => {
+const Header: React.FC<{
+  userID: string;
+  dashboardSwitchMode: DashboardMode;
+}> = ({ userID, dashboardSwitchMode }) => {
   return (
     <div className="absolute z-20 w-full h-16 p-3 px-6 select-none bg-primary">
       <div className="flex flex-row items-center justify-end w-full h-full">
@@ -12,6 +20,9 @@ const Header: React.FC = () => {
           <img src="/img/logo-darker.png" alt="logo" className="mr-3 h-9"></img>
           <div>uCredit</div>
         </div>
+        {dashboardSwitchMode === DashboardMode.Planning && <CommentsOverview />}
+        <Notification userID={userID} />
+        <HamburgerMenu mode={dashboardSwitchMode} />
       </div>
     </div>
   );

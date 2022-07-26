@@ -1,4 +1,4 @@
-import { FC, useEffect } from 'react';
+import React, { FC, useEffect } from 'react';
 import Distributions from './Distributions';
 import { useSelector } from 'react-redux';
 import {
