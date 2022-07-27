@@ -2267,8 +2267,8 @@ const bsCS_Old: Major = {
           description:
             '<b>CS Electives</b> <br /> ' +
             'Eight additional credits of Computer Science are required.' +
-            'For an approved list of courses from other departments (maximum of 6 credits allowed), visit https://www.cs.jhu.edu/computer-science-other-courses-for-bs-degree/ ' +
-            'and create a custom course to satisfy this requirement.',
+            'For an approved list of courses from other departments (maximum of 6 credits allowed), (1) visit https://www.cs.jhu.edu/computer-science-other-courses-for-bs-degree/ ' +
+            ', (2) create a custom course to satisfy this requirement, and (3) list it under the "EN Computer Science" department during creation.',
           required_credits: 8,
           criteria: 'EN Computer Science[D]',
           double_count: [
@@ -2552,9 +2552,9 @@ const bsCS_New: Major = {
         {
           description:
             '<b>CS Electives</b> <br /> ' +
-            'Six additional credits of Computer Science are required. ' +
-            'For an approved list of courses from other departments (maximum of 6 credits allowed), visit https://www.cs.jhu.edu/computer-science-other-courses-for-bs-degree/ ' +
-            'and create a custom course to satisfy this requirement.',
+            'Six additional credits of Computer Science are required.' +
+            'For an approved list of courses from other departments (maximum of 6 credits allowed), (1) visit https://www.cs.jhu.edu/computer-science-other-courses-for-bs-degree/ ' +
+            ', (2) create a custom course to satisfy this requirement, and (3) list it under the "EN Computer Science" department during creation.',
           required_credits: 6,
           criteria: 'EN Computer Science[D]',
           double_count: [
@@ -2572,9 +2572,9 @@ const bsCS_New: Major = {
             '<b>Upper Level CS Credits</b> <br /> ' +
               'At least 12 more upper level CS credits are required. ',
             '<b>CS Electives</b> <br /> ' +
-              'Six additional credits of Computer Science are required. ' +
-              'For an approved list of courses from other departments (maximum of 6 credits allowed), visit https://www.cs.jhu.edu/computer-science-other-courses-for-bs-degree/ ' +
-              'and create a custom course to satisfy this requirement.',
+              'Six additional credits of Computer Science are required.' +
+              'For an approved list of courses from other departments (maximum of 6 credits allowed), (1) visit https://www.cs.jhu.edu/computer-science-other-courses-for-bs-degree/ ' +
+              ', (2) create a custom course to satisfy this requirement, and (3) list it under the "EN Computer Science" department during creation.',
           ],
         },
       ],
