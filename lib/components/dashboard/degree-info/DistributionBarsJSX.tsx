@@ -199,25 +199,27 @@ const DistributionBarsJSX: FC<{ major: Major }> = ({ major }) => {
     // If double_count is string[], the specified distributions / fine requirements are 'whitelisted'
     // When a course satisfies a distribution, double_count takes the value of distribution.double_count
     if (!courseObj) return;
-    let distDoubleCount: string[] | undefined = undefined; // initial value
+    let distDoubleCount: string[] | undefined = ['All']; // double count by defualt 
     reqs.forEach((reqGroup, i) => {
       let req = reqGroup[1][0]; // general distribution
       if (
-        (!distDoubleCount || distDoubleCount.includes(req.name)) &&
+        distDoubleCount && 
+        (distDoubleCount.includes(req.name) || distDoubleCount.includes('All')) &&
         (req.fulfilled_credits < req.required_credits ||
           (req.required_credits === 0 && req.fulfilled_credits === 0)) &&
         checkRequirementSatisfied(req, courseObj)
       ) {
         reqs[i][1][0].fulfilled_credits += parseInt(courseObj.credits);
         distDoubleCount = req.double_count; // set double_count, if any
-        let fineDoubleCount: string[] | undefined = undefined;
+        let fineDoubleCount: string[] | undefined = ['All'];
         reqGroup[1].forEach((req: requirements, j: number) => {
           // fine reqs
           if (j !== 0) {
             // 0 is the general distribution, not fine req
             let fineReq = reqGroup[1][j];
             if (
-              (!fineDoubleCount || fineDoubleCount.includes(fineReq.name)) &&
+              fineDoubleCount && 
+              (fineDoubleCount.includes(fineReq.name) || fineDoubleCount.includes('All')) &&
               (fineReq.fulfilled_credits < fineReq.required_credits ||
                 (fineReq.required_credits === 0 &&
                   fineReq.fulfilled_credits === 0)) &&
