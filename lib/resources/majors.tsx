@@ -2257,7 +2257,7 @@ const bsCS_Old: Major = {
             '<b>Upper Level CS Credits</b> <br /> ' +
             'At least 13 more upper level CS credits are required. ',
           required_credits: 13,
-          criteria: 'EN Computer Science[D]^AND^Upper Level Undergraduate[L]',
+          criteria: 'EN Computer Science[D]^AND^Upper Level[L]',
           double_count: [
             '<b>Team Requirement</b> <br /> ' +
               'Select one course with Program of Study Tag CSCI-TEAM.',
@@ -2274,8 +2274,6 @@ const bsCS_Old: Major = {
           double_count: [
             '<b>Team Requirement</b> <br /> ' +
               'Select one course with Program of Study Tag CSCI-TEAM.',
-            '<b>Upper Level CS Credits</b> <br /> ' +
-              'At least 13 more upper level CS credits are required. ',
           ],
         },
         {
@@ -2335,11 +2333,8 @@ const bsCS_Old: Major = {
       required_credits: 12,
       min_credits_per_course: 4,
       description:
-        'All courses in this category must be from one of the two math departments on ' +
-        'campus: Mathematics or Applied Math and Statistics. However, 553.171 Discrete Mathematics ' +
-        'may not count towards these math requirements. Other than Calculus I and II, all the ' +
-        'remaining courses must be 200-level or above.',
-      criteria: 'AS Mathematics[D]^OR^EN Applied Mathematics & Statistics[D]',
+        'The core mathematics classes required for the major include Calculus I and II, as well as Discrete Mathematics.',
+      criteria: 'AS.110.108[C]^OR^AS.110.109[C]^OR^EN.553.171[C]',
       double_count: [
         'Computer Science',
         'Humanities/Social Sciences',
@@ -2371,7 +2366,10 @@ const bsCS_Old: Major = {
       required_credits: 12,
       min_credits_per_course: 3,
       description:
-        '<b>Electives</b> <br /> At least 3 more Math courses must be taken at the 200 or above level, ' +
+        'All courses in this category must be from one of the two math departments on ' +
+        'campus: Mathematics or Applied Math and Statistics. However, 553.171 Discrete Mathematics ' +
+        'may not count towards these math requirements. Other than Calculus I and II, all the ' +
+        'remaining courses must be 200-level or above ' +
         'and must include coverage of both Probability and Statistics.',
       criteria:
         '(AS Mathematics[D]^OR^EN Applied Mathematics & Statistics[D])^AND^(200[L]^OR^Upper Level[L])',
@@ -2408,10 +2406,9 @@ const bsCS_Old: Major = {
       min_credits_per_course: 1,
       description:
         'At least two semesters of physics or two semesters of chemistry, with the associated laboratories, must be included.',
-      criteria: 'N[A]',
+      criteria:
+        'N[A]^AND^(^NOT^(EN Computer Science[D]^OR^AS Center for Language Education[D]^OR^EN Applied Mathematics & Statistics[D]))',
       double_count: ['Humanities/Social Sciences', 'Writing Intensive'],
-      exception:
-        'EN Computer Science[D]^OR^AS Center for Language Education[D]^OR^EN Applied Mathematics & Statistics[D]',
     },
     {
       name: 'Humanities/Social Sciences',
@@ -2492,10 +2489,10 @@ const bsCS_New: Major = {
           description:
             '<b>Computer Ethics</b> <br /> Select one of the following courses: <br /> ' +
             'EN.601.104 Computer Ethics <br /> ' +
-            'EN.601.124 The Ethics of Artificial Intelligence and Automation (The Ethics of Artificial Intelligence and Automation)' +
+            'EN.601.124 The Ethics of Artificial Intelligence and Automation (The Ethics of Artificial Intelligence and Automation) <br /> ' +
             'EN.660.400 Practical Ethics for Future Leaders',
           required_credits: 1,
-          criteria: 'EN.601.104[C]^EN.601.124[C]^OR^EN.660.400[C]',
+          criteria: 'EN.601.104[C]^OR^EN.601.124[C]^OR^EN.660.400[C]',
           double_count: ['N/A'],
         },
         {
@@ -2562,8 +2559,6 @@ const bsCS_New: Major = {
           double_count: [
             '<b>Team Requirement</b> <br /> ' +
               'Select one course with Program of Study Tag CSCI-TEAM.',
-            '<b>Upper Level CS Credits</b> <br /> ' +
-              'At least 12 more upper level CS credits are required. ',
           ],
         },
         {
@@ -2591,6 +2586,11 @@ const bsCS_New: Major = {
         'At least one course in two different classification areas (Applications, Reasoning, Software, Systems) must be chosen in addition to Theory (Algorithms).',
       criteria: 'CSCI-APPL[T]^OR^CSCI-SOFT[T]^OR^CSCI-SYST[T]^OR^CSCI-RSNG[T]',
       pathing: 2,
+      double_count: [
+        'Mathematics',
+        'Humanities/Social Sciences',
+        'Writing Intensive',
+      ],
       fine_requirements: [
         {
           description: '<b>Application</b>',
@@ -2627,7 +2627,7 @@ const bsCS_New: Major = {
         'campus: Mathematics or Applied Math and Statistics. However, 553.171 Discrete Mathematics ' +
         'may not count towards these math requirements. Other than Calculus I and II, all the ' +
         'remaining courses must be 200-level or above.',
-      criteria: 'AS Mathematics[D]^OR^EN Applied Mathematics & Statistics[D]',
+      criteria: 'AS.110.108[C]^OR^AS.110.109[C]',
       double_count: [
         'Computer Science',
         'Humanities/Social Sciences',
