@@ -2480,6 +2480,7 @@ const bsCS_New: Major = {
         'major degree requirement</a> section on the department website.',
       criteria: 'EN Computer Science[D]^OR^EN.500.112[C]^OR^EN.660.400[C]',
       double_count: [
+        'Computer Science Classification',
         'Mathematics',
         'Humanities/Social Sciences',
         'Writing Intensive',
@@ -2551,7 +2552,7 @@ const bsCS_New: Major = {
         {
           description:
             '<b>CS Electives</b> <br /> ' +
-            'Six additional credits of Computer Science are required.' +
+            'Six additional credits of Computer Science are required. ' +
             'For an approved list of courses from other departments (maximum of 6 credits allowed), visit https://www.cs.jhu.edu/computer-science-other-courses-for-bs-degree/ ' +
             'and create a custom course to satisfy this requirement.',
           required_credits: 6,
@@ -2571,7 +2572,7 @@ const bsCS_New: Major = {
             '<b>Upper Level CS Credits</b> <br /> ' +
               'At least 12 more upper level CS credits are required. ',
             '<b>CS Electives</b> <br /> ' +
-              'Six additional credits of Computer Science are required.' +
+              'Six additional credits of Computer Science are required. ' +
               'For an approved list of courses from other departments (maximum of 6 credits allowed), visit https://www.cs.jhu.edu/computer-science-other-courses-for-bs-degree/ ' +
               'and create a custom course to satisfy this requirement.',
           ],
@@ -2587,6 +2588,7 @@ const bsCS_New: Major = {
       criteria: 'CSCI-APPL[T]^OR^CSCI-SOFT[T]^OR^CSCI-SYST[T]^OR^CSCI-RSNG[T]',
       pathing: 2,
       double_count: [
+        'Computer Science',
         'Mathematics',
         'Humanities/Social Sciences',
         'Writing Intensive',
