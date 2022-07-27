@@ -8,27 +8,27 @@ const Laptop: React.FC = () => {
     <>
       <div className="flex bg-sky-100 items-stretch w-full">
         <div className="mx-24 my-9 text-left">
-          <div className="felx flex-row justify-end">
+          <div className="felx flex-row">
             {/* plan Name */}
-            <div className="flex flex-row text-3xl sm: md:text- lg: xl: xxxl: ">
+            <div className="flex flex-row text-3xl sm: md: lg: xl: xxxl: ">
               The Best Plan for CS majors (plan name)
-            </div>
-            <div className="flex flex-row ml-6">
-              {/*Stars*/}
-              <button className="flex items-center mx-2 px-3">
-                <Star />
-              </button>
+              <div className="flex flex-row ml-8 text-xl">
+                {/*Stars*/}
+                <button className="flex items-center mx-2 px-3">
+                  <Star />
+                </button>
 
-              {/*Likes*/}
-              <button className="flex items-center mx-2 px-3">
-                <Like />
-                <p>102</p>
-              </button>
+                {/*Likes*/}
+                <button className="flex items-center mx-2 px-3">
+                  <Like />
+                  <p>102</p>
+                </button>
 
-              {/*Comments*/}
-              <div className="flex items-center mx-2 px-3">
-                <View />
-                <p>324</p>
+                {/*Comments*/}
+                <div className="flex items-center mx-2 px-3">
+                  <View />
+                  <p>324</p>
+                </div>
               </div>
             </div>
           </div>

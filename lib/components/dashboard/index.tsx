@@ -194,7 +194,7 @@ const Dashboard: React.FC<Props> = ({ mode }) => {
                 <div className="flex flex-col w-full overflow-hidden">
                   <div className="mx-auto  md:mx-[100px] ">
                     <div className="ml-[5%] md:ml-[0px]">
-                      <CourseList mode={mode} />
+                    <CourseList mode={mode} />
                     </div>
                   </div>
                 </div>
