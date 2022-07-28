@@ -4490,7 +4490,7 @@ const minorMath: Minor = {
       description:
         'Students must take one 200-level or above math course (excluding AS.110.202 Calculus III and the 2-credit 225).',
       criteria:
-        'AS Mathematics[D]^AND^(200[L]^OR^300[L])^NOT^AS.110.202[C]^NOT^AS.110.225[C]',
+        'AS Mathematics[D]^AND^(200[L]^OR^300[L])',
     },
     {
       name: '300-Level or Above Courses',
@@ -4508,6 +4508,7 @@ const minorMath: Minor = {
             'Students must take three mathematics courses at the 300-level or above (excluding the 1-credit seminar 345).**',
           criteria:
             'AS Mathematics[D]^AND^(300[L]^OR^400[L]^OR^500[L])^NOT^AS.110.345[C]',
+          double_count: ['All'],
         },
         {
           required_credits: 4,
@@ -4515,6 +4516,7 @@ const minorMath: Minor = {
             '** A course in the Department of Applied Mathematics and Statistics (AMS), at the corresponding level, may be substituted for one of the 300-level or above courses. ',
           criteria:
             'EN Applied Mathematics & Statistics[D]^AND^(300[L]^OR^400[L]^OR^500[L])',
+          double_count: ['All'],
         },
         {
           required_credits: 8,
@@ -4522,6 +4524,7 @@ const minorMath: Minor = {
             '** With an AMS course substitution, students must take two mathematics courses at the 300-level or above (excluding the 1-credit seminar 345).',
           criteria:
             'AS Mathematics[D]^AND^(300[L]^OR^400[L]^OR^500[L])^NOT^AS.110.345[C]',
+          double_count: ['All'],
         },
       ],
     },
