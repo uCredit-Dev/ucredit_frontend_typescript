@@ -4491,6 +4491,7 @@ const minorMath: Minor = {
         'Students must take one 200-level or above math course (excluding AS.110.202 Calculus III and the 2-credit 225).',
       criteria:
         'AS Mathematics[D]^AND^(200[L]^OR^300[L])',
+      double_count: [],
     },
     {
       name: '300-Level or Above Courses',
@@ -4505,7 +4506,7 @@ const minorMath: Minor = {
         {
           required_credits: 12,
           description:
-            'Students must take three mathematics courses at the 300-level or above (excluding the 1-credit seminar 345).**',
+            '<b>DEFAULT PATH:</b> <br /> Students must take three mathematics courses at the 300-level or above (excluding the 1-credit seminar 345).**',
           criteria:
             'AS Mathematics[D]^AND^(300[L]^OR^400[L]^OR^500[L])^NOT^AS.110.345[C]',
           double_count: ['All'],
@@ -4513,7 +4514,7 @@ const minorMath: Minor = {
         {
           required_credits: 4,
           description:
-            '** A course in the Department of Applied Mathematics and Statistics (AMS), at the corresponding level, may be substituted for one of the 300-level or above courses. ',
+            '** <b>ALTERNATIVE PATH:</b> <br /> A course in the Department of Applied Mathematics and Statistics (AMS), at the corresponding level, may be substituted for one of the 300-level or above courses. ',
           criteria:
             'EN Applied Mathematics & Statistics[D]^AND^(300[L]^OR^400[L]^OR^500[L])',
           double_count: ['All'],
@@ -4521,7 +4522,7 @@ const minorMath: Minor = {
         {
           required_credits: 8,
           description:
-            '** With an AMS course substitution, students must take two mathematics courses at the 300-level or above (excluding the 1-credit seminar 345).',
+            '** <b>ALTERNATIVE PATH (cont.):</b> <br /> With an AMS course substitution, students must take two mathematics courses at the 300-level or above (excluding the 1-credit seminar 345).',
           criteria:
             'AS Mathematics[D]^AND^(300[L]^OR^400[L]^OR^500[L])^NOT^AS.110.345[C]',
           double_count: ['All'],
