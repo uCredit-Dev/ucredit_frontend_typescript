@@ -4543,11 +4543,13 @@ const bsNeuro: Major = {
           required_credits: 9,
           description: '<b>Systems Neuroscience (ST)</b> <br /> ',
           criteria: 'NEUR-ST[T]',
+          double_count: ['All'],
         },
         {
           required_credits: 9,
           description: '<b>Cognitive Neuroscience (CG)</b> <br /> ',
           criteria: 'NEUR-CG[T]',
+          double_count: ['All'],
         },
         {
           required_credits: 9,
@@ -4555,6 +4557,7 @@ const bsNeuro: Major = {
             '<b>Computational Neuroscience (CP)</b> <br /> ' +
             'EN.553.291 (or AS.110.201 and AS.110.302) is required in addition to the credits required of the focus area.',
           criteria: 'NEUR-CP[T]',
+          double_count: ['All'],
         },
         {
           required_credits: 9,
@@ -4562,6 +4565,7 @@ const bsNeuro: Major = {
             '<b>Cellular and Molecular Neuroscience (CM)</b> <br /> ' +
             'AS.020.306 and AS.020.316 must be selected as the required biology course with lab.',
           criteria: 'NEUR-CM[T]',
+          double_count: ['All'],
         },
       ],
     },
@@ -4589,7 +4593,6 @@ const bsNeuro: Major = {
         'participating in the program. One credit of Scientific Communication across two semesters. Read more about <a href="https://krieger.jhu.edu/neuroscience/research/research-credit-requirements/">' +
         'research credit requirements</a>.',
       criteria: 'AS.080.500[C]^OR^AS.080.541[C]',
-      double_count: ['N/A'],
       fine_requirements: [
         {
           required_credits: 6,
@@ -4665,6 +4668,7 @@ const bsNeuro: Major = {
         'All students earning a degree from the School of Arts and Sciences must complete at least 12 credits in writing-intensive courses. ' +
         'Writing-intensive courses taken to satisfy major, minor, or distribution requirements may also count toward the writing requirement.',
       criteria: 'Written Intensive[W]',
+      double_count: ['All'],
     },
   ],
 };
