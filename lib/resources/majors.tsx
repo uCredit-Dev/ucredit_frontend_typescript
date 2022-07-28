@@ -545,9 +545,9 @@ const bsPhysics: Major = {
         'These courses must constitute a coherent and rigorous program of study.',
       criteria:
         '(AS Physics & Astronomy[D]^OR^AS Biology[D]^OR^AS Biophysics[D]^OR^AS Chemistry[D]^OR^AS Cognitive Science[D]^OR^' +
-        'AS Earth & Planetary Sciences[D]^OR^AS Mathematics[D]^OR^AS Neuroscience[D]^OR^EN Applied Mathematics & Statistics[D]^OR^' + 
-        'EN Biomedical Engineering[D]^OR^EN Chemical & Biomolecular Engineering[D]^OR^EN Electrical & Computer Engineering[D]^OR^' + 
-        'EN Computer Science[D]^OR^EN Environment Health and Engineering[D]^OR^EN Material Science & Engineering[D]^OR^' + 
+        'AS Earth & Planetary Sciences[D]^OR^AS Mathematics[D]^OR^AS Neuroscience[D]^OR^EN Applied Mathematics & Statistics[D]^OR^' +
+        'EN Biomedical Engineering[D]^OR^EN Chemical & Biomolecular Engineering[D]^OR^EN Electrical & Computer Engineering[D]^OR^' +
+        'EN Computer Science[D]^OR^EN Environment Health and Engineering[D]^OR^EN Material Science & Engineering[D]^OR^' +
         'EN Mechanical Engineering[D])^AND^(200[L]^OR^Upper Level[L])',
       double_count: [
         'Humanities (H) Distribution',
@@ -560,46 +560,58 @@ const bsPhysics: Major = {
           description: '<b>Physics and Astronomy</b>',
           required_credits: 12,
           criteria: 'AS Physics & Astronomy[D]',
+          double_count: ['All'],
         },
         {
           description: '<b>Biology</b>',
           required_credits: 12,
           criteria: 'AS Biology[D]',
+          double_count: ['All'],
         },
         {
           description: '<b>Biophysics</b>',
           required_credits: 12,
           criteria: 'AS Biophysics[D]',
+          double_count: ['All'],
         },
         {
           description: '<b>Chemistry</b>',
           required_credits: 12,
           criteria: 'AS Chemistry[D]',
+          double_count: ['All'],
         },
         {
           description: '<b>Cognitive Science</b>',
           required_credits: 12,
           criteria: 'AS Cognitive Science[D]',
+          double_count: ['All'],
         },
         {
           description: '<b>Earth and Planetary Sciences</b>',
           required_credits: 12,
           criteria: 'AS Earth & Planetary Sciences[D]',
+          double_count: ['All'],
         },
         {
           description: '<b>Mathematics</b>',
           required_credits: 12,
           criteria: 'AS Mathematics[D]',
+          double_count: ['All'],
         },
         {
           description: '<b>Neuroscience</b>',
           required_credits: 12,
           criteria: 'AS Neuroscience[D]',
+          double_count: ['All'],
         },
         {
           description: '<b>Engineering</b>',
           required_credits: 12,
-          criteria: '', // TODO: add WSE
+          criteria:
+            'EN Applied Mathematics & Statistics[D]^OR^EN Mechanical Engineering[D]^OR^' +
+            'EN Biomedical Engineering[D]^OR^EN Chemical & Biomolecular Engineering[D]^OR^EN Electrical & Computer Engineering[D]^OR^' +
+            'EN Computer Science[D]^OR^EN Environment Health and Engineering[D]^OR^EN Material Science & Engineering[D]^OR^',
+          double_count: ['All'],
         },
       ],
     },
@@ -660,6 +672,7 @@ const bsPhysics: Major = {
         'All students earning a degree from the School of Arts and Sciences must complete at least 12 credits in writing-intensive courses. ' +
         'Writing-intensive courses taken to satisfy major, minor, or distribution requirements may also count toward the writing requirement.',
       criteria: 'Written Intensive[W]',
+      double_count: ['All']
     },
   ],
 };
@@ -895,6 +908,7 @@ const baPhysics: Major = {
         'All students earning a degree from the School of Arts and Sciences must complete at least 12 credits in writing-intensive courses. ' +
         'Writing-intensive courses taken to satisfy major, minor, or distribution requirements may also count toward the writing requirement.',
       criteria: 'Written Intensive[W]',
+      double_count: ['All']
     },
   ],
 };
