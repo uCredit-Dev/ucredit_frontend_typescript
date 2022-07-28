@@ -2255,33 +2255,25 @@ const bsCS_Old: Major = {
         {
           description:
             '<b>Upper Level CS Credits</b> <br /> ' +
-            'At least 13 more upper level CS credits are required. ' +
-            'At least one course in two different classification areas (Applications, Reasoning, Software, Systems) must be chosen in addition to Theory (Algorithms).', // TODO: Question: How to include this requirement?: SEPARATE DISTRIBUTION PATHING
+            'At least 13 more upper level CS credits are required. ',
           required_credits: 13,
-          criteria: 'EN Computer Science[D]^AND^Upper Level Undergraduate[L]',
+          criteria: 'EN Computer Science[D]^AND^Upper Level[L]',
           double_count: [
             '<b>Team Requirement</b> <br /> ' +
               'Select one course with Program of Study Tag CSCI-TEAM.',
-            '<b>CS Electives</b> <br /> ' +
-              'Eight additional credits of Computer Science are required.' +
-              'For an approved list of courses from other departments (maximum of 6 credits allowed), visit https://www.cs.jhu.edu/computer-science-other-courses-for-bs-degree/ ' +
-              'and create a custom course to satisfy this requirement.',
           ],
         },
         {
           description:
             '<b>CS Electives</b> <br /> ' +
             'Eight additional credits of Computer Science are required.' +
-            'For an approved list of courses from other departments (maximum of 6 credits allowed), visit https://www.cs.jhu.edu/computer-science-other-courses-for-bs-degree/ ' +
-            'and create a custom course to satisfy this requirement.',
+            'For an approved list of courses from other departments (maximum of 6 credits allowed), (1) visit https://www.cs.jhu.edu/computer-science-other-courses-for-bs-degree/ ' +
+            ', (2) create a custom course to satisfy this requirement, and (3) list it under the "EN Computer Science" department during creation.',
           required_credits: 8,
           criteria: 'EN Computer Science[D]',
           double_count: [
             '<b>Team Requirement</b> <br /> ' +
               'Select one course with Program of Study Tag CSCI-TEAM.',
-            '<b>Upper Level CS Credits</b> <br /> ' +
-              'At least 13 more upper level CS credits are required. ' +
-              'At least one course in two different classification areas (Applications, Reasoning, Software, Systems) must be chosen in addition to Theory (Algorithms).',
           ],
         },
         {
@@ -2292,9 +2284,7 @@ const bsCS_Old: Major = {
           criteria: 'CSCI-TEAM[T]',
           double_count: [
             '<b>Upper Level CS Credits</b> <br /> ' +
-              'At least 13 more upper level CS credits are required. ' +
-              'At least one course in two different classification areas (Applications, ' +
-              'Reasoning, Software, Systems) must be chosen in addition to Theory (Algorithms).',
+              'At least 13 more upper level CS credits are required. ',
             '<b>CS Electives</b> <br /> ' +
               'Eight additional credits of Computer Science are required.' +
               'For an approved list of courses from other departments (maximum of 6 credits allowed), visit https://www.cs.jhu.edu/computer-science-other-courses-for-bs-degree/ ' +
@@ -2304,15 +2294,47 @@ const bsCS_Old: Major = {
       ],
     },
     {
-      name: 'Mathematics',
-      required_credits: 24,
+      name: 'Computer Science Classifications',
+      required_credits: 6,
       min_credits_per_course: 3,
       description:
-        'All courses in this category must be from one of the two math departments on ' +
-        'campus: Mathematics or Applied Math and Statistics. However, 553.171 Discrete Mathematics ' +
-        'may not count towards these math requirements. Other than Calculus I and II, all the ' +
-        'remaining courses must be 200-level or above.',
-      criteria: 'AS Mathematics[D]^OR^EN Applied Mathematics & Statistics[D]',
+        'At least one course in two different classification areas (Applications, Reasoning, Software, Systems) must be chosen in addition to Theory (Algorithms).',
+      criteria: 'CSCI-APPL[T]^OR^CSCI-SOFT[T]^OR^CSCI-SYST[T]^OR^CSCI-RSNG[T]',
+      pathing: 2,
+      fine_requirements: [
+        {
+          description: '<b>Application</b>',
+          required_credits: 3,
+          criteria: 'CSCI-APPL[T]',
+          double_count: ['N/A'],
+        },
+        {
+          description: '<b>Software</b>',
+          required_credits: 3,
+          criteria: 'CSCI-SOFT[T]',
+          double_count: ['N/A'],
+        },
+        {
+          description: '<b>Systems</b>',
+          required_credits: 3,
+          criteria: 'CSCI-SYST[T]',
+          double_count: ['N/A'],
+        },
+        {
+          description: '<b>Reasoning</b>',
+          required_credits: 3,
+          criteria: 'CSCI-RSNG[T]',
+          double_count: ['N/A'],
+        },
+      ],
+    },
+    {
+      name: 'Mathematics',
+      required_credits: 12,
+      min_credits_per_course: 4,
+      description:
+        'The core mathematics classes required for the major include Calculus I and II, as well as Discrete Mathematics.',
+      criteria: 'AS.110.108[C]^OR^AS.110.109[C]^OR^EN.553.171[C]',
       double_count: [
         'Computer Science',
         'Humanities/Social Sciences',
@@ -2337,27 +2359,56 @@ const bsCS_Old: Major = {
           required_credits: 4,
           criteria: 'EN.553.171[C]',
         },
+      ],
+    },
+    {
+      name: 'Mathematics Electives',
+      required_credits: 12,
+      min_credits_per_course: 3,
+      description:
+        'All courses in this category must be from one of the two math departments on ' +
+        'campus: Mathematics or Applied Math and Statistics. However, 553.171 Discrete Mathematics ' +
+        'may not count towards these math requirements. Other than Calculus I and II, all the ' +
+        'remaining courses must be 200-level or above ' +
+        'and must include coverage of both Probability and Statistics.',
+      criteria:
+        '(AS Mathematics[D]^OR^EN Applied Mathematics & Statistics[D])^AND^(200[L]^OR^Upper Level[L])',
+      double_count: [
+        'Computer Science',
+        'Humanities/Social Sciences',
+        'Writing Intensive',
+      ],
+      pathing: 1,
+      fine_requirements: [
         {
-          // TODO: How to account for prob/stats coverage requirement?: MATH ELECTIVES DISTRIBUTION WITH PATHING FOR PROB STATS
           description:
-            '<b>Electives</b> <br /> At least 3 more courses must be taken at the 200 or above level, ' +
-            'and must include coverage of both Probability and Statistics.',
-          required_credits: 12,
-          criteria:
-            '(AS Mathematics[D]^OR^EN Applied Mathematics & Statistics[D])^AND^(200[L]^OR^Upper Level[L])',
+            '<b>Option 1: Probability and Statistics Combined </b> <br />' +
+            'Select one of the following: <br />' +
+            'EN.553.211 Probability and Statistics for the Life Sciences<br />' +
+            'EN.553.310 Probability and Statistics for the Physical Sciences and Engineering<br />' +
+            'EN.553.311 Probability and Statistics for the Biological Sciences and Engineering',
+          required_credits: 4,
+          criteria: 'EN.553.211[C]^OR^EN.553.310[C]^OR^EN.553.311[C]',
+        },
+        {
+          description:
+            '<b>Option 2: Probability and Statistics Separate </b> <br />' +
+            'EN.553.420 Introduction to Probability<br />' +
+            'EN.553.430 Introduction to Statistics<br />',
+          required_credits: 8,
+          criteria: 'EN.553.420[C]^OR^EN.553.430[C]',
         },
       ],
     },
     {
-      name: 'Basic Sciences', // TODO: How to account for language/linguistic courses?
+      name: 'Basic Sciences',
       required_credits: 16,
       min_credits_per_course: 1,
       description:
         'At least two semesters of physics or two semesters of chemistry, with the associated laboratories, must be included.',
-      criteria: 'N[A]',
+      criteria:
+        'N[A]^AND^(^NOT^(EN Computer Science[D]^OR^AS Center for Language Education[D]^OR^EN Applied Mathematics & Statistics[D]))',
       double_count: ['Humanities/Social Sciences', 'Writing Intensive'],
-      exception:
-        'EN Computer Science[D]^OR^AS Center for Language Education[D]^OR^EN Applied Mathematics & Statistics[D]',
     },
     {
       name: 'Humanities/Social Sciences',
@@ -2425,135 +2476,229 @@ const bsCS_New: Major = {
       required_credits: 40,
       min_credits_per_course: 1,
       description:
-        "For more information please visit the <a href='https://www.cs.jhu.edu/2021undergraduate-advising-manual/'>" +
+        "For more information please visit the <a href='https://www.cs.jhu.edu/undergraduate-studies/academics/ugrad-advising-manual/'>" +
         'major degree requirement</a> section on the department website.',
-      criteria:
-        'EN Computer Science[D]^OR^CSCI-OTHER[T]^OR^Gateway Computing[N]',
+      criteria: 'EN Computer Science[D]^OR^EN.500.112[C]^OR^EN.660.400[C]',
+      double_count: [
+        'Computer Science Classification',
+        'Mathematics',
+        'Humanities/Social Sciences',
+        'Writing Intensive',
+      ],
       fine_requirements: [
         {
           description:
-            '<b>Computer Ethics(601.104).</b><p>Practical Ethics for Future Leaders (660.400/406) may be used as a substitute for the computer ethics requirement for the BS program, but does not count towards the CS total credits at all.</p>',
+            '<b>Computer Ethics</b> <br /> Select one of the following courses: <br /> ' +
+            'EN.601.104 Computer Ethics <br /> ' +
+            'EN.601.124 The Ethics of Artificial Intelligence and Automation (The Ethics of Artificial Intelligence and Automation) <br /> ' +
+            'EN.660.400 Practical Ethics for Future Leaders',
           required_credits: 1,
-          criteria: 'EN.600.104[C]^OR^EN.601.104[C]^OR^EN.660.400[C]',
+          criteria: 'EN.601.104[C]^OR^EN.601.124[C]^OR^EN.660.400[C]',
           double_count: ['N/A'],
         },
         {
           description:
-            '<b>Lower Level Undergraduate:</b><p>500.112/113/114 Gateway Computing or AP Comp Sci A or ' +
-            'equivalent<p>601.220 Intermediate Programming</p><p>601.226 Data Structures</p><p>601.229 ' +
-            'Computer System Fundamentals</p><p>601.230 Mathematical Foundations for Computer Science, or 601.231 Automata for those grandfathered into the old major</p><p>601.433 Algorithms</p>',
-          required_credits: 21,
-          criteria:
-            'EN.500.112[C]^OR^EN.500.113[C]^OR^EN.500.114[C]^OR^EN.601.220[C]^OR^EN.601.226[C]' +
-            '^OR^EN.601.229[C]^OR^EN.601.230[C]^OR^EN.601.433[C]^OR^EN.601.231',
+            '<b>Gateway Computing: JAVA</b> <br /> ' +
+            'EN.500.112 Gateway Computing: JAVA <br /> ' +
+            'For equivalent ways to satisfy this requirement, contact your advisor and create a custom course which satisfies this requirement.',
+          required_credits: 3,
+          criteria: 'EN.500.112[C]',
+        },
+        {
+          description:
+            '<b>Intermediate Programming</b> <br /> ' +
+            'EN.601.220 Intermediate Programming',
+          required_credits: 4,
+          criteria: 'EN.601.220[C]',
+        },
+        {
+          description:
+            '<b>Data Structures</b> <br /> EN.601.226 Data Structures',
+          required_credits: 4,
+          criteria: 'EN.601.226[C]',
+        },
+        {
+          description:
+            '<b>Computer System Fundamentals</b> <br /> ' +
+            'EN.601.229 Computer System Fundamentals',
+          required_credits: 3,
+          criteria: 'EN.601.229[C]',
+        },
+        {
+          description:
+            '<b>Mathematical Foundations of Computer Science</b> <br /> ' +
+            'EN.601.230 Mathematical Foundations of Computer Science',
+          required_credits: 4,
+          criteria: 'EN.601.230[C]',
+        },
+        {
+          description:
+            '<b>Intro Algorithms</b> <br /> EN.601.433 Intro Algorithms',
+          required_credits: 3,
+          criteria: 'EN.601.433[C]',
           double_count: ['N/A'],
         },
         {
           description:
-            '<b>Upper Level Undergraduate: </b><p>12 upper level CS credits in addition to the required Algorithms course</p>',
+            '<b>Upper Level CS Credits</b> <br /> ' +
+            'At least 12 more upper level CS credits are required. ',
           required_credits: 12,
-          criteria:
-            'EN Computer Science[D]^AND^Upper Level Undergraduate[L]^NOT^EN.601.433[C]^NOT^EN.601.633[C]',
+          criteria: 'EN Computer Science[D]^AND^Upper Level[L]',
           double_count: [
-            '<b>One Team(CSCI-TEAM) designated course.</b><p> This Team course may overlap other course ' +
-              'requirements, for example to count as both Team and Software.</p>',
-            '<b>2 Upper Level Classifications:</b><p>At least one upper level course in two of these four different classification</p> ' +
-              'areas: Applications(CSCI-APPL), Systems(CSCI-SYST), Software(CSCI-SOFT) and Reasoning(CSCI-RSNG)',
+            '<b>Team Requirement</b> <br /> ' +
+              'Select one course with Program of Study Tag CSCI-TEAM.',
           ],
         },
         {
           description:
-            '<b>2 Upper Level Classifications:</b><p>At least one upper level course in two of these four different classification</p> ' +
-            'areas: Applications(CSCI-APPL), Systems(CSCI-SYST), Software(CSCI-SOFT) and Reasoning(CSCI-RSNG)',
+            '<b>CS Electives</b> <br /> ' +
+            'Six additional credits of Computer Science are required.' +
+            'For an approved list of courses from other departments (maximum of 6 credits allowed), (1) visit https://www.cs.jhu.edu/computer-science-other-courses-for-bs-degree/ ' +
+            ', (2) create a custom course to satisfy this requirement, and (3) list it under the "EN Computer Science" department during creation.',
           required_credits: 6,
-          criteria:
-            'CSCI-APPL[T]^OR^CSCI-SYST[T]^OR^CSCI-SOFT[T]^OR^CSCI-RSNG[T]',
+          criteria: 'EN Computer Science[D]',
           double_count: [
-            '<b>Lower Level Undergraduate:</b><p>500.112/113/114 Gateway Computing or AP Comp Sci A or ' +
-              'equivalent<p>601.220 Intermediate Programming</p><p>601.226 Data Structures</p><p>601.229 ' +
-              'Computer System Fundamentals</p><p>601.230 Mathematical Foundations for Computer Science, or 601.231 Automata for those grandfathered into the old major</p><p>601.433 Algorithms</p>',
-            '<b>One Team(CSCI-TEAM) designated course.</b><p> This Team course may overlap other course ' +
-              'requirements, for example to count as both Team and Software.</p>',
+            '<b>Team Requirement</b> <br /> ' +
+              'Select one course with Program of Study Tag CSCI-TEAM.',
           ],
         },
         {
           description:
-            '<b>One Team(CSCI-TEAM) designated course.</b><p> This Team course may overlap other course ' +
-            'requirements, for example to count as both Team and Software.</p>',
+            '<b>Team Requirement</b> <br /> ' +
+            'Select one course with Program of Study Tag CSCI-TEAM.',
           required_credits: 3,
           criteria: 'CSCI-TEAM[T]',
           double_count: [
-            '<b>Upper Level Undergraduate: </b><p>12 upper level CS credits in addition to the required Algorithms course</p>',
-            '<b>2 Upper Level Classifications:</b><p>At least one upper level course in two of these four different classification</p> ' +
-              'areas: Applications(CSCI-APPL), Systems(CSCI-SYST), Software(CSCI-SOFT) and Reasoning(CSCI-RSNG)',
+            '<b>Upper Level CS Credits</b> <br /> ' +
+              'At least 12 more upper level CS credits are required. ',
+            '<b>CS Electives</b> <br /> ' +
+              'Six additional credits of Computer Science are required.' +
+              'For an approved list of courses from other departments (maximum of 6 credits allowed), (1) visit https://www.cs.jhu.edu/computer-science-other-courses-for-bs-degree/ ' +
+              ', (2) create a custom course to satisfy this requirement, and (3) list it under the "EN Computer Science" department during creation.',
           ],
         },
       ],
     },
     {
-      name: 'Math',
-      required_credits: 16,
+      name: 'Computer Science Classifications',
+      required_credits: 6,
       min_credits_per_course: 3,
+      description:
+        'At least one course in two different classification areas (Applications, Reasoning, Software, Systems) must be chosen in addition to Theory (Algorithms).',
+      criteria: 'CSCI-APPL[T]^OR^CSCI-SOFT[T]^OR^CSCI-SYST[T]^OR^CSCI-RSNG[T]',
+      pathing: 2,
+      double_count: [
+        'Computer Science',
+        'Mathematics',
+        'Humanities/Social Sciences',
+        'Writing Intensive',
+      ],
+      fine_requirements: [
+        {
+          description: '<b>Application</b>',
+          required_credits: 3,
+          criteria: 'CSCI-APPL[T]',
+          double_count: ['N/A'],
+        },
+        {
+          description: '<b>Software</b>',
+          required_credits: 3,
+          criteria: 'CSCI-SOFT[T]',
+          double_count: ['N/A'],
+        },
+        {
+          description: '<b>Systems</b>',
+          required_credits: 3,
+          criteria: 'CSCI-SYST[T]',
+          double_count: ['N/A'],
+        },
+        {
+          description: '<b>Reasoning</b>',
+          required_credits: 3,
+          criteria: 'CSCI-RSNG[T]',
+          double_count: ['N/A'],
+        },
+      ],
+    },
+    {
+      name: 'Mathematics',
+      required_credits: 8,
+      min_credits_per_course: 4,
       description:
         'All courses in this category must be from one of the two math departments on ' +
         'campus: Mathematics or Applied Math and Statistics. However, 553.171 Discrete Mathematics ' +
         'may not count towards these math requirements. Other than Calculus I and II, all the ' +
         'remaining courses must be 200-level or above.',
-      criteria: 'AS Mathematics[D]^OR^EN Applied Mathematics & Statistics[D]',
-      exception: 'EN.553.171[C]',
+      criteria: 'AS.110.108[C]^OR^AS.110.109[C]',
+      double_count: [
+        'Computer Science',
+        'Humanities/Social Sciences',
+        'Writing Intensive',
+      ],
       fine_requirements: [
         {
           description:
-            '<b>Required Courses:</b><p>110.108 Calculus I or AP equivalent</p>110.109 Calculus II or AP equivalent</p>' +
-            '<p>550.171/553.171 Discrete Mathematics if grandfathered into old major</p>',
-          required_credits: 8,
-          criteria: 'AS.110.108[C]^OR^AS.110.109[C]',
+            '<b>Calculus I</b> <br /> AS.110.108 Calculus I (Physical Sciences & Engineering)',
+          required_credits: 4,
+          criteria: 'AS.110.108[C]',
         },
         {
           description:
-            '<b>Math Elective:</b><p>This must be 200-level or above, chosen from Mathematics (AS.110.xxx) or Applied Math and Statistics (EN.553.xxx)</p>',
+            '<b>Calculus II</b> <br /> AS.110.109 Calculus II (Physical Sciences & Engineering)',
           required_credits: 4,
-          criteria: 'AS.110.[C]^OR^EN.553.[C]',
+          criteria: 'AS.110.109[C]',
         },
       ],
     },
     {
-      name: 'Probability and Statistics Requirements',
-      required_credits: 4,
+      name: 'Mathematics Electives',
+      required_credits: 8,
       min_credits_per_course: 3,
       description:
-        '<p> The BS math courses must include coverage ' +
-        'of both probability and statistics, which can be satisfied in many ways, including ' +
-        'taking any of the 553.3xx combined Probability & Statistics courses. Probability and Statistics:</p><p>Two paths:</p>',
+        '<b>Electives</b> <br /> At least 3 more Math courses must be taken at the 200 or above level, ' +
+        'and must include coverage of both Probability and Statistics.',
       criteria:
-        'EN.553.211[C]^OR^EN.553.310[C]^OR^EN.553.311[C]^OR^EN.553.420[C]^OR^EN.553.430[C]',
+        '(AS Mathematics[D]^OR^EN Applied Mathematics & Statistics[D])^AND^(200[L]^OR^Upper Level[L])',
+      double_count: [
+        'Computer Science',
+        'Humanities/Social Sciences',
+        'Writing Intensive',
+      ],
       pathing: 1,
       fine_requirements: [
         {
           description:
-            '<p>1. Any of the three courses below:</p><p>EN.553.211</p><p>EN.553.310</p><p>EN.553.311</p> ',
+            '<b>Option 1: Probability and Statistics Combined </b> <br />' +
+            'Select one of the following: <br />' +
+            'EN.553.211 Probability and Statistics for the Life Sciences<br />' +
+            'EN.553.310 Probability and Statistics for the Physical Sciences and Engineering<br />' +
+            'EN.553.311 Probability and Statistics for the Biological Sciences and Engineering',
           required_credits: 4,
           criteria: 'EN.553.211[C]^OR^EN.553.310[C]^OR^EN.553.311[C]',
         },
         {
           description:
-            '<p>2. Both Intro to Probability and Intro to Statistics</p><p>EN.553.420</p><p>EN.553.430</p> ',
+            '<b>Option 2: Probability and Statistics Separate </b> <br />' +
+            'EN.553.420 Introduction to Probability<br />' +
+            'EN.553.430 Introduction to Statistics<br />',
           required_credits: 8,
           criteria: 'EN.553.420[C]^OR^EN.553.430[C]',
         },
       ],
     },
     {
-      name: 'Science',
+      name: 'Basic Sciences',
       required_credits: 8,
       min_credits_per_course: 1,
       description:
-        'Students must take two semesters of core science courses (any combination of Physics, ' +
-        'Chemistry, Biology), with their associated labs. AP credit is an acceptable substitute for these courses and labs.',
+        'At least two semesters of physics or two semesters of chemistry, with the associated laboratories, must be included.',
       criteria: 'N[A]',
+      double_count: ['Humanities/Social Sciences', 'Writing Intensive'],
+      exception:
+        'EN Computer Science[D]^OR^AS Center for Language Education[D]^OR^EN Applied Mathematics & Statistics[D]',
     },
     {
-      name: 'Liberal Arts',
+      name: 'Humanities/Social Sciences',
       required_credits: 18,
       min_credits_per_course: 3,
       description:
@@ -2561,8 +2706,13 @@ const bsCS_New: Major = {
         'from any department. At most 2 of these courses may be taken S/U (if not counted towards ' +
         'the writing requirement). Foreign language courses can be counted as well, even if ' +
         'they don’t carry an ‘H’ or ‘S’ designator.',
-      criteria:
-        'AS Center for Language Education[D]^OR^AS Modern Languages and Literatures[D]^OR^H[A]^OR^S[A]',
+      criteria: 'H[A]^OR^S[A]',
+      double_count: [
+        'Computer Science',
+        'Mathematics',
+        'Basic Sciences',
+        'Writing Intensive',
+      ],
     },
     {
       name: 'Writing Intensive',
@@ -2572,17 +2722,29 @@ const bsCS_New: Major = {
         'Students are required to fulfill the university’s requirement of two writing intensive courses, ' +
         'each at least 3 credits. Students must receive at least a C- grade or better in these writing courses. ',
       criteria: 'Written Intensive[W]',
+      double_count: [
+        'Computer Science',
+        'Mathematics',
+        'Basic Sciences',
+        'Humanities/Social Sciences',
+      ],
       fine_requirements: [
         {
           description:
-            '<b>Writing-focused WI</b><p>At least one course must be explicitly focused on writing skills in English (eg, courses in professional, ' +
-            'fiction or expository writing). These courses may overlap with other requirements.</p><p>Any of the courses below would be satisfactory:</p><p>AS.060.100</p><p>AS.060.113</p><p>AS.060.114</p><p>AS.180.248</p><p>AS.220.105</p><p>AS.220.106</p><p>AS.220.108</p><p>AS.290.303</p><p>AS.360.133</p><p>EN.661.110</p><p>EN.661.111</p><p>EN.661.250</p><p>EN.661.251</p><p>EN.661.315</p>',
-
+            'At least one course with a primary focus on writing in English must be chosen.',
           required_credits: 3,
           criteria:
-            'AS.060.100[C]^OR^AS.060.113[C]^OR^AS.060.114[C]^OR^AS.180.248[C]^OR^AS.220.105[C]^OR^AS.220.106[C]^OR^AS.220.108[C]^OR^AS.290.303[C]^OR^AS.360.133[C]^OR^EN.661.110[C]^OR^EN.661.111[C]^OR^EN.661.250[C]^OR^EN.661.251[C]^OR^EN.661.315[C]',
+            'EN.661.110[C]^OR^EN.661.111[C]^OR^EN.661.250[C]^OR^EN.661.251[C]^OR^EN.661.315[C]^OR^AS.060.100[C]^OR^AS.060.113[C]^OR^AS.220.105[C]^OR^AS.180.248[C]^OR^AS.290.303[C]^OR^AS.360.133[C]',
         },
       ],
+    },
+    {
+      name: 'Electives',
+      required_credits: 38,
+      min_credits_per_course: 1,
+      description: 'These can be any credit bearing courses taken at JHU.',
+      criteria: '',
+      double_count: ['Writing Intensive'],
     },
   ],
 };
