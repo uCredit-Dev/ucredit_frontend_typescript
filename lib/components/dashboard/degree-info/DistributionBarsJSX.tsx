@@ -195,39 +195,26 @@ const DistributionBarsJSX: FC<{ major: Major }> = ({ major }) => {
 
   const updateReqs = (reqs: [string, requirements[]][], courseObj) => {
     // double_count check:
-    // If double_count is undefined, the course may double count for any number of distributions
+    // If double_count is undefined, the course may only count for one distribution
     // If double_count is string[], the specified distributions / fine requirements are 'whitelisted'
-    // When a course satisfies a distribution, double_count takes the value of distribution.double_count
+    // If double_count is ['All'], the course may double count freely
     if (!courseObj) return;
-    let distDoubleCount: string[] | undefined = undefined; // initial value
+    let distDoubleCount: string[] | undefined = ['All'];
     reqs.forEach((reqGroup, i) => {
       let req = reqGroup[1][0]; // general distribution
+      // if course satisfies distribution:
       if (
-        (!distDoubleCount || distDoubleCount.includes(req.name)) &&
+        distDoubleCount &&
+        (distDoubleCount.includes(req.name) ||
+          distDoubleCount.includes('All')) &&
         (req.fulfilled_credits < req.required_credits ||
           (req.required_credits === 0 && req.fulfilled_credits === 0)) &&
         checkRequirementSatisfied(req, courseObj)
       ) {
         reqs[i][1][0].fulfilled_credits += parseInt(courseObj.credits);
         distDoubleCount = req.double_count; // set double_count, if any
-        let fineDoubleCount: string[] | undefined = undefined;
-        reqGroup[1].forEach((req: requirements, j: number) => {
-          // fine reqs
-          if (j !== 0) {
-            // 0 is the general distribution, not fine req
-            let fineReq = reqGroup[1][j];
-            if (
-              (!fineDoubleCount || fineDoubleCount.includes(fineReq.name)) &&
-              (fineReq.fulfilled_credits < fineReq.required_credits ||
-                (fineReq.required_credits === 0 &&
-                  fineReq.fulfilled_credits === 0)) &&
-              checkRequirementSatisfied(fineReq, courseObj)
-            ) {
-              reqs[i][1][j].fulfilled_credits += parseInt(courseObj.credits);
-              fineDoubleCount = fineReq.double_count;
-            }
-          }
-        });
+        // for each fine req, see if course satisfies fine requirements
+        processFines(reqs, courseObj, i);
       }
     });
     // Pathing check
@@ -236,6 +223,35 @@ const DistributionBarsJSX: FC<{ major: Major }> = ({ major }) => {
         processReq(req, reqGroup);
       }),
     );
+  };
+
+  const processFines = (
+    reqs: [string, requirements[]][],
+    courseObj,
+    i: number,
+  ) => {
+    let fineDoubleCount: string[] | undefined = ['All'];
+    // for each fine req
+    reqs[i][1].forEach((req: requirements, j: number) => {
+      if (j !== 0) {
+        // skip general distribution, not fine req
+        let fineReq = reqs[i][1][j];
+        // if course satisfies fine requirement
+        if (
+          fineDoubleCount &&
+          (fineDoubleCount.includes(fineReq.name) ||
+            fineDoubleCount.includes('All')) &&
+          (fineReq.fulfilled_credits < fineReq.required_credits ||
+            (fineReq.required_credits === 0 &&
+              fineReq.fulfilled_credits === 0)) &&
+          checkRequirementSatisfied(fineReq, courseObj)
+        ) {
+          // update fine requirements
+          reqs[i][1][j].fulfilled_credits += parseInt(courseObj.credits);
+          fineDoubleCount = fineReq.double_count;
+        }
+      }
+    });
   };
 
   const processReq = (
