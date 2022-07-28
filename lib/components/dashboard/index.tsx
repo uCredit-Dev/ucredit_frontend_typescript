@@ -3,7 +3,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import Header from './Header';
 import FeedbackPopup from '../popups/FeedbackPopup';
 import FeedbackNotification from '../popups/FeedbackNotification';
-import Roadmap from '../roadmap/comments/RoadmapComment';
+// import Roadmap from '../roadmap/comments/RoadmapComment';
 
 import {
   selectImportingStatus,
@@ -194,7 +194,7 @@ const Dashboard: React.FC<Props> = ({ mode }) => {
                 <div className="flex flex-col w-full overflow-hidden">
                   <div className="mx-auto  md:mx-[100px] ">
                     <div className="ml-[5%] md:ml-[0px]">
-                    <CourseList mode={mode} />
+                      <CourseList mode={mode} />
                     </div>
                   </div>
                 </div>
@@ -211,7 +211,7 @@ const Dashboard: React.FC<Props> = ({ mode }) => {
             {courseInfoStatus && <CourseDisplayPopup />}
             {cartStatus && <Cart allCourses={[]} />}
           </div>
-          <Roadmap />
+          {/* <Roadmap /> */}
         </div>
       )}
       {/* Dummy components used to generate state information */}

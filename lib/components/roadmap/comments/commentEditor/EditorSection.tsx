@@ -3,17 +3,17 @@ import CommentIcon from './CommentIcon';
 import React, { FC, useState } from 'react';
 import clsx from 'clsx';
 
-const EditorSection: FC = () => {
+const EditorSection: FC<{
+  contents: string;
+  setContent;
+  submit: any;
+}> = ({ contents, setContent, submit }) => {
   const [editorPopup, setEditorPopup] = useState(false);
-  const [comments, setComments] = useState<string[]>([]);
 
   const toggleEditor = () => {
     setEditorPopup(!editorPopup);
   };
 
-  const addComments = (newComment: string) => {
-    setComments([...comments, newComment]);
-  };
   console.log(editorPopup);
 
   return (
@@ -31,9 +31,11 @@ const EditorSection: FC = () => {
           ></div>
 
           <Editor
-            addComments={addComments}
             toggleEditor={toggleEditor}
             editorPopup={editorPopup}
+            contents={contents}
+            setContent={setContent}
+            submit={submit}
           />
         </div>
       }

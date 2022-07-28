@@ -73,7 +73,7 @@ const RoadMap: React.FC<Props> = ({ mode }) => {
         <Header />
         <Banner />
         <RoadMapComment />
-        <EditorSection />
+        {/* <EditorSection /> */}
       </div>
     </>
   );

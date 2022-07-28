@@ -5,6 +5,7 @@ import { useSelector } from 'react-redux';
 import { selectUser } from '../../../slices/userSlice';
 import { ThreadType } from '../../../resources/commonTypes';
 import { selectPlan } from '../../../slices/currentPlanSlice';
+import Editorsection from './commentEditor/EditorSection';
 
 interface ThreadBodyType extends ThreadType {
   comments?: undefined;
@@ -55,20 +56,31 @@ const NewComment: FC<{
   // eslint-disable-next-line react-hooks/exhaustive-deps
 
   return (
-    <div className="h-[165px] rounded-[20px]   border-2 mt-5 px-10 py-6">
-      <textarea
-        onChange={(event) => setContent(event.target.value)}
-        className="p-2 w-full h-[80px]"
-        placeholder="comment here"
-      ></textarea>
-      <button
-        onClick={onCommentSubmit}
-        className="w-[75px] h-[32px] rounded-[100px] bg-[#0C3A76] text-white"
-      >
-        {' '}
-        submit
-      </button>
-    </div>
+    <>
+      <div className="h-[165px] rounded-[20px]   border-2 mt-5 px-10 py-6">
+        <textarea
+          onChange={(event) => setContent(event.target.value)}
+          className="p-2 w-full h-[80px]"
+          placeholder="comment here"
+          value={content}
+        ></textarea>
+        <button
+          onClick={() => {
+            onCommentSubmit();
+            setContent('');
+          }}
+          className="w-[75px] h-[32px] rounded-[100px] bg-[#0C3A76] text-white"
+        >
+          {' '}
+          submit
+        </button>
+      </div>
+      <Editorsection
+        contents={content}
+        setContent={setContent}
+        submit={onCommentSubmit}
+      />
+    </>
   );
 };
 
