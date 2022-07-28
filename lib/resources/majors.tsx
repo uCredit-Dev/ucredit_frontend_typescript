@@ -4489,8 +4489,7 @@ const minorMath: Minor = {
       min_credits_per_course: 4,
       description:
         'Students must take one 200-level or above math course (excluding AS.110.202 Calculus III and the 2-credit 225).',
-      criteria:
-        'AS Mathematics[D]^AND^(200[L]^OR^300[L])',
+      criteria: 'AS Mathematics[D]^AND^(200[L]^OR^300[L])',
       double_count: [],
     },
     {
