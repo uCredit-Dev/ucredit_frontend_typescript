@@ -69,7 +69,7 @@ const bsECE: Major = {
         'major degree requirement</a> on the academic catalogue.',
       criteria:
         'EN.520.123[C]^OR^EN.520.142[C]^OR^EN.520.214[C]^OR^EN.520.219[C]^OR^EN.520.230[C]^OR^EN.520.231[C]',
-      exclusive: true,
+      double_count: ['Humanity & Social Sciences', 'Writing Intensive'],
       fine_requirements: [
         {
           description:
@@ -114,9 +114,7 @@ const bsECE: Major = {
         'Up to six (6) credits of computer science courses may be used to satisfy this requirement.',
       criteria:
         'EN Computer Science[D]^OR^EN Electrical & Computer Engineering[D]',
-      exception:
-        'EN.520.123[C]^OR^EN.520.142[C]^OR^EN.520.214[C]^OR^EN.520.219[C]^OR^EN.520.230[C]^OR^EN.520.231[C]',
-      exclusive: true,
+      double_count: ['Humanity & Social Sciences', 'Writing Intensive'],
       fine_requirements: [
         {
           description: 'At least 9 credits of ECE electives',
@@ -139,7 +137,7 @@ const bsECE: Major = {
         'Students must take a total of 12 credits of advanced laboratory, design intensive, or senior design project courses. A minimum of six (6) credits must come from ECE. The remaining 6 credits of advanced lab can come from any department, as long as the class is listed as an option in this section of the degree audit and degree checksheet.',
       criteria:
         'EN Computer Science[D]^OR^EN Electrical & Computer Engineering[D]',
-      exclusive: true,
+      double_count: ['Humanity & Social Sciences', 'Writing Intensive'],
       fine_requirements: [
         {
           description: 'Advanced Laboratory Courses in ECE',
@@ -162,6 +160,7 @@ const bsECE: Major = {
       description:
         'Six (6) credits of "other engineering" courses (with an E designation) from KSAS or School of Engineering departments other than ECE or Applied Mathematics and Statistics or General Engineering (Note: Entrepreneurship and Management courses in the Center for Leadership Education CANNOT be counted as “other engineering courses”).',
       criteria: 'E[A]^NOT^(EN Electrical & Computer Engineering[D]^OR^EN Applied Mathematics & Statistics[D]^OR^EN General Engineering[D])',
+      double_count: ['Humanity & Social Sciences', 'Writing Intensive'],
       fine_requirements: [
         {
           description:
@@ -219,6 +218,7 @@ const bsECE: Major = {
       description:
         'Courses in this group may not be taken Satisfactory/Unsatisfactory. Must include AS.171.101 General Physics: Physical Science Major I-AS.171.102 General Physics: Physical Science Major II, AS.173.111 General Physics Laboratory I-AS.173.112 General Physics Laboratory II.',
       criteria: 'N[A]',
+      double_count: ['Humanity & Social Sciences', 'Writing Intensive'],
       fine_requirements: [
         {
           description:
@@ -261,6 +261,7 @@ const bsECE: Major = {
       description:
         'Two (2) credits in EN.660.400 Practical Ethics for Future Leaders and one (1) credit EN.520.404 Engineering solutions in a global, economic, environmental, and societal context.',
       criteria: 'EN.660.400[C]^OR^EN.520.404[C]',
+      double_count: ['Humanity & Social Sciences', 'Writing Intensive'],
     },
     {
       name: 'Humanity & Social Sciences',
@@ -269,6 +270,7 @@ const bsECE: Major = {
       description:
         'At least five (5), three-credit courses in humanities and social sciences.',
       criteria: '(H[A]^OR^S[A])^NOT^(EN.660.400[C]^OR^EN.520.404[C])',
+      double_count: ['All'],
     },
     {
       name: 'Writing Intensive',
@@ -277,7 +279,7 @@ const bsECE: Major = {
       description:
         'Two (2) writing-intensive courses (at least 3 credits each) are required. The writing-intensive courses may not be taken Satisfactory/Unsatisfactory and require a C- or better grade.',
       criteria: 'Written Intensive[W]',
-      double_count: ['Humanity & Social Science'],
+      double_count: ['All'],
     },
   ],
 };
@@ -608,8 +610,10 @@ const baCogSci: Major = {
 // https://e-catalogue.jhu.edu/arts-sciences/full-time-residential-programs/degree-programs/mathematics/mathematics-bachelor-arts/#requirementstext
 const baMath: Major = {
   degree_name: "B.A. Mathematics",
+  abbrev: 'B.A. Math',
   department: "AS Mathematics",
   total_degree_credit: 120,
+  url: 'https://e-catalogue.jhu.edu/arts-sciences/full-time-residential-programs/degree-programs/mathematics/mathematics-bachelor-arts/#requirementstext',
   wi_credit: 15,
   distributions: [
     {
@@ -619,6 +623,7 @@ const baMath: Major = {
       description:
         'For more information please visit https://e-catalogue.jhu.edu/arts-sciences/full-time-residential-programs/degree-programs/mathematics/mathematics-bachelor-arts/#requirementstext.',
       criteria: 'AS Mathematics[D]',
+      double_count: ['All'],
       fine_requirements: [
         {
           description:
@@ -710,6 +715,7 @@ const baMath: Major = {
       description:
         'Effective Fall 2022, all students earning a degree from the School of Arts and Sciences must complete Reintroduction to Writing in their first year at Hopkins plus an additional 12 credits in writing-intensive courses through their undergraduate experience for a minimum of 15 writing-intensive credits.',
       criteria: 'Written Intensive[W]',
+      double_count: ['All'],
       fine_requirements:[
         {
           description:
