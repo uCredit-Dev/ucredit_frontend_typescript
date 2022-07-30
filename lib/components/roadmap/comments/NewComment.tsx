@@ -5,7 +5,7 @@ import { useSelector } from 'react-redux';
 import { selectUser } from '../../../slices/userSlice';
 import { ThreadType } from '../../../resources/commonTypes';
 import { selectPlan } from '../../../slices/currentPlanSlice';
-import Editorsection from './commentEditor/EditorSection';
+import Editor from './commentEditor/Editor';
 
 interface ThreadBodyType extends ThreadType {
   comments?: undefined;
@@ -57,29 +57,19 @@ const NewComment: FC<{
 
   return (
     <>
-      <div className="h-[165px] rounded-[20px]   border-2 mt-5 px-10 py-6">
-        <textarea
-          onChange={(event) => setContent(event.target.value)}
-          className="p-2 w-full h-[80px]"
-          placeholder="comment here"
-          value={content}
-        ></textarea>
+      <div className="h-[100%] rounded-[20px] border-2 mt-5 overflow-hidden">
+        <Editor contents={content} setContent={setContent} />
         <button
           onClick={() => {
             onCommentSubmit();
             setContent('');
           }}
-          className="w-[75px] h-[32px] rounded-[100px] bg-[#0C3A76] text-white"
+          className="absolute mt-[-75px] ml-[15px] w-[75px] h-[32px] rounded-[100px] bg-[#0C3A76] text-white"
         >
           {' '}
           submit
         </button>
       </div>
-      <Editorsection
-        contents={content}
-        setContent={setContent}
-        submit={onCommentSubmit}
-      />
     </>
   );
 };

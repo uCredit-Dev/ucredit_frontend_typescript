@@ -7,9 +7,7 @@ import { getAPI } from './../../../resources/assets';
 import { useSelector } from 'react-redux';
 import { ThreadType } from '../../../resources/commonTypes';
 import { selectPlan } from '../../../slices/currentPlanSlice';
-/**
- * Footer of landing page.
- */
+
 const RoadmapComment: FC = () => {
   const [sort, setSort] = useState<string>('default');
   const [allThreads, setAllThreads] = useState<ThreadType[]>([]);
@@ -58,7 +56,7 @@ const RoadmapComment: FC = () => {
           </div>
         </div>
       </div>
-      <div className="mb-40 md:mx-32 mx-12 flex flex-col gap-1">
+      <div className="mb-20 md:mx-32 mx-12 flex flex-col gap-1">
         <NewComment updateRoadmapThreads={updateRoadmapThreads} />
         {allThreads.map((thread) =>
           thread.comments
