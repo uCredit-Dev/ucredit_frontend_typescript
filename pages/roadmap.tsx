@@ -2,7 +2,6 @@ import React from 'react';
 import Header from '../lib/components/roadmap/Header';
 import RoadMapComment from '../lib/components/roadmap/comments/RoadMapComment';
 import Banner from '../lib/components/roadmap/Banner';
-import EditorSection from '../lib/components/roadmap/comments/commentEditor/EditorSection';
 import { ReviewMode } from '../lib/resources/commonTypes';
 import { useDispatch, useSelector } from 'react-redux';
 import { useCallback, useEffect } from 'react';
