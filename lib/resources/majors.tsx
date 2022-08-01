@@ -610,7 +610,8 @@ const bsPhysics: Major = {
           criteria:
             'EN Applied Mathematics & Statistics[D]^OR^EN Mechanical Engineering[D]^OR^' +
             'EN Biomedical Engineering[D]^OR^EN Chemical & Biomolecular Engineering[D]^OR^EN Electrical & Computer Engineering[D]^OR^' +
-            'EN Computer Science[D]^OR^EN Environment Health and Engineering[D]^OR^EN Material Science & Engineering[D]^OR^',
+            'EN Computer Science[D]^OR^EN Environment Health and Engineering[D]^OR^EN Material Science & Engineering[D]^OR^' +
+            'EN Mechanical Engineering[D]',
           double_count: ['All'],
         },
       ],
@@ -672,7 +673,7 @@ const bsPhysics: Major = {
         'All students earning a degree from the School of Arts and Sciences must complete at least 12 credits in writing-intensive courses. ' +
         'Writing-intensive courses taken to satisfy major, minor, or distribution requirements may also count toward the writing requirement.',
       criteria: 'Written Intensive[W]',
-      double_count: ['All']
+      double_count: ['All'],
     },
   ],
 };
@@ -908,7 +909,7 @@ const baPhysics: Major = {
         'All students earning a degree from the School of Arts and Sciences must complete at least 12 credits in writing-intensive courses. ' +
         'Writing-intensive courses taken to satisfy major, minor, or distribution requirements may also count toward the writing requirement.',
       criteria: 'Written Intensive[W]',
-      double_count: ['All']
+      double_count: ['All'],
     },
   ],
 };
