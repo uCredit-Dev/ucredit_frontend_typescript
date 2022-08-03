@@ -1,16 +1,57 @@
 import clsx from "clsx";
-import React, { useState } from "react";
-
+import React, { useState, useEffect  } from "react";
+import axios from 'axios';
+import { getAPI } from './../../resources/assets';
+import { Plan } from './../../resources/commonTypes';
 const Preview: React.FC = () => {
   const [showPreview, setShowPreview] = useState(false);
   const [allowComment, setAllowComment] = useState(true);
+  const [tags, setTags] = useState([]);
+  const [description, setDescription] = useState("");
 
+  const [currentPlan, setCurrentPlan] = useState<Plan[]>([]);
+  
   const togglePreview = () =>{
     setShowPreview(!showPreview);
   }
   const toggleAllowComment =()=>{
     setAllowComment(!allowComment);
   }
+
+  // hardcoded for now
+  const planID = "61ccac7bfd08a30004b0417c";
+
+  // plan details saved to 'currentPlan'
+  useEffect(() => {
+    axios
+      .get(getAPI(window) + `/plans/${planID}`)
+      .then((response) => {
+        const plan = response.data.data;
+        setCurrentPlan(plan);
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+      
+  }, [planID]);
+
+  const onPlanSubmit = () => {
+    console.log(currentPlan);
+    console.log(currentPlan.majors[0]);
+    const old_id = "61ccac7bfd08a30004b0417c";
+    const tags = ["CS","CE"]
+    console.log(description);
+    // post
+    axios
+      .post(getAPI(window) + '/roadmapPlans/createFromPlan', {
+        old_id,
+        description,
+        tags,
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  };
 
   return (
     <>
@@ -37,7 +78,7 @@ const Preview: React.FC = () => {
       </svg>
       <div className="flex items-center sm:space-x-5 pl-[7%] pt-[3%]">
         <div className="inline-block font-['Futura'] text-[30px]">
-          Default Name
+          {currentPlan.name}
         </div>
         <svg width="34" height="34" viewBox="0 0 34 34" fill="none" xmlns="http://www.w3.org/2000/svg"
           className="inline-block">
@@ -56,7 +97,7 @@ const Preview: React.FC = () => {
       </div>
 
       <textarea className="mt-2 mx-[7%] w-[86%] border-2 text-[20px] p-3 rounded-[20px] h-36"
-        placeholder="enter despcription...">
+        placeholder="enter despcription..." onChange={(e) => setDescription(e.target.value)}>
       </textarea>
       <div className="mt-2 ml-[7%] flex items-center">
         <input type="radio" 
@@ -70,8 +111,17 @@ const Preview: React.FC = () => {
         <div className="font-['Futura'] text-[30px]">
           Preview
         </div>
+       
       </div>
-
+      <button
+          onClick={() => {
+            onPlanSubmit();
+          }}
+          className="absolute mt-[-75px] ml-[15px] w-[75px] h-[32px] rounded-[100px] bg-[#0C3A76] text-white"
+        >
+          {' '}
+          submit
+        </button>
     </div>
     </>
   )
