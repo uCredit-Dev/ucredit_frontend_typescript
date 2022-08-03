@@ -1,6 +1,7 @@
 import React, { useState, useCallback, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import Header from './Header';
+import Preview from './Preview';
 import FeedbackPopup from '../popups/FeedbackPopup';
 import FeedbackNotification from '../popups/FeedbackNotification';
 // import Roadmap from '../roadmap/comments/RoadmapComment';
@@ -218,6 +219,7 @@ const Dashboard: React.FC<Props> = ({ mode }) => {
       <GenerateNewPlan />
       {mode === ReviewMode.Edit && <HandleUserInfoSetupDummy />}
       <HandlePlanShareDummy />
+      <Preview />
     </>
   );
 };
