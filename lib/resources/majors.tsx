@@ -4522,8 +4522,8 @@ const bsNeuro: Major = {
     },
     {
       name: 'Biology Sequence',
-      required_credits: 6,
-      min_credits_per_course: 3,
+      required_credits: 4,
+      min_credits_per_course: 1,
       pathing: 1,
       description:
         'Select one biology course with lab of the following. Exam credit not applicable. For more detail please visit ' +
@@ -4531,7 +4531,7 @@ const bsNeuro: Major = {
       criteria:
         'AS.020.151[C]^OR^AS.020.153[C]^OR^AS.020.152[C]^OR^AS.020.154[C]^OR^' +
         'AS.020.305[C]^OR^AS.020.315[C]^OR^AS.250.253[C]^OR^AS.250.254[C]^OR^' +
-        'AS.020.303[C]^OR^AS.250.253[C]^OR^AS.020.315[C]^OR^AS.020.306[C]^OR^AS.020.316[C]^OR^' +
+        'AS.020.303[C]^OR^AS.020.306[C]^OR^AS.020.316[C]^OR^' +
         'AS.020.374[C]^OR^AS.020.377[C]',
       double_count: [
         'Humanities (H) Distribution',
