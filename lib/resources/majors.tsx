@@ -4531,7 +4531,7 @@ const bsNeuro: Major = {
       criteria:
         'AS.020.151[C]^OR^AS.020.153[C]^OR^AS.020.152[C]^OR^AS.020.154[C]^OR^' +
         'AS.020.305[C]^OR^AS.020.315[C]^OR^AS.250.253[C]^OR^AS.250.254[C]^OR^' +
-        'AS.020.303[C]^OR^AS.020.340[C]^OR^AS.020.306[C]^OR^AS.020.316[C]^OR^' +
+        'AS.020.303[C]^OR^AS.250.253[C]^OR^AS.020.315[C]^OR^AS.020.306[C]^OR^AS.020.316[C]^OR^' +
         'AS.020.374[C]^OR^AS.020.377[C]',
       double_count: [
         'Humanities (H) Distribution',
@@ -4553,13 +4553,13 @@ const bsNeuro: Major = {
           criteria: 'AS.020.152[C]^OR^AS.020.154[C]',
         },
         {
-          required_credits: 5,
+          required_credits: 4,
           description:
-            '<b>Genetics with lab</b> <br /> AS.020.303 Genetics<br /> AS.020.340 Developmental Genetics Lab',
-          criteria: 'AS.020.303[C]^OR^AS.020.340[C]',
+            '<b>Genetics with lab</b> <br /> AS.020.303 Genetics<br /><i>AND</i> <br />AS.250.253 Protein Engineering and Biochemistry Lab<br /><i>OR</i> <br />AS.020.315 Biochemistry Project lab',
+          criteria: 'AS.020.303[C]^OR^AS.250.253[C]^OR^AS.020.315[C]',
         },
         {
-          required_credits: 5,
+          required_credits: 4,
           description:
             '<b>Biochemistry with lab</b> <br />AS.020.305 Biochemistry<br /> <i>AND</i> <br />Select one of the following:' +
             '<br />AS.020.315 Biochemistry Project lab <br />AS.250.253 Protein Engineering and Biochemistry Lab ' +
@@ -4662,7 +4662,7 @@ const bsNeuro: Major = {
         {
           required_credits: 1,
           description:
-            '<b>Scientific Communication</b> <br /> One credit of AS.080.541 Scientific Communication: Neuroscience.',
+            '<b>Scientific Communication</b> <br /> Two semesters of AS.080.541 Scientific Communication: Neuroscience.',
           criteria: 'AS.080.500[C]',
         },
       ],
