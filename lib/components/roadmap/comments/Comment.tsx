@@ -4,6 +4,7 @@ import { getAPI } from './../../../resources/assets';
 import { useSelector } from 'react-redux';
 import { selectUser } from '../../../slices/userSlice';
 import { ThreadType, CommentType } from '../../../resources/commonTypes';
+import Editor from './commentEditor/Editor';
 
 interface CommentBodyType {
   commenter_id: string;
@@ -149,31 +150,18 @@ const Comment: FC<{
             className="fixed inset-0 bg-gray-500 bg-opacity-75 transition-opacity"
           ></div>
 
-          <div className="flex items-end sm:items-center justify-center min-h-full p-4 text-center sm:p-0 z-10 overflow-auto">
-            {/*
-          Modal panel, show/hide based on modal state.
-  
-          Entering: "ease-out duration-300"
-            From: "opacity-0 translate-y-4 sm:translate-y-0 sm:scale-95"
-            To: "opacity-100 translate-y-0 sm:scale-100"
-          Leaving: "ease-in duration-200"
-            From: "opacity-100 translate-y-0 sm:scale-100"
-            To: "opacity-0 translate-y-4 sm:translate-y-0 sm:scale-95"
-  */}
-            <div className=" w-[200%] h-[165px] group-click:block z-20 bg-white border-2 mt-10 ">
-              <textarea
-                className="w-[95%]  m-4 h-[80px]"
-                placeholder="reply here"
-                onChange={(e) => setContent(e.target.value)}
-              ></textarea>
-              <button
-                onClick={() => replyHandler()}
-                className="w-[75px] h-[32px] rounded-[100px] bg-[#0C3A76] text-white"
-              >
-                {' '}
-                submit{' '}
-              </button>
-            </div>
+          <div className="h-[100%] rounded-[20px] border-2 mt-5 overflow-hidden">
+            <Editor contents={commentContent} setContent={setContent} />
+            <button
+              onClick={() => {
+                replyHandler();
+                setContent('');
+              }}
+              className="absolute mt-[-75px] ml-[15px] w-[75px] h-[32px] rounded-[100px] bg-[#0C3A76] text-white"
+            >
+              {' '}
+              submit
+            </button>
           </div>
         </div>
       )}

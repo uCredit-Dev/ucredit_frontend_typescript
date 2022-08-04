@@ -12,7 +12,8 @@ const RoadmapComment: FC = () => {
   const [sort, setSort] = useState<string>('default');
   const [allThreads, setAllThreads] = useState<ThreadType[]>([]);
 
-  const currPlan = useSelector(selectPlan);
+  // const currPlan = useSelector(selectPlan);
+  const currPlan = { _id: '62d8875b5b6fb8734aa09679' };
 
   useEffect(() => {
     axios
@@ -58,26 +59,27 @@ const RoadmapComment: FC = () => {
       </div>
       <div className="mb-20 md:mx-32 mx-12 flex flex-col gap-1">
         <NewComment updateRoadmapThreads={updateRoadmapThreads} />
-        {allThreads.map((thread) =>
-          thread.comments
-            ?.slice(0, 1)
-            .map((comment) =>
-              thread._id != null ? (
-                <Comment
-                  key={comment.commenter_id.name + comment.message}
-                  username={comment.commenter_id.name}
-                  upvote={0}
-                  content={comment.message}
-                  date={comment.date}
-                  threadID={thread._id}
-                  subcomments={thread.comments.slice(1)}
-                  updateRoadmapThreads={updateRoadmapThreads}
-                />
-              ) : (
-                <></>
+        {allThreads.length > 0 &&
+          allThreads.map((thread) =>
+            thread.comments
+              ?.slice(0, 1)
+              .map((comment) =>
+                thread._id != null ? (
+                  <Comment
+                    key={comment.commenter_id.name + comment.message}
+                    username={comment.commenter_id.name}
+                    upvote={0}
+                    content={comment.message}
+                    date={comment.date}
+                    threadID={thread._id}
+                    subcomments={thread.comments.slice(1)}
+                    updateRoadmapThreads={updateRoadmapThreads}
+                  />
+                ) : (
+                  <></>
+                ),
               ),
-            ),
-        )}
+          )}
       </div>
     </div>
   );

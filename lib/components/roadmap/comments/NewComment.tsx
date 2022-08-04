@@ -23,7 +23,8 @@ const NewComment: FC<{
   updateRoadmapThreads: (thread: ThreadType) => void;
 }> = ({ updateRoadmapThreads }) => {
   const user = useSelector(selectUser);
-  const currPlan = useSelector(selectPlan);
+  // const currPlan = useSelector(selectPlan);
+  const currPlan = { _id: '62d8875b5b6fb8734aa09679' };
   const [content, setContent] = useState('');
 
   const onCommentSubmit = () => {
