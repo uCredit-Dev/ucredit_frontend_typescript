@@ -44,12 +44,25 @@ const HamburgerMenu: FC<{
             <Popover.Button
               className={`
                             ${open ? '' : 'text-opacity-90'}
-                            z-40 p-[0.53rem] pt-[0.6rem] space-y-1 bg-white rounded shadow h-9 w-9 mx-2 cursor-pointer hamburger-menu focus:outline-none`}
+                            w-full hover:bg-slate-300 text-lg rounded-lg sm:w-auto px-3 py-1 sm:hover:text-blue-header sm:hover:bg-blue-footer sm:rounded-[13px] transition duration-100 ease-in`}
             >
-              <span className="block w-5 h-[0.2rem] bg-black"></span>
-              <span className="block w-5 h-[0.2rem] bg-black"></span>
-              <span className="block w-5 h-[0.2rem] bg-black"></span>
+              <svg
+                className="h-6 w-6"
+                xmlns="http://www.w3.org/2000/svg"
+                fill="none"
+                viewBox="0 0 24 24"
+                strokeWidth="2"
+                stroke="currentColor"
+                aria-hidden="true"
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  d="M4 6h16M4 12h16M4 18h16"
+                />
+              </svg>
             </Popover.Button>
+
             <Transition
               as={Fragment}
               enter="transition ease-out duration-200"
