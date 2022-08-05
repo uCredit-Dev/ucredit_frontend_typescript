@@ -1,110 +1,91 @@
 import SearchBarArea from './searchBarArea';
-import { selectMobileAdvSearch } from '../../../slices/roadmapSearchSlice';
-import { useState } from 'react';
-import { useSelector } from 'react-redux';
-import { FaBars } from 'react-icons/fa';
-import { GrClose } from 'react-icons/gr';
-import React from 'react';
+import { useRouter } from 'next/router';
+import React, { useState } from 'react';
 
+/**
+ * Header components.
+ */
+const Links: React.FC = () => {
+  return (
+    <div className="sm:space-x-5">
+      <button className="w-full hover:bg-slate-300 text-lg rounded-lg sm:w-auto px-3 py-1 sm:hover:text-blue-header sm:hover:bg-blue-footer sm:rounded-[13px] transition duration-100 ease-in">
+        my dashboard
+      </button>
+
+      <button className="w-full hover:bg-slate-300 text-lg rounded-lg sm:w-auto px-3 py-1 sm:hover:text-blue-header sm:hover:bg-blue-footer sm:rounded-[13px] transition duration-100 ease-in">
+        post
+      </button>
+    </div>
+  );
+};
+
+/**
+ * Header of searching page ofoad map.
+ */
 const SearchHeader: React.FC = () => {
-  const mobileAdvSearch = useSelector(selectMobileAdvSearch);
-  const [mobileNavShowing, setMobileNavShowing] = useState<boolean>(false);
-
-  const getMobileNavClass = (): string => {
-    if (mobileNavShowing) {
-      return '';
-    } else {
-      return 'hidden';
-    }
-  };
-
-  const oppositeMobileNavClass = (): string => {
-    if (mobileNavShowing) {
-      return 'hidden';
-    } else {
-      return '';
-    }
-  };
-
-  const getOuterTopClass = () => {
-    if (mobileAdvSearch) {
-      return 'top-0';
-    } else {
-      return '-top-32';
-    }
-  };
+  const router = useRouter();
+  const [showMenu, setShowMenu] = useState<boolean>(false);
 
   return (
-    <div className={`sticky ${getOuterTopClass()} md:-top-36`}>
-      <div
-        className="h-16 bg-sky-200 sticky top-0 flex flex-row
-      justify-center items-center text-lg text-blue-900"
-      >
-        <a href="/">
-          <div className="flex flex-row">
-            <img className="w-9 h-9 ml-5" src="/img/logo.png" alt="logo" />
-            <p
-              className="hidden md:block text-xl flex-grow-0 mx-5 pt-0.5
-            pb-1"
-            >
-              uCredit
-            </p>
-          </div>
-        </a>
-        <p className="flex-grow"></p>
-        <div className="relative">
-          <button
-            className={`${oppositeMobileNavClass()}`}
-            onClick={() => setMobileNavShowing(true)}
-          >
-            <div className="md:hidden mr-6">
-              <FaBars size={28} color="black" />
-            </div>
-          </button>
-          <button
-            className={`${getMobileNavClass()}`}
-            onClick={() => setMobileNavShowing(false)}
-          >
-            <div className="md:hidden mr-6">
-              <GrClose size={28} color="black" />
-            </div>
-          </button>
+    <>
+    <div className="sticky top-0 z-40 flex justify-between items-center py-1 px-4 h-1/6 bg-blue-header">
+      <div className="flex-grow">
+        <div className="inline-flex">
+          <img
+            className="w-12 h-12 mr-1 scale-x-[-1]"
+            src="/img/logo.png"
+            alt="logo"
+          />
+
           <div
-            className={`absolute right-6 flex flex-col w-max outline
-          outline-2 outline-black rounded-2xl overflow-hidden child:px-4 
-          child:py-1 child:outline child:outline-gray-400 child:outline-1
-          ${getMobileNavClass()} md:hidden`}
+            className="text-3xl cursor-pointer text-blue-footer self-center"
+            onClick={() => router.push('/')}
           >
-            <a href="/">Dashboard</a>
-            <a href="/">Post a Plan</a>
+            uCredit
           </div>
-        </div>
-        <div className="hidden md:block flex-grow-0">
-          <a
-            href="/"
-            className="mx-2 px-3 pb-0.5 underline rounded-3xl 
-          hover:bg-blue-900 hover:text-white"
-          >
-            Dashboard
-          </a>
-          <a
-            href="/"
-            className="mx-2 px-3 pb-0.5 rounded-3xl text-white 
-          bg-blue-900"
-          >
-            Search
-          </a>
-          <a
-            href="/"
-            className="ml-2 mr-5 px-3 pb-0.5 underline rounded-3xl 
-          hover:bg-blue-900 hover:text-white"
-          >
-            Post
-          </a>
         </div>
       </div>
-      <SearchBarArea />
+      <div>
+        <div className="relative sm:hidden">
+          <button
+            type="button"
+            className="inline-flex items-center justify-center p-2 rounded-md text-gray-400 hover:text-white hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-white"
+            aria-controls="mobile-menu"
+            aria-expanded="false"
+            onClick={() => setShowMenu(!showMenu)}
+          >
+            <svg
+              className="h-6 w-6"
+              xmlns="http://www.w3.org/2000/svg"
+              fill="none"
+              viewBox="0 0 24 24"
+              strokeWidth="2"
+              stroke="currentColor"
+              aria-hidden="true"
+            >
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                d="M4 6h16M4 12h16M4 18h16"
+              />
+            </svg>
+          </button>
+
+          {showMenu && (
+            <div className="absolute w-20 top-12 space-y-1 right-0 z-100 bg-white shadow-xl rounded-lg">
+              <Links />
+            </div>
+          )}
+        </div>
+
+        <div className="hidden sm:block">
+          <Links />
+        </div>
+      </div>
+      
     </div>
+    <SearchBarArea />
+    </>
   );
 };
 
