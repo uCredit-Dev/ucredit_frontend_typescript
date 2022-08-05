@@ -1,6 +1,7 @@
 import { useState, useEffect, FC } from 'react';
 import {
   Course,
+  UserDistribution,
   Plan,
   ReviewMode,
   Year,
@@ -18,13 +19,16 @@ import Select from 'react-select';
 import { all_deps, getAPI, course_tags } from '../../../../resources/assets';
 import {
   selectCourseToShow,
+  selectDeleteCourseStatus,
   updateCourseToShow,
   updateShowCourseInfo,
 } from '../../../../slices/popupSlice';
 import {
   selectCurrentPlanCourses,
+  selectDistributions,
   selectPlan,
   updateCurrentPlanCourses,
+  updateDistributions,
   updateSelectedPlan,
 } from '../../../../slices/currentPlanSlice';
 import ReactTooltip from 'react-tooltip';
@@ -48,6 +52,7 @@ const Placeholder: FC<{ addCourse: (plan?: Plan) => void }> = (props) => {
   const searchStatus = useSelector(selectSearchStatus);
   const currentCourses = useSelector(selectCurrentPlanCourses);
   const currentPlan = useSelector(selectPlan);
+  const distributions = useSelector(selectDistributions);
   const dispatch = useDispatch();
 
   // Component state setup.
@@ -189,6 +194,12 @@ const Placeholder: FC<{ addCourse: (plan?: Plan) => void }> = (props) => {
         newYears.push({ ...y, courses: yCourses });
       });
       const newPlan: Plan = { ...currentPlan, years: newYears };
+      distributions.forEach((dist: UserDistribution, i: number) => {
+        if (data.data.distributions.includes(dist._id)) {
+          distributions[i] = dist; 
+        }
+      });
+      dispatch(updateDistributions(distributions));
       dispatch(updateSelectedPlan(newPlan));
       props.addCourse(newPlan);
     } else {
