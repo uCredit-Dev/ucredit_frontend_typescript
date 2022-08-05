@@ -3,17 +3,15 @@ import { RootState } from '../appStore/store';
 import {
   CommentType,
   DroppableType,
-  Major,
+  Distribution,
   Plan,
   ThreadType,
   UserCourse,
 } from '../components/../resources/commonTypes';
-import { requirements } from '../components/dashboard/degree-info/distributionFunctions';
-import { getMajorFromCommonName } from '../resources/majors';
 
 type CurrentPlanSlice = {
   plan: Plan;
-  distributions: [string, requirements[]][];
+  distributions: Distribution[];
   currentPlanCourses: UserCourse[];
   totalCredits: number;
   droppables: DroppableType[];
@@ -22,8 +20,8 @@ type CurrentPlanSlice = {
   filteredThreads: any;
   reviewedPlan: Plan | null;
   selectedThread: string | null;
-  selectedMajor: Major | null;
-  selectedDistribution: [string, requirements[]];
+  selectedMajor: string | null;
+  selectedDistribution: Distribution | null;
 };
 
 export const initialPlan = {
@@ -49,7 +47,7 @@ const initialState: CurrentPlanSlice = {
   reviewedPlan: null,
   selectedThread: null,
   selectedMajor: null,
-  selectedDistribution: ['', []],
+  selectedDistribution: null,
 };
 
 export const currentPlanSlice = createSlice({
@@ -58,21 +56,21 @@ export const currentPlanSlice = createSlice({
   reducers: {
     updateSelectedPlan: (state: any, action: PayloadAction<Plan>) => {
       state.plan = { ...action.payload };
-      const majorObj: Major | null =
+      const major_id: string | null =
         action.payload.major_ids.length > 0
-          ? getMajorFromCommonName(action.payload.major_ids[0])
+          ? action.payload.major_ids[0]
           : null;
-      if (majorObj) state.selectedMajor = majorObj;
+      if (major_id) state.selectedMajor = major_id;
     },
     updateDistributions: (
       state: any,
-      action: PayloadAction<[string, requirements[]][]>,
+      action: PayloadAction<Distribution[]>,
     ) => {
       state.distributions = [...action.payload];
       if (state.selectedDistribution)
         for (let distr of action.payload) {
           if (distr[0] === state.selectedDistribution[0]) {
-            state.selectedDistribution = [...distr];
+            state.selectedDistribution = distr;
             break;
           }
         }
@@ -137,12 +135,12 @@ export const currentPlanSlice = createSlice({
     updateSelectedThread: (state: any, action: PayloadAction<String>) => {
       state.selectedThread = action.payload;
     },
-    updateSelectedMajor: (state: any, action: PayloadAction<Major>) => {
+    updateSelectedMajor: (state: any, action: PayloadAction<String>) => {
       state.selectedMajor = action.payload;
     },
     updateSelectedDistribution: (
       state: any,
-      action: PayloadAction<[string, requirements[]]>,
+      action: PayloadAction<Distribution>,
     ) => {
       state.selectedDistribution = action.payload;
     },

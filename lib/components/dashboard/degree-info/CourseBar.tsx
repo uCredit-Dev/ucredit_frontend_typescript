@@ -6,7 +6,6 @@ import {
   selectDistributions,
   updateSelectedDistribution,
 } from '../../../slices/currentPlanSlice';
-import { requirements } from './distributionFunctions';
 import { CheckCircleIcon, ExclamationIcon } from '@heroicons/react/solid';
 import ReactTooltip from 'react-tooltip';
 import {
@@ -17,7 +16,7 @@ import {
 import { clearSearch, updatePlaceholder } from '../../../slices/searchSlice';
 import { updateCartInvokedBySemester } from '../../../slices/userSlice';
 import Comments from '../Comments';
-import { ReviewMode } from '../../../resources/commonTypes';
+import { Distribution, ReviewMode } from '../../../resources/commonTypes';
 
 /**
  * A distribution bar.
@@ -28,14 +27,13 @@ import { ReviewMode } from '../../../resources/commonTypes';
  * M tried @prop bgcolor - color of this distribution
  */
 const CourseBar: FC<{
-  distribution: requirements;
+  distribution: Distribution;
   general: boolean;
   bgcolor: string;
-  completed: boolean;
   mode?: ReviewMode;
-}> = ({ distribution, general, bgcolor, completed, mode }) => {
+}> = ({ distribution, general, bgcolor, mode }) => {
   const [plannedCredits, setPlannedCredits] = useState(
-    distribution.fulfilled_credits,
+    distribution.planned,
   );
   const [hovered, setHovered] = useState(false);
 
@@ -51,12 +49,12 @@ const CourseBar: FC<{
 
   // Decides how filled the credit bar is.
   useEffect(() => {
-    let temp = distribution.fulfilled_credits;
+    let temp = distribution.planned;
     setPlannedCredits(temp);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [
     currPlanCourses,
-    distribution.fulfilled_credits,
+    distribution.planned,
     distribution,
     distributions,
   ]);

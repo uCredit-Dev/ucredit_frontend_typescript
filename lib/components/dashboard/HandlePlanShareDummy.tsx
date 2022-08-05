@@ -107,7 +107,7 @@ const HandlePlanShareDummy = () => {
     dispatch(updateToAddName(plan.name));
     dispatch(
       updateToAddMajors(
-        plan.majors.map((major) => getMajorFromCommonName(major)),
+        plan.major_ids.map((major) => getMajorFromCommonName(major)),
       ),
     );
     dispatch(updateGeneratePlanAddStatus(true));

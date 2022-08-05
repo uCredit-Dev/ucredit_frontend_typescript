@@ -1,29 +1,30 @@
 import { useState, FC } from 'react';
 import FineRequirementListItem from './FineRequirementItem';
 import { requirements } from '../../../dashboard/degree-info/distributionFunctions';
+import { Distribution, FineReq } from '../../../../resources/commonTypes';
 
 const FineRequirementsList: FC<{
   searching: boolean;
   selectRequirement: Function;
-  selectedDistribution: [string, requirements[]];
+  selectedDistribution: Distribution;
 }> = (props) => {
   // Component state setup.
   const [hideResults, setHideResults] = useState<boolean>(false);
   const [selectedListItem, setSelectedListItem] = useState<number>(-1);
 
-  const selectRequirement = (requirement: requirements, i: number) => {
+  const selectRequirement = (requirement: FineReq, i: number) => {
     props.selectRequirement(requirement);
     setSelectedListItem(i);
   };
 
   const getRequirements = () => {
-    return props.selectedDistribution[1].map((requirement, i) => {
+    return props.selectedDistribution.fineReq_ids.map((fine, i) => {
       if (i === 0) return <></>; // TODO : better key
       return (
         <div key={i}>
           <FineRequirementListItem
             id={i}
-            itemRequirement={requirement}
+            itemRequirement={fine}
             onClick={selectRequirement}
             selected={i === selectedListItem}
           />

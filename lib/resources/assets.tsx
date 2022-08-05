@@ -4,6 +4,7 @@ import {
   Course,
   User,
   Plan,
+  Major,
   SemesterType,
   UserCourse,
   SISRetrievedCourse,
@@ -978,14 +979,12 @@ export const checkAllPrereqs = (
   });
 };
 
-/**
- * @param major - major name
- * @returns the major object from the name
- */
-export const getMajor = (major: string) => {
-  for (let m of allMajors) {
-    if (m.degree_name === major) {
-      return m;
-    }
+export async function getMajor(name: string): Promise<Major | null> {
+  const resp: Major | null = await axios.get(
+    getAPI(window) + '/courses/' + name,
+  );
+  if (resp === null) {
+    throw Error('Major not found');
   }
-};
+  return resp;
+}

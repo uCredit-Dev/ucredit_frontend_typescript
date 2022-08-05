@@ -3,6 +3,7 @@ import React, { FC, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import Select from 'react-select';
 import { allMajors } from '../../../resources/majors';
+import { Major } from '../../../resources/commonTypes';
 import { selectSelectedMajor } from '../../../slices/currentPlanSlice';
 import { updateInfoPopup } from '../../../slices/popupSlice';
 import DistributionBarsJSX from './DistributionBarsJSX';
@@ -17,7 +18,7 @@ const Distributions: FC<{
   // Component state setup.
   const [disclaimer, setDisclaimer] = useState<boolean>(true);
   const dispatch = useDispatch();
-  const major = useSelector(selectSelectedMajor);
+  const major_id = useSelector(selectSelectedMajor);
 
   const majorOptions = userMajors.map((m, index) => ({
     value: index,
@@ -25,7 +26,7 @@ const Distributions: FC<{
   }));
 
   const getHref = (): string => {
-    return major !== null ? major.url : '';
+    return majorObj !== null ? majorObj.url : '';
   };
 
   return (
@@ -43,7 +44,7 @@ const Distributions: FC<{
       {userMajors.length > 1 && (
         <Select
           options={majorOptions}
-          value={majorOptions.find(({ label }) => label === major?.degree_name)}
+          value={majorOptions.find(({ label }) => label === major_id)}
           onChange={(event) => {
             changeDisplayMajor(event?.label);
           }}
@@ -52,7 +53,7 @@ const Distributions: FC<{
           hideSelectedOptions
         />
       )}
-      <DistributionBarsJSX major={major ? major : allMajors[0]} />
+      <DistributionBarsJSX major={major_id ? major_id : allMajors[0].degree_name} />
       {disclaimer && (
         <div
           id="dropdown-cta"

@@ -197,9 +197,15 @@ export type FilterType =
 export type AreaType = 'N' | 'S' | 'H' | 'W' | 'E' | 'Q';
 
 export type FineReq = {
+  satisfied: boolean;
   required_credits: number;
   description: string;
   criteria: string;
+  plan_id: string; 
+  major_id: string; 
+  distribution_id: string; 
+  planned: number; 
+  current: number; 
   double_count?: string[];
 };
 

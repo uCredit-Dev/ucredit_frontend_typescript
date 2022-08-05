@@ -29,7 +29,7 @@ const InfoMenu: FC<Props> = () => {
   // Update major when plan changes
   useEffect(() => {
     if (!major) {
-      let firstMajor: string | undefined = currentPlan.majors[0];
+      let firstMajor: string | undefined = currentPlan.major_ids[0];
       if (firstMajor === undefined) {
         return;
       }
@@ -39,7 +39,7 @@ const InfoMenu: FC<Props> = () => {
       }
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [currentPlan._id, currentPlan.majors, currPlanCourses]);
+  }, [currentPlan._id, currentPlan.major_ids, currPlanCourses]);
 
   /**
    * Callback used to change the major of degree progress when user has multiple majors
