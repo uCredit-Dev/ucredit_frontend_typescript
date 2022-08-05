@@ -387,7 +387,7 @@ const bsPhysics: Major = {
       required_credits: 20,
       min_credits_per_course: 4,
       description:
-        'All Physics majors must Calculus I, Calculus II, Calculus III, Differential Equations, and Linear Algebra (or equivalent courses).',
+        'All Physics majors must take Calculus I, Calculus II, Calculus III, Differential Equations, and Linear Algebra (or equivalent courses).',
       criteria:
         'AS.110.108[C]^OR^AS.110.109[C]^OR^AS.110.113[C]^OR^AS.110.202[C]^OR^AS.110.211[C]^OR^' +
         'AS.110.302[C]^OR^AS.110.201[C]^OR^AS.110.212[C]',
@@ -438,7 +438,7 @@ const bsPhysics: Major = {
       required_credits: 38,
       min_credits_per_course: 1,
       description:
-        'The standard physics requirements for all physics majors matriculating on or after September 2020 consist of',
+        'All physics majors must take the following standard physics requirements',
       criteria:
         'AS.171.105[C]^OR^AS.171.101[C]^OR^AS.171.103[C]^OR^AS.171.107[C]^OR^AS.173.115[C]^OR^AS.173.111[C]^OR^' +
         'AS.171.106[C]^OR^AS.171.102[C]^OR^AS.171.104[C]^OR^AS.171.108[C]^OR^AS.173.116[C]^OR^AS.173.112[C]^OR^' +
@@ -692,7 +692,7 @@ const baPhysics: Major = {
       required_credits: 20,
       min_credits_per_course: 4,
       description:
-        'All Physics majors must Calculus I, Calculus II, Calculus III, Differential Equations, and Linear Algebra (or equivalent courses).',
+        'All Physics majors must take Calculus I, Calculus II, Calculus III, Differential Equations, and Linear Algebra (or equivalent courses).',
       criteria:
         'AS.110.108[C]^OR^AS.110.109[C]^OR^AS.110.113[C]^OR^AS.110.202[C]^OR^AS.110.211[C]^OR^' +
         'AS.110.302[C]^OR^AS.110.201[C]^OR^AS.110.212[C]',
@@ -743,7 +743,7 @@ const baPhysics: Major = {
       required_credits: 38,
       min_credits_per_course: 1,
       description:
-        'The standard physics requirements for all physics majors consist of:',
+        'All physics majors must take the following standard physics requirements.',
       criteria:
         'AS.171.105[C]^OR^AS.171.101[C]^OR^AS.171.103[C]^OR^AS.171.107[C]^OR^AS.173.115[C]^OR^AS.173.111[C]^OR^' +
         'AS.171.106[C]^OR^AS.171.102[C]^OR^AS.171.104[C]^OR^AS.171.108[C]^OR^AS.173.116[C]^OR^AS.173.112[C]^OR^' +
