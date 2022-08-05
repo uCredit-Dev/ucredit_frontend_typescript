@@ -154,7 +154,7 @@ export type SearchExtras = {
 };
 
 // Info for distribution bar.
-export type Distribution = {
+export type UserDistribution = {
   _id: string;
   name: string;
   required_credits: number;
@@ -164,7 +164,7 @@ export type Distribution = {
   user_id: string;
   plan_id: string;
   major_id: string; 
-  fineReq_ids?: FineReq[];
+  fineReq_ids?: FineReqObj[];
   planned: number; 
   current: number; 
   satisfied: boolean; 
@@ -196,7 +196,7 @@ export type FilterType =
 
 export type AreaType = 'N' | 'S' | 'H' | 'W' | 'E' | 'Q';
 
-export type FineReq = {
+export type UserFineReq = {
   satisfied: boolean;
   required_credits: number;
   description: string;
@@ -209,7 +209,14 @@ export type FineReq = {
   double_count?: string[];
 };
 
-export type DistributionObj = {
+export type FineReq = {
+  required_credits: number;
+  description: string;
+  criteria: string;
+  double_count?: string[];
+};
+
+export type Distribution = {
   name: string;
   required_credits: number;
   min_credits_per_course: number;
@@ -229,7 +236,7 @@ export type Major = {
   total_degree_credit: number;
   wi_credit: number;
   url: string;
-  distributions: DistributionObj[];
+  distributions: Distribution[];
 };
 
 export type Minor = {
@@ -239,7 +246,7 @@ export type Minor = {
   total_degree_credit: number;
   wi_credit: number;
   url: string;
-  distributions: DistributionObj[];
+  distributions: Distribution[];
 };
 
 export type DroppableType = {

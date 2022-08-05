@@ -1,5 +1,6 @@
 import React, { useState, useEffect, FC } from 'react';
 import {
+  UserDistribution,
   DroppableType,
   Plan,
   ReviewMode,
@@ -24,9 +25,11 @@ import { Droppable } from 'react-beautiful-dnd';
 import {
   selectCurrentPlanCourses,
   selectPlan,
+  selectDistributions, 
   updateCurrentPlanCourses,
   updateDroppables,
   updateSelectedPlan,
+  updateDistributions,
 } from '../../../../slices/currentPlanSlice';
 import ReactTooltip from 'react-tooltip';
 import clsx from 'clsx';
@@ -73,6 +76,7 @@ const Semester: FC<{
   const currentCourses = useSelector(selectCurrentPlanCourses);
   const inspected = useSelector(selectInspectedCourse);
   const cartOpen = useSelector(selectCartAdd);
+  const distributions = useSelector(selectDistributions);
 
   // State used to control whether dropdown is opened or closed
   const [totalCredits, setTotalCredits] = useState<number>(0);
@@ -187,13 +191,13 @@ const Semester: FC<{
    * Posts to add course route and then updates distribution. Then clears state.
    */
   const addPrereq = () => {
-    updateDistributions();
+    updateDistributionBars();
   };
 
   /**
    * Updates distribution bars upon successfully adding a course.
    */
-  const updateDistributions = (): void => {
+  const updateDistributionBars = (): void => {
     if (version !== 'None') {
       const body = {
         ...version,
@@ -203,7 +207,6 @@ const Semester: FC<{
         term: semesterName === 'All' ? 'fall' : semesterName.toLowerCase(),
         year: semesterYear._id,
         credits: version.credits === '' ? 0 : version.credits,
-        distribution_ids: currentPlan.distribution_ids,
         isPlaceholder: placeholder,
         area: inspectedArea,
         version: semesterName + ' ' + semesterYear.year,
@@ -229,7 +232,7 @@ const Semester: FC<{
   const handlePostResponse = (data) => {
     if (data.errors === undefined && version !== 'None') {
       let newUserCourse: UserCourse;
-      newUserCourse = { ...data.data };
+      newUserCourse = { ...data.data.course };
       dispatch(updateCurrentPlanCourses([...currentCourses, newUserCourse]));
       const allYears: Year[] = [...currentPlan.years];
       const newYears: Year[] = [];
@@ -249,6 +252,12 @@ const Semester: FC<{
           newPlanList[i] = newPlan;
         }
       }
+      distributions.forEach((dist: UserDistribution, i: number) => {
+        if (data.data.distributions.includes(dist._id)) {
+          distributions[i] = dist; 
+        }
+      });
+      dispatch(updateDistributions(distributions));
       dispatch(updatePlanList(newPlanList));
       dispatch(updateAddingPrereq(false));
       dispatch(updateInfoPopup(true));

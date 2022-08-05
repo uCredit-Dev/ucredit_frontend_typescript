@@ -3,9 +3,9 @@ import { useSelector, useDispatch } from 'react-redux';
 import { selectPlanList, updatePlanList } from '../../slices/userSlice';
 import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
-import { selectPlan, updateSelectedPlan } from '../../slices/currentPlanSlice';
+import { selectDistributions, selectPlan, updateDistributions, updateSelectedPlan } from '../../slices/currentPlanSlice';
 import { getAPI } from '../../resources/assets';
-import { Plan } from '../../resources/commonTypes';
+import { UserDistribution, Plan } from '../../resources/commonTypes';
 import {
   selectCourseToDelete,
   updateDeleteCourseStatus,
@@ -22,6 +22,7 @@ const DeleteCoursePopup: FC = () => {
   const currentPlan = useSelector(selectPlan);
   const courseInfo = useSelector(selectCourseToDelete);
   const planList = useSelector(selectPlanList);
+  const distributions = useSelector(selectDistributions);
 
   /**
    * Popup for deleting current selected course.
@@ -30,7 +31,8 @@ const DeleteCoursePopup: FC = () => {
     if (currentPlan.years.length > 1 && courseInfo !== null) {
       fetch(getAPI(window) + '/courses/' + courseInfo.course._id, {
         method: 'DELETE',
-      }).then(() => {
+      }).then((retrieved) => retrieved.json())
+        .then((data) => {
         let newPlan: Plan;
         const years = [...currentPlan.years];
         currentPlan.years.forEach((planYear, index) => {
@@ -41,6 +43,12 @@ const DeleteCoursePopup: FC = () => {
             years[index] = { ...years[index], courses: courses };
           }
         });
+        distributions.forEach((dist: UserDistribution, i: number) => {
+          if (data.data.distributions.includes(dist._id)) {
+            distributions[i] = dist; 
+          }
+        });
+        dispatch(updateDistributions(distributions));
         newPlan = { ...currentPlan, years: years };
 
         toast.error(courseInfo.course.title + ' deleted!');

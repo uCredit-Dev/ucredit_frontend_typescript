@@ -16,7 +16,7 @@ import {
 import { clearSearch, updatePlaceholder } from '../../../slices/searchSlice';
 import { updateCartInvokedBySemester } from '../../../slices/userSlice';
 import Comments from '../Comments';
-import { Distribution, ReviewMode } from '../../../resources/commonTypes';
+import { Distribution, ReviewMode, UserDistribution } from '../../../resources/commonTypes';
 
 /**
  * A distribution bar.
@@ -27,7 +27,7 @@ import { Distribution, ReviewMode } from '../../../resources/commonTypes';
  * M tried @prop bgcolor - color of this distribution
  */
 const CourseBar: FC<{
-  distribution: Distribution;
+  distribution: UserDistribution;
   general: boolean;
   bgcolor: string;
   mode?: ReviewMode;
@@ -63,7 +63,7 @@ const CourseBar: FC<{
   const openCartPopup = () => {
     dispatch(updateCartInvokedBySemester(false));
     // Filter for the correst distributions from redux store
-    let distrs = distributions.filter((req) => req[0] === distribution.name)[0];
+    let distrs = distributions.filter((dist) => dist.name === distribution.name)[0];
     if (distrs) {
       // if the distribution exists, then update the cart
       // at this point we have access to the current requirement
@@ -89,7 +89,7 @@ const CourseBar: FC<{
     (remainingCredits !== 0
       ? `<div>Remaining</div><div>${remainingCredits}</div>`
       : (() =>
-          completed
+          distribution.satisfied
             ? `<div style="width: 100%; height: auto; display: flex; flex-direction: row; justify-content: center">Completed!</div>`
             : `<div style="width: 100%; height: auto; display: flex; flex-direction: row; justify-content: center">Your credits fulfill this overall requirement, but your fine requirements are lacking! Please click this bar to find out more.</div>`)()) +
     `</div>`;
@@ -133,7 +133,7 @@ const CourseBar: FC<{
         />
         <div className="truncate">{section}</div>
         <div>
-          {remainingCredits === 0 && completed ? (
+          {remainingCredits === 0 && distribution.satisfied ? (
             <CheckCircleIcon className="w-4 h-5 mt-1 ml-1 stroke-2" />
           ) : remainingCredits === 0 ? (
             <ExclamationIcon className="w-4 h-5 mt-1 ml-1 stroke-2" />

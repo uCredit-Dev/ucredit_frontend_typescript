@@ -3,15 +3,15 @@ import { RootState } from '../appStore/store';
 import {
   CommentType,
   DroppableType,
-  Distribution,
   Plan,
   ThreadType,
   UserCourse,
+  UserDistribution,
 } from '../components/../resources/commonTypes';
 
 type CurrentPlanSlice = {
   plan: Plan;
-  distributions: Distribution[];
+  distributions: UserDistribution[];
   currentPlanCourses: UserCourse[];
   totalCredits: number;
   droppables: DroppableType[];
@@ -21,7 +21,7 @@ type CurrentPlanSlice = {
   reviewedPlan: Plan | null;
   selectedThread: string | null;
   selectedMajor: string | null;
-  selectedDistribution: Distribution | null;
+  selectedDistribution: UserDistribution | null;
 };
 
 export const initialPlan = {
@@ -64,7 +64,7 @@ export const currentPlanSlice = createSlice({
     },
     updateDistributions: (
       state: any,
-      action: PayloadAction<Distribution[]>,
+      action: PayloadAction<UserDistribution[]>,
     ) => {
       state.distributions = [...action.payload];
       if (state.selectedDistribution)
@@ -140,7 +140,7 @@ export const currentPlanSlice = createSlice({
     },
     updateSelectedDistribution: (
       state: any,
-      action: PayloadAction<Distribution>,
+      action: PayloadAction<UserDistribution>,
     ) => {
       state.selectedDistribution = action.payload;
     },

@@ -48,8 +48,8 @@ const Cart: FC<{ allCourses: SISRetrievedCourse[] }> = (props) => {
   const cartAdd = useSelector(selectCartAdd);
 
   useEffect(() => {
-    if (distrs[1] && distrs[1].length > 0) {
-      setSelectedRequirement(distrs[1][0]);
+    if (distrs) {
+      setSelectedRequirement(distrs);
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [distrs, currentPlanCourses, cartAdd]);

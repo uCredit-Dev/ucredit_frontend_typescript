@@ -12,10 +12,12 @@ import {
 } from '../../../../slices/searchSlice';
 import {
   selectCurrentPlanCourses,
+  selectDistributions,
   selectPlan,
   updateCurrentPlanCourses,
   updateDroppables,
   updateSelectedPlan,
+  updateDistributions
 } from '../../../../slices/currentPlanSlice';
 import ReactTooltip from 'react-tooltip';
 import clsx from 'clsx';
@@ -37,6 +39,7 @@ import {
   UserCourse,
   DroppableType,
   Plan,
+  Distribution,
 } from '../../../../resources/commonTypes';
 
 /**
@@ -60,6 +63,7 @@ const VSemester: React.FC<{
   const planList = useSelector(selectPlanList);
   const placeholder = useSelector(selectPlaceholder);
   const currentCourses = useSelector(selectCurrentPlanCourses);
+  const distributions = useSelector(selectDistributions);
 
   // State used to control whether dropdown is opened or closed
   const [totalCredits, setTotalCredits] = useState<number>(0);
@@ -141,14 +145,14 @@ const VSemester: React.FC<{
    * Posts to add course route and then updates distribution. Then clears state.
    */
   const addPrereq = () => {
-    updateDistributions();
+    updateDistributionBars();
     dispatch(clearSearch());
   };
 
   /**
    * Updates distribution bars upon successfully adding a course.
    */
-  const updateDistributions = (): void => {
+  const updateDistributionBars = (): void => {
     if (version !== 'None') {
       const body = {
         user_id: user._id,
@@ -184,13 +188,13 @@ const VSemester: React.FC<{
   const handlePostResponse = (data) => {
     if (data.errors === undefined && version !== 'None') {
       let newUserCourse: UserCourse;
-      newUserCourse = { ...data.data };
+      newUserCourse = { ...data.data.course };
       dispatch(updateCurrentPlanCourses([...currentCourses, newUserCourse]));
       const allYears: Year[] = [...currentPlan.years];
       const newYears: Year[] = [];
       allYears.forEach((y) => {
         if (y._id === semesterYear._id) {
-          const yCourses = [...y.courses, newUserCourse._id];
+          const yCourses = [...y.courses, newUserCourse];
           newYears.push({ ...y, courses: yCourses });
         } else {
           newYears.push(y);
@@ -204,6 +208,12 @@ const VSemester: React.FC<{
           newPlanList[i] = newPlan;
         }
       }
+      distributions.forEach((dist: Distribution, i: number) => {
+        if (data.data.distributions.includes(dist._id)) {
+          distributions[i] = dist; 
+        }
+      });
+      dispatch(updateDistributions(distributions));
       dispatch(updatePlanList(newPlanList));
       dispatch(updateAddingPrereq(false));
       dispatch(clearSearch());

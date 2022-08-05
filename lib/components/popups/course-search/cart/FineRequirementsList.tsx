@@ -1,18 +1,18 @@
 import { useState, FC } from 'react';
 import FineRequirementListItem from './FineRequirementItem';
 import { requirements } from '../../../dashboard/degree-info/distributionFunctions';
-import { Distribution, FineReq } from '../../../../resources/commonTypes';
+import { UserDistribution, UserFineReq } from '../../../../resources/commonTypes';
 
 const FineRequirementsList: FC<{
   searching: boolean;
   selectRequirement: Function;
-  selectedDistribution: Distribution;
+  selectedDistribution: UserDistribution;
 }> = (props) => {
   // Component state setup.
   const [hideResults, setHideResults] = useState<boolean>(false);
   const [selectedListItem, setSelectedListItem] = useState<number>(-1);
 
-  const selectRequirement = (requirement: FineReq, i: number) => {
+  const selectRequirement = (requirement: UserFineReq, i: number) => {
     props.selectRequirement(requirement);
     setSelectedListItem(i);
   };

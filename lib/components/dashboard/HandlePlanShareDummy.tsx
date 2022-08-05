@@ -3,9 +3,8 @@ import React, { useEffect, useState } from 'react';
 import { useCookies } from 'react-cookie';
 import { useDispatch, useSelector } from 'react-redux';
 import { toast } from 'react-toastify';
-import { getAPI, guestUser } from '../../resources/assets';
+import { getAPI, guestUser, getMajor } from '../../resources/assets';
 import { Plan, UserCourse, Year } from '../../resources/commonTypes';
-import { getMajorFromCommonName } from '../../resources/majors';
 import {
   selectCurrentPlanCourses,
   selectPlan,
@@ -90,7 +89,7 @@ const HandlePlanShareDummy = () => {
       dispatch(updateToAddName(plan.name));
       dispatch(
         updateToAddMajors(
-          plan.majors.map((major) => getMajorFromCommonName(major)),
+          plan.major_ids.map((major) => getMajor(major)),
         ),
       );
       setToAdd(years);
