@@ -29,7 +29,7 @@ type CurrentPlanSlice = {
 export const initialPlan = {
   _id: 'noPlan',
   name: '',
-  majors: [],
+  major_ids: [],
   distribution_ids: [],
   user_id: '',
   years: [],
@@ -59,8 +59,8 @@ export const currentPlanSlice = createSlice({
     updateSelectedPlan: (state: any, action: PayloadAction<Plan>) => {
       state.plan = { ...action.payload };
       const majorObj: Major | null =
-        action.payload.majors.length > 0
-          ? getMajorFromCommonName(action.payload.majors[0])
+        action.payload.major_ids.length > 0
+          ? getMajorFromCommonName(action.payload.major_ids[0])
           : null;
       if (majorObj) state.selectedMajor = majorObj;
     },

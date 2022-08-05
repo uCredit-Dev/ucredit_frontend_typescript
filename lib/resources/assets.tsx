@@ -824,9 +824,10 @@ export const checkPrereq = (
 };
 
 const checkOldPrereqNumbers = (
-  courseNumber: string,
-  preReqNumber: string,
+  courseNumber: string | undefined,
+  preReqNumber: string | undefined,
 ): boolean => {
+  if (!courseNumber || !preReqNumber) return false; 
   const courseNumberArray = courseNumber.split('.');
   const preReqNumberArray = preReqNumber.split('.');
   if (

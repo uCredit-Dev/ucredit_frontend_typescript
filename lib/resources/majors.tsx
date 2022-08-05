@@ -1,4 +1,6 @@
 import { Major, Minor } from './commonTypes';
+import axios from 'axios';
+import { getAPI } from './assets';
 
 // All Major Requirements can be found at the links below
 // https://e-catalogue.jhu.edu/arts-sciences/full-time-residential-programs/degree-programs/
@@ -4454,17 +4456,14 @@ const no_degree: Major = {
   wi_credit: 0,
 };
 
-export function getMajorFromCommonName(name: string): Major | null {
-  let out: Major | null = null;
-  allMajors.forEach((major) => {
-    if (major.degree_name === name) {
-      out = major;
-    }
-  });
-  if (out === null) {
+export async function getMajorFromCommonName(name: string): Promise<Major | null> {
+  const resp: Major | null = await axios.get(
+    getAPI(window) + '/courses/' + name,
+  );
+  if (resp === null) {
     throw Error('Major not found');
   }
-  return out;
+  return resp;
 }
 
 export const allMajors: Major[] = [

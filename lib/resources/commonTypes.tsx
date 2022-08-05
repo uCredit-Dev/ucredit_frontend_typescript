@@ -64,21 +64,26 @@ export type UserCourse = {
   _id: string;
   title: string;
   term: SemesterType;
-  number: string;
-  department: string;
-  tags: string[];
-  area: string;
+  termOffered?: string; 
+  year: string; 
+  version?: string; 
+  number?: string;
+  department?: string;
+  tags?: string[];
+  areas?: string;
   credits: number;
   wi: boolean;
   taken: boolean;
-  ratings: number[];
-  distribution_ids: string[];
+  preReq?: string[];
+  isPlaceholder: boolean;
+  isTransfer: boolean;
+  ratings?: number[];
+  distribution_ids?: string[];
+  fineReq_ids?: string[],
   plan_id: string;
   user_id: string;
-  year_id: string;
-  preReq: string[];
-  isPlaceholder: boolean;
-  version: string;
+  year_id?: string;
+  forceSatisfied?: string; 
 };
 
 export type Year = {
@@ -93,8 +98,7 @@ export type Year = {
 export type Plan = {
   _id: string;
   name: string;
-  majors: string[];
-  distribution_ids: string[];
+  major_ids: string[];
   user_id: string;
   numYears: number;
   years: Year[];
@@ -154,16 +158,19 @@ export type Distribution = {
   _id: string;
   name: string;
   required_credits: number;
-  min_credits_per_course: number;
   description: string;
   criteria: string;
-  fine_requirements?: FineReq[];
-  user_select?: boolean;
-  exception?: string;
-  planned_credits: number;
-  courses: string[];
+  min_credits_per_course: number;
   user_id: string;
   plan_id: string;
+  major_id: string; 
+  fineReq_ids?: FineReq[];
+  planned: number; 
+  current: number; 
+  satisfied: boolean; 
+  user_select: boolean;
+  double_count?: string[];
+  pathing?: number; 
 };
 
 export type SemesterType =
