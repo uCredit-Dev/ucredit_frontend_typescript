@@ -4,7 +4,8 @@ import Header from './Header';
 import Preview from './Preview';
 import FeedbackPopup from '../popups/FeedbackPopup';
 import FeedbackNotification from '../popups/FeedbackNotification';
-// import Roadmap from '../roadmap/comments/RoadmapComment';
+import RoadMapBanner from "../roadmap/Banner"
+import RoadmapComment from '../roadmap/comments/RoadMapComment';
 
 import {
   selectImportingStatus,
@@ -51,6 +52,7 @@ import HandleUserInfoSetupDummy from './HandleUserInfoSetupDummy';
 import { DashboardMode, ReviewMode } from '../../resources/commonTypes';
 import { userService } from '../../services';
 import PlanEditMenu from './menus/PlanEditMenu';
+
 
 interface Props {
   mode: ReviewMode;
@@ -185,10 +187,19 @@ const Dashboard: React.FC<Props> = ({ mode }) => {
             />
           )}
           <PlanEditMenu mode={mode} />
+
           <Header
             userID={user._id}
             dashboardSwitchMode={DashboardMode.Planning}
+            mode={mode}
           />
+
+          {mode === ReviewMode.RoadMap ? (
+            <RoadMapBanner />
+          ) : (
+            <></>
+          )}
+
           <div className="flex-grow w-full">
             <div className="flex flex-col w-full">
               <div className="flex flex-row thin:flex-wrap-reverse mt-[5rem] w-full h-full">
@@ -220,6 +231,11 @@ const Dashboard: React.FC<Props> = ({ mode }) => {
       {mode === ReviewMode.Edit && <HandleUserInfoSetupDummy />}
       <HandlePlanShareDummy />
       <Preview />
+      {mode === ReviewMode.RoadMap ? (
+            <RoadmapComment />
+          ) : (
+            <></>
+      )}
     </>
   );
 };
