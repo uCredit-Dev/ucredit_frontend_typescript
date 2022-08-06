@@ -2,6 +2,8 @@ import { useDispatch } from 'react-redux';
 import { RiMapPin2Fill } from 'react-icons/ri';
 import {
   updateSearchText,
+  updateSearchTagsText,
+  updateSearchMajorText,
   toggleMobileAdvSearch,
   selectMobileAdvSearch,
 } from '../../../slices/roadmapSearchSlice';
@@ -39,6 +41,14 @@ const SearchBarArea: React.FC = () => {
 
   const onSearchInput = (evt: any) => {
     dispatch(updateSearchText(evt.target.value));
+  };
+
+  const onSearchTagsInput = (evt: any) => {
+    dispatch(updateSearchTagsText(evt.target.value));
+  };
+
+  const onSearchMajorInput = (evt: any) => {
+    dispatch(updateSearchMajorText(evt.target.value));
   };
 
   const onAdvSearchToggle = (evt: any) => {
@@ -83,14 +93,14 @@ const SearchBarArea: React.FC = () => {
               placeHolder="Search Tags"
               heightClass="h-10 md"
               iconPosition="left-2"
-              onInputProp={onSearchInput}
+              onInputProp={onSearchTagsInput}
             />
             <SearchBar
               iconSize={28}
               placeHolder="Search Majors"
               heightClass="h-10 md"
               iconPosition="left-2"
-              onInputProp={onSearchInput}
+              onInputProp={onSearchMajorInput}
             />
             <div>
               <p className="relative left-2 inline-block">

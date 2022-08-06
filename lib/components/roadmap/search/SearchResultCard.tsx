@@ -72,13 +72,19 @@ const SearchResultCard: React.FC<planCardProps> = (props) => {
       {/*tagsList*/}
       <div className="flex flex-row">
       {props.tagsList.map((item, index) => {
-        let reminder = index % 3;
+        let reminder = index % 5;
         let className = "flex-grow-0 mx-2 px-3 pt-0.5 pb-1 rounded-3xl text-blue ";
         if (reminder === 0){
           className += "bg-yellow-300";
         }
         else if (reminder === 1){
           className += "bg-pink-300";
+        }
+        else if (reminder === 2){
+          className += "bg-blue-300";
+        }
+        else if (reminder === 3){
+          className += "bg-purple-300";
         }
         else {
           className += "bg-green-300";

@@ -17,6 +17,8 @@ import { useRouter } from 'next/router';
 import { useSelector } from 'react-redux';
 import { selectPlan, updateThreads } from '../../lib/slices/currentPlanSlice';
 import axios, { AxiosResponse } from 'axios';
+import { selectSearchText, selectSearchTagsText, selectSearchMajorText } from '../../lib/slices/roadmapSearchSlice';
+import { RootState } from '../../lib/appStore/store';
 
 const BASE_URL = 'http://localhost:4567';
 
@@ -26,6 +28,7 @@ const planArray : {
   uploadDate: string,
   content: string,
   tagsList: string[],
+  majorList: string[],
   watchNum: number,
   likeNum: number,
   starNum: number,
@@ -44,6 +47,7 @@ const fetchPlanById = (id) => {
       uploadDate: res.data.data.postedAt.substring(0, 10),
       content: res.data.data.description,
       tagsList: res.data.data.tags,
+      majorList: res.data.data.majors,
       watchNum: 1,
       likeNum: res.data.data.num_likes,
       starNum: 1,
@@ -59,8 +63,8 @@ fetchPlanById("62d884c75b6fb8734aa09670");
 fetchPlanById("62d887285b6fb8734aa09676");
 fetchPlanById("62d8875b5b6fb8734aa09679");
 fetchPlanById("62d888b15b6fb8734aa0967c");
-
-
+fetchPlanById("62df1485ef87259b7ec48469");
+fetchPlanById("62df150aab21329bcbd2707b");
 
 interface Props {
   plans: StatusPlan[];
@@ -84,11 +88,41 @@ const RoadmapSearch: React.FC<Props> = ({
   };
   
   const currPlan = useSelector(selectPlan);
+  const searchKeyword = useSelector(selectSearchText);
+  const searchTagsKeyword = useSelector(selectSearchTagsText);
+  const searchMajorKeyword = useSelector(selectSearchMajorText);
+
+  const matchWithTitle = (plan) => {
+    if (plan.planName.includes(searchKeyword) || plan.content.includes(searchKeyword)) {
+      return true;
+    }
+    else {
+      return false;
+    }
+  };
+
+  const matchWithTags = (plan) => {
+    console.log("Searched Tag:", searchTagsKeyword);
+    for (let tagName of plan.tagsList){
+      if (tagName.includes(searchTagsKeyword)) {
+        return true;
+      }
+    }
+    return false;
+  }
+
+  const matchWithMajor = (plan) => {
+    console.log("Searched Major:", searchMajorKeyword);
+    for (let majorName of plan.majorList){
+      if (majorName.includes(searchMajorKeyword)) {
+        return true;
+      }
+    }
+    return false;
+  }
 
   return (
-    
     <>
-
       <SearchHeader />
       <div className="flex flex-col md:flex-row bg-white">
         <div className="hidden md:block basis-2/5">
@@ -99,7 +133,7 @@ const RoadmapSearch: React.FC<Props> = ({
 
         {showPlans && (
           <div className="">
-            {planArray.map((item, i) => {
+            {planArray.filter(matchWithTitle).filter(matchWithTags).filter(matchWithMajor).map((item, i) => {
               // const { _id, name, status, review_id } = p;
               return (
                 <div key={item.id}>
