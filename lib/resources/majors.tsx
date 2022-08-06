@@ -159,7 +159,8 @@ const bsECE: Major = {
       min_credits_per_course: 1,
       description:
         'Six (6) credits of "other engineering" courses (with an E designation) from KSAS or School of Engineering departments other than ECE or Applied Mathematics and Statistics or General Engineering (Note: Entrepreneurship and Management courses in the Center for Leadership Education CANNOT be counted as “other engineering courses”).',
-      criteria: 'E[A]^NOT^(EN Electrical & Computer Engineering[D]^OR^EN Applied Mathematics & Statistics[D]^OR^EN General Engineering[D])',
+      criteria:
+        'E[A]^NOT^(EN Electrical & Computer Engineering[D]^OR^EN Applied Mathematics & Statistics[D]^OR^EN General Engineering[D])',
       double_count: ['Humanity & Social Sciences', 'Writing Intensive'],
       fine_requirements: [
         {
@@ -609,9 +610,9 @@ const baCogSci: Major = {
 
 // https://e-catalogue.jhu.edu/arts-sciences/full-time-residential-programs/degree-programs/mathematics/mathematics-bachelor-arts/#requirementstext
 const baMath: Major = {
-  degree_name: "B.A. Mathematics",
+  degree_name: 'B.A. Mathematics',
   abbrev: 'B.A. Math',
-  department: "AS Mathematics",
+  department: 'AS Mathematics',
   total_degree_credit: 120,
   url: 'https://e-catalogue.jhu.edu/arts-sciences/full-time-residential-programs/degree-programs/mathematics/mathematics-bachelor-arts/#requirementstext',
   wi_credit: 15,
@@ -626,8 +627,7 @@ const baMath: Major = {
       double_count: ['All'],
       fine_requirements: [
         {
-          description:
-            '<b>Calculus I</b><br />AS.110.106 or AS.110.108',
+          description: '<b>Calculus I</b><br />AS.110.106 or AS.110.108',
           required_credits: 4,
           criteria: 'AS.110.106[C]^OR^AS.110.108[C]',
         },
@@ -653,7 +653,8 @@ const baMath: Major = {
           description:
             '<b>Elementary Number Theory</b> or <b>Honors Algebra II</b> or <b>Introduction To Topology</b> or <b>Representation Theory</b> or <b>Introduction to Algebraic Geometry</b>',
           required_credits: 4,
-          criteria: 'AS.110.304[C]^OR^AS.110.412[C]^OR^AS.110.413[C]^OR^AS.110.422[C]^OR^AS.110.435[C]',
+          criteria:
+            'AS.110.304[C]^OR^AS.110.412[C]^OR^AS.110.413[C]^OR^AS.110.422[C]^OR^AS.110.435[C]',
         },
         {
           description:
@@ -665,11 +666,11 @@ const baMath: Major = {
           description:
             '<b>Methods of Complex Analysis</b> or <b>Real Analysis II</b> or <b>Honors Complex Analysis</b> or <b>Introduction To Topology</b> or <b>Honors Analysis II</b> or <b>Partial Differential Equations</b> or <b>Dynamical Systems</b> or <b>Introduction To Differential Geometry</b> or <b>Calculus on Manifolds</b> or <b>Fourier Analysis</b>',
           required_credits: 4,
-          criteria: 'AS.110.311[C]^OR^AS.110.406[C]^OR^AS.110.407[C]^OR^AS.110.413[C]^OR^AS.110.416[C]^OR^AS.110.417[C]^OR^AS.110.421[C]^OR^AS.110.439[C]^OR^AS.110.441[C]^OR^AS.110.443[C]',
+          criteria:
+            'AS.110.311[C]^OR^AS.110.406[C]^OR^AS.110.407[C]^OR^AS.110.413[C]^OR^AS.110.416[C]^OR^AS.110.417[C]^OR^AS.110.421[C]^OR^AS.110.439[C]^OR^AS.110.441[C]^OR^AS.110.443[C]',
         },
         {
-          description:
-            'One 300-level or higher math course',
+          description: 'One 300-level or higher math course',
           required_credits: 4,
           criteria: 'Upper Level[L]',
         },
@@ -677,7 +678,8 @@ const baMath: Major = {
           description:
             'Two courses in any one of the approved applications of mathematics or other courses approved by the Director of Undergraduate Studies.',
           required_credits: 8,
-          criteria: 'AS.171.204[C]^OR^AS.171.301[C]^OR^AS.171.303[C]^OR^AS.171.304[C]^OR^AS.171.312[C]^OR^AS.030.302[C]^OR^AS.030.453[C]^OR^AS.180.301[C]^OR^AS.180.302[C]^OR^AS.180.334[C]^OR^AS.180.434[C]^OR^EN.601.231[C]^OR^EN.601.433[C]^OR^EN.601.442[C]^OR^EN.601.457[C]^OR^EN.601.461[C]^OR^EN.601.464[C]^OR^EN.601.475[C]^OR^EN.601.476[C]^OR^EN.553.361[C]^OR^EN.553.362[C]^OR^EN.553.391[C]^OR^EN.553.420[C]^OR^EN.553.426[C]^OR^EN.553.430[C]^OR^EN.553.453[C]^OR^EN.553.465[C]^OR^EN.553.471[C]^OR^EN.553.472[C]^OR^EN.553.481[C]^OR^EN.553.492[C]^OR^EN.553.493[C]^OR^AS.150.420[C]^OR^AS.150.421[C]^OR^AS.150.422[C]',
+          criteria:
+            'AS.171.204[C]^OR^AS.171.301[C]^OR^AS.171.303[C]^OR^AS.171.304[C]^OR^AS.171.312[C]^OR^AS.030.302[C]^OR^AS.030.453[C]^OR^AS.180.301[C]^OR^AS.180.302[C]^OR^AS.180.334[C]^OR^AS.180.434[C]^OR^EN.601.231[C]^OR^EN.601.433[C]^OR^EN.601.442[C]^OR^EN.601.457[C]^OR^EN.601.461[C]^OR^EN.601.464[C]^OR^EN.601.475[C]^OR^EN.601.476[C]^OR^EN.553.361[C]^OR^EN.553.362[C]^OR^EN.553.391[C]^OR^EN.553.420[C]^OR^EN.553.426[C]^OR^EN.553.430[C]^OR^EN.553.453[C]^OR^EN.553.465[C]^OR^EN.553.471[C]^OR^EN.553.472[C]^OR^EN.553.481[C]^OR^EN.553.492[C]^OR^EN.553.493[C]^OR^AS.150.420[C]^OR^AS.150.421[C]^OR^AS.150.422[C]',
         },
       ],
     },
@@ -716,14 +718,13 @@ const baMath: Major = {
         'Effective Fall 2022, all students earning a degree from the School of Arts and Sciences must complete Reintroduction to Writing in their first year at Hopkins plus an additional 12 credits in writing-intensive courses through their undergraduate experience for a minimum of 15 writing-intensive credits.',
       criteria: 'Written Intensive[W]',
       double_count: ['All'],
-      fine_requirements:[
+      fine_requirements: [
         {
-          description:
-            'Reintroduction to Writing',
+          description: 'Reintroduction to Writing',
           required_credits: 4,
           criteria: 'AS.004.100[C]',
-        }
-      ]
+        },
+      ],
     },
   ],
 };
