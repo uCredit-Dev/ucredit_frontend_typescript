@@ -5343,6 +5343,91 @@ const minorPhysics: Minor = {
   ],
 };
 
+// https://mathematics.jhu.edu/undergraduate/minor-in-mathematics/
+// https://e-catalogue.jhu.edu/arts-sciences/full-time-residential-programs/degree-programs/mathematics/mathematics-minor/
+const minorMath: Minor = {
+  degree_name: 'Minor Mathematics',
+  abbrev: 'Minor Math',
+  department: 'AS Mathematics',
+  total_degree_credit: 28,
+  url: 'https://e-catalogue.jhu.edu/arts-sciences/full-time-residential-programs/degree-programs/mathematics/mathematics-minor/',
+  wi_credit: 0,
+  distributions: [
+    {
+      name: 'Calculus Courses',
+      required_credits: 12,
+      min_credits_per_course: 4,
+      description: 'Students must take Calculus I, II, and III.',
+      criteria:
+        'AS.110.106[C]^OR^AS.110.108[C]^OR^AS.110.107[C]^OR^AS.110.109[C]^OR^AS.110.113[C]^OR^AS.110.202[C]',
+      fine_requirements: [
+        {
+          required_credits: 4,
+          description:
+            '<b>Calculus I</b> <br/>(Biology and Social Sciences) or (Physical Sciences & Engineering)',
+          criteria: 'AS.110.106[C]^OR^AS.110.108[C]',
+        },
+        {
+          required_credits: 4,
+          description:
+            '<b>Calculus II</b> <br/>(Biology and Social Sciences) or (Physical Sciences & Engineering) or Honors Single Variable Calculus',
+          criteria: 'AS.110.107[C]^OR^AS.110.109[C]^OR^AS.110.113[C]',
+        },
+        {
+          required_credits: 4,
+          description: '<b>Calculus III</b>',
+          criteria: 'AS.110.202[C]',
+        },
+      ],
+    },
+    {
+      name: '200- or 300-Level Course',
+      required_credits: 4,
+      min_credits_per_course: 4,
+      description:
+        'Students must take one 200-level or above math course (excluding AS.110.202 Calculus III and the 2-credit 225).',
+      criteria: 'AS Mathematics[D]^AND^(200[L]^OR^300[L])',
+      double_count: [],
+    },
+    {
+      name: '300-Level or Above Courses',
+      required_credits: 12,
+      min_credits_per_course: 4,
+      description:
+        'Students must take three mathematics courses at the 300-level or above (excluding the 1-credit seminar 345). <br /> <br /> ** A course in the Department of Applied Mathematics and Statistics (AMS), at the corresponding level, may be substituted for one of the 300-level or above courses. However, only a course from AMS can serve as a substitute.',
+      criteria:
+        '(AS Mathematics[D]^OR^EN Applied Mathematics & Statistics[D])^AND^(300[L]^OR^400[L]^OR^500[L])^NOT^AS.110.345[C]',
+      pathing: 2,
+      fine_requirements: [
+        {
+          required_credits: 12,
+          description:
+            '<b>DEFAULT PATH:</b> <br /> Students must take three mathematics courses at the 300-level or above (excluding the 1-credit seminar 345).**',
+          criteria:
+            'AS Mathematics[D]^AND^(300[L]^OR^400[L]^OR^500[L])^NOT^AS.110.345[C]',
+          double_count: ['All'],
+        },
+        {
+          required_credits: 4,
+          description:
+            '** <b>ALTERNATIVE PATH:</b> <br /> A course in the Department of Applied Mathematics and Statistics (AMS), at the corresponding level, may be substituted for one of the 300-level or above courses. ',
+          criteria:
+            'EN Applied Mathematics & Statistics[D]^AND^(300[L]^OR^400[L]^OR^500[L])',
+          double_count: ['All'],
+        },
+        {
+          required_credits: 8,
+          description:
+            '** <b>ALTERNATIVE PATH (cont.):</b> <br /> With an AMS course substitution, students must take two mathematics courses at the 300-level or above (excluding the 1-credit seminar 345).',
+          criteria:
+            'AS Mathematics[D]^AND^(300[L]^OR^400[L]^OR^500[L])^NOT^AS.110.345[C]',
+          double_count: ['All'],
+        },
+      ],
+    },
+  ],
+};
+
 const no_degree: Major = {
   degree_name: "Undecided Degree/My degree isn't supported yet",
   distributions: [],
@@ -5388,6 +5473,7 @@ export const allMajors: Major[] = [
   baEcon,
   minorEcon,
   minorPhysics,
+  minorMath,
   // baPsych,
   // baMolCell,
   bsNeuro,
