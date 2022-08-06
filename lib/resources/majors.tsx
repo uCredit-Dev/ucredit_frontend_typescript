@@ -2689,31 +2689,32 @@ const bsCS_Old: Major = {
       description:
         'At least one course in two different classification areas (Applications, Reasoning, Software, Systems) must be chosen in addition to Theory (Algorithms).',
       criteria: 'CSCI-APPL[T]^OR^CSCI-SOFT[T]^OR^CSCI-SYST[T]^OR^CSCI-RSNG[T]',
+      double_count: [
+        'Mathematics',
+        'Humanities/Social Sciences',
+        'Writing Intensive',
+      ],
       pathing: 2,
       fine_requirements: [
         {
           description: '<b>Application</b>',
           required_credits: 3,
           criteria: 'CSCI-APPL[T]',
-          double_count: ['N/A'],
         },
         {
           description: '<b>Software</b>',
           required_credits: 3,
           criteria: 'CSCI-SOFT[T]',
-          double_count: ['N/A'],
         },
         {
           description: '<b>Systems</b>',
           required_credits: 3,
           criteria: 'CSCI-SYST[T]',
-          double_count: ['N/A'],
         },
         {
           description: '<b>Reasoning</b>',
           required_credits: 3,
           criteria: 'CSCI-RSNG[T]',
-          double_count: ['N/A'],
         },
       ],
     },
@@ -2824,12 +2825,7 @@ const bsCS_Old: Major = {
         'Students are required to fulfill the university’s requirement of two writing intensive courses, ' +
         'each at least 3 credits. Students must receive at least a C- grade or better in these writing courses. ',
       criteria: 'Written Intensive[W]',
-      double_count: [
-        'Computer Science',
-        'Mathematics',
-        'Basic Sciences',
-        'Humanities/Social Sciences',
-      ],
+      double_count: ['All'],
       fine_requirements: [
         {
           description:
@@ -2869,7 +2865,12 @@ const bsCS_New: Major = {
         'major degree requirement</a> section on the department website.',
       criteria:
         'EN Computer Science[D]^OR^CSCI-OTHER[T]^OR^Gateway Computing[N]',
-      double_count: ['All'],
+      double_count: [
+        'Computer Science Classifications',
+        'Mathematics',
+        'Humanities/Social Sciences',
+        'Writing Intensive',
+      ],
       fine_requirements: [
         {
           description:
@@ -2950,25 +2951,21 @@ const bsCS_New: Major = {
           description: '<b>Application</b>',
           required_credits: 3,
           criteria: 'CSCI-APPL[T]',
-          double_count: ['N/A'],
         },
         {
           description: '<b>Software</b>',
           required_credits: 3,
           criteria: 'CSCI-SOFT[T]',
-          double_count: ['N/A'],
         },
         {
           description: '<b>Systems</b>',
           required_credits: 3,
           criteria: 'CSCI-SYST[T]',
-          double_count: ['N/A'],
         },
         {
           description: '<b>Reasoning</b>',
           required_credits: 3,
           criteria: 'CSCI-RSNG[T]',
-          double_count: ['N/A'],
         },
       ],
     },
@@ -2982,7 +2979,6 @@ const bsCS_New: Major = {
         'may not count towards these math requirements. Other than Calculus I and II, all the ' +
         'remaining courses must be 200-level or above.',
       criteria: 'AS Mathematics[D]^OR^EN Applied Mathematics & Statistics[D]',
-      double_count: ['All'],
       fine_requirements: [
         {
           description:
@@ -3176,6 +3172,7 @@ const baCS_New: Major = {
           description: '<b>300-level</b><p>Two Courses at 300 Level</p>',
           required_credits: 6,
           criteria: '(H[A]^OR^S[A])^AND^(Upper Level Undergraduate[L])',
+          double_count: ['All'],
         },
         {
           description:
@@ -3183,6 +3180,7 @@ const baCS_New: Major = {
           required_credits: 6,
           criteria:
             'AS Center for Language Education[D]^OR^AS Modern Languages and Literatures[D]',
+          double_count: ['All'],
         },
       ],
     },
