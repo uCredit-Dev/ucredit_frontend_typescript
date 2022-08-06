@@ -16,6 +16,49 @@ import {
 import { useRouter } from 'next/router';
 import { useSelector } from 'react-redux';
 import { selectPlan, updateThreads } from '../../lib/slices/currentPlanSlice';
+import axios, { AxiosResponse } from 'axios';
+
+const BASE_URL = 'http://localhost:4567';
+
+const planArray : {
+  id: string,
+  planName: string,
+  uploadDate: string,
+  content: string,
+  tagsList: string[],
+  watchNum: number,
+  likeNum: number,
+  starNum: number,
+  commentNum: number,
+}[] = [];
+
+const fetchPlanById = (id) => {
+  axios({
+    method: 'GET',
+    url: BASE_URL + '/api/roadmapPlans/get/' + id,
+  }).then((res: AxiosResponse) => {
+    console.log('res: ', res.data.data);
+    let plan = {
+      id: res.data.data._id,
+      planName: res.data.data.name,
+      uploadDate: res.data.data.postedAt.substring(0, 10),
+      content: res.data.data.description,
+      tagsList: res.data.data.tags,
+      watchNum: 1,
+      likeNum: res.data.data.num_likes,
+      starNum: 1,
+      commentNum: 1
+    }
+    planArray.push(plan);
+  }).catch((err: any) => {
+    console.log('err: ', err);
+  })
+};
+
+fetchPlanById("62d884c75b6fb8734aa09670");
+fetchPlanById("62d887285b6fb8734aa09676");
+fetchPlanById("62d8875b5b6fb8734aa09679");
+fetchPlanById("62d888b15b6fb8734aa0967c");
 
 
 
@@ -26,7 +69,7 @@ interface Props {
 
 const RoadmapSearch: React.FC<Props> = ({
   plans,
-  expanded = false,
+  expanded = true,
 
 }) => {
   const [showPlans, setShowPlans] = useState(expanded);
@@ -56,18 +99,28 @@ const RoadmapSearch: React.FC<Props> = ({
 
         {showPlans && (
           <div className="">
-            {plans.map((p, i) => {
-              const { _id, name, status, review_id } = p;
+            {planArray.map((item, i) => {
+              // const { _id, name, status, review_id } = p;
               return (
-                <div key={_id}>
+                <div key={item.id}>
 
                   <Hoverable
                     as={
                       <div
                         className="transition-colors duration-150 ease-in rounded-sm cursor-pointer inspect-plan-button"
-                        onClick={(e) => handleViewPlan(e, p)}
+                        // onClick={(e) => handleViewPlan(e, p)}
                       >
-                        <SearchResultCard />
+                        <SearchResultCard 
+                          id={item.id}
+                          planName={item.planName}
+                          uploadDate={item.uploadDate}
+                          content={item.content}
+                          tagsList={item.tagsList}
+                          watchNum={item.watchNum}
+                          likeNum={item.likeNum}
+                          starNum={item.starNum}
+                          commentNum={item.commentNum}
+                        />
                       </div>
                     }
                   >
@@ -93,7 +146,7 @@ const RoadmapSearch: React.FC<Props> = ({
               className="transition-colors duration-150 ease-in rounded-sm cursor-pointer inspect-plan-button"
               onClick={(e) => handleViewPlan(e, currPlan)}
             >
-              <SearchResultCard />
+              {/* <SearchResultCard /> */}
             </div>
           }
         >
