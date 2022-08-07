@@ -51,7 +51,6 @@ import HandlePlanShareDummy from './HandlePlanShareDummy';
 import HandleUserInfoSetupDummy from './HandleUserInfoSetupDummy';
 import { DashboardMode, ReviewMode } from '../../resources/commonTypes';
 import { userService } from '../../services';
-import PlanEditMenu from './menus/PlanEditMenu';
 import Actionbar from './Actionbar';
 
 interface Props {
@@ -186,7 +185,7 @@ const Dashboard: React.FC<Props> = ({ mode }) => {
               notifHandler={setShowNotif}
             />
           )}
-          <PlanEditMenu mode={mode} />
+          {/* <PlanEditMenu mode={mode} /> */}
 
           <Header
             userID={user._id}
