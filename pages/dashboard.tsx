@@ -6,7 +6,7 @@ import {
   selectUser,
   updateReviewMode,
 } from '../lib/slices/userSlice';
-import { useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { ReviewMode, User } from '../lib/resources/commonTypes';
 import { useRouter } from 'next/router';
 import { userService } from '../lib/services';
