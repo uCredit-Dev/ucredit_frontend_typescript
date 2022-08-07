@@ -5,25 +5,25 @@ import { MinusIcon, ExclamationIcon } from '@heroicons/react/outline';
 import { Transition } from '@tailwindui/react';
 import clsx from 'clsx';
 import 'react-toastify/dist/ReactToastify.css';
-import { checkAllPrereqs, getColors } from '../../../../resources/assets';
+import { checkAllPrereqs, getColors } from '../../../resources/assets';
 import {
   UserCourse,
   SemesterType,
   Year,
   ReviewMode,
-} from '../../../../resources/commonTypes';
+} from '../../../resources/commonTypes';
 import {
   selectCurrentPlanCourses,
   selectPlan,
-} from '../../../../slices/currentPlanSlice';
-import { selectCourseCache } from '../../../../slices/userSlice';
+} from '../../../slices/currentPlanSlice';
+import { selectCourseCache } from '../../../slices/userSlice';
 import OverridePrereqPopup from './OverridePrereqPopup';
 import {
   updateCourseToDelete,
   updateCourseToShow,
   updateDeleteCourseStatus,
   updateShowCourseInfo,
-} from '../../../../slices/popupSlice';
+} from '../../../slices/popupSlice';
 
 /**
  * This is a course card displayed in the course list under each semester.

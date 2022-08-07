@@ -1,10 +1,6 @@
 import React, { FC, useState } from 'react';
 import { Draggable } from 'react-beautiful-dnd';
-import {
-  ReviewMode,
-  UserCourse,
-  Year,
-} from '../../../../resources/commonTypes';
+import { ReviewMode, UserCourse, Year } from '../../../resources/commonTypes';
 import YearComponent from './YearComponent';
 
 /**

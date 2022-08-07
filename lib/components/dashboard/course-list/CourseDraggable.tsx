@@ -5,8 +5,8 @@ import {
   SemesterType,
   UserCourse,
   Year,
-} from '../../../../resources/commonTypes';
-import Comments from '../../Comments';
+} from '../../../resources/commonTypes';
+import Comments from '../Comments';
 import CourseComponent from './CourseComponent';
 
 /**

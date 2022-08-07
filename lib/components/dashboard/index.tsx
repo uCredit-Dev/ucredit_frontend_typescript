@@ -4,7 +4,7 @@ import Header from './Header';
 import Preview from './Preview';
 import FeedbackPopup from '../popups/FeedbackPopup';
 import FeedbackNotification from '../popups/FeedbackNotification';
-import RoadMapBanner from "../roadmap/Banner"
+import RoadMapBanner from '../roadmap/Banner';
 import RoadmapComment from '../roadmap/comments/RoadMapComment';
 
 import {
@@ -35,7 +35,7 @@ import DeleteCoursePopup from '../popups/DeleteCoursePopup';
 import DeletePlanPopup from '../popups/DeletePlanPopup';
 import DeleteYearPopup from '../popups/DeleteYearPopup';
 import PlanAdd from '../popups/PlanAdd';
-import CourseList from './course-list/horizontal/CourseList';
+import CourseList from './course-list/CourseList';
 import InfoMenu from './degree-info/InfoMenu';
 import {
   selectLoginCheck,
@@ -52,7 +52,7 @@ import HandleUserInfoSetupDummy from './HandleUserInfoSetupDummy';
 import { DashboardMode, ReviewMode } from '../../resources/commonTypes';
 import { userService } from '../../services';
 import PlanEditMenu from './menus/PlanEditMenu';
-
+import Actionbar from './Actionbar';
 
 interface Props {
   mode: ReviewMode;
@@ -194,22 +194,13 @@ const Dashboard: React.FC<Props> = ({ mode }) => {
             mode={mode}
           />
 
-          {mode === ReviewMode.RoadMap ? (
-            <RoadMapBanner />
-          ) : (
-            <></>
-          )}
+          {mode === ReviewMode.RoadMap ? <RoadMapBanner /> : <></>}
 
           <div className="flex-grow w-full">
             <div className="flex flex-col w-full">
-              <div className="flex flex-row thin:flex-wrap-reverse mt-[5rem] w-full h-full">
-                <div className="flex flex-col w-full overflow-hidden">
-                  <div className="mx-auto  md:mx-[100px] ">
-                    <div className="ml-[5%] md:ml-[0px]">
-                      <CourseList mode={mode} />
-                    </div>
-                  </div>
-                </div>
+              <div className="flex flex-col pl-10 thin:flex-wrap-reverse mt-1 w-full h-full">
+                <Actionbar mode={mode} />
+                <CourseList mode={mode} />
               </div>
               {infoPopup && <InfoMenu mode={mode} />}
             </div>
@@ -231,11 +222,7 @@ const Dashboard: React.FC<Props> = ({ mode }) => {
       {mode === ReviewMode.Edit && <HandleUserInfoSetupDummy />}
       <HandlePlanShareDummy />
       <Preview />
-      {mode === ReviewMode.RoadMap ? (
-            <RoadmapComment />
-          ) : (
-            <></>
-      )}
+      {mode === ReviewMode.RoadMap ? <RoadmapComment /> : <></>}
     </>
   );
 };

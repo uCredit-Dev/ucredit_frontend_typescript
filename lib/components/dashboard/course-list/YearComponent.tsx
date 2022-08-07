@@ -1,25 +1,21 @@
 import React, { useState, useEffect, FC } from 'react';
 import Semester from './Semester';
-import {
-  ReviewMode,
-  UserCourse,
-  Year,
-} from '../../../../resources/commonTypes';
+import { ReviewMode, UserCourse, Year } from '../../../resources/commonTypes';
 import { DotsVerticalIcon } from '@heroicons/react/outline';
 import { useSelector, useDispatch } from 'react-redux';
 import {
   selectPlan,
   updateSelectedPlan,
-} from '../../../../slices/currentPlanSlice';
-import { getAPI, getColors } from '../../../../resources/assets';
+} from '../../../slices/currentPlanSlice';
+import { getAPI, getColors } from '../../../resources/assets';
 import YearSettingsDropdown from './YearSettingsDropdown';
 import clsx from 'clsx';
 import {
   selectAddingPrereq,
   selectShowingCart,
-} from '../../../../slices/popupSlice';
-import { selectInspectedCourse } from '../../../../slices/searchSlice';
-import Comments from '../../Comments';
+} from '../../../slices/popupSlice';
+import { selectInspectedCourse } from '../../../slices/searchSlice';
+import Comments from '../Comments';
 
 type SemSelected = {
   fall: boolean;

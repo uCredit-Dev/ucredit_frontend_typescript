@@ -6,7 +6,7 @@ import {
   SemesterType,
   UserCourse,
   Year,
-} from '../../../../resources/commonTypes';
+} from '../../../resources/commonTypes';
 import { useDispatch, useSelector } from 'react-redux';
 import {
   clearSearch,
@@ -17,7 +17,7 @@ import {
   updateCartAdd,
   updateSearchStatus,
   updateSearchTime,
-} from '../../../../slices/searchSlice';
+} from '../../../slices/searchSlice';
 import { PlusIcon } from '@heroicons/react/outline';
 import { QuestionMarkCircleIcon } from '@heroicons/react/solid';
 import { Droppable } from 'react-beautiful-dnd';
@@ -27,7 +27,7 @@ import {
   updateCurrentPlanCourses,
   updateDroppables,
   updateSelectedPlan,
-} from '../../../../slices/currentPlanSlice';
+} from '../../../slices/currentPlanSlice';
 import ReactTooltip from 'react-tooltip';
 import clsx from 'clsx';
 import CourseDraggable from './CourseDraggable';
@@ -36,16 +36,16 @@ import {
   updateAddingPrereq,
   updateInfoPopup,
   updateShowingCart,
-} from '../../../../slices/popupSlice';
+} from '../../../slices/popupSlice';
 import { toast } from 'react-toastify';
-import { getAPI } from '../../../../resources/assets';
+import { getAPI } from '../../../resources/assets';
 import {
   selectUser,
   selectPlanList,
   updatePlanList,
   updateCartInvokedBySemester,
-} from '../../../../slices/userSlice';
-import Comments from '../../Comments';
+} from '../../../slices/userSlice';
+import Comments from '../Comments';
 import CourseComponent from './CourseComponent';
 
 /**
