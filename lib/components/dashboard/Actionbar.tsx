@@ -1,8 +1,6 @@
-import { Selectable, SelectableOptions } from '@robertz65/lyte';
 import axios from 'axios';
 import React, { FC, useEffect, useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
-import { components, MultiValueProps, StylesConfig } from 'react-select';
 import { toast } from 'react-toastify';
 import { getAPI } from '../../resources/assets';
 import { ReviewMode, Year, Plan } from '../../resources/commonTypes';
@@ -24,10 +22,15 @@ import {
   selectReviewMode,
   updatePlanList,
 } from '../../slices/userSlice';
+import Autocomplete from '@mui/material/Autocomplete';
+import TextField from '@mui/material/TextField';
+import Button from '@mui/material/Button';
+import { TrashIcon } from '@heroicons/react/outline';
+import { ChartBarIcon, PencilAltIcon, PlusIcon } from '@heroicons/react/solid';
 
-const majorOptions = allMajors.map((major, index) => ({
-  value: index,
-  label: major.degree_name,
+const majorOptions = allMajors.map((major) => ({
+  abbrev: major.abbrev,
+  name: major.degree_name,
 }));
 
 const Actionbar: FC<{ mode: ReviewMode }> = ({ mode }) => {
@@ -39,8 +42,6 @@ const Actionbar: FC<{ mode: ReviewMode }> = ({ mode }) => {
   const reviewMode = useSelector(selectReviewMode);
   const [planName, setPlanName] = useState<string>(currentPlan.name);
   const [editName, setEditName] = useState<boolean>(false);
-  const [openEditArea, setOpenEditArea] = useState<boolean>(false);
-  const [shareableURL, setShareableURL] = useState<string>('');
   const searchStatus = useSelector(selectSearchStatus);
 
   // Only edits name if editName is true. If true, calls debounce update function
@@ -87,16 +88,15 @@ const Actionbar: FC<{ mode: ReviewMode }> = ({ mode }) => {
       .catch((err) => console.log(err));
   };
 
-  const handlePlanChange = (values) => {
-    const selected = values[0];
-    if (selected.label === 'Create New Plan' && user._id !== 'noUser') {
+  const handlePlanChange = (event, newValue) => {
+    if (!newValue.value || !newValue.value.name) return;
+    if (newValue.label === 'Create New Plan' && user._id !== 'noUser') {
       dispatch(updateAddingPlanStatus(true));
     } else {
-      toast(selected.value + ' selected!');
-
-      if (currentPlan._id !== selected.content._id)
+      toast(newValue.value.name + ' selected!');
+      if (currentPlan._id !== newValue.value._id)
         dispatch(updateCurrentPlanCourses([]));
-      dispatch(updateSelectedPlan(selected.content));
+      dispatch(updateSelectedPlan(newValue.value));
     }
   };
 
@@ -109,22 +109,14 @@ const Actionbar: FC<{ mode: ReviewMode }> = ({ mode }) => {
     setEditName(true);
   };
 
-  /**
-   * Limit the max width of multi-select labels
-   */
-  const customStyles: StylesConfig<typeof majorOptions[number], true> = {
-    multiValue: (provided) => {
-      const maxWidth = '17rem';
-      return { ...provided, maxWidth };
-    },
-  };
-
-  const handleMajorChange = (event: any) => {
-    if (event.length === 0) {
+  const handleMajorChange = (event, newValues) => {
+    if (newValues.length === 0) {
       toast.error('You must have at least one major!');
       return;
     }
-    const newMajors = event.map((option) => option.label);
+
+    const newMajors = newValues.map((option) => option.label);
+    console.log(newMajors);
     const body = {
       plan_id: currentPlan._id,
       majors: newMajors,
@@ -145,23 +137,27 @@ const Actionbar: FC<{ mode: ReviewMode }> = ({ mode }) => {
       .catch((err) => console.log(err));
   };
 
-  /**
-   * Show major multi-select's displayed major name to abbreviations (B.S. Computer Science => B.S. CS)
-   * if user selected more than one major
-   */
-  const MultiValue = (
-    props: MultiValueProps<typeof majorOptions[number], true>,
-  ) => {
-    const major = allMajors.find(
-      (majorObj) => majorObj.degree_name === props.data.label,
-    );
-    // @ts-ignore
-    const showAsAbbrev = props.selectProps.value.length > 1;
-    return (
-      <components.MultiValue {...props}>
-        {showAsAbbrev ? major?.abbrev : major?.degree_name}
-      </components.MultiValue>
-    );
+  const getCurrentMajors = (): { label: string; value: string }[] => {
+    const currentMajorOptions: { label: string; value: string }[] = [];
+    majorOptions.forEach((major, i) => {
+      if (currentPlan.majors.includes(major.name))
+        currentMajorOptions.push({ label: major.name, value: major.abbrev });
+    });
+    return currentMajorOptions;
+  };
+
+  const getLimitText = (): string => {
+    let outString = '';
+    const currMajors = getCurrentMajors();
+
+    currMajors.forEach((major, i) => {
+      if (i < 2) {
+        outString += major.value;
+        if (i < currMajors.length - 1) outString += ', ';
+      }
+    });
+    outString += currMajors.length > 2 ? ` +${currMajors.length - 2} more` : '';
+    return outString;
   };
 
   // Activates delete plan popup.
@@ -173,11 +169,13 @@ const Actionbar: FC<{ mode: ReviewMode }> = ({ mode }) => {
    * Handles when button for shareable link is clicked.
    */
   const onShareClick = (): void => {
-    if (shareableURL !== '') {
-      setShareableURL('');
-      return;
-    }
-    setShareableURL(window.location.origin + '/share?_id=' + currentPlan._id);
+    const shareableURL =
+      window.location.origin + '/share?_id=' + currentPlan._id;
+    navigator.clipboard.writeText(shareableURL).then(() => {
+      navigator.clipboard.writeText(shareableURL).then(() => {
+        toast.info('Share link copied to Clipboard!');
+      });
+    });
   };
 
   /**
@@ -221,27 +219,98 @@ const Actionbar: FC<{ mode: ReviewMode }> = ({ mode }) => {
     }
   };
   return (
-    <div className="flex flex-row mb-2">
-      <Selectable
-        width={180}
+    <div className="flex flex-row flex-wrap">
+      <Autocomplete
+        disablePortal
+        id="combo-box-demo"
         options={[
-          { content: 'Create New Plan', label: '' },
+          { value: null, label: 'Create New Plan' },
           ...planList
             .filter((plan) => plan._id !== currentPlan._id)
-            .map((plan) => ({ content: plan.name, label: plan._id })),
+            .map((plan) => ({ value: plan, label: plan.name })),
         ]}
-        defaultValue={currentPlan._id}
+        sx={{ width: 280 }}
+        renderInput={(params) => (
+          <TextField {...params} label="Select/Create Plan" />
+        )}
         onChange={handlePlanChange}
-        className="mr-2 thin:mx-auto text-lg font-light"
+        value={{
+          label: currentPlan.name,
+          value: currentPlan,
+        }}
+        size="small"
+        className="mr-2 my-3"
+        isOptionEqualToValue={(o1, o2) => {
+          if (!o1.value || !o2.value || !o1.value.name || !o2.value.name)
+            return true;
+          else return o1.value._id === o2.value._id;
+        }}
       />
-      <div className="flex flex-row items-end bg-white border border-gray-300 rounded h-10 mr-2">
-        <div className="m-auto ml-2 mr-0 text-xl">✎</div>
-        <input
-          value={planName}
-          className=" my-0.5 px-1 h-8 text-gray-800 text-lg outline-none w-full"
-          onChange={handlePlanNameChange}
+      <Autocomplete
+        disablePortal
+        multiple
+        id="combo-box-demo"
+        options={majorOptions.map((option, i) => ({
+          label: option.name,
+          value: option.abbrev,
+        }))}
+        sx={{ width: 300 }}
+        renderInput={(params) => (
+          <TextField {...params} label="Update Degrees" />
+        )}
+        onChange={handleMajorChange}
+        value={getCurrentMajors()}
+        size="small"
+        className="mr-2 important-nowrap my-3"
+        limitTags={0}
+        isOptionEqualToValue={(o1, o2) => o1.label === o2.label}
+        disableCloseOnSelect
+        getLimitTagsText={() => (
+          <div className="text-sm text-ellipsis whitespace-nowrap">
+            {getLimitText()}
+          </div>
+        )}
+      />
+      <Button variant="outlined" onClick={onShareClick} className="mr-2 my-3">
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          className="w-5 h-5 transition duration-200 ease-in transform hover:scale-110 mb-0.5"
+          fill="none"
+          viewBox="0 0 24 24"
+          stroke="currentColor"
+        >
+          <path
+            strokeLinecap="round"
+            strokeLinejoin="round"
+            strokeWidth={2}
+            d="M8.684 13.342C8.886 12.938 9 12.482 9 12c0-.482-.114-.938-.316-1.342m0 2.684a3 3 0 110-2.684m0 2.684l6.632 3.316m-6.632-6l6.632-3.316m0 0a3 3 0 105.367-2.684 3 3 0 00-5.367 2.684zm0 9.316a3 3 0 105.368 2.684 3 3 0 00-5.368-2.684z"
+          />
+        </svg>
+        <div className="ml-1">Share</div>
+      </Button>
+      <Button
+        onClick={activateDeletePlan}
+        variant="outlined"
+        color="error"
+        className="mr-2 my-3"
+      >
+        <TrashIcon className="w-5 mb-0.5 transition duration-200 ease-in transform cursor-pointer select-none stroke-2 hover:scale-110 mr-1" />{' '}
+        Delete Plan
+      </Button>
+      <Button
+        onClick={() => addNewYear(false)}
+        className="mr-2 my-3"
+        variant="outlined"
+        color="success"
+      >
+        <PlusIcon
+          data-tip={`Add a new year!`}
+          data-for="godTip"
+          className="w-5 h-5 mb-0.5 focus:outline-none"
         />
-      </div>
+        <div className="w-full ml-1">{' Add Year'}</div>
+      </Button>
+      <Button className="mr-2 my-3 bg-blue-100">Reviewers</Button>
     </div>
   );
 };

@@ -21,6 +21,10 @@ code {
   }
 }
 
+.important-nowrap {
+  flex-wrap: nowrap !important;
+}
+
 /* width */
 ::-webkit-scrollbar {
   height: 10px;

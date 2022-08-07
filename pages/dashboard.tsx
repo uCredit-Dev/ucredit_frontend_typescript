@@ -16,7 +16,6 @@ import {
   initialPlan,
   updateSelectedPlan,
 } from '../lib/slices/currentPlanSlice';
-import React from 'react';
 
 const Dash: React.FC = () => {
   const user: User = useSelector(selectUser);
