@@ -14,13 +14,18 @@ const Header: React.FC<{
   userID: string;
   dashboardSwitchMode: DashboardMode;
   mode: ReviewMode;
-}> = ({ userID, dashboardSwitchMode, mode }) => {
+  zLevelMax: boolean | null;
+}> = ({ userID, dashboardSwitchMode, mode, zLevelMax }) => {
   const router = useRouter();
   const [showMenu, setShowMenu] = useState<boolean>(false);
   return mode === ReviewMode.RoadMap ? (
     <RoadaMapHeader />
   ) : (
-    <div className="sticky top-0 z-40 flex justify-between items-center py-1 px-4 h-1/6 bg-blue-header">
+    <div
+      className={`z-[${
+        zLevelMax ? '91' : '40'
+      } flex justify-between items-center py-1 px-4 h-1/6 bg-blue-header`}
+    >
       <div className="flex-grow">
         <div className="inline-flex">
           <img

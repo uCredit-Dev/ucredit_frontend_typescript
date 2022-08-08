@@ -271,8 +271,8 @@ export interface ThreadType {
   resolved: boolean;
   location_type: string;
   location_id: string;
-  comments?: CommentType[];
-  _id?: string;
+  comments: CommentType[];
+  _id: string;
 }
 
 export type CommentType = {

@@ -16,6 +16,7 @@ import ReactTooltip from 'react-tooltip';
 import { Year } from '../../../resources/commonTypes';
 import clsx from 'clsx';
 import { selectInfoPopup } from '../../../slices/popupSlice';
+import React from 'react';
 
 /**
  * Search component for when someone clicks a search action.
@@ -69,7 +70,7 @@ const Search: FC = () => {
         className={clsx(
           'fixed flex flex-col bg-primary gradient-to-r select-none rounded z-30 w-9/12 tight:overflow-y-none h-5/6 top-1/3 left-1/2 transform -translate-x-1/2 -translate-y-1/3 tight:h-auto',
           {
-            '-translate-x-[62.5%]': infoPopup,
+            '-translate-x-[49vw]': infoPopup,
           },
         )}
         style={{ opacity: searchOpacity === 100 ? 1 : 0.1 }}
@@ -100,7 +101,7 @@ const Search: FC = () => {
             </div>
 
             <div
-              className="flex flex-row items-center justify-center w-8 ml-auto mr-6 h-8 p-1 transition duration-200 ease-in transform hover:scale-125"
+              className="flex flex-row items-center justify-center w-8 h-8 p-1 transition duration-200 ease-in transform hover:scale-125 mx-auto"
               onMouseEnter={() => setSearchOpacity(50)}
               onMouseLeave={() => setSearchOpacity(100)}
               onMouseOver={() => ReactTooltip.rebuild()}

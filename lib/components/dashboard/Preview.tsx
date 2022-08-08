@@ -235,6 +235,7 @@ const Preview: React.FC = () => {
             className="w-[21px] h-[21px] mr-3 bg-gray-100 border-gray-300 focus:ring-blue-footer"
             checked={!allowComment}
             onClick={toggleAllowComment}
+            onChange={toggleAllowComment}
           />
           Don't allow comment
         </div>

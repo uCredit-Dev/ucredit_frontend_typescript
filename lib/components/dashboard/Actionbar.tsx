@@ -11,12 +11,9 @@ import {
   updateCurrentPlanCourses,
 } from '../../slices/currentPlanSlice';
 import {
-  selectInfoPopup,
   updateAddingPlanStatus,
   updateDeletePlanStatus,
-  updateInfoPopup,
 } from '../../slices/popupSlice';
-import { selectSearchStatus } from '../../slices/searchSlice';
 import {
   selectPlanList,
   selectUser,
@@ -34,7 +31,7 @@ import Dialog from '@mui/material/Dialog';
 import DialogTitle from '@mui/material/DialogTitle';
 import Menu from '@mui/material/Menu';
 import Reviewers from './menus/reviewers/Reviewers';
-import { clsx } from 'clsx';
+import PersonIcon from '@mui/icons-material/Person';
 
 const majorOptions = allMajors.map((major) => ({
   abbrev: major.abbrev,
@@ -46,12 +43,10 @@ const Actionbar: FC<{ mode: ReviewMode }> = ({ mode }) => {
   const currentPlan = useSelector(selectPlan);
   const user = useSelector(selectUser);
   const dispatch = useDispatch();
-  const infoPopup = useSelector(selectInfoPopup);
   const reviewMode = useSelector(selectReviewMode);
   const [planName, setPlanName] = useState<string>(currentPlan.name);
   const [editName, setEditName] = useState<boolean>(false);
   const [openEdit, setOpenEdit] = useState<boolean>(false);
-  const searchStatus = useSelector(selectSearchStatus);
   const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
   const openMenu = Boolean(anchorEl);
   const handleClick = (event: React.MouseEvent<HTMLButtonElement>) => {
@@ -240,11 +235,17 @@ const Actionbar: FC<{ mode: ReviewMode }> = ({ mode }) => {
       {reviewMode === ReviewMode.Edit && (
         <>
           <Fab
-            color="info"
+            color="inherit"
             aria-label="edit"
             onClick={() => setOpenEdit(true)}
-            className="mr-2 my-3 shadow-none bg-blue-200 text-blue-600 my-auto"
             size="small"
+            sx={{
+              mr: 1,
+              my: 1,
+              bgcolor: '#C6E8FF',
+              boxShadow: 'none',
+            }}
+            className="z-20"
           >
             <EditIcon />
           </Fab>
@@ -272,7 +273,7 @@ const Actionbar: FC<{ mode: ReviewMode }> = ({ mode }) => {
                 .filter((plan) => plan._id !== currentPlan._id)
                 .map((plan) => ({ value: plan, label: plan.name })),
             ]}
-            sx={{ width: 280 }}
+            sx={{ width: 280, mr: 1, my: 1 }}
             renderInput={(params) => (
               <TextField {...params} label="Select/Create Plan" />
             )}
@@ -282,7 +283,6 @@ const Actionbar: FC<{ mode: ReviewMode }> = ({ mode }) => {
               value: currentPlan,
             }}
             size="small"
-            className="mr-2 my-3"
             isOptionEqualToValue={(o1, o2) => {
               if (!o1.value || !o2.value || !o1.value.name || !o2.value.name)
                 return true;
@@ -297,14 +297,13 @@ const Actionbar: FC<{ mode: ReviewMode }> = ({ mode }) => {
               label: option.name,
               value: option.abbrev,
             }))}
-            sx={{ width: 300 }}
+            sx={{ width: 300, mr: 1, my: 1 }}
             renderInput={(params) => (
               <TextField {...params} label="Update Degrees" />
             )}
             onChange={handleMajorChange}
             value={getCurrentMajors()}
             size="small"
-            className="mr-2 important-nowrap my-3"
             limitTags={0}
             isOptionEqualToValue={(o1, o2) => o1.label === o2.label}
             disableCloseOnSelect
@@ -319,7 +318,8 @@ const Actionbar: FC<{ mode: ReviewMode }> = ({ mode }) => {
       <Button
         variant="outlined"
         onClick={onShareClick}
-        className="mr-2 my-3 h-10"
+        sx={{ h: 10, mr: 1, my: 1 }}
+        color="info"
       >
         <svg
           xmlns="http://www.w3.org/2000/svg"
@@ -343,14 +343,14 @@ const Actionbar: FC<{ mode: ReviewMode }> = ({ mode }) => {
             onClick={activateDeletePlan}
             variant="outlined"
             color="error"
-            className="mr-2 my-3 h-10"
+            sx={{ h: 10, mr: 1, my: 1 }}
           >
             <TrashIcon className="w-5 mb-0.5 transition duration-200 ease-in transform cursor-pointer select-none stroke-2 hover:scale-110 mr-1" />{' '}
             Delete Plan
           </Button>
           <Button
             onClick={() => addNewYear(false)}
-            className="mr-2 my-3 h-10"
+            sx={{ mr: 1, my: 1 }}
             variant="outlined"
             color="success"
           >
@@ -359,10 +359,16 @@ const Actionbar: FC<{ mode: ReviewMode }> = ({ mode }) => {
           </Button>
           <div>
             <Button
-              className="mr-2 h-10 my-3 bg-blue-100"
               onClick={handleClick}
+              className="bg-blue-header"
+              sx={{
+                h: 10,
+                my: 1.25,
+                boxShadow: 'none',
+                color: 'black',
+              }}
             >
-              Reviewers
+              <PersonIcon /> Reviewers
             </Button>
             <Menu
               id="basic-menu"
@@ -372,40 +378,13 @@ const Actionbar: FC<{ mode: ReviewMode }> = ({ mode }) => {
               MenuListProps={{
                 'aria-labelledby': 'basic-button',
               }}
-              className="px-2"
+              sx={{ px: 1 }}
             >
               <Reviewers />
             </Menu>
           </div>
         </>
       )}
-      <Button
-        className={clsx(
-          'flex items-center p-2 text-base font-normal text-black rounded-lg  z-20 top-20 right-9 focus:outline-none bg-blue-100 shadow-sm text-sm',
-          {
-            'fixed ': searchStatus,
-            ' absolute': !searchStatus,
-          },
-        )}
-        onClick={() => {
-          dispatch(updateInfoPopup(!infoPopup));
-        }}
-      >
-        <svg
-          className="w-5 text-black plan-edit-menu mr-2"
-          fill="currentColor"
-          viewBox="0 0 20 20"
-          xmlns="http://www.w3.org/2000/svg"
-        >
-          <path d="M9 2a1 1 0 000 2h2a1 1 0 100-2H9z"></path>
-          <path
-            fillRule="evenodd"
-            d="M4 5a2 2 0 012-2 3 3 0 003 3h2a3 3 0 003-3 2 2 0 012 2v11a2 2 0 01-2 2H6a2 2 0 01-2-2V5zm3 4a1 1 0 000 2h.01a1 1 0 100-2H7zm3 0a1 1 0 000 2h3a1 1 0 100-2h-3zm-3 4a1 1 0 100 2h.01a1 1 0 100-2H7zm3 0a1 1 0 100 2h3a1 1 0 100-2h-3z"
-            clipRule="evenodd"
-          ></path>
-        </svg>{' '}
-        Tracker
-      </Button>
     </div>
   );
 };

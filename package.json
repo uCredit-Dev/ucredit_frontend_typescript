@@ -8,6 +8,7 @@
     "@emotion/styled": "^11.10.0",
     "@headlessui/react": "^1.6.6",
     "@heroicons/react": "^1.0.6",
+    "@material-ui/core": "^4.12.4",
     "@mui/icons-material": "^5.8.4",
     "@mui/material": "^5.9.3",
     "@n8tb1t/use-scroll-position": "^2.0.3",
