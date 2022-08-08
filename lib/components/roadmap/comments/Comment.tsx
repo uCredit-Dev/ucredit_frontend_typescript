@@ -36,6 +36,7 @@ const Comment: FC<{
   const [subcommentContent, setSubCommentContent] = useState<CommentType[]>([]);
 
   const user = useSelector(selectUser);
+
   useEffect(() => {
     setSubCommentContent(subcomments);
   }, [subcomments]);
@@ -47,7 +48,7 @@ const Comment: FC<{
     setIsShown(!isShown);
 
     const comment: CommentBodyType = {
-      commenter_id: username,
+      commenter_id: user._id,
       message: commentContent,
       visible_user_id: [user._id],
       thread_id: threadID,
@@ -59,13 +60,12 @@ const Comment: FC<{
         comment,
       })
       .then((res) => {
+        console.log('responser is ', res);
+
         setSubCommentContent([
           ...subcomments,
           {
-            commenter_id: {
-              name: res.data.data.commenter_id,
-              _id: res.data.data.commenter_id,
-            },
+            commenter_id: res.data.data.commenter_id,
             visible_user_id: res.data.data.visible_user_id,
             thread_id: res.data.data.thread_id,
             message: res.data.data.message,
@@ -80,7 +80,7 @@ const Comment: FC<{
   };
   return (
     <div>
-      <div className="mx-16 flex flex-col">
+      <div className="md:mx-1 mx-20 flex flex-col">
         <div className="h-auto w-full flex flex-row ">
           {/* upvote */}
           <div className="w-[60px] text-[#393939] flex flex-col ">
@@ -98,7 +98,7 @@ const Comment: FC<{
                 />
               </svg>
             </div>
-            <div className="h-[40px] text-[20px] text-[#393939] font-medium mt-[10px] ml-[-3px]">
+            <div className="h-[40px]  text-[20px] text-[#393939] font-medium mt-[10px] text-center ml-[-65%]">
               {upvote}
             </div>
           </div>
@@ -169,8 +169,8 @@ const Comment: FC<{
         {subcommentContent.map((subs) =>
           subs.thread_id === threadID ? (
             <Comment
-              key={subs.commenter_id.name + subs.message}
-              username={subs.commenter_id.name}
+              key={(subs.commenter_id, "'s comment")}
+              username={subs.commenter_id}
               upvote={0}
               content={subs.message}
               date={new Date(subs.date).toISOString().slice(0, 10)}

@@ -25,7 +25,6 @@ const Laptop: React.FC = () => {
       .get(getAPI(window) + `/roadmapPlans/get/${'62d8875b5b6fb8734aa09679'}`)
 
       .then((response) => {
-        console.log(response.data.data);
         setName(response.data.data.name);
         setUserID(response.data.data.user_id);
         setLikes(response.data.data.num_likes);
@@ -75,7 +74,10 @@ const Laptop: React.FC = () => {
             <div className="flex flex-row ml-64 mt-2">
               {tags.map((tag) => (
                 <div>
-                  <button className="flex-grow-0 mx-2 px-3 pt-0.5 pb-1 rounded-3xl text-blue bg-yellow-tag">
+                  <button
+                    key={tag}
+                    className="flex-grow-0 mx-2 px-3 pt-0.5 pb-1 rounded-3xl text-blue bg-yellow-tag"
+                  >
                     {tag}
                   </button>
                 </div>

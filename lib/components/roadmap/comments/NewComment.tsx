@@ -57,21 +57,19 @@ const NewComment: FC<{
   // eslint-disable-next-line react-hooks/exhaustive-deps
 
   return (
-    <>
-      <div className="h-[100%] rounded-[20px] border-2 mt-5 overflow-hidden">
-        <Editor contents={content} setContent={setContent} />
-        <button
-          onClick={() => {
-            onCommentSubmit();
-            setContent('');
-          }}
-          className="absolute mt-[-75px] ml-[15px] w-[75px] h-[32px] rounded-[100px] bg-[#0C3A76] text-white"
-        >
-          {' '}
-          submit
-        </button>
-      </div>
-    </>
+    <div className="h-[100%] rounded-[20px] border-2 mt-5 overflow-hidden">
+      <Editor contents={content} setContent={setContent} />
+      <button
+        onClick={() => {
+          onCommentSubmit();
+          setContent('');
+        }}
+        className="absolute mt-[-75px] ml-[15px] w-[75px] h-[32px] rounded-[100px] bg-[#0C3A76] text-white"
+      >
+        {' '}
+        submit
+      </button>
+    </div>
   );
 };
 

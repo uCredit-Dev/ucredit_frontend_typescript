@@ -276,10 +276,7 @@ export interface ThreadType {
 }
 
 export type CommentType = {
-  commenter_id: {
-    name: string;
-    _id: string;
-  };
+  commenter_id: string;
   visible_user_id: string[];
   thread_id: string;
   message: string;
