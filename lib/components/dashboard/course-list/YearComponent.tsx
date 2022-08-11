@@ -362,7 +362,7 @@ const YearComponent: FC<{
       id={id.toString()}
       className={clsx(
         'max-w-year-heading w-full min-w-[14rem]',
-        { 'cursor-move': !mode || mode !== ReviewMode.View },
+        { 'cursor-move': !mode || (mode !== ReviewMode.View && mode !== ReviewMode.RoadMap)},
         { 'z-30': addingPrereqStatus },
       )}
       onMouseLeave={() => {
@@ -402,7 +402,7 @@ const YearComponent: FC<{
               id={year._id + 'input'}
               value={yearName}
               className={clsx(
-                { 'cursor-move': !mode || mode !== ReviewMode.View },
+                { 'cursor-move': !mode || (mode !== ReviewMode.View && mode !== ReviewMode.RoadMap)},
                 'flex-grow w-auto mt-auto font-semibold bg-transparent border-b border-transparent select-none text-md focus:border-gray-400 focus:outline-none',
               )}
               onChange={handleYearNameChange}
@@ -412,7 +412,7 @@ const YearComponent: FC<{
             <div className="flex-grow my-auto">
               <div
                 className={clsx(
-                  { 'cursor-move': !mode || mode !== ReviewMode.View },
+                  { 'cursor-move': !mode || (mode !== ReviewMode.View && mode !== ReviewMode.RoadMap)},
                   'w-auto text-xl font-semibold bg-transparent border-b border-transparent select-none focus:border-gray-400 focus:outline-none',
                 )}
               >
@@ -490,7 +490,7 @@ const YearComponent: FC<{
               )}
               <div className="font-bold">{totalCredits} Credits</div>
             </div>
-            {(!mode || mode !== ReviewMode.View) && (
+            {(!mode || (mode !== ReviewMode.View && mode !== ReviewMode.RoadMap)) && (
               <DotsVerticalIcon
                 onClick={() => setDisplay(!display)}
                 className="cursor-pointer stroke-2 w-7"
