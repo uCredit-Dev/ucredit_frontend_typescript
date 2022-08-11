@@ -45,7 +45,7 @@ const Dash: React.FC = () => {
   }, []);
 
   useEffect(() => {
-    if (!router.query || !router.query.mode) {
+    if (!router.query || !router.query.mode || router.query.mode!=ReviewMode.RoadMap) {
       if (planList.length > 0) dispatch(updateSelectedPlan(planList[0]));
       else dispatch(updateSelectedPlan(initialPlan));
       dispatch(updateReviewMode(ReviewMode.Edit));
@@ -54,7 +54,7 @@ const Dash: React.FC = () => {
     }
     setMode(router.query.mode as ReviewMode);
     dispatch(updateReviewMode(router.query.mode as ReviewMode));
-    if (!router.query.plan) {
+    if (!router.query.plan || router.query.mode!=ReviewMode.RoadMap) {
       setMode(ReviewMode.Edit);
       dispatch(updateReviewMode(ReviewMode.Edit));
       return;
@@ -72,12 +72,13 @@ const Dash: React.FC = () => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [router.query]);
 
+  console.log(mode)
   return (
     <>
       <Head>
         <title>My Plan</title>
       </Head>
-      <Dashboard mode={mode} />
+      <Dashboard mode={ReviewMode.RoadMap}/>
     </>
   );
 };

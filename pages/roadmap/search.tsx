@@ -19,6 +19,7 @@ import { selectPlan, updateThreads } from '../../lib/slices/currentPlanSlice';
 import axios, { AxiosResponse } from 'axios';
 import { selectSearchText, selectSearchTagsText, selectSearchMajorText } from '../../lib/slices/roadmapSearchSlice';
 import { RootState } from '../../lib/appStore/store';
+import { ReviewMode} from '../../lib/resources/commonTypes';
 
 const BASE_URL = 'http://localhost:4567';
 
@@ -77,14 +78,14 @@ const RoadmapSearch: React.FC<Props> = ({
 
 }) => {
   const [showPlans, setShowPlans] = useState(expanded);
+  const [mode, setMode] = useState<ReviewMode>(ReviewMode.None);
   const router = useRouter();
-  const handleViewPlan = async (e, plan: Plan) => {
-    e.stopPropagation();
+  const handleViewPlan = async (e, plan_id) => {
+    setMode(ReviewMode.RoadMap);
     // hardcoded for now
     const planID = "61ccac7bfd08a30004b0417c";
     router.push(`/dashboard?plan=${planID}&mode=roadmap`);
-    //router.push(`/dashboard?plan=${plan._id}&mode=roadmap`);
-    //router.push('/dashboard&mode=roadmap');
+    // router.push(`/dashboard?plan=${plan_id}&mode=roadmap`);
   };
   
   const currPlan = useSelector(selectPlan);
@@ -134,7 +135,9 @@ const RoadmapSearch: React.FC<Props> = ({
         {showPlans && (
           <div className="">
             {planArray.filter(matchWithTitle).filter(matchWithTags).filter(matchWithMajor).map((item, i) => {
-              // const { _id, name, status, review_id } = p;
+              console.log(item.id)
+              
+
               return (
                 <div key={item.id}>
 
@@ -142,7 +145,7 @@ const RoadmapSearch: React.FC<Props> = ({
                     as={
                       <div
                         className="transition-colors duration-150 ease-in rounded-sm cursor-pointer inspect-plan-button"
-                        // onClick={(e) => handleViewPlan(e, p)}
+                        onClick={(e) => handleViewPlan(e, item.id)}
                       >
                         <SearchResultCard 
                           id={item.id}
@@ -174,26 +177,6 @@ const RoadmapSearch: React.FC<Props> = ({
           </div>
         )}
 
-        <Hoverable
-          as={
-            <div
-              className="transition-colors duration-150 ease-in rounded-sm cursor-pointer inspect-plan-button"
-              onClick={(e) => handleViewPlan(e, currPlan)}
-            >
-              {/* <SearchResultCard /> */}
-            </div>
-          }
-        >
-          {({ hovered }) => (
-            <>
-              {hovered && (
-                <TooltipPrimary width={120}>
-                  Inspect plan
-                </TooltipPrimary>
-              )}
-            </>
-          )}
-        </Hoverable>
       </div>
     </>
   );
