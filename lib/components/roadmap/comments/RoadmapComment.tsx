@@ -21,9 +21,13 @@ const RoadmapComment: FC = () => {
     axios
       .get(getAPI(window) + `/thread/getByPlan/${currPlan._id}`)
       .then((response) => {
-        const sorted = response.data.data.sort((a, b) =>
-          Date.parse(a.date) > Date.parse(b.date) ? 1 : -1,
+        console.log(' is response', response);
+        const sorted = response.data.data.sort(
+          sort === 'default' || sort === 'most recent'
+            ? (a, b) => (Date.parse(a.date) > Date.parse(b.date) ? 1 : -1)
+            : () => {},
         );
+
         setAllThreads(sorted);
       })
       .catch((error) => {
@@ -78,6 +82,7 @@ const RoadmapComment: FC = () => {
                     threadID={thread._id}
                     subcomments={thread.comments.slice(1)}
                     updateRoadmapThreads={updateRoadmapThreads}
+                    sort={sort}
                   />
                 ) : (
                   <></>

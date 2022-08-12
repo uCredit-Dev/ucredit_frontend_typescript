@@ -58,7 +58,7 @@ const RoadMap: React.FC<Props> = ({ mode }) => {
   useEffect(() => {
     // hard code the roadmap  plan
     userService.getPlan('61cd005a4ec21b0004c2a758').then((res) => {
-      console.log('res', res);
+      // console.log('res', res);
       dispatch(updateSelectedPlan(res.data));
     });
 
@@ -85,11 +85,12 @@ const RoadMap: React.FC<Props> = ({ mode }) => {
       <div className="flex flex-col w-full h-full font-roadMapPage bg-white">
         <Header />
         <Banner />
-        <div className="flex items-center pl-[7%] pt-[3%] ">
+        <div className="mx-32 pt-[3%] ">
           {/* <Actionbar mode={mode} /> */}
 
           <CourseList mode={ReviewMode.RoadMap} />
         </div>
+
         <RoadMapComment />
       </div>
     </>
