@@ -5,7 +5,11 @@ import Banner from '../lib/components/roadmap/Banner';
 import { ReviewMode } from '../lib/resources/commonTypes';
 import { useDispatch, useSelector } from 'react-redux';
 import { useCallback, useEffect } from 'react';
-import { selectPlan, updateThreads } from '../lib/slices/currentPlanSlice';
+import {
+  selectPlan,
+  updateSelectedPlan,
+  updateThreads,
+} from '../lib/slices/currentPlanSlice';
 import {
   selectExperimentList,
   setExperiments,
@@ -15,6 +19,10 @@ import { selectUser, updateCommenters } from '../lib/slices/userSlice';
 import axios from 'axios';
 import { getAPI } from '../lib/resources/assets';
 import { userService } from '../lib/services';
+// import CourseList from './plancourseList';
+import CourseList from '../lib/components/dashboard/course-list/CourseList';
+import HandleUserInfoSetupDummy from '../lib/components/dashboard/HandleUserInfoSetupDummy';
+import Actionbar from '../lib/components/dashboard/Actionbar';
 
 interface Props {
   mode: ReviewMode;
@@ -48,6 +56,12 @@ const RoadMap: React.FC<Props> = ({ mode }) => {
   }, [experimentList.length, updateExperimentsForUser]);
 
   useEffect(() => {
+    // hard code the roadmap  plan
+    userService.getPlan('61cd005a4ec21b0004c2a758').then((res) => {
+      console.log('res', res);
+      dispatch(updateSelectedPlan(res.data));
+    });
+
     (async () => {
       if (currPlan && currPlan._id !== 'noPlan') {
         const res = await userService.getThreads(currPlan._id);
@@ -71,6 +85,11 @@ const RoadMap: React.FC<Props> = ({ mode }) => {
       <div className="flex flex-col w-full h-full font-roadMapPage bg-white">
         <Header />
         <Banner />
+        <div className="flex items-center pl-[7%] pt-[3%] ">
+          {/* <Actionbar mode={mode} /> */}
+
+          <CourseList mode={ReviewMode.RoadMap} />
+        </div>
         <RoadMapComment />
       </div>
     </>

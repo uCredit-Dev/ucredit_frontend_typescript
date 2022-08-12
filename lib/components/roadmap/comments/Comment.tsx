@@ -5,6 +5,7 @@ import { useSelector } from 'react-redux';
 import { selectUser } from '../../../slices/userSlice';
 import { ThreadType, CommentType } from '../../../resources/commonTypes';
 import Editor from './commentEditor/Editor';
+import Markdown from 'markdown-to-jsx';
 
 interface CommentBodyType {
   commenter_id: string;
@@ -104,7 +105,7 @@ const Comment: FC<{
           </div>
 
           {/* name and content */}
-          <div className="text-[#797877] w-full flex flex-col py-[16px] gap-4">
+          <div className=" w-full flex flex-col py-[16px] gap-4">
             <div className="h-[20px] text-[18px] text-black font-bold flex flex-row">
               <div className="">{username}</div>
               <div className="ml-[40px] mt-[13px]">
@@ -123,8 +124,8 @@ const Comment: FC<{
               </div>
             </div>
 
-            <div className="h-[20px] text-[20px] text-black font-medium">
-              {content}
+            <div className="h-[20px] text-[20px]  font-medium">
+              <Markdown>{content}</Markdown>
             </div>
             <div className="h-[20px] text-[20px] text-[#797877] font-medium flex flex-row">
               <div>{new Date(date).toISOString().slice(0, 10)}</div>

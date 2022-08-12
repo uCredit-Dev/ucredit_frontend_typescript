@@ -10,12 +10,18 @@ import MenuItem from '@mui/material/MenuItem';
 import FormControl from '@mui/material/FormControl';
 import Select, { SelectChangeEvent } from '@mui/material/Select';
 import Chip from '@mui/material/Chip';
+import CourseList from './course-list/CourseList';
+import { ReviewMode } from '../../resources/commonTypes';
+import { useSelector } from 'react-redux';
+import { selectPlan } from '../../slices/currentPlanSlice';
 
 import axios from 'axios';
 import { getAPI } from './../../resources/assets';
 import { Plan } from './../../resources/commonTypes';
 
 const Preview: React.FC = () => {
+  const currentPlan = useSelector(selectPlan);
+
   const [showPreview, setShowPreview] = useState(false);
   const [allowComment, setAllowComment] = useState(true);
   const [planName, setPlanName] = useState('Default Name');
@@ -23,8 +29,6 @@ const Preview: React.FC = () => {
   const [tags, setTags] = useState<string[]>([]);
 
   const [description, setDescription] = useState('');
-
-  const [currentPlan, setCurrentPlan] = useState<Plan[]>([]);
 
   const ITEM_HEIGHT = 48;
   const ITEM_PADDING_TOP = 8;
@@ -67,39 +71,20 @@ const Preview: React.FC = () => {
     setPlanName(event.target.value);
   };
 
-  // hardcoded for now
-  const planID = '61ccac7bfd08a30004b0417c';
-
-  // plan details saved to 'currentPlan'
-  useEffect(() => {
+  const onPlanSubmit = () => {
+    const old_id = currentPlan._id;
+    // post
     axios
-      .get(getAPI(window) + `/plans/${planID}`)
-      .then((response) => {
-        const plan = response.data.data;
-        setCurrentPlan(plan);
+      .post(getAPI(window) + '/roadmapPlans/createFromPlan', {
+        old_id,
+        description,
+        tags,
+        planName,
       })
       .catch((error) => {
         console.log(error);
       });
-  }, [planID]);
-
-  // const onPlanSubmit = () => {
-  //   console.log(currentPlan);
-  //   console.log(currentPlan.majors[0]);
-  //   const old_id = '61ccac7bfd08a30004b0417c';
-  //   const tags = ['CS', 'CE'];
-  //   console.log(description);
-  //   // post
-  //   axios
-  //     .post(getAPI(window) + '/roadmapPlans/createFromPlan', {
-  //       old_id,
-  //       description,
-  //       tags,
-  //     })
-  //     .catch((error) => {
-  //       console.log(error);
-  //     });
-  // };
+  };
 
   return (
     <>
@@ -120,7 +105,7 @@ const Preview: React.FC = () => {
       ></div>
       <div
         className={clsx(
-          "fixed bottom-0 z-51 w-[100%] h-[70%] font-['Futura'] bg-white rounded-[20px] transition-all duration-500 ease-in-out",
+          "relative bottom-0 z-51 w-[100%] h-[70%] font-['Futura'] bg-white rounded-[20px] transition-all duration-500 ease-in-out",
           {
             'translate-y-full': !showPreview,
           },
@@ -240,18 +225,23 @@ const Preview: React.FC = () => {
           Don't allow comment
         </div>
 
-        <div className="flex items-center pl-[7%] pt-[3%]">
-          <div className="font-['Futura'] text-[30px]">Preview</div>
+        <div className="flex items-center pl-[7%] pt-[3%] ">
+          <div className="font-['Futura'] text-[30px] ">Preview</div>
+          {/* <div className="h-[40px]"></div> */}
         </div>
-        {/* <button
-          onClick={() => {
-            onPlanSubmit();
-          }}
-          className="absolute mt-[-75px] ml-[15px] w-[75px] h-[32px] rounded-[100px] bg-[#0C3A76] text-white"
-        >
-          {' '}
-          submit
-        </button> */}
+        <div className="flex items-center pl-[7%] pt-[3%] ">
+          <CourseList mode={ReviewMode.RoadMap} />
+        </div>
+        <div className="fixed bottom-[100px] right-[10%] w-[20px] h-auto text-lg rounded-lg sm:w-auto px-3 py-1 text-blue-header bg-blue-footer sm:rounded-[13px]">
+          <button
+            onClick={() => {
+              onPlanSubmit();
+            }}
+            className="w-[75px] h-[32px] rounded-[100px] bg-[#0C3A76] text-white"
+          >
+            submit
+          </button>
+        </div>
       </div>
     </>
   );

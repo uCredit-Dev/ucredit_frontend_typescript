@@ -63,7 +63,6 @@ const CourseList: FC<Props> = ({ mode }) => {
     const jsx: JSX.Element[] = [];
     const totCourses: UserCourse[] = [];
     let totalCredits: number = 0;
-
     plan.years.forEach((year: Year, yearIndex: number) => {
       const yearCourses: UserCourse[] = [];
 
