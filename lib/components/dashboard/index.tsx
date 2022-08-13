@@ -4,7 +4,7 @@ import Header from './Header';
 import FeedbackPopup from '../popups/FeedbackPopup';
 import FeedbackNotification from '../popups/FeedbackNotification';
 // import RoadMapBanner from '../roadmap/Banner';
-// import RoadmapComment from '../roadmap/comments/RoadMapComment';
+// import RoadmapComment from '../roadmap/comments/RoadmapComment';
 
 import {
   selectImportingStatus,

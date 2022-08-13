@@ -1,6 +1,6 @@
 import React from 'react';
 import Header from '../lib/components/roadmap/Header';
-import RoadMapComment from '../lib/components/roadmap/comments/RoadMapComment';
+import RoadmapComment from '../lib/components/roadmap/comments/RoadmapComment';
 import Banner from '../lib/components/roadmap/Banner';
 import { ReviewMode } from '../lib/resources/commonTypes';
 import { useDispatch, useSelector } from 'react-redux';
@@ -21,8 +21,6 @@ import { getAPI } from '../lib/resources/assets';
 import { userService } from '../lib/services';
 // import CourseList from './plancourseList';
 import CourseList from '../lib/components/dashboard/course-list/CourseList';
-import HandleUserInfoSetupDummy from '../lib/components/dashboard/HandleUserInfoSetupDummy';
-import Actionbar from '../lib/components/dashboard/Actionbar';
 
 interface Props {
   mode: ReviewMode;
@@ -91,7 +89,7 @@ const RoadMap: React.FC<Props> = ({ mode }) => {
           <CourseList mode={ReviewMode.RoadMap} />
         </div>
 
-        <RoadMapComment />
+        <RoadmapComment />
       </div>
     </>
   );

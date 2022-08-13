@@ -1,4 +1,4 @@
-import SearchBarArea from './searchBarArea';
+import SearchBarArea from './SearchBarArea';
 import { useRouter } from 'next/router';
 import React, { useState } from 'react';
 
