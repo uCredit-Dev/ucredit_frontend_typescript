@@ -156,21 +156,24 @@ const Dashboard: React.FC<Props> = ({ mode }) => {
   }, [experimentList.length, updateExperimentsForUser]);
 
   useEffect(() => {
-    (async () => {
-      if (currPlan && currPlan._id !== 'noPlan') {
-        const res = await userService.getThreads(currPlan._id);
-        dispatch(updateThreads(res.data));
-        const commentersSet = new Set<string>();
-        for (const thread of res.data) {
-          for (const comment of thread.comments) {
-            const userId = comment.commenter_id;
-            commentersSet.add(JSON.stringify(userId));
+    let unmounted = false;
+    let source = axios.CancelToken.source();
+    if (currPlan && currPlan._id !== 'noPlan') {
+      userService
+        .getThreads(currPlan._id, unmounted, source.token)
+        .then((res) => {
+          dispatch(updateThreads(res.data.data));
+          const commentersSet = new Set<string>();
+          for (const thread of res.data.data) {
+            for (const comment of thread.comments) {
+              const userId = comment.commenter_id;
+              commentersSet.add(JSON.stringify(userId));
+            }
           }
-        }
-        const commentersArr = [...commentersSet].map((c) => JSON.parse(c));
-        dispatch(updateCommenters(commentersArr));
-      }
-    })();
+          const commentersArr = [...commentersSet].map((c) => JSON.parse(c));
+          dispatch(updateCommenters(commentersArr));
+        });
+    }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [mode, currPlan._id]);
 

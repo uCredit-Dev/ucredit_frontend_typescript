@@ -1,3 +1,4 @@
+import axios from 'axios';
 import { getAPI } from '../resources/assets';
 import { fetchWrapper } from '../utils';
 
@@ -74,10 +75,15 @@ const postNewThread = (data: any) => {
     .then(handleResponse);
 };
 
-const getThreads = (id: string) => {
-  return fetchWrapper
-    .get(`${getAPI(window)}/thread/getByPlan/${id}`)
-    .then(handleResponse);
+const getThreads = (id: string, unmounted: boolean, cancelToken) => {
+  return axios
+    .get(`${getAPI(window)}/thread/getByPlan/${id}`, {
+      cancelToken: cancelToken,
+    })
+    .then((res) => {
+      console.log(res);
+      if (!unmounted) return res;
+    });
 };
 
 const postNewComment = (data: any, cb = undefined) => {
