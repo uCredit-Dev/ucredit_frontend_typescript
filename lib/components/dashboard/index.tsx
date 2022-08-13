@@ -1,11 +1,10 @@
 import React, { useState, useCallback, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import Header from './Header';
-// import Preview from './Preview';
 import FeedbackPopup from '../popups/FeedbackPopup';
 import FeedbackNotification from '../popups/FeedbackNotification';
-import RoadMapBanner from '../roadmap/Banner';
-import RoadmapComment from '../roadmap/comments/RoadMapComment';
+// import RoadMapBanner from '../roadmap/Banner';
+// import RoadmapComment from '../roadmap/comments/RoadMapComment';
 
 import {
   selectImportingStatus,
@@ -252,7 +251,7 @@ const Dashboard: React.FC<Props> = ({ mode }) => {
             Tracker
           </Button>
 
-          {mode === ReviewMode.RoadMap ? <RoadMapBanner /> : <></>}
+          {/* {mode === ReviewMode.RoadMap ? <RoadMapBanner /> : <></>} */}
 
           <div className="flex-grow w-full">
             <div className="flex flex-col w-full">
@@ -280,7 +279,7 @@ const Dashboard: React.FC<Props> = ({ mode }) => {
       {mode === ReviewMode.Edit && <HandleUserInfoSetupDummy />}
       <HandlePlanShareDummy />
       {/* <Preview /> */}
-      {mode === ReviewMode.RoadMap ? <RoadmapComment /> : <></>}
+      {/* {mode === ReviewMode.RoadMap ? <RoadmapComment /> : <></>} */}
     </>
   );
 };
