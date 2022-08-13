@@ -58,7 +58,9 @@ const CourseDisplayPopup: FC = () => {
       courseCache.forEach((c: SISRetrievedCourse) => {
         if (c.number === courseToShow.number) {
           c.versions.forEach((v: any, index: number) => {
-            if (v.term === courseToShow.version) {
+            if (
+              v.term.toLowerCase().includes(courseToShow.version.toLowerCase())
+            ) {
               const inspectedVersion: Course = {
                 title: c.title,
                 number: c.number,
@@ -89,6 +91,7 @@ const CourseDisplayPopup: FC = () => {
           level: '',
           version: courseToShow.version,
         };
+        console.log('not found');
 
         dispatch(updatePlaceholder(true));
         dispatch(updateInspectedVersion(placeholderCourse));
