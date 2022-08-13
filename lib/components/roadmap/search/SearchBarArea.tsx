@@ -7,7 +7,7 @@ import {
   toggleMobileAdvSearch,
   selectMobileAdvSearch,
 } from '../../../slices/roadmapSearchSlice';
-import SearchBar from './searchBar';
+import SearchBar from './SearchBar';
 import { useSelector } from 'react-redux';
 import React from 'react';
 
