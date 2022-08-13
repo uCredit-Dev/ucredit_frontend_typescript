@@ -1,4 +1,5 @@
 import clsx from 'clsx';
+import React from 'react';
 import { Dispatch, SetStateAction } from 'react';
 import { statusReadable } from '../../../pages/reviewer';
 import { ReviewRequestStatus } from '../../resources/commonTypes';

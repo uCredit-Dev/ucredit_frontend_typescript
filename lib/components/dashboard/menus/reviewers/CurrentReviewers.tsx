@@ -1,5 +1,5 @@
 import { CheckIcon, BellIcon } from '@heroicons/react/outline';
-import React, { useEffect, useState } from 'react';
+import React, { FC, useEffect } from 'react';
 import { useSelector } from 'react-redux';
 import ReactTooltip from 'react-tooltip';
 import { ReviewRequestStatus } from '../../../../resources/commonTypes';
@@ -9,9 +9,11 @@ import { toast } from 'react-toastify';
 import { getAPI } from '../../../../resources/assets';
 import clsx from 'clsx';
 
-const CurrentReviewers = () => {
+const CurrentReviewers: FC<{
+  reviewersJSX: JSX.Element[];
+  setReviewersJSX: (newJSX: JSX.Element[]) => void;
+}> = ({ reviewersJSX, setReviewersJSX }) => {
   const currentPlan = useSelector(selectPlan);
-  const [jsx, setJsx] = useState<JSX.Element[]>([]);
 
   const sendEmail = (toName, reviewID) => {
     const body = {
@@ -51,7 +53,7 @@ const CurrentReviewers = () => {
       const reviewers = (await userService.getPlanReviewers(currentPlan._id))
         .data;
       const elements: JSX.Element[] = await getElements(reviewers);
-      setJsx(elements);
+      setReviewersJSX(elements);
       // dispatch(updateSelectedPlan({ ...currentPlan, reviewers: reviewers }));
     })();
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -135,7 +137,7 @@ const CurrentReviewers = () => {
 
   return (
     <div className="flex flex-col">
-      {jsx}
+      {reviewersJSX}
       <ReactTooltip delayShow={200} />
     </div>
   );
