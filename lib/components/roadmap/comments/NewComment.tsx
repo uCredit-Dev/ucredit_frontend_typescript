@@ -4,12 +4,11 @@ import { getAPI } from './../../../resources/assets';
 import { useSelector } from 'react-redux';
 import { selectUser } from '../../../slices/userSlice';
 import { ThreadType } from '../../../resources/commonTypes';
-import { selectPlan } from '../../../slices/currentPlanSlice';
 import Editor from './commentEditor/Editor';
 
 interface ThreadBodyType extends ThreadType {
-  comments?: undefined;
-  _id?: undefined;
+  comments: [];
+  _id: '';
 }
 
 interface CommentBodyType {
@@ -33,6 +32,8 @@ const NewComment: FC<{
       location_type: 'Plan',
       location_id: currPlan._id,
       resolved: false,
+      comments: [],
+      _id: '',
     };
     const comment: CommentBodyType = {
       commenter_id: user._id,

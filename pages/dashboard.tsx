@@ -59,7 +59,7 @@ const Dash: React.FC = () => {
     }
     setMode(router.query.mode as ReviewMode);
     dispatch(updateReviewMode(router.query.mode as ReviewMode));
-    if (!router.query.plan || router.query.mode != ReviewMode.RoadMap) {
+    if (!router.query.plan || router.query.mode !== ReviewMode.RoadMap) {
       setMode(ReviewMode.Edit);
       dispatch(updateReviewMode(ReviewMode.Edit));
       return;
