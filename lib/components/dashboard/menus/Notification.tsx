@@ -34,10 +34,10 @@ const Notification: FC<{
               <Popover.Button
                 className={`
                             ${open ? '' : 'text-opacity-90'}
-                            text-white group bg-white px-2 py-1.5 rounded-md inline-flex items-center text-base font-medium hover:text-opacity-100 focus:outline-none focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-opacity-75 focus:outline-none`}
+                            w-full hover:bg-slate-300 text-lg rounded-lg sm:w-auto px-3 py-1 sm:hover:text-blue-header sm:hover:bg-blue-footer sm:rounded-[13px] transition duration-100 ease-in`}
               >
                 <span>
-                  <BellIcon className="h-6 text-black"></BellIcon>
+                  <BellIcon className="h-6 "></BellIcon>
                 </span>
               </Popover.Button>
 

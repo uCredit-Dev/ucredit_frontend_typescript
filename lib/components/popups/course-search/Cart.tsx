@@ -5,6 +5,7 @@ import CourseDisplay from './search-results/CourseDisplay';
 import { EyeOffIcon } from '@heroicons/react/outline';
 import ReactTooltip from 'react-tooltip';
 import {
+  Course,
   SearchExtras,
   SISRetrievedCourse,
 } from '../../../resources/commonTypes';
@@ -13,6 +14,7 @@ import FineRequirementsList from './cart/FineRequirementsList';
 import CartCourseList from './cart/CartCourseList';
 import { emptyRequirements } from './cart/dummies';
 import {
+  checkRequirementSatisfied,
   requirements,
   splitRequirements,
 } from '../../dashboard/degree-info/distributionFunctions';
@@ -93,6 +95,25 @@ const Cart: FC<{ allCourses: SISRetrievedCourse[] }> = (props) => {
         console.log('Course not found!');
       }
       courses = [...courses, ...found[0]];
+      courses = courses.filter((sisCourse) => {
+        const version = sisCourse.versions[0];
+        const course: Course = {
+          title: sisCourse.title,
+          number: sisCourse.number,
+          areas: version.areas,
+          term: version.term,
+          school: version.school,
+          department: version.department,
+          credits: version.credits,
+          wi: version.wi,
+          bio: version.bio,
+          tags: version.tags,
+          preReq: version.preReq,
+          restrictions: version.restrictions,
+          level: version.level,
+        };
+        return checkRequirementSatisfied(selectedRequirement, course);
+      });
       dispatch(updateRetrievedCourses(courses));
     });
   };

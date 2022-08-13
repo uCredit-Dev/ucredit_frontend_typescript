@@ -1,31 +1,36 @@
-import { DashboardMode } from '../../resources/commonTypes';
-import CommentsOverview from './menus/comments/CommentsOverview';
-import HamburgerMenu from './menus/HamburgerMenu';
-import Notification from './menus/Notification';
-import RoadaMapHeader from '../roadmap/Header';
-import { ReviewMode } from '../../resources/commonTypes';
 import { useRouter } from 'next/router';
 import React, { useState } from 'react';
 
 /**
- * User login/logout buttons.
+ * Header components.
  */
-const Header: React.FC<{
-  userID: string;
-  dashboardSwitchMode: DashboardMode;
-  mode: ReviewMode;
-  zLevelMax: boolean | null;
-}> = ({ userID, dashboardSwitchMode, mode, zLevelMax }) => {
+const Links: React.FC = () => {
+  return (
+    <div className="sm:space-x-5">
+      <button className="w-full hover:bg-slate-300 text-lg rounded-lg sm:w-auto px-3 py-1 sm:hover:text-blue-header sm:hover:bg-blue-footer sm:rounded-[13px] transition duration-100 ease-in">
+        post
+      </button>
+
+      <button className="w-full hover:bg-slate-300 text-lg rounded-lg sm:w-auto px-3 py-1 sm:hover:text-blue-header sm:hover:bg-blue-footer sm:rounded-[13px] transition duration-100 ease-in">
+        saved
+      </button>
+
+      <button className="w-full hover:bg-slate-300 text-lg rounded-lg sm:w-auto px-3 py-1 sm:hover:text-blue-header sm:hover:bg-blue-footer sm:rounded-[13px] transition duration-100 ease-in">
+        my plan
+      </button>
+    </div>
+  );
+};
+
+/**
+ * Header of road map.
+ */
+const Header: React.FC = () => {
   const router = useRouter();
   const [showMenu, setShowMenu] = useState<boolean>(false);
-  return mode === ReviewMode.RoadMap ? (
-    <RoadaMapHeader />
-  ) : (
-    <div
-      className={`z-[${
-        zLevelMax ? '91' : '40'
-      } flex justify-between items-center py-1 px-4 h-1/6 bg-blue-header`}
-    >
+
+  return (
+    <div className="sticky top-0 z-40 flex justify-between items-center py-1 px-4 h-1/6 bg-blue-header">
       <div className="flex-grow">
         <div className="inline-flex">
           <img
@@ -42,7 +47,7 @@ const Header: React.FC<{
           </div>
         </div>
       </div>
-      <div className="absolute w-20 top-12 space-y-1 right-0 z-100">
+      <div>
         <div className="relative sm:hidden">
           <button
             type="button"
@@ -67,11 +72,18 @@ const Header: React.FC<{
               />
             </svg>
           </button>
+
+          {showMenu && (
+            <div className="absolute w-20 top-12 space-y-1 right-0 z-100 bg-white shadow-xl rounded-lg">
+              <Links />
+            </div>
+          )}
+        </div>
+
+        <div className="hidden sm:block">
+          <Links />
         </div>
       </div>
-      {dashboardSwitchMode === DashboardMode.Planning && <CommentsOverview />}
-      <Notification userID={userID} />
-      <HamburgerMenu mode={dashboardSwitchMode} />
     </div>
   );
 };
