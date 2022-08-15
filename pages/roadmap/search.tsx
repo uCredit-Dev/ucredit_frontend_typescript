@@ -86,6 +86,7 @@ const RoadmapSearch: React.FC<Props> = ({ plans, expanded = true }) => {
   const searchMajorKeyword = useSelector(selectSearchMajorText);
 
   const matchWithTitle = (plan) => {
+    console.log('Searched Title:', searchKeyword);
     if (
       plan.planName.includes(searchKeyword) ||
       plan.content.includes(searchKeyword)
@@ -133,7 +134,7 @@ const RoadmapSearch: React.FC<Props> = ({ plans, expanded = true }) => {
             .filter(matchWithTags)
             .filter(matchWithMajor)
             .map((item, i) => {
-              console.log(item.id);
+              // console.log(item.id);
 
               return (
                 <div key={item.id}>
