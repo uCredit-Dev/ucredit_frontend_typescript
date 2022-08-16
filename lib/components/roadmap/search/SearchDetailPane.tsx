@@ -1,8 +1,28 @@
-import SearchBar from './searchBar';
 import { useState } from 'react';
 import React from 'react';
 
 const SearchDetailPane: React.FC = () => {
+  const [selectedTags, setSelectedTags] = useState<Array<string>>([]);
+  const tagArray: Array<string> = [
+    'double major',
+    'humanities',
+    'pre-med',
+    'pre-law',
+  ];
+
+  const addTag = (evt) => {
+    let newArray: Array<string> = selectedTags.slice();
+    newArray.push(evt.target.value);
+    setSelectedTags(newArray);
+  };
+
+  const removeTag = (evt) => {
+    let newArray: Array<string> = selectedTags.slice();
+    const index = newArray.indexOf(evt.target.value);
+    newArray.slice(index, 1);
+    setSelectedTags(newArray);
+  };
+
   const [selectedMajor, setselectedMajor] = useState<string>('');
   const majorArray: string[] = [
     'B.S. in Computer Science',
@@ -18,19 +38,32 @@ const SearchDetailPane: React.FC = () => {
     setselectedMajor(evt.target.innerText);
   };
 
-  const onInputChange = (evt) => {
+  const onMajorChange = (evt) => {
     setselectedMajor(evt.target.value);
   };
 
   return (
     <div className="mx-8 my-5 px-6 py-4 bg-sky-100 rounded-xl">
-      <SearchBar
+      {/*<SearchBar
         iconSize={24}
         onInputProp={() => {}}
         placeHolder="Search tags"
         heightClass="h-10"
         iconPosition="left-16"
-      />
+  />*/}
+      {/* Search Tags */}
+      <h3>Select Tags Below</h3>
+      <ul className="flex flex-col items-start">
+        {tagArray.map((item) => {
+          return (
+            <div>
+              <input key={item} id={item} type="checkbox" value={item}></input>
+              <label htmlFor={item}>{item}</label>
+            </div>
+          );
+        })}
+      </ul>
+      {/* Search Major */}
       <div
         className="w-full my-2 outline outline-gray-600 outline-2
       rounded-2xl overflow-hidden bg-white"
@@ -41,7 +74,7 @@ const SearchDetailPane: React.FC = () => {
           type="text"
           placeholder="search or select major"
           value={selectedMajor}
-          onChange={onInputChange}
+          onChange={onMajorChange}
         />
         <ul
           className="flex flex-col h-40 overflow-y-scroll rounded-b-2xl
