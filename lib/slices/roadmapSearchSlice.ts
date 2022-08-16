@@ -1,5 +1,4 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
-import { M } from 'msw/lib/glossary-297d38ba';
 import { RootState } from '../appStore/store';
 
 type roadmapSearchStates = {
@@ -35,8 +34,12 @@ export const roadmapSearchSlice = createSlice({
   },
 });
 
-export const { updateSearchText, updateSearchTagsText, updateSearchMajorText, toggleMobileAdvSearch } =
-  roadmapSearchSlice.actions;
+export const {
+  updateSearchText,
+  updateSearchTagsText,
+  updateSearchMajorText,
+  toggleMobileAdvSearch,
+} = roadmapSearchSlice.actions;
 
 export const selectSearchText = (state: RootState) =>
   state.roadmapSearch.searchText;

@@ -22,6 +22,7 @@ const Comment: FC<{
   threadID: any;
   date: string;
   subcomments: CommentType[];
+  sort: string;
   updateRoadmapThreads: (thread: ThreadType) => void;
 }> = ({
   upvote,
@@ -30,6 +31,7 @@ const Comment: FC<{
   threadID,
   date,
   subcomments,
+  sort,
   updateRoadmapThreads,
 }) => {
   const [isShown, setIsShown] = useState<boolean>(false);
@@ -124,7 +126,7 @@ const Comment: FC<{
               </div>
             </div>
 
-            <div className="h-[20px] text-[20px]  font-medium">
+            <div className="text-[20px]  font-medium">
               <Markdown>{content}</Markdown>
             </div>
             <div className="h-[20px] text-[20px] text-[#797877] font-medium flex flex-row">
@@ -178,6 +180,7 @@ const Comment: FC<{
               threadID={subs.thread_id}
               subcomments={[]}
               updateRoadmapThreads={updateRoadmapThreads}
+              sort={'default'}
             ></Comment>
           ) : (
             <></>

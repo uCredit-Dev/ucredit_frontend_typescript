@@ -1,11 +1,9 @@
 import clsx from 'clsx';
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import TextField from '@mui/material/TextField';
 import Collapse from '@mui/material/Collapse';
 import Box from '@mui/material/Box';
-import { Theme, useTheme } from '@mui/material/styles';
 import OutlinedInput from '@mui/material/OutlinedInput';
-import InputLabel from '@mui/material/InputLabel';
 import MenuItem from '@mui/material/MenuItem';
 import FormControl from '@mui/material/FormControl';
 import Select, { SelectChangeEvent } from '@mui/material/Select';
@@ -17,7 +15,6 @@ import { selectPlan } from '../../slices/currentPlanSlice';
 
 import axios from 'axios';
 import { getAPI } from './../../resources/assets';
-import { Plan } from './../../resources/commonTypes';
 
 const Preview: React.FC = () => {
   const currentPlan = useSelector(selectPlan);

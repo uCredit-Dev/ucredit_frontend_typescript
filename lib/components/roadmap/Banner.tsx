@@ -42,7 +42,7 @@ const Laptop: React.FC = () => {
     <>
       <div className="flex bg-sky-100 items-stretch w-full">
         <div className="mx-32 my-9 text-left">
-          <div className="felx flex-row">
+          <div className="flex flex-row">
             {/* plan Name */}
             <div className="flex flex-row text-3xl sm: md: lg: xl: xxxl: ">
               {name}

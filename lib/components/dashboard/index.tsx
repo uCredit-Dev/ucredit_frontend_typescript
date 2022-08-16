@@ -1,11 +1,10 @@
 import React, { useState, useCallback, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import Header from './Header';
-import Preview from './Preview';
 import FeedbackPopup from '../popups/FeedbackPopup';
 import FeedbackNotification from '../popups/FeedbackNotification';
-import RoadMapBanner from '../roadmap/Banner';
-import RoadmapComment from '../roadmap/comments/RoadMapComment';
+// import RoadMapBanner from '../roadmap/Banner';
+// import RoadmapComment from '../roadmap/comments/RoadmapComment';
 
 import {
   selectImportingStatus,
@@ -221,12 +220,12 @@ const Dashboard: React.FC<Props> = ({ mode }) => {
               outline: '2px solid transparent',
               outlineOffset: '2px',
               color: 'rgb(0 0 0 1)',
-              backgroundColor: 'rgb(198 232 255 1)',
+              backgroundColor: 'rgb(198, 232, 255, 1)',
               boxShadow:
                 'var(--tw-ring-offset-shadow, 0 0 #0000), var(--tw-ring-shadow, 0 0 #0000), var(--tw-shadow)',
             }}
             className={clsx(
-              'flex items-center p-2 text-base font-normal text-black rounded-lg z-[90] top-[4.65rem] right-9 focus:outline-none bg-blue-header shadow-sm text-sm',
+              'flex items-center p-2 text-base font-normal text-black rounded-lg z-[90] top-[4.65rem] right-9 focus:outline-none shadow-sm text-sm',
               {
                 'fixed ': searchStatus,
                 ' absolute': !searchStatus,
@@ -252,7 +251,7 @@ const Dashboard: React.FC<Props> = ({ mode }) => {
             Tracker
           </Button>
 
-          {mode === ReviewMode.RoadMap ? <RoadMapBanner /> : <></>}
+          {/* {mode === ReviewMode.RoadMap ? <RoadMapBanner /> : <></>} */}
 
           <div className="flex-grow w-full">
             <div className="flex flex-col w-full">
@@ -279,8 +278,8 @@ const Dashboard: React.FC<Props> = ({ mode }) => {
       <GenerateNewPlan />
       {mode === ReviewMode.Edit && <HandleUserInfoSetupDummy />}
       <HandlePlanShareDummy />
-      <Preview />
-      {mode === ReviewMode.RoadMap ? <RoadmapComment /> : <></>}
+      {/* <Preview /> */}
+      {/* {mode === ReviewMode.RoadMap ? <RoadmapComment /> : <></>} */}
     </>
   );
 };

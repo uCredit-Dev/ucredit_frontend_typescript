@@ -5,9 +5,7 @@ import Dropbox from './Dropbox';
 import CommentIcon from './commentEditor/CommentIcon';
 import axios from 'axios';
 import { getAPI } from './../../../resources/assets';
-import { useSelector } from 'react-redux';
 import { ThreadType } from '../../../resources/commonTypes';
-import { selectPlan } from '../../../slices/currentPlanSlice';
 
 const RoadmapComment: FC = () => {
   const [sort, setSort] = useState<string>('default');
@@ -21,14 +19,20 @@ const RoadmapComment: FC = () => {
     axios
       .get(getAPI(window) + `/thread/getByPlan/${currPlan._id}`)
       .then((response) => {
-        const sorted = response.data.data.sort((a, b) =>
-          Date.parse(a.date) > Date.parse(b.date) ? 1 : -1,
-        );
+        console.log(' is response', response);
+        const sorted =
+          sort === 'default' || sort === 'most recent'
+            ? response.data.data.sort((a, b) =>
+                Date.parse(a.date) > Date.parse(b.date) ? 1 : -1,
+              )
+            : response.data.data;
+
         setAllThreads(sorted);
       })
       .catch((error) => {
         console.log(error);
       });
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [currPlan._id]);
 
   const updateSort = (sortSelected): void => {
@@ -78,6 +82,7 @@ const RoadmapComment: FC = () => {
                     threadID={thread._id}
                     subcomments={thread.comments.slice(1)}
                     updateRoadmapThreads={updateRoadmapThreads}
+                    sort={sort}
                   />
                 ) : (
                   <></>
@@ -90,6 +95,6 @@ const RoadmapComment: FC = () => {
 };
 
 export default RoadmapComment;
-function setData(data: any) {
-  throw new Error('Function not implemented.');
-}
+// function setData(data: any) {
+//   throw new Error('Function not implemented.');
+// }

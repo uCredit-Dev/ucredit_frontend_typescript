@@ -360,12 +360,12 @@ const Actionbar: FC<{ mode: ReviewMode }> = ({ mode }) => {
           <div>
             <Button
               onClick={handleClick}
-              className="bg-blue-header"
               sx={{
                 h: 10,
                 my: 1.25,
                 boxShadow: 'none',
                 color: 'black',
+                backgroundColor: 'whitesmoke',
               }}
             >
               <PersonIcon /> Reviewers

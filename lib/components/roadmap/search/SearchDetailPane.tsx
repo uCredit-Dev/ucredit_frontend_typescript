@@ -1,5 +1,11 @@
+import SearchBar from './SearchBar';
 import { useState } from 'react';
 import React from 'react';
+import { useDispatch } from 'react-redux';
+import {
+  updateSearchTagsText,
+  updateSearchMajorText,
+} from '../../../slices/roadmapSearchSlice';
 
 const SearchDetailPane: React.FC = () => {
   const [selectedTags, setSelectedTags] = useState<Array<string>>([]);
@@ -23,6 +29,7 @@ const SearchDetailPane: React.FC = () => {
     setSelectedTags(newArray);
   };
 
+  const dispatch = useDispatch();
   const [selectedMajor, setselectedMajor] = useState<string>('');
   const majorArray: string[] = [
     'B.S. in Computer Science',
@@ -36,17 +43,24 @@ const SearchDetailPane: React.FC = () => {
 
   const changeSelectedMajor = (evt) => {
     setselectedMajor(evt.target.innerText);
+    dispatch(updateSearchMajorText(evt.target.innerText));
   };
 
   const onMajorChange = (evt) => {
     setselectedMajor(evt.target.value);
+    dispatch(updateSearchMajorText(evt.target.value));
+  };
+
+  const onSearchTagsInput = (evt: any) => {
+    console.log('tags updated!');
+    dispatch(updateSearchTagsText(evt.target.value));
   };
 
   return (
     <div className="mx-8 my-5 px-6 py-4 bg-sky-100 rounded-xl">
       {/*<SearchBar
         iconSize={24}
-        onInputProp={() => {}}
+        onInputProp={onSearchTagsInput}
         placeHolder="Search tags"
         heightClass="h-10"
         iconPosition="left-16"

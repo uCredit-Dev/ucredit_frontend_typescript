@@ -34,7 +34,9 @@ const CourseDraggable: FC<{
         key={course._id}
         index={index}
         draggableId={course._id}
-        isDragDisabled={draggable || mode === ReviewMode.View || mode === ReviewMode.RoadMap}
+        isDragDisabled={
+          draggable || mode === ReviewMode.View || mode === ReviewMode.RoadMap
+        }
       >
         {(provided, snapshot) => {
           return (

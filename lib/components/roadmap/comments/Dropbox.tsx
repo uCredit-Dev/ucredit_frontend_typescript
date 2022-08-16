@@ -16,6 +16,7 @@ const Dropbox: FC<DropboxProps> = ({ updateSort, sort, list }) => {
 
   function tabClicked(m) {
     updateSort(m);
+    handleClick();
   }
 
   return (
