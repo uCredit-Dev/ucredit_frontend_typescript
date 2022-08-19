@@ -4,6 +4,8 @@ import { RootState } from '../appStore/store';
 type roadmapSearchStates = {
   searchText: string;
   searchTagsText: string;
+  searchTags: Array<string>;
+  searchTagsSearchType: string;
   searchMajorText: string;
   mobileAdvSearch: boolean;
 };
@@ -11,6 +13,8 @@ type roadmapSearchStates = {
 const initialState: roadmapSearchStates = {
   searchText: '',
   searchTagsText: '',
+  searchTags: [],
+  searchTagsSearchType: 'or',
   searchMajorText: '',
   mobileAdvSearch: false,
 };
@@ -24,6 +28,12 @@ export const roadmapSearchSlice = createSlice({
     },
     updateSearchTagsText: (state: any, action: PayloadAction<String>) => {
       state.searchTagsText = action.payload;
+    },
+    updateSearchTags: (state: any, action: PayloadAction<Array<string>>) => {
+      state.searchTags = action.payload;
+    },
+    updateSearchTagsSearchType: (state: any, act: PayloadAction<boolean>) => {
+      state.searchTagsSearchType = act.payload;
     },
     updateSearchMajorText: (state: any, action: PayloadAction<String>) => {
       state.searchMajorText = action.payload;
@@ -39,6 +49,8 @@ export const {
   updateSearchTagsText,
   updateSearchMajorText,
   toggleMobileAdvSearch,
+  updateSearchTags,
+  updateSearchTagsSearchType,
 } = roadmapSearchSlice.actions;
 
 export const selectSearchText = (state: RootState) =>
@@ -49,5 +61,9 @@ export const selectSearchMajorText = (state: RootState) =>
   state.roadmapSearch.searchMajorText;
 export const selectMobileAdvSearch = (state: RootState) =>
   state.roadmapSearch.mobileAdvSearch;
+export const selectSearchTags = (state: RootState) =>
+  state.roadmapSearch.searchTags;
+export const selectSearchTagsSearchType = (state: RootState) =>
+  state.roadmapSearch.searchTagsSearchType;
 
 export default roadmapSearchSlice.reducer;

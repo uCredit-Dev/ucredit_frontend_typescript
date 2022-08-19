@@ -5,21 +5,31 @@ import { useDispatch } from 'react-redux';
 import {
   updateSearchTagsText,
   updateSearchMajorText,
+  updateSearchTags,
+  updateSearchTagsSearchType,
 } from '../../../slices/roadmapSearchSlice';
 
 const SearchDetailPane: React.FC = () => {
+  const dispatch = useDispatch();
+
   const [selectedTags, setSelectedTags] = useState<Array<string>>([]);
   const tagArray: Array<string> = [
-    'double major',
-    'humanities',
-    'pre-med',
-    'pre-law',
+    'Double major',
+    'Humanities',
+    'Pre-med',
+    'Pre-law',
+    'test 1',
+    'test 2',
+    'test 3',
+    'test 4',
+    'test 5',
   ];
 
   const addTag = (evt) => {
     let newArray: Array<string> = selectedTags.slice();
     newArray.push(evt.target.value);
     setSelectedTags(newArray);
+    dispatch(updateSearchTags(selectedTags));
   };
 
   const removeTag = (evt) => {
@@ -27,9 +37,9 @@ const SearchDetailPane: React.FC = () => {
     const index = newArray.indexOf(evt.target.value);
     newArray.slice(index, 1);
     setSelectedTags(newArray);
+    dispatch(updateSearchTags(selectedTags));
   };
 
-  const dispatch = useDispatch();
   const [selectedMajor, setselectedMajor] = useState<string>('');
   const majorArray: string[] = [
     'B.S. in Computer Science',
@@ -66,17 +76,55 @@ const SearchDetailPane: React.FC = () => {
         iconPosition="left-16"
   />*/}
       {/* Search Tags */}
-      <h3>Select Tags Below</h3>
-      <ul className="flex flex-col items-start">
-        {tagArray.map((item) => {
-          return (
-            <div>
-              <input key={item} id={item} type="checkbox" value={item}></input>
-              <label htmlFor={item}>{item}</label>
-            </div>
-          );
-        })}
-      </ul>
+      <h3>Search for plans with:</h3>
+      <div className="flex flex-row flex-wrap">
+        <div className="flex flex-row ml-4">
+          <input
+            type="radio"
+            id="tagsSearchOr"
+            name="tagsSearchType"
+            value="or"
+            className="mr-1"
+            checked={true}
+          ></input>
+          <label htmlFor="tagsSearchOr">Any of selected tags</label>
+        </div>
+        <div className="flex flew-row ml-4">
+          <input
+            type="radio"
+            id="tagsSearchAll"
+            name="tagsSearchType"
+            value="all"
+            className="mr-1"
+          ></input>
+          <label htmlFor="tagsSearchAll">All selected tags</label>
+        </div>
+      </div>
+      <div
+        className="overflow-hidden outline outline-gray-600 outline-2
+      rounded-2xl mt-1 mb-6 bg-white"
+      >
+        <ul
+          className="flex flex-row flex-wrap items-start max-h-34 
+        overflow-y-scroll pl-3 pr-1 py-0.5"
+        >
+          {tagArray.map((item) => {
+            return (
+              <div className="my-1 w-32">
+                <input
+                  key={item}
+                  id={item}
+                  type="checkbox"
+                  value={item}
+                ></input>
+                <label htmlFor={item} className="ml-1">
+                  {item}
+                </label>
+              </div>
+            );
+          })}
+        </ul>
+      </div>
       {/* Search Major */}
       <div
         className="w-full my-2 outline outline-gray-600 outline-2

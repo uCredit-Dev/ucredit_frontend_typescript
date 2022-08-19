@@ -24,7 +24,10 @@ module.exports = {
         addSVG: '12rem',
         full: '100%',
       },
-      maxHeight: { mobileSearch: '75vh' },
+      maxHeight: {
+        mobileSearch: '75vh',
+        34: '8.5rem',
+      },
       width: {
         year: '320px',
         courselist: '1400px',
