@@ -32,8 +32,9 @@ export const roadmapSearchSlice = createSlice({
     updateSearchTags: (state: any, action: PayloadAction<Array<string>>) => {
       state.searchTags = action.payload;
     },
-    updateSearchTagsSearchType: (state: any, act: PayloadAction<boolean>) => {
+    updateSearchTagsSearchType: (state: any, act: PayloadAction<string>) => {
       state.searchTagsSearchType = act.payload;
+      console.log(state.searchTagsSearchType);
     },
     updateSearchMajorText: (state: any, action: PayloadAction<String>) => {
       state.searchMajorText = action.payload;

@@ -1,18 +1,19 @@
-import SearchBar from './SearchBar';
 import { useState } from 'react';
 import React from 'react';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import {
   updateSearchTagsText,
   updateSearchMajorText,
   updateSearchTags,
   updateSearchTagsSearchType,
+  selectSearchTags,
 } from '../../../slices/roadmapSearchSlice';
 
 const SearchDetailPane: React.FC = () => {
   const dispatch = useDispatch();
+  const selectedTags = useSelector(selectSearchTags);
 
-  const [selectedTags, setSelectedTags] = useState<Array<string>>([]);
+  //const [selectedTags, setSelectedTags] = useState<Array<string>>([]);
   const tagArray: Array<string> = [
     'Double major',
     'Humanities',
@@ -25,19 +26,32 @@ const SearchDetailPane: React.FC = () => {
     'test 5',
   ];
 
-  const addTag = (evt) => {
+  const addTag = (tag: string) => {
+    if (selectedTags.includes(tag)) {
+      return;
+    }
     let newArray: Array<string> = selectedTags.slice();
-    newArray.push(evt.target.value);
-    setSelectedTags(newArray);
-    dispatch(updateSearchTags(selectedTags));
+    newArray.push(tag);
+    dispatch(updateSearchTags(newArray));
   };
 
-  const removeTag = (evt) => {
+  const removeTag = (tag: string) => {
     let newArray: Array<string> = selectedTags.slice();
-    const index = newArray.indexOf(evt.target.value);
-    newArray.slice(index, 1);
-    setSelectedTags(newArray);
-    dispatch(updateSearchTags(selectedTags));
+    const index = newArray.indexOf(tag);
+    newArray.splice(index, 1);
+    dispatch(updateSearchTags(newArray));
+  };
+
+  const onTagChange = (evt) => {
+    if (evt.target.checked) {
+      addTag(evt.target.value);
+    } else {
+      removeTag(evt.target.value);
+    }
+  };
+
+  const onTagSearchTypeChange = (evt) => {
+    dispatch(updateSearchTagsSearchType(evt.target.value));
   };
 
   const [selectedMajor, setselectedMajor] = useState<string>('');
@@ -85,7 +99,8 @@ const SearchDetailPane: React.FC = () => {
             name="tagsSearchType"
             value="or"
             className="mr-1"
-            checked={true}
+            defaultChecked={true}
+            onChange={onTagSearchTypeChange}
           ></input>
           <label htmlFor="tagsSearchOr">Any of selected tags</label>
         </div>
@@ -96,6 +111,7 @@ const SearchDetailPane: React.FC = () => {
             name="tagsSearchType"
             value="all"
             className="mr-1"
+            onChange={onTagSearchTypeChange}
           ></input>
           <label htmlFor="tagsSearchAll">All selected tags</label>
         </div>
@@ -116,6 +132,7 @@ const SearchDetailPane: React.FC = () => {
                   id={item}
                   type="checkbox"
                   value={item}
+                  onChange={onTagChange}
                 ></input>
                 <label htmlFor={item} className="ml-1">
                   {item}
