@@ -164,7 +164,7 @@ export type UserDistribution = {
   user_id: string;
   plan_id: string;
   major_id: string; 
-  fineReq_ids?: FineReqObj[];
+  fineReq_ids?: string[];
   planned: number; 
   current: number; 
   satisfied: boolean; 
