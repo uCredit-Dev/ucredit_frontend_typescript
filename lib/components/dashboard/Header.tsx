@@ -1,3 +1,4 @@
+import React from 'react';
 import { DashboardMode } from '../../resources/commonTypes';
 import CommentsOverview from './menus/comments/CommentsOverview';
 import HamburgerMenu from './menus/HamburgerMenu';
@@ -5,7 +6,6 @@ import Notification from './menus/Notification';
 import RoadaMapHeader from '../roadmap/Header';
 import { ReviewMode } from '../../resources/commonTypes';
 import { useRouter } from 'next/router';
-import React, { useState } from 'react';
 
 /**
  * User login/logout buttons.
@@ -17,7 +17,6 @@ const Header: React.FC<{
   zLevelMax: boolean | null;
 }> = ({ userID, dashboardSwitchMode, mode, zLevelMax }) => {
   const router = useRouter();
-  const [showMenu, setShowMenu] = useState<boolean>(false);
   return mode === ReviewMode.RoadMap ? (
     <RoadaMapHeader />
   ) : (
@@ -40,33 +39,6 @@ const Header: React.FC<{
           >
             uCredit
           </div>
-        </div>
-      </div>
-      <div className="absolute w-20 top-12 space-y-1 right-0 z-100">
-        <div className="relative sm:hidden">
-          <button
-            type="button"
-            className="inline-flex items-center justify-center p-2 rounded-md text-gray-400 hover:text-white hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-white"
-            aria-controls="mobile-menu"
-            aria-expanded="false"
-            onClick={() => setShowMenu(!showMenu)}
-          >
-            <svg
-              className="h-6 w-6"
-              xmlns="http://www.w3.org/2000/svg"
-              fill="none"
-              viewBox="0 0 24 24"
-              strokeWidth="2"
-              stroke="currentColor"
-              aria-hidden="true"
-            >
-              <path
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                d="M4 6h16M4 12h16M4 18h16"
-              />
-            </svg>
-          </button>
         </div>
       </div>
       {dashboardSwitchMode === DashboardMode.Planning && <CommentsOverview />}

@@ -163,6 +163,9 @@ const Dashboard: React.FC<Props> = ({ mode }) => {
       userService
         .getThreads(currPlan._id, unmounted, source.token)
         .then((res) => {
+          if (!res) {
+            throw new Error('No response from server');
+          }
           dispatch(updateThreads(res.data.data));
           const commentersSet = new Set<string>();
           for (const thread of res.data.data) {
@@ -173,7 +176,8 @@ const Dashboard: React.FC<Props> = ({ mode }) => {
           }
           const commentersArr = [...commentersSet].map((c) => JSON.parse(c));
           dispatch(updateCommenters(commentersArr));
-        });
+        })
+        .catch((err) => console.log(err));
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [mode, currPlan._id]);
@@ -210,7 +214,7 @@ const Dashboard: React.FC<Props> = ({ mode }) => {
           />
           <Button
             sx={{
-              position: searchStatus ? 'fixed' : 'absolute',
+              position: 'fixed',
               padding: '0.5rem',
               display: 'flex',
               alignItems: 'center',
@@ -259,7 +263,7 @@ const Dashboard: React.FC<Props> = ({ mode }) => {
 
           <div className="flex-grow w-full">
             <div className="flex flex-col w-full">
-              <div className="flex flex-col pl-10 thin:flex-wrap-reverse mt-1 w-full h-full">
+              <div className="flex flex-col pl-4 thin:flex-wrap-reverse mt-1 w-full h-full">
                 <Actionbar mode={mode} />
                 <CourseList mode={mode} />
               </div>

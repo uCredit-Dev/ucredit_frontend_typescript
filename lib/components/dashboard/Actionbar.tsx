@@ -231,6 +231,7 @@ const Actionbar: FC<{ mode: ReviewMode }> = ({ mode }) => {
     }
   };
   return (
+    // TODO: flex-wrap on mobile, scroll on desktop
     <div className="flex flex-row flex-wrap">
       {reviewMode === ReviewMode.Edit && (
         <>
@@ -244,8 +245,8 @@ const Actionbar: FC<{ mode: ReviewMode }> = ({ mode }) => {
               my: 1,
               bgcolor: '#C6E8FF',
               boxShadow: 'none',
+              zIndex: 1,
             }}
-            className="z-20"
           >
             <EditIcon />
           </Fab>
@@ -297,7 +298,7 @@ const Actionbar: FC<{ mode: ReviewMode }> = ({ mode }) => {
               label: option.name,
               value: option.abbrev,
             }))}
-            sx={{ width: 300, mr: 1, my: 1 }}
+            sx={{ width: 'auto', maxWidth: 400, mr: 1, my: 1 }}
             renderInput={(params) => (
               <TextField {...params} label="Update Degrees" />
             )}
@@ -308,7 +309,7 @@ const Actionbar: FC<{ mode: ReviewMode }> = ({ mode }) => {
             isOptionEqualToValue={(o1, o2) => o1.label === o2.label}
             disableCloseOnSelect
             getLimitTagsText={() => (
-              <div className="text-sm text-ellipsis whitespace-nowrap">
+              <div className="text-sm text-ellipsis whitespace-nowrap w-min">
                 {getLimitText()}
               </div>
             )}
@@ -318,7 +319,7 @@ const Actionbar: FC<{ mode: ReviewMode }> = ({ mode }) => {
       <Button
         variant="outlined"
         onClick={onShareClick}
-        sx={{ h: 10, mr: 1, my: 1 }}
+        sx={{ height: '2.5rem', mr: 1, my: 1 }}
         color="info"
       >
         <svg
@@ -340,17 +341,8 @@ const Actionbar: FC<{ mode: ReviewMode }> = ({ mode }) => {
       {reviewMode === ReviewMode.Edit && (
         <>
           <Button
-            onClick={activateDeletePlan}
-            variant="outlined"
-            color="error"
-            sx={{ h: 10, mr: 1, my: 1 }}
-          >
-            <TrashIcon className="w-5 mb-0.5 transition duration-200 ease-in transform cursor-pointer select-none stroke-2 hover:scale-110 mr-1" />{' '}
-            Delete Plan
-          </Button>
-          <Button
             onClick={() => addNewYear(false)}
-            sx={{ mr: 1, my: 1 }}
+            sx={{ height: '2.5rem', mr: 1, my: 1 }}
             variant="outlined"
             color="success"
           >
@@ -360,15 +352,16 @@ const Actionbar: FC<{ mode: ReviewMode }> = ({ mode }) => {
           <div>
             <Button
               onClick={handleClick}
+              variant="outlined"
               sx={{
-                h: 10,
-                my: 1.25,
-                boxShadow: 'none',
+                height: '2.5rem',
+                my: 1,
+                mr: 1,
                 color: 'black',
                 backgroundColor: 'whitesmoke',
               }}
             >
-              <PersonIcon /> Reviewers
+              <PersonIcon />
             </Button>
             <Menu
               id="basic-menu"
@@ -383,6 +376,14 @@ const Actionbar: FC<{ mode: ReviewMode }> = ({ mode }) => {
               <Reviewers />
             </Menu>
           </div>
+          <Button
+            onClick={activateDeletePlan}
+            variant="outlined"
+            color="error"
+            sx={{ height: '2.5rem', mr: 1, my: 1 }}
+          >
+            <TrashIcon className="w-5 mb-0.5 transition duration-200 ease-in transform cursor-pointer select-none stroke-2 hover:scale-110" />{' '}
+          </Button>
         </>
       )}
     </div>
