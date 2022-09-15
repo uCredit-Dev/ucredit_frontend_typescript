@@ -268,7 +268,7 @@ const Actionbar: FC<{ mode: ReviewMode }> = ({ mode }) => {
             disablePortal
             id="combo-box-demo"
             options={[
-              { value: null, label: 'Create New Plan' },
+              { value: currentPlan, label: 'Create New Plan' },
               ...planList
                 .filter((plan) => plan._id !== currentPlan._id)
                 .map((plan) => ({ value: plan, label: plan.name })),
