@@ -8,7 +8,7 @@ const Footer: React.FC = () => {
   const router = useRouter();
 
   return (
-    <div className="w-full h-1/4 flex flex-row px-10 pt-5 pb-3 justify-between items-end text-blue-header bg-blue-footer">
+    <div className="w-full h-auto flex flex-row px-10 pt-5 pb-3 justify-between items-end text-blue-header bg-blue-footer">
       <div className="flex-col space-y-4">
         <div className="inline-flex">
           <img
@@ -24,6 +24,13 @@ const Footer: React.FC = () => {
             uCredit
           </div>
         </div>
+        <p>
+          Disclaimer: uCredit is NOT an alternative to the SIS Degree Audit.
+          Though the degree validation is internally checked and updated, the
+          university does not vet or keep the degrees updated in any way. Any
+          outdated or inaccurate degrees may result in inaccurately displaying
+          whether a student's plan is satisfied or not.
+        </p>
         <p>@ Johns Hopkins University, Baltimore, Maryland 21218</p>
       </div>
 
