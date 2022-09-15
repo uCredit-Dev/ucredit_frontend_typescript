@@ -36,7 +36,6 @@ const fetchPlanById = (id) => {
     url: BASE_URL + '/api/roadmapPlans/get/' + id,
   })
     .then((res: AxiosResponse) => {
-      console.log('res: ', res.data.data);
       let plan = {
         id: res.data.data._id,
         planName: res.data.data.name,
@@ -97,7 +96,6 @@ const RoadmapSearch: React.FC<Props> = ({ plans, expanded = true }) => {
   };
 
   const matchWithTags = (plan) => {
-    console.log('Searched Tag:', searchTagsKeyword);
     for (let tagName of plan.tagsList) {
       if (tagName.includes(searchTagsKeyword)) {
         return true;
@@ -107,7 +105,6 @@ const RoadmapSearch: React.FC<Props> = ({ plans, expanded = true }) => {
   };
 
   const matchWithMajor = (plan) => {
-    console.log('Searched Major:', searchMajorKeyword);
     for (let majorName of plan.majorList) {
       if (majorName.includes(searchMajorKeyword)) {
         return true;
@@ -132,44 +129,40 @@ const RoadmapSearch: React.FC<Props> = ({ plans, expanded = true }) => {
             .filter(matchWithTitle)
             .filter(matchWithTags)
             .filter(matchWithMajor)
-            .map((item, i) => {
-              console.log(item.id);
-
-              return (
-                <div key={item.id}>
-                  <Hoverable
-                    as={
-                      <div
-                        className="transition-colors duration-150 ease-in rounded-sm cursor-pointer inspect-plan-button"
-                        onClick={(e) => handleViewPlan(e, item.id)}
-                      >
-                        <SearchResultCard
-                          id={item.id}
-                          planName={item.planName}
-                          uploadDate={item.uploadDate}
-                          content={item.content}
-                          tagsList={item.tagsList}
-                          watchNum={item.watchNum}
-                          likeNum={item.likeNum}
-                          starNum={item.starNum}
-                          commentNum={item.commentNum}
-                        />
-                      </div>
-                    }
-                  >
-                    {({ hovered }) => (
-                      <>
-                        {hovered && (
-                          <TooltipPrimary width={120}>
-                            Inspect plan
-                          </TooltipPrimary>
-                        )}
-                      </>
-                    )}
-                  </Hoverable>
-                </div>
-              );
-            })}
+            .map((item, i) => (
+              <div key={item.id}>
+                <Hoverable
+                  as={
+                    <div
+                      className="transition-colors duration-150 ease-in rounded-sm cursor-pointer inspect-plan-button"
+                      onClick={(e) => handleViewPlan(e, item.id)}
+                    >
+                      <SearchResultCard
+                        id={item.id}
+                        planName={item.planName}
+                        uploadDate={item.uploadDate}
+                        content={item.content}
+                        tagsList={item.tagsList}
+                        watchNum={item.watchNum}
+                        likeNum={item.likeNum}
+                        starNum={item.starNum}
+                        commentNum={item.commentNum}
+                      />
+                    </div>
+                  }
+                >
+                  {({ hovered }) => (
+                    <>
+                      {hovered && (
+                        <TooltipPrimary width={120}>
+                          Inspect plan
+                        </TooltipPrimary>
+                      )}
+                    </>
+                  )}
+                </Hoverable>
+              </div>
+            ))}
         </div>
         {/* )} */}
       </div>

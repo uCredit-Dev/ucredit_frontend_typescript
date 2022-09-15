@@ -81,7 +81,6 @@ const getThreads = (id: string, unmounted: boolean, cancelToken) => {
       cancelToken: cancelToken,
     })
     .then((res) => {
-      console.log(res);
       if (!unmounted) return res;
     });
 };

@@ -63,8 +63,6 @@ const Comment: FC<{
         comment,
       })
       .then((res) => {
-        console.log('responser is ', res);
-
         setSubCommentContent([
           ...subcomments,
           {

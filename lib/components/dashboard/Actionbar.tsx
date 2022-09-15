@@ -128,7 +128,6 @@ const Actionbar: FC<{ mode: ReviewMode }> = ({ mode }) => {
     }
 
     const newMajors = newValues.map((option) => option.label);
-    console.log(newMajors);
     const body = {
       plan_id: currentPlan._id,
       majors: newMajors,

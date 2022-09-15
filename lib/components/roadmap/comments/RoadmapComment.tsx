@@ -19,7 +19,6 @@ const RoadmapComment: FC = () => {
     axios
       .get(getAPI(window) + `/thread/getByPlan/${currPlan._id}`)
       .then((response) => {
-        console.log(' is response', response);
         const sorted =
           sort === 'default' || sort === 'most recent'
             ? response.data.data.sort((a, b) =>

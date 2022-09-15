@@ -91,7 +91,6 @@ const CourseDisplayPopup: FC = () => {
           level: '',
           version: courseToShow.version,
         };
-        console.log('not found');
 
         dispatch(updatePlaceholder(true));
         dispatch(updateInspectedVersion(placeholderCourse));
