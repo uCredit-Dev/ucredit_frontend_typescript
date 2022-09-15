@@ -1,5 +1,5 @@
 import Header from '../lib/components/landing-page/Header';
-import Footer from '../lib/components/landing-page/Footer';
+import Footer from '../lib/components/Footer';
 import Feather from '../lib/components/landing-page/assets/components/feather';
 import Feather2 from '../lib/components/landing-page/assets/components/feather2';
 import Footprints from '../lib/components/landing-page/assets/components/footprints';
