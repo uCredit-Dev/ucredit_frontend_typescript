@@ -83,12 +83,12 @@ const CourseDisplayPopup: FC = () => {
           school: 'none',
           department: 'none',
           credits: courseToShow.credits.toString(),
-          wi: false,
+          wi: courseToShow.wi,
           bio: 'This is a placeholder course',
-          tags: [],
+          tags: courseToShow.tags,
           preReq: [],
           restrictions: [],
-          level: '',
+          level: courseToShow.level,
           version: courseToShow.version,
         };
 
@@ -131,6 +131,7 @@ const CourseDisplayPopup: FC = () => {
         preReq: version.preReq,
         wi: version.wi,
         version: version.term,
+        level: version.level,
         expireAt:
           user._id === 'guestUser'
             ? Date.now() + 60 * 60 * 24 * 1000

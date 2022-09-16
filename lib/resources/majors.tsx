@@ -3913,7 +3913,7 @@ const no_degree: Major = {
   wi_credit: 0,
 };
 
-export function getMajorFromCommonName(name: string): Major | null {
+export function getMajorFromCommonName(name: string): Major {
   let out: Major | null = null;
   allMajors.forEach((major) => {
     if (major.degree_name === name) {

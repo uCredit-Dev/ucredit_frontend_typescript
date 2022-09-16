@@ -79,6 +79,7 @@ export type UserCourse = {
   preReq: string[];
   isPlaceholder: boolean;
   version: string;
+  level: string;
 };
 
 export type Year = {

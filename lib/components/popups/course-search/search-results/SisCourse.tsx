@@ -1,4 +1,4 @@
-import { FC, useEffect, useState } from 'react';
+import React, { FC, useEffect, useState } from 'react';
 import Select from 'react-select';
 import CourseVersion from './CourseVersion';
 import { useDispatch, useSelector } from 'react-redux';

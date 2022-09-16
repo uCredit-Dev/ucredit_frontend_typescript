@@ -1,4 +1,4 @@
-import { useState, useEffect, FC } from 'react';
+import React, { useState, useEffect, FC } from 'react';
 import {
   Course,
   Plan,
@@ -59,6 +59,8 @@ const Placeholder: FC<{ addCourse: (plan?: Plan) => void }> = (props) => {
   const [placeholderDepartment, setPlaceholderDepartment] =
     useState<string>('none');
   const [placeholderTag, setPlaceholderTag] = useState<string>('none');
+  const [placeholderWI, setPlaceholderWI] = useState<boolean>(false);
+  const [placeholderLevel, setPlaceholderLevel] = useState<string>('none');
 
   const reviewMode = useSelector(selectReviewMode);
 
@@ -74,6 +76,10 @@ const Placeholder: FC<{ addCourse: (plan?: Plan) => void }> = (props) => {
       setPlaceholderCredits(inspectedVersion.credits);
       setPlaceholderNumber(inspectedVersion.number);
       setPlaceholderDepartment(inspectedVersion.department);
+      setPlaceholderWI(inspectedVersion.wi);
+      setPlaceholderLevel(
+        inspectedVersion.level ? inspectedVersion.level : 'none',
+      );
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [inspectedVersion]);
@@ -141,6 +147,32 @@ const Placeholder: FC<{ addCourse: (plan?: Plan) => void }> = (props) => {
     }
   };
 
+  // On placeholder tag change
+  const onWIChange = (event: any) => {
+    const wi = event.value;
+    setPlaceholderWI(wi);
+    if (inspectedVersion !== 'None') {
+      const inspCopy: Course = {
+        ...inspectedVersion,
+        wi: wi,
+      };
+      dispatch(updateInspectedVersion(inspCopy));
+    }
+  };
+
+  // On placeholder tag change
+  const onLevelChange = (event: any) => {
+    const level = event.value;
+    setPlaceholderLevel(level);
+    if (inspectedVersion !== 'None') {
+      const inspCopy: Course = {
+        ...inspectedVersion,
+        level: level === 'none' ? '' : level,
+      };
+      dispatch(updateInspectedVersion(inspCopy));
+    }
+  };
+
   // Clears inspected course.
   const clearInspected = (): void => {
     dispatch(updatePlaceholder(false));
@@ -197,7 +229,7 @@ const Placeholder: FC<{ addCourse: (plan?: Plan) => void }> = (props) => {
   };
 
   return (
-    <div className="flex flex-col h-[80%] py-4 pl-8 font-medium bg-gray-100">
+    <div className="flex flex-col h-full py-4 pl-8 font-medium bg-gray-100">
       <div className="flex flex-row items-center w-full">
         <div className="mr-auto text-2xl">Add a placeholder</div>
         <button
@@ -224,7 +256,6 @@ const Placeholder: FC<{ addCourse: (plan?: Plan) => void }> = (props) => {
             value={placeholderNumber}
           ></input>
         </div>
-
         <div className="flex flex-col w-56 mt-2">
           Department
           <Select
@@ -318,6 +349,36 @@ const Placeholder: FC<{ addCourse: (plan?: Plan) => void }> = (props) => {
             className="w-40 mt-1 rounded outline-none"
             onChange={onPAChange}
             value={{ label: placeholderArea, value: placeholderArea }}
+          />
+          <div className="w-40 mt-1">Writing Intensive</div>
+          <Select
+            options={[true, false].map((option: boolean) => ({
+              label: option ? 'Yes' : 'No',
+              value: option,
+            }))}
+            className="w-40 mt-1 rounded outline-none"
+            onChange={onWIChange}
+            value={{
+              label: placeholderWI ? 'Yes' : 'No',
+              value: placeholderWI,
+            }}
+          />
+          <div className="w-40 mt-1">Level</div>
+          <Select
+            options={[
+              'Lower Level Undergraduate',
+              'Upper Level Undergraduate',
+              'none',
+            ].map((option: string) => ({
+              label: option,
+              value: option,
+            }))}
+            className="w-40 mt-1 rounded outline-none"
+            onChange={onLevelChange}
+            value={{
+              label: placeholderLevel,
+              value: placeholderLevel,
+            }}
           />
         </div>
       </div>
