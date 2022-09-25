@@ -258,10 +258,11 @@ const Comments: FC<{
     try {
       let comment_id: string = '';
       const threads = await userService.getThreads(plan._id, false, null);
-      for (let thread of threads.data) {
+      for (let thread of threads.data.data) {
         for (let comment of thread.comments) {
           if (comment._id === key) {
             comment_id = comment._id;
+            break;
           }
         }
       }
