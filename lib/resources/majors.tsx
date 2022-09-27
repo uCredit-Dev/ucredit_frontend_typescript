@@ -2607,7 +2607,6 @@ const CS_Minor_Old: Minor = {
       required_credits: 9,
       min_credits_per_course: 3,
       pathing: 1,
-      exclusive: true,
       description:
         '<b>Upper Level Undergraduate: </b><p>9 upper level CS credits that form a cohesive program of study and <b>must be approved by the computer science minor advisor</b>. One way is to choose all three courses within one or two area tag classifications (CSCI-APPL, CSCI-SOFT, CSCI-THRY, CSCI-RSNG, CSCI-SYST)</p>',
       criteria: 'EN Computer Science[D]^AND^Upper Level Undergraduate[L]',
