@@ -262,6 +262,11 @@ const Comments: FC<{
         for (let comment of thread.comments) {
           if (comment._id === key) {
             comment_id = comment._id;
+            const commentIndex = thread.comments
+              .map((e) => e._id)
+              .indexOf(comment_id);
+            thread.comments.splice(commentIndex);
+            dispatch(updateThreads(threads.data.data));
             break;
           }
         }
