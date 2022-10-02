@@ -265,7 +265,7 @@ const Comments: FC<{
             const commentIndex = thread.comments
               .map((e) => e._id)
               .indexOf(comment_id);
-            thread.comments.splice(commentIndex);
+            thread.comments.splice(commentIndex, 1);
             dispatch(updateThreads(threads.data.data));
             break;
           }
