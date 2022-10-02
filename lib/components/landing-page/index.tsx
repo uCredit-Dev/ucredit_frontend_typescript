@@ -1,6 +1,6 @@
 import React from 'react';
 import Banner from './Banner';
-import Footer from './Footer';
+import Footer from '../Footer';
 import Header from './Header';
 import Promo from './Promo';
 import Links from './Links';

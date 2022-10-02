@@ -1,26 +1,21 @@
 import { CheckIcon, BellIcon } from '@heroicons/react/outline';
-import React, { useEffect, useState } from 'react';
+import React, { FC, useEffect } from 'react';
 import { useSelector } from 'react-redux';
 import ReactTooltip from 'react-tooltip';
 import { ReviewRequestStatus } from '../../../../resources/commonTypes';
 import { userService } from '../../../../services';
 import { selectPlan } from '../../../../slices/currentPlanSlice';
 import { toast } from 'react-toastify';
-import emailjs from '@emailjs/browser';
 import { getAPI } from '../../../../resources/assets';
 import clsx from 'clsx';
 
-const CurrentReviewers = () => {
+const CurrentReviewers: FC<{
+  reviewersJSX: JSX.Element[];
+  setReviewersJSX: (newJSX: JSX.Element[]) => void;
+}> = ({ reviewersJSX, setReviewersJSX }) => {
   const currentPlan = useSelector(selectPlan);
-  const [jsx, setJsx] = useState<JSX.Element[]>([]);
 
-  const sendEmail = (fromName, toEmail, toName, reviewID) => {
-    var form = {
-      from_name: fromName,
-      to_email: toEmail,
-      to_name: toName,
-    };
-
+  const sendEmail = (toName, reviewID) => {
     const body = {
       review_id: reviewID,
       status: 'UNDERREVIEW',
@@ -35,23 +30,13 @@ const CurrentReviewers = () => {
     })
       .then((response) => {
         if (response.status === 200) {
-          // Status successfully changed to UNDERREVIEW
-          emailjs
-            .send(
-              'service_cami1cj',
-              'template_kilkjhv',
-              form,
-              'OYZ6l2hEt-shlZ7K1',
-            )
-            .then((result) => {
-              toast.success(
-                'Plan successfully sent to ' + toName + ' for review!',
-                {
-                  autoClose: 5000,
-                  closeOnClick: false,
-                },
-              );
-            });
+          toast.success(
+            'Plan successfully sent to ' + toName + ' for review!',
+            {
+              autoClose: 5000,
+              closeOnClick: false,
+            },
+          );
         }
       })
       .catch((err) => {
@@ -68,7 +53,7 @@ const CurrentReviewers = () => {
       const reviewers = (await userService.getPlanReviewers(currentPlan._id))
         .data;
       const elements: JSX.Element[] = await getElements(reviewers);
-      setJsx(elements);
+      setReviewersJSX(elements);
       // dispatch(updateSelectedPlan({ ...currentPlan, reviewers: reviewers }));
     })();
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -88,7 +73,7 @@ const CurrentReviewers = () => {
   };
 
   const makeOnClickHandler = (reviewee_name, email, name, review_id) => () =>
-    sendEmail(reviewee_name, email, name, review_id); // Saves temporal values
+    sendEmail(name, review_id); // Saves temporal values
 
   const getElements = async (data: any[]) => {
     const elements: JSX.Element[] = [];
@@ -152,7 +137,7 @@ const CurrentReviewers = () => {
 
   return (
     <div className="flex flex-col">
-      {jsx}
+      {reviewersJSX}
       <ReactTooltip delayShow={200} />
     </div>
   );

@@ -1,6 +1,5 @@
 import { useSelector } from 'react-redux';
 import React, { FC, useEffect, useState } from 'react';
-import emailjs from '@emailjs/browser';
 import clsx from 'clsx';
 import { XIcon } from '@heroicons/react/outline';
 import { toast } from 'react-toastify';
@@ -8,12 +7,6 @@ import { ReviewRequestStatus, User } from '../../../../resources/commonTypes';
 import { selectPlan } from '../../../../slices/currentPlanSlice';
 import { userService } from '../../../../services';
 import { selectUser } from '../../../../slices/userSlice';
-import getConfig from 'next/config';
-
-emailjs.init('Q-AuEay-7tGmmVaNw');
-
-const { publicRuntimeConfig } = getConfig();
-const baseUrl = publicRuntimeConfig.baseUrl;
 
 const ReviewerSearchResults: FC<{
   users: User[];
@@ -52,20 +45,11 @@ const ReviewerSearchResults: FC<{
       toast.success('Reviewer removed');
     } else {
       if (!isPending(user._id)) {
-        const review = (
-          await userService.requestReviewerPlan(
-            currentPlan._id,
-            user._id,
-            currentUser._id,
-          )
-        ).data;
-        emailjs.send('service_ixnb5h9', 'template_1dmlber', {
-          from_name: currentUser.name,
-          to_jhed: user._id,
-          to_name: user.name,
-          to_email: user.email,
-          url: `${baseUrl}/reviewer/${review._id}`,
-        });
+        await userService.requestReviewerPlan(
+          currentPlan._id,
+          user._id,
+          currentUser._id,
+        );
         toast.success('Reviewer requested');
       } else
         toast.error('You have already requested a review from this reviewer');

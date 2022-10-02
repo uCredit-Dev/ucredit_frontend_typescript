@@ -82,7 +82,7 @@ const CommentsOverview: React.FC = () => {
   };
 
   return (
-    <div className="z-40 flex flex-row text-xl">
+    <div className="flex flex-row text-xl">
       <div className="w-full h-full max-w-sm">
         <Popover className="h-full">
           {({ open }) => (
@@ -90,10 +90,10 @@ const CommentsOverview: React.FC = () => {
               <Popover.Button
                 className={`
                             ${open ? '' : 'text-opacity-90'}
-                            text-white group bg-white px-2 py-1.5 rounded-md inline-flex items-center text-base font-medium hover:text-opacity-100 focus:outline-none focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-opacity-75 focus:outline-none`}
+                            w-full hover:bg-slate-300 text-lg rounded-lg sm:w-auto px-3 py-1 sm:hover:text-blue-header sm:hover:bg-blue-footer sm:rounded-[13px] transition duration-100 ease-in`}
               >
                 <span>
-                  <AnnotationIcon className="h-6 text-black" />
+                  <AnnotationIcon className="h-6" />
                 </span>
               </Popover.Button>
 
@@ -106,7 +106,7 @@ const CommentsOverview: React.FC = () => {
                 leaveFrom="opacity-100 translate-y-0"
                 leaveTo="opacity-0 translate-y-1"
               >
-                <Popover.Panel className="absolute z-40 transform translate-x-[-140px] bg-white rounded-lg translate-y-[8px] w-80 max-w-none sm:px-0 lg:max-w-3xl h-[70vh]">
+                <Popover.Panel className="absolute z-[100] transform translate-x-[-140px] bg-white rounded-lg translate-y-[8px] w-80 max-w-none sm:px-0 lg:max-w-3xl h-[70vh]">
                   <div className="h-full rounded-lg shadow-lg ring-1 ring-black ring-opacity-5">
                     <div className="z-30 grid max-h-full overflow-y-auto bg-white rounded-lg p-7 lg:grid-cols-1">
                       {threadJSX.length !== 0 ? (
