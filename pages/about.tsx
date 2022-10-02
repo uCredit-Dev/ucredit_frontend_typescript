@@ -1,5 +1,5 @@
 import Header from '../lib/components/landing-page/Header';
-import Footer from '../lib/components/Footer';
+import Footer from '../lib/components/landing-page/Footer';
 import Feather from '../lib/components/landing-page/assets/components/feather';
 import Feather2 from '../lib/components/landing-page/assets/components/feather2';
 import Footprints from '../lib/components/landing-page/assets/components/footprints';
@@ -44,21 +44,20 @@ const About: React.FC = () => {
       <div className="mt-14 grid grid-cols-1 sm:grid-cols-2 max-w-7xl sm:mx-auto mx-4 py-6 px-4 sm:px-6 lg:px-16 justify-items-end">
         {/*Mobile Row 1, Disappears*/}
         <div className="flex w-full mt-3 overflow-hidden sm:h-0 sm:hidden sm:invisible sm:mt-0 sm:w-0 place-content-center">
-          <div className="grow z-20">
+          <div className="grow ">
             <svg
               viewBox="0 0 1400 1200"
               fill="none"
               xmlns="http://www.w3.org/2000/svg"
-              className="scale-[100%] z-20"
+              className="scale-[100%]"
             >
               {isMobile ? <Frontpage /> : <></>}
             </svg>
           </div>
         </div>
         {/*Col 1, Mobile Row 2*/}
-
         <div className=" justify-items-end grid sm:grid-rows-2 w-[100%] sm:w-auto mb-20 sm:mb-32 overflow-visible sm:mr-7">
-          <div className="absolute sm:relative overflow-visible">
+          <div className="absolute sm:relative overflow-visible ">
             <Footprints />
           </div>
           <div className=" overflow-hidden sm:mt-[-120px] sm:mb-0 mb-5">
@@ -91,7 +90,7 @@ const About: React.FC = () => {
         </div>
         {/*Col 2, Mobile Row 2*/}
         <div className="flex sm:h-full w-full sm:mt-10 overflow-hidden invisible sm:visible h-0 place-content-center sm:place-content-start">
-          <div className="grow ml-4 sm:ml-7 z-20">
+          <div className="grow ml-4 sm:ml-7">
             <svg
               viewBox="0 0 1400 1200"
               fill="none"
@@ -107,7 +106,7 @@ const About: React.FC = () => {
 
         {/*Mobile, Disappears*/}
         <div className="flex w-full mt-3 overflow-hidden sm:h-[0px] sm:hidden sm:invisible place-content-center">
-          <div className="grow sm:ml-7 z-20 ">
+          <div className="grow sm:ml-7 ">
             <div>
               <svg
                 viewBox="0 0 1450 1200"
@@ -126,7 +125,7 @@ const About: React.FC = () => {
             <Footprints2 />
           </div>
           <div className="sm:mt-28 mt-[-110px] ">
-            <div className="relative overflow-hidden  sm:mt-[-250px] mb-5 sm:mb-0">
+            <div className="relative overflow-hidden sm:mt-[-250px] mb-5 sm:mb-0">
               <div className="inline-block mt-1">
                 <Feather2 />
               </div>
@@ -135,34 +134,36 @@ const About: React.FC = () => {
               </div>
             </div>
           </div>
-          <div className="overflow-hidden  w-[100%] mt-[-30px] sm:mt-[-150px]">
+          <div className="overflow-hidden w-[100%] mt-[-30px] sm:mt-[-150px]">
             <div>
-              <b>uCredit is more than degree checking</b>, and we decided that
-              we wanted to broaden our scope and make uCredit{' '}
-              <b>
-                a tool for a student’s career and harness the power of community
-                to reach this goal.{' '}
-              </b>
+              <div>
+                <b>uCredit is more than degree checking</b>, and we decided that
+                we wanted to broaden our scope and make uCredit{' '}
+                <b>
+                  a tool for a student’s career and harness the power of
+                  community to reach this goal.{' '}
+                </b>
+              </div>
+              <div>
+                <br></br>Our 2022 spring and summer was focused on laying the
+                groundworks and blueprints for this new goal. Here are some
+                features we’ve implemented:{' '}
+              </div>
+              <br></br>
+              <li>
+                Plan sharing, allowing users to easily share a copy of their
+                plan.
+              </li>
+              <li>
+                Plan reviewer system, where you can allow your friends or
+                advisors to comment, approve, and review your own plan.
+              </li>
+              <li>
+                Roadmap forum, a feature currently in the works where users will
+                be able to share and search for others’ plans as templates based
+                on degree, tracks, or career tags.
+              </li>
             </div>
-            <br></br>
-            <div>
-              Our 2022 spring and summer was focused on laying the groundworks
-              and blueprints for this new goal. Here are some features we’ve
-              implemented:{' '}
-            </div>
-            <br></br>
-            <li>
-              Plan sharing, allowing users to easily share a copy of their plan.
-            </li>
-            <li>
-              Plan reviewer system, where you can allow your friends or advisors
-              to comment, approve, and review your own plan.
-            </li>
-            <li>
-              Roadmap forum, a feature currently in the works where users will
-              be able to share and search for others’ plans as templates based
-              on degree, tracks, or career tags.
-            </li>
           </div>
         </div>
         {/*Col 2*/}

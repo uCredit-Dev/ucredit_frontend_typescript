@@ -9,7 +9,7 @@ import {
 import React, { FC, useEffect, useState } from 'react';
 import { toast } from 'react-toastify';
 import { Selectable } from '@robertz65/lyte';
-import Semester from '../dashboard/course-list/Semester';
+import Semester from '../dashboard/course-list/horizontal/Semester';
 import { statusReadable } from '../../../pages/reviewer';
 import { userService } from '../../services';
 import DistributionBarsJSX from '../dashboard/degree-info/DistributionBarsJSX';

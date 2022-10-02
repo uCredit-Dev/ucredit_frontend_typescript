@@ -339,7 +339,6 @@ const HandlePlanShareDummy = () => {
             number: course.number,
             area: course.area,
             preReq: course.preReq,
-            level: course.level,
             expireAt:
               user._id === 'guestUser'
                 ? Date.now() + 60 * 60 * 24 * 1000

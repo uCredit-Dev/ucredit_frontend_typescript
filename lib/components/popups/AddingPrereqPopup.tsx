@@ -1,4 +1,3 @@
-import React from 'react';
 import { FC } from 'react';
 import { useDispatch } from 'react-redux';
 import { updateAddingPrereq } from '../../slices/popupSlice';

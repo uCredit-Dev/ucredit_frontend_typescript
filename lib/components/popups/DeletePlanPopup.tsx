@@ -10,7 +10,6 @@ import 'react-toastify/dist/ReactToastify.css';
 import { selectPlan, updateSelectedPlan } from '../../slices/currentPlanSlice';
 import { getAPI } from '../../resources/assets';
 import { updateDeletePlanStatus } from '../../slices/popupSlice';
-import { userService } from '../../../lib/services';
 
 /**
  * This is the confirmation popup that appears when users press the button to delete a plan.
@@ -26,7 +25,7 @@ const DeletePlanPopup: FC = () => {
   /**
    * Deletes current plan.
    */
-  const deleteCurrentPlan = async () => {
+  const deleteCurrentPlan = () => {
     // delete plan from db
     // update plan array
     // If plan list has more than one plan, delete. Otherwise, don't.
@@ -45,11 +44,6 @@ const DeletePlanPopup: FC = () => {
           dispatch(updateDeletePlanStatus(false));
         })
         .catch((err) => console.log(err));
-
-      const reviews = await userService.getPlanReviewers(currentPlan._id);
-      reviews.data.forEach(async (review) => {
-        await userService.removeReview(review._id);
-      });
     } else {
       toast.error('Cannot delete last plan!');
     }

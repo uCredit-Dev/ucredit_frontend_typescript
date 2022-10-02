@@ -1,7 +1,6 @@
 import { FC } from 'react';
 import { toast } from 'react-toastify';
 import { DuplicateIcon } from '@heroicons/react/outline';
-import React from 'react';
 
 /**
  * Shareable link popup.

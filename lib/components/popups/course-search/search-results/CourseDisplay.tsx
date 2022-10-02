@@ -1,4 +1,4 @@
-import React, { FC, useState } from 'react';
+import { FC, useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { Plan, UserCourse, Year } from '../../../../resources/commonTypes';
 import {
@@ -102,7 +102,6 @@ const CourseDisplay: FC<{ cart: boolean }> = ({ cart }) => {
       preReq: version.preReq,
       wi: version.wi,
       version: version.term,
-      level: version.level,
       expireAt:
         user._id === 'guestUser' ? Date.now() + 60 * 60 * 24 * 1000 : undefined,
     };

@@ -2,9 +2,6 @@ module.exports = {
   content: ['./pages/**/*.{js,ts,jsx,tsx}', './lib/**/*.{js,ts,jsx,tsx}'],
   theme: {
     extend: {
-      backgroundImage: {
-        'roadmap-pattern': "url('/img/roadmap_pattern.png')",
-      },
       borderRadius: {
         curvy: '50% 150px',
       },
@@ -67,16 +64,6 @@ module.exports = {
         blue: {
           header: '#C6E8FF',
           footer: '#0C3A76',
-          tag: '#83B9FF',
-        },
-        green: {
-          tag: '#D1FDCD',
-        },
-        red: {
-          tag: '#FFDBDB',
-        },
-        yellow: {
-          tag: '#FFF9A3',
         },
         name: '#38596C',
         slogan: '#4851AA',
@@ -182,9 +169,5 @@ module.exports = {
       fill: ['hover'],
     },
   },
-  plugins: [
-    function ({ addVariant }) {
-      addVariant('child', '& > *');
-    },
-  ],
+  plugins: [],
 };

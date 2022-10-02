@@ -8,10 +8,6 @@ import { store } from '../lib/appStore/store';
 import '../lib/index.css';
 import Head from 'next/head';
 // import MobileTurnPage from '../lib/components/MobileTurnPage';
-import { ThemeProvider, createTheme } from '@mui/material/styles';
-
-// Or Create your Own theme:
-const theme = createTheme();
 
 const MyApp: React.FC<{
   Component: NextComponentType;
@@ -54,26 +50,24 @@ const MyApp: React.FC<{
         />
       )}
       <CookiesProvider>
-        <ThemeProvider theme={theme}>
-          <Provider store={store}>
-            <Head>
-              <link rel="shortcut icon" href="/static/favicon.ico" />
-              <meta
-                name="description"
-                content="Quick accessible degree planning."
-              />
-              <meta
-                name="viewport"
-                content="initial-scale=1.0, width=device-width"
-              />
-            </Head>
-            {/* {screenWidth < 474 ? (
+        <Provider store={store}>
+          <Head>
+            <link rel="shortcut icon" href="/static/favicon.ico" />
+            <meta
+              name="description"
+              content="Quick accessible degree planning."
+            />
+            <meta
+              name="viewport"
+              content="initial-scale=1.0, width=device-width"
+            />
+          </Head>
+          {/* {screenWidth < 474 ? (
             <MobileTurnPage />
           ) : ( */}
-            <Component {...pageProps} />
-            {/* )} */}
-          </Provider>
-        </ThemeProvider>
+          <Component {...pageProps} />
+          {/* )} */}
+        </Provider>
       </CookiesProvider>
       <ToastContainer
         position="bottom-center"

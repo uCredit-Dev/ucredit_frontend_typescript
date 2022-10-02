@@ -70,12 +70,12 @@ export const AFTER_REVIEWER_REQUESTED = async (
   await AFTER_PLAN_CREATED(page, loginId);
   const {
     PLAN_EDIT_MENU_SELECTOR,
-    // ADD_REVIEWER_BUTTON_SELECTOR,
+    ADD_REVIEWER_BUTTON_SELECTOR,
     SEARCH_REVIEWER_INPUT_SELECTOR,
     REVIEWER_RESULT_SELECTOR,
   } = PLAN_EDIT_MENU;
   await page.locator(PLAN_EDIT_MENU_SELECTOR).click();
-  // await page.locator(ADD_REVIEWER_BUTTON_SELECTOR).click();
+  await page.locator(ADD_REVIEWER_BUTTON_SELECTOR).click();
   await page.locator(SEARCH_REVIEWER_INPUT_SELECTOR).type(reviewerId);
   await page.locator(REVIEWER_RESULT_SELECTOR).click();
 

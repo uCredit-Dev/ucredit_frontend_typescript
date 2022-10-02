@@ -11,7 +11,7 @@ const FeedbackNotification: FC<{
   notifHandler: (handle: boolean) => void;
 }> = ({ actionHandler, notifHandler }) => {
   return (
-    <div className="fixed bottom-0 z-20 flex flex-row w-full py-2 pl-16 font-bold select-none bg-blue-header text-blue-footer">
+    <div className="fixed bottom-0 z-20 flex flex-row w-full py-2 pl-16 font-bold select-none bg-primary">
       <div className="flex flex-row flex-grow">
         We use your feedback to improve your planning experience! Please fill
         out{' '}

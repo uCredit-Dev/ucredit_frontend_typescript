@@ -23,7 +23,7 @@ const Notification: FC<{
   }, []);
 
   return (
-    <div className="flex flex-row items-center justify-between px-4 text-xl">
+    <div className="z-[100] flex flex-row items-center justify-between px-4 text-xl">
       {notifications.length !== 0 ? (
         <ExclamationCircleIcon className="relative z-50 w-5 h-4 text-red-500 bg-white rounded-full -right-12 -top-4"></ExclamationCircleIcon>
       ) : null}
@@ -34,10 +34,10 @@ const Notification: FC<{
               <Popover.Button
                 className={`
                             ${open ? '' : 'text-opacity-90'}
-                            w-full hover:bg-slate-300 text-lg rounded-lg sm:w-auto px-3 py-1 sm:hover:text-blue-header sm:hover:bg-blue-footer sm:rounded-[13px] transition duration-100 ease-in`}
+                            text-white group bg-white px-2 py-1.5 rounded-md inline-flex items-center text-base font-medium hover:text-opacity-100 focus:outline-none focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-opacity-75 focus:outline-none`}
               >
                 <span>
-                  <BellIcon className="h-6 "></BellIcon>
+                  <BellIcon className="h-6 text-black"></BellIcon>
                 </span>
               </Popover.Button>
 
@@ -50,7 +50,7 @@ const Notification: FC<{
                 leaveFrom="opacity-100 translate-y-0"
                 leaveTo="opacity-0 translate-y-1"
               >
-                <Popover.Panel className="z-[100] absolute w-80 max-w-none transform rounded-lg max-h-[20rem] overflow-y-auto -translate-x-52 translate-y-[8px] sm:px-0 lg:max-w-3xl shadow-md">
+                <Popover.Panel className="absolute w-80 max-w-none transform rounded-lg max-h-[20rem] overflow-y-auto -translate-x-52 translate-y-[8px] sm:px-0 lg:max-w-3xl shadow-md">
                   <div className="rounded-lg ring-1 ring-black ring-opacity-5">
                     <div className="relative z-30 grid gap-8 bg-white rounded-lg p-7 lg:grid-cols-1">
                       {notifications.length !== 0 ? (

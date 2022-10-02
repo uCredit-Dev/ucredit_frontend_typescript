@@ -14,7 +14,7 @@ import {
   URL,
   TEST_ID,
   REVIEWER_ID,
-  // PLAN_EDIT_MENU,
+  PLAN_EDIT_MENU,
   ADD_PLAN_MODAL,
   COURSE_NAMES,
   ADD_COMMENT_MODAL,
@@ -37,8 +37,8 @@ test.describe('Request Reviewer', async () => {
   test('Should be able to search and add reviewer', async ({ page }) => {
     const reviewerPage = await newPage();
     await AFTER_REVIEWER_REQUESTED(page, reviewerPage);
-    // const { ADD_REVIEWER_SUCCEEDED_SELECTOR } = PLAN_EDIT_MENU;
-    // await expect(page.locator(ADD_REVIEWER_SUCCEEDED_SELECTOR)).toBeVisible();
+    const { ADD_REVIEWER_SUCCEEDED_SELECTOR } = PLAN_EDIT_MENU;
+    await expect(page.locator(ADD_REVIEWER_SUCCEEDED_SELECTOR)).toBeVisible();
   });
 });
 

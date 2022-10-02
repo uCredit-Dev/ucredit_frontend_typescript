@@ -5,25 +5,25 @@ import { MinusIcon, ExclamationIcon } from '@heroicons/react/outline';
 import { Transition } from '@tailwindui/react';
 import clsx from 'clsx';
 import 'react-toastify/dist/ReactToastify.css';
-import { checkAllPrereqs, getColors } from '../../../resources/assets';
+import { checkAllPrereqs, getColors } from '../../../../resources/assets';
 import {
   UserCourse,
   SemesterType,
   Year,
   ReviewMode,
-} from '../../../resources/commonTypes';
+} from '../../../../resources/commonTypes';
 import {
   selectCurrentPlanCourses,
   selectPlan,
-} from '../../../slices/currentPlanSlice';
-import { selectCourseCache } from '../../../slices/userSlice';
+} from '../../../../slices/currentPlanSlice';
+import { selectCourseCache } from '../../../../slices/userSlice';
 import OverridePrereqPopup from './OverridePrereqPopup';
 import {
   updateCourseToDelete,
   updateCourseToShow,
   updateDeleteCourseStatus,
   updateShowCourseInfo,
-} from '../../../slices/popupSlice';
+} from '../../../../slices/popupSlice';
 
 /**
  * This is a course card displayed in the course list under each semester.
@@ -129,7 +129,7 @@ const CourseComponent: FC<{
       onMouseLeave={deactivate}
     >
       <div className="absolute">
-        {hovered && mode !== ReviewMode.View && mode !== ReviewMode.RoadMap && (
+        {hovered && mode !== ReviewMode.View && (
           <div className="flex flex-row h-14">
             <MinusIcon
               className="z-20 -ml-6 flex flex-row items-center my-auto justify-center p-0.5 w-6 h-6 text-white bg-red-300 hover:bg-red-600 rounded-md outline-none stroke-2 cursor-pointer transform hover:scale-110 transition duration-150 ease-in"
