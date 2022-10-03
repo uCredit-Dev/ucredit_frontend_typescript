@@ -3412,7 +3412,7 @@ const bsCS_New: Major = {
           required_credits: 21,
           criteria:
             'EN.500.112[C]^OR^EN.500.113[C]^OR^EN.500.114[C]^OR^EN.601.220[C]^OR^EN.601.226[C]' +
-            '^OR^EN.601.229[C]^OR^EN.601.230[C]^OR^EN.601.433[C]^OR^EN.601.231',
+            '^OR^EN.601.229[C]^OR^EN.601.230[C]^OR^EN.601.433[C]^OR^EN.601.231[C]',
         },
         {
           description:
