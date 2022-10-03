@@ -2458,7 +2458,7 @@ const bsCS_Old: Major = {
       description:
         'At least two semesters of physics or two semesters of chemistry, with the associated laboratories, must be included.',
       criteria:
-        'N[A]^AND^(^NOT^(EN Computer Science[D]^OR^AS Center for Language Education[D]^OR^EN Applied Mathematics & Statistics[D]))',
+        'N[A]^NOT^(EN Computer Science[D]^OR^AS Center for Language Education[D]^OR^EN Applied Mathematics & Statistics[D])',
       double_count: ['Humanities/Social Sciences', 'Writing Intensive'],
     },
     {
@@ -2601,12 +2601,6 @@ const bsCS_New: Major = {
         'At least one course in two different classification areas (Applications, Reasoning, Software, Systems) must be chosen in addition to Theory (Algorithms).',
       criteria: 'CSCI-APPL[T]^OR^CSCI-SOFT[T]^OR^CSCI-SYST[T]^OR^CSCI-RSNG[T]',
       pathing: 2,
-      double_count: [
-        'Computer Science',
-        'Mathematics',
-        'Humanities/Social Sciences',
-        'Writing Intensive',
-      ],
       fine_requirements: [
         {
           description: '<b>Application</b>',
@@ -2668,7 +2662,7 @@ const bsCS_New: Major = {
         '<b>Electives</b> <br /> At least 3 more Math courses must be taken at the 200 or above level, ' +
         'and must include coverage of both Probability and Statistics.',
       criteria:
-        'EN.553.211[C]^OR^EN.553.310[C]^OR^EN.553.311[C]^OR^EN.553.420[C]^OR^EN.553.430[C]',
+        '(AS Mathematics[D]^OR^EN Applied Mathematics & Statistics[D])^AND^(200[L]^OR^Upper Level[L])',
       double_count: ['All'],
       pathing: 1,
       fine_requirements: [
@@ -2694,7 +2688,7 @@ const bsCS_New: Major = {
     },
     {
       name: 'Basic Sciences',
-      required_credits: 8,
+      required_credits: 10,
       min_credits_per_course: 1,
       description:
         'At least two semesters of physics or two semesters of chemistry, with the associated laboratories, must be included.',

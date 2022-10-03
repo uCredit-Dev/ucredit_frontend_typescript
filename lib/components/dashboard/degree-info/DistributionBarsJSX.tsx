@@ -71,14 +71,12 @@ const DistributionBarsJSX: FC<{ major: Major }> = ({ major }) => {
     const distributionJSX = distributions.map(
       (pair: [string, requirements[]], i: number) => {
         let completed = true;
-        pair[1].forEach((req: requirements) => {
-          if (
-            req.fulfilled_credits < req.required_credits ||
-            (req.required_credits === 0 && req.fulfilled_credits === 0)
-          ) {
+        for (let req of pair[1]) {
+          if (!checkReqCompleted(req)) {
             completed = false;
+            break;
           }
-        });
+        }
         return (
           <div key={pair[0] + pair[1] + i}>
             <div key={pair[1][0].name + 0 + pair[1][0].expr}>
@@ -116,6 +114,16 @@ const DistributionBarsJSX: FC<{ major: Major }> = ({ major }) => {
     setDistributionBarsJSX(distributionJSX);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [distributions, showDistributions]);
+
+  const checkReqCompleted = (req: requirements) => {
+    if (
+      req.fulfilled_credits < req.required_credits ||
+      (req.required_credits === 0 && req.fulfilled_credits === 0)
+    ) {
+      return false;
+    }
+    return true;
+  };
 
   /**
    * Gets all distributions associated with current plan
@@ -239,14 +247,16 @@ const DistributionBarsJSX: FC<{ major: Major }> = ({ major }) => {
         // if course satisfies fine requirement
         if (
           fineDoubleCount &&
-          (fineDoubleCount.includes(fineReq.name) ||
+          (fineDoubleCount.includes(fineReq.name) || // check if fine req can be double counted
             fineDoubleCount.includes('All')) &&
           (fineReq.fulfilled_credits < fineReq.required_credits ||
             (fineReq.required_credits === 0 &&
-              fineReq.fulfilled_credits === 0)) &&
-          checkRequirementSatisfied(fineReq, courseObj)
+              fineReq.fulfilled_credits === 0) || // check if fine req is already fulfilled
+            !checkReqCompleted(fineReq)) &&
+          checkRequirementSatisfied(fineReq, courseObj) // check if course satisfies fine req
         ) {
           // update fine requirements
+          console.log(reqs[i][1][j], courseObj);
           reqs[i][1][j].fulfilled_credits += parseInt(courseObj.credits);
           fineDoubleCount = fineReq.double_count;
         }

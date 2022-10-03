@@ -1,5 +1,5 @@
 import clsx from 'clsx';
-import { useState, useEffect, FC } from 'react';
+import React, { useState, useEffect, FC } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import {
   selectSemester,
