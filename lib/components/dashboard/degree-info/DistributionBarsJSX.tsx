@@ -258,7 +258,6 @@ const DistributionBarsJSX: FC<{ major: Major }> = ({ major }) => {
           checkRequirementSatisfied(fineReq, courseObj) // check if course satisfies fine req
         ) {
           // update fine requirements
-          console.log(reqs[i][1][j], courseObj);
           reqs[i][1][j].fulfilled_credits += parseInt(courseObj.credits);
           fineDoubleCount = fineReq.double_count;
         }

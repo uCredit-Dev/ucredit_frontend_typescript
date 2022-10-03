@@ -3108,7 +3108,7 @@ const bsCS_Old: Major = {
       description:
         "For more information please visit the <a href='https://www.cs.jhu.edu/undergraduate-studies/academics/ugrad-advising-manual/'>" +
         'major degree requirement</a> section on the department website.',
-      criteria: 'EN Computer Science[D]^OR^EN.500.112[C]^OR^EN.660.400[C]',
+      criteria: 'EN Computer Science[D]^OR^EN.500.112[C]^OR^EN.601.104[C]^OR^EN.660.400[C]',
       double_count: [
         'Mathematics',
         'Humanities/Social Sciences',
@@ -3387,7 +3387,7 @@ const bsCS_New: Major = {
         "For more information please visit the <a href='https://www.cs.jhu.edu/undergraduate-studies/academics/ugrad-advising-manual/'>" +
         'major degree requirement</a> section on the department website.',
       criteria:
-        'EN Computer Science[D]^OR^CSCI-OTHER[T]^OR^Gateway Computing[N]',
+        'EN Computer Science[D]^OR^CSCI-OTHER[T]^OR^Gateway Computing[N]^OR^EN.600.104[C]^OR^EN.601.104[C]^OR^EN.660.400[C]',
       double_count: [
         'Computer Science Classifications',
         'Mathematics',
@@ -3613,7 +3613,7 @@ const baCS_New: Major = {
         "For more information please visit the <a href='https://www.cs.jhu.edu/2021undergraduate-advising-manual/'>" +
         'major degree requirement</a> section on the department website.',
       criteria:
-        'EN Computer Science[D]^OR^CSCI-OTHER[T]^OR^Gateway Computing[N]',
+        'EN Computer Science[D]^OR^CSCI-OTHER[T]^OR^Gateway Computing[N]^OR^EN.600.104[C]^OR^EN.601.104[C]^OR^EN.660.400[C]',
       double_count: ['All'],
       fine_requirements: [
         {
