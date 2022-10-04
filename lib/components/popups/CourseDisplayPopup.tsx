@@ -72,6 +72,23 @@ const CourseDisplayPopup: FC = () => {
               found = true;
             }
           });
+          // If version is not found and the course is already searched, we just display the latest version of this semester.
+          if (!found) {
+            const semester = courseToShow.version.split(' ')[0];
+            c.versions.forEach((v: any, index: number) => {
+              if (v.term.includes(semester) && !found) {
+                const inspectedVersion: Course = {
+                  title: c.title,
+                  number: c.number,
+                  ...c.versions[index],
+                };
+                dispatch(updateInspectedCourse(c));
+                dispatch(updateInspectedVersion(inspectedVersion));
+                dispatch(updatePlaceholder(false));
+                found = true;
+              }
+            });
+          }
         }
       });
       if (!found) {
