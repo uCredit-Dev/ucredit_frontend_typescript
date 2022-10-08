@@ -190,6 +190,26 @@ const DistributionBarsJSX: FC<{ major: Major }> = ({ major }) => {
             counted = true;
         });
         checked.push(courseObj.resp);
+      } else if (course.number === 'placeholder') {
+        // course -> courseObj; course is UserCourse, courseObj.resp is Course
+        const resp: Course = {
+          title: '', // string;
+          number: course.number, // string;
+          areas: course.area, // string;
+          term: course.term, // string;
+          school: '', // string;
+          department: course.department, // string;
+          credits: course.credits.toString(), // string;
+          wi: course.wi, // boolean;
+          bio: '', // string;
+          tags: course.tags, // string[];
+          preReq: course.preReq, // string[];
+          restrictions: [], // Restriction[];
+          version: course.version, // string;
+          level: course.level, // string;
+        };
+        courseObj.resp = resp;
+        checked.push(courseObj.resp);
       }
       const localReqCopy: [string, requirements[]][] = copyReqs(reqCopy);
       if (!counted) updateReqs(localReqCopy, courseObj.resp);
@@ -256,7 +276,6 @@ const DistributionBarsJSX: FC<{ major: Major }> = ({ major }) => {
           checkRequirementSatisfied(fineReq, courseObj) // check if course satisfies fine req
         ) {
           // update fine requirements
-          console.log(reqs[i][1][j], courseObj);
           reqs[i][1][j].fulfilled_credits += parseInt(courseObj.credits);
           fineDoubleCount = fineReq.double_count;
         }
