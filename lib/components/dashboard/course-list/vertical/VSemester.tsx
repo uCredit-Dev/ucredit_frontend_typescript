@@ -41,6 +41,7 @@ import {
   Plan,
   Distribution,
 } from '../../../../resources/commonTypes';
+import React from 'react';
 
 /**
  * A component displaying all the courses in a specific semester.
@@ -162,7 +163,6 @@ const VSemester: React.FC<{
         term: semesterName === 'All' ? 'fall' : semesterName.toLowerCase(),
         year: semesterYear._id,
         credits: version.credits === '' ? 0 : version.credits,
-        distribution_ids: currentPlan.distribution_ids,
         isPlaceholder: placeholder,
         number: version.number,
         area: inspectedArea,

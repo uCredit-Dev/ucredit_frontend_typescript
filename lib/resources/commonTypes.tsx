@@ -14,8 +14,8 @@ export type Restriction = {
 export type Course = {
   title: string;
   number: string;
-  areas: string;
-  term: string;
+  areas?: string;
+  term?: string;
   school: string;
   department: string;
   credits: string;
@@ -67,7 +67,7 @@ export type UserCourse = {
   termOffered?: string; 
   year: string; 
   version?: string; 
-  number?: string;
+  number: string;
   department?: string;
   tags?: string[];
   areas?: string;

@@ -38,6 +38,7 @@ import {
 import { toast } from 'react-toastify';
 import { getAPI } from '../../resources/assets';
 import SisCourse from './course-search/search-results/SisCourse';
+import React from 'react';
 
 /**
  * Course info popup that opens when user preses info button on course components
@@ -80,7 +81,7 @@ const CourseDisplayPopup: FC = () => {
         const placeholderCourse: Course = {
           title: courseToShow.title,
           number: courseToShow.number,
-          areas: courseToShow.area,
+          areas: courseToShow.areas,
           term: courseToShow.version,
           school: 'none',
           department: 'none',

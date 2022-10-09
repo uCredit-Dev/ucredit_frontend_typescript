@@ -25,6 +25,7 @@ import {
   UserCourse,
   Year,
 } from '../../../../resources/commonTypes';
+import React from 'react';
 
 // Parsed prereq type
 // satisfied: a boolean that tells whether the prereq should be marked with green (satisfied) or red (unsatisfied)
@@ -184,7 +185,7 @@ const PrereqDisplay: FC = () => {
    *  @returns year object
    */
   const getYearById = (toShow: UserCourse | null): Year => {
-    const yearToGet: string = toShow ? toShow.year_id : year;
+    const yearToGet: string = toShow ? toShow.year : year;
     for (const yearObj of currentPlan.years) {
       if (yearObj._id === yearToGet) {
         return yearObj;

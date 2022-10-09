@@ -30,6 +30,7 @@ import {
 import { getAPI } from '../../../../resources/assets';
 import SisCourse from './SisCourse';
 import { updateShowingCart } from '../../../../slices/popupSlice';
+import React from 'react';
 
 /**
  * Displays course information once a user selects a course in the search list
@@ -98,7 +99,6 @@ const CourseDisplay: FC<{ cart: boolean }> = ({ cart }) => {
       term: semester === 'All' ? 'fall' : semester.toLowerCase(),
       year: addingYear !== null ? addingYear.name : '',
       credits: version.credits === '' ? 0 : version.credits,
-      distribution_ids: currentPlan.distribution_ids,
       isPlaceholder: placeholder,
       number: version.number,
       area: version.areas,

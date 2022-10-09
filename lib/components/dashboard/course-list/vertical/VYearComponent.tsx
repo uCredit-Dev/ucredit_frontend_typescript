@@ -11,6 +11,7 @@ import { getAPI } from '../../../../resources/assets';
 import VYearSettingsDropdown from './VYearSettingsDropdown';
 import clsx from 'clsx';
 import { selectAddingPrereq } from '../../../../slices/popupSlice';
+import React from 'react';
 
 type SemSelected = {
   fall: boolean;

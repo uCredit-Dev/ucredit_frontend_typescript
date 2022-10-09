@@ -32,10 +32,10 @@ export const guestUser: User = {
 };
 
 export const getColors = function (
-  distribution: string,
+  distribution: string | undefined,
   writingIntensive: boolean,
 ): string {
-  if (distribution === 'None') {
+  if (!distribution || distribution === 'None') {
     return '#F0F0F0';
   }
   if (writingIntensive) {
@@ -510,7 +510,7 @@ const backendSearch = async (
   courseNumber: string,
   indexNum: number,
   userC: UserCourse | null,
-): Promise<{ index: number; resp: Course }> =>
+): Promise<{ index: number; resp: Course | null}> =>
   new Promise(async (resolve) => {
     const courses: any = await axios
       .get(getAPI(window) + '/search', {
@@ -979,9 +979,9 @@ export const checkAllPrereqs = (
   });
 };
 
-export async function getMajor(name: string): Promise<Major | null> {
-  const resp: Major | null = await axios.get(
-    getAPI(window) + '/courses/' + name,
+export async function getMajor(name: string): Promise<Major> {
+  const resp: Major = await axios.get(
+    getAPI(window) + '/majors/' + name,
   );
   if (resp === null) {
     throw Error('Major not found');

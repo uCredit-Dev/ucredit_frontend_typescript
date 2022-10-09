@@ -87,11 +87,8 @@ const HandlePlanShareDummy = () => {
     if (cookieVal === '') {
       // if not, create a user first, then add
       dispatch(updateToAddName(plan.name));
-      dispatch(
-        updateToAddMajors(
-          plan.major_ids.map((major) => getMajor(major)),
-        ),
-      );
+      const toAddmajors = plan.major_ids.map((major) => getMajor(major)); 
+      Promise.all(toAddmajors).then((values) => dispatch(updateToAddMajors(values)));
       setToAdd(years);
       dispatch(updateUser(guestUser));
       dispatch(updateGeneratePlanAddStatus(true));
@@ -104,11 +101,8 @@ const HandlePlanShareDummy = () => {
 
   const afterPromise = (plan: Plan, years: Year[]) => {
     dispatch(updateToAddName(plan.name));
-    dispatch(
-      updateToAddMajors(
-        plan.major_ids.map((major) => getMajorFromCommonName(major)),
-      ),
-    );
+    const toAddmajors = plan.major_ids.map((major) => getMajor(major)); 
+    Promise.all(toAddmajors).then((values) => dispatch(updateToAddMajors(values)));
     dispatch(updateGeneratePlanAddStatus(true));
     setToAdd(years);
     setShouldAdd(true);
@@ -333,10 +327,9 @@ const HandlePlanShareDummy = () => {
             term: course.term,
             year: addingYear.name,
             credits: course.credits,
-            distribution_ids: currentPlan.distribution_ids,
             isPlaceholder: false,
             number: course.number,
-            area: course.area,
+            areas: course.areas,
             preReq: course.preReq,
             expireAt:
               user._id === 'guestUser'

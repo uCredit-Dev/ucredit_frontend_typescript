@@ -151,7 +151,7 @@ const CourseComponent: FC<{
         <div className="grid grid-flow-row-dense grid-cols-10 w-full h-full gap-x-1.5">
           <div
             className="col-span-1 px-1.5 h-5/6 place-self-center rounded-lg select-none"
-            style={{ backgroundColor: getColors(course.area, course.wi) }}
+            style={{ backgroundColor: getColors(course.areas, course.wi) }}
           ></div>
           <div className="col-span-8">
             <div className="truncate">{course.title}</div>
@@ -166,9 +166,9 @@ const CourseComponent: FC<{
             <div className="flex px-1 rounded select-none">
               {course.credits}
             </div>
-            {course.area !== 'None' && (
+            {course.areas !== 'None' && (
               <div className="text-[10px] flex px-1 font-semibold rounded select-none">
-                {course.area}
+                {course.areas}
               </div>
             )}{' '}
           </div>

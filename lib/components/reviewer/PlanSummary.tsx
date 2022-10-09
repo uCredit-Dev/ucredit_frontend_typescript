@@ -50,7 +50,7 @@ const PlanSummary: FC<{
   useEffect(() => {
     const { year, semester } = getNextSem();
     const majorAcc: Major[] = [];
-    plan.majors.forEach((m) => {
+    plan.major_ids.forEach((m) => {
       allMajors.forEach((ma) => {
         if (ma.degree_name === m) majorAcc.push(ma);
       });
@@ -209,7 +209,7 @@ const PlanSummary: FC<{
                   }
                 />
               )}
-              <DistributionBarsJSX major={selectedMajor} />
+              <DistributionBarsJSX major={selectedMajor.degree_name} />
             </div>
           </div>
           <div className="px-4 py-3 rounded-b-lg bg-gray-50 sm:px-6 sm:flex sm:flex-row-reverse ">
