@@ -51,7 +51,7 @@ const Dash: React.FC = () => {
       // we are guest looking at someone else’s plan
       // if they try to look at someone else’s plan, return error message
       if (typeof router.query.plan !== 'undefined') {
-        // toast.error('You do not have access to this plan!');
+        toast.error('You do not have access to this plan!');
         return;
       }
     }
@@ -85,10 +85,7 @@ const Dash: React.FC = () => {
             dispatch(updateSelectedPlan(res.data));
             dispatch(updateReviewMode(ReviewMode.View));
             setMode(ReviewMode.View);
-          } // else {
-          //   // if no, don't display plan at all, display toast error
-          //   toast.error('You do not have access to this plan!');
-          // }
+          }
         }
       } catch (e) {
         console.log(e);
