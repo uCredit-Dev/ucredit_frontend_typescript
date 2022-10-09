@@ -16,6 +16,8 @@ import {
   initialPlan,
   updateSelectedPlan,
 } from '../lib/slices/currentPlanSlice';
+import { toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 const Dash: React.FC = () => {
   const user: User = useSelector(selectUser);
@@ -45,6 +47,15 @@ const Dash: React.FC = () => {
   }, []);
 
   useEffect(() => {
+    if (user._id === 'noUser') {
+      // we are guest looking at someone else’s plan
+      // if they try to look at someone else’s plan, return error message
+      if (typeof router.query.plan !== 'undefined') {
+        // toast.error('You do not have access to this plan!');
+        return;
+      }
+    }
+    // if guest or user doesn't have any existing plans, create new plan
     if (!router.query || !router.query.mode) {
       if (planList.length > 0) dispatch(updateSelectedPlan(planList[0]));
       else dispatch(updateSelectedPlan(initialPlan));
@@ -52,19 +63,33 @@ const Dash: React.FC = () => {
       setMode(ReviewMode.Edit);
       return;
     }
-    setMode(router.query.mode as ReviewMode);
-    dispatch(updateReviewMode(router.query.mode as ReviewMode));
-    if (!router.query.plan) {
-      setMode(ReviewMode.Edit);
-      dispatch(updateReviewMode(ReviewMode.Edit));
-      return;
-    }
     (async () => {
       try {
         const res = await userService.getPlan(router.query.plan as string);
-        dispatch(updateSelectedPlan(res.data));
-        dispatch(updateReviewMode(ReviewMode.View));
-        setMode(ReviewMode.View);
+        if (Object.values(planList).includes(res.data._id)) {
+          // we are user we are looking at our own plan
+          setMode(router.query.mode as ReviewMode);
+          dispatch(updateReviewMode(router.query.mode as ReviewMode));
+          if (!router.query.plan) {
+            setMode(ReviewMode.Edit);
+            dispatch(updateReviewMode(ReviewMode.Edit));
+            return;
+          }
+        } else {
+          // we are user we are looking at someone else’s plan
+          const reviewers = (await userService.getPlanReviewers(res.data._id))
+            .data[0];
+          // check if user is reviewer for that person’s plan
+          if (Object.values(reviewers.reviewer_id).includes(user._id)) {
+            // if yes, display plan in view mode
+            dispatch(updateSelectedPlan(res.data));
+            dispatch(updateReviewMode(ReviewMode.View));
+            setMode(ReviewMode.View);
+          } // else {
+          //   // if no, don't display plan at all, display toast error
+          //   toast.error('You do not have access to this plan!');
+          // }
+        }
       } catch (e) {
         console.log(e);
       }
