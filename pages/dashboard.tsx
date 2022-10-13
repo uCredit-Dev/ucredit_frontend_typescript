@@ -5,13 +5,14 @@ import {
   selectPlanList,
   selectUser,
   updateReviewMode,
+  updateUser,
 } from '../lib/slices/userSlice';
 import React, { useEffect, useState } from 'react';
 import { ReviewMode, User } from '../lib/resources/commonTypes';
 import { useRouter } from 'next/router';
 import { userService } from '../lib/services';
 import axios from 'axios';
-import { getAPI } from '../lib/resources/assets';
+import { getAPI, guestUser } from '../lib/resources/assets';
 import {
   initialPlan,
   updateSelectedPlan,
@@ -48,14 +49,10 @@ const Dash: React.FC = () => {
 
   useEffect(() => {
     if (user._id === 'noUser') {
-      // we are guest looking at someone else’s plan
-      // if they try to look at someone else’s plan, return error message
       if (typeof router.query.plan !== 'undefined') {
         toast.error('You do not have access to this plan!');
-        return;
       }
     }
-    // if guest or user doesn't have any existing plans, create new plan
     if (!router.query || !router.query.mode) {
       if (planList.length > 0) dispatch(updateSelectedPlan(planList[0]));
       else dispatch(updateSelectedPlan(initialPlan));
@@ -67,7 +64,6 @@ const Dash: React.FC = () => {
       try {
         const res = await userService.getPlan(router.query.plan as string);
         if (Object.values(planList).includes(res.data._id)) {
-          // we are user we are looking at our own plan
           setMode(router.query.mode as ReviewMode);
           dispatch(updateReviewMode(router.query.mode as ReviewMode));
           if (!router.query.plan) {
@@ -76,12 +72,9 @@ const Dash: React.FC = () => {
             return;
           }
         } else {
-          // we are user we are looking at someone else’s plan
           const reviewers = (await userService.getPlanReviewers(res.data._id))
             .data[0];
-          // check if user is reviewer for that person’s plan
           if (Object.values(reviewers.reviewer_id).includes(user._id)) {
-            // if yes, display plan in view mode
             dispatch(updateSelectedPlan(res.data));
             dispatch(updateReviewMode(ReviewMode.View));
             setMode(ReviewMode.View);
