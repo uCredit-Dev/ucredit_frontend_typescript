@@ -48,10 +48,8 @@ const Dash: React.FC = () => {
   }, []);
 
   useEffect(() => {
-    if (user._id === 'noUser') {
-      if (typeof router.query.plan !== 'undefined') {
-        toast.error('You do not have access to this plan!');
-      }
+    if (user._id === 'noUser' && typeof router.query.plan !== 'undefined') {
+      toast.error('You do not have access to this plan!');
     }
     if (!router.query || !router.query.mode) {
       if (planList.length > 0) dispatch(updateSelectedPlan(planList[0]));
