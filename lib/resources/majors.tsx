@@ -1942,6 +1942,7 @@ const bsBME: Major = {
       min_credits_per_course: 1,
       description: 'Select 9 credits from any area.',
       criteria: 'H[A]^OR^S[A]^OR^Q[A]^OR^N[A]^OR^E[A]',
+      double_count: ['Writing Intensive'],
     },
     {
       name: 'Writing Intensive',
