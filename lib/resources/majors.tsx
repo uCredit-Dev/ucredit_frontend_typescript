@@ -3315,7 +3315,7 @@ const bsCS_Old: Major = {
     },
     {
       name: 'Basic Sciences',
-      required_credits: 16,
+      required_credits: 8,
       min_credits_per_course: 1,
       description:
         'At least two semesters of physics or two semesters of chemistry, with the associated laboratories, must be included.',
@@ -3545,7 +3545,7 @@ const bsCS_New: Major = {
     },
     {
       name: 'Basic Sciences',
-      required_credits: 10,
+      required_credits: 8,
       min_credits_per_course: 1,
       description:
         'At least two semesters of physics or two semesters of chemistry, with the associated laboratories, must be included.',
