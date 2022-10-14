@@ -1915,13 +1915,6 @@ const bsBME: Major = {
       ],
     },
     {
-      name: 'Other Electives',
-      required_credits: 9,
-      min_credits_per_course: 1,
-      description: 'Select 9 credits from any area.',
-      criteria: 'H[A]^OR^S[A]^OR^Q[A]^OR^N[A]^OR^E[A]',
-    },
-    {
       name: 'Humanities and Social Sciences',
       required_credits: 18,
       min_credits_per_course: 3,
@@ -1944,6 +1937,13 @@ const bsBME: Major = {
       ],
     },
     {
+      name: 'Other Electives',
+      required_credits: 9,
+      min_credits_per_course: 1,
+      description: 'Select 9 credits from any area.',
+      criteria: 'H[A]^OR^S[A]^OR^Q[A]^OR^N[A]^OR^E[A]',
+    },
+    {
       name: 'Writing Intensive',
       required_credits: 6,
       min_credits_per_course: 3,
@@ -1953,6 +1953,7 @@ const bsBME: Major = {
       criteria: 'Written Intensive[W]',
       double_count: ['All'],
     },
+
   ],
 };
 
