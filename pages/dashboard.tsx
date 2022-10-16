@@ -90,14 +90,16 @@ const Dash: React.FC = () => {
           setMode(ReviewMode.View);
           return;
         }
-        router.push('/dashboard');
-        toast.error('You do not have access to this plan!');
+        if (router.query.plan) {
+          router.push('/dashboard');
+          toast.error('You do not have access to this plan!');
+        }
       } catch (e) {
         console.log(e);
       }
     })();
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [router.query]); // router.query, change when reviewer -> planning dashboard
+  }, [router.query]);
 
   return (
     <>
