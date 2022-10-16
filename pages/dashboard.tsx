@@ -11,14 +11,13 @@ import { ReviewMode, User } from '../lib/resources/commonTypes';
 import { useRouter } from 'next/router';
 import { userService } from '../lib/services';
 import axios from 'axios';
-import { getAPI, guestUser } from '../lib/resources/assets';
+import { getAPI } from '../lib/resources/assets';
 import {
   initialPlan,
   updateSelectedPlan,
 } from '../lib/slices/currentPlanSlice';
 import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
-import { useRoutes } from 'react-router';
 
 const Dash: React.FC = () => {
   const user: User = useSelector(selectUser);
