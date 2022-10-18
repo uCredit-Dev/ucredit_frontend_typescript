@@ -126,7 +126,7 @@ const CourseBar: FC<{
       </div>
 
       <div
-        className="relative flex flex-row w-full h-6"
+        className="relative flex flex-row w-full h-6 cursor-pointer"
         data-tip={tooltip}
         data-for="godTip"
         onMouseOver={() => ReactTooltip.rebuild()}
