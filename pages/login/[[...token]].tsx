@@ -15,6 +15,7 @@ import {
   updateLoginCheck,
   updateUser,
   updateToken,
+  selectToken,
 } from '../../lib/slices/userSlice';
 import LoadingPage from '../../lib/components/LoadingPage';
 import { updateImportingStatus } from '../../lib/slices/currentPlanSlice';
@@ -37,6 +38,7 @@ const Login: React.FC = () => {
   const [session, setSession] = useState<string>('');
   const router = useRouter();
   const importID = useSelector(selectImportID);
+  const token = useSelector(selectToken);
   const devIDs = ['mockUser'];
 
   // Useffect runs once on page load, calling to https://ucredit-api.herokuapp.com/api/verifyLogin to retrieve user data.
@@ -69,7 +71,7 @@ const Login: React.FC = () => {
    */
   const handleDBLogin = (loginId: string) => {
     userService
-      .login(loginId)
+      .login(loginId, token)
       .then((retrievedUser) => {
         if (retrievedUser.errors === undefined) {
           if (retrievedUser.data.plan_ids.length === 0)

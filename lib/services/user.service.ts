@@ -1,5 +1,3 @@
-import { selectToken } from './../slices/userSlice';
-import { useSelector } from 'react-redux';
 import axios from 'axios';
 import { getAPI } from '../resources/assets';
 import { fetchWrapper } from '../utils';
@@ -9,22 +7,22 @@ import { fetchWrapper } from '../utils';
  * @param cookieVal - value of stored login session hash
  * @returns a promises that resolves on success or failure in logging in
  */
-const login = (cookieVal: string) => {
+const login = (cookieVal: string, token: string) => {
   return fetchWrapper
-    .get(`${getAPI(window)}/verifyLogin/${cookieVal}`)
+    .get(`${getAPI(window)}/verifyLogin/${cookieVal}`, token)
     .then((res) => res.json())
     .then((res) => res);
 };
 
-const getPlan = (planId: string) => {
+const getPlan = (planId: string, token: string) => {
   return fetchWrapper
-    .get(`${getAPI(window)}/plans/${planId}`)
+    .get(`${getAPI(window)}/plans/${planId}`, token)
     .then(handleResponse);
 };
 
-const getUser = (username: string) => {
+const getUser = (username: string, token: string) => {
   return fetchWrapper
-    .get(`${getAPI(window)}/user?username=${username}`)
+    .get(`${getAPI(window)}/user?username=${username}`, token)
     .then((res) => handleResponse(res));
 };
 
@@ -32,10 +30,11 @@ const requestReviewerPlan = (
   plan_id: string,
   reviewer_id: string,
   reviewee_id: string,
+  token: string, 
   cb = undefined,
 ) => {
   return fetchWrapper
-    .post(`${getAPI(window)}/planReview/request`, {
+    .post(`${getAPI(window)}/planReview/request`, token, {
       plan_id,
       reviewer_id,
       reviewee_id,
@@ -43,43 +42,45 @@ const requestReviewerPlan = (
     .then((res) => handleResponse(res, cb));
 };
 
-const removeReview = (review_id: string, cb = undefined) => {
+const removeReview = (review_id: string, token: string, cb = undefined) => {
   return fetchWrapper
-    .delete(`${getAPI(window)}/planReview/removeReview?review_id=${review_id}`)
+    .delete(`${getAPI(window)}/planReview/removeReview?review_id=${review_id}`, token)
     .then((res) => handleResponse(res, cb));
 };
 
-const confirmReviewerPlan = (review_id: string, cb = undefined) => {
+const confirmReviewerPlan = (review_id: string, token: string, cb = undefined) => {
   return fetchWrapper
-    .post(`${getAPI(window)}/planReview/confirm`, {
+    .post(`${getAPI(window)}/planReview/confirm`, token, {
       review_id,
     })
     .then((res) => handleResponse(res, cb));
 };
 
-const getReviewerPlans = (reviewer_id: string, cb = undefined) => {
+const getReviewerPlans = (reviewer_id: string, token: string, cb = undefined) => {
   return fetchWrapper
     .get(
       `${getAPI(window)}/planReview/plansToReview?reviewer_id=${reviewer_id}`,
+      token
     )
     .then((res) => handleResponse(res, cb));
 };
 
-const getPlanReviewers = (plan_id: string, cb = undefined) => {
+const getPlanReviewers = (plan_id: string, token: string, cb = undefined) => {
   return fetchWrapper
-    .get(`${getAPI(window)}/planReview/getReviewers?plan_id=${plan_id}`)
+    .get(`${getAPI(window)}/planReview/getReviewers?plan_id=${plan_id}`, token)
     .then((res) => handleResponse(res, cb));
 };
 
-const postNewThread = (data: any) => {
+const postNewThread = (data: any, token: string) => {
   return fetchWrapper
-    .post(`${getAPI(window)}/thread/new`, data)
+    .post(`${getAPI(window)}/thread/new`, token, data)
     .then(handleResponse);
 };
 
-const getThreads = (id: string, unmounted: boolean, cancelToken) => {
+const getThreads = (id: string, token: string, unmounted: boolean, cancelToken) => {
   return axios
     .get(`${getAPI(window)}/thread/getByPlan/${id}`, {
+      headers: { "Authorization" : `Bearer ${token}` }, 
       cancelToken: cancelToken,
     })
     .then((res) => {
@@ -87,28 +88,28 @@ const getThreads = (id: string, unmounted: boolean, cancelToken) => {
     });
 };
 
-const postNewComment = (data: any, cb = undefined) => {
+const postNewComment = (data: any, token: string, cb = undefined) => {
   return fetchWrapper
-    .post(`${getAPI(window)}/thread/reply`, data)
+    .post(`${getAPI(window)}/thread/reply`, token, data)
     .then(handleResponse);
 };
 
-const removeComment = (comment_id: string, cb = undefined) => {
+const removeComment = (comment_id: string, token: string, cb = undefined) => {
   return fetchWrapper
-    .delete(`${getAPI(window)}/comment`, { comment_id })
+    .delete(`${getAPI(window)}/comment`, token, { comment_id })
     .then((res) => handleResponse(res, cb));
 };
 
-const changeReviewStatus = (review_id, status, cb = undefined) => {
+const changeReviewStatus = (review_id, status, token: string, cb = undefined) => {
   return fetchWrapper
-    .post(`${getAPI(window)}/planReview/changeStatus`, {
+    .post(`${getAPI(window)}/planReview/changeStatus`, token, {
       review_id,
       status,
     })
     .then((res) => handleResponse(res, cb));
 };
 
-const getNotifications = (userID: string, token: string | undefined) => {
+const getNotifications = (userID: string, token: string) => {
   return fetchWrapper
     .get(`${getAPI(window)}/notifications/${userID}`, token)
     .then(handleResponse);

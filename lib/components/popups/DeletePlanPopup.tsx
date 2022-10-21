@@ -1,9 +1,10 @@
-import { FC } from 'react';
+import React, { FC } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import {
   selectUser,
   selectPlanList,
   updatePlanList,
+  selectToken,
 } from '../../slices/userSlice';
 import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
@@ -22,6 +23,7 @@ const DeletePlanPopup: FC = () => {
   const user = useSelector(selectUser);
   const currentPlan = useSelector(selectPlan);
   const planList = useSelector(selectPlanList);
+  const token = useSelector(selectToken);
 
   /**
    * Deletes current plan.
@@ -46,9 +48,9 @@ const DeletePlanPopup: FC = () => {
         })
         .catch((err) => console.log(err));
 
-      const reviews = await userService.getPlanReviewers(currentPlan._id);
+      const reviews = await userService.getPlanReviewers(currentPlan._id, token);
       reviews.data.forEach(async (review) => {
-        await userService.removeReview(review._id);
+        await userService.removeReview(review._id, token);
       });
     } else {
       toast.error('Cannot delete last plan!');

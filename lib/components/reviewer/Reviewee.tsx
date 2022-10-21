@@ -26,6 +26,8 @@ import {
   updateTotalCredits,
 } from '../../slices/currentPlanSlice';
 import { useDispatch } from 'react-redux';
+import { useSelector } from 'react-redux';
+import { selectToken } from '../../slices/userSlice';
 
 interface Props {
   userId: string;
@@ -63,6 +65,7 @@ const Reviewee: React.FC<Props> = ({
   const [notifState, setNotifState] = useState(false);
   const [summaryReviewID, setSummaryReviewID] = useState('');
   const [summaryPlan, setSummaryPlan] = useState<Plan>(plans[0]);
+  const token = useSelector(selectToken);
   const router = useRouter();
   const dispatch = useDispatch();
 
@@ -159,6 +162,7 @@ const Reviewee: React.FC<Props> = ({
                             await userService.changeReviewStatus(
                               review_id,
                               value.label,
+                              token
                             );
                             // window.location.href = '/reviewer';
                             setRefreshReviews(true);
