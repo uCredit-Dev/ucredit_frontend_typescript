@@ -9,7 +9,6 @@ import { selectToken } from '../../../../slices/userSlice';
 import { toast } from 'react-toastify';
 import { getAPI } from '../../../../resources/assets';
 import clsx from 'clsx';
-import { selectToken } from '../../../../slices/userSlice';
 
 const CurrentReviewers: FC<{
   reviewersJSX: JSX.Element[];

@@ -22,7 +22,7 @@ const ReviewerSearchResults: FC<{
         .data;
       setPlanReviewers(reviewers);
     })();
-  }, [currentPlan._id]);
+  }, [currentPlan._id, token]);
 
   const isReviewer = (id: string) => {
     for (const { reviewer_id, status, _id } of planReviewers) {

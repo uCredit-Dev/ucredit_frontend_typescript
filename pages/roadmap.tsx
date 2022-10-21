@@ -63,7 +63,7 @@ const RoadMap: React.FC<Props> = ({ mode }) => {
 
     (async () => {
       if (currPlan && currPlan._id !== 'noPlan') {
-        const res = await userService.getThreads(currPlan._id, token);
+        const res = await userService.getThreads(currPlan._id, token, false, null);
         dispatch(updateThreads(res.data));
         const commentersSet = new Set<string>();
         for (const thread of res.data) {

@@ -80,8 +80,8 @@ const RoadmapComment: FC = () => {
               .map((comment) =>
                 thread._id != null ? (
                   <Comment
-                    key={(comment.commenter_id, "'s comment")}
-                    username={comment.commenter_id}
+                    key={(comment.commenter_id.name, "'s comment")}
+                    username={comment.commenter_id._id}
                     upvote={0}
                     content={comment.message}
                     date={comment.date}

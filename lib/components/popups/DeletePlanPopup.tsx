@@ -12,7 +12,6 @@ import { selectPlan, updateSelectedPlan } from '../../slices/currentPlanSlice';
 import { getAPI } from '../../resources/assets';
 import { updateDeletePlanStatus } from '../../slices/popupSlice';
 import { userService } from '../../../lib/services';
-import { selectToken } from '../../slices/userSlice';
 
 /**
  * This is the confirmation popup that appears when users press the button to delete a plan.
@@ -25,7 +24,6 @@ const DeletePlanPopup: FC = () => {
   const token = useSelector(selectToken);
   const currentPlan = useSelector(selectPlan);
   const planList = useSelector(selectPlanList);
-  const token = useSelector(selectToken);
 
   /**
    * Deletes current plan.
