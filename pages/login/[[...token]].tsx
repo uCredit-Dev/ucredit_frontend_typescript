@@ -14,6 +14,7 @@ import {
   selectLoginCheck,
   updateLoginCheck,
   updateUser,
+  updateToken,
 } from '../../lib/slices/userSlice';
 import LoadingPage from '../../lib/components/LoadingPage';
 import { updateImportingStatus } from '../../lib/slices/currentPlanSlice';
@@ -132,7 +133,8 @@ const Login: React.FC = () => {
     axios
       .get(getAPI(window) + '/backdoor/verification/' + id)
       .then((res) => {
-        const devUser: User = res.data.data;
+        const devUser: User = res.data.data.user;
+        dispatch(updateToken(res.data.data.token));
         if (devUser.plan_ids.length === 0)
           dispatch(updateAddingPlanStatus(true));
         if (importID) dispatch(updateImportingStatus(true));
