@@ -16,7 +16,7 @@ const login = (cookieVal: string) => {
     .then((res) => res);
 };
 
-const getPlan = (planId: string) => {
+const getPlan = (planId: string, token: string | undefined) => {
   return fetchWrapper
     .get(`${getAPI(window)}/plans/${planId}`)
     .then(handleResponse);

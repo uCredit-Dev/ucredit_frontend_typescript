@@ -27,6 +27,7 @@ import {
   selectImportID,
   selectPlanList,
   selectUser,
+  selectToken,
 } from '../../slices/userSlice';
 
 const HandlePlanShareDummy = () => {
@@ -39,6 +40,7 @@ const HandlePlanShareDummy = () => {
   const generatePlanAddStatus = useSelector(selectGeneratePlanAddStatus);
   const currentCourses = useSelector(selectCurrentPlanCourses);
   const planList = useSelector(selectPlanList);
+  const token = useSelector(selectToken);
 
   // Component state setup
   const [shouldAdd, setShouldAdd] = useState<boolean>(false);
@@ -55,7 +57,9 @@ const HandlePlanShareDummy = () => {
   // Handle the case where the user is already exists
   const handleExistingUser = async (): Promise<void> => {
     const planResponse: any = await axios
-      .get(getAPI(window) + '/plans/' + id)
+      .get(getAPI(window) + '/plans/' + id, {
+        headers: { Authorization: `Bearer ${token}` },
+      })
       .catch((e) => {
         dispatch(updateImportingStatus(false));
         toast.dismiss();

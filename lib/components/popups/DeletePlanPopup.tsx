@@ -11,6 +11,7 @@ import { selectPlan, updateSelectedPlan } from '../../slices/currentPlanSlice';
 import { getAPI } from '../../resources/assets';
 import { updateDeletePlanStatus } from '../../slices/popupSlice';
 import { userService } from '../../../lib/services';
+import { selectToken } from '../../slices/userSlice';
 
 /**
  * This is the confirmation popup that appears when users press the button to delete a plan.
@@ -20,6 +21,7 @@ const DeletePlanPopup: FC = () => {
   // Redux Setup
   const dispatch = useDispatch();
   const user = useSelector(selectUser);
+  const token = useSelector(selectToken);
   const currentPlan = useSelector(selectPlan);
   const planList = useSelector(selectPlanList);
 
@@ -33,6 +35,9 @@ const DeletePlanPopup: FC = () => {
     if (planList.length > 1 && user._id !== 'noUser') {
       fetch(getAPI(window) + '/plans/' + currentPlan._id, {
         method: 'DELETE',
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
       })
         .then(() => {
           toast.error(currentPlan.name + ' deleted!');

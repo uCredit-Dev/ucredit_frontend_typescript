@@ -47,7 +47,9 @@ const HandleUserInfoSetupDummy: React.FC = () => {
         reviewMode !== ReviewMode.View
       ) {
         axios
-          .get(getAPI(window) + '/plansByUser/' + user._id, {headers: {"Authorization" : `Bearer ${token}`}})
+          .get(getAPI(window) + '/plansByUser/' + user._id, {
+            headers: { Authorization: `Bearer ${token}` },
+          })
           .then((retrieved) => processRetrievedPlans(retrieved.data.data))
           .catch((err) => {
             if (user._id === 'guestUser') {

@@ -5,6 +5,7 @@ import ReactTooltip from 'react-tooltip';
 import { ReviewRequestStatus } from '../../../../resources/commonTypes';
 import { userService } from '../../../../services';
 import { selectPlan } from '../../../../slices/currentPlanSlice';
+import { selectToken } from '../../../../slices/userSlice';
 import { toast } from 'react-toastify';
 import { getAPI } from '../../../../resources/assets';
 import clsx from 'clsx';
@@ -14,6 +15,7 @@ const CurrentReviewers: FC<{
   setReviewersJSX: (newJSX: JSX.Element[]) => void;
 }> = ({ reviewersJSX, setReviewersJSX }) => {
   const currentPlan = useSelector(selectPlan);
+  const token = useSelector(selectToken);
 
   const sendEmail = (toName, reviewID) => {
     const body = {
@@ -25,6 +27,7 @@ const CurrentReviewers: FC<{
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
+        Authorization: `Bearer ${token}`,
       },
       body: JSON.stringify(body),
     })

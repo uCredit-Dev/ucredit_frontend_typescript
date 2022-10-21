@@ -27,6 +27,7 @@ import {
   selectPlanList,
   selectReviewMode,
   selectUser,
+  selectToken,
   updatePlanList,
 } from '../../../slices/userSlice';
 import Reviewers from './reviewers/Reviewers';
@@ -45,6 +46,7 @@ const PlanEditMenu: FC<{ mode: ReviewMode }> = ({ mode }) => {
   const planList = useSelector(selectPlanList);
   const currentPlan = useSelector(selectPlan);
   const user = useSelector(selectUser);
+  const token = useSelector(selectToken);
   const dispatch = useDispatch();
   const infoPopup = useSelector(selectInfoPopup);
   const reviewMode = useSelector(selectReviewMode);
@@ -79,6 +81,7 @@ const PlanEditMenu: FC<{ mode: ReviewMode }> = ({ mode }) => {
       method: 'PATCH',
       headers: {
         'Content-Type': 'application/json',
+        Authorization: `Bearer ${token}`,
       },
       body: JSON.stringify(body),
     })
@@ -139,7 +142,9 @@ const PlanEditMenu: FC<{ mode: ReviewMode }> = ({ mode }) => {
       majors: newMajors,
     };
     axios
-      .patch(getAPI(window) + '/plans/update', body)
+      .patch(getAPI(window) + '/plans/update', body, {
+        headers: { Authorization: `Bearer ${token}` },
+      })
       .then(() => {
         const newUpdatedPlan = { ...currentPlan, majors: newMajors };
         dispatch(updateSelectedPlan(newUpdatedPlan));
