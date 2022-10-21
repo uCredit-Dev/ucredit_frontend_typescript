@@ -10,6 +10,7 @@ import {
 
 type UserSlice = {
   currentUser: User;
+  token?: string;
   planList: Plan[];
   courseCache: SISRetrievedCourse[];
   cacheNumbers: String[];
@@ -36,6 +37,7 @@ const initialState: UserSlice = {
     whitelisted_plan_ids: [],
     plan_ids: ['no plan'],
   },
+  token: '',
   planList: [],
   courseCache: [],
   retrievedAll: false,
@@ -127,6 +129,9 @@ export const userSlice = createSlice({
     updateCommenters: (state: any, action: PayloadAction<UserId[]>) => {
       state.commenters = action.payload.map(({ _id, name }) => ({ _id, name }));
     },
+    updateToken:(state: any, action: PayloadAction<String>) => {
+      state.token = action.payload;
+    },
     resetUser: (state: any) => {
       state.currentUser = initialState.currentUser;
       state.planList = initialState.planList;
@@ -149,6 +154,7 @@ export const {
   updateReviewMode,
   updateCartInvokedBySemester,
   updateCommenters,
+  updateToken,
   resetUser,
 } = userSlice.actions;
 
