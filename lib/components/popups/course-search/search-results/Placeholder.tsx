@@ -30,7 +30,7 @@ import {
 import ReactTooltip from 'react-tooltip';
 import { QuestionMarkCircleIcon } from '@heroicons/react/solid';
 import { XIcon } from '@heroicons/react/outline';
-import { selectReviewMode } from '../../../../slices/userSlice';
+import { selectReviewMode, selectToken } from '../../../../slices/userSlice';
 import clsx from 'clsx';
 
 const departmentFilters = ['none', ...all_deps];
@@ -48,6 +48,7 @@ const Placeholder: FC<{ addCourse: (plan?: Plan) => void }> = (props) => {
   const searchStatus = useSelector(selectSearchStatus);
   const currentCourses = useSelector(selectCurrentPlanCourses);
   const currentPlan = useSelector(selectPlan);
+  const token = useSelector(selectToken);
   const dispatch = useDispatch();
 
   // Component state setup.
@@ -191,6 +192,7 @@ const Placeholder: FC<{ addCourse: (plan?: Plan) => void }> = (props) => {
         method: 'DELETE',
         headers: {
           'Content-Type': 'application/json',
+          "Authorization" : `Bearer ${token}`
         },
       }).then((retrieved) => {
         retrieved.json().then(handleUpdateResponse);

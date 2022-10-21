@@ -83,6 +83,9 @@ const Notification: FC<{
                                 const resp = await axios.delete(
                                   getAPI(window) +
                                     `/notifications/${notifs[i]._id}`,
+                                  {
+                                    headers: { "Authorization" : `Bearer ${token}` }, 
+                                  }
                                 );
                                 if (resp.status !== 200) {
                                   console.log(resp.statusText);

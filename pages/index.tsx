@@ -5,6 +5,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { getAPI } from '../lib/resources/assets';
 import {
   selectCourseCache,
+  selectToken,
   selectUser,
   // updateAllCoursesCached,
   updateCourseCache,
@@ -24,6 +25,7 @@ const Home: React.FC = () => {
   const user = useSelector(selectUser);
   const curPlan = useSelector(selectPlan);
   const courseCache = useSelector(selectCourseCache);
+  const token = useSelector(selectToken);
 
   // Component state setup.
   const [welcomeScreen, setWelcomeScreen] = useState<boolean>(false);
@@ -81,7 +83,9 @@ const Home: React.FC = () => {
     ) {
       setNeedsToLoad(true);
       axios
-        .get(getAPI(window) + '/coursesByPlan/' + curPlan._id)
+        .get(getAPI(window) + '/coursesByPlan/' + curPlan._id, {
+          headers: { "Authorization" : `Bearer ${token}` }, 
+        })
         .then((response) => {
           response.data.data.forEach((c: UserCourse) => {
             axios
