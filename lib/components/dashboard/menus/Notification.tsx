@@ -5,15 +5,18 @@ import { userService } from '../../../services';
 import axios from 'axios';
 import { compareDesc } from 'date-fns';
 import { getAPI } from '../../../resources/assets';
+import { selectToken } from '../../../slices/userSlice';
+import { useSelector } from 'react-redux';
 
 const Notification: FC<{
   userID: string;
 }> = ({ userID }) => {
   const [notifications, setNotifications] = useState<any[]>([]);
+  const token = useSelector(selectToken);
 
   useEffect(() => {
     (async () => {
-      let data = await userService.getNotifications(userID);
+      let data = await userService.getNotifications(userID, token);
       data = data.data.sort((d1, d2) =>
         compareDesc(new Date(d1.date), new Date(d2.date)),
       );

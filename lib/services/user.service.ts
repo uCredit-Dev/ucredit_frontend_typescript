@@ -1,3 +1,5 @@
+import { selectToken } from './../slices/userSlice';
+import { useSelector } from 'react-redux';
 import axios from 'axios';
 import { getAPI } from '../resources/assets';
 import { fetchWrapper } from '../utils';
@@ -106,9 +108,9 @@ const changeReviewStatus = (review_id, status, cb = undefined) => {
     .then((res) => handleResponse(res, cb));
 };
 
-const getNotifications = (userID: string) => {
+const getNotifications = (userID: string, token: string | undefined) => {
   return fetchWrapper
-    .get(`${getAPI(window)}/notifications/${userID}`)
+    .get(`${getAPI(window)}/notifications/${userID}`, token)
     .then(handleResponse);
 };
 

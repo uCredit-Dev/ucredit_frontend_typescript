@@ -6,18 +6,25 @@ import CommentIcon from './commentEditor/CommentIcon';
 import axios from 'axios';
 import { getAPI } from './../../../resources/assets';
 import { ThreadType } from '../../../resources/commonTypes';
+import { useSelector } from 'react-redux';
+import { selectToken } from '../../../slices/userSlice';
 
 const RoadmapComment: FC = () => {
   const [sort, setSort] = useState<string>('default');
   const [allThreads, setAllThreads] = useState<ThreadType[]>([]);
   const [isShown, setIsShown] = useState<boolean>(false);
+  const token = useSelector(selectToken);
 
   // const currPlan = useSelector(selectPlan);
   const currPlan = { _id: '62d8875b5b6fb8734aa09679' };
 
   useEffect(() => {
     axios
-      .get(getAPI(window) + `/thread/getByPlan/${currPlan._id}`)
+      .get(getAPI(window) + `/thread/getByPlan/${currPlan._id}`, {
+        headers: { 
+          "Authorization" : `Bearer ${token}` 
+        }
+      })
       .then((response) => {
         const sorted =
           sort === 'default' || sort === 'most recent'

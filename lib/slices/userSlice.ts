@@ -161,6 +161,7 @@ export const {
 // The function below is called a selector and allows us to select a value from
 // the state. Please make a selector for each state :)
 export const selectUser = (state: RootState) => state.user.currentUser;
+export const selectToken = (state: RootState) => state.user.token;
 export const selectPlanList = (state: RootState) => state.user.planList;
 export const selectCourseCache = (state: RootState) => state.user.courseCache;
 export const selectRetrievedAll = (state: RootState) => state.user.retrievedAll;
