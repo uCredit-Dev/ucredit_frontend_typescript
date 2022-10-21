@@ -10,7 +10,7 @@ import {
 
 type UserSlice = {
   currentUser: User;
-  token?: string;
+  token: string;
   planList: Plan[];
   courseCache: SISRetrievedCourse[];
   cacheNumbers: String[];

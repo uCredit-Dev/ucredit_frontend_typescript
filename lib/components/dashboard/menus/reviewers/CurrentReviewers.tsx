@@ -9,6 +9,7 @@ import { selectToken } from '../../../../slices/userSlice';
 import { toast } from 'react-toastify';
 import { getAPI } from '../../../../resources/assets';
 import clsx from 'clsx';
+import { selectToken } from '../../../../slices/userSlice';
 
 const CurrentReviewers: FC<{
   reviewersJSX: JSX.Element[];
@@ -53,7 +54,7 @@ const CurrentReviewers: FC<{
 
   useEffect(() => {
     (async () => {
-      const reviewers = (await userService.getPlanReviewers(currentPlan._id))
+      const reviewers = (await userService.getPlanReviewers(currentPlan._id, token))
         .data;
       const elements: JSX.Element[] = await getElements(reviewers);
       setReviewersJSX(elements);
@@ -81,8 +82,8 @@ const CurrentReviewers: FC<{
   const getElements = async (data: any[]) => {
     const elements: JSX.Element[] = [];
     for (const { reviewer_id, status, reviewee_id, _id } of data) {
-      const reviewer = (await userService.getUser(reviewer_id._id)).data[0];
-      const reviewee = (await userService.getUser(reviewee_id)).data[0];
+      const reviewer = (await userService.getUser(reviewer_id._id, token)).data[0];
+      const reviewee = (await userService.getUser(reviewee_id, token)).data[0];
       elements.push(
         <div
           className="flex flex-row items-center space-between pt-2"

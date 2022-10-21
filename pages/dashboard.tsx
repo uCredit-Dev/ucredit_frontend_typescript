@@ -21,6 +21,7 @@ const Dash: React.FC = () => {
   const user: User = useSelector(selectUser);
   const router = useRouter();
   const planList = useSelector(selectPlanList);
+  const token = useSelector(selectToken);
   const [mode, setMode] = useState<ReviewMode>(ReviewMode.None);
   const dispatch = useDispatch();
 
@@ -61,7 +62,7 @@ const Dash: React.FC = () => {
     }
     (async () => {
       try {
-        const res = await userService.getPlan(router.query.plan as string);
+        const res = await userService.getPlan(router.query.plan as string, token);
         dispatch(updateSelectedPlan(res.data));
         dispatch(updateReviewMode(ReviewMode.View));
         setMode(ReviewMode.View);

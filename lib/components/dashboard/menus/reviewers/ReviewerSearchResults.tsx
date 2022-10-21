@@ -6,18 +6,19 @@ import { toast } from 'react-toastify';
 import { ReviewRequestStatus, User } from '../../../../resources/commonTypes';
 import { selectPlan } from '../../../../slices/currentPlanSlice';
 import { userService } from '../../../../services';
-import { selectUser } from '../../../../slices/userSlice';
+import { selectToken, selectUser } from '../../../../slices/userSlice';
 
 const ReviewerSearchResults: FC<{
   users: User[];
 }> = ({ users }) => {
   const currentPlan = useSelector(selectPlan);
   const currentUser = useSelector(selectUser);
+  const token = useSelector(selectToken);
   const [planReviewers, setPlanReviewers] = useState<any>([]);
 
   useEffect(() => {
     (async () => {
-      const reviewers = (await userService.getPlanReviewers(currentPlan._id))
+      const reviewers = (await userService.getPlanReviewers(currentPlan._id, token))
         .data;
       setPlanReviewers(reviewers);
     })();
@@ -41,7 +42,7 @@ const ReviewerSearchResults: FC<{
   const changeReviewer = async (user: User) => {
     const reviewId = isReviewer(user._id);
     if (reviewId) {
-      await userService.removeReview(reviewId);
+      await userService.removeReview(reviewId, token);
       toast.success('Reviewer removed');
     } else {
       if (!isPending(user._id)) {
@@ -49,6 +50,7 @@ const ReviewerSearchResults: FC<{
           currentPlan._id,
           user._id,
           currentUser._id,
+          token
         );
         toast.success('Reviewer requested');
       } else

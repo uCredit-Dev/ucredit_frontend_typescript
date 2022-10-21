@@ -39,6 +39,7 @@ import CourseList from './course-list/CourseList';
 import InfoMenu from './degree-info/InfoMenu';
 import {
   selectLoginCheck,
+  selectToken,
   selectUser,
   updateCommenters,
 } from '../../slices/userSlice';
@@ -77,6 +78,7 @@ const Dashboard: React.FC<Props> = ({ mode }) => {
   const addingPrereqStatus = useSelector(selectAddingPrereq);
   const cartStatus = useSelector(selectShowingCart);
   const experimentList = useSelector(selectExperimentList);
+  const token = useSelector(selectToken);
   const dispatch = useDispatch();
   const currPlan = useSelector(selectPlan);
   const infoPopup = useSelector(selectInfoPopup);
@@ -161,7 +163,7 @@ const Dashboard: React.FC<Props> = ({ mode }) => {
     let source = axios.CancelToken.source();
     if (currPlan && currPlan._id !== 'noPlan') {
       userService
-        .getThreads(currPlan._id, unmounted, source.token)
+        .getThreads(currPlan._id, token, unmounted, source.token)
         .then((res) => {
           if (!res) {
             throw new Error('No response from server');
