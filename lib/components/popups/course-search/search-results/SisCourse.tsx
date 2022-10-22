@@ -43,6 +43,7 @@ import { QuestionMarkCircleIcon } from '@heroicons/react/solid';
 import {
   selectCartInvokedBySemester,
   selectReviewMode,
+  selectToken,
 } from '../../../../slices/userSlice';
 import clsx from 'clsx';
 
@@ -71,6 +72,7 @@ const SisCourse: FC<{
   const courseToShow = useSelector(selectCourseToShow);
   const currentCourses = useSelector(selectCurrentPlanCourses);
   const reviewMode = useSelector(selectReviewMode);
+  const token = useSelector(selectToken);
   const cartInvokedBySemester = useSelector(selectCartInvokedBySemester);
 
   const [versionIndex, updateVersionIndex] = useState<number>(0);
@@ -187,6 +189,7 @@ const SisCourse: FC<{
         method: 'DELETE',
         headers: {
           'Content-Type': 'application/json',
+          "Authorization" : `Bearer ${token}`
         },
       })
         .then((retrieved) => retrieved.json())

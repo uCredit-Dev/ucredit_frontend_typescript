@@ -51,6 +51,7 @@ const CourseList: FC<Props> = ({ mode }) => {
   const droppables = useSelector(selectDroppables);
   const currentPlanCourses = useSelector(selectCurrentPlanCourses);
   const planList = useSelector(selectPlanList);
+  const token = useSelector(selectToken);
 
   // Component State setup.
   const [elements, setElements] = useState<JSX.Element[]>([]);
@@ -248,6 +249,7 @@ const CourseList: FC<Props> = ({ mode }) => {
           method: 'PATCH',
           headers: {
             'Content-Type': 'application/json',
+            "Authorization" : `Bearer ${token}`
           },
           body: JSON.stringify(body),
         });

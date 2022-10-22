@@ -6,6 +6,7 @@ import { selectInspectedCourse } from '../../../../slices/searchSlice';
 import CourseEvalCard from './CourseEvalCard';
 import clsx from 'clsx';
 import { getAPI } from '../../../../resources/assets';
+import React from 'react';
 
 /**
  * Displays course Evaluations based on inspected course
