@@ -1,9 +1,12 @@
 import axios from 'axios';
 import React, { useEffect, useState } from 'react';
+import { useSelector } from 'react-redux';
 import { getAPI } from '../../../../resources/assets';
 import ReviewerSearchResults from './ReviewerSearchResults';
+import { selectToken } from '../../../../slices/userSlice';
 
 const ReviewersSearch = () => {
+  const token = useSelector(selectToken);
   const [searchState, setSearchState] = useState('');
   const [searchData, setSearchData] = useState([]);
 
@@ -24,6 +27,7 @@ const ReviewersSearch = () => {
         method: 'GET',
         headers: {
           'Content-Type': 'application/json',
+          Authorization: `Bearer ${token}`,
         },
         params: {
           username: text,

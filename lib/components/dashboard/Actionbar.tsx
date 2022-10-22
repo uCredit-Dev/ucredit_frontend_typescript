@@ -218,7 +218,9 @@ const Actionbar: FC<{ mode: ReviewMode }> = ({ mode }) => {
             : undefined,
       }; // add to end by default
       axios
-        .post(getAPI(window) + '/years', body)
+        .post(getAPI(window) + '/years', body, {
+          headers: { Authorization: `Bearer ${token}` },
+        })
         .then((response: any) => {
           const updatedPlanList: Plan[] = [...planList];
           updatedPlanList[0] = {

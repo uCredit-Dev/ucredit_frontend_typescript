@@ -9,6 +9,7 @@ import {
   updateYearToDelete,
   updateDeleteYearStatus,
 } from '../../slices/popupSlice';
+import { selectToken } from '../../slices/userSlice';
 
 /**
  * This is the confirmation popup that appears when users press the button to delete a plan.
@@ -18,6 +19,7 @@ const DeleteYearPopup: FC = () => {
   // Redux Setup
   const dispatch = useDispatch();
   const currentPlan = useSelector(selectPlan);
+  const token = useSelector(selectToken);
   const year = useSelector(selectYearToDelete);
 
   /**
@@ -30,6 +32,7 @@ const DeleteYearPopup: FC = () => {
         method: 'DELETE',
         headers: {
           'Content-Type': 'application/json',
+          Authorization: `Bearer ${token}`,
         },
       })
         .then(() => {

@@ -12,7 +12,11 @@ import {
 } from '../../../slices/currentPlanSlice';
 import axios from 'axios';
 import { getAPI } from '../../../resources/assets';
-import { selectPlanList, updatePlanList } from '../../../slices/userSlice';
+import {
+  selectPlanList,
+  selectToken,
+  updatePlanList,
+} from '../../../slices/userSlice';
 import { toast } from 'react-toastify';
 
 type SemSelected = {
@@ -40,6 +44,7 @@ const YearSettingsDropdown: FC<{
   const dispatch = useDispatch();
   const currPlan = useSelector(selectPlan);
   const planList = useSelector(selectPlanList);
+  const token = useSelector(selectToken);
 
   const [semSelect, setSemSelect] = useState<boolean>(false);
   const [yearSelect, setYearSelect] = useState<boolean>(false);
@@ -80,10 +85,16 @@ const YearSettingsDropdown: FC<{
     // Change year
     if (!exists) {
       axios
-        .patch(getAPI(window) + '/years/updateYear', {
-          year_id: year._id,
-          year: selectedYear.value,
-        })
+        .patch(
+          getAPI(window) + '/years/updateYear',
+          {
+            year_id: year._id,
+            year: selectedYear.value,
+          },
+          {
+            headers: { Authorization: `Bearer ${token}` },
+          },
+        )
         .then((res) => {
           const newYear: Year = res.data.data;
           const newPlan: Plan = {

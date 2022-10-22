@@ -26,6 +26,7 @@ import {
 import { toast } from 'react-toastify';
 import {
   selectPlanList,
+  selectToken,
   updateCourseCache,
   updatePlanList,
 } from '../../../slices/userSlice';
@@ -44,6 +45,7 @@ const CourseList: FC<Props> = ({ mode }) => {
   // Setting up redux
   const dispatch = useDispatch();
   const currentPlan = useSelector(selectPlan);
+  const token = useSelector(selectToken);
   const searching = useSelector(selectSearchStatus);
   const placeholder = useSelector(selectPlaceholder);
   const droppables = useSelector(selectDroppables);
@@ -182,6 +184,7 @@ const CourseList: FC<Props> = ({ mode }) => {
       method: 'PATCH',
       headers: {
         'Content-Type': 'application/json',
+        Authorization: `Bearer ${token}`,
       },
       body: JSON.stringify(body),
     })
