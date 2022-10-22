@@ -172,7 +172,7 @@ const Login: React.FC = () => {
    */
   const preventPreLoginClick = () =>
     toast.info("Please wait while we check if you're logged in...", {
-      toastId: 'check login'
+      toastId: 'check login',
     });
 
   /**

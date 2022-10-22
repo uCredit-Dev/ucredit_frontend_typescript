@@ -145,7 +145,7 @@ const CourseDisplay: FC<{ cart: boolean }> = ({ cart }) => {
     dispatch(updatePlanList(newPlanList));
     dispatch(updateTotalCredits(totalCredits + newUserCourse.credits));
     toast.success(version.title + ' added!', {
-      toastId: 'title added'
+      toastId: 'title added',
     });
   };
 
