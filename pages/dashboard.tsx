@@ -92,7 +92,7 @@ const Dash: React.FC = () => {
         if (router.query.plan) {
           router.push('/dashboard');
           toast.error('You do not have access to this plan!', {
-            toastId: 'cannot access plan'
+            toastId: 'cannot access plan',
           });
         }
       } catch (e) {
