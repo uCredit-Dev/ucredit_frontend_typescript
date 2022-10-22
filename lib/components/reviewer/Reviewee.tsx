@@ -166,7 +166,9 @@ const Reviewee: React.FC<Props> = ({
                               `Status changed to ${
                                 statusReadable[value.label]
                               }`,
-                            );
+                            {
+                              toastId: 'status changed'
+                            });
                           } catch (e) {
                             console.log(e);
                           }

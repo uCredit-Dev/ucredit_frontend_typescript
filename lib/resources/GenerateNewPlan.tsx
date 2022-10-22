@@ -87,7 +87,9 @@ const GenerateNewPlan: FC = () => {
       // }
       dispatch(updateSelectedPlan(newPlan));
       dispatch(updatePlanList([newPlan, ...planList]));
-      if (!importing) toast.success(newPlan.name + ' created!');
+      if (!importing) toast.success(newPlan.name + ' created!', {
+        toastId: 'plan created'
+      });
       if (user._id === 'guestUser') {
         const planIdArray = [newPlan._id];
         dispatch(updateGuestPlanIds(planIdArray));

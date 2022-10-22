@@ -190,6 +190,7 @@ export type FilterType =
 
 export type AreaType = 'N' | 'S' | 'H' | 'W' | 'E' | 'Q';
 
+// Not useless, because Distributions and DistributionObj utilizes them
 export type FineReq = {
   required_credits: number;
   description: string;
@@ -197,6 +198,7 @@ export type FineReq = {
   double_count?: string[];
 };
 
+// Not useless, because used for major and minor
 export type DistributionObj = {
   name: string;
   required_credits: number;
