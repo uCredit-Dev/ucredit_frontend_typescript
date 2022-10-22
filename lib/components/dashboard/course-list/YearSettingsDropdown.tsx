@@ -114,7 +114,7 @@ const YearSettingsDropdown: FC<{
         });
     } else {
       toast.error('Year already exists', {
-        toastId: 'year exists'
+        toastId: 'year exists',
       });
     }
   };

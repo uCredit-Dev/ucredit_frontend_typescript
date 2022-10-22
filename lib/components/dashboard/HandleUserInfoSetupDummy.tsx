@@ -72,7 +72,7 @@ const HandleUserInfoSetupDummy: React.FC = () => {
         dispatch(updateSelectedPlan(retrievedPlans[0]));
       }
       toast('Retrieved ' + retrievedPlans.length + ' plans!', {
-        toastId: 'retrieved plans'
+        toastId: 'retrieved plans',
       });
     }
 

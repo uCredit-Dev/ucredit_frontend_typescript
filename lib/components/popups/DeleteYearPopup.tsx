@@ -41,14 +41,15 @@ const DeleteYearPopup: FC = () => {
           dispatch(updateYearToDelete(null));
           dispatch(updateDeleteYearStatus(false));
           toast.error('Deleted ' + year.name + '!', {
-            toastId: 'delete year'
+            toastId: 'delete year',
           });
         })
         .catch((err) => console.log(err));
     } else {
       toast.error('Cannot delete last year!', {
-        toastId: 'cannot delete last year'
-      });    }
+        toastId: 'cannot delete last year',
+      });
+    }
   };
 
   // Cancels plan delete

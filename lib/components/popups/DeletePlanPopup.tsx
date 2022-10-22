@@ -36,7 +36,7 @@ const DeletePlanPopup: FC = () => {
       })
         .then(() => {
           toast.error(currentPlan.name + ' deleted!', {
-            toastId: 'plan deleted'
+            toastId: 'plan deleted',
           });
           let updatedList = [...planList];
           updatedList = updatedList.filter((plan) => {
@@ -54,7 +54,7 @@ const DeletePlanPopup: FC = () => {
       });
     } else {
       toast.error('Cannot delete last plan!', {
-        toastId: 'cannot delete last plan'
+        toastId: 'cannot delete last plan',
       });
     }
   };

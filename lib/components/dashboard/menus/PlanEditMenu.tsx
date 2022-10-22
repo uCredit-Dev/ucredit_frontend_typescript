@@ -92,7 +92,7 @@ const PlanEditMenu: FC<{ mode: ReviewMode }> = ({ mode }) => {
           }
         }
         toast.success('Plan name changed to ' + planName + '!', {
-          toastId:'plan name changed'
+          toastId: 'plan name changed',
         });
         setEditName(false);
         dispatch(updatePlanList(newPlanList));
@@ -133,7 +133,7 @@ const PlanEditMenu: FC<{ mode: ReviewMode }> = ({ mode }) => {
   const handleMajorChange = (event: any) => {
     if (event.length === 0) {
       toast.error('You must have at least one major!', {
-        toastId: 'one major'
+        toastId: 'one major',
       });
       return;
     }
@@ -231,7 +231,7 @@ const PlanEditMenu: FC<{ mode: ReviewMode }> = ({ mode }) => {
         .catch((err) => console.log(err));
     } else {
       toast.error("Can't add more than 8 years!", {
-        toastId: 'too many years'
+        toastId: 'too many years',
       });
     }
   };

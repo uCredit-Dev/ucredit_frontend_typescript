@@ -158,7 +158,7 @@ const ExperimentDevBoardPopup: FC<{}> = () => {
     toast.success(`Updated Experiments`, {
       autoClose: 5000,
       closeOnClick: false,
-      toastId: 'updated experiments'
+      toastId: 'updated experiments',
     });
     setInputPercentages([...emptyArray]);
     setInputNames([...emptyArray]);
@@ -173,7 +173,7 @@ const ExperimentDevBoardPopup: FC<{}> = () => {
         {
           autoClose: 5000,
           closeOnClick: false,
-          toastId: 'name already used'
+          toastId: 'name already used',
         },
       );
       return;
@@ -189,7 +189,7 @@ const ExperimentDevBoardPopup: FC<{}> = () => {
     toast.success(`Added Experiment ${inputName}`, {
       autoClose: 5000,
       closeOnClick: false,
-      toastId: 'added experiment'
+      toastId: 'added experiment',
     });
     setInputName('');
     setAddExperimentPopup(!addExperimentPopup);
@@ -205,7 +205,7 @@ const ExperimentDevBoardPopup: FC<{}> = () => {
     toast.success(`Deleted Experiment`, {
       autoClose: 5000,
       closeOnClick: false,
-      toastId: 'delete experiment'
+      toastId: 'delete experiment',
     });
     setNameExperimentToDelete('');
     setDeleteExperimentPopup(!deleteExperimentPopup);
@@ -292,7 +292,7 @@ const ExperimentDevBoardPopup: FC<{}> = () => {
                             toast.success(`Copied ID to clipboard`, {
                               autoClose: 5000,
                               closeOnClick: true,
-                              toastId: 'copy ID'
+                              toastId: 'copy ID',
                             });
                           }}
                         >

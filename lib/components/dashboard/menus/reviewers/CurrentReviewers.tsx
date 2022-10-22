@@ -35,7 +35,7 @@ const CurrentReviewers: FC<{
             {
               autoClose: 5000,
               closeOnClick: false,
-              toastId: 'plan sent'
+              toastId: 'plan sent',
             },
           );
         }
@@ -45,7 +45,7 @@ const CurrentReviewers: FC<{
         toast.error('Plan failed to send to ' + toName + '.', {
           autoClose: 5000,
           closeOnClick: false,
-          toastId: 'plan failed to send'
+          toastId: 'plan failed to send',
         });
       });
   };
