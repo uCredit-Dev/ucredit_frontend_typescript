@@ -124,7 +124,7 @@ const CourseDisplay: FC<{ cart: boolean }> = ({ cart }) => {
       return;
     }
 
-    newUserCourse = { ...data.data };
+    newUserCourse = { ...data.data.course };
     dispatch(updateCurrentPlanCourses([...currentCourses, newUserCourse]));
     const allYears: Year[] = [...currentPlan.years];
     const newYears: Year[] = [];
