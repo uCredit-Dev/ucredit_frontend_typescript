@@ -235,12 +235,17 @@ const DistributionBarsJSX: FC<{ major: Major }> = ({ major }) => {
         distDoubleCount &&
         (distDoubleCount.includes(req.name) ||
           distDoubleCount.includes('All')) &&
-        (req.fulfilled_credits < req.required_credits ||
-          (req.required_credits === 0 && req.fulfilled_credits === 0)) &&
         checkRequirementSatisfied(req, courseObj)
       ) {
-        reqs[i][1][0].fulfilled_credits += parseInt(courseObj.credits);
-        distDoubleCount = req.double_count; // set double_count, if any
+        console.log(courseObj.title, req.name, distDoubleCount);
+        // update credit only if credit requirement not met
+        if (
+          req.fulfilled_credits < req.required_credits ||
+          (req.required_credits === 0 && req.fulfilled_credits === 0)
+        ) {
+          reqs[i][1][0].fulfilled_credits += parseInt(courseObj.credits);
+          distDoubleCount = req.double_count; // set double_count, if any
+        }
         // for each fine req, see if course satisfies fine requirements
         processFines(reqs, courseObj, i);
       }
@@ -297,7 +302,7 @@ const DistributionBarsJSX: FC<{ major: Major }> = ({ major }) => {
           numPaths -= 1;
         }
       }
-      if (numPaths === 0) {
+      if (numPaths <= 0) {
         reqGroup[1] = satisfiedFineRequirements;
       }
     }

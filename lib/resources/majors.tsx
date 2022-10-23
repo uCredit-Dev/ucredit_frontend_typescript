@@ -1915,13 +1915,6 @@ const bsBME: Major = {
       ],
     },
     {
-      name: 'Other Electives',
-      required_credits: 9,
-      min_credits_per_course: 1,
-      description: 'Select 9 credits from any area.',
-      criteria: 'H[A]^OR^S[A]^OR^Q[A]^OR^N[A]^OR^E[A]',
-    },
-    {
       name: 'Humanities and Social Sciences',
       required_credits: 18,
       min_credits_per_course: 3,
@@ -1942,6 +1935,14 @@ const bsBME: Major = {
           criteria: '(H[A]^OR^S[A])^AND^(Upper Level[L])',
         },
       ],
+    },
+    {
+      name: 'Other Electives',
+      required_credits: 9,
+      min_credits_per_course: 1,
+      description: 'Select 9 credits from any area.',
+      criteria: 'H[A]^OR^S[A]^OR^Q[A]^OR^N[A]^OR^E[A]',
+      double_count: ['Writing Intensive'],
     },
     {
       name: 'Writing Intensive',
@@ -3108,7 +3109,8 @@ const bsCS_Old: Major = {
       description:
         "For more information please visit the <a href='https://www.cs.jhu.edu/undergraduate-studies/academics/ugrad-advising-manual/'>" +
         'major degree requirement</a> section on the department website.',
-      criteria: 'EN Computer Science[D]^OR^EN.500.112[C]^OR^EN.660.400[C]',
+      criteria:
+        'EN Computer Science[D]^OR^EN.500.112[C]^OR^EN.601.104[C]^OR^EN.660.400[C]',
       double_count: [
         'Mathematics',
         'Humanities/Social Sciences',
@@ -3315,7 +3317,7 @@ const bsCS_Old: Major = {
     },
     {
       name: 'Basic Sciences',
-      required_credits: 16,
+      required_credits: 8,
       min_credits_per_course: 1,
       description:
         'At least two semesters of physics or two semesters of chemistry, with the associated laboratories, must be included.',
@@ -3387,7 +3389,7 @@ const bsCS_New: Major = {
         "For more information please visit the <a href='https://www.cs.jhu.edu/undergraduate-studies/academics/ugrad-advising-manual/'>" +
         'major degree requirement</a> section on the department website.',
       criteria:
-        'EN Computer Science[D]^OR^CSCI-OTHER[T]^OR^Gateway Computing[N]',
+        'EN Computer Science[D]^OR^CSCI-OTHER[T]^OR^Gateway Computing[N]^OR^EN.600.104[C]^OR^EN.601.104[C]^OR^EN.660.400[C]',
       double_count: [
         'Computer Science Classifications',
         'Mathematics',
@@ -3412,7 +3414,7 @@ const bsCS_New: Major = {
           required_credits: 21,
           criteria:
             'EN.500.112[C]^OR^EN.500.113[C]^OR^EN.500.114[C]^OR^EN.601.220[C]^OR^EN.601.226[C]' +
-            '^OR^EN.601.229[C]^OR^EN.601.230[C]^OR^EN.601.433[C]^OR^EN.601.231',
+            '^OR^EN.601.229[C]^OR^EN.601.230[C]^OR^EN.601.433[C]^OR^EN.601.231[C]',
         },
         {
           description:
@@ -3545,7 +3547,7 @@ const bsCS_New: Major = {
     },
     {
       name: 'Basic Sciences',
-      required_credits: 10,
+      required_credits: 8,
       min_credits_per_course: 1,
       description:
         'At least two semesters of physics or two semesters of chemistry, with the associated laboratories, must be included.',
@@ -3613,7 +3615,7 @@ const baCS_New: Major = {
         "For more information please visit the <a href='https://www.cs.jhu.edu/2021undergraduate-advising-manual/'>" +
         'major degree requirement</a> section on the department website.',
       criteria:
-        'EN Computer Science[D]^OR^CSCI-OTHER[T]^OR^Gateway Computing[N]',
+        'EN Computer Science[D]^OR^CSCI-OTHER[T]^OR^Gateway Computing[N]^OR^EN.600.104[C]^OR^EN.601.104[C]^OR^EN.660.400[C]',
       double_count: ['All'],
       fine_requirements: [
         {

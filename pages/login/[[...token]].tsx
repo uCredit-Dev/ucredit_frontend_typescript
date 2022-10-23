@@ -86,7 +86,14 @@ const Login: React.FC = () => {
 
           const referrer = router.query.referrer as string;
           if (referrer) redirectToReferrer();
-          else router.push('/dashboard');
+          else if (
+            typeof router.query.plan !== 'undefined' &&
+            typeof router.query.mode !== 'undefined'
+          ) {
+            router.push(
+              `/dashboard?plan=${router.query.plan}&mode=${router.query.mode}`,
+            );
+          } else router.push('/dashboard');
         } else {
           dispatch(updateLoginCheck(true));
           setFinishedLoginCheck(true);
@@ -146,7 +153,14 @@ const Login: React.FC = () => {
           '; path=/';
         const referrer = router.query.referrer as string;
         if (referrer) redirectToReferrer();
-        else router.push('/dashboard');
+        else if (
+          typeof router.query.plan !== 'undefined' &&
+          typeof router.query.mode !== 'undefined'
+        ) {
+          router.push(
+            `/dashboard?plan=${router.query.plan}&mode=${router.query.mode}`,
+          );
+        } else router.push('/dashboard');
       })
       .catch((err) => {
         console.log('Backdoor verfication failed!', err);
