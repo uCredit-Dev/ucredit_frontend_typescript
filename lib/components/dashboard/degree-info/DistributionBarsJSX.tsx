@@ -231,12 +231,14 @@ const DistributionBarsJSX: FC<{ major: Major }> = ({ major }) => {
     reqs.forEach((reqGroup, i) => {
       let req = reqGroup[1][0]; // general distribution
       // if course satisfies distribution:
+      distDoubleCount = req.double_count;
       if (
-        distDoubleCount &&
-        (distDoubleCount.includes(req.name) ||
-          distDoubleCount.includes('All')) &&
-        (req.fulfilled_credits < req.required_credits ||
-          (req.required_credits === 0 && req.fulfilled_credits === 0)) &&
+        (distDoubleCount &&
+          (distDoubleCount.includes(req.name) ||
+            (distDoubleCount.includes('All') &&
+              checkRequirementSatisfied(req, courseObj))) &&
+          (req.fulfilled_credits < req.required_credits ||
+            (req.required_credits === 0 && req.fulfilled_credits === 0))) ||
         checkRequirementSatisfied(req, courseObj)
       ) {
         reqs[i][1][0].fulfilled_credits += parseInt(courseObj.credits);
