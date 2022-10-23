@@ -53,10 +53,10 @@ const InfoMenu: FC<Props> = () => {
     dispatch(updateSelectedMajor(newMajor ? newMajor : allMajors[0]));
   };
   return (
-    <div className="z-[60] flex flex-col justify-between w-10 bg-red-100 h-min w-96 right-0 fixed mt-14">
-      <div className="drop-shadow-lg z-50 max-h-[80vh] bg-white bg-opacity-90 rounded  overflow-x-hidden overflow-y-auto w-full">
+    <div className="z-[101] flex flex-col justify-between bg-red-100 h-min right-0 fixed top-0 right-0">
+      <div className="drop-shadow-lg z-50 max-h-screen bg-white bg-opacity-90 rounded  overflow-x-hidden overflow-y-auto w-full">
         {/* <InfoCards /> */}
-        <div className="w-96 h-full">
+        <div className="w-[22.5vw] h-full">
           <Distributions
             userMajors={currentPlan.majors}
             changeDisplayMajor={changeDisplayMajor}

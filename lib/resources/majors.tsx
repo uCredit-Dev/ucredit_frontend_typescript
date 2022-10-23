@@ -52,14 +52,240 @@ import { getAPI } from './assets';
 //   distributions: [],
 // };
 
-// // https://engineering.jhu.edu/ece/undergraduate-studies/degree-options/
-// const bsCompEng: Major = {
-//   degree_name: "B.S. Computer Engineering",
-//   department: "AS Electrical & Computer Engineering",
-//   total_degree_credit: 120,
-//   wi_credit: 6,
-//   distributions: [],
-// };
+// https://e-catalogue.jhu.edu/engineering/full-time-residential-programs/degree-programs/electrical-computer-engineering/electrical-engineering-bachelor-science/#requirementstext
+const bsECE: Major = {
+  degree_name: 'B.S. Electrical Engineering',
+  department: 'EN Electrical & Computer Engineering',
+  total_degree_credit: 126,
+  wi_credit: 6,
+  abbrev: 'ECE',
+  url: 'https://e-catalogue.jhu.edu/engineering/full-time-residential-programs/degree-programs/electrical-computer-engineering/electrical-engineering-bachelor-science/#requirementstext',
+  distributions: [
+    {
+      name: 'ECE Core',
+      required_credits: 18,
+      min_credits_per_course: 2,
+      description:
+        'For more information please visit the' +
+        "<a href='https://e-catalogue.jhu.edu/engineering/full-time-residential-programs/degree-programs/electrical-computer-engineering/electrical-engineering-bachelor-science/#requirementstext'>" +
+        'major degree requirement</a> on the academic catalogue.',
+      criteria:
+        'EN.520.123[C]^OR^EN.520.142[C]^OR^EN.520.214[C]^OR^EN.520.219[C]^OR^EN.520.230[C]^OR^EN.520.231[C]',
+      double_count: ['Humanity & Social Sciences', 'Writing Intensive'],
+      fine_requirements: [
+        {
+          description:
+            '<b>Computational Modeling for Electrical and Computer Engineering</b> <br /> EN.520.123',
+          required_credits: 3,
+          criteria: 'EN.520.123[C]',
+        },
+        {
+          description: '<b>Digital Systems Fundamentals</b> <br /> EN.520.142',
+          required_credits: 3,
+          criteria: 'EN.520.142[C]',
+        },
+        {
+          description: '<b>Signals and Systems</b> <br /> EN.520.214',
+          required_credits: 4,
+          criteria: 'EN.520.214[C]',
+        },
+        {
+          description:
+            '<b>Introduction to Electromagnetics</b> <br /> EN.520.219',
+          required_credits: 3,
+          criteria: 'EN.520.219[C]',
+        },
+        {
+          description: '<b>Mastering Electronics</b> <br /> EN.520.230',
+          required_credits: 3,
+          criteria: 'EN.520.230[C]',
+        },
+        {
+          description:
+            '<b>Mastering Electronics Laboratory</b> <br /> EN.520.231',
+          required_credits: 2,
+          criteria: 'EN.520.231[C]',
+        },
+      ],
+    },
+    {
+      name: 'ECE Electives',
+      required_credits: 15,
+      min_credits_per_course: 1,
+      description:
+        'Up to six (6) credits of computer science courses may be used to satisfy this requirement.',
+      criteria:
+        'EN Computer Science[D]^OR^EN Electrical & Computer Engineering[D]',
+      double_count: ['Humanity & Social Sciences', 'Writing Intensive'],
+      fine_requirements: [
+        {
+          description: 'At least 9 credits of ECE electives',
+          required_credits: 9,
+          criteria: 'EN Electrical & Computer Engineering[D]',
+        },
+        {
+          description:
+            '<b>Intermediate Programming</b><br />EN.601.220<br />Can also be satisfied in Other Engineering.',
+          required_credits: 4,
+          criteria: 'EN.601.220[C]',
+        },
+      ],
+    },
+    {
+      name: 'ECE Labs',
+      required_credits: 12,
+      min_credits_per_course: 1,
+      description:
+        'Students must take a total of 12 credits of advanced laboratory, design intensive, or senior design project courses. A minimum of six (6) credits must come from ECE. The remaining 6 credits of advanced lab can come from any department, as long as the class is listed as an option in this section of the degree audit and degree checksheet.',
+      criteria:
+        'EN Computer Science[D]^OR^EN Electrical & Computer Engineering[D]',
+      double_count: ['Humanity & Social Sciences', 'Writing Intensive'],
+      fine_requirements: [
+        {
+          description: 'Advanced Laboratory Courses in ECE',
+          required_credits: 6,
+          criteria:
+            'EN.520.412[C]^OR^EN.520.424[C]^OR^EN.520.427[C]^OR^EN.520.433[C]^OR^EN.520.440[C]^OR^EN.520.448[C]^OR^EN.520.450[C]^OR^EN.520.452[C]^OR^EN.520.453[C]^OR^EN.520.454[C]^OR^EN.520.462[C]^OR^EN.520.463[C]^OR^EN.520.483[C]^OR^EN.520.491[C]^OR^EN.520.492[C]^OR^EN.495[C]^OR^EN.520.498[C]^OR^EN.520.499[C]',
+        },
+        {
+          description: 'Advanced Lab Credits from Approved List',
+          required_credits: 6,
+          criteria:
+            'EN.510.433[C]^OR^EN.510.434[C]^OR^EN.530.420[C]^OR^EN.530.421[C]^OR^EN.530.474[C]^OR^EN.530.495[C]^OR^EN.540.400[C]^OR^EN.540.421[C]^OR^EN.540.418[C]^OR^EN.540.419[C]^OR^EN.580.437[C]^OR^EN.580.438[C]^OR^EN.580.311[C]^OR^EN.580.312[C]^OR^EN.580.411[C]^OR^EN.580.412[C]^OR^EN.580.457[C]^OR^EN.580.471[C]^OR^EN.580.480[C]^OR^EN.580.481[C]^OR^EN.580.493[C]^OR^EN.601.411[C]^OR^EN.601.315[C]^OR^EN.601.415[C]^OR^EN.601.317[C]^OR^EN.601.417[C]^OR^EN.601.421[C]^OR^EN.601.443[C]^OR^EN.601.447[C]^OR^EN.601.454[C]^OR^EN.601.456[C]^OR^EN.601.461[C]^OR^EN.601.466[C]^OR^EN.601.468[C]^OR^EN.601.476[C]^OR^EN.601.482[C]^OR^EN.601.496[C]',
+        },
+      ],
+    },
+    {
+      name: 'Other Engineering',
+      required_credits: 6,
+      min_credits_per_course: 1,
+      description:
+        'Six (6) credits of "other engineering" courses (with an E designation) from KSAS or School of Engineering departments other than ECE or Applied Mathematics and Statistics or General Engineering (Note: Entrepreneurship and Management courses in the Center for Leadership Education CANNOT be counted as “other engineering courses”).',
+      criteria:
+        'E[A]^NOT^(EN Electrical & Computer Engineering[D]^OR^EN Applied Mathematics & Statistics[D]^OR^EN General Engineering[D])',
+      double_count: ['Humanity & Social Sciences', 'Writing Intensive'],
+      fine_requirements: [
+        {
+          description:
+            '<b>Intermediate Programming</b><br />EN.601.220<br />Can also be satisfied in ECE Electives.',
+          required_credits: 4,
+          criteria: 'EN.601.220[C]',
+        },
+      ],
+    },
+    {
+      name: 'Math',
+      required_credits: 20,
+      min_credits_per_course: 4,
+      description:
+        'Courses in this group may not be taken Satisfactory/Unsatisfactory. Elementary or precalculus courses such as AS.110.105 Precalculus or EN.553.111 Statistical Analysis I - are not acceptable.',
+      criteria:
+        'AS.110.109[C]^OR^AS.110.202[C]^OR^AS.110.211[C]^OR^AS.110.201[C]^OR^AS.110.212[C]^OR^AS.110.302[C]^OR^EN.553.310[C]^OR^EN.553.311[C]^OR^EN.553.420[C]',
+      fine_requirements: [
+        {
+          description:
+            '<b>Calculus II (For Physical Sciences and Engineering)</b><br /> AS.110.109',
+          required_credits: 4,
+          criteria: 'AS.110.109[C]',
+        },
+        {
+          description:
+            '<b>Linear Algebra</b> or <b>Honors Linear Algebra</b><br /> AS.110.201 or AS.110.212',
+          required_credits: 4,
+          criteria: 'AS.110.202[C]^OR^AS.110.211[C]',
+        },
+        {
+          description:
+            '<b>Calculus III</b> or <b>Honors Multivariable Calculus</b><br /> AS.110.201 or AS.110.212',
+          required_credits: 4,
+          criteria: 'AS.110.201[C]^OR^AS.110.212[C]',
+        },
+        {
+          description:
+            '<b>Differential Equations and Applications</b><br /> AS.110.302',
+          required_credits: 4,
+          criteria: 'AS.110.302[C]',
+        },
+        {
+          description:
+            '<b>Probability & Statistics</b> or <b>Introduction to Probability</b><br /> AS.553.310 or AS.553.311 or AS.553.420',
+          required_credits: 4,
+          criteria: 'EN.553.310[C]^OR^EN.553.311[C]^OR^EN.553.420[C]',
+        },
+      ],
+    },
+    {
+      name: 'Basic Sciences',
+      required_credits: 16,
+      min_credits_per_course: 1,
+      description:
+        'Courses in this group may not be taken Satisfactory/Unsatisfactory. Must include AS.171.101 General Physics: Physical Science Major I-AS.171.102 General Physics: Physical Science Major II, AS.173.111 General Physics Laboratory I-AS.173.112 General Physics Laboratory II.',
+      criteria: 'N[A]',
+      double_count: ['Humanity & Social Sciences', 'Writing Intensive'],
+      fine_requirements: [
+        {
+          description:
+            '<b>General Physics I</b><br /> AS.171.101 or AS.171.107',
+          required_credits: 4,
+          criteria: 'AS.171.101[C]^OR^AS.171.107[C]',
+        },
+        {
+          description:
+            '<b>General Physics II</b><br /> AS.171.102 or AS.171.108',
+          required_credits: 4,
+          criteria: 'AS.171.102[C]^OR^AS.171.108[C]',
+        },
+        {
+          description: '<b>General Physics Laboratory I</b><br /> AS.173.111',
+          required_credits: 1,
+          criteria: 'AS.173.111[C]',
+        },
+        {
+          description: '<b>General Physics Laboratory II</b><br /> AS.173.112',
+          required_credits: 1,
+          criteria: 'AS.173.111[C]',
+        },
+        {
+          description: '<b>Introductory Chemistry</b><br /> AS.030.101',
+          required_credits: 4,
+          criteria: 'AS.030.101[C]',
+        },
+        {
+          description: '<b>Additional N credits</b>',
+          required_credits: 3,
+          criteria: 'N[A]',
+        },
+      ],
+    },
+    {
+      name: 'Ethics',
+      required_credits: 3,
+      min_credits_per_course: 1,
+      description:
+        'Two (2) credits in EN.660.400 Practical Ethics for Future Leaders and one (1) credit EN.520.404 Engineering solutions in a global, economic, environmental, and societal context.',
+      criteria: 'EN.660.400[C]^OR^EN.520.404[C]',
+      double_count: ['Humanity & Social Sciences', 'Writing Intensive'],
+    },
+    {
+      name: 'Humanity & Social Sciences',
+      required_credits: 15,
+      min_credits_per_course: 3,
+      description:
+        'At least five (5), three-credit courses in humanities and social sciences.',
+      criteria: '(H[A]^OR^S[A])^NOT^(EN.660.400[C]^OR^EN.520.404[C])',
+      double_count: ['All'],
+    },
+    {
+      name: 'Writing Intensive',
+      required_credits: 6,
+      min_credits_per_course: 3,
+      description:
+        'Two (2) writing-intensive courses (at least 3 credits each) are required. The writing-intensive courses may not be taken Satisfactory/Unsatisfactory and require a C- or better grade.',
+      criteria: 'Written Intensive[W]',
+      double_count: ['All'],
+    },
+  ],
+};
 
 // // https://arthist.jhu.edu/undergraduate/requirements/
 // const baHistArt: Major = {
@@ -375,23 +601,667 @@ const baCogSci: Major = {
 //   distributions: [],
 // };
 
-// // https://physics-astronomy.jhu.edu/undergraduate/major-requirements/
-// const bsPhysics: Major = {
-//   degree_name: "B.S. Physics",
-//   department: "AS Physics",
-//   total_degree_credit: 120,
-//   wi_credit: 6,
-//   distributions: [],
-// };
+// https://physics-astronomy.jhu.edu/undergraduate/major-requirements/
+const bsPhysics: Major = {
+  degree_name: 'B.S. Physics',
+  abbrev: 'B.S. Phys',
+  url: 'https://e-catalogue.jhu.edu/arts-sciences/full-time-residential-programs/degree-programs/physics-astronomy/physics-bachelor-science/',
+  department: 'AS Physics & Astronomy',
+  total_degree_credit: 126,
+  wi_credit: 12,
+  distributions: [
+    {
+      name: 'Mathematics',
+      required_credits: 20,
+      min_credits_per_course: 4,
+      description:
+        'All Physics majors must take Calculus I, Calculus II, Calculus III, Differential Equations, and Linear Algebra (or equivalent courses).',
+      criteria:
+        'AS.110.108[C]^OR^AS.110.109[C]^OR^AS.110.113[C]^OR^AS.110.202[C]^OR^AS.110.211[C]^OR^' +
+        'AS.110.302[C]^OR^AS.110.201[C]^OR^AS.110.212[C]',
+      double_count: [
+        'Humanities (H) Distribution',
+        'Social Science (S) Distribution',
+        'Other (N/E/Q) Distribution',
+        'Writing Intensive',
+      ],
+      fine_requirements: [
+        {
+          description:
+            '<b>Calculus I</b> <br /> AS.110.108 Calculus I (Physical Sciences & Engineering)',
+          required_credits: 4,
+          criteria: 'AS.110.108[C]',
+        },
+        {
+          description:
+            '<b>Calculus II</b> <br /> AS.110.109 Calculus II (Physical Sciences & Engineering)' +
+            '<br /> <i>OR</i> <br /> AS.110.113 Honors Single Variable Calculus',
+          required_credits: 4,
+          criteria: 'AS.110.109[C]^OR^AS.110.113[C]',
+        },
+        {
+          description:
+            '<b>Calculus III</b> <br /> AS.110.202 Calculus III<br /> <i>OR</i> ' +
+            '<br /> AS.110.211 Honors Multivariable Calculus',
+          required_credits: 4,
+          criteria: 'AS.110.202[C]^OR^AS.110.211[C]',
+        },
+        {
+          description:
+            '<b>Differential Equations</b> <br /> AS.110.302 Differential Equations and Applications',
+          required_credits: 4,
+          criteria: 'AS.110.302[C]',
+        },
+        {
+          description:
+            '<b>Linear Algebra</b> <br /> AS.110.201 Linear Algebra<br /> <i>OR</i> ' +
+            '<br /> AS.110.212 Honors Linear Algebra',
+          required_credits: 4,
+          criteria: 'AS.110.201[C]^OR^AS.110.212[C]',
+        },
+      ],
+    },
+    {
+      name: 'Physics',
+      required_credits: 38,
+      min_credits_per_course: 1,
+      description:
+        'All physics majors must take the following standard physics requirements',
+      criteria:
+        'AS.171.105[C]^OR^AS.171.101[C]^OR^AS.171.103[C]^OR^AS.171.107[C]^OR^AS.173.115[C]^OR^AS.173.111[C]^OR^' +
+        'AS.171.106[C]^OR^AS.171.102[C]^OR^AS.171.104[C]^OR^AS.171.108[C]^OR^AS.173.116[C]^OR^AS.173.112[C]^OR^' +
+        'AS.171.201[C]^OR^AS.171.204[C]^OR^AS.171.312[C]^OR^AS.172.203[C]^OR^AS.171.301[C]^OR^AS.171.303[C]^OR^' +
+        'AS.171.304[C]^OR^AS.173.308[C]',
+      double_count: [
+        'Humanities (H) Distribution',
+        'Social Science (S) Distribution',
+        'Other (N/E/Q) Distribution',
+        'Writing Intensive',
+      ],
+      fine_requirements: [
+        {
+          description:
+            '<b>Classical Mechanics I</b> <br /> Select one of the following: <br /> AS.171.105 Classical Mechanics I' +
+            '<br /> AS.171.101 General Physics: Physical Science Major I <br />AS.171.103 General Physics I for Biological Science Majors' +
+            '<br /> AS.171.107 General Physics for Physical Sciences Majors (AL)',
+          required_credits: 4,
+          criteria:
+            'AS.171.105[C]^OR^AS.171.101[C]^OR^AS.171.103[C]^OR^AS.171.107[C]',
+        },
+        {
+          description:
+            '<b>Classical Mechanics Laboratory</b> <br /> AS.173.115 Classical Mechanics Laboratory' +
+            '<br /> <i>OR</i> <br /> AS.173.111 General Physics Laboratory I',
+          required_credits: 1,
+          criteria: 'AS.173.115[C]^OR^AS.173.111[C]',
+        },
+        {
+          description:
+            '<b>Electricity and Magnetism I</b> <br /> Select one of the following: <br /> AS.171.106 Electricity and Magnetism I' +
+            '<br /> AS.171.102 General Physics: Physical Science Major II <br />AS.171.104 General Physics/Biology Majors II' +
+            '<br /> AS.171.108 General Physics for Physical Science Majors (AL)',
+          required_credits: 4,
+          criteria:
+            'AS.171.106[C]^OR^AS.171.102[C]^OR^AS.171.104[C]^OR^AS.171.108[C]',
+        },
+        {
+          description:
+            '<b>Electricity and Magnetism Laboratory</b> <br /> AS.173.116 Electricity and Magnetism Laboratory' +
+            '<br /> <i>OR</i> <br /> AS.173.112 General Physics Laboratory II',
+          required_credits: 1,
+          criteria: 'AS.173.116[C]^OR^AS.173.112[C]',
+        },
+        {
+          description:
+            '<b>Special Relativity/Waves</b> <br /> AS.171.201 Special Relativity/Waves',
+          required_credits: 4,
+          criteria: 'AS.171.201[C]',
+        },
+        {
+          description:
+            '<b>Classical Mechanics II</b> <br /> AS.171.204 Classical Mechanics II',
+          required_credits: 4,
+          criteria: 'AS.171.204[C]',
+        },
+        {
+          description:
+            '<b>Statistical Physics/Thermodynamics</b> <br /> AS.171.312 Statistical Physics/Thermodynamics',
+          required_credits: 4,
+          criteria: 'AS.171.312[C]',
+        },
+        {
+          description:
+            '<b>Contemporary Physics Seminar</b> <br /> AS.172.203 Contemporary Physics Seminar',
+          required_credits: 1,
+          criteria: 'AS.172.203[C]',
+        },
+        {
+          description:
+            '<b>Electromagnetic Theory II</b> <br /> AS.171.301 Electromagnetic Theory II',
+          required_credits: 4,
+          criteria: 'AS.171.301[C]',
+        },
+        {
+          description:
+            '<b>Quantum Mechanics I</b> <br /> AS.171.303 Quantum Mechanics I',
+          required_credits: 4,
+          criteria: 'AS.171.303[C]',
+        },
+        {
+          description:
+            '<b>Quantum Mechanics II (or Topics in Modern Physics)</b> <br /> AS.171.304 Quantum Mechanics II',
+          required_credits: 4,
+          criteria: 'AS.171.304[C]',
+        },
+        {
+          description:
+            '<b>Advanced Physics Laboratory</b> <br /> AS.173.308 Advanced Physics Laboratory',
+          required_credits: 3,
+          criteria: 'AS.173.308[C]',
+        },
+      ],
+    },
+    {
+      name: 'Electives',
+      required_credits: 15,
+      min_credits_per_course: 3,
+      pathing: 1,
+      description:
+        'Five elective courses must be taken at the 200-600 level. Four courses must be within a single department or program in KSAS or WSE: ' +
+        'Physics and Astronomy, Biology, Biophysics, Chemistry, Cognitive Science, Earth and Planetary Sciences, ' +
+        'Mathematics, Neuroscience and/or the School of Engineering (excluding courses listed as 500.xxx, 660.xxx, 551.xxx and 661.xxx). ' +
+        'These courses must constitute a coherent and rigorous program of study.',
+      criteria:
+        '(AS Physics & Astronomy[D]^OR^AS Biology[D]^OR^AS Biophysics[D]^OR^AS Chemistry[D]^OR^AS Cognitive Science[D]^OR^' +
+        'AS Earth & Planetary Sciences[D]^OR^AS Mathematics[D]^OR^AS Neuroscience[D]^OR^EN Applied Mathematics & Statistics[D]^OR^' +
+        'EN Biomedical Engineering[D]^OR^EN Chemical & Biomolecular Engineering[D]^OR^EN Electrical & Computer Engineering[D]^OR^' +
+        'EN Computer Science[D]^OR^EN Environment Health and Engineering[D]^OR^EN Material Science & Engineering[D]^OR^' +
+        'EN Mechanical Engineering[D])^AND^(200[L]^OR^Upper Level[L])',
+      double_count: [
+        'Humanities (H) Distribution',
+        'Social Science (S) Distribution',
+        'Other (N/E/Q) Distribution',
+        'Writing Intensive',
+      ],
+      fine_requirements: [
+        {
+          description: '<b>Physics and Astronomy</b>',
+          required_credits: 12,
+          criteria: 'AS Physics & Astronomy[D]',
+          double_count: ['All'],
+        },
+        {
+          description: '<b>Biology</b>',
+          required_credits: 12,
+          criteria: 'AS Biology[D]',
+          double_count: ['All'],
+        },
+        {
+          description: '<b>Biophysics</b>',
+          required_credits: 12,
+          criteria: 'AS Biophysics[D]',
+          double_count: ['All'],
+        },
+        {
+          description: '<b>Chemistry</b>',
+          required_credits: 12,
+          criteria: 'AS Chemistry[D]',
+          double_count: ['All'],
+        },
+        {
+          description: '<b>Cognitive Science</b>',
+          required_credits: 12,
+          criteria: 'AS Cognitive Science[D]',
+          double_count: ['All'],
+        },
+        {
+          description: '<b>Earth and Planetary Sciences</b>',
+          required_credits: 12,
+          criteria: 'AS Earth & Planetary Sciences[D]',
+          double_count: ['All'],
+        },
+        {
+          description: '<b>Mathematics</b>',
+          required_credits: 12,
+          criteria: 'AS Mathematics[D]',
+          double_count: ['All'],
+        },
+        {
+          description: '<b>Neuroscience</b>',
+          required_credits: 12,
+          criteria: 'AS Neuroscience[D]',
+          double_count: ['All'],
+        },
+        {
+          description: '<b>Engineering</b>',
+          required_credits: 12,
+          criteria:
+            'EN Applied Mathematics & Statistics[D]^OR^EN Mechanical Engineering[D]^OR^' +
+            'EN Biomedical Engineering[D]^OR^EN Chemical & Biomolecular Engineering[D]^OR^EN Electrical & Computer Engineering[D]^OR^' +
+            'EN Computer Science[D]^OR^EN Environment Health and Engineering[D]^OR^EN Material Science & Engineering[D]^OR^' +
+            'EN Mechanical Engineering[D]',
+          double_count: ['All'],
+        },
+      ],
+    },
+    {
+      name: 'Humanities (H) Distribution',
+      required_credits: 9,
+      min_credits_per_course: 3,
+      description:
+        'The distribution requirement stipulates that students must earn a minimum number of credits in academic areas outside of their primary major. ' +
+        'The student must complete at least 9 credits in the Humanities (H) area. ' +
+        'These credits fulfilling the distribution requirement may overlap with major or minor requirements and the writing-intensive requirement.',
+      criteria: 'H[A]',
+      double_count: [
+        'Mathematics',
+        'Physics',
+        'Electives',
+        'Writing Intensive',
+      ],
+    },
+    {
+      name: 'Social Science (S) Distribution',
+      required_credits: 9,
+      min_credits_per_course: 3,
+      description:
+        'The distribution requirement stipulates that students must earn a minimum number of credits in academic areas outside of their primary major. ' +
+        'The student must complete at least 9 credits in the Social Science (S) area. ' +
+        'These credits fulfilling the distribution requirement may overlap with major or minor requirements and the writing-intensive requirement.',
+      criteria: 'S[A]',
+      double_count: [
+        'Mathematics',
+        'Physics',
+        'Electives',
+        'Writing Intensive',
+      ],
+    },
+    {
+      name: 'Other (N/E/Q) Distribution',
+      required_credits: 9,
+      min_credits_per_course: 3,
+      description:
+        'The distribution requirement stipulates that students must earn a minimum number of credits in academic areas outside of their primary major. ' +
+        'The student must complete at least 9 credits in any of the other areas: Natural Sciences (N), Engineering (E) and/or Quantitative (Q). ' +
+        'These credits fulfilling the distribution requirement may overlap with major or minor requirements and the writing-intensive requirement.',
+      criteria: 'N[A]^OR^E[A]^OR^Q[A]',
+      double_count: [
+        'Mathematics',
+        'Physics',
+        'Electives',
+        'Writing Intensive',
+      ],
+    },
+    {
+      name: 'Writing Intensive',
+      required_credits: 12,
+      min_credits_per_course: 3,
+      description:
+        'To encourage excellence in writing, across disciplines, the university requires all undergraduates to take a number of writing-intensive courses. ' +
+        'All students earning a degree from the School of Arts and Sciences must complete at least 12 credits in writing-intensive courses. ' +
+        'Writing-intensive courses taken to satisfy major, minor, or distribution requirements may also count toward the writing requirement.',
+      criteria: 'Written Intensive[W]',
+      double_count: ['All'],
+    },
+  ],
+};
 
-// // https://mathematics.jhu.edu/undergraduate/major-in-mathematics/
-// const bsMath: Major = {
-//   degree_name: "B.S. Mathematics",
-//   department: "AS Mathematics",
-//   total_degree_credit: 120,
-//   wi_credit: 6,
-//   distributions: [],
-// };
+// https://physics-astronomy.jhu.edu/undergraduate/major-requirements/
+const baPhysics: Major = {
+  degree_name: 'B.A. Physics',
+  abbrev: 'B.A. Phys',
+  department: 'AS Physics & Astronomy',
+  total_degree_credit: 120,
+  wi_credit: 12,
+  url: 'https://e-catalogue.jhu.edu/arts-sciences/full-time-residential-programs/degree-programs/physics-astronomy/physics-astronomy-bachelor-arts/',
+  distributions: [
+    {
+      name: 'Mathematics',
+      required_credits: 20,
+      min_credits_per_course: 4,
+      description:
+        'All Physics majors must take Calculus I, Calculus II, Calculus III, Differential Equations, and Linear Algebra (or equivalent courses).',
+      criteria:
+        'AS.110.108[C]^OR^AS.110.109[C]^OR^AS.110.113[C]^OR^AS.110.202[C]^OR^AS.110.211[C]^OR^' +
+        'AS.110.302[C]^OR^AS.110.201[C]^OR^AS.110.212[C]',
+      double_count: [
+        'Humanities (H) Distribution',
+        'Social Science (S) Distribution',
+        'Other (N/E/Q) Distribution',
+        'Writing Intensive',
+      ],
+      fine_requirements: [
+        {
+          description:
+            '<b>Calculus I</b> <br /> AS.110.108 Calculus I (Physical Sciences & Engineering)',
+          required_credits: 4,
+          criteria: 'AS.110.108[C]',
+        },
+        {
+          description:
+            '<b>Calculus II</b> <br /> AS.110.109 Calculus II (Physical Sciences & Engineering)' +
+            '<br /> <i>OR</i> <br /> AS.110.113 Honors Single Variable Calculus',
+          required_credits: 4,
+          criteria: 'AS.110.109[C]^OR^AS.110.113[C]',
+        },
+        {
+          description:
+            '<b>Calculus III</b> <br /> AS.110.202 Calculus III<br /> <i>OR</i> ' +
+            '<br /> AS.110.211 Honors Multivariable Calculus',
+          required_credits: 4,
+          criteria: 'AS.110.202[C]^OR^AS.110.211[C]',
+        },
+        {
+          description:
+            '<b>Differential Equations</b> <br /> AS.110.302 Differential Equations and Applications',
+          required_credits: 4,
+          criteria: 'AS.110.302[C]',
+        },
+        {
+          description:
+            '<b>Linear Algebra</b> <br /> AS.110.201 Linear Algebra<br /> <i>OR</i> ' +
+            '<br /> AS.110.212 Honors Linear Algebra',
+          required_credits: 4,
+          criteria: 'AS.110.201[C]^OR^AS.110.212[C]',
+        },
+      ],
+    },
+    {
+      name: 'Physics',
+      required_credits: 38,
+      min_credits_per_course: 1,
+      description:
+        'All physics majors must take the following standard physics requirements.',
+      criteria:
+        'AS.171.105[C]^OR^AS.171.101[C]^OR^AS.171.103[C]^OR^AS.171.107[C]^OR^AS.173.115[C]^OR^AS.173.111[C]^OR^' +
+        'AS.171.106[C]^OR^AS.171.102[C]^OR^AS.171.104[C]^OR^AS.171.108[C]^OR^AS.173.116[C]^OR^AS.173.112[C]^OR^' +
+        'AS.171.201[C]^OR^AS.171.204[C]^OR^AS.171.312[C]^OR^AS.172.203[C]^OR^AS.171.301[C]^OR^AS.171.303[C]^OR^' +
+        'AS.171.304[C]^OR^AS.173.308[C]',
+      double_count: [
+        'Humanities (H) Distribution',
+        'Social Science (S) Distribution',
+        'Other (N/E/Q) Distribution',
+        'Writing Intensive',
+      ],
+      fine_requirements: [
+        {
+          description:
+            '<b>Classical Mechanics I</b> <br /> Select one of the following: <br /> AS.171.105 Classical Mechanics I' +
+            '<br /> AS.171.101 General Physics: Physical Science Major I <br />AS.171.103 General Physics I for Biological Science Majors' +
+            '<br /> AS.171.107 General Physics for Physical Sciences Majors (AL)',
+          required_credits: 4,
+          criteria:
+            'AS.171.105[C]^OR^AS.171.101[C]^OR^AS.171.103[C]^OR^AS.171.107[C]',
+        },
+        {
+          description:
+            '<b>Classical Mechanics Laboratory</b> <br /> AS.173.115 Classical Mechanics Laboratory' +
+            '<br /> <i>OR</i> <br /> AS.173.111 General Physics Laboratory I',
+          required_credits: 1,
+          criteria: 'AS.173.115[C]^OR^AS.173.111[C]',
+        },
+        {
+          description:
+            '<b>Electricity and Magnetism I</b> <br /> Select one of the following: <br /> AS.171.106 Electricity and Magnetism I' +
+            '<br /> AS.171.102 General Physics: Physical Science Major II <br />AS.171.104 General Physics/Biology Majors II' +
+            '<br /> AS.171.108 General Physics for Physical Science Majors (AL)',
+          required_credits: 4,
+          criteria:
+            'AS.171.106[C]^OR^AS.171.102[C]^OR^AS.171.104[C]^OR^AS.171.108[C]',
+        },
+        {
+          description:
+            '<b>Electricity and Magnetism Laboratory</b> <br /> AS.173.116 Electricity and Magnetism Laboratory' +
+            '<br /> <i>OR</i> <br /> AS.173.112 General Physics Laboratory II',
+          required_credits: 1,
+          criteria: 'AS.173.116[C]^OR^AS.173.112[C]',
+        },
+        {
+          description:
+            '<b>Special Relativity/Waves</b> <br /> AS.171.201 Special Relativity/Waves',
+          required_credits: 4,
+          criteria: 'AS.171.201[C]',
+        },
+        {
+          description:
+            '<b>Contemporary Physics Seminar</b> <br /> AS.172.203 Contemporary Physics Seminar',
+          required_credits: 1,
+          criteria: 'AS.172.203[C]',
+        },
+        {
+          description:
+            '<b>Classical Mechanics II</b> <br /> AS.171.204 Classical Mechanics II',
+          required_credits: 4,
+          criteria: 'AS.171.204[C]',
+        },
+        {
+          description:
+            '<b>Statistical Physics/Thermodynamics</b> <br /> AS.171.312 Statistical Physics/Thermodynamics',
+          required_credits: 4,
+          criteria: 'AS.171.312[C]',
+        },
+        {
+          description:
+            '<b>Electromagnetic Theory II</b> <br /> AS.171.301 Electromagnetic Theory II',
+          required_credits: 4,
+          criteria: 'AS.171.301[C]',
+        },
+        {
+          description:
+            '<b>Quantum Mechanics I</b> <br /> AS.171.303 Quantum Mechanics I',
+          required_credits: 4,
+          criteria: 'AS.171.303[C]',
+        },
+        {
+          description:
+            '<b>Quantum Mechanics II (or Topics in Modern Physics)</b> <br /> AS.171.304 Quantum Mechanics II',
+          required_credits: 4,
+          criteria: 'AS.171.304[C]',
+        },
+        {
+          description:
+            '<b>Advanced Physics Laboratory</b> <br /> AS.173.308 Advanced Physics Laboratory',
+          required_credits: 3,
+          criteria: 'AS.173.308[C]',
+        },
+      ],
+    },
+    {
+      name: 'Upper Electives',
+      required_credits: 6,
+      min_credits_per_course: 3,
+      description:
+        'Students must take two additional courses (at least 3 credits each) at the 300-600 level in the Department of Physics and Astronomy or approved physics-related courses in other departments.',
+      criteria: 'AS Physics & Astronomy[D]^AND^Upper Level[L]',
+      double_count: [
+        'Humanities (H) Distribution',
+        'Social Science (S) Distribution',
+        'Other (N/E/Q) Distribution',
+        'Writing Intensive',
+      ],
+    },
+    {
+      name: 'Humanities (H) Distribution',
+      required_credits: 9,
+      min_credits_per_course: 3,
+      description:
+        'The distribution requirement stipulates that students must earn a minimum number of credits in academic areas outside of their primary major. ' +
+        'The student must complete at least 9 credits in the Humanities (H) area. ' +
+        'These credits fulfilling the distribution requirement may overlap with major or minor requirements and the writing-intensive requirement.',
+      criteria: 'H[A]',
+      double_count: [
+        'Mathematics',
+        'Physics',
+        'Electives',
+        'Writing Intensive',
+      ],
+    },
+    {
+      name: 'Social Science (S) Distribution',
+      required_credits: 9,
+      min_credits_per_course: 3,
+      description:
+        'The distribution requirement stipulates that students must earn a minimum number of credits in academic areas outside of their primary major. ' +
+        'The student must complete at least 9 credits in the Social Science (S) area. ' +
+        'These credits fulfilling the distribution requirement may overlap with major or minor requirements and the writing-intensive requirement.',
+      criteria: 'S[A]',
+      double_count: [
+        'Mathematics',
+        'Physics',
+        'Electives',
+        'Writing Intensive',
+      ],
+    },
+    {
+      name: 'Other (N/E/Q) Distribution',
+      required_credits: 9,
+      min_credits_per_course: 3,
+      description:
+        'The distribution requirement stipulates that students must earn a minimum number of credits in academic areas outside of their primary major. ' +
+        'The student must complete at least 9 credits in any of the other areas: Natural Sciences (N), Engineering (E) and/or Quantitative (Q). ' +
+        'These credits fulfilling the distribution requirement may overlap with major or minor requirements and the writing-intensive requirement.',
+      criteria: 'N[A]^OR^E[A]^OR^Q[A]',
+      double_count: [
+        'Mathematics',
+        'Physics',
+        'Electives',
+        'Writing Intensive',
+      ],
+    },
+    {
+      name: 'Writing Intensive',
+      required_credits: 12,
+      min_credits_per_course: 3,
+      description:
+        'To encourage excellence in writing, across disciplines, the university requires all undergraduates to take a number of writing-intensive courses. ' +
+        'All students earning a degree from the School of Arts and Sciences must complete at least 12 credits in writing-intensive courses. ' +
+        'Writing-intensive courses taken to satisfy major, minor, or distribution requirements may also count toward the writing requirement.',
+      criteria: 'Written Intensive[W]',
+      double_count: ['All'],
+    },
+  ],
+};
+
+// https://e-catalogue.jhu.edu/arts-sciences/full-time-residential-programs/degree-programs/mathematics/mathematics-bachelor-arts/#requirementstext
+const baMath: Major = {
+  degree_name: 'B.A. Mathematics',
+  abbrev: 'B.A. Math',
+  department: 'AS Mathematics',
+  total_degree_credit: 120,
+  url: 'https://e-catalogue.jhu.edu/arts-sciences/full-time-residential-programs/degree-programs/mathematics/mathematics-bachelor-arts/#requirementstext',
+  wi_credit: 15,
+  distributions: [
+    {
+      name: 'Major Requirement',
+      required_credits: 44,
+      min_credits_per_course: 1,
+      description:
+        'For more information please visit https://e-catalogue.jhu.edu/arts-sciences/full-time-residential-programs/degree-programs/mathematics/mathematics-bachelor-arts/#requirementstext.',
+      criteria: 'AS Mathematics[D]',
+      double_count: ['All'],
+      fine_requirements: [
+        {
+          description: '<b>Calculus I</b><br />AS.110.106 or AS.110.108',
+          required_credits: 4,
+          criteria: 'AS.110.106[C]^OR^AS.110.108[C]',
+        },
+        {
+          description:
+            '<b>Calculus II</b> or <b>Honors Single Variable Calculus</b><br />AS.110.107 or AS.110.113 or AS.110.109',
+          required_credits: 4,
+          criteria: 'AS.110.107[C]^OR^AS.110.113[C]^OR^AS.110.109[C]',
+        },
+        {
+          description:
+            '<b>Calculus III</b> or <b>Honors Multivariable Calculus</b><br />AS.110.202 or AS.110.211',
+          required_credits: 4,
+          criteria: 'AS.110.202[C]^OR^AS.110.211[C]',
+        },
+        {
+          description:
+            '<b>Introduction to Abstract Algebra</b> or <b>Honors Algebra I</b><br />AS.110.401 or AS.110.411',
+          required_credits: 4,
+          criteria: 'AS.110.401[C]^OR^AS.110.411[C]',
+        },
+        {
+          description:
+            '<b>Elementary Number Theory</b> or <b>Honors Algebra II</b> or <b>Introduction To Topology</b> or <b>Representation Theory</b> or <b>Introduction to Algebraic Geometry</b>',
+          required_credits: 4,
+          criteria:
+            'AS.110.304[C]^OR^AS.110.412[C]^OR^AS.110.413[C]^OR^AS.110.422[C]^OR^AS.110.435[C]',
+        },
+        {
+          description:
+            '<b>Real Analysis I</b> or <b>Honors Real Analysis I</b><br />AS.110.405 or AS.110.415',
+          required_credits: 4,
+          criteria: 'AS.110.405[C]^OR^AS.110.415[C]',
+        },
+        {
+          description:
+            '<b>Methods of Complex Analysis</b> or <b>Real Analysis II</b> or <b>Honors Complex Analysis</b> or <b>Introduction To Topology</b> or <b>Honors Analysis II</b> or <b>Partial Differential Equations</b> or <b>Dynamical Systems</b> or <b>Introduction To Differential Geometry</b> or <b>Calculus on Manifolds</b> or <b>Fourier Analysis</b>',
+          required_credits: 4,
+          criteria:
+            'AS.110.311[C]^OR^AS.110.406[C]^OR^AS.110.407[C]^OR^AS.110.413[C]^OR^AS.110.416[C]^OR^AS.110.417[C]^OR^AS.110.421[C]^OR^AS.110.439[C]^OR^AS.110.441[C]^OR^AS.110.443[C]',
+        },
+        {
+          description: 'One 300-level or higher math course',
+          required_credits: 4,
+          criteria: 'Upper Level[L]',
+        },
+        {
+          description:
+            'Two courses in any one of the approved applications of mathematics or other courses approved by the Director of Undergraduate Studies.',
+          required_credits: 8,
+          criteria:
+            'AS.171.204[C]^OR^AS.171.301[C]^OR^AS.171.303[C]^OR^AS.171.304[C]^OR^AS.171.312[C]^OR^AS.030.302[C]^OR^AS.030.453[C]^OR^AS.180.301[C]^OR^AS.180.302[C]^OR^AS.180.334[C]^OR^AS.180.434[C]^OR^EN.601.231[C]^OR^EN.601.433[C]^OR^EN.601.442[C]^OR^EN.601.457[C]^OR^EN.601.461[C]^OR^EN.601.464[C]^OR^EN.601.475[C]^OR^EN.601.476[C]^OR^EN.553.361[C]^OR^EN.553.362[C]^OR^EN.553.391[C]^OR^EN.553.420[C]^OR^EN.553.426[C]^OR^EN.553.430[C]^OR^EN.553.453[C]^OR^EN.553.465[C]^OR^EN.553.471[C]^OR^EN.553.472[C]^OR^EN.553.481[C]^OR^EN.553.492[C]^OR^EN.553.493[C]^OR^AS.150.420[C]^OR^AS.150.421[C]^OR^AS.150.422[C]',
+        },
+      ],
+    },
+    {
+      name: 'Humanities',
+      required_credits: 9,
+      min_credits_per_course: 1,
+      description:
+        'These credits fulfilling the distribution requirement may overlap with major or minor requirements and the writing-intensive requirement.',
+      criteria: 'H[A]',
+      double_count: ['Writing Intensive', 'Major Requirement'],
+    },
+    {
+      name: 'Social Sciences',
+      required_credits: 9,
+      min_credits_per_course: 1,
+      description:
+        'These credits fulfilling the distribution requirement may overlap with major or minor requirements and the writing-intensive requirement.',
+      criteria: 'S[A]',
+      double_count: ['Writing Intensive', 'Major Requirement'],
+    },
+    {
+      name: 'Natural Sciences/Quantitative/Engineering',
+      required_credits: 9,
+      min_credits_per_course: 1,
+      description:
+        'These credits fulfilling the distribution requirement may overlap with major or minor requirements and the writing-intensive requirement.',
+      criteria: 'N[A]^OR^Q[A]^OR^E[A]',
+      double_count: ['Writing Intensive', 'Major Requirement'],
+    },
+    {
+      name: 'Writing Intensive',
+      required_credits: 15,
+      min_credits_per_course: 1,
+      description:
+        'Effective Fall 2022, all students earning a degree from the School of Arts and Sciences must complete Reintroduction to Writing in their first year at Hopkins plus an additional 12 credits in writing-intensive courses through their undergraduate experience for a minimum of 15 writing-intensive credits.',
+      criteria: 'Written Intensive[W]',
+      double_count: ['All'],
+      fine_requirements: [
+        {
+          description: 'Reintroduction to Writing',
+          required_credits: 4,
+          criteria: 'AS.004.100[C]',
+        },
+      ],
+    },
+  ],
+};
 
 // // https://writingseminars.jhu.edu/undergraduate/requirements/
 // const baWritingSems: Major = {
@@ -424,15 +1294,6 @@ const baCogSci: Major = {
 // const baSoc: Major = {
 //   degree_name: "B.A. Sociology",
 //   department: "AS Sociology",
-//   total_degree_credit: 120,
-//   wi_credit: 6,
-//   distributions: [],
-// };
-
-// // https://krieger.jhu.edu/neuroscience/bs-program/requirements/
-// const baNeuro: Major = {
-//   degree_name: "B.A. Neuroscience",
-//   department: "AS Neuroscience",
 //   total_degree_credit: 120,
 //   wi_credit: 6,
 //   distributions: [],
@@ -1056,13 +1917,6 @@ const bsBME: Major = {
       ],
     },
     {
-      name: 'Other Electives',
-      required_credits: 9,
-      min_credits_per_course: 1,
-      description: 'Select 9 credits from any area.',
-      criteria: 'H[A]^OR^S[A]^OR^Q[A]^OR^N[A]^OR^E[A]',
-    },
-    {
       name: 'Humanities and Social Sciences',
       required_credits: 18,
       min_credits_per_course: 3,
@@ -1083,6 +1937,14 @@ const bsBME: Major = {
           criteria: '(H[A]^OR^S[A])^AND^(Upper Level[L])',
         },
       ],
+    },
+    {
+      name: 'Other Electives',
+      required_credits: 9,
+      min_credits_per_course: 1,
+      description: 'Select 9 credits from any area.',
+      criteria: 'H[A]^OR^S[A]^OR^Q[A]^OR^N[A]^OR^E[A]',
+      double_count: ['Writing Intensive'],
     },
     {
       name: 'Writing Intensive',
@@ -2073,7 +2935,7 @@ const bsAMS: Major = {
         'Biological Models and Simulations and Nonlinear Dynamics of Biological Systems <br /> EN.601.220 Intermediate Programming' +
         '. <br /> NOTE: Students are strongly encouraged to fulfill this element of the requirement by taking EN.500.113 Gateway Computing: Python, and to do this in their first semester at Johns Hopkins University.',
       criteria:
-        'EN.500.112[C]^OR^EN.500.113[C]^OR^EN.500.114[C]^OR^AS.250.205[C]^OR^EN.553.281[C]^OR^(EN.580.242[C]^AND^EN.580.244[C])^OR^' +
+        'EN.500.112[C]^OR^EN.500.113[C]^OR^EN.500.114[C]^OR^AS.250.205[C]^OR^EN.553.281[C]^OR^EN.580.242[C]^OR^EN.580.244[C]^OR^' +
         'EN.601.220[C]^OR^AS.250.205[C]',
       double_count: ['Quantitative Studies'],
     },
@@ -2130,7 +2992,7 @@ const bsAMS: Major = {
           required_credits: 6,
           description: '<b>Computational Mathematics</b>',
           criteria:
-            'EN.553.481[C]^AND^(AS.110.445[C]^OR^EN.553.433[C]^OR^EN.553.467[C]^OR^EN.553.493[C])',
+            'EN.553.481[C]^OR^AS.110.445[C]^OR^EN.553.433[C]^OR^EN.553.467[C]^OR^EN.553.493[C]',
         },
       ],
     },
@@ -2249,7 +3111,8 @@ const bsCS_Old: Major = {
       description:
         "For more information please visit the <a href='https://www.cs.jhu.edu/undergraduate-studies/academics/ugrad-advising-manual/'>" +
         'major degree requirement</a> section on the department website.',
-      criteria: 'EN Computer Science[D]^OR^EN.500.112[C]^OR^EN.660.400[C]',
+      criteria:
+        'EN Computer Science[D]^OR^EN.500.112[C]^OR^EN.601.104[C]^OR^EN.660.400[C]',
       double_count: [
         'Mathematics',
         'Humanities/Social Sciences',
@@ -2456,12 +3319,12 @@ const bsCS_Old: Major = {
     },
     {
       name: 'Basic Sciences',
-      required_credits: 16,
+      required_credits: 8,
       min_credits_per_course: 1,
       description:
         'At least two semesters of physics or two semesters of chemistry, with the associated laboratories, must be included.',
       criteria:
-        'N[A]^AND^(^NOT^(EN Computer Science[D]^OR^AS Center for Language Education[D]^OR^EN Applied Mathematics & Statistics[D]))',
+        'N[A]^NOT^(EN Computer Science[D]^OR^AS Center for Language Education[D]^OR^EN Applied Mathematics & Statistics[D])',
       double_count: ['Humanities/Social Sciences', 'Writing Intensive'],
     },
     {
@@ -2528,7 +3391,7 @@ const bsCS_New: Major = {
         "For more information please visit the <a href='https://www.cs.jhu.edu/undergraduate-studies/academics/ugrad-advising-manual/'>" +
         'major degree requirement</a> section on the department website.',
       criteria:
-        'EN Computer Science[D]^OR^CSCI-OTHER[T]^OR^Gateway Computing[N]',
+        'EN Computer Science[D]^OR^CSCI-OTHER[T]^OR^Gateway Computing[N]^OR^EN.600.104[C]^OR^EN.601.104[C]^OR^EN.660.400[C]',
       double_count: [
         'Computer Science Classifications',
         'Mathematics',
@@ -2553,7 +3416,7 @@ const bsCS_New: Major = {
           required_credits: 21,
           criteria:
             'EN.500.112[C]^OR^EN.500.113[C]^OR^EN.500.114[C]^OR^EN.601.220[C]^OR^EN.601.226[C]' +
-            '^OR^EN.601.229[C]^OR^EN.601.230[C]^OR^EN.601.433[C]^OR^EN.601.231',
+            '^OR^EN.601.229[C]^OR^EN.601.230[C]^OR^EN.601.433[C]^OR^EN.601.231[C]',
         },
         {
           description:
@@ -2604,12 +3467,6 @@ const bsCS_New: Major = {
         'At least one course in two different classification areas (Applications, Reasoning, Software, Systems) must be chosen in addition to Theory (Algorithms).',
       criteria: 'CSCI-APPL[T]^OR^CSCI-SOFT[T]^OR^CSCI-SYST[T]^OR^CSCI-RSNG[T]',
       pathing: 2,
-      double_count: [
-        'Computer Science',
-        'Mathematics',
-        'Humanities/Social Sciences',
-        'Writing Intensive',
-      ],
       fine_requirements: [
         {
           description: '<b>Application</b>',
@@ -2666,7 +3523,7 @@ const bsCS_New: Major = {
         '<b>Electives</b> <br /> At least 3 more Math courses must be taken at the 200 or above level, ' +
         'and must include coverage of both Probability and Statistics.',
       criteria:
-        'EN.553.211[C]^OR^EN.553.310[C]^OR^EN.553.311[C]^OR^EN.553.420[C]^OR^EN.553.430[C]',
+        '(AS Mathematics[D]^OR^EN Applied Mathematics & Statistics[D])^AND^(200[L]^OR^Upper Level[L])',
       double_count: ['All'],
       pathing: 1,
       fine_requirements: [
@@ -2760,7 +3617,7 @@ const baCS_New: Major = {
         "For more information please visit the <a href='https://www.cs.jhu.edu/2021undergraduate-advising-manual/'>" +
         'major degree requirement</a> section on the department website.',
       criteria:
-        'EN Computer Science[D]^OR^CSCI-OTHER[T]^OR^Gateway Computing[N]',
+        'EN Computer Science[D]^OR^CSCI-OTHER[T]^OR^Gateway Computing[N]^OR^EN.600.104[C]^OR^EN.601.104[C]^OR^EN.660.400[C]',
       double_count: ['All'],
       fine_requirements: [
         {
@@ -4365,6 +5222,382 @@ const minorAMS_New: Minor = {
   ],
 };
 
+const bsNeuro: Major = {
+  degree_name: 'B.S. Neuroscience',
+  abbrev: 'B.S. Neuro',
+  department: 'AS Neuroscience',
+  total_degree_credit: 120,
+  wi_credit: 12,
+  url: 'https://e-catalogue.jhu.edu/arts-sciences/full-time-residential-programs/degree-programs/neuroscience/neuroscience-bachelor-science/',
+  distributions: [
+    {
+      name: 'Neuroscience Sequence',
+      required_credits: 12,
+      min_credits_per_course: 3,
+      description:
+        'These are core neuroscience courses required for the major. ' +
+        'For more information please visit the ' +
+        "<a href='https://krieger.jhu.edu/neuroscience/bs-program/requirements/'>" +
+        'major degree requirement</a> section on the department website.',
+      criteria:
+        'AS.050.203[C]^OR^AS.080.250[C]^OR^AS.080.305[C]^OR^AS.080.306[C]',
+      double_count: [
+        'Humanities (H) Distribution',
+        'Social Sciences (S) Distribution',
+        'Other (N/E/Q) Distribution',
+        'Writing Intensive',
+      ],
+      fine_requirements: [
+        {
+          description:
+            '<b>Neuroscience: Cognitive</b> <br /> AS.050.203 Neuroscience: Cognitive',
+          required_credits: 3,
+          criteria: 'AS.050.203[C]',
+        },
+        {
+          description:
+            '<b>Neuroscience Laboratory</b> <br /> AS.080.250 Neuroscience Laboratory',
+          required_credits: 3,
+          criteria: 'AS.080.250[C]',
+        },
+        {
+          description:
+            '<b>Neuroscience: Cellular and Systems I</b> <br /> AS.080.305 Neuroscience: Cellular and Systems I',
+          required_credits: 3,
+          criteria: 'AS.080.305[C]',
+        },
+        {
+          description:
+            '<b>Neuroscience: Cellular and Systems II</b> <br /> AS.080.306 Neuroscience: Cellular and Systems II',
+          required_credits: 3,
+          criteria: 'AS.080.306[C]',
+        },
+      ],
+    },
+    {
+      name: 'Mathematics, Statistics, and Science Courses',
+      required_credits: 34,
+      min_credits_per_course: 1,
+      description:
+        'Must complete Calculus I, Calculus II, Probability & Statistics, Chemistry I & II, Organic Chemistry I, and General Physics I & II with their respective labs.',
+      criteria:
+        'EN.553.211[C]^OR^EN.553.310[C]^OR^EN.553.311[C]^OR^EN.553.111[C]^OR^EN.553.112[C]^OR^AS.110.106[C]^OR^AS.110.108[C]^OR^AS.110.107[C]^OR^AS.110.109[C]^OR^AS.171.113[C]^OR^' +
+        'AS.030.101[C]^OR^AS.030.102[C]^OR^AS.030.103[C]^OR^AS.030.105[C]^OR^AS.030.106[C]^OR^AS.030.305[C]^OR^' +
+        'AS.171.101[C]^OR^AS.171.103[C]^OR^AS.171.107[C]^OR^AS.171.102[C]^OR^AS.171.104[C]^OR^AS.171.108[C]^OR^AS.173.111[C]^OR^AS.173.112[C]',
+      double_count: [
+        'Humanities (H) Distribution',
+        'Social Sciences (S) Distribution',
+        'Other (N/E/Q) Distribution',
+        'Writing Intensive',
+      ],
+      fine_requirements: [
+        {
+          description:
+            '<b>Probability and Statistics</b> <br />' +
+            'Select one of the following: <br />' +
+            'EN.553.211 ProbStat for Life Sciences <br />' +
+            'EN.553.310 ProbStat for Physical Sciences <br />' +
+            'EN.553.311 ProbStat for Biological Sciences <br />' +
+            'EN.553.111 and EN.553.112 Statistical Analysis I and II',
+          required_credits: 4,
+          criteria:
+            'EN.553.211[C]^OR^EN.553.310[C]^OR^EN.553.311[C]^OR^EN.553.111[C]^OR^EN.553.112[C]',
+        },
+        {
+          description:
+            '<b>Calculus I</b> <br />' +
+            'AS.110.106 Calculus I (Biology and Social Sciences)' +
+            '<br /> <i>OR</i> <br />' +
+            'AS.110.108 Calculus I (Physical Sciences and Engineering)',
+          required_credits: 4,
+          criteria: 'AS.110.106[C]^OR^AS.110.108[C]',
+        },
+        {
+          description:
+            '<b>Calculus II</b> <br />' +
+            'Select one of the following: <br />' +
+            'AS.110.107 Calculus II (Biology and Social Sciences) <br />' +
+            'AS.110.109 Calculus II (Physical Sciences and Engineering) <br />' +
+            'AS.171.113 Subatomic World',
+          required_credits: 4,
+          criteria: 'AS.110.107[C]^OR^AS.110.109[C]^OR^AS.171.113[C]',
+        },
+        {
+          description:
+            '<b>Introductory Chemistry I</b> <br /> AS.030.101 Introductory Chemistry I',
+          required_credits: 3,
+          criteria: 'AS.030.101[C]',
+        },
+        {
+          description:
+            '<b>Introductory Chemistry Lab I</b> <br />AS.030.105 Introductory Chemistry Laboratory I',
+          required_credits: 1,
+          criteria: 'AS.030.105[C]',
+        },
+        {
+          description:
+            '<b>Introductory Chemistry II</b> <br />AS.030.102 Introductory Chemistry II',
+          required_credits: 3,
+          criteria: 'AS.030.102[C]',
+        },
+        {
+          description:
+            '<b>Introductory Chemistry Lab II</b> <br />AS.030.106 Introductory Chemistry Laboratory II <br /> <i>OR</i> <br />AS.030.103 Applied Chemical Equilibrium and Reactivity lab',
+          required_credits: 1,
+          criteria: 'AS.030.106[C]^OR^AS.030.103[C]',
+        },
+        {
+          description:
+            '<b>Organic Chemistry I</b> <br /> AS.030.205 Introductory Organic Chemistry I',
+          required_credits: 4,
+          criteria: 'AS.030.205[C]',
+        },
+        {
+          description:
+            '<b>Physics I</b> <br />' +
+            'Select one of the following: <br />' +
+            'AS.171.101 General Physics: Physical Science Majors I <br />' +
+            'AS.171.103 General Physics: Biological Science Majors I <br />' +
+            'AS.171.107 General Physics for Physical Sciences Majors (AL)',
+          required_credits: 4,
+          criteria: 'AS.171.101[C]^OR^AS.171.103[C]^OR^AS.171.107[C]',
+        },
+        {
+          description:
+            '<b>Physics Laboratory I</b> <br /> AS.173.111 General Physics Laboratory I',
+          required_credits: 1,
+          criteria: 'AS.173.111[C]',
+        },
+        {
+          description:
+            '<b>Physics II</b> <br />' +
+            'Select one of the following: <br />' +
+            'AS.171.102 General Physics: Physical Science Majors II <br />' +
+            'AS.171.104 General Physics/Biology Majors II <br />' +
+            'AS.171.108 General Physics for Physical Science Majors (AL)',
+          required_credits: 4,
+          criteria: 'AS.171.102[C]^OR^AS.171.104[C]^OR^AS.171.108[C]',
+        },
+        {
+          description:
+            '<b>Physics Laboratory II</b> <br /> AS.173.112 General Physics Laboratory II',
+          required_credits: 1,
+          criteria: 'AS.173.112[C]',
+        },
+      ],
+    },
+    {
+      name: 'Biology Sequence',
+      required_credits: 4,
+      min_credits_per_course: 1,
+      pathing: 1,
+      description:
+        'Select one biology course with lab of the following. Exam credit not applicable. For more detail please visit ' +
+        'https://krieger.jhu.edu/neuroscience/bs-program/requirements/',
+      criteria:
+        'AS.020.151[C]^OR^AS.020.153[C]^OR^AS.020.152[C]^OR^AS.020.154[C]^OR^' +
+        'AS.020.305[C]^OR^AS.020.315[C]^OR^AS.250.253[C]^OR^AS.250.254[C]^OR^' +
+        'AS.020.303[C]^OR^AS.020.306[C]^OR^AS.020.316[C]^OR^' +
+        'AS.020.374[C]^OR^AS.020.377[C]',
+      double_count: [
+        'Humanities (H) Distribution',
+        'Social Sciences (S) Distribution',
+        'Other (N/E/Q) Distribution',
+        'Writing Intensive',
+      ],
+      fine_requirements: [
+        {
+          required_credits: 4,
+          description:
+            '<b>General Biology I with lab</b> <br /> AS.020.151 General Biology I<br /> AS.020.153 General Biology Laboratory I',
+          criteria: 'AS.020.151[C]^OR^AS.020.153[C]',
+        },
+        {
+          required_credits: 4,
+          description:
+            '<b>General Biology II with lab</b> <br /> AS.020.152 General Biology II<br /> AS.020.154 General Biology Lab II',
+          criteria: 'AS.020.152[C]^OR^AS.020.154[C]',
+        },
+        {
+          required_credits: 4,
+          description:
+            '<b>Genetics with lab</b> <br /> AS.020.303 Genetics<br /><i>AND</i> <br />AS.250.253 Protein Engineering and Biochemistry Lab<br /><i>OR</i> <br />AS.020.315 Biochemistry Project lab',
+          criteria: 'AS.020.303[C]^OR^AS.250.253[C]^OR^AS.020.315[C]',
+        },
+        {
+          required_credits: 4,
+          description:
+            '<b>Biochemistry with lab</b> <br />AS.020.305 Biochemistry<br /> <i>AND</i> <br />Select one of the following:' +
+            '<br />AS.020.315 Biochemistry Project lab <br />AS.250.253 Protein Engineering and Biochemistry Lab ' +
+            '<br />AS.250.254 Protein Biochemistry and Engineering Laboratory',
+          criteria:
+            'AS.020.305[C]^OR^AS.020.315[C]^OR^AS.250.253[C]^OR^AS.250.254[C]',
+        },
+        {
+          required_credits: 5,
+          description:
+            '<b>Cell Biology with lab</b> <br />AS.020.306 Cell Biology <br />AS.020.316 Cell Biology Lab',
+          criteria: 'AS.020.306[C]^OR^AS.020.316[C]',
+        },
+        {
+          required_credits: 4,
+          description:
+            '<b>Comparative Physiology with lab</b> <br />AS.020.374 Comparative Physiology <br />AS.020.377 Comparative Physiology Lab',
+          criteria: 'AS.020.374[C]^OR^AS.020.377[C]',
+        },
+      ],
+    },
+    {
+      name: 'Focus Area',
+      required_credits: 9,
+      min_credits_per_course: 1,
+      pathing: 1,
+      description:
+        'Nine credits of 300-level or higher approved courses from one of four focus areas: Systems Neuroscience, ' +
+        'Cognitive Neuroscience, Computational Neuroscience, or Cellular and Molecular Neuroscience',
+      criteria:
+        '(NEUR-ST[T]^OR^NEUR-CG[T]^OR^NEUR-CP[T]^OR^NEUR-CM[T])^AND^Upper Level[L]',
+      double_count: [
+        'Humanities (H) Distribution',
+        'Social Sciences (S) Distribution',
+        'Other (N/E/Q) Distribution',
+        'Writing Intensive',
+      ],
+      fine_requirements: [
+        {
+          required_credits: 9,
+          description: '<b>Systems Neuroscience (ST)</b> <br /> ',
+          criteria: 'NEUR-ST[T]',
+          double_count: ['All'],
+        },
+        {
+          required_credits: 9,
+          description: '<b>Cognitive Neuroscience (CG)</b> <br /> ',
+          criteria: 'NEUR-CG[T]',
+          double_count: ['All'],
+        },
+        {
+          required_credits: 9,
+          description:
+            '<b>Computational Neuroscience (CP)</b> <br /> ' +
+            'EN.553.291 (or AS.110.201 and AS.110.302) is required in addition to the credits required of the focus area.',
+          criteria: 'NEUR-CP[T]',
+          double_count: ['All'],
+        },
+        {
+          required_credits: 9,
+          description:
+            '<b>Cellular and Molecular Neuroscience (CM)</b> <br /> ' +
+            'AS.020.306 and AS.020.316 must be selected as the required biology course with lab.',
+          criteria: 'NEUR-CM[T]',
+          double_count: ['All'],
+        },
+      ],
+    },
+    {
+      name: 'Elective Course',
+      required_credits: 3,
+      min_credits_per_course: 3,
+      description:
+        'Three credits of 300-level or higher approved course outside of selected focus area',
+      criteria:
+        '(NEUR-ST[T]^OR^NEUR-CG[T]^OR^NEUR-CP[T]^OR^NEUR-CM[T])^AND^Upper Level[L]',
+      double_count: [
+        'Humanities (H) Distribution',
+        'Social Sciences (S) Distribution',
+        'Other (N/E/Q) Distribution',
+        'Writing Intensive',
+      ],
+    },
+    {
+      name: 'Research',
+      required_credits: 7,
+      min_credits_per_course: 0.5,
+      description:
+        'Six credits of neuroscience research, obtained through work in one of the neuroscience laboratories ' +
+        'participating in the program. One credit of Scientific Communication across two semesters. Read more about <a href="https://krieger.jhu.edu/neuroscience/research/research-credit-requirements/">' +
+        'research credit requirements</a>.',
+      criteria: 'AS.080.500[C]^OR^AS.080.541[C]',
+      fine_requirements: [
+        {
+          required_credits: 6,
+          description:
+            '<b>Neuroscience Research</b> <br /> Six credits of AS.080.541 Research Neuroscience - Neuroscience Majors.',
+          criteria: 'AS.080.541[C]',
+        },
+        {
+          required_credits: 1,
+          description:
+            '<b>Scientific Communication</b> <br /> Two semesters of AS.080.541 Scientific Communication: Neuroscience.',
+          criteria: 'AS.080.500[C]',
+        },
+      ],
+    },
+    {
+      name: 'Humanities (H) Distribution',
+      required_credits: 9,
+      min_credits_per_course: 3,
+      description:
+        'The distribution requirement stipulates that students must earn a minimum number of credits in academic areas outside of their primary major. ' +
+        'The student must complete at least 9 credits in the Humanities (H) area. ' +
+        'These credits fulfilling the distribution requirement may overlap with major or minor requirements and the writing-intensive requirement.',
+      criteria: 'H[A]',
+      double_count: [
+        'Neuroscience Sequence',
+        'Mathematics, Statistics, and Science Courses',
+        'Biology Sequence',
+        'Focus Area',
+        'Elective Course',
+      ],
+    },
+    {
+      name: 'Social Science (S) Distribution',
+      required_credits: 9,
+      min_credits_per_course: 3,
+      description:
+        'The distribution requirement stipulates that students must earn a minimum number of credits in academic areas outside of their primary major. ' +
+        'The student must complete at least 9 credits in the Social Science (S) area. ' +
+        'These credits fulfilling the distribution requirement may overlap with major or minor requirements and the writing-intensive requirement.',
+      criteria: 'S[A]',
+      double_count: [
+        'Neuroscience Sequence',
+        'Mathematics, Statistics, and Science Courses',
+        'Biology Sequence',
+        'Focus Area',
+        'Elective Course',
+      ],
+    },
+    {
+      name: 'Other (N/E/Q) Distribution',
+      required_credits: 9,
+      min_credits_per_course: 3,
+      description:
+        'The distribution requirement stipulates that students must earn a minimum number of credits in academic areas outside of their primary major. ' +
+        'The student must complete at least 9 credits in any of the other areas: Natural Sciences (N), Engineering (E) and/or Quantitative (Q). ' +
+        'These credits fulfilling the distribution requirement may overlap with major or minor requirements and the writing-intensive requirement.',
+      criteria: 'N[A]^OR^E[A]^OR^Q[A]',
+      double_count: [
+        'Neuroscience Sequence',
+        'Mathematics, Statistics, and Science Courses',
+        'Biology Sequence',
+        'Focus Area',
+        'Elective Course',
+      ],
+    },
+    {
+      name: 'Writing Intensive',
+      required_credits: 12,
+      min_credits_per_course: 3,
+      description:
+        'To encourage excellence in writing, across disciplines, the university requires all undergraduates to take a number of writing-intensive courses. ' +
+        'All students earning a degree from the School of Arts and Sciences must complete at least 12 credits in writing-intensive courses. ' +
+        'Writing-intensive courses taken to satisfy major, minor, or distribution requirements may also count toward the writing requirement.',
+      criteria: 'Written Intensive[W]',
+      double_count: ['All'],
+    },
+  ],
+};
+
 // https://e-catalogue.jhu.edu/arts-sciences/full-time-residential-programs/degree-programs/economics/economics-minor/
 // https://econ.jhu.edu/undergraduate/minor-requirements/
 const minorEcon: Minor = {
@@ -4446,6 +5679,91 @@ const minorPhysics: Minor = {
   ],
 };
 
+// https://mathematics.jhu.edu/undergraduate/minor-in-mathematics/
+// https://e-catalogue.jhu.edu/arts-sciences/full-time-residential-programs/degree-programs/mathematics/mathematics-minor/
+const minorMath: Minor = {
+  degree_name: 'Minor Mathematics',
+  abbrev: 'Minor Math',
+  department: 'AS Mathematics',
+  total_degree_credit: 28,
+  url: 'https://e-catalogue.jhu.edu/arts-sciences/full-time-residential-programs/degree-programs/mathematics/mathematics-minor/',
+  wi_credit: 0,
+  distributions: [
+    {
+      name: 'Calculus Courses',
+      required_credits: 12,
+      min_credits_per_course: 4,
+      description: 'Students must take Calculus I, II, and III.',
+      criteria:
+        'AS.110.106[C]^OR^AS.110.108[C]^OR^AS.110.107[C]^OR^AS.110.109[C]^OR^AS.110.113[C]^OR^AS.110.202[C]',
+      fine_requirements: [
+        {
+          required_credits: 4,
+          description:
+            '<b>Calculus I</b> <br/>(Biology and Social Sciences) or (Physical Sciences & Engineering)',
+          criteria: 'AS.110.106[C]^OR^AS.110.108[C]',
+        },
+        {
+          required_credits: 4,
+          description:
+            '<b>Calculus II</b> <br/>(Biology and Social Sciences) or (Physical Sciences & Engineering) or Honors Single Variable Calculus',
+          criteria: 'AS.110.107[C]^OR^AS.110.109[C]^OR^AS.110.113[C]',
+        },
+        {
+          required_credits: 4,
+          description: '<b>Calculus III</b>',
+          criteria: 'AS.110.202[C]',
+        },
+      ],
+    },
+    {
+      name: '200- or 300-Level Course',
+      required_credits: 4,
+      min_credits_per_course: 4,
+      description:
+        'Students must take one 200-level or above math course (excluding AS.110.202 Calculus III and the 2-credit 225).',
+      criteria: 'AS Mathematics[D]^AND^(200[L]^OR^300[L])',
+      double_count: [],
+    },
+    {
+      name: '300-Level or Above Courses',
+      required_credits: 12,
+      min_credits_per_course: 4,
+      description:
+        'Students must take three mathematics courses at the 300-level or above (excluding the 1-credit seminar 345). <br /> <br /> ** A course in the Department of Applied Mathematics and Statistics (AMS), at the corresponding level, may be substituted for one of the 300-level or above courses. However, only a course from AMS can serve as a substitute.',
+      criteria:
+        '(AS Mathematics[D]^OR^EN Applied Mathematics & Statistics[D])^AND^(300[L]^OR^400[L]^OR^500[L])^NOT^AS.110.345[C]',
+      pathing: 2,
+      fine_requirements: [
+        {
+          required_credits: 12,
+          description:
+            '<b>DEFAULT PATH:</b> <br /> Students must take three mathematics courses at the 300-level or above (excluding the 1-credit seminar 345).**',
+          criteria:
+            'AS Mathematics[D]^AND^(300[L]^OR^400[L]^OR^500[L])^NOT^AS.110.345[C]',
+          double_count: ['All'],
+        },
+        {
+          required_credits: 4,
+          description:
+            '** <b>ALTERNATIVE PATH:</b> <br /> A course in the Department of Applied Mathematics and Statistics (AMS), at the corresponding level, may be substituted for one of the 300-level or above courses. ',
+          criteria:
+            'EN Applied Mathematics & Statistics[D]^AND^(300[L]^OR^400[L]^OR^500[L])',
+          double_count: ['All'],
+        },
+        {
+          required_credits: 8,
+          description:
+            '** <b>ALTERNATIVE PATH (cont.):</b> <br /> With an AMS course substitution, students must take two mathematics courses at the 300-level or above (excluding the 1-credit seminar 345).',
+          criteria:
+            'AS Mathematics[D]^AND^(300[L]^OR^400[L]^OR^500[L])^NOT^AS.110.345[C]',
+          double_count: ['All'],
+        },
+      ],
+    },
+  ],
+};
+
 const no_degree: Major = {
   degree_name: "Undecided Degree/My degree isn't supported yet",
   distributions: [],
@@ -4479,29 +5797,30 @@ export const allMajors: Major[] = [
   minorAMS_New,
   baIS,
   bsMechE,
-  // baPH,
   bsBME,
-  // baHistory,
-  // baBiology,
   bsCBE,
-
   baEcon,
   minorEcon,
   minorPhysics,
+  minorMath,
+  baCogSci,
+  bsNeuro,
+  bsECE,
+  baMath,
+  baPhysics,
+  bsPhysics,
+  // bsEnvEng,
+  // baSoc,
+  // baWritingSems,
   // baPsych,
   // baMolCell,
-  // bsNeuro,
-  // baSoc,
-  // bsElectricEng,
-  // bsEnvEng,
-  // baWritingSems,
-  // bsMath,
-  // bsPhysics,
   // baMSH,
+  // baPH,
   // bsBioPhysics,
   // bsChem,
   // bsME,
-  baCogSci,
+  // baHistory,
+  // baBiology,
   // bsMatSci,
   // bsBBio,
   // baHistArt,

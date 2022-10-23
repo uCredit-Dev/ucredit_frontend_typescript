@@ -1,4 +1,4 @@
-import { useState, useEffect, FC } from 'react';
+import React, { useState, useEffect, FC } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import {
   selectPlaceholder,
@@ -65,14 +65,23 @@ const SearchList: FC<{
         ? filteredCourses.length - 1
         : startingIndex + coursesPerPage - 1;
     for (let i = startingIndex; i <= endingIndex; i++) {
+      let inserted: string[] = [];
       const inspecting = { ...filteredCourses[i] };
       inspecting.versions.forEach((v: any, versionNum: number) => {
+        let alreadyInserted = false;
+        inserted.forEach((term: string) => {
+          if (term.includes(v.term)) {
+            alreadyInserted = true;
+          }
+        });
         if (
-          v.term === searchFilters.term + ' ' + searchFilters.year ||
-          (searchFilters.term === 'All' &&
-            (searchFilters.year === currentPlan.years[0].year ||
-              searchFilters.year.toString() === v.term.split(' ')[1]))
+          !alreadyInserted &&
+          (v.term === searchFilters.term + ' ' + searchFilters.year ||
+            (searchFilters.term === 'All' &&
+              (searchFilters.year === currentPlan.years[0].year ||
+                searchFilters.year.toString() === v.term.split(' ')[1])))
         ) {
+          inserted.push(v.term);
           toDisplay.push(
             <div
               key={inspecting.number + v.term + versionNum}
@@ -87,6 +96,7 @@ const SearchList: FC<{
         }
       });
     }
+    console.log(toDisplay);
     return toDisplay;
   };
 

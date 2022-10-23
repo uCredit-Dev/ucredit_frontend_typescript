@@ -1,5 +1,5 @@
 import clsx from 'clsx';
-import { useState, useEffect, FC } from 'react';
+import React, { useState, useEffect, FC } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import {
   selectCurrentPlanCourses,
@@ -93,24 +93,6 @@ const CourseBar: FC<{
             ? `<div style="width: 100%; height: auto; display: flex; flex-direction: row; justify-content: center">Completed!</div>`
             : `<div style="width: 100%; height: auto; display: flex; flex-direction: row; justify-content: center">Your credits fulfill this overall requirement, but your fine requirements are lacking! Please click this bar to find out more.</div>`)()) +
     `</div>`;
-
-  /**
-   * Returns UI for unstasified fine req course bar with satisfied credit count
-   */
-  // const getExclamationMark = () => (
-  //   <>
-  //     {!completed && (
-  //       <ExclamationIcon className="absolute w-5 h-5 transform -translate-x-1/2 -translate-y-1/2 stroke-2 left-1/2 top-1/2 stroke-white" />
-  //     )}
-  //   </>
-  // );
-
-  /**
-   * Wrapper for exclamation mark when credit count matches, but fine reqs are not fulfilled
-   */
-  // const exclamationMarkWrapper = () => (
-  //   <>{remainingCredits === 0 && !completed && <>{getExclamationMark()}</>}</>
-  // );
 
   return (
     <>

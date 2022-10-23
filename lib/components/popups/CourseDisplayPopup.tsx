@@ -1,4 +1,4 @@
-import { FC, useEffect, useState } from 'react';
+import React, { FC, useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import Placeholder from './course-search/search-results/Placeholder';
 import {
@@ -63,7 +63,9 @@ const CourseDisplayPopup: FC = () => {
       courseCache.forEach((c: SISRetrievedCourse) => {
         if (c.number === courseToShow.number) {
           c.versions.forEach((v: any, index: number) => {
-            if (v.term === courseToShow.version) {
+            if (
+              v.term.toLowerCase().includes(courseToShow.version.toLowerCase())
+            ) {
               const inspectedVersion: Course = {
                 title: c.title,
                 number: c.number,
@@ -75,6 +77,23 @@ const CourseDisplayPopup: FC = () => {
               found = true;
             }
           });
+          // If version is not found and the course is already searched, we just display the latest version of this semester.
+          if (!found) {
+            const semester = courseToShow.version.split(' ')[0];
+            c.versions.forEach((v: any, index: number) => {
+              if (v.term.includes(semester) && !found) {
+                const inspectedVersion: Course = {
+                  title: c.title,
+                  number: c.number,
+                  ...c.versions[index],
+                };
+                dispatch(updateInspectedCourse(c));
+                dispatch(updateInspectedVersion(inspectedVersion));
+                dispatch(updatePlaceholder(false));
+                found = true;
+              }
+            });
+          }
         }
       });
       if (!found) {
@@ -86,12 +105,12 @@ const CourseDisplayPopup: FC = () => {
           school: 'none',
           department: 'none',
           credits: courseToShow.credits.toString(),
-          wi: false,
+          wi: courseToShow.wi,
           bio: 'This is a placeholder course',
-          tags: [],
+          tags: courseToShow.tags,
           preReq: [],
           restrictions: [],
-          level: '',
+          level: courseToShow.level,
           version: courseToShow.version,
         };
 
@@ -133,6 +152,7 @@ const CourseDisplayPopup: FC = () => {
         preReq: version.preReq,
         wi: version.wi,
         version: version.term,
+        level: version.level,
         expireAt:
           user._id === 'guestUser'
             ? Date.now() + 60 * 60 * 24 * 1000

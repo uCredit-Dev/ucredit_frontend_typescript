@@ -6,7 +6,7 @@ import {
   selectUser,
   updateReviewMode,
 } from '../lib/slices/userSlice';
-import { useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { ReviewMode, User } from '../lib/resources/commonTypes';
 import { useRouter } from 'next/router';
 import { userService } from '../lib/services';
@@ -16,6 +16,8 @@ import {
   initialPlan,
   updateSelectedPlan,
 } from '../lib/slices/currentPlanSlice';
+import { toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 const Dash: React.FC = () => {
   const user: User = useSelector(selectUser);
@@ -25,7 +27,9 @@ const Dash: React.FC = () => {
   const dispatch = useDispatch();
 
   useEffect(() => {
-    if (!user || user._id === 'noUser') router.push('/login');
+    if (!user || user._id === 'noUser')
+      router.push('/login' + router.asPath.substring(10));
+
     const yearRange = localStorage.getItem('yearRange');
     if (!yearRange) {
       axios
@@ -46,25 +50,49 @@ const Dash: React.FC = () => {
 
   useEffect(() => {
     if (!router.query || !router.query.mode) {
-      if (planList.length > 0) dispatch(updateSelectedPlan(planList[0]));
-      else dispatch(updateSelectedPlan(initialPlan));
-      dispatch(updateReviewMode(ReviewMode.Edit));
-      setMode(ReviewMode.Edit);
-      return;
-    }
-    setMode(router.query.mode as ReviewMode);
-    dispatch(updateReviewMode(router.query.mode as ReviewMode));
-    if (!router.query.plan) {
-      setMode(ReviewMode.Edit);
-      dispatch(updateReviewMode(ReviewMode.Edit));
-      return;
+      if (planList.length > 0) {
+        dispatch(updateSelectedPlan(planList[0]));
+        dispatch(updateReviewMode(ReviewMode.Edit));
+        setMode(ReviewMode.Edit);
+        return;
+      } else if (initialPlan._id !== 'noPlan' || user._id === 'guestUser') {
+        dispatch(updateSelectedPlan(initialPlan));
+        dispatch(updateReviewMode(ReviewMode.Edit));
+        setMode(ReviewMode.Edit);
+        return;
+      }
     }
     (async () => {
       try {
+        if (user._id === 'noUser') {
+          return;
+        }
+        if (!router.query || !router.query.mode) {
+          const plan = await userService.getPlan(user.plan_ids[0]);
+          dispatch(updateSelectedPlan(plan.data));
+          dispatch(updateReviewMode(ReviewMode.Edit));
+          setMode(ReviewMode.Edit);
+          return;
+        }
         const res = await userService.getPlan(router.query.plan as string);
-        dispatch(updateSelectedPlan(res.data));
-        dispatch(updateReviewMode(ReviewMode.View));
-        setMode(ReviewMode.View);
+        if (Object.values(user.plan_ids).includes(res.data._id as string)) {
+          setMode(ReviewMode.Edit);
+          dispatch(updateReviewMode(ReviewMode.Edit));
+          router.push('/dashboard');
+          return;
+        }
+        const reviewers = (await userService.getPlanReviewers(res.data._id))
+          .data[0];
+        if (Object.values(reviewers.reviewer_id).includes(user._id)) {
+          dispatch(updateSelectedPlan(res.data));
+          dispatch(updateReviewMode(ReviewMode.View));
+          setMode(ReviewMode.View);
+          return;
+        }
+        if (router.query.plan) {
+          router.push('/dashboard');
+          toast.error('You do not have access to this plan!');
+        }
       } catch (e) {
         console.log(e);
       }
@@ -77,6 +105,7 @@ const Dash: React.FC = () => {
       <Head>
         <title>My Plan</title>
       </Head>
+      {/* <Dashboard mode={ReviewMode.RoadMap} /> */}
       <Dashboard mode={mode} />
     </>
   );

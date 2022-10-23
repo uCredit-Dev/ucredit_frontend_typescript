@@ -1,5 +1,5 @@
 import Header from '../lib/components/landing-page/Header';
-import Footer from '../lib/components/landing-page/Footer';
+import Footer from '../lib/components/Footer';
 import Card from '../lib/components/landing-page/team-page/Card';
 import ProfileMobile from '../lib/components/landing-page/team-page/ProfileMobile';
 import {

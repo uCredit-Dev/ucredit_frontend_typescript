@@ -30,7 +30,7 @@ const Distributions: FC<{
   };
 
   return (
-    <div className="z-50 flex-none p-6 w-96 h-auto bg-white rounded">
+    <div className="z-50 flex-none p-6 w-full h-auto bg-white rounded">
       <div className="flex flex-row mb-3 w-full">
         <div className="self-start text-2xl font-medium">Degree Progress</div>
         {/* Degree Progress */}

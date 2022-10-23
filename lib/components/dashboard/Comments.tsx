@@ -201,6 +201,7 @@ const Comments: FC<{
   // const getOptions = () => {
   //   let ids: string[] = [];
   //   if (thisThread) {
+  //     // not being handled currently
   //     // if there are already comments here, we need to do one of the following
   //     // 1. if the user is the commenter, show all reviewers
   //     // 2. if the user is a reviewer, show the below
@@ -256,11 +257,17 @@ const Comments: FC<{
     });
     try {
       let comment_id: string = '';
-      const threads = await userService.getThreads(plan._id);
-      for (let thread of threads.data) {
+      const threads = await userService.getThreads(plan._id, false, null);
+      for (let thread of threads.data.data) {
         for (let comment of thread.comments) {
           if (comment._id === key) {
             comment_id = comment._id;
+            const commentIndex = thread.comments
+              .map((e) => e._id)
+              .indexOf(comment_id);
+            thread.comments.splice(commentIndex, 1);
+            dispatch(updateThreads(threads.data.data));
+            break;
           }
         }
       }
