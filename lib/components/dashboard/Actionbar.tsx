@@ -74,7 +74,7 @@ const Actionbar: FC<{ mode: ReviewMode }> = ({ mode }) => {
   const updateName = (): void => {
     const body = {
       plan_id: currentPlan._id,
-      majors: currentPlan.majors,
+      major_ids: currentPlan.major_ids,
       name: planName,
     };
     fetch(getAPI(window) + '/plans/update', {
@@ -130,12 +130,12 @@ const Actionbar: FC<{ mode: ReviewMode }> = ({ mode }) => {
     const newMajors = newValues.map((option) => option.label);
     const body = {
       plan_id: currentPlan._id,
-      majors: newMajors,
+      major_ids: newMajors,
     };
     axios
       .patch(getAPI(window) + '/plans/update', body)
       .then(() => {
-        const newUpdatedPlan = { ...currentPlan, majors: newMajors };
+        const newUpdatedPlan = { ...currentPlan, major_ids: newMajors };
         dispatch(updateSelectedPlan(newUpdatedPlan));
         let newPlanList = [...planList];
         for (let i = 0; i < planList.length; i++) {
@@ -151,7 +151,7 @@ const Actionbar: FC<{ mode: ReviewMode }> = ({ mode }) => {
   const getCurrentMajors = (): { label: string; value: string }[] => {
     const currentMajorOptions: { label: string; value: string }[] = [];
     majorOptions.forEach((major, i) => {
-      if (currentPlan.majors.includes(major.name))
+      if (currentPlan.major_ids.includes(major.name))
         currentMajorOptions.push({ label: major.name, value: major.abbrev });
     });
     return currentMajorOptions;

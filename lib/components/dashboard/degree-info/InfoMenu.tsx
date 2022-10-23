@@ -33,7 +33,7 @@ const InfoMenu: FC<Props> = () => {
       if (firstMajor === undefined) {
         return;
       }
-      let majorObj: Major | undefined = getMajor(firstMajor);
+      let majorObj = getMajor(firstMajor);
       if (majorObj) {
         dispatch(updateSelectedMajor(majorObj));
       }
@@ -50,7 +50,7 @@ const InfoMenu: FC<Props> = () => {
     const newMajor = allMajors.find(
       (majorObj) => majorObj.degree_name === selected,
     );
-    dispatch(updateSelectedMajor(newMajor ? newMajor : allMajors[0]));
+    dispatch(updateSelectedMajor(newMajor ? newMajor.degree_name : allMajors[0].degree_name));
   };
   return (
     <div className="z-[101] flex flex-col justify-between bg-red-100 h-min right-0 fixed top-0 right-0">
@@ -58,7 +58,7 @@ const InfoMenu: FC<Props> = () => {
         {/* <InfoCards /> */}
         <div className="w-[22.5vw] h-full">
           <Distributions
-            userMajors={currentPlan.majors}
+            userMajors={currentPlan.major_ids}
             changeDisplayMajor={changeDisplayMajor}
           />
         </div>

@@ -2,8 +2,7 @@ import { XIcon } from '@heroicons/react/solid';
 import React, { FC, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import Select from 'react-select';
-import { allMajors } from '../../../resources/majors';
-import { Major } from '../../../resources/commonTypes';
+import { getMajor } from '../../../resources/assets';
 import { selectSelectedMajor } from '../../../slices/currentPlanSlice';
 import { updateInfoPopup } from '../../../slices/popupSlice';
 import DistributionBarsJSX from './DistributionBarsJSX';
@@ -19,6 +18,7 @@ const Distributions: FC<{
   const [disclaimer, setDisclaimer] = useState<boolean>(true);
   const dispatch = useDispatch();
   const major_id = useSelector(selectSelectedMajor);
+  const majorObj = getMajor((major_id ? major_id : userMajors[0])); 
 
   const majorOptions = userMajors.map((m, index) => ({
     value: index,
@@ -26,7 +26,7 @@ const Distributions: FC<{
   }));
 
   const getHref = (): string => {
-    return majorObj !== null ? majorObj.url : '';
+    return majorObj ? majorObj.url : '';
   };
 
   return (
@@ -53,7 +53,7 @@ const Distributions: FC<{
           hideSelectedOptions
         />
       )}
-      <DistributionBarsJSX major={major_id ? major_id : allMajors[0].degree_name} />
+      <DistributionBarsJSX major_id={major_id ? major_id : userMajors[0]} major={majorObj ? majorObj : null} />
       {disclaimer && (
         <div
           id="dropdown-cta"

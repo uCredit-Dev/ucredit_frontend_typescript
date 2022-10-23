@@ -30,7 +30,6 @@ import {
 import { getAPI } from '../../../../resources/assets';
 import SisCourse from './SisCourse';
 import { updateShowingCart } from '../../../../slices/popupSlice';
-import React from 'react';
 
 /**
  * Displays course information once a user selects a course in the search list

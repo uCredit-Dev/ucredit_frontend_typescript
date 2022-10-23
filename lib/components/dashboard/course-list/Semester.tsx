@@ -29,7 +29,7 @@ import {
   updateCurrentPlanCourses,
   updateDroppables,
   updateSelectedPlan,
-} from '../../../../slices/currentPlanSlice';
+} from '../../../slices/currentPlanSlice';
 import ReactTooltip from 'react-tooltip';
 import clsx from 'clsx';
 import CourseDraggable from './CourseDraggable';
@@ -90,7 +90,7 @@ const Semester: FC<{
 
   // Every time any courses within this semester changes, update total credit count and the list.
   useEffect(() => {
-    if (version.areas && version !== 'None') {
+    if (version !== 'None' && version.areas) {
       setInspectedArea(version.areas.charAt(0));
     }
     const sortedCourses: UserCourse[] = [...courses];

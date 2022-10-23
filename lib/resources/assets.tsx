@@ -979,12 +979,14 @@ export const checkAllPrereqs = (
   });
 };
 
-export async function getMajor(name: string): Promise<Major> {
-  const resp: Major = await axios.get(
-    getAPI(window) + '/majors/' + name,
-  );
-  if (resp === null) {
-    throw Error('Major not found');
-  }
-  return resp;
+export function getMajor(name: string): any {
+  let majorObj = null; 
+  axios.get(getAPI(window) + '/majors/' + name)
+    .then((resp) => {
+      if (resp === null) {
+        throw Error('Major not found');
+      }
+      majorObj = resp.data.data;
+    });
+  return majorObj; 
 }

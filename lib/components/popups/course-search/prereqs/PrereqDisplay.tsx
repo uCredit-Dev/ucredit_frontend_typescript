@@ -25,7 +25,6 @@ import {
   UserCourse,
   Year,
 } from '../../../../resources/commonTypes';
-import React from 'react';
 
 // Parsed prereq type
 // satisfied: a boolean that tells whether the prereq should be marked with green (satisfied) or red (unsatisfied)
