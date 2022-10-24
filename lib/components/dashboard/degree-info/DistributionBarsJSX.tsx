@@ -236,7 +236,6 @@ const DistributionBarsJSX: FC<{ major: Major }> = ({ major }) => {
           distDoubleCount.includes('All')) &&
         checkRequirementSatisfied(req, courseObj)
       ) {
-        console.log(courseObj.title, req.name, distDoubleCount);
         // update credit only if credit requirement not met
         if (
           req.fulfilled_credits < req.required_credits ||
