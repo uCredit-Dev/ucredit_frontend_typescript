@@ -191,22 +191,21 @@ const DistributionBarsJSX: FC<{ major: Major }> = ({ major }) => {
         });
         checked.push(courseObj.resp);
       } else if (course.number === 'placeholder') {
-        // course -> courseObj; course is UserCourse, courseObj.resp is Course
         const resp: Course = {
-          title: '', // string;
-          number: course.number, // string;
-          areas: course.area, // string;
-          term: course.term, // string;
-          school: '', // string;
-          department: course.department, // string;
-          credits: course.credits.toString(), // string;
-          wi: course.wi, // boolean;
-          bio: '', // string;
-          tags: course.tags, // string[];
-          preReq: course.preReq, // string[];
-          restrictions: [], // Restriction[];
-          version: course.version, // string;
-          level: course.level, // string;
+          title: '',
+          number: course.number,
+          areas: course.area,
+          term: course.term,
+          school: '',
+          department: course.department,
+          credits: course.credits.toString(),
+          wi: course.wi,
+          bio: '',
+          tags: course.tags,
+          preReq: course.preReq,
+          restrictions: [],
+          version: course.version,
+          level: course.level,
         };
         courseObj.resp = resp;
         checked.push(courseObj.resp);
