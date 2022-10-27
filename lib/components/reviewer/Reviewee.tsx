@@ -54,11 +54,10 @@ const dropdownOptions = [
 const Reviewee: React.FC<Props> = ({
   plans,
   reviewee,
-  expanded = false,
   setRefreshReviews,
   onDeleteItem,
 }) => {
-  // const [showPlans, setShowPlans] = useState(expanded);
+  const [showPlans, setShowPlans] = useState(true);
   const [majors, setMajors] = useState<string[]>([]);
   const [notifState, setNotifState] = useState(false);
   const [summaryReviewID, setSummaryReviewID] = useState('');
@@ -88,7 +87,7 @@ const Reviewee: React.FC<Props> = ({
       <div className="w-full p-3 bg-white border border-gray-300 rounded-md">
         <div
           className="flex justify-between mb-2"
-          // onClick={() => setShowPlans(!showPlans)}
+          onClick={() => setShowPlans(!showPlans)}
         >
           <div>
             <p className="font-semibold">{reviewee.name}</p>
@@ -96,8 +95,7 @@ const Reviewee: React.FC<Props> = ({
           </div>
           <p className="flex items-center">{reviewee.grade}</p>
         </div>
-        <div className={clsx('text-sm')}>
-          {/* , { 'mb-2': showPlans } */}
+        <div className={clsx('text-sm', { 'mb-2': showPlans })}>
           {majors.map((m) => (
             <p key={m}>{m}</p>
           ))}
@@ -110,152 +108,154 @@ const Reviewee: React.FC<Props> = ({
             setRefreshReviews={setRefreshReviews}
           />
         ) : null}
-        {/* {showPlans && ( */}
-        <div className="divide-y">
-          {plans.map((p, i) => {
-            const { _id, name, status, review_id } = p;
-            return (
-              <div key={_id}>
-                <div className="flex items-center justify-between h-8 group">
-                  <div className="flex items-center gap-[6px]">
-                    {status && (
+        {showPlans && (
+          <div className="divide-y">
+            {plans.map((p, i) => {
+              const { _id, name, status, review_id } = p;
+              return (
+                <div key={_id}>
+                  <div className="flex items-center justify-between h-8 group">
+                    <div className="flex items-center gap-[6px]">
+                      {status && (
+                        <Hoverable
+                          as={
+                            <div
+                              className={clsx(
+                                'w-2 h-2 translate-y-[1.5px] rounded-full',
+                                {
+                                  'bg-sky-500':
+                                    status === ReviewRequestStatus.UnderReview,
+                                  'bg-emerald-500':
+                                    status === ReviewRequestStatus.Approved,
+                                  'bg-red-500':
+                                    status === ReviewRequestStatus.Rejected,
+                                },
+                              )}
+                            />
+                          }
+                        >
+                          {({ hovered }) => (
+                            <>
+                              {hovered && (
+                                <TooltipPrimary width={140}>
+                                  {statusReadable[status]}
+                                </TooltipPrimary>
+                              )}
+                            </>
+                          )}
+                        </Hoverable>
+                      )}
+                      <p>{name}</p>
+                    </div>
+                    <div className="flex items-center gap-x-1">
+                      <Selectable
+                        width={180}
+                        options={dropdownOptions}
+                        onChange={async (values) => {
+                          const value = values[0];
+                          if (!value) return;
+                          try {
+                            await userService.changeReviewStatus(
+                              review_id,
+                              value.label,
+                            );
+                            // window.location.href = '/reviewer';
+                            setRefreshReviews(true);
+                            toast.success(
+                              `Status changed to ${
+                                statusReadable[value.label]
+                              }`,
+                            );
+                          } catch (e) {
+                            console.log(e);
+                          }
+                        }}
+                        defaultValue={status}
+                      />
                       <Hoverable
                         as={
                           <div
-                            className={clsx(
-                              'w-2 h-2 translate-y-[1.5px] rounded-full',
-                              {
-                                'bg-sky-500':
-                                  status === ReviewRequestStatus.UnderReview,
-                                'bg-emerald-500':
-                                  status === ReviewRequestStatus.Approved,
-                                'bg-red-500':
-                                  status === ReviewRequestStatus.Rejected,
-                              },
-                            )}
-                          />
+                            className="flex items-center justify-center w-6 h-6 transition-colors duration-150 ease-in rounded-sm cursor-pointer hover:bg-gray-200 inspect-plan-button"
+                            onClick={(e) => handleViewPlan(e, p)}
+                          >
+                            <EyeIcon className="w-5 h-5" />
+                          </div>
                         }
                       >
                         {({ hovered }) => (
                           <>
                             {hovered && (
-                              <TooltipPrimary width={140}>
-                                {statusReadable[status]}
+                              <TooltipPrimary width={120}>
+                                Inspect plan
                               </TooltipPrimary>
                             )}
                           </>
                         )}
                       </Hoverable>
-                    )}
-                    <p>{name}</p>
-                  </div>
-                  <div className="flex items-center gap-x-1">
-                    <Selectable
-                      width={180}
-                      options={dropdownOptions}
-                      onChange={async (values) => {
-                        const value = values[0];
-                        if (!value) return;
-                        try {
-                          await userService.changeReviewStatus(
-                            review_id,
-                            value.label,
-                          );
-                          // window.location.href = '/reviewer';
-                          setRefreshReviews(true);
-                          toast.success(
-                            `Status changed to ${statusReadable[value.label]}`,
-                          );
-                        } catch (e) {
-                          console.log(e);
-                        }
-                      }}
-                      defaultValue={status}
-                    />
-                    <Hoverable
-                      as={
-                        <div
-                          className="flex items-center justify-center w-6 h-6 transition-colors duration-150 ease-in rounded-sm cursor-pointer hover:bg-gray-200 inspect-plan-button"
-                          onClick={(e) => handleViewPlan(e, p)}
-                        >
-                          <EyeIcon className="w-5 h-5" />
-                        </div>
-                      }
-                    >
-                      {({ hovered }) => (
-                        <>
-                          {hovered && (
-                            <TooltipPrimary width={120}>
-                              Inspect plan
-                            </TooltipPrimary>
-                          )}
-                        </>
-                      )}
-                    </Hoverable>
-                    <Hoverable
-                      as={
-                        <button
-                          className="flex items-center justify-center w-6 h-6 transition-colors duration-150 ease-in rounded-sm cursor-pointer hover:bg-gray-200 view-summary-button"
-                          onClick={(e) => {
-                            e.stopPropagation();
-                            setSummaryReviewID(review_id);
-                            setSummaryPlan(p);
-                            setNotifState(!notifState);
-                            dispatch(updateSelectedPlan(p));
-                            let allCourses: UserCourse[] = [];
-                            let totCredits = 0;
-                            p.years.forEach((y) => {
-                              y.courses.forEach((c) => {
-                                totCredits += c.credits;
+                      <Hoverable
+                        as={
+                          <button
+                            className="flex items-center justify-center w-6 h-6 transition-colors duration-150 ease-in rounded-sm cursor-pointer hover:bg-gray-200 view-summary-button"
+                            onClick={(e) => {
+                              e.stopPropagation();
+                              setSummaryReviewID(review_id);
+                              setSummaryPlan(p);
+                              setNotifState(!notifState);
+                              dispatch(updateSelectedPlan(p));
+                              let allCourses: UserCourse[] = [];
+                              let totCredits = 0;
+                              p.years.forEach((y) => {
+                                y.courses.forEach((c) => {
+                                  totCredits += c.credits;
+                                });
+                                allCourses = [...allCourses, ...y.courses];
                               });
-                              allCourses = [...allCourses, ...y.courses];
-                            });
-                            dispatch(updateCurrentPlanCourses(allCourses));
-                            dispatch(updateTotalCredits(totCredits));
-                          }}
-                        >
-                          <ClipboardListIcon className="w-5 h-5"></ClipboardListIcon>
-                        </button>
-                      }
-                    >
-                      {({ hovered }) => (
-                        <>
-                          {hovered && (
-                            <TooltipPrimary width={120}>
-                              View Summary
-                            </TooltipPrimary>
-                          )}
-                        </>
-                      )}
-                    </Hoverable>
-                    <Hoverable
-                      as={
-                        <button
-                          className="flex items-center justify-center w-6 h-6 transition-colors duration-150 ease-in rounded-sm cursor-pointer hover:bg-gray-200 inspect-plan-button"
-                          onClick={deleteHandler}
-                        >
-                          <TrashIcon className="w-5 h-5 stroke-red-500" />
-                        </button>
-                      }
-                    >
-                      {({ hovered }) => (
-                        <>
-                          {' '}
-                          {hovered && (
-                            <TooltipPrimary width={130}>
-                              Delete Reviewee
-                            </TooltipPrimary>
-                          )}
-                        </>
-                      )}
-                    </Hoverable>
+                              dispatch(updateCurrentPlanCourses(allCourses));
+                              dispatch(updateTotalCredits(totCredits));
+                            }}
+                          >
+                            <ClipboardListIcon className="w-5 h-5"></ClipboardListIcon>
+                          </button>
+                        }
+                      >
+                        {({ hovered }) => (
+                          <>
+                            {hovered && (
+                              <TooltipPrimary width={120}>
+                                View Summary
+                              </TooltipPrimary>
+                            )}
+                          </>
+                        )}
+                      </Hoverable>
+                      <Hoverable
+                        as={
+                          <button
+                            className="flex items-center justify-center w-6 h-6 transition-colors duration-150 ease-in rounded-sm cursor-pointer hover:bg-gray-200 inspect-plan-button"
+                            onClick={deleteHandler}
+                          >
+                            <TrashIcon className="w-5 h-5 stroke-red-500" />
+                          </button>
+                        }
+                      >
+                        {({ hovered }) => (
+                          <>
+                            {' '}
+                            {hovered && (
+                              <TooltipPrimary width={130}>
+                                Delete Reviewee
+                              </TooltipPrimary>
+                            )}
+                          </>
+                        )}
+                      </Hoverable>
+                    </div>
                   </div>
                 </div>
-              </div>
-            );
-          })}
-        </div>
-        {/* )} */}
+              );
+            })}
+          </div>
+        )}
       </div>
     )
   );
