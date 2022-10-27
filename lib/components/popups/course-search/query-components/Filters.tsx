@@ -10,6 +10,7 @@ import {
   updateSearchFilters,
 } from '../../../../slices/searchSlice';
 import { selectPlan } from '../../../../slices/currentPlanSlice';
+import React from 'react';
 
 const creditFilters = ['Any', 0, 1, 2, 3, 4];
 const distributionFilters = ['N', 'S', 'H', 'Q', 'E'];
@@ -218,9 +219,9 @@ const Filters: FC<{
   const getYears = (): { value: number; label: number }[] => {
     const yearRange = JSON.parse(localStorage.getItem('yearRange'));
     if (yearRange) {
-      let total = yearRange.max - yearRange.min;
+      let total = yearRange.max - yearRange.min + 1;
       if (new Date().getMonth() >= 3) total++;
-      const years = [];
+      const years: any= [];
       for (let i = 0; i < total; i++) {
         years.push({ value: yearRange.min + i, label: yearRange.min + i });
       }
@@ -248,7 +249,7 @@ const Filters: FC<{
           className="w-40 mx-1 rounded outline-none"
           onChange={handleYearFilterChange}
           value={{
-            value: searchFilters.year,
+            value: searchFilters.term === "Spring" ? searchFilters.year + 1 : searchFilters.year,
             label:
               searchFilters.year === currentPlan.years[0].year
                 ? 'All'
