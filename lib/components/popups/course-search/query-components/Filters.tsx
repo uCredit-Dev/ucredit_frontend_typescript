@@ -221,7 +221,7 @@ const Filters: FC<{
     if (yearRange) {
       let total = yearRange.max - yearRange.min + 1;
       if (new Date().getMonth() >= 3) total++;
-      const years: any= [];
+      const years: any = [];
       for (let i = 0; i < total; i++) {
         years.push({ value: yearRange.min + i, label: yearRange.min + i });
       }
@@ -249,7 +249,10 @@ const Filters: FC<{
           className="w-40 mx-1 rounded outline-none"
           onChange={handleYearFilterChange}
           value={{
-            value: searchFilters.term === "Spring" ? searchFilters.year + 1 : searchFilters.year,
+            value:
+              searchFilters.term === 'Spring'
+                ? searchFilters.year + 1
+                : searchFilters.year,
             label:
               searchFilters.year === currentPlan.years[0].year
                 ? 'All'
