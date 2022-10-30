@@ -118,10 +118,7 @@ const Form: FC<{ setSearching: (searching: boolean) => void }> = (props) => {
     // we need to check Fall, Spring, Intersession, and Summer to see if we need to increase year value.
     if (
       (semester === 'Spring' && date.getMonth() >= 9) ||
-      (semester === 'Intersession' && date.getMonth() === 11) ||
-      (semester === 'Summer' &&
-        date.getMonth() >= 2 &&
-        yearVal !== date.getFullYear())
+      (semester === 'Intersession' && date.getMonth() === 11)
     )
       dispatch(
         updateSearchFilters({ filter: 'year', value: date.getFullYear() + 1 }),
