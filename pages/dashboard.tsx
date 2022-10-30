@@ -81,13 +81,14 @@ const Dash: React.FC = () => {
           router.push('/dashboard');
           return;
         }
-        const reviewers = (await userService.getPlanReviewers(res.data._id))
-          .data[0];
-        if (Object.values(reviewers.reviewer_id).includes(user._id)) {
-          dispatch(updateSelectedPlan(res.data));
-          dispatch(updateReviewMode(ReviewMode.View));
-          setMode(ReviewMode.View);
-          return;
+        const reviewers = await userService.getPlanReviewers(res.data._id);
+        for (const reviewer of reviewers.data) {
+          if (Object.values(reviewer.reviewer_id).includes(user._id)) {
+            dispatch(updateSelectedPlan(res.data));
+            dispatch(updateReviewMode(ReviewMode.View));
+            setMode(ReviewMode.View);
+            return;
+          }
         }
         if (router.query.plan) {
           router.push('/dashboard');
