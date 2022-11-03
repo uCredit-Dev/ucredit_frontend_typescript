@@ -79,7 +79,7 @@ const MyApp: React.FC<{
         position="bottom-center"
         autoClose={4000}
         hideProgressBar={true}
-        newestOnTop={false}
+        newestOnTop={true}
         closeOnClick
         rtl={false}
         pauseOnFocusLoss
