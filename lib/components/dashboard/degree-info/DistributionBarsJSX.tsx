@@ -1,5 +1,6 @@
 import React, { FC, useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
+import { getDistributions } from '../../../resources/assets';
 import {
   Major,
   Plan, UserDistribution,
@@ -9,11 +10,12 @@ import {
   selectDistributions,
   selectPlan,
   selectTotalCredits,
+  updateDistributions,
   updateTotalCredits,
 } from '../../../slices/currentPlanSlice';
 import CourseBar from './CourseBar';
 
-const DistributionBarsJSX: FC<{ major_id: string, major: Major }> = ({ major_id, major }) => {
+const DistributionBarsJSX: FC<{ major_id: string }> = ({ major_id }) => {
   const dispatch = useDispatch();
   const distributions = useSelector(selectDistributions);
   const currentPlan: Plan = useSelector(selectPlan);
@@ -27,6 +29,16 @@ const DistributionBarsJSX: FC<{ major_id: string, major: Major }> = ({ major_id,
     new Array(distributions.length),
   );
 
+  // at first load 
+  useEffect(() => {
+    async function fetchData() {
+      let distributions = await getDistributions(currentPlan._id); 
+      dispatch(updateDistributions(distributions));
+    }
+    fetchData();
+    // dispatch(updateTotalCredits(distributions.))
+  }, [currentPlan._id]);
+
   // Update total credits everytime courses change.
   useEffect(() => {
     let tot = 0;
@@ -39,7 +51,7 @@ const DistributionBarsJSX: FC<{ major_id: string, major: Major }> = ({ major_id,
 
   // Update displayed JSX every time distributions get updated.
   useEffect(() => {
-    setCalculated(true);
+    setCalculated(false);
     console.log(distributions);
     const distributionJSX = distributions.map((dist: UserDistribution, i: number) => {
         return (
@@ -77,7 +89,7 @@ const DistributionBarsJSX: FC<{ major_id: string, major: Major }> = ({ major_id,
     //   />,
     // );
     setDistributionBarsJSX(distributionJSX);
-    setCalculated(false);
+    setCalculated(true);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [distributions, showDistributions]);
 

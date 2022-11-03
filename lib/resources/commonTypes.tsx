@@ -99,7 +99,7 @@ export type Year = {
 export type Plan = {
   _id: string;
   name: string;
-  major_ids: string[];
+  majors: string[];
   user_id: string;
   numYears: number;
   years: Year[];

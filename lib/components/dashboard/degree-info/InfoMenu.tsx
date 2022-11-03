@@ -23,23 +23,20 @@ interface Props {
 const InfoMenu: FC<Props> = () => {
   const currentPlan: Plan = useSelector(selectPlan);
   const currPlanCourses = useSelector(selectCurrentPlanCourses);
-  const major = useSelector(selectSelectedMajor);
+  const major_id = useSelector(selectSelectedMajor);
   const dispatch = useDispatch();
 
   // Update major when plan changes
   useEffect(() => {
-    if (!major) {
-      let firstMajor: string | undefined = currentPlan.major_ids[0];
+    if (!major_id) {
+      let firstMajor: string | undefined = currentPlan.majors[0];
       if (firstMajor === undefined) {
         return;
       }
-      let majorObj = getMajor(firstMajor);
-      if (majorObj) {
-        dispatch(updateSelectedMajor(majorObj));
-      }
+      dispatch(updateSelectedMajor(firstMajor));
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [currentPlan._id, currentPlan.major_ids, currPlanCourses]);
+  }, [currentPlan._id, currentPlan.majors]);
 
   /**
    * Callback used to change the major of degree progress when user has multiple majors
@@ -47,10 +44,7 @@ const InfoMenu: FC<Props> = () => {
    * @returns
    */
   const changeDisplayMajor = (selected: string) => {
-    const newMajor = allMajors.find(
-      (majorObj) => majorObj.degree_name === selected,
-    );
-    dispatch(updateSelectedMajor(newMajor ? newMajor.degree_name : allMajors[0].degree_name));
+    dispatch(updateSelectedMajor(selected));
   };
   return (
     <div className="z-[101] flex flex-col justify-between bg-red-100 h-min right-0 fixed top-0 right-0">
@@ -58,7 +52,7 @@ const InfoMenu: FC<Props> = () => {
         {/* <InfoCards /> */}
         <div className="w-[22.5vw] h-full">
           <Distributions
-            userMajors={currentPlan.major_ids}
+            userMajors={currentPlan.majors}
             changeDisplayMajor={changeDisplayMajor}
           />
         </div>
