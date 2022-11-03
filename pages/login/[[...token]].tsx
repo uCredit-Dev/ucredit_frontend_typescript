@@ -171,7 +171,9 @@ const Login: React.FC = () => {
    * Handles the case where we haven't logged in yet and users are exposed to the guest login button.
    */
   const preventPreLoginClick = () =>
-    toast.info("Please wait while we check if you're logged in...");
+    toast.info("Please wait while we check if you're logged in...", {
+      toastId: 'check login',
+    });
 
   /**
    * Handles custom session id change.
