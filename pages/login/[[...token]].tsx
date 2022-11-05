@@ -21,6 +21,7 @@ import axios from 'axios';
 import { User } from '../../lib/resources/commonTypes';
 import { userService } from '../../lib/services';
 import { updateAddingPlanStatus } from '../../lib/slices/popupSlice';
+import React from 'react';
 
 /**
  * The login page, designed after the Spotify login page..
