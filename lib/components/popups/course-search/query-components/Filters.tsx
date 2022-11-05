@@ -217,12 +217,12 @@ const Filters: FC<{
    * @returns an array of options for the year select.
    */
   const getYears = (): { value: number; label: number }[] => {
-    const yearRange = JSON.parse(sessionStorage.getItem('yearRange') || "null");
+    const yearRange = JSON.parse(sessionStorage.getItem('yearRange') || 'null');
     if (yearRange) {
       let total = yearRange.max - yearRange.min;
-      // spring courses released in october 
+      // spring courses released in october
       if (new Date().getMonth() >= 9) total++;
-      const years : any[] = [];
+      const years: any[] = [];
       for (let year = yearRange.min; year < yearRange.min + total; year++) {
         years.push({ value: year, label: year });
       }
