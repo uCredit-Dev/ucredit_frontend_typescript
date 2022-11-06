@@ -72,7 +72,7 @@ const PlanEditMenu: FC<{ mode: ReviewMode }> = ({ mode }) => {
   const updateName = (): void => {
     const body = {
       plan_id: currentPlan._id,
-      majors: currentPlan.major_ids,
+      major_ids: currentPlan.major_ids,
       name: planName,
     };
     fetch(getAPI(window) + '/plans/update', {
@@ -136,7 +136,7 @@ const PlanEditMenu: FC<{ mode: ReviewMode }> = ({ mode }) => {
     const newMajors = event.map((option) => option.label);
     const body = {
       plan_id: currentPlan._id,
-      majors: newMajors,
+      major_ids: newMajors,
     };
     axios
       .patch(getAPI(window) + '/plans/update', body)
