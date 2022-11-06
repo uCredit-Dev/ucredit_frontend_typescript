@@ -32,6 +32,7 @@ import { QuestionMarkCircleIcon } from '@heroicons/react/solid';
 import { XIcon } from '@heroicons/react/outline';
 import { selectReviewMode } from '../../../../slices/userSlice';
 import clsx from 'clsx';
+import { toast } from 'react-toastify';
 
 const departmentFilters = ['none', ...all_deps];
 const tagFilters = ['none', ...course_tags];
@@ -390,7 +391,23 @@ const Placeholder: FC<{ addCourse: (plan?: Plan) => void }> = (props) => {
             },
             'p-1 mr-0 text-white transition duration-200 ease-in transform rounded w-28 hover:bg-secondary bg-primary focus:outline-none hover:scale-105',
           )}
-          onClick={() => props.addCourse()}
+          onClick={() => {
+            if (
+              !placeholderTitle ||
+              !placeholderNumber ||
+              !placeholderDepartment ||
+              !placeholderTag ||
+              !placeholderCredits ||
+              !placeholderArea ||
+              !placeholderLevel
+            ) {
+              toast.error('You cannot leave fields empty!');
+            } else if (placeholderLevel === 'none') {
+              toast.error('Please specify Level!');
+            } else {
+              props.addCourse();
+            }
+          }}
           disabled={reviewMode === ReviewMode.View}
         >
           Add Course
