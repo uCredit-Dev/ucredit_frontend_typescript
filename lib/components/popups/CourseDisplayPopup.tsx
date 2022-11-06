@@ -190,7 +190,7 @@ const CourseDisplayPopup: FC = () => {
         }
         distributions.forEach((dist: UserDistribution, i: number) => {
           if (data.data.distributions.includes(dist._id)) {
-            distributions[i] = dist; 
+            distributions[i] = dist;
           }
         });
         dispatch(updateDistributions(distributions));

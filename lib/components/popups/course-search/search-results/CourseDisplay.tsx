@@ -1,6 +1,11 @@
 import React, { FC, useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
-import { UserDistribution, Plan, UserCourse, Year } from '../../../../resources/commonTypes';
+import {
+  UserDistribution,
+  Plan,
+  UserCourse,
+  Year,
+} from '../../../../resources/commonTypes';
 import {
   clearSearch,
   selectSemester,
@@ -146,7 +151,7 @@ const CourseDisplay: FC<{ cart: boolean }> = ({ cart }) => {
     }
     distributions.forEach((dist: UserDistribution, i: number) => {
       if (data.data.distributions.includes(dist._id)) {
-        distributions[i] = dist; 
+        distributions[i] = dist;
       }
     });
     dispatch(updateDistributions(distributions));

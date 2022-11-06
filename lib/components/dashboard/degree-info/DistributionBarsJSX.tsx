@@ -1,22 +1,20 @@
 import React, { FC, useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { getDistributions } from '../../../resources/assets';
-import {
-  Major,
-  Plan, UserDistribution,
-} from '../../../resources/commonTypes';
+import { Plan, UserDistribution } from '../../../resources/commonTypes';
 import {
   selectCurrentPlanCourses,
   selectDistributions,
   selectPlan,
-  selectSelectedMajor,
   selectTotalCredits,
   updateDistributions,
   updateTotalCredits,
 } from '../../../slices/currentPlanSlice';
 import CourseBar from './CourseBar';
 
-const DistributionBarsJSX: FC<{ selectedMajor: string }> = ({ selectedMajor }) => {
+const DistributionBarsJSX: FC<{ selectedMajor: string }> = ({
+  selectedMajor,
+}) => {
   const dispatch = useDispatch();
   const distributions = useSelector(selectDistributions);
   const currentPlan: Plan = useSelector(selectPlan);
@@ -30,10 +28,13 @@ const DistributionBarsJSX: FC<{ selectedMajor: string }> = ({ selectedMajor }) =
     new Array(distributions.length),
   );
 
-  // at first load 
+  // at first load
   useEffect(() => {
     async function fetchData() {
-      let distributions = await getDistributions(currentPlan._id, selectedMajor); 
+      let distributions = await getDistributions(
+        currentPlan._id,
+        selectedMajor,
+      );
       dispatch(updateDistributions(distributions));
     }
     fetchData();
@@ -46,15 +47,16 @@ const DistributionBarsJSX: FC<{ selectedMajor: string }> = ({ selectedMajor }) =
     currentPlan.years.forEach((year) => {
       tot += year.courses.length;
     });
-    updateTotalCredits(tot); 
+    updateTotalCredits(tot);
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [currPlanCourses]);  
+  }, [currPlanCourses]);
 
   // Update displayed JSX every time distributions get updated.
   useEffect(() => {
     setCalculated(false);
     console.log(distributions);
-    const distributionJSX = distributions.map((dist: UserDistribution, i: number) => {
+    const distributionJSX = distributions.map(
+      (dist: UserDistribution, i: number) => {
         return (
           <div key={dist._id}>
             <div key={dist.name + 0 + dist._id}>
@@ -66,10 +68,10 @@ const DistributionBarsJSX: FC<{ selectedMajor: string }> = ({ selectedMajor }) =
             </div>
           </div>
         );
-      }
+      },
     );
     // distributionJSX.unshift(
-    //   // TODO: replace with distributions from backend 
+    //   // TODO: replace with distributions from backend
     //   <CourseBar
     //     distribution={{
     //       name: 'Total Credits',

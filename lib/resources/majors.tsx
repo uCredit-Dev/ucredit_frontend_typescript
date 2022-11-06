@@ -5774,7 +5774,9 @@ const no_degree: Major = {
   wi_credit: 0,
 };
 
-export async function getMajorFromCommonName(name: string): Promise<Major | null> {
+export async function getMajorFromCommonName(
+  name: string,
+): Promise<Major | null> {
   const resp: Major | null = await axios.get(
     getAPI(window) + '/courses/' + name,
   );

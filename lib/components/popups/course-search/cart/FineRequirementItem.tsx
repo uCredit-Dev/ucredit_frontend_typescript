@@ -28,7 +28,9 @@ const FineRequirementListItem: FC<{
       onClick={handleFineReqClick}
     >
       <div className="flex flex-col justify-center w-full h-full">
-        <div className="break-normal">{parse(props.itemRequirement.description)}</div>{' '}
+        <div className="break-normal">
+          {parse(props.itemRequirement.description)}
+        </div>{' '}
         {/* ALL A BIG TODO: WIll have to format this later */}
         <div className="">
           {props.itemRequirement.planned} /{' '}

@@ -64,9 +64,9 @@ export type UserCourse = {
   _id: string;
   title: string;
   term: SemesterType;
-  termOffered?: string; 
-  year: string; 
-  version?: string; 
+  termOffered?: string;
+  year: string;
+  version?: string;
   number: string;
   department?: string;
   tags?: string[];
@@ -79,11 +79,11 @@ export type UserCourse = {
   isTransfer: boolean;
   ratings?: number[];
   distribution_ids?: string[];
-  fineReq_ids?: string[],
+  fineReq_ids?: string[];
   plan_id: string;
   user_id: string;
   year_id?: string;
-  forceSatisfied?: string; 
+  forceSatisfied?: string;
   level: string;
 };
 
@@ -164,14 +164,14 @@ export type UserDistribution = {
   min_credits_per_course: number;
   user_id: string;
   plan_id: string;
-  major_id: string; 
+  major_id: string;
   fineReq_ids?: string[];
-  planned: number; 
-  current: number; 
-  satisfied: boolean; 
+  planned: number;
+  current: number;
+  satisfied: boolean;
   user_select: boolean;
   double_count?: string[];
-  pathing?: number; 
+  pathing?: number;
 };
 
 export type SemesterType =
@@ -202,11 +202,11 @@ export type UserFineReq = {
   required_credits: number;
   description: string;
   criteria: string;
-  plan_id: string; 
-  major_id: string; 
-  distribution_id: string; 
-  planned: number; 
-  current: number; 
+  plan_id: string;
+  major_id: string;
+  distribution_id: string;
+  planned: number;
+  current: number;
   double_count?: string[];
 };
 

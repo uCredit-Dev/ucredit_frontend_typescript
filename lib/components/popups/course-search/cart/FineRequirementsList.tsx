@@ -1,7 +1,10 @@
 import { useState, FC } from 'react';
 import FineRequirementListItem from './FineRequirementItem';
-import { requirements } from '../../../dashboard/degree-info/distributionFunctions';
-import { UserDistribution, UserFineReq } from '../../../../resources/commonTypes';
+import {
+  UserDistribution,
+  UserFineReq,
+} from '../../../../resources/commonTypes';
+import React from 'react';
 
 const FineRequirementsList: FC<{
   searching: boolean;

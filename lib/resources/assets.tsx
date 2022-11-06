@@ -4,13 +4,11 @@ import {
   Course,
   User,
   Plan,
-  Major,
   SemesterType,
   UserCourse,
   SISRetrievedCourse,
   Year,
 } from './commonTypes';
-import { allMajors } from './majors';
 import { store } from '../appStore/store';
 
 export const getAPI = (window) =>
@@ -828,7 +826,7 @@ const checkOldPrereqNumbers = (
   courseNumber: string | undefined,
   preReqNumber: string | undefined,
 ): boolean => {
-  if (!courseNumber || !preReqNumber) return false; 
+  if (!courseNumber || !preReqNumber) return false;
   const courseNumberArray = courseNumber.split('.');
   const preReqNumberArray = preReqNumber.split('.');
   if (
@@ -980,18 +978,19 @@ export const checkAllPrereqs = (
 };
 
 export function getMajor(name: string): any {
-  let majorObj = null; 
-  axios.get(getAPI(window) + '/majors/' + name)
-    .then((resp) => {
-      if (resp === null) {
-        throw Error('Major not found');
-      }
-      majorObj = resp.data.data;
-    });
-  return majorObj; 
+  let majorObj = null;
+  axios.get(getAPI(window) + '/majors/' + name).then((resp) => {
+    if (resp === null) {
+      throw Error('Major not found');
+    }
+    majorObj = resp.data.data;
+  });
+  return majorObj;
 }
 
 export async function getDistributions(plan_id: string, major_id: string) {
-  const res = await axios.get(getAPI(window) + '/distributionsByPlan/', { params: { plan_id, major_id }}); 
-  return res.data.data; 
+  const res = await axios.get(getAPI(window) + '/distributionsByPlan/', {
+    params: { plan_id, major_id },
+  });
+  return res.data.data;
 }

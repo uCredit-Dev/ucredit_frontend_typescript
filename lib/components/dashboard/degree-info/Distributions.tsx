@@ -1,5 +1,5 @@
 import { XIcon } from '@heroicons/react/solid';
-import React, { FC, useEffect, useState } from 'react';
+import React, { FC, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import Select from 'react-select';
 import { selectSelectedMajor } from '../../../slices/currentPlanSlice';
@@ -16,7 +16,7 @@ const Distributions: FC<{
   // Component state setup.
   const [disclaimer, setDisclaimer] = useState<boolean>(true);
   const dispatch = useDispatch();
-  const selectedMajor = useSelector(selectSelectedMajor); 
+  const selectedMajor = useSelector(selectSelectedMajor);
 
   const majorOptions = userMajors.map((m, index) => ({
     value: index,
@@ -24,7 +24,7 @@ const Distributions: FC<{
   }));
 
   const getHref = (): string => {
-    // TODO 
+    // TODO
     return 'jhu.edu';
     // return majorObj ? majorObj.url : '';
   };
@@ -53,7 +53,9 @@ const Distributions: FC<{
           hideSelectedOptions
         />
       )}
-      <DistributionBarsJSX selectedMajor={selectedMajor ? selectedMajor : userMajors[0]} />
+      <DistributionBarsJSX
+        selectedMajor={selectedMajor ? selectedMajor : userMajors[0]}
+      />
       {disclaimer && (
         <div
           id="dropdown-cta"

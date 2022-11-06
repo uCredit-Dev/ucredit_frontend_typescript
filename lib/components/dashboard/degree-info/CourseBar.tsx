@@ -16,7 +16,10 @@ import {
 import { clearSearch, updatePlaceholder } from '../../../slices/searchSlice';
 import { updateCartInvokedBySemester } from '../../../slices/userSlice';
 import Comments from '../Comments';
-import { Distribution, ReviewMode, UserDistribution } from '../../../resources/commonTypes';
+import {
+  ReviewMode,
+  UserDistribution,
+} from '../../../resources/commonTypes';
 
 /**
  * A distribution bar.
@@ -32,9 +35,7 @@ const CourseBar: FC<{
   bgcolor: string;
   mode?: ReviewMode;
 }> = ({ distribution, general, bgcolor, mode }) => {
-  const [plannedCredits, setPlannedCredits] = useState(
-    distribution.planned,
-  );
+  const [plannedCredits, setPlannedCredits] = useState(distribution.planned);
   const [hovered, setHovered] = useState(false);
 
   const currPlanCourses = useSelector(selectCurrentPlanCourses);
@@ -52,18 +53,15 @@ const CourseBar: FC<{
     let temp = distribution.planned;
     setPlannedCredits(temp);
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [
-    currPlanCourses,
-    distribution.planned,
-    distribution,
-    distributions,
-  ]);
+  }, [currPlanCourses, distribution.planned, distribution, distributions]);
 
   // Onclick for course bar, opens cart popup passing in corresponding props
   const openCartPopup = () => {
     dispatch(updateCartInvokedBySemester(false));
     // Filter for the correst distributions from redux store
-    let distrs = distributions.filter((dist) => dist.name === distribution.name)[0];
+    let distrs = distributions.filter(
+      (dist) => dist.name === distribution.name,
+    )[0];
     if (distrs) {
       // if the distribution exists, then update the cart
       // at this point we have access to the current requirement
