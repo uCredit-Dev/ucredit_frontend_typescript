@@ -991,17 +991,7 @@ export function getMajor(name: string): any {
   return majorObj; 
 }
 
-export async function getDistributions(plan_id: string) {
-  // let distributions: any[] = []; 
-  // axios.get(getAPI(window) + '/distributionsByPlan/' + plan_id)
-  //   .then((resp) => {
-  //     if (resp === null) {
-  //       throw Error('Major not found');
-  //     }
-  //     distributions = resp.data.data;
-  //     console.log(distributions);
-  //   });
-  // return distributions; 
-  const res = await axios.get(getAPI(window) + '/distributionsByPlan/' + plan_id); 
+export async function getDistributions(plan_id: string, major_id: string) {
+  const res = await axios.get(getAPI(window) + '/distributionsByPlan/', { params: { plan_id, major_id }}); 
   return res.data.data; 
 }
