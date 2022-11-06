@@ -29,14 +29,14 @@ const InfoMenu: FC<Props> = () => {
   // Update major when plan changes
   useEffect(() => {
     if (!major_id) {
-      let firstMajor: string | undefined = currentPlan.majors[0];
+      let firstMajor: string | undefined = currentPlan.major_ids[0];
       if (firstMajor === undefined) {
         return;
       }
       dispatch(updateSelectedMajor(firstMajor));
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [currentPlan._id, currentPlan.majors]);
+  }, [currentPlan._id, currentPlan.major_ids]);
 
   /**
    * Callback used to change the major of degree progress when user has multiple majors
@@ -52,7 +52,7 @@ const InfoMenu: FC<Props> = () => {
         {/* <InfoCards /> */}
         <div className="w-[22.5vw] h-full">
           <Distributions
-            userMajors={currentPlan.majors}
+            userMajors={currentPlan.major_ids}
             changeDisplayMajor={changeDisplayMajor}
           />
         </div>

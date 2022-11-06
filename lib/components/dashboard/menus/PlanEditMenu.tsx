@@ -72,7 +72,7 @@ const PlanEditMenu: FC<{ mode: ReviewMode }> = ({ mode }) => {
   const updateName = (): void => {
     const body = {
       plan_id: currentPlan._id,
-      majors: currentPlan.majors,
+      majors: currentPlan.major_ids,
       name: planName,
     };
     fetch(getAPI(window) + '/plans/update', {
@@ -348,7 +348,7 @@ const PlanEditMenu: FC<{ mode: ReviewMode }> = ({ mode }) => {
                               isClearable={false}
                               options={majorOptions}
                               value={majorOptions.filter((major) =>
-                                currentPlan.majors.includes(major.label),
+                                currentPlan.major_ids.includes(major.label),
                               )}
                               styles={customStyles}
                               onChange={handleMajorChange}

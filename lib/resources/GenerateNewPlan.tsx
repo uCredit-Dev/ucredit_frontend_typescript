@@ -41,10 +41,11 @@ const GenerateNewPlan: FC = () => {
   // UseEffect that generates a new plan everytime generateNew is true.
   useEffect(() => {
     if (!generatePlanAddStatus || toAddMajors.length === 0) return;
+    console.log(toAddMajors);
     const planBody = {
       name: 'Unnamed Plan',
       user_id: user._id,
-      majors: toAddMajors.map((major) => major.degree_name),
+      major_ids: toAddMajors,
       year: user.grade,
       expireAt:
         user._id === 'guestUser' ? Date.now() + 60 * 60 * 24 * 1000 : undefined,

@@ -87,8 +87,7 @@ const HandlePlanShareDummy = () => {
     if (cookieVal === '') {
       // if not, create a user first, then add
       dispatch(updateToAddName(plan.name));
-      const toAddmajors = plan.majors.map((major) => getMajor(major)); 
-      Promise.all(toAddmajors).then((values) => dispatch(updateToAddMajors(values)));
+      dispatch(updateToAddMajors(plan.major_ids));
       setToAdd(years);
       dispatch(updateUser(guestUser));
       dispatch(updateGeneratePlanAddStatus(true));
@@ -101,8 +100,7 @@ const HandlePlanShareDummy = () => {
 
   const afterPromise = (plan: Plan, years: Year[]) => {
     dispatch(updateToAddName(plan.name));
-    const toAddmajors = plan.majors.map((major) => getMajor(major)); 
-    Promise.all(toAddmajors).then((values) => dispatch(updateToAddMajors(values)));
+    dispatch(updateToAddMajors(plan.major_ids));
     dispatch(updateGeneratePlanAddStatus(true));
     setToAdd(years);
     setShouldAdd(true);
