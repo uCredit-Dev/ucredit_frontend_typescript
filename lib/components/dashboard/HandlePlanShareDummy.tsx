@@ -3,7 +3,7 @@ import React, { useEffect, useState } from 'react';
 import { useCookies } from 'react-cookie';
 import { useDispatch, useSelector } from 'react-redux';
 import { toast } from 'react-toastify';
-import { getAPI, guestUser, getMajor } from '../../resources/assets';
+import { getAPI, guestUser } from '../../resources/assets';
 import { Plan, UserCourse, Year } from '../../resources/commonTypes';
 import {
   selectCurrentPlanCourses,
@@ -328,6 +328,8 @@ const HandlePlanShareDummy = () => {
             isPlaceholder: false,
             number: course.number,
             areas: course.areas,
+            tags: course.tags, 
+            department: course.department, 
             preReq: course.preReq,
             level: course.level,
             expireAt:

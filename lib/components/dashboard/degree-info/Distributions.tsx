@@ -2,6 +2,7 @@ import { XIcon } from '@heroicons/react/solid';
 import React, { FC, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import Select from 'react-select';
+import { allMajors } from '../../../resources/majors';
 import { selectSelectedMajor } from '../../../slices/currentPlanSlice';
 import { updateInfoPopup } from '../../../slices/popupSlice';
 import DistributionBarsJSX from './DistributionBarsJSX';
@@ -24,9 +25,7 @@ const Distributions: FC<{
   }));
 
   const getHref = (): string => {
-    // TODO
-    return 'jhu.edu';
-    // return majorObj ? majorObj.url : '';
+    return selectedMajor ? allMajors[selectedMajor].url : '';
   };
 
   return (

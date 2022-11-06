@@ -7,9 +7,7 @@ import {
   selectSelectedMajor,
   updateSelectedMajor,
 } from '../../../slices/currentPlanSlice';
-import { getMajor } from '../../../resources/assets';
-import { Major, Plan, ReviewMode } from '../../../resources/commonTypes';
-import { allMajors } from '../../../resources/majors';
+import { Plan, ReviewMode } from '../../../resources/commonTypes';
 import { useDispatch } from 'react-redux';
 
 interface Props {

@@ -66,7 +66,7 @@ export type UserCourse = {
   term: SemesterType;
   termOffered?: string;
   year: string;
-  version?: string;
+  version: string;
   number: string;
   department?: string;
   tags?: string[];

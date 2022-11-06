@@ -1,5 +1,4 @@
 import {
-  Major,
   Plan,
   ReviewMode,
   SemesterType,
@@ -13,7 +12,7 @@ import Semester from '../dashboard/course-list/Semester';
 import { statusReadable } from '../../../pages/reviewer';
 import { userService } from '../../services';
 import DistributionBarsJSX from '../dashboard/degree-info/DistributionBarsJSX';
-import { allMajors } from '../../resources/majors';
+import { allMajorNames } from '../../resources/majors';
 
 const getNextSem = (): { year: Number; semester: SemesterType } => {
   const date = new Date();
@@ -41,18 +40,18 @@ const PlanSummary: FC<{
     })(),
   );
   const [courses, setCourses] = useState<UserCourse[]>(plan.years[0].courses);
-  const [majors, setMajors] = useState<Major[]>([]);
-  const [selectedMajor, setSelectedMajor] = useState<Major>(allMajors[0]);
+  const [majors, setMajors] = useState<string[]>([]);
+  const [selectedMajor, setSelectedMajor] = useState<string>(allMajorNames[0]);
   const [semesters, setSemesters] = useState<
     { label: string; content: string }[]
   >([]);
 
   useEffect(() => {
     const { year, semester } = getNextSem();
-    const majorAcc: Major[] = [];
+    const majorAcc: string[] = [];
     plan.major_ids.forEach((m) => {
-      allMajors.forEach((ma) => {
-        if (ma.degree_name === m) majorAcc.push(ma);
+      allMajorNames.forEach((ma) => {
+        if (ma === m) majorAcc.push(ma);
       });
     });
     setMajors(majorAcc);
@@ -193,23 +192,23 @@ const PlanSummary: FC<{
                   width={'100%'}
                   options={majors.map((m) => {
                     return {
-                      label: m.degree_name,
-                      content: m.degree_name.toString(),
+                      label: m,
+                      content: m.toString(),
                     };
                   })}
                   onChange={async (values) => {
                     const value = values[0];
                     if (!value) return;
-                    allMajors.forEach((m) => {
-                      if (m.degree_name === value.label) setSelectedMajor(m);
+                    allMajorNames.forEach((m) => {
+                      if (m === value.label) setSelectedMajor(m);
                     });
                   }}
                   defaultValue={
-                    allMajors[0] ? allMajors[0].degree_name : 'loading...'
+                    allMajorNames[0] ? allMajorNames[0] : 'loading...'
                   }
                 />
               )}
-              <DistributionBarsJSX major={selectedMajor.degree_name} />
+              <DistributionBarsJSX selectedMajor={selectedMajor} />
             </div>
           </div>
           <div className="px-4 py-3 rounded-b-lg bg-gray-50 sm:px-6 sm:flex sm:flex-row-reverse ">

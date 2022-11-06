@@ -2,7 +2,7 @@ import { FC } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { toast } from 'react-toastify';
 import { selectPlanList } from '../../slices/userSlice';
-import { allMajors } from '../../resources/majors';
+import { allMajorNames } from '../../resources/majors';
 import Select from 'react-select';
 import {
   selectToAddName,
@@ -12,13 +12,12 @@ import {
   updateToAddName,
   updateToAddMajors,
 } from '../../slices/popupSlice';
-import { Major } from '../../resources/commonTypes';
 import React from 'react';
 
 const majorOptions = [
-  ...allMajors.map((major, index) => ({
+  ...allMajorNames.map((major, index) => ({
     value: index,
-    label: major.degree_name,
+    label: major,
   })),
 ];
 

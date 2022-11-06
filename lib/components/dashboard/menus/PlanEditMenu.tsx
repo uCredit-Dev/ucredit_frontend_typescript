@@ -11,7 +11,7 @@ import Select, {
 import { toast } from 'react-toastify';
 import { getAPI } from '../../../resources/assets';
 import { Plan, ReviewMode, Year } from '../../../resources/commonTypes';
-import { allMajors } from '../../../resources/majors';
+import { allMajorNames, allMajors } from '../../../resources/majors';
 import {
   selectPlan,
   updateCurrentPlanCourses,
@@ -35,9 +35,9 @@ import clsx from 'clsx';
 import { selectSearchStatus } from '../../../slices/searchSlice';
 import { Popover, Transition } from '@headlessui/react';
 
-const majorOptions = allMajors.map((major, index) => ({
+const majorOptions = allMajorNames.map((major, index) => ({
   value: index,
-  label: major.degree_name,
+  label: major,
 }));
 
 const PlanEditMenu: FC<{ mode: ReviewMode }> = ({ mode }) => {
@@ -161,14 +161,14 @@ const PlanEditMenu: FC<{ mode: ReviewMode }> = ({ mode }) => {
   const MultiValue = (
     props: MultiValueProps<typeof majorOptions[number], true>,
   ) => {
-    const major = allMajors.find(
-      (majorObj) => majorObj.degree_name === props.data.label,
+    const major = allMajorNames.find(
+      (major) => major === props.data.label,
     );
     // @ts-ignore
     const showAsAbbrev = props.selectProps.value.length > 1;
     return (
       <components.MultiValue {...props}>
-        {showAsAbbrev ? major?.abbrev : major?.degree_name}
+        {showAsAbbrev ? allMajors[major]["abbrev"] : major}
       </components.MultiValue>
     );
   };

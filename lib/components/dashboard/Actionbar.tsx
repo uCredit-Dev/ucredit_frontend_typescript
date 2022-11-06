@@ -4,7 +4,7 @@ import { useSelector, useDispatch } from 'react-redux';
 import { toast } from 'react-toastify';
 import { getAPI } from '../../resources/assets';
 import { ReviewMode, Year, Plan } from '../../resources/commonTypes';
-import { allMajors } from '../../resources/majors';
+import { allMajorNames, allMajors } from '../../resources/majors';
 import {
   selectPlan,
   updateSelectedPlan,
@@ -33,9 +33,9 @@ import Menu from '@mui/material/Menu';
 import Reviewers from './menus/reviewers/Reviewers';
 import PersonIcon from '@mui/icons-material/Person';
 
-const majorOptions = allMajors.map((major) => ({
-  abbrev: major.abbrev,
-  name: major.degree_name,
+const majorOptions = allMajorNames.map((major) => ({
+  abbrev: allMajors[major]["abbrev"],
+  name: major,
 }));
 
 const Actionbar: FC<{ mode: ReviewMode }> = ({ mode }) => {
