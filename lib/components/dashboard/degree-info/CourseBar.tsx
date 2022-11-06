@@ -30,7 +30,7 @@ import {
  * M tried @prop bgcolor - color of this distribution
  */
 const CourseBar: FC<{
-  distribution: UserDistribution;
+  distribution: UserDistribution | any;
   general: boolean;
   bgcolor: string;
   mode?: ReviewMode;

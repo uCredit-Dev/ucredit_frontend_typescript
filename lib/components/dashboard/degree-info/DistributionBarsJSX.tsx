@@ -1,7 +1,8 @@
 import React, { FC, useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { getDistributions } from '../../../resources/assets';
-import { Plan, UserDistribution } from '../../../resources/commonTypes';
+import { Plan, UserCourse, UserDistribution, Year } from '../../../resources/commonTypes';
+import { allMajors } from '../../../resources/majors';
 import {
   selectCurrentPlanCourses,
   selectDistributions,
@@ -39,15 +40,18 @@ const DistributionBarsJSX: FC<{ selectedMajor: string }> = ({
     }
     fetchData();
     // dispatch(updateTotalCredits(distributions.))
-  }, [currentPlan._id, selectedMajor]);
+  }, [currentPlan._id, selectedMajor, currPlanCourses, dispatch]);
 
   // Update total credits everytime courses change.
   useEffect(() => {
-    let tot = 0;
-    currentPlan.years.forEach((year) => {
-      tot += year.courses.length;
+    let newTotalCredits = 0;
+    currentPlan.years.forEach((year: Year, yearIndex: number) => {
+      year.courses.forEach((course: UserCourse) => {
+        if (course._id === 'invalid_course') return;
+        newTotalCredits += course.credits;
+      });
+      dispatch(updateTotalCredits(newTotalCredits));
     });
-    updateTotalCredits(tot);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [currPlanCourses]);
 
@@ -70,27 +74,23 @@ const DistributionBarsJSX: FC<{ selectedMajor: string }> = ({
         );
       },
     );
-    // distributionJSX.unshift(
-    //   // TODO: replace with distributions from backend
-    //   <CourseBar
-    //     distribution={{
-    //       name: 'Total Credits',
-    //       criteria: '',
-    //       required_credits: major !== null ? major.total_degree_credit : 0,
-    //       planned: totalCredits,
-    //       description:
-    //         major !== null
-    //           ? 'This is the total amount of credits that is required for ' +
-    //           major
-    //           : '',
-    //     }}
-    //     completed={
-    //       totalCredits >= (major !== null ? major.total_degree_credit : 0)
-    //     }
-    //     general={true}
-    //     bgcolor=""
-    //   />,
-    // );
+    distributionJSX.unshift(
+      <CourseBar
+        distribution={{
+          name: 'Total Credits',
+          required_credits: allMajors[selectedMajor].total_degree_credit, 
+          planned: totalCredits,
+          description:
+            selectedMajor !== null
+              ? 'This is the total amount of credits that is required for ' +
+              selectedMajor
+              : '',
+          satisfied: totalCredits >= allMajors[selectedMajor].total_degree_credit, 
+        }}
+        general={true}
+        bgcolor={""}
+      />,
+    );
     setDistributionBarsJSX(distributionJSX);
     setCalculated(true);
     // eslint-disable-next-line react-hooks/exhaustive-deps
