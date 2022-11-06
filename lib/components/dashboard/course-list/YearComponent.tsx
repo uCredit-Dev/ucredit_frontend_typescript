@@ -370,7 +370,9 @@ const YearComponent: FC<{
       )}
       onMouseLeave={() => {
         setDraggable(true);
-        setDisplay(false);
+        if (!collapse) {
+          setDisplay(false);
+        }
         setHovered(false);
       }}
       onMouseEnter={() => {
