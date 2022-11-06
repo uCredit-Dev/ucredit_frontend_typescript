@@ -395,8 +395,6 @@ const Placeholder: FC<{ addCourse: (plan?: Plan) => void }> = (props) => {
             if (
               !placeholderTitle ||
               !placeholderNumber ||
-              !placeholderDepartment ||
-              !placeholderTag ||
               !placeholderCredits ||
               !placeholderArea ||
               !placeholderLevel
