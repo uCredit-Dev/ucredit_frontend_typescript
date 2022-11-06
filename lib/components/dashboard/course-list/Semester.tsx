@@ -208,7 +208,7 @@ const Semester: FC<{
         year: semesterYear._id,
         credits: version.credits === '' ? 0 : version.credits,
         isPlaceholder: placeholder,
-        area: inspectedArea,
+        areas: inspectedArea,
         version: semesterName + ' ' + semesterYear.year,
         expireAt:
           user._id === 'guestUser'
