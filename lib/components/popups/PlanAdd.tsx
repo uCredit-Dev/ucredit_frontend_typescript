@@ -13,6 +13,7 @@ import {
   updateToAddMajors,
 } from '../../slices/popupSlice';
 import { Major } from '../../resources/commonTypes';
+import React from 'react';
 
 const majorOptions = [
   ...allMajors.map((major, index) => ({
@@ -60,9 +61,9 @@ const PlanAdd: FC = () => {
 
   // Handles changing the major of the new plan.
   const handleMajorChange = (event: any) => {
-    const selectedMajors: Major[] = [];
-    event.forEach(({ value }) => {
-      selectedMajors.push(allMajors[value]);
+    const selectedMajors: string[] = [];
+    event.forEach(({ label }) => {
+      selectedMajors.push(label);
     });
     dispatch(updateToAddMajors(selectedMajors));
   };

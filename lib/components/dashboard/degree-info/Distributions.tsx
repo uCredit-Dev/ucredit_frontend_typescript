@@ -16,7 +16,7 @@ const Distributions: FC<{
   // Component state setup.
   const [disclaimer, setDisclaimer] = useState<boolean>(true);
   const dispatch = useDispatch();
-  const major_id = useSelector(selectSelectedMajor); 
+  const selectedMajor = useSelector(selectSelectedMajor); 
 
   const majorOptions = userMajors.map((m, index) => ({
     value: index,
@@ -44,7 +44,7 @@ const Distributions: FC<{
       {userMajors.length > 1 && (
         <Select
           options={majorOptions}
-          value={majorOptions.find(({ label }) => label === major_id)}
+          value={majorOptions.find(({ label }) => label === selectedMajor)}
           onChange={(event) => {
             changeDisplayMajor(event?.label);
           }}
@@ -53,7 +53,7 @@ const Distributions: FC<{
           hideSelectedOptions
         />
       )}
-      <DistributionBarsJSX major_id={major_id ? major_id : userMajors[0]} />
+      <DistributionBarsJSX selectedMajor={selectedMajor ? selectedMajor : userMajors[0]} />
       {disclaimer && (
         <div
           id="dropdown-cta"
