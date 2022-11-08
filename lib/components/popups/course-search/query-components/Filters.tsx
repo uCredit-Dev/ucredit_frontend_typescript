@@ -10,7 +10,6 @@ import {
   updateSearchFilters,
 } from '../../../../slices/searchSlice';
 import { selectPlan } from '../../../../slices/currentPlanSlice';
-import React from 'react';
 
 const creditFilters = ['Any', 0, 1, 2, 3, 4];
 const distributionFilters = ['N', 'S', 'H', 'Q', 'E'];
