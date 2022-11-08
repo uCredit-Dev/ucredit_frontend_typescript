@@ -190,6 +190,25 @@ const DistributionBarsJSX: FC<{ major: Major }> = ({ major }) => {
             counted = true;
         });
         checked.push(courseObj.resp);
+      } else if (course.number === 'placeholder') {
+        const resp: Course = {
+          title: '',
+          number: course.number,
+          areas: course.area,
+          term: course.term,
+          school: '',
+          department: course.department,
+          credits: course.credits.toString(),
+          wi: course.wi,
+          bio: '',
+          tags: course.tags,
+          preReq: course.preReq,
+          restrictions: [],
+          version: course.version,
+          level: course.level,
+        };
+        courseObj.resp = resp;
+        checked.push(courseObj.resp);
       }
       const localReqCopy: [string, requirements[]][] = copyReqs(reqCopy);
       if (!counted) updateReqs(localReqCopy, courseObj.resp);
