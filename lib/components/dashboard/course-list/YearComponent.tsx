@@ -1,4 +1,4 @@
-import React, { useState, useEffect, FC } from 'react';
+import React, { useState, useEffect, useRef, FC } from 'react';
 import Semester from './Semester';
 import { ReviewMode, UserCourse, Year } from '../../../resources/commonTypes';
 import { DotsVerticalIcon } from '@heroicons/react/outline';
@@ -76,6 +76,8 @@ const YearComponent: FC<{
   const inspected = useSelector(selectInspectedCourse);
   const dispatch = useDispatch();
 
+  let wrapperRef = useRef(null);
+
   // Updates and parses all courses into semesters whenever the current plan or courses array changes.
   useEffect(() => {
     // For each of the user's courses for this year, put them in their respective semesters.
@@ -105,6 +107,30 @@ const YearComponent: FC<{
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [yearName]);
+
+  useEffect(() => {
+    const handleClickOutside = (e: MouseEvent) => {
+      if (
+        !display ||
+        // @ts-ignore: property does not exist error
+        (typeof e.target.className === 'string' &&
+          // @ts-ignore: property does not exist error
+          e.target.className.includes('option')) ||
+        // @ts-ignore: property does not exist error
+        e.target.tagName === 'svg' ||
+        // @ts-ignore: property does not exist error
+        e.target.tagName === 'path' ||
+        // @ts-ignore: property does not exist error
+        (e.target.tagName === 'DIV' && e.target.className.includes('css'))
+      )
+        return;
+      const currentWrapperRef: any = wrapperRef.current;
+      if (currentWrapperRef && !currentWrapperRef.contains(e.target))
+        setDisplay(false);
+    };
+    document.addEventListener('click', handleClickOutside);
+    return () => document.removeEventListener('click', handleClickOutside);
+  }, [wrapperRef, display]);
 
   /**
    * Updates the credit distribution of the year.
@@ -512,16 +538,18 @@ const YearComponent: FC<{
             )}
           </div>
         </div>
-        {display && (
-          <YearSettingsDropdown
-            year={year}
-            setToShow={setToShow}
-            setDisplay={setDisplay}
-            toShow={toShow}
-            setEdittingName={setEdittingName}
-            id={id}
-          />
-        )}
+        <div ref={wrapperRef}>
+          {display && (
+            <YearSettingsDropdown
+              year={year}
+              setToShow={setToShow}
+              setDisplay={setDisplay}
+              toShow={toShow}
+              setEdittingName={setEdittingName}
+              id={id}
+            />
+          )}
+        </div>
       </div>
       {collapse ? (
         <div
