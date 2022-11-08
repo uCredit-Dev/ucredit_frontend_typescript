@@ -6,6 +6,7 @@ import {
   ReviewRequestStatus,
 } from '../../../lib/resources/commonTypes';
 import Status from './Status';
+import React from 'react';
 
 const settings = [
   'Recently Updated',

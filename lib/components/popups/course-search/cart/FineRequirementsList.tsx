@@ -1,4 +1,4 @@
-import { useState, FC } from 'react';
+import React, { useState, FC } from 'react';
 import FineRequirementListItem from './FineRequirementItem';
 import { requirements } from '../../../dashboard/degree-info/distributionFunctions';
 

@@ -23,6 +23,7 @@ import popupReducer, {
 import experimentReducer from '../../slices/experimentSlice';
 import { ToastContainer } from 'react-toastify';
 import { allMajors as mockAllMajors } from '../../resources/majors';
+import React from 'react';
 
 let history = createMemoryHistory({ initialEntries: ['/login'] });
 let mockStore = configureStore({

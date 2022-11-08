@@ -1,4 +1,5 @@
 import { RefreshIcon } from '@heroicons/react/solid';
+import React from 'react';
 
 const MobileTurnPage = () => {
   return (

@@ -6,6 +6,7 @@ import {
 import { useDispatch, useSelector } from 'react-redux';
 import clsx from 'clsx';
 import { FC } from 'react';
+import React from 'react';
 
 const ExperimentPopup: FC<{
   experimentPopup: boolean;

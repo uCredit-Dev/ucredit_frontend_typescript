@@ -11,6 +11,7 @@ import {
   updateDeleteCourseStatus,
   updateCourseToDelete,
 } from '../../slices/popupSlice';
+import React from 'react';
 
 /**
  * This is the confirmation popup that appears when users press the button to delete a course.

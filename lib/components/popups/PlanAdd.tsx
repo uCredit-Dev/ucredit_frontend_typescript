@@ -13,6 +13,7 @@ import {
   updateToAddMajors,
 } from '../../slices/popupSlice';
 import { Major } from '../../resources/commonTypes';
+import React from 'react';
 
 const majorOptions = [
   ...allMajors.map((major, index) => ({

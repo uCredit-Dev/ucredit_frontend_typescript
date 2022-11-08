@@ -1,4 +1,4 @@
-import { FC } from 'react';
+import React, { FC } from 'react';
 import { SISRetrievedCourse, Course } from '../../../../resources/commonTypes';
 import { useDispatch, useSelector } from 'react-redux';
 import {
