@@ -96,7 +96,6 @@ const SearchList: FC<{
         }
       });
     }
-    console.log(toDisplay);
     return toDisplay;
   };
 

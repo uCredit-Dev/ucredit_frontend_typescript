@@ -30,7 +30,7 @@ const Dash: React.FC = () => {
     if (!user || user._id === 'noUser')
       router.push('/login' + router.asPath.substring(10));
 
-    const yearRange = localStorage.getItem('yearRange');
+    const yearRange = sessionStorage.getItem('yearRange');
     if (!yearRange) {
       axios
         .get(getAPI(window) + '/getYearRange')
@@ -39,9 +39,8 @@ const Dash: React.FC = () => {
           const yearRange = {
             min,
             max,
-            expiry: new Date().getTime() + 1829800000,
           };
-          localStorage.setItem('yearRange', JSON.stringify(yearRange));
+          sessionStorage.setItem('yearRange', JSON.stringify(yearRange));
         })
         .catch((err) => console.log(err));
     }
@@ -92,7 +91,9 @@ const Dash: React.FC = () => {
         }
         if (router.query.plan) {
           router.push('/dashboard');
-          toast.error('You do not have access to this plan!');
+          toast.error('You do not have access to this plan!', {
+            toastId: 'cannot access plan',
+          });
         }
       } catch (e) {
         console.log(e);

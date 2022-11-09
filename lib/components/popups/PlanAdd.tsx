@@ -37,7 +37,9 @@ const PlanAdd: FC = () => {
    */
   const createNewPlan = () => {
     if (toAddMajors.length === 0) {
-      toast.error('Please choose a valid major!');
+      toast.error('Please choose a valid major!', {
+        toastId: 'choose valid major',
+      });
     } else {
       dispatch(updateAddingPlanStatus(false));
       dispatch(updateGeneratePlanAddStatus(true));
@@ -52,7 +54,9 @@ const PlanAdd: FC = () => {
   // Handles user's intention to cancel creating a new plan.
   const handleCancel = () => {
     if (planList.length === 0) {
-      toast.error('Please create at least one plan to continue!');
+      toast.error('Please create at least one plan to continue!', {
+        toastId: 'create at least one plan',
+      });
     } else {
       dispatch(updateAddingPlanStatus(false));
     }

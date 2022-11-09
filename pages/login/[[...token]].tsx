@@ -21,6 +21,7 @@ import axios from 'axios';
 import { User } from '../../lib/resources/commonTypes';
 import { userService } from '../../lib/services';
 import { updateAddingPlanStatus } from '../../lib/slices/popupSlice';
+import React from 'react';
 
 /**
  * The login page, designed after the Spotify login page..
@@ -171,7 +172,9 @@ const Login: React.FC = () => {
    * Handles the case where we haven't logged in yet and users are exposed to the guest login button.
    */
   const preventPreLoginClick = () =>
-    toast.info("Please wait while we check if you're logged in...");
+    toast.info("Please wait while we check if you're logged in...", {
+      toastId: 'check login',
+    });
 
   /**
    * Handles custom session id change.
