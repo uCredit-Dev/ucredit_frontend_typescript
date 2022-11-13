@@ -110,20 +110,7 @@ const YearComponent: FC<{
 
   useEffect(() => {
     const handleClickOutside = (e: MouseEvent) => {
-      if (
-        !display ||
-        // @ts-ignore: property does not exist error
-        (typeof e.target.className === 'string' &&
-          // @ts-ignore: property does not exist error
-          e.target.className.includes('option')) ||
-        // @ts-ignore: property does not exist error
-        e.target.tagName === 'svg' ||
-        // @ts-ignore: property does not exist error
-        e.target.tagName === 'path' ||
-        // @ts-ignore: property does not exist error
-        (e.target.tagName === 'DIV' && e.target.className.includes('css'))
-      )
-        return;
+      if (!display) return;
       const currentWrapperRef: any = wrapperRef.current;
       if (currentWrapperRef && !currentWrapperRef.contains(e.target))
         setDisplay(false);
@@ -131,6 +118,26 @@ const YearComponent: FC<{
     document.addEventListener('click', handleClickOutside);
     return () => document.removeEventListener('click', handleClickOutside);
   }, [wrapperRef, display]);
+
+  // useEffect(() => {
+  //   const handleClickOutside = (e: MouseEvent) => {
+  //     const target = e.target as Element;
+  //     if (
+  //       !display ||
+  //       (typeof target.className === 'string' &&
+  //         target.className.includes('option')) ||
+  //       target.tagName === 'svg' ||
+  //       target.tagName === 'path' ||
+  //       (target.tagName === 'DIV' && target.className.includes('css'))
+  //     )
+  //       return;
+  //     const currentWrapperRef: any = wrapperRef.current;
+  //     if (currentWrapperRef && !currentWrapperRef.contains(e.target))
+  //       setDisplay(false);
+  //   };
+  //   document.addEventListener('click', handleClickOutside);
+  //   return () => document.removeEventListener('click', handleClickOutside);
+  // }, [wrapperRef, display]);
 
   /**
    * Updates the credit distribution of the year.
