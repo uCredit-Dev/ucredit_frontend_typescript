@@ -57,7 +57,9 @@ const CartCourseListItem: FC<{
               props.course.terms.map((fullTerm) => fullTerm.split(' ')[0]),
             ),
           ].map((term) => (
-            <div className="ml-1">{term}</div>
+            <div key={term} className="ml-1">
+              {term}
+            </div>
           ))}
         </div>
       </div>
