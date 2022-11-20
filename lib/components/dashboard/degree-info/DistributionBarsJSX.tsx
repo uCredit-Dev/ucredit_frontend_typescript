@@ -92,8 +92,8 @@ const DistributionBarsJSX: FC<{ major: Major }> = ({ major }) => {
       },
     );
     distributionJSX.unshift(
-      <div key={"total"}>
-        <div key={"total"+0+"total"}>
+      <div key={'total'}>
+        <div key={'total' + 0 + 'total'}>
           <CourseBar
             distribution={{
               name: 'Total Credits',
@@ -113,7 +113,7 @@ const DistributionBarsJSX: FC<{ major: Major }> = ({ major }) => {
             bgcolor=""
           />
         </div>
-      </div>
+      </div>,
     );
     setDistributionBarsJSX(distributionJSX);
     // eslint-disable-next-line react-hooks/exhaustive-deps
