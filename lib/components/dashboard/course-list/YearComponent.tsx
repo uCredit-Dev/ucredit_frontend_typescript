@@ -108,6 +108,7 @@ const YearComponent: FC<{
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [yearName]);
 
+  // if year is collapsed and user opens year settings dropdown, clicking outside the dropdown closes it
   useEffect(() => {
     const handleClickOutside = (e: MouseEvent) => {
       if (!display) return;
