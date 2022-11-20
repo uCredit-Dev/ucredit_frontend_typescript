@@ -165,13 +165,14 @@ export type UserDistribution = {
   user_id: string;
   plan_id: string;
   major_id: string;
-  fineReq_ids?: string[];
+  fineReq_ids: string[] | UserFineReq[];
   planned: number;
   current: number;
   satisfied: boolean;
   user_select: boolean;
   double_count?: string[];
   pathing?: number;
+  wi?: boolean;
 };
 
 export type SemesterType =
@@ -198,6 +199,7 @@ export type FilterType =
 export type AreaType = 'N' | 'S' | 'H' | 'W' | 'E' | 'Q';
 
 export type UserFineReq = {
+  _id: string; 
   satisfied: boolean;
   required_credits: number;
   description: string;
@@ -211,10 +213,13 @@ export type UserFineReq = {
 };
 
 export type FineReq = {
-  required_credits: number;
   description: string;
-  criteria: string;
+  criteria: string,
+  required_credits: number;
+  planned: number;
   double_count?: string[];
+  pathing?: number;
+  wi?: boolean;
 };
 
 export type Distribution = {

@@ -2,18 +2,29 @@ import { FC } from 'react';
 import parse from 'html-react-parser';
 import clsx from 'clsx';
 import { FineReq } from '../../../../resources/commonTypes';
+import { requirements } from '../../../dashboard/degree-info/distributionFunctions';
 
 // TODO : documentation goes here
 const FineRequirementListItem: FC<{
   itemRequirement: FineReq;
   onClick: Function;
   selected?: boolean;
-  id: number;
+  id: string;
 }> = (props) => {
   // Setup Redux
 
   const handleFineReqClick = () => {
-    props.onClick(props.itemRequirement, props.id);
+    const req : requirements = {
+      name: '',
+      description: props.itemRequirement.description,
+      expr: props.itemRequirement.criteria,
+      required_credits: props.itemRequirement.required_credits,
+      fulfilled_credits: props.itemRequirement.planned,
+      double_count: props.itemRequirement.double_count,
+      pathing: props.itemRequirement.pathing,
+      wi: props.itemRequirement.wi,
+    }
+    props.onClick(req, props.id);
   };
 
   return (

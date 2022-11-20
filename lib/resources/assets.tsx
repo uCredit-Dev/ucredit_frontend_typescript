@@ -988,6 +988,11 @@ export function getMajor(name: string): any {
   return majorObj;
 }
 
+export async function getDistribution(distribution_id: string) {
+  const res = await axios.get(getAPI(window) + `/distributions/${distribution_id}`);
+  return res.data.data;
+}
+
 export async function getDistributions(plan_id: string, major_id: string) {
   const res = await axios.get(getAPI(window) + '/distributionsByPlan/', {
     params: { plan_id, major_id },

@@ -20,6 +20,7 @@ import {
   ReviewMode,
   UserDistribution,
 } from '../../../resources/commonTypes';
+import { getDistribution } from '../../../resources/assets';
 
 /**
  * A distribution bar.
@@ -56,17 +57,19 @@ const CourseBar: FC<{
   }, [currPlanCourses, distribution.planned, distribution, distributions]);
 
   // Onclick for course bar, opens cart popup passing in corresponding props
-  const openCartPopup = () => {
+  const openCartPopup = async () => {
     dispatch(updateCartInvokedBySemester(false));
     // Filter for the correst distributions from redux store
-    let distrs = distributions.filter(
-      (dist) => dist.name === distribution.name,
-    )[0];
-    if (distrs) {
+    let distr : UserDistribution = distribution;
+    // get fineReqs
+    if (distribution._id) {
+      distr = await getDistribution(distribution._id);
+    }
+    if (distr) {
       // if the distribution exists, then update the cart
       // at this point we have access to the current requirement
       // and all dsitibrutions. to pick out hte rest of the ascoatied fine distirbutions, use this filter.
-      dispatch(updateSelectedDistribution(distrs));
+      dispatch(updateSelectedDistribution(distr));
       dispatch(updateShowingCart(true));
       dispatch(updateInfoPopup(false));
       dispatch(updateAddingPrereq(false));

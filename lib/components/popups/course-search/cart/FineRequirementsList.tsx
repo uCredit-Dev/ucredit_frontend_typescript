@@ -13,23 +13,22 @@ const FineRequirementsList: FC<{
 }> = (props) => {
   // Component state setup.
   const [hideResults, setHideResults] = useState<boolean>(false);
-  const [selectedListItem, setSelectedListItem] = useState<number>(-1);
+  const [selectedListItem, setSelectedListItem] = useState<string>("");
 
   const selectRequirement = (requirement: UserFineReq, i: number) => {
     props.selectRequirement(requirement);
-    setSelectedListItem(i);
+    setSelectedListItem(requirement._id);
   };
 
   const getRequirements = () => {
-    return props.selectedDistribution.fineReq_ids.map((fine, i) => {
-      if (i === 0) return <></>; // TODO : better key
+    return props.selectedDistribution.fineReq_ids.map((fine) => {
       return (
-        <div key={i}>
+        <div key={fine._id}>
           <FineRequirementListItem
-            id={i}
+            id={fine._id}
             itemRequirement={fine}
             onClick={selectRequirement}
-            selected={i === selectedListItem}
+            selected={fine._id === selectedListItem}
           />
         </div>
       );

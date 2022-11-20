@@ -58,7 +58,6 @@ const DistributionBarsJSX: FC<{ selectedMajor: string }> = ({
   // Update displayed JSX every time distributions get updated.
   useEffect(() => {
     setCalculated(false);
-    console.log(distributions);
     const distributionJSX = distributions.map(
       (dist: UserDistribution, i: number) => {
         return (
