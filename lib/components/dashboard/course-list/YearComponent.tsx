@@ -119,26 +119,6 @@ const YearComponent: FC<{
     return () => document.removeEventListener('click', handleClickOutside);
   }, [wrapperRef, display]);
 
-  // useEffect(() => {
-  //   const handleClickOutside = (e: MouseEvent) => {
-  //     const target = e.target as Element;
-  //     if (
-  //       !display ||
-  //       (typeof target.className === 'string' &&
-  //         target.className.includes('option')) ||
-  //       target.tagName === 'svg' ||
-  //       target.tagName === 'path' ||
-  //       (target.tagName === 'DIV' && target.className.includes('css'))
-  //     )
-  //       return;
-  //     const currentWrapperRef: any = wrapperRef.current;
-  //     if (currentWrapperRef && !currentWrapperRef.contains(e.target))
-  //       setDisplay(false);
-  //   };
-  //   document.addEventListener('click', handleClickOutside);
-  //   return () => document.removeEventListener('click', handleClickOutside);
-  // }, [wrapperRef, display]);
-
   /**
    * Updates the credit distribution of the year.
    */
