@@ -92,24 +92,28 @@ const DistributionBarsJSX: FC<{ major: Major }> = ({ major }) => {
       },
     );
     distributionJSX.unshift(
-      <CourseBar
-        distribution={{
-          name: 'Total Credits',
-          expr: '',
-          required_credits: major !== null ? major.total_degree_credit : 0,
-          fulfilled_credits: totalCredits,
-          description:
-            major !== null
-              ? 'This is the total amount of credits that is required for ' +
-                major.degree_name
-              : '',
-        }}
-        completed={
-          totalCredits >= (major !== null ? major.total_degree_credit : 0)
-        }
-        general={true}
-        bgcolor=""
-      />,
+      <div key={"total"}>
+        <div key={"total"+0+"total"}>
+          <CourseBar
+            distribution={{
+              name: 'Total Credits',
+              expr: '',
+              required_credits: major !== null ? major.total_degree_credit : 0,
+              fulfilled_credits: totalCredits,
+              description:
+                major !== null
+                  ? 'This is the total amount of credits that is required for ' +
+                    major.degree_name
+                  : '',
+            }}
+            completed={
+              totalCredits >= (major !== null ? major.total_degree_credit : 0)
+            }
+            general={true}
+            bgcolor=""
+          />
+        </div>
+      </div>
     );
     setDistributionBarsJSX(distributionJSX);
     // eslint-disable-next-line react-hooks/exhaustive-deps
