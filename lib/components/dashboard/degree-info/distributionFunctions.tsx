@@ -72,8 +72,7 @@ export const getBoolExpr = (
     if (concat.length > 3) {
       index = index + 2;
     } else index++;
-
-    boolExpr = boolExpr.concat(concat); // Causing issues with biology major.
+    boolExpr = boolExpr.concat(concat);
   }
   return boolExpr;
 };
