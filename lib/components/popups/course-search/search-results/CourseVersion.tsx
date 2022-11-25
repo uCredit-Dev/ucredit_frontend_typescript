@@ -1,6 +1,6 @@
 import { QuestionMarkCircleIcon } from '@heroicons/react/solid';
 import clsx from 'clsx';
-import { useState, useRef, useEffect, FC } from 'react';
+import React, { useState, useRef, useEffect, FC } from 'react';
 import { useSelector } from 'react-redux';
 import ReactTooltip from 'react-tooltip';
 import { getColors } from '../../../../resources/assets';

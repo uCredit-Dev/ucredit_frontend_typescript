@@ -2,7 +2,7 @@
  * Fixtures: Hard-coded data for tests.
  */
 export const URL = 'https://ucredit-frontend-typescript-local.vercel.app';
-export const API_URL = 'http://ucredit-dev.herokuapp.com';
+export const API_URL = 'https://ucredit-dev.onrender.com';
 export const TEST_ID = 'TEST_DEV';
 export const REVIEWER_ID = 'REVIEWER_DEV';
 export const COURSE_NAMES = {

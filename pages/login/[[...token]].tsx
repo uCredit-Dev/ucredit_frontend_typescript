@@ -22,6 +22,7 @@ import axios from 'axios';
 import { User } from '../../lib/resources/commonTypes';
 import { userService } from '../../lib/services';
 import { updateAddingPlanStatus } from '../../lib/slices/popupSlice';
+import React from 'react';
 
 /**
  * The login page, designed after the Spotify login page..
@@ -89,7 +90,14 @@ const Login: React.FC = () => {
           dispatch(updateLoginCheck(true));
           const referrer = router.query.referrer as string;
           if (referrer) redirectToReferrer();
-          else router.push('/dashboard');
+          else if (
+            typeof router.query.plan !== 'undefined' &&
+            typeof router.query.mode !== 'undefined'
+          ) {
+            router.push(
+              `/dashboard?plan=${router.query.plan}&mode=${router.query.mode}`,
+            );
+          } else router.push('/dashboard');
         } else {
           dispatch(updateLoginCheck(true));
           setFinishedLoginCheck(true);
@@ -154,7 +162,14 @@ const Login: React.FC = () => {
           '; path=/';
         const referrer = router.query.referrer as string;
         if (referrer) redirectToReferrer();
-        else router.push('/dashboard');
+        else if (
+          typeof router.query.plan !== 'undefined' &&
+          typeof router.query.mode !== 'undefined'
+        ) {
+          router.push(
+            `/dashboard?plan=${router.query.plan}&mode=${router.query.mode}`,
+          );
+        } else router.push('/dashboard');
       })
       .catch((err) => {
         console.log('Backdoor verfication failed!', err);
@@ -165,7 +180,9 @@ const Login: React.FC = () => {
    * Handles the case where we haven't logged in yet and users are exposed to the guest login button.
    */
   const preventPreLoginClick = () =>
-    toast.info("Please wait while we check if you're logged in...");
+    toast.info("Please wait while we check if you're logged in...", {
+      toastId: 'check login',
+    });
 
   /**
    * Handles custom session id change.

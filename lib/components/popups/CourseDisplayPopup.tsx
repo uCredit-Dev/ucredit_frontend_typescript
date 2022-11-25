@@ -193,7 +193,9 @@ const CourseDisplayPopup: FC = () => {
         dispatch(updateShowCourseInfo(false));
         dispatch(clearSearch());
         dispatch(updatePlaceholder(false));
-        toast.success('Course updated!');
+        toast.success('Course updated!', {
+          toastId: 'course updated',
+        });
       } else {
         console.log('Failed to add', data.errors);
       }

@@ -40,8 +40,14 @@ const ReviewerAdd: React.FC = () => {
           reviewerPlanId,
           token,
           (status: number) => {
-            if (status === 400) toast.error('Failed');
-            else if (status === 200) toast.success('Confirmed reviewer plan!');
+            if (status === 400)
+              toast.error('Failed', {
+                toastId: 'failed',
+              });
+            else if (status === 200)
+              toast.success('Confirmed reviewer plan!', {
+                toastId: 'confirm reviewer plan',
+              });
           },
         );
         router.push('/reviewer');

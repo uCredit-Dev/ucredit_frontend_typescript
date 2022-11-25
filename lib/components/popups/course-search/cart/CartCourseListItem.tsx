@@ -1,4 +1,4 @@
-import { FC } from 'react';
+import React, { FC } from 'react';
 import { SISRetrievedCourse, Course } from '../../../../resources/commonTypes';
 import { useDispatch, useSelector } from 'react-redux';
 import {
@@ -57,7 +57,9 @@ const CartCourseListItem: FC<{
               props.course.terms.map((fullTerm) => fullTerm.split(' ')[0]),
             ),
           ].map((term) => (
-            <div className="ml-1">{term}</div>
+            <div key={term} className="ml-1">
+              {term}
+            </div>
           ))}
         </div>
       </div>

@@ -123,7 +123,12 @@ const PlanSummary: FC<{
       );
       setRefreshReviews(true);
       setNotifState(false);
-      toast.success(`Status changed to ${statusReadable[value.toUpperCase()]}`);
+      toast.success(
+        `Status changed to ${statusReadable[value.toUpperCase()]}`,
+        {
+          toastId: 'status updated',
+        },
+      );
     } catch (e) {
       console.log(e);
     }

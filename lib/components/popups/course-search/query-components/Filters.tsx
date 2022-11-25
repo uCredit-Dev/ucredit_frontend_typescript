@@ -1,4 +1,4 @@
-import { FC, useEffect } from 'react';
+import React, { FC, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import Select from 'react-select';
 import ReactTooltip from 'react-tooltip';
@@ -216,13 +216,14 @@ const Filters: FC<{
    * @returns an array of options for the year select.
    */
   const getYears = (): { value: number; label: number }[] => {
-    const yearRange = JSON.parse(localStorage.getItem('yearRange'));
+    const yearRange = JSON.parse(sessionStorage.getItem('yearRange') || 'null');
     if (yearRange) {
       let total = yearRange.max - yearRange.min;
-      if (new Date().getMonth() >= 3) total++;
-      const years = [];
-      for (let i = 0; i < total; i++) {
-        years.push({ value: yearRange.min + i, label: yearRange.min + i });
+      // spring courses released in october
+      if (new Date().getMonth() >= 9) total++;
+      const years: any[] = [];
+      for (let year = yearRange.min; year < yearRange.min + total; year++) {
+        years.push({ value: year, label: year });
       }
       return years;
     }

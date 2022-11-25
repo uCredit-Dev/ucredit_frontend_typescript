@@ -167,7 +167,9 @@ const CourseList: FC<Props> = ({ mode }) => {
    */
   const swapYear = (sourceIndex: number, destIndex: number): void => {
     if (sourceIndex === 0 || destIndex === 0) {
-      toast.error("Can't swap with AP Equivalent section!");
+      toast.error("Can't swap with AP Equivalent section!", {
+        toastId: 'no AP swap',
+      });
       return;
     }
     const yearArr: Year[] = [...currentPlan.years];
@@ -235,7 +237,9 @@ const CourseList: FC<Props> = ({ mode }) => {
         retrievedCourses.length !== 0 &&
         !checkDestValid(course, destination, retrievedCourses)
       ) {
-        toast.error("Course isn't usually held this semester!");
+        toast.error("Course isn't usually held this semester!", {
+          toastId: 'no course this semester',
+        });
       } else {
         const body = {
           newYear: destYear._id,
@@ -256,7 +260,9 @@ const CourseList: FC<Props> = ({ mode }) => {
         if (!res.ok) {
           console.log('ERROR:', res);
         } else {
-          toast.success('Successfully moved course!');
+          toast.success('Successfully moved course!', {
+            toastId: 'moved course',
+          });
         }
         res = await res.json();
         const updatedCourse = res.data;

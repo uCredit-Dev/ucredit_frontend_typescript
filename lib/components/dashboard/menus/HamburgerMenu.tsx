@@ -126,7 +126,7 @@ const HamburgerMenu: FC<{
               <ListItemButton
                 onClick={() => {
                   window.location.href =
-                    'https://ucredit-api.herokuapp.com/api/login';
+                    'https://ucredit-api.onrender.com/api/login';
                 }}
                 className="flex items-center p-2 text-base font-normal text-gray-900 rounded-lg hover:bg-gray-100"
               >

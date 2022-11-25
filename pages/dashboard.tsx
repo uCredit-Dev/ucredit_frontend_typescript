@@ -17,6 +17,8 @@ import {
   initialPlan,
   updateSelectedPlan,
 } from '../lib/slices/currentPlanSlice';
+import { toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 const Dash: React.FC = () => {
   const user: User = useSelector(selectUser);
@@ -27,8 +29,10 @@ const Dash: React.FC = () => {
   const dispatch = useDispatch();
 
   useEffect(() => {
-    if (!user || user._id === 'noUser') router.push('/login');
-    const yearRange = localStorage.getItem('yearRange');
+    if (!user || user._id === 'noUser')
+      router.push('/login' + router.asPath.substring(10));
+
+    const yearRange = sessionStorage.getItem('yearRange');
     if (!yearRange) {
       axios
         .get(getAPI(window) + '/getYearRange')
@@ -37,9 +41,8 @@ const Dash: React.FC = () => {
           const yearRange = {
             min,
             max,
-            expiry: new Date().getTime() + 1829800000,
           };
-          localStorage.setItem('yearRange', JSON.stringify(yearRange));
+          sessionStorage.setItem('yearRange', JSON.stringify(yearRange));
         })
         .catch((err) => console.log(err));
     }
@@ -48,28 +51,52 @@ const Dash: React.FC = () => {
 
   useEffect(() => {
     if (!router.query || !router.query.mode) {
-      if (planList.length > 0) dispatch(updateSelectedPlan(planList[0]));
-      else dispatch(updateSelectedPlan(initialPlan));
-      dispatch(updateReviewMode(ReviewMode.Edit));
-      setMode(ReviewMode.Edit);
-      return;
-    }
-    setMode(router.query.mode as ReviewMode);
-    dispatch(updateReviewMode(router.query.mode as ReviewMode));
-    if (!router.query.plan) {
-      setMode(ReviewMode.Edit);
-      dispatch(updateReviewMode(ReviewMode.Edit));
-      return;
+      if (planList.length > 0) {
+        dispatch(updateSelectedPlan(planList[0]));
+        dispatch(updateReviewMode(ReviewMode.Edit));
+        setMode(ReviewMode.Edit);
+        return;
+      } else if (initialPlan._id !== 'noPlan' || user._id === 'guestUser') {
+        dispatch(updateSelectedPlan(initialPlan));
+        dispatch(updateReviewMode(ReviewMode.Edit));
+        setMode(ReviewMode.Edit);
+        return;
+      }
     }
     (async () => {
       try {
-        const res = await userService.getPlan(
-          router.query.plan as string,
-          token,
-        );
-        dispatch(updateSelectedPlan(res.data));
-        dispatch(updateReviewMode(ReviewMode.View));
-        setMode(ReviewMode.View);
+        if (user._id === 'noUser') {
+          return;
+        }
+        if (!router.query || !router.query.mode) {
+          const plan = await userService.getPlan(user.plan_ids[0], token);
+          dispatch(updateSelectedPlan(plan.data));
+          dispatch(updateReviewMode(ReviewMode.Edit));
+          setMode(ReviewMode.Edit);
+          return;
+        }
+        const res = await userService.getPlan(router.query.plan as string, token);
+        if (Object.values(user.plan_ids).includes(res.data._id as string)) {
+          setMode(ReviewMode.Edit);
+          dispatch(updateReviewMode(ReviewMode.Edit));
+          router.push('/dashboard');
+          return;
+        }
+        const reviewers = await userService.getPlanReviewers(res.data._id, token);
+        for (const reviewer of reviewers.data) {
+          if (Object.values(reviewer.reviewer_id).includes(user._id)) {
+            dispatch(updateSelectedPlan(res.data));
+            dispatch(updateReviewMode(ReviewMode.View));
+            setMode(ReviewMode.View);
+            return;
+          }
+        }
+        if (router.query.plan) {
+          router.push('/dashboard');
+          toast.error('You do not have access to this plan!', {
+            toastId: 'cannot access plan',
+          });
+        }
       } catch (e) {
         console.log(e);
       }
