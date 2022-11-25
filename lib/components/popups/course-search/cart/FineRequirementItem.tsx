@@ -1,4 +1,4 @@
-import React, { FC } from 'react';
+import { FC } from 'react';
 import parse from 'html-react-parser';
 import clsx from 'clsx';
 import { requirements } from '../../../dashboard/degree-info/distributionFunctions';

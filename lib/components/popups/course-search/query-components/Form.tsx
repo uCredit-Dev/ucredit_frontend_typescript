@@ -1,4 +1,4 @@
-import React, { FC, useEffect, useState } from 'react';
+import { FC, useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import {
   updateSearchTerm,
@@ -117,8 +117,11 @@ const Form: FC<{ setSearching: (searching: boolean) => void }> = (props) => {
     // If the current year is the same as the year of the semester or later,
     // we need to check Fall, Spring, Intersession, and Summer to see if we need to increase year value.
     if (
-      (semester === 'Spring' && date.getMonth() >= 9) ||
-      (semester === 'Intersession' && date.getMonth() === 11)
+      (semester === 'Spring' && date.getMonth() >= 10) ||
+      (semester === 'Intersession' && date.getMonth() === 11) ||
+      (semester === 'Summer' &&
+        date.getMonth() >= 2 &&
+        yearVal !== date.getFullYear())
     )
       dispatch(
         updateSearchFilters({ filter: 'year', value: date.getFullYear() + 1 }),

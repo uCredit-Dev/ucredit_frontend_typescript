@@ -75,9 +75,7 @@ const HandleUserInfoSetupDummy: React.FC = () => {
       if (!curPlan || curPlan._id === 'noPlan') {
         dispatch(updateSelectedPlan(retrievedPlans[0]));
       }
-      toast('Retrieved ' + retrievedPlans.length + ' plans!', {
-        toastId: 'retrieved plans',
-      });
+      toast('Retrieved ' + retrievedPlans.length + ' plans!');
     }
 
     if (

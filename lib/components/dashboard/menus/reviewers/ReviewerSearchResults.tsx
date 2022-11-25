@@ -44,9 +44,7 @@ const ReviewerSearchResults: FC<{
     const reviewId = isReviewer(user._id);
     if (reviewId) {
       await userService.removeReview(reviewId, token);
-      toast.success('Reviewer removed', {
-        toastId: 'reviewer removed',
-      });
+      toast.success('Reviewer removed');
     } else {
       if (!isPending(user._id)) {
         await userService.requestReviewerPlan(
@@ -55,13 +53,9 @@ const ReviewerSearchResults: FC<{
           currentUser._id,
           token,
         );
-        toast.success('Reviewer requested', {
-          toastId: 'reviewer requested',
-        });
+        toast.success('Reviewer requested');
       } else
-        toast.error('You have already requested a review from this reviewer', {
-          toastId: 'reviewer already requested',
-        });
+        toast.error('You have already requested a review from this reviewer');
     }
   };
 

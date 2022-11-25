@@ -1,4 +1,4 @@
-import React, { useState, useEffect, FC } from 'react';
+import { useState, useEffect, FC } from 'react';
 import { CourseEvals } from '../../../../resources/commonTypes';
 import axios from 'axios';
 import { useSelector } from 'react-redux';

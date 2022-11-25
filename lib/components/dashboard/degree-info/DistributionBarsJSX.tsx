@@ -92,28 +92,24 @@ const DistributionBarsJSX: FC<{ major: Major }> = ({ major }) => {
       },
     );
     distributionJSX.unshift(
-      <div key={'total'}>
-        <div key={'total' + 0 + 'total'}>
-          <CourseBar
-            distribution={{
-              name: 'Total Credits',
-              expr: '',
-              required_credits: major !== null ? major.total_degree_credit : 0,
-              fulfilled_credits: totalCredits,
-              description:
-                major !== null
-                  ? 'This is the total amount of credits that is required for ' +
-                    major.degree_name
-                  : '',
-            }}
-            completed={
-              totalCredits >= (major !== null ? major.total_degree_credit : 0)
-            }
-            general={true}
-            bgcolor=""
-          />
-        </div>
-      </div>,
+      <CourseBar
+        distribution={{
+          name: 'Total Credits',
+          expr: '',
+          required_credits: major !== null ? major.total_degree_credit : 0,
+          fulfilled_credits: totalCredits,
+          description:
+            major !== null
+              ? 'This is the total amount of credits that is required for ' +
+                major.degree_name
+              : '',
+        }}
+        completed={
+          totalCredits >= (major !== null ? major.total_degree_credit : 0)
+        }
+        general={true}
+        bgcolor=""
+      />,
     );
     setDistributionBarsJSX(distributionJSX);
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -193,25 +189,6 @@ const DistributionBarsJSX: FC<{ major: Major }> = ({ major }) => {
           if (courseObj.resp !== null && c.number === courseObj.resp.number)
             counted = true;
         });
-        checked.push(courseObj.resp);
-      } else if (course.number === 'placeholder') {
-        const resp: Course = {
-          title: '',
-          number: course.number,
-          areas: course.area,
-          term: course.term,
-          school: '',
-          department: course.department,
-          credits: course.credits.toString(),
-          wi: course.wi,
-          bio: '',
-          tags: course.tags,
-          preReq: course.preReq,
-          restrictions: [],
-          version: course.version,
-          level: course.level,
-        };
-        courseObj.resp = resp;
         checked.push(courseObj.resp);
       }
       const localReqCopy: [string, requirements[]][] = copyReqs(reqCopy);
@@ -304,7 +281,7 @@ const DistributionBarsJSX: FC<{ major: Major }> = ({ major }) => {
           numPaths -= 1;
         }
       }
-      if (numPaths <= 0) {
+      if (numPaths === 0) {
         reqGroup[1] = satisfiedFineRequirements;
       }
     }

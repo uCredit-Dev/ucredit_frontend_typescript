@@ -50,9 +50,7 @@ const DeleteCoursePopup: FC = () => {
         });
         newPlan = { ...currentPlan, years: years };
 
-        toast.error(courseInfo.course.title + ' deleted!', {
-          toastId: 'course deleted',
-        });
+        toast.error(courseInfo.course.title + ' deleted!');
         dispatch(updateSelectedPlan(newPlan));
         dispatch(
           updatePlanList(
@@ -67,9 +65,7 @@ const DeleteCoursePopup: FC = () => {
         dispatch(updateCourseToDelete(null));
       });
     } else {
-      toast.error('Cannot delete last year!', {
-        toastId: 'cannot delete last year',
-      });
+      toast.error('Cannot delete last year!');
     }
   };
 

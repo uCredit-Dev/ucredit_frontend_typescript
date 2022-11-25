@@ -40,9 +40,7 @@ const ApplicationFormPopup: FC<{
       });
       setActivateError(false);
       setActivateEmailPopup(false);
-      toast.success('Application sent!', {
-        toastId: 'app sent',
-      });
+      toast.success('Application sent!');
     } else {
       setActivateError(true);
     }

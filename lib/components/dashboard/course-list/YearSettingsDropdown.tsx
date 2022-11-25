@@ -124,9 +124,7 @@ const YearSettingsDropdown: FC<{
           console.log(err);
         });
     } else {
-      toast.error('Year already exists', {
-        toastId: 'year exists',
-      });
+      toast.error('Year already exists');
     }
   };
 

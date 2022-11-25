@@ -1,4 +1,4 @@
-import React, { FC, useEffect } from 'react';
+import { FC, useEffect } from 'react';
 import clsx from 'clsx';
 import ReactTooltip from 'react-tooltip';
 import { StarIcon } from '@heroicons/react/outline';

@@ -1915,6 +1915,13 @@ const bsBME: Major = {
       ],
     },
     {
+      name: 'Other Electives',
+      required_credits: 9,
+      min_credits_per_course: 1,
+      description: 'Select 9 credits from any area.',
+      criteria: 'H[A]^OR^S[A]^OR^Q[A]^OR^N[A]^OR^E[A]',
+    },
+    {
       name: 'Humanities and Social Sciences',
       required_credits: 18,
       min_credits_per_course: 3,
@@ -1935,14 +1942,6 @@ const bsBME: Major = {
           criteria: '(H[A]^OR^S[A])^AND^(Upper Level[L])',
         },
       ],
-    },
-    {
-      name: 'Other Electives',
-      required_credits: 9,
-      min_credits_per_course: 1,
-      description: 'Select 9 credits from any area.',
-      criteria: 'H[A]^OR^S[A]^OR^Q[A]^OR^N[A]^OR^E[A]',
-      double_count: ['Writing Intensive'],
     },
     {
       name: 'Writing Intensive',
@@ -3317,7 +3316,7 @@ const bsCS_Old: Major = {
     },
     {
       name: 'Basic Sciences',
-      required_credits: 8,
+      required_credits: 16,
       min_credits_per_course: 1,
       description:
         'At least two semesters of physics or two semesters of chemistry, with the associated laboratories, must be included.',
@@ -3547,7 +3546,7 @@ const bsCS_New: Major = {
     },
     {
       name: 'Basic Sciences',
-      required_credits: 8,
+      required_credits: 10,
       min_credits_per_course: 1,
       description:
         'At least two semesters of physics or two semesters of chemistry, with the associated laboratories, must be included.',

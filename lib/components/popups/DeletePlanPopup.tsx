@@ -12,7 +12,6 @@ import { selectPlan, updateSelectedPlan } from '../../slices/currentPlanSlice';
 import { getAPI } from '../../resources/assets';
 import { updateDeletePlanStatus } from '../../slices/popupSlice';
 import { userService } from '../../../lib/services';
-import React from 'react';
 
 /**
  * This is the confirmation popup that appears when users press the button to delete a plan.
@@ -41,9 +40,7 @@ const DeletePlanPopup: FC = () => {
         },
       })
         .then(() => {
-          toast.error(currentPlan.name + ' deleted!', {
-            toastId: 'plan deleted',
-          });
+          toast.error(currentPlan.name + ' deleted!');
           let updatedList = [...planList];
           updatedList = updatedList.filter((plan) => {
             return plan._id !== currentPlan._id;
@@ -62,9 +59,7 @@ const DeletePlanPopup: FC = () => {
         await userService.removeReview(review._id, token);
       });
     } else {
-      toast.error('Cannot delete last plan!', {
-        toastId: 'cannot delete last plan',
-      });
+      toast.error('Cannot delete last plan!');
     }
   };
 

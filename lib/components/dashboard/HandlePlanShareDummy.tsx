@@ -68,7 +68,6 @@ const HandlePlanShareDummy = () => {
           {
             closeOnClick: false,
             autoClose: false,
-            toastId: 'failed to import',
           },
         );
       });
@@ -319,7 +318,6 @@ const HandlePlanShareDummy = () => {
       toast.success('Plan Imported!', {
         autoClose: 5000,
         closeOnClick: false,
-        toastId: 'plan imported',
       });
       dispatch(updateAddingPlanStatus(false));
     }
@@ -358,7 +356,6 @@ const HandlePlanShareDummy = () => {
             area: course.area,
             preReq: course.preReq,
             level: course.level,
-            version: course.version,
             expireAt:
               user._id === 'guestUser'
                 ? Date.now() + 60 * 60 * 24 * 1000

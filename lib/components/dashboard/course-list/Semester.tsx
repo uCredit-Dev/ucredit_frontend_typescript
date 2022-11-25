@@ -258,9 +258,7 @@ const Semester: FC<{
       if (cartOpen) dispatch(updateShowingCart(true));
       else dispatch(clearSearch());
       dispatch(updateCartAdd(false));
-      toast.success(version.title + ' added!', {
-        toastId: 'title added',
-      });
+      toast.success(version.title + ' added!');
     } else {
       console.log('Failed to add', data.errors);
     }

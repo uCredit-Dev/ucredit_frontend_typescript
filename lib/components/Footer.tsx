@@ -25,12 +25,11 @@ const Footer: React.FC = () => {
           </div>
         </div>
         <p>
-          Disclaimer: the services provided by uCredit are purely informative in
-          nature. We are not affiliated with Johns Hopkins University, nor do we
-          intend to substitute for the University’s official advising processes.
-          For this reason, we make no guarantees regarding our users’ academic
-          success or timely graduation, and cannot be held responsible for such
-          issues should they arise.
+          Disclaimer: uCredit is NOT an alternative to the SIS Degree Audit.
+          Though the degree validation is internally checked and updated, the
+          university does not vet or keep the degrees updated in any way. Any
+          outdated or inaccurate degrees may result in inaccurately displaying
+          whether a student's plan is satisfied or not.
         </p>
         <p>@ Johns Hopkins University, Baltimore, Maryland 21218</p>
       </div>

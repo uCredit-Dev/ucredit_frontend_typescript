@@ -56,10 +56,11 @@ const dropdownOptions = [
 const Reviewee: React.FC<Props> = ({
   plans,
   reviewee,
+  expanded = false,
   setRefreshReviews,
   onDeleteItem,
 }) => {
-  const [showPlans, setShowPlans] = useState(true);
+  const [showPlans, setShowPlans] = useState(expanded);
   const [majors, setMajors] = useState<string[]>([]);
   const [notifState, setNotifState] = useState(false);
   const [summaryReviewID, setSummaryReviewID] = useState('');
@@ -169,9 +170,6 @@ const Reviewee: React.FC<Props> = ({
                               `Status changed to ${
                                 statusReadable[value.label]
                               }`,
-                              {
-                                toastId: 'status changed',
-                              },
                             );
                           } catch (e) {
                             console.log(e);

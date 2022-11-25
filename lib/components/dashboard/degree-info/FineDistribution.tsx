@@ -10,7 +10,6 @@ import {
 import { selectCurrentPlanCourses } from '../../../slices/currentPlanSlice';
 import { selectCourseCache } from '../../../slices/userSlice';
 import { getCourse } from '../../../resources/assets';
-import React from 'react';
 
 /**
  * Component that displays fine requirements of a specific distribution.

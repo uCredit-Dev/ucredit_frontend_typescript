@@ -1,4 +1,4 @@
-import React, { useState, FC } from 'react';
+import { useState, FC } from 'react';
 import FineRequirementListItem from './FineRequirementItem';
 import { requirements } from '../../../dashboard/degree-info/distributionFunctions';
 
@@ -18,7 +18,7 @@ const FineRequirementsList: FC<{
 
   const getRequirements = () => {
     return props.selectedDistribution[1].map((requirement, i) => {
-      if (i === 0) return <div key={0}></div>; // TODO : better key
+      if (i === 0) return <></>; // TODO : better key
       return (
         <div key={i}>
           <FineRequirementListItem
