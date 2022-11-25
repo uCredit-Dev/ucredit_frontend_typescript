@@ -44,8 +44,7 @@ const Login: React.FC = () => {
   useEffect(() => {
     const token = router.query.token && router.query.token[0];
     const loginId = token ? token : getLoginCookieVal(cookies);
-    // if (loginId && window.location.href.includes('ucredit.me')) {
-    if (loginId) {
+    if (loginId && window.location.href.includes('ucredit.me')) {
       setFinishedLoginCheck(false);
       handleDBLogin(loginId);
     } else if (loginId) handleJHULogin(loginId);
@@ -111,8 +110,10 @@ const Login: React.FC = () => {
   /**
    * Handles if the user is invalid.
    */
-  const handleGuest = (): void => {
+  const handleGuest = async () => {
     dispatch(updateUser(guestUser));
+    const res = await axios.get(getAPI(window) + `/backdoor/verification/guestUser`); 
+    dispatch(updateToken(res.data.data.token));
     router.push('/dashboard');
   };
 
