@@ -15,7 +15,6 @@ import {
   updateLoginCheck,
   updateUser,
   updateToken,
-  selectToken,
 } from '../../lib/slices/userSlice';
 import LoadingPage from '../../lib/components/LoadingPage';
 import { updateImportingStatus } from '../../lib/slices/currentPlanSlice';
@@ -38,7 +37,6 @@ const Login: React.FC = () => {
   const [session, setSession] = useState<string>('');
   const router = useRouter();
   const importID = useSelector(selectImportID);
-  const token = useSelector(selectToken);
   const devIDs = ['mockUser'];
 
   // Useffect runs once on page load, calling to https://ucredit-api.herokuapp.com/api/verifyLogin to retrieve user data.
@@ -46,7 +44,8 @@ const Login: React.FC = () => {
   useEffect(() => {
     const token = router.query.token && router.query.token[0];
     const loginId = token ? token : getLoginCookieVal(cookies);
-    if (loginId && window.location.href.includes('ucredit.me')) {
+    // if (loginId && window.location.href.includes('ucredit.me')) {
+    if (loginId) {
       setFinishedLoginCheck(false);
       handleDBLogin(loginId);
     } else if (loginId) handleJHULogin(loginId);
@@ -71,10 +70,12 @@ const Login: React.FC = () => {
    */
   const handleDBLogin = (loginId: string) => {
     userService
-      .login(loginId, token)
-      .then((retrievedUser) => {
-        if (retrievedUser.errors === undefined) {
-          if (retrievedUser.data.plan_ids.length === 0)
+      .login(loginId)
+      .then((data) => {
+        const user = data.data.retrievedUser; 
+        const token = data.data.token; 
+        if (user.errors === undefined) {
+          if (user.plan_ids.length === 0)
             dispatch(updateAddingPlanStatus(true));
           if (loginId)
             document.cookie =
@@ -84,9 +85,9 @@ const Login: React.FC = () => {
               new Date(Date.now() + 200000000000000).toString() +
               '; path=/';
           if (importID) dispatch(updateImportingStatus(true));
-          dispatch(updateUser(retrievedUser.data));
+          dispatch(updateUser(user));
+          dispatch(updateToken(token));
           dispatch(updateLoginCheck(true));
-
           const referrer = router.query.referrer as string;
           if (referrer) redirectToReferrer();
           else router.push('/dashboard');

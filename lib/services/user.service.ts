@@ -7,9 +7,9 @@ import { fetchWrapper } from '../utils';
  * @param cookieVal - value of stored login session hash
  * @returns a promises that resolves on success or failure in logging in
  */
-const login = (cookieVal: string, token: string) => {
+const login = (cookieVal: string) => {
   return fetchWrapper
-    .get(`${getAPI(window)}/verifyLogin/${cookieVal}`, token)
+    .get(`${getAPI(window)}/verifyLogin/${cookieVal}`)
     .then((res) => res.json())
     .then((res) => res);
 };
