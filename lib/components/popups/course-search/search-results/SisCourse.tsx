@@ -189,7 +189,7 @@ const SisCourse: FC<{
         method: 'DELETE',
         headers: {
           'Content-Type': 'application/json',
-          "Authorization" : `Bearer ${token}`
+          Authorization: `Bearer ${token}`,
         },
       })
         .then((retrieved) => retrieved.json())

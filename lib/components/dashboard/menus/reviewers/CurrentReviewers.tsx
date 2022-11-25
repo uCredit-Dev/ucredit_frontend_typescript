@@ -53,8 +53,9 @@ const CurrentReviewers: FC<{
 
   useEffect(() => {
     (async () => {
-      const reviewers = (await userService.getPlanReviewers(currentPlan._id, token))
-        .data;
+      const reviewers = (
+        await userService.getPlanReviewers(currentPlan._id, token)
+      ).data;
       const elements: JSX.Element[] = await getElements(reviewers);
       setReviewersJSX(elements);
       // dispatch(updateSelectedPlan({ ...currentPlan, reviewers: reviewers }));
@@ -81,7 +82,8 @@ const CurrentReviewers: FC<{
   const getElements = async (data: any[]) => {
     const elements: JSX.Element[] = [];
     for (const { reviewer_id, status, reviewee_id, _id } of data) {
-      const reviewer = (await userService.getUser(reviewer_id._id, token)).data[0];
+      const reviewer = (await userService.getUser(reviewer_id._id, token))
+        .data[0];
       const reviewee = (await userService.getUser(reviewee_id, token)).data[0];
       elements.push(
         <div

@@ -51,7 +51,10 @@ const DeletePlanPopup: FC = () => {
         })
         .catch((err) => console.log(err));
 
-      const reviews = await userService.getPlanReviewers(currentPlan._id, token);
+      const reviews = await userService.getPlanReviewers(
+        currentPlan._id,
+        token,
+      );
       reviews.data.forEach(async (review) => {
         await userService.removeReview(review._id, token);
       });

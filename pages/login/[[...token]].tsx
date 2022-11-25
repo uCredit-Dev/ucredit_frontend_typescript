@@ -71,8 +71,8 @@ const Login: React.FC = () => {
     userService
       .login(loginId)
       .then((data) => {
-        const user = data.data.retrievedUser; 
-        const token = data.data.token; 
+        const user = data.data.retrievedUser;
+        const token = data.data.token;
         if (user.errors === undefined) {
           if (user.plan_ids.length === 0)
             dispatch(updateAddingPlanStatus(true));
@@ -112,7 +112,9 @@ const Login: React.FC = () => {
    */
   const handleGuest = async () => {
     dispatch(updateUser(guestUser));
-    const res = await axios.get(getAPI(window) + `/backdoor/verification/guestUser`); 
+    const res = await axios.get(
+      getAPI(window) + `/backdoor/verification/guestUser`,
+    );
     dispatch(updateToken(res.data.data.token));
     router.push('/dashboard');
   };

@@ -40,7 +40,8 @@ const Reviewer: React.FC = () => {
     if (_id === 'noUser' || _id === 'guestUser') return;
     (async () => {
       const plansByUser = new Map();
-      const reviews = (await userService.getReviewerPlans(user._id, token)).data;
+      const reviews = (await userService.getReviewerPlans(user._id, token))
+        .data;
       for (const { _id, plan_id, reviewee_id, status } of reviews) {
         if (status === ReviewRequestStatus.Pending) continue;
         const plansResp = await userService.getPlan(plan_id, token);
@@ -49,7 +50,8 @@ const Reviewer: React.FC = () => {
           status,
           review_id: _id,
         };
-        const reviewee = (await userService.getUser(reviewee_id._id, token)).data[0];
+        const reviewee = (await userService.getUser(reviewee_id._id, token))
+          .data[0];
         const revieweeString = JSON.stringify(reviewee);
         const plans = plansByUser.get(revieweeString) || [];
         plansByUser.set(revieweeString, [...plans, plan]);

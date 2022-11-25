@@ -162,7 +162,7 @@ const Reviewee: React.FC<Props> = ({
                             await userService.changeReviewStatus(
                               review_id,
                               value.label,
-                              token
+                              token,
                             );
                             // window.location.href = '/reviewer';
                             setRefreshReviews(true);

@@ -1,6 +1,10 @@
 import { FC } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
-import { selectPlanList, selectToken, updatePlanList } from '../../slices/userSlice';
+import {
+  selectPlanList,
+  selectToken,
+  updatePlanList,
+} from '../../slices/userSlice';
 import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import { selectPlan, updateSelectedPlan } from '../../slices/currentPlanSlice';
@@ -32,7 +36,7 @@ const DeleteCoursePopup: FC = () => {
     if (currentPlan.years.length > 1 && courseInfo !== null) {
       fetch(getAPI(window) + '/courses/' + courseInfo.course._id, {
         method: 'DELETE',
-        headers: {"Authorization" : `Bearer ${token}`}
+        headers: { Authorization: `Bearer ${token}` },
       }).then(() => {
         let newPlan: Plan;
         const years = [...currentPlan.years];

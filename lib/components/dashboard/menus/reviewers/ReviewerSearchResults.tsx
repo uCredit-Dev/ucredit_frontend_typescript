@@ -18,8 +18,9 @@ const ReviewerSearchResults: FC<{
 
   useEffect(() => {
     (async () => {
-      const reviewers = (await userService.getPlanReviewers(currentPlan._id, token))
-        .data;
+      const reviewers = (
+        await userService.getPlanReviewers(currentPlan._id, token)
+      ).data;
       setPlanReviewers(reviewers);
     })();
   }, [currentPlan._id, token]);
@@ -50,7 +51,7 @@ const ReviewerSearchResults: FC<{
           currentPlan._id,
           user._id,
           currentUser._id,
-          token
+          token,
         );
         toast.success('Reviewer requested');
       } else

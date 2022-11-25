@@ -129,7 +129,7 @@ export const userSlice = createSlice({
     updateCommenters: (state: any, action: PayloadAction<UserId[]>) => {
       state.commenters = action.payload.map(({ _id, name }) => ({ _id, name }));
     },
-    updateToken:(state: any, action: PayloadAction<String>) => {
+    updateToken: (state: any, action: PayloadAction<String>) => {
       state.token = action.payload;
     },
     resetUser: (state: any) => {

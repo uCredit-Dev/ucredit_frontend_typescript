@@ -60,11 +60,15 @@ const Comment: FC<{
     };
 
     axios
-      .post(getAPI(window) + '/thread/reply', {
-        comment,
-      }, {
-        headers: { "Authorization" : `Bearer ${token}` }, 
-      })
+      .post(
+        getAPI(window) + '/thread/reply',
+        {
+          comment,
+        },
+        {
+          headers: { Authorization: `Bearer ${token}` },
+        },
+      )
       .then((res) => {
         setSubCommentContent([
           ...subcomments,

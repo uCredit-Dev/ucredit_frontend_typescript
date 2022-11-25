@@ -192,7 +192,7 @@ const Placeholder: FC<{ addCourse: (plan?: Plan) => void }> = (props) => {
         method: 'DELETE',
         headers: {
           'Content-Type': 'application/json',
-          "Authorization" : `Bearer ${token}`
+          Authorization: `Bearer ${token}`,
         },
       }).then((retrieved) => {
         retrieved.json().then(handleUpdateResponse);

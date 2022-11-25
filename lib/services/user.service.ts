@@ -30,7 +30,7 @@ const requestReviewerPlan = (
   plan_id: string,
   reviewer_id: string,
   reviewee_id: string,
-  token: string, 
+  token: string,
   cb = undefined,
 ) => {
   return fetchWrapper
@@ -44,11 +44,18 @@ const requestReviewerPlan = (
 
 const removeReview = (review_id: string, token: string, cb = undefined) => {
   return fetchWrapper
-    .delete(`${getAPI(window)}/planReview/removeReview?review_id=${review_id}`, token)
+    .delete(
+      `${getAPI(window)}/planReview/removeReview?review_id=${review_id}`,
+      token,
+    )
     .then((res) => handleResponse(res, cb));
 };
 
-const confirmReviewerPlan = (review_id: string, token: string, cb = undefined) => {
+const confirmReviewerPlan = (
+  review_id: string,
+  token: string,
+  cb = undefined,
+) => {
   return fetchWrapper
     .post(`${getAPI(window)}/planReview/confirm`, token, {
       review_id,
@@ -56,11 +63,15 @@ const confirmReviewerPlan = (review_id: string, token: string, cb = undefined) =
     .then((res) => handleResponse(res, cb));
 };
 
-const getReviewerPlans = (reviewer_id: string, token: string, cb = undefined) => {
+const getReviewerPlans = (
+  reviewer_id: string,
+  token: string,
+  cb = undefined,
+) => {
   return fetchWrapper
     .get(
       `${getAPI(window)}/planReview/plansToReview?reviewer_id=${reviewer_id}`,
-      token
+      token,
     )
     .then((res) => handleResponse(res, cb));
 };
@@ -77,10 +88,15 @@ const postNewThread = (data: any, token: string) => {
     .then(handleResponse);
 };
 
-const getThreads = (id: string, token: string, unmounted: boolean, cancelToken) => {
+const getThreads = (
+  id: string,
+  token: string,
+  unmounted: boolean,
+  cancelToken,
+) => {
   return axios
     .get(`${getAPI(window)}/thread/getByPlan/${id}`, {
-      headers: { "Authorization" : `Bearer ${token}` }, 
+      headers: { Authorization: `Bearer ${token}` },
       cancelToken: cancelToken,
     })
     .then((res) => {
@@ -100,7 +116,12 @@ const removeComment = (comment_id: string, token: string, cb = undefined) => {
     .then((res) => handleResponse(res, cb));
 };
 
-const changeReviewStatus = (review_id, status, token: string, cb = undefined) => {
+const changeReviewStatus = (
+  review_id,
+  status,
+  token: string,
+  cb = undefined,
+) => {
   return fetchWrapper
     .post(`${getAPI(window)}/planReview/changeStatus`, token, {
       review_id,

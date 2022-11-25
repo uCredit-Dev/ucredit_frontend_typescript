@@ -21,9 +21,9 @@ const RoadmapComment: FC = () => {
   useEffect(() => {
     axios
       .get(getAPI(window) + `/thread/getByPlan/${currPlan._id}`, {
-        headers: { 
-          "Authorization" : `Bearer ${token}` 
-        }
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
       })
       .then((response) => {
         const sorted =

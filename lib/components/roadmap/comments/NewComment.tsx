@@ -44,13 +44,15 @@ const NewComment: FC<{
     };
 
     axios
-      .post(getAPI(window) + '/thread/new', {
-        thread,
-        comment,
-      }, 
-      {
-        headers: { Authorization: `Bearer ${token}` },
-      }
+      .post(
+        getAPI(window) + '/thread/new',
+        {
+          thread,
+          comment,
+        },
+        {
+          headers: { Authorization: `Bearer ${token}` },
+        },
       )
       .then((res) => {
         updateRoadmapThreads(res.data.data);

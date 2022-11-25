@@ -63,7 +63,10 @@ const Dash: React.FC = () => {
     }
     (async () => {
       try {
-        const res = await userService.getPlan(router.query.plan as string, token);
+        const res = await userService.getPlan(
+          router.query.plan as string,
+          token,
+        );
         dispatch(updateSelectedPlan(res.data));
         dispatch(updateReviewMode(ReviewMode.View));
         setMode(ReviewMode.View);

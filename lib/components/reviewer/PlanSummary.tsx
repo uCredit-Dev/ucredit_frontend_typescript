@@ -116,7 +116,11 @@ const PlanSummary: FC<{
 
   const updateStatus = (value) => async () => {
     try {
-      await userService.changeReviewStatus(review_id, value.toUpperCase(), token);
+      await userService.changeReviewStatus(
+        review_id,
+        value.toUpperCase(),
+        token,
+      );
       setRefreshReviews(true);
       setNotifState(false);
       toast.success(`Status changed to ${statusReadable[value.toUpperCase()]}`);

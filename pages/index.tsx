@@ -84,7 +84,7 @@ const Home: React.FC = () => {
       setNeedsToLoad(true);
       axios
         .get(getAPI(window) + '/coursesByPlan/' + curPlan._id, {
-          headers: { "Authorization" : `Bearer ${token}` }, 
+          headers: { Authorization: `Bearer ${token}` },
         })
         .then((response) => {
           response.data.data.forEach((c: UserCourse) => {
