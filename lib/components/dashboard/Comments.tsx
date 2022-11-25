@@ -25,6 +25,7 @@ import {
 import { userService } from '../../services';
 import {
   selectCommenters,
+  selectToken,
   selectUser,
   updateCommenters,
 } from '../../slices/userSlice';
@@ -45,6 +46,7 @@ const Comments: FC<{
   const reviewedPlan = useSelector(selectReviewedPlan);
   const selectedThread = useSelector(selectSelectedThread);
   const commenters = useSelector(selectCommenters);
+  const token = useSelector(selectToken);
   let wrapperRef = useRef(null);
   const [comments, setComments] = useState<JSX.Element[]>([]);
   // const [visibleUsers, setVisibleUsers] = useState<String[]>([]);
@@ -119,7 +121,7 @@ const Comments: FC<{
           date: new Date(),
         },
       };
-      const temp = await userService.postNewComment(body);
+      const temp = await userService.postNewComment(body, token);
       const newComment = temp.data;
       const commenter = {
         _id: user._id,
@@ -147,7 +149,7 @@ const Comments: FC<{
           date: new Date(),
         },
       };
-      const temp = await userService.postNewThread(data);
+      const temp = await userService.postNewThread(data, token);
       JSON.parse(JSON.stringify(threads));
       let threadCopy = JSON.parse(JSON.stringify(threads));
       threadCopy[location] = temp.data;
@@ -257,7 +259,12 @@ const Comments: FC<{
     });
     try {
       let comment_id: string = '';
-      const threads = await userService.getThreads(plan._id, false, null);
+      const threads = await userService.getThreads(
+        plan._id,
+        token,
+        false,
+        null,
+      );
       for (let thread of threads.data.data) {
         for (let comment of thread.comments) {
           if (comment._id === key) {
@@ -271,7 +278,7 @@ const Comments: FC<{
           }
         }
       }
-      await userService.removeComment(comment_id);
+      await userService.removeComment(comment_id, token);
     } catch (err) {
       console.log(err);
     }

@@ -2,7 +2,7 @@ import React, { FC, useEffect, useState } from 'react';
 import axios from 'axios';
 import { getAPI } from './../../../resources/assets';
 import { useSelector } from 'react-redux';
-import { selectUser } from '../../../slices/userSlice';
+import { selectToken, selectUser } from '../../../slices/userSlice';
 import { ThreadType, CommentType } from '../../../resources/commonTypes';
 import Editor from './commentEditor/Editor';
 import Markdown from 'markdown-to-jsx';
@@ -39,6 +39,7 @@ const Comment: FC<{
   const [subcommentContent, setSubCommentContent] = useState<CommentType[]>([]);
 
   const user = useSelector(selectUser);
+  const token = useSelector(selectToken);
 
   useEffect(() => {
     setSubCommentContent(subcomments);
@@ -59,9 +60,15 @@ const Comment: FC<{
     };
 
     axios
-      .post(getAPI(window) + '/thread/reply', {
-        comment,
-      })
+      .post(
+        getAPI(window) + '/thread/reply',
+        {
+          comment,
+        },
+        {
+          headers: { Authorization: `Bearer ${token}` },
+        },
+      )
       .then((res) => {
         setSubCommentContent([
           ...subcomments,
@@ -170,8 +177,8 @@ const Comment: FC<{
         {subcommentContent.map((subs) =>
           subs.thread_id === threadID ? (
             <Comment
-              key={(subs.commenter_id, "'s comment")}
-              username={subs.commenter_id}
+              key={(subs.commenter_id.name, "'s comment")}
+              username={subs.commenter_id._id}
               upvote={0}
               content={subs.message}
               date={new Date(subs.date).toISOString().slice(0, 10)}

@@ -1,4 +1,4 @@
-import { FC } from 'react';
+import React, { FC } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
@@ -9,7 +9,7 @@ import {
   updateYearToDelete,
   updateDeleteYearStatus,
 } from '../../slices/popupSlice';
-import React from 'react';
+import { selectToken } from '../../slices/userSlice';
 
 /**
  * This is the confirmation popup that appears when users press the button to delete a plan.
@@ -19,6 +19,7 @@ const DeleteYearPopup: FC = () => {
   // Redux Setup
   const dispatch = useDispatch();
   const currentPlan = useSelector(selectPlan);
+  const token = useSelector(selectToken);
   const year = useSelector(selectYearToDelete);
 
   /**
@@ -31,6 +32,7 @@ const DeleteYearPopup: FC = () => {
         method: 'DELETE',
         headers: {
           'Content-Type': 'application/json',
+          Authorization: `Bearer ${token}`,
         },
       })
         .then(() => {

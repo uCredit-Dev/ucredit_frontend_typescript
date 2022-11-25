@@ -3,6 +3,7 @@ import Head from 'next/head';
 import { useDispatch, useSelector } from 'react-redux';
 import {
   selectPlanList,
+  selectToken,
   selectUser,
   updateReviewMode,
 } from '../lib/slices/userSlice';
@@ -23,6 +24,7 @@ const Dash: React.FC = () => {
   const user: User = useSelector(selectUser);
   const router = useRouter();
   const planList = useSelector(selectPlanList);
+  const token = useSelector(selectToken);
   const [mode, setMode] = useState<ReviewMode>(ReviewMode.None);
   const dispatch = useDispatch();
 
@@ -67,20 +69,20 @@ const Dash: React.FC = () => {
           return;
         }
         if (!router.query || !router.query.mode) {
-          const plan = await userService.getPlan(user.plan_ids[0]);
+          const plan = await userService.getPlan(user.plan_ids[0], token);
           dispatch(updateSelectedPlan(plan.data));
           dispatch(updateReviewMode(ReviewMode.Edit));
           setMode(ReviewMode.Edit);
           return;
         }
-        const res = await userService.getPlan(router.query.plan as string);
+        const res = await userService.getPlan(router.query.plan as string, token);
         if (Object.values(user.plan_ids).includes(res.data._id as string)) {
           setMode(ReviewMode.Edit);
           dispatch(updateReviewMode(ReviewMode.Edit));
           router.push('/dashboard');
           return;
         }
-        const reviewers = await userService.getPlanReviewers(res.data._id);
+        const reviewers = await userService.getPlanReviewers(res.data._id, token);
         for (const reviewer of reviewers.data) {
           if (Object.values(reviewer.reviewer_id).includes(user._id)) {
             dispatch(updateSelectedPlan(res.data));

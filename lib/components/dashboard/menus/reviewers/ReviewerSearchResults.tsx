@@ -6,22 +6,24 @@ import { toast } from 'react-toastify';
 import { ReviewRequestStatus, User } from '../../../../resources/commonTypes';
 import { selectPlan } from '../../../../slices/currentPlanSlice';
 import { userService } from '../../../../services';
-import { selectUser } from '../../../../slices/userSlice';
+import { selectToken, selectUser } from '../../../../slices/userSlice';
 
 const ReviewerSearchResults: FC<{
   users: User[];
 }> = ({ users }) => {
   const currentPlan = useSelector(selectPlan);
   const currentUser = useSelector(selectUser);
+  const token = useSelector(selectToken);
   const [planReviewers, setPlanReviewers] = useState<any>([]);
 
   useEffect(() => {
     (async () => {
-      const reviewers = (await userService.getPlanReviewers(currentPlan._id))
-        .data;
+      const reviewers = (
+        await userService.getPlanReviewers(currentPlan._id, token)
+      ).data;
       setPlanReviewers(reviewers);
     })();
-  }, [currentPlan._id]);
+  }, [currentPlan._id, token]);
 
   const isReviewer = (id: string) => {
     for (const { reviewer_id, status, _id } of planReviewers) {
@@ -41,7 +43,7 @@ const ReviewerSearchResults: FC<{
   const changeReviewer = async (user: User) => {
     const reviewId = isReviewer(user._id);
     if (reviewId) {
-      await userService.removeReview(reviewId);
+      await userService.removeReview(reviewId, token);
       toast.success('Reviewer removed', {
         toastId: 'reviewer removed',
       });
@@ -51,6 +53,7 @@ const ReviewerSearchResults: FC<{
           currentPlan._id,
           user._id,
           currentUser._id,
+          token,
         );
         toast.success('Reviewer requested', {
           toastId: 'reviewer requested',
