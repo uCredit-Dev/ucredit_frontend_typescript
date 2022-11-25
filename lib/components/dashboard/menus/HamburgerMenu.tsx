@@ -8,7 +8,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { getLoginCookieVal, getAPI } from '../../../resources/assets';
 import { DashboardMode } from '../../../resources/commonTypes';
 import { resetCurrentPlan } from '../../../slices/currentPlanSlice';
-import { resetUser, selectUser, selectToken } from '../../../slices/userSlice';
+import { resetUser, selectUser, selectToken, updateToken } from '../../../slices/userSlice';
 import Divider from '@mui/material/Divider';
 import ListItem from '@mui/material/ListItem';
 import ListItemButton from '@mui/material/ListItemButton';
@@ -20,7 +20,6 @@ const HamburgerMenu: FC<{
 }> = ({ mode }) => {
   // Redux Setup
   const user = useSelector(selectUser);
-  const token = useSelector(selectToken);
   const dispatch = useDispatch();
   const router = useRouter();
   const [cookies, , removeCookie] = useCookies(['connect.sid']);
@@ -30,9 +29,7 @@ const HamburgerMenu: FC<{
     const loginId = getLoginCookieVal(cookies);
     if (getAPI(window).includes('ucredit.me'))
       axios
-        .delete(getAPI(window) + '/verifyLogin/' + loginId, {
-          headers: { Authorization: `Bearer ${token}` },
-        })
+        .delete(getAPI(window) + '/verifyLogin/' + loginId)
         .then(() => logOut())
         .catch((err) => {
           console.log('error logging out', err);
@@ -43,6 +40,7 @@ const HamburgerMenu: FC<{
   const logOut = () => {
     removeCookie('connect.sid', { path: '/' });
     dispatch(resetUser());
+    dispatch(updateToken(''));
     dispatch(resetCurrentPlan());
     router.push('/login');
   };
