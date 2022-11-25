@@ -75,14 +75,20 @@ const Dash: React.FC = () => {
           setMode(ReviewMode.Edit);
           return;
         }
-        const res = await userService.getPlan(router.query.plan as string, token);
+        const res = await userService.getPlan(
+          router.query.plan as string,
+          token,
+        );
         if (Object.values(user.plan_ids).includes(res.data._id as string)) {
           setMode(ReviewMode.Edit);
           dispatch(updateReviewMode(ReviewMode.Edit));
           router.push('/dashboard');
           return;
         }
-        const reviewers = await userService.getPlanReviewers(res.data._id, token);
+        const reviewers = await userService.getPlanReviewers(
+          res.data._id,
+          token,
+        );
         for (const reviewer of reviewers.data) {
           if (Object.values(reviewer.reviewer_id).includes(user._id)) {
             dispatch(updateSelectedPlan(res.data));

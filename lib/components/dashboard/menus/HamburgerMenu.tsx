@@ -8,11 +8,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { getLoginCookieVal, getAPI } from '../../../resources/assets';
 import { DashboardMode } from '../../../resources/commonTypes';
 import { resetCurrentPlan } from '../../../slices/currentPlanSlice';
-import {
-  resetUser,
-  selectUser,
-  updateToken,
-} from '../../../slices/userSlice';
+import { resetUser, selectUser, updateToken } from '../../../slices/userSlice';
 import Divider from '@mui/material/Divider';
 import ListItem from '@mui/material/ListItem';
 import ListItemButton from '@mui/material/ListItemButton';
