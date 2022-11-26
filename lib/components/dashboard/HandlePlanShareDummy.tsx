@@ -194,7 +194,7 @@ const HandlePlanShareDummy = () => {
         preUniversity: false,
         expireAt:
           user._id === 'guestUser'
-            ? Date.now() + 60 * 60 * 24 * 1000
+            ? Date.now()
             : undefined,
       }; // add to end by default
       const postYearResp: any = await axios
@@ -345,7 +345,7 @@ const HandlePlanShareDummy = () => {
             version: course.version,
             expireAt:
               user._id === 'guestUser'
-                ? Date.now() + 60 * 60 * 24 * 1000
+                ? Date.now()
                 : undefined,
           };
           fetch(getAPI(window) + '/courses', {

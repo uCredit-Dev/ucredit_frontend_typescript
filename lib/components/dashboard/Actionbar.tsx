@@ -215,7 +215,7 @@ const Actionbar: FC<{ mode: ReviewMode }> = ({ mode }) => {
         preUniversity: preUniversity,
         expireAt:
           user._id === 'guestUser'
-            ? Date.now() + 60 * 60 * 24 * 1000
+            ? Date.now()
             : undefined,
       }; // add to end by default
       axios

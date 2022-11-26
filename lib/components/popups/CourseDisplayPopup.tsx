@@ -151,7 +151,7 @@ const CourseDisplayPopup: FC = () => {
         level: version.level,
         expireAt:
           user._id === 'guestUser'
-            ? Date.now() + 60 * 60 * 24 * 1000
+            ? Date.now()
             : undefined,
       };
       fetch(getAPI(window) + '/courses', {

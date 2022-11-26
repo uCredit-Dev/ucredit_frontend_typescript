@@ -104,7 +104,7 @@ const CourseDisplay: FC<{ cart: boolean }> = ({ cart }) => {
       version: version.term,
       level: version.level,
       expireAt:
-        user._id === 'guestUser' ? Date.now() + 60 * 60 * 24 * 1000 : undefined,
+        user._id === 'guestUser' ? Date.now() : undefined,
     };
 
     let retrieved = await fetch(getAPI(window) + '/courses', {

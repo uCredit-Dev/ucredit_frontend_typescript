@@ -47,7 +47,7 @@ const GenerateNewPlan: FC = () => {
       majors: toAddMajors.map((major) => major.degree_name),
       year: user.grade,
       expireAt:
-        user._id === 'guestUser' ? Date.now() + 60 * 60 * 24 * 1000 : undefined,
+        user._id === 'guestUser' ? Date.now() : undefined,
     };
     planBody.name = !importing ? toAddName : 'Imported ' + toAddName;
     dispatch(updateImportID(''));
@@ -116,7 +116,7 @@ const GenerateNewPlan: FC = () => {
 //     plan_id: planID,
 //     filter: '',
 //     expireAt:
-//       userID === 'guestUser' ? Date.now() + 60 * 60 * 24 * 1000 : undefined,
+//       userID === 'guestUser' ? Date.now() : undefined,
 //   };
 // };
 
