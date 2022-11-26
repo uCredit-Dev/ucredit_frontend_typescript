@@ -3,6 +3,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import Placeholder from './course-search/search-results/Placeholder';
 import {
   Course,
+  UserDistribution,
   Plan,
   SISRetrievedCourse,
   UserCourse,
@@ -29,7 +30,9 @@ import {
 } from '../../slices/userSlice';
 import {
   selectCurrentPlanCourses,
+  selectDistributions,
   updateCurrentPlanCourses,
+  updateDistributions,
   updateSelectedPlan,
 } from '../../slices/currentPlanSlice';
 import { toast } from 'react-toastify';
@@ -49,6 +52,7 @@ const CourseDisplayPopup: FC = () => {
   const version = useSelector(selectVersion);
   const planList = useSelector(selectPlanList);
   const currentCourses = useSelector(selectCurrentPlanCourses);
+  const distributions = useSelector(selectDistributions);
 
   const [inspectedArea, setInspectedArea] = useState<string>('None');
 
@@ -95,7 +99,7 @@ const CourseDisplayPopup: FC = () => {
         const placeholderCourse: Course = {
           title: courseToShow.title,
           number: courseToShow.number,
-          areas: courseToShow.area,
+          areas: courseToShow.areas,
           term: courseToShow.version,
           school: 'none',
           department: 'none',
@@ -141,10 +145,11 @@ const CourseDisplayPopup: FC = () => {
         year: addingYear !== null ? addingYear.name : '',
         term: courseToShow.term,
         credits: version.credits === '' ? 0 : version.credits,
-        distribution_ids: plan.distribution_ids,
         isPlaceholder: placeholder,
         number: version.number,
-        area: placeholder ? version.areas : inspectedArea,
+        areas: placeholder ? version.areas : inspectedArea,
+        tags: version.tags, 
+        department: version.department, 
         preReq: version.preReq,
         wi: version.wi,
         version: version.term,
@@ -185,6 +190,12 @@ const CourseDisplayPopup: FC = () => {
             newPlanList[i] = newPlan;
           }
         }
+        distributions.forEach((dist: UserDistribution, i: number) => {
+          if (data.data.distributions.includes(dist._id)) {
+            distributions[i] = dist;
+          }
+        });
+        dispatch(updateDistributions(distributions));
         dispatch(updatePlanList(newPlanList));
         dispatch(updateCourseToShow(null));
         dispatch(updateShowCourseInfo(false));

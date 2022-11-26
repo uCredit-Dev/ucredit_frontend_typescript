@@ -9,7 +9,6 @@ import {
   SISRetrievedCourse,
   Year,
 } from './commonTypes';
-import { allMajors } from './majors';
 import { store } from '../appStore/store';
 
 export const getAPI = (window) =>
@@ -31,10 +30,10 @@ export const guestUser: User = {
 };
 
 export const getColors = function (
-  distribution: string,
+  distribution: string | undefined,
   writingIntensive: boolean,
 ): string {
-  if (distribution === 'None') {
+  if (!distribution || distribution === 'None') {
     return '#F0F0F0';
   }
   if (writingIntensive) {
@@ -824,9 +823,10 @@ export const checkPrereq = (
 };
 
 const checkOldPrereqNumbers = (
-  courseNumber: string,
-  preReqNumber: string,
+  courseNumber: string | undefined,
+  preReqNumber: string | undefined,
 ): boolean => {
+  if (!courseNumber || !preReqNumber) return false;
   const courseNumberArray = courseNumber.split('.');
   const preReqNumberArray = preReqNumber.split('.');
   if (
@@ -977,14 +977,25 @@ export const checkAllPrereqs = (
   });
 };
 
-/**
- * @param major - major name
- * @returns the major object from the name
- */
-export const getMajor = (major: string) => {
-  for (let m of allMajors) {
-    if (m.degree_name === major) {
-      return m;
+export function getMajor(name: string): any {
+  let majorObj = null;
+  axios.get(getAPI(window) + '/majors/' + name).then((resp) => {
+    if (resp === null) {
+      throw Error('Major not found');
     }
-  }
-};
+    majorObj = resp.data.data;
+  });
+  return majorObj;
+}
+
+export async function getDistribution(distribution_id: string) {
+  const res = await axios.get(getAPI(window) + `/distributions/${distribution_id}`);
+  return res.data.data;
+}
+
+export async function getDistributions(plan_id: string, major_id: string) {
+  const res = await axios.get(getAPI(window) + '/distributionsByPlan/', {
+    params: { plan_id, major_id },
+  });
+  return res.data.data;
+}

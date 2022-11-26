@@ -5,7 +5,6 @@ import { useDispatch, useSelector } from 'react-redux';
 import { toast } from 'react-toastify';
 import { getAPI, guestUser } from '../../resources/assets';
 import { Plan, UserCourse, Year } from '../../resources/commonTypes';
-import { getMajorFromCommonName } from '../../resources/majors';
 import {
   selectCurrentPlanCourses,
   selectPlan,
@@ -89,11 +88,7 @@ const HandlePlanShareDummy = () => {
     if (cookieVal === '') {
       // if not, create a user first, then add
       dispatch(updateToAddName(plan.name));
-      dispatch(
-        updateToAddMajors(
-          plan.majors.map((major) => getMajorFromCommonName(major)),
-        ),
-      );
+      dispatch(updateToAddMajors(plan.major_ids));
       setToAdd(years);
       dispatch(updateUser(guestUser));
       dispatch(updateGeneratePlanAddStatus(true));
@@ -106,11 +101,7 @@ const HandlePlanShareDummy = () => {
 
   const afterPromise = (plan: Plan, years: Year[]) => {
     dispatch(updateToAddName(plan.name));
-    dispatch(
-      updateToAddMajors(
-        plan.majors.map((major) => getMajorFromCommonName(major)),
-      ),
-    );
+    dispatch(updateToAddMajors(plan.major_ids));
     dispatch(updateGeneratePlanAddStatus(true));
     setToAdd(years);
     setShouldAdd(true);
@@ -336,10 +327,11 @@ const HandlePlanShareDummy = () => {
             term: course.term,
             year: addingYear.name,
             credits: course.credits,
-            distribution_ids: currentPlan.distribution_ids,
             isPlaceholder: false,
             number: course.number,
-            area: course.area,
+            areas: course.areas,
+            tags: course.tags, 
+            department: course.department, 
             preReq: course.preReq,
             level: course.level,
             version: course.version,

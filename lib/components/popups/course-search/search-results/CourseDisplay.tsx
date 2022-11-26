@@ -1,6 +1,11 @@
 import React, { FC, useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
-import { Plan, UserCourse, Year } from '../../../../resources/commonTypes';
+import {
+  UserDistribution,
+  Plan,
+  UserCourse,
+  Year,
+} from '../../../../resources/commonTypes';
 import {
   clearSearch,
   selectSemester,
@@ -19,9 +24,11 @@ import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import {
   selectCurrentPlanCourses,
+  selectDistributions,
   selectPlan,
   selectTotalCredits,
   updateCurrentPlanCourses,
+  updateDistributions,
   updateSelectedPlan,
   updateTotalCredits,
 } from '../../../../slices/currentPlanSlice';
@@ -44,6 +51,7 @@ const CourseDisplay: FC<{ cart: boolean }> = ({ cart }) => {
   const placeholder = useSelector(selectPlaceholder);
   const currentCourses = useSelector(selectCurrentPlanCourses);
   const totalCredits = useSelector(selectTotalCredits);
+  const distributions = useSelector(selectDistributions);
 
   // component state setup
   const [inspectedArea, setInspectedArea] = useState<string>('None');
@@ -55,7 +63,7 @@ const CourseDisplay: FC<{ cart: boolean }> = ({ cart }) => {
     // Adds course, updates user frontend distributions display, and clears search states.
     if (version !== 'None') {
       // Posts to add course route and then updates distribution.
-      updateDistributions();
+      updateDistributionBars();
 
       // Clears search state.
       dispatch(clearSearch());
@@ -82,7 +90,7 @@ const CourseDisplay: FC<{ cart: boolean }> = ({ cart }) => {
    * Updates distribution bars upon successfully adding a course.
    * TODO: Move this to assets and modularize
    */
-  const updateDistributions = async () => {
+  const updateDistributionBars = async () => {
     let newUserCourse: UserCourse;
     if (version === 'None') return;
     const addingYear: Year | null = getYear();
@@ -95,10 +103,11 @@ const CourseDisplay: FC<{ cart: boolean }> = ({ cart }) => {
       term: semester === 'All' ? 'fall' : semester.toLowerCase(),
       year: addingYear !== null ? addingYear.name : '',
       credits: version.credits === '' ? 0 : version.credits,
-      distribution_ids: currentPlan.distribution_ids,
       isPlaceholder: placeholder,
       number: version.number,
-      area: version.areas,
+      areas: version.areas,
+      tags: version.tags, 
+      department: version.department, 
       preReq: version.preReq,
       wi: version.wi,
       version: version.term,
@@ -122,7 +131,7 @@ const CourseDisplay: FC<{ cart: boolean }> = ({ cart }) => {
       return;
     }
 
-    newUserCourse = { ...data.data };
+    newUserCourse = { ...data.data.course };
     dispatch(updateCurrentPlanCourses([...currentCourses, newUserCourse]));
     const allYears: Year[] = [...currentPlan.years];
     const newYears: Year[] = [];
@@ -142,6 +151,12 @@ const CourseDisplay: FC<{ cart: boolean }> = ({ cart }) => {
         newPlanList[i] = newPlan;
       }
     }
+    distributions.forEach((dist: UserDistribution, i: number) => {
+      if (data.data.distributions.includes(dist._id)) {
+        distributions[i] = dist;
+      }
+    });
+    dispatch(updateDistributions(distributions));
     dispatch(updatePlanList(newPlanList));
     dispatch(updateTotalCredits(totalCredits + newUserCourse.credits));
     toast.success(version.title + ' added!', {

@@ -4,8 +4,10 @@ import CourseVersion from './CourseVersion';
 import { useDispatch, useSelector } from 'react-redux';
 import {
   selectCurrentPlanCourses,
+  selectDistributions,
   selectPlan,
   updateCurrentPlanCourses,
+  updateDistributions,
   updateSelectedPlan,
 } from '../../../../slices/currentPlanSlice';
 import {
@@ -23,6 +25,7 @@ import {
 } from '../../../../slices/searchSlice';
 import {
   Course,
+  UserDistribution,
   Plan,
   ReviewMode,
   SemesterType,
@@ -72,6 +75,7 @@ const SisCourse: FC<{
   const currentCourses = useSelector(selectCurrentPlanCourses);
   const reviewMode = useSelector(selectReviewMode);
   const cartInvokedBySemester = useSelector(selectCartInvokedBySemester);
+  const distributions = useSelector(selectDistributions);
 
   const [versionIndex, updateVersionIndex] = useState<number>(0);
   const [ogSem, setOgSem] = useState<SemesterType | 'All'>('All');
@@ -218,6 +222,12 @@ const SisCourse: FC<{
       });
       const newPlan: Plan = { ...currentPlan, years: newYears };
       dispatch(updateSelectedPlan(newPlan));
+      distributions.forEach((dist: UserDistribution, i: number) => {
+        if (data.data.distributions.includes(dist._id)) {
+          distributions[i] = dist;
+        }
+      });
+      dispatch(updateDistributions(distributions));
       props.addCourse(newPlan);
     } else {
       console.log('ERROR: Failed to add', data.errors);

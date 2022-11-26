@@ -107,7 +107,7 @@ const CourseVersion: FC<{ setInspectedArea: (area: string) => void }> = ({
   };
 
   const getAreaEls = () => {
-    if (version !== 'None' && version.areas !== 'None')
+    if (version !== 'None' && version.areas && version.areas !== 'None')
       return version.areas.split('').map((area: string, i: number) => (
         <div
           className="flex flex-row items-center transition duration-200 ease-in transform hover:scale-110"

@@ -42,7 +42,7 @@ const fetchPlanById = (id) => {
         uploadDate: res.data.data.postedAt.substring(0, 10),
         content: res.data.data.description,
         tagsList: res.data.data.tags,
-        majorList: res.data.data.majors,
+        majorList: res.data.data.major_ids,
         watchNum: 1,
         likeNum: res.data.data.num_likes,
         starNum: 1,

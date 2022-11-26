@@ -6,7 +6,6 @@ import {
   selectDistributions,
   updateSelectedDistribution,
 } from '../../../slices/currentPlanSlice';
-import { requirements } from './distributionFunctions';
 import { CheckCircleIcon, ExclamationIcon } from '@heroicons/react/solid';
 import ReactTooltip from 'react-tooltip';
 import {
@@ -17,7 +16,11 @@ import {
 import { clearSearch, updatePlaceholder } from '../../../slices/searchSlice';
 import { updateCartInvokedBySemester } from '../../../slices/userSlice';
 import Comments from '../Comments';
-import { ReviewMode } from '../../../resources/commonTypes';
+import {
+  ReviewMode,
+  UserDistribution,
+} from '../../../resources/commonTypes';
+import { getDistribution } from '../../../resources/assets';
 
 /**
  * A distribution bar.
@@ -28,15 +31,12 @@ import { ReviewMode } from '../../../resources/commonTypes';
  * M tried @prop bgcolor - color of this distribution
  */
 const CourseBar: FC<{
-  distribution: requirements;
+  distribution: UserDistribution | any;
   general: boolean;
   bgcolor: string;
-  completed: boolean;
   mode?: ReviewMode;
-}> = ({ distribution, general, bgcolor, completed, mode }) => {
-  const [plannedCredits, setPlannedCredits] = useState(
-    distribution.fulfilled_credits,
-  );
+}> = ({ distribution, general, bgcolor, mode }) => {
+  const [plannedCredits, setPlannedCredits] = useState(distribution.planned);
   const [hovered, setHovered] = useState(false);
 
   const currPlanCourses = useSelector(selectCurrentPlanCourses);
@@ -51,26 +51,25 @@ const CourseBar: FC<{
 
   // Decides how filled the credit bar is.
   useEffect(() => {
-    let temp = distribution.fulfilled_credits;
+    let temp = distribution.planned;
     setPlannedCredits(temp);
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [
-    currPlanCourses,
-    distribution.fulfilled_credits,
-    distribution,
-    distributions,
-  ]);
+  }, [currPlanCourses, distribution.planned, distribution, distributions]);
 
   // Onclick for course bar, opens cart popup passing in corresponding props
-  const openCartPopup = () => {
+  const openCartPopup = async () => {
     dispatch(updateCartInvokedBySemester(false));
     // Filter for the correst distributions from redux store
-    let distrs = distributions.filter((req) => req[0] === distribution.name)[0];
-    if (distrs) {
+    let distr : UserDistribution = distribution;
+    // get fineReqs
+    if (distribution._id) {
+      distr = await getDistribution(distribution._id);
+    }
+    if (distr) {
       // if the distribution exists, then update the cart
       // at this point we have access to the current requirement
       // and all dsitibrutions. to pick out hte rest of the ascoatied fine distirbutions, use this filter.
-      dispatch(updateSelectedDistribution(distrs));
+      dispatch(updateSelectedDistribution(distr));
       dispatch(updateShowingCart(true));
       dispatch(updateInfoPopup(false));
       dispatch(updateAddingPrereq(false));
@@ -91,7 +90,7 @@ const CourseBar: FC<{
     (remainingCredits !== 0
       ? `<div>Remaining</div><div>${remainingCredits}</div>`
       : (() =>
-          completed
+          distribution.satisfied
             ? `<div style="width: 100%; height: auto; display: flex; flex-direction: row; justify-content: center">Completed!</div>`
             : `<div style="width: 100%; height: auto; display: flex; flex-direction: row; justify-content: center">Your credits fulfill this overall requirement, but your fine requirements are lacking! Please click this bar to find out more.</div>`)()) +
     `</div>`;
@@ -117,7 +116,7 @@ const CourseBar: FC<{
         />
         <div className="truncate">{section}</div>
         <div>
-          {remainingCredits === 0 && completed ? (
+          {remainingCredits === 0 && distribution.satisfied ? (
             <CheckCircleIcon className="w-4 h-5 mt-1 ml-1 stroke-2" />
           ) : remainingCredits === 0 ? (
             <ExclamationIcon className="w-4 h-5 mt-1 ml-1 stroke-2" />
