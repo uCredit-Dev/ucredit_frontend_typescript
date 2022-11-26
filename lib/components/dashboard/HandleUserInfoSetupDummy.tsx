@@ -68,7 +68,7 @@ const HandleUserInfoSetupDummy: React.FC = () => {
         plan1._id.localeCompare(plan2._id),
       );
       dispatch(updatePlanList(retrievedPlans));
-      if (!curPlan || curPlan._id === 'noPlan') {
+      if (curPlan._id === 'noPlan') {
         dispatch(updateSelectedPlan(retrievedPlans[0]));
       }
       toast('Retrieved ' + retrievedPlans.length + ' plans!');

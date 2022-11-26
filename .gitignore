@@ -34,5 +34,3 @@ playwright-report/
 
 .env
 e2e/screenshots/
-
-.idea/

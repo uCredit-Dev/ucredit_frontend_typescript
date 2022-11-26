@@ -55,7 +55,6 @@ export const currentPlanSlice = createSlice({
   initialState,
   reducers: {
     updateSelectedPlan: (state: any, action: PayloadAction<Plan>) => {
-      if (!action.payload || action.payload._id === 'noPlan') return;
       state.plan = { ...action.payload };
       const major_id: string | null =
         action.payload.major_ids.length > 0

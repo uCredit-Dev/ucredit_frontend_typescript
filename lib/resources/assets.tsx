@@ -508,7 +508,7 @@ const backendSearch = async (
   courseNumber: string,
   indexNum: number,
   userC: UserCourse | null,
-): Promise<{ index: number; resp: Course | null }> =>
+): Promise<{ index: number; resp: Course | null}> =>
   new Promise(async (resolve) => {
     const courses: any = await axios
       .get(getAPI(window) + '/search', {

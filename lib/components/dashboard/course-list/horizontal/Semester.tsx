@@ -7,7 +7,7 @@ import {
   SemesterType,
   UserCourse,
   Year,
-} from '../../../resources/commonTypes';
+} from '../../../../resources/commonTypes';
 import { useDispatch, useSelector } from 'react-redux';
 import {
   clearSearch,
@@ -18,7 +18,7 @@ import {
   updateCartAdd,
   updateSearchStatus,
   updateSearchTime,
-} from '../../../slices/searchSlice';
+} from '../../../../slices/searchSlice';
 import { PlusIcon } from '@heroicons/react/outline';
 import { QuestionMarkCircleIcon } from '@heroicons/react/solid';
 import { Droppable } from 'react-beautiful-dnd';
@@ -30,7 +30,7 @@ import {
   updateDroppables,
   updateSelectedPlan,
   updateDistributions,
-} from '../../../slices/currentPlanSlice';
+} from '../../../../slices/currentPlanSlice';
 import ReactTooltip from 'react-tooltip';
 import clsx from 'clsx';
 import CourseDraggable from './CourseDraggable';
@@ -39,16 +39,16 @@ import {
   updateAddingPrereq,
   updateInfoPopup,
   updateShowingCart,
-} from '../../../slices/popupSlice';
+} from '../../../../slices/popupSlice';
 import { toast } from 'react-toastify';
-import { getAPI } from '../../../resources/assets';
+import { getAPI } from '../../../../resources/assets';
 import {
   selectUser,
   selectPlanList,
   updatePlanList,
   updateCartInvokedBySemester,
-} from '../../../slices/userSlice';
-import Comments from '../Comments';
+} from '../../../../slices/userSlice';
+import Comments from '../../Comments';
 import CourseComponent from './CourseComponent';
 
 /**
@@ -136,7 +136,7 @@ const Semester: FC<{
     // Do something similar for plan, year, and semester
     // All threads should be retrieved on first load of the plan and stored in a map.
     return semesterCourses.map((course, index) => {
-      if (mode !== ReviewMode.View && mode !== ReviewMode.RoadMap) {
+      if (mode !== ReviewMode.View) {
         return (
           <div key={course._id} className="w-auto mr-0">
             <CourseDraggable
@@ -435,10 +435,7 @@ const Semester: FC<{
     checkSemester() && (
       <button
         className={clsx(
-          {
-            'bg-slate-300 hover:bg-slate-300':
-              mode === ReviewMode.View || mode === ReviewMode.RoadMap,
-          },
+          { 'bg-slate-300 hover:bg-slate-300': mode === ReviewMode.View },
           'z-40 w-24 py-1 text-xs text-white transition duration-150 ease-in transform rounded hover:bg-secondary bg-primary focus:outline-none hover:scale-101',
         )}
         onClick={addPrereq}
