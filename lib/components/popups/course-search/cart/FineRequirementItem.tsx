@@ -14,7 +14,7 @@ const FineRequirementListItem: FC<{
   // Setup Redux
 
   const handleFineReqClick = () => {
-    const req : requirements = {
+    const req: requirements = {
       name: '',
       description: props.itemRequirement.description,
       expr: props.itemRequirement.criteria,
@@ -23,7 +23,7 @@ const FineRequirementListItem: FC<{
       double_count: props.itemRequirement.double_count,
       pathing: props.itemRequirement.pathing,
       wi: props.itemRequirement.wi,
-    }
+    };
     props.onClick(req, props.id);
   };
 

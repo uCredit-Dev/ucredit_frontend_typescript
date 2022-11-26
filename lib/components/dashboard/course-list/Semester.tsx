@@ -25,7 +25,7 @@ import { Droppable } from 'react-beautiful-dnd';
 import {
   selectCurrentPlanCourses,
   selectPlan,
-  selectDistributions, 
+  selectDistributions,
   updateCurrentPlanCourses,
   updateDroppables,
   updateSelectedPlan,

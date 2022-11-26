@@ -12,7 +12,7 @@ const FineRequirementsList: FC<{
 }> = (props) => {
   // Component state setup.
   const [hideResults, setHideResults] = useState<boolean>(false);
-  const [selectedListItem, setSelectedListItem] = useState<string>("");
+  const [selectedListItem, setSelectedListItem] = useState<string>('');
 
   const selectRequirement = (requirement: UserFineReq, i: number) => {
     props.selectRequirement(requirement);

@@ -989,7 +989,9 @@ export function getMajor(name: string): any {
 }
 
 export async function getDistribution(distribution_id: string) {
-  const res = await axios.get(getAPI(window) + `/distributions/${distribution_id}`);
+  const res = await axios.get(
+    getAPI(window) + `/distributions/${distribution_id}`,
+  );
   return res.data.data;
 }
 

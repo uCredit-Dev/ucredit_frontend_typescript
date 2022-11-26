@@ -1,7 +1,12 @@
 import React, { FC, useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { getDistributions } from '../../../resources/assets';
-import { Plan, UserCourse, UserDistribution, Year } from '../../../resources/commonTypes';
+import {
+  Plan,
+  UserCourse,
+  UserDistribution,
+  Year,
+} from '../../../resources/commonTypes';
 import { allMajors } from '../../../resources/majors';
 import {
   selectCurrentPlanCourses,
@@ -79,17 +84,18 @@ const DistributionBarsJSX: FC<{ selectedMajor: string }> = ({
           <CourseBar
             distribution={{
               name: 'Total Credits',
-              required_credits: allMajors[selectedMajor].total_degree_credit, 
+              required_credits: allMajors[selectedMajor].total_degree_credit,
               planned: totalCredits,
               description:
                 selectedMajor !== null
                   ? 'This is the total amount of credits that is required for ' +
-                  selectedMajor
+                    selectedMajor
                   : '',
-              satisfied: totalCredits >= allMajors[selectedMajor].total_degree_credit, 
+              satisfied:
+                totalCredits >= allMajors[selectedMajor].total_degree_credit,
             }}
             general={true}
-            bgcolor={""}
+            bgcolor={''}
           />
         </div>
       </div>,

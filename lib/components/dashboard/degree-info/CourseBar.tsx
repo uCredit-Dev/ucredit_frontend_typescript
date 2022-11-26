@@ -16,10 +16,7 @@ import {
 import { clearSearch, updatePlaceholder } from '../../../slices/searchSlice';
 import { updateCartInvokedBySemester } from '../../../slices/userSlice';
 import Comments from '../Comments';
-import {
-  ReviewMode,
-  UserDistribution,
-} from '../../../resources/commonTypes';
+import { ReviewMode, UserDistribution } from '../../../resources/commonTypes';
 import { getDistribution } from '../../../resources/assets';
 
 /**
@@ -60,7 +57,7 @@ const CourseBar: FC<{
   const openCartPopup = async () => {
     dispatch(updateCartInvokedBySemester(false));
     // Filter for the correst distributions from redux store
-    let distr : UserDistribution = distribution;
+    let distr: UserDistribution = distribution;
     // get fineReqs
     if (distribution._id) {
       distr = await getDistribution(distribution._id);

@@ -199,7 +199,7 @@ export type FilterType =
 export type AreaType = 'N' | 'S' | 'H' | 'W' | 'E' | 'Q';
 
 export type UserFineReq = {
-  _id: string; 
+  _id: string;
   satisfied: boolean;
   required_credits: number;
   description: string;
@@ -214,7 +214,7 @@ export type UserFineReq = {
 
 export type FineReq = {
   description: string;
-  criteria: string,
+  criteria: string;
   required_credits: number;
   planned: number;
   double_count?: string[];

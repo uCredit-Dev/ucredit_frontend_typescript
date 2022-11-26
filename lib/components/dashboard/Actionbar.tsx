@@ -34,7 +34,7 @@ import Reviewers from './menus/reviewers/Reviewers';
 import PersonIcon from '@mui/icons-material/Person';
 
 const majorOptions = allMajorNames.map((major) => ({
-  abbrev: allMajors[major]["abbrev"],
+  abbrev: allMajors[major]['abbrev'],
   name: major,
 }));
 

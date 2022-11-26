@@ -17,7 +17,7 @@ import {
   updateCurrentPlanCourses,
   updateDroppables,
   updateSelectedPlan,
-  updateDistributions
+  updateDistributions,
 } from '../../../../slices/currentPlanSlice';
 import ReactTooltip from 'react-tooltip';
 import clsx from 'clsx';
@@ -210,7 +210,7 @@ const VSemester: React.FC<{
       }
       distributions.forEach((dist: Distribution, i: number) => {
         if (data.data.distributions.includes(dist._id)) {
-          distributions[i] = dist; 
+          distributions[i] = dist;
         }
       });
       dispatch(updateDistributions(distributions));

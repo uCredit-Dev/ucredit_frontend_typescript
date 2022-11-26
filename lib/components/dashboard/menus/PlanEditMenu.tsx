@@ -165,14 +165,12 @@ const PlanEditMenu: FC<{ mode: ReviewMode }> = ({ mode }) => {
   const MultiValue = (
     props: MultiValueProps<typeof majorOptions[number], true>,
   ) => {
-    const major = allMajorNames.find(
-      (major) => major === props.data.label,
-    );
+    const major = allMajorNames.find((major) => major === props.data.label);
     // @ts-ignore
     const showAsAbbrev = props.selectProps.value.length > 1;
     return (
       <components.MultiValue {...props}>
-        {showAsAbbrev ? allMajors[major]["abbrev"] : major}
+        {showAsAbbrev ? allMajors[major]['abbrev'] : major}
       </components.MultiValue>
     );
   };

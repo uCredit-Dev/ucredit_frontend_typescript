@@ -60,7 +60,7 @@ const DeleteCoursePopup: FC = () => {
           toast.error(courseInfo.course.title + ' deleted!', {
             toastId: 'course deleted',
           });
-            dispatch(updateSelectedPlan(newPlan));
+          dispatch(updateSelectedPlan(newPlan));
           dispatch(
             updatePlanList(
               planList.map((plan) => {
