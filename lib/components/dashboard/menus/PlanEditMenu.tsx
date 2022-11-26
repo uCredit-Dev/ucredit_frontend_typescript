@@ -211,10 +211,7 @@ const PlanEditMenu: FC<{ mode: ReviewMode }> = ({ mode }) => {
       const body = {
         ...newYear,
         preUniversity: preUniversity,
-        expireAt:
-          user._id === 'guestUser'
-            ? Date.now()
-            : undefined,
+        expireAt: user._id === 'guestUser' ? Date.now() : undefined,
       }; // add to end by default
       axios
         .post(getAPI(window) + '/years', body)

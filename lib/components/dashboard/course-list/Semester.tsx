@@ -207,10 +207,7 @@ const Semester: FC<{
         isPlaceholder: placeholder,
         area: inspectedArea,
         version: semesterName + ' ' + semesterYear.year,
-        expireAt:
-          user._id === 'guestUser'
-            ? Date.now()
-            : undefined,
+        expireAt: user._id === 'guestUser' ? Date.now() : undefined,
         _id: undefined,
       };
 

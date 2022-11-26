@@ -103,8 +103,7 @@ const CourseDisplay: FC<{ cart: boolean }> = ({ cart }) => {
       wi: version.wi,
       version: version.term,
       level: version.level,
-      expireAt:
-        user._id === 'guestUser' ? Date.now() : undefined,
+      expireAt: user._id === 'guestUser' ? Date.now() : undefined,
     };
 
     let retrieved = await fetch(getAPI(window) + '/courses', {

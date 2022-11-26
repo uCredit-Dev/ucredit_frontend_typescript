@@ -149,10 +149,7 @@ const CourseDisplayPopup: FC = () => {
         wi: version.wi,
         version: version.term,
         level: version.level,
-        expireAt:
-          user._id === 'guestUser'
-            ? Date.now()
-            : undefined,
+        expireAt: user._id === 'guestUser' ? Date.now() : undefined,
       };
       fetch(getAPI(window) + '/courses', {
         method: 'POST',

@@ -46,8 +46,7 @@ const GenerateNewPlan: FC = () => {
       user_id: user._id,
       majors: toAddMajors.map((major) => major.degree_name),
       year: user.grade,
-      expireAt:
-        user._id === 'guestUser' ? Date.now() : undefined,
+      expireAt: user._id === 'guestUser' ? Date.now() : undefined,
     };
     planBody.name = !importing ? toAddName : 'Imported ' + toAddName;
     dispatch(updateImportID(''));
