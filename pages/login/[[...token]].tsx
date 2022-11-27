@@ -191,8 +191,7 @@ const Login: React.FC = () => {
     handleJHULogin(session);
   };
 
-  const tooltip = 
-        `<ReactTooltip id="godTip" place="top" effect="solid">
+  const tooltip = `<ReactTooltip id="godTip" place="top" effect="solid">
           <div style="overflow: wrap; margin-bottom: 1rem;">uCredit JHU login is currently unavailable.</div>
           <div>Sorry, it will be back soon! In the meantime, please continue as guest.</div>
         </ReactTooltip>`;
