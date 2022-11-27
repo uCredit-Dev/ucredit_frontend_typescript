@@ -12,7 +12,6 @@ import { selectPlan, updateSelectedPlan } from '../../slices/currentPlanSlice';
 import { getAPI } from '../../resources/assets';
 import { updateDeletePlanStatus } from '../../slices/popupSlice';
 import { userService } from '../../../lib/services';
-import React from 'react';
 
 /**
  * This is the confirmation popup that appears when users press the button to delete a plan.
