@@ -36,26 +36,24 @@ const Laptop: React.FC = () => {
                 </div>
               </div>
             ) : (
-              <>
-                <div className="py-20 flex flex-row align-middle" key={d.title}>
-                  <div className="flex justify-center w-1/3 h-1/3 rounded-md">
-                    <img
-                      className="rounded-md drop-shadow-2xl"
-                      alt=""
-                      src={d.img}
-                    />
-                  </div>
+              <div className="py-20 flex flex-row align-middle" key={d.title}>
+                <div className="flex justify-center w-1/3 h-1/3 rounded-md">
+                  <img
+                    className="rounded-md drop-shadow-2xl"
+                    alt=""
+                    src={d.img}
+                  />
+                </div>
 
-                  <div className="w-2/3 p-10 align-middle items-center ">
-                    <div className="text-4xl mb-10 xxxl:text-[60px] xxxl:w-[1200px] xxxl:leading-[80px]">
-                      {d.title}
-                    </div>
-                    <div className="text-black text-2xl xxxl:text-[35px] xxxl:w-[1400px] xxxl:mt-[100px] xxxl:leading-[60px]">
-                      {d.desc}
-                    </div>
+                <div className="w-2/3 p-10 align-middle items-center ">
+                  <div className="text-4xl mb-10 xxxl:text-[60px] xxxl:w-[1200px] xxxl:leading-[80px]">
+                    {d.title}
+                  </div>
+                  <div className="text-black text-2xl xxxl:text-[35px] xxxl:w-[1400px] xxxl:mt-[100px] xxxl:leading-[60px]">
+                    {d.desc}
                   </div>
                 </div>
-              </>
+              </div>
             );
           })}
         </div>
