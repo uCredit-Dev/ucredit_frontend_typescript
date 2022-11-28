@@ -22,6 +22,7 @@ import { User } from '../../lib/resources/commonTypes';
 import { userService } from '../../lib/services';
 import { updateAddingPlanStatus } from '../../lib/slices/popupSlice';
 import React from 'react';
+import ReactTooltip from 'react-tooltip';
 
 /**
  * The login page, designed after the Spotify login page..
@@ -190,6 +191,11 @@ const Login: React.FC = () => {
     handleJHULogin(session);
   };
 
+  const tooltip = `<ReactTooltip id="godTip" place="top" effect="solid">
+          <div style="overflow: wrap; margin-bottom: 1rem;">uCredit JHU login is currently unavailable.</div>
+          <div>Sorry, it will be back soon! In the meantime, please continue as guest.</div>
+        </ReactTooltip>`;
+
   return (
     <>
       <Head>
@@ -259,12 +265,18 @@ const Login: React.FC = () => {
               <div className="w-full mx-auto mt-8 text-4xl text-center mb-14">
                 Quick accessible degree planning.
               </div>
-              <button
-                onClick={handleJHULogin}
-                className="flex flex-row items-center justify-center w-64 h-12 mx-auto font-semibold tracking-widest transition duration-200 ease-in transform rounded-full cursor-pointer select-none bg-secondary hover:scale-105"
+              <div
+                data-tip={tooltip}
+                data-for="godTip"
+                onMouseOver={() => ReactTooltip.rebuild()}
               >
-                JHU Login
-              </button>
+                <button
+                  // onClick={handleJHULogin}
+                  className="flex flex-row items-center justify-center w-64 h-12 mx-auto font-semibold tracking-widest transition duration-200 ease-in transform rounded-full cursor-pointer select-none bg-gray-400 hover:scale-105"
+                >
+                  JHU Login
+                </button>
+              </div>
               <button
                 className="flex flex-row items-center justify-center w-64 h-12 mx-auto mt-5 mb-auto font-semibold tracking-widest transition duration-200 ease-in transform rounded-full cursor-pointer select-none bg-secondary focus:outline-none hover:scale-105"
                 onClick={
