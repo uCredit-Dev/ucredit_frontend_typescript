@@ -18,6 +18,15 @@ export const currentMembers = [
     portfolio: '',
   },
   {
+    name: 'Robert Zhang',
+    role: 'Senior Advisor/Tech Lead',
+    img: '/img/team-page/Robert_Zhang.png',
+    class: '2023',
+    github: 'https://github.com/robertzhidealx',
+    linkedin: 'https://www.linkedin.com/in/~rz',
+    portfolio: '',
+  },
+  {
     name: 'Aryaman Shodhan',
     role: 'Project Manager',
     img: '/img/team-page/Aryaman_shodhan.png',
@@ -46,15 +55,6 @@ export const currentMembers = [
     linkedin: 'www.linkedin.com/in/astrid-k-jiang',
     portfolio: '',
   },
-  {
-    name: 'Astrid Chawla',
-    role: 'UI/UX Designer',
-    img: '/img/team-page/Daivik_Chawla.jfif',
-    class: '2024',
-    github: '',
-    linkedin: 'www.linkedin.com/in/daivik-chawla-257a2420b/',
-    portfolio: '',
-  },
 
   {
     name: 'Minseo Park',
@@ -63,16 +63,6 @@ export const currentMembers = [
     class: '2025',
     github: '',
     linkedin: 'https://www.linkedin.com/in/minseo-park13/',
-    portfolio: '',
-  },
-
-  {
-    name: 'Akhil Deo',
-    role: 'Software Engineer',
-    img: '/img/team-page/Akhil_Deo.png',
-    class: '2025',
-    github: 'https://github.com/akhildeo',
-    linkedin: 'https://www.linkedin.com/in/akhildeo',
     portfolio: '',
   },
 
@@ -87,49 +77,12 @@ export const currentMembers = [
   },
 
   {
-    name: 'JJ Yang',
-    role: 'Software Engineer (Past Team Manager)',
-    img: '/img/team-page/JJ_Yang.png',
-    class: '2024',
-    github: '',
-    linkedin: 'https://www.linkedin.com/in/kristine-yang-8b13881b6/',
-    portfolio: '',
-  },
-
-  {
-    name: 'Elva Shang',
-    role: 'Software Engineer (Past Team Manager)',
-    img: '/img/team-page/Ruoyan_Shang.png',
-    class: '2024',
-    github: 'https://github.com/Elvaaaaaa',
-    linkedin: 'https://www.linkedin.com/in/ruoyan-shang/',
-    portfolio: '',
-  },
-  {
-    name: 'Jessie Luo',
-    role: 'Software Engineer/Marketing',
-    img: '/img/team-page/Jessie_Luo.png',
-    class: '2024',
-    github: 'https://github.com/JessieLuo30',
-    linkedin: 'https://www.linkedin.com/in/jessie-luo-bc076/',
-    portfolio: 'https://jessieluo.netlify.app/',
-  },
-  {
-    name: 'Fyona Sun',
+    name: 'Akhil Deo',
     role: 'Software Engineer',
-    img: '/img/team-page/Fyona_Sun.png',
-    class: '2024',
-    github: 'https://github.com/QifanSun1128',
-    linkedin: 'https://www.linkedin.com/in/qifan-sun-797ab4224/',
-    portfolio: '',
-  },
-  {
-    name: 'Rosa Gao',
-    role: 'Software Engineer/Marketing',
-    img: '/img/team-page/Rosa_Gao.png',
+    img: '/img/team-page/Akhil_Deo.png',
     class: '2025',
-    github: 'https://github.com/RosaGao',
-    linkedin: 'https://www.linkedin.com/in/rosa-gao/',
+    github: 'https://github.com/akhildeo',
+    linkedin: 'https://www.linkedin.com/in/akhildeo',
     portfolio: '',
   },
 ];
@@ -147,16 +100,6 @@ export const supervisors = [
 ];
 
 export const alumnis = [
-  {
-    name: 'Robert Zhang',
-    role: 'Tech Lead',
-    img: '/img/team-page/Robert_Zhang.png',
-    class: '2023',
-    github: 'https://github.com/robertzhidealx',
-    linkedin: 'https://www.linkedin.com/in/~rz',
-    portfolio: '',
-  },
-
   {
     name: 'Andy Qin',
     role: 'Team Manager',
@@ -313,6 +256,53 @@ export const alumnis = [
     class: '2027',
     github: 'https://github.com/Kevin-Liu-01',
     linkedin: 'https://www.linkedin.com/in/kevin-liu-2495b6205/',
+    portfolio: '',
+  },
+
+  {
+    name: 'JJ Yang',
+    role: 'Software Engineer (Past Team Manager)',
+    img: '/img/team-page/JJ_Yang.png',
+    class: '2024',
+    github: '',
+    linkedin: 'https://www.linkedin.com/in/kristine-yang-8b13881b6/',
+    portfolio: '',
+  },
+
+  {
+    name: 'Elva Shang',
+    role: 'Software Engineer (Past Team Manager)',
+    img: '/img/team-page/Ruoyan_Shang.png',
+    class: '2024',
+    github: 'https://github.com/Elvaaaaaa',
+    linkedin: 'https://www.linkedin.com/in/ruoyan-shang/',
+    portfolio: '',
+  },
+  {
+    name: 'Jessie Luo',
+    role: 'Software Engineer/Marketing',
+    img: '/img/team-page/Jessie_Luo.png',
+    class: '2024',
+    github: 'https://github.com/JessieLuo30',
+    linkedin: 'https://www.linkedin.com/in/jessie-luo-bc076/',
+    portfolio: 'https://jessieluo.netlify.app/',
+  },
+  {
+    name: 'Fyona Sun',
+    role: 'Software Engineer',
+    img: '/img/team-page/Fyona_Sun.png',
+    class: '2024',
+    github: 'https://github.com/QifanSun1128',
+    linkedin: 'https://www.linkedin.com/in/qifan-sun-797ab4224/',
+    portfolio: '',
+  },
+  {
+    name: 'Rosa Gao',
+    role: 'Software Engineer/Marketing',
+    img: '/img/team-page/Rosa_Gao.png',
+    class: '2025',
+    github: 'https://github.com/RosaGao',
+    linkedin: 'https://www.linkedin.com/in/rosa-gao/',
     portfolio: '',
   },
 ];
