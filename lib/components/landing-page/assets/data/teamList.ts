@@ -18,6 +18,15 @@ export const currentMembers = [
     portfolio: '',
   },
   {
+    name: 'Robert Zhang',
+    role: 'Senior Advisor/Tech Lead',
+    img: '/img/team-page/Robert_Zhang.png',
+    class: '2023',
+    github: 'https://github.com/robertzhidealx',
+    linkedin: 'https://www.linkedin.com/in/~rz',
+    portfolio: '',
+  },
+  {
     name: 'Aryaman Shodhan',
     role: 'Project Manager',
     img: '/img/team-page/Aryaman_shodhan.png',
@@ -49,7 +58,7 @@ export const currentMembers = [
 
   {
     name: 'Minseo Park',
-    role: 'Tech Lead',
+    role: 'Software Engineer',
     img: '/img/team-page/Minseo_Park.png',
     class: '2025',
     github: '',
@@ -59,7 +68,7 @@ export const currentMembers = [
 
   {
     name: 'Josephine Deng',
-    role: 'Tech Lead',
+    role: 'Software Engineer',
     img: '/img/team-page/Josephine_Deng.png',
     class: '2025',
     github: '',
@@ -91,16 +100,6 @@ export const supervisors = [
 ];
 
 export const alumnis = [
-  {
-    name: 'Robert Zhang',
-    role: 'Tech Lead',
-    img: '/img/team-page/Robert_Zhang.png',
-    class: '2023',
-    github: 'https://github.com/robertzhidealx',
-    linkedin: 'https://www.linkedin.com/in/~rz',
-    portfolio: '',
-  },
-
   {
     name: 'Andy Qin',
     role: 'Team Manager',
