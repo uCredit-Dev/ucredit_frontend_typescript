@@ -4,6 +4,7 @@ import CurrentReviewers from './CurrentReviewers';
 import ReviewersSearch from './ReviewersSearch';
 import { Hoverable, TooltipPrimary } from '../../../utils';
 import Divider from '@mui/material/Divider';
+import Tooltip from '@mui/material/Tooltip';
 
 const Reviewers = () => {
   const [addingReviewer, updateAddingReviewer] = useState<Boolean>(false);
@@ -13,7 +14,13 @@ const Reviewers = () => {
     <div className="flex flex-col min-w-[16rem] mx-2">
       <div className="flex flex-row items-center justify-between pb-1 text-xl cursor-pointer rounded p-2">
         <div className="flex items-center gap-1">
-          <p className="flex flex-row h-full">Reviewers</p>
+          <Tooltip
+            title="Click on Edit to add or remove reviewers."
+            placement="left"
+            arrow
+          >
+            <p className="flex flex-row h-full">Add Reviewer</p>
+          </Tooltip>
           {process.env.NODE_ENV === 'development' && (
             <Hoverable
               as={<ExclamationIcon className="text-red-400 w-5 h-5 relative" />}
