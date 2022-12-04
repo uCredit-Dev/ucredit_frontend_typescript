@@ -15,7 +15,7 @@ const Reviewers = () => {
       <div className="flex flex-row items-center justify-between pb-1 text-xl cursor-pointer rounded p-2">
         <div className="flex items-center gap-1">
           <Tooltip
-            title="Click on Edit to add or remove reviewers."
+            title="Click on Edit button to add or remove reviewers."
             placement="left"
             arrow
           >
