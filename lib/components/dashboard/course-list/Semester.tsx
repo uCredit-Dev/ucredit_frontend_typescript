@@ -231,9 +231,10 @@ const Semester: FC<{
 
   const handlePostResponse = (data) => {
     if (data.errors === undefined && version !== 'None') {
-      let newUserCourse: UserCourse;
-      newUserCourse = { ...data.data.course };
+      // add course to currentPlanCourses
+      let newUserCourse: UserCourse = data.data.course;
       dispatch(updateCurrentPlanCourses([...currentCourses, newUserCourse]));
+      // add course to plan's year 
       const allYears: Year[] = [...currentPlan.years];
       const newYears: Year[] = [];
       allYears.forEach((y) => {
@@ -246,19 +247,22 @@ const Semester: FC<{
       });
       const newPlan: Plan = { ...currentPlan, years: newYears };
       dispatch(updateSelectedPlan(newPlan));
+      // add new plan to planList  
       const newPlanList = [...planList];
       for (let i = 0; i < planList.length; i++) {
         if (planList[i]._id === newPlan._id) {
           newPlanList[i] = newPlan;
         }
       }
+      // update modified distributions 
+      dispatch(updatePlanList(newPlanList));
       distributions.forEach((dist: UserDistribution, i: number) => {
         if (data.data.distributions.includes(dist._id)) {
           distributions[i] = dist;
         }
       });
       dispatch(updateDistributions(distributions));
-      dispatch(updatePlanList(newPlanList));
+      // close popups and notify user 
       dispatch(updateAddingPrereq(false));
       dispatch(updateInfoPopup(true));
       if (cartOpen) dispatch(updateShowingCart(true));

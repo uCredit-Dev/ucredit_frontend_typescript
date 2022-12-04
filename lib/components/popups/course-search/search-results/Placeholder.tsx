@@ -206,34 +206,25 @@ const Placeholder: FC<{ addCourse: (plan?: Plan) => void }> = (props) => {
 
   const handleUpdateResponse = (data: any): void => {
     if (data.errors === undefined && courseToShow !== null) {
-      const updated = currentCourses.filter((course) => {
-        if (course._id === courseToShow._id) {
-          return false;
-        } else {
-          return true;
-        }
-      });
+      // remove updated course from currentPlanCourses
+      const updated = currentCourses.filter((course) => course._id !== courseToShow._id);
       dispatch(updateCurrentPlanCourses(updated));
+      // remove updated course from plan years 
       const allYears: Year[] = [...currentPlan.years];
       const newYears: Year[] = [];
       allYears.forEach((y) => {
-        const yCourses = y.courses.filter((course) => {
-          if (course === courseToShow) {
-            return false;
-          } else {
-            return true;
-          }
-        });
+        const yCourses = y.courses.filter((course) => course._id !== courseToShow._id);
         newYears.push({ ...y, courses: yCourses });
       });
       const newPlan: Plan = { ...currentPlan, years: newYears };
+      dispatch(updateSelectedPlan(newPlan));
+      // update modified distributions  
       distributions.forEach((dist: UserDistribution, i: number) => {
         if (data.data.distributions.includes(dist._id)) {
           distributions[i] = dist;
         }
       });
       dispatch(updateDistributions(distributions));
-      dispatch(updateSelectedPlan(newPlan));
       props.addCourse(newPlan);
     } else {
       console.log('ERROR: Failed to add', data.errors);

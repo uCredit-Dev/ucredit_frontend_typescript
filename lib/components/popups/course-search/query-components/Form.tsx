@@ -24,7 +24,6 @@ import axios from 'axios';
 import { getAPI } from '../../../../resources/assets';
 import { filterCourses } from './formUtils';
 import { selectPlan } from '../../../../slices/currentPlanSlice';
-import React from 'react';
 
 type SearchMapEl = {
   course: SISRetrievedCourse;
