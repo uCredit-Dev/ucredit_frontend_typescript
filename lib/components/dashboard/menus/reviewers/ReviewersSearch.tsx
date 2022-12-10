@@ -15,29 +15,28 @@ const ReviewersSearch = () => {
   };
 
   useEffect(() => {
+    const Search = (text: String) => {
+      axios
+        .get(getAPI(window) + '/user', {
+          method: 'GET',
+          headers: {
+            'Content-Type': 'application/json',
+            Authorization: `Bearer ${token}`,
+          },
+          params: {
+            username: text,
+          },
+        })
+        .then((users) => {
+          // TODO: This should return plan objects as well
+          setSearchData(users.data.data);
+        });
+    };
     if (searchState.length > 0) {
       const search = setTimeout(() => Search(searchState), 500);
       return () => clearTimeout(search);
     }
-  }, [searchState]);
-
-  const Search = (text: String) => {
-    axios
-      .get(getAPI(window) + '/user', {
-        method: 'GET',
-        headers: {
-          'Content-Type': 'application/json',
-          Authorization: `Bearer ${token}`,
-        },
-        params: {
-          username: text,
-        },
-      })
-      .then((users) => {
-        // TODO: This should return plan objects as well
-        setSearchData(users.data.data);
-      });
-  };
+  }, [searchState, token]);
 
   return (
     <div className="flex flex-col pr-1 bg-slate-100 mx-1 rounded-lg">
