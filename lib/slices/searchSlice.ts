@@ -114,6 +114,8 @@ export const searchSlice = createSlice({
       action: PayloadAction<Course | 'None'>,
     ) => {
       state.inspectedVersion = action.payload;
+      console.log('inspected version is ');
+      console.log(state.inspectedVersion);
     },
     clearSearch: (state: any) => {
       state.filters = initialState.filters;

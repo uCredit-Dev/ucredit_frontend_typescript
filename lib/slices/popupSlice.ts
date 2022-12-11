@@ -88,6 +88,7 @@ export const popupSlice = createSlice({
       state: any,
       action: PayloadAction<UserCourse | null>,
     ) => {
+      console.log('payload is ' + action.payload);
       state.courseToShow = action.payload;
     },
     updateAddingPrereq: (state: any, action: PayloadAction<boolean>) => {

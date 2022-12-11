@@ -131,6 +131,7 @@ const Placeholder: FC<{ addCourse: (plan?: Plan) => void }> = (props) => {
     setPlaceholderDepartment(dep);
     if (inspectedVersion !== 'None') {
       const inspCopy: Course = { ...inspectedVersion, department: dep };
+      // console.log(inspCopy);
       dispatch(updateInspectedVersion(inspCopy));
     }
   };
@@ -208,6 +209,8 @@ const Placeholder: FC<{ addCourse: (plan?: Plan) => void }> = (props) => {
           return true;
         }
       });
+      console.log('updated');
+      console.log(updated);
       dispatch(updateCurrentPlanCourses(updated));
       const allYears: Year[] = [...currentPlan.years];
       const newYears: Year[] = [];
