@@ -11,6 +11,7 @@ import {
   // updateRetrievedAll,
 } from '../lib/slices/userSlice';
 import {
+  SISRetrievedCourse,
   // SISRetrievedCourse,
   UserCourse,
   Year,
@@ -83,19 +84,8 @@ const Home: React.FC = () => {
       axios
         .get(getAPI(window) + '/coursesByPlan/' + curPlan._id)
         .then((response) => {
-          response.data.data.forEach((c: UserCourse) => {
-            axios
-              .get(getAPI(window) + '/search', {
-                params: { query: c.number },
-                // eslint-disable-next-line no-loop-func
-              })
-              .then((retrieved) => {
-                dispatch(updateCourseCache(retrieved.data.data));
-              })
-              .catch((err) => {
-                console.log(err);
-              });
-          });
+          const sisCourses: SISRetrievedCourse[] = response.data.data; 
+          dispatch(updateCourseCache(sisCourses));
         })
         .catch((err) => {
           console.log(err);

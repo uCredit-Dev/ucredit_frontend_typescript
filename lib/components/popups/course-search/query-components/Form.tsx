@@ -37,7 +37,11 @@ type SearchMapEl = {
  *
  * @prop setSearching - sets searching state
  */
-const Form: FC<{ setSearching: (searching: boolean) => void }> = (props) => {
+const Form: FC<{ 
+  setSearching: (searching: boolean) => void; 
+  pageNum: number; 
+  setPageCount: Function; 
+}> = ({setSearching, pageNum, setPageCount}) => {
   // Set up redux dispatch and variables.
   const dispatch = useDispatch();
   const searchTerm = useSelector(selectSearchterm);
@@ -72,11 +76,12 @@ const Form: FC<{ setSearching: (searching: boolean) => void }> = (props) => {
           searchedQuery.versions,
           searchedQuery.queryLength,
           searchedQuery.extras,
+          pageNum
         );
       }
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [searchedQuery]);
+  }, [searchedQuery, pageNum]);
 
   const getYearVal = (): number => {
     let year: number = new Date().getFullYear();
@@ -149,7 +154,7 @@ const Form: FC<{ setSearching: (searching: boolean) => void }> = (props) => {
       searchFilters.levels === null
     ) {
       dispatch(updateRetrievedCourses([]));
-      props.setSearching(false);
+      setSearching(false);
       return;
     }
     // Search params.
@@ -168,12 +173,12 @@ const Form: FC<{ setSearching: (searching: boolean) => void }> = (props) => {
       levels: searchFilters.levels,
     };
 
-    props.setSearching(true);
+    setSearching(true);
 
     if (searchTerm.length > 0) {
       // Search with half second debounce.
       const search = setTimeout(
-        performSmartSearch(searchTerm, extras, searchTerm.length),
+        performSmartSearch(searchTerm, extras, searchTerm.length, pageNum),
         500,
       );
       return () => clearTimeout(search);
@@ -181,7 +186,7 @@ const Form: FC<{ setSearching: (searching: boolean) => void }> = (props) => {
       find(extras).then((found) => dispatch(updateRetrievedCourses(found[0])));
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [searchTerm, searchFilters]);
+  }, [searchTerm, searchFilters, pageNum]);
 
   /**
    * Finds course based on the search conditions given in extras.
@@ -196,7 +201,7 @@ const Form: FC<{ setSearching: (searching: boolean) => void }> = (props) => {
       let courses: SISRetrievedCourse[] = [...courseCache];
       if (!retrievedAll) {
         const retrieved: any = await axios
-          .get(getAPI(window) + '/search', {
+          .get(getAPI(window) + '/search/1', {
             params: getParams(extras),
           })
           .catch(() => {
@@ -242,7 +247,7 @@ const Form: FC<{ setSearching: (searching: boolean) => void }> = (props) => {
       extras.query.length <= minLength ||
       searchTerm.length - extras.query.length >= 2
     ) {
-      props.setSearching(false);
+      setSearching(false);
     }
     return SISRetrieved;
   };
@@ -294,6 +299,7 @@ const Form: FC<{ setSearching: (searching: boolean) => void }> = (props) => {
     versions: number[],
     queryLength: number,
     extras: SearchExtras,
+    pageNum: number
   ) => {
     courses.forEach((course: SISRetrievedCourse, index: number) => {
       if (!searchedCourses.has(course.number + '0')) {
@@ -310,7 +316,7 @@ const Form: FC<{ setSearching: (searching: boolean) => void }> = (props) => {
     const newSearchList: SISRetrievedCourse[] = getNewSearchList();
     dispatch(updateRetrievedCourses(newSearchList));
     if (queryLength > minLength && initialQueryLength - queryLength < 9) {
-      performSmartSearch(extras.query, extras, queryLength - 1)();
+      performSmartSearch(extras.query, extras, queryLength - 1, pageNum)();
     }
   };
 
@@ -354,6 +360,7 @@ const Form: FC<{ setSearching: (searching: boolean) => void }> = (props) => {
       originalQuery: string,
       extras: SearchExtras,
       queryLength: number,
+      pageNum: number
     ): (() => void) =>
     (): void => {
       const querySubstrs: string[] = [];
@@ -366,20 +373,22 @@ const Form: FC<{ setSearching: (searching: boolean) => void }> = (props) => {
       } else if (queryLength > 0 && queryLength < minLength) {
         // Perform normal search if query length is between 1 and minLength
         axios
-          .get(getAPI(window) + '/search', {
+          .get(getAPI(window) + `/search/${pageNum}`, {
             params: getParams(extras),
           })
           .then((retrieved) => {
-            let retrievedCourses: SISRetrievedCourse[] = retrieved.data.data;
+            let retrievedCourses: SISRetrievedCourse[] = retrieved.data.data.courses;
+            const pageCount = retrieved.data.data.pagination.last; 
+            setPageCount(pageCount);
             dispatch(updateCourseCache(retrievedCourses));
             dispatch(updateRetrievedCourses(retrievedCourses));
-            props.setSearching(false);
+            setSearching(false);
           })
           .catch(() => {
-            props.setSearching(false);
+            setSearching(false);
           });
       } else {
-        props.setSearching(false);
+        setSearching(false);
       }
     };
 

@@ -22,10 +22,11 @@ const SearchList: FC<{
   searching: boolean;
   hideResults: boolean;
   setHideResults: Function;
-}> = ({ searching, hideResults, setHideResults }) => {
+  pageNum: number; 
+  pageCount: number; 
+  setPageNum: Function; 
+}> = ({ searching, hideResults, setHideResults, pageNum, pageCount, setPageNum }) => {
   // Component state setup.
-  const [pageNum, setPageNum] = useState<number>(0);
-  const [pageCount, setPageCount] = useState<number>(0);
   const [filteredCourses, setFilteredCourses] = useState<SISRetrievedCourse[]>(
     [],
   );
@@ -37,18 +38,9 @@ const SearchList: FC<{
   const currentPlan = useSelector(selectPlan);
   const dispatch = useDispatch();
 
-  let coursesPerPage = 10;
-
   // Updates pagination every time the searched courses change.
   useEffect(() => {
     const SISFilteredCourses: SISRetrievedCourse[] = courses;
-    // If coursesPerPage doesn't divide perfectly into total courses, we need one more page.
-    const division = Math.floor(SISFilteredCourses.length / coursesPerPage);
-    const pages =
-      SISFilteredCourses.length % coursesPerPage === 0
-        ? division
-        : division + 1;
-    setPageCount(pages);
     setFilteredCourses(SISFilteredCourses);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [courses, searchFilters]);
@@ -59,12 +51,7 @@ const SearchList: FC<{
    */
   const courseList = () => {
     let toDisplay: any = [];
-    let startingIndex = pageNum * coursesPerPage;
-    let endingIndex =
-      startingIndex + coursesPerPage > filteredCourses.length
-        ? filteredCourses.length - 1
-        : startingIndex + coursesPerPage - 1;
-    for (let i = startingIndex; i <= endingIndex; i++) {
+    for (let i = 0; i < filteredCourses.length; i++) {
       let inserted: string[] = [];
       const inspecting = { ...filteredCourses[i] };
       inspecting.versions.forEach((v: any, versionNum: number) => {
@@ -104,7 +91,7 @@ const SearchList: FC<{
    * @param event event raised on changing search result page
    */
   const handlePageClick = (event: any) => {
-    setPageNum(event.selected);
+    setPageNum(event.selected+1);
   };
 
   /**

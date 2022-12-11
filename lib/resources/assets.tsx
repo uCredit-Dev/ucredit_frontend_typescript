@@ -512,7 +512,7 @@ const backendSearch = async (
 ): Promise<{ index: number; resp: Course | null }> =>
   new Promise(async (resolve) => {
     const courses: any = await axios
-      .get(getAPI(window) + '/search', {
+      .get(getAPI(window) + '/search/1', {
         params: { query: courseNumber },
       })
       .catch((err) => console.log(err));
