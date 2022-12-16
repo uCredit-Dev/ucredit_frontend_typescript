@@ -56,6 +56,7 @@ const CourseList: FC<Props> = ({ mode }) => {
   // Gets all courses for each year and generates year objects based on them.
   useEffect(() => {
     processPlan(currentPlan);
+    console.log('here is', currentPlan);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [currentPlan._id, searching, placeholder, currentPlan.years]);
 

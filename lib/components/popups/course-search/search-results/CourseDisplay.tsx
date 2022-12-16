@@ -52,6 +52,7 @@ const CourseDisplay: FC<{ cart: boolean }> = ({ cart }) => {
    * Adds course
    */
   const addCourse = (): void => {
+    console.log('k');
     // Adds course, updates user frontend distributions display, and clears search states.
     if (version !== 'None') {
       // Posts to add course route and then updates distribution.
@@ -99,6 +100,8 @@ const CourseDisplay: FC<{ cart: boolean }> = ({ cart }) => {
       isPlaceholder: placeholder,
       number: version.number,
       area: version.areas,
+      department: version.department,
+      tags: version.tags,
       preReq: version.preReq,
       wi: version.wi,
       version: version.term,
@@ -123,6 +126,7 @@ const CourseDisplay: FC<{ cart: boolean }> = ({ cart }) => {
     }
 
     newUserCourse = { ...data.data };
+
     dispatch(updateCurrentPlanCourses([...currentCourses, newUserCourse]));
     const allYears: Year[] = [...currentPlan.years];
     const newYears: Year[] = [];

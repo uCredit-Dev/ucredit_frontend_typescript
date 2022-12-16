@@ -72,11 +72,14 @@ const Placeholder: FC<{ addCourse: (plan?: Plan) => void }> = (props) => {
   // Updates placeholder information everytime inspected course changes.
   useEffect(() => {
     if (placeholder && inspectedVersion !== 'None') {
+      console.log(inspectedVersion, 2);
       setPlaceholderArea(inspectedVersion.areas);
       setPlaceholderTitle(inspectedVersion.title);
       setPlaceholderCredits(inspectedVersion.credits);
       setPlaceholderNumber(inspectedVersion.number);
       setPlaceholderDepartment(inspectedVersion.department);
+      console.log(inspectedVersion, 8);
+      setPlaceholderTag(inspectedVersion.tags[0]);
       setPlaceholderWI(inspectedVersion.wi);
       setPlaceholderLevel(
         inspectedVersion.level ? inspectedVersion.level : 'none',
@@ -84,6 +87,10 @@ const Placeholder: FC<{ addCourse: (plan?: Plan) => void }> = (props) => {
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [inspectedVersion]);
+
+  useEffect(() => {
+    console.log(placeholderDepartment);
+  }, [placeholderDepartment]);
 
   // On placeholder title change
   const onPTChange = (event: any) => {
@@ -131,7 +138,7 @@ const Placeholder: FC<{ addCourse: (plan?: Plan) => void }> = (props) => {
     setPlaceholderDepartment(dep);
     if (inspectedVersion !== 'None') {
       const inspCopy: Course = { ...inspectedVersion, department: dep };
-      // console.log(inspCopy);
+      console.log(inspCopy, 3);
       dispatch(updateInspectedVersion(inspCopy));
     }
   };
@@ -143,7 +150,8 @@ const Placeholder: FC<{ addCourse: (plan?: Plan) => void }> = (props) => {
     if (inspectedVersion !== 'None') {
       const inspCopy: Course = {
         ...inspectedVersion,
-        tags: [...inspectedVersion.tags, tag],
+        // tags: [...inspectedVersion.tags, tag],
+        tags: [tag],
       };
       dispatch(updateInspectedVersion(inspCopy));
     }
@@ -209,8 +217,6 @@ const Placeholder: FC<{ addCourse: (plan?: Plan) => void }> = (props) => {
           return true;
         }
       });
-      console.log('updated');
-      console.log(updated);
       dispatch(updateCurrentPlanCourses(updated));
       const allYears: Year[] = [...currentPlan.years];
       const newYears: Year[] = [];
