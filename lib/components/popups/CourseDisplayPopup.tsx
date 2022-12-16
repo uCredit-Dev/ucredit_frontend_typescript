@@ -135,7 +135,6 @@ const CourseDisplayPopup: FC = () => {
   const addCourse = (plan?: Plan): void => {
     if (version !== 'None' && courseToShow !== null && plan !== undefined) {
       const addingYear: Year | null = getYear(plan);
-      console.log(courseToShow, 1, version.department);
       const body = {
         user_id: user._id,
         year_id: courseToShow.year_id !== null ? courseToShow.year_id : '',
@@ -175,7 +174,6 @@ const CourseDisplayPopup: FC = () => {
   const handlePostAddCourse =
     (plan: Plan) =>
     (data): void => {
-      console.log('we are here!', data);
       let newUserCourse: UserCourse;
       if (data.errors === undefined && courseToShow !== null) {
         newUserCourse = { ...data.data };
@@ -191,7 +189,6 @@ const CourseDisplayPopup: FC = () => {
             newPlanList[i] = newPlan;
           }
         }
-        console.log('our new plan', newPlan);
         dispatch(updatePlanList(newPlanList));
         dispatch(updateCourseToShow(null));
         dispatch(updateShowCourseInfo(false));

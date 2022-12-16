@@ -72,13 +72,11 @@ const Placeholder: FC<{ addCourse: (plan?: Plan) => void }> = (props) => {
   // Updates placeholder information everytime inspected course changes.
   useEffect(() => {
     if (placeholder && inspectedVersion !== 'None') {
-      console.log(inspectedVersion, 2);
       setPlaceholderArea(inspectedVersion.areas);
       setPlaceholderTitle(inspectedVersion.title);
       setPlaceholderCredits(inspectedVersion.credits);
       setPlaceholderNumber(inspectedVersion.number);
       setPlaceholderDepartment(inspectedVersion.department);
-      console.log(inspectedVersion, 8);
       setPlaceholderTag(inspectedVersion.tags[0]);
       setPlaceholderWI(inspectedVersion.wi);
       setPlaceholderLevel(
@@ -87,10 +85,6 @@ const Placeholder: FC<{ addCourse: (plan?: Plan) => void }> = (props) => {
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [inspectedVersion]);
-
-  useEffect(() => {
-    console.log(placeholderDepartment);
-  }, [placeholderDepartment]);
 
   // On placeholder title change
   const onPTChange = (event: any) => {

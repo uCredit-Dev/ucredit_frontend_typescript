@@ -52,7 +52,6 @@ const CourseDisplay: FC<{ cart: boolean }> = ({ cart }) => {
    * Adds course
    */
   const addCourse = (): void => {
-    console.log('k');
     // Adds course, updates user frontend distributions display, and clears search states.
     if (version !== 'None') {
       // Posts to add course route and then updates distribution.
