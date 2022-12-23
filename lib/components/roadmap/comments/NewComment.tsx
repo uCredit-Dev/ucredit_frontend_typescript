@@ -2,7 +2,7 @@ import React, { FC, useState } from 'react';
 import axios from 'axios';
 import { getAPI } from './../../../resources/assets';
 import { useSelector } from 'react-redux';
-import { selectUser } from '../../../slices/userSlice';
+import { selectToken, selectUser } from '../../../slices/userSlice';
 import { ThreadType } from '../../../resources/commonTypes';
 import Editor from './commentEditor/Editor';
 
@@ -25,6 +25,7 @@ const NewComment: FC<{
   // const currPlan = useSelector(selectPlan);
   const currPlan = { _id: '62d8875b5b6fb8734aa09679' };
   const [content, setContent] = useState('');
+  const token = useSelector(selectToken);
 
   const onCommentSubmit = () => {
     const thread: ThreadBodyType = {
@@ -43,10 +44,16 @@ const NewComment: FC<{
     };
 
     axios
-      .post(getAPI(window) + '/thread/new', {
-        thread,
-        comment,
-      })
+      .post(
+        getAPI(window) + '/thread/new',
+        {
+          thread,
+          comment,
+        },
+        {
+          headers: { Authorization: `Bearer ${token}` },
+        },
+      )
       .then((res) => {
         updateRoadmapThreads(res.data.data);
         setContent('');

@@ -18,6 +18,7 @@ import {
   selectPlanList,
   selectUser,
   selectReviewMode,
+  selectToken,
   updatePlanList,
 } from '../../slices/userSlice';
 import Autocomplete from '@mui/material/Autocomplete';
@@ -42,6 +43,7 @@ const Actionbar: FC<{ mode: ReviewMode }> = ({ mode }) => {
   const planList = useSelector(selectPlanList);
   const currentPlan = useSelector(selectPlan);
   const user = useSelector(selectUser);
+  const token = useSelector(selectToken);
   const dispatch = useDispatch();
   const reviewMode = useSelector(selectReviewMode);
   const [planName, setPlanName] = useState<string>(currentPlan.name);
@@ -81,6 +83,7 @@ const Actionbar: FC<{ mode: ReviewMode }> = ({ mode }) => {
       method: 'PATCH',
       headers: {
         'Content-Type': 'application/json',
+        Authorization: `Bearer ${token}`,
       },
       body: JSON.stringify(body),
     })
@@ -137,7 +140,9 @@ const Actionbar: FC<{ mode: ReviewMode }> = ({ mode }) => {
       majors: newMajors,
     };
     axios
-      .patch(getAPI(window) + '/plans/update', body)
+      .patch(getAPI(window) + '/plans/update', body, {
+        headers: { Authorization: `Bearer ${token}` },
+      })
       .then(() => {
         const newUpdatedPlan = { ...currentPlan, majors: newMajors };
         dispatch(updateSelectedPlan(newUpdatedPlan));
@@ -216,7 +221,9 @@ const Actionbar: FC<{ mode: ReviewMode }> = ({ mode }) => {
         expireAt: user._id === 'guestUser' ? Date.now() : undefined,
       }; // add to end by default
       axios
-        .post(getAPI(window) + '/years', body)
+        .post(getAPI(window) + '/years', body, {
+          headers: { Authorization: `Bearer ${token}` },
+        })
         .then((response: any) => {
           const updatedPlanList: Plan[] = [...planList];
           updatedPlanList[0] = {

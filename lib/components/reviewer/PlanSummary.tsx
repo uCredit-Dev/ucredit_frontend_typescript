@@ -14,6 +14,8 @@ import { statusReadable } from '../../../pages/reviewer';
 import { userService } from '../../services';
 import DistributionBarsJSX from '../dashboard/degree-info/DistributionBarsJSX';
 import { allMajors } from '../../resources/majors';
+import { selectToken } from '../../slices/userSlice';
+import { useSelector } from 'react-redux';
 
 const getNextSem = (): { year: Number; semester: SemesterType } => {
   const date = new Date();
@@ -46,6 +48,7 @@ const PlanSummary: FC<{
   const [semesters, setSemesters] = useState<
     { label: string; content: string }[]
   >([]);
+  const token = useSelector(selectToken);
 
   useEffect(() => {
     const { year, semester } = getNextSem();
@@ -113,7 +116,11 @@ const PlanSummary: FC<{
 
   const updateStatus = (value) => async () => {
     try {
-      await userService.changeReviewStatus(review_id, value.toUpperCase());
+      await userService.changeReviewStatus(
+        review_id,
+        value.toUpperCase(),
+        token,
+      );
       setRefreshReviews(true);
       setNotifState(false);
       toast.success(

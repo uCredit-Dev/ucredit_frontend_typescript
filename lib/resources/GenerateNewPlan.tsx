@@ -6,6 +6,7 @@ import {
   updatePlanList,
   selectUser,
   selectPlanList,
+  selectToken,
   updateGuestPlanIds,
   updateImportID,
 } from '../slices/userSlice';
@@ -32,6 +33,7 @@ const GenerateNewPlan: FC = () => {
   // Redux setup
   const dispatch = useDispatch();
   const user = useSelector(selectUser);
+  const token = useSelector(selectToken);
   const planList = useSelector(selectPlanList);
   const toAddName = useSelector(selectToAddName);
   const toAddMajors = useSelector(selectToAddMajors);
@@ -53,7 +55,9 @@ const GenerateNewPlan: FC = () => {
 
     let newPlan: Plan;
     const getData = async () => {
-      let response = await axios.post(getAPI(window) + '/plans', planBody);
+      let response = await axios.post(getAPI(window) + '/plans', planBody, {
+        headers: { Authorization: `Bearer ${token}` },
+      });
       newPlan = response.data.data;
       dispatch(
         updateSearchTime({

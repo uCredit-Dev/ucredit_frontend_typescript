@@ -13,6 +13,7 @@ import {
   selectUser,
   selectPlanList,
   updatePlanList,
+  selectToken,
 } from '../../../../slices/userSlice';
 import Placeholder from './Placeholder';
 import { toast } from 'react-toastify';
@@ -44,6 +45,7 @@ const CourseDisplay: FC<{ cart: boolean }> = ({ cart }) => {
   const placeholder = useSelector(selectPlaceholder);
   const currentCourses = useSelector(selectCurrentPlanCourses);
   const totalCredits = useSelector(selectTotalCredits);
+  const token = useSelector(selectToken);
 
   // component state setup
   const [inspectedArea, setInspectedArea] = useState<string>('None');
@@ -110,6 +112,7 @@ const CourseDisplay: FC<{ cart: boolean }> = ({ cart }) => {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
+        Authorization: `Bearer ${token}`,
       },
       body: JSON.stringify(body),
     });

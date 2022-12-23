@@ -1,9 +1,10 @@
-import { FC } from 'react';
+import React, { FC } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import {
   selectUser,
   selectPlanList,
   updatePlanList,
+  selectToken,
 } from '../../slices/userSlice';
 import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
@@ -11,7 +12,6 @@ import { selectPlan, updateSelectedPlan } from '../../slices/currentPlanSlice';
 import { getAPI } from '../../resources/assets';
 import { updateDeletePlanStatus } from '../../slices/popupSlice';
 import { userService } from '../../../lib/services';
-import React from 'react';
 
 /**
  * This is the confirmation popup that appears when users press the button to delete a plan.
@@ -21,6 +21,7 @@ const DeletePlanPopup: FC = () => {
   // Redux Setup
   const dispatch = useDispatch();
   const user = useSelector(selectUser);
+  const token = useSelector(selectToken);
   const currentPlan = useSelector(selectPlan);
   const planList = useSelector(selectPlanList);
 
@@ -34,6 +35,9 @@ const DeletePlanPopup: FC = () => {
     if (planList.length > 1 && user._id !== 'noUser') {
       fetch(getAPI(window) + '/plans/' + currentPlan._id, {
         method: 'DELETE',
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
       })
         .then(() => {
           toast.error(currentPlan.name + ' deleted!', {
@@ -49,9 +53,12 @@ const DeletePlanPopup: FC = () => {
         })
         .catch((err) => console.log(err));
 
-      const reviews = await userService.getPlanReviewers(currentPlan._id);
+      const reviews = await userService.getPlanReviewers(
+        currentPlan._id,
+        token,
+      );
       reviews.data.forEach(async (review) => {
-        await userService.removeReview(review._id);
+        await userService.removeReview(review._id, token);
       });
     } else {
       toast.error('Cannot delete last plan!', {

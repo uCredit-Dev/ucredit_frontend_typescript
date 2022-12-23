@@ -3,7 +3,7 @@ import React, { useEffect, useState } from 'react';
 import { useSelector } from 'react-redux';
 import Header from '../../lib/components/dashboard/Header';
 import { userService } from '../../lib/services';
-import { selectUser } from '../../lib/slices/userSlice';
+import { selectToken, selectUser } from '../../lib/slices/userSlice';
 import { Reviewee, Search } from '../../lib/components/reviewer';
 import {
   DashboardMode,
@@ -20,6 +20,7 @@ export const statusReadable = {
 const Reviewer: React.FC = () => {
   const router = useRouter();
   const user = useSelector(selectUser);
+  const token = useSelector(selectToken);
   const [filtered, setFiltered] = useState<RevieweePlans[]>([]);
   const [foundPlan, setFoundPlan] = useState(false);
   const [refreshReviews, setRefreshReviews] = useState(false);
@@ -39,16 +40,18 @@ const Reviewer: React.FC = () => {
     if (_id === 'noUser' || _id === 'guestUser') return;
     (async () => {
       const plansByUser = new Map();
-      const reviews = (await userService.getReviewerPlans(user._id)).data;
+      const reviews = (await userService.getReviewerPlans(user._id, token))
+        .data;
       for (const { _id, plan_id, reviewee_id, status } of reviews) {
         if (status === ReviewRequestStatus.Pending) continue;
-        const plansResp = await userService.getPlan(plan_id);
+        const plansResp = await userService.getPlan(plan_id, token);
         const plan = {
           ...plansResp.data,
           status,
           review_id: _id,
         };
-        const reviewee = (await userService.getUser(reviewee_id._id)).data[0];
+        const reviewee = (await userService.getUser(reviewee_id._id, token))
+          .data[0];
         const revieweeString = JSON.stringify(reviewee);
         const plans = plansByUser.get(revieweeString) || [];
         plansByUser.set(revieweeString, [...plans, plan]);
@@ -73,13 +76,13 @@ const Reviewer: React.FC = () => {
     });
     try {
       let review_id: string = '';
-      const reviewees = await userService.getReviewerPlans(user._id);
+      const reviewees = await userService.getReviewerPlans(user._id, token);
       for (let review of reviewees.data) {
         if (review.reviewee_id._id === revieweeID) {
           review_id = review._id;
         }
       }
-      await userService.removeReview(review_id);
+      await userService.removeReview(review_id, token);
     } catch (err) {
       console.log(err);
     }

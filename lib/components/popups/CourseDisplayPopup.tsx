@@ -24,6 +24,7 @@ import {
 import {
   selectCourseCache,
   selectPlanList,
+  selectToken,
   selectUser,
   updatePlanList,
 } from '../../slices/userSlice';
@@ -46,6 +47,7 @@ const CourseDisplayPopup: FC = () => {
   const courseCache = useSelector(selectCourseCache);
   const placeholder = useSelector(selectPlaceholder);
   const user = useSelector(selectUser);
+  const token = useSelector(selectToken);
   const version = useSelector(selectVersion);
   const planList = useSelector(selectPlanList);
   const currentCourses = useSelector(selectCurrentPlanCourses);
@@ -155,6 +157,7 @@ const CourseDisplayPopup: FC = () => {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
+          Authorization: `Bearer ${token}`,
         },
         body: JSON.stringify(body),
       })

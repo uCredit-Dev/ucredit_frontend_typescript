@@ -10,6 +10,7 @@ import {
 } from '../../slices/currentPlanSlice';
 import {
   selectReviewMode,
+  selectToken,
   selectUser,
   updatePlanList,
 } from '../../slices/userSlice';
@@ -23,6 +24,7 @@ const HandleUserInfoSetupDummy: React.FC = () => {
   // Redux setup
   const dispatch = useDispatch();
   const user = useSelector(selectUser);
+  const token = useSelector(selectToken);
   const importing = useSelector(selectImportingStatus);
   const curPlan = useSelector(selectPlan);
   const reviewMode = useSelector(selectReviewMode);
@@ -45,7 +47,9 @@ const HandleUserInfoSetupDummy: React.FC = () => {
         reviewMode !== ReviewMode.View
       ) {
         axios
-          .get(getAPI(window) + '/plansByUser/' + user._id)
+          .get(getAPI(window) + '/plansByUser/' + user._id, {
+            headers: { Authorization: `Bearer ${token}` },
+          })
           .then((retrieved) => processRetrievedPlans(retrieved.data.data))
           .catch((err) => {
             if (user._id === 'guestUser') {

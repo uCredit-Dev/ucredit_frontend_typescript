@@ -44,6 +44,7 @@ import {
   selectPlanList,
   updatePlanList,
   updateCartInvokedBySemester,
+  selectToken,
 } from '../../../slices/userSlice';
 import Comments from '../Comments';
 import CourseComponent from './CourseComponent';
@@ -67,6 +68,7 @@ const Semester: FC<{
   const addingPrereqStatus = useSelector(selectAddingPrereq);
   const version = useSelector(selectVersion);
   const user = useSelector(selectUser);
+  const token = useSelector(selectToken);
   const currentPlan = useSelector(selectPlan);
   const planList = useSelector(selectPlanList);
   const placeholder = useSelector(selectPlaceholder);
@@ -215,6 +217,7 @@ const Semester: FC<{
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
+          Authorization: `Bearer ${token}`,
         },
         body: JSON.stringify(body),
       })
