@@ -72,20 +72,7 @@ const Comments: FC<{
 
   useEffect(() => {
     const handleClickOutside = (e: MouseEvent) => {
-      if (
-        !expanded ||
-        // @ts-ignore: property does not exist error
-        (typeof e.target.className === 'string' &&
-          // @ts-ignore: property does not exist error
-          e.target.className.includes('option')) ||
-        // @ts-ignore: property does not exist error
-        e.target.tagName === 'svg' ||
-        // @ts-ignore: property does not exist error
-        e.target.tagName === 'path' ||
-        // @ts-ignore: property does not exist error
-        (e.target.tagName === 'DIV' && e.target.className.includes('css'))
-      )
-        return;
+      if (!expanded) return;
       const currentWrapperRef: any = wrapperRef.current;
       if (currentWrapperRef && !currentWrapperRef.contains(e.target))
         setExpanded(false);

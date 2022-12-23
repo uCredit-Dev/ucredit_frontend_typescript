@@ -24,9 +24,8 @@ const ReviewerSearchResults: FC<{
   }, [currentPlan._id]);
 
   const isReviewer = (id: string) => {
-    for (const { reviewer_id, status, _id } of planReviewers) {
-      if (reviewer_id._id === id && status !== ReviewRequestStatus.Pending)
-        return _id;
+    for (const { reviewer_id, _id } of planReviewers) {
+      if (reviewer_id._id === id) return _id;
     }
     return '';
   };
