@@ -192,10 +192,7 @@ const HandlePlanShareDummy = () => {
       const body = {
         ...yearBody,
         preUniversity: false,
-        expireAt:
-          user._id === 'guestUser'
-            ? Date.now() + 60 * 60 * 24 * 1000
-            : undefined,
+        expireAt: user._id === 'guestUser' ? Date.now() : undefined,
       }; // add to end by default
       const postYearResp: any = await axios
         .post(getAPI(window) + '/years', body)
@@ -343,10 +340,7 @@ const HandlePlanShareDummy = () => {
             preReq: course.preReq,
             level: course.level,
             version: course.version,
-            expireAt:
-              user._id === 'guestUser'
-                ? Date.now() + 60 * 60 * 24 * 1000
-                : undefined,
+            expireAt: user._id === 'guestUser' ? Date.now() : undefined,
           };
           fetch(getAPI(window) + '/courses', {
             method: 'POST',
