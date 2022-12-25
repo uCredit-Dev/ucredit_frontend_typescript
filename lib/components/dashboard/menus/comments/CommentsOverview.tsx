@@ -28,8 +28,13 @@ const CommentsOverview: React.FC = () => {
     for (let k in threadObjs) {
       temp.push(threadObjs[k]);
     }
-    const ts = temp.map((e) => getComments(e));
-    setThreadJSX(ts);
+    if (
+      temp[temp.length - 1] !== undefined &&
+      temp[temp.length - 1].comments.length > 0
+    ) {
+      const ts = temp.map((e) => getComments(e));
+      setThreadJSX(ts);
+    }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [threadObjs]);
 

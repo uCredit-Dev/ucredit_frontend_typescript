@@ -58,10 +58,34 @@ const Comments: FC<{
   }, [selectedThread]);
 
   useEffect(() => {
-    if (threads[location]) {
-      setThisThread(threads[location]);
-      const commentsJSX = getComments(threads[location]);
-      setComments(commentsJSX.filter((el) => el !== null));
+    console.log(threads[location]);
+    if (threads[location] && threads[location].comments.length > 0) {
+      console.log(thisThread);
+      console.log(
+        thisThread?.comments[0]._id !== threads[location]?.comments[0]._id,
+      );
+      console.log(thisThread?.comments[0].thread_id);
+      console.log(threads[location]?.comments[0].thread_id);
+      if (
+        thisThread &&
+        thisThread?.comments[0]._id !== threads[location]?.comments[0]._id
+        // thisThread != threads[location] &&
+        // !thisThread.comments.includes(threads[location].comments[0])
+      ) {
+        const concat = thisThread.comments.concat(threads[location].comments);
+        setThisThread({ ...threads[location], comments: concat });
+        const commentsJSX = getComments({
+          ...threads[location],
+          comments: concat,
+        });
+        console.log(commentsJSX);
+        setComments(commentsJSX.filter((el) => el !== null));
+      } else {
+        console.log('what');
+        setThisThread(threads[location]);
+        const commentsJSX = getComments(threads[location]);
+        setComments(commentsJSX.filter((el) => el !== null));
+      }
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [threads]);
