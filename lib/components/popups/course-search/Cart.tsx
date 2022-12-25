@@ -172,7 +172,7 @@ const Cart: FC<{ allCourses: SISRetrievedCourse[] }> = (props) => {
       // let courses: SISRetrievedCourse[] = [...courseCache]; // how actively is this cache updated?
       // if (!retrievedAll) { // how often is this filter used?
       const retrieved: any = await axios
-        .get(getAPI(window) + '/search/1', {
+        .get(getAPI(window) + '/search', {
           params: getParams(extras),
         })
         .catch(() => {
