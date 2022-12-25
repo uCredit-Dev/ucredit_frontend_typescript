@@ -6,14 +6,10 @@ import { getAPI } from '../lib/resources/assets';
 import {
   selectCourseCache,
   selectUser,
-  // updateAllCoursesCached,
   updateCourseCache,
-  // updateRetrievedAll,
 } from '../lib/slices/userSlice';
 import {
   SISRetrievedCourse,
-  // SISRetrievedCourse,
-  UserCourse,
   Year,
 } from '../lib/resources/commonTypes';
 import { selectPlan } from '../lib/slices/currentPlanSlice';

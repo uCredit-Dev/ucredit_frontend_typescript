@@ -139,6 +139,7 @@ export type Filter = {
 };
 
 export type SearchExtras = {
+  page: number; 
   query: string;
   credits: string | null;
   areas: string | null;
