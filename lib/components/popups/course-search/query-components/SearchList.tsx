@@ -52,36 +52,29 @@ const SearchList: FC<{
   const courseList = () => {
     let toDisplay: any = [];
     for (let i = 0; i < filteredCourses.length; i++) {
-      let inserted: string[] = [];
       const inspecting = { ...filteredCourses[i] };
-      inspecting.versions.forEach((v: any, versionNum: number) => {
-        let alreadyInserted = false;
-        inserted.forEach((term: string) => {
-          if (term.includes(v.term)) {
-            alreadyInserted = true;
-          }
-        });
+      for (let j = 0; j < inspecting.versions.length; j++) {
+        const v = inspecting.versions[j];
         if (
-          !alreadyInserted &&
           (v.term === searchFilters.term + ' ' + searchFilters.year ||
             (searchFilters.term === 'All' &&
               (searchFilters.year === currentPlan.years[0].year ||
                 searchFilters.year.toString() === v.term.split(' ')[1])))
         ) {
-          inserted.push(v.term);
+          console.log(inspecting);
           toDisplay.push(
             <div
-              key={inspecting.number + v.term + versionNum}
+              key={inspecting._id}
               className="transition duration-200 ease-in transform hover:scale-105"
               onClick={() =>
                 window.innerWidth < 1200 ? setHideResults(true) : null
               }
             >
-              <CourseCard course={inspecting} version={versionNum} />
+              <CourseCard course={inspecting} version={j} />
             </div>,
           );
         }
-      });
+      }
     }
     return toDisplay;
   };

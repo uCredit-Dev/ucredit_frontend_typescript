@@ -16,7 +16,7 @@ import {
 import 'react-toastify/dist/ReactToastify.css';
 import Filters from './Filters';
 import axios from 'axios';
-import { getAPI } from '../../../../resources/assets';
+import { getAPI, getParams } from '../../../../resources/assets';
 import { selectPlan } from '../../../../slices/currentPlanSlice';
 
 /**
@@ -29,7 +29,8 @@ const Form: FC<{
   setSearching: (searching: boolean) => void; 
   pageNum: number; 
   setPageCount: Function; 
-}> = ({setSearching, pageNum, setPageCount}) => {
+  setPageNum: Function; 
+}> = ({setSearching, pageNum, setPageCount, setPageNum}) => {
   // Set up redux dispatch and variables.
   const dispatch = useDispatch();
   const searchTerm = useSelector(selectSearchterm);
@@ -96,7 +97,12 @@ const Form: FC<{
       );
   };
 
-  // Search with debouncing of 2/4s of a second.
+  useEffect(() => {
+    setPageNum(1);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [searchTerm, searchFilters])
+
+  // Search with debouncing of 4/8s of a second.
   useEffect(() => {
     // Skip searching if no filters or queries are specified
     if (
@@ -176,20 +182,6 @@ const Form: FC<{
   const handleSearchTerm = (event: any): void => {
     dispatch(updateSearchTerm(event.target.value));
   };
-
-  // Returns search fetch params
-  const getParams = (extras: SearchExtras) => ({
-    page: pageNum,
-    query: extras.query,
-    department: extras.department,
-    term: extras.term,
-    areas: extras.areas,
-    credits: extras.credits,
-    wi: extras.wi,
-    tags: extras.tags,
-    level: extras.levels,
-    year: extras.year,
-  });
 
   return (
     <div className="w-full h-auto px-5 pt-3 border-b border-gray-400 select-none text-coursecard">

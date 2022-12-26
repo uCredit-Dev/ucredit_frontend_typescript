@@ -104,7 +104,7 @@ const Search: FC = () => {
             <div className="h-full overflow-y-auto">
               {!hideResults && (
                 <>
-                  <Form setSearching={setSearching} pageNum={pageNum} setPageCount={setPageCount} />
+                  <Form setSearching={setSearching} pageNum={pageNum} setPageCount={setPageCount} setPageNum={setPageNum} />
                   <SearchList
                     searching={searching}
                     hideResults={hideResults}

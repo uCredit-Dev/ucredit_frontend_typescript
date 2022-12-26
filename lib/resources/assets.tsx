@@ -8,6 +8,7 @@ import {
   UserCourse,
   SISRetrievedCourse,
   Year,
+  SearchExtras,
 } from './commonTypes';
 import { allMajors } from './majors';
 import { store } from '../appStore/store';
@@ -52,6 +53,19 @@ export const getColors = function (
     return '#83B9FF';
   }
 };
+
+export const getParams = (extras: SearchExtras) => ({
+  page: extras.page,
+  query: extras.query,
+  department: extras.department,
+  term: extras.term === 'All' ? '' : extras.term,
+  year: extras.year === 'All' ? '' : extras.year,
+  areas: extras.areas,
+  credits: extras.credits,
+  wi: extras.wi,
+  tags: extras.tags,
+  level: extras.levels,
+});
 
 // On SIS, scrape the majors using the console, check Notion for more info
 export const AS_deps = [
