@@ -27,10 +27,10 @@ import { selectPlan } from '../../../../slices/currentPlanSlice';
  */
 const Form: FC<{ 
   setSearching: (searching: boolean) => void; 
-  pageNum: number; 
+  pageIndex: number; 
   setPageCount: Function; 
-  setPageNum: Function; 
-}> = ({setSearching, pageNum, setPageCount, setPageNum}) => {
+  setPageIndex: Function; 
+}> = ({setSearching, pageIndex, setPageCount, setPageIndex}) => {
   // Set up redux dispatch and variables.
   const dispatch = useDispatch();
   const searchTerm = useSelector(selectSearchterm);
@@ -98,7 +98,7 @@ const Form: FC<{
   };
 
   useEffect(() => {
-    setPageNum(1);
+    setPageIndex(0);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [searchTerm, searchFilters])
 
@@ -120,7 +120,7 @@ const Form: FC<{
     }
     // Search params.
     const extras: SearchExtras = {
-      page: pageNum,
+      page: pageIndex,
       query: searchTerm,
       credits: searchFilters.credits,
       areas: searchFilters.distribution,
@@ -148,7 +148,7 @@ const Form: FC<{
       setSearching(false);
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [searchTerm, searchFilters, pageNum]);
+  }, [searchTerm, searchFilters, pageIndex]);
 
   /**
    * Performs search call with filters to backend and updates redux with retrieved courses.

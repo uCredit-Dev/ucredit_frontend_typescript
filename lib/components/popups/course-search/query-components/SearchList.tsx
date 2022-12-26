@@ -22,10 +22,10 @@ const SearchList: FC<{
   searching: boolean;
   hideResults: boolean;
   setHideResults: Function;
-  pageNum: number; 
+  pageIndex: number; 
   pageCount: number; 
-  setPageNum: Function; 
-}> = ({ searching, hideResults, setHideResults, pageNum, pageCount, setPageNum }) => {
+  setPageIndex: Function; 
+}> = ({ searching, hideResults, setHideResults, pageIndex, pageCount, setPageIndex }) => {
   // Component state setup.
   const [filteredCourses, setFilteredCourses] = useState<SISRetrievedCourse[]>(
     [],
@@ -61,7 +61,6 @@ const SearchList: FC<{
               (searchFilters.year === currentPlan.years[0].year ||
                 searchFilters.year.toString() === v.term.split(' ')[1])))
         ) {
-          console.log(inspecting);
           toDisplay.push(
             <div
               key={inspecting._id}
@@ -84,7 +83,7 @@ const SearchList: FC<{
    * @param event event raised on changing search result page
    */
   const handlePageClick = (event: any) => {
-    setPageNum(event.selected+1);
+    setPageIndex(event.selected);
   };
 
   /**
@@ -122,7 +121,7 @@ const SearchList: FC<{
   const getPaginationUI = () =>
     pageCount > 1 && (
       <div className="flex flex-row justify-center w-full h-auto">
-        <Pagination pageCount={pageCount} handlePageClick={handlePageClick} />
+        <Pagination pageCount={pageCount} pageIndex={pageIndex} handlePageClick={handlePageClick} />
       </div>
     );
 
@@ -195,11 +194,13 @@ const SearchList: FC<{
 // Below is the pagination component.
 type PaginationProps = {
   pageCount: number;
+  pageIndex: number;
   handlePageClick: any;
 };
 
 const Pagination: React.FC<PaginationProps> = ({
   pageCount,
+  pageIndex, 
   handlePageClick,
 }) => {
   /* A Pagination component we'll use! Prop list and docs here: https://github.com/AdeleD/react-paginate. '
@@ -213,6 +214,7 @@ const Pagination: React.FC<PaginationProps> = ({
       breakLabel={'...'}
       breakClassName={'justify-items-end h-6 mt-1'}
       pageCount={pageCount}
+      forcePage={pageIndex}
       marginPagesDisplayed={2}
       pageRangeDisplayed={3}
       onPageChange={handlePageClick}

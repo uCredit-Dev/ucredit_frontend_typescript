@@ -2,11 +2,11 @@ import React, { useState, useEffect, FC } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import {
   selectPageCount,
-  selectPageNum,
+  selectPageIndex,
   selectPlaceholder,
   selectRetrievedCourses,
   updateInspectedVersion,
-  updatePageNum,
+  updatePageIndex,
   updatePlaceholder,
 } from '../../../../slices/searchSlice';
 import ReactPaginate from 'react-paginate';
@@ -35,11 +35,9 @@ const CartCourseList: FC<{
   // Redux setup
   const courses = useSelector(selectRetrievedCourses);
   const placeholder = useSelector(selectPlaceholder);
-  const pageNum = useSelector(selectPageNum);
+  const pageIndex = useSelector(selectPageIndex);
   const pageCount = useSelector(selectPageCount);
   const dispatch = useDispatch();
-
-  const coursesPerPage = 10;
 
   // Updates pagination every time the searched courses change.
   useEffect(() => {
@@ -64,13 +62,7 @@ const CartCourseList: FC<{
   const courseList = () => {
     let toDisplay: any = [];
 
-    let startingIndex = pageNum * coursesPerPage;
-    let endingIndex =
-      startingIndex + coursesPerPage > filteredCourses.length
-        ? filteredCourses.length - 1
-        : startingIndex + coursesPerPage - 1;
-    for (let i = startingIndex; i <= endingIndex; i++) {
-      const inspecting = { ...filteredCourses[i] };
+    for (let inspecting of filteredCourses) {
       // issue is that this adds duplicates of a course. using "every" callback will
       // stop iterating once a version is found.
       // Matt: I don't believe we need to do this.
@@ -100,7 +92,7 @@ const CartCourseList: FC<{
    * @param event event raised on changing search result page
    */
   const handlePageClick = (event: any) => {
-    dispatch(updatePageNum(event.selected+1));
+    dispatch(updatePageIndex(event.selected));
   };
 
   /**
@@ -139,7 +131,7 @@ const CartCourseList: FC<{
     <>
       {pageCount > 1 && (
         <div className="flex flex-row justify-center w-full h-auto">
-          <Pagination pageCount={pageCount} handlePageClick={handlePageClick} />
+          <Pagination pageCount={pageCount} pageIndex={pageIndex} handlePageClick={handlePageClick} />
         </div>
       )}
     </>
@@ -259,11 +251,13 @@ const CartCourseList: FC<{
 // Below is the pagination component.
 type PaginationProps = {
   pageCount: number;
+  pageIndex: number; 
   handlePageClick: any;
 };
 
 const Pagination: React.FC<PaginationProps> = ({
   pageCount,
+  pageIndex, 
   handlePageClick,
 }) => {
   /* A Pagination component we'll use! Prop list and docs here: https://github.com/AdeleD/react-paginate. '
@@ -279,6 +273,7 @@ const Pagination: React.FC<PaginationProps> = ({
       pageCount={pageCount}
       marginPagesDisplayed={2}
       pageRangeDisplayed={3}
+      forcePage={pageIndex}
       onPageChange={handlePageClick}
       containerClassName={'flex'}
       activeClassName={'bg-gray-400'}

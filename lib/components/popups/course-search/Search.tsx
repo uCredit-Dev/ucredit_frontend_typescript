@@ -6,10 +6,10 @@ import {
   updateSearchStatus,
   selectInspectedCourse,
   selectPlaceholder,
-  selectPageNum,
   selectPageCount,
   updatePageCount,
-  updatePageNum,
+  selectPageIndex,
+  updatePageIndex,
 } from '../../../slices/searchSlice';
 import CourseDisplay from './search-results/CourseDisplay';
 import Form from './query-components/Form';
@@ -39,7 +39,7 @@ const Search: FC = () => {
   const inspected = useSelector(selectInspectedCourse);
   const placeholder = useSelector(selectPlaceholder);
   const infoPopup = useSelector(selectInfoPopup);
-  const pageNum = useSelector(selectPageNum);
+  const pageIndex = useSelector(selectPageIndex);
   const pageCount = useSelector(selectPageCount);
 
   /**
@@ -60,8 +60,8 @@ const Search: FC = () => {
     dispatch(updatePageCount(newPageCount)); 
   }
 
-  const setPageNum = (newPageNum: number) => {
-    dispatch(updatePageNum(newPageNum)); 
+  const setPageIndex = (newPageIndex: number) => {
+    dispatch(updatePageIndex(newPageIndex)); 
   }
 
   useEffect(() => {
@@ -104,14 +104,14 @@ const Search: FC = () => {
             <div className="h-full overflow-y-auto">
               {!hideResults && (
                 <>
-                  <Form setSearching={setSearching} pageNum={pageNum} setPageCount={setPageCount} setPageNum={setPageNum} />
+                  <Form setSearching={setSearching} pageIndex={pageIndex} setPageCount={setPageCount} setPageIndex={setPageIndex} />
                   <SearchList
                     searching={searching}
                     hideResults={hideResults}
                     setHideResults={setHideResults}
-                    pageNum={pageNum}
+                    pageIndex={pageIndex}
                     pageCount={pageCount}
-                    setPageNum={setPageNum}
+                    setPageIndex={setPageIndex}
                   />
                 </>
               )}
