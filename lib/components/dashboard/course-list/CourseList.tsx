@@ -225,10 +225,8 @@ const CourseList: FC<Props> = ({ mode }) => {
       .map((c) => c._id)
       .indexOf(course._id);
     try {
-      const resp = await axios.get(getAPI(window) + '/search', {
-        params: { query: course.number },
-      });
-      let retrievedCourses: SISRetrievedCourse[] = resp.data.data.courses;
+      const resp = await axios.get(getAPI(window) + `/search/${course._id}`);
+      let retrievedCourses: SISRetrievedCourse[] = resp.data.data;
       dispatch(updateCourseCache(retrievedCourses));
       if (
         retrievedCourses.length !== 0 &&
