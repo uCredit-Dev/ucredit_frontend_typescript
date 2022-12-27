@@ -531,7 +531,7 @@ const backendSearch = async (
       })
       .catch((err) => console.log(err));
     if (courses === undefined) return Promise.reject();
-    let retrieved: SISRetrievedCourse = courses.data.data[0];
+    let retrieved: SISRetrievedCourse = courses.data.data.courses[0];
     if (retrieved === undefined) {
       store.dispatch(updateUnfoundNumbers(courseNumber));
       return resolve({ index: indexNum, resp: null });
@@ -543,7 +543,7 @@ const backendSearch = async (
         versionIndex = index;
       }
     });
-    store.dispatch(updateCourseCache(courses.data.data));
+    store.dispatch(updateCourseCache(courses.data.data.courses));
     resolve({
       index: indexNum,
       resp: {
