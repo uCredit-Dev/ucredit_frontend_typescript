@@ -1,12 +1,9 @@
 import React, { useState, useEffect, FC } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import {
-  selectPageCount,
-  selectPageIndex,
   selectPlaceholder,
   selectRetrievedCourses,
   updateInspectedVersion,
-  updatePageIndex,
   updatePlaceholder,
 } from '../../../../slices/searchSlice';
 import ReactPaginate from 'react-paginate';
@@ -28,6 +25,8 @@ const CartCourseList: FC<{
   textFilter: string;
 }> = (props) => {
   // Component state setup.
+  const [pageNum, setPageNum] = useState<number>(0);
+  const [pageCount, setPageCount] = useState<number>(0);
   const [hideResults, setHideResults] = useState<boolean>(false);
   const [filteredCourses, setFilteredCourses] = useState<SISRetrievedCourse[]>(
     [],
@@ -35,9 +34,9 @@ const CartCourseList: FC<{
   // Redux setup
   const courses = useSelector(selectRetrievedCourses);
   const placeholder = useSelector(selectPlaceholder);
-  const pageIndex = useSelector(selectPageIndex);
-  const pageCount = useSelector(selectPageCount);
   const dispatch = useDispatch();
+
+  const coursesPerPage = 10;
 
   // Updates pagination every time the searched courses change.
   useEffect(() => {
@@ -51,6 +50,11 @@ const CartCourseList: FC<{
       if (!course.title.toLowerCase().includes(props.textFilter)) return;
       filteredCourses.push(course);
     });
+    // If coursesPerPage doesn't divide perfectly into total courses, we need one more page.
+    const division = Math.floor(filteredCourses.length / coursesPerPage);
+    const pages =
+      filteredCourses.length % coursesPerPage === 0 ? division : division + 1;
+    setPageCount(pages);
     setFilteredCourses(filteredCourses);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [courses, props.textFilter]);
@@ -62,7 +66,13 @@ const CartCourseList: FC<{
   const courseList = () => {
     let toDisplay: any = [];
 
-    for (let inspecting of filteredCourses) {
+    let startingIndex = pageNum * coursesPerPage;
+    let endingIndex =
+      startingIndex + coursesPerPage > filteredCourses.length
+        ? filteredCourses.length - 1
+        : startingIndex + coursesPerPage - 1;
+    for (let i = startingIndex; i <= endingIndex; i++) {
+      const inspecting = { ...filteredCourses[i] };
       // issue is that this adds duplicates of a course. using "every" callback will
       // stop iterating once a version is found.
       // Matt: I don't believe we need to do this.
@@ -92,7 +102,7 @@ const CartCourseList: FC<{
    * @param event event raised on changing search result page
    */
   const handlePageClick = (event: any) => {
-    dispatch(updatePageIndex(event.selected));
+    setPageNum(event.selected);
   };
 
   /**
@@ -131,7 +141,7 @@ const CartCourseList: FC<{
     <>
       {pageCount > 1 && (
         <div className="flex flex-row justify-center w-full h-auto">
-          <Pagination pageCount={pageCount} pageIndex={pageIndex} handlePageClick={handlePageClick} />
+          <Pagination pageCount={pageCount} handlePageClick={handlePageClick} />
         </div>
       )}
     </>
@@ -251,13 +261,11 @@ const CartCourseList: FC<{
 // Below is the pagination component.
 type PaginationProps = {
   pageCount: number;
-  pageIndex: number; 
   handlePageClick: any;
 };
 
 const Pagination: React.FC<PaginationProps> = ({
   pageCount,
-  pageIndex, 
   handlePageClick,
 }) => {
   /* A Pagination component we'll use! Prop list and docs here: https://github.com/AdeleD/react-paginate. '
@@ -273,7 +281,6 @@ const Pagination: React.FC<PaginationProps> = ({
       pageCount={pageCount}
       marginPagesDisplayed={2}
       pageRangeDisplayed={3}
-      forcePage={pageIndex}
       onPageChange={handlePageClick}
       containerClassName={'flex'}
       activeClassName={'bg-gray-400'}

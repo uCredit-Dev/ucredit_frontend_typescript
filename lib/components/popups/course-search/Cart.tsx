@@ -170,13 +170,13 @@ const Cart: FC<{ allCourses: SISRetrievedCourse[] }> = (props) => {
   ): Promise<[SISRetrievedCourse[], number[]]> => {
     return new Promise(async (resolve) => {
       const retrieved: any = await axios
-        .get(getAPI(window) + '/search', {
+        .get(getAPI(window) + '/cartSearch', {
           params: getParams(extras),
         })
         .catch(() => {
           return [[], []];
         });
-      return resolve([retrieved.data.data.courses, []]);
+      return resolve([retrieved.data.data, []]);
     });
   };
 
