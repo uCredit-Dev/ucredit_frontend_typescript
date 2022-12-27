@@ -136,6 +136,7 @@ const Form: FC<{
     };
 
     setSearching(true);
+    dispatch(updateRetrievedCourses([]));
 
     if (searchTerm.length > 0) {
       // Search with half second debounce.
