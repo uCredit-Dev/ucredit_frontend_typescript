@@ -87,7 +87,7 @@ const Semester: FC<{
 
   // Every time any courses within this semester changes, update total credit count and the list.
   useEffect(() => {
-    if (version !== 'None') {
+    if (version !== 'None' && version.areas) {
       setInspectedArea(version.areas.charAt(0));
     }
     const sortedCourses: UserCourse[] = [...courses];

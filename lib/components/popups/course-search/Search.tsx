@@ -6,6 +6,9 @@ import {
   updateSearchStatus,
   selectInspectedCourse,
   selectPlaceholder,
+  updatePageCount,
+  selectPageIndex,
+  updatePageIndex,
 } from '../../../slices/searchSlice';
 import CourseDisplay from './search-results/CourseDisplay';
 import Form from './query-components/Form';
@@ -35,6 +38,7 @@ const Search: FC = () => {
   const inspected = useSelector(selectInspectedCourse);
   const placeholder = useSelector(selectPlaceholder);
   const infoPopup = useSelector(selectInfoPopup);
+  const pageIndex = useSelector(selectPageIndex);
 
   /**
    * Gets specific year's name.
@@ -49,6 +53,14 @@ const Search: FC = () => {
     });
     return name;
   };
+
+  const setPageCount = (newPageCount: number) => {
+    dispatch(updatePageCount(newPageCount)); 
+  }
+
+  const setPageIndex = (newPageIndex: number) => {
+    dispatch(updatePageIndex(newPageIndex)); 
+  }
 
   useEffect(() => {
     if (inspected === 'None' && !placeholder) setHideResults(false);
@@ -90,11 +102,12 @@ const Search: FC = () => {
             <div className="h-full overflow-y-auto">
               {!hideResults && (
                 <>
-                  <Form setSearching={setSearching} />
+                  <Form setSearching={setSearching} pageIndex={pageIndex} setPageCount={setPageCount} setPageIndex={setPageIndex} />
                   <SearchList
                     searching={searching}
                     hideResults={hideResults}
                     setHideResults={setHideResults}
+                    setPageIndex={setPageIndex}
                   />
                 </>
               )}
