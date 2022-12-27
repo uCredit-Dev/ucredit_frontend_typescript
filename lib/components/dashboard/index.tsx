@@ -42,6 +42,7 @@ import {
   selectToken,
   selectUser,
   updateCommenters,
+  updateCourseCache,
 } from '../../slices/userSlice';
 import axios from 'axios';
 import { getAPI } from './../../resources/assets';
@@ -50,7 +51,7 @@ import GenerateNewPlan from '../../resources/GenerateNewPlan';
 import LoadingPage from '../LoadingPage';
 import HandlePlanShareDummy from './HandlePlanShareDummy';
 import HandleUserInfoSetupDummy from './HandleUserInfoSetupDummy';
-import { DashboardMode, ReviewMode } from '../../resources/commonTypes';
+import { DashboardMode, ReviewMode, SISRetrievedCourse } from '../../resources/commonTypes';
 import { userService } from '../../services';
 import Actionbar from './Actionbar';
 import Button from '@mui/material/Button';
@@ -162,6 +163,16 @@ const Dashboard: React.FC<Props> = ({ mode }) => {
     let unmounted = false;
     let source = axios.CancelToken.source();
     if (currPlan && currPlan._id !== 'noPlan') {
+      axios
+        .get(getAPI(window) + '/coursesByPlan/' + currPlan._id)
+        .then((response) => {
+          const sisCourses: SISRetrievedCourse[] = response.data.data; 
+          dispatch(updateCourseCache(sisCourses));
+          console.log(sisCourses);
+        })
+        .catch((err) => {
+          console.log(err);
+        });
       userService
         .getThreads(currPlan._id, token, unmounted, source.token)
         .then((res) => {

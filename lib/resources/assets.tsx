@@ -8,6 +8,7 @@ import {
   UserCourse,
   SISRetrievedCourse,
   Year,
+  SearchExtras,
 } from './commonTypes';
 import { allMajors } from './majors';
 import { store } from '../appStore/store';
@@ -52,6 +53,19 @@ export const getColors = function (
     return '#83B9FF';
   }
 };
+
+export const getParams = (extras: SearchExtras) => ({
+  page: extras.page,
+  query: extras.query,
+  department: extras.department,
+  term: extras.term === 'All' ? '' : extras.term,
+  year: extras.year === 'All' ? '' : extras.year,
+  areas: extras.areas,
+  credits: extras.credits,
+  wi: extras.wi,
+  tags: extras.tags,
+  level: extras.levels,
+});
 
 // On SIS, scrape the majors using the console, check Notion for more info
 export const AS_deps = [
@@ -495,6 +509,7 @@ export const getCourse = async (
         return resolve({ index: indexNum, resp: out });
       }
     }
+    console.log(courseNumber); 
 
     if (out === null) {
       if (store.getState().user.unfoundNumbers.includes(courseNumber)) {
@@ -517,7 +532,7 @@ const backendSearch = async (
       })
       .catch((err) => console.log(err));
     if (courses === undefined) return Promise.reject();
-    let retrieved: SISRetrievedCourse = courses.data.data[0];
+    let retrieved: SISRetrievedCourse = courses.data.data.courses[0];
     if (retrieved === undefined) {
       store.dispatch(updateUnfoundNumbers(courseNumber));
       return resolve({ index: indexNum, resp: null });
@@ -529,7 +544,9 @@ const backendSearch = async (
         versionIndex = index;
       }
     });
-    store.dispatch(updateCourseCache(courses.data.data));
+    const cache: SISRetrievedCourse[] = []; 
+    cache.push(retrieved);
+    store.dispatch(updateCourseCache(cache));
     resolve({
       index: indexNum,
       resp: {
