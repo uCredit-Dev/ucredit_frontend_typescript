@@ -1,9 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { useSelector } from 'react-redux';
 // import { toast } from 'react-toastify';
-import {
-  selectUser,
-} from '../lib/slices/userSlice';
+import { selectUser } from '../lib/slices/userSlice';
 
 import LandingPage from '../lib/components/landing-page';
 import Head from 'next/head';

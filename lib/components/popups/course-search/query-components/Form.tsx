@@ -25,12 +25,12 @@ import { selectPlan } from '../../../../slices/currentPlanSlice';
  *
  * @prop setSearching - sets searching state
  */
-const Form: FC<{ 
-  setSearching: (searching: boolean) => void; 
-  pageIndex: number; 
-  setPageCount: Function; 
-  setPageIndex: Function; 
-}> = ({setSearching, pageIndex, setPageCount, setPageIndex}) => {
+const Form: FC<{
+  setSearching: (searching: boolean) => void;
+  pageIndex: number;
+  setPageCount: Function;
+  setPageIndex: Function;
+}> = ({ setSearching, pageIndex, setPageCount, setPageIndex }) => {
   // Set up redux dispatch and variables.
   const dispatch = useDispatch();
   const searchTerm = useSelector(selectSearchterm);
@@ -100,7 +100,7 @@ const Form: FC<{
   useEffect(() => {
     setPageIndex(0);
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [searchTerm, searchFilters])
+  }, [searchTerm, searchFilters]);
 
   // Search with debouncing of 4/8s of a second.
   useEffect(() => {
@@ -140,10 +140,7 @@ const Form: FC<{
 
     if (searchTerm.length > 0) {
       // Search with half second debounce.
-      const search = setTimeout(
-        performSmartSearch(extras),
-        500,
-      );
+      const search = setTimeout(performSmartSearch(extras), 500);
       return () => clearTimeout(search);
     } else {
       setSearching(false);
@@ -159,17 +156,16 @@ const Form: FC<{
    * @returns reference to a function that conducts smart search
    */
   const performSmartSearch =
-    (
-      extras: SearchExtras,
-    ): (() => void) =>
+    (extras: SearchExtras): (() => void) =>
     (): void => {
       axios
         .get(getAPI(window) + '/search', {
           params: getParams(extras),
         })
         .then((retrieved) => {
-          let retrievedCourses: SISRetrievedCourse[] = retrieved.data.data.courses;
-          const pageCount = retrieved.data.data.pagination.last; 
+          let retrievedCourses: SISRetrievedCourse[] =
+            retrieved.data.data.courses;
+          const pageCount = retrieved.data.data.pagination.last;
           setPageCount(pageCount);
           dispatch(updateRetrievedCourses(retrievedCourses));
           setSearching(false);

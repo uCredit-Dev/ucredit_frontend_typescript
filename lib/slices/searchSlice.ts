@@ -43,8 +43,8 @@ type searchStates = {
   placeholder: boolean;
   searchStack: { sis: SISRetrievedCourse; ver: Course }[];
   cartAdd: boolean;
-  pageIndex: number; 
-  pageCount: number; 
+  pageIndex: number;
+  pageCount: number;
 };
 
 type searchStackUpdate = {
@@ -205,8 +205,8 @@ export const {
   clearSearch,
   popSearchStack,
   updateCartAdd,
-  updatePageIndex, 
-  updatePageCount
+  updatePageIndex,
+  updatePageCount,
 } = searchSlice.actions;
 
 // The function below is called a selector and allows us to select a value from

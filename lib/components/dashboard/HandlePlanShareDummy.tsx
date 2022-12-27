@@ -4,7 +4,12 @@ import { useCookies } from 'react-cookie';
 import { useDispatch, useSelector } from 'react-redux';
 import { toast } from 'react-toastify';
 import { getAPI, guestUser } from '../../resources/assets';
-import { Plan, SISRetrievedCourse, UserCourse, Year } from '../../resources/commonTypes';
+import {
+  Plan,
+  SISRetrievedCourse,
+  UserCourse,
+  Year,
+} from '../../resources/commonTypes';
 import { getMajorFromCommonName } from '../../resources/majors';
 import {
   selectCurrentPlanCourses,
@@ -130,7 +135,7 @@ const HandlePlanShareDummy = () => {
     axios
       .get(getAPI(window) + '/coursesByPlan/' + id)
       .then((response) => {
-        const sisCourses: SISRetrievedCourse[] = response.data.data; 
+        const sisCourses: SISRetrievedCourse[] = response.data.data;
         dispatch(updateCourseCache(sisCourses));
       })
       .catch((err) => {

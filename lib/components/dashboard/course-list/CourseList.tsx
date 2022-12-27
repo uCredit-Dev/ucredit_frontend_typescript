@@ -231,25 +231,24 @@ const CourseList: FC<Props> = ({ mode }) => {
       newTerm: destination.semester,
     };
 
-    let res: any = 
-      await fetch(getAPI(window) + '/courses/dragged', {
-        method: 'PATCH',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(body),
-      });
+    let res: any = await fetch(getAPI(window) + '/courses/dragged', {
+      method: 'PATCH',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(body),
+    });
 
-    // handle error 
+    // handle error
     if (!res.ok) {
       if (res.status === 400) {
         toast.error("Course isn't usually held this semester!", {
           toastId: 'no course this semester',
-        });    
+        });
       }
       console.log('ERROR:', res);
-      return; 
-    } 
+      return;
+    }
 
     toast.success('Successfully moved course!', {
       toastId: 'moved course',

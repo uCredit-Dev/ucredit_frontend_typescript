@@ -509,7 +509,7 @@ export const getCourse = async (
         return resolve({ index: indexNum, resp: out });
       }
     }
-    console.log(courseNumber); 
+    console.log(courseNumber);
 
     if (out === null) {
       if (store.getState().user.unfoundNumbers.includes(courseNumber)) {
@@ -544,7 +544,7 @@ const backendSearch = async (
         versionIndex = index;
       }
     });
-    const cache: SISRetrievedCourse[] = []; 
+    const cache: SISRetrievedCourse[] = [];
     cache.push(retrieved);
     store.dispatch(updateCourseCache(cache));
     resolve({

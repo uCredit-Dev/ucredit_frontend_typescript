@@ -25,7 +25,7 @@ const SearchList: FC<{
   searching: boolean;
   hideResults: boolean;
   setHideResults: Function;
-  setPageIndex: Function; 
+  setPageIndex: Function;
 }> = ({ searching, hideResults, setHideResults, setPageIndex }) => {
   // Component state setup.
   const [filteredCourses, setFilteredCourses] = useState<SISRetrievedCourse[]>(
@@ -59,10 +59,10 @@ const SearchList: FC<{
       for (let j = 0; j < inspecting.versions.length; j++) {
         const v = inspecting.versions[j];
         if (
-          (v.term === searchFilters.term + ' ' + searchFilters.year ||
-            (searchFilters.term === 'All' &&
-              (searchFilters.year === currentPlan.years[0].year ||
-                searchFilters.year.toString() === v.term.split(' ')[1])))
+          v.term === searchFilters.term + ' ' + searchFilters.year ||
+          (searchFilters.term === 'All' &&
+            (searchFilters.year === currentPlan.years[0].year ||
+              searchFilters.year.toString() === v.term.split(' ')[1]))
         ) {
           toDisplay.push(
             <div
@@ -124,7 +124,11 @@ const SearchList: FC<{
   const getPaginationUI = () =>
     pageCount > 1 && (
       <div className="flex flex-row justify-center w-full h-auto">
-        <Pagination pageCount={pageCount} pageIndex={pageIndex} handlePageClick={handlePageClick} />
+        <Pagination
+          pageCount={pageCount}
+          pageIndex={pageIndex}
+          handlePageClick={handlePageClick}
+        />
       </div>
     );
 
@@ -203,7 +207,7 @@ type PaginationProps = {
 
 const Pagination: React.FC<PaginationProps> = ({
   pageCount,
-  pageIndex, 
+  pageIndex,
   handlePageClick,
 }) => {
   /* A Pagination component we'll use! Prop list and docs here: https://github.com/AdeleD/react-paginate. '

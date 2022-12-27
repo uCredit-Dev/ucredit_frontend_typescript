@@ -55,12 +55,12 @@ const Search: FC = () => {
   };
 
   const setPageCount = (newPageCount: number) => {
-    dispatch(updatePageCount(newPageCount)); 
-  }
+    dispatch(updatePageCount(newPageCount));
+  };
 
   const setPageIndex = (newPageIndex: number) => {
-    dispatch(updatePageIndex(newPageIndex)); 
-  }
+    dispatch(updatePageIndex(newPageIndex));
+  };
 
   useEffect(() => {
     if (inspected === 'None' && !placeholder) setHideResults(false);
@@ -102,7 +102,12 @@ const Search: FC = () => {
             <div className="h-full overflow-y-auto">
               {!hideResults && (
                 <>
-                  <Form setSearching={setSearching} pageIndex={pageIndex} setPageCount={setPageCount} setPageIndex={setPageIndex} />
+                  <Form
+                    setSearching={setSearching}
+                    pageIndex={pageIndex}
+                    setPageCount={setPageCount}
+                    setPageIndex={setPageIndex}
+                  />
                   <SearchList
                     searching={searching}
                     hideResults={hideResults}
