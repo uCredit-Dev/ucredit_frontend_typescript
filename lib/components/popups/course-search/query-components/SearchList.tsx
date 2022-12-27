@@ -1,10 +1,13 @@
 import React, { useState, useEffect, FC } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import {
+  selectPageCount,
+  selectPageIndex,
   selectPlaceholder,
   selectRetrievedCourses,
   selectSearchFilters,
   updateInspectedVersion,
+  updatePageIndex,
   updatePlaceholder,
 } from '../../../../slices/searchSlice';
 import CourseCard from './CourseCard';
@@ -22,10 +25,8 @@ const SearchList: FC<{
   searching: boolean;
   hideResults: boolean;
   setHideResults: Function;
-  pageIndex: number; 
-  pageCount: number; 
   setPageIndex: Function; 
-}> = ({ searching, hideResults, setHideResults, pageIndex, pageCount, setPageIndex }) => {
+}> = ({ searching, hideResults, setHideResults, setPageIndex }) => {
   // Component state setup.
   const [filteredCourses, setFilteredCourses] = useState<SISRetrievedCourse[]>(
     [],
@@ -36,6 +37,8 @@ const SearchList: FC<{
   const placeholder = useSelector(selectPlaceholder);
   const searchFilters = useSelector(selectSearchFilters);
   const currentPlan = useSelector(selectPlan);
+  const pageIndex = useSelector(selectPageIndex);
+  const pageCount = useSelector(selectPageCount);
   const dispatch = useDispatch();
 
   // Updates pagination every time the searched courses change.
@@ -83,7 +86,7 @@ const SearchList: FC<{
    * @param event event raised on changing search result page
    */
   const handlePageClick = (event: any) => {
-    setPageIndex(event.selected);
+    dispatch(updatePageIndex(event.selected));
   };
 
   /**

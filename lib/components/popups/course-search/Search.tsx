@@ -6,7 +6,6 @@ import {
   updateSearchStatus,
   selectInspectedCourse,
   selectPlaceholder,
-  selectPageCount,
   updatePageCount,
   selectPageIndex,
   updatePageIndex,
@@ -40,7 +39,6 @@ const Search: FC = () => {
   const placeholder = useSelector(selectPlaceholder);
   const infoPopup = useSelector(selectInfoPopup);
   const pageIndex = useSelector(selectPageIndex);
-  const pageCount = useSelector(selectPageCount);
 
   /**
    * Gets specific year's name.
@@ -109,8 +107,6 @@ const Search: FC = () => {
                     searching={searching}
                     hideResults={hideResults}
                     setHideResults={setHideResults}
-                    pageIndex={pageIndex}
-                    pageCount={pageCount}
                     setPageIndex={setPageIndex}
                   />
                 </>
