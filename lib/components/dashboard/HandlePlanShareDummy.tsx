@@ -133,7 +133,11 @@ const HandlePlanShareDummy = () => {
    */
   const cache = (id: string) => {
     axios
-      .get(getAPI(window) + '/coursesByPlan/' + id)
+      .get(getAPI(window) + '/coursesByPlan/' + id, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      })
       .then((response) => {
         const sisCourses: SISRetrievedCourse[] = response.data.data;
         dispatch(updateCourseCache(sisCourses));

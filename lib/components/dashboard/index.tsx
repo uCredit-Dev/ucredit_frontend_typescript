@@ -168,7 +168,11 @@ const Dashboard: React.FC<Props> = ({ mode }) => {
     let source = axios.CancelToken.source();
     if (currPlan && currPlan._id !== 'noPlan') {
       axios
-        .get(getAPI(window) + '/coursesByPlan/' + currPlan._id)
+        .get(getAPI(window) + `/coursesByPlan/${currPlan._id}`, {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },  
+        })
         .then((response) => {
           const sisCourses: SISRetrievedCourse[] = response.data.data;
           dispatch(updateCourseCache(sisCourses));

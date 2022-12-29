@@ -509,7 +509,6 @@ export const getCourse = async (
         return resolve({ index: indexNum, resp: out });
       }
     }
-    console.log(courseNumber);
 
     if (out === null) {
       if (store.getState().user.unfoundNumbers.includes(courseNumber)) {
