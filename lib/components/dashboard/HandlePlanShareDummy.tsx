@@ -54,13 +54,13 @@ const HandlePlanShareDummy = () => {
 
   useEffect(() => {
     if (id !== null) {
-      handleExistingUser();
+      handleExistingUser(id);
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   // Handle the case where the user is already exists
-  const handleExistingUser = async (): Promise<void> => {
+  const handleExistingUser = async (id: string): Promise<void> => {
     const planResponse: any = await axios
       .get(getAPI(window) + '/plans/' + id, {
         headers: { Authorization: `Bearer ${token}` },
@@ -129,7 +129,7 @@ const HandlePlanShareDummy = () => {
 
   /**
    * Caches all courses in plans
-   * @param years - an array of years of the plan
+   * @param id - plan id
    */
   const cache = (id: string) => {
     axios
