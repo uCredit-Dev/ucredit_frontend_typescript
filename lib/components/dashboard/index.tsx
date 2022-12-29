@@ -172,7 +172,6 @@ const Dashboard: React.FC<Props> = ({ mode }) => {
         .then((response) => {
           const sisCourses: SISRetrievedCourse[] = response.data.data;
           dispatch(updateCourseCache(sisCourses));
-          console.log(sisCourses);
         })
         .catch((err) => {
           console.log(err);
