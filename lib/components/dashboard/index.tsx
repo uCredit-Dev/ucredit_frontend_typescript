@@ -171,7 +171,7 @@ const Dashboard: React.FC<Props> = ({ mode }) => {
         .get(getAPI(window) + `/coursesByPlan/${currPlan._id}`, {
           headers: {
             Authorization: `Bearer ${token}`,
-          },  
+          },
         })
         .then((response) => {
           const sisCourses: SISRetrievedCourse[] = response.data.data;
