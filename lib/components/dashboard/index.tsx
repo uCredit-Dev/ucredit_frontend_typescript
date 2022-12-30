@@ -1,4 +1,4 @@
-import React, { useState, useCallback, useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import Header from './Header';
 import FeedbackPopup from '../popups/FeedbackPopup';
@@ -22,11 +22,6 @@ import {
   selectInfoPopup,
   updateInfoPopup,
 } from '../../slices/popupSlice';
-import {
-  selectExperimentList,
-  setExperiments,
-  toggleExperimentStatus,
-} from '../../slices/experimentSlice';
 import { selectSearchStatus } from '../../slices/searchSlice';
 import AddingPrereqPopup from '../popups/AddingPrereqPopup';
 import Search from '../popups/course-search/Search';
@@ -44,7 +39,6 @@ import {
   updateCommenters,
 } from '../../slices/userSlice';
 import axios from 'axios';
-import { getAPI } from './../../resources/assets';
 import Cart from '../popups/course-search/Cart';
 import GenerateNewPlan from '../../resources/GenerateNewPlan';
 import LoadingPage from '../LoadingPage';
@@ -77,8 +71,8 @@ const Dashboard: React.FC<Props> = ({ mode }) => {
   const courseInfoStatus = useSelector(selectShowCourseInfo);
   const addingPrereqStatus = useSelector(selectAddingPrereq);
   const cartStatus = useSelector(selectShowingCart);
-  const experimentList = useSelector(selectExperimentList);
   const token = useSelector(selectToken);
+  // const experimentList = useSelector(selectExperimentList);
   const dispatch = useDispatch();
   const currPlan = useSelector(selectPlan);
   const infoPopup = useSelector(selectInfoPopup);
@@ -137,26 +131,26 @@ const Dashboard: React.FC<Props> = ({ mode }) => {
   //   }
   // });
 
-  const updateExperimentsForUser = useCallback(() => {
-    axios
-      .get(getAPI(window) + '/experiments/allExperiments')
-      .then(async (experimentListResponse) => {
-        const experiments = experimentListResponse.data.data;
-        dispatch(setExperiments(experiments));
-        for (const experiment of experiments) {
-          if (experiment.active.includes(user._id)) {
-            dispatch(toggleExperimentStatus(experiment._id));
-          }
-        }
-      })
-      .catch((errAllExperiments) => {
-        console.log(errAllExperiments);
-      });
-  }, [dispatch, user._id]);
+  // const updateExperimentsForUser = useCallback(() => {
+  //   axios
+  //     .get(getAPI(window) + '/experiments/allExperiments')
+  //     .then(async (experimentListResponse) => {
+  //       const experiments = experimentListResponse.data.data;
+  //       dispatch(setExperiments(experiments));
+  //       for (const experiment of experiments) {
+  //         if (experiment.active.includes(user._id)) {
+  //           dispatch(toggleExperimentStatus(experiment._id));
+  //         }
+  //       }
+  //     })
+  //     .catch((errAllExperiments) => {
+  //       console.log(errAllExperiments);
+  //     });
+  // }, [dispatch, user._id]);
 
-  useEffect(() => {
-    updateExperimentsForUser();
-  }, [experimentList.length, updateExperimentsForUser]);
+  // useEffect(() => {
+  //   updateExperimentsForUser();
+  // }, [experimentList.length, updateExperimentsForUser]);
 
   useEffect(() => {
     let unmounted = false;
