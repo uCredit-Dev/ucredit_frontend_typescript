@@ -15,27 +15,46 @@ Deployment: https://ucredit.me
 │   ├── components
 │   │   ├── dashboard
 │   │   │   ├── course-list
-│   │   │   │   ├── horizontal
-│   │   │   │   └── vertical
-│   │   │   └── degree-info
+│   │   │   ├── degree-info
+│   │   │   └── menus
+│   │   │       ├── comments
+│   │   │       └── reviewers
 │   │   ├── landing-page
-│   │   ├── login
-│   │   └── popups
-│   │       └── course-search
-│   │           ├── cart
-│   │           ├── prereqs
-│   │           ├── query-components
-│   │           └── search-results
+│   │   │   ├── assets
+│   │   │   │   ├── components
+│   │   │   │   ├── data
+│   │   │   │   ├── img
+│   │   │   │   └── svg
+│   │   │   └── team-page
+│   │   ├── popups
+│   │   │   └── course-search
+│   │   │       ├── cart
+│   │   │       ├── prereqs
+│   │   │       ├── query-components
+│   │   │       └── search-results
+│   │   ├── reviewer
+│   │   ├── roadmap
+│   │   │   ├── assets
+│   │   │   ├── comments
+│   │   │   └── search
+│   │   └── utils
 │   ├── resources
 │   │   └── redux_sample
-│   └── slices
+│   ├── services
+│   ├── slices
+│   └── utils
 ├── pages
-│   └── login
+│   ├── login
+│   ├── reviewer
+│   └── roadmap
 └── public
     ├── img
     │   ├── landing-page
-    │   └── line-art
+    │   ├── line-art
+    │   └── team-page
+    ├── static
     └── svg
+
 ```
 
 All folders and files in the `pages` folder correspond to client paths you access. E.g., `/pages/index.tsx` corresponds to `/` in the browser. For any other (utility) components, put them under the `lib` folder. Basically, `src` is now `lib`.
