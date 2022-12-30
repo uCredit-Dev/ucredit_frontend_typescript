@@ -175,13 +175,13 @@ const YearComponent: FC<{
     const parsedIntersessionCourses: UserCourse[] = [];
     const parsedSummerCourses: UserCourse[] = [];
     courses.forEach((course) => {
-      if (course.term.toLowerCase() === 'fall') {
+      if (course.term && course.term.toLowerCase() === 'fall') {
         parsedFallCourses.push(course);
-      } else if (course.term.toLowerCase() === 'spring') {
+      } else if (course.term && course.term.toLowerCase() === 'spring') {
         parsedSpringCourses.push(course);
-      } else if (course.term.toLowerCase() === 'summer') {
+      } else if (course.term && course.term.toLowerCase() === 'summer') {
         parsedSummerCourses.push(course);
-      } else if (course.term.toLowerCase() === 'intersession') {
+      } else if (course.term && course.term.toLowerCase() === 'intersession') {
         parsedIntersessionCourses.push(course);
       }
     });
