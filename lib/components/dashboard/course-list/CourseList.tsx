@@ -235,6 +235,7 @@ const CourseList: FC<Props> = ({ mode }) => {
       method: 'PATCH',
       headers: {
         'Content-Type': 'application/json',
+        'Authorization': `Bearer ${token}`
       },
       body: JSON.stringify(body),
     });
