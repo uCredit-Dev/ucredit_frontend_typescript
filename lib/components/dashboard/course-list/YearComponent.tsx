@@ -16,6 +16,7 @@ import {
 } from '../../../slices/popupSlice';
 import { selectInspectedCourse } from '../../../slices/searchSlice';
 import Comments from '../Comments';
+import { selectToken } from '../../../slices/userSlice';
 
 type SemSelected = {
   fall: boolean;
@@ -40,6 +41,7 @@ const YearComponent: FC<{
   setDraggable: (draggable: boolean) => void;
   mode: ReviewMode;
 }> = ({ id, year, courses, setDraggable, mode }) => {
+  const token = useSelector(selectToken);
   const [fallCourses, setFallCourses] = useState<UserCourse[]>([]);
   const [springCourses, setSpringCourses] = useState<UserCourse[]>([]);
   const [winterCourses, setWinterCourses] = useState<UserCourse[]>([]);
@@ -201,6 +203,7 @@ const YearComponent: FC<{
       method: 'PATCH',
       headers: {
         'Content-Type': 'application/json',
+        Authorization: `Bearer ${token}`,
       },
       body: JSON.stringify(body),
     })

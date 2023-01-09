@@ -5,6 +5,7 @@ import ReactTooltip from 'react-tooltip';
 import { ReviewRequestStatus } from '../../../../resources/commonTypes';
 import { userService } from '../../../../services';
 import { selectPlan } from '../../../../slices/currentPlanSlice';
+import { selectToken } from '../../../../slices/userSlice';
 import { toast } from 'react-toastify';
 import { getAPI } from '../../../../resources/assets';
 import clsx from 'clsx';
@@ -14,6 +15,7 @@ const CurrentReviewers: FC<{
   setReviewersJSX: (newJSX: JSX.Element[]) => void;
 }> = ({ reviewersJSX, setReviewersJSX }) => {
   const currentPlan = useSelector(selectPlan);
+  const token = useSelector(selectToken);
 
   const sendEmail = (toName, reviewID) => {
     const body = {
@@ -25,6 +27,7 @@ const CurrentReviewers: FC<{
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
+        Authorization: `Bearer ${token}`,
       },
       body: JSON.stringify(body),
     })
@@ -52,8 +55,9 @@ const CurrentReviewers: FC<{
 
   useEffect(() => {
     (async () => {
-      const reviewers = (await userService.getPlanReviewers(currentPlan._id))
-        .data;
+      const reviewers = (
+        await userService.getPlanReviewers(currentPlan._id, token)
+      ).data;
       const elements: JSX.Element[] = await getElements(reviewers);
       setReviewersJSX(elements);
       // dispatch(updateSelectedPlan({ ...currentPlan, reviewers: reviewers }));
@@ -80,8 +84,9 @@ const CurrentReviewers: FC<{
   const getElements = async (data: any[]) => {
     const elements: JSX.Element[] = [];
     for (const { reviewer_id, status, reviewee_id, _id } of data) {
-      const reviewer = (await userService.getUser(reviewer_id._id)).data[0];
-      const reviewee = (await userService.getUser(reviewee_id)).data[0];
+      const reviewer = (await userService.getUser(reviewer_id._id, token))
+        .data[0];
+      const reviewee = (await userService.getUser(reviewee_id, token)).data[0];
       elements.push(
         <div
           className="flex flex-row items-center space-between pt-2"

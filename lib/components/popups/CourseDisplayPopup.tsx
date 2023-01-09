@@ -24,6 +24,7 @@ import {
 import {
   selectCourseCache,
   selectPlanList,
+  selectToken,
   selectUser,
   updatePlanList,
 } from '../../slices/userSlice';
@@ -46,6 +47,7 @@ const CourseDisplayPopup: FC = () => {
   const courseCache = useSelector(selectCourseCache);
   const placeholder = useSelector(selectPlaceholder);
   const user = useSelector(selectUser);
+  const token = useSelector(selectToken);
   const version = useSelector(selectVersion);
   const planList = useSelector(selectPlanList);
   const currentCourses = useSelector(selectCurrentPlanCourses);
@@ -149,15 +151,13 @@ const CourseDisplayPopup: FC = () => {
         wi: version.wi,
         version: version.term,
         level: version.level,
-        expireAt:
-          user._id === 'guestUser'
-            ? Date.now() + 60 * 60 * 24 * 1000
-            : undefined,
+        expireAt: user._id === 'guestUser' ? Date.now() : undefined,
       };
       fetch(getAPI(window) + '/courses', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
+          Authorization: `Bearer ${token}`,
         },
         body: JSON.stringify(body),
       })

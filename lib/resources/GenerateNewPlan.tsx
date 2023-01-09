@@ -6,6 +6,7 @@ import {
   updatePlanList,
   selectUser,
   selectPlanList,
+  selectToken,
   updateGuestPlanIds,
   updateImportID,
 } from '../slices/userSlice';
@@ -32,6 +33,7 @@ const GenerateNewPlan: FC = () => {
   // Redux setup
   const dispatch = useDispatch();
   const user = useSelector(selectUser);
+  const token = useSelector(selectToken);
   const planList = useSelector(selectPlanList);
   const toAddName = useSelector(selectToAddName);
   const toAddMajors = useSelector(selectToAddMajors);
@@ -46,15 +48,16 @@ const GenerateNewPlan: FC = () => {
       user_id: user._id,
       majors: toAddMajors.map((major) => major.degree_name),
       year: user.grade,
-      expireAt:
-        user._id === 'guestUser' ? Date.now() + 60 * 60 * 24 * 1000 : undefined,
+      expireAt: user._id === 'guestUser' ? Date.now() : undefined,
     };
     planBody.name = !importing ? toAddName : 'Imported ' + toAddName;
     dispatch(updateImportID(''));
 
     let newPlan: Plan;
     const getData = async () => {
-      let response = await axios.post(getAPI(window) + '/plans', planBody);
+      let response = await axios.post(getAPI(window) + '/plans', planBody, {
+        headers: { Authorization: `Bearer ${token}` },
+      });
       newPlan = response.data.data;
       dispatch(
         updateSearchTime({
@@ -116,7 +119,7 @@ const GenerateNewPlan: FC = () => {
 //     plan_id: planID,
 //     filter: '',
 //     expireAt:
-//       userID === 'guestUser' ? Date.now() + 60 * 60 * 24 * 1000 : undefined,
+//       userID === 'guestUser' ? Date.now() : undefined,
 //   };
 // };
 
