@@ -35,7 +35,6 @@ const CartCourseList: FC<{
   const courses = useSelector(selectRetrievedCourses);
   const placeholder = useSelector(selectPlaceholder);
   const dispatch = useDispatch();
-
   const coursesPerPage = 10;
 
   // Updates pagination every time the searched courses change.
