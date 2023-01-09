@@ -10,10 +10,7 @@ import {
   updateSelectedPlan,
   updateThreads,
 } from '../lib/slices/currentPlanSlice';
-import {
-  selectToken,
-  updateCommenters,
-} from '../lib/slices/userSlice';
+import { selectToken, updateCommenters } from '../lib/slices/userSlice';
 import { userService } from '../lib/services';
 // import CourseList from './plancourseList';
 import CourseList from '../lib/components/dashboard/course-list/CourseList';
