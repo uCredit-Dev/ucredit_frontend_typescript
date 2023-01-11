@@ -43,7 +43,8 @@ const DeleteCoursePopup: FC = () => {
       fetch(getAPI(window) + '/courses/' + courseInfo.course._id, {
         method: 'DELETE',
         headers: { Authorization: `Bearer ${token}` },
-      }).then((retrieved) => retrieved.json())
+      })
+        .then((retrieved) => retrieved.json())
         .then((data) => {
           let newPlan: Plan;
           const years = [...currentPlan.years];

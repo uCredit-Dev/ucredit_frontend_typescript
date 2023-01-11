@@ -204,18 +204,22 @@ const SisCourse: FC<{
   const handleUpdate = (data) => {
     if (data.errors === undefined && courseToShow !== null) {
       // remove updated course from currentPlanCourses
-      const updated = currentCourses.filter((course) => course._id !== courseToShow._id);
+      const updated = currentCourses.filter(
+        (course) => course._id !== courseToShow._id,
+      );
       dispatch(updateCurrentPlanCourses(updated));
-      // remove updated course from plan years 
+      // remove updated course from plan years
       const allYears: Year[] = [...currentPlan.years];
       const newYears: Year[] = [];
       allYears.forEach((y) => {
-        const yCourses = y.courses.filter((course) => course._id !== courseToShow._id);
+        const yCourses = y.courses.filter(
+          (course) => course._id !== courseToShow._id,
+        );
         newYears.push({ ...y, courses: yCourses });
       });
       const newPlan: Plan = { ...currentPlan, years: newYears };
       dispatch(updateSelectedPlan(newPlan));
-      // update modified distributions  
+      // update modified distributions
       distributions.forEach((dist: UserDistribution, i: number) => {
         if (data.data.distributions.includes(dist._id)) {
           distributions[i] = dist;

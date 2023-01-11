@@ -190,7 +190,7 @@ const VSemester: React.FC<{
       // add course to currentPlanCourses
       let newUserCourse: UserCourse = data.data.course;
       dispatch(updateCurrentPlanCourses([...currentCourses, newUserCourse]));
-      // add course to plan's year 
+      // add course to plan's year
       const allYears: Year[] = [...currentPlan.years];
       const newYears: Year[] = [];
       allYears.forEach((y) => {
@@ -203,14 +203,14 @@ const VSemester: React.FC<{
       });
       const newPlan: Plan = { ...currentPlan, years: newYears };
       dispatch(updateSelectedPlan(newPlan));
-      // add new plan to planList  
+      // add new plan to planList
       const newPlanList = [...planList];
       for (let i = 0; i < planList.length; i++) {
         if (planList[i]._id === newPlan._id) {
           newPlanList[i] = newPlan;
         }
       }
-      // update modified distributions 
+      // update modified distributions
       dispatch(updatePlanList(newPlanList));
       distributions.forEach((dist: UserDistribution, i: number) => {
         if (data.data.distributions.includes(dist._id)) {
@@ -218,7 +218,7 @@ const VSemester: React.FC<{
         }
       });
       dispatch(updateDistributions(distributions));
-      // close popups and notify user 
+      // close popups and notify user
       dispatch(updatePlanList(newPlanList));
       dispatch(updateAddingPrereq(false));
       dispatch(clearSearch());
