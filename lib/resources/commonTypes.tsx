@@ -14,8 +14,8 @@ export type Restriction = {
 export type Course = {
   title: string;
   number: string;
-  areas: string;
-  term: string;
+  areas?: string;
+  term?: string;
   school: string;
   department: string;
   credits: string;
@@ -64,21 +64,26 @@ export type UserCourse = {
   _id: string;
   title: string;
   term: SemesterType;
+  termOffered?: string;
+  year: string;
+  version: string;
   number: string;
-  department: string;
-  tags: string[];
-  area: string;
+  department?: string;
+  tags?: string[];
+  areas?: string;
   credits: number;
   wi: boolean;
   taken: boolean;
-  ratings: number[];
-  distribution_ids: string[];
+  preReq?: string[];
+  isPlaceholder: boolean;
+  isTransfer: boolean;
+  ratings?: number[];
+  distribution_ids?: string[];
+  fineReq_ids?: string[];
   plan_id: string;
   user_id: string;
-  year_id: string;
-  preReq: string[];
-  isPlaceholder: boolean;
-  version: string;
+  year_id?: string;
+  forceSatisfied?: string;
   level: string;
 };
 
@@ -94,8 +99,7 @@ export type Year = {
 export type Plan = {
   _id: string;
   name: string;
-  majors: string[];
-  distribution_ids: string[];
+  major_ids: string[];
   user_id: string;
   numYears: number;
   years: Year[];
@@ -151,20 +155,24 @@ export type SearchExtras = {
 };
 
 // Info for distribution bar.
-export type Distribution = {
+export type UserDistribution = {
   _id: string;
   name: string;
   required_credits: number;
-  min_credits_per_course: number;
   description: string;
   criteria: string;
-  fine_requirements?: FineReq[];
-  user_select?: boolean;
-  exception?: string;
-  planned_credits: number;
-  courses: string[];
+  min_credits_per_course: number;
   user_id: string;
   plan_id: string;
+  major_id: string;
+  fineReq_ids: string[] | UserFineReq[];
+  planned: number;
+  current: number;
+  satisfied: boolean;
+  user_select: boolean;
+  double_count?: string[];
+  pathing?: number;
+  wi?: boolean;
 };
 
 export type SemesterType =
@@ -190,14 +198,31 @@ export type FilterType =
 
 export type AreaType = 'N' | 'S' | 'H' | 'W' | 'E' | 'Q';
 
-export type FineReq = {
+export type UserFineReq = {
+  _id: string;
+  satisfied: boolean;
   required_credits: number;
   description: string;
   criteria: string;
+  plan_id: string;
+  major_id: string;
+  distribution_id: string;
+  planned: number;
+  current: number;
   double_count?: string[];
 };
 
-export type DistributionObj = {
+export type FineReq = {
+  description: string;
+  criteria: string;
+  required_credits: number;
+  planned: number;
+  double_count?: string[];
+  pathing?: number;
+  wi?: boolean;
+};
+
+export type Distribution = {
   name: string;
   required_credits: number;
   min_credits_per_course: number;
@@ -217,7 +242,7 @@ export type Major = {
   total_degree_credit: number;
   wi_credit: number;
   url: string;
-  distributions: DistributionObj[];
+  distributions: Distribution[];
 };
 
 export type Minor = {
@@ -227,7 +252,7 @@ export type Minor = {
   total_degree_credit: number;
   wi_credit: number;
   url: string;
-  distributions: DistributionObj[];
+  distributions: Distribution[];
 };
 
 export type DroppableType = {

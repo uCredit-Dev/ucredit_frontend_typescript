@@ -50,8 +50,18 @@ const Cart: FC<{ allCourses: SISRetrievedCourse[] }> = (props) => {
   const cartAdd = useSelector(selectCartAdd);
 
   useEffect(() => {
-    if (distrs[1] && distrs[1].length > 0) {
-      setSelectedRequirement(distrs[1][0]);
+    if (distrs) {
+      const req: requirements = {
+        name: distrs.name,
+        description: distrs.description,
+        expr: distrs.criteria,
+        required_credits: distrs.required_credits,
+        fulfilled_credits: distrs.planned,
+        double_count: distrs.double_count,
+        pathing: distrs.pathing,
+        wi: distrs.wi,
+      };
+      setSelectedRequirement(req);
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [distrs, currentPlanCourses, cartAdd]);
@@ -261,7 +271,7 @@ const Cart: FC<{ allCourses: SISRetrievedCourse[] }> = (props) => {
         style={{ opacity: searchOpacity === 100 ? 1 : 0.1 }}
       >
         <div className="px-4 py-2 text-white select-none text-coursecard font-large">
-          {distrs[0]}
+          {distrs.name}
           {/** This is the popup header. */}
         </div>
         <div className="flex flex-row w-full h-full tight:flex-col tight:h-auto tight:max-h-mobileSearch text-coursecard tight:overflow-y-scroll overflow-hidden">

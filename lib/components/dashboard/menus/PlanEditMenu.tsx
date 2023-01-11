@@ -11,7 +11,7 @@ import Select, {
 import { toast } from 'react-toastify';
 import { getAPI } from '../../../resources/assets';
 import { Plan, ReviewMode, Year } from '../../../resources/commonTypes';
-import { allMajors } from '../../../resources/majors';
+import { allMajorNames, allMajors } from '../../../resources/majors';
 import {
   selectPlan,
   updateCurrentPlanCourses,
@@ -36,9 +36,9 @@ import clsx from 'clsx';
 import { selectSearchStatus } from '../../../slices/searchSlice';
 import { Popover, Transition } from '@headlessui/react';
 
-const majorOptions = allMajors.map((major, index) => ({
+const majorOptions = allMajorNames.map((major, index) => ({
   value: index,
-  label: major.degree_name,
+  label: major,
 }));
 
 const PlanEditMenu: FC<{ mode: ReviewMode }> = ({ mode }) => {
@@ -74,7 +74,7 @@ const PlanEditMenu: FC<{ mode: ReviewMode }> = ({ mode }) => {
   const updateName = (): void => {
     const body = {
       plan_id: currentPlan._id,
-      majors: currentPlan.majors,
+      major_ids: currentPlan.major_ids,
       name: planName,
     };
     fetch(getAPI(window) + '/plans/update', {
@@ -143,7 +143,7 @@ const PlanEditMenu: FC<{ mode: ReviewMode }> = ({ mode }) => {
     const newMajors = event.map((option) => option.label);
     const body = {
       plan_id: currentPlan._id,
-      majors: newMajors,
+      major_ids: newMajors,
     };
     axios
       .patch(getAPI(window) + '/plans/update', body, {
@@ -170,14 +170,12 @@ const PlanEditMenu: FC<{ mode: ReviewMode }> = ({ mode }) => {
   const MultiValue = (
     props: MultiValueProps<typeof majorOptions[number], true>,
   ) => {
-    const major = allMajors.find(
-      (majorObj) => majorObj.degree_name === props.data.label,
-    );
+    const major = allMajorNames.find((major) => major === props.data.label);
     // @ts-ignore
     const showAsAbbrev = props.selectProps.value.length > 1;
     return (
       <components.MultiValue {...props}>
-        {showAsAbbrev ? major?.abbrev : major?.degree_name}
+        {showAsAbbrev ? allMajors[major]['abbrev'] : major}
       </components.MultiValue>
     );
   };
@@ -358,7 +356,7 @@ const PlanEditMenu: FC<{ mode: ReviewMode }> = ({ mode }) => {
                               isClearable={false}
                               options={majorOptions}
                               value={majorOptions.filter((major) =>
-                                currentPlan.majors.includes(major.label),
+                                currentPlan.major_ids.includes(major.label),
                               )}
                               styles={customStyles}
                               onChange={handleMajorChange}

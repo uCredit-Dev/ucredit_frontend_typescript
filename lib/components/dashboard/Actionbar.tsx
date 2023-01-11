@@ -4,7 +4,7 @@ import { useSelector, useDispatch } from 'react-redux';
 import { toast } from 'react-toastify';
 import { getAPI } from '../../resources/assets';
 import { ReviewMode, Year, Plan } from '../../resources/commonTypes';
-import { allMajors } from '../../resources/majors';
+import { allMajorNames, allMajors } from '../../resources/majors';
 import {
   selectPlan,
   updateSelectedPlan,
@@ -34,9 +34,9 @@ import Menu from '@mui/material/Menu';
 import Reviewers from './menus/reviewers/Reviewers';
 import PersonIcon from '@mui/icons-material/Person';
 
-const majorOptions = allMajors.map((major) => ({
-  abbrev: major.abbrev,
-  name: major.degree_name,
+const majorOptions = allMajorNames.map((major) => ({
+  abbrev: allMajors[major]['abbrev'],
+  name: major,
 }));
 
 const Actionbar: FC<{ mode: ReviewMode }> = ({ mode }) => {
@@ -76,7 +76,7 @@ const Actionbar: FC<{ mode: ReviewMode }> = ({ mode }) => {
   const updateName = (): void => {
     const body = {
       plan_id: currentPlan._id,
-      majors: currentPlan.majors,
+      major_ids: currentPlan.major_ids,
       name: planName,
     };
     fetch(getAPI(window) + '/plans/update', {
@@ -137,14 +137,14 @@ const Actionbar: FC<{ mode: ReviewMode }> = ({ mode }) => {
     const newMajors = newValues.map((option) => option.label);
     const body = {
       plan_id: currentPlan._id,
-      majors: newMajors,
+      major_ids: newMajors,
     };
     axios
       .patch(getAPI(window) + '/plans/update', body, {
         headers: { Authorization: `Bearer ${token}` },
       })
       .then(() => {
-        const newUpdatedPlan = { ...currentPlan, majors: newMajors };
+        const newUpdatedPlan = { ...currentPlan, major_ids: newMajors };
         dispatch(updateSelectedPlan(newUpdatedPlan));
         let newPlanList = [...planList];
         for (let i = 0; i < planList.length; i++) {
@@ -160,7 +160,7 @@ const Actionbar: FC<{ mode: ReviewMode }> = ({ mode }) => {
   const getCurrentMajors = (): { label: string; value: string }[] => {
     const currentMajorOptions: { label: string; value: string }[] = [];
     majorOptions.forEach((major, i) => {
-      if (currentPlan.majors.includes(major.name))
+      if (currentPlan.major_ids.includes(major.name))
         currentMajorOptions.push({ label: major.name, value: major.abbrev });
     });
     return currentMajorOptions;
