@@ -16,12 +16,14 @@ import {
   updateDistributions,
   updateTotalCredits,
 } from '../../../slices/currentPlanSlice';
+import { selectToken } from '../../../slices/userSlice';
 import CourseBar from './CourseBar';
 
 const DistributionBarsJSX: FC<{ selectedMajor: string }> = ({
   selectedMajor,
 }) => {
   const dispatch = useDispatch();
+  const token = useSelector(selectToken);
   const distributions = useSelector(selectDistributions);
   const currentPlan: Plan = useSelector(selectPlan);
   const currPlanCourses = useSelector(selectCurrentPlanCourses);
@@ -40,12 +42,13 @@ const DistributionBarsJSX: FC<{ selectedMajor: string }> = ({
       let distributions = await getDistributions(
         currentPlan._id,
         selectedMajor,
+        token,
       );
       dispatch(updateDistributions(distributions));
     }
     fetchData();
     // dispatch(updateTotalCredits(distributions.))
-  }, [currentPlan._id, selectedMajor, currPlanCourses, dispatch]);
+  }, [currentPlan._id, selectedMajor, currPlanCourses, dispatch, token]);
 
   // Update total credits everytime courses change.
   useEffect(() => {

@@ -14,7 +14,10 @@ import {
   updateShowingCart,
 } from '../../../slices/popupSlice';
 import { clearSearch, updatePlaceholder } from '../../../slices/searchSlice';
-import { updateCartInvokedBySemester } from '../../../slices/userSlice';
+import {
+  selectToken,
+  updateCartInvokedBySemester,
+} from '../../../slices/userSlice';
 import Comments from '../Comments';
 import { ReviewMode, UserDistribution } from '../../../resources/commonTypes';
 import { getDistribution } from '../../../resources/assets';
@@ -36,6 +39,7 @@ const CourseBar: FC<{
   const [plannedCredits, setPlannedCredits] = useState(distribution.planned);
   const [hovered, setHovered] = useState(false);
 
+  const token = useSelector(selectToken);
   const currPlanCourses = useSelector(selectCurrentPlanCourses);
   const maxCredits = distribution.required_credits;
   const section = distribution.name;
@@ -60,7 +64,7 @@ const CourseBar: FC<{
     let distr: UserDistribution = distribution;
     // get fineReqs
     if (distribution._id) {
-      distr = await getDistribution(distribution._id);
+      distr = await getDistribution(distribution._id, token);
     }
     if (distr) {
       // if the distribution exists, then update the cart

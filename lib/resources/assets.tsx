@@ -302,8 +302,7 @@ export const processPrereqs = async (
 ): Promise<PrereqCourses> => {
   // Regex used to get an array of course numbers.
   const regex: RegExp = /[A-Z]{2}\.\d{3}\.\d{3}/g;
-  const forwardSlashRegex: RegExp =
-    /[A-Z]{2}\.\d{3}\.\d{3}\/[A-Z]{2}\.\d{3}\.\d{3}/g; // e.g. EN.XXX.XXX/EN.XXX.XXX
+  const forwardSlashRegex: RegExp = /[A-Z]{2}\.\d{3}\.\d{3}\/[A-Z]{2}\.\d{3}\.\d{3}/g; // e.g. EN.XXX.XXX/EN.XXX.XXX
   const forwardSlashRegex2: RegExp = /[A-Z]{2}\.\d{3}\.\d{3}\/\d{3}\.\d{3}/g; // e.g. EN.XXX.XXX/XXX.XXX
   const forwardSlashRegex3: RegExp = /[A-Z]{2}\.\d{3}\/\d{3}\.\d{3}/g; // e.g. EN.XXX/XXX.XXX
 
@@ -988,16 +987,24 @@ export function getMajor(name: string): any {
   return majorObj;
 }
 
-export async function getDistribution(distribution_id: string) {
+export async function getDistribution(distribution_id: string, token: string) {
   const res = await axios.get(
     getAPI(window) + `/distributions/${distribution_id}`,
+    {
+      headers: { Authorization: `Bearer ${token}` },
+    },
   );
   return res.data.data;
 }
 
-export async function getDistributions(plan_id: string, major_id: string) {
+export async function getDistributions(
+  plan_id: string,
+  major_id: string,
+  token: string,
+) {
   const res = await axios.get(getAPI(window) + '/distributionsByPlan/', {
     params: { plan_id, major_id },
+    headers: { Authorization: `Bearer ${token}` },
   });
   return res.data.data;
 }
