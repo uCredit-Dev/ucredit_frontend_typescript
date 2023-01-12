@@ -4,7 +4,12 @@ import { useCookies } from 'react-cookie';
 import { useDispatch, useSelector } from 'react-redux';
 import { toast } from 'react-toastify';
 import { getAPI, guestUser } from '../../resources/assets';
-import { Plan, UserCourse, Year } from '../../resources/commonTypes';
+import {
+  Plan,
+  SISRetrievedCourse,
+  UserCourse,
+  Year,
+} from '../../resources/commonTypes';
 import { getMajorFromCommonName } from '../../resources/majors';
 import {
   selectCurrentPlanCourses,
@@ -49,13 +54,13 @@ const HandlePlanShareDummy = () => {
 
   useEffect(() => {
     if (id !== null) {
-      handleExistingUser();
+      handleExistingUser(id);
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   // Handle the case where the user is already exists
-  const handleExistingUser = async (): Promise<void> => {
+  const handleExistingUser = async (id: string): Promise<void> => {
     const planResponse: any = await axios
       .get(getAPI(window) + '/plans/' + id, {
         headers: { Authorization: `Bearer ${token}` },
@@ -83,9 +88,9 @@ const HandlePlanShareDummy = () => {
       .catch((e) => {
         console.log('ERROR: ', e);
       });
-    let years = yearsResponse.data.data;
 
-    cache(years);
+    cache(id);
+    let years = yearsResponse.data.data;
     // check whether the user is logged in (whether a cookie exists)
     let cookieVal = '';
     Object.entries(cookies).forEach((cookie: any) => {
@@ -124,30 +129,23 @@ const HandlePlanShareDummy = () => {
 
   /**
    * Caches all courses in plans
-   * @param years - an array of years of the plan
+   * @param id - plan id
    */
-  const cache = (years: Year[]) => {
-    let total = 0;
-    let cum = 0;
-    years.forEach((y) => {
-      if (cum === total) {
-        setCached(true);
-      }
-      y.courses.forEach((c) => {
-        total++;
-        axios
-          .get(getAPI(window) + '/search', {
-            params: { query: c._id },
-          })
-          .then((retrieved) => {
-            dispatch(updateCourseCache(retrieved.data.data));
-            cum++;
-            if (cum === total) {
-              setCached(true);
-            }
-          });
+  const cache = (id: string) => {
+    axios
+      .get(getAPI(window) + '/coursesByPlan/' + id, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      })
+      .then((response) => {
+        const sisCourses: SISRetrievedCourse[] = response.data.data;
+        dispatch(updateCourseCache(sisCourses));
+      })
+      .catch((err) => {
+        console.log(err);
       });
-    });
+    setCached(true);
   };
 
   // Imports or creates new plan.

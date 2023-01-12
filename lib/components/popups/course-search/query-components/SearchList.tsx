@@ -1,10 +1,13 @@
 import React, { useState, useEffect, FC } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import {
+  selectPageCount,
+  selectPageIndex,
   selectPlaceholder,
   selectRetrievedCourses,
   selectSearchFilters,
   updateInspectedVersion,
+  updatePageIndex,
   updatePlaceholder,
 } from '../../../../slices/searchSlice';
 import CourseCard from './CourseCard';
@@ -22,10 +25,9 @@ const SearchList: FC<{
   searching: boolean;
   hideResults: boolean;
   setHideResults: Function;
-}> = ({ searching, hideResults, setHideResults }) => {
+  setPageIndex: Function;
+}> = ({ searching, hideResults, setHideResults, setPageIndex }) => {
   // Component state setup.
-  const [pageNum, setPageNum] = useState<number>(0);
-  const [pageCount, setPageCount] = useState<number>(0);
   const [filteredCourses, setFilteredCourses] = useState<SISRetrievedCourse[]>(
     [],
   );
@@ -35,20 +37,13 @@ const SearchList: FC<{
   const placeholder = useSelector(selectPlaceholder);
   const searchFilters = useSelector(selectSearchFilters);
   const currentPlan = useSelector(selectPlan);
+  const pageIndex = useSelector(selectPageIndex);
+  const pageCount = useSelector(selectPageCount);
   const dispatch = useDispatch();
-
-  let coursesPerPage = 10;
 
   // Updates pagination every time the searched courses change.
   useEffect(() => {
     const SISFilteredCourses: SISRetrievedCourse[] = courses;
-    // If coursesPerPage doesn't divide perfectly into total courses, we need one more page.
-    const division = Math.floor(SISFilteredCourses.length / coursesPerPage);
-    const pages =
-      SISFilteredCourses.length % coursesPerPage === 0
-        ? division
-        : division + 1;
-    setPageCount(pages);
     setFilteredCourses(SISFilteredCourses);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [courses, searchFilters]);
@@ -59,42 +54,29 @@ const SearchList: FC<{
    */
   const courseList = () => {
     let toDisplay: any = [];
-    let startingIndex = pageNum * coursesPerPage;
-    let endingIndex =
-      startingIndex + coursesPerPage > filteredCourses.length
-        ? filteredCourses.length - 1
-        : startingIndex + coursesPerPage - 1;
-    for (let i = startingIndex; i <= endingIndex; i++) {
-      let inserted: string[] = [];
+    for (let i = 0; i < filteredCourses.length; i++) {
       const inspecting = { ...filteredCourses[i] };
-      inspecting.versions.forEach((v: any, versionNum: number) => {
-        let alreadyInserted = false;
-        inserted.forEach((term: string) => {
-          if (term.includes(v.term)) {
-            alreadyInserted = true;
-          }
-        });
+      for (let j = 0; j < inspecting.versions.length; j++) {
+        const v = inspecting.versions[j];
         if (
-          !alreadyInserted &&
-          (v.term === searchFilters.term + ' ' + searchFilters.year ||
-            (searchFilters.term === 'All' &&
-              (searchFilters.year === currentPlan.years[0].year ||
-                searchFilters.year.toString() === v.term.split(' ')[1])))
+          v.term === searchFilters.term + ' ' + searchFilters.year ||
+          (searchFilters.term === 'All' &&
+            (searchFilters.year === currentPlan.years[0].year ||
+              searchFilters.year.toString() === v.term.split(' ')[1]))
         ) {
-          inserted.push(v.term);
           toDisplay.push(
             <div
-              key={inspecting.number + v.term + versionNum}
+              key={inspecting._id}
               className="transition duration-200 ease-in transform hover:scale-105"
               onClick={() =>
                 window.innerWidth < 1200 ? setHideResults(true) : null
               }
             >
-              <CourseCard course={inspecting} version={versionNum} />
+              <CourseCard course={inspecting} version={j} />
             </div>,
           );
         }
-      });
+      }
     }
     return toDisplay;
   };
@@ -104,7 +86,7 @@ const SearchList: FC<{
    * @param event event raised on changing search result page
    */
   const handlePageClick = (event: any) => {
-    setPageNum(event.selected);
+    dispatch(updatePageIndex(event.selected));
   };
 
   /**
@@ -142,7 +124,11 @@ const SearchList: FC<{
   const getPaginationUI = () =>
     pageCount > 1 && (
       <div className="flex flex-row justify-center w-full h-auto">
-        <Pagination pageCount={pageCount} handlePageClick={handlePageClick} />
+        <Pagination
+          pageCount={pageCount}
+          pageIndex={pageIndex}
+          handlePageClick={handlePageClick}
+        />
       </div>
     );
 
@@ -215,11 +201,13 @@ const SearchList: FC<{
 // Below is the pagination component.
 type PaginationProps = {
   pageCount: number;
+  pageIndex: number;
   handlePageClick: any;
 };
 
 const Pagination: React.FC<PaginationProps> = ({
   pageCount,
+  pageIndex,
   handlePageClick,
 }) => {
   /* A Pagination component we'll use! Prop list and docs here: https://github.com/AdeleD/react-paginate. '
@@ -233,6 +221,7 @@ const Pagination: React.FC<PaginationProps> = ({
       breakLabel={'...'}
       breakClassName={'justify-items-end h-6 mt-1'}
       pageCount={pageCount}
+      forcePage={pageIndex}
       marginPagesDisplayed={2}
       pageRangeDisplayed={3}
       onPageChange={handlePageClick}
