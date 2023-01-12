@@ -4,8 +4,10 @@ import CourseVersion from './CourseVersion';
 import { useDispatch, useSelector } from 'react-redux';
 import {
   selectCurrentPlanCourses,
+  selectDistributions,
   selectPlan,
   updateCurrentPlanCourses,
+  updateDistributions,
   updateSelectedPlan,
 } from '../../../../slices/currentPlanSlice';
 import {
@@ -23,6 +25,7 @@ import {
 } from '../../../../slices/searchSlice';
 import {
   Course,
+  UserDistribution,
   Plan,
   ReviewMode,
   SemesterType,
@@ -74,6 +77,7 @@ const SisCourse: FC<{
   const reviewMode = useSelector(selectReviewMode);
   const token = useSelector(selectToken);
   const cartInvokedBySemester = useSelector(selectCartInvokedBySemester);
+  const distributions = useSelector(selectDistributions);
 
   const [versionIndex, updateVersionIndex] = useState<number>(0);
   const [ogSem, setOgSem] = useState<SemesterType | 'All'>('All');
@@ -199,28 +203,29 @@ const SisCourse: FC<{
 
   const handleUpdate = (data) => {
     if (data.errors === undefined && courseToShow !== null) {
-      const updated = currentCourses.filter((course) => {
-        if (course._id === courseToShow._id) {
-          return false;
-        } else {
-          return true;
-        }
-      });
+      // remove updated course from currentPlanCourses
+      const updated = currentCourses.filter(
+        (course) => course._id !== courseToShow._id,
+      );
       dispatch(updateCurrentPlanCourses(updated));
+      // remove updated course from plan years
       const allYears: Year[] = [...currentPlan.years];
       const newYears: Year[] = [];
       allYears.forEach((y) => {
-        const yCourses = y.courses.filter((course) => {
-          if (course._id === courseToShow._id) {
-            return false;
-          } else {
-            return true;
-          }
-        });
+        const yCourses = y.courses.filter(
+          (course) => course._id !== courseToShow._id,
+        );
         newYears.push({ ...y, courses: yCourses });
       });
       const newPlan: Plan = { ...currentPlan, years: newYears };
       dispatch(updateSelectedPlan(newPlan));
+      // update modified distributions
+      distributions.forEach((dist: UserDistribution, i: number) => {
+        if (data.data.distributions.includes(dist._id)) {
+          distributions[i] = dist;
+        }
+      });
+      dispatch(updateDistributions(distributions));
       props.addCourse(newPlan);
     } else {
       console.log('ERROR: Failed to add', data.errors);

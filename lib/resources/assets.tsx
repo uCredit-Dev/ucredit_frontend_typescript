@@ -10,7 +10,6 @@ import {
   Year,
   SearchExtras,
 } from './commonTypes';
-import { allMajors } from './majors';
 import { store } from '../appStore/store';
 
 export const getAPI = (window) =>
@@ -32,10 +31,10 @@ export const guestUser: User = {
 };
 
 export const getColors = function (
-  distribution: string,
+  distribution: string | undefined,
   writingIntensive: boolean,
 ): string {
-  if (distribution === 'None') {
+  if (!distribution || distribution === 'None') {
     return '#F0F0F0';
   }
   if (writingIntensive) {
@@ -317,8 +316,7 @@ export const processPrereqs = async (
 ): Promise<PrereqCourses> => {
   // Regex used to get an array of course numbers.
   const regex: RegExp = /[A-Z]{2}\.\d{3}\.\d{3}/g;
-  const forwardSlashRegex: RegExp =
-    /[A-Z]{2}\.\d{3}\.\d{3}\/[A-Z]{2}\.\d{3}\.\d{3}/g; // e.g. EN.XXX.XXX/EN.XXX.XXX
+  const forwardSlashRegex: RegExp = /[A-Z]{2}\.\d{3}\.\d{3}\/[A-Z]{2}\.\d{3}\.\d{3}/g; // e.g. EN.XXX.XXX/EN.XXX.XXX
   const forwardSlashRegex2: RegExp = /[A-Z]{2}\.\d{3}\.\d{3}\/\d{3}\.\d{3}/g; // e.g. EN.XXX.XXX/XXX.XXX
   const forwardSlashRegex3: RegExp = /[A-Z]{2}\.\d{3}\/\d{3}\.\d{3}/g; // e.g. EN.XXX/XXX.XXX
 
@@ -840,9 +838,10 @@ export const checkPrereq = (
 };
 
 const checkOldPrereqNumbers = (
-  courseNumber: string,
-  preReqNumber: string,
+  courseNumber: string | undefined,
+  preReqNumber: string | undefined,
 ): boolean => {
+  if (!courseNumber || !preReqNumber) return false;
   const courseNumberArray = courseNumber.split('.');
   const preReqNumberArray = preReqNumber.split('.');
   if (
@@ -993,14 +992,35 @@ export const checkAllPrereqs = (
   });
 };
 
-/**
- * @param major - major name
- * @returns the major object from the name
- */
-export const getMajor = (major: string) => {
-  for (let m of allMajors) {
-    if (m.degree_name === major) {
-      return m;
+export function getMajor(name: string): any {
+  let majorObj = null;
+  axios.get(getAPI(window) + '/majors/' + name).then((resp) => {
+    if (resp === null) {
+      throw Error('Major not found');
     }
-  }
-};
+    majorObj = resp.data.data;
+  });
+  return majorObj;
+}
+
+export async function getDistribution(distribution_id: string, token: string) {
+  const res = await axios.get(
+    getAPI(window) + `/distributions/${distribution_id}`,
+    {
+      headers: { Authorization: `Bearer ${token}` },
+    },
+  );
+  return res.data.data;
+}
+
+export async function getDistributions(
+  plan_id: string,
+  major_id: string,
+  token: string,
+) {
+  const res = await axios.get(getAPI(window) + '/distributionsByPlan/', {
+    params: { plan_id, major_id },
+    headers: { Authorization: `Bearer ${token}` },
+  });
+  return res.data.data;
+}

@@ -7,9 +7,14 @@ import {
 } from '../../slices/userSlice';
 import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
-import { selectPlan, updateSelectedPlan } from '../../slices/currentPlanSlice';
+import {
+  selectDistributions,
+  selectPlan,
+  updateDistributions,
+  updateSelectedPlan,
+} from '../../slices/currentPlanSlice';
 import { getAPI } from '../../resources/assets';
-import { Plan } from '../../resources/commonTypes';
+import { UserDistribution, Plan } from '../../resources/commonTypes';
 import {
   selectCourseToDelete,
   updateDeleteCourseStatus,
@@ -28,6 +33,7 @@ const DeleteCoursePopup: FC = () => {
   const courseInfo = useSelector(selectCourseToDelete);
   const planList = useSelector(selectPlanList);
   const token = useSelector(selectToken);
+  const distributions = useSelector(selectDistributions);
 
   /**
    * Popup for deleting current selected course.
@@ -37,35 +43,42 @@ const DeleteCoursePopup: FC = () => {
       fetch(getAPI(window) + '/courses/' + courseInfo.course._id, {
         method: 'DELETE',
         headers: { Authorization: `Bearer ${token}` },
-      }).then(() => {
-        let newPlan: Plan;
-        const years = [...currentPlan.years];
-        currentPlan.years.forEach((planYear, index) => {
-          if (planYear._id === courseInfo.course.year_id) {
-            const courses = planYear.courses.filter(
-              (yearCourse) => yearCourse._id !== courseInfo.course._id,
-            );
-            years[index] = { ...years[index], courses: courses };
-          }
+      })
+        .then((retrieved) => retrieved.json())
+        .then((data) => {
+          let newPlan: Plan;
+          const years = [...currentPlan.years];
+          currentPlan.years.forEach((planYear, index) => {
+            if (planYear._id === courseInfo.course.year_id) {
+              const courses = planYear.courses.filter(
+                (yearCourse) => yearCourse._id !== courseInfo.course._id,
+              );
+              years[index] = { ...years[index], courses: courses };
+            }
+          });
+          distributions.forEach((dist: UserDistribution, i: number) => {
+            if (data.data.distributions.includes(dist._id)) {
+              distributions[i] = dist;
+            }
+          });
+          dispatch(updateDistributions(distributions));
+          newPlan = { ...currentPlan, years: years };
+          toast.error(courseInfo.course.title + ' deleted!', {
+            toastId: 'course deleted',
+          });
+          dispatch(updateSelectedPlan(newPlan));
+          dispatch(
+            updatePlanList(
+              planList.map((plan) => {
+                if (plan._id === newPlan._id) {
+                  return newPlan;
+                } else return plan;
+              }),
+            ),
+          );
+          dispatch(updateDeleteCourseStatus(false));
+          dispatch(updateCourseToDelete(null));
         });
-        newPlan = { ...currentPlan, years: years };
-
-        toast.error(courseInfo.course.title + ' deleted!', {
-          toastId: 'course deleted',
-        });
-        dispatch(updateSelectedPlan(newPlan));
-        dispatch(
-          updatePlanList(
-            planList.map((plan) => {
-              if (plan._id === newPlan._id) {
-                return newPlan;
-              } else return plan;
-            }),
-          ),
-        );
-        dispatch(updateDeleteCourseStatus(false));
-        dispatch(updateCourseToDelete(null));
-      });
     } else {
       toast.error('Cannot delete last year!', {
         toastId: 'cannot delete last year',

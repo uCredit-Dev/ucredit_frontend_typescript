@@ -71,7 +71,7 @@ const Reviewee: React.FC<Props> = ({
   useEffect(() => {
     const set = new Set<string>();
     for (const p of plans) {
-      for (const m of p.majors) set.add(m);
+      for (const m of p.major_ids) set.add(m);
     }
     setMajors([...set]);
   }, [plans]);

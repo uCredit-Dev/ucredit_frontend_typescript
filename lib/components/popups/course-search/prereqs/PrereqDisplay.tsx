@@ -184,7 +184,7 @@ const PrereqDisplay: FC = () => {
    *  @returns year object
    */
   const getYearById = (toShow: UserCourse | null): Year => {
-    const yearToGet: string = toShow ? toShow.year_id : year;
+    const yearToGet: string = toShow ? toShow.year : year;
     for (const yearObj of currentPlan.years) {
       if (yearObj._id === yearToGet) {
         return yearObj;

@@ -137,8 +137,8 @@ const YearComponent: FC<{
     let count: number = 0;
     courses.forEach((course) => {
       count += course.credits;
-      if (course.area && course.area !== 'None') {
-        for (let area of course.area) {
+      if (course.areas && course.areas !== 'None') {
+        for (let area of course.areas) {
           switch (area) {
             case 'N':
               newCreditCount.N += course.credits;

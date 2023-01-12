@@ -10,7 +10,7 @@ type PopupSlice = {
   deletePlan: boolean;
   addPlan: boolean;
   toAddName: string;
-  toAddMajors: Major[];
+  toAddMajors: string[];
   generateAdd: boolean;
   deleteYear: boolean;
   yearToDelete: Year | null;
@@ -66,7 +66,7 @@ export const popupSlice = createSlice({
     updateToAddName: (state: any, action: PayloadAction<string>) => {
       state.toAddName = action.payload;
     },
-    updateToAddMajors: (state, action: PayloadAction<Major[]>) => {
+    updateToAddMajors: (state, action: PayloadAction<string[]>) => {
       state.toAddMajors = action.payload;
     },
     updateDeletePlanStatus: (state: any, action: PayloadAction<boolean>) => {
