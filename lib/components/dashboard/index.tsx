@@ -298,7 +298,7 @@ const Dashboard: React.FC<Props> = ({ mode }) => {
             {deleteYearStatus && <DeleteYearPopup />}
             {deleteCourseStatus && <DeleteCoursePopup />}
             {courseInfoStatus && <CourseDisplayPopup />}
-            {cartStatus && <Cart allCourses={[]} />}
+            {cartStatus && <Cart />}
           </div>
           {/* <Roadmap /> */}
         </div>

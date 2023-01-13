@@ -1,14 +1,17 @@
-import React, { useState, useEffect, FC } from 'react';
+import React, { useState, FC } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import {
+  selectPageCount,
+  selectPageIndex,
   selectPlaceholder,
   selectRetrievedCourses,
   updateInspectedVersion,
+  updatePageIndex,
   updatePlaceholder,
 } from '../../../../slices/searchSlice';
 import ReactPaginate from 'react-paginate';
 import { QuestionMarkCircleIcon } from '@heroicons/react/solid';
-import { Course, SISRetrievedCourse } from '../../../../resources/commonTypes';
+import { Course } from '../../../../resources/commonTypes';
 import ReactTooltip from 'react-tooltip';
 
 // TODO: remove this import, for dummy courses
@@ -21,42 +24,16 @@ import { requirements } from '../../../dashboard/degree-info/distributionFunctio
 const CartCourseList: FC<{
   searching: boolean;
   selectedRequirement: requirements;
-  allCourses: SISRetrievedCourse[];
   textFilter: string;
 }> = (props) => {
   // Component state setup.
-  const [pageNum, setPageNum] = useState<number>(0);
-  const [pageCount, setPageCount] = useState<number>(0);
   const [hideResults, setHideResults] = useState<boolean>(false);
-  const [filteredCourses, setFilteredCourses] = useState<SISRetrievedCourse[]>(
-    [],
-  );
   // Redux setup
   const courses = useSelector(selectRetrievedCourses);
   const placeholder = useSelector(selectPlaceholder);
+  const pageIndex = useSelector(selectPageIndex);
+  const pageCount = useSelector(selectPageCount);
   const dispatch = useDispatch();
-  const coursesPerPage = 10;
-
-  // Updates pagination every time the searched courses change.
-  useEffect(() => {
-    const filteredCourses: SISRetrievedCourse[] = [];
-    courses.forEach((course: SISRetrievedCourse) => {
-      for (let c of filteredCourses) {
-        if (c.number === course.number) {
-          return;
-        }
-      }
-      if (!course.title.toLowerCase().includes(props.textFilter)) return;
-      filteredCourses.push(course);
-    });
-    // If coursesPerPage doesn't divide perfectly into total courses, we need one more page.
-    const division = Math.floor(filteredCourses.length / coursesPerPage);
-    const pages =
-      filteredCourses.length % coursesPerPage === 0 ? division : division + 1;
-    setPageCount(pages);
-    setFilteredCourses(filteredCourses);
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [courses, props.textFilter]);
 
   /**
    * Generates a list of 10 retrieved course matching the search queries and page number.
@@ -65,13 +42,8 @@ const CartCourseList: FC<{
   const courseList = () => {
     let toDisplay: any = [];
 
-    let startingIndex = pageNum * coursesPerPage;
-    let endingIndex =
-      startingIndex + coursesPerPage > filteredCourses.length
-        ? filteredCourses.length - 1
-        : startingIndex + coursesPerPage - 1;
-    for (let i = startingIndex; i <= endingIndex; i++) {
-      const inspecting = { ...filteredCourses[i] };
+    for (let i = 0; i < courses.length; i++) {
+      const inspecting = { ...courses[i] };
       // issue is that this adds duplicates of a course. using "every" callback will
       // stop iterating once a version is found.
       // Matt: I don't believe we need to do this.
@@ -100,8 +72,12 @@ const CartCourseList: FC<{
    * Sets page number when clicking on a page in the pagination component.
    * @param event event raised on changing search result page
    */
+  /**
+   * Sets page number when clicking on a page in the pagination component.
+   * @param event event raised on changing search result page
+   */
   const handlePageClick = (event: any) => {
-    setPageNum(event.selected);
+    dispatch(updatePageIndex(event.selected));
   };
 
   /**
@@ -140,7 +116,11 @@ const CartCourseList: FC<{
     <>
       {pageCount > 1 && (
         <div className="flex flex-row justify-center w-full h-auto">
-          <Pagination pageCount={pageCount} handlePageClick={handlePageClick} />
+          <Pagination
+            pageIndex={pageIndex}
+            pageCount={pageCount}
+            handlePageClick={handlePageClick}
+          />
         </div>
       )}
     </>
@@ -259,11 +239,13 @@ const CartCourseList: FC<{
 
 // Below is the pagination component.
 type PaginationProps = {
+  pageIndex: number;
   pageCount: number;
   handlePageClick: any;
 };
 
 const Pagination: React.FC<PaginationProps> = ({
+  pageIndex,
   pageCount,
   handlePageClick,
 }) => {
@@ -278,6 +260,7 @@ const Pagination: React.FC<PaginationProps> = ({
       breakLabel={'...'}
       breakClassName={'justify-items-end h-6 mt-1'}
       pageCount={pageCount}
+      forcePage={pageIndex}
       marginPagesDisplayed={2}
       pageRangeDisplayed={3}
       onPageChange={handlePageClick}
