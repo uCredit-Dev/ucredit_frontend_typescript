@@ -316,7 +316,8 @@ export const processPrereqs = async (
 ): Promise<PrereqCourses> => {
   // Regex used to get an array of course numbers.
   const regex: RegExp = /[A-Z]{2}\.\d{3}\.\d{3}/g;
-  const forwardSlashRegex: RegExp = /[A-Z]{2}\.\d{3}\.\d{3}\/[A-Z]{2}\.\d{3}\.\d{3}/g; // e.g. EN.XXX.XXX/EN.XXX.XXX
+  const forwardSlashRegex: RegExp =
+    /[A-Z]{2}\.\d{3}\.\d{3}\/[A-Z]{2}\.\d{3}\.\d{3}/g; // e.g. EN.XXX.XXX/EN.XXX.XXX
   const forwardSlashRegex2: RegExp = /[A-Z]{2}\.\d{3}\.\d{3}\/\d{3}\.\d{3}/g; // e.g. EN.XXX.XXX/XXX.XXX
   const forwardSlashRegex3: RegExp = /[A-Z]{2}\.\d{3}\/\d{3}\.\d{3}/g; // e.g. EN.XXX/XXX.XXX
 
@@ -523,13 +524,11 @@ const backendSearch = async (
   userC: UserCourse | null,
 ): Promise<{ index: number; resp: Course | null }> =>
   new Promise(async (resolve) => {
-    const courses: any = await axios
-      .get(getAPI(window) + '/search', {
-        params: { query: courseNumber },
-      })
+    const res: any = await axios
+      .get(getAPI(window) + `/searchNumber/${courseNumber}`)
       .catch((err) => console.log(err));
-    if (courses === undefined) return Promise.reject();
-    let retrieved: SISRetrievedCourse = courses.data.data.courses[0];
+    if (res === undefined) return Promise.reject();
+    let retrieved: SISRetrievedCourse = res.data.data;
     if (retrieved === undefined) {
       store.dispatch(updateUnfoundNumbers(courseNumber));
       return resolve({ index: indexNum, resp: null });
