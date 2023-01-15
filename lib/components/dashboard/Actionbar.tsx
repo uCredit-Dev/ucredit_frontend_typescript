@@ -76,7 +76,7 @@ const Actionbar: FC<{ mode: ReviewMode }> = ({ mode }) => {
   const updateName = (): void => {
     const body = {
       plan_id: currentPlan._id,
-      major_ids: currentPlan.major_ids,
+      majors: currentPlan.major_ids,
       name: planName,
     };
     fetch(getAPI(window) + '/plans/update', {
@@ -137,7 +137,7 @@ const Actionbar: FC<{ mode: ReviewMode }> = ({ mode }) => {
     const newMajors = newValues.map((option) => option.label);
     const body = {
       plan_id: currentPlan._id,
-      major_ids: newMajors,
+      majors: newMajors,
     };
     axios
       .patch(getAPI(window) + '/plans/update', body, {

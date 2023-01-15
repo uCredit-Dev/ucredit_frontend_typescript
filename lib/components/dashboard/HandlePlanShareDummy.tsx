@@ -346,6 +346,7 @@ const HandlePlanShareDummy = () => {
             preReq: course.preReq,
             level: course.level,
             version: course.version,
+            wi: course.wi,
             expireAt: user._id === 'guestUser' ? Date.now() : undefined,
           };
           fetch(getAPI(window) + '/courses', {
