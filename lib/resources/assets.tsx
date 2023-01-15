@@ -1023,3 +1023,15 @@ export async function getDistributions(
   });
   return res.data.data;
 }
+
+export async function getUpdatedDistributions(
+  plan_id: string,
+  major_id: string,
+  token: string,
+) {
+  const res = await axios.get(getAPI(window) + '/distributionsByPlan/', {
+    params: { plan_id, major_id, reload: 'true' },
+    headers: { Authorization: `Bearer ${token}` },
+  });
+  return res.data.data;
+}

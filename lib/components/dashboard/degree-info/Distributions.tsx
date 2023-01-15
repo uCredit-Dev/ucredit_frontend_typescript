@@ -1,10 +1,17 @@
-import { XIcon } from '@heroicons/react/solid';
+import { CheckIcon, XIcon } from '@heroicons/react/solid';
 import React, { FC, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import Select from 'react-select';
+import { getUpdatedDistributions } from '../../../resources/assets';
+import { Plan } from '../../../resources/commonTypes';
 import { allMajors } from '../../../resources/majors';
-import { selectSelectedMajor } from '../../../slices/currentPlanSlice';
+import {
+  selectSelectedMajor,
+  selectPlan,
+  updateDistributions,
+} from '../../../slices/currentPlanSlice';
 import { updateInfoPopup } from '../../../slices/popupSlice';
+import { selectToken } from '../../../slices/userSlice';
 import DistributionBarsJSX from './DistributionBarsJSX';
 
 /**
@@ -17,7 +24,9 @@ const Distributions: FC<{
   // Component state setup.
   const [disclaimer, setDisclaimer] = useState<boolean>(true);
   const dispatch = useDispatch();
-  const selectedMajor = useSelector(selectSelectedMajor);
+  const selectedMajor: string = useSelector(selectSelectedMajor);
+  const plan: Plan = useSelector(selectPlan);
+  const token = useSelector(selectToken);
 
   const majorOptions = userMajors.map((m, index) => ({
     value: index,
@@ -28,11 +37,23 @@ const Distributions: FC<{
     return selectedMajor ? allMajors[selectedMajor].url : '';
   };
 
+  const reload = () => {
+    getUpdatedDistributions(plan._id, selectedMajor, token).then((dist) => {
+      dispatch(updateDistributions(dist));
+    });
+  };
+
   return (
     <div className="z-50 flex-none p-6 w-full h-auto bg-white rounded">
       <div className="flex flex-row mb-3 w-full">
         <div className="self-start text-2xl font-medium">Degree Progress</div>
         {/* Degree Progress */}
+        <div
+          className="h-6 w-6 m-auto mr-0 cursor-pointer"
+          onClick={() => reload()}
+        >
+          <CheckIcon />
+        </div>
         <div
           className="h-6 w-6 m-auto mr-0 cursor-pointer"
           onClick={() => dispatch(updateInfoPopup(false))}
