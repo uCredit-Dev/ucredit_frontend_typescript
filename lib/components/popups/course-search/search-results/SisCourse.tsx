@@ -6,7 +6,6 @@ import {
   selectCurrentPlanCourses,
   selectPlan,
   updateCurrentPlanCourses,
-  updateDistributions,
   updateSelectedPlan,
 } from '../../../../slices/currentPlanSlice';
 import {
@@ -217,7 +216,6 @@ const SisCourse: FC<{
       const newPlan: Plan = { ...currentPlan, years: newYears };
       dispatch(updateSelectedPlan(newPlan));
       // update modified distributions
-      dispatch(updateDistributions(data.data.distributions));
       props.addCourse(newPlan);
     } else {
       console.log('ERROR: Failed to add', data.errors);

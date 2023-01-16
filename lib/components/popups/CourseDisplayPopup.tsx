@@ -31,7 +31,6 @@ import {
 import {
   selectCurrentPlanCourses,
   updateCurrentPlanCourses,
-  updateDistributions,
   updateSelectedPlan,
 } from '../../slices/currentPlanSlice';
 import { toast } from 'react-toastify';
@@ -185,7 +184,6 @@ const CourseDisplayPopup: FC = () => {
           newPlanList[i] = newPlan;
         }
       }
-      dispatch(updateDistributions(data.data.distributions));
       dispatch(updatePlanList(newPlanList));
       dispatch(updateCourseToShow(null));
       dispatch(updateShowCourseInfo(false));

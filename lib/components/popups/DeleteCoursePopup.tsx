@@ -7,11 +7,7 @@ import {
 } from '../../slices/userSlice';
 import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
-import {
-  selectPlan,
-  updateDistributions,
-  updateSelectedPlan,
-} from '../../slices/currentPlanSlice';
+import { selectPlan, updateSelectedPlan } from '../../slices/currentPlanSlice';
 import { getAPI } from '../../resources/assets';
 import { Plan } from '../../resources/commonTypes';
 import {
@@ -43,7 +39,7 @@ const DeleteCoursePopup: FC = () => {
         headers: { Authorization: `Bearer ${token}` },
       })
         .then((retrieved) => retrieved.json())
-        .then((data) => {
+        .then((res) => {
           let newPlan: Plan;
           const years = [...currentPlan.years];
           currentPlan.years.forEach((planYear, index) => {
@@ -54,7 +50,6 @@ const DeleteCoursePopup: FC = () => {
               years[index] = { ...years[index], courses: courses };
             }
           });
-          dispatch(updateDistributions(data.data.distributions));
           newPlan = { ...currentPlan, years: years };
           toast.error(courseInfo.course.title + ' deleted!', {
             toastId: 'course deleted',

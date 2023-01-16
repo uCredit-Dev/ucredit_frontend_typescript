@@ -23,7 +23,6 @@ import {
   selectPlan,
   selectTotalCredits,
   updateCurrentPlanCourses,
-  updateDistributions,
   updateSelectedPlan,
   updateTotalCredits,
 } from '../../../../slices/currentPlanSlice';
@@ -126,7 +125,7 @@ const CourseDisplay: FC<{ cart: boolean }> = ({ cart }) => {
       return;
     }
 
-    newUserCourse = { ...data.data.course };
+    newUserCourse = data.data;
     dispatch(updateCurrentPlanCourses([...currentCourses, newUserCourse]));
     const allYears: Year[] = [...currentPlan.years];
     const newYears: Year[] = [];
@@ -146,7 +145,6 @@ const CourseDisplay: FC<{ cart: boolean }> = ({ cart }) => {
         newPlanList[i] = newPlan;
       }
     }
-    dispatch(updateDistributions(data.data.distributions));
     dispatch(updatePlanList(newPlanList));
     dispatch(updateTotalCredits(totalCredits + newUserCourse.credits));
     toast.success(version.title + ' added!', {

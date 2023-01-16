@@ -38,15 +38,9 @@ const DistributionBarsJSX: FC<{ selectedMajor: string }> = ({
 
   // at first load
   useEffect(() => {
-    async function fetchData() {
-      let distributions = await getDistributions(
-        currentPlan._id,
-        selectedMajor,
-        token,
-      );
-      dispatch(updateDistributions(distributions));
-    }
-    fetchData();
+    getDistributions(currentPlan._id, selectedMajor, token).then((dist) => {
+      dispatch(updateDistributions(dist));
+    });
     // dispatch(updateTotalCredits(distributions.))
   }, [currentPlan._id, selectedMajor, currPlanCourses, dispatch, token]);
 

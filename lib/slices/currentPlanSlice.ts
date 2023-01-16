@@ -143,13 +143,13 @@ export const currentPlanSlice = createSlice({
     },
     updateSelectedDistribution: (
       state: any,
-      action: PayloadAction<UserDistribution>,
+      action: PayloadAction<UserDistribution | null>,
     ) => {
       state.selectedDistribution = action.payload;
     },
     updateSelectedFineReq: (
       state: any,
-      action: PayloadAction<UserFineReq>,
+      action: PayloadAction<UserFineReq | null>,
     ) => {
       state.selectedFineReq = action.payload;
     },

@@ -5,6 +5,7 @@ import {
   selectCurrentPlanCourses,
   selectDistributions,
   updateSelectedDistribution,
+  updateSelectedFineReq,
 } from '../../../slices/currentPlanSlice';
 import { CheckCircleIcon, ExclamationIcon } from '@heroicons/react/solid';
 import ReactTooltip from 'react-tooltip';
@@ -71,6 +72,7 @@ const CourseBar: FC<{
       // at this point we have access to the current requirement
       // and all dsitibrutions. to pick out hte rest of the ascoatied fine distirbutions, use this filter.
       dispatch(updateSelectedDistribution(distr));
+      dispatch(updateSelectedFineReq(null));
       dispatch(updateShowingCart(true));
       dispatch(updateInfoPopup(false));
       dispatch(updateAddingPrereq(false));

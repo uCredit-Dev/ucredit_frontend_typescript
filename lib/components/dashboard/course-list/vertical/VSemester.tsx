@@ -16,7 +16,6 @@ import {
   updateCurrentPlanCourses,
   updateDroppables,
   updateSelectedPlan,
-  updateDistributions,
 } from '../../../../slices/currentPlanSlice';
 import ReactTooltip from 'react-tooltip';
 import clsx from 'clsx';
@@ -185,7 +184,7 @@ const VSemester: React.FC<{
   const handlePostResponse = (data) => {
     if (data.errors === undefined && version !== 'None') {
       // add course to currentPlanCourses
-      let newUserCourse: UserCourse = data.data.course;
+      let newUserCourse: UserCourse = data.data;
       dispatch(updateCurrentPlanCourses([...currentCourses, newUserCourse]));
       // add course to plan's year
       const allYears: Year[] = [...currentPlan.years];
@@ -209,7 +208,6 @@ const VSemester: React.FC<{
       }
       // update modified distributions
       dispatch(updatePlanList(newPlanList));
-      dispatch(updateDistributions(data.data.distributions));
       // close popups and notify user
       dispatch(updatePlanList(newPlanList));
       dispatch(updateAddingPrereq(false));

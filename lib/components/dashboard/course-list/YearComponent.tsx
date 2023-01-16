@@ -174,7 +174,7 @@ const YearComponent: FC<{
     const parsedSpringCourses: UserCourse[] = [];
     const parsedIntersessionCourses: UserCourse[] = [];
     const parsedSummerCourses: UserCourse[] = [];
-    courses.forEach((course) => {
+    for (let course of courses) {
       if (course.term.toLowerCase() === 'fall') {
         parsedFallCourses.push(course);
       } else if (course.term.toLowerCase() === 'spring') {
@@ -184,7 +184,7 @@ const YearComponent: FC<{
       } else if (course.term.toLowerCase() === 'intersession') {
         parsedIntersessionCourses.push(course);
       }
-    });
+    }
     setFallCourses(parsedFallCourses);
     setSpringCourses(parsedSpringCourses);
     setWinterCourses(parsedIntersessionCourses);

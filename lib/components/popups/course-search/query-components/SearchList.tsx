@@ -42,8 +42,7 @@ const SearchList: FC<{
 
   // Updates pagination every time the searched courses change.
   useEffect(() => {
-    const SISFilteredCourses: SISRetrievedCourse[] = courses;
-    setFilteredCourses(SISFilteredCourses);
+    setFilteredCourses(courses);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [courses, searchFilters]);
 
