@@ -3,7 +3,6 @@ import { useDispatch, useSelector } from 'react-redux';
 import Placeholder from './course-search/search-results/Placeholder';
 import {
   Course,
-  UserDistribution,
   Plan,
   SISRetrievedCourse,
   UserCourse,
@@ -31,7 +30,6 @@ import {
 } from '../../slices/userSlice';
 import {
   selectCurrentPlanCourses,
-  selectDistributions,
   updateCurrentPlanCourses,
   updateDistributions,
   updateSelectedPlan,
@@ -54,7 +52,6 @@ const CourseDisplayPopup: FC = () => {
   const version = useSelector(selectVersion);
   const planList = useSelector(selectPlanList);
   const currentCourses = useSelector(selectCurrentPlanCourses);
-  const distributions = useSelector(selectDistributions);
 
   const [inspectedArea, setInspectedArea] = useState<string>('None');
 
@@ -108,7 +105,7 @@ const CourseDisplayPopup: FC = () => {
           credits: courseToShow.credits.toString(),
           wi: courseToShow.wi,
           bio: 'This is a placeholder course',
-          tags: courseToShow.tags,
+          tags: courseToShow.tags || [],
           preReq: [],
           restrictions: [],
           level: courseToShow.level,
@@ -172,54 +169,47 @@ const CourseDisplayPopup: FC = () => {
   };
 
   // Handles post add course post response
-  const handlePostAddCourse =
-    (plan: Plan) =>
-    (data): void => {
-      let newUserCourse: UserCourse;
-      if (data.errors === undefined && courseToShow !== null) {
-        newUserCourse = { ...data.data };
-        dispatch(updateCurrentPlanCourses([...currentCourses, newUserCourse]));
-        const allYears: Year[] = [...plan.years];
-        const newYears: Year[] = [];
-        allYears.forEach(updateYears(newYears, newUserCourse));
-        const newPlan: Plan = { ...plan, years: newYears };
-        dispatch(updateSelectedPlan(newPlan));
-        const newPlanList = [...planList];
-        for (let i = 0; i < planList.length; i++) {
-          if (planList[i]._id === newPlan._id) {
-            newPlanList[i] = newPlan;
-          }
+  const handlePostAddCourse = (plan: Plan) => (data): void => {
+    let newUserCourse: UserCourse;
+    if (data.errors === undefined && courseToShow !== null) {
+      newUserCourse = { ...data.data };
+      dispatch(updateCurrentPlanCourses([...currentCourses, newUserCourse]));
+      const allYears: Year[] = [...plan.years];
+      const newYears: Year[] = [];
+      allYears.forEach(updateYears(newYears, newUserCourse));
+      const newPlan: Plan = { ...plan, years: newYears };
+      dispatch(updateSelectedPlan(newPlan));
+      const newPlanList = [...planList];
+      for (let i = 0; i < planList.length; i++) {
+        if (planList[i]._id === newPlan._id) {
+          newPlanList[i] = newPlan;
         }
-        distributions.forEach((dist: UserDistribution, i: number) => {
-          if (data.data.distributions.includes(dist._id)) {
-            distributions[i] = dist;
-          }
-        });
-        dispatch(updateDistributions(distributions));
-        dispatch(updatePlanList(newPlanList));
-        dispatch(updateCourseToShow(null));
-        dispatch(updateShowCourseInfo(false));
-        dispatch(clearSearch());
-        dispatch(updatePlaceholder(false));
-        toast.success('Course updated!', {
-          toastId: 'course updated',
-        });
-      } else {
-        console.log('Failed to add', data.errors);
       }
-    };
+      dispatch(updateDistributions(data.data.distributions));
+      dispatch(updatePlanList(newPlanList));
+      dispatch(updateCourseToShow(null));
+      dispatch(updateShowCourseInfo(false));
+      dispatch(clearSearch());
+      dispatch(updatePlaceholder(false));
+      toast.success('Course updated!', {
+        toastId: 'course updated',
+      });
+    } else {
+      console.log('Failed to add', data.errors);
+    }
+  };
 
   // Helper method that updates the years array in the plan after adding course.
-  const updateYears =
-    (newYears: Year[], newUserCourse: UserCourse) =>
-    (year: Year): void => {
-      if (courseToShow !== null && year._id === courseToShow.year_id) {
-        const yCourses = [...year.courses, newUserCourse];
-        newYears.push({ ...year, courses: yCourses });
-      } else {
-        newYears.push(year);
-      }
-    };
+  const updateYears = (newYears: Year[], newUserCourse: UserCourse) => (
+    year: Year,
+  ): void => {
+    if (courseToShow !== null && year._id === courseToShow.year_id) {
+      const yCourses = [...year.courses, newUserCourse];
+      newYears.push({ ...year, courses: yCourses });
+    } else {
+      newYears.push(year);
+    }
+  };
 
   return (
     <div className="absolute top-0">

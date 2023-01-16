@@ -4,27 +4,31 @@ import {
   UserDistribution,
   UserFineReq,
 } from '../../../../resources/commonTypes';
+import { useSelector } from 'react-redux';
+import {
+  selectSelectedDistribution,
+  updateSelectedFineReq,
+} from '../../../../slices/currentPlanSlice';
+import { useDispatch } from 'react-redux';
 
-const FineRequirementsList: FC<{
-  searching: boolean;
-  selectRequirement: Function;
-  selectedDistribution: UserDistribution;
-}> = (props) => {
+const FineRequirementsList: FC<{}> = () => {
+  const dispatch = useDispatch();
+  const dist: UserDistribution | null = useSelector(selectSelectedDistribution);
   // Component state setup.
   const [hideResults, setHideResults] = useState<boolean>(false);
   const [selectedListItem, setSelectedListItem] = useState<string>('');
 
-  const selectRequirement = (requirement: UserFineReq, i: number) => {
-    props.selectRequirement(requirement);
+  const selectRequirement = (requirement: UserFineReq) => {
+    dispatch(updateSelectedFineReq(requirement));
     setSelectedListItem(requirement._id);
   };
 
   const getRequirements = () => {
-    return props.selectedDistribution.fineReq_ids.map((fine) => {
+    return dist.fineReq_ids.map((fine) => {
+      if (!fine.description) return <></>;
       return (
         <div key={fine._id}>
           <FineRequirementListItem
-            id={fine._id}
             itemRequirement={fine}
             onClick={selectRequirement}
             selected={fine._id === selectedListItem}

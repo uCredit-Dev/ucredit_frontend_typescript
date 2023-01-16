@@ -1,7 +1,6 @@
 import React, { useState, useEffect, FC } from 'react';
 import {
   Course,
-  UserDistribution,
   Plan,
   ReviewMode,
   Year,
@@ -24,7 +23,6 @@ import {
 } from '../../../../slices/popupSlice';
 import {
   selectCurrentPlanCourses,
-  selectDistributions,
   selectPlan,
   updateCurrentPlanCourses,
   updateDistributions,
@@ -53,17 +51,18 @@ const Placeholder: FC<{ addCourse: (plan?: Plan) => void }> = (props) => {
   const currentCourses = useSelector(selectCurrentPlanCourses);
   const currentPlan = useSelector(selectPlan);
   const token = useSelector(selectToken);
-  const distributions = useSelector(selectDistributions);
   const dispatch = useDispatch();
 
   // Component state setup.
-  const [placeholderTitle, setPlaceholderTitle] =
-    useState<string>('placeholder');
+  const [placeholderTitle, setPlaceholderTitle] = useState<string>(
+    'placeholder',
+  );
   const [placeholderArea, setPlaceholderArea] = useState<string>('none');
   const [placeholderCredits, setPlaceholderCredits] = useState<string>('0');
   const [placeholderNumber, setPlaceholderNumber] = useState<string>('');
-  const [placeholderDepartment, setPlaceholderDepartment] =
-    useState<string>('none');
+  const [placeholderDepartment, setPlaceholderDepartment] = useState<string>(
+    'none',
+  );
   const [placeholderTag, setPlaceholderTag] = useState<string>('none');
   const [placeholderWI, setPlaceholderWI] = useState<boolean>(false);
   const [placeholderLevel, setPlaceholderLevel] = useState<string>('none');
@@ -224,12 +223,7 @@ const Placeholder: FC<{ addCourse: (plan?: Plan) => void }> = (props) => {
       const newPlan: Plan = { ...currentPlan, years: newYears };
       dispatch(updateSelectedPlan(newPlan));
       // update modified distributions
-      distributions.forEach((dist: UserDistribution, i: number) => {
-        if (data.data.distributions.includes(dist._id)) {
-          distributions[i] = dist;
-        }
-      });
-      dispatch(updateDistributions(distributions));
+      dispatch(updateDistributions(data.data.distributions));
       props.addCourse(newPlan);
     } else {
       console.log('ERROR: Failed to add', data.errors);

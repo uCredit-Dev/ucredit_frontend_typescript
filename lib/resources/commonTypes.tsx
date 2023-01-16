@@ -212,6 +212,8 @@ export type UserFineReq = {
   planned: number;
   current: number;
   double_count?: string[];
+  wi: boolean | undefined;
+  pathing: number | undefined;
 };
 
 export type FineReq = {

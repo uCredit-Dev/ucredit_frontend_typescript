@@ -1,6 +1,5 @@
 import React, { useState, useEffect, FC } from 'react';
 import {
-  UserDistribution,
   DroppableType,
   Plan,
   ReviewMode,
@@ -25,7 +24,6 @@ import { Droppable } from 'react-beautiful-dnd';
 import {
   selectCurrentPlanCourses,
   selectPlan,
-  selectDistributions,
   updateCurrentPlanCourses,
   updateDroppables,
   updateSelectedPlan,
@@ -78,7 +76,6 @@ const Semester: FC<{
   const currentCourses = useSelector(selectCurrentPlanCourses);
   const inspected = useSelector(selectInspectedCourse);
   const cartOpen = useSelector(selectCartAdd);
-  const distributions = useSelector(selectDistributions);
 
   // State used to control whether dropdown is opened or closed
   const [totalCredits, setTotalCredits] = useState<number>(0);
@@ -256,12 +253,7 @@ const Semester: FC<{
       }
       // update modified distributions
       dispatch(updatePlanList(newPlanList));
-      distributions.forEach((dist: UserDistribution, i: number) => {
-        if (data.data.distributions.includes(dist._id)) {
-          distributions[i] = dist;
-        }
-      });
-      dispatch(updateDistributions(distributions));
+      dispatch(updateDistributions(data.data.distributions));
       // close popups and notify user
       dispatch(updateAddingPrereq(false));
       dispatch(updateInfoPopup(true));

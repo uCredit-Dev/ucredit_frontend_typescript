@@ -4,7 +4,6 @@ import CourseVersion from './CourseVersion';
 import { useDispatch, useSelector } from 'react-redux';
 import {
   selectCurrentPlanCourses,
-  selectDistributions,
   selectPlan,
   updateCurrentPlanCourses,
   updateDistributions,
@@ -25,7 +24,6 @@ import {
 } from '../../../../slices/searchSlice';
 import {
   Course,
-  UserDistribution,
   Plan,
   ReviewMode,
   SemesterType,
@@ -77,7 +75,6 @@ const SisCourse: FC<{
   const reviewMode = useSelector(selectReviewMode);
   const token = useSelector(selectToken);
   const cartInvokedBySemester = useSelector(selectCartInvokedBySemester);
-  const distributions = useSelector(selectDistributions);
 
   const [versionIndex, updateVersionIndex] = useState<number>(0);
   const [ogSem, setOgSem] = useState<SemesterType | 'All'>('All');
@@ -88,7 +85,7 @@ const SisCourse: FC<{
   }, []);
 
   useEffect(() => {
-    if (inspected !== 'None' && version !== 'None') {
+    if (inspected !== 'None' && version !== 'None' && version.term) {
       const index: number = inspected.terms.indexOf(version.term.toString());
       updateVersionIndex(index);
     }
@@ -98,7 +95,7 @@ const SisCourse: FC<{
 
   // Returns an array of select options for the distribution area users want to add the course to.
   const getInspectedAreas = () => {
-    if (version !== 'None' && version.areas !== 'None') {
+    if (version !== 'None' && version.areas && version.areas !== 'None') {
       const areaOptions = version.areas
         .split('')
         .map((area: string, i: number) => (
@@ -220,12 +217,7 @@ const SisCourse: FC<{
       const newPlan: Plan = { ...currentPlan, years: newYears };
       dispatch(updateSelectedPlan(newPlan));
       // update modified distributions
-      distributions.forEach((dist: UserDistribution, i: number) => {
-        if (data.data.distributions.includes(dist._id)) {
-          distributions[i] = dist;
-        }
-      });
-      dispatch(updateDistributions(distributions));
+      dispatch(updateDistributions(data.data.distributions));
       props.addCourse(newPlan);
     } else {
       console.log('ERROR: Failed to add', data.errors);

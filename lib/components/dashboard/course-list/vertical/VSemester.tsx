@@ -12,7 +12,6 @@ import {
 } from '../../../../slices/searchSlice';
 import {
   selectCurrentPlanCourses,
-  selectDistributions,
   selectPlan,
   updateCurrentPlanCourses,
   updateDroppables,
@@ -39,7 +38,6 @@ import {
   UserCourse,
   DroppableType,
   Plan,
-  UserDistribution,
 } from '../../../../resources/commonTypes';
 import React from 'react';
 
@@ -64,7 +62,6 @@ const VSemester: React.FC<{
   const planList = useSelector(selectPlanList);
   const placeholder = useSelector(selectPlaceholder);
   const currentCourses = useSelector(selectCurrentPlanCourses);
-  const distributions = useSelector(selectDistributions);
 
   // State used to control whether dropdown is opened or closed
   const [totalCredits, setTotalCredits] = useState<number>(0);
@@ -212,12 +209,7 @@ const VSemester: React.FC<{
       }
       // update modified distributions
       dispatch(updatePlanList(newPlanList));
-      distributions.forEach((dist: UserDistribution, i: number) => {
-        if (data.data.distributions.includes(dist._id)) {
-          distributions[i] = dist;
-        }
-      });
-      dispatch(updateDistributions(distributions));
+      dispatch(updateDistributions(data.data.distributions));
       // close popups and notify user
       dispatch(updatePlanList(newPlanList));
       dispatch(updateAddingPrereq(false));

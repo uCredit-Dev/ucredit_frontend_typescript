@@ -8,13 +8,12 @@ import {
 import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import {
-  selectDistributions,
   selectPlan,
   updateDistributions,
   updateSelectedPlan,
 } from '../../slices/currentPlanSlice';
 import { getAPI } from '../../resources/assets';
-import { UserDistribution, Plan } from '../../resources/commonTypes';
+import { Plan } from '../../resources/commonTypes';
 import {
   selectCourseToDelete,
   updateDeleteCourseStatus,
@@ -33,7 +32,6 @@ const DeleteCoursePopup: FC = () => {
   const courseInfo = useSelector(selectCourseToDelete);
   const planList = useSelector(selectPlanList);
   const token = useSelector(selectToken);
-  const distributions = useSelector(selectDistributions);
 
   /**
    * Popup for deleting current selected course.
@@ -56,12 +54,7 @@ const DeleteCoursePopup: FC = () => {
               years[index] = { ...years[index], courses: courses };
             }
           });
-          distributions.forEach((dist: UserDistribution, i: number) => {
-            if (data.data.distributions.includes(dist._id)) {
-              distributions[i] = dist;
-            }
-          });
-          dispatch(updateDistributions(distributions));
+          dispatch(updateDistributions(data.data.distributions));
           newPlan = { ...currentPlan, years: years };
           toast.error(courseInfo.course.title + ' deleted!', {
             toastId: 'course deleted',

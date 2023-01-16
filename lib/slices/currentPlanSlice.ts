@@ -7,8 +7,8 @@ import {
   ThreadType,
   UserCourse,
   UserDistribution,
-} from '../components/../resources/commonTypes';
-
+  UserFineReq
+} from './../resources/commonTypes';
 type CurrentPlanSlice = {
   plan: Plan;
   distributions: UserDistribution[];
@@ -22,6 +22,7 @@ type CurrentPlanSlice = {
   selectedThread: string | null;
   selectedMajor: string | null;
   selectedDistribution: UserDistribution | null;
+  selectedFineReq: UserFineReq | null;
 };
 
 export const initialPlan = {
@@ -48,6 +49,7 @@ const initialState: CurrentPlanSlice = {
   selectedThread: null,
   selectedMajor: null,
   selectedDistribution: null,
+  selectedFineReq: null
 };
 
 export const currentPlanSlice = createSlice({
@@ -145,6 +147,12 @@ export const currentPlanSlice = createSlice({
     ) => {
       state.selectedDistribution = action.payload;
     },
+    updateSelectedFineReq: (
+      state: any,
+      action: PayloadAction<UserFineReq>,
+    ) => {
+      state.selectedFineReq = action.payload;
+    },
   },
 });
 
@@ -163,6 +171,7 @@ export const {
   updateSelectedThread,
   updateSelectedMajor,
   updateSelectedDistribution,
+  updateSelectedFineReq
 } = currentPlanSlice.actions;
 
 // The function below is called a selector and allows us to select a value from
@@ -189,5 +198,7 @@ export const selectSelectedMajor = (state: RootState) =>
   state.currentPlan.selectedMajor;
 export const selectSelectedDistribution = (state: RootState) =>
   state.currentPlan.selectedDistribution;
+export const selectSelectedFineReq = (state: RootState) =>
+  state.currentPlan.selectedFineReq;
 
 export default currentPlanSlice.reducer;

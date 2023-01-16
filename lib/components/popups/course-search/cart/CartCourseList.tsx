@@ -16,14 +16,12 @@ import ReactTooltip from 'react-tooltip';
 
 // TODO: remove this import, for dummy courses
 import CartCourseListItem from './CartCourseListItem';
-import { requirements } from '../../../dashboard/degree-info/distributionFunctions';
 
 /*
   List of searched courses.
 */
 const CartCourseList: FC<{
   searching: boolean;
-  selectedRequirement: requirements;
   textFilter: string;
 }> = (props) => {
   // Component state setup.

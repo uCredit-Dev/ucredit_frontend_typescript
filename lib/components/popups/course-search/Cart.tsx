@@ -8,8 +8,6 @@ import { SISRetrievedCourse } from '../../../resources/commonTypes';
 import { updateInfoPopup, updateShowingCart } from '../../../slices/popupSlice';
 import FineRequirementsList from './cart/FineRequirementsList';
 import CartCourseList from './cart/CartCourseList';
-import { emptyRequirements } from './cart/dummies';
-import { requirements } from '../../dashboard/degree-info/distributionFunctions';
 import {
   selectCartAdd,
   selectPageIndex,
@@ -22,6 +20,7 @@ import { getAPI } from '../../../resources/assets';
 import {
   selectCurrentPlanCourses,
   selectSelectedDistribution,
+  selectSelectedFineReq,
 } from '../../../slices/currentPlanSlice';
 
 /**
@@ -34,71 +33,54 @@ const Cart: FC<{}> = () => {
 
   // FOR DUMMY FILTER TESTING TODO REMOVE
   // TODO : double check the initial state on this hook. do i even need this if stored in redux?
-  const [selectedRequirement, setSelectedRequirement] =
-    useState<requirements>(emptyRequirements);
+  const [cartFilter, setCartFilter] = useState<string>('');
   const [textFilterInputValue, setTextFilterInputValue] = useState<string>('');
 
   // Redux selectors and dispatch
   const dispatch = useDispatch();
-  const distrs = useSelector(selectSelectedDistribution);
+  const dist = useSelector(selectSelectedDistribution);
+  const fine = useSelector(selectSelectedFineReq);
   const currentPlanCourses = useSelector(selectCurrentPlanCourses);
   const cartAdd = useSelector(selectCartAdd);
   const pageIndex = useSelector(selectPageIndex);
 
   useEffect(() => {
-    if (distrs) {
-      const req: requirements = {
-        name: distrs.name,
-        description: distrs.description,
-        expr: distrs.criteria,
-        required_credits: distrs.required_credits,
-        fulfilled_credits: distrs.planned,
-        double_count: distrs.double_count,
-        pathing: distrs.pathing,
-        wi: distrs.wi,
-      };
-      setSelectedRequirement(req);
+    if (dist) {
+      setCartFilter(dist.criteria);
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [distrs, currentPlanCourses, cartAdd]);
+  }, [dist, currentPlanCourses, cartAdd]);
+
+  useEffect(() => {
+    if (fine) {
+      setCartFilter(fine.criteria);
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [fine, currentPlanCourses, cartAdd]);
 
   // Performing searching in useEffect so as to activate searching
   useEffect(() => {
     setSearching(true);
     dispatch(updatePageIndex(0));
-    async function fetchData() {
-      await updateSelectedRequirement();
-    }
-    fetchData();
+    cartSearch();
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [selectedRequirement]);
+  }, [cartFilter]);
 
   // Performing searching in useEffect so as to activate searching
   useEffect(() => {
     setSearching(true);
-    async function fetchData() {
-      await updateSelectedRequirement();
-    }
-    fetchData();
+    cartSearch();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [pageIndex]);
 
-  const updateSelectedRequirement = async () => {
-    // setLocalRetrievedCourses([]);
-    // dispatch(updateRetrievedCourses([]));
-    // will find based on selected requirement
-    // concern with selecting multiple requirements in a row? how will promises be handled correctly?
-    // probably simlar to how seraches are ended prematurely. anyways, just want ot see if this works.
-    setSearching(false);
-
-    let courses: SISRetrievedCourse[] = await fineReqFind(
-      selectedRequirement.expr,
-      pageIndex,
-    );
-    if (!courses) {
-      console.log('Course not found!');
-    }
-    dispatch(updateRetrievedCourses(courses));
+  const cartSearch = () => {
+    fineReqFind(cartFilter, pageIndex).then((courses: SISRetrievedCourse[]) => {
+      if (!courses) {
+        console.log('Course not found!');
+      }
+      dispatch(updateRetrievedCourses(courses));
+      setSearching(false);
+    });
   };
 
   const fineReqFind = (
@@ -152,7 +134,7 @@ const Cart: FC<{}> = () => {
         style={{ opacity: searchOpacity === 100 ? 1 : 0.1 }}
       >
         <div className="px-4 py-2 text-white select-none text-coursecard font-large">
-          {distrs.name}
+          {dist.name}
           {/** This is the popup header. */}
         </div>
         <div className="flex flex-row w-full h-full tight:flex-col tight:h-auto tight:max-h-mobileSearch text-coursecard tight:overflow-y-scroll overflow-hidden">
@@ -176,7 +158,6 @@ const Cart: FC<{}> = () => {
               </div>
               <CartCourseList
                 searching={searching}
-                selectedRequirement={selectedRequirement}
                 textFilter={textFilterInputValue.toLowerCase()}
               />
             </div>
@@ -207,11 +188,7 @@ const Cart: FC<{}> = () => {
           >
             <div className="h-full overflow-y-auto">
               {/* This is where the courses would go (the left column) */}
-              <FineRequirementsList
-                searching={false}
-                selectRequirement={setSelectedRequirement}
-                selectedDistribution={distrs}
-              />
+              <FineRequirementsList />
             </div>
           </div>
         </div>

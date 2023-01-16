@@ -1,11 +1,6 @@
 import React, { FC, useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
-import {
-  UserDistribution,
-  Plan,
-  UserCourse,
-  Year,
-} from '../../../../resources/commonTypes';
+import { Plan, UserCourse, Year } from '../../../../resources/commonTypes';
 import {
   clearSearch,
   selectSemester,
@@ -25,7 +20,6 @@ import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import {
   selectCurrentPlanCourses,
-  selectDistributions,
   selectPlan,
   selectTotalCredits,
   updateCurrentPlanCourses,
@@ -53,7 +47,6 @@ const CourseDisplay: FC<{ cart: boolean }> = ({ cart }) => {
   const currentCourses = useSelector(selectCurrentPlanCourses);
   const totalCredits = useSelector(selectTotalCredits);
   const token = useSelector(selectToken);
-  const distributions = useSelector(selectDistributions);
 
   // component state setup
   const [inspectedArea, setInspectedArea] = useState<string>('None');
@@ -153,12 +146,7 @@ const CourseDisplay: FC<{ cart: boolean }> = ({ cart }) => {
         newPlanList[i] = newPlan;
       }
     }
-    distributions.forEach((dist: UserDistribution, i: number) => {
-      if (data.data.distributions.includes(dist._id)) {
-        distributions[i] = dist;
-      }
-    });
-    dispatch(updateDistributions(distributions));
+    dispatch(updateDistributions(data.data.distributions));
     dispatch(updatePlanList(newPlanList));
     dispatch(updateTotalCredits(totalCredits + newUserCourse.credits));
     toast.success(version.title + ' added!', {

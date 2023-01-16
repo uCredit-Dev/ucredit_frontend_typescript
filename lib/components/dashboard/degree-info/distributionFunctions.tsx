@@ -6,7 +6,6 @@ export type requirements = {
   required_credits: number;
   fulfilled_credits: number;
   description: string;
-  double_count?: string[];
   pathing?: number;
   wi?: boolean;
 };
@@ -206,7 +205,6 @@ export const getRequirements = (major: Major) => {
       fulfilled_credits: 0,
       description: element.description,
       pathing: element.pathing,
-      double_count: element.double_count,
     };
     allReq.push(general);
     if (element.fine_requirements !== undefined) {
@@ -219,7 +217,6 @@ export const getRequirements = (major: Major) => {
             required_credits: fine.required_credits,
             fulfilled_credits: 0,
             description: '',
-            double_count: fine.double_count,
           },
         ];
       });
