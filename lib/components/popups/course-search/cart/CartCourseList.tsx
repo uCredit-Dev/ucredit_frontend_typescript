@@ -23,7 +23,7 @@ import CartCourseListItem from './CartCourseListItem';
 const CartCourseList: FC<{
   searching: boolean;
   textFilter: string;
-}> = (props) => {
+}> = ({ searching, textFilter }) => {
   // Component state setup.
   const [hideResults, setHideResults] = useState<boolean>(false);
   // Redux setup
@@ -136,7 +136,7 @@ const CartCourseList: FC<{
    */
   const getLoadingUI = () => (
     <>
-      {props.searching ? (
+      {searching ? (
         <img src="/img/loading.gif" alt="Searching..." className="h-10"></img>
       ) : (
         <div className="text-lg text-center text-gray-400">

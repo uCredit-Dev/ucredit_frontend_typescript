@@ -16,7 +16,7 @@ import clsx from 'clsx';
 const CartCourseListItem: FC<{
   course: SISRetrievedCourse;
   version: number;
-}> = (props) => {
+}> = ({ course, version }) => {
   // Setup Redux
   const dispatch = useDispatch();
   const selectedCourse = useSelector(selectVersion);
@@ -25,12 +25,12 @@ const CartCourseListItem: FC<{
    * User selects a course to look at.
    */
   const handleCourseClick = () => {
-    dispatch(updateInspectedCourse(props.course));
+    dispatch(updateInspectedCourse(course));
     dispatch(updatePlaceholder(false));
     const newInspected: Course = {
-      title: props.course.title,
-      number: props.course.number,
-      ...props.course.versions[props.version],
+      title: course.title,
+      number: course.number,
+      ...course.versions[version],
     };
     dispatch(updateInspectedVersion(newInspected));
   };
@@ -41,21 +41,19 @@ const CartCourseListItem: FC<{
         {
           'bg-secondary bg-opacity-25':
             selectedCourse !== 'None' &&
-            selectedCourse.number === props.course.number,
+            selectedCourse.number === course.number,
         },
         'mb-2 p-2 w-full h-14 bg-white rounded cursor-pointer transition duration-200 ease-in-out',
       )}
       onClick={handleCourseClick}
     >
       <div className="flex flex-col justify-center w-full h-full">
-        <div className="truncate">{props.course.title}</div>
+        <div className="truncate">{course.title}</div>
         <div className="flex flex-row truncate">
-          {/*   {props.course.terms[props.version]} */}
-          {props.course.number}
+          {/*   {course.terms[version]} */}
+          {course.number}
           {[
-            ...new Set(
-              props.course.terms.map((fullTerm) => fullTerm.split(' ')[0]),
-            ),
+            ...new Set(course.terms.map((fullTerm) => fullTerm.split(' ')[0])),
           ].map((term) => (
             <div key={term} className="ml-1">
               {term}

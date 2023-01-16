@@ -41,7 +41,9 @@ const tagFilters = ['none', ...course_tags];
  * Page for adding a placeholder
  * @prop addCourse - a function that adds the placeholder to the plan.
  */
-const Placeholder: FC<{ addCourse: (plan?: Plan) => void }> = (props) => {
+const Placeholder: FC<{ addCourse: (plan?: Plan) => void }> = ({
+  addCourse,
+}) => {
   // Redux Setup
   const inspectedVersion = useSelector(selectVersion);
   const courseToShow = useSelector(selectCourseToShow);
@@ -224,7 +226,7 @@ const Placeholder: FC<{ addCourse: (plan?: Plan) => void }> = (props) => {
       const newPlan: Plan = { ...currentPlan, years: newYears };
       dispatch(updateSelectedPlan(newPlan));
       // update modified distributions
-      props.addCourse(newPlan);
+      addCourse(newPlan);
     } else {
       console.log('ERROR: Failed to add', data.errors);
     }
@@ -404,7 +406,7 @@ const Placeholder: FC<{ addCourse: (plan?: Plan) => void }> = (props) => {
             } else if (placeholderLevel === 'none') {
               toast.error('Please specify Level!');
             } else {
-              props.addCourse();
+              addCourse();
             }
           }}
           disabled={reviewMode === ReviewMode.View}

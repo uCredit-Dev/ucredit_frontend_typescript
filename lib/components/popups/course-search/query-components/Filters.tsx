@@ -20,7 +20,7 @@ const wiFilters = ['Any', 'Yes', 'No'];
  */
 const Filters: FC<{
   showCriteria: boolean;
-}> = (props) => {
+}> = ({ showCriteria }) => {
   // Set up redux dispatch and variables.
   const dispatch = useDispatch();
   const searchFilters = useSelector(selectSearchFilters);
@@ -257,7 +257,7 @@ const Filters: FC<{
           }}
         />
       </div>
-      {props.showCriteria && (
+      {showCriteria && (
         <div>
           <div
             className="flex flex-row items-center justify-between w-full h-auto mb-2"

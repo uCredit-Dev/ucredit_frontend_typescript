@@ -16,18 +16,18 @@ const YearDraggable: FC<{
   yearIndex: number;
   yearCourses: UserCourse[];
   mode: ReviewMode;
-}> = (props) => {
+}> = ({ id, year, yearIndex, yearCourses, mode }) => {
   const [draggable, setDraggable] = useState<boolean>(true);
   return (
     <Draggable
-      key={props.year._id}
-      index={props.yearIndex}
-      draggableId={props.year._id}
+      key={year._id}
+      index={yearIndex}
+      draggableId={year._id}
       isDragDisabled={
         draggable ||
-        props.id === 0 ||
-        props.mode === ReviewMode.View ||
-        props.mode === ReviewMode.RoadMap
+        id === 0 ||
+        mode === ReviewMode.View ||
+        mode === ReviewMode.RoadMap
       }
     >
       {(provided, snapshot) => {
@@ -42,12 +42,12 @@ const YearDraggable: FC<{
             )}
           >
             <YearComponent
-              key={props.year._id}
-              id={props.yearIndex}
-              year={props.year}
-              courses={props.yearCourses}
+              key={year._id}
+              id={yearIndex}
+              year={year}
+              courses={yearCourses}
               setDraggable={setDraggable}
-              mode={props.mode}
+              mode={mode}
             />
           </div>
         );

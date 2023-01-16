@@ -59,7 +59,7 @@ const SisCourse: FC<{
   setInspectedArea: (area: string) => void;
   addCourse: (plan?: Plan) => void;
   cart: boolean;
-}> = (props) => {
+}> = ({ inspectedArea, setInspectedArea, addCourse, cart }) => {
   // Redux Setup
   const dispatch = useDispatch();
   const inspected = useSelector(selectInspectedCourse);
@@ -216,7 +216,7 @@ const SisCourse: FC<{
       const newPlan: Plan = { ...currentPlan, years: newYears };
       dispatch(updateSelectedPlan(newPlan));
       // update modified distributions
-      props.addCourse(newPlan);
+      addCourse(newPlan);
     } else {
       console.log('ERROR: Failed to add', data.errors);
     }
@@ -318,8 +318,8 @@ const SisCourse: FC<{
               :
               <select
                 className="h-6 ml-2 rounded outline-none w-14"
-                value={props.inspectedArea}
-                onChange={(event) => props.setInspectedArea(event.target.value)}
+                value={inspectedArea}
+                onChange={(event) => setInspectedArea(event.target.value)}
               >
                 {getInspectedAreas()}
               </select>
@@ -344,9 +344,9 @@ const SisCourse: FC<{
           'w-auto h-10 p-2 mt-2 mx-auto text-white transition duration-200 ease-in transform rounded md:hover:bg-secondary md:bg-primary focus:outline-none hover:scale-105 bg-secondary',
         )}
         onClick={() => {
-          if (props.cart) {
+          if (cart) {
             addPrereq();
-          } else props.addCourse();
+          } else addCourse();
         }}
         disabled={cartInvokedBySemester && reviewMode === ReviewMode.View}
       >
@@ -370,7 +370,7 @@ const SisCourse: FC<{
    */
   const getAddCourseType = () => (
     <>
-      {props.cart ? (
+      {cart ? (
         <div className="relative bottom-0 flex flex-row items-center w-full h-20 px-4 py-2 bg-gray-100 rounded-b">
           {getAddCourseButton()}
         </div>
@@ -435,7 +435,7 @@ const SisCourse: FC<{
                 onChange={handleTermSwitch}
               />
             </div>
-            <CourseVersion setInspectedArea={props.setInspectedArea} />
+            <CourseVersion setInspectedArea={setInspectedArea} />
           </div>
           {getAddCourseType()}
         </>
