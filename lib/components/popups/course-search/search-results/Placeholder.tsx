@@ -75,12 +75,14 @@ const Placeholder: FC<{ addCourse: (plan?: Plan) => void }> = (props) => {
   // Updates placeholder information everytime inspected course changes.
   useEffect(() => {
     if (placeholder && inspectedVersion !== 'None') {
-      setPlaceholderArea(inspectedVersion.areas);
       setPlaceholderTitle(inspectedVersion.title);
       setPlaceholderCredits(inspectedVersion.credits);
       setPlaceholderNumber(inspectedVersion.number);
       setPlaceholderDepartment(inspectedVersion.department);
       setPlaceholderWI(inspectedVersion.wi);
+      setPlaceholderArea(
+        inspectedVersion.areas ? inspectedVersion.areas : 'none',
+      );
       setPlaceholderLevel(
         inspectedVersion.level ? inspectedVersion.level : 'none',
       );

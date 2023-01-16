@@ -44,17 +44,21 @@ const Reviewer: React.FC = () => {
         .data;
       for (const { _id, plan_id, reviewee_id, status } of reviews) {
         if (status === ReviewRequestStatus.Pending) continue;
-        const plansResp = await userService.getPlan(plan_id, token);
-        const plan = {
-          ...plansResp.data,
-          status,
-          review_id: _id,
-        };
-        const reviewee = (await userService.getUser(reviewee_id._id, token))
-          .data[0];
-        const revieweeString = JSON.stringify(reviewee);
-        const plans = plansByUser.get(revieweeString) || [];
-        plansByUser.set(revieweeString, [...plans, plan]);
+        try {
+          const plansResp = await userService.getPlan(plan_id, token);
+          const plan = {
+            ...plansResp.data,
+            status,
+            review_id: _id,
+          };
+          const reviewee = (await userService.getUser(reviewee_id._id, token))
+            .data[0];
+          const revieweeString = JSON.stringify(reviewee);
+          const plans = plansByUser.get(revieweeString) || [];
+          plansByUser.set(revieweeString, [...plans, plan]);
+        } catch (err) {
+          continue;
+        }
       }
       const revieweePlansArr: RevieweePlans[] = [];
       for (const [k, v] of plansByUser) {
