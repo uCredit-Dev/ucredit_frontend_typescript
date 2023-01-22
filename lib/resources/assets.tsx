@@ -1025,7 +1025,7 @@ export async function getDistributions(
 
 export async function getUpdatedDistributions(
   plan_id: string,
-  major_id: string,
+  major_id: string | null,
   token: string,
 ) {
   const res = await axios.get(getAPI(window) + '/distributionsByPlan/', {

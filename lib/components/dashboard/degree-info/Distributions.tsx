@@ -1,4 +1,5 @@
-import { CheckIcon, XIcon } from '@heroicons/react/solid';
+import { CalculatorIcon } from '@heroicons/react/outline';
+import { XIcon } from '@heroicons/react/solid';
 import React, { FC, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import Select from 'react-select';
@@ -24,7 +25,7 @@ const Distributions: FC<{
   // Component state setup.
   const [disclaimer, setDisclaimer] = useState<boolean>(true);
   const dispatch = useDispatch();
-  const selectedMajor: string = useSelector(selectSelectedMajor);
+  const selectedMajor: string | null = useSelector(selectSelectedMajor);
   const plan: Plan = useSelector(selectPlan);
   const token = useSelector(selectToken);
 
@@ -52,7 +53,7 @@ const Distributions: FC<{
           className="h-6 w-6 m-auto mr-0 cursor-pointer"
           onClick={() => reload()}
         >
-          <CheckIcon />
+          <CalculatorIcon />
         </div>
         <div
           className="h-6 w-6 m-auto mr-0 cursor-pointer"
