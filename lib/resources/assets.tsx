@@ -17,7 +17,7 @@ export const getAPI = (window) =>
     ? 'http://localhost:4567/api'
     : window.location.href.includes('https://ucredit.me')
     ? 'https://ucredit-api.onrender.com/api'
-    : 'https://ucredit-dist.onrender.com';
+    : 'https://ucredit-dist.onrender.com/api';
 // : 'https://ucredit-dev.onrender.com/api';
 
 export const guestUser: User = {
