@@ -277,7 +277,8 @@ const DistributionBarsJSX: FC<{ major: Major }> = ({ major }) => {
           (fineDoubleCount.includes(fineReq.name) || // check if fine req can be double counted
             fineDoubleCount.includes('All')) &&
           (fineReq.fulfilled_credits < fineReq.required_credits ||
-          (fineReq.required_credits === 0 && fineReq.fulfilled_credits === 0) || // check if fine req is already fulfilled
+            (fineReq.required_credits === 0 &&
+              fineReq.fulfilled_credits === 0) || // check if fine req is already fulfilled
             !checkReqCompleted(fineReq)) &&
           checkRequirementSatisfied(fineReq, courseObj) // check if course satisfies fine req
         ) {

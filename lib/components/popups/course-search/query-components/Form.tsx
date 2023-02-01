@@ -156,25 +156,25 @@ const Form: FC<{
    * @param queryLength - length of search query
    * @returns reference to a function that conducts smart search
    */
-  const performSmartSearch = (
-    extras: SearchExtras,
-  ): (() => void) => (): void => {
-    axios
-      .get(getAPI(window) + '/search', {
-        params: getParams(extras),
-      })
-      .then((retrieved) => {
-        let retrievedCourses: SISRetrievedCourse[] =
-          retrieved.data.data.courses;
-        const pageCount = retrieved.data.data.pagination.last;
-        dispatch(updatePageCount(pageCount));
-        dispatch(updateRetrievedCourses(retrievedCourses));
-        setSearching(false);
-      })
-      .catch(() => {
-        setSearching(false);
-      });
-  };
+  const performSmartSearch =
+    (extras: SearchExtras): (() => void) =>
+    (): void => {
+      axios
+        .get(getAPI(window) + '/search', {
+          params: getParams(extras),
+        })
+        .then((retrieved) => {
+          let retrievedCourses: SISRetrievedCourse[] =
+            retrieved.data.data.courses;
+          const pageCount = retrieved.data.data.pagination.last;
+          dispatch(updatePageCount(pageCount));
+          dispatch(updateRetrievedCourses(retrievedCourses));
+          setSearching(false);
+        })
+        .catch(() => {
+          setSearching(false);
+        });
+    };
 
   // Update search term
   const handleSearchTerm = (event: any): void => {

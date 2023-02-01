@@ -34,9 +34,8 @@ const Cart: FC<{}> = () => {
 
   // FOR DUMMY FILTER TESTING TODO REMOVE
   // TODO : double check the initial state on this hook. do i even need this if stored in redux?
-  const [selectedRequirement, setSelectedRequirement] = useState<requirements>(
-    emptyRequirements,
-  );
+  const [selectedRequirement, setSelectedRequirement] =
+    useState<requirements>(emptyRequirements);
   const [cartFilter, setCartFilter] = useState<string>('');
   const [textFilterInputValue, setTextFilterInputValue] = useState<string>('');
 
