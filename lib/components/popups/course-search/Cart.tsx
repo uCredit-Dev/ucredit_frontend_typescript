@@ -4,26 +4,21 @@ import { useDispatch, useSelector } from 'react-redux';
 import CourseDisplay from './search-results/CourseDisplay';
 import { EyeOffIcon } from '@heroicons/react/outline';
 import ReactTooltip from 'react-tooltip';
-import {
-  Course,
-  SearchExtras,
-  SISRetrievedCourse,
-} from '../../../resources/commonTypes';
+import { SISRetrievedCourse } from '../../../resources/commonTypes';
 import { updateInfoPopup, updateShowingCart } from '../../../slices/popupSlice';
 import FineRequirementsList from './cart/FineRequirementsList';
 import CartCourseList from './cart/CartCourseList';
 import { emptyRequirements } from './cart/dummies';
-import {
-  checkRequirementSatisfied,
-  requirements,
-  splitRequirements,
-} from '../../dashboard/degree-info/distributionFunctions';
+import { requirements } from '../../dashboard/degree-info/distributionFunctions';
 import {
   selectCartAdd,
+  selectPageIndex,
+  updatePageCount,
+  updatePageIndex,
   updateRetrievedCourses,
 } from '../../../slices/searchSlice';
 import axios from 'axios';
-import { getAPI, getParams } from '../../../resources/assets';
+import { getAPI } from '../../../resources/assets';
 import {
   selectCurrentPlanCourses,
   selectSelectedDistribution,
@@ -32,15 +27,17 @@ import {
 /**
  * Search component for when someone clicks a search action.
  */
-const Cart: FC<{ allCourses: SISRetrievedCourse[] }> = (props) => {
+const Cart: FC<{}> = () => {
   // Component states
   const [searchOpacity, setSearchOpacity] = useState<number>(100);
   const [searching, setSearching] = useState<boolean>(false);
 
   // FOR DUMMY FILTER TESTING TODO REMOVE
   // TODO : double check the initial state on this hook. do i even need this if stored in redux?
-  const [selectedRequirement, setSelectedRequirement] =
-    useState<requirements>(emptyRequirements);
+  const [selectedRequirement, setSelectedRequirement] = useState<requirements>(
+    emptyRequirements,
+  );
+  const [cartFilter, setCartFilter] = useState<string>('');
   const [textFilterInputValue, setTextFilterInputValue] = useState<string>('');
 
   // Redux selectors and dispatch
@@ -48,135 +45,53 @@ const Cart: FC<{ allCourses: SISRetrievedCourse[] }> = (props) => {
   const distrs = useSelector(selectSelectedDistribution);
   const currentPlanCourses = useSelector(selectCurrentPlanCourses);
   const cartAdd = useSelector(selectCartAdd);
+  const pageIndex = useSelector(selectPageIndex);
 
   useEffect(() => {
     if (distrs[1] && distrs[1].length > 0) {
       setSelectedRequirement(distrs[1][0]);
+      setCartFilter(selectedRequirement.expr);
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [distrs, currentPlanCourses, cartAdd]);
 
-  // Performing searching in useEffect so as to activate searching
   useEffect(() => {
-    setSearching(true);
-    updateSelectedRequirement();
+    setCartFilter(selectedRequirement.expr);
+    dispatch(updatePageIndex(0));
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [selectedRequirement]);
 
-  const updateSelectedRequirement = () => {
-    // setLocalRetrievedCourses([]);
-    // dispatch(updateRetrievedCourses([]));
-    // will find based on selected requirement
-    // concern with selecting multiple requirements in a row? how will promises be handled correctly?
-    // probably simlar to how seraches are ended prematurely. anyways, just want ot see if this works.
+  // Performing searching in useEffect so as to activate searching
+  useEffect(() => {
+    setSearching(true);
+    cartSearch();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [cartFilter, pageIndex]);
 
-    let splitRequirement = splitRequirements(selectedRequirement.expr);
-
-    // issue here will be making sure to reject all these promises once the component unmounts!!!
-    // getall extras
-    let allExtras: SearchExtras[] = [];
-    let index = 0;
-    let ignores = ['(', ')', 'OR', 'AND', 'NOT'];
-    while (index < splitRequirement.length) {
-      if (!ignores.includes(splitRequirement[index])) {
-        allExtras.push(
-          generateExtrasFromSplitRequirement(splitRequirement, index),
-        );
-        index += 2;
-      } else {
-        index += 1;
-      }
-    }
-    let courses: SISRetrievedCourse[] = [];
-    setSearching(false);
-    allExtras.forEach(async (extra) => {
-      const found = await fineReqFind(extra);
-      if (!found) {
+  const cartSearch = () => {
+    fineReqFind(cartFilter, pageIndex).then((courses: SISRetrievedCourse[]) => {
+      if (!courses) {
         console.log('Course not found!');
       }
-      courses = [...courses, ...found[0]];
-      courses = courses.filter((sisCourse) => {
-        const version = sisCourse.versions[0];
-        const course: Course = {
-          title: sisCourse.title,
-          number: sisCourse.number,
-          areas: version.areas,
-          term: version.term,
-          school: version.school,
-          department: version.department,
-          credits: version.credits,
-          wi: version.wi,
-          bio: version.bio,
-          tags: version.tags,
-          preReq: version.preReq,
-          restrictions: version.restrictions,
-          level: version.level,
-        };
-        return checkRequirementSatisfied(selectedRequirement, course);
-      });
       dispatch(updateRetrievedCourses(courses));
+      setSearching(false);
     });
   };
 
-  const generateExtrasFromSplitRequirement = (
-    splitArr: string[],
-    index: number,
-  ): SearchExtras => {
-    let extras: SearchExtras = {
-      page: null,
-      query: '',
-      credits: null,
-      areas: null,
-      wi: null,
-      term: 'All',
-      year: 'All',
-      department: null,
-      tags: null,
-      levels: null,
-    };
-    switch (splitArr[index + 1]) {
-      case 'C': // Course Number
-        // is there a way to search by course number?
-        extras.query = splitArr[index];
-        break;
-      case 'T': // Tag
-        extras.tags = splitArr[index];
-        break;
-      case 'D': // Department
-        extras.department = splitArr[index];
-        break;
-      case 'A': // Area
-        break;
-      case 'N': // Name
-        extras.query = splitArr[index];
-        break;
-      case 'W': //Written intensive
-        extras.wi = true; // does this work?
-        break;
-      case 'L': // Level
-        // TODO : figure out levels ? factor from distrubitionFunctions.tsx
-        // also why is distributionFunctions a tsx file....
-        // updatedConcat = handleLCase(splitArr, index, course);
-        extras.levels = splitArr[index];
-        break;
-      default:
-        extras.query = splitArr[index];
-    }
-    return extras;
-  };
-
   const fineReqFind = (
-    extras: SearchExtras,
-  ): Promise<[SISRetrievedCourse[], number[]]> => {
+    expr: string,
+    page: number,
+  ): Promise<SISRetrievedCourse[]> => {
     return new Promise(async (resolve) => {
       const retrieved: any = await axios
         .get(getAPI(window) + '/cartSearch', {
-          params: getParams(extras),
+          params: { expr, page },
         })
         .catch(() => {
-          return [[], []];
+          return [];
         });
-      return resolve([retrieved.data.data, []]);
+      dispatch(updatePageCount(retrieved.data.data.pagination.last));
+      return resolve(retrieved.data.data.courses);
     });
   };
 
@@ -237,9 +152,7 @@ const Cart: FC<{ allCourses: SISRetrievedCourse[] }> = (props) => {
                 </div>
               </div>
               <CartCourseList
-                allCourses={props.allCourses} //remove this later
                 searching={searching}
-                selectedRequirement={selectedRequirement}
                 textFilter={textFilterInputValue.toLowerCase()}
               />
             </div>
