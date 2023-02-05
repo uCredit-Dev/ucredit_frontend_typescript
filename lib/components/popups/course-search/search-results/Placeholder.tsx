@@ -132,7 +132,6 @@ const Placeholder: FC<{ addCourse: (plan?: Plan) => void }> = (props) => {
     setPlaceholderDepartment(dep);
     if (inspectedVersion !== 'None') {
       const inspCopy: Course = { ...inspectedVersion, department: dep };
-      console.log(inspCopy, 3);
       dispatch(updateInspectedVersion(inspCopy));
     }
   };
