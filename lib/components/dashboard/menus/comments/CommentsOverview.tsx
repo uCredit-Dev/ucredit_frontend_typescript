@@ -28,6 +28,7 @@ const CommentsOverview: React.FC = () => {
     for (let k in threadObjs) {
       temp.push(threadObjs[k]);
     }
+    // does not handle deleting the last comment
     if (
       temp[temp.length - 1] !== undefined &&
       temp[temp.length - 1].comments.length > 0
