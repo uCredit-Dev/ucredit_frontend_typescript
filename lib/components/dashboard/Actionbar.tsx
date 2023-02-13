@@ -32,7 +32,8 @@ import Dialog from '@mui/material/Dialog';
 import DialogTitle from '@mui/material/DialogTitle';
 import Menu from '@mui/material/Menu';
 import Reviewers from './menus/reviewers/Reviewers';
-import PersonIcon from '@mui/icons-material/Person';
+import { Typography } from '@mui/material';
+import Box from '@mui/material/Box';
 
 const majorOptions = allMajors.map((major) => ({
   abbrev: major.abbrev,
@@ -372,18 +373,26 @@ const Actionbar: FC<{ mode: ReviewMode }> = ({ mode }) => {
             >
               <Reviewers />
               <Tooltip
-                title="Click to get a shareable link to your plan."
+                title={
+                  <Typography fontSize={17}>
+                    "Click to share a plan snapshot, which allows people with
+                    JHU accounts to get a copy of your plan that they can edit
+                    and make it their own."
+                  </Typography>
+                }
                 placement="left"
                 arrow
               >
-                <Button
-                  onClick={onShareClick}
-                  variant="outlined"
-                  sx={{ width: '10rem', height: '2rem', mx: 1, my: 1 }}
-                  color="info"
-                >
-                  <div className="ml-1">Copy Plan Link</div>
-                </Button>
+                <Box textAlign="center">
+                  <Button
+                    onClick={onShareClick}
+                    variant="outlined"
+                    sx={{ width: '15rem', height: '2rem', mx: 1, my: 1 }}
+                    color="info"
+                  >
+                    <div className="ml-1">Share Plan Snapshot</div>
+                  </Button>
+                </Box>
               </Tooltip>
             </Menu>
           </div>

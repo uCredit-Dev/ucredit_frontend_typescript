@@ -5,6 +5,7 @@ import ReviewersSearch from './ReviewersSearch';
 import { Hoverable, TooltipPrimary } from '../../../utils';
 import Divider from '@mui/material/Divider';
 import Tooltip from '@mui/material/Tooltip';
+import { Typography } from '@mui/material';
 
 const Reviewers = () => {
   const [addingReviewer, updateAddingReviewer] = useState<Boolean>(false);
@@ -15,7 +16,12 @@ const Reviewers = () => {
       <div className="flex flex-row items-center justify-between pb-1 text-xl cursor-pointer rounded p-2">
         <div className="flex items-center gap-1">
           <Tooltip
-            title="Click on Edit button to add or remove reviewers."
+            title={
+              <Typography fontSize={17}>
+                "Click on the Edit button to add or remove reviewers who can
+                comment on your plan."
+              </Typography>
+            }
             placement="left"
             arrow
           >
