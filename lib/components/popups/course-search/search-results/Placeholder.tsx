@@ -143,7 +143,6 @@ const Placeholder: FC<{ addCourse: (plan?: Plan) => void }> = (props) => {
     if (inspectedVersion !== 'None') {
       const inspCopy: Course = {
         ...inspectedVersion,
-        // tags: [...inspectedVersion.tags, tag],
         tags: [tag],
       };
       dispatch(updateInspectedVersion(inspCopy));
