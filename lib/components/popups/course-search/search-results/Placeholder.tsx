@@ -55,15 +55,13 @@ const Placeholder: FC<{ addCourse: (plan?: Plan) => void }> = ({
   const dispatch = useDispatch();
 
   // Component state setup.
-  const [placeholderTitle, setPlaceholderTitle] = useState<string>(
-    'placeholder',
-  );
+  const [placeholderTitle, setPlaceholderTitle] =
+    useState<string>('placeholder');
   const [placeholderArea, setPlaceholderArea] = useState<string>('none');
   const [placeholderCredits, setPlaceholderCredits] = useState<string>('0');
   const [placeholderNumber, setPlaceholderNumber] = useState<string>('');
-  const [placeholderDepartment, setPlaceholderDepartment] = useState<string>(
-    'none',
-  );
+  const [placeholderDepartment, setPlaceholderDepartment] =
+    useState<string>('none');
   const [placeholderTag, setPlaceholderTag] = useState<string>('none');
   const [placeholderWI, setPlaceholderWI] = useState<boolean>(false);
   const [placeholderLevel, setPlaceholderLevel] = useState<string>('none');

@@ -15,10 +15,7 @@ import {
   updateShowingCart,
 } from '../../../slices/popupSlice';
 import { clearSearch, updatePlaceholder } from '../../../slices/searchSlice';
-import {
-  selectToken,
-  updateCartInvokedBySemester,
-} from '../../../slices/userSlice';
+import { updateCartInvokedBySemester } from '../../../slices/userSlice';
 import Comments from '../Comments';
 import { ReviewMode, UserDistribution } from '../../../resources/commonTypes';
 

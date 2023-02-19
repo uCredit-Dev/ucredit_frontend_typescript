@@ -7,7 +7,7 @@ import {
   ThreadType,
   UserCourse,
   UserDistribution,
-  UserFineReq
+  UserFineReq,
 } from './../resources/commonTypes';
 type CurrentPlanSlice = {
   plan: Plan;
@@ -49,7 +49,7 @@ const initialState: CurrentPlanSlice = {
   selectedThread: null,
   selectedMajor: null,
   selectedDistribution: null,
-  selectedFineReq: null
+  selectedFineReq: null,
 };
 
 export const currentPlanSlice = createSlice({
@@ -171,7 +171,7 @@ export const {
   updateSelectedThread,
   updateSelectedMajor,
   updateSelectedDistribution,
-  updateSelectedFineReq
+  updateSelectedFineReq,
 } = currentPlanSlice.actions;
 
 // The function below is called a selector and allows us to select a value from
