@@ -23,7 +23,7 @@ import {
   updateRetrievedCourses,
 } from '../../../slices/searchSlice';
 import axios from 'axios';
-import { getAPI } from '../../../resources/assets';
+import { getAPI, getParams } from '../../../resources/assets';
 import {
   selectCurrentPlanCourses,
   selectSelectedDistribution,
@@ -123,6 +123,7 @@ const Cart: FC<{ allCourses: SISRetrievedCourse[] }> = (props) => {
     index: number,
   ): SearchExtras => {
     let extras: SearchExtras = {
+      page: null,
       query: '',
       credits: null,
       areas: null,
@@ -148,7 +149,6 @@ const Cart: FC<{ allCourses: SISRetrievedCourse[] }> = (props) => {
         break;
       case 'N': // Name
         extras.query = splitArr[index];
-
         break;
       case 'W': //Written intensive
         extras.wi = true; // does this work?
@@ -169,63 +169,16 @@ const Cart: FC<{ allCourses: SISRetrievedCourse[] }> = (props) => {
     extras: SearchExtras,
   ): Promise<[SISRetrievedCourse[], number[]]> => {
     return new Promise(async (resolve) => {
-      // let courses: SISRetrievedCourse[] = [...courseCache]; // how actively is this cache updated?
-      // if (!retrievedAll) { // how often is this filter used?
       const retrieved: any = await axios
-        .get(getAPI(window) + '/search', {
+        .get(getAPI(window) + '/cartSearch', {
           params: getParams(extras),
         })
         .catch(() => {
           return [[], []];
         });
-      let SISRetrieved: SISRetrievedCourse[] = processedRetrievedData(
-        retrieved.data.data,
-        extras,
-      );
-      return resolve([SISRetrieved, []]);
-      // } else {
-      //   const filterProcessing = filterCourses(extras, courses);
-      //   if (filterProcessing) return filterProcessing;
-      //   return resolve([courses, []]);
-      // }
+      return resolve([retrieved.data.data, []]);
     });
   };
-
-  const processedRetrievedData = (
-    data: SISRetrievedCourse[],
-    extras: SearchExtras,
-  ): SISRetrievedCourse[] => {
-    let SISRetrieved: SISRetrievedCourse[] = data;
-    if (extras.areas === 'N')
-      // TODO: backend searches for courses with "None" area. Fix this.
-      SISRetrieved = SISRetrieved.filter((course) => {
-        for (let version of course.versions) {
-          if (version.areas === 'N') return true;
-        }
-        return false;
-      });
-    // need some logic here to make sure all the courses are finished being found? since we're running
-    // multiple finds.
-    // if (
-    //   extras.query.length <= minLength ||
-    //   searchTerm.length - extras.query.length >= 2
-    // ) {
-    //   props.setSearching(false);
-    // }
-    return SISRetrieved;
-  };
-
-  // TODO : this is copied from Form.tsx. refactor inthe future
-  const getParams = (extras: SearchExtras) => ({
-    query: extras.query,
-    department: extras.department,
-    term: extras.term === 'All' ? '' : extras.term,
-    areas: extras.areas,
-    credits: extras.credits,
-    wi: extras.wi,
-    tags: extras.tags,
-    level: extras.levels,
-  });
 
   // for text filter
   const updateTextFilterInputValue = (

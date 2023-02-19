@@ -78,6 +78,7 @@ const Placeholder: FC<{ addCourse: (plan?: Plan) => void }> = (props) => {
       setPlaceholderCredits(inspectedVersion.credits);
       setPlaceholderNumber(inspectedVersion.number);
       setPlaceholderDepartment(inspectedVersion.department);
+      setPlaceholderTag(inspectedVersion.tags[0]);
       setPlaceholderWI(inspectedVersion.wi);
       setPlaceholderLevel(
         inspectedVersion.level ? inspectedVersion.level : 'none',
@@ -143,7 +144,7 @@ const Placeholder: FC<{ addCourse: (plan?: Plan) => void }> = (props) => {
     if (inspectedVersion !== 'None') {
       const inspCopy: Course = {
         ...inspectedVersion,
-        tags: [...inspectedVersion.tags, tag],
+        tags: [tag],
       };
       dispatch(updateInspectedVersion(inspCopy));
     }

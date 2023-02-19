@@ -8,6 +8,7 @@ import {
   UserCourse,
   SISRetrievedCourse,
   Year,
+  SearchExtras,
 } from './commonTypes';
 import { allMajors } from './majors';
 import { store } from '../appStore/store';
@@ -52,6 +53,19 @@ export const getColors = function (
     return '#83B9FF';
   }
 };
+
+export const getParams = (extras: SearchExtras) => ({
+  page: extras.page,
+  query: extras.query,
+  department: extras.department,
+  term: extras.term === 'All' ? '' : extras.term,
+  year: extras.year === 'All' ? '' : extras.year,
+  areas: extras.areas,
+  credits: extras.credits,
+  wi: extras.wi,
+  tags: extras.tags,
+  level: extras.levels,
+});
 
 // On SIS, scrape the majors using the console, check Notion for more info
 export const AS_deps = [
@@ -303,8 +317,7 @@ export const processPrereqs = async (
 ): Promise<PrereqCourses> => {
   // Regex used to get an array of course numbers.
   const regex: RegExp = /[A-Z]{2}\.\d{3}\.\d{3}/g;
-  const forwardSlashRegex: RegExp =
-    /[A-Z]{2}\.\d{3}\.\d{3}\/[A-Z]{2}\.\d{3}\.\d{3}/g; // e.g. EN.XXX.XXX/EN.XXX.XXX
+  const forwardSlashRegex: RegExp = /[A-Z]{2}\.\d{3}\.\d{3}\/[A-Z]{2}\.\d{3}\.\d{3}/g; // e.g. EN.XXX.XXX/EN.XXX.XXX
   const forwardSlashRegex2: RegExp = /[A-Z]{2}\.\d{3}\.\d{3}\/\d{3}\.\d{3}/g; // e.g. EN.XXX.XXX/XXX.XXX
   const forwardSlashRegex3: RegExp = /[A-Z]{2}\.\d{3}\/\d{3}\.\d{3}/g; // e.g. EN.XXX/XXX.XXX
 
@@ -512,7 +525,7 @@ const backendSearch = async (
 ): Promise<{ index: number; resp: Course | null }> =>
   new Promise(async (resolve) => {
     const courses: any = await axios
-      .get(getAPI(window) + '/search', {
+      .get(getAPI(window) + '/cartSearch', {
         params: { query: courseNumber },
       })
       .catch((err) => console.log(err));
@@ -529,7 +542,9 @@ const backendSearch = async (
         versionIndex = index;
       }
     });
-    store.dispatch(updateCourseCache(courses.data.data));
+    const cache: SISRetrievedCourse[] = [];
+    cache.push(retrieved);
+    store.dispatch(updateCourseCache(cache));
     resolve({
       index: indexNum,
       resp: {
