@@ -14,6 +14,7 @@ import ListItem from '@mui/material/ListItem';
 import ListItemButton from '@mui/material/ListItemButton';
 import ListItemIcon from '@mui/material/ListItemIcon';
 import ListItemText from '@mui/material/ListItemText';
+import { reset } from '@amplitude/analytics-browser';
 
 const HamburgerMenu: FC<{
   mode: DashboardMode;
@@ -38,6 +39,7 @@ const HamburgerMenu: FC<{
   };
 
   const logOut = () => {
+    // reset();
     removeCookie('connect.sid', { path: '/' });
     dispatch(resetUser());
     dispatch(updateToken(''));

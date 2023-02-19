@@ -22,6 +22,8 @@ import axios from 'axios';
 import { User } from '../../lib/resources/commonTypes';
 import { userService } from '../../lib/services';
 import { updateAddingPlanStatus } from '../../lib/slices/popupSlice';
+import { init } from '@amplitude/analytics-browser';
+import * as amplitude from '@amplitude/analytics-browser';
 
 /**
  * The login page, designed after the Spotify login page..
@@ -49,6 +51,7 @@ const Login: React.FC = () => {
       handleDBLogin(loginId);
     } else if (loginId) handleJHULogin(loginId);
     else dispatch(updateLoginCheck(true));
+    // init('6beab2d293835bee5dd3417a83d9ac13', loginId);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [router.query.token]);
 
@@ -118,6 +121,7 @@ const Login: React.FC = () => {
    * Handles if the user is invalid.
    */
   const handleGuest = async () => {
+    // init('6beab2d293835bee5dd3417a83d9ac13', 'guestUser');
     dispatch(updateUser(guestUser));
     const res = await axios.get(
       getAPI(window) + `/backdoor/verification/guestUser`,
@@ -194,6 +198,9 @@ const Login: React.FC = () => {
    * Handles custom session id submission
    */
   const submitSession = () => {
+    // init('6beab2d293835bee5dd3417a83d9ac13', session);
+    // amplitude.init('6beab2d293835bee5dd3417a83d9ac13');
+    // amplitude.track('Logged In!');
     handleJHULogin(session);
   };
 
