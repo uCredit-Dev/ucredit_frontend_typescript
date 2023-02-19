@@ -62,16 +62,12 @@ const CourseBar: FC<{
   const openCartPopup = async () => {
     dispatch(updateCartInvokedBySemester(false));
     // Filter for the correst distributions from redux store
-    let distr: UserDistribution = distribution;
-    // get fineReqs
-    if (distribution._id) {
-      distr = await getDistribution(distribution._id, token);
-    }
-    if (distr) {
+    let distrs = distributions.filter((req) => req[0] === distribution.name)[0];
+    if (distrs) {
       // if the distribution exists, then update the cart
       // at this point we have access to the current requirement
       // and all dsitibrutions. to pick out hte rest of the ascoatied fine distirbutions, use this filter.
-      dispatch(updateSelectedDistribution(distr));
+      dispatch(updateSelectedDistribution(distrs));
       dispatch(updateSelectedFineReq(null));
       dispatch(updateShowingCart(true));
       dispatch(updateInfoPopup(false));
