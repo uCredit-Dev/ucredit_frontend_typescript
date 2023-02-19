@@ -19,16 +19,17 @@ import {
 import { selectToken } from '../../../slices/userSlice';
 import CourseBar from './CourseBar';
 
-const DistributionBarsJSX: FC<{ selectedMajor: string }> = ({
-  selectedMajor,
-}) => {
+const DistributionBarsJSX: FC<{
+  selectedMajor: string;
+  calculated: boolean;
+  setCalculated: Function;
+}> = ({ selectedMajor, calculated, setCalculated }) => {
   const dispatch = useDispatch();
   const token = useSelector(selectToken);
   const distributions = useSelector(selectDistributions);
   const currentPlan: Plan = useSelector(selectPlan);
   const currPlanCourses = useSelector(selectCurrentPlanCourses);
   const totalCredits = useSelector(selectTotalCredits);
-  const [calculated, setCalculated] = useState<boolean>(false);
   const [distributionBarsJSX, setDistributionBarsJSX] = useState<JSX.Element[]>(
     [],
   );
@@ -38,8 +39,10 @@ const DistributionBarsJSX: FC<{ selectedMajor: string }> = ({
 
   // at first load
   useEffect(() => {
+    setCalculated(false);
     getDistributions(currentPlan._id, selectedMajor, token).then((dist) => {
       dispatch(updateDistributions(dist));
+      setCalculated(true);
     });
     // dispatch(updateTotalCredits(distributions.))
   }, [currentPlan._id, selectedMajor, currPlanCourses, dispatch, token]);

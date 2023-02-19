@@ -24,6 +24,7 @@ const Distributions: FC<{
 }> = ({ userMajors, changeDisplayMajor }) => {
   // Component state setup.
   const [disclaimer, setDisclaimer] = useState<boolean>(true);
+  const [calculated, setCalculated] = useState<boolean>(false);
   const dispatch = useDispatch();
   const selectedMajor: string | null = useSelector(selectSelectedMajor);
   const plan: Plan = useSelector(selectPlan);
@@ -39,8 +40,10 @@ const Distributions: FC<{
   };
 
   const reload = () => {
+    setCalculated(false);
     getUpdatedDistributions(plan._id, selectedMajor, token).then((dist) => {
       dispatch(updateDistributions(dist));
+      setCalculated(true);
     });
   };
 
@@ -76,6 +79,8 @@ const Distributions: FC<{
       )}
       <DistributionBarsJSX
         selectedMajor={selectedMajor ? selectedMajor : userMajors[0]}
+        calculated={calculated}
+        setCalculated={setCalculated}
       />
       {disclaimer && (
         <div
