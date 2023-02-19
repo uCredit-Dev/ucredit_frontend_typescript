@@ -21,7 +21,6 @@ import {
 } from '../../../slices/userSlice';
 import Comments from '../Comments';
 import { ReviewMode, UserDistribution } from '../../../resources/commonTypes';
-import { getDistribution } from '../../../resources/assets';
 
 /**
  * A distribution bar.
@@ -40,7 +39,6 @@ const CourseBar: FC<{
   const [plannedCredits, setPlannedCredits] = useState(distribution.planned);
   const [hovered, setHovered] = useState(false);
 
-  const token = useSelector(selectToken);
   const currPlanCourses = useSelector(selectCurrentPlanCourses);
   const maxCredits = distribution.required_credits;
   const section = distribution.name;

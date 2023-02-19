@@ -1,10 +1,6 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { RootState } from '../appStore/store';
-import {
-  Major,
-  UserCourse,
-  Year,
-} from '../components/../resources/commonTypes';
+import { UserCourse, Year } from '../components/../resources/commonTypes';
 
 type PopupSlice = {
   deletePlan: boolean;

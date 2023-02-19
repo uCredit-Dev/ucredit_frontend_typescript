@@ -20,7 +20,6 @@ interface Props {
  */
 const InfoMenu: FC<Props> = () => {
   const currentPlan: Plan = useSelector(selectPlan);
-  const currPlanCourses = useSelector(selectCurrentPlanCourses);
   const major_id = useSelector(selectSelectedMajor);
   const dispatch = useDispatch();
 
