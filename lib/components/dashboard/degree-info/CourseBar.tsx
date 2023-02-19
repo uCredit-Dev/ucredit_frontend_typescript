@@ -56,7 +56,7 @@ const CourseBar: FC<{
     let temp = distribution.planned;
     setPlannedCredits(temp);
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [currPlanCourses, distribution.planned, distribution, distributions]);
+  }, [currPlanCourses, distribution, distributions]);
 
   // Onclick for course bar, opens cart popup passing in corresponding props
   const openCartPopup = async () => {

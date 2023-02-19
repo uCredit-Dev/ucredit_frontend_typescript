@@ -44,8 +44,14 @@ const DistributionBarsJSX: FC<{
       dispatch(updateDistributions(dist));
       setCalculated(true);
     });
-    // dispatch(updateTotalCredits(distributions.))
-  }, [currentPlan._id, selectedMajor, currPlanCourses, dispatch, token]);
+  }, [
+    currentPlan._id,
+    selectedMajor,
+    currPlanCourses,
+    dispatch,
+    token,
+    setCalculated,
+  ]);
 
   // Update total credits everytime courses change.
   useEffect(() => {
