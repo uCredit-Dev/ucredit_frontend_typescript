@@ -173,12 +173,9 @@ const Semester: FC<{
   const getCreditString = (): string => {
     let string = `<div>${totalCredits} Credits</div>`;
     if (
-      (semesterName !== 'Intersession' && totalCredits < 12) ||
-      (semesterName === 'Intersession' && totalCredits < 3)
+      semesterName !== 'Intersession' && semesterName !== 'Summer' && totalCredits < 12
     )
-      string += `\nMore than ${
-        semesterName !== 'Intersession' ? 12 : 3
-      } credits required!`;
+      string += `\nMore than 12 credits required!`;
     else if (totalCredits > 18)
       string +=
         '\nCritical credit count reached (you seem to be taking a lot of credits)! Check with your advisor!';
@@ -346,8 +343,7 @@ const Semester: FC<{
     switch (colorType) {
       case 'bg-red-200':
         return (
-          (totalCredits < 12 && semesterName !== 'Intersession') ||
-          totalCredits < 3
+          (totalCredits < 12 && semesterName !== 'Intersession' && semesterName !== 'Summer') 
         );
       case 'bg-yellow-200':
         return (
@@ -359,8 +355,7 @@ const Semester: FC<{
           (totalCredits <= 18 &&
             totalCredits >= 12 &&
             semesterName !== 'Intersession') ||
-          (totalCredits <= 6 &&
-            totalCredits >= 3 &&
+          (totalCredits <= 3 &&
             semesterName === 'Intersession') ||
           semesterName === 'All'
         );
