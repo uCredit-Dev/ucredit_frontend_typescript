@@ -33,6 +33,7 @@ import DialogTitle from '@mui/material/DialogTitle';
 import Menu from '@mui/material/Menu';
 import Reviewers from './menus/reviewers/Reviewers';
 import PersonIcon from '@mui/icons-material/Person';
+import * as amplitude from '@amplitude/analytics-browser';
 
 const majorOptions = allMajors.map((major) => ({
   abbrev: major.abbrev,
@@ -101,6 +102,7 @@ const Actionbar: FC<{ mode: ReviewMode }> = ({ mode }) => {
         });
         setEditName(false);
         dispatch(updatePlanList(newPlanList));
+        amplitude.track('Renamed Plan');
       })
       .catch((err) => console.log(err));
   };
@@ -133,7 +135,6 @@ const Actionbar: FC<{ mode: ReviewMode }> = ({ mode }) => {
       });
       return;
     }
-
     const newMajors = newValues.map((option) => option.label);
     const body = {
       plan_id: currentPlan._id,
@@ -153,6 +154,7 @@ const Actionbar: FC<{ mode: ReviewMode }> = ({ mode }) => {
           }
         }
         dispatch(updatePlanList(newPlanList));
+        amplitude.track('Changed Majors');
       })
       .catch((err) => console.log(err));
   };

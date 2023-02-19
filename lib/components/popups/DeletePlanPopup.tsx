@@ -12,6 +12,7 @@ import { selectPlan, updateSelectedPlan } from '../../slices/currentPlanSlice';
 import { getAPI } from '../../resources/assets';
 import { updateDeletePlanStatus } from '../../slices/popupSlice';
 import { userService } from '../../../lib/services';
+import * as amplitude from '@amplitude/analytics-browser';
 
 /**
  * This is the confirmation popup that appears when users press the button to delete a plan.
@@ -60,6 +61,7 @@ const DeletePlanPopup: FC = () => {
       reviews.data.forEach(async (review) => {
         await userService.removeReview(review._id, token);
       });
+      amplitude.track('Deleted Plan');
     } else {
       toast.error('Cannot delete last plan!', {
         toastId: 'cannot delete last plan',
