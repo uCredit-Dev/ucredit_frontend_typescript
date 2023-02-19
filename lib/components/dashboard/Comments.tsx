@@ -29,6 +29,7 @@ import {
   selectUser,
   updateCommenters,
 } from '../../slices/userSlice';
+import * as amplitude from '@amplitude/analytics-browser';
 
 const Comments: FC<{
   location: string;
@@ -84,6 +85,7 @@ const Comments: FC<{
   }, [wrapperRef, expanded]);
 
   const submitReply = async (e) => {
+    amplitude.track('Added Comment');
     e.preventDefault();
     if (replyText === '') {
       return;
