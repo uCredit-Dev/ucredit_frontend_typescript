@@ -22,7 +22,6 @@ import axios from 'axios';
 import { User } from '../../lib/resources/commonTypes';
 import { userService } from '../../lib/services';
 import { updateAddingPlanStatus } from '../../lib/slices/popupSlice';
-import { init } from '@amplitude/analytics-browser';
 import * as amplitude from '@amplitude/analytics-browser';
 
 /**
@@ -51,7 +50,6 @@ const Login: React.FC = () => {
       handleDBLogin(loginId);
     } else if (loginId) handleJHULogin(loginId);
     else dispatch(updateLoginCheck(true));
-    // init('6beab2d293835bee5dd3417a83d9ac13', loginId);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [router.query.token]);
 
@@ -121,7 +119,8 @@ const Login: React.FC = () => {
    * Handles if the user is invalid.
    */
   const handleGuest = async () => {
-    // init('6beab2d293835bee5dd3417a83d9ac13', 'guestUser');
+    amplitude.init('6beab2d293835bee5dd3417a83d9ac13', 'guestUser');
+    amplitude.track('Guest User Login');
     dispatch(updateUser(guestUser));
     const res = await axios.get(
       getAPI(window) + `/backdoor/verification/guestUser`,
@@ -134,6 +133,8 @@ const Login: React.FC = () => {
    * Handles JHU Login button being pressed.
    */
   const handleJHULogin = (loginId: any) => {
+    amplitude.init('6beab2d293835bee5dd3417a83d9ac13', loginId);
+    amplitude.track('JHU User Login');
     if (window.location.href.includes('ucredit.me')) {
       if (loginId && typeof loginId === 'string') handleDBLogin(loginId);
       else window.location.href = getAPI(window) + '/login';
@@ -198,9 +199,6 @@ const Login: React.FC = () => {
    * Handles custom session id submission
    */
   const submitSession = () => {
-    // init('6beab2d293835bee5dd3417a83d9ac13', session);
-    // amplitude.init('6beab2d293835bee5dd3417a83d9ac13');
-    // amplitude.track('Logged In!');
     handleJHULogin(session);
   };
 
