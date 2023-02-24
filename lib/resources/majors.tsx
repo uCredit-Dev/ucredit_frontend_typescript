@@ -57,7 +57,8 @@ const bsECE: Major = {
   total_degree_credit: 126,
   wi_credit: 6,
   abbrev: 'ECE',
-  url: 'https://e-catalogue.jhu.edu/engineering/full-time-residential-programs/degree-programs/electrical-computer-engineering/electrical-engineering-bachelor-science/#requirementstext',
+  url:
+    'https://e-catalogue.jhu.edu/engineering/full-time-residential-programs/degree-programs/electrical-computer-engineering/electrical-engineering-bachelor-science/#requirementstext',
   distributions: [
     {
       name: 'ECE Core',
@@ -603,7 +604,8 @@ const baCogSci: Major = {
 const bsPhysics: Major = {
   degree_name: 'B.S. Physics',
   abbrev: 'B.S. Phys',
-  url: 'https://e-catalogue.jhu.edu/arts-sciences/full-time-residential-programs/degree-programs/physics-astronomy/physics-bachelor-science/',
+  url:
+    'https://e-catalogue.jhu.edu/arts-sciences/full-time-residential-programs/degree-programs/physics-astronomy/physics-bachelor-science/',
   department: 'AS Physics & Astronomy',
   total_degree_credit: 126,
   wi_credit: 12,
@@ -911,7 +913,8 @@ const baPhysics: Major = {
   department: 'AS Physics & Astronomy',
   total_degree_credit: 120,
   wi_credit: 12,
-  url: 'https://e-catalogue.jhu.edu/arts-sciences/full-time-residential-programs/degree-programs/physics-astronomy/physics-astronomy-bachelor-arts/',
+  url:
+    'https://e-catalogue.jhu.edu/arts-sciences/full-time-residential-programs/degree-programs/physics-astronomy/physics-astronomy-bachelor-arts/',
   distributions: [
     {
       name: 'Mathematics',
@@ -1146,7 +1149,8 @@ const baMath: Major = {
   abbrev: 'B.A. Math',
   department: 'AS Mathematics',
   total_degree_credit: 120,
-  url: 'https://e-catalogue.jhu.edu/arts-sciences/full-time-residential-programs/degree-programs/mathematics/mathematics-bachelor-arts/#requirementstext',
+  url:
+    'https://e-catalogue.jhu.edu/arts-sciences/full-time-residential-programs/degree-programs/mathematics/mathematics-bachelor-arts/#requirementstext',
   wi_credit: 15,
   distributions: [
     {
@@ -1313,7 +1317,8 @@ const baEcon: Major = {
   department: 'AS Economics',
   total_degree_credit: 120,
   wi_credit: 12,
-  url: 'https://e-catalogue.jhu.edu/arts-sciences/full-time-residential-programs/degree-programs/economics/economics-bachelor-arts/',
+  url:
+    'https://e-catalogue.jhu.edu/arts-sciences/full-time-residential-programs/degree-programs/economics/economics-bachelor-arts/',
   distributions: [
     {
       name: 'Economics Core',
@@ -1495,7 +1500,8 @@ const bsBME: Major = {
   department: 'EN Biomedical Engineering',
   total_degree_credit: 129,
   wi_credit: 6,
-  url: 'https://www.bme.jhu.edu/academics/undergraduate/undergraduate-degree-requirements/',
+  url:
+    'https://www.bme.jhu.edu/academics/undergraduate/undergraduate-degree-requirements/',
   distributions: [
     {
       name: 'Biomedical Core',
@@ -2279,7 +2285,8 @@ const bsCBE: Major = {
   department: 'EN Chemical & Biomolecular Engineering',
   total_degree_credit: 128,
   wi_credit: 6,
-  url: 'https://engineering.jhu.edu/chembe/undergraduate-studies/undergraduate-degree-program/',
+  url:
+    'https://engineering.jhu.edu/chembe/undergraduate-studies/undergraduate-degree-program/',
   distributions: [
     {
       name: 'Core ChemBE',
@@ -2579,7 +2586,8 @@ const baIS: Major = {
   department: 'AS International Studies',
   total_degree_credit: 120,
   wi_credit: 12,
-  url: 'https://krieger.jhu.edu/internationalstudies/undergraduate/requirements/',
+  url:
+    'https://krieger.jhu.edu/internationalstudies/undergraduate/requirements/',
   distributions: [
     {
       name: 'Political Science',
@@ -2843,7 +2851,8 @@ const bsAMS: Major = {
   department: 'EN Applied Mathematics & Statistics',
   total_degree_credit: 120,
   wi_credit: 6,
-  url: 'https://e-catalogue.jhu.edu/engineering/full-time-residential-programs/degree-programs/applied-mathematics-statistics/applied-mathematics-statistics-bs/#requirementstext',
+  url:
+    'https://e-catalogue.jhu.edu/engineering/full-time-residential-programs/degree-programs/applied-mathematics-statistics/applied-mathematics-statistics-bs/#requirementstext',
   distributions: [
     {
       name: 'Math',
@@ -3100,7 +3109,8 @@ const bsCS_Old: Major = {
   department: 'EN Computer Science',
   total_degree_credit: 126,
   wi_credit: 6,
-  url: 'https://www.cs.jhu.edu/undergraduate-studies/academics/ugrad-advising-manual/',
+  url:
+    'https://www.cs.jhu.edu/undergraduate-studies/academics/ugrad-advising-manual/',
   distributions: [
     {
       name: 'Computer Science',
@@ -3404,7 +3414,7 @@ const bsCS_New: Major = {
             'EN.601.124 The Ethics of Artificial Intelligence and Automation (The Ethics of Artificial Intelligence and Automation) <br /> ' +
             'EN.660.400 Practical Ethics for Future Leaders',
           required_credits: 1,
-          criteria: 'EN.600.104[C]^OR^EN.601.104[C]^OR^EN.660.400[C]',
+          criteria: 'EN.600.104[C]^OR^EN.601.124[C]^OR^EN.660.400[C]',
         },
         {
           description:
@@ -3916,7 +3926,8 @@ const bsMolCell: Major = {
   department: 'AS Biology',
   total_degree_credit: 120,
   wi_credit: 12,
-  url: 'https://e-catalogue.jhu.edu/arts-sciences/full-time-residential-programs/degree-programs/biology/molecular-cellular-biology-bachelor-science/',
+  url:
+    'https://e-catalogue.jhu.edu/arts-sciences/full-time-residential-programs/degree-programs/biology/molecular-cellular-biology-bachelor-science/',
   distributions: [
     {
       name: 'Biology Core',
@@ -4252,7 +4263,8 @@ const bsMechE: Major = {
   department: 'EN Mechanical Engineering',
   total_degree_credit: 126,
   wi_credit: 6,
-  url: 'https://e-catalogue.jhu.edu/engineering/full-time-residential-programs/degree-programs/mechanical-engineering/mechanical-engineering-bachelor-science/#requirementstext',
+  url:
+    'https://e-catalogue.jhu.edu/engineering/full-time-residential-programs/degree-programs/mechanical-engineering/mechanical-engineering-bachelor-science/#requirementstext',
   distributions: [
     {
       name: 'Mathematics',
@@ -5226,7 +5238,8 @@ const bsNeuro: Major = {
   department: 'AS Neuroscience',
   total_degree_credit: 120,
   wi_credit: 12,
-  url: 'https://e-catalogue.jhu.edu/arts-sciences/full-time-residential-programs/degree-programs/neuroscience/neuroscience-bachelor-science/',
+  url:
+    'https://e-catalogue.jhu.edu/arts-sciences/full-time-residential-programs/degree-programs/neuroscience/neuroscience-bachelor-science/',
   distributions: [
     {
       name: 'Neuroscience Sequence',
@@ -5603,7 +5616,8 @@ const minorEcon: Minor = {
   abbrev: 'Minor Econ',
   department: 'AS Economics',
   total_degree_credit: 18,
-  url: 'https://e-catalogue.jhu.edu/arts-sciences/full-time-residential-programs/degree-programs/economics/economics-minor/',
+  url:
+    'https://e-catalogue.jhu.edu/arts-sciences/full-time-residential-programs/degree-programs/economics/economics-minor/',
   wi_credit: 0,
   distributions: [
     {
@@ -5684,7 +5698,8 @@ const minorMath: Minor = {
   abbrev: 'Minor Math',
   department: 'AS Mathematics',
   total_degree_credit: 28,
-  url: 'https://e-catalogue.jhu.edu/arts-sciences/full-time-residential-programs/degree-programs/mathematics/mathematics-minor/',
+  url:
+    'https://e-catalogue.jhu.edu/arts-sciences/full-time-residential-programs/degree-programs/mathematics/mathematics-minor/',
   wi_credit: 0,
   distributions: [
     {
