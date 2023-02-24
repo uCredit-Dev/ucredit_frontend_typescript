@@ -25,8 +25,7 @@ const SearchList: FC<{
   searching: boolean;
   hideResults: boolean;
   setHideResults: Function;
-  setPageIndex: Function;
-}> = ({ searching, hideResults, setHideResults, setPageIndex }) => {
+}> = ({ searching, hideResults, setHideResults }) => {
   // Component state setup.
   const [filteredCourses, setFilteredCourses] = useState<SISRetrievedCourse[]>(
     [],
