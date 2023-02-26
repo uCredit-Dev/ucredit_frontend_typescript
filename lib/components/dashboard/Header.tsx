@@ -6,6 +6,7 @@ import Notification from './menus/Notification';
 import RoadaMapHeader from '../roadmap/Header';
 import { ReviewMode } from '../../resources/commonTypes';
 import { useRouter } from 'next/router';
+import * as amplitude from '@amplitude/analytics-browser';
 
 /**
  * User login/logout buttons.

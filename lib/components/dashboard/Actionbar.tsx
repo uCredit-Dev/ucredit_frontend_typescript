@@ -198,6 +198,7 @@ const Actionbar: FC<{ mode: ReviewMode }> = ({ mode }) => {
         toast.info('Share link copied to Clipboard!', {
           toastId: 'share link copied',
         });
+        amplitude.track('Copied Share Link');
       });
     });
   };
