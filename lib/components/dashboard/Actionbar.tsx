@@ -237,6 +237,7 @@ const Actionbar: FC<{ mode: ReviewMode }> = ({ mode }) => {
           toast.success('New Year added!', {
             toastId: 'new year added',
           });
+          amplitude.track('Added Year');
         })
         .catch((err) => console.log(err));
     } else {

@@ -18,6 +18,7 @@ import {
   updatePlanList,
 } from '../../../slices/userSlice';
 import { toast } from 'react-toastify';
+import * as amplitude from '@amplitude/analytics-browser';
 
 type SemSelected = {
   fall: boolean;
@@ -119,6 +120,7 @@ const YearSettingsDropdown: FC<{
               }),
             ),
           );
+          amplitude.track('Changed Year');
         })
         .catch((err) => {
           console.log(err);
