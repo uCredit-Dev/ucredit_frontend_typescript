@@ -46,6 +46,7 @@ import {
   selectToken,
 } from '../../../../slices/userSlice';
 import clsx from 'clsx';
+import * as amplitude from '@amplitude/analytics-browser';
 
 /**
  * Displays a sis course when searching
@@ -351,7 +352,10 @@ const SisCourse: FC<{
         onClick={() => {
           if (props.cart) {
             addPrereq();
-          } else props.addCourse();
+          } else {
+            props.addCourse();
+            amplitude.track('Added Course');
+          }
         }}
         disabled={cartInvokedBySemester && reviewMode === ReviewMode.View}
       >
