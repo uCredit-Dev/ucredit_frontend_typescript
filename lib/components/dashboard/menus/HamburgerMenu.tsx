@@ -56,6 +56,9 @@ const HamburgerMenu: FC<{
       return;
     }
     setShowMenu(!showMenu);
+    if (!showMenu) {
+      amplitude.track('Opened Hamburger Menu');
+    }
   };
 
   return (

@@ -10,6 +10,7 @@ import { formatDistanceToNow } from 'date-fns';
 import { selectUser } from '../../../../slices/userSlice';
 import CommenterToggle from './CommenterToggle';
 import { CommentType, ThreadType } from '../../../../resources/commonTypes';
+import * as amplitude from '@amplitude/analytics-browser';
 
 const CommentsOverview: React.FC = () => {
   const [threadJSX, setThreadJSX] = useState<JSX.Element[]>([]);
@@ -91,6 +92,7 @@ const CommentsOverview: React.FC = () => {
                 className={`
                             ${open ? '' : 'text-opacity-90'}
                             w-full hover:bg-slate-300 text-lg rounded-lg sm:w-auto px-3 py-1 sm:hover:text-blue-header sm:hover:bg-blue-footer sm:rounded-[13px] transition duration-100 ease-in`}
+                onClick={() => {amplitude.track('Opened Comments Overview');}}
               >
                 <span>
                   <AnnotationIcon className="h-6" />
