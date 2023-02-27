@@ -42,7 +42,7 @@ const Header: React.FC<{
         </div>
       </div>
       {dashboardSwitchMode === DashboardMode.Planning && <CommentsOverview />}
-      <Notification userID={userID} onClick={() => {console.log('YAY2');}} />
+      <Notification userID={userID} />
       <HamburgerMenu mode={dashboardSwitchMode} />
     </div>
   );

@@ -72,6 +72,7 @@ const DeletePlanPopup: FC = () => {
   // Cancels plan delete
   const cancel = () => {
     dispatch(updateDeletePlanStatus(false));
+    amplitude.track('Canceled Plan Delete');
   };
 
   return (
