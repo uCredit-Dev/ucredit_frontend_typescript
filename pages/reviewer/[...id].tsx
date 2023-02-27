@@ -11,6 +11,7 @@ import {
 import 'react-toastify/dist/ReactToastify.css';
 import { userService } from '../../lib/services';
 import React from 'react';
+import * as amplitude from '@amplitude/analytics-browser';
 
 const ReviewerAdd: React.FC = () => {
   const router = useRouter();
@@ -48,6 +49,7 @@ const ReviewerAdd: React.FC = () => {
               toast.success('Confirmed reviewer plan!', {
                 toastId: 'confirm reviewer plan',
               });
+              amplitude.track('Confirmed Reviewer');
           },
         );
         router.push('/reviewer');
