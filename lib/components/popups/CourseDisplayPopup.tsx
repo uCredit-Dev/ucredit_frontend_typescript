@@ -199,6 +199,9 @@ const CourseDisplayPopup: FC = () => {
         });
       } else {
         console.log('Failed to add', data.errors);
+        data.errors.forEach((error) => {
+          toast.error(error.detail);
+        });
       }
     };
 

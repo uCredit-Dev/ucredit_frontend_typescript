@@ -123,6 +123,9 @@ const CourseDisplay: FC<{ cart: boolean }> = ({ cart }) => {
 
     if (data.errors !== undefined) {
       console.log('Failed to add', data.errors);
+      data.errors.forEach((error) => {
+        toast.error(error.detail);
+      });
       return;
     }
 
