@@ -92,7 +92,7 @@ const CourseComponent: FC<{
   const deleteCourse = () => {
     dispatch(updateCourseToDelete({ course: course, year: year }));
     dispatch(updateDeleteCourseStatus(true));
-    amplitude.track('Deleted Course');
+    amplitude.track('Clicked Course Delete');
   };
 
   /**

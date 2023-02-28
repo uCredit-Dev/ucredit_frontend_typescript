@@ -61,7 +61,7 @@ const DeletePlanPopup: FC = () => {
       reviews.data.forEach(async (review) => {
         await userService.removeReview(review._id, token);
       });
-      amplitude.track('Deleted Plan');
+      amplitude.track('Confirmed Plan Deletion');
     } else {
       toast.error('Cannot delete last plan!', {
         toastId: 'cannot delete last plan',
@@ -72,7 +72,7 @@ const DeletePlanPopup: FC = () => {
   // Cancels plan delete
   const cancel = () => {
     dispatch(updateDeletePlanStatus(false));
-    amplitude.track('Canceled Plan Delete');
+    amplitude.track('Declined Plan Deletion');
   };
 
   return (

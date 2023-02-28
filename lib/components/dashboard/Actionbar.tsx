@@ -185,6 +185,7 @@ const Actionbar: FC<{ mode: ReviewMode }> = ({ mode }) => {
   // Activates delete plan popup.
   const activateDeletePlan = (): void => {
     dispatch(updateDeletePlanStatus(true));
+    amplitude.track('Clicked Delete Plan');
   };
 
   /**
