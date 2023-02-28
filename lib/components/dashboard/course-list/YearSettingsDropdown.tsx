@@ -60,18 +60,30 @@ const YearSettingsDropdown: FC<{
 
   const modifyFall = () => {
     setToShow({ ...toShow, fall: !toShow.fall });
+    if (toShow.fall) {
+      amplitude.track('Unselected Fall');
+    } else amplitude.track('Selected Fall');
   };
 
   const modifySpring = () => {
     setToShow({ ...toShow, spring: !toShow.spring });
+    if (toShow.spring) {
+      amplitude.track('Unselected Spring');
+    } else amplitude.track('Selected Spring');
   };
 
   const modifySummer = () => {
     setToShow({ ...toShow, summer: !toShow.summer });
+    if (toShow.summer) {
+      amplitude.track('Unselected Summer');
+    } else amplitude.track('Selected Summer');
   };
 
   const modifyIntersession = () => {
     setToShow({ ...toShow, intersession: !toShow.intersession });
+    if (toShow.intersession) {
+      amplitude.track('Unselected Intersession');
+    } else amplitude.track('Selected Intersession');
   };
 
   const handleYearChange = (selectedYear: any) => {
