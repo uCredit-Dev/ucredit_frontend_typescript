@@ -455,10 +455,12 @@ const PrereqDisplay: FC = () => {
         </>
       );
     else if (!loaded)
-      return <>
-        <div>Loading Prereqs</div>
-        <img src="/img/loading.gif" alt="Searching..." className="h-7"></img>
-      </>
+      return (
+        <>
+          <div>Loading Prereqs</div>
+          <img src="/img/loading.gif" alt="Searching..." className="h-7"></img>
+        </>
+      );
     else
       return (
         <p key={'drop' + preReqDisplay} className="p-2 overflow-y-auto">
