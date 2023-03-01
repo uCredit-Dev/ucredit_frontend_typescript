@@ -311,7 +311,7 @@ const Comments: FC<{
               className="flex items-center self-end justify-center gap-1 mt-2 text-sm transition-colors duration-150 ease-in transform rounded cursor-pointer hover:text-sky-600"
               onClick={submitReply}
             >
-              <span>Send</span>
+              <span>Comment</span>
               <PaperAirplaneIcon className="w-4 h-4 rotate-90" />
             </div>
           </div>

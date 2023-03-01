@@ -3600,7 +3600,7 @@ const bsCS_New: Major = {
 
 // https://www.cs.jhu.edu/undergraduate-studies/academics/ugrad-advising-manual/
 const baCS_New: Major = {
-  degree_name: 'B.A. Computer Science (NEW - 2021 & after)',
+  degree_name: 'B.A. Computer Science',
   abbrev: 'B.A. CS',
   department: 'EN Computer Science',
   total_degree_credit: 120,
