@@ -455,7 +455,10 @@ const PrereqDisplay: FC = () => {
         </>
       );
     else if (!loaded)
-      return <>{'Loading Prereqs Status: loaded is ' + loaded.toString()}</>;
+      return <>
+        <div>Loading Prereqs</div>
+        <img src="/img/loading.gif" alt="Searching..." className="h-7"></img>
+      </>
     else
       return (
         <p key={'drop' + preReqDisplay} className="p-2 overflow-y-auto">
