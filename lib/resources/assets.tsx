@@ -525,31 +525,33 @@ const backendSearch = async (
   userC: UserCourse | null,
 ): Promise<{ index: number; resp: Course | null }> =>
   new Promise(async (resolve) => {
-    const res: any = await axios
-      .get(getAPI(window) + `/searchNumber/${courseNumber}`)
-      .catch((err) => {});
-    if (res === undefined) {
+    try {
+      const res: any = await axios.get(
+        getAPI(window) + `/searchNumber/${courseNumber}`,
+      );
+      let retrieved: SISRetrievedCourse = res.data.data;
+      let versionIndex = 0;
+      retrieved.versions.forEach((element, index) => {
+        if (userC === null) return;
+        if (element.term === userC.term) {
+          versionIndex = index;
+        }
+      });
+      const cache: SISRetrievedCourse[] = [];
+      cache.push(retrieved);
+      store.dispatch(updateCourseCache(cache));
+      resolve({
+        index: indexNum,
+        resp: {
+          ...retrieved,
+          ...retrieved.versions[versionIndex],
+        },
+      });
+    } catch (err) {
+      // 404
       store.dispatch(updateUnfoundNumbers(courseNumber));
       return resolve({ index: indexNum, resp: null });
     }
-    let retrieved: SISRetrievedCourse = res.data.data;
-    let versionIndex = 0;
-    retrieved.versions.forEach((element, index) => {
-      if (userC === null) return;
-      if (element.term === userC.term) {
-        versionIndex = index;
-      }
-    });
-    const cache: SISRetrievedCourse[] = [];
-    cache.push(retrieved);
-    store.dispatch(updateCourseCache(cache));
-    resolve({
-      index: indexNum,
-      resp: {
-        ...retrieved,
-        ...retrieved.versions[versionIndex],
-      },
-    });
   });
 
 /**
