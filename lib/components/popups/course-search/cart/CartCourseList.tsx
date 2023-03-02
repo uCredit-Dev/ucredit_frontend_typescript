@@ -1,4 +1,4 @@
-import React, { useState, FC, useEffect } from 'react';
+import React, { useState, FC } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import {
   selectPageCount,
@@ -33,10 +33,6 @@ const CartCourseList: FC<{
   const pageIndex = useSelector(selectPageIndex);
   const pageCount = useSelector(selectPageCount);
   const dispatch = useDispatch();
-
-  useEffect(() => {
-    console.log(courses);
-  }, [courses]);
 
   /**
    * Generates a list of 10 retrieved course matching the search queries and page number.
