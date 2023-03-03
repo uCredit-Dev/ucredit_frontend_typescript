@@ -111,6 +111,9 @@ const Actionbar: FC<{ mode: ReviewMode }> = ({ mode }) => {
     if (!newValue.value || !newValue.value.name) return;
     if (newValue.label === 'Create New Plan' && user._id !== 'noUser') {
       dispatch(updateAddingPlanStatus(true));
+      const identifyObj = new amplitude.Identify();
+      identifyObj.add('Number of Plans', 1);
+      amplitude.identify(identifyObj);
     } else {
       toast(newValue.value.name + ' selected!');
       if (currentPlan._id !== newValue.value._id)

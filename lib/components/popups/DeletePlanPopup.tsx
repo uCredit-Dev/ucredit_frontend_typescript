@@ -62,6 +62,9 @@ const DeletePlanPopup: FC = () => {
         await userService.removeReview(review._id, token);
       });
       amplitude.track('Confirmed Plan Deletion');
+      const identifyObj = new amplitude.Identify();
+      identifyObj.add('Number of Plans', -1);
+      amplitude.identify(identifyObj);
     } else {
       toast.error('Cannot delete last plan!', {
         toastId: 'cannot delete last plan',
