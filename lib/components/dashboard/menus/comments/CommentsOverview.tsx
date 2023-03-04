@@ -24,18 +24,19 @@ const CommentsOverview: React.FC = () => {
   };
 
   useEffect(() => {
+    console.log("selectFilteredThreads is updated");
     const temp: ThreadType[] = [];
     for (let k in threadObjs) {
       temp.push(threadObjs[k]);
     }
     // does not handle deleting the last comment
-    if (
-      temp[temp.length - 1] !== undefined &&
-      temp[temp.length - 1].comments.length > 0
-    ) {
+    // if (
+    //   temp[temp.length - 1] !== undefined &&
+    //   temp[temp.length - 1].comments.length > 0
+    // ) {
       const ts = temp.map((e) => getComments(e));
       setThreadJSX(ts);
-    }
+    // }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [threadObjs]);
 

@@ -186,6 +186,7 @@ const Dashboard: React.FC<Props> = ({ mode }) => {
           if (!res) {
             throw new Error('No response from server');
           }
+          // console.log("(index.tsx) updateThreads: ", res.data.data);
           dispatch(updateThreads(res.data.data));
           const commentersSet = new Set<string>();
           for (const thread of res.data.data) {
