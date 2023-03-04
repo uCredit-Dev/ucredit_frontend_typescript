@@ -310,7 +310,7 @@ const SisCourse: FC<{
               </select>
             </div>
             <div className="flex flex-row items-center w-auto h-auto ml-5 tight:ml-0 tight:mt-2">
-              Area
+              Count as
               <div className="flex-grow">
                 <QuestionMarkCircleIcon
                   className="h-4 fill-gray"

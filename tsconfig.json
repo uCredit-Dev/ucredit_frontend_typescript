@@ -2,12 +2,7 @@
   "compilerOptions": {
     "target": "es5",
     "downlevelIteration": true,
-    "lib": [
-      "dom",
-      "dom.iterable",
-      "esnext",
-      "es2015"
-    ],
+    "lib": ["dom", "dom.iterable", "esnext", "es2015"],
     "allowJs": true,
     "noImplicitAny": false,
     "skipLibCheck": true,
@@ -24,12 +19,6 @@
     "jsx": "preserve",
     "incremental": true
   },
-  "include": [
-    "src",
-    "tailwind.config.js",
-    "custom.d.ts"
-  ],
-  "exclude": [
-    "node_modules"
-  ]
+  "include": ["src", "tailwind.config.js", "custom.d.ts"],
+  "exclude": ["node_modules"]
 }

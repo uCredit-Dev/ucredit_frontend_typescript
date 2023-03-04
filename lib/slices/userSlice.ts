@@ -102,9 +102,6 @@ export const userSlice = createSlice({
         state.courseCache = [...action.payload];
       }
     },
-    updateRetrievedAll: (state: any, action: PayloadAction<Boolean>) => {
-      state.retrievedAll = action.payload;
-    },
     updateImportID: (state: any, action: PayloadAction<String>) => {
       state.importId = action.payload;
     },
@@ -145,7 +142,6 @@ export const {
   updateGuestPlanIds,
   updateCourseCache,
   updateAllCoursesCached,
-  updateRetrievedAll,
   updateUnfoundNumbers,
   updateImportID,
   updateReviewerPlanID,

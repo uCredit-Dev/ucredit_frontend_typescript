@@ -4,10 +4,13 @@ import {
   updateSearchTerm,
   updateRetrievedCourses,
   updateSearchFilters,
+  updatePageIndex,
   selectSearchterm,
   selectSearchFilters,
   selectSemester,
   selectYear,
+  selectPageIndex,
+  updatePageCount,
 } from '../../../../slices/searchSlice';
 import {
   SearchExtras,
@@ -15,21 +18,9 @@ import {
 } from '../../../../resources/commonTypes';
 import 'react-toastify/dist/ReactToastify.css';
 import Filters from './Filters';
-import {
-  selectCourseCache,
-  selectRetrievedAll,
-  updateCourseCache,
-} from '../../../../slices/userSlice';
 import axios from 'axios';
-import { getAPI } from '../../../../resources/assets';
-import { filterCourses } from './formUtils';
+import { getAPI, getParams } from '../../../../resources/assets';
 import { selectPlan } from '../../../../slices/currentPlanSlice';
-
-type SearchMapEl = {
-  course: SISRetrievedCourse;
-  version: number;
-  priority: number;
-};
 
 /**
  * Search form, including the search query input and filters.
@@ -37,46 +28,20 @@ type SearchMapEl = {
  *
  * @prop setSearching - sets searching state
  */
-const Form: FC<{ setSearching: (searching: boolean) => void }> = (props) => {
+const Form: FC<{
+  setSearching: (searching: boolean) => void;
+}> = ({ setSearching }) => {
   // Set up redux dispatch and variables.
   const dispatch = useDispatch();
   const searchTerm = useSelector(selectSearchterm);
   const searchFilters = useSelector(selectSearchFilters);
   const semester = useSelector(selectSemester);
-  const courseCache = useSelector(selectCourseCache);
-  const retrievedAll = useSelector(selectRetrievedAll);
   const currentPlan = useSelector(selectPlan);
   const searchYear = useSelector(selectYear);
+  const pageIndex = useSelector(selectPageIndex);
 
   // Component state setup
   const [showCriteria, setShowCriteria] = useState(false);
-  const [searchedCourses] = useState<Map<string, SearchMapEl>>(
-    new Map<string, SearchMapEl>(),
-  );
-  const [searchedCoursesFrequency] = useState<Map<string, number>>(
-    new Map<string, number>(),
-  );
-  const [initialQueryLength, setInitialQueryLength] = useState<number>(0);
-  const [searchedQuery, setSearchedQuery] = useState<any | null>(null);
-
-  // In order to make sure our search results correctly match our search term due to the asynchronous nature of finds.
-  // We use this hook to make sure that the search results are updated when the search term matches the term used for the search result.
-  useEffect(() => {
-    if (searchedQuery !== null) {
-      if (
-        searchedQuery.total === searchedQuery.cum &&
-        searchedQuery.originalQuery === searchTerm
-      ) {
-        handleFinishFinding(
-          searchedQuery.courses,
-          searchedQuery.versions,
-          searchedQuery.queryLength,
-          searchedQuery.extras,
-        );
-      }
-    }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [searchedQuery]);
 
   const getYearVal = (): number => {
     let year: number = new Date().getFullYear();
@@ -133,11 +98,13 @@ const Form: FC<{ setSearching: (searching: boolean) => void }> = (props) => {
       );
   };
 
-  // Search with debouncing of 2/4s of a second.
-  const minLength = 4;
   useEffect(() => {
-    searchedCourses.clear();
-    setInitialQueryLength(searchTerm.length);
+    dispatch(updatePageIndex(0));
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [searchTerm, searchFilters]);
+
+  // Search with debouncing of 4/8s of a second.
+  useEffect(() => {
     // Skip searching if no filters or queries are specified
     if (
       searchTerm.length === 0 &&
@@ -149,11 +116,12 @@ const Form: FC<{ setSearching: (searching: boolean) => void }> = (props) => {
       searchFilters.levels === null
     ) {
       dispatch(updateRetrievedCourses([]));
-      props.setSearching(false);
+      setSearching(false);
       return;
     }
     // Search params.
     const extras: SearchExtras = {
+      page: pageIndex,
       query: searchTerm,
       credits: searchFilters.credits,
       areas: searchFilters.distribution,
@@ -168,179 +136,18 @@ const Form: FC<{ setSearching: (searching: boolean) => void }> = (props) => {
       levels: searchFilters.levels,
     };
 
-    props.setSearching(true);
+    setSearching(true);
+    dispatch(updateRetrievedCourses([]));
 
     if (searchTerm.length > 0) {
       // Search with half second debounce.
-      const search = setTimeout(
-        performSmartSearch(searchTerm, extras, searchTerm.length),
-        500,
-      );
+      const search = setTimeout(performSmartSearch(extras), 500);
       return () => clearTimeout(search);
     } else {
-      find(extras).then((found) => dispatch(updateRetrievedCourses(found[0])));
+      setSearching(false);
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [searchTerm, searchFilters]);
-
-  /**
-   * Finds course based on the search conditions given in extras.
-   * Finds all relevant courses by starting with all courses and filtering them out.
-   * @param extras - search params
-   * @returns a promise that resolves when searching is concluded
-   */
-  const find = (
-    extras: SearchExtras,
-  ): Promise<[SISRetrievedCourse[], number[]]> => {
-    return new Promise(async (resolve) => {
-      let courses: SISRetrievedCourse[] = [...courseCache];
-      if (!retrievedAll) {
-        const retrieved: any = await axios
-          .get(getAPI(window) + '/search', {
-            params: getParams(extras),
-          })
-          .catch(() => {
-            return [[], []];
-          });
-        let SISRetrieved: SISRetrievedCourse[] = processedRetrievedData(
-          retrieved.data.data,
-          extras,
-        );
-        return resolve([SISRetrieved, []]);
-      } else {
-        const filterProcessing = filterCourses(extras, courses);
-        if (filterProcessing) return filterProcessing;
-        return resolve([courses, []]);
-      }
-    });
-  };
-
-  /**
-   * Processes retrieved data after searching
-   * @param data - retrieved data
-   * @param extras - search params
-   * @returns SISRetrieved - processed data
-   */
-  const processedRetrievedData = (
-    data: SISRetrievedCourse[],
-    extras: SearchExtras,
-  ): SISRetrievedCourse[] => {
-    let SISRetrieved: SISRetrievedCourse[] = data;
-    // This filtering needs to be done because backend returns courses with incorrect term and year matching. This needs to be fixed.
-    SISRetrieved = SISRetrieved.filter((course) => {
-      for (let version of course.versions) {
-        if (
-          version.term === extras.term + ' ' + extras.year ||
-          extras.term === 'All' ||
-          extras.year === 'All'
-        )
-          return true;
-      }
-      return false;
-    });
-    if (
-      extras.query.length <= minLength ||
-      searchTerm.length - extras.query.length >= 2
-    ) {
-      props.setSearching(false);
-    }
-    return SISRetrieved;
-  };
-
-  /**
-   * Searches for all subquery combinations for the specific substring length, queryLength.
-
-   * @param extras - search params
-   * @param queryLength - length of search query
-   * @param querySubstrs - an array of different substring combinations of search query
-   */
-  const substringSearch = async (
-    originalQuery: string,
-    extras: SearchExtras,
-    queryLength: number,
-    querySubstrs: string[],
-  ): Promise<void> => {
-    let courses: SISRetrievedCourse[] = [];
-    let versions: number[] = [];
-    let total = 0;
-    let cum = 0;
-    querySubstrs.forEach(async (subQuery) => {
-      total++;
-      const courseVersions = await find({
-        ...extras,
-        query: subQuery,
-      });
-      cum++;
-      courses.push(...courseVersions[0]);
-      versions.push(...courseVersions[1]);
-      setSearchedQuery({
-        total,
-        cum,
-        originalQuery,
-        courses,
-        versions,
-        queryLength,
-        extras,
-      });
-    });
-  };
-
-  // Handles the finishing of finding courses.
-  // tracks the number of times a course appears in the searchedCourses after a search
-  // and presumably uses it to sort the list by relevancy (the map thingy)
-  // also recursively calls the smartSearch
-  const handleFinishFinding = (
-    courses: SISRetrievedCourse[],
-    versions: number[],
-    queryLength: number,
-    extras: SearchExtras,
-  ) => {
-    courses.forEach((course: SISRetrievedCourse, index: number) => {
-      if (!searchedCourses.has(course.number + '0')) {
-        searchedCourses.set(course.number + '0', {
-          course: course,
-          version: versions[index],
-          priority: queryLength,
-        });
-        searchedCoursesFrequency.set(course.number, 1);
-      } else {
-        handleFrequency(course, versions, queryLength, index);
-      }
-    });
-    const newSearchList: SISRetrievedCourse[] = getNewSearchList();
-    dispatch(updateRetrievedCourses(newSearchList));
-    if (queryLength > minLength && initialQueryLength - queryLength < 9) {
-      performSmartSearch(extras.query, extras, queryLength - 1)();
-    }
-  };
-
-  // Handles the frequency of a course.
-  const handleFrequency = (
-    course: SISRetrievedCourse,
-    versions,
-    queryLength: number,
-    index: number,
-  ) => {
-    let frequency = searchedCoursesFrequency.get(course.number);
-    let flag = false;
-    if (frequency !== undefined) {
-      for (let i = 0; i < frequency; i++) {
-        if (
-          searchedCourses.get(course.number + i)?.course.title === course.title
-        ) {
-          flag = true;
-        }
-      }
-      if (!flag) {
-        searchedCourses.set(course.number + frequency, {
-          course: course,
-          version: versions[index],
-          priority: queryLength,
-        });
-        searchedCoursesFrequency.set(course.number, frequency + 1);
-      }
-    }
-  };
+  }, [searchTerm, searchFilters, pageIndex]);
 
   /**
    * Performs search call with filters to backend and updates redux with retrieved courses.
@@ -350,74 +157,29 @@ const Form: FC<{ setSearching: (searching: boolean) => void }> = (props) => {
    * @returns reference to a function that conducts smart search
    */
   const performSmartSearch =
-    (
-      originalQuery: string,
-      extras: SearchExtras,
-      queryLength: number,
-    ): (() => void) =>
+    (extras: SearchExtras): (() => void) =>
     (): void => {
-      const querySubstrs: string[] = [];
-      if (queryLength >= minLength) {
-        // Finds all substring combinations and searches.
-        for (let i = 0; i < searchTerm.length - queryLength + 1; i++) {
-          querySubstrs.push(searchTerm.substring(i, i + queryLength));
-        }
-        substringSearch(originalQuery, extras, queryLength, querySubstrs);
-      } else if (queryLength > 0 && queryLength < minLength) {
-        // Perform normal search if query length is between 1 and minLength
-        axios
-          .get(getAPI(window) + '/search', {
-            params: getParams(extras),
-          })
-          .then((retrieved) => {
-            let retrievedCourses: SISRetrievedCourse[] = retrieved.data.data;
-            dispatch(updateCourseCache(retrievedCourses));
-            dispatch(updateRetrievedCourses(retrievedCourses));
-            props.setSearching(false);
-          })
-          .catch(() => {
-            props.setSearching(false);
-          });
-      } else {
-        props.setSearching(false);
-      }
+      axios
+        .get(getAPI(window) + '/search', {
+          params: getParams(extras),
+        })
+        .then((retrieved) => {
+          let retrievedCourses: SISRetrievedCourse[] =
+            retrieved.data.data.courses;
+          const pageCount = retrieved.data.data.pagination.last;
+          dispatch(updatePageCount(pageCount));
+          dispatch(updateRetrievedCourses(retrievedCourses));
+          setSearching(false);
+        })
+        .catch(() => {
+          setSearching(false);
+        });
     };
-
-  /**
-   * Gets new list of searched courses.
-   * @returns an array of retrieved courses
-   */
-  const getNewSearchList = (): SISRetrievedCourse[] => {
-    let searchList: SISRetrievedCourse[] = [];
-    // sorts searchedCourses map by priority.
-    searchedCourses[Symbol.iterator] = function* () {
-      yield* [...this.entries()]
-        .sort((a, b) => a[1].course.title.length - b[1].course.title.length)
-        .sort((a, b) => b[1].priority - a[1].priority);
-    };
-    for (let [, value] of searchedCourses) {
-      searchList.push(value.course);
-    }
-    return searchList;
-  };
 
   // Update search term
   const handleSearchTerm = (event: any): void => {
     dispatch(updateSearchTerm(event.target.value));
   };
-
-  // Returns search fetch params
-  const getParams = (extras: SearchExtras) => ({
-    query: extras.query,
-    department: extras.department,
-    term: extras.term,
-    areas: extras.areas,
-    credits: extras.credits,
-    wi: extras.wi,
-    tags: extras.tags,
-    level: extras.levels,
-    year: extras.year,
-  });
 
   return (
     <div className="w-full h-auto px-5 pt-3 border-b border-gray-400 select-none text-coursecard">

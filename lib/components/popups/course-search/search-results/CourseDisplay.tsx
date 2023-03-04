@@ -101,6 +101,8 @@ const CourseDisplay: FC<{ cart: boolean }> = ({ cart }) => {
       isPlaceholder: placeholder,
       number: version.number,
       area: version.areas,
+      department: version.department,
+      tags: version.tags,
       preReq: version.preReq,
       wi: version.wi,
       version: version.term,
@@ -125,6 +127,7 @@ const CourseDisplay: FC<{ cart: boolean }> = ({ cart }) => {
     }
 
     newUserCourse = { ...data.data };
+
     dispatch(updateCurrentPlanCourses([...currentCourses, newUserCourse]));
     const allYears: Year[] = [...currentPlan.years];
     const newYears: Year[] = [];

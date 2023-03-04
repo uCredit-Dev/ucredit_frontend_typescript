@@ -100,7 +100,9 @@ const CourseDisplayPopup: FC = () => {
           areas: courseToShow.area,
           term: courseToShow.version,
           school: 'none',
-          department: 'none',
+          department: courseToShow.department
+            ? courseToShow.department
+            : 'none',
           credits: courseToShow.credits.toString(),
           wi: courseToShow.wi,
           bio: 'This is a placeholder course',
@@ -147,6 +149,8 @@ const CourseDisplayPopup: FC = () => {
         isPlaceholder: placeholder,
         number: version.number,
         area: placeholder ? version.areas : inspectedArea,
+        department: version.department,
+        tags: version.tags,
         preReq: version.preReq,
         wi: version.wi,
         version: version.term,
