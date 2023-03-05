@@ -9,7 +9,6 @@ import {
   UserCourse,
 } from '../components/../resources/commonTypes';
 import { requirements } from '../components/dashboard/degree-info/distributionFunctions';
-import { getMajorFromCommonName } from '../resources/majors';
 
 type CurrentPlanSlice = {
   plan: Plan;
@@ -59,11 +58,6 @@ export const currentPlanSlice = createSlice({
     updateSelectedPlan: (state: any, action: PayloadAction<Plan>) => {
       if (!action.payload || action.payload._id === 'noPlan') return;
       state.plan = { ...action.payload };
-      const majorObj: Major | null =
-        action.payload.majors.length > 0
-          ? getMajorFromCommonName(action.payload.majors[0])
-          : null;
-      if (majorObj) state.selectedMajor = majorObj;
     },
     updateDistributions: (
       state: any,
