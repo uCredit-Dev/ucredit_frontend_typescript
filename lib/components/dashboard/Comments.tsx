@@ -60,11 +60,7 @@ const Comments: FC<{
   }, [selectedThread]);
 
   useEffect(() => {
-    // console.log(threads[location]?.comments);
-    // if (threads[location] && threads[location].comments.length > 0) {
-    // console.log(threads[location]);
     if (threads[location]) {
-      // console.log(thisThread);
       setThisThread(threads[location]);
       const commentsJSX = getComments(threads[location]);
       setComments(commentsJSX.filter((el) => el !== null));
@@ -148,7 +144,6 @@ const Comments: FC<{
         _id: user._id,
         name: user.name,
       };
-      // console.log("(Comments.tsx) updateThreads: ", Object.values(threadCopy));
       dispatch(updateThreads(Object.values(threadCopy)));
       setThisThread(threadCopy[location]);
       setReplyText('');
