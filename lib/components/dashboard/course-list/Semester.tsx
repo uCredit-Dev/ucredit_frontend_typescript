@@ -360,6 +360,7 @@ const Semester: FC<{
             totalCredits >= 12 &&
             semesterName !== 'Intersession') ||
           (totalCredits <= 3 && semesterName === 'Intersession') ||
+          (totalCredits <= 14 && semesterName === 'Summer') ||
           semesterName === 'All'
         );
       default:
