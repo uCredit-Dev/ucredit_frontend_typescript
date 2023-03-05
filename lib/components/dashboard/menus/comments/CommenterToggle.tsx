@@ -43,8 +43,8 @@ const CommenterToggle: React.FC<Props> = ({ className = '' }) => {
       (newValue as any).comments = Array.from(filteredComments.values());
       filtered.set(key, newValue);
     }
-    for (let [key, value] of filtered.entries()) {
-      if (value.comments.length == 0) return;
+    for (let value of filtered.values()) {
+      if (value.comments.length === 0) return;
     }
     dispatch(updateFilteredThreads(filtered));
     // eslint-disable-next-line react-hooks/exhaustive-deps
