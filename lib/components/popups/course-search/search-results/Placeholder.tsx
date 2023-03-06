@@ -33,6 +33,7 @@ import { XIcon } from '@heroicons/react/outline';
 import { selectReviewMode, selectToken } from '../../../../slices/userSlice';
 import clsx from 'clsx';
 import { toast } from 'react-toastify';
+import * as amplitude from '@amplitude/analytics-browser';
 
 const departmentFilters = ['none', ...all_deps];
 const tagFilters = ['none', ...course_tags];
@@ -407,6 +408,7 @@ const Placeholder: FC<{ addCourse: (plan?: Plan) => void }> = (props) => {
               toast.error('Please specify Level!');
             } else {
               props.addCourse();
+              amplitude.track('Added Placeholder Course');
             }
           }}
           disabled={reviewMode === ReviewMode.View}

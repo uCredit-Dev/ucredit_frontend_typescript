@@ -17,6 +17,7 @@ import {
 import { selectInspectedCourse } from '../../../slices/searchSlice';
 import Comments from '../Comments';
 import { selectToken } from '../../../slices/userSlice';
+import * as amplitude from '@amplitude/analytics-browser';
 
 type SemSelected = {
   fall: boolean;
@@ -215,6 +216,7 @@ const YearComponent: FC<{
         const newUpdatedPlan = { ...currentPlan, years: newYearArray };
         dispatch(updateSelectedPlan(newUpdatedPlan));
         setEditedName(false);
+        amplitude.track('Renamed Year');
       })
       .catch((err) => console.log(err));
   };

@@ -1,5 +1,6 @@
 import React, { FC } from 'react';
 import { XIcon } from '@heroicons/react/outline';
+import * as amplitude from '@amplitude/analytics-browser';
 
 /**
  * Feedback notification banner in dashboard
@@ -17,7 +18,10 @@ const FeedbackNotification: FC<{
         out{' '}
         <div
           className="ml-1 text-white cursor-pointer"
-          onClick={() => actionHandler(true)}
+          onClick={() => {
+            actionHandler(true);
+            amplitude.track('Clicked Feedback Form');
+          }}
         >
           this feedback form
         </div>
