@@ -44,6 +44,7 @@ import {
   selectPlanList,
   updatePlanList,
   updateCartInvokedBySemester,
+  selectToken,
 } from '../../../slices/userSlice';
 import Comments from '../Comments';
 import CourseComponent from './CourseComponent';
@@ -67,6 +68,7 @@ const Semester: FC<{
   const addingPrereqStatus = useSelector(selectAddingPrereq);
   const version = useSelector(selectVersion);
   const user = useSelector(selectUser);
+  const token = useSelector(selectToken);
   const currentPlan = useSelector(selectPlan);
   const planList = useSelector(selectPlanList);
   const placeholder = useSelector(selectPlaceholder);
@@ -87,7 +89,7 @@ const Semester: FC<{
 
   // Every time any courses within this semester changes, update total credit count and the list.
   useEffect(() => {
-    if (version !== 'None') {
+    if (version !== 'None' && version.areas) {
       setInspectedArea(version.areas.charAt(0));
     }
     const sortedCourses: UserCourse[] = [...courses];
@@ -207,10 +209,7 @@ const Semester: FC<{
         isPlaceholder: placeholder,
         area: inspectedArea,
         version: semesterName + ' ' + semesterYear.year,
-        expireAt:
-          user._id === 'guestUser'
-            ? Date.now() + 60 * 60 * 24 * 1000
-            : undefined,
+        expireAt: user._id === 'guestUser' ? Date.now() : undefined,
         _id: undefined,
       };
 
@@ -218,6 +217,7 @@ const Semester: FC<{
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
+          Authorization: `Bearer ${token}`,
         },
         body: JSON.stringify(body),
       })

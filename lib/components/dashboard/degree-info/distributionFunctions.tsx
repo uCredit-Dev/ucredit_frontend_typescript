@@ -66,10 +66,13 @@ export const getBoolExpr = (
     } else {
       concat = handleTagType(splitArr, index, course);
     }
+    if (index === 0 && concat === '&&!') {
+      boolExpr = boolExpr.concat('true');
+    }
     if (concat.length > 3) {
       index = index + 2;
     } else index++;
-    boolExpr = boolExpr.concat(concat); // Causing issues with biology major.
+    boolExpr = boolExpr.concat(concat);
   }
   return boolExpr;
 };
@@ -98,7 +101,9 @@ const handleTagType = (
       break;
     case 'A': // Area
       updatedConcat = (
-        course.areas !== 'None' && course.areas.includes(splitArr[index])
+        course.areas !== undefined &&
+        course.areas !== 'None' &&
+        course.areas.includes(splitArr[index])
       ).toString();
       break;
     case 'N': // Name

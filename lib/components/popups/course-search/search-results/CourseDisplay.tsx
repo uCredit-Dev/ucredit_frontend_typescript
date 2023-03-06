@@ -13,6 +13,7 @@ import {
   selectUser,
   selectPlanList,
   updatePlanList,
+  selectToken,
 } from '../../../../slices/userSlice';
 import Placeholder from './Placeholder';
 import { toast } from 'react-toastify';
@@ -44,6 +45,7 @@ const CourseDisplay: FC<{ cart: boolean }> = ({ cart }) => {
   const placeholder = useSelector(selectPlaceholder);
   const currentCourses = useSelector(selectCurrentPlanCourses);
   const totalCredits = useSelector(selectTotalCredits);
+  const token = useSelector(selectToken);
 
   // component state setup
   const [inspectedArea, setInspectedArea] = useState<string>('None');
@@ -99,18 +101,20 @@ const CourseDisplay: FC<{ cart: boolean }> = ({ cart }) => {
       isPlaceholder: placeholder,
       number: version.number,
       area: version.areas,
+      department: version.department,
+      tags: version.tags,
       preReq: version.preReq,
       wi: version.wi,
       version: version.term,
       level: version.level,
-      expireAt:
-        user._id === 'guestUser' ? Date.now() + 60 * 60 * 24 * 1000 : undefined,
+      expireAt: user._id === 'guestUser' ? Date.now() : undefined,
     };
 
     let retrieved = await fetch(getAPI(window) + '/courses', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
+        Authorization: `Bearer ${token}`,
       },
       body: JSON.stringify(body),
     });
@@ -123,6 +127,7 @@ const CourseDisplay: FC<{ cart: boolean }> = ({ cart }) => {
     }
 
     newUserCourse = { ...data.data };
+
     dispatch(updateCurrentPlanCourses([...currentCourses, newUserCourse]));
     const allYears: Year[] = [...currentPlan.years];
     const newYears: Year[] = [];

@@ -1,4 +1,4 @@
-import React, { useState, useEffect, FC } from 'react';
+import React, { useState, useEffect, useRef, FC } from 'react';
 import Semester from './Semester';
 import { ReviewMode, UserCourse, Year } from '../../../resources/commonTypes';
 import { DotsVerticalIcon } from '@heroicons/react/outline';
@@ -16,6 +16,8 @@ import {
 } from '../../../slices/popupSlice';
 import { selectInspectedCourse } from '../../../slices/searchSlice';
 import Comments from '../Comments';
+import { selectToken } from '../../../slices/userSlice';
+import * as amplitude from '@amplitude/analytics-browser';
 
 type SemSelected = {
   fall: boolean;
@@ -40,6 +42,7 @@ const YearComponent: FC<{
   setDraggable: (draggable: boolean) => void;
   mode: ReviewMode;
 }> = ({ id, year, courses, setDraggable, mode }) => {
+  const token = useSelector(selectToken);
   const [fallCourses, setFallCourses] = useState<UserCourse[]>([]);
   const [springCourses, setSpringCourses] = useState<UserCourse[]>([]);
   const [winterCourses, setWinterCourses] = useState<UserCourse[]>([]);
@@ -76,6 +79,8 @@ const YearComponent: FC<{
   const inspected = useSelector(selectInspectedCourse);
   const dispatch = useDispatch();
 
+  let wrapperRef = useRef(null);
+
   // Updates and parses all courses into semesters whenever the current plan or courses array changes.
   useEffect(() => {
     // For each of the user's courses for this year, put them in their respective semesters.
@@ -105,6 +110,18 @@ const YearComponent: FC<{
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [yearName]);
+
+  // if year is collapsed and user opens year settings dropdown, clicking outside the dropdown closes it
+  useEffect(() => {
+    const handleClickOutside = (e: MouseEvent) => {
+      if (!display) return;
+      const currentWrapperRef: any = wrapperRef.current;
+      if (currentWrapperRef && !currentWrapperRef.contains(e.target))
+        setDisplay(false);
+    };
+    document.addEventListener('click', handleClickOutside);
+    return () => document.removeEventListener('click', handleClickOutside);
+  }, [wrapperRef, display]);
 
   /**
    * Updates the credit distribution of the year.
@@ -159,13 +176,13 @@ const YearComponent: FC<{
     const parsedIntersessionCourses: UserCourse[] = [];
     const parsedSummerCourses: UserCourse[] = [];
     courses.forEach((course) => {
-      if (course.term.toLowerCase() === 'fall') {
+      if (course.term && course.term.toLowerCase() === 'fall') {
         parsedFallCourses.push(course);
-      } else if (course.term.toLowerCase() === 'spring') {
+      } else if (course.term && course.term.toLowerCase() === 'spring') {
         parsedSpringCourses.push(course);
-      } else if (course.term.toLowerCase() === 'summer') {
+      } else if (course.term && course.term.toLowerCase() === 'summer') {
         parsedSummerCourses.push(course);
-      } else if (course.term.toLowerCase() === 'intersession') {
+      } else if (course.term && course.term.toLowerCase() === 'intersession') {
         parsedIntersessionCourses.push(course);
       }
     });
@@ -187,6 +204,7 @@ const YearComponent: FC<{
       method: 'PATCH',
       headers: {
         'Content-Type': 'application/json',
+        Authorization: `Bearer ${token}`,
       },
       body: JSON.stringify(body),
     })
@@ -198,6 +216,7 @@ const YearComponent: FC<{
         const newUpdatedPlan = { ...currentPlan, years: newYearArray };
         dispatch(updateSelectedPlan(newUpdatedPlan));
         setEditedName(false);
+        amplitude.track('Renamed Year');
       })
       .catch((err) => console.log(err));
   };
@@ -370,7 +389,9 @@ const YearComponent: FC<{
       )}
       onMouseLeave={() => {
         setDraggable(true);
-        setDisplay(false);
+        if (!collapse) {
+          setDisplay(false);
+        }
         setHovered(false);
       }}
       onMouseEnter={() => {
@@ -510,16 +531,18 @@ const YearComponent: FC<{
             )}
           </div>
         </div>
-        {display && (
-          <YearSettingsDropdown
-            year={year}
-            setToShow={setToShow}
-            setDisplay={setDisplay}
-            toShow={toShow}
-            setEdittingName={setEdittingName}
-            id={id}
-          />
-        )}
+        <div ref={wrapperRef}>
+          {display && (
+            <YearSettingsDropdown
+              year={year}
+              setToShow={setToShow}
+              setDisplay={setDisplay}
+              toShow={toShow}
+              setEdittingName={setEdittingName}
+              id={id}
+            />
+          )}
+        </div>
       </div>
       {collapse ? (
         <div

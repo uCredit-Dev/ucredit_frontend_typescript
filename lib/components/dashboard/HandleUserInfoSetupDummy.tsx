@@ -10,11 +10,13 @@ import {
 } from '../../slices/currentPlanSlice';
 import {
   selectReviewMode,
+  selectToken,
   selectUser,
   updatePlanList,
 } from '../../slices/userSlice';
 import { getAPI } from '../../resources/assets';
 import { updateAddingPlanStatus } from '../../slices/popupSlice';
+import * as amplitude from '@amplitude/analytics-browser';
 
 /**
  * Handles dashboard user entry and login logic.
@@ -23,6 +25,7 @@ const HandleUserInfoSetupDummy: React.FC = () => {
   // Redux setup
   const dispatch = useDispatch();
   const user = useSelector(selectUser);
+  const token = useSelector(selectToken);
   const importing = useSelector(selectImportingStatus);
   const curPlan = useSelector(selectPlan);
   const reviewMode = useSelector(selectReviewMode);
@@ -45,7 +48,9 @@ const HandleUserInfoSetupDummy: React.FC = () => {
         reviewMode !== ReviewMode.View
       ) {
         axios
-          .get(getAPI(window) + '/plansByUser/' + user._id)
+          .get(getAPI(window) + '/plansByUser/' + user._id, {
+            headers: { Authorization: `Bearer ${token}` },
+          })
           .then((retrieved) => processRetrievedPlans(retrieved.data.data))
           .catch((err) => {
             if (user._id === 'guestUser') {
@@ -90,6 +95,10 @@ const HandleUserInfoSetupDummy: React.FC = () => {
       );
       // Initial load, there is no current plan, so we set the current to be the first plan in the array.
       dispatch(updatePlanList(retrievedPlans));
+      
+      const identifyObj = new amplitude.Identify();
+      identifyObj.setOnce('Number of Plans', user.plan_ids.length);
+      amplitude.identify(identifyObj);
     }
   };
 

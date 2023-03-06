@@ -1,6 +1,6 @@
 import { useRouter } from 'next/router';
 import Head from 'next/head';
-import { useState, useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useCookies } from 'react-cookie';
 import { useDispatch, useSelector } from 'react-redux';
 import { toast } from 'react-toastify';
@@ -14,6 +14,7 @@ import {
   selectLoginCheck,
   updateLoginCheck,
   updateUser,
+  updateToken,
 } from '../../lib/slices/userSlice';
 import LoadingPage from '../../lib/components/LoadingPage';
 import { updateImportingStatus } from '../../lib/slices/currentPlanSlice';
@@ -21,7 +22,7 @@ import axios from 'axios';
 import { User } from '../../lib/resources/commonTypes';
 import { userService } from '../../lib/services';
 import { updateAddingPlanStatus } from '../../lib/slices/popupSlice';
-import React from 'react';
+import * as amplitude from '@amplitude/analytics-browser';
 
 /**
  * The login page, designed after the Spotify login page..
@@ -70,9 +71,11 @@ const Login: React.FC = () => {
   const handleDBLogin = (loginId: string) => {
     userService
       .login(loginId)
-      .then((retrievedUser) => {
-        if (retrievedUser.errors === undefined) {
-          if (retrievedUser.data.plan_ids.length === 0)
+      .then((data) => {
+        const user = data.data.retrievedUser;
+        const token = data.data.token;
+        if (user.errors === undefined) {
+          if (user.plan_ids.length === 0)
             dispatch(updateAddingPlanStatus(true));
           if (loginId)
             document.cookie =
@@ -82,9 +85,9 @@ const Login: React.FC = () => {
               new Date(Date.now() + 200000000000000).toString() +
               '; path=/';
           if (importID) dispatch(updateImportingStatus(true));
-          dispatch(updateUser(retrievedUser.data));
+          dispatch(updateUser(user));
+          dispatch(updateToken(token));
           dispatch(updateLoginCheck(true));
-
           const referrer = router.query.referrer as string;
           if (referrer) redirectToReferrer();
           else if (
@@ -115,8 +118,14 @@ const Login: React.FC = () => {
   /**
    * Handles if the user is invalid.
    */
-  const handleGuest = (): void => {
+  const handleGuest = async () => {
+    amplitude.init('6beab2d293835bee5dd3417a83d9ac13', 'guestUser');
+    amplitude.track('Guest User Login');
     dispatch(updateUser(guestUser));
+    const res = await axios.get(
+      getAPI(window) + `/backdoor/verification/guestUser`,
+    );
+    dispatch(updateToken(res.data.data.token));
     router.push('/dashboard');
   };
 
@@ -124,6 +133,8 @@ const Login: React.FC = () => {
    * Handles JHU Login button being pressed.
    */
   const handleJHULogin = (loginId: any) => {
+    amplitude.init('6beab2d293835bee5dd3417a83d9ac13', loginId);
+    amplitude.track('JHU User Login');
     if (window.location.href.includes('ucredit.me')) {
       if (loginId && typeof loginId === 'string') handleDBLogin(loginId);
       else window.location.href = getAPI(window) + '/login';
@@ -140,7 +151,8 @@ const Login: React.FC = () => {
     axios
       .get(getAPI(window) + '/backdoor/verification/' + id)
       .then((res) => {
-        const devUser: User = res.data.data;
+        const devUser: User = res.data.data.user;
+        dispatch(updateToken(res.data.data.token));
         if (devUser.plan_ids.length === 0)
           dispatch(updateAddingPlanStatus(true));
         if (importID) dispatch(updateImportingStatus(true));

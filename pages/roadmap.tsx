@@ -15,7 +15,11 @@ import {
   setExperiments,
   toggleExperimentStatus,
 } from '../lib/slices/experimentSlice';
-import { selectUser, updateCommenters } from '../lib/slices/userSlice';
+import {
+  selectToken,
+  selectUser,
+  updateCommenters,
+} from '../lib/slices/userSlice';
 import axios from 'axios';
 import { getAPI } from '../lib/resources/assets';
 import { userService } from '../lib/services';
@@ -29,6 +33,7 @@ interface Props {
 const RoadMap: React.FC<Props> = ({ mode }) => {
   const user = useSelector(selectUser);
   const experimentList = useSelector(selectExperimentList);
+  const token = useSelector(selectToken);
   const dispatch = useDispatch();
   const currPlan = useSelector(selectPlan);
 
@@ -55,14 +60,19 @@ const RoadMap: React.FC<Props> = ({ mode }) => {
 
   useEffect(() => {
     // hard code the roadmap  plan
-    userService.getPlan('61cd005a4ec21b0004c2a758').then((res) => {
+    userService.getPlan('61cd005a4ec21b0004c2a758', token).then((res) => {
       // console.log('res', res);
       dispatch(updateSelectedPlan(res.data));
     });
 
     (async () => {
       if (currPlan && currPlan._id !== 'noPlan') {
-        const res = await userService.getThreads(currPlan._id);
+        const res = await userService.getThreads(
+          currPlan._id,
+          token,
+          false,
+          null,
+        );
         dispatch(updateThreads(res.data));
         const commentersSet = new Set<string>();
         for (const thread of res.data) {

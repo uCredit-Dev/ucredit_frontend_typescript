@@ -44,6 +44,7 @@ export type Version = {
 };
 
 export type SISRetrievedCourse = {
+  _id: string;
   title: string;
   number: string;
   terms: string[];
@@ -139,6 +140,7 @@ export type Filter = {
 };
 
 export type SearchExtras = {
+  page: number | null;
   query: string;
   credits: string | null;
   areas: string | null;

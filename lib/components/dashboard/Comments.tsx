@@ -25,9 +25,11 @@ import {
 import { userService } from '../../services';
 import {
   selectCommenters,
+  selectToken,
   selectUser,
   updateCommenters,
 } from '../../slices/userSlice';
+import * as amplitude from '@amplitude/analytics-browser';
 
 const Comments: FC<{
   location: string;
@@ -45,6 +47,7 @@ const Comments: FC<{
   const reviewedPlan = useSelector(selectReviewedPlan);
   const selectedThread = useSelector(selectSelectedThread);
   const commenters = useSelector(selectCommenters);
+  const token = useSelector(selectToken);
   let wrapperRef = useRef(null);
   const [comments, setComments] = useState<JSX.Element[]>([]);
   // const [visibleUsers, setVisibleUsers] = useState<String[]>([]);
@@ -72,20 +75,7 @@ const Comments: FC<{
 
   useEffect(() => {
     const handleClickOutside = (e: MouseEvent) => {
-      if (
-        !expanded ||
-        // @ts-ignore: property does not exist error
-        (typeof e.target.className === 'string' &&
-          // @ts-ignore: property does not exist error
-          e.target.className.includes('option')) ||
-        // @ts-ignore: property does not exist error
-        e.target.tagName === 'svg' ||
-        // @ts-ignore: property does not exist error
-        e.target.tagName === 'path' ||
-        // @ts-ignore: property does not exist error
-        (e.target.tagName === 'DIV' && e.target.className.includes('css'))
-      )
-        return;
+      if (!expanded) return;
       const currentWrapperRef: any = wrapperRef.current;
       if (currentWrapperRef && !currentWrapperRef.contains(e.target))
         setExpanded(false);
@@ -95,6 +85,7 @@ const Comments: FC<{
   }, [wrapperRef, expanded]);
 
   const submitReply = async (e) => {
+    amplitude.track('Added Comment');
     e.preventDefault();
     if (replyText === '') {
       return;
@@ -119,7 +110,7 @@ const Comments: FC<{
           date: new Date(),
         },
       };
-      const temp = await userService.postNewComment(body);
+      const temp = await userService.postNewComment(body, token);
       const newComment = temp.data;
       const commenter = {
         _id: user._id,
@@ -147,7 +138,7 @@ const Comments: FC<{
           date: new Date(),
         },
       };
-      const temp = await userService.postNewThread(data);
+      const temp = await userService.postNewThread(data, token);
       JSON.parse(JSON.stringify(threads));
       let threadCopy = JSON.parse(JSON.stringify(threads));
       threadCopy[location] = temp.data;
@@ -257,7 +248,12 @@ const Comments: FC<{
     });
     try {
       let comment_id: string = '';
-      const threads = await userService.getThreads(plan._id, false, null);
+      const threads = await userService.getThreads(
+        plan._id,
+        token,
+        false,
+        null,
+      );
       for (let thread of threads.data.data) {
         for (let comment of thread.comments) {
           if (comment._id === key) {
@@ -271,7 +267,7 @@ const Comments: FC<{
           }
         }
       }
-      await userService.removeComment(comment_id);
+      await userService.removeComment(comment_id, token);
     } catch (err) {
       console.log(err);
     }
@@ -317,7 +313,7 @@ const Comments: FC<{
               className="flex items-center self-end justify-center gap-1 mt-2 text-sm transition-colors duration-150 ease-in transform rounded cursor-pointer hover:text-sky-600"
               onClick={submitReply}
             >
-              <span>Send</span>
+              <span>Comment</span>
               <PaperAirplaneIcon className="w-4 h-4 rotate-90" />
             </div>
           </div>

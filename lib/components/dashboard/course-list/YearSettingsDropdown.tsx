@@ -12,8 +12,13 @@ import {
 } from '../../../slices/currentPlanSlice';
 import axios from 'axios';
 import { getAPI } from '../../../resources/assets';
-import { selectPlanList, updatePlanList } from '../../../slices/userSlice';
+import {
+  selectPlanList,
+  selectToken,
+  updatePlanList,
+} from '../../../slices/userSlice';
 import { toast } from 'react-toastify';
+import * as amplitude from '@amplitude/analytics-browser';
 
 type SemSelected = {
   fall: boolean;
@@ -40,6 +45,7 @@ const YearSettingsDropdown: FC<{
   const dispatch = useDispatch();
   const currPlan = useSelector(selectPlan);
   const planList = useSelector(selectPlanList);
+  const token = useSelector(selectToken);
 
   const [semSelect, setSemSelect] = useState<boolean>(false);
   const [yearSelect, setYearSelect] = useState<boolean>(false);
@@ -54,18 +60,30 @@ const YearSettingsDropdown: FC<{
 
   const modifyFall = () => {
     setToShow({ ...toShow, fall: !toShow.fall });
+    if (toShow.fall) {
+      amplitude.track('Unselected Fall');
+    } else amplitude.track('Selected Fall');
   };
 
   const modifySpring = () => {
     setToShow({ ...toShow, spring: !toShow.spring });
+    if (toShow.spring) {
+      amplitude.track('Unselected Spring');
+    } else amplitude.track('Selected Spring');
   };
 
   const modifySummer = () => {
     setToShow({ ...toShow, summer: !toShow.summer });
+    if (toShow.summer) {
+      amplitude.track('Unselected Summer');
+    } else amplitude.track('Selected Summer');
   };
 
   const modifyIntersession = () => {
     setToShow({ ...toShow, intersession: !toShow.intersession });
+    if (toShow.intersession) {
+      amplitude.track('Unselected Intersession');
+    } else amplitude.track('Selected Intersession');
   };
 
   const handleYearChange = (selectedYear: any) => {
@@ -80,10 +98,16 @@ const YearSettingsDropdown: FC<{
     // Change year
     if (!exists) {
       axios
-        .patch(getAPI(window) + '/years/updateYear', {
-          year_id: year._id,
-          year: selectedYear.value,
-        })
+        .patch(
+          getAPI(window) + '/years/updateYear',
+          {
+            year_id: year._id,
+            year: selectedYear.value,
+          },
+          {
+            headers: { Authorization: `Bearer ${token}` },
+          },
+        )
         .then((res) => {
           const newYear: Year = res.data.data;
           const newPlan: Plan = {
@@ -108,6 +132,7 @@ const YearSettingsDropdown: FC<{
               }),
             ),
           );
+          amplitude.track('Changed Year');
         })
         .catch((err) => {
           console.log(err);

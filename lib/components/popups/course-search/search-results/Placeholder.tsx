@@ -30,9 +30,10 @@ import {
 import ReactTooltip from 'react-tooltip';
 import { QuestionMarkCircleIcon } from '@heroicons/react/solid';
 import { XIcon } from '@heroicons/react/outline';
-import { selectReviewMode } from '../../../../slices/userSlice';
+import { selectReviewMode, selectToken } from '../../../../slices/userSlice';
 import clsx from 'clsx';
 import { toast } from 'react-toastify';
+import * as amplitude from '@amplitude/analytics-browser';
 
 const departmentFilters = ['none', ...all_deps];
 const tagFilters = ['none', ...course_tags];
@@ -49,6 +50,7 @@ const Placeholder: FC<{ addCourse: (plan?: Plan) => void }> = (props) => {
   const searchStatus = useSelector(selectSearchStatus);
   const currentCourses = useSelector(selectCurrentPlanCourses);
   const currentPlan = useSelector(selectPlan);
+  const token = useSelector(selectToken);
   const dispatch = useDispatch();
 
   // Component state setup.
@@ -77,6 +79,7 @@ const Placeholder: FC<{ addCourse: (plan?: Plan) => void }> = (props) => {
       setPlaceholderCredits(inspectedVersion.credits);
       setPlaceholderNumber(inspectedVersion.number);
       setPlaceholderDepartment(inspectedVersion.department);
+      setPlaceholderTag(inspectedVersion.tags[0]);
       setPlaceholderWI(inspectedVersion.wi);
       setPlaceholderLevel(
         inspectedVersion.level ? inspectedVersion.level : 'none',
@@ -142,7 +145,7 @@ const Placeholder: FC<{ addCourse: (plan?: Plan) => void }> = (props) => {
     if (inspectedVersion !== 'None') {
       const inspCopy: Course = {
         ...inspectedVersion,
-        tags: [...inspectedVersion.tags, tag],
+        tags: [tag],
       };
       dispatch(updateInspectedVersion(inspCopy));
     }
@@ -192,6 +195,7 @@ const Placeholder: FC<{ addCourse: (plan?: Plan) => void }> = (props) => {
         method: 'DELETE',
         headers: {
           'Content-Type': 'application/json',
+          Authorization: `Bearer ${token}`,
         },
       }).then((retrieved) => {
         retrieved.json().then(handleUpdateResponse);
@@ -404,6 +408,7 @@ const Placeholder: FC<{ addCourse: (plan?: Plan) => void }> = (props) => {
               toast.error('Please specify Level!');
             } else {
               props.addCourse();
+              amplitude.track('Added Placeholder Course');
             }
           }}
           disabled={reviewMode === ReviewMode.View}

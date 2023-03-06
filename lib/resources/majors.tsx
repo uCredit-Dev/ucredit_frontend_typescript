@@ -3404,7 +3404,7 @@ const bsCS_New: Major = {
             'EN.601.124 The Ethics of Artificial Intelligence and Automation (The Ethics of Artificial Intelligence and Automation) <br /> ' +
             'EN.660.400 Practical Ethics for Future Leaders',
           required_credits: 1,
-          criteria: 'EN.600.104[C]^OR^EN.601.104[C]^OR^EN.660.400[C]',
+          criteria: 'EN.600.104[C]^OR^EN.601.124[C]^OR^EN.660.400[C]',
         },
         {
           description:
@@ -3600,7 +3600,7 @@ const bsCS_New: Major = {
 
 // https://www.cs.jhu.edu/undergraduate-studies/academics/ugrad-advising-manual/
 const baCS_New: Major = {
-  degree_name: 'B.A. Computer Science (NEW - 2021 & after)',
+  degree_name: 'B.A. Computer Science',
   abbrev: 'B.A. CS',
   department: 'EN Computer Science',
   total_degree_credit: 120,
