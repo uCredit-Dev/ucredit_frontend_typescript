@@ -18,8 +18,8 @@ const Reviewers = () => {
           <Tooltip
             title={
               <Typography fontSize={17}>
-                "Click on the Edit button to add or remove reviewers who can
-                comment on your plan."
+                Click on the Edit button to add or remove reviewers who can
+                comment on your plan.
               </Typography>
             }
             placement="left"
