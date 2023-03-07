@@ -4,17 +4,20 @@ import { useDispatch, useSelector } from 'react-redux';
 import { toast } from 'react-toastify';
 import {
   selectReviewerPlanId,
+  selectToken,
   selectUser,
   updateReviewerPlanID,
 } from '../../lib/slices/userSlice';
 import 'react-toastify/dist/ReactToastify.css';
 import { userService } from '../../lib/services';
 import React from 'react';
+import * as amplitude from '@amplitude/analytics-browser';
 
 const ReviewerAdd: React.FC = () => {
   const router = useRouter();
   const dispatch = useDispatch();
   const user = useSelector(selectUser);
+  const token = useSelector(selectToken);
   const reviewerPlanId = useSelector(selectReviewerPlanId);
 
   useEffect(() => {
@@ -36,6 +39,7 @@ const ReviewerAdd: React.FC = () => {
         if (user._id === 'noUser' || user._id === 'guestUser') return;
         await userService.confirmReviewerPlan(
           reviewerPlanId,
+          token,
           (status: number) => {
             if (status === 400)
               toast.error('Failed', {
@@ -45,6 +49,7 @@ const ReviewerAdd: React.FC = () => {
               toast.success('Confirmed reviewer plan!', {
                 toastId: 'confirm reviewer plan',
               });
+            amplitude.track('Confirmed Reviewer');
           },
         );
         router.push('/reviewer');

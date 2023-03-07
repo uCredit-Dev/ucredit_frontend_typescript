@@ -39,8 +39,10 @@ import CourseList from './course-list/CourseList';
 import InfoMenu from './degree-info/InfoMenu';
 import {
   selectLoginCheck,
+  selectToken,
   selectUser,
   updateCommenters,
+  updateCourseCache,
 } from '../../slices/userSlice';
 import axios from 'axios';
 import { getAPI } from './../../resources/assets';
@@ -49,12 +51,17 @@ import GenerateNewPlan from '../../resources/GenerateNewPlan';
 import LoadingPage from '../LoadingPage';
 import HandlePlanShareDummy from './HandlePlanShareDummy';
 import HandleUserInfoSetupDummy from './HandleUserInfoSetupDummy';
-import { DashboardMode, ReviewMode } from '../../resources/commonTypes';
+import {
+  DashboardMode,
+  ReviewMode,
+  SISRetrievedCourse,
+} from '../../resources/commonTypes';
 import { userService } from '../../services';
 import Actionbar from './Actionbar';
 import Button from '@mui/material/Button';
 import clsx from 'clsx';
 import Footer from '../Footer';
+import * as amplitude from '@amplitude/analytics-browser';
 
 interface Props {
   mode: ReviewMode;
@@ -77,6 +84,7 @@ const Dashboard: React.FC<Props> = ({ mode }) => {
   const addingPrereqStatus = useSelector(selectAddingPrereq);
   const cartStatus = useSelector(selectShowingCart);
   const experimentList = useSelector(selectExperimentList);
+  const token = useSelector(selectToken);
   const dispatch = useDispatch();
   const currPlan = useSelector(selectPlan);
   const infoPopup = useSelector(selectInfoPopup);
@@ -160,8 +168,21 @@ const Dashboard: React.FC<Props> = ({ mode }) => {
     let unmounted = false;
     let source = axios.CancelToken.source();
     if (currPlan && currPlan._id !== 'noPlan') {
+      axios
+        .get(getAPI(window) + `/coursesByPlan/${currPlan._id}`, {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        })
+        .then((response) => {
+          const sisCourses: SISRetrievedCourse[] = response.data.data;
+          dispatch(updateCourseCache(sisCourses));
+        })
+        .catch((err) => {
+          console.log(err);
+        });
       userService
-        .getThreads(currPlan._id, unmounted, source.token)
+        .getThreads(currPlan._id, token, unmounted, source.token)
         .then((res) => {
           if (!res) {
             throw new Error('No response from server');
@@ -241,6 +262,7 @@ const Dashboard: React.FC<Props> = ({ mode }) => {
             )}
             onClick={() => {
               dispatch(updateInfoPopup(!infoPopup));
+              amplitude.track('Clicked Tracker');
             }}
           >
             <svg
@@ -278,7 +300,7 @@ const Dashboard: React.FC<Props> = ({ mode }) => {
             {deleteYearStatus && <DeleteYearPopup />}
             {deleteCourseStatus && <DeleteCoursePopup />}
             {courseInfoStatus && <CourseDisplayPopup />}
-            {cartStatus && <Cart allCourses={[]} />}
+            {cartStatus && <Cart />}
           </div>
           {/* <Roadmap /> */}
         </div>

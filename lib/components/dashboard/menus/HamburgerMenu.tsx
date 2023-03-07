@@ -8,12 +8,13 @@ import { useDispatch, useSelector } from 'react-redux';
 import { getLoginCookieVal, getAPI } from '../../../resources/assets';
 import { DashboardMode } from '../../../resources/commonTypes';
 import { resetCurrentPlan } from '../../../slices/currentPlanSlice';
-import { resetUser, selectUser } from '../../../slices/userSlice';
+import { resetUser, selectUser, updateToken } from '../../../slices/userSlice';
 import Divider from '@mui/material/Divider';
 import ListItem from '@mui/material/ListItem';
 import ListItemButton from '@mui/material/ListItemButton';
 import ListItemIcon from '@mui/material/ListItemIcon';
 import ListItemText from '@mui/material/ListItemText';
+import * as amplitude from '@amplitude/analytics-browser';
 
 const HamburgerMenu: FC<{
   mode: DashboardMode;
@@ -38,8 +39,10 @@ const HamburgerMenu: FC<{
   };
 
   const logOut = () => {
+    amplitude.reset();
     removeCookie('connect.sid', { path: '/' });
     dispatch(resetUser());
+    dispatch(updateToken(''));
     dispatch(resetCurrentPlan());
     router.push('/login');
   };
@@ -53,6 +56,9 @@ const HamburgerMenu: FC<{
       return;
     }
     setShowMenu(!showMenu);
+    if (!showMenu) {
+      amplitude.track('Opened Hamburger Menu');
+    }
   };
 
   return (

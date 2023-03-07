@@ -27,6 +27,7 @@ import {
   selectPlanList,
   selectReviewMode,
   selectUser,
+  selectToken,
   updatePlanList,
 } from '../../../slices/userSlice';
 import Reviewers from './reviewers/Reviewers';
@@ -45,6 +46,7 @@ const PlanEditMenu: FC<{ mode: ReviewMode }> = ({ mode }) => {
   const planList = useSelector(selectPlanList);
   const currentPlan = useSelector(selectPlan);
   const user = useSelector(selectUser);
+  const token = useSelector(selectToken);
   const dispatch = useDispatch();
   const infoPopup = useSelector(selectInfoPopup);
   const reviewMode = useSelector(selectReviewMode);
@@ -79,6 +81,7 @@ const PlanEditMenu: FC<{ mode: ReviewMode }> = ({ mode }) => {
       method: 'PATCH',
       headers: {
         'Content-Type': 'application/json',
+        Authorization: `Bearer ${token}`,
       },
       body: JSON.stringify(body),
     })
@@ -123,7 +126,7 @@ const PlanEditMenu: FC<{ mode: ReviewMode }> = ({ mode }) => {
   /**
    * Limit the max width of multi-select labels
    */
-  const customStyles: StylesConfig<typeof majorOptions[number], true> = {
+  const customStyles: StylesConfig<(typeof majorOptions)[number], true> = {
     multiValue: (provided) => {
       const maxWidth = '17rem';
       return { ...provided, maxWidth };
@@ -143,7 +146,9 @@ const PlanEditMenu: FC<{ mode: ReviewMode }> = ({ mode }) => {
       majors: newMajors,
     };
     axios
-      .patch(getAPI(window) + '/plans/update', body)
+      .patch(getAPI(window) + '/plans/update', body, {
+        headers: { Authorization: `Bearer ${token}` },
+      })
       .then(() => {
         const newUpdatedPlan = { ...currentPlan, majors: newMajors };
         dispatch(updateSelectedPlan(newUpdatedPlan));
@@ -163,7 +168,7 @@ const PlanEditMenu: FC<{ mode: ReviewMode }> = ({ mode }) => {
    * if user selected more than one major
    */
   const MultiValue = (
-    props: MultiValueProps<typeof majorOptions[number], true>,
+    props: MultiValueProps<(typeof majorOptions)[number], true>,
   ) => {
     const major = allMajors.find(
       (majorObj) => majorObj.degree_name === props.data.label,
@@ -211,13 +216,12 @@ const PlanEditMenu: FC<{ mode: ReviewMode }> = ({ mode }) => {
       const body = {
         ...newYear,
         preUniversity: preUniversity,
-        expireAt:
-          user._id === 'guestUser'
-            ? Date.now() + 60 * 60 * 24 * 1000
-            : undefined,
+        expireAt: user._id === 'guestUser' ? Date.now() : undefined,
       }; // add to end by default
       axios
-        .post(getAPI(window) + '/years', body)
+        .post(getAPI(window) + '/years', body, {
+          headers: { Authorization: `Bearer ${token}` },
+        })
         .then((response: any) => {
           const updatedPlanList: Plan[] = [...planList];
           updatedPlanList[0] = {

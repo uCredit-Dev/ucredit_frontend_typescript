@@ -43,8 +43,10 @@ import { QuestionMarkCircleIcon } from '@heroicons/react/solid';
 import {
   selectCartInvokedBySemester,
   selectReviewMode,
+  selectToken,
 } from '../../../../slices/userSlice';
 import clsx from 'clsx';
+import * as amplitude from '@amplitude/analytics-browser';
 
 /**
  * Displays a sis course when searching
@@ -71,6 +73,7 @@ const SisCourse: FC<{
   const courseToShow = useSelector(selectCourseToShow);
   const currentCourses = useSelector(selectCurrentPlanCourses);
   const reviewMode = useSelector(selectReviewMode);
+  const token = useSelector(selectToken);
   const cartInvokedBySemester = useSelector(selectCartInvokedBySemester);
 
   const [versionIndex, updateVersionIndex] = useState<number>(0);
@@ -187,6 +190,7 @@ const SisCourse: FC<{
         method: 'DELETE',
         headers: {
           'Content-Type': 'application/json',
+          Authorization: `Bearer ${token}`,
         },
       })
         .then((retrieved) => retrieved.json())
@@ -307,7 +311,7 @@ const SisCourse: FC<{
               </select>
             </div>
             <div className="flex flex-row items-center w-auto h-auto ml-5 tight:ml-0 tight:mt-2">
-              Area
+              Count as
               <div className="flex-grow">
                 <QuestionMarkCircleIcon
                   className="h-4 fill-gray"
@@ -348,7 +352,10 @@ const SisCourse: FC<{
         onClick={() => {
           if (props.cart) {
             addPrereq();
-          } else props.addCourse();
+          } else {
+            props.addCourse();
+            amplitude.track('Added Course');
+          }
         }}
         disabled={cartInvokedBySemester && reviewMode === ReviewMode.View}
       >

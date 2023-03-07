@@ -24,6 +24,7 @@ import {
 import {
   selectCourseCache,
   selectPlanList,
+  selectToken,
   selectUser,
   updatePlanList,
 } from '../../slices/userSlice';
@@ -35,6 +36,7 @@ import {
 import { toast } from 'react-toastify';
 import { getAPI } from '../../resources/assets';
 import SisCourse from './course-search/search-results/SisCourse';
+import * as amplitude from '@amplitude/analytics-browser';
 
 /**
  * Course info popup that opens when user preses info button on course components
@@ -46,6 +48,7 @@ const CourseDisplayPopup: FC = () => {
   const courseCache = useSelector(selectCourseCache);
   const placeholder = useSelector(selectPlaceholder);
   const user = useSelector(selectUser);
+  const token = useSelector(selectToken);
   const version = useSelector(selectVersion);
   const planList = useSelector(selectPlanList);
   const currentCourses = useSelector(selectCurrentPlanCourses);
@@ -98,7 +101,9 @@ const CourseDisplayPopup: FC = () => {
           areas: courseToShow.area,
           term: courseToShow.version,
           school: 'none',
-          department: 'none',
+          department: courseToShow.department
+            ? courseToShow.department
+            : 'none',
           credits: courseToShow.credits.toString(),
           wi: courseToShow.wi,
           bio: 'This is a placeholder course',
@@ -145,19 +150,19 @@ const CourseDisplayPopup: FC = () => {
         isPlaceholder: placeholder,
         number: version.number,
         area: placeholder ? version.areas : inspectedArea,
+        department: version.department,
+        tags: version.tags,
         preReq: version.preReq,
         wi: version.wi,
         version: version.term,
         level: version.level,
-        expireAt:
-          user._id === 'guestUser'
-            ? Date.now() + 60 * 60 * 24 * 1000
-            : undefined,
+        expireAt: user._id === 'guestUser' ? Date.now() : undefined,
       };
       fetch(getAPI(window) + '/courses', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
+          Authorization: `Bearer ${token}`,
         },
         body: JSON.stringify(body),
       })
@@ -193,6 +198,7 @@ const CourseDisplayPopup: FC = () => {
         toast.success('Course updated!', {
           toastId: 'course updated',
         });
+        amplitude.track('Moved Course');
       } else {
         console.log('Failed to add', data.errors);
       }

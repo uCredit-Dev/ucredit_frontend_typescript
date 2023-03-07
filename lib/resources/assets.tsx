@@ -8,6 +8,7 @@ import {
   UserCourse,
   SISRetrievedCourse,
   Year,
+  SearchExtras,
 } from './commonTypes';
 import { allMajors } from './majors';
 import { store } from '../appStore/store';
@@ -52,6 +53,19 @@ export const getColors = function (
     return '#83B9FF';
   }
 };
+
+export const getParams = (extras: SearchExtras) => ({
+  page: extras.page,
+  query: extras.query,
+  department: extras.department,
+  term: extras.term === 'All' ? '' : extras.term,
+  year: extras.year === 'All' ? '' : extras.year,
+  areas: extras.areas,
+  credits: extras.credits,
+  wi: extras.wi,
+  tags: extras.tags,
+  level: extras.levels,
+});
 
 // On SIS, scrape the majors using the console, check Notion for more info
 export const AS_deps = [
@@ -511,32 +525,33 @@ const backendSearch = async (
   userC: UserCourse | null,
 ): Promise<{ index: number; resp: Course | null }> =>
   new Promise(async (resolve) => {
-    const courses: any = await axios
-      .get(getAPI(window) + '/search', {
-        params: { query: courseNumber },
-      })
-      .catch((err) => console.log(err));
-    if (courses === undefined) return Promise.reject();
-    let retrieved: SISRetrievedCourse = courses.data.data[0];
-    if (retrieved === undefined) {
+    try {
+      const res: any = await axios.get(
+        getAPI(window) + `/searchNumber/${courseNumber}`,
+      );
+      let retrieved: SISRetrievedCourse = res.data.data;
+      let versionIndex = 0;
+      retrieved.versions.forEach((element, index) => {
+        if (userC === null) return;
+        if (element.term === userC.term) {
+          versionIndex = index;
+        }
+      });
+      const cache: SISRetrievedCourse[] = [];
+      cache.push(retrieved);
+      store.dispatch(updateCourseCache(cache));
+      resolve({
+        index: indexNum,
+        resp: {
+          ...retrieved,
+          ...retrieved.versions[versionIndex],
+        },
+      });
+    } catch (err) {
+      // 404
       store.dispatch(updateUnfoundNumbers(courseNumber));
       return resolve({ index: indexNum, resp: null });
     }
-    let versionIndex = 0;
-    retrieved.versions.forEach((element, index) => {
-      if (userC === null) return;
-      if (element.term === userC.term) {
-        versionIndex = index;
-      }
-    });
-    store.dispatch(updateCourseCache(courses.data.data));
-    resolve({
-      index: indexNum,
-      resp: {
-        ...retrieved,
-        ...retrieved.versions[versionIndex],
-      },
-    });
   });
 
 /**
