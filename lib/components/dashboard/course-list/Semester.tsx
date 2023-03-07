@@ -261,7 +261,7 @@ const Semester: FC<{
     } else {
       console.log('Failed to add', data.errors);
       data.errors.forEach((error) => {
-        if(error.status == 400) {
+        if (error.status == 400) {
           toast.error(error.detail);
           dispatch(updateAddingPrereq(false));
         }
