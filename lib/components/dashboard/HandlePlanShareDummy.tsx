@@ -115,6 +115,7 @@ const HandlePlanShareDummy = () => {
     }
   };
 
+  // handle promise response
   const afterPromise = (plan: Plan, years: Year[]) => {
     dispatch(updateToAddName(plan.name));
     dispatch(
