@@ -317,7 +317,8 @@ export const processPrereqs = async (
 ): Promise<PrereqCourses> => {
   // Regex used to get an array of course numbers.
   const regex: RegExp = /[A-Z]{2}\.\d{3}\.\d{3}/g;
-  const forwardSlashRegex: RegExp = /[A-Z]{2}\.\d{3}\.\d{3}\/[A-Z]{2}\.\d{3}\.\d{3}/g; // e.g. EN.XXX.XXX/EN.XXX.XXX
+  const forwardSlashRegex: RegExp =
+    /[A-Z]{2}\.\d{3}\.\d{3}\/[A-Z]{2}\.\d{3}\.\d{3}/g; // e.g. EN.XXX.XXX/EN.XXX.XXX
   const forwardSlashRegex2: RegExp = /[A-Z]{2}\.\d{3}\.\d{3}\/\d{3}\.\d{3}/g; // e.g. EN.XXX.XXX/XXX.XXX
   const forwardSlashRegex3: RegExp = /[A-Z]{2}\.\d{3}\/\d{3}\.\d{3}/g; // e.g. EN.XXX/XXX.XXX
 
@@ -524,34 +525,33 @@ const backendSearch = async (
   userC: UserCourse | null,
 ): Promise<{ index: number; resp: Course | null }> =>
   new Promise(async (resolve) => {
-    const courses: any = await axios
-      .get(getAPI(window) + '/cartSearch', {
-        params: { query: courseNumber },
-      })
-      .catch((err) => console.log(err));
-    if (courses === undefined) return Promise.reject();
-    let retrieved: SISRetrievedCourse = courses.data.data[0];
-    if (retrieved === undefined) {
+    try {
+      const res: any = await axios.get(
+        getAPI(window) + `/searchNumber/${courseNumber}`,
+      );
+      let retrieved: SISRetrievedCourse = res.data.data;
+      let versionIndex = 0;
+      retrieved.versions.forEach((element, index) => {
+        if (userC === null) return;
+        if (element.term === userC.term) {
+          versionIndex = index;
+        }
+      });
+      const cache: SISRetrievedCourse[] = [];
+      cache.push(retrieved);
+      store.dispatch(updateCourseCache(cache));
+      resolve({
+        index: indexNum,
+        resp: {
+          ...retrieved,
+          ...retrieved.versions[versionIndex],
+        },
+      });
+    } catch (err) {
+      // 404
       store.dispatch(updateUnfoundNumbers(courseNumber));
       return resolve({ index: indexNum, resp: null });
     }
-    let versionIndex = 0;
-    retrieved.versions.forEach((element, index) => {
-      if (userC === null) return;
-      if (element.term === userC.term) {
-        versionIndex = index;
-      }
-    });
-    const cache: SISRetrievedCourse[] = [];
-    cache.push(retrieved);
-    store.dispatch(updateCourseCache(cache));
-    resolve({
-      index: indexNum,
-      resp: {
-        ...retrieved,
-        ...retrieved.versions[versionIndex],
-      },
-    });
   });
 
 /**

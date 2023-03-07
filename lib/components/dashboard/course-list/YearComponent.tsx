@@ -17,6 +17,7 @@ import {
 import { selectInspectedCourse } from '../../../slices/searchSlice';
 import Comments from '../Comments';
 import { selectToken } from '../../../slices/userSlice';
+import * as amplitude from '@amplitude/analytics-browser';
 
 type SemSelected = {
   fall: boolean;
@@ -175,13 +176,13 @@ const YearComponent: FC<{
     const parsedIntersessionCourses: UserCourse[] = [];
     const parsedSummerCourses: UserCourse[] = [];
     courses.forEach((course) => {
-      if (course.term.toLowerCase() === 'fall') {
+      if (course.term && course.term.toLowerCase() === 'fall') {
         parsedFallCourses.push(course);
-      } else if (course.term.toLowerCase() === 'spring') {
+      } else if (course.term && course.term.toLowerCase() === 'spring') {
         parsedSpringCourses.push(course);
-      } else if (course.term.toLowerCase() === 'summer') {
+      } else if (course.term && course.term.toLowerCase() === 'summer') {
         parsedSummerCourses.push(course);
-      } else if (course.term.toLowerCase() === 'intersession') {
+      } else if (course.term && course.term.toLowerCase() === 'intersession') {
         parsedIntersessionCourses.push(course);
       }
     });
@@ -215,6 +216,7 @@ const YearComponent: FC<{
         const newUpdatedPlan = { ...currentPlan, years: newYearArray };
         dispatch(updateSelectedPlan(newUpdatedPlan));
         setEditedName(false);
+        amplitude.track('Renamed Year');
       })
       .catch((err) => console.log(err));
   };

@@ -24,6 +24,7 @@ import {
   updateDeleteCourseStatus,
   updateShowCourseInfo,
 } from '../../../slices/popupSlice';
+import * as amplitude from '@amplitude/analytics-browser';
 
 /**
  * This is a course card displayed in the course list under each semester.
@@ -91,6 +92,7 @@ const CourseComponent: FC<{
   const deleteCourse = () => {
     dispatch(updateCourseToDelete({ course: course, year: year }));
     dispatch(updateDeleteCourseStatus(true));
+    amplitude.track('Clicked Course Delete');
   };
 
   /**

@@ -36,6 +36,7 @@ import {
 import { toast } from 'react-toastify';
 import { getAPI } from '../../resources/assets';
 import SisCourse from './course-search/search-results/SisCourse';
+import * as amplitude from '@amplitude/analytics-browser';
 
 /**
  * Course info popup that opens when user preses info button on course components
@@ -197,6 +198,7 @@ const CourseDisplayPopup: FC = () => {
         toast.success('Course updated!', {
           toastId: 'course updated',
         });
+        amplitude.track('Moved Course');
       } else {
         console.log('Failed to add', data.errors);
       }
