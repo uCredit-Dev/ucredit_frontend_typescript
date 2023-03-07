@@ -529,7 +529,11 @@ const backendSearch = async (
       const res: any = await axios.get(
         getAPI(window) + `/searchNumber/${courseNumber}`,
       );
-      let retrieved: SISRetrievedCourse = res.data.data;
+      let retrieved: SISRetrievedCourse | -1 = res.data.data;
+      if (retrieved === -1) {
+        store.dispatch(updateUnfoundNumbers(courseNumber));
+        return resolve({ index: indexNum, resp: null });
+      }
       let versionIndex = 0;
       retrieved.versions.forEach((element, index) => {
         if (userC === null) return;
@@ -548,8 +552,6 @@ const backendSearch = async (
         },
       });
     } catch (err) {
-      // 404
-      store.dispatch(updateUnfoundNumbers(courseNumber));
       return resolve({ index: indexNum, resp: null });
     }
   });
