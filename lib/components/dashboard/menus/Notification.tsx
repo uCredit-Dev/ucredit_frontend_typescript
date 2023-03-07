@@ -39,7 +39,9 @@ const Notification: FC<{
                 className={`
                             ${open ? '' : 'text-opacity-90'}
                             w-full hover:bg-slate-300 text-lg rounded-lg sm:w-auto px-3 py-1 sm:hover:text-blue-header sm:hover:bg-blue-footer sm:rounded-[13px] transition duration-100 ease-in`}
-                onClick={() => {amplitude.track('Opened Notifications');}}
+                onClick={() => {
+                  amplitude.track('Opened Notifications');
+                }}
               >
                 <span>
                   <BellIcon className="h-6 "></BellIcon>

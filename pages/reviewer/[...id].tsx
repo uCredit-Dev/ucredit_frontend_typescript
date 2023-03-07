@@ -49,7 +49,7 @@ const ReviewerAdd: React.FC = () => {
               toast.success('Confirmed reviewer plan!', {
                 toastId: 'confirm reviewer plan',
               });
-              amplitude.track('Confirmed Reviewer');
+            amplitude.track('Confirmed Reviewer');
           },
         );
         router.push('/reviewer');
