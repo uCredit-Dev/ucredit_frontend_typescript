@@ -95,7 +95,7 @@ const HandleUserInfoSetupDummy: React.FC = () => {
       );
       // Initial load, there is no current plan, so we set the current to be the first plan in the array.
       dispatch(updatePlanList(retrievedPlans));
-      
+
       const identifyObj = new amplitude.Identify();
       identifyObj.setOnce('Number of Plans', user.plan_ids.length);
       amplitude.identify(identifyObj);
