@@ -35,7 +35,6 @@ import Menu from '@mui/material/Menu';
 import Reviewers from './menus/reviewers/Reviewers';
 import { Typography } from '@mui/material';
 import Box from '@mui/material/Box';
-import PersonIcon from '@mui/icons-material/Person';
 import * as amplitude from '@amplitude/analytics-browser';
 
 
