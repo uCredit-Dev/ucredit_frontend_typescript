@@ -37,7 +37,6 @@ import { Typography } from '@mui/material';
 import Box from '@mui/material/Box';
 import * as amplitude from '@amplitude/analytics-browser';
 
-
 const majorOptions = allMajors.map((major) => ({
   abbrev: major.abbrev,
   name: major.degree_name,
