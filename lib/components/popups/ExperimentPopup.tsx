@@ -42,8 +42,8 @@ const ExperimentPopup: FC<{
         <img
           src={'svg/Beaker.svg'}
           onClick={() => setExperimentPopup(!experimentPopup)}
-          data-tip={`View/Toggle Experiments!`}
-          data-for="godTip"
+          data-tooltip-content={`View/Toggle Experiments!`}
+          data-tooltip-id="godtip"
           className="w-10 h-10 focus:outline-none"
           alt="beaker"
         />
