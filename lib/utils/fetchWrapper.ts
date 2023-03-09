@@ -18,6 +18,24 @@ const post = (url: string, token: string | undefined, data: Object) => {
   });
 };
 
+/*
+  Update a comment
+*/
+const patch = (
+  url: string,
+  token: string,
+  data: { comment_id: string, message: string },
+) => {
+  return fetch(url, {
+    method: 'PATCH',
+    headers: {
+      'Content-Type': 'application/json',
+      Authorization: `Bearer ${token}`,
+    },
+    body: JSON.stringify(data),
+  });
+};
+
 const _delete = (
   url: string,
   token: string,
@@ -33,4 +51,4 @@ const _delete = (
   });
 };
 
-export const fetchWrapper = { get, post, delete: _delete };
+export const fetchWrapper = { get, post, patch, delete: _delete };

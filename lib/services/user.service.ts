@@ -12,7 +12,7 @@ const login = (cookieVal: string) => {
     .get(`${getAPI(window)}/verifyLogin/${cookieVal}`)
     .then((res) => res.json())
     .then((res) => res);
-};
+}; 
 
 const getPlan = (planId: string, token: string) => {
   return fetchWrapper
@@ -116,6 +116,12 @@ const removeComment = (comment_id: string, token: string, cb = undefined) => {
     .then((res) => handleResponse(res, cb));
 };
 
+const editComment = (data: any, token: string, cb = undefined) => {
+  return fetchWrapper
+    .patch(`${getAPI(window)}/comment`, token, data)
+    .then((res) => handleResponse(res, cb));
+};
+
 const changeReviewStatus = (
   review_id,
   status,
@@ -162,6 +168,7 @@ export const userService = {
   getThreads,
   postNewComment,
   removeComment,
+  editComment,
   changeReviewStatus,
   getNotifications,
 };
