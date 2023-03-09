@@ -282,7 +282,7 @@ const Comments: FC<{
       console.log(err);
     }
   };
-
+  
   return (
     <div
       className={clsx('absolute z-20 h-12 cursor-default md:translate-x-60 ', {
