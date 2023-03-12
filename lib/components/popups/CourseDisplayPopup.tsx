@@ -201,6 +201,11 @@ const CourseDisplayPopup: FC = () => {
         amplitude.track('Moved Course');
       } else {
         console.log('Failed to add', data.errors);
+        data.errors.forEach((error) => {
+          if (error.status === 400) {
+            toast.error(error.detail);
+          }
+        });
       }
     };
 
