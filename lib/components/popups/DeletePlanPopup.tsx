@@ -34,6 +34,13 @@ const DeletePlanPopup: FC = () => {
     // update plan array
     // If plan list has more than one plan, delete. Otherwise, don't.
     if (planList.length > 1 && user._id !== 'noUser') {
+      const threads = await userService.getThreads(
+        currentPlan._id,
+        token,
+        false,
+        null,
+      );
+
       fetch(getAPI(window) + '/plans/' + currentPlan._id, {
         method: 'DELETE',
         headers: {
@@ -61,6 +68,13 @@ const DeletePlanPopup: FC = () => {
       reviews.data.forEach(async (review) => {
         await userService.removeReview(review._id, token);
       });
+
+      for (let thread of threads.data.data) {
+        for (let comment of thread.comments) {
+          await userService.removeComment(comment._id, token);
+        }
+      }
+
       amplitude.track('Confirmed Plan Deletion');
       const identifyObj = new amplitude.Identify();
       identifyObj.add('Number of Plans', -1);
