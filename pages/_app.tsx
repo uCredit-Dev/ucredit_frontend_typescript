@@ -47,6 +47,11 @@ const MyApp: React.FC<{
                 name="viewport"
                 content="initial-scale=1.0, width=device-width"
               />
+              <meta name="keywords" content="ucredit, jhu, semesterly" />
+              <meta
+                name="google-site-verification"
+                content="pvEeXuYCxF6NJiH_huGZMae_aKeTckqDrTB74w7FdF8"
+              />
             </Head>
             {/* {screenWidth < 474 ? (
             <MobileTurnPage />

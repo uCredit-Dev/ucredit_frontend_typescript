@@ -50,7 +50,11 @@ const Home: React.FC = () => {
     <>
       <Head>
         <title>uCredit</title>
-        <meta name="google-site-verification" content="pvEeXuYCxF6NJiH_huGZMae_aKeTckqDrTB74w7FdF8" />
+        <meta name="keywords" content="ucredit, jhu, semesterly" />
+        <meta
+          name="google-site-verification"
+          content="pvEeXuYCxF6NJiH_huGZMae_aKeTckqDrTB74w7FdF8"
+        />
       </Head>
       <LandingPage />
     </>
