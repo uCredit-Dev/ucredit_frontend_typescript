@@ -3,7 +3,6 @@ import { useDispatch, useSelector } from 'react-redux';
 
 import CourseDisplay from './search-results/CourseDisplay';
 import { EyeOffIcon } from '@heroicons/react/outline';
-import ReactTooltip from 'react-tooltip';
 import { SISRetrievedCourse } from '../../../resources/commonTypes';
 import { updateInfoPopup, updateShowingCart } from '../../../slices/popupSlice';
 import FineRequirementsList from './cart/FineRequirementsList';
@@ -101,11 +100,6 @@ const Cart: FC<{}> = () => {
     setTextFilterInputValue(e.target.value);
   };
 
-  useEffect(() => {
-    ReactTooltip.rebuild();
-    ReactTooltip.hide();
-  });
-
   return (
     <div className="absolute top-0 ">
       {/* Background Grey */}
@@ -162,9 +156,8 @@ const Cart: FC<{}> = () => {
               className="flex flex-row items-center justify-center w-full h-8 p-1 transition duration-200 ease-in transform hover:scale-125"
               onMouseEnter={() => setSearchOpacity(50)}
               onMouseLeave={() => setSearchOpacity(100)}
-              onMouseOver={() => ReactTooltip.rebuild()}
-              data-tip="Hide search"
-              data-for="godTip"
+              data-tooltip-content="Hide search"
+              data-tooltip-id="godtip"
             >
               <EyeOffIcon className="w-6 h-6 text-gray-500 stroke-2" />
             </div>
