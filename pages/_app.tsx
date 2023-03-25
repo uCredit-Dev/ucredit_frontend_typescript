@@ -59,20 +59,8 @@ const MyApp: React.FC<{
             <Head>
               <link rel="shortcut icon" href="/static/favicon.ico" />
               <meta
-                name="description"
-                content="Quick accessible degree planning."
-              />
-              <meta
                 name="viewport"
                 content="initial-scale=1.0, width=device-width"
-              />
-              <meta
-                name="keywords"
-                content="ucredit, jhu, semesterly, madooei"
-              />
-              <meta
-                name="google-site-verification"
-                content="pvEeXuYCxF6NJiH_huGZMae_aKeTckqDrTB74w7FdF8"
               />
             </Head>
             {/* {screenWidth < 474 ? (

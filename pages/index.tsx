@@ -49,7 +49,18 @@ const Home: React.FC = () => {
   return (
     <>
       <Head>
-        <title>uCredit</title>
+        <title>
+          uCredit: quick and accessible degree planning for JHU students
+        </title>
+        <meta
+          name="description"
+          content="uCredit is a degree-tracking application packed with unique features, where users seamlessly manage their academic plans and developers are empowered to build great student-centered tools."
+        />
+        <meta name="robots" content="index, follow" />
+        <meta
+          name="google-site-verification"
+          content="pvEeXuYCxF6NJiH_huGZMae_aKeTckqDrTB74w7FdF8"
+        />
       </Head>
       <LandingPage />
     </>
