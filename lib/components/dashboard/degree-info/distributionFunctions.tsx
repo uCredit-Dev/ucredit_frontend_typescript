@@ -101,7 +101,9 @@ const handleTagType = (
       break;
     case 'A': // Area
       updatedConcat = (
-        course.areas !== 'None' && course.areas.includes(splitArr[index])
+        course.areas !== undefined &&
+        course.areas !== 'None' &&
+        course.areas.includes(splitArr[index])
       ).toString();
       break;
     case 'N': // Name

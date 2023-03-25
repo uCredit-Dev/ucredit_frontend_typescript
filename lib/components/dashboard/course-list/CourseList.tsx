@@ -29,6 +29,7 @@ import {
 } from '../../../slices/userSlice';
 import { getAPI } from '../../../resources/assets';
 import YearDraggable from './YearDraggable';
+import * as amplitude from '@amplitude/analytics-browser';
 
 interface Props {
   mode: ReviewMode;
@@ -254,6 +255,7 @@ const CourseList: FC<Props> = ({ mode }) => {
     toast.success('Successfully moved course!', {
       toastId: 'moved course',
     });
+    amplitude.track('Moved Course');
     res = await res.json();
     const updatedCourse = res.data;
 

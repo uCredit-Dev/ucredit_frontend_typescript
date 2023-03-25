@@ -33,6 +33,7 @@ import DialogTitle from '@mui/material/DialogTitle';
 import Menu from '@mui/material/Menu';
 import Reviewers from './menus/reviewers/Reviewers';
 import PersonIcon from '@mui/icons-material/Person';
+import * as amplitude from '@amplitude/analytics-browser';
 
 const majorOptions = allMajors.map((major) => ({
   abbrev: major.abbrev,
@@ -101,6 +102,7 @@ const Actionbar: FC<{ mode: ReviewMode }> = ({ mode }) => {
         });
         setEditName(false);
         dispatch(updatePlanList(newPlanList));
+        amplitude.track('Renamed Plan');
       })
       .catch((err) => console.log(err));
   };
@@ -109,6 +111,9 @@ const Actionbar: FC<{ mode: ReviewMode }> = ({ mode }) => {
     if (!newValue.value || !newValue.value.name) return;
     if (newValue.label === 'Create New Plan' && user._id !== 'noUser') {
       dispatch(updateAddingPlanStatus(true));
+      const identifyObj = new amplitude.Identify();
+      identifyObj.add('Number of Plans', 1);
+      amplitude.identify(identifyObj);
     } else {
       toast(newValue.value.name + ' selected!');
       if (currentPlan._id !== newValue.value._id)
@@ -133,7 +138,6 @@ const Actionbar: FC<{ mode: ReviewMode }> = ({ mode }) => {
       });
       return;
     }
-
     const newMajors = newValues.map((option) => option.label);
     const body = {
       plan_id: currentPlan._id,
@@ -153,6 +157,7 @@ const Actionbar: FC<{ mode: ReviewMode }> = ({ mode }) => {
           }
         }
         dispatch(updatePlanList(newPlanList));
+        amplitude.track('Changed Majors');
       })
       .catch((err) => console.log(err));
   };
@@ -183,6 +188,7 @@ const Actionbar: FC<{ mode: ReviewMode }> = ({ mode }) => {
   // Activates delete plan popup.
   const activateDeletePlan = (): void => {
     dispatch(updateDeletePlanStatus(true));
+    amplitude.track('Clicked Delete Plan');
   };
 
   /**
@@ -196,6 +202,7 @@ const Actionbar: FC<{ mode: ReviewMode }> = ({ mode }) => {
         toast.info('Share link copied to Clipboard!', {
           toastId: 'share link copied',
         });
+        amplitude.track('Copied Share Link');
       });
     });
   };
@@ -235,6 +242,7 @@ const Actionbar: FC<{ mode: ReviewMode }> = ({ mode }) => {
           toast.success('New Year added!', {
             toastId: 'new year added',
           });
+          amplitude.track('Added Year');
         })
         .catch((err) => console.log(err));
     } else {

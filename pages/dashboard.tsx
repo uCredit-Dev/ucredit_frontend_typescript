@@ -19,6 +19,7 @@ import {
 } from '../lib/slices/currentPlanSlice';
 import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import * as amplitude from '@amplitude/analytics-browser';
 
 const Dash: React.FC = () => {
   const user: User = useSelector(selectUser);
@@ -63,6 +64,12 @@ const Dash: React.FC = () => {
         return;
       }
     }
+
+    const identifyObj = new amplitude.Identify();
+    identifyObj.setOnce('Affiliation', user.affiliation);
+    identifyObj.set('Grade', user.grade);
+    amplitude.identify(identifyObj);
+
     (async () => {
       try {
         if (user._id === 'noUser') {
