@@ -81,7 +81,8 @@ const Comments: FC<{
         setExpanded(false);
     };
     document.addEventListener('click', handleClickOutside, true);
-    return () => document.removeEventListener('click', handleClickOutside, true);
+    return () =>
+      document.removeEventListener('click', handleClickOutside, true);
   }, [wrapperRef, expanded]);
 
   const submitReply = async (e) => {
