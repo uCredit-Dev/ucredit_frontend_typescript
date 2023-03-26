@@ -195,10 +195,10 @@ const Form: FC<{
         <div
           className="flex flex-row items-center justify-center flex-none w-6 h-6 transition duration-200 ease-in transform bg-white rounded-full cursor-pointer hover:scale-110"
           onClick={() => setShowCriteria(!showCriteria)}
-          data-tip={
+          data-tooltip-content={
             showCriteria ? 'Hide search criteria' : 'Show search criteria'
           }
-          data-for="godTip"
+          data-tooltip-id="godtip"
         >
           {!showCriteria ? (
             <img

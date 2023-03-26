@@ -1,7 +1,6 @@
 import { CheckIcon, BellIcon } from '@heroicons/react/outline';
 import React, { FC, useEffect } from 'react';
 import { useSelector } from 'react-redux';
-import ReactTooltip from 'react-tooltip';
 import { ReviewRequestStatus } from '../../../../resources/commonTypes';
 import { userService } from '../../../../services';
 import { selectPlan } from '../../../../slices/currentPlanSlice';
@@ -70,11 +69,18 @@ const CurrentReviewers: FC<{
       return (
         <div
           className="w-3 h-3 bg-black rounded-full tooltip"
-          data-tip="Pending"
+          data-tooltip-id="godtip"
+          data-tooltip-content="Pending"
         />
       );
     } else if (status !== ReviewRequestStatus.Pending) {
-      return <CheckIcon className="w-5 h-5 tooltip" data-tip="Accepted" />;
+      return (
+        <CheckIcon
+          className="w-5 h-5 tooltip"
+          data-tooltip-id="godtip"
+          data-tooltip-content="Accepted"
+        />
+      );
     }
   };
 
@@ -98,7 +104,8 @@ const CurrentReviewers: FC<{
                 src="svg/CircularArrow.svg"
                 alt="requesting review"
                 className="h-3 w-3 mt-1.5 mr-1 tooltip"
-                data-tip="This reviewer is requesting a review"
+                data-tooltip-id="godtip"
+                data-tooltip-content="This reviewer is requesting a review"
               />
             )}
             <div className="flex items-center justify-center w-6 h-6">
@@ -142,12 +149,7 @@ const CurrentReviewers: FC<{
     return elements;
   };
 
-  return (
-    <div className="flex flex-col">
-      {reviewersJSX}
-      <ReactTooltip delayShow={200} />
-    </div>
-  );
+  return <div className="flex flex-col">{reviewersJSX}</div>;
 };
 
 export default CurrentReviewers;

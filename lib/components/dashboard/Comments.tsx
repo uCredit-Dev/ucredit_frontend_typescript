@@ -80,8 +80,8 @@ const Comments: FC<{
       if (currentWrapperRef && !currentWrapperRef.contains(e.target))
         setExpanded(false);
     };
-    document.addEventListener('click', handleClickOutside);
-    return () => document.removeEventListener('click', handleClickOutside);
+    document.addEventListener('mousedown', handleClickOutside);
+    return () => document.removeEventListener('mousedown', handleClickOutside);
   }, [wrapperRef, expanded]);
 
   const submitReply = async (e) => {
@@ -254,6 +254,7 @@ const Comments: FC<{
         false,
         null,
       );
+      if (!threads) return;
       for (let thread of threads.data.data) {
         for (let comment of thread.comments) {
           if (comment._id === key) {
@@ -275,7 +276,7 @@ const Comments: FC<{
 
   return (
     <div
-      className={clsx('absolute z-50 h-12 cursor-default md:translate-x-60 ', {
+      className={clsx('absolute z-20 h-12 cursor-default md:translate-x-60 ', {
         'translate-y-[12px]': location.split(' ')[0] === 'Course',
         '-left-[125px] translate-y-7': location.split(' ')[0] === 'Year',
         'z-0': !expanded && (hovered || thisThread),
@@ -283,7 +284,7 @@ const Comments: FC<{
     >
       {expanded ? (
         <div
-          className="w-[300px] relative z-90 left-2 top-2 flex flex-col gap-2 p-2 rounded shadow cursor-default bg-slate-200"
+          className="w-[300px] relative z-20 left-2 top-2 flex flex-col gap-2 p-2 rounded shadow cursor-default bg-slate-200"
           ref={wrapperRef}
         >
           {comments && comments.length ? (
