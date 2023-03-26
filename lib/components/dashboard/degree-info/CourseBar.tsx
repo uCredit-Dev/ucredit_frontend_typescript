@@ -15,9 +15,13 @@ import {
   updateShowingCart,
 } from '../../../slices/popupSlice';
 import { clearSearch, updatePlaceholder } from '../../../slices/searchSlice';
-import { updateCartInvokedBySemester } from '../../../slices/userSlice';
+import {
+  selectToken,
+  updateCartInvokedBySemester,
+} from '../../../slices/userSlice';
 import Comments from '../Comments';
 import { ReviewMode, UserDistribution } from '../../../resources/commonTypes';
+import { getDistribution } from '../../../resources/assets';
 
 /**
  * A distribution bar.
@@ -36,6 +40,7 @@ const CourseBar: FC<{
   const [plannedCredits, setPlannedCredits] = useState(distribution.planned);
   const [hovered, setHovered] = useState(false);
 
+  const token = useSelector(selectToken);
   const currPlanCourses = useSelector(selectCurrentPlanCourses);
   const maxCredits = distribution.required_credits;
   const section = distribution.name;
@@ -57,12 +62,16 @@ const CourseBar: FC<{
   const openCartPopup = async () => {
     dispatch(updateCartInvokedBySemester(false));
     // Filter for the correst distributions from redux store
-    let distrs = distributions.filter((req) => req[0] === distribution.name)[0];
-    if (distrs) {
+    let distr: UserDistribution = distribution;
+    // get fineReqs
+    if (distribution._id) {
+      distr = await getDistribution(distribution._id, token);
+    }
+    if (distr) {
       // if the distribution exists, then update the cart
       // at this point we have access to the current requirement
       // and all dsitibrutions. to pick out hte rest of the ascoatied fine distirbutions, use this filter.
-      dispatch(updateSelectedDistribution(distrs));
+      dispatch(updateSelectedDistribution(distr));
       dispatch(updateSelectedFineReq(null));
       dispatch(updateShowingCart(true));
       dispatch(updateInfoPopup(false));

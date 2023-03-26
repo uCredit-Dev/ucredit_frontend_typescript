@@ -85,7 +85,7 @@ const DistributionBarsJSX: FC<{
       },
     );
     distributionJSX.unshift(
-      <div key={'total'}>
+      <div id="totalBar" key={'total'}>
         <div key={'total' + 0 + 'total'}>
           <CourseBar
             distribution={{
