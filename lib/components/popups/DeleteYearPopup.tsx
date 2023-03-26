@@ -10,6 +10,7 @@ import {
   updateDeleteYearStatus,
 } from '../../slices/popupSlice';
 import { selectToken } from '../../slices/userSlice';
+import { userService } from '../../../lib/services';
 
 /**
  * This is the confirmation popup that appears when users press the button to delete a plan.
@@ -26,7 +27,9 @@ const DeleteYearPopup: FC = () => {
    * Popup for deleting current plan.
    */
   // Delete the selected year
-  const activateDeleteYear = () => {
+  const activateDeleteYear = async () => {
+    console.log(year);
+
     if (currentPlan.years.length > 1 && year !== null) {
       fetch(getAPI(window) + '/years/' + year._id, {
         method: 'DELETE',
@@ -48,6 +51,23 @@ const DeleteYearPopup: FC = () => {
           });
         })
         .catch((err) => console.log(err));
+
+      const threads = await userService.getThreads(
+        currentPlan._id,
+        token,
+        false,
+        null,
+      );
+      for (let thread of threads.data.data) {
+        console.log(thread.location_id);
+        // if (thread.location_id.substring(0, 24) === year._id) {
+        for (let comment of thread.comments) {
+          console.log(comment);
+          // comments on course ??? get course of 
+          // await userService.removeComment(comment._id, token);
+        }
+        // }
+      }
     } else {
       toast.error('Cannot delete last year!', {
         toastId: 'cannot delete last year',
