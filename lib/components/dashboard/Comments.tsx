@@ -80,8 +80,8 @@ const Comments: FC<{
       if (currentWrapperRef && !currentWrapperRef.contains(e.target))
         setExpanded(false);
     };
-    document.addEventListener('mousedown', handleClickOutside);
-    return () => document.removeEventListener('mousedown', handleClickOutside);
+    document.addEventListener('click', handleClickOutside, true);
+    return () => document.removeEventListener('click', handleClickOutside, true);
   }, [wrapperRef, expanded]);
 
   const submitReply = async (e) => {
