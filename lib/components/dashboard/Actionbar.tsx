@@ -389,7 +389,7 @@ const Actionbar: FC<{ mode: ReviewMode }> = ({ mode }) => {
                   <Typography fontSize={17}>
                     Click to share a plan snapshot, which allows people with JHU
                     accounts to get a copy of your plan that they can edit and
-                    make it their own.
+                    make their own.
                   </Typography>
                 }
                 placement="left"
