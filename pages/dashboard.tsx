@@ -20,6 +20,7 @@ import {
 import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import * as amplitude from '@amplitude/analytics-browser';
+import { Tooltip } from 'react-tooltip';
 
 const Dash: React.FC = () => {
   const user: User = useSelector(selectUser);
@@ -124,6 +125,11 @@ const Dash: React.FC = () => {
       </Head>
       {/* <Dashboard mode={ReviewMode.RoadMap} /> */}
       <Dashboard mode={mode} />
+      <Tooltip
+        className="z-[1000] max-w-2xl"
+        positionStrategy="fixed"
+        id="godtip"
+      />
     </>
   );
 };
