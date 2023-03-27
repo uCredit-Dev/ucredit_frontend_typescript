@@ -12,9 +12,9 @@ import { useRouter } from 'next/router';
  */
 const Header: React.FC<{
   userID: string;
-  dashboardSwitchMode: DashboardMode;
+  dashboardSwitchMode?: DashboardMode;
   mode: ReviewMode;
-  zLevelMax: boolean | null;
+  zLevelMax?: boolean | null;
 }> = ({ userID, dashboardSwitchMode, mode, zLevelMax }) => {
   const router = useRouter();
   return mode === ReviewMode.RoadMap ? (

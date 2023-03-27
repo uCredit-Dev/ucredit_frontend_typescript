@@ -455,7 +455,12 @@ const PrereqDisplay: FC = () => {
         </>
       );
     else if (!loaded)
-      return <>{'Loading Prereqs Status: loaded is ' + loaded.toString()}</>;
+      return (
+        <>
+          <div>Loading Prereqs</div>
+          <img src="/img/loading.gif" alt="Searching..." className="h-7"></img>
+        </>
+      );
     else
       return (
         <p key={'drop' + preReqDisplay} className="p-2 overflow-y-auto">
@@ -477,8 +482,8 @@ const PrereqDisplay: FC = () => {
             },
           )}
           onClick={handlePrereqDisplayModeChange(2)}
-          data-tip="bullet list"
-          data-for="godTip"
+          data-tooltip-content="bullet list"
+          data-tooltip-id="godtip"
         >
           <img src="svg/Menu.svg" alt="" />
         </div>
@@ -492,8 +497,8 @@ const PrereqDisplay: FC = () => {
             },
           )}
           onClick={handlePrereqDisplayModeChange(1)}
-          data-tip="description"
-          data-for="godTip"
+          data-tooltip-content="description"
+          data-tooltip-id="godtip"
         >
           <img src="svg/Description.svg" alt="" className="w-5 h-5" />
         </div>

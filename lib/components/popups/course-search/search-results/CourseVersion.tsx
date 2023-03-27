@@ -2,7 +2,6 @@ import { QuestionMarkCircleIcon } from '@heroicons/react/solid';
 import clsx from 'clsx';
 import React, { useState, useRef, useEffect, FC } from 'react';
 import { useSelector } from 'react-redux';
-import ReactTooltip from 'react-tooltip';
 import { getColors } from '../../../../resources/assets';
 import { selectVersion } from '../../../../slices/searchSlice';
 import PrereqDisplay from '../prereqs/PrereqDisplay';
@@ -22,10 +21,6 @@ const CourseVersion: FC<{ setInspectedArea: (area: string) => void }> = ({
   const bioElRef = useRef<HTMLParagraphElement>(null);
   const [showMore, setShowMore] = useState<number>(2);
   const [displayPreReqsView, setdisplayPreReqsView] = useState<number>(1);
-
-  useEffect(() => {
-    ReactTooltip.rebuild();
-  }, [displayPreReqsView]);
 
   // UseEffect runs when a new course is version.
   // It automatically updates the current area in the add course area selection to the first area in the course areas string.
@@ -116,8 +111,8 @@ const CourseVersion: FC<{ setInspectedArea: (area: string) => void }> = ({
           <div
             className="flex items-center w-auto px-1 font-semibold rounded select-none"
             style={{ backgroundColor: getColors(area, version.wi) }}
-            data-tip={getAreaName(area)}
-            data-for="godTip"
+            data-tooltip-content={getAreaName(area)}
+            data-tooltip-id="godtip"
           >
             {area}
           </div>
@@ -147,8 +142,10 @@ const CourseVersion: FC<{ setInspectedArea: (area: string) => void }> = ({
             className="px-1 mx-1 mt-1 font-semibold text-white transition duration-200 ease-in transform rounded w-max bg-primary hover:scale-101"
           >
             <div
-              data-tip={'Ask your advisor for more info about ' + tag + ' tag!'}
-              data-for="godTip"
+              data-tooltip-content={
+                'Ask your advisor for more info about ' + tag + ' tag!'
+              }
+              data-tooltip-id="godtip"
             >
               {tag}
             </div>
@@ -206,8 +203,8 @@ const CourseVersion: FC<{ setInspectedArea: (area: string) => void }> = ({
                 <div className="mr-1 font-semibold">Credit: </div>
                 <div
                   className="flex items-center w-auto px-1 font-semibold text-white transition duration-200 ease-in transform rounded select-none bg-primary hover:scale-110"
-                  data-tip={version.credits + ' credits'}
-                  data-for="godTip"
+                  data-tooltip-content={version.credits + ' credits'}
+                  data-tooltip-id="godtip"
                 >
                   {version.credits}
                 </div>
@@ -220,8 +217,8 @@ const CourseVersion: FC<{ setInspectedArea: (area: string) => void }> = ({
                   <div className="flex-grow mt-1">
                     <QuestionMarkCircleIcon
                       className="h-4 fill-gray"
-                      data-for="godTip"
-                      data-tip={
+                      data-tooltip-id="godtip"
+                      data-tooltip-html={
                         '<p>Areas designate the specific subset a course belongs to. Each degree requires students to take a certain amount of credits or courses in a spcific area.</p><p>H - Humanities</p><p>S - Social Sciences</p><p>E - Engineering</p><p>N - Natural Sciences</p><p>Q - Quantitative</p>'
                       }
                     />
@@ -240,8 +237,8 @@ const CourseVersion: FC<{ setInspectedArea: (area: string) => void }> = ({
                   <div className="flex-grow mt-1">
                     <QuestionMarkCircleIcon
                       className="h-4 fill-gray"
-                      data-for="godTip"
-                      data-tip={
+                      data-tooltip-id="godtip"
+                      data-tooltip-html={
                         '<p>Many degree and a few courses require students to complete a specific amount of courses under a certain tag.</p><p>These usually come in the form of 3-4 letters designating department (ie. CSC = Computer Science) followed by 2+ letters signalling the specific subgroup designation within the department (ie. SOFT = Software).</p>'
                       }
                     />
