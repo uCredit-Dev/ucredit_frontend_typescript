@@ -60,13 +60,29 @@ const DeleteYearPopup: FC = () => {
       );
       for (let thread of threads.data.data) {
         console.log(thread.location_id);
-        // if (thread.location_id.substring(0, 24) === year._id) {
-        for (let comment of thread.comments) {
-          console.log(comment);
-          // comments on course ??? get course of 
-          // await userService.removeComment(comment._id, token);
+        // comments on course ??? get course -> check year_id
+
+        if (thread.location_id.substring(0, 24) === year._id) {
+          for (let comment of thread.comments) {
+            console.log(comment);
+            // await userService.removeComment(comment._id, token);
+          }
         }
-        // }
+
+        // if (thread.location_type === 'Course')
+        // use thread.location_id to search for course
+        // check if course.year_id matches year._id
+
+        if (thread.location_type === 'Course') {
+          const course = await userService.getCourse(thread.location_id, token);
+          console.log(course);
+          // if (=== year._id) {
+          for (let comment of thread.comments) {
+            console.log(comment);
+            // await userService.removeComment(comment._id, token);
+          }
+          // }
+        }
       }
     } else {
       toast.error('Cannot delete last year!', {
