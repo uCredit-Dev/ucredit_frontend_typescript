@@ -16,6 +16,7 @@ import {
   updateCourseToDelete,
 } from '../../slices/popupSlice';
 import React from 'react';
+import { userService } from '../../../lib/services';
 import * as amplitude from '@amplitude/analytics-browser';
 
 /**
@@ -33,8 +34,14 @@ const DeleteCoursePopup: FC = () => {
   /**
    * Popup for deleting current selected course.
    */
-  const activateDeleteCourse = () => {
+  const activateDeleteCourse = async () => {
     if (currentPlan.years.length > 1 && courseInfo !== null) {
+      const threads = await userService.getThreads(
+        currentPlan._id,
+        token,
+        false,
+        null,
+      );
       fetch(getAPI(window) + '/courses/' + courseInfo.course._id, {
         method: 'DELETE',
         headers: { Authorization: `Bearer ${token}` },
@@ -50,7 +57,6 @@ const DeleteCoursePopup: FC = () => {
           }
         });
         newPlan = { ...currentPlan, years: years };
-
         toast.error(courseInfo.course.title + ' deleted!', {
           toastId: 'course deleted',
         });
@@ -68,6 +74,13 @@ const DeleteCoursePopup: FC = () => {
         dispatch(updateCourseToDelete(null));
         amplitude.track('Confirmed Course Deletion');
       });
+      for (let thread of threads.data.data) {
+        if (thread.location_id === courseInfo.course._id) {
+          for (let comment of thread.comments) {
+            await userService.removeComment(comment._id, token);
+          }
+        }
+      }
     } else {
       toast.error('Cannot delete last year!', {
         toastId: 'cannot delete last year',
