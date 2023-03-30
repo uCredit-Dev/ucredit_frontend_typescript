@@ -177,8 +177,8 @@ export type SemesterType =
   | 'All';
 
 // https://stackoverflow.com/questions/52085454/typescript-define-a-union-type-from-an-array-of-strings
-export type DepartmentType = (typeof all_deps)[number];
-export type TagType = (typeof course_tags)[number];
+export type DepartmentType = typeof all_deps[number];
+export type TagType = typeof course_tags[number];
 
 export type FilterType =
   | 'credits'
