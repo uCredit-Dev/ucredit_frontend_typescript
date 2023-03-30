@@ -36,6 +36,7 @@ import {
 import { toast } from 'react-toastify';
 import { getAPI } from '../../resources/assets';
 import SisCourse from './course-search/search-results/SisCourse';
+import * as amplitude from '@amplitude/analytics-browser';
 
 /**
  * Course info popup that opens when user preses info button on course components
@@ -197,8 +198,14 @@ const CourseDisplayPopup: FC = () => {
         toast.success('Course updated!', {
           toastId: 'course updated',
         });
+        amplitude.track('Moved Course');
       } else {
         console.log('Failed to add', data.errors);
+        data.errors.forEach((error) => {
+          if (error.status === 400) {
+            toast.error(error.detail);
+          }
+        });
       }
     };
 
@@ -226,7 +233,7 @@ const CourseDisplayPopup: FC = () => {
       ></div>
 
       {/* Actual popup */}
-      <div className="h-screen fixed z-40 left-1/2 flex flex-col min-w-planAdd h-3/4 bg-primary rounded select-none transform -translate-x-1/2 translate-y-12">
+      <div className="fixed z-40 left-1/2 flex flex-col min-w-planAdd h-3/4 bg-primary rounded select-none transform -translate-x-1/2 translate-y-12">
         <div className="px-4 py-2 text-white text-coursecard font-semibold select-none">
           Inspecting{' '}
           {courseToShow === null ? 'Invalid course' : courseToShow.title}

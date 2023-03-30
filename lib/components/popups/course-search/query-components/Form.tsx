@@ -4,10 +4,13 @@ import {
   updateSearchTerm,
   updateRetrievedCourses,
   updateSearchFilters,
+  updatePageIndex,
   selectSearchterm,
   selectSearchFilters,
   selectSemester,
   selectYear,
+  selectPageIndex,
+  updatePageCount,
 } from '../../../../slices/searchSlice';
 import {
   SearchExtras,
@@ -27,10 +30,7 @@ import { selectPlan } from '../../../../slices/currentPlanSlice';
  */
 const Form: FC<{
   setSearching: (searching: boolean) => void;
-  pageIndex: number;
-  setPageCount: Function;
-  setPageIndex: Function;
-}> = ({ setSearching, pageIndex, setPageCount, setPageIndex }) => {
+}> = ({ setSearching }) => {
   // Set up redux dispatch and variables.
   const dispatch = useDispatch();
   const searchTerm = useSelector(selectSearchterm);
@@ -38,6 +38,7 @@ const Form: FC<{
   const semester = useSelector(selectSemester);
   const currentPlan = useSelector(selectPlan);
   const searchYear = useSelector(selectYear);
+  const pageIndex = useSelector(selectPageIndex);
 
   // Component state setup
   const [showCriteria, setShowCriteria] = useState(false);
@@ -98,7 +99,7 @@ const Form: FC<{
   };
 
   useEffect(() => {
-    setPageIndex(0);
+    dispatch(updatePageIndex(0));
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [searchTerm, searchFilters]);
 
@@ -166,7 +167,7 @@ const Form: FC<{
           let retrievedCourses: SISRetrievedCourse[] =
             retrieved.data.data.courses;
           const pageCount = retrieved.data.data.pagination.last;
-          setPageCount(pageCount);
+          dispatch(updatePageCount(pageCount));
           dispatch(updateRetrievedCourses(retrievedCourses));
           setSearching(false);
         })
@@ -194,10 +195,10 @@ const Form: FC<{
         <div
           className="flex flex-row items-center justify-center flex-none w-6 h-6 transition duration-200 ease-in transform bg-white rounded-full cursor-pointer hover:scale-110"
           onClick={() => setShowCriteria(!showCriteria)}
-          data-tip={
+          data-tooltip-content={
             showCriteria ? 'Hide search criteria' : 'Show search criteria'
           }
-          data-for="godTip"
+          data-tooltip-id="godtip"
         >
           {!showCriteria ? (
             <img

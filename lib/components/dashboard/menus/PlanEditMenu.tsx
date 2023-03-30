@@ -126,7 +126,7 @@ const PlanEditMenu: FC<{ mode: ReviewMode }> = ({ mode }) => {
   /**
    * Limit the max width of multi-select labels
    */
-  const customStyles: StylesConfig<typeof majorOptions[number], true> = {
+  const customStyles: StylesConfig<(typeof majorOptions)[number], true> = {
     multiValue: (provided) => {
       const maxWidth = '17rem';
       return { ...provided, maxWidth };
@@ -168,7 +168,7 @@ const PlanEditMenu: FC<{ mode: ReviewMode }> = ({ mode }) => {
    * if user selected more than one major
    */
   const MultiValue = (
-    props: MultiValueProps<typeof majorOptions[number], true>,
+    props: MultiValueProps<(typeof majorOptions)[number], true>,
   ) => {
     const major = allMajors.find(
       (majorObj) => majorObj.degree_name === props.data.label,
@@ -394,8 +394,8 @@ const PlanEditMenu: FC<{ mode: ReviewMode }> = ({ mode }) => {
                             className=" thin:mx-auto flex mr-2 flex-row items-center text-left w-full h-10 my-1 transition duration-200 ease-in border bg-green-100 border-gray-300 rounded cursor-pointer hover:underline hover:bg-green-300 focus:outline-none"
                           >
                             <PlusIcon
-                              data-tip={`Add a new year!`}
-                              data-for="godTip"
+                              data-tooltip-content={`Add a new year!`}
+                              data-tooltip-id="godtip"
                               className="w-5 h-5 ml-2 m-auto focus:outline-none"
                             />
                             <div className="w-full ml-1">{' Add Year'}</div>

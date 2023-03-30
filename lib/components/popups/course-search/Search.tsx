@@ -6,16 +6,12 @@ import {
   updateSearchStatus,
   selectInspectedCourse,
   selectPlaceholder,
-  updatePageCount,
-  selectPageIndex,
-  updatePageIndex,
 } from '../../../slices/searchSlice';
 import CourseDisplay from './search-results/CourseDisplay';
 import Form from './query-components/Form';
 import SearchList from './query-components/SearchList';
 import { EyeOffIcon } from '@heroicons/react/outline';
 import { selectPlan } from '../../../slices/currentPlanSlice';
-import ReactTooltip from 'react-tooltip';
 import { Year } from '../../../resources/commonTypes';
 import clsx from 'clsx';
 import { selectInfoPopup } from '../../../slices/popupSlice';
@@ -38,7 +34,6 @@ const Search: FC = () => {
   const inspected = useSelector(selectInspectedCourse);
   const placeholder = useSelector(selectPlaceholder);
   const infoPopup = useSelector(selectInfoPopup);
-  const pageIndex = useSelector(selectPageIndex);
 
   /**
    * Gets specific year's name.
@@ -52,14 +47,6 @@ const Search: FC = () => {
       }
     });
     return name;
-  };
-
-  const setPageCount = (newPageCount: number) => {
-    dispatch(updatePageCount(newPageCount));
-  };
-
-  const setPageIndex = (newPageIndex: number) => {
-    dispatch(updatePageIndex(newPageIndex));
   };
 
   useEffect(() => {
@@ -102,17 +89,11 @@ const Search: FC = () => {
             <div className="h-full overflow-y-auto">
               {!hideResults && (
                 <>
-                  <Form
-                    setSearching={setSearching}
-                    pageIndex={pageIndex}
-                    setPageCount={setPageCount}
-                    setPageIndex={setPageIndex}
-                  />
+                  <Form setSearching={setSearching} />
                   <SearchList
                     searching={searching}
                     hideResults={hideResults}
                     setHideResults={setHideResults}
-                    setPageIndex={setPageIndex}
                   />
                 </>
               )}
@@ -122,9 +103,8 @@ const Search: FC = () => {
               className="flex flex-row items-center justify-center w-8 h-8 p-1 transition duration-200 ease-in transform hover:scale-125 mx-auto"
               onMouseEnter={() => setSearchOpacity(50)}
               onMouseLeave={() => setSearchOpacity(100)}
-              onMouseOver={() => ReactTooltip.rebuild()}
-              data-tip="Hide search"
-              data-for="godTip"
+              data-tooltip-content="Hide search"
+              data-tooltip-id="godtip"
             >
               <EyeOffIcon className="w-6 h-6 text-gray-500 stroke-2" />
             </div>

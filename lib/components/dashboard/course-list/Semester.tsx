@@ -28,7 +28,6 @@ import {
   updateDroppables,
   updateSelectedPlan,
 } from '../../../slices/currentPlanSlice';
-import ReactTooltip from 'react-tooltip';
 import clsx from 'clsx';
 import CourseDraggable from './CourseDraggable';
 import {
@@ -82,10 +81,6 @@ const Semester: FC<{
   const [inspectedArea, setInspectedArea] = useState<string>('None');
   const [openAPInfoBox, setOpenAPInfoBox] = useState<boolean>(false);
   const [hovered, setHovered] = useState<boolean>(false);
-
-  useEffect(() => {
-    ReactTooltip.rebuild();
-  }, [courses.length, totalCredits]);
 
   // Every time any courses within this semester changes, update total credit count and the list.
   useEffect(() => {
@@ -259,6 +254,12 @@ const Semester: FC<{
       });
     } else {
       console.log('Failed to add', data.errors);
+      data.errors.forEach((error) => {
+        if (error.status === 400) {
+          toast.error(error.detail);
+          dispatch(updateAddingPrereq(false));
+        }
+      });
     }
   };
 
@@ -325,10 +326,10 @@ const Semester: FC<{
             {
               'bg-green-200': colorCheck('bg-green-200'),
             },
-            'flex flex-row items-center justify-center mt-0.5 -ml-2 px-1 w-auto text-black text-xs bg-white rounded',
+            'flex flex-row items-center justify-center mt-0.5 -ml-2 px-1 w-auto text-black text-xs rounded',
           )}
-          data-tip={getCreditString()}
-          data-for="godTip"
+          data-tooltip-html={getCreditString()}
+          data-tooltip-id="godtip"
         >
           {totalCredits}
         </div>

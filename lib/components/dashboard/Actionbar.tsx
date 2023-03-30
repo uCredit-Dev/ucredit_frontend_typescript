@@ -5,6 +5,7 @@ import { toast } from 'react-toastify';
 import { getAPI } from '../../resources/assets';
 import { ReviewMode, Year, Plan } from '../../resources/commonTypes';
 import { allMajors } from '../../resources/majors';
+import Tooltip from '@mui/material/Tooltip';
 import {
   selectPlan,
   updateSelectedPlan,
@@ -32,7 +33,9 @@ import Dialog from '@mui/material/Dialog';
 import DialogTitle from '@mui/material/DialogTitle';
 import Menu from '@mui/material/Menu';
 import Reviewers from './menus/reviewers/Reviewers';
-import PersonIcon from '@mui/icons-material/Person';
+import { Typography } from '@mui/material';
+import Box from '@mui/material/Box';
+import * as amplitude from '@amplitude/analytics-browser';
 
 const majorOptions = allMajors.map((major) => ({
   abbrev: major.abbrev,
@@ -101,6 +104,7 @@ const Actionbar: FC<{ mode: ReviewMode }> = ({ mode }) => {
         });
         setEditName(false);
         dispatch(updatePlanList(newPlanList));
+        amplitude.track('Renamed Plan');
       })
       .catch((err) => console.log(err));
   };
@@ -109,6 +113,9 @@ const Actionbar: FC<{ mode: ReviewMode }> = ({ mode }) => {
     if (!newValue.value || !newValue.value.name) return;
     if (newValue.label === 'Create New Plan' && user._id !== 'noUser') {
       dispatch(updateAddingPlanStatus(true));
+      const identifyObj = new amplitude.Identify();
+      identifyObj.add('Number of Plans', 1);
+      amplitude.identify(identifyObj);
     } else {
       toast(newValue.value.name + ' selected!');
       if (currentPlan._id !== newValue.value._id)
@@ -133,7 +140,6 @@ const Actionbar: FC<{ mode: ReviewMode }> = ({ mode }) => {
       });
       return;
     }
-
     const newMajors = newValues.map((option) => option.label);
     const body = {
       plan_id: currentPlan._id,
@@ -153,6 +159,7 @@ const Actionbar: FC<{ mode: ReviewMode }> = ({ mode }) => {
           }
         }
         dispatch(updatePlanList(newPlanList));
+        amplitude.track('Changed Majors');
       })
       .catch((err) => console.log(err));
   };
@@ -183,6 +190,7 @@ const Actionbar: FC<{ mode: ReviewMode }> = ({ mode }) => {
   // Activates delete plan popup.
   const activateDeletePlan = (): void => {
     dispatch(updateDeletePlanStatus(true));
+    amplitude.track('Clicked Delete Plan');
   };
 
   /**
@@ -196,6 +204,7 @@ const Actionbar: FC<{ mode: ReviewMode }> = ({ mode }) => {
         toast.info('Share link copied to Clipboard!', {
           toastId: 'share link copied',
         });
+        amplitude.track('Copied Share Link');
       });
     });
   };
@@ -235,6 +244,7 @@ const Actionbar: FC<{ mode: ReviewMode }> = ({ mode }) => {
           toast.success('New Year added!', {
             toastId: 'new year added',
           });
+          amplitude.track('Added Year');
         })
         .catch((err) => console.log(err));
     } else {
@@ -329,28 +339,6 @@ const Actionbar: FC<{ mode: ReviewMode }> = ({ mode }) => {
           />
         </>
       )}
-      <Button
-        variant="outlined"
-        onClick={onShareClick}
-        sx={{ height: '2.5rem', mr: 1, my: 1 }}
-        color="info"
-      >
-        <svg
-          xmlns="http://www.w3.org/2000/svg"
-          className="w-5 h-5 transition duration-200 ease-in transform hover:scale-110 mb-0.5"
-          fill="none"
-          viewBox="0 0 24 24"
-          stroke="currentColor"
-        >
-          <path
-            strokeLinecap="round"
-            strokeLinejoin="round"
-            strokeWidth={2}
-            d="M8.684 13.342C8.886 12.938 9 12.482 9 12c0-.482-.114-.938-.316-1.342m0 2.684a3 3 0 110-2.684m0 2.684l6.632 3.316m-6.632-6l6.632-3.316m0 0a3 3 0 105.367-2.684 3 3 0 00-5.367 2.684zm0 9.316a3 3 0 105.368 2.684 3 3 0 00-5.368-2.684z"
-          />
-        </svg>
-        <div className="ml-1">Share</div>
-      </Button>
       {reviewMode === ReviewMode.Edit && (
         <>
           <Button
@@ -366,15 +354,24 @@ const Actionbar: FC<{ mode: ReviewMode }> = ({ mode }) => {
             <Button
               onClick={handleClick}
               variant="outlined"
-              sx={{
-                height: '2.5rem',
-                my: 1,
-                mr: 1,
-                color: 'black',
-                backgroundColor: 'whitesmoke',
-              }}
+              sx={{ height: '2.5rem', mr: 1, my: 1 }}
+              color="info"
             >
-              <PersonIcon />
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                className="w-5 h-5 transition duration-200 ease-in transform hover:scale-110 mb-0.5"
+                fill="none"
+                viewBox="0 0 24 24"
+                stroke="currentColor"
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth={2}
+                  d="M8.684 13.342C8.886 12.938 9 12.482 9 12c0-.482-.114-.938-.316-1.342m0 2.684a3 3 0 110-2.684m0 2.684l6.632 3.316m-6.632-6l6.632-3.316m0 0a3 3 0 105.367-2.684 3 3 0 00-5.367 2.684zm0 9.316a3 3 0 105.368 2.684 3 3 0 00-5.368-2.684z"
+                />
+              </svg>
+              <div className="ml-1">Share</div>
             </Button>
             <Menu
               id="basic-menu"
@@ -387,6 +384,28 @@ const Actionbar: FC<{ mode: ReviewMode }> = ({ mode }) => {
               sx={{ px: 1 }}
             >
               <Reviewers />
+              <Tooltip
+                title={
+                  <Typography fontSize={17}>
+                    Click to share a plan snapshot, which allows people with JHU
+                    accounts to get a copy of your plan that they can edit and
+                    make their own.
+                  </Typography>
+                }
+                placement="left"
+                arrow
+              >
+                <Box textAlign="center">
+                  <Button
+                    onClick={onShareClick}
+                    variant="outlined"
+                    sx={{ width: '15rem', height: '2rem', mx: 1, my: 1 }}
+                    color="info"
+                  >
+                    <div className="ml-1">Share Plan Snapshot</div>
+                  </Button>
+                </Box>
+              </Tooltip>
             </Menu>
           </div>
           <Button

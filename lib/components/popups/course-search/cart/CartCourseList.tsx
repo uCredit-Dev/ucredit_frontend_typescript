@@ -1,62 +1,37 @@
-import React, { useState, useEffect, FC } from 'react';
+import React, { useState, FC } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import {
+  selectPageCount,
+  selectPageIndex,
   selectPlaceholder,
   selectRetrievedCourses,
   updateInspectedVersion,
+  updatePageIndex,
   updatePlaceholder,
 } from '../../../../slices/searchSlice';
 import ReactPaginate from 'react-paginate';
 import { QuestionMarkCircleIcon } from '@heroicons/react/solid';
-import { Course, SISRetrievedCourse } from '../../../../resources/commonTypes';
-import ReactTooltip from 'react-tooltip';
+import { Course } from '../../../../resources/commonTypes';
 
 // TODO: remove this import, for dummy courses
 import CartCourseListItem from './CartCourseListItem';
-import { requirements } from '../../../dashboard/degree-info/distributionFunctions';
 
 /*
   List of searched courses.
 */
 const CartCourseList: FC<{
   searching: boolean;
-  selectedRequirement: requirements;
-  allCourses: SISRetrievedCourse[];
   textFilter: string;
 }> = (props) => {
   // Component state setup.
-  const [pageNum, setPageNum] = useState<number>(0);
-  const [pageCount, setPageCount] = useState<number>(0);
   const [hideResults, setHideResults] = useState<boolean>(false);
-  const [filteredCourses, setFilteredCourses] = useState<SISRetrievedCourse[]>(
-    [],
-  );
+
   // Redux setup
   const courses = useSelector(selectRetrievedCourses);
   const placeholder = useSelector(selectPlaceholder);
+  const pageIndex = useSelector(selectPageIndex);
+  const pageCount = useSelector(selectPageCount);
   const dispatch = useDispatch();
-  const coursesPerPage = 10;
-
-  // Updates pagination every time the searched courses change.
-  useEffect(() => {
-    const filteredCourses: SISRetrievedCourse[] = [];
-    courses.forEach((course: SISRetrievedCourse) => {
-      for (let c of filteredCourses) {
-        if (c.number === course.number) {
-          return;
-        }
-      }
-      if (!course.title.toLowerCase().includes(props.textFilter)) return;
-      filteredCourses.push(course);
-    });
-    // If coursesPerPage doesn't divide perfectly into total courses, we need one more page.
-    const division = Math.floor(filteredCourses.length / coursesPerPage);
-    const pages =
-      filteredCourses.length % coursesPerPage === 0 ? division : division + 1;
-    setPageCount(pages);
-    setFilteredCourses(filteredCourses);
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [courses, props.textFilter]);
 
   /**
    * Generates a list of 10 retrieved course matching the search queries and page number.
@@ -65,20 +40,8 @@ const CartCourseList: FC<{
   const courseList = () => {
     let toDisplay: any = [];
 
-    let startingIndex = pageNum * coursesPerPage;
-    let endingIndex =
-      startingIndex + coursesPerPage > filteredCourses.length
-        ? filteredCourses.length - 1
-        : startingIndex + coursesPerPage - 1;
-    for (let i = startingIndex; i <= endingIndex; i++) {
-      const inspecting = { ...filteredCourses[i] };
-      // issue is that this adds duplicates of a course. using "every" callback will
-      // stop iterating once a version is found.
-      // Matt: I don't believe we need to do this.
-      // inspecting.versions.every((v: any, ind: number) => {
-      // reverses list to get latest version
-      // if (v.term.includes(defaultYearForCart)) {
-      // this has been chagged to not use the filters
+    for (let i = 0; i < courses.length; i++) {
+      const inspecting = { ...courses[i] };
       toDisplay.push(
         <div
           key={inspecting.number}
@@ -88,10 +51,6 @@ const CartCourseList: FC<{
           <CartCourseListItem course={inspecting} version={0} />
         </div>,
       );
-      //     return false;
-      //   }
-      //   return true;
-      // });
     }
     return toDisplay;
   };
@@ -101,7 +60,7 @@ const CartCourseList: FC<{
    * @param event event raised on changing search result page
    */
   const handlePageClick = (event: any) => {
-    setPageNum(event.selected);
+    dispatch(updatePageIndex(event.selected));
   };
 
   /**
@@ -140,7 +99,11 @@ const CartCourseList: FC<{
     <>
       {pageCount > 1 && (
         <div className="flex flex-row justify-center w-full h-auto">
-          <Pagination pageCount={pageCount} handlePageClick={handlePageClick} />
+          <Pagination
+            pageIndex={pageIndex}
+            pageCount={pageCount}
+            handlePageClick={handlePageClick}
+          />
         </div>
       )}
     </>
@@ -203,7 +166,7 @@ const CartCourseList: FC<{
     <>
       <div
         className="flex flex-row items-center justify-between w-full h-12 px-5 py-2 mb-3 bg-gray-200 border-b border-gray-400"
-        data-tip="Hide Search Results"
+        data-tooltip-content="Hide Search Results"
       >
         <div className="flex flex-row">
           <div className="text-lg font-semibold">Search Results</div>{' '}
@@ -220,8 +183,8 @@ const CartCourseList: FC<{
           <div className="flex-grow mr-1">
             <QuestionMarkCircleIcon
               className="h-4 fill-gray"
-              data-for="godTip"
-              data-tip={
+              data-tooltip-id="godtip"
+              data-tooltip-html={
                 "<p>Placeholder course used to flexibly add courses to your plan. Any course not covered by the plan can be added in this way. Just remember to fill out all necessary information of the placeholder course you'd like the plan to count towards!</p><p>Examples:</p><p>- A future 3 credit H course.</p><p>- A required lab safety course of number EN.990.110</p><p>- An AP course covering for the 4 credit course, Calculus I (AS.110.108)</p>"
               }
             />
@@ -229,11 +192,8 @@ const CartCourseList: FC<{
           <div
             className="flex flex-row items-center justify-center w-auto h-6 px-1 transition duration-200 ease-in transform bg-white rounded cursor-pointer hover:scale-110"
             onClick={onPlaceholderClick}
-            data-tip="Add a placeholder or non-SIS course"
-            data-for="godTip"
-            onMouseOver={() => {
-              ReactTooltip.rebuild();
-            }}
+            data-tooltip-content="Add a placeholder or non-SIS course"
+            data-tooltip-id="godtip"
           >
             <div className="mr-1">Custom</div>
             {placeholder ? (
@@ -259,11 +219,13 @@ const CartCourseList: FC<{
 
 // Below is the pagination component.
 type PaginationProps = {
+  pageIndex: number;
   pageCount: number;
   handlePageClick: any;
 };
 
 const Pagination: React.FC<PaginationProps> = ({
+  pageIndex,
   pageCount,
   handlePageClick,
 }) => {
@@ -278,6 +240,7 @@ const Pagination: React.FC<PaginationProps> = ({
       breakLabel={'...'}
       breakClassName={'justify-items-end h-6 mt-1'}
       pageCount={pageCount}
+      forcePage={pageIndex}
       marginPagesDisplayed={2}
       pageRangeDisplayed={3}
       onPageChange={handlePageClick}

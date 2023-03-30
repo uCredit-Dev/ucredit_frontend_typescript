@@ -43,7 +43,8 @@ const FineRequirementsList: FC<{
     <>
       <div
         className="flex flex-row items-center justify-between mb-3 px-5 py-2 w-full h-12 bg-gray-200 border-b border-gray-400"
-        data-tip="Hide Search Results"
+        data-tooltip-content="Hide Search Results"
+        data-tooltip-id="godtip"
       >
         <div className="flex flex-row">
           <div className="text-lg font-semibold">Fine Requirements List</div>{' '}
