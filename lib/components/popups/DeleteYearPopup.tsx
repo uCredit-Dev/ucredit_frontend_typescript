@@ -28,9 +28,30 @@ const DeleteYearPopup: FC = () => {
    */
   // Delete the selected year
   const activateDeleteYear = async () => {
-    console.log(year);
-
     if (currentPlan.years.length > 1 && year !== null) {
+      const threads = await userService.getThreads(
+        currentPlan._id,
+        token,
+        false,
+        null,
+      );
+      for (let thread of threads.data.data) {
+        // delete comments on the selected year and its semesters
+        if (thread.location_id.substring(0, 24) === year._id) {
+          for (let comment of thread.comments) {
+            await userService.removeComment(comment._id, token);
+          }
+        }
+        // delete comments on the selected year's courses
+        if (thread.location_type === 'Course') {
+          const course = await userService.getCourse(thread.location_id, token);
+          if (course.data.year_id === year._id) {
+            for (let comment of thread.comments) {
+              await userService.removeComment(comment._id, token);
+            }
+          }
+        }
+      }
       fetch(getAPI(window) + '/years/' + year._id, {
         method: 'DELETE',
         headers: {
@@ -51,39 +72,6 @@ const DeleteYearPopup: FC = () => {
           });
         })
         .catch((err) => console.log(err));
-
-      const threads = await userService.getThreads(
-        currentPlan._id,
-        token,
-        false,
-        null,
-      );
-      for (let thread of threads.data.data) {
-        console.log(thread.location_id);
-        // comments on course ??? get course -> check year_id
-
-        if (thread.location_id.substring(0, 24) === year._id) {
-          for (let comment of thread.comments) {
-            console.log(comment);
-            // await userService.removeComment(comment._id, token);
-          }
-        }
-
-        // if (thread.location_type === 'Course')
-        // use thread.location_id to search for course
-        // check if course.year_id matches year._id
-
-        if (thread.location_type === 'Course') {
-          const course = await userService.getCourse(thread.location_id, token);
-          console.log(course);
-          // if (=== year._id) {
-          for (let comment of thread.comments) {
-            console.log(comment);
-            // await userService.removeComment(comment._id, token);
-          }
-          // }
-        }
-      }
     } else {
       toast.error('Cannot delete last year!', {
         toastId: 'cannot delete last year',
