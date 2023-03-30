@@ -384,7 +384,7 @@ const YearComponent: FC<{
         'max-w-year-heading w-full min-w-[14rem]',
         {
           'cursor-move':
-            !mode || (mode !== ReviewMode.View && mode !== ReviewMode.RoadMap),
+            !mode || (mode !== ReviewMode.View),
         },
         { 'z-30': addingPrereqStatus },
       )}
@@ -430,7 +430,7 @@ const YearComponent: FC<{
                 {
                   'cursor-move':
                     !mode ||
-                    (mode !== ReviewMode.View && mode !== ReviewMode.RoadMap),
+                    (mode !== ReviewMode.View),
                 },
                 'flex-grow w-auto mt-auto font-semibold bg-transparent border-b border-transparent select-none text-md focus:border-gray-400 focus:outline-none',
               )}
@@ -444,7 +444,7 @@ const YearComponent: FC<{
                   {
                     'cursor-move':
                       !mode ||
-                      (mode !== ReviewMode.View && mode !== ReviewMode.RoadMap),
+                      (mode !== ReviewMode.View),
                   },
                   'w-auto text-xl font-semibold bg-transparent border-b border-transparent select-none focus:border-gray-400 focus:outline-none',
                 )}
@@ -524,7 +524,7 @@ const YearComponent: FC<{
               <div className="font-bold">{totalCredits} Credits</div>
             </div>
             {(!mode ||
-              (mode !== ReviewMode.View && mode !== ReviewMode.RoadMap)) && (
+              (mode !== ReviewMode.View)) && (
               <DotsVerticalIcon
                 onClick={() => setDisplay(!display)}
                 className="cursor-pointer stroke-2 w-7"

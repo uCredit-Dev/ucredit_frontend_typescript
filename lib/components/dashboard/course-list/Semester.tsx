@@ -129,7 +129,7 @@ const Semester: FC<{
     // Do something similar for plan, year, and semester
     // All threads should be retrieved on first load of the plan and stored in a map.
     return semesterCourses.map((course, index) => {
-      if (mode !== ReviewMode.View && mode !== ReviewMode.RoadMap) {
+      if (mode !== ReviewMode.View) {
         return (
           <div key={course._id} className="w-auto mr-0">
             <CourseDraggable
@@ -431,7 +431,7 @@ const Semester: FC<{
         className={clsx(
           {
             'bg-slate-300 hover:bg-slate-300':
-              mode === ReviewMode.View || mode === ReviewMode.RoadMap,
+              mode === ReviewMode.View,
           },
           'z-40 w-24 py-1 text-xs text-white transition duration-150 ease-in transform rounded hover:bg-secondary bg-primary focus:outline-none hover:scale-101',
         )}

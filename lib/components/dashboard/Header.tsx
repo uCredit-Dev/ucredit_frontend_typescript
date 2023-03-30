@@ -3,7 +3,6 @@ import { DashboardMode } from '../../resources/commonTypes';
 import CommentsOverview from './menus/comments/CommentsOverview';
 import HamburgerMenu from './menus/HamburgerMenu';
 import Notification from './menus/Notification';
-import RoadaMapHeader from '../roadmap/Header';
 import { ReviewMode } from '../../resources/commonTypes';
 import { useRouter } from 'next/router';
 
@@ -17,9 +16,7 @@ const Header: React.FC<{
   zLevelMax?: boolean | null;
 }> = ({ userID, dashboardSwitchMode, mode, zLevelMax }) => {
   const router = useRouter();
-  return mode === ReviewMode.RoadMap ? (
-    <RoadaMapHeader />
-  ) : (
+  return (
     <div
       className={`z-[${
         zLevelMax ? '91' : '40'

@@ -264,7 +264,6 @@ export enum ReviewMode {
   View = 'view',
   Edit = 'edit',
   None = '',
-  RoadMap = 'roadmap',
 }
 
 export interface ThreadType {

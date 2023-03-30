@@ -9,7 +9,6 @@ import FormControl from '@mui/material/FormControl';
 import Select, { SelectChangeEvent } from '@mui/material/Select';
 import Chip from '@mui/material/Chip';
 import CourseList from './course-list/CourseList';
-import { ReviewMode } from '../../resources/commonTypes';
 import { useSelector } from 'react-redux';
 import { selectPlan } from '../../slices/currentPlanSlice';
 
@@ -227,7 +226,7 @@ const Preview: React.FC = () => {
           {/* <div className="h-[40px]"></div> */}
         </div>
         <div className="flex items-center pl-[7%] pt-[3%] ">
-          <CourseList mode={ReviewMode.RoadMap} />
+          <CourseList mode={mode} />
         </div>
         <div className="fixed bottom-[100px] right-[10%] w-[20px] h-auto text-lg rounded-lg sm:w-auto px-3 py-1 text-blue-header bg-blue-footer sm:rounded-[13px]">
           <button

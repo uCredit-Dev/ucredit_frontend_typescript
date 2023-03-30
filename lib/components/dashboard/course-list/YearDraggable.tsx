@@ -26,8 +26,7 @@ const YearDraggable: FC<{
       isDragDisabled={
         draggable ||
         props.id === 0 ||
-        props.mode === ReviewMode.View ||
-        props.mode === ReviewMode.RoadMap
+        props.mode === ReviewMode.View
       }
     >
       {(provided, snapshot) => {
