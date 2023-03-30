@@ -22,7 +22,6 @@ const NewComment: FC<{
   updateRoadmapThreads: (thread: ThreadType) => void;
 }> = ({ updateRoadmapThreads }) => {
   const user = useSelector(selectUser);
-  // const currPlan = useSelector(selectPlan);
   const currPlan = { _id: '62d8875b5b6fb8734aa09679' };
   const [content, setContent] = useState('');
   const token = useSelector(selectToken);
@@ -62,7 +61,6 @@ const NewComment: FC<{
         console.log(error);
       });
   };
-  // eslint-disable-next-line react-hooks/exhaustive-deps
 
   return (
     <div className="h-[100%] rounded-[20px] border-2 mt-5 overflow-hidden">

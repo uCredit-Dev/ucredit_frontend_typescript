@@ -21,7 +21,6 @@ const Laptop: React.FC = () => {
 
   useEffect(() => {
     axios
-      // .get(getAPI(window) + `/roadmapPlans/get/${currPlan._id}`)
       .get(getAPI(window) + `/roadmapPlans/get/${'62d8875b5b6fb8734aa09679'}`)
 
       .then((response) => {
@@ -82,17 +81,6 @@ const Laptop: React.FC = () => {
                   </button>
                 </div>
               ))}
-              {/* <div>
-                <button className="flex-grow-0 mx-2 px-3 pt-0.5 pb-1 rounded-3xl text-blue bg-green-tag">
-                  Humanity
-                </button>
-              </div>
-
-              <div>
-                <button className="flex-grow-0 mx-2 px-3 pt-0.5 pb-1 rounded-3xl text-blue bg-red-tag">
-                  Pre-law
-                </button>
-              </div> */}
             </div>
           </div>
 

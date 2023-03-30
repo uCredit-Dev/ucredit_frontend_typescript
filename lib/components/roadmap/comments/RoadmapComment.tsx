@@ -15,7 +15,6 @@ const RoadmapComment: FC = () => {
   const [isShown, setIsShown] = useState<boolean>(false);
   const token = useSelector(selectToken);
 
-  // const currPlan = useSelector(selectPlan);
   const currPlan = { _id: '62d8875b5b6fb8734aa09679' };
 
   useEffect(() => {
@@ -38,7 +37,6 @@ const RoadmapComment: FC = () => {
       .catch((error) => {
         console.log(error);
       });
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [currPlan._id]);
 
   const updateSort = (sortSelected): void => {
@@ -101,6 +99,3 @@ const RoadmapComment: FC = () => {
 };
 
 export default RoadmapComment;
-// function setData(data: any) {
-//   throw new Error('Function not implemented.');
-// }

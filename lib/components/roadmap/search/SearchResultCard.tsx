@@ -37,7 +37,6 @@ const SearchResultCard: React.FC<planCardProps> = (props) => {
       <div
         className={
           'flex flex-row'
-          /*`grid grid-cols-2 gap-4 place-content-between h-20`*/
         }
       >
         {/*title*/}

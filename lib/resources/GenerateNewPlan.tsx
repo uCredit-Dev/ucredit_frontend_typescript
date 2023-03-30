@@ -65,29 +65,6 @@ const GenerateNewPlan: FC = () => {
           searchYear: newPlan.years[0]._id,
         }),
       );
-      // Make a new distribution for each distribution of each major of the plan.
-      // for (const { distributions } of toAddMajors) {
-      //   for (const distr of distributions) {
-      //     const distributionBody = getDistributionBody(
-      //       distr.name,
-      //       user._id,
-      //       newPlan._id,
-      //     );
-      //     console.log(distr);
-      //     let newDistr = await axios.post(
-      //       getAPI(window) + '/distributions',
-      //       distributionBody,
-      //     );
-      //     console.log(newDistr);
-      //     newPlan = {
-      //       ...newPlan,
-      //       distribution_ids: [
-      //         ...newPlan.distribution_ids,
-      //         newDistr.data.data._id,
-      //       ],
-      //     };
-      //   }
-      // }
       dispatch(updateSelectedPlan(newPlan));
       dispatch(updatePlanList([newPlan, ...planList]));
       if (!importing)
@@ -102,25 +79,8 @@ const GenerateNewPlan: FC = () => {
       dispatch(updateGeneratePlanAddStatus(false));
     };
     getData().catch(console.error);
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [generatePlanAddStatus]);
   return <div></div>;
 };
-
-// const getDistributionBody = (
-//   distrName: string,
-//   userID: string,
-//   planID: string,
-// ): object => {
-//   return {
-//     name: distrName,
-//     required: true,
-//     user_id: userID,
-//     plan_id: planID,
-//     filter: '',
-//     expireAt:
-//       userID === 'guestUser' ? Date.now() : undefined,
-//   };
-// };
 
 export default GenerateNewPlan;
