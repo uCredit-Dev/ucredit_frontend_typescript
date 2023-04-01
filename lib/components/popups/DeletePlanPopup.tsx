@@ -13,6 +13,7 @@ import { getAPI } from '../../resources/assets';
 import { updateDeletePlanStatus } from '../../slices/popupSlice';
 import { userService } from '../../../lib/services';
 import * as amplitude from '@amplitude/analytics-browser';
+import axios from 'axios';
 
 /**
  * This is the confirmation popup that appears when users press the button to delete a plan.
@@ -34,12 +35,12 @@ const DeletePlanPopup: FC = () => {
     // update plan array
     // If plan list has more than one plan, delete. Otherwise, don't.
     if (planList.length > 1 && user._id !== 'noUser') {
-      fetch(getAPI(window) + '/plans/' + currentPlan._id, {
-        method: 'DELETE',
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      })
+      axios
+        .delete(getAPI(window) + '/plans/' + currentPlan._id, {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        })
         .then(() => {
           toast.error(currentPlan.name + ' deleted!', {
             toastId: 'plan deleted',

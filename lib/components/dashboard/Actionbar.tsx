@@ -82,14 +82,10 @@ const Actionbar: FC<{ mode: ReviewMode }> = ({ mode }) => {
       majors: currentPlan.majors,
       name: planName,
     };
-    fetch(getAPI(window) + '/plans/update', {
-      method: 'PATCH',
-      headers: {
-        'Content-Type': 'application/json',
-        Authorization: `Bearer ${token}`,
-      },
-      body: JSON.stringify(body),
-    })
+    axios
+      .patch(getAPI(window) + '/plans/update', body, {
+        headers: { ContentType: 'application/json', Authorization: `Bearer ${token}` },
+      })
       .then(() => {
         const newUpdatedPlan = { ...currentPlan, name: planName };
         dispatch(updateSelectedPlan(newUpdatedPlan));

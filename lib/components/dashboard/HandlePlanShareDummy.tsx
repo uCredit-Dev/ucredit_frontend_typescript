@@ -332,52 +332,40 @@ const HandlePlanShareDummy = () => {
     yearIndex: number,
     plan: Plan,
   ): Promise<UserCourse> => {
-    return new Promise((resolve) => {
-      axios
-        .get(getAPI(window) + '/courses/' + courseId)
-        .then((response) => {
-          let course: UserCourse = response.data.data;
-          const addingYear: Year = plan.years[yearIndex];
-
-          const body = {
-            user_id: user._id,
-            year_id: addingYear._id,
-            plan_id: currentPlan._id,
-            title: course.title,
-            term: course.term,
-            year: addingYear.name,
-            credits: course.credits,
-            distribution_ids: currentPlan.distribution_ids,
-            isPlaceholder: false,
-            number: course.number,
-            area: course.area,
-            preReq: course.preReq,
-            level: course.level,
-            version: course.version,
-            expireAt: user._id === 'guestUser' ? Date.now() : undefined,
-          };
-          fetch(getAPI(window) + '/courses', {
-            method: 'POST',
-            headers: {
-              'Content-Type': 'application/json',
-              Authorization: `Bearer ${token}`,
-            },
-            body: JSON.stringify(body),
-          })
-            .then((retrieved) => retrieved.json())
-            .then((data) => {
-              if (data.errors === undefined) {
-                let newUserCourse: UserCourse = { ...data.data };
-                return resolve(newUserCourse);
-              } else {
-                console.log('Failed to add', data.errors);
-              }
-            });
+    try {
+      let res = await axios.get(getAPI(window) + '/courses/' + courseId); 
+      let course: UserCourse = res.data.data;
+      const addingYear: Year = plan.years[yearIndex];
+      const body = {
+        user_id: user._id,
+        year_id: addingYear._id,
+        plan_id: currentPlan._id,
+        title: course.title,
+        term: course.term,
+        year: addingYear.name,
+        credits: course.credits,
+        distribution_ids: currentPlan.distribution_ids,
+        isPlaceholder: false,
+        number: course.number,
+        area: course.area,
+        preReq: course.preReq,
+        level: course.level,
+        version: course.version,
+        expireAt: user._id === 'guestUser' ? Date.now() : undefined,
+      };
+      res = await axios
+        .post(getAPI(window) + '/courses', body, {
+          headers: {
+            Authorization: `Bearer ${token}`,
+            ContentType: 'application/json',
+          },
         })
-        .catch((err) =>
-          console.log('error creating course while sharing', err),
-        );
-    });
+      let newUserCourse: UserCourse = { ...res.data.data };
+      return newUserCourse;
+    } catch (err) {
+      console.log('error creating course while sharing', err);
+      return Promise.reject(err);
+    }
   };
 
   return <></>;

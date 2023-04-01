@@ -77,14 +77,13 @@ const PlanEditMenu: FC<{ mode: ReviewMode }> = ({ mode }) => {
       majors: currentPlan.majors,
       name: planName,
     };
-    fetch(getAPI(window) + '/plans/update', {
-      method: 'PATCH',
-      headers: {
-        'Content-Type': 'application/json',
-        Authorization: `Bearer ${token}`,
-      },
-      body: JSON.stringify(body),
-    })
+    axios
+      .patch(getAPI(window) + '/plans/update', body, {
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${token}`,
+        },
+      })
       .then(() => {
         const newUpdatedPlan = { ...currentPlan, name: planName };
         dispatch(updateSelectedPlan(newUpdatedPlan));
@@ -126,7 +125,7 @@ const PlanEditMenu: FC<{ mode: ReviewMode }> = ({ mode }) => {
   /**
    * Limit the max width of multi-select labels
    */
-  const customStyles: StylesConfig<(typeof majorOptions)[number], true> = {
+  const customStyles: StylesConfig<typeof majorOptions[number], true> = {
     multiValue: (provided) => {
       const maxWidth = '17rem';
       return { ...provided, maxWidth };
@@ -168,7 +167,7 @@ const PlanEditMenu: FC<{ mode: ReviewMode }> = ({ mode }) => {
    * if user selected more than one major
    */
   const MultiValue = (
-    props: MultiValueProps<(typeof majorOptions)[number], true>,
+    props: MultiValueProps<typeof majorOptions[number], true>,
   ) => {
     const major = allMajors.find(
       (majorObj) => majorObj.degree_name === props.data.label,

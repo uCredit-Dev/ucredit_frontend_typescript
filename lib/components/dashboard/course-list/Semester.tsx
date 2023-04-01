@@ -47,6 +47,7 @@ import {
 } from '../../../slices/userSlice';
 import Comments from '../Comments';
 import CourseComponent from './CourseComponent';
+import axios from 'axios';
 
 /**
  * A component displaying all the courses in a specific semester.
@@ -208,23 +209,24 @@ const Semester: FC<{
         _id: undefined,
       };
 
-      fetch(getAPI(window) + '/courses', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          Authorization: `Bearer ${token}`,
-        },
-        body: JSON.stringify(body),
-      })
-        .then((retrieved) => retrieved.json())
-        .then(handlePostResponse);
+      axios
+        .post(getAPI(window) + '/courses', body, {
+          headers: {
+            'Content-Type': 'application/json',
+            Authorization: `Bearer ${token}`,
+          },
+        })
+        .then((res) => handlePostResponse(res))
+        .catch((err) => {
+          console.log('Failed to add', err);
+          dispatch(updateAddingPrereq(false));
+        });
     }
   };
 
-  const handlePostResponse = (data) => {
-    if (data.errors === undefined && version !== 'None') {
-      let newUserCourse: UserCourse;
-      newUserCourse = { ...data.data };
+  const handlePostResponse = (res) => {
+    if (version !== 'None') {
+      let newUserCourse: UserCourse = { ...res.data.data };
       dispatch(updateCurrentPlanCourses([...currentCourses, newUserCourse]));
       const allYears: Year[] = [...currentPlan.years];
       const newYears: Year[] = [];
@@ -252,14 +254,6 @@ const Semester: FC<{
       dispatch(updateCartAdd(false));
       toast.success(version.title + ' added!', {
         toastId: 'title added',
-      });
-    } else {
-      console.log('Failed to add', data.errors);
-      data.errors.forEach((error) => {
-        if (error.status === 400) {
-          toast.error(error.detail);
-          dispatch(updateAddingPrereq(false));
-        }
       });
     }
   };

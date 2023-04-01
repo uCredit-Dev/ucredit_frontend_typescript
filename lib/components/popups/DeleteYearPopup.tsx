@@ -10,6 +10,7 @@ import {
   updateDeleteYearStatus,
 } from '../../slices/popupSlice';
 import { selectToken } from '../../slices/userSlice';
+import axios from 'axios';
 
 /**
  * This is the confirmation popup that appears when users press the button to delete a plan.
@@ -28,13 +29,13 @@ const DeleteYearPopup: FC = () => {
   // Delete the selected year
   const activateDeleteYear = () => {
     if (currentPlan.years.length > 1 && year !== null) {
-      fetch(getAPI(window) + '/years/' + year._id, {
-        method: 'DELETE',
-        headers: {
-          'Content-Type': 'application/json',
-          Authorization: `Bearer ${token}`,
-        },
-      })
+      axios
+        .delete(getAPI(window) + '/years/' + year._id, {
+          headers: {
+            'Content-Type': 'application/json',
+            Authorization: `Bearer ${token}`,
+          },
+        })
         .then(() => {
           const newYearArray = [...currentPlan.years].filter(
             (yr) => yr._id !== year._id,

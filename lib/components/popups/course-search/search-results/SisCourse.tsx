@@ -46,6 +46,7 @@ import {
 } from '../../../../slices/userSlice';
 import clsx from 'clsx';
 import * as amplitude from '@amplitude/analytics-browser';
+import axios from 'axios';
 
 /**
  * Displays a sis course when searching
@@ -184,20 +185,20 @@ const SisCourse: FC<{
    */
   const updateCourse = (): void => {
     if (courseToShow !== null) {
-      fetch(getAPI(window) + '/courses/' + courseToShow._id, {
-        method: 'DELETE',
-        headers: {
-          'Content-Type': 'application/json',
-          Authorization: `Bearer ${token}`,
-        },
-      })
-        .then((retrieved) => retrieved.json())
-        .then(handleUpdate);
+      axios
+        .delete(getAPI(window) + '/courses/' + courseToShow._id, {
+          headers: {
+            'Content-Type': 'application/json',
+            Authorization: `Bearer ${token}`,
+          },
+        })
+        .then(handleUpdate)
+        .catch((err) => console.log(err));
     }
   };
 
-  const handleUpdate = (data) => {
-    if (data.errors === undefined && courseToShow !== null) {
+  const handleUpdate = () => {
+    if (courseToShow !== null) {
       const updated = currentCourses.filter((course) => {
         if (course._id === courseToShow._id) {
           return false;
@@ -221,8 +222,6 @@ const SisCourse: FC<{
       const newPlan: Plan = { ...currentPlan, years: newYears };
       dispatch(updateSelectedPlan(newPlan));
       props.addCourse(newPlan);
-    } else {
-      console.log('ERROR: Failed to add', data.errors);
     }
   };
 

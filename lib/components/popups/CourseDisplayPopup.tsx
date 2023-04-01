@@ -37,6 +37,7 @@ import { toast } from 'react-toastify';
 import { getAPI } from '../../resources/assets';
 import SisCourse from './course-search/search-results/SisCourse';
 import * as amplitude from '@amplitude/analytics-browser';
+import axios from 'axios';
 
 /**
  * Course info popup that opens when user preses info button on course components
@@ -158,68 +159,61 @@ const CourseDisplayPopup: FC = () => {
         level: version.level,
         expireAt: user._id === 'guestUser' ? Date.now() : undefined,
       };
-      fetch(getAPI(window) + '/courses', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          Authorization: `Bearer ${token}`,
-        },
-        body: JSON.stringify(body),
-      })
-        .then((retrieved) => retrieved.json())
-        .then(handlePostAddCourse(plan));
+      axios
+        .post(getAPI(window) + '/courses', body, {
+          headers: {
+            'Content-Type': 'application/json',
+            Authorization: `Bearer ${token}`,
+          },
+        })
+        .then((res) => res.data.data)
+        .then(handlePostAddCourse(plan))
+        .catch((err) => {
+          console.log('Failed to add', err);
+        });
     }
   };
 
   // Handles post add course post response
-  const handlePostAddCourse =
-    (plan: Plan) =>
-    (data): void => {
-      let newUserCourse: UserCourse;
-      if (data.errors === undefined && courseToShow !== null) {
-        newUserCourse = { ...data.data };
-        dispatch(updateCurrentPlanCourses([...currentCourses, newUserCourse]));
-        const allYears: Year[] = [...plan.years];
-        const newYears: Year[] = [];
-        allYears.forEach(updateYears(newYears, newUserCourse));
-        const newPlan: Plan = { ...plan, years: newYears };
-        dispatch(updateSelectedPlan(newPlan));
-        const newPlanList = [...planList];
-        for (let i = 0; i < planList.length; i++) {
-          if (planList[i]._id === newPlan._id) {
-            newPlanList[i] = newPlan;
-          }
+  const handlePostAddCourse = (plan: Plan) => (data): void => {
+    let newUserCourse: UserCourse;
+    if (courseToShow !== null) {
+      newUserCourse = { ...data };
+      dispatch(updateCurrentPlanCourses([...currentCourses, newUserCourse]));
+      const allYears: Year[] = [...plan.years];
+      const newYears: Year[] = [];
+      allYears.forEach(updateYears(newYears, newUserCourse));
+      const newPlan: Plan = { ...plan, years: newYears };
+      dispatch(updateSelectedPlan(newPlan));
+      const newPlanList = [...planList];
+      for (let i = 0; i < planList.length; i++) {
+        if (planList[i]._id === newPlan._id) {
+          newPlanList[i] = newPlan;
         }
-        dispatch(updatePlanList(newPlanList));
-        dispatch(updateCourseToShow(null));
-        dispatch(updateShowCourseInfo(false));
-        dispatch(clearSearch());
-        dispatch(updatePlaceholder(false));
-        toast.success('Course updated!', {
-          toastId: 'course updated',
-        });
-        amplitude.track('Moved Course');
-      } else {
-        console.log('Failed to add', data.errors);
-        data.errors.forEach((error) => {
-          if (error.status === 400) {
-            toast.error(error.detail);
-          }
-        });
       }
-    };
+      dispatch(updatePlanList(newPlanList));
+      dispatch(updateCourseToShow(null));
+      dispatch(updateShowCourseInfo(false));
+      dispatch(clearSearch());
+      dispatch(updatePlaceholder(false));
+      toast.success('Course updated!', {
+        toastId: 'course updated',
+      });
+      amplitude.track('Moved Course');
+    }
+  };
 
   // Helper method that updates the years array in the plan after adding course.
-  const updateYears =
-    (newYears: Year[], newUserCourse: UserCourse) =>
-    (year: Year): void => {
-      if (courseToShow !== null && year._id === courseToShow.year_id) {
-        const yCourses = [...year.courses, newUserCourse];
-        newYears.push({ ...year, courses: yCourses });
-      } else {
-        newYears.push(year);
-      }
-    };
+  const updateYears = (newYears: Year[], newUserCourse: UserCourse) => (
+    year: Year,
+  ): void => {
+    if (courseToShow !== null && year._id === courseToShow.year_id) {
+      const yCourses = [...year.courses, newUserCourse];
+      newYears.push({ ...year, courses: yCourses });
+    } else {
+      newYears.push(year);
+    }
+  };
 
   return (
     <div className="absolute top-0">

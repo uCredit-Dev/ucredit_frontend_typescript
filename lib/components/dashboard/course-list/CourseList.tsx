@@ -30,6 +30,7 @@ import {
 import { getAPI } from '../../../resources/assets';
 import YearDraggable from './YearDraggable';
 import * as amplitude from '@amplitude/analytics-browser';
+import axios from 'axios';
 
 interface Props {
   mode: ReviewMode;
@@ -174,24 +175,21 @@ const CourseList: FC<Props> = ({ mode }) => {
     const temp: Year = yearArr[sourceIndex];
     yearArr.splice(sourceIndex, 1);
     yearArr.splice(destIndex, 0, temp);
-    dispatch(updateSelectedPlan({ ...currentPlan, years: yearArr }));
     const yearIdArr: string[] = yearArr.map((year) => year._id);
     const body = {
       plan_id: currentPlan._id,
       year_ids: yearIdArr,
     };
-    fetch(getAPI(window) + '/years/changeOrder', {
-      method: 'PATCH',
-      headers: {
-        'Content-Type': 'application/json',
-        Authorization: `Bearer ${token}`,
-      },
-      body: JSON.stringify(body),
-    })
-      .then((resp) => {
-        if (!resp.ok) {
-          console.log('ERROR:', resp);
-        }
+    axios
+      .patch(getAPI(window) + '/years/changeOrder', body, {
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${token}`,
+        },
+      })
+      .then(() => {
+        // update frontend on success
+        dispatch(updateSelectedPlan({ ...currentPlan, years: yearArr }));
       })
       .catch((err) => console.log(err));
   };
@@ -218,9 +216,10 @@ const CourseList: FC<Props> = ({ mode }) => {
     // Defining relevant variables
     const sourceYear: Year = sourceObj.year;
     const destYear: Year = destObj.year;
-    const course: UserCourse = [...source.courses].sort(
-      (course1: UserCourse, course2: UserCourse) =>
-        course2._id.localeCompare(course1._id),
+    const course: UserCourse = [
+      ...source.courses,
+    ].sort((course1: UserCourse, course2: UserCourse) =>
+      course2._id.localeCompare(course1._id),
     )[sourceIndex];
     const courseYearIndex: number = sourceYear.courses
       .map((c) => c._id)
@@ -232,23 +231,22 @@ const CourseList: FC<Props> = ({ mode }) => {
       newTerm: destination.semester,
     };
 
-    let res: any = await fetch(getAPI(window) + '/courses/dragged', {
-      method: 'PATCH',
+    let res = await axios.patch(getAPI(window) + '/courses/dragged', body, {
       headers: {
-        'Content-Type': 'application/json',
+        ContentType: 'application/json',
         Authorization: `Bearer ${token}`,
       },
-      body: JSON.stringify(body),
     });
 
     // handle error
-    if (!res.ok) {
+    if (res.status !== 200) {
       if (res.status === 400) {
         toast.error("Course isn't usually held this semester!", {
           toastId: 'no course this semester',
         });
+      } else {
+        console.log('ERROR:', res);
       }
-      console.log('ERROR:', res);
       return;
     }
 
@@ -256,8 +254,7 @@ const CourseList: FC<Props> = ({ mode }) => {
       toastId: 'moved course',
     });
     amplitude.track('Moved Course');
-    res = await res.json();
-    const updatedCourse = res.data;
+    const updatedCourse = res.data.data;
 
     const sourceCourseArr = [...sourceYear.courses];
     let destCourseArr = [...destYear.courses];
