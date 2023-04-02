@@ -430,8 +430,7 @@ const Semester: FC<{
       <button
         className={clsx(
           {
-            'bg-slate-300 hover:bg-slate-300':
-              mode === ReviewMode.View,
+            'bg-slate-300 hover:bg-slate-300': mode === ReviewMode.View,
           },
           'z-40 w-24 py-1 text-xs text-white transition duration-150 ease-in transform rounded hover:bg-secondary bg-primary focus:outline-none hover:scale-101',
         )}

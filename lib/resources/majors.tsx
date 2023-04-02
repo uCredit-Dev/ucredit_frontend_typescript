@@ -4911,7 +4911,6 @@ const bsNeuro: Major = {
   ],
 };
 
-
 const minorEcon: Minor = {
   degree_name: 'Minor Economics',
   abbrev: 'Minor Econ',
