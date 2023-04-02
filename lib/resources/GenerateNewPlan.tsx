@@ -78,6 +78,7 @@ const GenerateNewPlan: FC = () => {
       dispatch(clearToAdd());
       dispatch(updateGeneratePlanAddStatus(false));
     };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
     getData().catch(console.error);
   }, [generatePlanAddStatus]);
   return <div></div>;
