@@ -395,14 +395,11 @@ export const getCourses = (
 ): Promise<PrereqCourses> => {
   return new Promise(async (resolve) => {
     // Gets an array of all courses in expression.
-    let match = expr.match(regex);
-    let numList: RegExpMatchArray = [];
+    let numList: RegExpMatchArray | null = expr.match(regex);
+    if (!numList) return;
     let numNameList: any[] = []; // Contains the number with name of a course.
 
     // If we were able to find course numbers in regex matches, update the numList to list of course numbers
-    if (match) {
-      numList = match;
-    }
 
     // For the list of numbers, retrieve each course number, search for it and store the combined number + name into numNameList
     let retrieved = 0;

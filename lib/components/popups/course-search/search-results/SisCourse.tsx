@@ -28,7 +28,6 @@ import {
   SemesterType,
   Year,
 } from '../../../../resources/commonTypes';
-import ReactTooltip from 'react-tooltip';
 import {
   selectCourseToShow,
   selectShowCourseInfo,
@@ -89,7 +88,6 @@ const SisCourse: FC<{
       const index: number = inspected.terms.indexOf(version.term.toString());
       updateVersionIndex(index);
     }
-    ReactTooltip.rebuild();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [version]);
 
@@ -270,8 +268,8 @@ const SisCourse: FC<{
               <div className="flex-grow">
                 <QuestionMarkCircleIcon
                   className="h-4 fill-gray"
-                  data-for="godTip"
-                  data-tip={`<p>This is the year you're selecting for.</p><p>The version you are viewing gives you a snapshot of the information of the course at a specific time to give you an understanding of the past and current states of the course. This is NOT to determine where on the plan you are adding the course.</p><p>NOTE: This could be different from the version of the course you are viewing.</p><p>(ie. Course Version "Spring, 2021" may not equal "Spring, Senior")</p>`}
+                  data-tooltip-id="godtip"
+                  data-tooltip-html={`<p>This is the year you're selecting for.</p><p>The version you are viewing gives you a snapshot of the information of the course at a specific time to give you an understanding of the past and current states of the course. This is NOT to determine where on the plan you are adding the course.</p><p>NOTE: This could be different from the version of the course you are viewing.</p><p>(ie. Course Version "Spring, 2021" may not equal "Spring, Senior")</p>`}
                 />
               </div>
               <select
@@ -315,8 +313,8 @@ const SisCourse: FC<{
               <div className="flex-grow">
                 <QuestionMarkCircleIcon
                   className="h-4 fill-gray"
-                  data-for="godTip"
-                  data-tip={
+                  data-tooltip-id="godtip"
+                  data-tooltip-html={
                     '<p>Areas designate the specific subset a course belongs to. Each degree requires students to take a certain amount of credits or courses in a spcific area.</p><p>H - Humanities</p><p>S - Social Sciences</p><p>E - Engineering</p><p>N - Natural Sciences</p><p>Q - Quantitative</p>'
                   }
                 />
@@ -415,8 +413,8 @@ const SisCourse: FC<{
                 <div className="flex-grow mt-1">
                   <QuestionMarkCircleIcon
                     className="h-4 fill-gray"
-                    data-for="godTip"
-                    data-tip={`<p>This is a specific snapshot of course information at a specific time in the past or present.</p><p>NOTE: This is NOT to determine where on the plan you are adding the course.</p><p>(ie. Course Version "Spring, 2021" may not equal "Spring, Senior")</p>`}
+                    data-tooltip-id="godtip"
+                    data-tooltip-html={`<p>This is a specific snapshot of course information at a specific time in the past or present.</p><p>NOTE: This is NOT to determine where on the plan you are adding the course.</p><p>(ie. Course Version "Spring, 2021" may not equal "Spring, Senior")</p>`}
                   />
                 </div>
                 :

@@ -1,5 +1,4 @@
 import React, { useState, useEffect, FC, useRef } from 'react';
-import ReactTooltip from 'react-tooltip';
 import { useDispatch, useSelector } from 'react-redux';
 import { MinusIcon, ExclamationIcon } from '@heroicons/react/outline';
 import { Transition } from '@tailwindui/react';
@@ -145,9 +144,6 @@ const CourseComponent: FC<{
         onMouseEnter={() => setDraggable(false)}
         onMouseLeave={() => setDraggable(true)}
         onClick={displayCourses}
-        onMouseOver={() => {
-          ReactTooltip.rebuild();
-        }}
         key={course.number}
       >
         <div className="grid grid-flow-row-dense grid-cols-10 w-full h-full gap-x-1.5">

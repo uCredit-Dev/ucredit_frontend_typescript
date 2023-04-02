@@ -13,7 +13,6 @@ import {
 import CourseCard from './CourseCard';
 import ReactPaginate from 'react-paginate';
 import { Course, SISRetrievedCourse } from '../../../../resources/commonTypes';
-import ReactTooltip from 'react-tooltip';
 import { QuestionMarkCircleIcon } from '@heroicons/react/solid';
 import { NewspaperIcon } from '@heroicons/react/outline';
 import { selectPlan } from '../../../../slices/currentPlanSlice';
@@ -159,7 +158,7 @@ const SearchList: FC<{
     <>
       <div
         className="flex flex-row items-center justify-between w-full h-12 px-5 py-2 mb-3 bg-gray-200 border-b border-gray-400"
-        data-tip="Hide Search Results"
+        data-tooltip-content="Hide Search Results"
       >
         <div className="flex flex-row">
           <div className="text-lg font-semibold">Search Results</div>
@@ -168,8 +167,8 @@ const SearchList: FC<{
           <div className="flex-grow mr-1">
             <QuestionMarkCircleIcon
               className="h-4 fill-gray"
-              data-for="godTip"
-              data-tip={
+              data-tooltip-id="godtip"
+              data-tooltip-html={
                 "<p>Placeholder course used to flexibly add courses to your plan. Any course not covered by the plan can be added in this way. Just remember to fill out all necessary information of the placeholder course you'd like the plan to count towards!</p><p>Examples:</p><p>- A future 3 credit H course.</p><p>- A required lab safety course of number EN.990.110</p><p>- An AP course covering for the 4 credit course, Calculus I (AS.110.108)</p>"
               }
             />
@@ -177,11 +176,8 @@ const SearchList: FC<{
           <div
             className="flex flex-row items-center justify-center w-auto h-6 px-1 transition duration-200 ease-in transform bg-white rounded cursor-pointer hover:scale-110"
             onClick={onPlaceholderClick}
-            data-tip="Add a placeholder or non-SIS course"
-            data-for="godTip"
-            onMouseOver={() => {
-              ReactTooltip.rebuild();
-            }}
+            data-tooltip-content="Add a placeholder or non-SIS course"
+            data-tooltip-id="godtip"
           >
             <div className="mr-1">Custom</div>
             <NewspaperIcon className="w-4 h-4 stroke-2" />
