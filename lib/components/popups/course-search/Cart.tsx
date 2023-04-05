@@ -36,6 +36,7 @@ const Cart: FC<{}> = () => {
   const [selectedRequirement, setSelectedRequirement] =
     useState<requirements>(emptyRequirements);
   const [cartFilter, setCartFilter] = useState<string>('');
+  const [isCartFilterLoaded, setIsCartFilterLoaded] = useState<boolean>(false);
   const [textFilterInputValue, setTextFilterInputValue] = useState<string>('');
 
   // Redux selectors and dispatch
@@ -46,25 +47,27 @@ const Cart: FC<{}> = () => {
   const pageIndex = useSelector(selectPageIndex);
 
   useEffect(() => {
-    if (distrs[1] && distrs[1].length > 0) {
-      setSelectedRequirement(distrs[1][0]);
-      setCartFilter(selectedRequirement.expr);
-    }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [distrs, currentPlanCourses, cartAdd]);
-
-  useEffect(() => {
     setCartFilter(selectedRequirement.expr);
     dispatch(updatePageIndex(0));
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [selectedRequirement]);
 
+  useEffect(() => {
+    if (distrs[1] && distrs[1].length > 0) {
+      setSelectedRequirement(distrs[1][0]);
+      setCartFilter(distrs[1][0].expr);
+      setIsCartFilterLoaded(true);
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [distrs, currentPlanCourses, cartAdd]);
+
   // Performing searching in useEffect so as to activate searching
   useEffect(() => {
     setSearching(true);
-    cartSearch();
+    dispatch(updateRetrievedCourses([]));
+    if (isCartFilterLoaded) cartSearch();
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [cartFilter, pageIndex]);
+  }, [cartFilter, pageIndex, isCartFilterLoaded]);
 
   const cartSearch = () => {
     fineReqFind(cartFilter, pageIndex).then((courses: SISRetrievedCourse[]) => {
