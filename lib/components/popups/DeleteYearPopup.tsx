@@ -38,17 +38,13 @@ const DeleteYearPopup: FC = () => {
       for (let thread of threads.data.data) {
         // delete comments on the selected year and its semesters
         if (thread.location_id.substring(0, 24) === year._id) {
-          for (let comment of thread.comments) {
-            await userService.removeComment(comment._id, token);
-          }
+          await userService.removeThread(thread._id, token);
         }
         // delete comments on the selected year's courses
         if (thread.location_type === 'Course') {
           const course = await userService.getCourse(thread.location_id, token);
           if (course.data.year_id === year._id) {
-            for (let comment of thread.comments) {
-              await userService.removeComment(comment._id, token);
-            }
+            await userService.removeThread(thread._id, token);
           }
         }
       }

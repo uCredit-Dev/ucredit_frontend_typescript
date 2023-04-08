@@ -122,6 +122,12 @@ const removeComment = (comment_id: string, token: string, cb = undefined) => {
     .then((res) => handleResponse(res, cb));
 };
 
+const removeThread = (thread_id: string, token: string, cb = undefined) => {
+  return fetchWrapper
+    .delete(`${getAPI(window)}/thread`, token, { thread_id })
+    .then((res) => handleResponse(res, cb));
+};
+
 const changeReviewStatus = (
   review_id,
   status,
@@ -169,6 +175,7 @@ export const userService = {
   getThreads,
   postNewComment,
   removeComment,
+  removeThread,
   changeReviewStatus,
   getNotifications,
 };

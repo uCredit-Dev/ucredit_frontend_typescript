@@ -265,11 +265,14 @@ const Comments: FC<{
               .indexOf(comment_id);
             thread.comments.splice(commentIndex, 1);
             dispatch(updateThreads(threads.data.data));
+            await userService.removeComment(comment_id, token);
             break;
           }
         }
+        if (thread.comments.length === 0) {
+          await userService.removeThread(thread._id, token);
+        }
       }
-      await userService.removeComment(comment_id, token);
     } catch (err) {
       console.log(err);
     }

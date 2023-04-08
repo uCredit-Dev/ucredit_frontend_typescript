@@ -76,9 +76,7 @@ const DeleteCoursePopup: FC = () => {
       });
       for (let thread of threads.data.data) {
         if (thread.location_id === courseInfo.course._id) {
-          for (let comment of thread.comments) {
-            await userService.removeComment(comment._id, token);
-          }
+          await userService.removeThread(thread._id, token);
         }
       }
     } else {
