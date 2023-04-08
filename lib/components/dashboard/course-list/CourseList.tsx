@@ -216,10 +216,9 @@ const CourseList: FC<Props> = ({ mode }) => {
     // Defining relevant variables
     const sourceYear: Year = sourceObj.year;
     const destYear: Year = destObj.year;
-    const course: UserCourse = [
-      ...source.courses,
-    ].sort((course1: UserCourse, course2: UserCourse) =>
-      course2._id.localeCompare(course1._id),
+    const course: UserCourse = [...source.courses].sort(
+      (course1: UserCourse, course2: UserCourse) =>
+        course2._id.localeCompare(course1._id),
     )[sourceIndex];
     const courseYearIndex: number = sourceYear.courses
       .map((c) => c._id)
@@ -231,60 +230,54 @@ const CourseList: FC<Props> = ({ mode }) => {
       newTerm: destination.semester,
     };
 
-    let res = await axios.patch(getAPI(window) + '/courses/dragged', body, {
-      headers: {
-        ContentType: 'application/json',
-        Authorization: `Bearer ${token}`,
-      },
-    });
+    try {
+      let res = await axios.patch(getAPI(window) + '/courses/dragged', body, {
+        headers: {
+          ContentType: 'application/json',
+          Authorization: `Bearer ${token}`,
+        },
+      });
+      toast.success('Successfully moved course!', {
+        toastId: 'moved course',
+      });
+      amplitude.track('Moved Course');
+      const updatedCourse = res.data.data;
 
-    // handle error
-    if (res.status !== 200) {
-      if (res.status === 400) {
-        toast.error("Course isn't usually held this semester!", {
-          toastId: 'no course this semester',
-        });
+      const sourceCourseArr = [...sourceYear.courses];
+      let destCourseArr = [...destYear.courses];
+      sourceCourseArr.splice(courseYearIndex, 1);
+      if (destCourseArr.map((c) => c._id).indexOf(updatedCourse._id) === -1) {
+        destCourseArr.push(updatedCourse);
       } else {
-        console.log('ERROR:', res);
+        // otherwase source and destination are the same.
+        destCourseArr = sourceCourseArr;
+        destCourseArr.push(updatedCourse);
       }
-      return;
+      const currPlanYears = [...currentPlan.years];
+      currPlanYears[sourceObj.index] = {
+        ...sourceYear,
+        courses: sourceCourseArr,
+      };
+      currPlanYears[destObj.index] = {
+        ...destYear,
+        courses: destCourseArr,
+      };
+
+      const newCurrentPlan: Plan = {
+        ...currentPlan,
+        years: currPlanYears,
+      };
+      const planListClone = [...planList];
+      planListClone[0] = newCurrentPlan;
+      updatePlanCourses(destYear, destination.semester, updatedCourse);
+      dispatch(updatePlanList(planListClone));
+      dispatch(updateSelectedPlan(newCurrentPlan));
+    } catch (err) {
+      console.log('ERROR:', err);
+      toast.error("Course isn't usually held this semester!", {
+        toastId: 'no course this semester',
+      });
     }
-
-    toast.success('Successfully moved course!', {
-      toastId: 'moved course',
-    });
-    amplitude.track('Moved Course');
-    const updatedCourse = res.data.data;
-
-    const sourceCourseArr = [...sourceYear.courses];
-    let destCourseArr = [...destYear.courses];
-    sourceCourseArr.splice(courseYearIndex, 1);
-    if (destCourseArr.map((c) => c._id).indexOf(updatedCourse._id) === -1) {
-      destCourseArr.push(updatedCourse);
-    } else {
-      // otherwase source and destination are the same.
-      destCourseArr = sourceCourseArr;
-      destCourseArr.push(updatedCourse);
-    }
-    const currPlanYears = [...currentPlan.years];
-    currPlanYears[sourceObj.index] = {
-      ...sourceYear,
-      courses: sourceCourseArr,
-    };
-    currPlanYears[destObj.index] = {
-      ...destYear,
-      courses: destCourseArr,
-    };
-
-    const newCurrentPlan: Plan = {
-      ...currentPlan,
-      years: currPlanYears,
-    };
-    const planListClone = [...planList];
-    planListClone[0] = newCurrentPlan;
-    updatePlanCourses(destYear, destination.semester, updatedCourse);
-    dispatch(updatePlanList(planListClone));
-    dispatch(updateSelectedPlan(newCurrentPlan));
   };
 
   /**

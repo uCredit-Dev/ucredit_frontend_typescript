@@ -333,7 +333,7 @@ const HandlePlanShareDummy = () => {
     plan: Plan,
   ): Promise<UserCourse> => {
     try {
-      let res = await axios.get(getAPI(window) + '/courses/' + courseId); 
+      let res = await axios.get(getAPI(window) + '/courses/' + courseId);
       let course: UserCourse = res.data.data;
       const addingYear: Year = plan.years[yearIndex];
       const body = {
@@ -353,13 +353,12 @@ const HandlePlanShareDummy = () => {
         version: course.version,
         expireAt: user._id === 'guestUser' ? Date.now() : undefined,
       };
-      res = await axios
-        .post(getAPI(window) + '/courses', body, {
-          headers: {
-            Authorization: `Bearer ${token}`,
-            ContentType: 'application/json',
-          },
-        })
+      res = await axios.post(getAPI(window) + '/courses', body, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+          ContentType: 'application/json',
+        },
+      });
       let newUserCourse: UserCourse = { ...res.data.data };
       return newUserCourse;
     } catch (err) {

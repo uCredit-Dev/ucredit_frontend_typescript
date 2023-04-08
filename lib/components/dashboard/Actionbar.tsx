@@ -84,7 +84,10 @@ const Actionbar: FC<{ mode: ReviewMode }> = ({ mode }) => {
     };
     axios
       .patch(getAPI(window) + '/plans/update', body, {
-        headers: { ContentType: 'application/json', Authorization: `Bearer ${token}` },
+        headers: {
+          ContentType: 'application/json',
+          Authorization: `Bearer ${token}`,
+        },
       })
       .then(() => {
         const newUpdatedPlan = { ...currentPlan, name: planName };
