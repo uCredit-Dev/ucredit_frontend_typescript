@@ -119,8 +119,9 @@ const YearComponent: FC<{
       if (currentWrapperRef && !currentWrapperRef.contains(e.target))
         setDisplay(false);
     };
-    document.addEventListener('click', handleClickOutside);
-    return () => document.removeEventListener('click', handleClickOutside);
+    document.addEventListener('click', handleClickOutside, true);
+    return () =>
+      document.removeEventListener('click', handleClickOutside, true);
   }, [wrapperRef, display]);
 
   /**
