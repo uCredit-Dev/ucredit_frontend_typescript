@@ -574,13 +574,13 @@ const baCogSci: Major = {
 
 // https://chemistry.jhu.edu/undergraduate/requirements/
 const baChem: Major = {
-  degree_name: "B.A. Chemistry",
-  abbrev: "baChem",
-  department: "AS Chemistry",
+  degree_name: 'B.A. Chemistry',
+  abbrev: 'baChem',
+  department: 'AS Chemistry',
   total_degree_credit: 70,
   wi_credit: 6,
-  url: "https://e-catalogue.jhu.edu/arts-sciences/full-time-residential-programs/degree-programs/chemistry/chemistry-bachelor-arts/",
-  distributions: [ 
+  url: 'https://e-catalogue.jhu.edu/arts-sciences/full-time-residential-programs/degree-programs/chemistry/chemistry-bachelor-arts/',
+  distributions: [
     {
       name: 'Chemistry Core',
       required_credits: 40,
@@ -678,8 +678,7 @@ const baChem: Major = {
             '<br /> AS.030.245 Quantitative Analytical Laboratory <br /> AS.030.305	Physical Chemistry Instrumentation Laboratory I <br />' +
             'EN.030.306 Physical Chemistry Instrumentation Laboratory II',
           required_credits: 6,
-          criteria:
-            'AS.030.245[C]^OR^AS.030.305[C]^OR^EN.030.306[C]',
+          criteria: 'AS.030.245[C]^OR^AS.030.305[C]^OR^EN.030.306[C]',
         },
       ],
     },
@@ -689,7 +688,7 @@ const baChem: Major = {
       min_credits_per_course: 1,
       description:
         'Other courses that are not part of the Chemistry Core but are required for the major.',
-      criteria: 
+      criteria:
         'AS.171.105[C]^OR^AS.171.101[C]^OR^AS.171.103[C]^OR^AS.171.107[C]^OR^AS.173.115[C]^OR^AS.173.111[C]^OR^' +
         'AS.171.106[C]^OR^AS.171.102[C]^OR^AS.171.104[C]^OR^AS.171.108[C]^OR^AS.173.116[C]^OR^AS.173.112[C]^OR^' +
         'AS.110.106[C]^OR^AS.110.108[C]^OR^AS.110.107[C]^OR^AS.110.109[C]^OR^AS.110.113[C]',
@@ -743,12 +742,12 @@ const baChem: Major = {
         },
         {
           description:
-          '<b>Calculus II</b> <br />' +
-          'AS.110.109 Calculus II (For Physical Sciences and Engineering)' +
-          '<br /> <i>OR</i> <br />' +
-          'AS.110.107 Calculus II (For Biological and Social Science)' +
-          '<br /> <i>OR</i> <br />' +
-          'AS.110.113 Honors Single Variable Calculus',
+            '<b>Calculus II</b> <br />' +
+            'AS.110.109 Calculus II (For Physical Sciences and Engineering)' +
+            '<br /> <i>OR</i> <br />' +
+            'AS.110.107 Calculus II (For Biological and Social Science)' +
+            '<br /> <i>OR</i> <br />' +
+            'AS.110.113 Honors Single Variable Calculus',
           required_credits: 4,
           criteria: 'AS.110.107[C]^OR^AS.110.109[C]^OR^AS.110.113[C]',
         },
@@ -761,16 +760,18 @@ const baChem: Major = {
       description:
         'Students must take three credits of advanced chemistry courses beyond AS.030.305-AS.030.306. ' +
         'None of the advanced course requirements may be fulfilled with research. ' +
-        'Students must also take nine credits of advanced chemistry courses, or science electives at the 300-level or higher ' + 
+        'Students must also take nine credits of advanced chemistry courses, or science electives at the 300-level or higher ' +
         'approved by a Department of Chemistry advisor, and/or mathematics beyond Calculus II',
-      criteria: 'AS Chemistry[D]^AND^(200[L]^OR^300[L])^OR^AS Mathematics[D]^AND^(200[L])^NOT^AS.030.305[C]^NOT^AS.030.306[C]',
+      criteria:
+        'AS Chemistry[D]^AND^(200[L]^OR^300[L])^OR^AS Mathematics[D]^AND^(200[L])^NOT^AS.030.305[C]^NOT^AS.030.306[C]',
       fine_requirements: [
         {
           description:
             '<b>Advanced chemistry courses</b> <br /> AS.173.116 Electricity and Magnetism Laboratory' +
             '<br /> <i>OR</i> <br /> AS.173.112 General Physics Laboratory II',
           required_credits: 3,
-          criteria: 'AS Chemistry[D]^AND^(200[L]^OR^300[L])^NOT^AS.030.305[C]^NOT^AS.030.306[C]',
+          criteria:
+            'AS Chemistry[D]^AND^(200[L]^OR^300[L])^NOT^AS.030.305[C]^NOT^AS.030.306[C]',
         },
         {
           description:
@@ -778,9 +779,10 @@ const baChem: Major = {
             '<br /> <i>OR</i> <br /> science electives at the 300-level or higher' +
             '<br /> <i>OR</i> <br /> mathematics beyond Calculus II',
           required_credits: 9,
-          criteria: 'AS Chemistry[D]^AND^(300[L])^OR^AS Mathematics[D]^AND^(200[L])',
+          criteria:
+            'AS Chemistry[D]^AND^(300[L])^OR^AS Mathematics[D]^AND^(200[L])',
         },
-      ]
+      ],
     },
   ],
 };
