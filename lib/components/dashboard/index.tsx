@@ -56,6 +56,7 @@ import Button from '@mui/material/Button';
 import clsx from 'clsx';
 import Footer from '../Footer';
 import * as amplitude from '@amplitude/analytics-browser';
+import { getAPI } from '../../resources/assets';
 
 interface Props {
   mode: ReviewMode;
