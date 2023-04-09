@@ -88,7 +88,7 @@ const Form: FC<{
       dispatch(
         updateSearchFilters({ filter: 'year', value: date.getFullYear() + 1 }),
       );
-    else if (semester === 'Fall' && date.getMonth() < 3) {
+    else if (semester === 'Fall' && date.getMonth() < 2) {
       dispatch(
         updateSearchFilters({ filter: 'year', value: date.getFullYear() - 1 }),
       );
