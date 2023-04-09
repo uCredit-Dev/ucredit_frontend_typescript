@@ -244,8 +244,11 @@ const CourseList: FC<Props> = ({ mode }) => {
     // handle error
     if (!res.ok) {
       if (res.status === 400) {
-        toast.error("Course isn't usually held this semester!", {
-          toastId: 'no course this semester',
+        const data = await res.json();
+        data.errors.forEach((error) => {
+          if (error.status === 400) {
+            toast.error(error.detail);
+          }
         });
       }
       console.log('ERROR:', res);
