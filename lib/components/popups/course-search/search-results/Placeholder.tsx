@@ -27,12 +27,12 @@ import {
   updateCurrentPlanCourses,
   updateSelectedPlan,
 } from '../../../../slices/currentPlanSlice';
-import ReactTooltip from 'react-tooltip';
 import { QuestionMarkCircleIcon } from '@heroicons/react/solid';
 import { XIcon } from '@heroicons/react/outline';
 import { selectReviewMode, selectToken } from '../../../../slices/userSlice';
 import clsx from 'clsx';
 import { toast } from 'react-toastify';
+import * as amplitude from '@amplitude/analytics-browser';
 
 const departmentFilters = ['none', ...all_deps];
 const tagFilters = ['none', ...course_tags];
@@ -66,10 +66,6 @@ const Placeholder: FC<{ addCourse: (plan?: Plan) => void }> = (props) => {
 
   const reviewMode = useSelector(selectReviewMode);
 
-  useEffect(() => {
-    ReactTooltip.rebuild();
-  });
-
   // Updates placeholder information everytime inspected course changes.
   useEffect(() => {
     if (placeholder && inspectedVersion !== 'None') {
@@ -78,6 +74,7 @@ const Placeholder: FC<{ addCourse: (plan?: Plan) => void }> = (props) => {
       setPlaceholderCredits(inspectedVersion.credits);
       setPlaceholderNumber(inspectedVersion.number);
       setPlaceholderDepartment(inspectedVersion.department);
+      setPlaceholderTag(inspectedVersion.tags[0]);
       setPlaceholderWI(inspectedVersion.wi);
       setPlaceholderLevel(
         inspectedVersion.level ? inspectedVersion.level : 'none',
@@ -143,7 +140,7 @@ const Placeholder: FC<{ addCourse: (plan?: Plan) => void }> = (props) => {
     if (inspectedVersion !== 'None') {
       const inspCopy: Course = {
         ...inspectedVersion,
-        tags: [...inspectedVersion.tags, tag],
+        tags: [tag],
       };
       dispatch(updateInspectedVersion(inspCopy));
     }
@@ -282,8 +279,8 @@ const Placeholder: FC<{ addCourse: (plan?: Plan) => void }> = (props) => {
             <div className="flex-grow">
               <QuestionMarkCircleIcon
                 className="h-4 fill-gray"
-                data-for="godTip"
-                data-tip={
+                data-tooltip-id="godtip"
+                data-tooltip-html={
                   '<p>Many degree and a few courses require students to complete a specific amount of courses under a certain tag.</p><p>These usually come in the form of 3-4 letters designating department (ie. CSC = Computer Science) followed by 2+ letters signalling the specific subgroup designation within the department (ie. SOFT = Software).</p>'
                 }
               />
@@ -337,8 +334,8 @@ const Placeholder: FC<{ addCourse: (plan?: Plan) => void }> = (props) => {
             <div className="flex-grow">
               <QuestionMarkCircleIcon
                 className="h-4 fill-gray"
-                data-for="godTip"
-                data-tip={
+                data-tooltip-id="godtip"
+                data-tooltip-html={
                   '<p>Areas designate the specific subset a course belongs to. Each degree requires students to take a certain amount of credits or courses in a spcific area.</p><p>H - Humanities</p><p>S - Social Sciences</p><p>E - Engineering</p><p>N - Natural Sciences</p><p>Q - Quantitative</p>'
                 }
               />
@@ -406,6 +403,7 @@ const Placeholder: FC<{ addCourse: (plan?: Plan) => void }> = (props) => {
               toast.error('Please specify Level!');
             } else {
               props.addCourse();
+              amplitude.track('Added Placeholder Course');
             }
           }}
           disabled={reviewMode === ReviewMode.View}

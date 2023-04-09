@@ -8,6 +8,7 @@ import {
   UserCourse,
   SISRetrievedCourse,
   Year,
+  SearchExtras,
 } from './commonTypes';
 import { allMajors } from './majors';
 import { store } from '../appStore/store';
@@ -52,6 +53,19 @@ export const getColors = function (
     return '#83B9FF';
   }
 };
+
+export const getParams = (extras: SearchExtras) => ({
+  page: extras.page,
+  query: extras.query,
+  department: extras.department,
+  term: extras.term === 'All' ? '' : extras.term,
+  year: extras.year === 'All' ? '' : extras.year,
+  areas: extras.areas,
+  credits: extras.credits,
+  wi: extras.wi,
+  tags: extras.tags,
+  level: extras.levels,
+});
 
 // On SIS, scrape the majors using the console, check Notion for more info
 export const AS_deps = [
@@ -381,14 +395,11 @@ export const getCourses = (
 ): Promise<PrereqCourses> => {
   return new Promise(async (resolve) => {
     // Gets an array of all courses in expression.
-    let match = expr.match(regex);
-    let numList: RegExpMatchArray = [];
+    let numList: RegExpMatchArray | null = expr.match(regex);
+    if (!numList) return;
     let numNameList: any[] = []; // Contains the number with name of a course.
 
     // If we were able to find course numbers in regex matches, update the numList to list of course numbers
-    if (match) {
-      numList = match;
-    }
 
     // For the list of numbers, retrieve each course number, search for it and store the combined number + name into numNameList
     let retrieved = 0;
@@ -511,32 +522,35 @@ const backendSearch = async (
   userC: UserCourse | null,
 ): Promise<{ index: number; resp: Course | null }> =>
   new Promise(async (resolve) => {
-    const courses: any = await axios
-      .get(getAPI(window) + '/search', {
-        params: { query: courseNumber },
-      })
-      .catch((err) => console.log(err));
-    if (courses === undefined) return Promise.reject();
-    let retrieved: SISRetrievedCourse = courses.data.data[0];
-    if (retrieved === undefined) {
-      store.dispatch(updateUnfoundNumbers(courseNumber));
+    try {
+      const res: any = await axios.get(
+        getAPI(window) + `/searchNumber/${courseNumber}`,
+      );
+      let retrieved: SISRetrievedCourse | -1 = res.data.data;
+      if (retrieved === -1) {
+        store.dispatch(updateUnfoundNumbers(courseNumber));
+        return resolve({ index: indexNum, resp: null });
+      }
+      let versionIndex = 0;
+      retrieved.versions.forEach((element, index) => {
+        if (userC === null) return;
+        if (element.term === userC.term) {
+          versionIndex = index;
+        }
+      });
+      const cache: SISRetrievedCourse[] = [];
+      cache.push(retrieved);
+      store.dispatch(updateCourseCache(cache));
+      resolve({
+        index: indexNum,
+        resp: {
+          ...retrieved,
+          ...retrieved.versions[versionIndex],
+        },
+      });
+    } catch (err) {
       return resolve({ index: indexNum, resp: null });
     }
-    let versionIndex = 0;
-    retrieved.versions.forEach((element, index) => {
-      if (userC === null) return;
-      if (element.term === userC.term) {
-        versionIndex = index;
-      }
-    });
-    store.dispatch(updateCourseCache(courses.data.data));
-    resolve({
-      index: indexNum,
-      resp: {
-        ...retrieved,
-        ...retrieved.versions[versionIndex],
-      },
-    });
   });
 
 /**

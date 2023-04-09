@@ -1,16 +1,18 @@
 import React, { useState, useEffect, FC } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import {
+  selectPageCount,
+  selectPageIndex,
   selectPlaceholder,
   selectRetrievedCourses,
   selectSearchFilters,
   updateInspectedVersion,
+  updatePageIndex,
   updatePlaceholder,
 } from '../../../../slices/searchSlice';
 import CourseCard from './CourseCard';
 import ReactPaginate from 'react-paginate';
 import { Course, SISRetrievedCourse } from '../../../../resources/commonTypes';
-import ReactTooltip from 'react-tooltip';
 import { QuestionMarkCircleIcon } from '@heroicons/react/solid';
 import { NewspaperIcon } from '@heroicons/react/outline';
 import { selectPlan } from '../../../../slices/currentPlanSlice';
@@ -24,8 +26,6 @@ const SearchList: FC<{
   setHideResults: Function;
 }> = ({ searching, hideResults, setHideResults }) => {
   // Component state setup.
-  const [pageNum, setPageNum] = useState<number>(0);
-  const [pageCount, setPageCount] = useState<number>(0);
   const [filteredCourses, setFilteredCourses] = useState<SISRetrievedCourse[]>(
     [],
   );
@@ -35,20 +35,13 @@ const SearchList: FC<{
   const placeholder = useSelector(selectPlaceholder);
   const searchFilters = useSelector(selectSearchFilters);
   const currentPlan = useSelector(selectPlan);
+  const pageIndex = useSelector(selectPageIndex);
+  const pageCount = useSelector(selectPageCount);
   const dispatch = useDispatch();
-
-  let coursesPerPage = 10;
 
   // Updates pagination every time the searched courses change.
   useEffect(() => {
     const SISFilteredCourses: SISRetrievedCourse[] = courses;
-    // If coursesPerPage doesn't divide perfectly into total courses, we need one more page.
-    const division = Math.floor(SISFilteredCourses.length / coursesPerPage);
-    const pages =
-      SISFilteredCourses.length % coursesPerPage === 0
-        ? division
-        : division + 1;
-    setPageCount(pages);
     setFilteredCourses(SISFilteredCourses);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [courses, searchFilters]);
@@ -59,42 +52,29 @@ const SearchList: FC<{
    */
   const courseList = () => {
     let toDisplay: any = [];
-    let startingIndex = pageNum * coursesPerPage;
-    let endingIndex =
-      startingIndex + coursesPerPage > filteredCourses.length
-        ? filteredCourses.length - 1
-        : startingIndex + coursesPerPage - 1;
-    for (let i = startingIndex; i <= endingIndex; i++) {
-      let inserted: string[] = [];
+    for (let i = 0; i < filteredCourses.length; i++) {
       const inspecting = { ...filteredCourses[i] };
-      inspecting.versions.forEach((v: any, versionNum: number) => {
-        let alreadyInserted = false;
-        inserted.forEach((term: string) => {
-          if (term.includes(v.term)) {
-            alreadyInserted = true;
-          }
-        });
+      for (let j = 0; j < inspecting.versions.length; j++) {
+        const v = inspecting.versions[j];
         if (
-          !alreadyInserted &&
-          (v.term === searchFilters.term + ' ' + searchFilters.year ||
-            (searchFilters.term === 'All' &&
-              (searchFilters.year === currentPlan.years[0].year ||
-                searchFilters.year.toString() === v.term.split(' ')[1])))
+          v.term === searchFilters.term + ' ' + searchFilters.year ||
+          (searchFilters.term === 'All' &&
+            (searchFilters.year === currentPlan.years[0].year ||
+              searchFilters.year.toString() === v.term.split(' ')[1]))
         ) {
-          inserted.push(v.term);
           toDisplay.push(
             <div
-              key={inspecting.number + v.term + versionNum}
+              key={inspecting._id}
               className="transition duration-200 ease-in transform hover:scale-105"
               onClick={() =>
                 window.innerWidth < 1200 ? setHideResults(true) : null
               }
             >
-              <CourseCard course={inspecting} version={versionNum} />
+              <CourseCard course={inspecting} version={j} />
             </div>,
           );
         }
-      });
+      }
     }
     return toDisplay;
   };
@@ -104,7 +84,7 @@ const SearchList: FC<{
    * @param event event raised on changing search result page
    */
   const handlePageClick = (event: any) => {
-    setPageNum(event.selected);
+    dispatch(updatePageIndex(event.selected));
   };
 
   /**
@@ -142,7 +122,11 @@ const SearchList: FC<{
   const getPaginationUI = () =>
     pageCount > 1 && (
       <div className="flex flex-row justify-center w-full h-auto">
-        <Pagination pageCount={pageCount} handlePageClick={handlePageClick} />
+        <Pagination
+          pageCount={pageCount}
+          pageIndex={pageIndex}
+          handlePageClick={handlePageClick}
+        />
       </div>
     );
 
@@ -174,7 +158,7 @@ const SearchList: FC<{
     <>
       <div
         className="flex flex-row items-center justify-between w-full h-12 px-5 py-2 mb-3 bg-gray-200 border-b border-gray-400"
-        data-tip="Hide Search Results"
+        data-tooltip-content="Hide Search Results"
       >
         <div className="flex flex-row">
           <div className="text-lg font-semibold">Search Results</div>
@@ -183,8 +167,8 @@ const SearchList: FC<{
           <div className="flex-grow mr-1">
             <QuestionMarkCircleIcon
               className="h-4 fill-gray"
-              data-for="godTip"
-              data-tip={
+              data-tooltip-id="godtip"
+              data-tooltip-html={
                 "<p>Placeholder course used to flexibly add courses to your plan. Any course not covered by the plan can be added in this way. Just remember to fill out all necessary information of the placeholder course you'd like the plan to count towards!</p><p>Examples:</p><p>- A future 3 credit H course.</p><p>- A required lab safety course of number EN.990.110</p><p>- An AP course covering for the 4 credit course, Calculus I (AS.110.108)</p>"
               }
             />
@@ -192,11 +176,8 @@ const SearchList: FC<{
           <div
             className="flex flex-row items-center justify-center w-auto h-6 px-1 transition duration-200 ease-in transform bg-white rounded cursor-pointer hover:scale-110"
             onClick={onPlaceholderClick}
-            data-tip="Add a placeholder or non-SIS course"
-            data-for="godTip"
-            onMouseOver={() => {
-              ReactTooltip.rebuild();
-            }}
+            data-tooltip-content="Add a placeholder or non-SIS course"
+            data-tooltip-id="godtip"
           >
             <div className="mr-1">Custom</div>
             <NewspaperIcon className="w-4 h-4 stroke-2" />
@@ -215,11 +196,13 @@ const SearchList: FC<{
 // Below is the pagination component.
 type PaginationProps = {
   pageCount: number;
+  pageIndex: number;
   handlePageClick: any;
 };
 
 const Pagination: React.FC<PaginationProps> = ({
   pageCount,
+  pageIndex,
   handlePageClick,
 }) => {
   /* A Pagination component we'll use! Prop list and docs here: https://github.com/AdeleD/react-paginate. '
@@ -233,6 +216,7 @@ const Pagination: React.FC<PaginationProps> = ({
       breakLabel={'...'}
       breakClassName={'justify-items-end h-6 mt-1'}
       pageCount={pageCount}
+      forcePage={pageIndex}
       marginPagesDisplayed={2}
       pageRangeDisplayed={3}
       onPageChange={handlePageClick}

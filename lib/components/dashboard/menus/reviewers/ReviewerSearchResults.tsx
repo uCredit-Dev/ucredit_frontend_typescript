@@ -7,6 +7,7 @@ import { ReviewRequestStatus, User } from '../../../../resources/commonTypes';
 import { selectPlan } from '../../../../slices/currentPlanSlice';
 import { userService } from '../../../../services';
 import { selectToken, selectUser } from '../../../../slices/userSlice';
+import * as amplitude from '@amplitude/analytics-browser';
 
 const ReviewerSearchResults: FC<{
   users: User[];
@@ -57,6 +58,7 @@ const ReviewerSearchResults: FC<{
         toast.success('Reviewer requested', {
           toastId: 'reviewer requested',
         });
+        amplitude.track('Requested Reviewer');
       } else
         toast.error('You have already requested a review from this reviewer', {
           toastId: 'reviewer already requested',

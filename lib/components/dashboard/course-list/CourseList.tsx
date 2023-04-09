@@ -6,11 +6,9 @@ import {
   Plan,
   ReviewMode,
   SemesterType,
-  SISRetrievedCourse,
   UserCourse,
   Year,
 } from '../../../resources/commonTypes';
-import axios from 'axios';
 import {
   selectCurrentPlanCourses,
   selectDroppables,
@@ -27,11 +25,11 @@ import { toast } from 'react-toastify';
 import {
   selectPlanList,
   selectToken,
-  updateCourseCache,
   updatePlanList,
 } from '../../../slices/userSlice';
 import { getAPI } from '../../../resources/assets';
 import YearDraggable from './YearDraggable';
+import * as amplitude from '@amplitude/analytics-browser';
 
 interface Props {
   mode: ReviewMode;
@@ -227,105 +225,69 @@ const CourseList: FC<Props> = ({ mode }) => {
     const courseYearIndex: number = sourceYear.courses
       .map((c) => c._id)
       .indexOf(course._id);
-    try {
-      const resp = await axios.get(getAPI(window) + '/search', {
-        params: { query: course.number },
-      });
-      let retrievedCourses: SISRetrievedCourse[] = resp.data.data;
-      dispatch(updateCourseCache(retrievedCourses));
-      if (
-        retrievedCourses.length !== 0 &&
-        !checkDestValid(course, destination, retrievedCourses)
-      ) {
+    const body = {
+      newYear: destYear._id,
+      oldYear: sourceYear._id,
+      courseId: course._id,
+      newTerm: destination.semester,
+    };
+
+    let res: any = await fetch(getAPI(window) + '/courses/dragged', {
+      method: 'PATCH',
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${token}`,
+      },
+      body: JSON.stringify(body),
+    });
+
+    // handle error
+    if (!res.ok) {
+      if (res.status === 400) {
         toast.error("Course isn't usually held this semester!", {
           toastId: 'no course this semester',
         });
-      } else {
-        const body = {
-          newYear: destYear._id,
-          oldYear: sourceYear._id,
-          courseId: course._id,
-          newTerm: destination.semester,
-        };
-
-        let res: any = await fetch(getAPI(window) + '/courses/dragged', {
-          method: 'PATCH',
-          headers: {
-            'Content-Type': 'application/json',
-            Authorization: `Bearer ${token}`,
-          },
-          body: JSON.stringify(body),
-        });
-
-        if (!res.ok) {
-          console.log('ERROR:', res);
-        } else {
-          toast.success('Successfully moved course!', {
-            toastId: 'moved course',
-          });
-        }
-        res = await res.json();
-        const updatedCourse = res.data;
-
-        const sourceCourseArr = [...sourceYear.courses];
-        let destCourseArr = [...destYear.courses];
-        sourceCourseArr.splice(courseYearIndex, 1);
-        if (destCourseArr.map((c) => c._id).indexOf(updatedCourse._id) === -1) {
-          destCourseArr.push(updatedCourse);
-        } else {
-          // otherwase source and destination are the same.
-          destCourseArr = sourceCourseArr;
-          destCourseArr.push(updatedCourse);
-        }
-        const currPlanYears = [...currentPlan.years];
-        currPlanYears[sourceObj.index] = {
-          ...sourceYear,
-          courses: sourceCourseArr,
-        };
-        currPlanYears[destObj.index] = {
-          ...destYear,
-          courses: destCourseArr,
-        };
-
-        const newCurrentPlan: Plan = {
-          ...currentPlan,
-          years: currPlanYears,
-        };
-        const planListClone = [...planList];
-        planListClone[0] = newCurrentPlan;
-        updatePlanCourses(destYear, destination.semester, updatedCourse);
-        dispatch(updatePlanList(planListClone));
-        dispatch(updateSelectedPlan(newCurrentPlan));
       }
-    } catch (err) {
-      console.log('error is: ' + err);
+      console.log('ERROR:', res);
+      return;
     }
-  };
 
-  /**
-   * Checks if droppable destination is valid
-   * @param courseId - course id of course you are dragging
-   * @param dest - destination droppable
-   * @returns true if valid destination, false if not
-   */
-  const checkDestValid = (
-    course: UserCourse,
-    dest: DroppableType,
-    retrievedCourses: SISRetrievedCourse[],
-  ): boolean => {
-    let valid = false;
-    for (let sisVer of retrievedCourses) {
-      if (valid) break;
-      if (sisVer.number === course.number) {
-        for (let term of sisVer.terms) {
-          if (term.split(' ')[0] === dest.semester) {
-            valid = true;
-            break;
-          }
-        }
-      }
+    toast.success('Successfully moved course!', {
+      toastId: 'moved course',
+    });
+    amplitude.track('Moved Course');
+    res = await res.json();
+    const updatedCourse = res.data;
+
+    const sourceCourseArr = [...sourceYear.courses];
+    let destCourseArr = [...destYear.courses];
+    sourceCourseArr.splice(courseYearIndex, 1);
+    if (destCourseArr.map((c) => c._id).indexOf(updatedCourse._id) === -1) {
+      destCourseArr.push(updatedCourse);
+    } else {
+      // otherwase source and destination are the same.
+      destCourseArr = sourceCourseArr;
+      destCourseArr.push(updatedCourse);
     }
-    return valid;
+    const currPlanYears = [...currentPlan.years];
+    currPlanYears[sourceObj.index] = {
+      ...sourceYear,
+      courses: sourceCourseArr,
+    };
+    currPlanYears[destObj.index] = {
+      ...destYear,
+      courses: destCourseArr,
+    };
+
+    const newCurrentPlan: Plan = {
+      ...currentPlan,
+      years: currPlanYears,
+    };
+    const planListClone = [...planList];
+    planListClone[0] = newCurrentPlan;
+    updatePlanCourses(destYear, destination.semester, updatedCourse);
+    dispatch(updatePlanList(planListClone));
+    dispatch(updateSelectedPlan(newCurrentPlan));
   };
 
   /**

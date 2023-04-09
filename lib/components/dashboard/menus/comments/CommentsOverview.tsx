@@ -8,14 +8,17 @@ import {
 import { useDispatch, useSelector } from 'react-redux';
 import { formatDistanceToNow } from 'date-fns';
 import { selectUser } from '../../../../slices/userSlice';
+import { selectPlan } from '../../../../slices/currentPlanSlice';
 import CommenterToggle from './CommenterToggle';
 import { CommentType, ThreadType } from '../../../../resources/commonTypes';
+import * as amplitude from '@amplitude/analytics-browser';
 
 const CommentsOverview: React.FC = () => {
   const [threadJSX, setThreadJSX] = useState<JSX.Element[]>([]);
 
   const threadObjs = useSelector(selectFilteredThreads);
   const user = useSelector(selectUser);
+  const currentPlan = useSelector(selectPlan);
 
   const dispatch = useDispatch();
 
@@ -26,7 +29,7 @@ const CommentsOverview: React.FC = () => {
   useEffect(() => {
     const temp: ThreadType[] = [];
     for (let k in threadObjs) {
-      temp.push(threadObjs[k]);
+      if (threadObjs[k].plan_id === currentPlan._id) temp.push(threadObjs[k]);
     }
     const ts = temp.map((e) => getComments(e));
     setThreadJSX(ts);
@@ -91,6 +94,9 @@ const CommentsOverview: React.FC = () => {
                 className={`
                             ${open ? '' : 'text-opacity-90'}
                             w-full hover:bg-slate-300 text-lg rounded-lg sm:w-auto px-3 py-1 sm:hover:text-blue-header sm:hover:bg-blue-footer sm:rounded-[13px] transition duration-100 ease-in`}
+                onClick={() => {
+                  amplitude.track('Opened Comments Overview');
+                }}
               >
                 <span>
                   <AnnotationIcon className="h-6" />

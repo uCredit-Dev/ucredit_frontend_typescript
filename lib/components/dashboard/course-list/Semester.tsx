@@ -28,7 +28,6 @@ import {
   updateDroppables,
   updateSelectedPlan,
 } from '../../../slices/currentPlanSlice';
-import ReactTooltip from 'react-tooltip';
 import clsx from 'clsx';
 import CourseDraggable from './CourseDraggable';
 import {
@@ -83,13 +82,9 @@ const Semester: FC<{
   const [openAPInfoBox, setOpenAPInfoBox] = useState<boolean>(false);
   const [hovered, setHovered] = useState<boolean>(false);
 
-  useEffect(() => {
-    ReactTooltip.rebuild();
-  }, [courses.length, totalCredits]);
-
   // Every time any courses within this semester changes, update total credit count and the list.
   useEffect(() => {
-    if (version !== 'None') {
+    if (version !== 'None' && version.areas) {
       setInspectedArea(version.areas.charAt(0));
     }
     const sortedCourses: UserCourse[] = [...courses];
@@ -173,12 +168,11 @@ const Semester: FC<{
   const getCreditString = (): string => {
     let string = `<div>${totalCredits} Credits</div>`;
     if (
-      (semesterName !== 'Intersession' && totalCredits < 12) ||
-      (semesterName === 'Intersession' && totalCredits < 3)
+      semesterName !== 'Intersession' &&
+      semesterName !== 'Summer' &&
+      totalCredits < 12
     )
-      string += `\nMore than ${
-        semesterName !== 'Intersession' ? 12 : 3
-      } credits required!`;
+      string += `\nMore than 12 credits required!`;
     else if (totalCredits > 18)
       string +=
         '\nCritical credit count reached (you seem to be taking a lot of credits)! Check with your advisor!';
@@ -260,6 +254,12 @@ const Semester: FC<{
       });
     } else {
       console.log('Failed to add', data.errors);
+      data.errors.forEach((error) => {
+        if (error.status === 400) {
+          toast.error(error.detail);
+          dispatch(updateAddingPrereq(false));
+        }
+      });
     }
   };
 
@@ -326,10 +326,10 @@ const Semester: FC<{
             {
               'bg-green-200': colorCheck('bg-green-200'),
             },
-            'flex flex-row items-center justify-center mt-0.5 -ml-2 px-1 w-auto text-black text-xs bg-white rounded',
+            'flex flex-row items-center justify-center mt-0.5 -ml-2 px-1 w-auto text-black text-xs rounded',
           )}
-          data-tip={getCreditString()}
-          data-for="godTip"
+          data-tooltip-html={getCreditString()}
+          data-tooltip-id="godtip"
         >
           {totalCredits}
         </div>
@@ -346,8 +346,9 @@ const Semester: FC<{
     switch (colorType) {
       case 'bg-red-200':
         return (
-          (totalCredits < 12 && semesterName !== 'Intersession') ||
-          totalCredits < 3
+          totalCredits < 12 &&
+          semesterName !== 'Intersession' &&
+          semesterName !== 'Summer'
         );
       case 'bg-yellow-200':
         return (
@@ -359,9 +360,8 @@ const Semester: FC<{
           (totalCredits <= 18 &&
             totalCredits >= 12 &&
             semesterName !== 'Intersession') ||
-          (totalCredits <= 6 &&
-            totalCredits >= 3 &&
-            semesterName === 'Intersession') ||
+          (totalCredits <= 3 && semesterName === 'Intersession') ||
+          (totalCredits <= 14 && semesterName === 'Summer') ||
           semesterName === 'All'
         );
       default:
