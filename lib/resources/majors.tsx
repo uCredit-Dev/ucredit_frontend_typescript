@@ -578,7 +578,7 @@ const baChem: Major = {
   abbrev: 'baChem',
   department: 'AS Chemistry',
   total_degree_credit: 70,
-  wi_credit: 6,
+  wi_credit: 12,
   url: 'https://e-catalogue.jhu.edu/arts-sciences/full-time-residential-programs/degree-programs/chemistry/chemistry-bachelor-arts/',
   distributions: [
     {
@@ -590,7 +590,7 @@ const baChem: Major = {
         '<br>For more information please visit the degree requirements section on the department website.',
       criteria:
         'AS.030.101[C]^OR^AS.030.102[C]^OR^AS.030.103[C]^OR^AS.030.105[C]^OR^AS.030.106[C]^OR^AS.030.205[C]^OR^AS.030.206[C]^OR^AS.030.212[C]^OR^AS.030.225[C]' +
-        '^OR^AS.030.227[C]^OR^AS.030.228[C]^OR^AS.030.301[C]^OR^AS.030.302[C]AS.030.449[C]AS.030.356[C]AS.030.245[C]^OR^AS.030.305[C]^OR^EN.030.306[C]',
+        '^OR^AS.030.227[C]^OR^AS.030.228[C]^OR^AS.030.301[C]^OR^AS.030.302[C]^OR^AS.030.449[C]^OR^AS.030.356[C]^OR^AS.030.245[C]^OR^AS.030.305[C]^OR^AS.030.306[C]',
       double_count: [
         'Humanities (H) Distribution',
         'Social Science (S) Distribution',
@@ -678,7 +678,50 @@ const baChem: Major = {
             '<br /> AS.030.245 Quantitative Analytical Laboratory <br /> AS.030.305	Physical Chemistry Instrumentation Laboratory I <br />' +
             'EN.030.306 Physical Chemistry Instrumentation Laboratory II',
           required_credits: 6,
-          criteria: 'AS.030.245[C]^OR^AS.030.305[C]^OR^EN.030.306[C]',
+          criteria: 'AS.030.245[C]^OR^AS.030.305[C]^OR^AS.030.306[C]',
+        },
+      ],
+    },
+    {
+      name: 'Humanities',
+      required_credits: 9,
+      min_credits_per_course: 1,
+      description:
+        'These credits fulfilling the distribution requirement may overlap with major or minor requirements and the writing-intensive requirement.',
+      criteria: 'H[A]',
+      double_count: ['Writing Intensive', 'Major Requirement'],
+    },
+    {
+      name: 'Social Sciences',
+      required_credits: 9,
+      min_credits_per_course: 1,
+      description:
+        'These credits fulfilling the distribution requirement may overlap with major or minor requirements and the writing-intensive requirement.',
+      criteria: 'S[A]',
+      double_count: ['Writing Intensive', 'Major Requirement'],
+    },
+    {
+      name: 'Natural Sciences/Quantitative/Engineering',
+      required_credits: 9,
+      min_credits_per_course: 1,
+      description:
+        'These credits fulfilling the distribution requirement may overlap with major or minor requirements and the writing-intensive requirement.',
+      criteria: 'N[A]^OR^Q[A]^OR^E[A]',
+      double_count: ['Writing Intensive', 'Major Requirement'],
+    },
+    {
+      name: 'Writing Intensive',
+      required_credits: 15,
+      min_credits_per_course: 1,
+      description:
+        'Effective Fall 2022, all students earning a degree from the School of Arts and Sciences must complete Reintroduction to Writing in their first year at Hopkins plus an additional 12 credits in writing-intensive courses through their undergraduate experience for a minimum of 15 writing-intensive credits.',
+      criteria: 'Written Intensive[W]',
+      double_count: ['All'],
+      fine_requirements: [
+        {
+          description: 'Reintroduction to Writing',
+          required_credits: 4,
+          criteria: 'AS.004.100[C]',
         },
       ],
     },
@@ -767,8 +810,8 @@ const baChem: Major = {
       fine_requirements: [
         {
           description:
-            '<b>Advanced chemistry courses</b> <br /> AS.173.116 Electricity and Magnetism Laboratory' +
-            '<br /> <i>OR</i> <br /> AS.173.112 General Physics Laboratory II',
+            '<b>Advanced chemistry courses</b> <br /> Three credits of advanced chemistry courses beyond AS.030.305-AS.030.306, ' +
+            'cannot be fulfilled with research',
           required_credits: 3,
           criteria:
             'AS Chemistry[D]^AND^(200[L]^OR^300[L])^NOT^AS.030.305[C]^NOT^AS.030.306[C]',
