@@ -40,6 +40,9 @@ const DeletePlanPopup: FC = () => {
         false,
         null,
       );
+      for (let thread of threads.data.data) {
+        await userService.removeThread(thread._id, token);
+      }
       fetch(getAPI(window) + '/plans/' + currentPlan._id, {
         method: 'DELETE',
         headers: {
@@ -66,11 +69,6 @@ const DeletePlanPopup: FC = () => {
       reviews.data.forEach(async (review) => {
         await userService.removeReview(review._id, token);
       });
-      for (let thread of threads.data.data) {
-        for (let comment of thread.comments) {
-          await userService.removeComment(comment._id, token);
-        }
-      }
       amplitude.track('Confirmed Plan Deletion');
       const identifyObj = new amplitude.Identify();
       identifyObj.add('Number of Plans', -1);
