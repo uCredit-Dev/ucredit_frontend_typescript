@@ -707,7 +707,7 @@ const baChem: Major = {
       description:
         'These credits fulfilling the distribution requirement may overlap with major or minor requirements and the writing-intensive requirement.',
       criteria: 'N[A]^OR^Q[A]^OR^E[A]',
-      double_count: ['Writing Intensive', 'Major Requirement'],
+      double_count: ['Writing Intensive', 'Major Requirement', 'Advanced Elective Courses'],
     },
     {
       name: 'Writing Intensive',
@@ -806,7 +806,7 @@ const baChem: Major = {
         'Students must also take nine credits of advanced chemistry courses, or science electives at the 300-level or higher ' +
         'approved by a Department of Chemistry advisor, and/or mathematics beyond Calculus II',
       criteria:
-        'AS Chemistry[D]^AND^(200[L]^OR^300[L])^OR^AS Mathematics[D]^AND^(200[L])^NOT^AS.030.305[C]^NOT^AS.030.306[C]',
+        '(AS Chemistry[D]^AND^Upper Level[L])^OR^(AS Mathematics[D]^NOT^AS.110.108[C]^NOT^AS.110.109[C])^NOT^AS.030.305[C]^NOT^AS.030.306[C]',
       fine_requirements: [
         {
           description:
@@ -814,7 +814,7 @@ const baChem: Major = {
             'cannot be fulfilled with research',
           required_credits: 3,
           criteria:
-            'AS Chemistry[D]^AND^(200[L]^OR^300[L])^NOT^AS.030.305[C]^NOT^AS.030.306[C]',
+            '(AS Chemistry[D]^AND^Upper Level[L])^NOT^AS.030.305[C]^NOT^AS.030.306[C]',
         },
         {
           description:
@@ -823,7 +823,7 @@ const baChem: Major = {
             '<br /> <i>OR</i> <br /> mathematics beyond Calculus II',
           required_credits: 9,
           criteria:
-            '(AS Chemistry[D]^AND^(300[L]^OR^400[L]))^OR^(N[A]^AND^(300[L]^OR^400[L]))^OR^(AS Mathematics[D]^AND^200[L])',
+            '(AS Chemistry[D]^AND^(Upper Level[L]))^OR^(N[A]^AND^(Upper Level[L]))^OR^(AS Mathematics[D]^NOT^AS.110.108[C]^NOT^AS.110.109[C])',
         },
       ],
     },
