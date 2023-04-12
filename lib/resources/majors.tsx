@@ -577,7 +577,7 @@ const baChem: Major = {
   degree_name: 'B.A. Chemistry',
   abbrev: 'baChem',
   department: 'AS Chemistry',
-  total_degree_credit: 70,
+  total_degree_credit: 120,
   wi_credit: 12,
   url: 'https://e-catalogue.jhu.edu/arts-sciences/full-time-residential-programs/degree-programs/chemistry/chemistry-bachelor-arts/',
   distributions: [
@@ -798,7 +798,7 @@ const baChem: Major = {
     },
     {
       name: 'Advanced Elective Courses',
-      required_credits: 3,
+      required_credits: 12,
       min_credits_per_course: 1,
       description:
         'Students must take three credits of advanced chemistry courses beyond AS.030.305-AS.030.306. ' +
@@ -823,7 +823,7 @@ const baChem: Major = {
             '<br /> <i>OR</i> <br /> mathematics beyond Calculus II',
           required_credits: 9,
           criteria:
-            'AS Chemistry[D]^AND^(300[L])^OR^AS Mathematics[D]^AND^(200[L])',
+            '(AS Chemistry[D]^AND^(300[L]^OR^400[L]))^OR^(N[A]^AND^(300[L]^OR^400[L]))^OR^(AS Mathematics[D]^AND^200[L])',
         },
       ],
     },
