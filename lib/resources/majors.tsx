@@ -707,7 +707,11 @@ const baChem: Major = {
       description:
         'These credits fulfilling the distribution requirement may overlap with major or minor requirements and the writing-intensive requirement.',
       criteria: 'N[A]^OR^Q[A]^OR^E[A]',
-      double_count: ['Writing Intensive', 'Major Requirement', 'Advanced Elective Courses'],
+      double_count: [
+        'Writing Intensive',
+        'Major Requirement',
+        'Advanced Elective Courses',
+      ],
     },
     {
       name: 'Writing Intensive',
