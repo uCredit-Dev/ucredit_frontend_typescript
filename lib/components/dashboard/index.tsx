@@ -90,7 +90,56 @@ const Dashboard: React.FC<Props> = ({ mode }) => {
   // State Setup
   const [showNotif, setShowNotif] = useState<boolean>(true);
   const [formPopup, setFormPopup] = useState<boolean>(false);
+  // const [showMobileMenu, setShowMobMenu] = useState(false);
+  // const [experimentPopup] = useState<boolean>(false);
+  // const [displayedNumber, setDisplayedNumber] = useState<number>(3);
+  // const [crement, setCrement] = useState<number>(0);
 
+  // useEffect(() => {
+  //   if (blueButton !== null) {
+  //     setCrement(blueButton.active ? 1 : -1);
+  //   }
+  //   // eslint-disable-next-line react-hooks/exhaustive-deps
+  // }, [experimentList.length > 0 ? blueButton : null]);
+
+  // useEffect(() => {
+  //   if (!experimentPopup && experimentList.length > 0) {
+  //     axios
+  //       .get(`${api}/experiments/allExperiments`)
+  //       .then(function (resp) {
+  //         const importedExperimentList = resp.data.data;
+  //         for (const experiment of experimentList) {
+  //           const currentActive = experiment.active;
+  //           const importedActive = importedExperimentList[
+  //             experimentIDs.indexOf(experiment._id)
+  //           ].active.includes(user._id);
+
+  //           if (currentActive === importedActive) continue;
+
+  //           const command = experiment.active ? 'add/' : 'delete/';
+  //           axios
+  //             .put(`${api}/experiments/${command}${experiment.name}`, {
+  //               user_id: user._id,
+  //             })
+  //             .catch(function (error) {
+  //               console.log(error);
+  //             });
+  //         }
+  //       })
+  //       .catch(function (error) {
+  //         console.log(error);
+  //       });
+  //   }
+  //   // eslint-disable-next-line react-hooks/exhaustive-deps
+  // }, [experimentPopup]);
+
+  // useScrollPosition(({ prevPos, currPos }) => {
+  //   if (currPos.y > -14) {
+  //     setShowHeader(true);
+  //   } else if (currPos.y > -120) {
+  //     setShowHeader(false);
+  //   }
+  // });
   const updateExperimentsForUser = useCallback(() => {
     axios
       .get(getAPI(window) + '/experiments/allExperiments')

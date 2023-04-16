@@ -4911,6 +4911,9 @@ const bsNeuro: Major = {
   ],
 };
 
+// https://e-catalogue.jhu.edu/arts-sciences/full-time-residential-programs/degree-programs/economics/economics-minor/
+// https://econ.jhu.edu/undergraduate/minor-requirements/
+
 const minorEcon: Minor = {
   degree_name: 'Minor Economics',
   abbrev: 'Minor Econ',
@@ -5120,4 +5123,24 @@ export const allMajors: Major[] = [
   baMath,
   baPhysics,
   bsPhysics,
+  // bsEnvEng,
+  // baSoc,
+  // baWritingSems,
+  // baPsych,
+  // baMolCell,
+  // baMSH,
+  // baPH,
+  // bsBioPhysics,
+  // bsChem,
+  // bsME,
+  // baHistory,
+  // baBiology,
+  // bsMatSci,
+  // bsBBio,
+  // baHistArt,
+  // bsCompEng,
+  // bsEPS,
+  // bsEnvSci,
+  // baEnglish,
+  // bsCivEng,
 ];
