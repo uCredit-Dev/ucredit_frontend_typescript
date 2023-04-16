@@ -170,6 +170,14 @@ const deleteNotifications = (
     .then((res) => handleResponse(res, cb));
 };
 
+const updateYear = (data: any, token: string, cb = undefined) => {
+  return axios
+    .patch(`${getAPI(window)}/years/updateYear`, data, {
+      headers: { Authorization: `Bearer ${token}` },
+    })
+    .then((res) => handleResponse(res, cb));
+};
+
 const handleResponse = (res, cb: any = undefined) => {
   if (!res) return;
   return res.text().then((text) => {
@@ -203,4 +211,5 @@ export const userService = {
   getYear,
   deletePlan,
   deleteNotifications,
+  updateYear,
 };
