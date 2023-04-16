@@ -51,8 +51,8 @@ const Distributions: FC<{
     <div className="z-50 flex-none p-6 w-full h-auto bg-white rounded">
       <div className="flex flex-row mb-3 w-full">
         <div className="self-start text-2xl font-medium">Degree Progress</div>
-        {/* Degree Progress */}
         <div
+          id="reload-button"
           className="h-6 w-6 m-auto mr-0 cursor-pointer"
           onClick={() => reload()}
         >
@@ -67,6 +67,7 @@ const Distributions: FC<{
       </div>
       {userMajors.length > 1 && (
         <Select
+          id="major-select"
           options={majorOptions}
           value={majorOptions.find(({ label }) => label === selectedMajor)}
           onChange={(event) => {

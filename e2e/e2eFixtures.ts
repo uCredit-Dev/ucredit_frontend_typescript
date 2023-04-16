@@ -12,6 +12,24 @@ export const COURSE_NAMES = {
   DISCRETE_MATHEMATICS: 'Discrete Mathematics',
   HONORS_LINEAR_ALGEBRA: 'Honors Linear Algebra',
 };
+export const CS_DISTRIBUTION_NAMES = {
+  COMPUTER_SCIENCE: 'Computer Science',
+  CLASSIFICATIONS: 'Computer Science Classifications',
+  MATHEMATICS: 'Mathematics',
+  MATHEMATICS_ELECTIVES: 'Mathematics Electives',
+  BASIC_SCIENCES: 'Basic Sciences',
+  HUMANITIES_SOCIAL_SCIENCES: 'Humanities/Social Sciences',
+  WRITING_INTEISIVE: 'Writing Intensive',
+  ELECTIVES: 'Electives',
+};
+export const CS_FINE_NAMES = {
+  ETHICS: "Computer Ethics", 
+  TEAM: 'Team Requirement',
+  UPPER: 'Upper Level CS Credits',
+  LOWER: 'Lower Level Undergraduate', 
+  CALC: 'Calculus I',
+  WRITING: 'Writing-Focused WI',
+}
 
 export const HOME_PAGE = {
   APP_NAME: 'uCredit',
@@ -27,7 +45,7 @@ export const LOGIN_PAGE = {
 export const ADD_PLAN_MODAL = {
   ADD_PLAN_MODAL_SELECTOR: 'text=Adding a new plan!',
   SELECT_MAJOR_INPUT_SELECTOR: '.select-major-input',
-  CS_BA_MAJOR_NAME: 'B.A. Computer',
+  CS_BS_MAJOR_NAME: 'B.S. Computer Science',
   ADD_MAJOR_BUTTON_SELECTOR: 'button:text("Add")',
 };
 
@@ -78,14 +96,18 @@ export const HAMBURGER_MENU = {
 export const PLAN_EDIT_MENU = {
   PLAN_EDIT_MENU_SELECTOR: '.plan-edit-menu',
   DEFAULT_PLAN_NAME_SELECTOR: 'text="Unnamed Plan"',
-  DEGREE_PROGRESS_SELECTOR: 'text="Degree Progress"',
+  TRACKER_SELECTOR: 'text="Tracker"',
   ADD_REVIEWER_BUTTON_SELECTOR: '.add-reviewer-button',
   SEARCH_REVIEWER_INPUT_SELECTOR: 'input[placeholder="jsmith1 or John Smith"]',
   REVIEWER_RESULT_SELECTOR: `text=${REVIEWER_ID}`,
   ADD_REVIEWER_SUCCEEDED_SELECTOR: 'text="Reviewer requested"',
 };
 
-export const DEGREE_PROGRESS = {};
+export const TRACKER_MODAL = {
+  RELOAD_BUTTON_SELECTOR: '.reload-button',
+  TOTAL_CREDIT_SELECTOR: '.total',
+  MAJOR_OPTIONS_SELECTOR: '.major-select',
+};
 
 export const REVIEWER_DASHBOARD = {
   INSPECT_PLAN_BUTTON_SELECTOR: '.inspect-plan-button',
@@ -96,7 +118,3 @@ export const PLAN_SUMMARY_MODAL = {
   CLOSE_BUTTON_SELECTOR: 'button:text("Close")',
 };
 
-export const TRACKER_MODAL = {
-  TRACKER: 'button:text(TRACKER)', 
-  
-};

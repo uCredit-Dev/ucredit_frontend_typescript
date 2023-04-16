@@ -62,9 +62,9 @@ test.describe('Reviewer Flow', async () => {
   });
 
   test('Should be able to view reviewee plan summary', async ({ page }) => {
-    const { CS_BA_MAJOR_NAME } = ADD_PLAN_MODAL;
+    const { CS_BS_MAJOR_NAME } = ADD_PLAN_MODAL;
     await viewPlanSummary(page);
-    await expect(page.locator(`text=${CS_BA_MAJOR_NAME}`)).toBeVisible();
+    await expect(page.locator(`text=${CS_BS_MAJOR_NAME}`)).toBeVisible();
   });
 });
 

@@ -45,11 +45,11 @@ export const AFTER_PLAN_CREATED = async (page, loginId = TEST_ID) => {
   await AFTER_LOGIN(page, loginId);
   const {
     SELECT_MAJOR_INPUT_SELECTOR,
-    CS_BA_MAJOR_NAME,
+    CS_BS_MAJOR_NAME,
     ADD_MAJOR_BUTTON_SELECTOR,
   } = ADD_PLAN_MODAL;
   await page.locator(SELECT_MAJOR_INPUT_SELECTOR).click();
-  await page.locator(SELECT_MAJOR_INPUT_SELECTOR).type(CS_BA_MAJOR_NAME);
+  await page.locator(SELECT_MAJOR_INPUT_SELECTOR).type(CS_BS_MAJOR_NAME);
   await page.locator(SELECT_MAJOR_INPUT_SELECTOR).press('Tab');
   await page.locator(ADD_MAJOR_BUTTON_SELECTOR).click();
 };

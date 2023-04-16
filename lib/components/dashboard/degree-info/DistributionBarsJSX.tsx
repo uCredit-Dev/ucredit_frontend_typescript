@@ -69,41 +69,31 @@ const DistributionBarsJSX: FC<{
   // Update displayed JSX every time distributions get updated.
   useEffect(() => {
     setCalculated(false);
-    const distributionJSX = distributions.map(
-      (dist: UserDistribution, i: number) => {
-        return (
-          <div key={dist._id}>
-            <div key={dist.name + 0 + dist._id}>
-              <CourseBar
-                distribution={dist}
-                general={true}
-                bgcolor={'skyblue'}
-              />
-            </div>
-          </div>
-        );
-      },
-    );
-    distributionJSX.unshift(
-      <div id="totalBar" key={'total'}>
-        <div key={'total' + 0 + 'total'}>
-          <CourseBar
-            distribution={{
-              name: 'Total Credits',
-              required_credits: allMajors[selectedMajor].total_degree_credit,
-              planned: totalCredits,
-              description:
-                selectedMajor !== null
-                  ? 'This is the total amount of credits that is required for ' +
-                    selectedMajor
-                  : '',
-              satisfied:
-                totalCredits >= allMajors[selectedMajor].total_degree_credit,
-            }}
-            general={true}
-            bgcolor={''}
-          />
+    const distributionJSX = distributions.map((dist: UserDistribution) => {
+      return (
+        <div key={dist._id} id={dist.name}>
+          <CourseBar distribution={dist} general={true} bgcolor={'skyblue'} />
         </div>
+      );
+    });
+    distributionJSX.unshift(
+      <div id="total" key={'total'}>
+        <CourseBar
+          distribution={{
+            name: 'Total Credits',
+            required_credits: allMajors[selectedMajor].total_degree_credit,
+            planned: totalCredits,
+            description:
+              selectedMajor !== null
+                ? 'This is the total amount of credits that is required for ' +
+                  selectedMajor
+                : '',
+            satisfied:
+              totalCredits >= allMajors[selectedMajor].total_degree_credit,
+          }}
+          general={true}
+          bgcolor={''}
+        />
       </div>,
     );
     setDistributionBarsJSX(distributionJSX);
