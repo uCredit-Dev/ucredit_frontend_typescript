@@ -136,6 +136,18 @@ const getNotifications = (userID: string, token: string) => {
     .then(handleResponse);
 };
 
+const getUserPlan = (user_id: string, token: string, cb = undefined) => {
+  return fetchWrapper
+    .get(`${getAPI(window)}/plansByUser/${user_id}`, token)
+    .then((res) => handleResponse(res, cb));
+};
+
+const createNewPlan = (planBody: any, token: string, cb = undefined) => {
+  return fetchWrapper
+    .post(`${getAPI(window)}/plans`, token, planBody)
+    .then((res) => handleResponse(res, cb));
+};
+
 const handleResponse = (res, cb: any = undefined) => {
   if (!res) return;
   return res.text().then((text) => {
@@ -164,4 +176,6 @@ export const userService = {
   removeComment,
   changeReviewStatus,
   getNotifications,
+  getUserPlan,
+  createNewPlan,
 };
