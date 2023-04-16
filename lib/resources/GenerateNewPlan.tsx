@@ -1,5 +1,4 @@
 import React, { FC, useEffect } from 'react';
-import axios from 'axios';
 import { useDispatch, useSelector } from 'react-redux';
 import { Plan } from './commonTypes';
 import {
@@ -16,7 +15,6 @@ import {
   selectImportingStatus,
   updateSelectedPlan,
 } from '../slices/currentPlanSlice';
-import { getAPI } from './assets';
 import { updateSearchTime } from '../slices/searchSlice';
 import {
   selectToAddName,
@@ -25,6 +23,7 @@ import {
   clearToAdd,
   updateGeneratePlanAddStatus,
 } from '../slices/popupSlice';
+import { userService } from '../services';
 
 /**
  * Reusable component that generates a new empty plan.
@@ -55,9 +54,7 @@ const GenerateNewPlan: FC = () => {
 
     let newPlan: Plan;
     const getData = async () => {
-      let response = await axios.post(getAPI(window) + '/plans', planBody, {
-        headers: { Authorization: `Bearer ${token}` },
-      });
+      let response = await userService.createNewPlan(planBody, token);
       newPlan = response.data.data;
       dispatch(
         updateSearchTime({
