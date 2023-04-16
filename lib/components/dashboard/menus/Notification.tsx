@@ -84,18 +84,16 @@ const Notification: FC<{
                                   : 100);
                                 i++
                               ) {
-                                const resp = await axios.delete(
-                                  getAPI(window) +
-                                    `/notifications/${notifs[i]._id}`,
-                                  {
-                                    headers: {
-                                      Authorization: `Bearer ${token}`,
-                                    },
-                                  },
-                                );
-                                if (resp.status !== 200) {
-                                  console.log(resp.statusText);
-                                }
+                                (async () => {
+                                  const resp =
+                                    await userService.deleteNotifications(
+                                      notifs[i]._id,
+                                      token,
+                                    );
+                                  if (resp.status !== 200) {
+                                    console.log(resp.statusText);
+                                  }
+                                })();
                               }
                             }}
                           >
