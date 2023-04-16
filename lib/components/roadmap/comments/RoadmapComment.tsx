@@ -4,7 +4,6 @@ import Comment from './Comment';
 import Dropbox from './Dropbox';
 import CommentIcon from './commentEditor/CommentIcon';
 import axios from 'axios';
-import { getAPI } from './../../../resources/assets';
 import { ThreadType } from '../../../resources/commonTypes';
 import { useSelector } from 'react-redux';
 import { selectToken } from '../../../slices/userSlice';
