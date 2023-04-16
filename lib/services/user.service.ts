@@ -148,6 +148,12 @@ const createNewPlan = (planBody: any, token: string, cb = undefined) => {
     .then((res) => handleResponse(res, cb));
 };
 
+const getYear = (id: string, token: string, cb = undefined) => {
+  return fetchWrapper
+    .get(`${getAPI(window)}/years/${id}`, token)
+    .then((res) => handleResponse(res, cb));
+};
+
 const handleResponse = (res, cb: any = undefined) => {
   if (!res) return;
   return res.text().then((text) => {
@@ -178,4 +184,5 @@ export const userService = {
   getNotifications,
   getUserPlan,
   createNewPlan,
+  getYear,
 };
