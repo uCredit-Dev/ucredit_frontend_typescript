@@ -10,8 +10,6 @@ import {
   selectPlan,
   updateSelectedPlan,
 } from '../../../slices/currentPlanSlice';
-import axios from 'axios';
-import { getAPI } from '../../../resources/assets';
 import {
   selectPlanList,
   selectToken,
