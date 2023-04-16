@@ -1,6 +1,4 @@
 import React, { FC, useEffect, useState } from 'react';
-import axios from 'axios';
-import { getAPI } from './../../../resources/assets';
 import { useSelector } from 'react-redux';
 import { selectToken, selectUser } from '../../../slices/userSlice';
 import { ThreadType, CommentType } from '../../../resources/commonTypes';
