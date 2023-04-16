@@ -155,7 +155,19 @@ const getYear = (id: string, token: string, cb = undefined) => {
 };
 
 const deletePlan = (plan_id: string, token: string, cb = undefined) => {
-  return fetchWrapper.delete(`${getAPI(window)}/plans/${plan_id}`, token);
+  return fetchWrapper
+    .delete(`${getAPI(window)}/plans/${plan_id}`, token)
+    .then((res) => handleResponse(res, cb));
+};
+
+const deleteNotifications = (
+  notif_id: string,
+  token: string,
+  cb = undefined,
+) => {
+  return fetchWrapper
+    .delete(`${getAPI(window)}/notifications/${notif_id}`, token)
+    .then((res) => handleResponse(res, cb));
 };
 
 const handleResponse = (res, cb: any = undefined) => {
@@ -190,4 +202,5 @@ export const userService = {
   createNewPlan,
   getYear,
   deletePlan,
+  deleteNotifications,
 };
