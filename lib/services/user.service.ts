@@ -154,6 +154,10 @@ const getYear = (id: string, token: string, cb = undefined) => {
     .then((res) => handleResponse(res, cb));
 };
 
+const deletePlan = (plan_id: string, token: string, cb = undefined) => {
+  return fetchWrapper.delete(`${getAPI(window)}/plans/${plan_id}`, token);
+};
+
 const handleResponse = (res, cb: any = undefined) => {
   if (!res) return;
   return res.text().then((text) => {
@@ -185,4 +189,5 @@ export const userService = {
   getUserPlan,
   createNewPlan,
   getYear,
+  deletePlan,
 };
