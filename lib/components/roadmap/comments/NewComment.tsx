@@ -5,6 +5,7 @@ import { useSelector } from 'react-redux';
 import { selectToken, selectUser } from '../../../slices/userSlice';
 import { ThreadType } from '../../../resources/commonTypes';
 import Editor from './commentEditor/Editor';
+import { userService } from '../../../services';
 
 interface ThreadBodyType extends ThreadType {
   comments: [];
@@ -43,24 +44,15 @@ const NewComment: FC<{
       date: new Date(Date.now()).toISOString().slice(0, 10),
     };
 
-    axios
-      .post(
-        getAPI(window) + '/thread/new',
-        {
-          thread,
-          comment,
-        },
-        {
-          headers: { Authorization: `Bearer ${token}` },
-        },
-      )
-      .then((res) => {
-        updateRoadmapThreads(res.data.data);
-        setContent('');
-      })
-      .catch((error) => {
-        console.log(error);
-      });
+    (async () => {
+      const newThread = await userService
+        .postNewThread({ thread, comment }, token)
+        .catch((error) => {
+          console.log(error);
+        });
+      updateRoadmapThreads(newThread.data.data);
+      setContent('');
+    })();
   };
   // eslint-disable-next-line react-hooks/exhaustive-deps
 
