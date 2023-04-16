@@ -186,7 +186,7 @@ const YearComponent: FC<{
       } else if (course.term && course.term.toLowerCase() === 'intersession') {
         parsedIntersessionCourses.push(course);
       }
-    }
+    });
     setFallCourses(parsedFallCourses);
     setSpringCourses(parsedSpringCourses);
     setWinterCourses(parsedIntersessionCourses);
