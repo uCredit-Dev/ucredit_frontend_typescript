@@ -80,6 +80,7 @@ module.exports = {
         },
         name: '#38596C',
         slogan: '#4851AA',
+        button: '#0C3A76'
         // gray: '#5F5F5F',
       },
       backgroundColor: {
