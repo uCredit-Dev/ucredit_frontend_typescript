@@ -4,11 +4,11 @@ import {
   updateSearchTerm,
   updateRetrievedCourses,
   updateSearchFilters,
+  updatePageIndex,
   selectSearchterm,
   selectSearchFilters,
   selectSemester,
   selectYear,
-  updatePageIndex,
   updatePageCount,
   selectPageIndex,
 } from '../../../../slices/searchSlice';
@@ -88,7 +88,7 @@ const Form: FC<{
       dispatch(
         updateSearchFilters({ filter: 'year', value: date.getFullYear() + 1 }),
       );
-    else if (semester === 'Fall' && date.getMonth() < 3) {
+    else if (semester === 'Fall' && date.getMonth() < 2) {
       dispatch(
         updateSearchFilters({ filter: 'year', value: date.getFullYear() - 1 }),
       );
@@ -156,25 +156,25 @@ const Form: FC<{
    * @param queryLength - length of search query
    * @returns reference to a function that conducts smart search
    */
-  const performSmartSearch =
-    (extras: SearchExtras): (() => void) =>
-    (): void => {
-      axios
-        .get(getAPI(window) + '/search', {
-          params: getParams(extras),
-        })
-        .then((retrieved) => {
-          let retrievedCourses: SISRetrievedCourse[] =
-            retrieved.data.data.courses;
-          const pageCount = retrieved.data.data.pagination.last;
-          dispatch(updatePageCount(pageCount));
-          dispatch(updateRetrievedCourses(retrievedCourses));
-          setSearching(false);
-        })
-        .catch(() => {
-          setSearching(false);
-        });
-    };
+  const performSmartSearch = (
+    extras: SearchExtras,
+  ): (() => void) => (): void => {
+    axios
+      .get(getAPI(window) + '/search', {
+        params: getParams(extras),
+      })
+      .then((retrieved) => {
+        let retrievedCourses: SISRetrievedCourse[] =
+          retrieved.data.data.courses;
+        const pageCount = retrieved.data.data.pagination.last;
+        dispatch(updatePageCount(pageCount));
+        dispatch(updateRetrievedCourses(retrievedCourses));
+        setSearching(false);
+      })
+      .catch(() => {
+        setSearching(false);
+      });
+  };
 
   // Update search term
   const handleSearchTerm = (event: any): void => {
@@ -195,10 +195,10 @@ const Form: FC<{
         <div
           className="flex flex-row items-center justify-center flex-none w-6 h-6 transition duration-200 ease-in transform bg-white rounded-full cursor-pointer hover:scale-110"
           onClick={() => setShowCriteria(!showCriteria)}
-          data-tip={
+          data-tooltip-content={
             showCriteria ? 'Hide search criteria' : 'Show search criteria'
           }
-          data-for="godTip"
+          data-tooltip-id="godtip"
         >
           {!showCriteria ? (
             <img

@@ -8,7 +8,6 @@ import {
   updateSelectedFineReq,
 } from '../../../slices/currentPlanSlice';
 import { CheckCircleIcon, ExclamationIcon } from '@heroicons/react/solid';
-import ReactTooltip from 'react-tooltip';
 import {
   updateAddingPrereq,
   updateInfoPopup,
@@ -129,15 +128,12 @@ const CourseBar: FC<{
 
       <div
         className="relative flex flex-row w-full h-6 cursor-pointer"
-        data-tip={tooltip}
-        data-for="godTip"
-        onMouseOver={() => ReactTooltip.rebuild()}
         onClick={openCartPopup}
       >
         <div
           className="relative flex flex-row w-full h-6 mb-2 bg-gray-200 rounded-full"
-          data-tip={tooltip}
-          data-for="godTip"
+          data-tooltip-html={tooltip}
+          data-tooltip-id="godtip"
         >
           <div
             className="h-full rounded-full"

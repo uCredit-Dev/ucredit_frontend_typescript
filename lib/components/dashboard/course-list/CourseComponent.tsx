@@ -1,5 +1,4 @@
 import React, { useState, useEffect, FC, useRef } from 'react';
-import ReactTooltip from 'react-tooltip';
 import { useDispatch, useSelector } from 'react-redux';
 import { MinusIcon, ExclamationIcon } from '@heroicons/react/outline';
 import { Transition } from '@tailwindui/react';
@@ -24,6 +23,7 @@ import {
   updateDeleteCourseStatus,
   updateShowCourseInfo,
 } from '../../../slices/popupSlice';
+import * as amplitude from '@amplitude/analytics-browser';
 
 /**
  * This is a course card displayed in the course list under each semester.
@@ -91,6 +91,7 @@ const CourseComponent: FC<{
   const deleteCourse = () => {
     dispatch(updateCourseToDelete({ course: course, year: year }));
     dispatch(updateDeleteCourseStatus(true));
+    amplitude.track('Clicked Course Delete');
   };
 
   /**
@@ -143,9 +144,6 @@ const CourseComponent: FC<{
         onMouseEnter={() => setDraggable(false)}
         onMouseLeave={() => setDraggable(true)}
         onClick={displayCourses}
-        onMouseOver={() => {
-          ReactTooltip.rebuild();
-        }}
         key={course.number}
       >
         <div className="grid grid-flow-row-dense grid-cols-10 w-full h-full gap-x-1.5">

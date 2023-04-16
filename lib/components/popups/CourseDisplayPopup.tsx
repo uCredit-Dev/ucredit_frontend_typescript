@@ -36,6 +36,7 @@ import {
 import { toast } from 'react-toastify';
 import { getAPI } from '../../resources/assets';
 import SisCourse from './course-search/search-results/SisCourse';
+import * as amplitude from '@amplitude/analytics-browser';
 
 /**
  * Course info popup that opens when user preses info button on course components
@@ -100,7 +101,9 @@ const CourseDisplayPopup: FC = () => {
           areas: courseToShow.areas,
           term: courseToShow.version,
           school: 'none',
-          department: 'none',
+          department: courseToShow.department
+            ? courseToShow.department
+            : 'none',
           credits: courseToShow.credits.toString(),
           wi: courseToShow.wi,
           bio: 'This is a placeholder course',
@@ -145,9 +148,9 @@ const CourseDisplayPopup: FC = () => {
         credits: version.credits === '' ? 0 : version.credits,
         isPlaceholder: placeholder,
         number: version.number,
-        areas: placeholder ? version.areas : inspectedArea,
-        tags: version.tags,
+        area: placeholder ? version.areas : inspectedArea,
         department: version.department,
+        tags: version.tags,
         preReq: version.preReq,
         wi: version.wi,
         version: version.term,
@@ -194,8 +197,14 @@ const CourseDisplayPopup: FC = () => {
         toast.success('Course updated!', {
           toastId: 'course updated',
         });
+        amplitude.track('Moved Course');
       } else {
         console.log('Failed to add', data.errors);
+        data.errors.forEach((error) => {
+          if (error.status === 400) {
+            toast.error(error.detail);
+          }
+        });
       }
     };
 
@@ -223,7 +232,7 @@ const CourseDisplayPopup: FC = () => {
       ></div>
 
       {/* Actual popup */}
-      <div className="h-screen fixed z-40 left-1/2 flex flex-col min-w-planAdd h-3/4 bg-primary rounded select-none transform -translate-x-1/2 translate-y-12">
+      <div className="fixed z-40 left-1/2 flex flex-col min-w-planAdd h-3/4 bg-primary rounded select-none transform -translate-x-1/2 translate-y-12">
         <div className="px-4 py-2 text-white text-coursecard font-semibold select-none">
           Inspecting{' '}
           {courseToShow === null ? 'Invalid course' : courseToShow.title}

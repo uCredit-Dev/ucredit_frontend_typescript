@@ -1,15 +1,12 @@
 import React, { FC, useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-
 import CourseDisplay from './search-results/CourseDisplay';
 import { EyeOffIcon } from '@heroicons/react/outline';
-import ReactTooltip from 'react-tooltip';
 import { SISRetrievedCourse } from '../../../resources/commonTypes';
 import { updateInfoPopup, updateShowingCart } from '../../../slices/popupSlice';
 import FineRequirementsList from './cart/FineRequirementsList';
 import CartCourseList from './cart/CartCourseList';
 import {
-  selectCartAdd,
   selectPageIndex,
   updatePageCount,
   updatePageIndex,
@@ -18,7 +15,6 @@ import {
 import axios from 'axios';
 import { getAPI } from '../../../resources/assets';
 import {
-  selectCurrentPlanCourses,
   selectSelectedDistribution,
   selectSelectedFineReq,
 } from '../../../slices/currentPlanSlice';
@@ -34,44 +30,39 @@ const Cart: FC<{}> = () => {
   // FOR DUMMY FILTER TESTING TODO REMOVE
   // TODO : double check the initial state on this hook. do i even need this if stored in redux?
   const [cartFilter, setCartFilter] = useState<string>('');
+  const [isCartFilterLoaded, setIsCartFilterLoaded] = useState<boolean>(false);
   const [textFilterInputValue, setTextFilterInputValue] = useState<string>('');
 
   // Redux selectors and dispatch
   const dispatch = useDispatch();
   const dist = useSelector(selectSelectedDistribution);
   const fine = useSelector(selectSelectedFineReq);
-  const currentPlanCourses = useSelector(selectCurrentPlanCourses);
-  const cartAdd = useSelector(selectCartAdd);
   const pageIndex = useSelector(selectPageIndex);
 
+  // upda
   useEffect(() => {
     if (dist) {
       setCartFilter(dist.criteria);
+      dispatch(updatePageIndex(0));
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [dist, currentPlanCourses, cartAdd]);
+  }, [dist]);
 
   useEffect(() => {
     if (fine) {
       setCartFilter(fine.criteria);
+      setIsCartFilterLoaded(true);
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [fine, currentPlanCourses, cartAdd]);
+  }, [fine]);
 
   // Performing searching in useEffect so as to activate searching
   useEffect(() => {
     setSearching(true);
-    dispatch(updatePageIndex(0));
-    cartSearch();
+    dispatch(updateRetrievedCourses([]));
+    if (isCartFilterLoaded) cartSearch();
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [cartFilter]);
-
-  // Performing searching in useEffect so as to activate searching
-  useEffect(() => {
-    setSearching(true);
-    cartSearch();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [pageIndex]);
+  }, [cartFilter, pageIndex, isCartFilterLoaded]);
 
   const cartSearch = () => {
     fineReqFind(cartFilter, pageIndex).then((courses: SISRetrievedCourse[]) => {
@@ -107,11 +98,6 @@ const Cart: FC<{}> = () => {
     setTextFilterInputValue(e.target.value);
   };
 
-  useEffect(() => {
-    ReactTooltip.rebuild();
-    ReactTooltip.hide();
-  });
-
   return (
     <div className="absolute top-0 ">
       {/* Background Grey */}
@@ -134,7 +120,7 @@ const Cart: FC<{}> = () => {
         style={{ opacity: searchOpacity === 100 ? 1 : 0.1 }}
       >
         <div className="px-4 py-2 text-white select-none text-coursecard font-large">
-          {dist.name}
+          {dist?.name}
           {/** This is the popup header. */}
         </div>
         <div className="flex flex-row w-full h-full tight:flex-col tight:h-auto tight:max-h-mobileSearch text-coursecard tight:overflow-y-scroll overflow-hidden">
@@ -168,9 +154,8 @@ const Cart: FC<{}> = () => {
               className="flex flex-row items-center justify-center w-full h-8 p-1 transition duration-200 ease-in transform hover:scale-125"
               onMouseEnter={() => setSearchOpacity(50)}
               onMouseLeave={() => setSearchOpacity(100)}
-              onMouseOver={() => ReactTooltip.rebuild()}
-              data-tip="Hide search"
-              data-for="godTip"
+              data-tooltip-content="Hide search"
+              data-tooltip-id="godtip"
             >
               <EyeOffIcon className="w-6 h-6 text-gray-500 stroke-2" />
             </div>

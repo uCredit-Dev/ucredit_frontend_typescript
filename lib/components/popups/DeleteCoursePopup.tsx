@@ -16,6 +16,7 @@ import {
   updateCourseToDelete,
 } from '../../slices/popupSlice';
 import React from 'react';
+import * as amplitude from '@amplitude/analytics-browser';
 
 /**
  * This is the confirmation popup that appears when users press the button to delete a course.
@@ -66,6 +67,7 @@ const DeleteCoursePopup: FC = () => {
           );
           dispatch(updateDeleteCourseStatus(false));
           dispatch(updateCourseToDelete(null));
+          amplitude.track('Confirmed Course Deletion');
         });
     } else {
       toast.error('Cannot delete last year!', {
@@ -78,6 +80,7 @@ const DeleteCoursePopup: FC = () => {
   const cancel = () => {
     dispatch(updateDeleteCourseStatus(false));
     dispatch(updateCourseToDelete(null));
+    amplitude.track('Declined Course Deletion');
   };
 
   return (

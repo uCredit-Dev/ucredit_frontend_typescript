@@ -8,8 +8,10 @@ import { Reviewee, Search } from '../../lib/components/reviewer';
 import {
   DashboardMode,
   RevieweePlans,
+  ReviewMode,
   ReviewRequestStatus,
 } from '../../lib/resources/commonTypes';
+import { Tooltip } from 'react-tooltip';
 
 export const statusReadable = {
   [ReviewRequestStatus.UnderReview]: 'Under Review',
@@ -94,7 +96,12 @@ const Reviewer: React.FC = () => {
 
   return (
     <div>
-      <Header userID={user._id} dashboardSwitchMode={DashboardMode.Reviewer} />
+      <Tooltip id="godtip" className="z-[1000]" />
+      <Header
+        userID={user._id}
+        dashboardSwitchMode={DashboardMode.Reviewer}
+        mode={ReviewMode.None}
+      />
       <div className="pt-24 text-black bg-[#eff2f5] font-bold text-xl md:px-[250px] pb-4">
         Reviewees
       </div>

@@ -61,6 +61,7 @@ import Actionbar from './Actionbar';
 import Button from '@mui/material/Button';
 import clsx from 'clsx';
 import Footer from '../Footer';
+import * as amplitude from '@amplitude/analytics-browser';
 
 interface Props {
   mode: ReviewMode;
@@ -261,6 +262,7 @@ const Dashboard: React.FC<Props> = ({ mode }) => {
             )}
             onClick={() => {
               dispatch(updateInfoPopup(!infoPopup));
+              amplitude.track('Clicked Tracker');
             }}
           >
             <svg

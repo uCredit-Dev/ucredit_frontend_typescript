@@ -16,6 +16,7 @@ import {
 } from '../../slices/userSlice';
 import { getAPI } from '../../resources/assets';
 import { updateAddingPlanStatus } from '../../slices/popupSlice';
+import * as amplitude from '@amplitude/analytics-browser';
 
 /**
  * Handles dashboard user entry and login logic.
@@ -94,6 +95,10 @@ const HandleUserInfoSetupDummy: React.FC = () => {
       );
       // Initial load, there is no current plan, so we set the current to be the first plan in the array.
       dispatch(updatePlanList(retrievedPlans));
+
+      const identifyObj = new amplitude.Identify();
+      identifyObj.setOnce('Number of Plans', user.plan_ids.length);
+      amplitude.identify(identifyObj);
     }
   };
 

@@ -218,8 +218,8 @@ const ExperimentDevBoardPopup: FC<{}> = () => {
         <div className="flex flex-row items-center ml-2 my-1 w-10 h-10 hover:underline hover:bg-green-300 border border-gray-300 rounded focus:outline-none shadow cursor-pointer transition duration-200 ease-in">
           {/* <AdjustmentSvg
             onClick={() => setExperimentDevBoardPopup(!experimentDevBoardPopup)}
-            data-tip={`Update Experiment Distributions!`}
-            data-for="godTip"
+            data-tooltip-content={`Update Experiment Distributions!`}
+            data-tooltip-id="godTip"
             className="w-10 h-10 focus:outline-none"
           /> */}
         </div>
@@ -253,8 +253,8 @@ const ExperimentDevBoardPopup: FC<{}> = () => {
                         setAddExperimentPopup(!addExperimentPopup);
                         setExperimentDevBoardPopup(!experimentDevBoardPopup);
                       }}
-                      data-tip={`Add a New Experiment!`}
-                      data-for="godTip"
+                      data-tooltip-content={`Add a New Experiment!`}
+                      data-tooltip-id="godTip"
                       className="w-8 h-8 focus:outline-none"
                     /> */}
                   </div>
@@ -276,8 +276,8 @@ const ExperimentDevBoardPopup: FC<{}> = () => {
                                 !experimentDevBoardPopup,
                               );
                             }}
-                            data-tip={`Delete This Experiment!`}
-                            data-for="godTip"
+                            data-tooltip-content={`Delete This Experiment!`}
+                            data-tooltip-id="godTip"
                             className="w-10 h-10 focus:outline-none"
                           /> */}
                         </div>

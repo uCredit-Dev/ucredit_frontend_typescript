@@ -29,6 +29,7 @@ import {
 } from '../../../slices/userSlice';
 import { getAPI } from '../../../resources/assets';
 import YearDraggable from './YearDraggable';
+import * as amplitude from '@amplitude/analytics-browser';
 
 interface Props {
   mode: ReviewMode;
@@ -243,8 +244,11 @@ const CourseList: FC<Props> = ({ mode }) => {
     // handle error
     if (!res.ok) {
       if (res.status === 400) {
-        toast.error("Course isn't usually held this semester!", {
-          toastId: 'no course this semester',
+        const data = await res.json();
+        data.errors.forEach((error) => {
+          if (error.status === 400) {
+            toast.error(error.detail);
+          }
         });
       }
       console.log('ERROR:', res);
@@ -254,6 +258,7 @@ const CourseList: FC<Props> = ({ mode }) => {
     toast.success('Successfully moved course!', {
       toastId: 'moved course',
     });
+    amplitude.track('Moved Course');
     res = await res.json();
     const updatedCourse = res.data;
 

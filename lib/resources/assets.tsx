@@ -317,8 +317,7 @@ export const processPrereqs = async (
 ): Promise<PrereqCourses> => {
   // Regex used to get an array of course numbers.
   const regex: RegExp = /[A-Z]{2}\.\d{3}\.\d{3}/g;
-  const forwardSlashRegex: RegExp =
-    /[A-Z]{2}\.\d{3}\.\d{3}\/[A-Z]{2}\.\d{3}\.\d{3}/g; // e.g. EN.XXX.XXX/EN.XXX.XXX
+  const forwardSlashRegex: RegExp = /[A-Z]{2}\.\d{3}\.\d{3}\/[A-Z]{2}\.\d{3}\.\d{3}/g; // e.g. EN.XXX.XXX/EN.XXX.XXX
   const forwardSlashRegex2: RegExp = /[A-Z]{2}\.\d{3}\.\d{3}\/\d{3}\.\d{3}/g; // e.g. EN.XXX.XXX/XXX.XXX
   const forwardSlashRegex3: RegExp = /[A-Z]{2}\.\d{3}\/\d{3}\.\d{3}/g; // e.g. EN.XXX/XXX.XXX
 
@@ -395,14 +394,11 @@ export const getCourses = (
 ): Promise<PrereqCourses> => {
   return new Promise(async (resolve) => {
     // Gets an array of all courses in expression.
-    let match = expr.match(regex);
-    let numList: RegExpMatchArray = [];
+    let numList: RegExpMatchArray | null = expr.match(regex);
+    if (!numList) return;
     let numNameList: any[] = []; // Contains the number with name of a course.
 
     // If we were able to find course numbers in regex matches, update the numList to list of course numbers
-    if (match) {
-      numList = match;
-    }
 
     // For the list of numbers, retrieve each course number, search for it and store the combined number + name into numNameList
     let retrieved = 0;
@@ -525,32 +521,35 @@ const backendSearch = async (
   userC: UserCourse | null,
 ): Promise<{ index: number; resp: Course | null }> =>
   new Promise(async (resolve) => {
-    const res: any = await axios
-      .get(getAPI(window) + `/searchNumber/${courseNumber}`)
-      .catch((err) => {});
-    if (res === undefined) return Promise.reject();
-    let retrieved: SISRetrievedCourse = res.data.data;
-    if (retrieved === undefined) {
-      store.dispatch(updateUnfoundNumbers(courseNumber));
+    try {
+      const res: any = await axios.get(
+        getAPI(window) + `/searchNumber/${courseNumber}`,
+      );
+      let retrieved: SISRetrievedCourse | -1 = res.data.data;
+      if (retrieved === -1) {
+        store.dispatch(updateUnfoundNumbers(courseNumber));
+        return resolve({ index: indexNum, resp: null });
+      }
+      let versionIndex = 0;
+      retrieved.versions.forEach((element, index) => {
+        if (userC === null) return;
+        if (element.term === userC.term) {
+          versionIndex = index;
+        }
+      });
+      const cache: SISRetrievedCourse[] = [];
+      cache.push(retrieved);
+      store.dispatch(updateCourseCache(cache));
+      resolve({
+        index: indexNum,
+        resp: {
+          ...retrieved,
+          ...retrieved.versions[versionIndex],
+        },
+      });
+    } catch (err) {
       return resolve({ index: indexNum, resp: null });
     }
-    let versionIndex = 0;
-    retrieved.versions.forEach((element, index) => {
-      if (userC === null) return;
-      if (element.term === userC.term) {
-        versionIndex = index;
-      }
-    });
-    const cache: SISRetrievedCourse[] = [];
-    cache.push(retrieved);
-    store.dispatch(updateCourseCache(cache));
-    resolve({
-      index: indexNum,
-      resp: {
-        ...retrieved,
-        ...retrieved.versions[versionIndex],
-      },
-    });
   });
 
 /**
