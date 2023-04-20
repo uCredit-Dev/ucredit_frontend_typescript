@@ -139,13 +139,10 @@ const Form: FC<{
     setSearching(true);
     dispatch(updateRetrievedCourses([]));
 
-    if (searchTerm.length > 0) {
-      // Search with half second debounce.
-      const search = setTimeout(performSmartSearch(extras), 500);
-      return () => clearTimeout(search);
-    } else {
-      setSearching(false);
-    }
+    // Search with half second debounce.
+    const search = setTimeout(performSmartSearch(extras), 500);
+    return () => clearTimeout(search);
+
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [searchTerm, searchFilters, pageIndex]);
 
