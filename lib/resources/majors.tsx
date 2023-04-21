@@ -5330,6 +5330,180 @@ const minorMath: Minor = {
   ],
 };
 
+// https://e-catalogue.jhu.edu/engineering/full-time-residential-programs/degree-programs/robotics-computational-sensing/computer-integrated-surgery-minor/#requirementstext
+const minorCIS: Minor = {
+  degree_name: 'Minor Computer Integrated Surgery',
+  abbrev: 'Minor CIS',
+  department: 'EN Robotics and Computational Sensing',
+  total_degree_credit: 43,
+  wi_credit: 0,
+  url: 'https://lcsr.jhu.edu/computer-integrated-surgery-minor/',
+  distributions: [
+    {
+      name: 'Fundamental Computer Science Courses',
+      required_credits: 7,
+      min_credits_per_course: 3,
+      description:
+        'You must have a fundamental bakcground in computer programming and computer science. ' +
+        'You must take Gateway Computing JAVA and Data Structures (Or equivalent experience determined by your CIS minor adviser.)',
+      criteria: 'EN.500.112[C]^OR^EN.601.226[C]',
+      fine_requirements: [
+        {
+          description: '<b>EN.500.112 Gateway Computing: JAVA</b>',
+          required_credits: 3,
+          criteria: 'EN.500.112[C]',
+        },
+        {
+          description: '<b>601.226 Data Structures</b>',
+          required_credits: 4,
+          criteria: 'EN.601.226[C]',
+        },
+      ],
+    },
+    {
+      name: 'Fundamental Mathematics Courses',
+      required_credits: 16,
+      min_credits_per_course: 4,
+      description:
+        'All CIS Minors must take Calculus I, Calculus II, Calculus III or Honors Multivariable Calculus ' +
+        'and choose one of the following: Linear Algebra and Differential Equations, Differential Equations, Linear Algebra, or Honors Linear Algebra. ' +
+        'Math requirements may also be satisfied by an equivalent course as determined by CIS advisor.',
+      criteria:
+        'AS.110.106[C]^OR^AS.110.108[C]^OR^AS.110.109[C]^OR^AS.110.107[C]^OR^' +
+        'AS.110.202[C]^OR^AS.110.211[C]^OR^AS.110.201[C]^OR^EN.553.291[C]^OR^AS.110.212[C]',
+      double_count: [
+        'Humanities (H) Distribution',
+        'Social Science (S) Distribution',
+        'Other (N/E/Q) Distribution',
+        'Writing Intensive',
+      ],
+      fine_requirements: [
+        {
+          description:
+            '<b>Calculus I</b> <br />' +
+            'AS.110.106 Calculus I (Biology and Social Sciences)' +
+            '<br /> <i>OR</i> <br />' +
+            'AS.110.108 Calculus I (Physical Sciences and Engineering)',
+          required_credits: 4,
+          criteria: 'AS.110.106[C]^OR^AS.110.108[C]',
+        },
+        {
+          description:
+            '<b>Calculus II</b> <br />' +
+            'AS.110.109 Calculus II (For Physical Sciences and Engineering)' +
+            '<br /> <i>OR</i> <br />' +
+            'AS.110.107 Calculus II (For Biological and Social Science)',
+          required_credits: 4,
+          criteria: 'AS.110.109[C]^OR^AS.110.107[C]',
+        },
+        {
+          description:
+            '<b>Calculus III</b> <br /> AS.110.202 Calculus III' +
+            '<br /> <i>OR</i> <br /> AS.110.211 Honors Multivariable Calculus',
+          required_credits: 4,
+          criteria: 'AS.110.202[C]^OR^AS.110.211[C]',
+        },
+        {
+          description:
+            '<b>Linear Algebra</b> <br /> AS.110.201 Linear Algebra<br /> <i>OR</i> ' +
+            '<br /> EN.553.291 Linear Algebra and Differential Equations<br /> <i>OR</i> ' +
+            '<br /> AS.110.212 Honors Linear Algebra',
+          required_credits: 4,
+          criteria: 'AS.110.201[C]^OR^EN.553.291[C]^OR^AS.110.212[C]',
+        },
+      ],
+    },
+    {
+      name: 'Fundamental Computer Integrated Surgery Courses',
+      required_credits: 8,
+      min_credits_per_course: 4,
+      description:
+        'You must take Computer Integrated Surgery I and a design course in CIS.',
+      criteria:
+        '(EN.510.433[C]^OR^EN.510.434[C])^OR^(EN.520.462[C]^OR^EN.520.463[C])^OR^' +
+        '(EN.520.498[C]^OR^EN.520.499[C])^OR^(EN.540.400[C]^OR^EN.540.421[C])^OR^' +
+        '(EN.580.311[C]^OR^EN.580.312[C])^OR^(EN.580.411[C]^OR^EN.580.412[C])^OR^' +
+        '(EN.580.456[C]^OR^EN.580.457[C])^OR^(EN.580.471[C]^OR^EN.580.571[C])^OR^' +
+        '(EN.580.480[C]^OR^EN.580.481[C])^OR^(EN.580.580[C]^OR^EN.580.581[C])^OR^' +
+        'EN.601.455[C]^OR^EN.601.456[C]^OR^(EN.580.437[C]^OR^EN.580.438[C])',
+      fine_requirements: [
+        {
+          description: '<b>EN.601.455 Computer Integrated Surgery I</b>',
+          required_credits: 4,
+          criteria: 'EN.601.455[C]',
+        },
+        {
+          description:
+            '<b>EN.601.456 Computer Integrated Surgery II or design course in CIS</b>',
+          required_credits: 4,
+          criteria:
+            '(EN.510.433[C]^OR^EN.510.434[C])^OR^(EN.520.462[C]^OR^EN.520.463[C])^OR^' +
+            '(EN.520.498[C]^OR^EN.520.499[C])^OR^(EN.540.400[C]^OR^EN.540.421[C])^OR^' +
+            '(EN.580.311[C]^OR^EN.580.312[C])^OR^(EN.580.411[C]^OR^EN.580.412[C])^OR^' +
+            '(EN.580.456[C]^OR^EN.580.457[C])^OR^(EN.580.471[C]^OR^EN.580.571[C])^OR^' +
+            '(EN.580.480[C]^OR^EN.580.481[C])^OR^(EN.580.580[C]^OR^EN.580.581[C])^OR^' +
+            'EN.601.456[C]^OR^(EN.580.437[C]^OR^EN.580.438[C])',
+        },
+      ],
+    },
+    {
+      name: 'Other Courses Related to CIS',
+      required_credits: 12,
+      min_credits_per_course: 3,
+      description:
+        '<p>Select at least four other courses related to CIS. Of these, at least one must be in either the Imaging Subgroup or the Robotics Subgroup</p>',
+      criteria:
+        'EN.520.414[C]^OR^EN.520.432[C]^OR^EN.520.433[C]^OR^EN.601.461[C]^OR^EN.530.420[C]^OR^EN.530.421[C]^OR^EN.530.603[C]^OR^EN.530.646[C]^OR^EN.601.463[C]^OR^EN.520.448[C]^OR^EN.530.445[C]^OR^EN.580.471[C]^OR^EN.601.454[C]^OR^EN.601.476[C]^OR^EN.601.482[C]',
+      fine_requirements: [
+        {
+          required_credits: 3,
+          description:
+            '<b>Imaging</b> <br />' +
+            'EN.520.414 Image Processing & Analysis' +
+            '<br /> <i>OR</i> <br />' +
+            'EN.520.432 Medical Imaging Systems' +
+            '<br /> <i>OR</i> <br />' +
+            'EN.520.433 Medical Image Analysis' +
+            '<br /> <i>OR</i> <br />' +
+            'EN.601.461 Computer Vision' +
+            '<br /><br /><b>Robotics</b> <br />' +
+            'EN.530.420 Robot Sensors/Actuators' +
+            '<br /> <i>OR</i> <br />' +
+            'EN.530.421 Mechatronics' +
+            '<br /> <i>OR</i> <br />' +
+            'EN.530.603 Applied Optimal Control' +
+            '<br /> <i>OR</i> <br />' +
+            'EN.530.646 Robot Devices, Kinematics, Dynamics, and Control' +
+            '<br /> <i>OR</i> <br />' +
+            'EN.601.463 Algorithms for Sensor-Based Robotics',
+          criteria:
+            'EN.520.414[C]^OR^EN.520.432[C]^OR^EN.520.433[C]^OR^EN.601.461[C]^OR^EN.530.420[C]^OR^EN.530.421[C]^OR^EN.530.603[C]^OR^EN.530.646[C]^OR^EN.601.463[C]',
+          double_count: ['All'],
+        },
+        {
+          required_credits: 0,
+          description:
+            '<b>Other</b> <br />' +
+            'EN.520.448 Electronics Design Lab' +
+            '<br /> <i>OR</i> <br />' +
+            'EN.530.445 Introduction to Biomechanics' +
+            '<br /> <i>OR</i> <br />' +
+            'EN.580.471 Principles of Design of BME Instrumentation' +
+            '<br /> <i>OR</i> <br />' +
+            'EN.601.454 Augmented Reality' +
+            '<br /> <i>OR</i> <br />' +
+            'EN.601.476 Machine Learning: Data to Models' +
+            '<br /> <i>OR</i> <br />' +
+            'EN.601.482 Machine Learning: Deep Learning',
+          criteria:
+            'EN.520.448[C]^OR^EN.530.445[C]^OR^EN.580.471[C]^OR^EN.601.454[C]^OR^EN.601.476[C]^OR^EN.601.482[C]',
+          double_count: ['All'],
+        },
+      ],
+    },
+  ],
+};
+
 const no_degree: Major = {
   degree_name: "Undecided Degree/My degree isn't supported yet",
   distributions: [],
@@ -5375,6 +5549,7 @@ export const allMajors: Major[] = [
   baMath,
   baPhysics,
   bsPhysics,
+  minorCIS,
   // bsEnvEng,
   // baSoc,
   // baWritingSems,
