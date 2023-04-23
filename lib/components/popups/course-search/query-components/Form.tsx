@@ -105,20 +105,6 @@ const Form: FC<{
 
   // Search with debouncing of 4/8s of a second.
   useEffect(() => {
-    // Skip searching if no filters or queries are specified
-    if (
-      searchTerm.length === 0 &&
-      searchFilters.credits === null &&
-      searchFilters.distribution === null &&
-      searchFilters.wi === null &&
-      searchFilters.department === null &&
-      searchFilters.tags === null &&
-      searchFilters.levels === null
-    ) {
-      dispatch(updateRetrievedCourses([]));
-      setSearching(false);
-      return;
-    }
     // Search params.
     const extras: SearchExtras = {
       page: pageIndex,
