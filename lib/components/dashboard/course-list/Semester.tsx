@@ -476,7 +476,7 @@ const Semester: FC<{
           onMouseEnter={() => setHovered(true)}
           className="min-w-[15rem] max-w-[40rem] w-min mx-3"
         >
-          <div className="relative">
+          <div>
             <Comments
               location={'Semester ' + semesterYear._id + semesterName}
               hovered={hovered}
