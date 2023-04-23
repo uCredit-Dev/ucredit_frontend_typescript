@@ -15,6 +15,7 @@ import * as amplitude from '@amplitude/analytics-browser';
 
 const CommentsOverview: React.FC = () => {
   const [threadJSX, setThreadJSX] = useState<JSX.Element[]>([]);
+  const [numComments, setNumComments] = useState(0);
 
   const threadObjs = useSelector(selectFilteredThreads);
   const user = useSelector(selectUser);
@@ -27,10 +28,15 @@ const CommentsOverview: React.FC = () => {
   };
 
   useEffect(() => {
+    let comments = 0;
     const temp: ThreadType[] = [];
     for (let k in threadObjs) {
-      if (threadObjs[k].plan_id === currentPlan._id) temp.push(threadObjs[k]);
+      if (threadObjs[k].plan_id === currentPlan._id) {
+        temp.push(threadObjs[k]);
+        comments += threadObjs[k].comments.length;
+      }
     }
+    setNumComments(comments);
     const ts = temp.map((e) => getComments(e));
     setThreadJSX(ts);
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -115,10 +121,10 @@ const CommentsOverview: React.FC = () => {
                 <Popover.Panel className="absolute z-[100] transform translate-x-[-140px] bg-white rounded-lg translate-y-[8px] w-80 max-w-none sm:px-0 lg:max-w-3xl h-[70vh]">
                   <div className="h-full rounded-lg shadow-lg ring-1 ring-black ring-opacity-5">
                     <div className="z-30 grid max-h-full overflow-y-auto bg-white rounded-lg p-7 lg:grid-cols-1">
-                      {threadJSX.length !== 0 ? (
+                      {numComments > 0 ? (
                         <CommenterToggle className="mb-3" />
                       ) : null}
-                      {threadJSX.length !== 0 ? (
+                      {numComments > 0 ? (
                         threadJSX
                       ) : (
                         <p className="text-sm italic text-center text-slate-500">
