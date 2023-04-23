@@ -24,8 +24,6 @@ import { selectPlan } from '../../../../slices/currentPlanSlice';
 
 /**
  * Search form, including the search query input and filters.
- * TODO: filter by uppeer/lower levels
- *
  * @prop setSearching - sets searching state
  */
 const Form: FC<{
