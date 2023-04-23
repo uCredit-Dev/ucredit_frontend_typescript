@@ -129,6 +129,7 @@ const Semester: FC<{
     // Do something similar for plan, year, and semester
     // All threads should be retrieved on first load of the plan and stored in a map.
     return semesterCourses.map((course, index) => {
+      console.log(mode);
       if (mode !== ReviewMode.View && mode !== ReviewMode.RoadMap) {
         return (
           <div key={course._id} className="w-auto mr-0">
