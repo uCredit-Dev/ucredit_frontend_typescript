@@ -57,7 +57,7 @@ const HandleUserInfoSetupDummy: React.FC = () => {
                 console.log('ERROR:', err);
               }
             })
-          ).data.data;
+          ).data;
           processRetrievedPlans(userPlan);
         })();
       }
