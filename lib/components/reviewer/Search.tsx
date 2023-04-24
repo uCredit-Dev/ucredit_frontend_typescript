@@ -47,6 +47,32 @@ const Search: React.FC<{
     updateSearchState(e.target.value);
   };
 
+  //Given a reviewee, returns time of last update of one of that reviewees plans, if that info is tracked
+  const getLastUpdatedPlan= (a:RevieweePlans) => {
+    let lastUpdatedPlan=a.plans[0];
+    a.plans.forEach(d => {
+      if(lastUpdatedPlan.updatedAt!==undefined && d.updatedAt!==undefined)
+      {
+        if(lastUpdatedPlan.updatedAt < d.updatedAt)
+        {
+          lastUpdatedPlan=d;
+        }
+      }
+      else if(d.updatedAt!=null)
+      {
+        lastUpdatedPlan=d;
+      }
+    } );
+    if(lastUpdatedPlan.updatedAt==null)
+    {
+      return "";
+    }
+    else
+    {
+      return lastUpdatedPlan.updatedAt.toLocaleString();
+    }
+  };
+
   const filter = () => {
     let filteredMap = new Map();
     for (const { reviewee, plans } of revieweePlans) {
@@ -73,6 +99,9 @@ const Search: React.FC<{
     switch (searchSetting) {
       case 'Recently Updated':
         // TODO
+        filteredArray.sort((a, b) => 
+          -1*getLastUpdatedPlan(a).localeCompare(getLastUpdatedPlan(b)),
+        );
         break;
       case 'First Name':
         filteredArray.sort((a, b) =>
