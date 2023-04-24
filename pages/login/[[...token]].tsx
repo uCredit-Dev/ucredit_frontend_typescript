@@ -69,6 +69,8 @@ const Login: React.FC = () => {
    * @param token the token to set the cookie as
    */
   const handleDBLogin = (loginId: string) => {
+    amplitude.init('6beab2d293835bee5dd3417a83d9ac13', loginId);
+    amplitude.track('JHU User Login');
     userService
       .login(loginId)
       .then((data) => {
@@ -133,8 +135,6 @@ const Login: React.FC = () => {
    * Handles JHU Login button being pressed.
    */
   const handleJHULogin = (loginId: any) => {
-    amplitude.init('6beab2d293835bee5dd3417a83d9ac13', loginId);
-    amplitude.track('JHU User Login');
     if (window.location.href.includes('ucredit.me')) {
       if (loginId && typeof loginId === 'string') handleDBLogin(loginId);
       else window.location.href = getAPI(window) + '/login';
@@ -148,6 +148,11 @@ const Login: React.FC = () => {
    * @param id - id of the dev to login as
    */
   const handleDevLogin = (id: string) => (): void => {
+    amplitude.init('6beab2d293835bee5dd3417a83d9ac13', id);
+    if (id === 'TEST_DEV' || id === 'REVIEWER_DEV') {
+      amplitude.setOptOut(true);
+    }
+    amplitude.track('Dev User Login');
     axios
       .get(getAPI(window) + '/backdoor/verification/' + id)
       .then((res) => {
