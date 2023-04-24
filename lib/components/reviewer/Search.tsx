@@ -98,7 +98,6 @@ const Search: React.FC<{
       filteredArray.push({ reviewee: JSON.parse(k), plans: v });
     switch (searchSetting) {
       case 'Recently Updated':
-        // TODO
         filteredArray.sort((a, b) => 
           -1*getLastUpdatedPlan(a).localeCompare(getLastUpdatedPlan(b)),
         );
