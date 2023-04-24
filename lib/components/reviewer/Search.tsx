@@ -48,27 +48,23 @@ const Search: React.FC<{
   };
 
   //Given a reviewee, returns time of last update of one of that reviewees plans, if that info is tracked
-  const getLastUpdatedPlan= (a:RevieweePlans) => {
-    let lastUpdatedPlan=a.plans[0];
-    a.plans.forEach(d => {
-      if(lastUpdatedPlan.updatedAt!==undefined && d.updatedAt!==undefined)
-      {
-        if(lastUpdatedPlan.updatedAt < d.updatedAt)
-        {
-          lastUpdatedPlan=d;
+  const getLastUpdatedPlan = (a: RevieweePlans) => {
+    let lastUpdatedPlan = a.plans[0];
+    a.plans.forEach((d) => {
+      if (
+        lastUpdatedPlan.updatedAt !== undefined &&
+        d.updatedAt !== undefined
+      ) {
+        if (lastUpdatedPlan.updatedAt < d.updatedAt) {
+          lastUpdatedPlan = d;
         }
+      } else if (d.updatedAt != null) {
+        lastUpdatedPlan = d;
       }
-      else if(d.updatedAt!=null)
-      {
-        lastUpdatedPlan=d;
-      }
-    } );
-    if(lastUpdatedPlan.updatedAt==null)
-    {
-      return "";
-    }
-    else
-    {
+    });
+    if (lastUpdatedPlan.updatedAt == null) {
+      return '';
+    } else {
       return lastUpdatedPlan.updatedAt.toLocaleString();
     }
   };
@@ -98,8 +94,9 @@ const Search: React.FC<{
       filteredArray.push({ reviewee: JSON.parse(k), plans: v });
     switch (searchSetting) {
       case 'Recently Updated':
-        filteredArray.sort((a, b) => 
-          -1*getLastUpdatedPlan(a).localeCompare(getLastUpdatedPlan(b)),
+        filteredArray.sort(
+          (a, b) =>
+            -1 * getLastUpdatedPlan(a).localeCompare(getLastUpdatedPlan(b)),
         );
         break;
       case 'First Name':
