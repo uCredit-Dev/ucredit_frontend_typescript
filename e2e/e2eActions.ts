@@ -8,6 +8,7 @@ import {
   DASHBOARD,
   HAMBURGER_MENU,
   REVIEWER_DASHBOARD,
+  TRACKER_MODAL,
 } from './e2eFixtures';
 import { Page, expect } from '@playwright/test';
 
@@ -121,4 +122,26 @@ export const inspectPlan = async (page: Page) => {
 export const viewPlanSummary = async (page: Page) => {
   const { VIEW_SUMMARY_BUTTON_SELECTOR } = REVIEWER_DASHBOARD;
   await page.locator(VIEW_SUMMARY_BUTTON_SELECTOR).first().click();
+};
+
+/**
+ * Click on tracker button to view degree progress.
+ * @param page The page to view the plan summary with
+ * @precondition page must be on dashboard
+ * @postcondition page must be showing the degree progress
+ */
+export const clickTracker = async (page: Page) => {
+  const { TRACKER_SELECTOR } = DASHBOARD;
+  await page.locator(TRACKER_SELECTOR).click();
+};
+
+/**
+ * Click on distribution to view its fine requirements.
+ * @param page The page to view the fine requirements with
+ * @precondition page must be on dashboard and degree progress must be showing
+ * @postcondition page must be showing the cart with fine requirements
+ */
+export const clickDistributionBar = async (page: Page, distribution: string) => {
+  const { distribution_selector } = TRACKER_MODAL; 
+  await page.locator(distribution_selector(distribution)).click();
 };

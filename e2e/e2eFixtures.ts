@@ -66,6 +66,7 @@ export const DASHBOARD = {
    */
   addCourseButtonSelector: (year: string, semester: string) =>
     `.add-course-button-${year}-${semester}`,
+  TRACKER_SELECTOR: 'text="Tracker"',
 };
 
 export const ADD_COURSE_MODAL = {
@@ -96,7 +97,6 @@ export const HAMBURGER_MENU = {
 export const PLAN_EDIT_MENU = {
   PLAN_EDIT_MENU_SELECTOR: '.plan-edit-menu',
   DEFAULT_PLAN_NAME_SELECTOR: 'text="Unnamed Plan"',
-  TRACKER_SELECTOR: 'text="Tracker"',
   ADD_REVIEWER_BUTTON_SELECTOR: '.add-reviewer-button',
   SEARCH_REVIEWER_INPUT_SELECTOR: 'input[placeholder="jsmith1 or John Smith"]',
   REVIEWER_RESULT_SELECTOR: `text=${REVIEWER_ID}`,
@@ -107,6 +107,7 @@ export const TRACKER_MODAL = {
   RELOAD_BUTTON_SELECTOR: '.reload-button',
   TOTAL_CREDIT_SELECTOR: '.total',
   MAJOR_OPTIONS_SELECTOR: '.major-select',
+  distribution_selector: (name: string) => `.${name}`,
 };
 
 export const REVIEWER_DASHBOARD = {

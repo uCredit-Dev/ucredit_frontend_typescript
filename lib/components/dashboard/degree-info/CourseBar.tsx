@@ -127,6 +127,7 @@ const CourseBar: FC<{
       </div>
 
       <div
+        id={distribution.name}
         className="relative flex flex-row w-full h-6 cursor-pointer"
         onClick={openCartPopup}
       >
