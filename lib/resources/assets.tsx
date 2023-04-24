@@ -454,12 +454,13 @@ export const getCourses = (
         if (numNameList[outIndex] == null) {
           retrieved++;
           if (numList[outIndex] === 'EN.990.100') {
-            numNameList[outIndex] = 'Lab Safety            (Please click on the Prerequisites Description tab for full description)'
-          }
-          else {numNameList[outIndex] =
-            numList[outIndex] +
-            numList[outIndex] +
-            ' Has not been offered in the past 4 years or listed on SIS. Please click on the Prerequisites Description tab for full description.';
+            numNameList[outIndex] =
+              'Lab Safety            (Please click on the Prerequisites Description tab for full description)';
+          } else {
+            numNameList[outIndex] =
+              numList[outIndex] +
+              numList[outIndex] +
+              ' Has not been offered in the past 4 years or listed on SIS. Please click on the Prerequisites Description tab for full description.';
           }
         }
         if (retrieved === numList.length) {
@@ -832,9 +833,10 @@ export const checkPrereq = (
 ): boolean => {
   for (let course of courses) {
     if (
-      (((course.number === preReqNumber ||
+      ((course.number === preReqNumber ||
         checkOldPrereqNumbers(course.number, preReqNumber)) &&
-      prereqInPast(course, year, semester, plan)) || preReqNumber === 'Lab Safety')
+        prereqInPast(course, year, semester, plan)) ||
+      preReqNumber === 'Lab Safety'
     )
       return true;
   }
