@@ -10,7 +10,6 @@ import {
   updateDeleteYearStatus,
 } from '../../slices/popupSlice';
 import { selectToken } from '../../slices/userSlice';
-import { userService } from '../../../lib/services';
 
 /**
  * This is the confirmation popup that appears when users press the button to delete a plan.
@@ -27,27 +26,8 @@ const DeleteYearPopup: FC = () => {
    * Popup for deleting current plan.
    */
   // Delete the selected year
-  const activateDeleteYear = async () => {
+  const activateDeleteYear = () => {
     if (currentPlan.years.length > 1 && year !== null) {
-      const threads = await userService.getThreads(
-        currentPlan._id,
-        token,
-        false,
-        null,
-      );
-      for (let thread of threads.data.data) {
-        // delete comments on the selected year and its semesters
-        if (thread.location_id.substring(0, 24) === year._id) {
-          await userService.removeThread(thread._id, token);
-        }
-        // delete comments on the selected year's courses
-        if (thread.location_type === 'Course') {
-          const course = await userService.getCourse(thread.location_id, token);
-          if (course.data.year_id === year._id) {
-            await userService.removeThread(thread._id, token);
-          }
-        }
-      }
       fetch(getAPI(window) + '/years/' + year._id, {
         method: 'DELETE',
         headers: {

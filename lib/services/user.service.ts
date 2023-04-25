@@ -14,12 +14,6 @@ const login = (cookieVal: string) => {
     .then((res) => res);
 };
 
-const getCourse = (courseId: string, token: string) => {
-  return fetchWrapper
-    .get(`${getAPI(window)}/courses/${courseId}`, token)
-    .then(handleResponse);
-};
-
 const getPlan = (planId: string, token: string) => {
   return fetchWrapper
     .get(`${getAPI(window)}/plans/${planId}`, token)
@@ -163,7 +157,6 @@ const handleResponse = (res, cb: any = undefined) => {
 
 export const userService = {
   login,
-  getCourse,
   getPlan,
   getUser,
   requestReviewerPlan,
