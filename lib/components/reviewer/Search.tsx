@@ -65,9 +65,8 @@ const Search: React.FC<{
     });
     if (lastUpdatedPlan.updatedAt == null) {
       return '';
-    } else {
-      return lastUpdatedPlan.updatedAt.toLocaleString();
     }
+    return lastUpdatedPlan.updatedAt.toLocaleString();
   };
 
   const getUpdateTime = (a: StatusPlan) => {
