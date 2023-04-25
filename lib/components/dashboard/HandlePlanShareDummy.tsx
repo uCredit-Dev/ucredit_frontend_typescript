@@ -237,6 +237,15 @@ const HandlePlanShareDummy = () => {
         if (empty) {
           dispatch(updateImportingStatus(false));
           dispatch(updateAddingPlanStatus(false));
+        } else {
+          dispatch(updateImportingStatus(false));
+          toast.dismiss();
+          toast.success('Plan Imported!', {
+            autoClose: 5000,
+            closeOnClick: false,
+            toastId: 'plan imported',
+          });
+          dispatch(updateAddingPlanStatus(false));
         }
       }
     });
@@ -257,15 +266,20 @@ const HandlePlanShareDummy = () => {
     for (const yearIt of toAdd) {
       for (const course of yearIt.courses) {
         if (empty) emptyClone = false;
-        const courseResponse = await addCourse(
-          course._id,
-          toAdd.indexOf(yearIt),
-          newUpdatedPlan,
-        );
-        added = [...added, courseResponse];
-        handleFinishAdding(newUpdatedPlan, added, total);
+        try {
+          const courseResponse = await addCourse(
+            course._id,
+            toAdd.indexOf(yearIt),
+            newUpdatedPlan,
+          );
+          added = [...added, courseResponse];
+          handleFinishAdding(newUpdatedPlan, added, total);
+        } catch (error) {
+          console.log(`Failed to add course: ${error.message}`);
+        }
       }
     }
+
     return emptyClone;
   };
 
@@ -308,16 +322,6 @@ const HandlePlanShareDummy = () => {
     dispatch(updatePlanList(newPlanList));
     dispatch(updateCurrentPlanCourses(added));
     dispatch(updateSelectedPlan(newPlan));
-    if (total === added.length) {
-      dispatch(updateImportingStatus(false));
-      toast.dismiss();
-      toast.success('Plan Imported!', {
-        autoClose: 5000,
-        closeOnClick: false,
-        toastId: 'plan imported',
-      });
-      dispatch(updateAddingPlanStatus(false));
-    }
   };
 
   /**
@@ -332,13 +336,12 @@ const HandlePlanShareDummy = () => {
     yearIndex: number,
     plan: Plan,
   ): Promise<UserCourse> => {
-    return new Promise((resolve) => {
+    return new Promise((resolve, reject) => {
       axios
         .get(getAPI(window) + '/courses/' + courseId)
         .then((response) => {
           let course: UserCourse = response.data.data;
           const addingYear: Year = plan.years[yearIndex];
-
           const body = {
             user_id: user._id,
             year_id: addingYear._id,
@@ -371,12 +374,14 @@ const HandlePlanShareDummy = () => {
                 return resolve(newUserCourse);
               } else {
                 console.log('Failed to add', data.errors);
+                return reject(new Error(`Failed to add ${body.title}`));
               }
             });
         })
-        .catch((err) =>
-          console.log('error creating course while sharing', err),
-        );
+        .catch((err) => {
+          console.log('error creating course while sharing', err);
+          return reject(new Error('error creating course while sharing'));
+        });
     });
   };
 
