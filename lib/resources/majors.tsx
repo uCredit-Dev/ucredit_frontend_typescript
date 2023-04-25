@@ -578,7 +578,7 @@ const baChem: Major = {
   abbrev: 'baChem',
   department: 'AS Chemistry',
   total_degree_credit: 120,
-  wi_credit: 12,
+  wi_credit: 15,
   url: 'https://e-catalogue.jhu.edu/arts-sciences/full-time-residential-programs/degree-programs/chemistry/chemistry-bachelor-arts/',
   distributions: [
     {
@@ -716,7 +716,7 @@ const baChem: Major = {
     {
       name: 'Writing Intensive',
       required_credits: 15,
-      min_credits_per_course: 1,
+      min_credits_per_course: 3,
       description:
         'Effective Fall 2022, all students earning a degree from the School of Arts and Sciences must complete Reintroduction to Writing in their first year at Hopkins plus an additional 12 credits in writing-intensive courses through their undergraduate experience for a minimum of 15 writing-intensive credits.',
       criteria: 'Written Intensive[W]',
@@ -5354,7 +5354,7 @@ const minorCIS: Minor = {
           criteria: 'EN.500.112[C]',
         },
         {
-          description: '<b>601.226 Data Structures</b>',
+          description: '<b>EN.601.226 Data Structures</b>',
           required_credits: 4,
           criteria: 'EN.601.226[C]',
         },
@@ -5371,12 +5371,6 @@ const minorCIS: Minor = {
       criteria:
         'AS.110.106[C]^OR^AS.110.108[C]^OR^AS.110.109[C]^OR^AS.110.107[C]^OR^' +
         'AS.110.202[C]^OR^AS.110.211[C]^OR^AS.110.201[C]^OR^EN.553.291[C]^OR^AS.110.212[C]',
-      double_count: [
-        'Humanities (H) Distribution',
-        'Social Science (S) Distribution',
-        'Other (N/E/Q) Distribution',
-        'Writing Intensive',
-      ],
       fine_requirements: [
         {
           description:
@@ -5420,12 +5414,12 @@ const minorCIS: Minor = {
       description:
         'You must take Computer Integrated Surgery I and a design course in CIS.',
       criteria:
-        '(EN.510.433[C]^OR^EN.510.434[C])^OR^(EN.520.462[C]^OR^EN.520.463[C])^OR^' +
-        '(EN.520.498[C]^OR^EN.520.499[C])^OR^(EN.540.400[C]^OR^EN.540.421[C])^OR^' +
-        '(EN.580.311[C]^OR^EN.580.312[C])^OR^(EN.580.411[C]^OR^EN.580.412[C])^OR^' +
-        '(EN.580.456[C]^OR^EN.580.457[C])^OR^(EN.580.471[C]^OR^EN.580.571[C])^OR^' +
-        '(EN.580.480[C]^OR^EN.580.481[C])^OR^(EN.580.580[C]^OR^EN.580.581[C])^OR^' +
-        'EN.601.455[C]^OR^EN.601.456[C]^OR^(EN.580.437[C]^OR^EN.580.438[C])',
+        'EN.510.433[C]^OR^EN.510.434[C]^OR^EN.520.462[C]^OR^EN.520.463[C]^OR^' +
+        'EN.520.498[C]^OR^EN.520.499[C]^OR^EN.540.400[C]^OR^EN.540.421[C]^OR^' +
+        'EN.580.311[C]^OR^EN.580.312[C]^OR^EN.580.411[C]^OR^EN.580.412[C]^OR^' +
+        'EN.580.456[C]^OR^EN.580.457[C]^OR^EN.580.471[C]^OR^EN.580.571[C]^OR^' +
+        'EN.580.480[C]^OR^EN.580.481[C]^OR^EN.580.580[C]^OR^EN.580.581[C]^OR^' +
+        'EN.601.455[C]^OR^EN.601.456[C]^OR^EN.580.437[C]^OR^EN.580.438[C]',
       fine_requirements: [
         {
           description: '<b>EN.601.455 Computer Integrated Surgery I</b>',
@@ -5437,12 +5431,12 @@ const minorCIS: Minor = {
             '<b>EN.601.456 Computer Integrated Surgery II or design course in CIS</b>',
           required_credits: 4,
           criteria:
-            '(EN.510.433[C]^OR^EN.510.434[C])^OR^(EN.520.462[C]^OR^EN.520.463[C])^OR^' +
-            '(EN.520.498[C]^OR^EN.520.499[C])^OR^(EN.540.400[C]^OR^EN.540.421[C])^OR^' +
-            '(EN.580.311[C]^OR^EN.580.312[C])^OR^(EN.580.411[C]^OR^EN.580.412[C])^OR^' +
-            '(EN.580.456[C]^OR^EN.580.457[C])^OR^(EN.580.471[C]^OR^EN.580.571[C])^OR^' +
-            '(EN.580.480[C]^OR^EN.580.481[C])^OR^(EN.580.580[C]^OR^EN.580.581[C])^OR^' +
-            'EN.601.456[C]^OR^(EN.580.437[C]^OR^EN.580.438[C])',
+            'EN.601.456[C]^OR^EN.510.433[C]^OR^EN.510.434[C]^OR^EN.520.462[C]^OR^' +
+            'EN.520.463[C]^OR^EN.520.498[C]^OR^EN.520.499[C]^OR^EN.540.400[C]^OR^' +
+            'EN.540.421[C]^OR^EN.580.311[C]^OR^EN.580.312[C]^OR^EN.580.411[C]^OR^' +
+            'EN.580.412[C]^OR^EN.580.456[C]^OR^EN.580.457[C]^OR^EN.580.471[C]^OR^' +
+            'EN.580.571[C]^OR^EN.580.480[C]^OR^EN.580.481[C]^OR^EN.580.580[C]^OR^' +
+            'EN.580.581[C]^OR^EN.580.437[C]^OR^EN.580.438[C]',
         },
       ],
     },
@@ -5478,7 +5472,6 @@ const minorCIS: Minor = {
             'EN.601.463 Algorithms for Sensor-Based Robotics',
           criteria:
             'EN.520.414[C]^OR^EN.520.432[C]^OR^EN.520.433[C]^OR^EN.601.461[C]^OR^EN.530.420[C]^OR^EN.530.421[C]^OR^EN.530.603[C]^OR^EN.530.646[C]^OR^EN.601.463[C]',
-          double_count: ['All'],
         },
         {
           required_credits: 0,
@@ -5497,7 +5490,6 @@ const minorCIS: Minor = {
             'EN.601.482 Machine Learning: Deep Learning',
           criteria:
             'EN.520.448[C]^OR^EN.530.445[C]^OR^EN.580.471[C]^OR^EN.601.454[C]^OR^EN.601.476[C]^OR^EN.601.482[C]',
-          double_count: ['All'],
         },
       ],
     },
@@ -5531,24 +5523,25 @@ export const allMajors: Major[] = [
   no_degree,
   bsCS,
   baCS,
-  minorCS,
   bsMolCell,
   bsAMS,
-  minorAMS,
   baIS,
   bsMechE,
   bsBME,
   bsCBE,
   baEcon,
-  minorEcon,
-  minorPhysics,
-  minorMath,
   baCogSci,
   bsNeuro,
   bsECE,
   baMath,
   baPhysics,
   bsPhysics,
+  baChem,
+  minorCS,
+  minorAMS,
+  minorEcon,
+  minorPhysics,
+  minorMath,
   minorCIS,
   // bsEnvEng,
   // baSoc,
@@ -5558,7 +5551,6 @@ export const allMajors: Major[] = [
   // baMSH,
   // baPH,
   // bsBioPhysics,
-  baChem,
   // bsME,
   // baHistory,
   // baBiology,
