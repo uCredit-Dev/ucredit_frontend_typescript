@@ -24,8 +24,6 @@ import { selectPlan } from '../../../../slices/currentPlanSlice';
 
 /**
  * Search form, including the search query input and filters.
- * TODO: filter by uppeer/lower levels
- *
  * @prop setSearching - sets searching state
  */
 const Form: FC<{
@@ -88,7 +86,7 @@ const Form: FC<{
       dispatch(
         updateSearchFilters({ filter: 'year', value: date.getFullYear() + 1 }),
       );
-    else if (semester === 'Fall' && date.getMonth() < 3) {
+    else if (semester === 'Fall' && date.getMonth() < 2) {
       dispatch(
         updateSearchFilters({ filter: 'year', value: date.getFullYear() - 1 }),
       );
@@ -105,20 +103,6 @@ const Form: FC<{
 
   // Search with debouncing of 4/8s of a second.
   useEffect(() => {
-    // Skip searching if no filters or queries are specified
-    if (
-      searchTerm.length === 0 &&
-      searchFilters.credits === null &&
-      searchFilters.distribution === null &&
-      searchFilters.wi === null &&
-      searchFilters.department === null &&
-      searchFilters.tags === null &&
-      searchFilters.levels === null
-    ) {
-      dispatch(updateRetrievedCourses([]));
-      setSearching(false);
-      return;
-    }
     // Search params.
     const extras: SearchExtras = {
       page: pageIndex,
@@ -139,13 +123,10 @@ const Form: FC<{
     setSearching(true);
     dispatch(updateRetrievedCourses([]));
 
-    if (searchTerm.length > 0) {
-      // Search with half second debounce.
-      const search = setTimeout(performSmartSearch(extras), 500);
-      return () => clearTimeout(search);
-    } else {
-      setSearching(false);
-    }
+    // Search with half second debounce.
+    const search = setTimeout(performSmartSearch(extras), 500);
+    return () => clearTimeout(search);
+
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [searchTerm, searchFilters, pageIndex]);
 

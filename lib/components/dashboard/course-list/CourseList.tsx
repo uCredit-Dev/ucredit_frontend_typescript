@@ -231,17 +231,35 @@ const CourseList: FC<Props> = ({ mode }) => {
     };
 
     try {
-      let res = await axios.patch(getAPI(window) + '/courses/dragged', body, {
+      let res: any = await fetch(getAPI(window) + '/courses/dragged', {
+        method: 'PATCH',
         headers: {
-          ContentType: 'application/json',
+          'Content-Type': 'application/json',
           Authorization: `Bearer ${token}`,
         },
+        body: JSON.stringify(body),
       });
+
+      // handle error
+      if (!res.ok) {
+        if (res.status === 400) {
+          const data = await res.json();
+          data.errors.forEach((error) => {
+            if (error.status === 400) {
+              toast.error(error.detail);
+            }
+          });
+        }
+        console.log('ERROR:', res);
+        return;
+      }
+
       toast.success('Successfully moved course!', {
         toastId: 'moved course',
       });
       amplitude.track('Moved Course');
-      const updatedCourse = res.data.data;
+      res = await res.json();
+      const updatedCourse = res.data;
 
       const sourceCourseArr = [...sourceYear.courses];
       let destCourseArr = [...destYear.courses];
