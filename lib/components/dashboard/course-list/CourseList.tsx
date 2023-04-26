@@ -30,6 +30,7 @@ import {
 import { getAPI } from '../../../resources/assets';
 import YearDraggable from './YearDraggable';
 import * as amplitude from '@amplitude/analytics-browser';
+import axios from 'axios';
 
 interface Props {
   mode: ReviewMode;
@@ -174,24 +175,21 @@ const CourseList: FC<Props> = ({ mode }) => {
     const temp: Year = yearArr[sourceIndex];
     yearArr.splice(sourceIndex, 1);
     yearArr.splice(destIndex, 0, temp);
-    dispatch(updateSelectedPlan({ ...currentPlan, years: yearArr }));
     const yearIdArr: string[] = yearArr.map((year) => year._id);
     const body = {
       plan_id: currentPlan._id,
       year_ids: yearIdArr,
     };
-    fetch(getAPI(window) + '/years/changeOrder', {
-      method: 'PATCH',
-      headers: {
-        'Content-Type': 'application/json',
-        Authorization: `Bearer ${token}`,
-      },
-      body: JSON.stringify(body),
-    })
-      .then((resp) => {
-        if (!resp.ok) {
-          console.log('ERROR:', resp);
-        }
+    axios
+      .patch(getAPI(window) + '/years/changeOrder', body, {
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${token}`,
+        },
+      })
+      .then(() => {
+        // update frontend on success
+        dispatch(updateSelectedPlan({ ...currentPlan, years: yearArr }));
       })
       .catch((err) => console.log(err));
   };
@@ -232,65 +230,72 @@ const CourseList: FC<Props> = ({ mode }) => {
       newTerm: destination.semester,
     };
 
-    let res: any = await fetch(getAPI(window) + '/courses/dragged', {
-      method: 'PATCH',
-      headers: {
-        'Content-Type': 'application/json',
-        Authorization: `Bearer ${token}`,
-      },
-      body: JSON.stringify(body),
-    });
+    try {
+      let res: any = await fetch(getAPI(window) + '/courses/dragged', {
+        method: 'PATCH',
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${token}`,
+        },
+        body: JSON.stringify(body),
+      });
 
-    // handle error
-    if (!res.ok) {
-      if (res.status === 400) {
-        const data = await res.json();
-        data.errors.forEach((error) => {
-          if (error.status === 400) {
-            toast.error(error.detail);
-          }
-        });
+      // handle error
+      if (!res.ok) {
+        if (res.status === 400) {
+          const data = await res.json();
+          data.errors.forEach((error) => {
+            if (error.status === 400) {
+              toast.error(error.detail);
+            }
+          });
+        }
+        console.log('ERROR:', res);
+        return;
       }
-      console.log('ERROR:', res);
-      return;
+
+      toast.success('Successfully moved course!', {
+        toastId: 'moved course',
+      });
+      amplitude.track('Moved Course');
+      res = await res.json();
+      const updatedCourse = res.data;
+
+      const sourceCourseArr = [...sourceYear.courses];
+      let destCourseArr = [...destYear.courses];
+      sourceCourseArr.splice(courseYearIndex, 1);
+      if (destCourseArr.map((c) => c._id).indexOf(updatedCourse._id) === -1) {
+        destCourseArr.push(updatedCourse);
+      } else {
+        // otherwase source and destination are the same.
+        destCourseArr = sourceCourseArr;
+        destCourseArr.push(updatedCourse);
+      }
+      const currPlanYears = [...currentPlan.years];
+      currPlanYears[sourceObj.index] = {
+        ...sourceYear,
+        courses: sourceCourseArr,
+      };
+      currPlanYears[destObj.index] = {
+        ...destYear,
+        courses: destCourseArr,
+      };
+
+      const newCurrentPlan: Plan = {
+        ...currentPlan,
+        years: currPlanYears,
+      };
+      const planListClone = [...planList];
+      planListClone[0] = newCurrentPlan;
+      updatePlanCourses(destYear, destination.semester, updatedCourse);
+      dispatch(updatePlanList(planListClone));
+      dispatch(updateSelectedPlan(newCurrentPlan));
+    } catch (err) {
+      console.log('ERROR:', err);
+      toast.error("Course isn't usually held this semester!", {
+        toastId: 'no course this semester',
+      });
     }
-
-    toast.success('Successfully moved course!', {
-      toastId: 'moved course',
-    });
-    amplitude.track('Moved Course');
-    res = await res.json();
-    const updatedCourse = res.data;
-
-    const sourceCourseArr = [...sourceYear.courses];
-    let destCourseArr = [...destYear.courses];
-    sourceCourseArr.splice(courseYearIndex, 1);
-    if (destCourseArr.map((c) => c._id).indexOf(updatedCourse._id) === -1) {
-      destCourseArr.push(updatedCourse);
-    } else {
-      // otherwase source and destination are the same.
-      destCourseArr = sourceCourseArr;
-      destCourseArr.push(updatedCourse);
-    }
-    const currPlanYears = [...currentPlan.years];
-    currPlanYears[sourceObj.index] = {
-      ...sourceYear,
-      courses: sourceCourseArr,
-    };
-    currPlanYears[destObj.index] = {
-      ...destYear,
-      courses: destCourseArr,
-    };
-
-    const newCurrentPlan: Plan = {
-      ...currentPlan,
-      years: currPlanYears,
-    };
-    const planListClone = [...planList];
-    planListClone[0] = newCurrentPlan;
-    updatePlanCourses(destYear, destination.semester, updatedCourse);
-    dispatch(updatePlanList(planListClone));
-    dispatch(updateSelectedPlan(newCurrentPlan));
   };
 
   /**

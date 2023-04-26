@@ -8,6 +8,7 @@ import { selectToken } from '../../../../slices/userSlice';
 import { toast } from 'react-toastify';
 import { getAPI } from '../../../../resources/assets';
 import clsx from 'clsx';
+import axios from 'axios';
 
 const CurrentReviewers: FC<{
   reviewersJSX: JSX.Element[];
@@ -21,26 +22,19 @@ const CurrentReviewers: FC<{
       review_id: reviewID,
       status: 'UNDERREVIEW',
     };
-
-    fetch(getAPI(window) + '/planReview/changeStatus', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-        Authorization: `Bearer ${token}`,
-      },
-      body: JSON.stringify(body),
-    })
-      .then((response) => {
-        if (response.status === 200) {
-          toast.success(
-            'Plan successfully sent to ' + toName + ' for review!',
-            {
-              autoClose: 5000,
-              closeOnClick: false,
-              toastId: 'plan sent',
-            },
-          );
-        }
+    axios
+      .post(getAPI(window) + '/planReview/changeStatus', body, {
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${token}`,
+        },
+      })
+      .then(() => {
+        toast.success('Plan successfully sent to ' + toName + ' for review!', {
+          autoClose: 5000,
+          closeOnClick: false,
+          toastId: 'plan sent',
+        });
       })
       .catch((err) => {
         // Error in /changeStatus call

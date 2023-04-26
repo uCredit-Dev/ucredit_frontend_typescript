@@ -1,5 +1,4 @@
 import React, { useEffect } from 'react';
-import axios from 'axios';
 import { useDispatch, useSelector } from 'react-redux';
 import { toast } from 'react-toastify';
 import { Plan, ReviewMode } from '../../resources/commonTypes';
@@ -14,9 +13,9 @@ import {
   selectUser,
   updatePlanList,
 } from '../../slices/userSlice';
-import { getAPI } from '../../resources/assets';
 import { updateAddingPlanStatus } from '../../slices/popupSlice';
 import * as amplitude from '@amplitude/analytics-browser';
+import { userService } from '../../services';
 
 /**
  * Handles dashboard user entry and login logic.
@@ -47,20 +46,20 @@ const HandleUserInfoSetupDummy: React.FC = () => {
           (!importing && user._id === curPlan.user_id)) &&
         reviewMode !== ReviewMode.View
       ) {
-        axios
-          .get(getAPI(window) + '/plansByUser/' + user._id, {
-            headers: { Authorization: `Bearer ${token}` },
-          })
-          .then((retrieved) => processRetrievedPlans(retrieved.data.data))
-          .catch((err) => {
-            if (user._id === 'guestUser') {
-              console.log(
-                'In guest user! This is expected as there are no users with this id.',
-              );
-            } else {
-              console.log('ERROR:', err);
-            }
-          });
+        (async () => {
+          const userPlan = (
+            await userService.getUserPlan(user._id, token).catch((err) => {
+              if (user._id === 'guestUser') {
+                console.log(
+                  'In guest user! This is expected as there are no users with this id.',
+                );
+              } else {
+                console.log('ERROR:', err);
+              }
+            })
+          ).data;
+          processRetrievedPlans(userPlan);
+        })();
       }
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps

@@ -18,6 +18,7 @@ import { selectInspectedCourse } from '../../../slices/searchSlice';
 import Comments from '../Comments';
 import { selectToken } from '../../../slices/userSlice';
 import * as amplitude from '@amplitude/analytics-browser';
+import axios from 'axios';
 
 type SemSelected = {
   fall: boolean;
@@ -201,14 +202,13 @@ const YearComponent: FC<{
       year_id: year._id,
       name: yearName,
     };
-    fetch(getAPI(window) + '/years/updateName', {
-      method: 'PATCH',
-      headers: {
-        'Content-Type': 'application/json',
-        Authorization: `Bearer ${token}`,
-      },
-      body: JSON.stringify(body),
-    })
+    axios
+      .patch(getAPI(window) + '/years/updateName', body, {
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${token}`,
+        },
+      })
       .then(() => {
         const newUpdatedYear = { ...year, name: yearName };
         const newYearArray = [...currentPlan.years].map((yr) =>

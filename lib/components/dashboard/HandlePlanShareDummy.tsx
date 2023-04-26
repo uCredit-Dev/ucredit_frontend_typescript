@@ -34,6 +34,7 @@ import {
   selectUser,
   selectToken,
 } from '../../slices/userSlice';
+import { userService } from '../../services';
 
 const HandlePlanShareDummy = () => {
   const [cookies] = useCookies(['connect.sid']);
@@ -81,14 +82,11 @@ const HandlePlanShareDummy = () => {
     if (planResponse === undefined) return Promise.reject();
     let plan: Plan = planResponse.data.data;
     // get the years of that plan, stored in years
-    const yearsResponse: any = await axios
-      .get(getAPI(window) + '/years/' + id, {
-        headers: { Authorization: `Bearer ${token}` },
-      })
+    const yearsResponse: any = await userService
+      .getYear(id, token)
       .catch((e) => {
         console.log('ERROR: ', e);
       });
-
     cache(id);
     let years = yearsResponse.data.data;
     // check whether the user is logged in (whether a cookie exists)

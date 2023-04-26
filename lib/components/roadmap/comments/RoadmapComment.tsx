@@ -4,10 +4,10 @@ import Comment from './Comment';
 import Dropbox from './Dropbox';
 import CommentIcon from './commentEditor/CommentIcon';
 import axios from 'axios';
-import { getAPI } from './../../../resources/assets';
 import { ThreadType } from '../../../resources/commonTypes';
 import { useSelector } from 'react-redux';
 import { selectToken } from '../../../slices/userSlice';
+import { userService } from '../../../services';
 
 const RoadmapComment: FC = () => {
   const [sort, setSort] = useState<string>('default');
@@ -19,20 +19,20 @@ const RoadmapComment: FC = () => {
   const currPlan = { _id: '62d8875b5b6fb8734aa09679' };
 
   useEffect(() => {
-    axios
-      .get(getAPI(window) + `/thread/getByPlan/${currPlan._id}`, {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      })
+    let unmounted = false;
+    let source = axios.CancelToken.source();
+    userService
+      .getThreads(currPlan._id, token, unmounted, source.token)
       .then((response) => {
+        if (!response) {
+          throw new Error('No response from server');
+        }
         const sorted =
           sort === 'default' || sort === 'most recent'
             ? response.data.data.sort((a, b) =>
                 Date.parse(a.date) > Date.parse(b.date) ? 1 : -1,
               )
             : response.data.data;
-
         setAllThreads(sorted);
       })
       .catch((error) => {

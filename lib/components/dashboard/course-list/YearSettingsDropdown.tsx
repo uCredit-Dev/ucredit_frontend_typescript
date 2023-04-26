@@ -10,8 +10,6 @@ import {
   selectPlan,
   updateSelectedPlan,
 } from '../../../slices/currentPlanSlice';
-import axios from 'axios';
-import { getAPI } from '../../../resources/assets';
 import {
   selectPlanList,
   selectToken,
@@ -19,6 +17,7 @@ import {
 } from '../../../slices/userSlice';
 import { toast } from 'react-toastify';
 import * as amplitude from '@amplitude/analytics-browser';
+import { userService } from '../../../services';
 
 type SemSelected = {
   fall: boolean;
@@ -97,46 +96,44 @@ const YearSettingsDropdown: FC<{
 
     // Change year
     if (!exists) {
-      axios
-        .patch(
-          getAPI(window) + '/years/updateYear',
-          {
-            year_id: year._id,
-            year: selectedYear.value,
-          },
-          {
-            headers: { Authorization: `Bearer ${token}` },
-          },
-        )
-        .then((res) => {
-          const newYear: Year = res.data.data;
-          const newPlan: Plan = {
-            ...currPlan,
-            years: currPlan.years.map((y) => {
-              if (y._id === newYear._id) {
-                return newYear;
+      (async () => {
+        const newYear: Year = (
+          await userService
+            .updateYear(
+              {
+                year_id: year._id,
+                year: selectedYear.value,
+              },
+              token,
+            )
+            .catch((err) => {
+              console.log(err);
+            })
+        ).data.data;
+        const newPlan: Plan = {
+          ...currPlan,
+          years: currPlan.years.map((y) => {
+            if (y._id === newYear._id) {
+              return newYear;
+            } else {
+              return y;
+            }
+          }),
+        };
+        dispatch(updateSelectedPlan(newPlan));
+        dispatch(
+          updatePlanList(
+            planList.map((p, i) => {
+              if (i === 0) {
+                return newPlan;
               } else {
-                return y;
+                return p;
               }
             }),
-          };
-          dispatch(updateSelectedPlan(newPlan));
-          dispatch(
-            updatePlanList(
-              planList.map((p, i) => {
-                if (i === 0) {
-                  return newPlan;
-                } else {
-                  return p;
-                }
-              }),
-            ),
-          );
-          amplitude.track('Changed Year');
-        })
-        .catch((err) => {
-          console.log(err);
-        });
+          ),
+        );
+        amplitude.track('Changed Year');
+      })();
     } else {
       toast.error('Year already exists', {
         toastId: 'year exists',

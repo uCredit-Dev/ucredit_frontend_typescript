@@ -142,6 +142,48 @@ const getNotifications = (userID: string, token: string) => {
     .then(handleResponse);
 };
 
+const getUserPlan = (user_id: string, token: string, cb = undefined) => {
+  return fetchWrapper
+    .get(`${getAPI(window)}/plansByUser/${user_id}`, token)
+    .then((res) => handleResponse(res, cb));
+};
+
+const createNewPlan = (planBody: any, token: string, cb = undefined) => {
+  return fetchWrapper
+    .post(`${getAPI(window)}/plans`, token, planBody)
+    .then((res) => handleResponse(res, cb));
+};
+
+const getYear = (id: string, token: string, cb = undefined) => {
+  return fetchWrapper
+    .get(`${getAPI(window)}/years/${id}`, token)
+    .then((res) => handleResponse(res, cb));
+};
+
+const deletePlan = (plan_id: string, token: string, cb = undefined) => {
+  return fetchWrapper
+    .delete(`${getAPI(window)}/plans/${plan_id}`, token)
+    .then((res) => handleResponse(res, cb));
+};
+
+const deleteNotifications = (
+  notif_id: string,
+  token: string,
+  cb = undefined,
+) => {
+  return fetchWrapper
+    .delete(`${getAPI(window)}/notifications/${notif_id}`, token)
+    .then((res) => handleResponse(res, cb));
+};
+
+const updateYear = (data: any, token: string, cb = undefined) => {
+  return axios
+    .patch(`${getAPI(window)}/years/updateYear`, data, {
+      headers: { Authorization: `Bearer ${token}` },
+    })
+    .then((res) => handleResponse(res, cb));
+};
+
 const handleResponse = (res, cb: any = undefined) => {
   if (!res) return;
   return res.text().then((text) => {
@@ -171,4 +213,10 @@ export const userService = {
   removeThread,
   changeReviewStatus,
   getNotifications,
+  getUserPlan,
+  createNewPlan,
+  getYear,
+  deletePlan,
+  deleteNotifications,
+  updateYear,
 };

@@ -37,6 +37,7 @@ import { toast } from 'react-toastify';
 import { getAPI } from '../../resources/assets';
 import SisCourse from './course-search/search-results/SisCourse';
 import * as amplitude from '@amplitude/analytics-browser';
+import axios from 'axios';
 
 /**
  * Course info popup that opens when user preses info button on course components
@@ -158,16 +159,18 @@ const CourseDisplayPopup: FC = () => {
         level: version.level,
         expireAt: user._id === 'guestUser' ? Date.now() : undefined,
       };
-      fetch(getAPI(window) + '/courses', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          Authorization: `Bearer ${token}`,
-        },
-        body: JSON.stringify(body),
-      })
-        .then((retrieved) => retrieved.json())
-        .then(handlePostAddCourse(plan));
+      axios
+        .post(getAPI(window) + '/courses', body, {
+          headers: {
+            'Content-Type': 'application/json',
+            Authorization: `Bearer ${token}`,
+          },
+        })
+        .then((res) => res.data.data)
+        .then(handlePostAddCourse(plan))
+        .catch((err) => {
+          console.log('Failed to add', err);
+        });
     }
   };
 
@@ -176,8 +179,8 @@ const CourseDisplayPopup: FC = () => {
     (plan: Plan) =>
     (data): void => {
       let newUserCourse: UserCourse;
-      if (data.errors === undefined && courseToShow !== null) {
-        newUserCourse = { ...data.data };
+      if (courseToShow !== null) {
+        newUserCourse = { ...data };
         dispatch(updateCurrentPlanCourses([...currentCourses, newUserCourse]));
         const allYears: Year[] = [...plan.years];
         const newYears: Year[] = [];
@@ -198,14 +201,7 @@ const CourseDisplayPopup: FC = () => {
         toast.success('Course updated!', {
           toastId: 'course updated',
         });
-        amplitude.track('Moved Course');
-      } else {
-        console.log('Failed to add', data.errors);
-        data.errors.forEach((error) => {
-          if (error.status === 400) {
-            toast.error(error.detail);
-          }
-        });
+        amplitude.track('Updated Course');
       }
     };
 

@@ -17,6 +17,7 @@ import {
 } from '../../slices/popupSlice';
 import React from 'react';
 import * as amplitude from '@amplitude/analytics-browser';
+import axios from 'axios';
 
 /**
  * This is the confirmation popup that appears when users press the button to delete a course.
@@ -35,39 +36,40 @@ const DeleteCoursePopup: FC = () => {
    */
   const activateDeleteCourse = () => {
     if (currentPlan.years.length > 1 && courseInfo !== null) {
-      fetch(getAPI(window) + '/courses/' + courseInfo.course._id, {
-        method: 'DELETE',
-        headers: { Authorization: `Bearer ${token}` },
-      }).then(() => {
-        let newPlan: Plan;
-        const years = [...currentPlan.years];
-        currentPlan.years.forEach((planYear, index) => {
-          if (planYear._id === courseInfo.course.year_id) {
-            const courses = planYear.courses.filter(
-              (yearCourse) => yearCourse._id !== courseInfo.course._id,
-            );
-            years[index] = { ...years[index], courses: courses };
-          }
-        });
-        newPlan = { ...currentPlan, years: years };
+      axios
+        .delete(getAPI(window) + '/courses/' + courseInfo.course._id, {
+          headers: { Authorization: `Bearer ${token}` },
+        })
+        .then(() => {
+          let newPlan: Plan;
+          const years = [...currentPlan.years];
+          currentPlan.years.forEach((planYear, index) => {
+            if (planYear._id === courseInfo.course.year_id) {
+              const courses = planYear.courses.filter(
+                (yearCourse) => yearCourse._id !== courseInfo.course._id,
+              );
+              years[index] = { ...years[index], courses: courses };
+            }
+          });
+          newPlan = { ...currentPlan, years: years };
 
-        toast.error(courseInfo.course.title + ' deleted!', {
-          toastId: 'course deleted',
+          toast.error(courseInfo.course.title + ' deleted!', {
+            toastId: 'course deleted',
+          });
+          dispatch(updateSelectedPlan(newPlan));
+          dispatch(
+            updatePlanList(
+              planList.map((plan) => {
+                if (plan._id === newPlan._id) {
+                  return newPlan;
+                } else return plan;
+              }),
+            ),
+          );
+          dispatch(updateDeleteCourseStatus(false));
+          dispatch(updateCourseToDelete(null));
+          amplitude.track('Confirmed Course Deletion');
         });
-        dispatch(updateSelectedPlan(newPlan));
-        dispatch(
-          updatePlanList(
-            planList.map((plan) => {
-              if (plan._id === newPlan._id) {
-                return newPlan;
-              } else return plan;
-            }),
-          ),
-        );
-        dispatch(updateDeleteCourseStatus(false));
-        dispatch(updateCourseToDelete(null));
-        amplitude.track('Confirmed Course Deletion');
-      });
     } else {
       toast.error('Cannot delete last year!', {
         toastId: 'cannot delete last year',

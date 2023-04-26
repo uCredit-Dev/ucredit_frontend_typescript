@@ -29,6 +29,7 @@ import {
 import { getAPI } from '../../../../resources/assets';
 import SisCourse from './SisCourse';
 import { updateShowingCart } from '../../../../slices/popupSlice';
+import axios from 'axios';
 
 /**
  * Displays course information once a user selects a course in the search list
@@ -110,28 +111,18 @@ const CourseDisplay: FC<{ cart: boolean }> = ({ cart }) => {
       expireAt: user._id === 'guestUser' ? Date.now() : undefined,
     };
 
-    let retrieved = await fetch(getAPI(window) + '/courses', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-        Authorization: `Bearer ${token}`,
-      },
-      body: JSON.stringify(body),
-    });
-
-    let data = await retrieved.json();
-
-    if (data.errors !== undefined) {
-      console.log('Failed to add', data.errors);
-      data.errors.forEach((error) => {
-        if (error.status === 400) {
-          toast.error(error.detail);
-        }
+    try {
+      let res = await axios.post(getAPI(window) + '/courses', body, {
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${token}`,
+        },
       });
+      newUserCourse = { ...res.data.data };
+    } catch (err) {
+      console.log('Failed to add', err);
       return;
     }
-
-    newUserCourse = { ...data.data };
 
     dispatch(updateCurrentPlanCourses([...currentCourses, newUserCourse]));
     const allYears: Year[] = [...currentPlan.years];

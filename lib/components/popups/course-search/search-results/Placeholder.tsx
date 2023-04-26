@@ -33,6 +33,7 @@ import { selectReviewMode, selectToken } from '../../../../slices/userSlice';
 import clsx from 'clsx';
 import { toast } from 'react-toastify';
 import * as amplitude from '@amplitude/analytics-browser';
+import axios from 'axios';
 
 const departmentFilters = ['none', ...all_deps];
 const tagFilters = ['none', ...course_tags];
@@ -186,20 +187,20 @@ const Placeholder: FC<{ addCourse: (plan?: Plan) => void }> = (props) => {
    */
   const updateCourse = (): void => {
     if (courseToShow !== null) {
-      fetch(getAPI(window) + '/courses/' + courseToShow._id, {
-        method: 'DELETE',
-        headers: {
-          'Content-Type': 'application/json',
-          Authorization: `Bearer ${token}`,
-        },
-      }).then((retrieved) => {
-        retrieved.json().then(handleUpdateResponse);
-      });
+      axios
+        .delete(getAPI(window) + '/courses/' + courseToShow._id, {
+          headers: {
+            'Content-Type': 'application/json',
+            Authorization: `Bearer ${token}`,
+          },
+        })
+        .then(handleUpdateResponse)
+        .catch((err) => console.log('ERROR: Failed to add', err));
     }
   };
 
-  const handleUpdateResponse = (data: any): void => {
-    if (data.errors === undefined && courseToShow !== null) {
+  const handleUpdateResponse = (res: any): void => {
+    if (courseToShow !== null) {
       const updated = currentCourses.filter((course) => {
         if (course._id === courseToShow._id) {
           return false;
@@ -223,8 +224,6 @@ const Placeholder: FC<{ addCourse: (plan?: Plan) => void }> = (props) => {
       const newPlan: Plan = { ...currentPlan, years: newYears };
       dispatch(updateSelectedPlan(newPlan));
       props.addCourse(newPlan);
-    } else {
-      console.log('ERROR: Failed to add', data.errors);
     }
   };
 

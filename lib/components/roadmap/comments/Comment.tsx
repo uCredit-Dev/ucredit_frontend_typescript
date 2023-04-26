@@ -1,11 +1,10 @@
 import React, { FC, useEffect, useState } from 'react';
-import axios from 'axios';
-import { getAPI } from './../../../resources/assets';
 import { useSelector } from 'react-redux';
 import { selectToken, selectUser } from '../../../slices/userSlice';
 import { ThreadType, CommentType } from '../../../resources/commonTypes';
 import Editor from './commentEditor/Editor';
 import Markdown from 'markdown-to-jsx';
+import { userService } from '../../../services';
 
 interface CommentBodyType {
   commenter_id: string;
@@ -59,32 +58,24 @@ const Comment: FC<{
       date: new Date(Date.now()).toISOString().slice(0, 10),
     };
 
-    axios
-      .post(
-        getAPI(window) + '/thread/reply',
+    (async () => {
+      const newComment = (
+        await userService.postNewComment(comment, token).catch((error) => {
+          console.log(error);
+        })
+      ).data.data;
+      setSubCommentContent([
+        ...subcomments,
         {
-          comment,
+          commenter_id: newComment.commenter_id,
+          visible_user_id: newComment.visible_user_id,
+          thread_id: newComment.thread_id,
+          message: newComment.message,
+          date: newComment.date,
+          _id: newComment._id,
         },
-        {
-          headers: { Authorization: `Bearer ${token}` },
-        },
-      )
-      .then((res) => {
-        setSubCommentContent([
-          ...subcomments,
-          {
-            commenter_id: res.data.data.commenter_id,
-            visible_user_id: res.data.data.visible_user_id,
-            thread_id: res.data.data.thread_id,
-            message: res.data.data.message,
-            date: res.data.data.date,
-            _id: res.data.data._id,
-          },
-        ]);
-      })
-      .catch((error) => {
-        console.log(error);
-      });
+      ]);
+    })();
   };
   return (
     <div>
