@@ -5166,6 +5166,7 @@ const bsNeuro: Major = {
 
 // https://e-catalogue.jhu.edu/arts-sciences/full-time-residential-programs/degree-programs/economics/economics-minor/
 // https://econ.jhu.edu/undergraduate/minor-requirements/
+
 const minorEcon: Minor = {
   degree_name: 'Minor Economics',
   abbrev: 'Minor Econ',
