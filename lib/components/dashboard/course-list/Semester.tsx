@@ -129,7 +129,7 @@ const Semester: FC<{
     // Do something similar for plan, year, and semester
     // All threads should be retrieved on first load of the plan and stored in a map.
     return semesterCourses.map((course, index) => {
-      if (mode !== ReviewMode.View && mode !== ReviewMode.RoadMap) {
+      if (mode !== ReviewMode.View) {
         return (
           <div key={course._id} className="w-auto mr-0">
             <CourseDraggable
@@ -168,12 +168,11 @@ const Semester: FC<{
   const getCreditString = (): string => {
     let string = `<div>${totalCredits} Credits</div>`;
     if (
-      (semesterName !== 'Intersession' && totalCredits < 12) ||
-      (semesterName === 'Intersession' && totalCredits < 3)
+      semesterName !== 'Intersession' &&
+      semesterName !== 'Summer' &&
+      totalCredits < 12
     )
-      string += `\nMore than ${
-        semesterName !== 'Intersession' ? 12 : 3
-      } credits required!`;
+      string += `\nMore than 12 credits required!`;
     else if (totalCredits > 18)
       string +=
         '\nCritical credit count reached (you seem to be taking a lot of credits)! Check with your advisor!';
@@ -347,8 +346,9 @@ const Semester: FC<{
     switch (colorType) {
       case 'bg-red-200':
         return (
-          (totalCredits < 12 && semesterName !== 'Intersession') ||
-          totalCredits < 3
+          totalCredits < 12 &&
+          semesterName !== 'Intersession' &&
+          semesterName !== 'Summer'
         );
       case 'bg-yellow-200':
         return (
@@ -360,9 +360,8 @@ const Semester: FC<{
           (totalCredits <= 18 &&
             totalCredits >= 12 &&
             semesterName !== 'Intersession') ||
-          (totalCredits <= 6 &&
-            totalCredits >= 3 &&
-            semesterName === 'Intersession') ||
+          (totalCredits <= 3 && semesterName === 'Intersession') ||
+          (totalCredits <= 14 && semesterName === 'Summer') ||
           semesterName === 'All'
         );
       default:
@@ -430,8 +429,7 @@ const Semester: FC<{
       <button
         className={clsx(
           {
-            'bg-slate-300 hover:bg-slate-300':
-              mode === ReviewMode.View || mode === ReviewMode.RoadMap,
+            'bg-slate-300 hover:bg-slate-300': mode === ReviewMode.View,
           },
           'z-40 w-24 py-1 text-xs text-white transition duration-150 ease-in transform rounded hover:bg-secondary bg-primary focus:outline-none hover:scale-101',
         )}
@@ -477,7 +475,7 @@ const Semester: FC<{
           onMouseEnter={() => setHovered(true)}
           className="min-w-[15rem] max-w-[40rem] w-min mx-3"
         >
-          <div className="relative">
+          <div>
             <Comments
               location={'Semester ' + semesterYear._id + semesterName}
               hovered={hovered}

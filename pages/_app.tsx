@@ -40,10 +40,6 @@ const MyApp: React.FC<{
             <Head>
               <link rel="shortcut icon" href="/static/favicon.ico" />
               <meta
-                name="description"
-                content="Quick accessible degree planning."
-              />
-              <meta
                 name="viewport"
                 content="initial-scale=1.0, width=device-width"
               />
