@@ -7,7 +7,12 @@ import {
 } from '../../slices/userSlice';
 import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
-import { selectPlan, updateSelectedPlan } from '../../slices/currentPlanSlice';
+import {
+  selectPlan,
+  updateSelectedPlan,
+  selectSelectedMajor,
+  updateSelectedMajor,
+} from '../../slices/currentPlanSlice';
 import { getAPI } from '../../resources/assets';
 import { Plan } from '../../resources/commonTypes';
 import {
@@ -29,6 +34,7 @@ const DeleteCoursePopup: FC = () => {
   const courseInfo = useSelector(selectCourseToDelete);
   const planList = useSelector(selectPlanList);
   const token = useSelector(selectToken);
+  const newSelectedMajor = useSelector(selectSelectedMajor);
 
   /**
    * Popup for deleting current selected course.
@@ -55,6 +61,9 @@ const DeleteCoursePopup: FC = () => {
           toastId: 'course deleted',
         });
         dispatch(updateSelectedPlan(newPlan));
+        if (newSelectedMajor) {
+          dispatch(updateSelectedMajor(newSelectedMajor));
+        }
         dispatch(
           updatePlanList(
             planList.map((plan) => {

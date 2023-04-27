@@ -40,7 +40,13 @@ const CartCourseList: FC<{
   const courseList = () => {
     let toDisplay: any = [];
 
-    for (let i = 0; i < courses.length; i++) {
+    const searchedCourses = courses.filter(
+      (course) =>
+        course.title.toLocaleLowerCase().includes(props.textFilter) ||
+        course.number.toLocaleLowerCase().includes(props.textFilter),
+    );
+
+    for (let i = 0; i < searchedCourses.length; i++) {
       const inspecting = { ...courses[i] };
       toDisplay.push(
         <div

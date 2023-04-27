@@ -4,6 +4,7 @@ import debounce from 'lodash.debounce';
 import {
   RevieweePlans,
   ReviewRequestStatus,
+  StatusPlan,
 } from '../../../lib/resources/commonTypes';
 import Status from './Status';
 import React from 'react';
@@ -47,6 +48,34 @@ const Search: React.FC<{
     updateSearchState(e.target.value);
   };
 
+  //Given a reviewee, returns time of last update of one of that reviewees plans, if that info is tracked
+  const getLastUpdatedPlan = (a: RevieweePlans) => {
+    let lastUpdatedPlan = a.plans[0];
+    a.plans.forEach((d) => {
+      if (
+        lastUpdatedPlan.updatedAt !== undefined &&
+        d.updatedAt !== undefined
+      ) {
+        if (lastUpdatedPlan.updatedAt < d.updatedAt) {
+          lastUpdatedPlan = d;
+        }
+      } else if (d.updatedAt != null) {
+        lastUpdatedPlan = d;
+      }
+    });
+    if (lastUpdatedPlan.updatedAt == null) {
+      return '';
+    }
+    return lastUpdatedPlan.updatedAt.toLocaleString();
+  };
+
+  const getUpdateTime = (a: StatusPlan) => {
+    if (a.updatedAt === undefined) {
+      return '';
+    }
+    return a.updatedAt.toLocaleString();
+  };
+
   const filter = () => {
     let filteredMap = new Map();
     for (const { reviewee, plans } of revieweePlans) {
@@ -72,7 +101,20 @@ const Search: React.FC<{
       filteredArray.push({ reviewee: JSON.parse(k), plans: v });
     switch (searchSetting) {
       case 'Recently Updated':
-        // TODO
+        let multiplier = -1;
+        if (reversed) {
+          multiplier = 1;
+        }
+        filteredArray.forEach((a) =>
+          a.plans.sort(
+            (b, c) =>
+              multiplier * getUpdateTime(b).localeCompare(getUpdateTime(c)),
+          ),
+        );
+        filteredArray.sort(
+          (a, b) =>
+            -1 * getLastUpdatedPlan(a).localeCompare(getLastUpdatedPlan(b)),
+        );
         break;
       case 'First Name':
         filteredArray.sort((a, b) =>
@@ -100,7 +142,9 @@ const Search: React.FC<{
         break;
       default:
     }
-    if (reversed) filteredArray = filteredArray.reverse();
+    if (reversed) {
+      filteredArray = filteredArray.reverse();
+    }
     setFiltered(filteredArray || []);
   };
 
