@@ -147,6 +147,11 @@ const Comments: FC<{
         _id: user._id,
         name: user.name,
       };
+      const commenter = threadCopy[location].comments[0].commenter_id;
+      const newCommenters = [...commenters];
+      if (!newCommenters.find((c) => c._id === commenter._id))
+        newCommenters.push(commenter);
+      dispatch(updateCommenters(newCommenters));
       dispatch(updateThreads(Object.values(threadCopy)));
       setThisThread(threadCopy[location]);
       setReplyText('');
