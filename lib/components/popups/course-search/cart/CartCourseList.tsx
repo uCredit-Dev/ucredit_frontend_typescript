@@ -13,8 +13,6 @@ import ReactPaginate from 'react-paginate';
 import { QuestionMarkCircleIcon } from '@heroicons/react/solid';
 import { Course } from '../../../../resources/commonTypes';
 
-// TODO: remove this import, for dummy courses
-import CartCourseListItem from './CartCourseListItem';
 
 /*
   List of searched courses.
@@ -54,7 +52,6 @@ const CartCourseList: FC<{
           className="transition duration-200 ease-in transform hover:scale-105"
           onClick={() => setHideResults(true)}
         >
-          <CartCourseListItem course={inspecting} version={0} />
         </div>,
       );
     }
