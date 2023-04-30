@@ -172,6 +172,7 @@ const Cart: FC<{}> = () => {
 
           <div
             className={
+              // todo: check styles?
               'flex flex-col rounded-l bg-gray-200 flex-none border-l-2 tight:border-0 border-gray-300 tight:w-auto w-80'
             }
           >
