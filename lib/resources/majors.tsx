@@ -2395,135 +2395,156 @@ const bsBME: Major = {
 // };
 
 // // https://krieger.jhu.edu/publichealth/academics/ba-program/
-// const baPH: Major = {
-//   degree_name: "B.A. Public Health Studies",
-//   department: "AS Public Health Studies",
-//   total_degree_credit: 120,
-//   wi_credit: 12,
-//   distributions: [
-//     {
-//       name: "Public Health Studies Core Courses",
-//       required_credits: 40,
-//       min_credits_per_course: 1,
-//       description:
-//         "For more information please visit the" +
-//         "<a href='https://e-catalogue.jhu.edu/arts-sciences/full-time-residential-programs/degree-programs/public-health-studies/public-health-studies-bachelor-arts/'>" +
-//         "major degree requirement</a> section on the department website.",
-//       criteria: "AS Public Health Studies[D]",
-//       fine_requirements: [
-//         {
-//           description:
-//             "Required Courses: \n\t280.101 Introduction to Public Health\n\t280.240 Research Methods in Public Health\n\t" +
-//             "280.335 The Environment and Your Health\n\t280.340 Fundamentals of Health Policy & Management\n\t" +
-//             "280.345 Public Health Biostatistics\n\t280.350	Fundamentals of Epidemiology",
-//           required_credits: 21,
-//           criteria:
-//             "AS.280.101[C]^OR^AS.280.240[C]^OR^AS.280.240[C]^OR^AS.280.335[C]^OR^AS.280.340[C]^OR^AS.280.345[C]^OR^AS.280.350[C]",
-//         },
-//       ],
-//     },
-//     {
-//       name: "Intermediate Public Health Courses at Homewood",
-//       required_credits: 15,
-//       min_credits_per_course: 3,
-//       description:
-//         "One course at the 200-400 level focusing on social and behavioral aspects of public health from the list below." +
-//         "Other courses may apply with advisor approval. All courses must be at least 3 credits and only 2 Gordis Teaching " +
-//         "Fellowship (GTF) courses may apply (AS.280.4xx courses).",
-//       criteria:
-//         "AS Intermediate Public Health[D]^AND^(200[L]^OR^300[L]^OR^400[L])",
-//       exception: "",
-//       fine_requirements: [
-//         {
-//           description:
-//             "Required Courses:\n\t230.341	Sociology of Health and Illness\n\t",
-//           required_credits: 3,
-//           criteria: "AS.230.341[C]",
-//         },
-//       ],
-//     },
-//     {
-//       name: "Applied Experience",
-//       required_credits: 1,
-//       min_credits_per_course: 1,
-//       description:
-//         "The Applied Experience (AE) is a required experiential learning component of the Public Health Studies" +
-//         " curriculum. The purpose of the AE is to provide students with supervised, hands-on experience in a professional" +
-//         " public health setting. The Applied Experience gives students an opportunity to explore an area of interest within" +
-//         " the field of public health by actively engaging in and directly contributing to a public health project or program." +
-//         " The AE must be at least 80 hours and 4 weeks long under the supervision of a public health profession.",
-//       criteria: "AS.280.500[C]",
-//     },
-//     {
-//       name: "Courses at Johns Hopkins Bloomberg School of Public Health (JHSPH)",
-//       required_credits: 10,
-//       min_credits_per_course: 3,
-//       description:
-//         "Courses are taken at the Johns Hopkins Bloomberg School of Public Health in the student's final year." +
-//         " Students take 15 JHSPH credits, which is the equivalent of 10 Homewood credits. Blended courses may" +
-//         " count for this requirement, Independent Research and Special Studies will not. Online courses will " +
-//         "count toward you total number of credits needed to graduate, but will not count toward the 15 credits " +
-//         "needed to fulfill this specific requirement. Within the 15 credits, students must create an 8 credits " +
-//         "focus in one particular area, topic, or department.",
-//       criteria: "AS Bloomberg School of Public Health[D]",
-//     },
-//     {
-//       name: "Social Science",
-//       required_credits: 6,
-//       min_credits_per_course: 3,
-//       description:
-//         "Select two introductory social science courses from Table 1. Other courses may apply with advisor approval. " +
-//         "These courses must be from two different departments..",
-//       criteria: "AS Social Science[D]",
-//     },
-//     {
-//       name: "Natural Science",
-//       required_credits: 7,
-//       min_credits_per_course: 1,
-//       description: "Must complete the following courses in Natural Science.",
-//       criteria: "AS Natural Science[N]",
-//       fine_requirements: [
-//         {
-//           description:
-//             "Select two Biology Lecture Courses of the following (Note: Other biology courses may apply with advisor approval):" +
-//             "\n\tAS.020.151 General Biology I\n\tAS.020.152 General Biology II\n\tAS.020.303 Genetics\n\tAS.020.305 Biochemistry\n\t" +
-//             "\n\tAS.020.306 Cell Biology\n\tAS.020.374 Comparative Animal Physiology\n\tAS.280.161 Applications of Biological Concepts in Public Health",
-//           required_credits: 6,
-//           criteria:
-//             "AS.020.151[C]^OR^AS.020.152[C]^OR^AS.020.303[C]^OR^AS.020.305[C]^OR^AS.020.306[C]^OR^AS.020.374[C]" +
-//             "^OR^AS.280.161[C]",
-//         },
-//         {
-//           description:
-//             "Select one Biology Lab Course of the following:\n\t" +
-//             "AS.020.153 General Biology Laboratory I\n\tAS.020.154 General Biology Lab II\n\tAS.020.315 Biochemistry Project labs\n\t" +
-//             "\n\tAS.020.316 Cell Biology Lab\n\tAS.020.340 Developmental Genetics Lab\n\tAS.020.377 Comparative Physiology Lab\n\t" +
-//             "AS.250.253 Protein Engineering and Biochemistry Lab\n\tAS.250.254 Protein Biochemistry and Engineering Laboratory",
-//           required_credits: 1,
-//           criteria:
-//             "AS.020.153[C]^OR^AS.020.154[C]^OR^AS.020.315[C]^OR^AS.020.316[C]^OR^AS.020.340[C]^OR^AS.020.377[C]" +
-//             "^OR^AS.250.253[C]^OR^AS.250.254[C]",
-//         },
-//       ],
-//     },
-//     {
-//       name: "Quantitative",
-//       required_credits: 4,
-//       min_credits_per_course: 4,
-//       description: "Must complete the following courses in Quantitative.",
-//       criteria: "AS Quantitative[N]",
-//       fine_requirements: [
-//         {
-//           description:
-//             "Select one Quantitative Course of the following:\n\t110.106 Calculus I (Biology and Social Sciences)\n\t" +
-//             "110.108 Calculus I (Physical Sciences & Engineering)",
-//           required_credits: 4,
-//           criteria: "AS.110.106[C]^OR^AS.110.108[C]",
-//         },
-//       ],
-//     },
-//   ],
-// };
+const baPH: Major = {
+  degree_name: "B.A. Public Health Studies",
+  abbrev: "B.A. Public Health",
+  department: "AS Public Health Studies",
+  total_degree_credit: 120,
+  wi_credit: 15,
+  url: 'https://e-catalogue.jhu.edu/arts-sciences/full-time-residential-programs/degree-programs/public-health-studies/public-health-studies-bachelor-arts/',
+  distributions: [
+    {
+      name: "Public Health Studies Core Courses",
+      required_credits: 40,
+      min_credits_per_course: 1,
+      description:
+        "For more information please visit the" +
+        "<a href='https://e-catalogue.jhu.edu/arts-sciences/full-time-residential-programs/degree-programs/public-health-studies/public-health-studies-bachelor-arts/'>" +
+        "major degree requirement</a> section on the department website.",
+      criteria: "AS Public Health Studies[D]",
+      fine_requirements: [
+        {
+          description:
+            "Required Courses: \n\t280.101 Introduction to Public Health (Fall & Spring)\n\t280.240 Research Methods in Public Health (Fall & Spring)\n\t" +
+            "280.335 The Environment and Your Health (Fall & Spring) \n\t280.340 Fundamentals of Health Policy & Management (Spring)\n\t" +
+            "280.345 Public Health Biostatistics (Fall)\n\t280.350	Fundamentals of Epidemiology (Fall & Spring)",
+          required_credits: 21,
+          criteria:
+            "AS.280.101[C]^OR^AS.280.240[C]^OR^AS.280.240[C]^OR^AS.280.335[C]^OR^AS.280.340[C]^OR^AS.280.345[C]^OR^AS.280.350[C]",
+        },
+      ],
+    },
+    {
+      name: "Intermediate Public Health Courses at Homewood",
+      required_credits: 15,
+      min_credits_per_course: 3,
+      description:
+        "One course at the 200-400 level focusing on social and behavioral aspects of public health from the list below." +
+        "Please see your PHS advisor for a list of current courses that will satisfy the requirement.",
+      criteria:
+        "AS Intermediate Public Health[D]^AND^(200[L]^OR^300[L]^OR^400[L])",
+      exception: "",
+      fine_requirements: [
+        {
+          description:
+            "Required Courses:\n\t230.341	Sociology of Health and Illness OR \n\t280.355 Introduction to Social and Behavioral Determinants of Health",
+          required_credits: 3,
+          criteria: "AS.230.341[C]^OR^AS.280.355[C]",
+        },
+      ],
+    },
+    {
+      name: "Applied Experience",
+      required_credits: 1,
+      min_credits_per_course: 1,
+      description:
+        "The Applied Experience (AE) is a required experiential learning component of the Public Health Studies" +
+        " curriculum. The purpose of the AE is to provide students with supervised, hands-on experience in a professional" +
+        " public health setting. The Applied Experience gives students an opportunity to explore an area of interest within" +
+        " the field of public health by actively engaging in and directly contributing to a public health project or program." +
+        " The AE must be at least 80 hours and 4 weeks long under the supervision of a public health profession.",
+      criteria: "AS.280.500[C]",
+    },
+    {
+      name: "Courses at Johns Hopkins Bloomberg School of Public Health (JHSPH)",
+      required_credits: 10,
+      min_credits_per_course: 3,
+      description:
+        "Courses are taken at the Johns Hopkins Bloomberg School of Public Health in the student's final year." +
+        " Students take 15 JHSPH credits, which is the equivalent of 10 Homewood credits. Blended courses may" +
+        " count for this requirement, Independent Research and Special Studies will not. Online courses will " +
+        "count toward you total number of credits needed to graduate, but will not count toward the 15 credits " +
+        "needed to fulfill this specific requirement. Within the 15 credits, students must create an 8 credits " +
+        "focus in one particular area, topic, or department.",
+      criteria: "AS Bloomberg School of Public Health[D]",
+    },
+    {
+      name: "Social Science",
+      required_credits: 9,
+      min_credits_per_course: 3,
+      description:
+        "Select two introductory social science courses from " +
+        "<a href='https://e-catalogue.jhu.edu/arts-sciences/full-time-residential-programs/degree-programs/public-health-studies/public-health-studies-bachelor-arts/'>" +
+        "Table 1</a>. Other courses may apply with advisor approval. " +
+        "These courses must be from two different departments (distinguished by department course number, not name)",
+      criteria: "AS Social Science[D]",
+      double_count: ['Writing Intensive', 'Major Requirement'],
+    },
+    {
+      name: "Natural Science",
+      required_credits: 9,
+      min_credits_per_course: 1,
+      description: "Select two Biology Lecture Courses of the following (Or Equivalent):",
+      criteria: "AS Natural Science[N]",
+      fine_requirements: [
+        {
+          description:
+            "Select two Biology Lecture Courses of the following (Note: Other biology courses may apply with advisor approval):" +
+            "\n\tAS.020.151 General Biology I\n\tAS.020.152 General Biology II\n\tAS.020.303 Genetics\n\tAS.020.305 Biochemistry\n\t" +
+            "\n\tAS.020.306 Cell Biology\n\tAS.020.374 Comparative Animal Physiology\n\tAS.280.161 Applications of Biological Concepts in Public Health",
+          required_credits: 6,
+          criteria:
+            "AS.020.151[C]^OR^AS.020.152[C]^OR^AS.020.303[C]^OR^AS.020.305[C]^OR^AS.020.306[C]^OR^AS.020.374[C]" +
+            "^OR^AS.280.161[C]",
+        },
+        {
+          description:
+            "Select one Biology Lab Course of the following:\n\t" +
+            "AS.020.153 General Biology Laboratory I\n\tAS.020.154 General Biology Lab II\n\tAS.020.315 Biochemistry Project labs\n\t" +
+            "\n\tAS.020.316 Cell Biology Lab\n\tAS.020.340 Developmental Genetics Lab\n\tAS.020.377 Comparative Physiology Lab\n\t" +
+            "AS.250.253 Protein Engineering and Biochemistry Lab\n\tAS.250.254 Protein Biochemistry and Engineering Laboratory",
+          required_credits: 1,
+          criteria:
+            "AS.020.153[C]^OR^AS.020.154[C]^OR^AS.020.315[C]^OR^AS.020.316[C]^OR^AS.020.340[C]^OR^AS.020.377[C]" +
+            "^OR^AS.250.253[C]^OR^AS.250.254[C]",
+        },
+      ],
+      double_count: ['Writing Intensive', 'Major Requirement'],
+    },
+    {
+      name: "Quantitative",
+      required_credits: 9,
+      min_credits_per_course: 3,
+      description: "Must complete the following courses in Quantitative.",
+      criteria: "AS Quantitative[N]",
+      fine_requirements: [
+        {
+          description:
+            "Select one Quantitative Course of the following:\n\t110.106 Calculus I (Biology and Social Sciences)\n\t" +
+            "110.108 Calculus I (Physical Sciences & Engineering)",
+          required_credits: 4,
+          criteria: "AS.110.106[C]^OR^AS.110.108[C]",
+        },
+      ],
+    },
+    {
+      name: 'Writing Intensive',
+      required_credits: 15,
+      min_credits_per_course: 3,
+      description:
+        'Effective Fall 2022, all students earning a degree from the School of Arts and Sciences must complete Reintroduction to Writing in their first year at Hopkins plus an additional 12 credits in writing-intensive courses through their undergraduate experience for a minimum of 15 writing-intensive credits.',
+      criteria: 'Written Intensive[W]',
+      double_count: ['All'],
+      fine_requirements: [
+        {
+          description: 'Reintroduction to Writing',
+          required_credits: 4,
+          criteria: 'AS.004.100[C]',
+        },
+      ],
+    },
+  ],
+};
 
 // https://engineering.jhu.edu/chembe/undergraduate-studies/undergraduate-degree-program/
 const bsCBE: Major = {
@@ -5550,7 +5571,7 @@ export const allMajors: Major[] = [
   // baPsych,
   // baMolCell,
   // baMSH,
-  // baPH,
+  baPH,
   // bsBioPhysics,
   // bsME,
   // baHistory,
