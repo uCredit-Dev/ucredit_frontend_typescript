@@ -159,7 +159,7 @@ export const currentMembers = [
   {
     name: 'Nishikar Parchuri',
     role: 'Software Engineer',
-    img: '/img/team-page/Nishikar_Parchuri.jpg',
+    img: '/img/team-page/NIshikar_Parchuri.jpg',
     class: '2025',
     github: 'https://github.com/nishikarp',
     linkedin: 'www.linkedin.com/in/nishikarp',

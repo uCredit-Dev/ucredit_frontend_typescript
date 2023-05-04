@@ -23,12 +23,7 @@ const YearDraggable: FC<{
       key={year._id}
       index={yearIndex}
       draggableId={year._id}
-      isDragDisabled={
-        draggable ||
-        id === 0 ||
-        mode === ReviewMode.View ||
-        mode === ReviewMode.RoadMap
-      }
+      isDragDisabled={draggable || id === 0 || mode === ReviewMode.View}
     >
       {(provided, snapshot) => {
         return (

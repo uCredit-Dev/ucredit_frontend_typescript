@@ -7,7 +7,7 @@ import {
   UserDistribution,
   Year,
 } from '../../../resources/commonTypes';
-import { allMajors } from '../../../resources/majors';
+import { majorInfos } from '../../../resources/majors';
 import {
   selectCurrentPlanCourses,
   selectDistributions,
@@ -81,7 +81,7 @@ const DistributionBarsJSX: FC<{
         <CourseBar
           distribution={{
             name: 'Total Credits',
-            required_credits: allMajors[selectedMajor].total_degree_credit,
+            required_credits: majorInfos[selectedMajor].total_degree_credit,
             planned: totalCredits,
             description:
               selectedMajor !== null
@@ -89,7 +89,7 @@ const DistributionBarsJSX: FC<{
                   selectedMajor
                 : '',
             satisfied:
-              totalCredits >= allMajors[selectedMajor].total_degree_credit,
+              totalCredits >= majorInfos[selectedMajor].total_degree_credit,
           }}
           general={true}
           bgcolor={''}

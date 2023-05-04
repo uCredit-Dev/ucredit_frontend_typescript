@@ -5,7 +5,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import Select from 'react-select';
 import { getUpdatedDistributions } from '../../../resources/assets';
 import { Plan } from '../../../resources/commonTypes';
-import { allMajors } from '../../../resources/majors';
+import { majorInfos } from '../../../resources/majors';
 import {
   selectSelectedMajor,
   selectPlan,
@@ -36,7 +36,7 @@ const Distributions: FC<{
   }));
 
   const getHref = (): string => {
-    return selectedMajor ? allMajors[selectedMajor].url : '';
+    return selectedMajor ? majorInfos[selectedMajor].url : '';
   };
 
   const reload = () => {

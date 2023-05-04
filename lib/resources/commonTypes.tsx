@@ -105,6 +105,7 @@ export type Plan = {
   numYears: number;
   years: Year[];
   reviewers: any[];
+  updatedAt: Date;
 };
 
 type Affiliation = 'STUDENT' | 'FACULTY' | 'STAFF';
@@ -185,8 +186,8 @@ export type SemesterType =
   | 'All';
 
 // https://stackoverflow.com/questions/52085454/typescript-define-a-union-type-from-an-array-of-strings
-export type DepartmentType = (typeof all_deps)[number];
-export type TagType = (typeof course_tags)[number];
+export type DepartmentType = typeof all_deps[number];
+export type TagType = typeof course_tags[number];
 
 export type FilterType =
   | 'credits'
@@ -220,7 +221,6 @@ export type FineReq = {
   description: string;
   criteria: string;
   required_credits: number;
-  planned: number;
   double_count?: string[];
   pathing?: number;
   wi?: boolean;
@@ -291,7 +291,6 @@ export enum ReviewMode {
   View = 'view',
   Edit = 'edit',
   None = '',
-  RoadMap = 'roadmap',
 }
 
 export interface ThreadType {

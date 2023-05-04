@@ -123,7 +123,6 @@ const Dash: React.FC = () => {
       <Head>
         <title>My Plan</title>
       </Head>
-      {/* <Dashboard mode={ReviewMode.RoadMap} /> */}
       <Dashboard mode={mode} />
       <Tooltip
         className="z-[1000] max-w-2xl"

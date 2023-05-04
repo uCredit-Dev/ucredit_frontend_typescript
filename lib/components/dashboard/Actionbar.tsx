@@ -4,12 +4,14 @@ import { useSelector, useDispatch } from 'react-redux';
 import { toast } from 'react-toastify';
 import { getAPI } from '../../resources/assets';
 import { ReviewMode, Year, Plan } from '../../resources/commonTypes';
-import { allMajorNames, allMajors } from '../../resources/majors';
+import { majorNames, majorInfos } from '../../resources/majors';
 import Tooltip from '@mui/material/Tooltip';
 import {
   selectPlan,
+  selectSelectedMajor,
   updateSelectedPlan,
   updateCurrentPlanCourses,
+  updateSelectedMajor,
 } from '../../slices/currentPlanSlice';
 import {
   updateAddingPlanStatus,
@@ -37,14 +39,15 @@ import { Typography } from '@mui/material';
 import Box from '@mui/material/Box';
 import * as amplitude from '@amplitude/analytics-browser';
 
-const majorOptions = allMajorNames.map((major) => ({
-  abbrev: allMajors[major]['abbrev'],
+const majorOptions = majorNames.map((major) => ({
+  abbrev: majorInfos[major]['abbrev'],
   name: major,
 }));
 
 const Actionbar: FC<{ mode: ReviewMode }> = ({ mode }) => {
   const planList = useSelector(selectPlanList);
   const currentPlan = useSelector(selectPlan);
+  const newSelectedMajor = useSelector(selectSelectedMajor);
   const user = useSelector(selectUser);
   const token = useSelector(selectToken);
   const dispatch = useDispatch();
@@ -170,6 +173,11 @@ const Actionbar: FC<{ mode: ReviewMode }> = ({ mode }) => {
       if (currentPlan.major_ids.includes(major.name))
         currentMajorOptions.push({ label: major.name, value: major.abbrev });
     });
+    if (newSelectedMajor) {
+      if (currentPlan.major_ids.includes(newSelectedMajor)) {
+        dispatch(updateSelectedMajor(newSelectedMajor));
+      }
+    }
     return currentMajorOptions;
   };
 

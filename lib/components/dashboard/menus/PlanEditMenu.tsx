@@ -11,7 +11,7 @@ import Select, {
 import { toast } from 'react-toastify';
 import { getAPI } from '../../../resources/assets';
 import { Plan, ReviewMode, Year } from '../../../resources/commonTypes';
-import { allMajorNames, allMajors } from '../../../resources/majors';
+import { majorNames, majorInfos } from '../../../resources/majors';
 import {
   selectPlan,
   updateCurrentPlanCourses,
@@ -36,7 +36,7 @@ import clsx from 'clsx';
 import { selectSearchStatus } from '../../../slices/searchSlice';
 import { Popover, Transition } from '@headlessui/react';
 
-const majorOptions = allMajorNames.map((major, index) => ({
+const majorOptions = majorNames.map((major, index) => ({
   value: index,
   label: major,
 }));
@@ -126,7 +126,7 @@ const PlanEditMenu: FC<{ mode: ReviewMode }> = ({ mode }) => {
   /**
    * Limit the max width of multi-select labels
    */
-  const customStyles: StylesConfig<(typeof majorOptions)[number], true> = {
+  const customStyles: StylesConfig<typeof majorOptions[number], true> = {
     multiValue: (provided) => {
       const maxWidth = '17rem';
       return { ...provided, maxWidth };
@@ -168,14 +168,14 @@ const PlanEditMenu: FC<{ mode: ReviewMode }> = ({ mode }) => {
    * if user selected more than one major
    */
   const MultiValue = (
-    props: MultiValueProps<(typeof majorOptions)[number], true>,
+    props: MultiValueProps<typeof majorOptions[number], true>,
   ) => {
-    const major = allMajorNames.find((major) => major === props.data.label);
+    const major = majorNames.find((major) => major === props.data.label);
     // @ts-ignore
     const showAsAbbrev = props.selectProps.value.length > 1;
     return (
       <components.MultiValue {...props}>
-        {showAsAbbrev ? allMajors[major]['abbrev'] : major}
+        {showAsAbbrev ? majorInfos[major]['abbrev'] : major}
       </components.MultiValue>
     );
   };

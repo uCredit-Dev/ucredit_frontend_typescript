@@ -22,9 +22,11 @@ import {
   selectCurrentPlanCourses,
   selectPlan,
   selectTotalCredits,
+  selectSelectedMajor,
   updateCurrentPlanCourses,
   updateSelectedPlan,
   updateTotalCredits,
+  updateSelectedMajor,
 } from '../../../../slices/currentPlanSlice';
 import { getAPI } from '../../../../resources/assets';
 import SisCourse from './SisCourse';
@@ -46,6 +48,7 @@ const CourseDisplay: FC<{ cart: boolean }> = ({ cart }) => {
   const currentCourses = useSelector(selectCurrentPlanCourses);
   const totalCredits = useSelector(selectTotalCredits);
   const token = useSelector(selectToken);
+  const newSelectedMajor = useSelector(selectSelectedMajor);
 
   // component state setup
   const [inspectedArea, setInspectedArea] = useState<string>('None');
@@ -150,6 +153,11 @@ const CourseDisplay: FC<{ cart: boolean }> = ({ cart }) => {
         newPlanList[i] = newPlan;
       }
     }
+
+    if (newSelectedMajor) {
+      dispatch(updateSelectedMajor(newSelectedMajor));
+    }
+
     dispatch(updatePlanList(newPlanList));
     dispatch(updateTotalCredits(totalCredits + newUserCourse.credits));
     toast.success(version.title + ' added!', {

@@ -14,7 +14,7 @@ import { userService } from '../../services';
 import DistributionBarsJSX from '../dashboard/degree-info/DistributionBarsJSX';
 import { selectToken } from '../../slices/userSlice';
 import { useSelector } from 'react-redux';
-import { allMajorNames } from '../../resources/majors';
+import { majorNames } from '../../resources/majors';
 
 const getNextSem = (): { year: Number; semester: SemesterType } => {
   const date = new Date();
@@ -33,6 +33,7 @@ const PlanSummary: FC<{
   setRefreshReviews: (refreshReviews: boolean) => void;
 }> = ({ plan, setNotifState, review_id, setRefreshReviews }) => {
   const [semester, setSemester] = useState<SemesterType>(getNextSem().semester);
+  const [calculated, setCalculated] = useState<boolean>(false);
   const [year, setYear] = useState<Year>(
     (() => {
       for (let y of plan.years) {
@@ -43,7 +44,7 @@ const PlanSummary: FC<{
   );
   const [courses, setCourses] = useState<UserCourse[]>(plan.years[0].courses);
   const [majors, setMajors] = useState<string[]>([]);
-  const [selectedMajor, setSelectedMajor] = useState<string>(allMajorNames[0]);
+  const [selectedMajor, setSelectedMajor] = useState<string>(majorNames[0]);
   const [semesters, setSemesters] = useState<
     { label: string; content: string }[]
   >([]);
@@ -53,7 +54,7 @@ const PlanSummary: FC<{
     const { year, semester } = getNextSem();
     const majorAcc: string[] = [];
     plan.major_ids.forEach((m) => {
-      allMajorNames.forEach((ma) => {
+      majorNames.forEach((ma) => {
         if (ma === m) majorAcc.push(ma);
       });
     });
@@ -187,13 +188,6 @@ const PlanSummary: FC<{
                 mode={ReviewMode.View}
                 display={true}
               />
-              {/* <InfoMenu plan={plan} mode={ReviewMode.View}/> */}
-              {/* <Distributions
-                  major={plan.majors[0]}
-                  userMajors={plan.majors}
-                  changeDisplayMajor={changeDisplayMajor}
-                  distributionBarsJSX={distributionBarsJSX}
-                /> */}
               <p className="px-5 mt-2 text-sm text-center text-gray-500">
                 Here is a summary of the student's courses
               </p>
@@ -211,16 +205,18 @@ const PlanSummary: FC<{
                   onChange={async (values) => {
                     const value = values[0];
                     if (!value) return;
-                    allMajorNames.forEach((m) => {
+                    majorNames.forEach((m) => {
                       if (m === value.label) setSelectedMajor(m);
                     });
                   }}
-                  defaultValue={
-                    allMajorNames[0] ? allMajorNames[0] : 'loading...'
-                  }
+                  defaultValue={majorNames[0] ? majorNames[0] : 'loading...'}
                 />
               )}
-              <DistributionBarsJSX selectedMajor={selectedMajor} />
+              <DistributionBarsJSX
+                selectedMajor={selectedMajor}
+                calculated={calculated}
+                setCalculated={setCalculated}
+              />
             </div>
           </div>
           <div className="px-4 py-3 rounded-b-lg bg-gray-50 sm:px-6 sm:flex sm:flex-row-reverse ">

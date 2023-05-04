@@ -3,8 +3,6 @@ import { useDispatch, useSelector } from 'react-redux';
 import Header from './Header';
 import FeedbackPopup from '../popups/FeedbackPopup';
 import FeedbackNotification from '../popups/FeedbackNotification';
-// import RoadMapBanner from '../roadmap/Banner';
-// import RoadmapComment from '../roadmap/comments/RoadmapComment';
 
 import {
   selectImportingStatus,
@@ -142,7 +140,6 @@ const Dashboard: React.FC<Props> = ({ mode }) => {
   //     setShowHeader(false);
   //   }
   // });
-
   const updateExperimentsForUser = useCallback(() => {
     axios
       .get(getAPI(window) + '/experiments/allExperiments')
@@ -254,7 +251,7 @@ const Dashboard: React.FC<Props> = ({ mode }) => {
                 'var(--tw-ring-offset-shadow, 0 0 #0000), var(--tw-ring-shadow, 0 0 #0000), var(--tw-shadow)',
             }}
             className={clsx(
-              'flex items-center p-2 text-base font-normal text-black rounded-lg z-[90] top-[4.65rem] right-9 focus:outline-none shadow-sm text-sm',
+              'flex items-center p-2 font-normal text-black rounded-lg z-[90] top-[4.65rem] right-9 focus:outline-none shadow-sm text-sm',
               {
                 'fixed ': searchStatus,
                 ' absolute': !searchStatus,
@@ -281,8 +278,6 @@ const Dashboard: React.FC<Props> = ({ mode }) => {
             Tracker
           </Button>
 
-          {/* {mode === ReviewMode.RoadMap ? <RoadMapBanner /> : <></>} */}
-
           <div className="flex-grow w-full">
             <div className="flex flex-col w-full">
               <div className="flex flex-col pl-4 thin:flex-wrap-reverse mt-1 w-full h-full">
@@ -302,15 +297,12 @@ const Dashboard: React.FC<Props> = ({ mode }) => {
             {courseInfoStatus && <CourseDisplayPopup />}
             {cartStatus && <Cart />}
           </div>
-          {/* <Roadmap /> */}
         </div>
       )}
       {/* Dummy components used to generate state information */}
       <GenerateNewPlan />
       {mode === ReviewMode.Edit && <HandleUserInfoSetupDummy />}
       <HandlePlanShareDummy />
-      {/* <Preview /> */}
-      {/* {mode === ReviewMode.RoadMap ? <RoadmapComment /> : <></>} */}
     </>
   );
 };

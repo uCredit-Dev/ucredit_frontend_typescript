@@ -22,7 +22,7 @@ import popupReducer, {
 } from '../../slices/popupSlice';
 import experimentReducer from '../../slices/experimentSlice';
 import { ToastContainer } from 'react-toastify';
-import { allMajors as mockAllMajors } from '../../resources/majors';
+import { majorInfos as mockmajorInfos } from '../../resources/majors';
 import React from 'react';
 
 let history = createMemoryHistory({ initialEntries: ['/login'] });
@@ -44,7 +44,7 @@ let mockStore = configureStore({
 jest.mock('react-select', () => ({ options, value, onChange }) => {
   function handleChange(event) {
     const option = options.find((op) => op.label === event.currentTarget.value);
-    mockStore.dispatch(mockUpdateToAddMajors([mockAllMajors[option.value]]));
+    mockStore.dispatch(mockUpdateToAddMajors([mockmajorInfos[option.value]]));
   }
   return (
     <select

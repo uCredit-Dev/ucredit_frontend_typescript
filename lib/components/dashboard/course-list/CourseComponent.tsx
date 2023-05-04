@@ -130,7 +130,7 @@ const CourseComponent: FC<{
       onMouseLeave={deactivate}
     >
       <div className="absolute">
-        {hovered && mode !== ReviewMode.View && mode !== ReviewMode.RoadMap && (
+        {hovered && (
           <div className="flex flex-row h-14">
             <MinusIcon
               className="z-20 -ml-6 flex flex-row items-center my-auto justify-center p-0.5 w-6 h-6 text-white bg-red-300 hover:bg-red-600 rounded-md outline-none stroke-2 cursor-pointer transform hover:scale-110 transition duration-150 ease-in"

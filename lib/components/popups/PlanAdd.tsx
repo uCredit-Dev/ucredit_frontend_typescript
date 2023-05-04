@@ -2,7 +2,7 @@ import React, { FC } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { toast } from 'react-toastify';
 import { selectPlanList } from '../../slices/userSlice';
-import { allMajorNames } from '../../resources/majors';
+import { majorNames } from '../../resources/majors';
 import Select from 'react-select';
 import {
   selectToAddName,
@@ -14,7 +14,7 @@ import {
 } from '../../slices/popupSlice';
 
 const majorOptions = [
-  ...allMajorNames.map((major, index) => ({
+  ...majorNames.map((major, index) => ({
     value: index,
     label: major,
   })),

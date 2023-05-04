@@ -33,10 +33,6 @@ Deployment: https://ucredit.me
 │   │   │       ├── query-components
 │   │   │       └── search-results
 │   │   ├── reviewer
-│   │   ├── roadmap
-│   │   │   ├── assets
-│   │   │   ├── comments
-│   │   │   └── search
 │   │   └── utils
 │   ├── resources
 │   │   └── redux_sample
@@ -45,8 +41,7 @@ Deployment: https://ucredit.me
 │   └── utils
 ├── pages
 │   ├── login
-│   ├── reviewer
-│   └── roadmap
+│   └── reviewer
 └── public
     ├── img
     │   ├── landing-page
