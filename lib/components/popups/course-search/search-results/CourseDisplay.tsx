@@ -102,7 +102,7 @@ const CourseDisplay: FC<{ cart: boolean }> = ({ cart }) => {
       credits: version.credits === '' ? 0 : version.credits,
       isPlaceholder: placeholder,
       number: version.number,
-      area: version.areas,
+      areas: version.areas,
       department: version.department,
       tags: version.tags,
       preReq: version.preReq,

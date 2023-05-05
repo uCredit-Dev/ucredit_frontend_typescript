@@ -161,7 +161,7 @@ const VSemester: React.FC<{
         credits: version.credits === '' ? 0 : version.credits,
         isPlaceholder: placeholder,
         number: version.number,
-        area: inspectedArea,
+        areas: inspectedArea,
         preReq: version.preReq,
         expireAt:
           user._id === 'guestUser'

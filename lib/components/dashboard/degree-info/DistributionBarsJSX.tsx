@@ -33,9 +33,6 @@ const DistributionBarsJSX: FC<{
   const [distributionBarsJSX, setDistributionBarsJSX] = useState<JSX.Element[]>(
     [],
   );
-  const [showDistributions] = useState<boolean[]>(
-    new Array(distributions.length),
-  );
 
   // at first load
   useEffect(() => {
@@ -44,14 +41,8 @@ const DistributionBarsJSX: FC<{
       dispatch(updateDistributions(dist));
       setCalculated(true);
     });
-  }, [
-    currentPlan._id,
-    selectedMajor,
-    currPlanCourses,
-    dispatch,
-    token,
-    setCalculated,
-  ]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [currentPlan._id, selectedMajor, currPlanCourses, token]);
 
   // Update total credits everytime courses change.
   useEffect(() => {
@@ -99,7 +90,7 @@ const DistributionBarsJSX: FC<{
     setDistributionBarsJSX(distributionJSX);
     setCalculated(true);
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [distributions, showDistributions]);
+  }, [distributions]);
 
   return (
     <div>
