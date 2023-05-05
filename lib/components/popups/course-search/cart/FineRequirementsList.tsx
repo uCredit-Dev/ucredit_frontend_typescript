@@ -2,6 +2,12 @@ import React, { useState, FC } from 'react';
 import FineRequirementListItem from './FineRequirementItem';
 import { requirements } from '../../../dashboard/degree-info/distributionFunctions';
 
+/**
+ * This component is a container that displays a list of requirements for a selected distribution.
+ * @prop searching - This prop is not used by this component and can be safely omitted.
+ * @prop selectRequirement -  A function that sets the currently selected requirement.
+ * @prop selectedDistribution - The selected distribution and its corresponding requirements.
+ */
 const FineRequirementsList: FC<{
   searching: boolean;
   selectRequirement: Function;
