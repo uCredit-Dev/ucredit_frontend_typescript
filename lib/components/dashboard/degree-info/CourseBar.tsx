@@ -60,12 +60,13 @@ const CourseBar: FC<{
   // Onclick for course bar, opens cart popup passing in corresponding props
   const openCartPopup = async () => {
     dispatch(updateCartInvokedBySemester(false));
+    // if total don't open cart
+    if (!distribution._id) return;
     // Filter for the correst distributions from redux store
-    let distr: UserDistribution = distribution;
-    // get fineReqs
-    if (distribution._id) {
-      distr = await getDistribution(distribution._id, token);
-    }
+    let distr: UserDistribution = await getDistribution(
+      distribution._id,
+      token,
+    );
     if (distr) {
       // if the distribution exists, then update the cart
       // at this point we have access to the current requirement

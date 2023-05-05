@@ -24,7 +24,7 @@ const FineRequirementsList: FC<{}> = () => {
   };
 
   const getRequirements = () => {
-    return dist.fineReq_ids.map((fine) => {
+    return dist?.fineReq_ids.map((fine: any) => {
       if (!fine.description) return <></>;
       return (
         <div key={fine._id}>

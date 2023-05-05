@@ -41,8 +41,8 @@ const CartCourseList: FC<{
 
     const searchedCourses = courses.filter(
       (course) =>
-        course.title.toLocaleLowerCase().includes(props.textFilter) ||
-        course.number.toLocaleLowerCase().includes(props.textFilter),
+        course.title.toLocaleLowerCase().includes(textFilter) ||
+        course.number.toLocaleLowerCase().includes(textFilter),
     );
 
     for (let i = 0; i < searchedCourses.length; i++) {

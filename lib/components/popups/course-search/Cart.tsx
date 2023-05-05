@@ -43,6 +43,7 @@ const Cart: FC<{}> = () => {
   useEffect(() => {
     if (dist) {
       setCartFilter(dist.criteria);
+      setIsCartFilterLoaded(true);
       dispatch(updatePageIndex(0));
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -52,6 +53,7 @@ const Cart: FC<{}> = () => {
     if (fine) {
       setCartFilter(fine.criteria);
       setIsCartFilterLoaded(true);
+      dispatch(updatePageIndex(0));
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [fine]);

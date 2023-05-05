@@ -34,6 +34,7 @@ export const initialPlan = {
   years: [],
   numYears: 0,
   reviewers: [],
+  updatedAt: new Date()
 };
 
 const initialState: CurrentPlanSlice = {
@@ -72,7 +73,7 @@ export const currentPlanSlice = createSlice({
       state.distributions = [...action.payload];
       if (state.selectedDistribution)
         for (let distr of action.payload) {
-          if (distr[0] === state.selectedDistribution[0]) {
+          if (distr._id === state.selectedDistribution._id) {
             state.selectedDistribution = distr;
             break;
           }

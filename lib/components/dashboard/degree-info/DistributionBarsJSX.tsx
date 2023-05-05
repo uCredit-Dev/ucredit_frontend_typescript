@@ -37,8 +37,8 @@ const DistributionBarsJSX: FC<{
   // at first load
   useEffect(() => {
     setCalculated(false);
-    getDistributions(currentPlan._id, selectedMajor, token).then((dist) => {
-      dispatch(updateDistributions(dist));
+    getDistributions(currentPlan._id, selectedMajor, token).then((dists) => {
+      dispatch(updateDistributions(dists));
       setCalculated(true);
     });
     // eslint-disable-next-line react-hooks/exhaustive-deps
