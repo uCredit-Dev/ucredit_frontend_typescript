@@ -5271,35 +5271,46 @@ const minorEntrMgmt: Minor = {
         'Courses may be chosen from the list below. Students can choose 1 course from the Marketing' +
         ' & Communications electives listed in a separate table below.',
       criteria:
-        'EN.660.105[C]^OR^EN.660.250[C]^OR^EN.660.203[C]^OR^EN.661.110[C]^OR^EN.661.250[C]',
+        'AS.180.263[C]^OR^EN.570.334[C]^OR^EN.661.301[C]^OR^EN.661.315[C]^EN.661.317[C]^' +
+        '(EN Center for Leadership Education[D]^AND^(300[L]^OR^400[L]))',
       fine_requirements: [
         {
-          required_credits: 3,
+          required_credits: 0,
           description:
-            '<b>EN.660.105</b> <br />Foundations of American Enterprise**',
-          criteria: 'EN.660.105[C]',
+            'Clark Scholars may also take the following series of one-credit courses, as the equivalent of 1 three-credit course.<br />' +
+            'EN.660.106 Clark Scholars Leadership Challenge' +
+            '<br /> <i>OR</i> <br />' +
+            'EN.660.270 Clark Scholar Engineering Design I' +
+            '<br /> <i>OR</i> <br />' +
+            'EN.660.380 Clark Scholar Engineering Design II	',
+          criteria: 'EN.660.106[C]^OR^EN.660.270[C]^OR^EN.660.380[C]',
         },
         {
-          required_credits: 3,
+          required_credits: 0,
           description:
-            '<b>EN.660.250</b> <br />Identifying and Capturing Markets**',
-          criteria: 'EN.660.250[C]',
-        },
-        {
-          required_credits: 3,
-          description: '<b>EN.660.203</b> <br />Financial Accounting**',
-          criteria: 'EN.660.203[C]',
-        },
-        {
-          required_credits: 3,
-          description:
-            '<b>EN.661.110</b> <br />Professional Writing and Communication**',
-          criteria: 'EN.661.110[C]',
-        },
-        {
-          required_credits: 3,
-          description: '<b>EN.661.250</b> <br />Oral Presentations**',
-          criteria: 'EN.661.250[C]',
+            'Students may use only one Marketing and Communications course as an upper-level elective' +
+            ' for the Entrepreneurship and Management minor. <br />' +
+            'EN.660.352	New Product Development' +
+            '<br /> <i>OR</i> <br />' +
+            'EN.660.358	International Marketing' +
+            '<br /> <i>OR</i> <br />' +
+            'EN.660.420	Marketing Strategy' +
+            '<br /> <i>OR</i> <br />' +
+            'EN.660.450	Advertising & Integrated Marketing Communication' +
+            '<br /> <i>OR</i> <br />' +
+            'EN.660.453	Digital and Social Media Marketing' +
+            '<br /> <i>OR</i> <br />' +
+            'EN.661.306	Special Topics in Professional Writing: Freelance Travel Writing' +
+            '<br /> <i>OR</i> <br />' +
+            'EN.661.355	Special Topics in Professional Writing: Blogging about Food and Culture' +
+            '<br /> <i>OR</i> <br />' +
+            'EN.661.360	Marketing Your Start-up' +
+            '<br /> <i>OR</i> <br />' +
+            'EN.661.370	Storytelling with Data' +
+            '<br /> <i>OR</i> <br />' +
+            'EN.661.380	Decision Analytics',
+          criteria:
+            'EN.660.352[C]^OR^EN.660.358[C]^OR^EN.660.420[C]^OR^EN.660.450[C]^OR^EN.660.453[C]^OR^EN.661.306[C]^OR^EN.661.355[C]^OR^EN.661.360[C]^OR^EN.661.370[C]^OR^EN.661.380[C]',
         },
       ],
     },
