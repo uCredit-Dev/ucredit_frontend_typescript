@@ -2405,41 +2405,75 @@ const baPH: Major = {
   distributions: [
     {
       name: 'Public Health Studies Core Courses',
-      required_credits: 40,
-      min_credits_per_course: 1,
+      required_credits: 21,
+      min_credits_per_course: 3,
+      double_count: ['All'],
       description:
         'For more information please visit the' +
         "<a href='https://e-catalogue.jhu.edu/arts-sciences/full-time-residential-programs/degree-programs/public-health-studies/public-health-studies-bachelor-arts/'>" +
         'major degree requirement</a> section on the department website.',
-      criteria: 'AS Public Health Studies[D]',
+      criteria: 'AS.280.101[C]^OR^AS.280.240[C]^OR^AS.280.240[C]^OR^AS.280.335[C]^OR^AS.280.340[C]^OR^AS.280.345[C]^OR^AS.280.350[C]',
       fine_requirements: [
         {
           description:
-            'Required Courses: \n\t280.101 Introduction to Public Health (Fall & Spring)\n\t280.240 Research Methods in Public Health (Fall & Spring)\n\t' +
-            '280.335 The Environment and Your Health (Fall & Spring) \n\t280.340 Fundamentals of Health Policy & Management (Spring)\n\t' +
-            '280.345 Public Health Biostatistics (Fall)\n\t280.350	Fundamentals of Epidemiology (Fall & Spring)',
-          required_credits: 21,
-          criteria:
-            'AS.280.101[C]^OR^AS.280.240[C]^OR^AS.280.240[C]^OR^AS.280.335[C]^OR^AS.280.340[C]^OR^AS.280.345[C]^OR^AS.280.350[C]',
+            '<b>Introduction to Public Health</b> <br /> AS.280.101 Introduction to Public Health (Fall & Spring)',
+          required_credits: 3,
+          criteria: 'AS.280.101[C]',
+        },
+        {
+          description:
+            '<b>Research Methods in Public Health</b> <br /> AS.280.240 Research Methods in Public Health (Fall & Spring)',
+          required_credits: 4,
+          criteria: 'AS.280.240[C]',
+        },
+        {
+          description:
+            '<b>The Environment and Your Health</b> <br /> AS.280.335 The Environment and Your Health (Fall & Spring)',
+          required_credits: 3,
+          criteria: 'AS.280.335[C]',
+        },
+        {
+          description:
+            '<b>Fundamentals of Health Policy & Management</b> <br /> AS.280.340 Fundamentals of Health Policy & Management (Spring)',
+          required_credits: 3,
+          criteria: 'AS.280.340[C]',
+        },
+        {
+          description:
+            '<b>Public Health Biostatistics</b> <br /> AS.280.345 Public Health Biostatistics (Fall) <br /> <i>OR</i> <br /> Other statistics courses may apply with advisor approval.',
+          required_credits: 3,
+          criteria: 'AS.280.345[C]',
+        },
+        {
+          description:
+            '<b>Fundamentals of Epidemiology</b> <br /> AS.280.350 Fundamentals of Epidemiology (Fall & Spring)',
+          required_credits: 3,
+          criteria: 'AS.280.350[C]',
         },
       ],
     },
     {
       name: 'Intermediate Public Health Courses at Homewood',
-      required_credits: 15,
+      required_credits: 12,
       min_credits_per_course: 3,
+      double_count: ['All'],
       description:
         'One course at the 200-400 level focusing on social and behavioral aspects of public health from the list below.' +
         'Please see your PHS advisor for a list of current courses that will satisfy the requirement.',
       criteria:
         'AS Intermediate Public Health[D]^AND^(200[L]^OR^300[L]^OR^400[L])',
-      exception: '',
       fine_requirements: [
         {
           description:
-            'Required Courses:\n\t230.341	Sociology of Health and Illness OR \n\t280.355 Introduction to Social and Behavioral Determinants of Health',
+            '<b>Social and Behavioral Course</b> <br /> AS.230.341 Sociology of Health and Illness (other options may be approved by your advisor) <br /> <i>OR</i> <br />AS.280.355 Introduction to Social and Behavioral Determinants of Health',
           required_credits: 3,
           criteria: 'AS.230.341[C]^OR^AS.280.355[C]',
+        },
+        {
+          description:
+            'Three additional Public Health courses at the 200-400 level',
+          required_credits: 9,
+          criteria: 'AS Intermediate Public Health[D]^AND^(200[L]^OR^300[L]^OR^400[L])',
         },
       ],
     },
@@ -2447,6 +2481,7 @@ const baPH: Major = {
       name: 'Applied Experience',
       required_credits: 1,
       min_credits_per_course: 1,
+      double_count: ['All'],
       description:
         'The Applied Experience (AE) is a required experiential learning component of the Public Health Studies' +
         ' curriculum. The purpose of the AE is to provide students with supervised, hands-on experience in a professional' +
@@ -2459,6 +2494,7 @@ const baPH: Major = {
       name: 'Courses at Johns Hopkins Bloomberg School of Public Health (JHSPH)',
       required_credits: 10,
       min_credits_per_course: 3,
+      double_count: ['All'],
       description:
         "Courses are taken at the Johns Hopkins Bloomberg School of Public Health in the student's final year." +
         ' Students take 15 JHSPH credits, which is the equivalent of 10 Homewood credits. Blended courses may' +
@@ -2477,16 +2513,20 @@ const baPH: Major = {
         "<a href='https://e-catalogue.jhu.edu/arts-sciences/full-time-residential-programs/degree-programs/public-health-studies/public-health-studies-bachelor-arts/'>" +
         'Table 1</a>. Other courses may apply with advisor approval. ' +
         'These courses must be from two different departments (distinguished by department course number, not name)',
-      criteria: 'AS Social Science[D]',
+      criteria: 'AS.070.132[C]^OR^AS.140.105[C]^OR^AS.140.106[C]^OR^AS.150.219[C]^OR^AS.180.101[C]^OR^AS.180.102^OR^AS.190.220[C]^OR^AS.190.284^OR^' +
+                'AS.200.101[C]^OR^AS.200.110[C]^OR^AS.200.132[C]^OR^AS.200.133[C]^OR^AS.200.209[C]^OR^AS.200.212[C]^OR^AS.200.222[C]^OR^AS.230.101[C]^OR^' +
+                'AS.230.150[C]^OR^AS.271.107[C]^OR^AS.360.247[C]^OR^EN.570.108[C]^OR^EN.570.110[C]',
       double_count: ['Writing Intensive', 'Major Requirement'],
     },
     {
       name: 'Natural Science',
-      required_credits: 9,
+      required_credits: 7,
       min_credits_per_course: 1,
+      double_count: ['All'],
       description:
-        'Select two Biology Lecture Courses of the following (Or Equivalent):',
-      criteria: 'AS Natural Science[N]',
+        'Students must take two biology lecture courses and a biology lab course',
+      criteria: 'AS.020.151[C]^OR^AS.020.152[C]^OR^AS.020.303[C]^OR^AS.020.305[C]^OR^AS.020.306[C]^OR^AS.020.374[C]^OR^AS.280.161[C]^OR^' +
+                'AS.020.153[C]^OR^AS.020.154[C]^OR^AS.020.315[C]^OR^AS.020.316[C]^OR^AS.020.340[C]^OR^AS.020.377[C]^OR^AS.250.253[C]^OR^AS.250.254[C]',
       fine_requirements: [
         {
           description:
@@ -2495,8 +2535,7 @@ const baPH: Major = {
             '\n\tAS.020.306 Cell Biology\n\tAS.020.374 Comparative Animal Physiology\n\tAS.280.161 Applications of Biological Concepts in Public Health',
           required_credits: 6,
           criteria:
-            'AS.020.151[C]^OR^AS.020.152[C]^OR^AS.020.303[C]^OR^AS.020.305[C]^OR^AS.020.306[C]^OR^AS.020.374[C]' +
-            '^OR^AS.280.161[C]',
+            'AS.020.151[C]^OR^AS.020.152[C]^OR^AS.020.303[C]^OR^AS.020.305[C]^OR^AS.020.306[C]^OR^AS.020.374[C]^OR^AS.280.161[C]',
         },
         {
           description:
@@ -2514,10 +2553,11 @@ const baPH: Major = {
     },
     {
       name: 'Quantitative',
-      required_credits: 9,
-      min_credits_per_course: 3,
-      description: 'Must complete the following courses in Quantitative.',
-      criteria: 'AS Quantitative[N]',
+      required_credits: 4,
+      min_credits_per_course: 4,
+      double_count: ['All'],
+      description: 'Must complete Calculus I',
+      criteria: 'AS.110.106[C]^OR^AS.110.108[C]',
       fine_requirements: [
         {
           description:
