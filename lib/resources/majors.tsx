@@ -5164,6 +5164,190 @@ const bsNeuro: Major = {
   ],
 };
 
+//https://e-catalogue.jhu.edu/engineering/full-time-residential-programs/degree-programs/leadership-education/entrepreneurship-management-minor/#requirementstext
+const minorEntrMgmt: Minor = {
+  degree_name: 'Minor Entrepreneurship and Management',
+  abbrev: 'Minor Entr & Mgmt',
+  department: 'EN Center for Leadership Education',
+  total_degree_credit: 21,
+  url: 'https://e-catalogue.jhu.edu/engineering/full-time-residential-programs/degree-programs/leadership-education/entrepreneurship-management-minor/#requirementstext',
+  wi_credit: 0,
+  distributions: [
+    {
+      name: 'Statistics',
+      required_credits: 3,
+      min_credits_per_course: 3,
+      description:
+        'These courses expose students to the foundations of statistics that are used extensively in business ' +
+        'decision-making. These topics include correlation, estimation, hypothesis testing, linear regression, prediction, ' +
+        'and forecasting. Students may take either two elementary statistics courses or one intermediate/advanced calculus-based' +
+        ' statistics course from the list below.',
+      criteria:
+        'AS.230.205[C]^OR^AS.280.345[C]^OR^AS.280.345[C]^OR^EN.553.111[C]^OR^EN.553.112[C]^OR^EN.661.380[C]^OR^' +
+        'EN.553.211[C]^OR^EN.553.310[C]^OR^EN.553.311[C]^OR^EN.553.430[C]^OR^EN.560.240[C]',
+      fine_requirements: [
+        {
+          required_credits: 8,
+          description:
+            '<b>Option One: Two Elementary Statistics Courses.</b> Credit earned for AP Statistics (equivalent to EN.553.111)' +
+            ' will satisfy the first of the two required courses.<br />' +
+            'First course (select one): <br/>' +
+            'AS.230.205 Introduction to Social Statistics' +
+            '<br /> <i>OR</i> <br />' +
+            'AS.280.345 Public Health Biostatistics' +
+            '<br /> <i>OR</i> <br />' +
+            'EN.553.111 Statistical Analysis I <br/>' +
+            'Second course (select one) <br/>' +
+            'EN.553.112 Statistical Analysis II' +
+            '<br /> <i>OR</i> <br />' +
+            'EN.661.380 Decision Analytics <br/>',
+          criteria:
+            'AS.230.205[C]^OR^AS.280.345[C]^OR^AS.280.345[C]^OR^EN.553.111[C]^OR^EN.553.112[C]^OR^EN.661.380[C]',
+        },
+
+        {
+          required_credits: 3,
+          description:
+            '<b>Option Two: One Intermediate/Calculus-Based Course (must have Calculus as a prerequisite)</b><br />' +
+            'EN.553.211 Probability and Statistics for the Life Sciences' +
+            '<br /> <i>OR</i> <br />' +
+            'EN.553.310 Probability & Statistics for the Physical Sciences & Engineering' +
+            '<br /> <i>OR</i> <br />' +
+            'EN.553.311 Probability and Statistics for the Biological Sciences and Engineering' +
+            '<br /> <i>OR</i> <br />' +
+            'EN.553.430 Introduction to Statistics' +
+            '<br /> <i>OR</i> <br />' +
+            'EN.560.240 Uncertainty, Reliability and Decision-making',
+          criteria:
+            'EN.553.211[C]^OR^EN.553.310[C]^OR^EN.553.311[C]^OR^EN.553.430[C]^OR^EN.560.240[C]',
+        },
+      ],
+    },
+    {
+      name: 'Entrepreneurship and Management Fundamentals',
+      required_credits: 9,
+      min_credits_per_course: 3,
+      description:
+        'Students must complete three fundamental courses in entrepreneurship and management.',
+      criteria:
+        'EN.660.105[C]^OR^EN.660.250[C]^OR^EN.660.203[C]^OR^EN.661.110[C]^OR^EN.661.250[C]',
+      fine_requirements: [
+        {
+          required_credits: 3,
+          description:
+            '<b>EN.660.105</b> <br />Foundations of American Enterprise**',
+          criteria: 'EN.660.105[C]',
+        },
+        {
+          required_credits: 3,
+          description:
+            '<b>EN.660.250</b> <br />Identifying and Capturing Markets**',
+          criteria: 'EN.660.250[C]',
+        },
+        {
+          required_credits: 3,
+          description: '<b>EN.660.203</b> <br />Financial Accounting**',
+          criteria: 'EN.660.203[C]',
+        },
+        {
+          required_credits: 3,
+          description:
+            '<b>EN.661.110</b> <br />Professional Writing and Communication**',
+          criteria: 'EN.661.110[C]',
+        },
+        {
+          required_credits: 3,
+          description: '<b>EN.661.250</b> <br />Oral Presentations**',
+          criteria: 'EN.661.250[C]',
+        },
+      ],
+    },
+    {
+      name: 'Upper-Level Elective Courses in Entrepreneurship and Management',
+      required_credits: 6,
+      min_credits_per_course: 3,
+      description:
+        'Students must complete two upper-level courses in entrepreneurship and management. ' +
+        'Courses may be chosen from the list below. Students can choose 1 course from the Marketing' +
+        ' & Communications electives listed in a separate table below.',
+      criteria:
+        'EN.660.105[C]^OR^EN.660.250[C]^OR^EN.660.203[C]^OR^EN.661.110[C]^OR^EN.661.250[C]',
+      fine_requirements: [
+        {
+          required_credits: 3,
+          description:
+            '<b>EN.660.105</b> <br />Foundations of American Enterprise**',
+          criteria: 'EN.660.105[C]',
+        },
+        {
+          required_credits: 3,
+          description:
+            '<b>EN.660.250</b> <br />Identifying and Capturing Markets**',
+          criteria: 'EN.660.250[C]',
+        },
+        {
+          required_credits: 3,
+          description: '<b>EN.660.203</b> <br />Financial Accounting**',
+          criteria: 'EN.660.203[C]',
+        },
+        {
+          required_credits: 3,
+          description:
+            '<b>EN.661.110</b> <br />Professional Writing and Communication**',
+          criteria: 'EN.661.110[C]',
+        },
+        {
+          required_credits: 3,
+          description: '<b>EN.661.250</b> <br />Oral Presentations**',
+          criteria: 'EN.661.250[C]',
+        },
+      ],
+    },
+    {
+      name: 'Entrepreneurship and Management Capstone',
+      required_credits: 3,
+      min_credits_per_course: 3,
+      description: 'Students must complete one 400-level capstone course.',
+      criteria:
+        'EN.660.410[C]^OR^EN.660.411[C]^OR^EN.660.419[C]^OR^EN.660.459[C]^OR^EN.660.460[C]^OR^EN.663.453[C]',
+      fine_requirements: [
+        {
+          required_credits: 3,
+          description:
+            '<b>EN.660.410</b> <br />Computer Science Innovation and Entrepreneurship**',
+          criteria: 'EN.660.410[C]',
+        },
+        {
+          required_credits: 3,
+          description:
+            '<b>EN.660.411</b> <br />Corporate Strategy and Business Failure**',
+          criteria: 'EN.660.411[C]',
+        },
+        {
+          required_credits: 3,
+          description: '<b>EN.660.419</b> <br />Strategy Consulting**',
+          criteria: 'EN.660.419[C]',
+        },
+        {
+          required_credits: 3,
+          description: '<b>EN.660.459</b> <br />Entrepreneurial Spirits**',
+          criteria: 'EN.660.459[C]',
+        },
+        {
+          required_credits: 3,
+          description: '<b>EN.660.460</b> <br />Entrepreneurship**',
+          criteria: 'EN.660.460[C]',
+        },
+        {
+          required_credits: 3,
+          description: '<b>EN.663.453</b> <br />Innovation and Design I**',
+          criteria: 'EN.663.453[C]',
+        },
+      ],
+    },
+  ],
+};
+
 // https://e-catalogue.jhu.edu/arts-sciences/full-time-residential-programs/degree-programs/economics/economics-minor/
 // https://econ.jhu.edu/undergraduate/minor-requirements/
 
@@ -5544,6 +5728,7 @@ export const allMajors: Major[] = [
   minorPhysics,
   minorMath,
   minorCIS,
+  minorEntrMgmt,
   // bsEnvEng,
   // baSoc,
   // baWritingSems,
