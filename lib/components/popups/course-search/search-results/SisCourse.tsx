@@ -82,8 +82,7 @@ const SisCourse: FC<{
   
   useEffect(() => {
     setOgSem(searchSemester);
-    console.log("plan", currentPlan);
-    console.log("term", year);
+    console.log('terms', inspected);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
@@ -383,10 +382,17 @@ const SisCourse: FC<{
   );
 
   const getTerms = () => {
+    if (inspected === 'None') {
+      return [];
+    }
+    const offeredSemesters = [... new Set(inspected!.terms.map((term) => {
+      return term.split(' ')[0].toLowerCase();
+    }))]
+    console.log(offeredSemesters);
     const terms: { year_id: string, semester?: string }[] = [];
     for (const year of currentPlan.years) {
       if (year.name !== "AP/Transfer") {
-        for (const semester of ['fall', 'spring', 'summer', 'intersession']) {
+        for (const semester of offeredSemesters) {
           terms.push({ year_id: year._id, semester: semester });
         }
       } else {
@@ -438,21 +444,6 @@ const SisCourse: FC<{
                 options={getTerms().map((term) => {
                   return { label: getTermString(term.year_id, term.semester), value: JSON.stringify(term) };
                 })}
-                  /*inspected.terms
-                  .filter(
-                    (term) =>
-                      term
-                        .toLowerCase()
-                        .includes(searchSemester.toLowerCase()) ||
-                      (courseToShow !== null &&
-                        term
-                          .toLowerCase()
-                          .includes(courseToShow.term.toLowerCase())),
-                  )
-                  .map((term) => {
-                    return { label: term, value: term };
-                  })*/
-                // }
                 value={{
                   label: getTermString(year, sem),
                   value: JSON.stringify({ year_id: year, semester: sem }),
