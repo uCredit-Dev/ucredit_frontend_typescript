@@ -22,7 +22,6 @@ import {
   updateCartAdd,
 } from '../../../../slices/searchSlice';
 import {
-  Course,
   Plan,
   ReviewMode,
   SemesterType,
@@ -75,7 +74,6 @@ const SisCourse: FC<{
   const token = useSelector(selectToken);
   const cartInvokedBySemester = useSelector(selectCartInvokedBySemester);
 
-  const [versionIndex, updateVersionIndex] = useState<number>(0);
   const [year, setYear] = useState<string>(
     courseToShow ? courseToShow.year_id : searchYear,
   );
@@ -88,16 +86,6 @@ const SisCourse: FC<{
     setOgSem(searchSemester);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
-
-  useEffect(() => {
-    if (inspected !== 'None' && version !== 'None') {
-      const index: number = inspected.terms.indexOf(
-        JSON.stringify(version.term),
-      );
-      updateVersionIndex(index);
-    }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [version]);
 
   // Returns an array of select options for the distribution area users want to add the course to.
   const getInspectedAreas = () => {
