@@ -79,16 +79,17 @@ const SisCourse: FC<{
   const [year, setYear] = useState<string>(courseToShow!.year_id);
   const [sem, setSem] = useState<string>(courseToShow!.term);
   const [ogSem, setOgSem] = useState<SemesterType | 'All'>('All');
-  
+
   useEffect(() => {
     setOgSem(searchSemester);
-    console.log('terms', inspected);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   useEffect(() => {
     if (inspected !== 'None' && version !== 'None') {
-      const index: number = inspected.terms.indexOf(JSON.stringify(version.term));
+      const index: number = inspected.terms.indexOf(
+        JSON.stringify(version.term),
+      );
       updateVersionIndex(index);
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -385,13 +386,16 @@ const SisCourse: FC<{
     if (inspected === 'None') {
       return [];
     }
-    const offeredSemesters = [... new Set(inspected!.terms.map((term) => {
-      return term.split(' ')[0].toLowerCase();
-    }))]
-    console.log(offeredSemesters);
-    const terms: { year_id: string, semester?: string }[] = [];
+    const offeredSemesters = [
+      ...new Set(
+        inspected!.terms.map((term) => {
+          return term.split(' ')[0].toLowerCase();
+        }),
+      ),
+    ];
+    const terms: { year_id: string; semester?: string }[] = [];
     for (const year of currentPlan.years) {
-      if (year.name !== "AP/Transfer") {
+      if (year.name !== 'AP/Transfer') {
         for (const semester of offeredSemesters) {
           terms.push({ year_id: year._id, semester: semester });
         }
@@ -400,12 +404,12 @@ const SisCourse: FC<{
       }
     }
     return terms;
-  }
+  };
 
   const getTermString = (year_id: string, semester: string | undefined) => {
-    const year = currentPlan.years.find(y => y._id === year_id);
+    const year = currentPlan.years.find((y) => y._id === year_id);
     return (year ? year.name : '') + (semester ? ' ' + semester : '');
-  }
+  };
 
   return (
     <div className="flex flex-col h-full">
@@ -428,21 +432,14 @@ const SisCourse: FC<{
               </div>
             </div>
             <div className="flex flex-row items-center font-semibold">
-              <div className="flex flex-row">
-                Term
-                {/* <div className="flex-grow mt-1">
-                  <QuestionMarkCircleIcon
-                    className="h-4 fill-gray"
-                    data-tooltip-id="godtip"
-                    data-tooltip-html={`<p>This is a specific snapshot of course information at a specific time in the past or present.</p><p>NOTE: This is NOT to determine where on the plan you are adding the course.</p><p>(ie. Course Version "Spring, 2021" may not equal "Spring, Senior")</p>`}
-                  />
-                </div> */}
-                :
-              </div>
+              <div className="flex flex-row">Term :</div>
               <Select
                 className="ml-2 w-50"
                 options={getTerms().map((term) => {
-                  return { label: getTermString(term.year_id, term.semester), value: JSON.stringify(term) };
+                  return {
+                    label: getTermString(term.year_id, term.semester),
+                    value: JSON.stringify(term),
+                  };
                 })}
                 value={{
                   label: getTermString(year, sem),

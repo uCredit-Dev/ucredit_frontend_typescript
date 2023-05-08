@@ -118,7 +118,6 @@ const CourseDisplayPopup: FC = () => {
         dispatch(updateInspectedVersion(placeholderCourse));
       }
     }
-    console.log("course", courseToShow);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
@@ -136,8 +135,10 @@ const CourseDisplayPopup: FC = () => {
   // Updates distribution bars upon successfully adding a course.
   const addCourse = (plan?: Plan, year_id?: string, term?: string): void => {
     if (version !== 'None' && courseToShow !== null && plan !== undefined) {
-      const addingYear: Year | null = getYear(plan, year_id || courseToShow.year_id);
-      console.log("year", addingYear);     
+      const addingYear: Year | null = getYear(
+        plan,
+        year_id || courseToShow.year_id,
+      );
       const body = {
         user_id: user._id,
         year_id: addingYear !== null ? addingYear._id : '',
@@ -178,7 +179,6 @@ const CourseDisplayPopup: FC = () => {
       let newUserCourse: UserCourse;
       if (data.errors === undefined && courseToShow !== null) {
         newUserCourse = { ...data.data };
-        console.log("created course", newUserCourse);
         dispatch(updateCurrentPlanCourses([...currentCourses, newUserCourse]));
         const allYears: Year[] = [...plan.years];
         const newYears: Year[] = [];
