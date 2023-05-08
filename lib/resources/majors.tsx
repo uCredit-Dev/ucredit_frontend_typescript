@@ -724,8 +724,8 @@ const baChem: Major = {
       fine_requirements: [
         {
           description: 'Reintroduction to Writing',
-          required_credits: 4,
-          criteria: 'AS.004.100[C]',
+          required_credits: 3,
+          criteria: 'AS.004.101[C]',
         },
       ],
     },
@@ -1506,8 +1506,8 @@ const baMath: Major = {
       fine_requirements: [
         {
           description: 'Reintroduction to Writing',
-          required_credits: 4,
-          criteria: 'AS.004.100[C]',
+          required_credits: 3,
+          criteria: 'AS.004.101[C]',
         },
       ],
     },
@@ -2412,7 +2412,8 @@ const baPH: Major = {
         'For more information please visit the' +
         "<a href='https://e-catalogue.jhu.edu/arts-sciences/full-time-residential-programs/degree-programs/public-health-studies/public-health-studies-bachelor-arts/'>" +
         'major degree requirement</a> section on the department website.',
-      criteria: 'AS.280.101[C]^OR^AS.280.240[C]^OR^AS.280.240[C]^OR^AS.280.335[C]^OR^AS.280.340[C]^OR^AS.280.345[C]^OR^AS.280.350[C]',
+      criteria:
+        'AS.280.101[C]^OR^AS.280.240[C]^OR^AS.280.240[C]^OR^AS.280.335[C]^OR^AS.280.340[C]^OR^AS.280.345[C]^OR^AS.280.350[C]',
       fine_requirements: [
         {
           description:
@@ -2461,7 +2462,7 @@ const baPH: Major = {
         'One course at the 200-400 level focusing on social and behavioral aspects of public health from the list below.' +
         'Please see your PHS advisor for a list of current courses that will satisfy the requirement.',
       criteria:
-        'AS Intermediate Public Health[D]^AND^(200[L]^OR^300[L]^OR^400[L])',
+        'AS.230.341[C]^OR^AS.280.355[C]^OR^((AS Public Health Studies[D])^AND^(200[L]^OR^300[L]^OR^400[L]))',
       fine_requirements: [
         {
           description:
@@ -2473,7 +2474,8 @@ const baPH: Major = {
           description:
             'Three additional Public Health courses at the 200-400 level',
           required_credits: 9,
-          criteria: 'AS Intermediate Public Health[D]^AND^(200[L]^OR^300[L]^OR^400[L])',
+          criteria:
+            '(AS Public Health Studies[D])^AND^(200[L]^OR^300[L]^OR^400[L])',
         },
       ],
     },
@@ -2506,50 +2508,51 @@ const baPH: Major = {
     },
     {
       name: 'Social Science',
-      required_credits: 9,
+      required_credits: 6,
       min_credits_per_course: 3,
       description:
         'Select two introductory social science courses from ' +
         "<a href='https://e-catalogue.jhu.edu/arts-sciences/full-time-residential-programs/degree-programs/public-health-studies/public-health-studies-bachelor-arts/'>" +
         'Table 1</a>. Other courses may apply with advisor approval. ' +
         'These courses must be from two different departments (distinguished by department course number, not name)',
-      criteria: 'AS.070.132[C]^OR^AS.140.105[C]^OR^AS.140.106[C]^OR^AS.150.219[C]^OR^AS.180.101[C]^OR^AS.180.102^OR^AS.190.220[C]^OR^AS.190.284^OR^' +
-                'AS.200.101[C]^OR^AS.200.110[C]^OR^AS.200.132[C]^OR^AS.200.133[C]^OR^AS.200.209[C]^OR^AS.200.212[C]^OR^AS.200.222[C]^OR^AS.230.101[C]^OR^' +
-                'AS.230.150[C]^OR^AS.271.107[C]^OR^AS.360.247[C]^OR^EN.570.108[C]^OR^EN.570.110[C]',
+      criteria:
+        'AS.070.132[C]^OR^AS.140.105[C]^OR^AS.140.106[C]^OR^AS.150.219[C]^OR^AS.180.101[C]^OR^AS.180.102[C]^OR^AS.190.220[C]^OR^AS.190.284[C]^OR^' +
+        'AS.200.101[C]^OR^AS.200.110[C]^OR^AS.200.132[C]^OR^AS.200.133[C]^OR^AS.200.209[C]^OR^AS.200.212[C]^OR^AS.200.222[C]^OR^AS.230.101[C]^OR^' +
+        'AS.230.150[C]^OR^AS.271.107[C]^OR^AS.360.247[C]^OR^EN.570.108[C]^OR^EN.570.110[C]',
       double_count: ['Writing Intensive', 'Major Requirement'],
     },
     {
       name: 'Natural Science',
       required_credits: 7,
       min_credits_per_course: 1,
-      double_count: ['All'],
+      double_count: ['Writing Intensive', 'Major Requirement'],
       description:
-        'Students must take two biology lecture courses and a biology lab course',
-      criteria: 'AS.020.151[C]^OR^AS.020.152[C]^OR^AS.020.303[C]^OR^AS.020.305[C]^OR^AS.020.306[C]^OR^AS.020.374[C]^OR^AS.280.161[C]^OR^' +
-                'AS.020.153[C]^OR^AS.020.154[C]^OR^AS.020.315[C]^OR^AS.020.316[C]^OR^AS.020.340[C]^OR^AS.020.377[C]^OR^AS.250.253[C]^OR^AS.250.254[C]',
+        'Students must take two biology lecture courses and a biology lab course (Note: Other biology courses may apply with advisor approval)',
+      criteria:
+        'AS.020.151[C]^OR^AS.020.152[C]^OR^AS.020.303[C]^OR^AS.020.305[C]^OR^AS.020.306[C]^OR^AS.020.374[C]^OR^AS.280.161[C]^OR^' +
+        'AS.020.153[C]^OR^AS.020.154[C]^OR^AS.020.315[C]^OR^AS.020.316[C]^OR^AS.020.340[C]^OR^AS.020.377[C]^OR^AS.250.253[C]^OR^AS.250.254[C]',
       fine_requirements: [
         {
           description:
-            'Select two Biology Lecture Courses of the following (Note: Other biology courses may apply with advisor approval):' +
-            '\n\tAS.020.151 General Biology I\n\tAS.020.152 General Biology II\n\tAS.020.303 Genetics\n\tAS.020.305 Biochemistry\n\t' +
-            '\n\tAS.020.306 Cell Biology\n\tAS.020.374 Comparative Animal Physiology\n\tAS.280.161 Applications of Biological Concepts in Public Health',
+            '<b>Biology Lecture</b> <br /> AS.020.151 General Biology I <br /> <i>OR</i> <br /> AS.020.152 General Biology II <br /> <i>OR</i> <br />' +
+            'AS.020.303 Genetics <br /> <i>OR</i> <br /> AS.020.305 Biochemistry <br /> <i>OR</i> <br /> AS.020.306 Cell Biology <br /> <i>OR</i> <br />' +
+            'AS.020.374 Comparative Animal Physiology <br /> <i>OR</i> <br /> AS.280.161 Applications of Biological Concepts in Public Health',
           required_credits: 6,
           criteria:
             'AS.020.151[C]^OR^AS.020.152[C]^OR^AS.020.303[C]^OR^AS.020.305[C]^OR^AS.020.306[C]^OR^AS.020.374[C]^OR^AS.280.161[C]',
         },
         {
           description:
-            'Select one Biology Lab Course of the following:\n\t' +
-            'AS.020.153 General Biology Laboratory I\n\tAS.020.154 General Biology Lab II\n\tAS.020.315 Biochemistry Project labs\n\t' +
-            '\n\tAS.020.316 Cell Biology Lab\n\tAS.020.340 Developmental Genetics Lab\n\tAS.020.377 Comparative Physiology Lab\n\t' +
-            'AS.250.253 Protein Engineering and Biochemistry Lab\n\tAS.250.254 Protein Biochemistry and Engineering Laboratory',
+            '<b>Biology Lab</b> <br /> AS.020.153 General Biology Laboratory I <br /> <i>OR</i> <br /> AS.020.154 General Biology Lab II' +
+            '<br /> <i>OR</i> <br /> AS.020.315 Biochemistry Project labs <br /> <i>OR</i> <br /> AS.020.316 Cell Biology Lab <br />' +
+            '<i>OR</i> <br /> AS.020.340 Developmental Genetics Lab <br /> <i>OR</i> <br /> AS.020.377 Comparative Physiology Lab <br />' +
+            '<i>OR</i> <br /> AS.250.253 Protein Engineering and Biochemistry Lab <br /> <i>OR</i> <br /> AS.250.254 Protein Biochemistry and Engineering Laboratory',
           required_credits: 1,
           criteria:
             'AS.020.153[C]^OR^AS.020.154[C]^OR^AS.020.315[C]^OR^AS.020.316[C]^OR^AS.020.340[C]^OR^AS.020.377[C]' +
             '^OR^AS.250.253[C]^OR^AS.250.254[C]',
         },
       ],
-      double_count: ['Writing Intensive', 'Major Requirement'],
     },
     {
       name: 'Quantitative',
@@ -2561,8 +2564,7 @@ const baPH: Major = {
       fine_requirements: [
         {
           description:
-            'Select one Quantitative Course of the following:\n\t110.106 Calculus I (Biology and Social Sciences)\n\t' +
-            '110.108 Calculus I (Physical Sciences & Engineering)',
+            '<b>Calculus I</b> <br /> AS.110.106 Calculus I (Biology and Social Sciences) <br /> <i>OR</i> <br /> AS.110.108 Calculus I (Physical Sciences & Engineering)',
           required_credits: 4,
           criteria: 'AS.110.106[C]^OR^AS.110.108[C]',
         },
@@ -2579,8 +2581,8 @@ const baPH: Major = {
       fine_requirements: [
         {
           description: 'Reintroduction to Writing',
-          required_credits: 4,
-          criteria: 'AS.004.100[C]',
+          required_credits: 3,
+          criteria: 'AS.004.101[C]',
         },
       ],
     },
@@ -5586,6 +5588,7 @@ export const allMajors: Major[] = [
   no_degree,
   bsCS,
   baCS,
+  baPH,
   bsMolCell,
   bsAMS,
   baIS,
@@ -5612,7 +5615,6 @@ export const allMajors: Major[] = [
   // baPsych,
   // baMolCell,
   // baMSH,
-  baPH,
   // bsBioPhysics,
   // bsME,
   // baHistory,
