@@ -158,7 +158,6 @@ const CourseDisplayPopup: FC = () => {
         level: version.level,
         expireAt: user._id === 'guestUser' ? Date.now() : undefined,
       };
-      console.log(body);
       fetch(getAPI(window) + '/courses', {
         method: 'POST',
         headers: {
@@ -215,7 +214,7 @@ const CourseDisplayPopup: FC = () => {
   const updateYears =
     (newYears: Year[], newUserCourse: UserCourse) =>
     (year: Year): void => {
-      if (courseToShow !== null && year._id === courseToShow.year_id) {
+      if (newUserCourse !== null && year._id === newUserCourse.year_id) {
         const yCourses = [...year.courses, newUserCourse];
         newYears.push({ ...year, courses: yCourses });
       } else {
