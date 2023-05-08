@@ -76,8 +76,12 @@ const SisCourse: FC<{
   const cartInvokedBySemester = useSelector(selectCartInvokedBySemester);
 
   const [versionIndex, updateVersionIndex] = useState<number>(0);
-  const [year, setYear] = useState<string>(courseToShow!.year_id);
-  const [sem, setSem] = useState<string>(courseToShow!.term);
+  const [year, setYear] = useState<string>(
+    courseToShow ? courseToShow.year_id : searchYear,
+  );
+  const [sem, setSem] = useState<string>(
+    courseToShow ? courseToShow.term : searchSemester.toLowerCase(),
+  );
   const [ogSem, setOgSem] = useState<SemesterType | 'All'>('All');
 
   useEffect(() => {
@@ -146,6 +150,13 @@ const SisCourse: FC<{
   // Handles switching displayed term.
   const handleTermSwitch = (event: any): void => {
     const value = JSON.parse(event.value);
+    dispatch(
+      updateSearchTime({
+        searchSemester:
+          value.semester.charAt(0).toUpperCase() + value.semester.slice(1),
+        searchYear: value.year_id,
+      }),
+    );
     setYear(value.year_id);
     setSem(value.semester);
   };
@@ -399,8 +410,6 @@ const SisCourse: FC<{
         for (const semester of offeredSemesters) {
           terms.push({ year_id: year._id, semester: semester });
         }
-      } else {
-        terms.push({ year_id: year._id });
       }
     }
     return terms;
