@@ -57,7 +57,7 @@ import * as amplitude from '@amplitude/analytics-browser';
 const SisCourse: FC<{
   inspectedArea: string;
   setInspectedArea: (area: string) => void;
-  addCourse: (plan?: Plan) => void;
+  addCourse: (plan?: Plan, year_id?: string, term?: string) => void;
   cart: boolean;
 }> = (props) => {
   // Redux Setup
@@ -76,16 +76,20 @@ const SisCourse: FC<{
   const cartInvokedBySemester = useSelector(selectCartInvokedBySemester);
 
   const [versionIndex, updateVersionIndex] = useState<number>(0);
+  const [year, setYear] = useState<string>(courseToShow!.year_id);
+  const [sem, setSem] = useState<string>(courseToShow!.term);
   const [ogSem, setOgSem] = useState<SemesterType | 'All'>('All');
-
+  
   useEffect(() => {
     setOgSem(searchSemester);
+    console.log("plan", currentPlan);
+    console.log("term", year);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   useEffect(() => {
     if (inspected !== 'None' && version !== 'None') {
-      const index: number = inspected.terms.indexOf(version.term.toString());
+      const index: number = inspected.terms.indexOf(JSON.stringify(version.term));
       updateVersionIndex(index);
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -141,18 +145,9 @@ const SisCourse: FC<{
 
   // Handles switching displayed term.
   const handleTermSwitch = (event: any): void => {
-    if (inspected !== 'None') {
-      inspected.versions.forEach((ver) => {
-        if (ver.term === event.value) {
-          const newInspected: Course = {
-            title: inspected.title,
-            number: inspected.number,
-            ...ver,
-          };
-          dispatch(updateInspectedVersion(newInspected));
-        }
-      });
-    }
+    const value = JSON.parse(event.value);
+    setYear(value.year_id);
+    setSem(value.semester);
   };
 
   /**
@@ -220,7 +215,7 @@ const SisCourse: FC<{
       });
       const newPlan: Plan = { ...currentPlan, years: newYears };
       dispatch(updateSelectedPlan(newPlan));
-      props.addCourse(newPlan);
+      props.addCourse(newPlan, year, sem);
     } else {
       console.log('ERROR: Failed to add', data.errors);
     }
@@ -387,6 +382,25 @@ const SisCourse: FC<{
     </>
   );
 
+  const getTerms = () => {
+    const terms: { year_id: string, semester?: string }[] = [];
+    for (const year of currentPlan.years) {
+      if (year.name !== "AP/Transfer") {
+        for (const semester of ['fall', 'spring', 'summer', 'intersession']) {
+          terms.push({ year_id: year._id, semester: semester });
+        }
+      } else {
+        terms.push({ year_id: year._id });
+      }
+    }
+    return terms;
+  }
+
+  const getTermString = (year_id: string, semester: string | undefined) => {
+    const year = currentPlan.years.find(y => y._id === year_id);
+    return (year ? year.name : '') + (semester ? ' ' + semester : '');
+  }
+
   return (
     <div className="flex flex-col h-full">
       {inspected !== 'None' && (
@@ -410,18 +424,21 @@ const SisCourse: FC<{
             <div className="flex flex-row items-center font-semibold">
               <div className="flex flex-row">
                 Term
-                <div className="flex-grow mt-1">
+                {/* <div className="flex-grow mt-1">
                   <QuestionMarkCircleIcon
                     className="h-4 fill-gray"
                     data-tooltip-id="godtip"
                     data-tooltip-html={`<p>This is a specific snapshot of course information at a specific time in the past or present.</p><p>NOTE: This is NOT to determine where on the plan you are adding the course.</p><p>(ie. Course Version "Spring, 2021" may not equal "Spring, Senior")</p>`}
                   />
-                </div>
+                </div> */}
                 :
               </div>
               <Select
-                className="ml-2 w-44"
-                options={inspected.terms
+                className="ml-2 w-50"
+                options={getTerms().map((term) => {
+                  return { label: getTermString(term.year_id, term.semester), value: JSON.stringify(term) };
+                })}
+                  /*inspected.terms
                   .filter(
                     (term) =>
                       term
@@ -434,12 +451,13 @@ const SisCourse: FC<{
                   )
                   .map((term) => {
                     return { label: term, value: term };
-                  })}
+                  })*/
+                // }
                 value={{
-                  label: inspected.terms[versionIndex],
-                  value: inspected.terms[versionIndex],
+                  label: getTermString(year, sem),
+                  value: JSON.stringify({ year_id: year, semester: sem }),
                 }}
-                onChange={handleTermSwitch}
+                onChange={(event) => handleTermSwitch(event)}
               />
             </div>
             <CourseVersion setInspectedArea={props.setInspectedArea} />
