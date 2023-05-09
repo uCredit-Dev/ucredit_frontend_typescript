@@ -13,7 +13,6 @@ import ReactPaginate from 'react-paginate';
 import { QuestionMarkCircleIcon } from '@heroicons/react/solid';
 import { Course } from '../../../../resources/commonTypes';
 
-
 /*
   List of searched courses.
 */
@@ -51,8 +50,7 @@ const CartCourseList: FC<{
           key={inspecting.number}
           className="transition duration-200 ease-in transform hover:scale-105"
           onClick={() => setHideResults(true)}
-        >
-        </div>,
+        ></div>,
       );
     }
     return toDisplay;
