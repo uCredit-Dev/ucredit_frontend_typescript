@@ -405,7 +405,8 @@ const SisCourse: FC<{
 
   const getTermString = (year_id: string, semester: string | undefined) => {
     const year = currentPlan.years.find((y) => y._id === year_id);
-    return (year ? year.name : '') + (semester ? ' ' + semester : '');
+    const semesterFormatted = semester ? semester.charAt(0).toUpperCase() + semester.slice(1) : '';
+    return (year ? year.name : '') + ' ' + semesterFormatted;
   };
 
   return (
