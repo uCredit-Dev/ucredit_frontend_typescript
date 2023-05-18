@@ -3790,7 +3790,6 @@ const minorCS: Minor = {
   ],
 };
 
-
 const bsMolCell: Major = {
   degree_name: 'B.S. Molecular and Cellular Biology',
   abbrev: 'B.S. Mol Cell',
@@ -3873,7 +3872,8 @@ const bsMolCell: Major = {
       min_credits_per_course: 1,
       description:
         'Must complete General Chemistry (or AP equivalent) and Organic Chemistry in addition to their respective labs.',
-      criteria: 'AS.030.101[C]^OR^AS.030.105[C]^OR^AS.030.102[C]^OR^AS.030.106[C]^OR^AS.030.103[C]^OR^AS.030.205[C]^OR^AS.030.206[C]^OR^AS.030.212[C]^OR^AS.030.225[C]^OR^AS.030.227[C]',
+      criteria:
+        'AS.030.101[C]^OR^AS.030.105[C]^OR^AS.030.102[C]^OR^AS.030.106[C]^OR^AS.030.103[C]^OR^AS.030.205[C]^OR^AS.030.206[C]^OR^AS.030.212[C]^OR^AS.030.225[C]^OR^AS.030.227[C]',
       double_count: [
         'Biology Research Requirement',
         'Writing Intensive',
@@ -3921,7 +3921,8 @@ const bsMolCell: Major = {
       min_credits_per_course: 1,
       description:
         'Must complete Physics I and II (or AP equivalent) in addition to their respective labs.',
-      criteria: 'AS.171.101[C]^OR^AS.171.103[C]^OR^AS.171.107[C]^OR^AS.171.102[C]^OR^AS.171.104[C]^OR^AS.171.108[C]^OR^AS.173.111[C]^OR^AS.173.112[C]',
+      criteria:
+        'AS.171.101[C]^OR^AS.171.103[C]^OR^AS.171.107[C]^OR^AS.171.102[C]^OR^AS.171.104[C]^OR^AS.171.108[C]^OR^AS.173.111[C]^OR^AS.173.112[C]',
       double_count: [
         'Biology Research Requirement',
         'Writing Intensive',
