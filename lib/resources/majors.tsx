@@ -3790,11 +3790,7 @@ const minorCS: Minor = {
   ],
 };
 
-/*
-  TODO:
-  1. Some of the search features don't work properly (i.e. research courses, General Physics II for bio majors)
-  3. Potentially formatting updates
-*/
+
 const bsMolCell: Major = {
   degree_name: 'B.S. Molecular and Cellular Biology',
   abbrev: 'B.S. Mol Cell',
