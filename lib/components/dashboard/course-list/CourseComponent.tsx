@@ -38,7 +38,8 @@ const CourseComponent: FC<{
   year: Year;
   semester: SemesterType;
   mode: ReviewMode;
-}> = ({ setDraggable, year, course, semester, mode }) => {
+  thread: string
+}> = ({ setDraggable, year, course, semester, mode, thread }) => {
   // React setup
   const [activated, setActivated] = useState<boolean>(false);
   const [satisfied, setSatisfied] = useState<boolean>(false);
