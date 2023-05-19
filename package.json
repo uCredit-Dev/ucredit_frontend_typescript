@@ -94,7 +94,7 @@
     "@types/webpack-env": "^1.18.0",
     "autoprefixer": "^10.4.13",
     "jest-sonar-reporter": "^2.0.0",
-    "mini-css-extract-plugin": "2.7.2",
+    "mini-css-extract-plugin": "2.7.6",
     "msw": "^1.1.0",
     "postcss": "^8.4.21",
     "prettier": "2.8.4",
