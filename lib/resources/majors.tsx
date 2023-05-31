@@ -3378,7 +3378,8 @@ const bsCS: Major = {
             'EN.601.124 The Ethics of Artificial Intelligence and Automation (The Ethics of Artificial Intelligence and Automation) <br /> ' +
             'EN.660.400 Practical Ethics for Future Leaders',
           required_credits: 1,
-          criteria: 'EN.600.104[C]^OR^EN.601.124[C]^OR^EN.660.400[C]',
+          criteria:
+            'EN.600.104[C]^OR^EN.601.104[C]^OR^EN.601.124[C]^OR^EN.660.400[C]',
         },
         {
           description:
