@@ -29,7 +29,7 @@
     "html-react-parser": "^3.0.12",
     "lodash.debounce": "^4.0.8",
     "markdown-to-jsx": "^7.1.9",
-    "md-editor-rt": "^2.9.0",
+    "md-editor-rt": "^4.0.4",
     "msw": "^1.1.0",
     "next": "^13.2.3",
     "nodemailer": "^6.9.1",
