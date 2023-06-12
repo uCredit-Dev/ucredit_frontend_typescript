@@ -98,17 +98,17 @@ const SearchList: FC<{
       const placeholderCourse: Course = {
         title: 'placeholder',
         number: 'placeholder',
-        areas: '',
+        areas: 'none',
         term: '',
         school: 'none',
         department: 'none',
-        credits: '',
+        credits: '0',
         wi: false,
         bio: 'This is a placeholder course',
-        tags: [],
+        tags: ['none'],
         preReq: [],
         restrictions: [],
-        level: '',
+        level: 'Lower Level Undergraduate',
       };
       dispatch(updatePlaceholder(true));
       dispatch(updateInspectedVersion(placeholderCourse));

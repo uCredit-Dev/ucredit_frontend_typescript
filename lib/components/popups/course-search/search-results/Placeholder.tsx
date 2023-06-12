@@ -342,7 +342,7 @@ const Placeholder: FC<{ addCourse: (plan?: Plan) => void }> = (props) => {
             </div>
           </div>
           <Select
-            options={['None', 'N', 'S', 'H', 'E', 'Q'].map((area: any) => ({
+            options={['none', 'N', 'S', 'H', 'E', 'Q'].map((area: any) => ({
               label: area,
               value: area,
             }))}
@@ -368,7 +368,6 @@ const Placeholder: FC<{ addCourse: (plan?: Plan) => void }> = (props) => {
             options={[
               'Lower Level Undergraduate',
               'Upper Level Undergraduate',
-              'none',
             ].map((option: string) => ({
               label: option,
               value: option,
