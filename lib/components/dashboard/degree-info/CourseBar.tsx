@@ -117,9 +117,9 @@ const CourseBar: FC<{
         <div className="truncate">{section}</div>
         <div>
           {remainingCredits === 0 && completed ? (
-            <CheckCircleIcon className="w-4 h-5 mt-1 ml-1 stroke-2" />
+            <CheckCircleIcon className="w-4 h-5 mt-1 ml-1 text-green-500" />
           ) : remainingCredits === 0 ? (
-            <ExclamationIcon className="w-4 h-5 mt-1 ml-1 stroke-2" />
+            <ExclamationIcon className="w-4 h-5 mt-1 ml-1 text-red-500" />
           ) : null}
         </div>
       </div>
