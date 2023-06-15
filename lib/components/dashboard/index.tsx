@@ -3,8 +3,6 @@ import { useDispatch, useSelector } from 'react-redux';
 import Header from './Header';
 import FeedbackPopup from '../popups/FeedbackPopup';
 import FeedbackNotification from '../popups/FeedbackNotification';
-// import RoadMapBanner from '../roadmap/Banner';
-// import RoadmapComment from '../roadmap/comments/RoadmapComment';
 
 import {
   selectImportingStatus,
@@ -142,7 +140,6 @@ const Dashboard: React.FC<Props> = ({ mode }) => {
   //     setShowHeader(false);
   //   }
   // });
-
   const updateExperimentsForUser = useCallback(() => {
     axios
       .get(getAPI(window) + '/experiments/allExperiments')
@@ -281,8 +278,6 @@ const Dashboard: React.FC<Props> = ({ mode }) => {
             Tracker
           </Button>
 
-          {/* {mode === ReviewMode.RoadMap ? <RoadMapBanner /> : <></>} */}
-
           <div className="flex-grow w-full">
             <div className="flex flex-col w-full">
               <div className="flex flex-col pl-4 thin:flex-wrap-reverse mt-1 w-full h-full">
@@ -302,15 +297,12 @@ const Dashboard: React.FC<Props> = ({ mode }) => {
             {courseInfoStatus && <CourseDisplayPopup />}
             {cartStatus && <Cart />}
           </div>
-          {/* <Roadmap /> */}
         </div>
       )}
       {/* Dummy components used to generate state information */}
       <GenerateNewPlan />
       {mode === ReviewMode.Edit && <HandleUserInfoSetupDummy />}
       <HandlePlanShareDummy />
-      {/* <Preview /> */}
-      {/* {mode === ReviewMode.RoadMap ? <RoadmapComment /> : <></>} */}
     </>
   );
 };

@@ -194,7 +194,7 @@ const DistributionBarsJSX: FC<{ major: Major }> = ({ major }) => {
             counted = true;
         });
         checked.push(courseObj.resp);
-      } else if (course.number === 'placeholder') {
+      } else if (course.isPlaceholder === true) {
         const resp: Course = {
           title: '',
           number: course.number,

@@ -572,14 +572,267 @@ const baCogSci: Major = {
 //   distributions: [],
 // };
 
-// // https://chemistry.jhu.edu/undergraduate/requirements/
-// const bsChem: Major = {
-//   degree_name: "B.S. Chemistry",
-//   department: "AS Chemistry",
-//   total_degree_credit: 120,
-//   wi_credit: 6,
-//   distributions: [],
-// };
+// https://chemistry.jhu.edu/undergraduate/requirements/
+const baChem: Major = {
+  degree_name: 'B.A. Chemistry',
+  abbrev: 'baChem',
+  department: 'AS Chemistry',
+  total_degree_credit: 120,
+  wi_credit: 15,
+  url: 'https://e-catalogue.jhu.edu/arts-sciences/full-time-residential-programs/degree-programs/chemistry/chemistry-bachelor-arts/',
+  distributions: [
+    {
+      name: 'Chemistry Core',
+      required_credits: 40,
+      min_credits_per_course: 1,
+      description:
+        'These are the core chemistry courses required for the major.' +
+        '<br>For more information please visit the degree requirements section on the department website.',
+      criteria:
+        'AS.030.101[C]^OR^AS.030.102[C]^OR^AS.030.103[C]^OR^AS.030.105[C]^OR^AS.030.106[C]^OR^AS.030.205[C]^OR^AS.030.206[C]^OR^AS.030.212[C]^OR^AS.030.225[C]' +
+        '^OR^AS.030.227[C]^OR^AS.030.228[C]^OR^AS.030.301[C]^OR^AS.030.302[C]^OR^AS.030.449[C]^OR^AS.030.356[C]^OR^AS.030.245[C]^OR^AS.030.305[C]^OR^AS.030.306[C]',
+      double_count: [
+        'Humanities (H) Distribution',
+        'Social Science (S) Distribution',
+        'Other (N/E/Q) Distribution',
+        'Writing Intensive',
+      ],
+      fine_requirements: [
+        {
+          description:
+            '<b>Introductory Chemistry I</b> <br /> AS.030.101 Introductory Chemistry I',
+          required_credits: 3,
+          criteria: 'AS.030.101[C]',
+        },
+        {
+          description:
+            '<b>Introductory Chemistry II</b> <br /> AS.030.102 Introductory Chemistry II <br /><i>OR<i><br /> AS.030.103 Applied Chemical Equilibrium and Reactivity',
+          required_credits: 3,
+          criteria: 'AS.030.102[C]^OR^AS.030.103[C]',
+        },
+        {
+          description:
+            '<b>Introductory Chemistry Laboratory I</b> <br /> AS.030.105 Introductory Chemistry Laboratory I',
+          required_credits: 1,
+          criteria: 'AS.030.105[C]',
+        },
+        {
+          description:
+            '<b>Introductory Chemistry Laboratory II</b> <br /> AS.030.106 Introductory Chemistry Laboratory II',
+          required_credits: 1,
+          criteria: 'AS.030.106[C]',
+        },
+        {
+          description:
+            '<b>Introductory Organic Chemistry I</b> <br /> AS.030.205 Introductory Organic Chemistry I',
+          required_credits: 4,
+          criteria: 'AS.030.205[C]',
+        },
+        {
+          description:
+            '<b>Organic Chemistry II</b> <br /> AS.030.206 Organic Chemistry II <br /> <i>OR</i> <br /> AS.030.212 Honors Organic Chemistry II',
+          required_credits: 4,
+          criteria: 'AS.030.206[C]^OR^AS.030.212[C]',
+        },
+        {
+          description:
+            '<b>Organic Chemistry Lab</b> <br />' +
+            'AS.030.225 Introductory Organic Chemistry Laboratory <br /> <i>OR</i> </br>' +
+            'AS.030.227 Chemical Chirality: An Introduction in Organic Chem. Lab, Techniques',
+          required_credits: 3,
+          criteria: 'AS.030.225[C]^OR^AS.030.227[C]',
+        },
+        {
+          description:
+            '<b>Intermediate Organic Chemistry Laboratory</b> <br /> AS.030.228 Intermediate Organic Chemistry Laboratory',
+          required_credits: 3,
+          criteria: 'AS.030.228[C]',
+        },
+        {
+          description:
+            '<b>Physical Chemistry I</b> <br /> AS.030.301 Physical Chemistry I',
+          required_credits: 3,
+          criteria: 'AS.030.301[C]',
+        },
+        {
+          description:
+            '<b>Physical Chemistry II</b> <br /> AS.030.302 Physical Chemistry II',
+          required_credits: 3,
+          criteria: 'AS.030.302[C]',
+        },
+        {
+          description:
+            '<b>Chemistry of Inorganic Compounds</b> <br /> AS.030.449 Chemistry of Inorganic Compounds',
+          required_credits: 3,
+          criteria: 'AS.030.449[C]',
+        },
+        {
+          description:
+            '<b>Advanced Inorganic Lab</b> <br /> AS.030.356 Advanced Inorganic Lab',
+          required_credits: 3,
+          criteria: 'AS.030.356[C]',
+        },
+        {
+          description:
+            '<b>Lab Courses</b> <br /> Select two Lab Courses from the following:' +
+            '<br /> AS.030.245 Quantitative Analytical Laboratory <br /> AS.030.305	Physical Chemistry Instrumentation Laboratory I <br />' +
+            'EN.030.306 Physical Chemistry Instrumentation Laboratory II',
+          required_credits: 6,
+          criteria: 'AS.030.245[C]^OR^AS.030.305[C]^OR^AS.030.306[C]',
+        },
+      ],
+    },
+    {
+      name: 'Humanities',
+      required_credits: 9,
+      min_credits_per_course: 1,
+      description:
+        'These credits fulfilling the distribution requirement may overlap with major or minor requirements and the writing-intensive requirement.',
+      criteria: 'H[A]',
+      double_count: ['Writing Intensive', 'Major Requirement'],
+    },
+    {
+      name: 'Social Sciences',
+      required_credits: 9,
+      min_credits_per_course: 1,
+      description:
+        'These credits fulfilling the distribution requirement may overlap with major or minor requirements and the writing-intensive requirement.',
+      criteria: 'S[A]',
+      double_count: ['Writing Intensive', 'Major Requirement'],
+    },
+    {
+      name: 'Natural Sciences/Quantitative/Engineering',
+      required_credits: 9,
+      min_credits_per_course: 1,
+      description:
+        'These credits fulfilling the distribution requirement may overlap with major or minor requirements and the writing-intensive requirement.',
+      criteria: 'N[A]^OR^Q[A]^OR^E[A]',
+      double_count: [
+        'Writing Intensive',
+        'Major Requirement',
+        'Advanced Elective Courses',
+      ],
+    },
+    {
+      name: 'Writing Intensive',
+      required_credits: 15,
+      min_credits_per_course: 3,
+      description:
+        'Effective Fall 2022, all students earning a degree from the School of Arts and Sciences must complete Reintroduction to Writing in their first year at Hopkins plus an additional 12 credits in writing-intensive courses through their undergraduate experience for a minimum of 15 writing-intensive credits.',
+      criteria: 'Written Intensive[W]',
+      double_count: ['All'],
+      fine_requirements: [
+        {
+          description: 'Reintroduction to Writing',
+          required_credits: 4,
+          criteria: 'AS.004.100[C]',
+        },
+      ],
+    },
+    {
+      name: 'Courses Outside the Department',
+      required_credits: 18,
+      min_credits_per_course: 1,
+      description:
+        'Other courses that are not part of the Chemistry Core but are required for the major.',
+      criteria:
+        'AS.171.105[C]^OR^AS.171.101[C]^OR^AS.171.103[C]^OR^AS.171.107[C]^OR^AS.173.115[C]^OR^AS.173.111[C]^OR^' +
+        'AS.171.106[C]^OR^AS.171.102[C]^OR^AS.171.104[C]^OR^AS.171.108[C]^OR^AS.173.116[C]^OR^AS.173.112[C]^OR^' +
+        'AS.110.106[C]^OR^AS.110.108[C]^OR^AS.110.107[C]^OR^AS.110.109[C]^OR^AS.110.113[C]',
+      double_count: [
+        'Humanities (H) Distribution',
+        'Social Science (S) Distribution',
+        'Other (N/E/Q) Distribution',
+        'Writing Intensive',
+      ],
+      fine_requirements: [
+        {
+          description:
+            '<b>General Physics I / Classical Mechanics I</b> <br /> Select one of the following: <br /> AS.171.105 Classical Mechanics I' +
+            '<br /> AS.171.101 General Physics: Physical Science Major I <br />AS.171.103 General Physics I for Biological Science Majors' +
+            '<br /> AS.171.107 General Physics for Physical Sciences Majors (AL)',
+          required_credits: 4,
+          criteria:
+            'AS.171.105[C]^OR^AS.171.101[C]^OR^AS.171.103[C]^OR^AS.171.107[C]',
+        },
+        {
+          description:
+            '<b>General Physics / Classical Mechanics Laboratory</b> <br /> AS.173.115 Classical Mechanics Laboratory' +
+            '<br /> <i>OR</i> <br /> AS.173.111 General Physics Laboratory I',
+          required_credits: 1,
+          criteria: 'AS.173.115[C]^OR^AS.173.111[C]',
+        },
+        {
+          description:
+            '<b>General Physics II / Electricity and Magnetism I</b> <br /> Select one of the following: <br /> AS.171.106 Electricity and Magnetism I' +
+            '<br /> AS.171.102 General Physics: Physical Science Major II <br />AS.171.104 General Physics/Biology Majors II' +
+            '<br /> AS.171.108 General Physics for Physical Science Majors (AL)',
+          required_credits: 4,
+          criteria:
+            'AS.171.106[C]^OR^AS.171.102[C]^OR^AS.171.104[C]^OR^AS.171.108[C]',
+        },
+        {
+          description:
+            '<b>General Physics Laboratory II / Electricity and Magnetism Laboratory</b> <br /> AS.173.116 Electricity and Magnetism Laboratory' +
+            '<br /> <i>OR</i> <br /> AS.173.112 General Physics Laboratory II',
+          required_credits: 1,
+          criteria: 'AS.173.116[C]^OR^AS.173.112[C]',
+        },
+        {
+          description:
+            '<b>Calculus I</b> <br />' +
+            'AS.110.106 Calculus I (Biology and Social Sciences)' +
+            '<br /> <i>OR</i> <br />' +
+            'AS.110.108 Calculus I (Physical Sciences and Engineering)',
+          required_credits: 4,
+          criteria: 'AS.110.106[C]^OR^AS.110.108[C]',
+        },
+        {
+          description:
+            '<b>Calculus II</b> <br />' +
+            'AS.110.109 Calculus II (For Physical Sciences and Engineering)' +
+            '<br /> <i>OR</i> <br />' +
+            'AS.110.107 Calculus II (For Biological and Social Science)' +
+            '<br /> <i>OR</i> <br />' +
+            'AS.110.113 Honors Single Variable Calculus',
+          required_credits: 4,
+          criteria: 'AS.110.107[C]^OR^AS.110.109[C]^OR^AS.110.113[C]',
+        },
+      ],
+    },
+    {
+      name: 'Advanced Elective Courses',
+      required_credits: 12,
+      min_credits_per_course: 1,
+      description:
+        'Students must take three credits of advanced chemistry courses beyond AS.030.305-AS.030.306. ' +
+        'None of the advanced course requirements may be fulfilled with research. ' +
+        'Students must also take nine credits of advanced chemistry courses, or science electives at the 300-level or higher ' +
+        'approved by a Department of Chemistry advisor, and/or mathematics beyond Calculus II',
+      criteria:
+        '(AS Chemistry[D]^AND^Upper Level[L])^OR^(AS Mathematics[D]^NOT^AS.110.108[C]^NOT^AS.110.109[C])^NOT^AS.030.305[C]^NOT^AS.030.306[C]',
+      fine_requirements: [
+        {
+          description:
+            '<b>Advanced chemistry courses</b> <br /> Three credits of advanced chemistry courses beyond AS.030.305-AS.030.306, ' +
+            'cannot be fulfilled with research',
+          required_credits: 3,
+          criteria:
+            '(AS Chemistry[D]^AND^Upper Level[L])^NOT^AS.030.305[C]^NOT^AS.030.306[C]',
+        },
+        {
+          description:
+            '<b>Advanced sciences/mathematics</b> <br /> Nine credits of advanced chemistry courses' +
+            '<br /> <i>OR</i> <br /> science electives at the 300-level or higher' +
+            '<br /> <i>OR</i> <br /> mathematics beyond Calculus II',
+          required_credits: 9,
+          criteria:
+            '(AS Chemistry[D]^AND^(Upper Level[L]))^OR^(N[A]^AND^(Upper Level[L]))^OR^(AS Mathematics[D]^NOT^AS.110.108[C]^NOT^AS.110.109[C])',
+        },
+      ],
+    },
+  ],
+};
 
 // // https://biophysics.jhu.edu/undergraduate/requirements/
 // const bsBioPhysics: Major = {
@@ -3125,7 +3378,8 @@ const bsCS: Major = {
             'EN.601.124 The Ethics of Artificial Intelligence and Automation (The Ethics of Artificial Intelligence and Automation) <br /> ' +
             'EN.660.400 Practical Ethics for Future Leaders',
           required_credits: 1,
-          criteria: 'EN.600.104[C]^OR^EN.601.124[C]^OR^EN.660.400[C]',
+          criteria:
+            'EN.600.104[C]^OR^EN.601.104[C]^OR^EN.601.124[C]^OR^EN.660.400[C]',
         },
         {
           description:
@@ -4913,6 +5167,7 @@ const bsNeuro: Major = {
 
 // https://e-catalogue.jhu.edu/arts-sciences/full-time-residential-programs/degree-programs/economics/economics-minor/
 // https://econ.jhu.edu/undergraduate/minor-requirements/
+
 const minorEcon: Minor = {
   degree_name: 'Minor Economics',
   abbrev: 'Minor Econ',
@@ -5077,6 +5332,172 @@ const minorMath: Minor = {
   ],
 };
 
+// https://e-catalogue.jhu.edu/engineering/full-time-residential-programs/degree-programs/robotics-computational-sensing/computer-integrated-surgery-minor/#requirementstext
+const minorCIS: Minor = {
+  degree_name: 'Minor Computer Integrated Surgery',
+  abbrev: 'Minor CIS',
+  department: 'EN Robotics and Computational Sensing',
+  total_degree_credit: 43,
+  wi_credit: 0,
+  url: 'https://lcsr.jhu.edu/computer-integrated-surgery-minor/',
+  distributions: [
+    {
+      name: 'Fundamental Computer Science Courses',
+      required_credits: 7,
+      min_credits_per_course: 3,
+      description:
+        'You must have a fundamental bakcground in computer programming and computer science. ' +
+        'You must take Gateway Computing JAVA and Data Structures (Or equivalent experience determined by your CIS minor adviser.)',
+      criteria: 'EN.500.112[C]^OR^EN.601.226[C]',
+      fine_requirements: [
+        {
+          description: '<b>EN.500.112 Gateway Computing: JAVA</b>',
+          required_credits: 3,
+          criteria: 'EN.500.112[C]',
+        },
+        {
+          description: '<b>EN.601.226 Data Structures</b>',
+          required_credits: 4,
+          criteria: 'EN.601.226[C]',
+        },
+      ],
+    },
+    {
+      name: 'Fundamental Mathematics Courses',
+      required_credits: 16,
+      min_credits_per_course: 4,
+      description:
+        'All CIS Minors must take Calculus I, Calculus II, Calculus III or Honors Multivariable Calculus ' +
+        'and choose one of the following: Linear Algebra and Differential Equations, Differential Equations, Linear Algebra, or Honors Linear Algebra. ' +
+        'Math requirements may also be satisfied by an equivalent course as determined by CIS advisor.',
+      criteria:
+        'AS.110.106[C]^OR^AS.110.108[C]^OR^AS.110.109[C]^OR^AS.110.107[C]^OR^' +
+        'AS.110.202[C]^OR^AS.110.211[C]^OR^AS.110.201[C]^OR^EN.553.291[C]^OR^AS.110.212[C]',
+      fine_requirements: [
+        {
+          description:
+            '<b>Calculus I</b> <br />' +
+            'AS.110.106 Calculus I (Biology and Social Sciences)' +
+            '<br /> <i>OR</i> <br />' +
+            'AS.110.108 Calculus I (Physical Sciences and Engineering)',
+          required_credits: 4,
+          criteria: 'AS.110.106[C]^OR^AS.110.108[C]',
+        },
+        {
+          description:
+            '<b>Calculus II</b> <br />' +
+            'AS.110.109 Calculus II (For Physical Sciences and Engineering)' +
+            '<br /> <i>OR</i> <br />' +
+            'AS.110.107 Calculus II (For Biological and Social Science)',
+          required_credits: 4,
+          criteria: 'AS.110.109[C]^OR^AS.110.107[C]',
+        },
+        {
+          description:
+            '<b>Calculus III</b> <br /> AS.110.202 Calculus III' +
+            '<br /> <i>OR</i> <br /> AS.110.211 Honors Multivariable Calculus',
+          required_credits: 4,
+          criteria: 'AS.110.202[C]^OR^AS.110.211[C]',
+        },
+        {
+          description:
+            '<b>Linear Algebra</b> <br /> AS.110.201 Linear Algebra<br /> <i>OR</i> ' +
+            '<br /> EN.553.291 Linear Algebra and Differential Equations<br /> <i>OR</i> ' +
+            '<br /> AS.110.212 Honors Linear Algebra',
+          required_credits: 4,
+          criteria: 'AS.110.201[C]^OR^EN.553.291[C]^OR^AS.110.212[C]',
+        },
+      ],
+    },
+    {
+      name: 'Fundamental Computer Integrated Surgery Courses',
+      required_credits: 8,
+      min_credits_per_course: 4,
+      description:
+        'You must take Computer Integrated Surgery I and a design course in CIS.',
+      criteria:
+        'EN.510.433[C]^OR^EN.510.434[C]^OR^EN.520.462[C]^OR^EN.520.463[C]^OR^' +
+        'EN.520.498[C]^OR^EN.520.499[C]^OR^EN.540.400[C]^OR^EN.540.421[C]^OR^' +
+        'EN.580.311[C]^OR^EN.580.312[C]^OR^EN.580.411[C]^OR^EN.580.412[C]^OR^' +
+        'EN.580.456[C]^OR^EN.580.457[C]^OR^EN.580.471[C]^OR^EN.580.571[C]^OR^' +
+        'EN.580.480[C]^OR^EN.580.481[C]^OR^EN.580.580[C]^OR^EN.580.581[C]^OR^' +
+        'EN.601.455[C]^OR^EN.601.456[C]^OR^EN.580.437[C]^OR^EN.580.438[C]',
+      fine_requirements: [
+        {
+          description: '<b>EN.601.455 Computer Integrated Surgery I</b>',
+          required_credits: 4,
+          criteria: 'EN.601.455[C]',
+        },
+        {
+          description:
+            '<b>EN.601.456 Computer Integrated Surgery II or design course in CIS</b>',
+          required_credits: 4,
+          criteria:
+            'EN.601.456[C]^OR^EN.510.433[C]^OR^EN.510.434[C]^OR^EN.520.462[C]^OR^' +
+            'EN.520.463[C]^OR^EN.520.498[C]^OR^EN.520.499[C]^OR^EN.540.400[C]^OR^' +
+            'EN.540.421[C]^OR^EN.580.311[C]^OR^EN.580.312[C]^OR^EN.580.411[C]^OR^' +
+            'EN.580.412[C]^OR^EN.580.456[C]^OR^EN.580.457[C]^OR^EN.580.471[C]^OR^' +
+            'EN.580.571[C]^OR^EN.580.480[C]^OR^EN.580.481[C]^OR^EN.580.580[C]^OR^' +
+            'EN.580.581[C]^OR^EN.580.437[C]^OR^EN.580.438[C]',
+        },
+      ],
+    },
+    {
+      name: 'Other Courses Related to CIS',
+      required_credits: 12,
+      min_credits_per_course: 3,
+      description:
+        '<p>Select at least four other courses related to CIS. Of these, at least one must be in either the Imaging Subgroup or the Robotics Subgroup</p>',
+      criteria:
+        'EN.520.414[C]^OR^EN.520.432[C]^OR^EN.520.433[C]^OR^EN.601.461[C]^OR^EN.530.420[C]^OR^EN.530.421[C]^OR^EN.530.603[C]^OR^EN.530.646[C]^OR^EN.601.463[C]^OR^EN.520.448[C]^OR^EN.530.445[C]^OR^EN.580.471[C]^OR^EN.601.454[C]^OR^EN.601.476[C]^OR^EN.601.482[C]',
+      fine_requirements: [
+        {
+          required_credits: 3,
+          description:
+            '<b>Imaging</b> <br />' +
+            'EN.520.414 Image Processing & Analysis' +
+            '<br /> <i>OR</i> <br />' +
+            'EN.520.432 Medical Imaging Systems' +
+            '<br /> <i>OR</i> <br />' +
+            'EN.520.433 Medical Image Analysis' +
+            '<br /> <i>OR</i> <br />' +
+            'EN.601.461 Computer Vision' +
+            '<br /><br /><b>Robotics</b> <br />' +
+            'EN.530.420 Robot Sensors/Actuators' +
+            '<br /> <i>OR</i> <br />' +
+            'EN.530.421 Mechatronics' +
+            '<br /> <i>OR</i> <br />' +
+            'EN.530.603 Applied Optimal Control' +
+            '<br /> <i>OR</i> <br />' +
+            'EN.530.646 Robot Devices, Kinematics, Dynamics, and Control' +
+            '<br /> <i>OR</i> <br />' +
+            'EN.601.463 Algorithms for Sensor-Based Robotics',
+          criteria:
+            'EN.520.414[C]^OR^EN.520.432[C]^OR^EN.520.433[C]^OR^EN.601.461[C]^OR^EN.530.420[C]^OR^EN.530.421[C]^OR^EN.530.603[C]^OR^EN.530.646[C]^OR^EN.601.463[C]',
+        },
+        {
+          required_credits: 0,
+          description:
+            '<b>Other</b> <br />' +
+            'EN.520.448 Electronics Design Lab' +
+            '<br /> <i>OR</i> <br />' +
+            'EN.530.445 Introduction to Biomechanics' +
+            '<br /> <i>OR</i> <br />' +
+            'EN.580.471 Principles of Design of BME Instrumentation' +
+            '<br /> <i>OR</i> <br />' +
+            'EN.601.454 Augmented Reality' +
+            '<br /> <i>OR</i> <br />' +
+            'EN.601.476 Machine Learning: Data to Models' +
+            '<br /> <i>OR</i> <br />' +
+            'EN.601.482 Machine Learning: Deep Learning',
+          criteria:
+            'EN.520.448[C]^OR^EN.530.445[C]^OR^EN.580.471[C]^OR^EN.601.454[C]^OR^EN.601.476[C]^OR^EN.601.482[C]',
+        },
+      ],
+    },
+  ],
+};
+
 const no_degree: Major = {
   degree_name: "Undecided Degree/My degree isn't supported yet",
   distributions: [],
@@ -5104,24 +5525,26 @@ export const allMajors: Major[] = [
   no_degree,
   bsCS,
   baCS,
-  minorCS,
   bsMolCell,
   bsAMS,
-  minorAMS,
   baIS,
   bsMechE,
   bsBME,
   bsCBE,
   baEcon,
-  minorEcon,
-  minorPhysics,
-  minorMath,
   baCogSci,
   bsNeuro,
   bsECE,
   baMath,
   baPhysics,
   bsPhysics,
+  baChem,
+  minorCS,
+  minorAMS,
+  minorEcon,
+  minorPhysics,
+  minorMath,
+  minorCIS,
   // bsEnvEng,
   // baSoc,
   // baWritingSems,
@@ -5130,7 +5553,6 @@ export const allMajors: Major[] = [
   // baMSH,
   // baPH,
   // bsBioPhysics,
-  // bsChem,
   // bsME,
   // baHistory,
   // baBiology,
