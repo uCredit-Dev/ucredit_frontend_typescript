@@ -342,7 +342,7 @@ const Placeholder: FC<{ addCourse: (plan?: Plan) => void }> = (props) => {
             </div>
           </div>
           <Select
-            options={['none', 'N', 'S', 'H', 'E', 'Q'].map((area: any) => ({
+            options={['None', 'N', 'S', 'H', 'E', 'Q'].map((area: any) => ({
               label: area,
               value: area,
             }))}
