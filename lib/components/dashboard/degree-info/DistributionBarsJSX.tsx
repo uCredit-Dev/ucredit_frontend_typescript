@@ -248,6 +248,16 @@ const DistributionBarsJSX: FC<{ major: Major }> = ({ major }) => {
           reqs[i][1][0].fulfilled_credits += parseInt(courseObj.credits);
           distDoubleCount = req.double_count; // set double_count, if any
         }
+        // TODO: for taken variable
+        if (
+          req.taken_credits < req.fulfilled_credits ||
+          (req.taken_credits === 0 && req.fulfilled_credits === 0)
+        ) {
+          // TODO: compare year and term with the current date passed from somewhere
+          if (compareTime(courseObj.year_id, courseObj.term, '2021', 'Fall')) {
+            reqs[i][1][0].taken_credits += parseInt(courseObj.credits);
+          }
+        }
         // for each fine req, see if course satisfies fine requirements
         processFines(reqs, courseObj, i);
       }
@@ -275,16 +285,28 @@ const DistributionBarsJSX: FC<{ major: Major }> = ({ major }) => {
         if (
           fineDoubleCount &&
           (fineDoubleCount.includes(fineReq.name) || // check if fine req can be double counted
-            fineDoubleCount.includes('All')) &&
-          (fineReq.fulfilled_credits < fineReq.required_credits ||
-            (fineReq.required_credits === 0 &&
-              fineReq.fulfilled_credits === 0) || // check if fine req is already fulfilled
-            !checkReqCompleted(fineReq)) &&
+          fineDoubleCount.includes('All')) &&
+          !checkReqCompleted(fineReq) &&
           checkRequirementSatisfied(fineReq, courseObj) // check if course satisfies fine req
         ) {
           // update fine requirements
-          reqs[i][1][j].fulfilled_credits += parseInt(courseObj.credits);
-          fineDoubleCount = fineReq.double_count;
+          if (
+            fineReq.fulfilled_credits < fineReq.required_credits ||
+            (fineReq.required_credits === 0 && fineReq.fulfilled_credits === 0) // check if fine req is already fulfilled)
+          ) {
+            reqs[i][1][j].fulfilled_credits += parseInt(courseObj.credits);
+            fineDoubleCount = fineReq.double_count;
+          }
+          // TODO: for taken variable
+          if (
+            fineReq.taken_credits < fineReq.fulfilled_credits ||
+            (fineReq.taken_credits === 0 && fineReq.fulfilled_credits === 0)
+          ) {
+            // TODO: compare year and term with the current date passed from somewhere
+            if (compareTime(courseObj.year_id, courseObj.term, '2021', 'Fall')) {
+              reqs[i][1][j].taken_credits += parseInt(courseObj.credits);
+            }
+          }
         }
       }
     });
@@ -331,5 +353,17 @@ const DistributionBarsJSX: FC<{ major: Major }> = ({ major }) => {
     </div>
   );
 };
+
+const compareTime = (year_id: string, term: string, currentYear: string, currentTerm: string) => {
+  // TODO: get year from year_id
+  if (year_id < currentYear) {
+    return true;
+  } else if (year_id === currentYear) {
+    if (term < currentTerm) { // TODO: check if it the the correct way to compare terms
+      return true;
+    }
+  }
+  return false;
+}
 
 export default DistributionBarsJSX;
