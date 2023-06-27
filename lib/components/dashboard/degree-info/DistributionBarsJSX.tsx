@@ -1,11 +1,16 @@
 import React, { FC, useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { getCourse } from '../../../resources/assets';
+import { 
+  prereqInPast,
+  getCourse 
+} from '../../../resources/assets';
 import {
   Plan,
   Major,
   Course,
   UserCourse,
+  Year, 
+  SemesterType,
 } from '../../../resources/commonTypes';
 import {
   selectDistributions,
@@ -215,7 +220,7 @@ const DistributionBarsJSX: FC<{ major: Major }> = ({ major }) => {
         checked.push(courseObj.resp);
       }
       const localReqCopy: [string, requirements[]][] = copyReqs(reqCopy);
-      if (!counted) updateReqs(localReqCopy, courseObj.resp);
+      if (!counted) updateReqs(localReqCopy, courseObj.resp, course, updatingPlan);
       reqCopy = localReqCopy;
       count++;
       if (count === courses.length) {
@@ -224,7 +229,7 @@ const DistributionBarsJSX: FC<{ major: Major }> = ({ major }) => {
     }
   };
 
-  const updateReqs = (reqs: [string, requirements[]][], courseObj) => {
+  const updateReqs = (reqs: [string, requirements[]][], courseObj, course: UserCourse, plan: Plan) => {
     // double_count check:
     // If double_count is undefined, the course may only count for one distribution
     // If double_count is string[], the specified distributions / fine requirements are 'whitelisted'
@@ -254,12 +259,21 @@ const DistributionBarsJSX: FC<{ major: Major }> = ({ major }) => {
           (req.taken_credits === 0 && req.fulfilled_credits === 0)
         ) {
           // TODO: compare year and term with the current date passed from somewhere
-          if (compareTime(courseObj.year_id, courseObj.term, '2021', 'Fall')) {
+          let currentYear: Year = {
+            _id: '',
+            name: '',
+            courses: [],
+            year: 2023,
+            plan_id: '',
+            user_id: '',
+          };
+          let currentTerm: SemesterType = 'Fall';
+          if (prereqInPast(course, currentYear, currentTerm, plan)) {
             reqs[i][1][0].taken_credits += parseInt(courseObj.credits);
           }
         }
         // for each fine req, see if course satisfies fine requirements
-        processFines(reqs, courseObj, i);
+        processFines(reqs, courseObj, i, course, plan);
       }
     });
     // Pathing check
@@ -274,6 +288,8 @@ const DistributionBarsJSX: FC<{ major: Major }> = ({ major }) => {
     reqs: [string, requirements[]][],
     courseObj,
     i: number,
+    course: UserCourse,
+    plan: Plan,
   ) => {
     let fineDoubleCount: string[] | undefined = ['All'];
     // for each fine req
@@ -303,8 +319,17 @@ const DistributionBarsJSX: FC<{ major: Major }> = ({ major }) => {
             (fineReq.taken_credits === 0 && fineReq.fulfilled_credits === 0)
           ) {
             // TODO: compare year and term with the current date passed from somewhere
-            if (compareTime(courseObj.year_id, courseObj.term, '2021', 'Fall')) {
-              reqs[i][1][j].taken_credits += parseInt(courseObj.credits);
+            let currentYear: Year = {
+              _id: '',
+              name: '',
+              courses: [],
+              year: 2023,
+              plan_id: '',
+              user_id: '',
+            };
+            let currentTerm: SemesterType = 'Fall';
+            if (prereqInPast(course, currentYear, currentTerm, plan)) {
+              reqs[i][1][0].taken_credits += parseInt(courseObj.credits);
             }
           }
         }
@@ -353,17 +378,5 @@ const DistributionBarsJSX: FC<{ major: Major }> = ({ major }) => {
     </div>
   );
 };
-
-const compareTime = (year_id: string, term: string, currentYear: string, currentTerm: string) => {
-  // TODO: get year from year_id
-  if (year_id < currentYear) {
-    return true;
-  } else if (year_id === currentYear) {
-    if (term < currentTerm) { // TODO: check if it the the correct way to compare terms
-      return true;
-    }
-  }
-  return false;
-}
 
 export default DistributionBarsJSX;
