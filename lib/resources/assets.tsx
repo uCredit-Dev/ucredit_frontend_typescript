@@ -867,7 +867,7 @@ const semesters: string[] = ['fall', 'intersession', 'spring', 'summer'];
  * @param plan - user's plan
  * @returns - whether the course is in the past
  */
-const prereqInPast = (
+export const prereqInPast = (
   course: UserCourse,
   year: Year,
   semester: SemesterType,
