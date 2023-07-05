@@ -26,6 +26,7 @@ import {
   getRequirements,
   requirements,
 } from './distributionFunctions';
+import { Console } from 'console';
 
 const DistributionBarsJSX: FC<{ major: Major }> = ({ major }) => {
   const dispatch = useDispatch();
@@ -258,6 +259,7 @@ const DistributionBarsJSX: FC<{ major: Major }> = ({ major }) => {
           req.taken_credits < req.fulfilled_credits ||
           (req.taken_credits === 0 && req.fulfilled_credits === 0)
         ) {
+          
           // TODO: compare year and term with the current date passed from somewhere
           let currentYear: Year = {
             _id: '',
@@ -270,10 +272,12 @@ const DistributionBarsJSX: FC<{ major: Major }> = ({ major }) => {
           let currentTerm: SemesterType = 'Fall';
           if (prereqInPast(course, currentYear, currentTerm, plan)) {
             reqs[i][1][0].taken_credits += parseInt(courseObj.credits);
+            distDoubleCount = req.double_count; // set double_count, if any
           }
         }
         // for each fine req, see if course satisfies fine requirements
         processFines(reqs, courseObj, i, course, plan);
+        
       }
     });
     // Pathing check
@@ -330,6 +334,7 @@ const DistributionBarsJSX: FC<{ major: Major }> = ({ major }) => {
             let currentTerm: SemesterType = 'Fall';
             if (prereqInPast(course, currentYear, currentTerm, plan)) {
               reqs[i][1][0].taken_credits += parseInt(courseObj.credits);
+              fineDoubleCount = fineReq.double_count;
             }
           }
         }
