@@ -85,7 +85,7 @@ const CourseBar: FC<{
     `<div style="margin-bottom: 1rem;">${distribution.description}</div>` +
     `<div style='width: 100%; height: auto;'><div style='width: 100%; display: flex; flex-direction: row; justify-content: space-between;'>` +
     `<div>Taken</div><div>${distribution.taken_credits}</div>` +
-    `<div>Planned</div><div>${plannedCredits}</div>
+    `<div>Planned</div><div>${plannedCredits - distribution.taken_credits}</div>
     </div>
     <div style='display: flex; flex-direction: row; justify-content: space-between;'>` +
     (remainingCredits !== 0

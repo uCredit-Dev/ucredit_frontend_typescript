@@ -106,6 +106,7 @@ const DistributionBarsJSX: FC<{ major: Major }> = ({ major }) => {
               expr: '',
               required_credits: major !== null ? major.total_degree_credit : 0,
               fulfilled_credits: totalCredits,
+              taken_credits: totalCredits,
               description:
                 major !== null
                   ? 'This is the total amount of credits that is required for ' +
@@ -333,7 +334,7 @@ const DistributionBarsJSX: FC<{ major: Major }> = ({ major }) => {
             };
             let currentTerm: SemesterType = 'Fall';
             if (prereqInPast(course, currentYear, currentTerm, plan)) {
-              reqs[i][1][0].taken_credits += parseInt(courseObj.credits);
+              reqs[i][1][j].taken_credits += parseInt(courseObj.credits);
               fineDoubleCount = fineReq.double_count;
             }
           }
