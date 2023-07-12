@@ -1,15 +1,12 @@
 import React, { FC, useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { 
-  prereqInPast,
-  getCourse 
-} from '../../../resources/assets';
+import { prereqInPast, getCourse } from '../../../resources/assets';
 import {
   Plan,
   Major,
   Course,
   UserCourse,
-  Year, 
+  Year,
   SemesterType,
 } from '../../../resources/commonTypes';
 import {
@@ -89,7 +86,8 @@ const DistributionBarsJSX: FC<{ major: Major }> = ({ major }) => {
               <CourseBar
                 distribution={pair[1][0]}
                 general={true}
-                bgcolor={'skyblue'}
+                plannedcolor={'skyblue'}
+                takencolor={'steelblue'}
                 completed={completed}
               />
             </div>
@@ -117,7 +115,8 @@ const DistributionBarsJSX: FC<{ major: Major }> = ({ major }) => {
               totalCredits >= (major !== null ? major.total_degree_credit : 0)
             }
             general={true}
-            bgcolor=""
+            plannedcolor=""
+            takencolor=""
           />
         </div>
       </div>,
@@ -222,7 +221,8 @@ const DistributionBarsJSX: FC<{ major: Major }> = ({ major }) => {
         checked.push(courseObj.resp);
       }
       const localReqCopy: [string, requirements[]][] = copyReqs(reqCopy);
-      if (!counted) updateReqs(localReqCopy, courseObj.resp, course, updatingPlan);
+      if (!counted)
+        updateReqs(localReqCopy, courseObj.resp, course, updatingPlan);
       reqCopy = localReqCopy;
       count++;
       if (count === courses.length) {
@@ -231,7 +231,12 @@ const DistributionBarsJSX: FC<{ major: Major }> = ({ major }) => {
     }
   };
 
-  const updateReqs = (reqs: [string, requirements[]][], courseObj, course: UserCourse, plan: Plan) => {
+  const updateReqs = (
+    reqs: [string, requirements[]][],
+    courseObj,
+    course: UserCourse,
+    plan: Plan,
+  ) => {
     // double_count check:
     // If double_count is undefined, the course may only count for one distribution
     // If double_count is string[], the specified distributions / fine requirements are 'whitelisted'
@@ -260,7 +265,6 @@ const DistributionBarsJSX: FC<{ major: Major }> = ({ major }) => {
           req.taken_credits < req.fulfilled_credits ||
           (req.taken_credits === 0 && req.fulfilled_credits === 0)
         ) {
-          
           // TODO: compare year and term with the current date passed from somewhere
           let currentYear: Year = {
             _id: '',
@@ -278,7 +282,6 @@ const DistributionBarsJSX: FC<{ major: Major }> = ({ major }) => {
         }
         // for each fine req, see if course satisfies fine requirements
         processFines(reqs, courseObj, i, course, plan);
-        
       }
     });
     // Pathing check
@@ -306,7 +309,7 @@ const DistributionBarsJSX: FC<{ major: Major }> = ({ major }) => {
         if (
           fineDoubleCount &&
           (fineDoubleCount.includes(fineReq.name) || // check if fine req can be double counted
-          fineDoubleCount.includes('All')) &&
+            fineDoubleCount.includes('All')) &&
           !checkReqCompleted(fineReq) &&
           checkRequirementSatisfied(fineReq, courseObj) // check if course satisfies fine req
         ) {

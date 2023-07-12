@@ -24,18 +24,22 @@ import { ReviewMode } from '../../../resources/commonTypes';
  * @prop general - if this is a general distribution
  * @prop description - this is the description of the distribution
  * @prop total - whether this is a course bar tracking the total amount of credits
- * M tried @prop bgcolor - color of this distribution
+ * M tried @prop plannedcolor - color of planned courses
+ * M tried @prop takencolor - color of taken courses
  */
 const CourseBar: FC<{
   distribution: requirements;
   general: boolean;
-  bgcolor: string;
+  plannedcolor: string;
+  takencolor: string;
   completed: boolean;
   mode?: ReviewMode;
-}> = ({ distribution, general, bgcolor, completed, mode }) => {
+}> = ({ distribution, general, plannedcolor, takencolor, completed, mode }) => {
   const [plannedCredits, setPlannedCredits] = useState(
     distribution.fulfilled_credits,
   );
+  // TODO: for taken variables
+  const [takenCredits, setTakenCredits] = useState(distribution.taken_credits);
   const [hovered, setHovered] = useState(false);
 
   const currPlanCourses = useSelector(selectCurrentPlanCourses);
@@ -52,6 +56,9 @@ const CourseBar: FC<{
   useEffect(() => {
     let temp = distribution.fulfilled_credits;
     setPlannedCredits(temp);
+    // TODO: for taken variables
+    let temp2 = distribution.taken_credits;
+    setTakenCredits(temp2);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [
     currPlanCourses,
@@ -84,8 +91,8 @@ const CourseBar: FC<{
     `<div style="overflow: wrap; margin-bottom: 1rem;">${section}</div>` +
     `<div style="margin-bottom: 1rem;">${distribution.description}</div>` +
     `<div style='width: 100%; height: auto;'><div style='width: 100%; display: flex; flex-direction: row; justify-content: space-between;'>` +
-    `<div>Taken</div><div>${distribution.taken_credits}</div>` +
-    `<div>Planned</div><div>${plannedCredits - distribution.taken_credits}</div>
+    `<div>Taken</div><div>${takenCredits}</div>` +
+    `<div>Planned</div><div>${plannedCredits - takenCredits}</div>
     </div>
     <div style='display: flex; flex-direction: row; justify-content: space-between;'>` +
     (remainingCredits !== 0
@@ -137,14 +144,27 @@ const CourseBar: FC<{
           <div
             className="h-full rounded-full"
             style={{
-              background: bgcolor.length > 0 ? bgcolor : '#90EE90',
+              background: plannedcolor.length > 0 ? plannedcolor : '#90EE90',
               width: `${
                 plannedCredits <= maxCredits
                   ? (plannedCredits / maxCredits) * 100 + '%'
                   : '100%'
               }`,
             }}
-          />
+          >
+            {/* TODO: display color for taken courses */}
+            <div
+              className="h-full rounded-full"
+              style={{
+                background: takencolor.length > 0 ? takencolor : '#90EE90',
+                width: `${
+                  takenCredits <= plannedCredits
+                    ? (takenCredits / plannedCredits) * 100 + '%'
+                    : '100%'
+                }`,
+              }}
+            />
+          </div>
           {/* {remainingCredits === 0 && completed ? (
             <CheckCircleIcon className="absolute w-5 h-5 text-white transform -translate-x-1/2 -translate-y-1/2 stroke-2 left-1/2 top-1/2" />
           ) : (
