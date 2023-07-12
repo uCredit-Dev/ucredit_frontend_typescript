@@ -55,6 +55,7 @@ const PrereqDisplay: FC = () => {
   const [loaded, setLoaded] = useState<boolean>(false);
   const [hasPreReqs, setHasPreReqs] = useState<boolean>(false);
   const [NNegativePreReqs, setNNegativePreReqs] = useState<any[]>();
+  console.log("hello" + courseToShow?.postReq + " "+  courseToShow?.number);
 
   // This useEffect performs prereq retrieval every time a new course is displayed.
   useEffect(() => {
