@@ -355,6 +355,7 @@ const HandlePlanShareDummy = () => {
             number: course.number,
             area: course.area,
             preReq: course.preReq,
+            postReq: course.postReq,
             level: course.level,
             version: course.version,
             expireAt: user._id === 'guestUser' ? Date.now() : undefined,
