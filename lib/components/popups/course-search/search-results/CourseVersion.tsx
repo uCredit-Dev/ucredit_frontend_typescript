@@ -6,6 +6,7 @@ import { getColors } from '../../../../resources/assets';
 import { selectVersion } from '../../../../slices/searchSlice';
 import PrereqDisplay from '../prereqs/PrereqDisplay';
 import CourseEvalSection from './CourseEvalSection';
+import PostReqSection from '../postreqs/PostReqSection';
 
 /**
  * A component showing the specific version of the course at a particular semester/year
@@ -182,8 +183,15 @@ const CourseVersion: FC<{ setInspectedArea: (area: string) => void }> = ({
     else return null;
   };
 
-  const getPrereqDisplayMode = () =>
-    displayPreReqsView === 1 ? <PrereqDisplay /> : <CourseEvalSection />;
+  const getPrereqDisplayMode = () => {
+    if (displayPreReqsView === 1) {
+      return <PrereqDisplay />;
+    } else if (displayPreReqsView === 2) {
+      return <PostReqSection />;
+    } else {
+      return <CourseEvalSection />;
+    }
+  };
 
   const getWIText = () => (version !== 'None' && version.wi ? 'Yes' : 'No');
 
@@ -309,6 +317,21 @@ const CourseVersion: FC<{ setInspectedArea: (area: string) => void }> = ({
             >
               Course Evaluation
             </button>{' '}
+            <button 
+              className={clsx(
+                'mr-3 text-xl font-medium hover:border-b-2 border-secondary focus:outline-none',
+                {
+                  'border-b-2 -mb-0.5': displayPreReqsView === 2,
+                  'hover:-mb-0.5': displayPreReqsView !== 2,
+                }
+              )}
+              onClick={() => {
+                setdisplayPreReqsView(2);
+              }}
+              >
+                Postrequisites
+              </button>
+
           </div>
           {getPrereqDisplayMode()}
         </>
