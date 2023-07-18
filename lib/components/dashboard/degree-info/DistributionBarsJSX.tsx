@@ -32,6 +32,8 @@ const DistributionBarsJSX: FC<{ major: Major }> = ({ major }) => {
   const courseCache = useSelector(selectCourseCache);
   const currPlanCourses = useSelector(selectCurrentPlanCourses);
   const totalCredits = useSelector(selectTotalCredits);
+  // TODO: for total taken credits
+  const [totalTakenCredits, setTotalTakenCredits] = useState(0);
   const [calculated, setCalculated] = useState<boolean>(false);
   const [distributionBarsJSX, setDistributionBarsJSX] = useState<JSX.Element[]>(
     [],
@@ -104,7 +106,7 @@ const DistributionBarsJSX: FC<{ major: Major }> = ({ major }) => {
               expr: '',
               required_credits: major !== null ? major.total_degree_credit : 0,
               fulfilled_credits: totalCredits,
-              taken_credits: totalCredits,
+              taken_credits: totalTakenCredits,
               description:
                 major !== null
                   ? 'This is the total amount of credits that is required for ' +
@@ -118,7 +120,7 @@ const DistributionBarsJSX: FC<{ major: Major }> = ({ major }) => {
             plannedcolor=""
             takencolor=""
           />
-        </div>
+        </div>        
       </div>,
     );
     setDistributionBarsJSX(distributionJSX);
@@ -277,6 +279,8 @@ const DistributionBarsJSX: FC<{ major: Major }> = ({ major }) => {
           let currentTerm: SemesterType = 'Fall';
           if (prereqInPast(course, currentYear, currentTerm, plan)) {
             reqs[i][1][0].taken_credits += parseInt(courseObj.credits);
+            setTotalTakenCredits(totalTakenCredits + parseInt(courseObj.credits));
+            // course.taken = true;
             distDoubleCount = req.double_count; // set double_count, if any
           }
         }
