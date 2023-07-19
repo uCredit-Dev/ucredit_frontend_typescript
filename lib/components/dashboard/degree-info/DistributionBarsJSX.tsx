@@ -46,6 +46,32 @@ const DistributionBarsJSX: FC<{ major: Major }> = ({ major }) => {
     new Array(distributions.length),
   );
 
+  // Get the current year and term
+  const currentYear: Year = {
+    _id: '',
+    name: '', 
+    courses: [],
+    year: new Date().getFullYear(), // TODO: check if this is correct
+    plan_id: '',
+    user_id: '',
+  };
+  const currentTerm: SemesterType = getCurrentTerm();
+
+  // Gets the current term
+  // TODO: check if month logic is correct
+  function getCurrentTerm(): SemesterType {
+    const month = new Date().getMonth();
+    if (month >= 1 && month <= 5) {
+      return "Spring";
+    } else if (month >= 6 && month <= 8) {
+      return "Summer";
+    } else if (month >= 9 && month <= 12) {
+      return "Fall";
+    } else {
+      return "Intersession";
+    }
+  };
+
   // Gets distribution everytime a plan changes.
   useEffect(() => {
     const distr = getDistributions();
@@ -267,16 +293,6 @@ const DistributionBarsJSX: FC<{ major: Major }> = ({ major }) => {
           req.taken_credits < req.fulfilled_credits ||
           (req.taken_credits === 0 && req.fulfilled_credits === 0)
         ) {
-          // TODO: compare year and term with the current date passed from somewhere
-          let currentYear: Year = {
-            _id: '',
-            name: '',
-            courses: [],
-            year: 2023,
-            plan_id: '',
-            user_id: '',
-          };
-          let currentTerm: SemesterType = 'Fall';
           if (prereqInPast(course, currentYear, currentTerm, plan)) {
             reqs[i][1][0].taken_credits += parseInt(courseObj.credits);
             setTotalTakenCredits(totalTakenCredits + parseInt(courseObj.credits));
@@ -330,16 +346,6 @@ const DistributionBarsJSX: FC<{ major: Major }> = ({ major }) => {
             fineReq.taken_credits < fineReq.fulfilled_credits ||
             (fineReq.taken_credits === 0 && fineReq.fulfilled_credits === 0)
           ) {
-            // TODO: compare year and term with the current date passed from somewhere
-            let currentYear: Year = {
-              _id: '',
-              name: '',
-              courses: [],
-              year: 2023,
-              plan_id: '',
-              user_id: '',
-            };
-            let currentTerm: SemesterType = 'Fall';
             if (prereqInPast(course, currentYear, currentTerm, plan)) {
               reqs[i][1][j].taken_credits += parseInt(courseObj.credits);
               fineDoubleCount = fineReq.double_count;
