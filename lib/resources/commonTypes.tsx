@@ -40,6 +40,7 @@ export type Version = {
   level: string;
   tags: string[];
   preReq: string[];
+  postReq: PostReq[];
   coReq: string[];
   restrictions: any[];
 };
