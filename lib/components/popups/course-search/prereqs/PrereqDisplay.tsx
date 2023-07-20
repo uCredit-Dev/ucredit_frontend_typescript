@@ -49,13 +49,14 @@ const PrereqDisplay: FC = () => {
   const courseCache = useSelector(selectCourseCache);
   const courseToShow = useSelector(selectCourseToShow);
 
+
+
   // Component states
   const [prereqDisplayMode, setPrereqDisplayMode] = useState(2);
   const [preReqDisplay, setPreReqDisplay] = useState<JSX.Element[]>([]);
   const [loaded, setLoaded] = useState<boolean>(false);
   const [hasPreReqs, setHasPreReqs] = useState<boolean>(false);
   const [NNegativePreReqs, setNNegativePreReqs] = useState<any[]>();
-  console.log("hello" + courseToShow?.postReq + " "+  courseToShow?.number);
 
   // This useEffect performs prereq retrieval every time a new course is displayed.
   useEffect(() => {

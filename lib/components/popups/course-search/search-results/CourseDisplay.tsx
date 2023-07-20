@@ -107,6 +107,7 @@ const CourseDisplay: FC<{ cart: boolean }> = ({ cart }) => {
       department: version.department,
       tags: version.tags,
       preReq: version.preReq,
+      postReq: version.postReq,
       wi: version.wi,
       version: version.term,
       level: version.level,
