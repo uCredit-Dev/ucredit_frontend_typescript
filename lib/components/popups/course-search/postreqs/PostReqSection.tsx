@@ -59,6 +59,9 @@ const PostReqSection: FC = () => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [version, courseCache]);
 
+  console.log("course" + " " + courseToShow?.number);
+  console.log("course" + " " + courseToShow?.postReq);
+
   const hello =
         courseToShow?.postReq.map((course) => <div>{course.number} |  {course.title} | {course.credits}</div>)
     return (
