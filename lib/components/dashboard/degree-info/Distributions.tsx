@@ -53,6 +53,13 @@ const Distributions: FC<{
         />
       )}
       <DistributionBarsJSX major={major ? major : allMajors[0]} />
+
+      <div className="text-sm">
+        <small><small><strong>Note:</strong> Courses taken before the current term is marked as "Taken." 
+        "Planned" courses include those during and after the current term.</small></small>
+      </div>
+
+      
       {disclaimer && (
         <div
           id="dropdown-cta"
