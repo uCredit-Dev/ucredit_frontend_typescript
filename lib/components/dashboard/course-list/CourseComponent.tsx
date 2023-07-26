@@ -4,7 +4,7 @@ import { MinusIcon, ExclamationIcon } from '@heroicons/react/outline';
 import { Transition } from '@tailwindui/react';
 import clsx from 'clsx';
 import 'react-toastify/dist/ReactToastify.css';
-import { checkAllPrereqs, getColors } from '../../../resources/assets';
+import { checkAllPrereqs, getStatusColor } from '../../../resources/assets';
 import {
   UserCourse,
   SemesterType,
@@ -149,7 +149,7 @@ const CourseComponent: FC<{
         <div className="grid grid-flow-row-dense grid-cols-10 w-full h-full gap-x-1.5">
           <div
             className="col-span-1 px-1.5 h-5/6 place-self-center rounded-lg select-none"
-            style={{ backgroundColor: getColors(course.area, course.wi) }}
+            style={{ backgroundColor: getStatusColor(course.taken) }}
           ></div>
           <div className="col-span-8">
             <div className="truncate">{course.title}</div>

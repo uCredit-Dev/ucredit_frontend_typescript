@@ -31,6 +31,17 @@ export const guestUser: User = {
   plan_ids: [],
 };
 
+export const getStatusColor = function (
+  taken: boolean,
+): string {
+  if (taken) {
+    return 'skyblue';
+  }
+  else {
+    return 'steelblue';
+  }
+}
+
 export const getColors = function (
   distribution: string,
   writingIntensive: boolean,
