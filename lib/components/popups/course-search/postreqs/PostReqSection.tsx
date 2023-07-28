@@ -90,7 +90,8 @@ const PostReqSection: FC = () => {
           satisfied: false,
         });
       }
-      console.log(postReqsWithSatisfied);
+      console.log("postreq satisfied: " + postReqsWithSatisfied);
+      console.log("postreq not satisfied: " + postReqsWithoutSatisfied);
       });
     // If there exists preReqs, we need to process and display them.
     if (version !== 'None' && postReqs.length > 0) {
@@ -135,20 +136,22 @@ const PostReqSection: FC = () => {
         postReqsWithoutSatisfied.map((course) => <button onClick={() => updateInspected(course.number)()}
 
         >{course.number} |  {course.title} | {course.credits}</button>);
-
-    console.log(hello)
-    console.log(postReqsWithSatisfied)
-
-    const hello4 =
-    inspected.versions[0].postReq.map((course) => <button onClick={() => updateInspected(course.number)()}
-    > {course.number} |  {course.title} | {course.credits}</button>);
-
+        
+  const hello4 =
+  inspected.versions[0].postReq.map((course, index) => 
+    <div key={index} className="courseItem" style={{borderBottom: '1px solid #ccc', margin: '5px 0'}}>
+      <button className="flex justify-between" onClick={() => updateInspected(course.number)()}>
+        <div className="flex-grow">{course.number} {course.title}</div>
+        <div className="w-5 ml-2 items-center font-semibold text-white transition duration-200 ease-in transform rounded select-none bg-primary hover:scale-110" 
+            data-tooltip-content={`${course.credits} credits`} 
+            data-tooltip-id="godtip">{course.credits}</div>
+      </button>
+    </div>
+  );
 
   const hello3 = <div> This course has no post-reqs </div>;
     return (
         <div>
-            <h1>Post-Requisites </h1>
-            {/* {hello} */}
             {hasPostReqs ? hello4 : hello3}
 
         </div>
