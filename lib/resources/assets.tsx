@@ -867,7 +867,7 @@ const semesters: string[] = ['fall', 'intersession', 'spring', 'summer'];
  * @param plan - user's plan
  * @returns - whether the course is in the past
  */
-const prereqInPast = (
+export const prereqInPast = (
   course: UserCourse,
   year: Year,
   semester: SemesterType,
@@ -940,6 +940,7 @@ function getCourseYear(plan: Plan, course: UserCourse): Year | null {
   });
   return year;
 }
+
 
 /**
  * @param currCourses - user's courses

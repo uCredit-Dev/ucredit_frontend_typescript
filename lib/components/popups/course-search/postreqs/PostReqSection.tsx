@@ -13,6 +13,7 @@ import {
   processPrereqs,
   checkPrereq,
   getCourse,
+  prereqInPast
 } from '../../../../resources/assets';
 import {
   selectCurrentPlanCourses,
@@ -37,20 +38,13 @@ const PostReqSection: FC = () => {
   const courseCache = useSelector(selectCourseCache);
   const courseToShow = useSelector(selectCourseToShow);
 
-    // This useEffect performs prereq retrieval every time a new course is displayed.
-    useEffect(() => {
-      
-      // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [version, courseCache]);
-
-  // Component states
-  //const [postReqDisplay, setPostReqDisplay] = useState<JSX.Element[]>([]);
-  //const [loaded, setLoaded] = useState<boolean>(false);
-  const [hasPostReqs, setHasPostReqs] = useState<boolean>(false);
-  const postReqsWithSatisfied = [];
-  const postReqsWithoutSatisfied = [];
 
 
+  /**
+   * Parses through the currentPlan years and returns year object corresponding to the year of the prereq or the current year if not found
+   * @param toShow - course to find year of
+   *  @returns year object
+   */
   const getYearById = (toShow: UserCourse | null): Year => {
     const yearToGet: string = toShow ? toShow.year_id : year;
     for (const yearObj of currentPlan.years) {
@@ -61,7 +55,30 @@ const PostReqSection: FC = () => {
     return currentPlan.years[currentPlan.years.length - 1];
   };
 
-  console.log(semester);
+  const currYear = getYearById(courseToShow);
+  const currSemester: string =
+  courseToShow !== null
+    ? courseToShow.term.charAt(0).toUpperCase() +
+      courseToShow.term.slice(1)
+    : semester;
+    // This useEffect performs prereq retrieval every time a new course is displayed.
+    useEffect(() => {
+      
+      // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [version, courseCache]);
+
+  // Component states
+  //const [postReqDisplay, setPostReqDisplay] = useState<JSX.Element[]>([]);
+  //const [loaded, setLoaded] = useState<boolean>(false);
+  const [hasPostReqs, setHasPostReqs] = useState<boolean>(false);
+  // const postReqsWithSatisfied = [];
+  // const postReqsWithoutSatisfied = [];
+  const [postReqsWithSatisfied, setHasPostReqsWithSatisfied] = useState<any[]>([]);
+  const [postReqsWithoutSatisfied, setHasPostReqsWithoutSatisfied] = useState<any[]>([]);
+  const postReqsWithSatisfied1: any[] = [];
+  const postReqsWithoutSatisfied1: any[] = [];
+
+  //console.log(currYear.year);
 
 
   useEffect(() => {
@@ -72,27 +89,27 @@ const PostReqSection: FC = () => {
 
     let postReqs = inspected.versions[0].postReq;
 
-    console.log(postReqs);
-    let realPostReqs = postReqs.map((course) => {
-      console.log("hello");
+
+    postReqs.map((course) => {
       getCourse(course.number, courseCache, currPlanCourses);
       let satisfied=false;
-      if(course.title.length > "10")
+      if(checkIfSatisfied(course))
       {
-        postReqsWithSatisfied.push({
+        postReqsWithSatisfied1.push({
           ...course,
           satisfied: true,
         });
       }
       else {
-        postReqsWithoutSatisfied.push({
+        postReqsWithoutSatisfied1.push({
           ...course,
           satisfied: false,
         });
       }
-      console.log("postreq satisfied: " + postReqsWithSatisfied);
-      console.log("postreq not satisfied: " + postReqsWithoutSatisfied);
+      //console.log(postReqsWithSatisfied);
       });
+    setHasPostReqsWithSatisfied(postReqsWithSatisfied1);
+    setHasPostReqsWithoutSatisfied(postReqsWithoutSatisfied1);
     // If there exists preReqs, we need to process and display them.
     if (version !== 'None' && postReqs.length > 0) {
       setHasPostReqs(true);
@@ -100,13 +117,78 @@ const PostReqSection: FC = () => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [version, courseCache]);
 
+  function checkIfSatisfied(course) {
+    try {
+      var str=course.preReqs;
+      if(course.preReqs.length === 0) {
+        return false;
+      }
+      var fullArray= str.split("^", 100);
+      var ind=fullArray.indexOf(")");
+      while(ind !== -1)
+      {
+        
+        var elements = fullArray.splice(ind-4, 5);
+        if(elements[2]==="AND")
+        {
+          fullArray.splice(ind-4, 0, isCourseBeforeOther(elements[1]) && isCourseBeforeOther(elements[3]));
+        }
+        else
+        {
+          fullArray.splice(ind-4, 0, isCourseBeforeOther(elements[1]) || isCourseBeforeOther(elements[3]));
+        }
+        ind=fullArray.indexOf(")");
+      }
+      ind=fullArray.indexOf("AND");
+      while(ind !== -1)
+      {
+        var elements = fullArray.splice(ind-1, 3);
+        fullArray.splice(ind-1, 0, isCourseBeforeOther(elements[0]) && isCourseBeforeOther(elements[2]));
+        ind=fullArray.indexOf("AND");
+      }
 
-  //console.log(courseCache)
-  //console.log(courseToShow);
+      ind=fullArray.indexOf("OR");
+      while(ind !== -1)
+      {
+        var elements = fullArray.splice(ind-1, 3);
+        fullArray.splice(ind-1, 0, isCourseBeforeOther(elements[0]) || isCourseBeforeOther(elements[2]));
+        var ind=fullArray.indexOf("OR");
+      }
+      return isCourseBeforeOther(fullArray[0]);
+    } catch (exception)
+    {
+      return false;
+    }
+
+  }
+
+  //returns true if preReq course is found in plan, and occurs before current semester and year
+  //note, this assumes the current popUp course is not taken yet if its not been added yet!
+  function isCourseBeforeOther(preReqCourseString) {
+    if(preReqCourseString === true || preReqCourseString === false)
+    {
+      return preReqCourseString;
+    }
+    for(let course of currPlanCourses)
+    {
+      if(course.number === preReqCourseString.substring(0,preReqCourseString.length-3))
+      {
+        //in case course is in plan twice, only retun true if its definitely found before.
+        if(prereqInPast(course, currYear, semester, currentPlan) === true)
+        {
+          return true;
+        }
+      }
+    }
+    return false;
+  }
+
+
+  
+
   const updateInspected =
     (courseNumber: string): (() => void) =>
     (): void => {
-      console.log("clicked")
       courseCache.forEach((course: SISRetrievedCourse) => {
         if (
           course.number === courseNumber &&
@@ -123,17 +205,31 @@ const PostReqSection: FC = () => {
         }
       });
     };
-  // const hello =
-  //       courseToShow?.postReq.map((course) => <div>{course.number} |  {course.title} | {course.credits}</div>)
+
   const hello =
-        postReqsWithSatisfied.map((course) => <button onClick={() => updateInspected(course.number)()}
+  postReqsWithSatisfied.map((course, index) => 
+    <div key={index} className="courseItem" style={{borderBottom: '1px solid #ccc', margin: '5px 0', }}>
+      <button className="flex justify-between text-green-200" onClick={() => updateInspected(course.number)()}>
+        <div className="flex-grow">{course.number} {course.title}</div>
+        <div className="w-5 ml-2 items-center font-semibold text-white transition duration-200 ease-in transform rounded select-none bg-primary hover:scale-110" 
+            data-tooltip-content={`${course.credits} credits`} 
+            data-tooltip-id="godtip">{course.credits}</div>
+      </button>
+    </div>
+  );
 
-        >{course.number} |  {course.title} | {course.credits}</button>);
   const hello2 =
-        postReqsWithoutSatisfied.map((course) => <button onClick={() => updateInspected(course.number)()}
+  postReqsWithoutSatisfied.map((course, index) => 
+    <div key={index} className="courseItem" style={{borderBottom: '1px solid #ccc', margin: '5px 0'}}>
+      <button className="flex justify-between text-orange-200" onClick={() => updateInspected(course.number)()}>
+        <div className="flex-grow">{course.number} {course.title}</div>
+        <div className="w-5 ml-2 items-center font-semibold text-white transition duration-200 ease-in transform rounded select-none bg-primary hover:scale-110" 
+            data-tooltip-content={`${course.credits} credits`} 
+            data-tooltip-id="godtip">{course.credits}</div>
+      </button>
+    </div>
+  );
 
-        >{course.number} |  {course.title} | {course.credits}</button>);
-        
   const hello4 =
   inspected.versions[0].postReq.map((course, index) => 
     <div key={index} className="courseItem" style={{borderBottom: '1px solid #ccc', margin: '5px 0'}}>
@@ -149,7 +245,7 @@ const PostReqSection: FC = () => {
   const hello3 = <div> This course has no post-reqs </div>;
     return (
         <div>
-            {hasPostReqs ? hello4 : hello3}
+            {hasPostReqs ? [hello, hello2] : hello3}
 
         </div>
     )
