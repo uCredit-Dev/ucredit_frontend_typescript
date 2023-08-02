@@ -209,7 +209,7 @@ const PostReqSection: FC = () => {
   const hello =
   postReqsWithSatisfied.map((course, index) => 
     <div key={index} className="courseItem" style={{borderBottom: '1px solid #ccc', margin: '5px 0', }}>
-      <button className="flex justify-between text-green-200" onClick={() => updateInspected(course.number)()}>
+      <button className="flex justify-between text-green-600" onClick={() => updateInspected(course.number)()}>
         <div className="flex-grow">{course.number} {course.title}</div>
         <div className="w-5 ml-2 items-center font-semibold text-white transition duration-200 ease-in transform rounded select-none bg-primary hover:scale-110" 
             data-tooltip-content={`${course.credits} credits`} 
@@ -221,7 +221,7 @@ const PostReqSection: FC = () => {
   const hello2 =
   postReqsWithoutSatisfied.map((course, index) => 
     <div key={index} className="courseItem" style={{borderBottom: '1px solid #ccc', margin: '5px 0'}}>
-      <button className="flex justify-between text-orange-200" onClick={() => updateInspected(course.number)()}>
+      <button className="flex justify-between text-orange-600" onClick={() => updateInspected(course.number)()}>
         <div className="flex-grow">{course.number} {course.title}</div>
         <div className="w-5 ml-2 items-center font-semibold text-white transition duration-200 ease-in transform rounded select-none bg-primary hover:scale-110" 
             data-tooltip-content={`${course.credits} credits`} 
@@ -244,8 +244,16 @@ const PostReqSection: FC = () => {
 
   const hello3 = <div> This course has no post-reqs </div>;
     return (
-        <div>
-            {hasPostReqs ? [hello, hello2] : hello3}
+        <div className="container relative ">
+
+          <div className="absolute top-0 right-0">
+              <div className="flex justify-center items-center w-7 h-7 text-sm font-semibold text-black transition duration-200 ease-in transform rounded-full bg-gray-200 hover:scale-110" 
+                  data-tooltip-content={`Green: Satisfied all prerequisites. Orange: Not all prerequisites satisfied.`} 
+                  data-tooltip-id="godtip">
+                ?
+              </div>
+          </div>
+          {hasPostReqs ? [hello, hello2] : hello3}
 
         </div>
     )
