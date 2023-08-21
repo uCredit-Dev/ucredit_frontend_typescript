@@ -12,7 +12,7 @@ const login = (cookieVal: string) => {
     .get(`${getAPI(window)}/verifyLogin/${cookieVal}`)
     .then((res) => res.json())
     .then((res) => res);
-}; 
+};
 
 const getPlan = (planId: string, token: string) => {
   return fetchWrapper

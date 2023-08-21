@@ -960,7 +960,6 @@ const checkSemester = (
   return false;
 };
 
-
 /**
  * @param plan the user's plan
  * @param course the course we are interested in
