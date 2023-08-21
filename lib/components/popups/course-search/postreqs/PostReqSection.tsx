@@ -118,11 +118,6 @@ const PostReqSection: FC = () => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [version, courseCache]);
 
-<<<<<<< HEAD
-  console.log("course" + " " + courseToShow?.number);
-  console.log("course" + " " + courseToShow?.postReq);
-
-=======
   function checkIfSatisfied(course) {
     try {
       var str = course.preReqs;
@@ -213,13 +208,6 @@ const PostReqSection: FC = () => {
     return false;
   }
 
-<<<<<<< HEAD
-
-  
->>>>>>> 946dde98 (added pre-req checker)
-
-=======
->>>>>>> 1f8829dc (Fixed prettier issues)
   const updateInspected =
     (courseNumber: string): (() => void) =>
     (): void => {
@@ -240,7 +228,6 @@ const PostReqSection: FC = () => {
       });
     };
 
-<<<<<<< HEAD
   const satisfiedPostReqsComponents = satisfiedPostReqs.map((course, index) => (
     <div
       key={index}
@@ -253,60 +240,9 @@ const PostReqSection: FC = () => {
       >
         <div className="flex-grow">
           {course.number} {course.title}
-=======
-  const hello =
-  postReqsWithSatisfied.map((course, index) => 
-    <div key={index} className="courseItem" style={{borderBottom: '1px solid #ccc', margin: '5px 0', }}>
-      <button className="flex justify-between text-green-600" onClick={() => updateInspected(course.number)()}>
-        <div className="flex-grow">{course.number} {course.title}</div>
-        <div className="w-5 ml-2 items-center font-semibold text-white transition duration-200 ease-in transform rounded select-none bg-primary hover:scale-110" 
-            data-tooltip-content={`${course.credits} credits`} 
-            data-tooltip-id="godtip">{course.credits}</div>
-      </button>
-    </div>
-  );
-
-  const hello2 =
-  postReqsWithoutSatisfied.map((course, index) => 
-    <div key={index} className="courseItem" style={{borderBottom: '1px solid #ccc', margin: '5px 0'}}>
-      <button className="flex justify-between text-orange-600" onClick={() => updateInspected(course.number)()}>
-        <div className="flex-grow">{course.number} {course.title}</div>
-        <div className="w-5 ml-2 items-center font-semibold text-white transition duration-200 ease-in transform rounded select-none bg-primary hover:scale-110" 
-            data-tooltip-content={`${course.credits} credits`} 
-            data-tooltip-id="godtip">{course.credits}</div>
-      </button>
-    </div>
-  );
-
-  const hello4 =
-  inspected.versions[0].postReq.map((course, index) => 
-    <div key={index} className="courseItem" style={{borderBottom: '1px solid #ccc', margin: '5px 0'}}>
-      <button className="flex justify-between" onClick={() => updateInspected(course.number)()}>
-        <div className="flex-grow">{course.number} {course.title}</div>
-        <div className="w-5 ml-2 items-center font-semibold text-white transition duration-200 ease-in transform rounded select-none bg-primary hover:scale-110" 
-            data-tooltip-content={`${course.credits} credits`} 
-            data-tooltip-id="godtip">{course.credits}</div>
-      </button>
-    </div>
-  );
-
-  const hello3 = <div> This course has no post-reqs </div>;
-    return (
-        <div className="container relative ">
-
-          <div className="absolute top-0 right-0">
-              <div className="flex justify-center items-center w-7 h-7 text-sm font-semibold text-black transition duration-200 ease-in transform rounded-full bg-gray-200 hover:scale-110" 
-                  data-tooltip-content={`Green: Satisfied all prerequisites. Orange: Not all prerequisites satisfied.`} 
-                  data-tooltip-id="godtip">
-                ?
-              </div>
-          </div>
-          {hasPostReqs ? [hello, hello2] : hello3}
-
->>>>>>> 480c234e (tooltip, legend coloring)
         </div>
         <div
-          className="w-5 ml-2 items-center font-semibold text-white transition duration-200 ease-in transform rounded select-none bg-primary hover:scale-110"
+          className="w-5 ml-2 mb-1 items-center font-semibold text-white transition duration-200 ease-in transform rounded select-none bg-primary hover:scale-110"
           data-tooltip-content={`${course.credits} credits`}
           data-tooltip-id="godtip"
         >
@@ -331,7 +267,7 @@ const PostReqSection: FC = () => {
             {course.number} {course.title}
           </div>
           <div
-            className="w-5 ml-2 items-center font-semibold text-white transition duration-200 ease-in transform rounded select-none bg-primary hover:scale-110"
+            className="w-5 ml-2 mb-1 items-center font-semibold text-white transition duration-200 ease-in transform rounded select-none bg-primary hover:scale-110"
             data-tooltip-content={`${course.credits} credits`}
             data-tooltip-id="godtip"
           >
@@ -348,9 +284,17 @@ const PostReqSection: FC = () => {
   //   : 'Currently Displaying unsatisfied postreqs, click to display satisfied postreqs';
 
   return (
-    <div>
+    <div className="relative">
+      <div className="absolute top-0 right-0">
+        <div className="flex justify-center items-center w-7 h-7 text-sm font-semibold text-black transition duration-200 ease-in transform rounded-full bg-gray-200 hover:scale-110" 
+            data-tooltip-content={`Green: Satisfied all prerequisites. Orange: Not all prerequisites satisfied.`} 
+            data-tooltip-id="godtip">
+          ?
+        </div>
+      </div>
       {/* <button onClick={() => setSat(!sat)}>{message}</button> */}
       {/* {hasPostReqs ? sat ? satisfiedPostReqsComponents: unsatisfiedPostReqsComponents : noPostReqs} */}
+      
       {hasPostReqs
         ? [satisfiedPostReqsComponents, unsatisfiedPostReqsComponents]
         : noPostReqs}
