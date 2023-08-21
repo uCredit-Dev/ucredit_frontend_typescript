@@ -51,7 +51,7 @@ const Comments: FC<{
   const token = useSelector(selectToken);
   let wrapperRef = useRef(null);
   const [comments, setComments] = useState<JSX.Element[]>([]);
-  const [editComment, setEditComment] = useState<String>("");
+  const [editComment, setEditComment] = useState<String>('');
   // const [visibleUsers, setVisibleUsers] = useState<String[]>([]);
 
   useEffect(() => {
@@ -76,7 +76,6 @@ const Comments: FC<{
     setEditComment(e.target.value);
     // handleEditChange(e) // remove after ux team decides on edit
   };
-
 
   const handleEditChange = (e) => {
     setEditComment(e.target.value);
@@ -163,7 +162,7 @@ const Comments: FC<{
 
   const getComments = (thisThread): JSX.Element[] => {
     if (!thisThread) return [];
-    console.log(thisThread.comments)
+    console.log(thisThread.comments);
     const divs = thisThread.comments.map((c: CommentType) => {
       // if (!c.visible_user_id.includes(user._id)) {
       //   return null;
@@ -187,8 +186,7 @@ const Comments: FC<{
                 className="flex items-center justify-center w-6 h-6 transition-colors duration-150 ease-in rounded-sm cursor-pointer hover:bg-gray-200 inspect-plan-button"
                 onClick={editHandler(c._id)}
               >
-              <PencilAltIcon className="w-5 h-5 stroke-red-500" />
-            
+                <PencilAltIcon className="w-5 h-5 stroke-red-500" />
               </button>
             )}
             {c.commenter_id._id === user._id && (
@@ -292,28 +290,40 @@ const Comments: FC<{
       console.log(err);
     }
   };
-  
-  
-  const [editResponse, setEditResponse] = useState("");
+
+  const [editResponse, setEditResponse] = useState('');
   useEffect(() => {
     if (editResponse) {
       try {
-        userService.editComment({comment_id: editResponse, message: editComment}, token)
+        userService
+          .editComment(
+            { comment_id: editResponse, message: editComment },
+            token,
+          )
           .then((res) => {
             const modifiedComment = res.data;
-            const newThreads = {...threads};
+            const newThreads = { ...threads };
             const commentsArray = [...newThreads[location].comments];
             for (let comment in commentsArray) {
               if (commentsArray[comment]._id === modifiedComment._id) {
-                commentsArray[comment] = {...modifiedComment, commenter_id:{_id: modifiedComment.commenter_id, name: user.name}};
+                commentsArray[comment] = {
+                  ...modifiedComment,
+                  commenter_id: {
+                    _id: modifiedComment.commenter_id,
+                    name: user.name,
+                  },
+                };
                 break;
               }
             }
-            const newThread = {...newThreads[location], comments: commentsArray};
+            const newThread = {
+              ...newThreads[location],
+              comments: commentsArray,
+            };
             newThreads[location] = newThread;
             dispatch(updateThreads(Object.values(newThreads)));
             setThisThread(newThread);
-            setEditResponse("");
+            setEditResponse('');
           })
           .catch((err) => {
             console.log(err);
@@ -322,18 +332,13 @@ const Comments: FC<{
         console.log(err);
       }
     }
-  // eslint-disable-next-line react-hooks/exhaustive-deps
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [editResponse]);
-    
 
-    
-  
-  
   const editHandler = (key) => () => {
     // TODO: figure how to edit comments
     setEditResponse(key);
   };
-
 
   return (
     <div
