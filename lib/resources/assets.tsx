@@ -960,39 +960,6 @@ const checkSemester = (
   return false;
 };
 
-/**
- * @param semester - semester to check against
- * @param courseSemester - semester of course
- */
-const checkSemesterOrCurrent = (
-  semester: SemesterType,
-  courseSemester: SemesterType,
-): boolean => {
-  const uppercaseConverted =
-    courseSemester.charAt(0).toUpperCase() + courseSemester.slice(1);
-  if (
-    uppercaseConverted === 'Fall' ||
-    uppercaseConverted === 'Spring' ||
-    uppercaseConverted === 'Summer' ||
-    uppercaseConverted === 'Intersession'
-  ) {
-    courseSemester = uppercaseConverted;
-  }
-
-  if (courseSemester === 'Fall') {
-    return true;
-  } else if (courseSemester === 'Spring') {
-    return semester !== 'Fall';
-  } else if (courseSemester === 'Intersession') {
-    return semester !== 'Spring' && semester !== 'Fall';
-  } else {
-    return (
-      semester !== 'Intersession' &&
-      semester !== 'Spring' &&
-      semester !== 'Fall'
-    );
-  }
-};
 
 /**
  * @param plan the user's plan

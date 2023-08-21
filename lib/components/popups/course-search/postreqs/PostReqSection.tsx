@@ -9,13 +9,8 @@ import {
   selectInspectedCourse,
 } from '../../../../slices/searchSlice';
 import {
-  filterNNegatives,
-  processPrereqs,
-  checkPrereq,
   getCourse,
   getCourseYear,
-  prereqInPast,
-  prereqInPastOrCurrent,
 } from '../../../../resources/assets';
 import {
   selectCurrentPlanCourses,
@@ -99,7 +94,7 @@ const PostReqSection: FC = () => {
   const [unsatisfiedPostReqs, setHasUnsatisfiedPostReqs] = useState<any[]>([]);
   const tempSatisfiedPostReqs: any[] = [];
   const tempUnsatisfiedPostReqs: any[] = [];
-  const [sat, setSat] = useState<boolean>(true);
+  // const [sat, setSat] = useState<boolean>(true);
 
   useEffect(() => {
     setHasPostReqs(false);
@@ -108,18 +103,16 @@ const PostReqSection: FC = () => {
 
     postReqs.map((course, index) => {
       getCourse(course.number, courseCache, currPlanCourses, index);
-      let satisfied = false;
       if (checkIfSatisfied(course)) {
         tempSatisfiedPostReqs.push({
           ...course,
-          satisfied: true,
         });
       } else {
         tempUnsatisfiedPostReqs.push({
           ...course,
-          satisfied: false,
         });
       }
+      return null;
     });
     setHasSatisfiedPostReqs(tempSatisfiedPostReqs);
     setHasUnsatisfiedPostReqs(tempUnsatisfiedPostReqs);
@@ -183,7 +176,7 @@ const PostReqSection: FC = () => {
           0,
           isCourseBeforeOther(elements[0]) || isCourseBeforeOther(elements[2]),
         );
-        var ind = fullArray.indexOf('OR');
+        ind = fullArray.indexOf('OR');
         console.log(fullArray);
       }
       console.log(fullArray);
@@ -353,9 +346,9 @@ const PostReqSection: FC = () => {
   );
 
   const noPostReqs = <div> This course has no post-reqs </div>;
-  const message = sat
-    ? 'Currently Displaying satisfied postreqs, click to display unsatisfied postreqs'
-    : 'Currently Displaying unsatisfied postreqs, click to display satisfied postreqs';
+  // const message = sat
+  //   ? 'Currently Displaying satisfied postreqs, click to display unsatisfied postreqs'
+  //   : 'Currently Displaying unsatisfied postreqs, click to display satisfied postreqs';
 
   return (
     <div>
