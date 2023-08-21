@@ -24,7 +24,7 @@ const post = (url: string, token: string | undefined, data: Object) => {
 const patch = (
   url: string,
   token: string,
-  data: { comment_id: string, message: string },
+  data: { comment_id: string; message: string },
 ) => {
   return fetch(url, {
     method: 'PATCH',

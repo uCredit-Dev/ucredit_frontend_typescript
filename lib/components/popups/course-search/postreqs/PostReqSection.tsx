@@ -1,5 +1,4 @@
 import React, { useState, useEffect, FC } from 'react';
-import clsx from 'clsx';
 import { useSelector, useDispatch } from 'react-redux';
 import {
   selectSemester,
@@ -8,10 +7,7 @@ import {
   selectVersion,
   selectInspectedCourse,
 } from '../../../../slices/searchSlice';
-import {
-  getCourse,
-  getCourseYear,
-} from '../../../../resources/assets';
+import { getCourse, getCourseYear } from '../../../../resources/assets';
 import {
   selectCurrentPlanCourses,
   selectPlan,
@@ -131,8 +127,9 @@ const PostReqSection: FC = () => {
       var fullArray = str.split('^', 100);
       var ind = fullArray.indexOf(')');
       console.log(fullArray);
+      var elements = ind;
       while (ind !== -1) {
-        var elements = fullArray.splice(ind - 4, 5);
+        elements = fullArray.splice(ind - 4, 5);
         if (elements[2] === 'AND') {
           fullArray.splice(
             ind - 4,
@@ -153,7 +150,7 @@ const PostReqSection: FC = () => {
       }
       ind = fullArray.indexOf('AND');
       while (ind !== -1) {
-        var elements = fullArray.splice(ind - 1, 3);
+        elements = fullArray.splice(ind - 1, 3);
         fullArray.splice(
           ind - 1,
           0,
@@ -165,7 +162,7 @@ const PostReqSection: FC = () => {
 
       ind = fullArray.indexOf('OR');
       while (ind !== -1) {
-        var elements = fullArray.splice(ind - 1, 3);
+        elements = fullArray.splice(ind - 1, 3);
         fullArray.splice(
           ind - 1,
           0,
