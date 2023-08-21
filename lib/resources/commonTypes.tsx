@@ -68,7 +68,7 @@ export type PostReq = {
   title: string;
   credits: string;
   preReqs: string;
-}
+};
 
 // For User courses, which have extra ids with user-specific info and a single term/area that the user chose.
 export type UserCourse = {

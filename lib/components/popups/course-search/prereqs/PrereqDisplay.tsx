@@ -49,7 +49,6 @@ const PrereqDisplay: FC = () => {
   const courseCache = useSelector(selectCourseCache);
   const courseToShow = useSelector(selectCourseToShow);
 
-
   // Component states
   const [prereqDisplayMode, setPrereqDisplayMode] = useState(2);
   const [preReqDisplay, setPreReqDisplay] = useState<JSX.Element[]>([]);

@@ -984,12 +984,8 @@ const checkSemesterOrCurrent = (
   } else if (courseSemester === 'Spring') {
     return semester !== 'Fall';
   } else if (courseSemester === 'Intersession') {
-    return (
-      semester !== 'Spring' &&
-      semester !== 'Fall'
-    );
-  } else 
-  {
+    return semester !== 'Spring' && semester !== 'Fall';
+  } else {
     return (
       semester !== 'Intersession' &&
       semester !== 'Spring' &&
@@ -1012,7 +1008,6 @@ export function getCourseYear(plan: Plan, course: UserCourse): Year | null {
   });
   return year;
 }
-
 
 /**
  * @param currCourses - user's courses

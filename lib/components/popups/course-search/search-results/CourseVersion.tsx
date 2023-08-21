@@ -317,15 +317,17 @@ const CourseVersion: FC<{ setInspectedArea: (area: string) => void }> = ({
             >
               Course Evaluation
             </button>{' '}
-            <button 
-              data-tooltip-content={"Postrequisites are courses that require the current course as a prerequisite."}
+            <button
+              data-tooltip-content={
+                'Postrequisites are courses that require the current course as a prerequisite.'
+              }
               data-tooltip-id="godtip"
               className={clsx(
                 'mr-3 text-xl font-medium hover:border-b-2 border-secondary focus:outline-none',
                 {
                   'border-b-2 -mb-0.5': displayPreReqsView === 2,
                   'hover:-mb-0.5': displayPreReqsView !== 2,
-                }
+                },
               )}
               onClick={() => {
                 setdisplayPreReqsView(2);
@@ -333,7 +335,6 @@ const CourseVersion: FC<{ setInspectedArea: (area: string) => void }> = ({
             >
               Postrequisites
             </button>
-
           </div>
           {getPrereqDisplayMode()}
         </>
