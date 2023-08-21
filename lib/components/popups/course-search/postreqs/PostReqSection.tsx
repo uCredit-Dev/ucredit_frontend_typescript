@@ -13,7 +13,9 @@ import {
   processPrereqs,
   checkPrereq,
   getCourse,
-  prereqInPast
+  getCourseYear,
+  prereqInPast,
+  prereqInPastOrCurrent
 } from '../../../../resources/assets';
 import {
   selectCurrentPlanCourses,
@@ -27,6 +29,7 @@ import {
   Year,
 } from '../../../../resources/commonTypes';
 
+
 const PostReqSection: FC = () => {
   const dispatch = useDispatch();
   const version = useSelector(selectVersion);
@@ -38,7 +41,22 @@ const PostReqSection: FC = () => {
   const courseCache = useSelector(selectCourseCache);
   const courseToShow = useSelector(selectCourseToShow);
 
-
+  const convertTermToInt= (term: string) : number  => {
+    if(term === 'fall') {
+      return 0;
+    }
+    else if(term === 'intersession') {
+      return 2;
+    }
+    else if(term === 'spring') {
+      return 3;
+    }
+    else if( term === 'summer')
+    {
+      return 4;
+    }
+    return 5;
+  } 
 
   /**
    * Parses through the currentPlan years and returns year object corresponding to the year of the prereq or the current year if not found
@@ -55,62 +73,64 @@ const PostReqSection: FC = () => {
     return currentPlan.years[currentPlan.years.length - 1];
   };
 
-  const currYear = getYearById(courseToShow);
-  const currSemester: string =
-  courseToShow !== null
-    ? courseToShow.term.charAt(0).toUpperCase() +
-      courseToShow.term.slice(1)
-    : semester;
-    // This useEffect performs prereq retrieval every time a new course is displayed.
-    useEffect(() => {
-      
-      // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [version, courseCache]);
 
-  // Component states
-  //const [postReqDisplay, setPostReqDisplay] = useState<JSX.Element[]>([]);
-  //const [loaded, setLoaded] = useState<boolean>(false);
+  const currentSemester = courseToShow ? courseToShow.term.toLowerCase() : semester.toLowerCase();
+  const currentYear = getYearById(courseToShow).year;
+  
+  const compareDates = (currentCourseTerm:string, currentCourseYear:number, prereqCourseTerm:string, preReqCourseYear:number| undefined) => 
+  {
+
+    if(preReqCourseYear || 10 < currentCourseYear)
+    {
+      return true;
+    }
+    else if(preReqCourseYear === currentCourseYear) {
+      if(convertTermToInt(prereqCourseTerm) <= convertTermToInt(currentCourseTerm))
+      {
+        return true;
+      }
+      return false;
+    }
+    return false;
+  }
+
+
+
   const [hasPostReqs, setHasPostReqs] = useState<boolean>(false);
-  // const postReqsWithSatisfied = [];
-  // const postReqsWithoutSatisfied = [];
-  const [postReqsWithSatisfied, setHasPostReqsWithSatisfied] = useState<any[]>([]);
-  const [postReqsWithoutSatisfied, setHasPostReqsWithoutSatisfied] = useState<any[]>([]);
-  const postReqsWithSatisfied1: any[] = [];
-  const postReqsWithoutSatisfied1: any[] = [];
 
-  //console.log(currYear.year);
+  const [satisfiedPostReqs, setHasSatisfiedPostReqs] = useState<any[]>([]);
+  const [unsatisfiedPostReqs, setHasUnsatisfiedPostReqs] = useState<any[]>([]);
+  const tempSatisfiedPostReqs: any[] = [];
+  const tempUnsatisfiedPostReqs: any[] = [];
+  const [sat, setSat] = useState<boolean>(true);
+
 
 
   useEffect(() => {
-    // Reset state whenever new inspected course
-    //setPostReqDisplay([]);
-    //setLoaded(false);
     setHasPostReqs(false);
 
     let postReqs = inspected.versions[0].postReq;
 
 
-    postReqs.map((course) => {
-      getCourse(course.number, courseCache, currPlanCourses);
+    postReqs.map((course, index) => {
+      getCourse(course.number, courseCache, currPlanCourses, index);
       let satisfied=false;
       if(checkIfSatisfied(course))
       {
-        postReqsWithSatisfied1.push({
+        tempSatisfiedPostReqs.push({
           ...course,
           satisfied: true,
         });
       }
       else {
-        postReqsWithoutSatisfied1.push({
+        tempUnsatisfiedPostReqs.push({
           ...course,
           satisfied: false,
         });
       }
-      //console.log(postReqsWithSatisfied);
       });
-    setHasPostReqsWithSatisfied(postReqsWithSatisfied1);
-    setHasPostReqsWithoutSatisfied(postReqsWithoutSatisfied1);
-    // If there exists preReqs, we need to process and display them.
+    setHasSatisfiedPostReqs(tempSatisfiedPostReqs);
+    setHasUnsatisfiedPostReqs(tempUnsatisfiedPostReqs);
     if (version !== 'None' && postReqs.length > 0) {
       setHasPostReqs(true);
     }
@@ -130,9 +150,9 @@ const PostReqSection: FC = () => {
       }
       var fullArray= str.split("^", 100);
       var ind=fullArray.indexOf(")");
+      console.log(fullArray);
       while(ind !== -1)
       {
-        
         var elements = fullArray.splice(ind-4, 5);
         if(elements[2]==="AND")
         {
@@ -143,6 +163,8 @@ const PostReqSection: FC = () => {
           fullArray.splice(ind-4, 0, isCourseBeforeOther(elements[1]) || isCourseBeforeOther(elements[3]));
         }
         ind=fullArray.indexOf(")");
+        console.log(fullArray);
+
       }
       ind=fullArray.indexOf("AND");
       while(ind !== -1)
@@ -150,6 +172,8 @@ const PostReqSection: FC = () => {
         var elements = fullArray.splice(ind-1, 3);
         fullArray.splice(ind-1, 0, isCourseBeforeOther(elements[0]) && isCourseBeforeOther(elements[2]));
         ind=fullArray.indexOf("AND");
+        console.log(fullArray);
+
       }
 
       ind=fullArray.indexOf("OR");
@@ -158,7 +182,10 @@ const PostReqSection: FC = () => {
         var elements = fullArray.splice(ind-1, 3);
         fullArray.splice(ind-1, 0, isCourseBeforeOther(elements[0]) || isCourseBeforeOther(elements[2]));
         var ind=fullArray.indexOf("OR");
+        console.log(fullArray);
+
       }
+      console.log(fullArray);
       return isCourseBeforeOther(fullArray[0]);
     } catch (exception)
     {
@@ -167,8 +194,8 @@ const PostReqSection: FC = () => {
 
   }
 
-  //returns true if preReq course is found in plan, and occurs before current semester and year
-  //note, this assumes the current popUp course is not taken yet if its not been added yet!
+  //returns true if preReq course is found in plan, and occurs before or during current semester and year
+  //note, this assumes the current popUp course is taken if its not been added yet!
   function isCourseBeforeOther(preReqCourseString) {
     if(preReqCourseString === true || preReqCourseString === false)
     {
@@ -178,8 +205,11 @@ const PostReqSection: FC = () => {
     {
       if(course.number === preReqCourseString.substring(0,preReqCourseString.length-3))
       {
-        //in case course is in plan twice, only retun true if its definitely found before.
-        if(prereqInPast(course, currYear, semester, currentPlan) === true)
+        const retrievedYear = (getCourseYear(currentPlan, course))?.year;
+        const retrievedSemester = course.term;
+        //in case course is in plan twice, only return true if its definitely found before.
+        if(compareDates(currentSemester, currentYear, retrievedSemester, retrievedYear))
+        // if(prereqInPastOrCurrent(course, currYear , semester, currentPlan) === true)
         {
           return true;
         }
@@ -212,10 +242,10 @@ const PostReqSection: FC = () => {
       });
     };
 
-  const hello =
-  postReqsWithSatisfied.map((course, index) => 
+  const satisfiedPostReqsComponents =
+  satisfiedPostReqs.map((course, index) => 
     <div key={index} className="courseItem" style={{borderBottom: '1px solid #ccc', margin: '5px 0', }}>
-      <button className="flex justify-between text-green-200" onClick={() => updateInspected(course.number)()}>
+      <button className="flex justify-between text-green-700 hover:text-green-900 hover:border-green-900" onClick={() => updateInspected(course.number)()}>
         <div className="flex-grow">{course.number} {course.title}</div>
         <div className="w-5 ml-2 items-center font-semibold text-white transition duration-200 ease-in transform rounded select-none bg-primary hover:scale-110" 
             data-tooltip-content={`${course.credits} credits`} 
@@ -224,10 +254,10 @@ const PostReqSection: FC = () => {
     </div>
   );
 
-  const hello2 =
-  postReqsWithoutSatisfied.map((course, index) => 
+  const unsatisfiedPostReqsComponents =
+  unsatisfiedPostReqs.map((course, index) => 
     <div key={index} className="courseItem" style={{borderBottom: '1px solid #ccc', margin: '5px 0'}}>
-      <button className="flex justify-between text-orange-200" onClick={() => updateInspected(course.number)()}>
+      <button className="flex justify-between hover:text-red-900 text-red-700 hover:border-red-900" onClick={() => updateInspected(course.number)()}>
         <div className="flex-grow">{course.number} {course.title}</div>
         <div className="w-5 ml-2 items-center font-semibold text-white transition duration-200 ease-in transform rounded select-none bg-primary hover:scale-110" 
             data-tooltip-content={`${course.credits} credits`} 
@@ -235,23 +265,16 @@ const PostReqSection: FC = () => {
       </button>
     </div>
   );
+  
+  const noPostReqs = <div> This course has no post-reqs </div>;
+  const message = sat ? "Currently Displaying satisfied postreqs, click to display unsatisfied postreqs" : "Currently Displaying unsatisfied postreqs, click to display satisfied postreqs"
 
-  const hello4 =
-  inspected.versions[0].postReq.map((course, index) => 
-    <div key={index} className="courseItem" style={{borderBottom: '1px solid #ccc', margin: '5px 0'}}>
-      <button className="flex justify-between" onClick={() => updateInspected(course.number)()}>
-        <div className="flex-grow">{course.number} {course.title}</div>
-        <div className="w-5 ml-2 items-center font-semibold text-white transition duration-200 ease-in transform rounded select-none bg-primary hover:scale-110" 
-            data-tooltip-content={`${course.credits} credits`} 
-            data-tooltip-id="godtip">{course.credits}</div>
-      </button>
-    </div>
-  );
-
-  const hello3 = <div> This course has no post-reqs </div>;
     return (
         <div>
-            {hasPostReqs ? [hello, hello2] : hello3}
+            <button onClick={() => setSat(!sat)}>{message}</button>
+            {/* {hasPostReqs ? sat ? satisfiedPostReqsComponents: unsatisfiedPostReqsComponents : noPostReqs} */}
+            {hasPostReqs ? [satisfiedPostReqsComponents, unsatisfiedPostReqsComponents ]: noPostReqs}
+
 
         </div>
     )

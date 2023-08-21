@@ -894,6 +894,40 @@ export const prereqInPast = (
 };
 
 /**
+ * Check's whether prereq is satisfied by the course in the past
+ * @param course - the course
+ * @param year - the year of the course we are checking (not course)
+ * @param semester - semester of the course we are checking (not course)
+ * @param plan - user's plan
+ * @returns - whether the course is in the past
+ */
+export const prereqInPastOrCurrent = (
+  course: UserCourse,
+  year: Year,
+  semester: SemesterType,
+  plan: Plan,
+): boolean => {
+  const retrievedYear = getCourseYear(plan, course);
+  if (retrievedYear !== null) {
+    if (
+      retrievedYear.year < year.year ||
+      (year.year === retrievedYear.year && checkSemester(semester, course.term))
+    ) {
+      return true;
+    } else if (retrievedYear.year > year.year) {
+      return false;
+    } else {
+      return (
+        semesters.indexOf(course.term) <=
+        semesters.indexOf(semester.toLowerCase())
+      );
+    }
+  } else {
+    return false;
+  }
+};
+
+/**
  * @param semester - semester to check against
  * @param courseSemester - semester of course
  */
@@ -927,11 +961,49 @@ const checkSemester = (
 };
 
 /**
+ * @param semester - semester to check against
+ * @param courseSemester - semester of course
+ */
+const checkSemesterOrCurrent = (
+  semester: SemesterType,
+  courseSemester: SemesterType,
+): boolean => {
+  const uppercaseConverted =
+    courseSemester.charAt(0).toUpperCase() + courseSemester.slice(1);
+  if (
+    uppercaseConverted === 'Fall' ||
+    uppercaseConverted === 'Spring' ||
+    uppercaseConverted === 'Summer' ||
+    uppercaseConverted === 'Intersession'
+  ) {
+    courseSemester = uppercaseConverted;
+  }
+
+  if (courseSemester === 'Fall') {
+    return true;
+  } else if (courseSemester === 'Spring') {
+    return semester !== 'Fall';
+  } else if (courseSemester === 'Intersession') {
+    return (
+      semester !== 'Spring' &&
+      semester !== 'Fall'
+    );
+  } else 
+  {
+    return (
+      semester !== 'Intersession' &&
+      semester !== 'Spring' &&
+      semester !== 'Fall'
+    );
+  }
+};
+
+/**
  * @param plan the user's plan
  * @param course the course we are interested in
  * @returns the year of the course
  */
-function getCourseYear(plan: Plan, course: UserCourse): Year | null {
+export function getCourseYear(plan: Plan, course: UserCourse): Year | null {
   let year: Year | null = null;
   plan.years.forEach((currPlanYear) => {
     if (currPlanYear._id === course.year_id) {
