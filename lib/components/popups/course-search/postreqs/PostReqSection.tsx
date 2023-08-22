@@ -126,7 +126,6 @@ const PostReqSection: FC = () => {
       }
       var fullArray = str.split('^', 100);
       var ind = fullArray.indexOf(')');
-      console.log(fullArray);
       var elements = ind;
       while (ind !== -1) {
         elements = fullArray.splice(ind - 4, 5);
@@ -146,7 +145,6 @@ const PostReqSection: FC = () => {
           );
         }
         ind = fullArray.indexOf(')');
-        console.log(fullArray);
       }
       ind = fullArray.indexOf('AND');
       while (ind !== -1) {
@@ -157,7 +155,6 @@ const PostReqSection: FC = () => {
           isCourseBeforeOther(elements[0]) && isCourseBeforeOther(elements[2]),
         );
         ind = fullArray.indexOf('AND');
-        console.log(fullArray);
       }
 
       ind = fullArray.indexOf('OR');
@@ -169,9 +166,7 @@ const PostReqSection: FC = () => {
           isCourseBeforeOther(elements[0]) || isCourseBeforeOther(elements[2]),
         );
         ind = fullArray.indexOf('OR');
-        console.log(fullArray);
       }
-      console.log(fullArray);
       return isCourseBeforeOther(fullArray[0]);
     } catch (exception) {
       return false;
@@ -179,7 +174,7 @@ const PostReqSection: FC = () => {
   }
 
   //returns true if preReq course is found in plan, and occurs before or during current semester and year
-  //note, this assumes the current popUp course is taken if its not been added yet!
+  //note, this assumes the currently clicked course is not taken
   function isCourseBeforeOther(preReqCourseString) {
     if (preReqCourseString === true || preReqCourseString === false) {
       return preReqCourseString;
