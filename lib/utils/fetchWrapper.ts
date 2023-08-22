@@ -18,6 +18,7 @@ const post = (url: string, token: string | undefined, data: Object) => {
   });
 };
 
+
 const _delete = (
   url: string,
   token: string,
