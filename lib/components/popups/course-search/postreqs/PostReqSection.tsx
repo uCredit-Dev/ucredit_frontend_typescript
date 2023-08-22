@@ -95,7 +95,7 @@ const PostReqSection: FC = () => {
   useEffect(() => {
     setHasPostReqs(false);
 
-    let postReqs = inspected.versions[0].postReq;
+    let postReqs = inspected !== 'None' ? inspected.versions[0].postReq : [];
 
     postReqs.map((course, index) => {
       getCourse(course.number, courseCache, currPlanCourses, index);
