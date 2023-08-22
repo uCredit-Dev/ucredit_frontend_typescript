@@ -301,3 +301,5 @@ const PostReqSection: FC = () => {
     </div>
   );
 };
+
+export default PostReqSection;
