@@ -18,6 +18,7 @@ import {
   SISRetrievedCourse,
   UserCourse,
   Year,
+  PostReq,
 } from '../../../../resources/commonTypes';
 
 const PostReqSection: FC = () => {
@@ -31,21 +32,28 @@ const PostReqSection: FC = () => {
   const courseCache = useSelector(selectCourseCache);
   const courseToShow = useSelector(selectCourseToShow);
 
-  const convertTermToInt = (term: string): number => {
+  enum Terms {
+    fall = 0,
+    intersession = 1,
+    spring = 2,
+    summer = 3,
+    error = 4,
+  }
+  const convertTermToInt = (term: string): Terms => {
     if (term === 'fall') {
-      return 0;
+      return Terms.fall;
     } else if (term === 'intersession') {
-      return 2;
+      return Terms.intersession;
     } else if (term === 'spring') {
-      return 3;
+      return Terms.spring;
     } else if (term === 'summer') {
-      return 4;
+      return Terms.summer;
     }
-    return 5;
+    return Terms.error;
   };
 
   /**
-   * Parses through the currentPlan years and returns year object corresponding to the year of the prereq or the current year if not found
+   * Parses through the currentPlan years and returns year object corresponding to the year of the prereq or the year the current popup corresponds to.
    * @param toShow - course to find year of
    *  @returns year object
    */
@@ -73,23 +81,22 @@ const PostReqSection: FC = () => {
     if (preReqCourseYear || 10 < currentCourseYear) {
       return true;
     } else if (preReqCourseYear === currentCourseYear) {
-      if (
-        convertTermToInt(prereqCourseTerm) <=
-        convertTermToInt(currentCourseTerm)
-      ) {
-        return true;
-      }
-      return false;
+      return (
+        convertTermToInt(prereqCourseTerm.toLowerCase()) <=
+        convertTermToInt(currentCourseTerm.toLowerCase())
+      );
     }
     return false;
   };
 
   const [hasPostReqs, setHasPostReqs] = useState<boolean>(false);
 
-  const [satisfiedPostReqs, setHasSatisfiedPostReqs] = useState<any[]>([]);
-  const [unsatisfiedPostReqs, setHasUnsatisfiedPostReqs] = useState<any[]>([]);
-  const tempSatisfiedPostReqs: any[] = [];
-  const tempUnsatisfiedPostReqs: any[] = [];
+  const [satisfiedPostReqs, setHasSatisfiedPostReqs] = useState<PostReq[]>([]);
+  const [unsatisfiedPostReqs, setHasUnsatisfiedPostReqs] = useState<PostReq[]>(
+    [],
+  );
+  const tempSatisfiedPostReqs: PostReq[] = [];
+  const tempUnsatisfiedPostReqs: PostReq[] = [];
   // const [sat, setSat] = useState<boolean>(true);
 
   useEffect(() => {
@@ -97,16 +104,12 @@ const PostReqSection: FC = () => {
 
     let postReqs = inspected !== 'None' ? inspected.versions[0].postReq : [];
 
-    postReqs.map((course, index) => {
+    postReqs.forEach((course, index) => {
       getCourse(course.number, courseCache, currPlanCourses, index);
       if (checkIfSatisfied(course)) {
-        tempSatisfiedPostReqs.push({
-          ...course,
-        });
+        tempSatisfiedPostReqs.push(course);
       } else {
-        tempUnsatisfiedPostReqs.push({
-          ...course,
-        });
+        tempUnsatisfiedPostReqs.push(course);
       }
       return null;
     });
@@ -118,34 +121,55 @@ const PostReqSection: FC = () => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [version, courseCache]);
 
+  //preReqs is of the form (AS.050.111[C]^OR^(^AS.050.112[C]^AND^AS.050.113^)^)
   function checkIfSatisfied(course) {
+    console.log(course.preReqs);
     try {
-      var str = course.preReqs;
+      let str = course.preReqs;
       if (course.preReqs.length === 0) {
         return false;
       }
-      var fullArray = str.split('^', 100);
-      var ind = fullArray.indexOf(')');
-      var elements = ind;
+      //separates preReqs into components by using '^' as a delimiter.
+      let fullArray = str.split('^', 100);
+
+      let ind = fullArray.indexOf(')');
+      let elements = ind;
+      //repeats loops until you run out of ending parenthesis.
       while (ind !== -1) {
+        //removes 5 items prior to end paranthesis of one of the following two forms:
+        // Case 1:    [(, CourseNum, operation, CourseNum, )]
+        // Case 2:    [previousOperation, CourseNum, operation, CourseNum, )]
         elements = fullArray.splice(ind - 4, 5);
+
+        // isCourseBeforeOther(courseNum) returns true/false if that course has already been taken/not taken.
+        // Thus, replacedElement simply becomes the result of CourseNum boolean operation CourseNum
+        let replacedElement = '';
         if (elements[2] === 'AND') {
-          fullArray.splice(
-            ind - 4,
-            0,
+          replacedElement =
             isCourseBeforeOther(elements[1]) &&
-              isCourseBeforeOther(elements[3]),
-          );
+            isCourseBeforeOther(elements[3]);
         } else {
-          fullArray.splice(
-            ind - 4,
-            0,
+          replacedElement =
             isCourseBeforeOther(elements[1]) ||
-              isCourseBeforeOther(elements[3]),
-          );
+            isCourseBeforeOther(elements[3]);
+          // fullArray.splice(
+          //   ind - 4,
+          //   0,
+          //   isCourseBeforeOther(elements[1]) ||
+          //     isCourseBeforeOther(elements[3]),
+          // );
+        }
+        //if this is case 1, replace the entire expression with true or false.
+        if (elements[0] === '(') {
+          fullArray.splice(ind - 4, 0, replacedElement);
+          //if this is case 2, replace just the courseNum, operation, and second course Num with true or false.
+        } else {
+          fullArray.splice(ind - 4, 0, elements[0], replacedElement, ')');
         }
         ind = fullArray.indexOf(')');
       }
+      //Now repeats to resolve all of the AND operations left, as we know there are no more
+      // paranthesis.
       ind = fullArray.indexOf('AND');
       while (ind !== -1) {
         elements = fullArray.splice(ind - 1, 3);
@@ -156,7 +180,7 @@ const PostReqSection: FC = () => {
         );
         ind = fullArray.indexOf('AND');
       }
-
+      //Now repeats until all of the OR operations are resolved.
       ind = fullArray.indexOf('OR');
       while (ind !== -1) {
         elements = fullArray.splice(ind - 1, 3);
@@ -174,7 +198,7 @@ const PostReqSection: FC = () => {
   }
 
   //returns true if preReq course is found in plan, and occurs before or during current semester and year
-  //note, this assumes the currently clicked course is not taken
+  //note, this assumes the currently clicked course is taken if it's in the plan.
   function isCourseBeforeOther(preReqCourseString) {
     if (preReqCourseString === true || preReqCourseString === false) {
       return preReqCourseString;
@@ -195,7 +219,6 @@ const PostReqSection: FC = () => {
             retrievedYear,
           )
         ) {
-          // if(prereqInPastOrCurrent(course, currYear , semester, currentPlan) === true)
           return true;
         }
       }

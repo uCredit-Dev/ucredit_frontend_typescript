@@ -23,7 +23,7 @@ export type Course = {
   bio: string;
   tags: string[];
   preReq: string[];
-  postReq: any[];
+  postReq: PostReq[];
   restrictions: Restriction[];
   version?: string;
   level: string;
