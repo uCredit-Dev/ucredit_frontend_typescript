@@ -20,6 +20,7 @@ import {
   Year,
   PostReq,
 } from '../../../../resources/commonTypes';
+import { inspect } from 'util';
 
 const PostReqSection: FC = () => {
   const dispatch = useDispatch();
@@ -123,7 +124,6 @@ const PostReqSection: FC = () => {
 
   //preReqs is of the form (AS.050.111[C]^OR^(^AS.050.112[C]^AND^AS.050.113^)^)
   function checkIfSatisfied(course) {
-    console.log(course.preReqs);
     try {
       let str = course.preReqs;
       if (course.preReqs.length === 0) {
