@@ -96,15 +96,23 @@ const PostReqSection: FC = () => {
   const [unsatisfiedPostReqs, setHasUnsatisfiedPostReqs] = useState<PostReq[]>(
     [],
   );
-  const tempSatisfiedPostReqs: PostReq[] = [];
-  const tempUnsatisfiedPostReqs: PostReq[] = [];
   // const [sat, setSat] = useState<boolean>(true);
 
   useEffect(() => {
     setHasPostReqs(false);
 
-    let postReqs = inspected !== 'None' ? inspected.versions[0].postReq : [];
-
+    let postReqs: PostReq[] = [];
+    if(inspected !== 'None') {
+      inspected.versions.forEach((courseVersion) => {
+        if(version!== 'None') {
+          if(courseVersion.term === version.term) {
+            postReqs=courseVersion.postReq;
+          }
+        }
+      });
+    }
+    const tempSatisfiedPostReqs: PostReq[] = [];
+    const tempUnsatisfiedPostReqs: PostReq[] = [];
     postReqs.forEach((course, index) => {
       getCourse(course.number, courseCache, currPlanCourses, index);
       if (checkIfSatisfied(course)) {
@@ -123,17 +131,16 @@ const PostReqSection: FC = () => {
   }, [version, courseCache]);
 
   //preReqs is of the form (AS.050.111[C]^OR^(^AS.050.112[C]^AND^AS.050.113^)^)
-  function checkIfSatisfied(course) {
+  function checkIfSatisfied(course: PostReq) {
     try {
-      let str = course.preReqs;
-      if (course.preReqs.length === 0) {
+      let str = course.versions[0].preReqs;
+      if (course.versions[0].preReqs.length === 0) {
         return false;
       }
       //separates preReqs into components by using '^' as a delimiter.
-      let fullArray = str.split('^', 100);
-
+      let fullArray: (string| boolean)[] = str.split('^', 100);
       let ind = fullArray.indexOf(')');
-      let elements = ind;
+      let elements:(string| boolean)[] = [];
       //repeats loops until you run out of ending parenthesis.
       while (ind !== -1) {
         //removes 5 items prior to end paranthesis of one of the following two forms:
@@ -261,10 +268,10 @@ const PostReqSection: FC = () => {
         </div>
         <div
           className="w-5 ml-2 mb-1 items-center font-semibold text-white transition duration-200 ease-in transform rounded select-none bg-primary hover:scale-110"
-          data-tooltip-content={`${course.credits} credits`}
+          data-tooltip-content={`${course.versions[0].credits} credits`}
           data-tooltip-id="godtip"
         >
-          {course.credits}
+          {course.versions[0].credits}
         </div>
       </button>
     </div>
@@ -286,10 +293,10 @@ const PostReqSection: FC = () => {
           </div>
           <div
             className="w-5 ml-2 mb-1 items-center font-semibold text-white transition duration-200 ease-in transform rounded select-none bg-primary hover:scale-110"
-            data-tooltip-content={`${course.credits} credits`}
+            data-tooltip-content={`${course.versions[0].credits} credits`}
             data-tooltip-id="godtip"
           >
-            {course.credits}
+            {course.versions[0].credits}
           </div>
         </button>
       </div>

@@ -62,12 +62,16 @@ export type CourseEvals = {
   term: string;
 };
 
+export type PostReqVersions = {
+  preReqs: string;
+  credits: string;
+  term: string;
+}
 export type PostReq = {
   courseId: string;
   number: string;
   title: string;
-  credits: string;
-  preReqs: string;
+  versions: PostReqVersions[];
 };
 
 // For User courses, which have extra ids with user-specific info and a single term/area that the user chose.
