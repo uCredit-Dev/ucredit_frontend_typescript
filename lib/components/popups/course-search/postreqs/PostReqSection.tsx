@@ -20,7 +20,6 @@ import {
   Year,
   PostReq,
 } from '../../../../resources/commonTypes';
-import { inspect } from 'util';
 
 const PostReqSection: FC = () => {
   const dispatch = useDispatch();
@@ -102,11 +101,11 @@ const PostReqSection: FC = () => {
     setHasPostReqs(false);
 
     let postReqs: PostReq[] = [];
-    if(inspected !== 'None') {
+    if (inspected !== 'None') {
       inspected.versions.forEach((courseVersion) => {
-        if(version!== 'None') {
-          if(courseVersion.term === version.term) {
-            postReqs=courseVersion.postReq;
+        if (version !== 'None') {
+          if (courseVersion.term === version.term) {
+            postReqs = courseVersion.postReq;
           }
         }
       });
@@ -138,9 +137,9 @@ const PostReqSection: FC = () => {
         return false;
       }
       //separates preReqs into components by using '^' as a delimiter.
-      let fullArray: (string| boolean)[] = str.split('^', 100);
+      let fullArray: (string | boolean)[] = str.split('^', 100);
       let ind = fullArray.indexOf(')');
-      let elements:(string| boolean)[] = [];
+      let elements: (string | boolean)[] = [];
       //repeats loops until you run out of ending parenthesis.
       while (ind !== -1) {
         //removes 5 items prior to end paranthesis of one of the following two forms:

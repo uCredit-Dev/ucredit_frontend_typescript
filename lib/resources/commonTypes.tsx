@@ -66,7 +66,7 @@ export type PostReqVersions = {
   preReqs: string;
   credits: string;
   term: string;
-}
+};
 export type PostReq = {
   courseId: string;
   number: string;
