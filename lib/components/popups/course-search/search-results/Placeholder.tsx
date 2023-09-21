@@ -368,7 +368,6 @@ const Placeholder: FC<{ addCourse: (plan?: Plan) => void }> = (props) => {
             options={[
               'Lower Level Undergraduate',
               'Upper Level Undergraduate',
-              'none',
             ].map((option: string) => ({
               label: option,
               value: option,
