@@ -122,29 +122,30 @@ const CourseDisplayPopup: FC = () => {
   }, []);
 
   // Gets current year name.
-  const getYear = (newPlan: Plan): Year | null => {
+  const getYear = (newPlan: Plan, year_id: string): Year | null => {
     let out: Year | null = null;
-    if (courseToShow !== null) {
-      newPlan.years.forEach((planYear) => {
-        if (planYear._id === courseToShow.year_id) {
-          out = planYear;
-        }
-      });
-    }
+    newPlan.years.forEach((planYear) => {
+      if (planYear._id === year_id) {
+        out = planYear;
+      }
+    });
     return out;
   };
 
   // Updates distribution bars upon successfully adding a course.
-  const addCourse = (plan?: Plan): void => {
+  const addCourse = (plan?: Plan, year_id?: string, term?: string): void => {
     if (version !== 'None' && courseToShow !== null && plan !== undefined) {
-      const addingYear: Year | null = getYear(plan);
+      const addingYear: Year | null = getYear(
+        plan,
+        year_id || courseToShow.year_id,
+      );
       const body = {
         user_id: user._id,
-        year_id: courseToShow.year_id !== null ? courseToShow.year_id : '',
+        year_id: addingYear !== null ? addingYear._id : '',
         plan_id: plan._id,
         title: version.title,
         year: addingYear !== null ? addingYear.name : '',
-        term: courseToShow.term,
+        term: term || courseToShow.term,
         credits: version.credits === '' ? 0 : version.credits,
         distribution_ids: plan.distribution_ids,
         isPlaceholder: placeholder,
@@ -213,7 +214,7 @@ const CourseDisplayPopup: FC = () => {
   const updateYears =
     (newYears: Year[], newUserCourse: UserCourse) =>
     (year: Year): void => {
-      if (courseToShow !== null && year._id === courseToShow.year_id) {
+      if (newUserCourse !== null && year._id === newUserCourse.year_id) {
         const yCourses = [...year.courses, newUserCourse];
         newYears.push({ ...year, courses: yCourses });
       } else {
