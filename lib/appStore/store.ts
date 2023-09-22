@@ -4,7 +4,7 @@ import userReducer from '../slices/userSlice';
 import searchReducer from '../slices/searchSlice';
 import currentPlanReducer from '../slices/currentPlanSlice';
 import popupReducer from '../slices/popupSlice';
-import roadmapSearchSlice from '../slices/roadmapSearchSlice';
+import experimentReducer from '../slices/experimentSlice';
 
 export const store = configureStore({
   reducer: {
@@ -13,8 +13,7 @@ export const store = configureStore({
     search: searchReducer,
     currentPlan: currentPlanReducer,
     popup: popupReducer,
-    roadmapSearch: roadmapSearchSlice,
-    // experiment: experimentReducer,
+    experiment: experimentReducer,
   },
   middleware: (getDefaultMiddleware) =>
     getDefaultMiddleware({

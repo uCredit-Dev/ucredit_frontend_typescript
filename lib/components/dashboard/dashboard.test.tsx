@@ -32,7 +32,6 @@ let mockStore = configureStore({
     search: searchReducer,
     currentPlan: currentPlanReducer,
     popup: popupReducer,
-    // experiment: experimentReducer,
   },
   middleware: (getDefaultMiddleware) =>
     getDefaultMiddleware({

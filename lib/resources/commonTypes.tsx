@@ -101,6 +101,7 @@ export type Plan = {
   numYears: number;
   years: Year[];
   reviewers: any[];
+  updatedAt: Date;
 };
 
 type Affiliation = 'STUDENT' | 'FACULTY' | 'STAFF';
@@ -264,7 +265,6 @@ export enum ReviewMode {
   View = 'view',
   Edit = 'edit',
   None = '',
-  RoadMap = 'roadmap',
 }
 
 export interface ThreadType {
