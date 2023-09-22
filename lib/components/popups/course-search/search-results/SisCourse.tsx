@@ -36,7 +36,7 @@ import {
   updateShowingCart,
 } from '../../../../slices/popupSlice';
 import { getAPI } from '../../../../resources/assets';
-import { ChevronDownIcon, XIcon } from '@heroicons/react/outline';
+import { ChevronDownIcon, XIcon, PlusIcon } from '@heroicons/react/outline';
 import { QuestionMarkCircleIcon } from '@heroicons/react/solid';
 import {
   selectCartInvokedBySemester,
@@ -339,7 +339,7 @@ const SisCourse: FC<{
             'bg-slate-300 hover:bg-slate-300':
               cartInvokedBySemester && reviewMode === ReviewMode.View,
           },
-          'w-auto h-10 p-2 mt-2 mx-auto text-white transition duration-200 ease-in transform rounded md:hover:bg-secondary md:bg-primary focus:outline-none hover:scale-105 bg-secondary',
+          'flex justify-center items-center pl-5 pr-4 py-4 mx-4.5 text-white rounded-md hover:bg-buttonHover focus:outline-none hover:scale-105 bg-button drop-shadow-2xl backdrop-opacity-15 backdrop-blur-2xl',
         )}
         onClick={() => {
           if (props.cart) {
@@ -351,7 +351,8 @@ const SisCourse: FC<{
         }}
         disabled={cartInvokedBySemester && reviewMode === ReviewMode.View}
       >
-        Add Course
+        <p className="text-md font-bold">Add Course</p>
+        <PlusIcon className="h-4 ml-1" />
       </button>
     ) : (
       <button
