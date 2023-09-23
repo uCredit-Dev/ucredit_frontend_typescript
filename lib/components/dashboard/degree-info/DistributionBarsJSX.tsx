@@ -32,7 +32,6 @@ const DistributionBarsJSX: FC<{ major: Major }> = ({ major }) => {
   const courseCache = useSelector(selectCourseCache);
   const currPlanCourses = useSelector(selectCurrentPlanCourses);
   const totalCredits = useSelector(selectTotalCredits);
-  // TODO: for total taken credits
   const [totalTakenCredits, setTotalTakenCredits] = useState(0);
   const [calculated, setCalculated] = useState<boolean>(false);
   const [distributionBarsJSX, setDistributionBarsJSX] = useState<JSX.Element[]>(
@@ -51,14 +50,13 @@ const DistributionBarsJSX: FC<{ major: Major }> = ({ major }) => {
     _id: '',
     name: '', 
     courses: [],
-    year: new Date().getFullYear(), // TODO: check if this is correct
+    year: new Date().getFullYear(),
     plan_id: '',
     user_id: '',
   };
   const currentTerm: SemesterType = getCurrentTerm();
 
   // Gets the current term
-  // TODO: check if month logic is correct
   function getCurrentTerm(): SemesterType {
     const month = new Date().getMonth();
     if (month >= 1 && month <= 5) {
@@ -143,8 +141,8 @@ const DistributionBarsJSX: FC<{ major: Major }> = ({ major }) => {
               totalCredits >= (major !== null ? major.total_degree_credit : 0)
             }
             general={true}
-            plannedcolor=""
-            takencolor=""
+            plannedcolor="lightgreen"
+            takencolor="mediumseagreen"
           />
         </div>        
       </div>,
@@ -212,6 +210,7 @@ const DistributionBarsJSX: FC<{ major: Major }> = ({ major }) => {
   ) => {
     let reqCopy: [string, requirements[]][] = copyReqs(reqs);
     let count: number = 0;
+    let temp_total_taken = 0;
     const checked: Course[] = [];
     for (let course of coursesCopy) {
       setCalculated(false);
@@ -249,14 +248,19 @@ const DistributionBarsJSX: FC<{ major: Major }> = ({ major }) => {
         checked.push(courseObj.resp);
       }
       const localReqCopy: [string, requirements[]][] = copyReqs(reqCopy);
-      if (!counted)
+      if (!counted) {
         updateReqs(localReqCopy, courseObj.resp, course, updatingPlan);
+        if (prereqInPast(course, currentYear, currentTerm, updatingPlan)) {
+          temp_total_taken += course.credits;
+        }
+      }
       reqCopy = localReqCopy;
       count++;
       if (count === courses.length) {
         setDistributions({ plan: updatingPlan, distr: reqCopy });
       }
     }
+    setTotalTakenCredits(temp_total_taken);
   };
 
   const updateReqs = (
@@ -288,7 +292,6 @@ const DistributionBarsJSX: FC<{ major: Major }> = ({ major }) => {
           reqs[i][1][0].fulfilled_credits += parseInt(courseObj.credits);
           distDoubleCount = req.double_count; // set double_count, if any
         }
-        // TODO: for taken variable
         if (
           req.taken_credits < req.fulfilled_credits ||
           (req.taken_credits === 0 && req.fulfilled_credits === 0)
@@ -296,7 +299,7 @@ const DistributionBarsJSX: FC<{ major: Major }> = ({ major }) => {
           if (prereqInPast(course, currentYear, currentTerm, plan)) {
             reqs[i][1][0].taken_credits += parseInt(courseObj.credits);
             setTotalTakenCredits(totalTakenCredits + parseInt(courseObj.credits));
-            // course.taken = true;
+            //course.taken = true;
             distDoubleCount = req.double_count; // set double_count, if any
           }
         }
@@ -341,7 +344,6 @@ const DistributionBarsJSX: FC<{ major: Major }> = ({ major }) => {
             reqs[i][1][j].fulfilled_credits += parseInt(courseObj.credits);
             fineDoubleCount = fineReq.double_count;
           }
-          // TODO: for taken variable
           if (
             fineReq.taken_credits < fineReq.fulfilled_credits ||
             (fineReq.taken_credits === 0 && fineReq.fulfilled_credits === 0)
