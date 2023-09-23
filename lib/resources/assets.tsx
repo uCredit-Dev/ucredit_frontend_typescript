@@ -873,7 +873,7 @@ const semesters: string[] = ['fall', 'intersession', 'spring', 'summer'];
  * @param plan - user's plan
  * @returns - whether the course is in the past
  */
-const prereqInPast = (
+export const prereqInPast = (
   course: UserCourse,
   year: Year,
   semester: SemesterType,
@@ -891,6 +891,40 @@ const prereqInPast = (
     } else {
       return (
         semesters.indexOf(course.term) <
+        semesters.indexOf(semester.toLowerCase())
+      );
+    }
+  } else {
+    return false;
+  }
+};
+
+/**
+ * Check's whether prereq is satisfied by the course in the past
+ * @param course - the course
+ * @param year - the year of the course we are checking (not course)
+ * @param semester - semester of the course we are checking (not course)
+ * @param plan - user's plan
+ * @returns - whether the course is in the past
+ */
+export const prereqInPastOrCurrent = (
+  course: UserCourse,
+  year: Year,
+  semester: SemesterType,
+  plan: Plan,
+): boolean => {
+  const retrievedYear = getCourseYear(plan, course);
+  if (retrievedYear !== null) {
+    if (
+      retrievedYear.year < year.year ||
+      (year.year === retrievedYear.year && checkSemester(semester, course.term))
+    ) {
+      return true;
+    } else if (retrievedYear.year > year.year) {
+      return false;
+    } else {
+      return (
+        semesters.indexOf(course.term) <=
         semesters.indexOf(semester.toLowerCase())
       );
     }
@@ -937,7 +971,7 @@ const checkSemester = (
  * @param course the course we are interested in
  * @returns the year of the course
  */
-function getCourseYear(plan: Plan, course: UserCourse): Year | null {
+export function getCourseYear(plan: Plan, course: UserCourse): Year | null {
   let year: Year | null = null;
   plan.years.forEach((currPlanYear) => {
     if (currPlanYear._id === course.year_id) {

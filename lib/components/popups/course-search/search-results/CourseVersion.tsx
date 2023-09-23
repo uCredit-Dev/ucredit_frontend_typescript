@@ -6,6 +6,7 @@ import { getColors } from '../../../../resources/assets';
 import { selectVersion } from '../../../../slices/searchSlice';
 import PrereqDisplay from '../prereqs/PrereqDisplay';
 import CourseEvalSection from './CourseEvalSection';
+import PostReqSection from '../postreqs/PostReqSection';
 
 /**
  * A component showing the specific version of the course at a particular semester/year
@@ -182,8 +183,15 @@ const CourseVersion: FC<{ setInspectedArea: (area: string) => void }> = ({
     else return null;
   };
 
-  const getPrereqDisplayMode = () =>
-    displayPreReqsView === 1 ? <PrereqDisplay /> : <CourseEvalSection />;
+  const getPrereqDisplayMode = () => {
+    if (displayPreReqsView === 1) {
+      return <PrereqDisplay />;
+    } else if (displayPreReqsView === 2) {
+      return <PostReqSection />;
+    } else {
+      return <CourseEvalSection />;
+    }
+  };
 
   const getWIText = () => (version !== 'None' && version.wi ? 'Yes' : 'No');
 
@@ -280,7 +288,20 @@ const CourseVersion: FC<{ setInspectedArea: (area: string) => void }> = ({
             </p>
             {getShowMoreText()}
           </div>
-          <div className="flex flex-row border-b-2">
+          <div className="flex flex-row border-b-2 relative">
+            {displayPreReqsView === 2 ? (
+              <div className="absolute top-0 right-0">
+                <div
+                  className="flex justify-center items-center w-7 h-7 text-sm font-semibold text-black transition duration-200 ease-in transform rounded-full bg-gray-200 hover:scale-110"
+                  data-tooltip-content={`Green: Satisfied all prerequisites. Red: Not all prerequisites satisfied.`}
+                  data-tooltip-id="godtip"
+                >
+                  ?
+                </div>
+              </div>
+            ) : (
+              <></>
+            )}
             <button
               className={clsx(
                 'mr-3 text-xl font-medium hover:border-b-2 border-secondary focus:outline-none',
@@ -309,6 +330,24 @@ const CourseVersion: FC<{ setInspectedArea: (area: string) => void }> = ({
             >
               Course Evaluation
             </button>{' '}
+            <button
+              data-tooltip-content={
+                'Postrequisites are courses that require the current course as a prerequisite.'
+              }
+              data-tooltip-id="godtip"
+              className={clsx(
+                'mr-3 text-xl font-medium hover:border-b-2 border-secondary focus:outline-none',
+                {
+                  'border-b-2 -mb-0.5': displayPreReqsView === 2,
+                  'hover:-mb-0.5': displayPreReqsView !== 2,
+                },
+              )}
+              onClick={() => {
+                setdisplayPreReqsView(2);
+              }}
+            >
+              Postrequisites
+            </button>
           </div>
           {getPrereqDisplayMode()}
         </>
