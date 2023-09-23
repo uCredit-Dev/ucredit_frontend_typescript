@@ -289,15 +289,19 @@ const CourseVersion: FC<{ setInspectedArea: (area: string) => void }> = ({
             {getShowMoreText()}
           </div>
           <div className="flex flex-row border-b-2 relative">
-            {displayPreReqsView === 2 ? <div className="absolute top-0 right-0">
-              <div
-                className="flex justify-center items-center w-7 h-7 text-sm font-semibold text-black transition duration-200 ease-in transform rounded-full bg-gray-200 hover:scale-110"
-                data-tooltip-content={`Green: Satisfied all prerequisites. Orange: Not all prerequisites satisfied.`}
-                data-tooltip-id="godtip"
-              >
-                ?
+            {displayPreReqsView === 2 ? (
+              <div className="absolute top-0 right-0">
+                <div
+                  className="flex justify-center items-center w-7 h-7 text-sm font-semibold text-black transition duration-200 ease-in transform rounded-full bg-gray-200 hover:scale-110"
+                  data-tooltip-content={`Green: Satisfied all prerequisites. Orange: Not all prerequisites satisfied.`}
+                  data-tooltip-id="godtip"
+                >
+                  ?
+                </div>
               </div>
-            </div> : <></>}
+            ) : (
+              <></>
+            )}
             <button
               className={clsx(
                 'mr-3 text-xl font-medium hover:border-b-2 border-secondary focus:outline-none',
