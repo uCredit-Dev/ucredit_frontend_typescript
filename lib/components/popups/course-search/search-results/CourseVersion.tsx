@@ -293,7 +293,7 @@ const CourseVersion: FC<{ setInspectedArea: (area: string) => void }> = ({
               <div className="absolute top-0 right-0">
                 <div
                   className="flex justify-center items-center w-7 h-7 text-sm font-semibold text-black transition duration-200 ease-in transform rounded-full bg-gray-200 hover:scale-110"
-                  data-tooltip-content={`Green: Satisfied all prerequisites. Orange: Not all prerequisites satisfied.`}
+                  data-tooltip-content={`Green: Satisfied all prerequisites. Red: Not all prerequisites satisfied.`}
                   data-tooltip-id="godtip"
                 >
                   ?
