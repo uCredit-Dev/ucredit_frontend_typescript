@@ -147,6 +147,12 @@ export const currentPlanSlice = createSlice({
     ) => {
       state.selectedDistribution = action.payload;
     },
+    updateCoursesTakenStatus: (
+      state: any,
+      action: PayloadAction<{index: number, taken: boolean}>,
+    ) => {
+      state.currentPlanCourses[action.payload.index].taken = action.payload.taken;
+    }
   },
 });
 
@@ -165,6 +171,7 @@ export const {
   updateSelectedThread,
   updateSelectedMajor,
   updateSelectedDistribution,
+  updateCoursesTakenStatus,
 } = currentPlanSlice.actions;
 
 // The function below is called a selector and allows us to select a value from

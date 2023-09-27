@@ -15,6 +15,7 @@ import {
   selectCurrentPlanCourses,
   updateDistributions,
   selectTotalCredits,
+  updateCoursesTakenStatus,
 } from '../../../slices/currentPlanSlice';
 import { selectCourseCache } from '../../../slices/userSlice';
 import CourseBar from './CourseBar';
@@ -23,7 +24,6 @@ import {
   getRequirements,
   requirements,
 } from './distributionFunctions';
-import { Console } from 'console';
 
 const DistributionBarsJSX: FC<{ major: Major }> = ({ major }) => {
   const dispatch = useDispatch();
@@ -249,10 +249,13 @@ const DistributionBarsJSX: FC<{ major: Major }> = ({ major }) => {
       }
       const localReqCopy: [string, requirements[]][] = copyReqs(reqCopy);
       if (!counted) {
-        updateReqs(localReqCopy, courseObj.resp, course, updatingPlan);
         if (prereqInPast(course, currentYear, currentTerm, updatingPlan)) {
+          dispatch(updateCoursesTakenStatus({index: count, taken: true}));
           temp_total_taken += course.credits;
+        } else {
+          dispatch(updateCoursesTakenStatus({index: count, taken: false}));
         }
+        updateReqs(localReqCopy, courseObj.resp, course, updatingPlan);
       }
       reqCopy = localReqCopy;
       count++;
@@ -299,7 +302,7 @@ const DistributionBarsJSX: FC<{ major: Major }> = ({ major }) => {
           if (prereqInPast(course, currentYear, currentTerm, plan)) {
             reqs[i][1][0].taken_credits += parseInt(courseObj.credits);
             setTotalTakenCredits(totalTakenCredits + parseInt(courseObj.credits));
-            //course.taken = true;
+            // course.taken = true;
             distDoubleCount = req.double_count; // set double_count, if any
           }
         }

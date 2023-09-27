@@ -13,6 +13,33 @@ import {
 import { allMajors } from './majors';
 import { store } from '../appStore/store';
 
+
+// Get the current year
+export function getCurrentYear(): Year {
+  return {
+    _id: '',
+    name: '', 
+    courses: [],
+    year: new Date().getFullYear(),
+    plan_id: '',
+    user_id: '',
+  };
+}
+
+// Gets the current term
+export function getCurrentTerm(): SemesterType {
+  const month = new Date().getMonth();
+  if (month >= 1 && month <= 5) {
+    return "Spring";
+  } else if (month >= 6 && month <= 8) {
+    return "Summer";
+  } else if (month >= 9 && month <= 12) {
+    return "Fall";
+  } else {
+    return "Intersession";
+  }
+};
+
 export const getAPI = (window) =>
   window.location.href.includes('http://localhost:3000')
     ? 'http://localhost:4567/api'
@@ -32,13 +59,17 @@ export const guestUser: User = {
 };
 
 export const getStatusColor = function (
-  taken: boolean,
+  course: UserCourse,
+  currPlan: Plan,
+  currentYear: Year,
+  currentTerm: SemesterType,
 ): string {
-  if (taken) {
-    return 'skyblue';
+  console.log(course);
+  if (prereqInPast(course, currentYear, currentTerm, currPlan)) {
+    return 'steelblue';
   }
   else {
-    return 'steelblue';
+    return 'skyblue';
   }
 }
 

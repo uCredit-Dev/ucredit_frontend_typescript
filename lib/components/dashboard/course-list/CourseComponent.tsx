@@ -4,7 +4,12 @@ import { MinusIcon, ExclamationIcon } from '@heroicons/react/outline';
 import { Transition } from '@tailwindui/react';
 import clsx from 'clsx';
 import 'react-toastify/dist/ReactToastify.css';
-import { checkAllPrereqs, getStatusColor } from '../../../resources/assets';
+import { 
+  checkAllPrereqs, 
+  getStatusColor, 
+  getCurrentYear, 
+  getCurrentTerm,
+} from '../../../resources/assets';
 import {
   UserCourse,
   SemesterType,
@@ -24,6 +29,7 @@ import {
   updateShowCourseInfo,
 } from '../../../slices/popupSlice';
 import * as amplitude from '@amplitude/analytics-browser';
+import { set } from 'date-fns';
 
 /**
  * This is a course card displayed in the course list under each semester.
@@ -47,6 +53,12 @@ const CourseComponent: FC<{
   const [hovered, setHovered] = useState<boolean>(false);
 
   const isMounted = useRef(false);
+
+  // Get the current year and term
+  const currentYear: Year = getCurrentYear();
+  const currentTerm: SemesterType = getCurrentTerm();
+
+  const [statusColor, setStatusColor] = useState<string>('steelblue');
 
   // Redux setup
   const dispatch = useDispatch();
@@ -76,6 +88,11 @@ const CourseComponent: FC<{
     };
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [currPlanCourses]);
+
+  // Sets status color based on course status
+  useEffect(() => {
+    setStatusColor(getStatusColor(course, currentPlan, currentYear, currentTerm));
+  }, [course, currentPlan]);
 
   /**
    * Sets or resets the course displayed in popout after user clicks it in course list.
@@ -149,7 +166,7 @@ const CourseComponent: FC<{
         <div className="grid grid-flow-row-dense grid-cols-10 w-full h-full gap-x-1.5">
           <div
             className="col-span-1 px-1.5 h-5/6 place-self-center rounded-lg select-none"
-            style={{ backgroundColor: getStatusColor(course.taken) }}
+            style={{ backgroundColor: statusColor}}
           ></div>
           <div className="col-span-8">
             <div className="truncate">{course.title}</div>

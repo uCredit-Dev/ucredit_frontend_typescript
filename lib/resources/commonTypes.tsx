@@ -71,7 +71,7 @@ export type UserCourse = {
   area: string;
   credits: number;
   wi: boolean;
-  taken: boolean; // TODO: implement
+  taken: boolean;
   ratings: number[];
   distribution_ids: string[];
   plan_id: string;
