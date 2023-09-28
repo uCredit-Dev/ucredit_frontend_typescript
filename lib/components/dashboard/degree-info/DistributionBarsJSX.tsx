@@ -1,6 +1,6 @@
 import React, { FC, useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { prereqInPast, getCourse } from '../../../resources/assets';
+import { compareDates, getCourseYear, getCourse } from '../../../resources/assets';
 import {
   Plan,
   Major,
@@ -59,7 +59,7 @@ const DistributionBarsJSX: FC<{ major: Major }> = ({ major }) => {
   // Gets the current term
   function getCurrentTerm(): SemesterType {
     const month = new Date().getMonth();
-    if (month >= 1 && month <= 5) {
+    if (month > 1 && month <= 5) {
       return "Spring";
     } else if (month >= 6 && month <= 8) {
       return "Summer";
@@ -249,7 +249,7 @@ const DistributionBarsJSX: FC<{ major: Major }> = ({ major }) => {
       }
       const localReqCopy: [string, requirements[]][] = copyReqs(reqCopy);
       if (!counted) {
-        if (prereqInPast(course, currentYear, currentTerm, updatingPlan)) {
+        if (compareDates(currentTerm, new Date().getFullYear(), course.term, getCourseYear(updatingPlan, course).year)) {
           dispatch(updateCoursesTakenStatus({index: count, taken: true}));
           temp_total_taken += course.credits;
         } else {
@@ -299,7 +299,7 @@ const DistributionBarsJSX: FC<{ major: Major }> = ({ major }) => {
           req.taken_credits < req.fulfilled_credits ||
           (req.taken_credits === 0 && req.fulfilled_credits === 0)
         ) {
-          if (prereqInPast(course, currentYear, currentTerm, plan)) {
+          if (compareDates(currentTerm, new Date().getFullYear(), course.term, getCourseYear(plan, course).year)) {
             reqs[i][1][0].taken_credits += parseInt(courseObj.credits);
             setTotalTakenCredits(totalTakenCredits + parseInt(courseObj.credits));
             // course.taken = true;
@@ -351,7 +351,7 @@ const DistributionBarsJSX: FC<{ major: Major }> = ({ major }) => {
             fineReq.taken_credits < fineReq.fulfilled_credits ||
             (fineReq.taken_credits === 0 && fineReq.fulfilled_credits === 0)
           ) {
-            if (prereqInPast(course, currentYear, currentTerm, plan)) {
+            if (compareDates(currentTerm, new Date().getFullYear(), course.term, getCourseYear(plan, course).year)) {
               reqs[i][1][j].taken_credits += parseInt(courseObj.credits);
               fineDoubleCount = fineReq.double_count;
             }

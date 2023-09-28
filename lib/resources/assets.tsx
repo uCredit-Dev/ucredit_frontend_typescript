@@ -64,8 +64,7 @@ export const getStatusColor = function (
   currentYear: Year,
   currentTerm: SemesterType,
 ): string {
-  console.log(course);
-  if (prereqInPast(course, currentYear, currentTerm, currPlan)) {
+  if (compareDates(currentTerm, new Date().getFullYear(), course.term, getCourseYear(currPlan, course).year)) {
     return 'steelblue';
   }
   else {
@@ -935,6 +934,46 @@ export const prereqInPast = (
   }
 };
 
+	
+export const compareDates = (
+  currentCourseTerm: string,
+  currentCourseYear: number,
+  prereqCourseTerm: string,
+  preReqCourseYear: number,
+) => {
+  if (prereqCourseTerm !== "Fall") {
+    preReqCourseYear++;
+  }
+  if (preReqCourseYear < currentCourseYear) {
+    return true;
+  } else if (preReqCourseYear === currentCourseYear) {
+    return (
+      convertTermToInt(prereqCourseTerm.toLowerCase()) <=
+      convertTermToInt(currentCourseTerm.toLowerCase())
+    );
+  }
+  return false;
+};
+enum Terms {
+  fall = 0,
+  intersession = 1,
+  spring = 2,
+  summer = 3,
+  error = 4,
+}
+const convertTermToInt = (term: string): Terms => {
+  if (term === 'fall') {
+    return Terms.fall;
+  } else if (term === 'intersession') {
+    return Terms.intersession;
+  } else if (term === 'spring') {
+    return Terms.spring;
+  } else if (term === 'summer') {
+    return Terms.summer;
+  }
+  return Terms.error;
+};
+
 /**
  * @param semester - semester to check against
  * @param courseSemester - semester of course
@@ -968,20 +1007,20 @@ const checkSemester = (
   return false;
 };
 
+
 /**
  * @param plan the user's plan
  * @param course the course we are interested in
  * @returns the year of the course
  */
-function getCourseYear(plan: Plan, course: UserCourse): Year | null {
-  let year: Year | null = null;
+export const getCourseYear = (plan: Plan, course: UserCourse): Year | null => {  let year: Year | null = null;
   plan.years.forEach((currPlanYear) => {
     if (currPlanYear._id === course.year_id) {
       year = currPlanYear;
     }
   });
   return year;
-}
+};
 
 /**
  * @param currCourses - user's courses
