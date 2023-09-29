@@ -387,7 +387,7 @@ const Placeholder: FC<{ addCourse: (plan?: Plan) => void }> = (props) => {
             {
               'bg-slate-300 hover:bg-slate-300': reviewMode === ReviewMode.View,
             },
-            'flex justify-center items-center pl-5 pr-4 py-4 mx-4.5 text-white rounded-md w-40 hover:bg-buttonHover focus:outline-none hover:scale-105 bg-button drop-shadow-2xl backdrop-opacity-15 backdrop-blur-2xl',
+            'flex justify-center items-center py-4 text-white rounded-md w-40 hover:bg-buttonHover focus:outline-none hover:scale-105 bg-button drop-shadow-2xl backdrop-opacity-15 backdrop-blur-2xl',
           )}
           onClick={() => {
             if (
@@ -414,12 +414,12 @@ const Placeholder: FC<{ addCourse: (plan?: Plan) => void }> = (props) => {
         <button
           className={clsx(
             { 'bg-slate-300': reviewMode === ReviewMode.View },
-            'flex justify-center items-center pl-4 pr-4 py-4 text-white rounded-md w-44 hover:bg-buttonHover focus:outline-none hover:scale-105 bg-button drop-shadow-2xl backdrop-opacity-15 backdrop-blur-2xl',
+            'flex justify-center items-center py-3.5 text-white rounded-md w-40 hover:bg-buttonHover focus:outline-none hover:scale-105 bg-button drop-shadow-2xl backdrop-opacity-15 backdrop-blur-2xl',
           )}
           onClick={updateCourse}
           disabled={reviewMode === ReviewMode.View}
         >
-          <p className="text-md font-bold">Update Course</p>
+          <p className="text-sm font-bold">Update Course</p>
         </button>
       )}
     </div>
