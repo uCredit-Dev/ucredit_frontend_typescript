@@ -91,9 +91,9 @@ const CourseBar: FC<{
   `<div style="overflow: wrap; margin-bottom: 1rem;">${section}</div>` +
   `<div style="margin-bottom: 1rem;">${distribution.description}</div>` +
   `<div style='width: 100%; height: auto;'>` +
-    `<div style='width: 100%; display: flex; flex-direction: row; justify-content: space-between; color: steelblue'>` +
+    `<div style='width: 100%; display: flex; flex-direction: row; justify-content: space-between; color: ${takencolor}'>` +
       `<div>Completed</div><div>${takenCredits}</div></div>` +
-    `<div style='width: 100%; display: flex; flex-direction: row; justify-content: space-between; color: skyblue'>` +
+    `<div style='width: 100%; display: flex; flex-direction: row; justify-content: space-between; color: ${plannedcolor}'>` +
       `<div>Planned</div><div>${plannedCredits - takenCredits}</div></div>` +
     `<div style='width: 100%; display: flex; flex-direction: row; justify-content: space-between; color: #F0F0F0'>` +
       (remainingCredits !== 0
