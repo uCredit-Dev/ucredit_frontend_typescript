@@ -54,7 +54,6 @@ const Distributions: FC<{
       )}
       <DistributionBarsJSX major={major ? major : allMajors[0]} />
 
-      
       {disclaimer && (
         <div
           id="dropdown-cta"

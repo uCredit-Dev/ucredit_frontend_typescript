@@ -88,23 +88,21 @@ const CourseBar: FC<{
   };
 
   const tooltip =
-  `<div style="overflow: wrap; margin-bottom: 1rem;">${section}</div>` +
-  `<div style="margin-bottom: 1rem;">${distribution.description}</div>` +
-  `<div style='width: 100%; height: auto;'>` +
+    `<div style="overflow: wrap; margin-bottom: 1rem;">${section}</div>` +
+    `<div style="margin-bottom: 1rem;">${distribution.description}</div>` +
+    `<div style='width: 100%; height: auto;'>` +
     `<div style='width: 100%; display: flex; flex-direction: row; justify-content: space-between; color: ${takencolor}'>` +
-      `<div>Completed</div><div>${takenCredits}</div></div>` +
+    `<div>Completed</div><div>${takenCredits}</div></div>` +
     `<div style='width: 100%; display: flex; flex-direction: row; justify-content: space-between; color: ${plannedcolor}'>` +
-      `<div>Planned</div><div>${plannedCredits - takenCredits}</div></div>` +
+    `<div>Planned</div><div>${plannedCredits - takenCredits}</div></div>` +
     `<div style='width: 100%; display: flex; flex-direction: row; justify-content: space-between; color: #F0F0F0'>` +
-      (remainingCredits !== 0
-        ? `<div>Remaining</div><div>${remainingCredits}</div>`
-        : (() =>
-            completed
-              ? `<div style="width: 100%; height: auto; display: flex; flex-direction: row; justify-content: center">Completed!</div>`
-              : `<div style="width: 100%; height: auto; display: flex; flex-direction: row; justify-content: center">Your credits fulfill this overall requirement, but your fine requirements are lacking! Please click this bar to find out more.</div>`
-          )()) +
+    (remainingCredits !== 0
+      ? `<div>Remaining</div><div>${remainingCredits}</div>`
+      : (() =>
+          completed
+            ? `<div style="width: 100%; height: auto; display: flex; flex-direction: row; justify-content: center">Completed!</div>`
+            : `<div style="width: 100%; height: auto; display: flex; flex-direction: row; justify-content: center">Your credits fulfill this overall requirement, but your fine requirements are lacking! Please click this bar to find out more.</div>`)()) +
     `</div>`;
-  
 
   return (
     <>

@@ -1,6 +1,10 @@
 import React, { FC, useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { compareDates, getCourseYear, getCourse } from '../../../resources/assets';
+import {
+  compareDates,
+  getCourseYear,
+  getCourse,
+} from '../../../resources/assets';
 import {
   Plan,
   Major,
@@ -48,7 +52,7 @@ const DistributionBarsJSX: FC<{ major: Major }> = ({ major }) => {
   // Get the current year and term
   const currentYear: Year = {
     _id: '',
-    name: '', 
+    name: '',
     courses: [],
     year: new Date().getFullYear(),
     plan_id: '',
@@ -60,15 +64,15 @@ const DistributionBarsJSX: FC<{ major: Major }> = ({ major }) => {
   function getCurrentTerm(): SemesterType {
     const month = new Date().getMonth();
     if (month > 1 && month <= 5) {
-      return "Spring";
+      return 'Spring';
     } else if (month >= 6 && month <= 8) {
-      return "Summer";
+      return 'Summer';
     } else if (month >= 9 && month <= 12) {
-      return "Fall";
+      return 'Fall';
     } else {
-      return "Intersession";
+      return 'Intersession';
     }
-  };
+  }
 
   // Gets distribution everytime a plan changes.
   useEffect(() => {
@@ -144,7 +148,7 @@ const DistributionBarsJSX: FC<{ major: Major }> = ({ major }) => {
             plannedcolor="lightgreen"
             takencolor="mediumseagreen"
           />
-        </div>        
+        </div>
       </div>,
     );
     setDistributionBarsJSX(distributionJSX);
@@ -249,11 +253,18 @@ const DistributionBarsJSX: FC<{ major: Major }> = ({ major }) => {
       }
       const localReqCopy: [string, requirements[]][] = copyReqs(reqCopy);
       if (!counted) {
-        if (compareDates(currentTerm, new Date().getFullYear(), course.term, getCourseYear(updatingPlan, course).year)) {
-          dispatch(updateCoursesTakenStatus({index: count, taken: true}));
+        if (
+          compareDates(
+            currentTerm,
+            new Date().getFullYear(),
+            course.term,
+            getCourseYear(updatingPlan, course).year,
+          )
+        ) {
+          dispatch(updateCoursesTakenStatus({ index: count, taken: true }));
           temp_total_taken += course.credits;
         } else {
-          dispatch(updateCoursesTakenStatus({index: count, taken: false}));
+          dispatch(updateCoursesTakenStatus({ index: count, taken: false }));
         }
         updateReqs(localReqCopy, courseObj.resp, course, updatingPlan);
       }
@@ -299,9 +310,18 @@ const DistributionBarsJSX: FC<{ major: Major }> = ({ major }) => {
           req.taken_credits < req.fulfilled_credits ||
           (req.taken_credits === 0 && req.fulfilled_credits === 0)
         ) {
-          if (compareDates(currentTerm, new Date().getFullYear(), course.term, getCourseYear(plan, course).year)) {
+          if (
+            compareDates(
+              currentTerm,
+              new Date().getFullYear(),
+              course.term,
+              getCourseYear(plan, course).year,
+            )
+          ) {
             reqs[i][1][0].taken_credits += parseInt(courseObj.credits);
-            setTotalTakenCredits(totalTakenCredits + parseInt(courseObj.credits));
+            setTotalTakenCredits(
+              totalTakenCredits + parseInt(courseObj.credits),
+            );
             // course.taken = true;
             distDoubleCount = req.double_count; // set double_count, if any
           }
@@ -351,7 +371,14 @@ const DistributionBarsJSX: FC<{ major: Major }> = ({ major }) => {
             fineReq.taken_credits < fineReq.fulfilled_credits ||
             (fineReq.taken_credits === 0 && fineReq.fulfilled_credits === 0)
           ) {
-            if (compareDates(currentTerm, new Date().getFullYear(), course.term, getCourseYear(plan, course).year)) {
+            if (
+              compareDates(
+                currentTerm,
+                new Date().getFullYear(),
+                course.term,
+                getCourseYear(plan, course).year,
+              )
+            ) {
               reqs[i][1][j].taken_credits += parseInt(courseObj.credits);
               fineDoubleCount = fineReq.double_count;
             }

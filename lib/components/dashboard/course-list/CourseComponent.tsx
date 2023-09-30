@@ -4,10 +4,10 @@ import { MinusIcon, ExclamationIcon } from '@heroicons/react/outline';
 import { Transition } from '@tailwindui/react';
 import clsx from 'clsx';
 import 'react-toastify/dist/ReactToastify.css';
-import { 
-  checkAllPrereqs, 
-  getStatusColor, 
-  getCurrentYear, 
+import {
+  checkAllPrereqs,
+  getStatusColor,
+  getCurrentYear,
   getCurrentTerm,
 } from '../../../resources/assets';
 import {
@@ -91,7 +91,9 @@ const CourseComponent: FC<{
 
   // Sets status color based on course status
   useEffect(() => {
-    setStatusColor(getStatusColor(course, currentPlan, currentYear, currentTerm));
+    setStatusColor(
+      getStatusColor(course, currentPlan, currentYear, currentTerm),
+    );
   }, [course, currentPlan]);
 
   /**
@@ -166,7 +168,7 @@ const CourseComponent: FC<{
         <div className="grid grid-flow-row-dense grid-cols-10 w-full h-full gap-x-1.5">
           <div
             className="col-span-1 px-1.5 h-5/6 place-self-center rounded-lg select-none"
-            style={{ backgroundColor: statusColor}}
+            style={{ backgroundColor: statusColor }}
           ></div>
           <div className="col-span-8">
             <div className="truncate">{course.title}</div>

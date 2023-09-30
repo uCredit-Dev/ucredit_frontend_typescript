@@ -13,12 +13,11 @@ import {
 import { allMajors } from './majors';
 import { store } from '../appStore/store';
 
-
 // Get the current year
 export function getCurrentYear(): Year {
   return {
     _id: '',
-    name: '', 
+    name: '',
     courses: [],
     year: new Date().getFullYear(),
     plan_id: '',
@@ -30,15 +29,15 @@ export function getCurrentYear(): Year {
 export function getCurrentTerm(): SemesterType {
   const month = new Date().getMonth();
   if (month >= 1 && month <= 5) {
-    return "Spring";
+    return 'Spring';
   } else if (month >= 6 && month <= 8) {
-    return "Summer";
+    return 'Summer';
   } else if (month >= 9 && month <= 12) {
-    return "Fall";
+    return 'Fall';
   } else {
-    return "Intersession";
+    return 'Intersession';
   }
-};
+}
 
 export const getAPI = (window) =>
   window.location.href.includes('http://localhost:3000')
@@ -64,13 +63,19 @@ export const getStatusColor = function (
   currentYear: Year,
   currentTerm: SemesterType,
 ): string {
-  if (compareDates(currentTerm, new Date().getFullYear(), course.term, getCourseYear(currPlan, course).year)) {
+  if (
+    compareDates(
+      currentTerm,
+      new Date().getFullYear(),
+      course.term,
+      getCourseYear(currPlan, course).year,
+    )
+  ) {
     return 'steelblue';
-  }
-  else {
+  } else {
     return 'skyblue';
   }
-}
+};
 
 export const getColors = function (
   distribution: string,
@@ -934,14 +939,13 @@ export const prereqInPast = (
   }
 };
 
-	
 export const compareDates = (
   currentCourseTerm: string,
   currentCourseYear: number,
   prereqCourseTerm: string,
   preReqCourseYear: number,
 ) => {
-  if (prereqCourseTerm !== "Fall") {
+  if (prereqCourseTerm !== 'Fall') {
     preReqCourseYear++;
   }
   if (preReqCourseYear < currentCourseYear) {
@@ -1007,13 +1011,13 @@ const checkSemester = (
   return false;
 };
 
-
 /**
  * @param plan the user's plan
  * @param course the course we are interested in
  * @returns the year of the course
  */
-export const getCourseYear = (plan: Plan, course: UserCourse): Year | null => {  let year: Year | null = null;
+export const getCourseYear = (plan: Plan, course: UserCourse): Year | null => {
+  let year: Year | null = null;
   plan.years.forEach((currPlanYear) => {
     if (currPlanYear._id === course.year_id) {
       year = currPlanYear;

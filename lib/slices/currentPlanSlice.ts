@@ -149,10 +149,11 @@ export const currentPlanSlice = createSlice({
     },
     updateCoursesTakenStatus: (
       state: any,
-      action: PayloadAction<{index: number, taken: boolean}>,
+      action: PayloadAction<{ index: number; taken: boolean }>,
     ) => {
-      state.currentPlanCourses[action.payload.index].taken = action.payload.taken;
-    }
+      state.currentPlanCourses[action.payload.index].taken =
+        action.payload.taken;
+    },
   },
 });
 
