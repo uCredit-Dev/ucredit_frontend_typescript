@@ -258,7 +258,7 @@ const DistributionBarsJSX: FC<{ major: Major }> = ({ major }) => {
             currentTerm,
             new Date().getFullYear(),
             course.term,
-            getCourseYear(updatingPlan, course).year,
+            getCourseYear(updatingPlan, course)?.year || 0,
           )
         ) {
           dispatch(updateCoursesTakenStatus({ index: count, taken: true }));
@@ -315,7 +315,7 @@ const DistributionBarsJSX: FC<{ major: Major }> = ({ major }) => {
               currentTerm,
               new Date().getFullYear(),
               course.term,
-              getCourseYear(plan, course).year,
+              getCourseYear(plan, course)?.year || 0,
             )
           ) {
             reqs[i][1][0].taken_credits += parseInt(courseObj.credits);
@@ -376,7 +376,7 @@ const DistributionBarsJSX: FC<{ major: Major }> = ({ major }) => {
                 currentTerm,
                 new Date().getFullYear(),
                 course.term,
-                getCourseYear(plan, course).year,
+                getCourseYear(plan, course)?.year || 0,
               )
             ) {
               reqs[i][1][j].taken_credits += parseInt(courseObj.credits);

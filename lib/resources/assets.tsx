@@ -939,32 +939,47 @@ export const prereqInPast = (
   }
 };
 
+/**
+ * Compare dates between two courses
+ * @param firstCourseTerm - the term of the first course
+ * @param firstCourseYear - the year of the first course
+ * @param secondCourseTerm - the term of the second course
+ * @param secondCourseYear - the year of the second course
+ * @returns - whether the date of the first course is before or after the date of the second course
+ */
 export const compareDates = (
-  currentCourseTerm: string,
-  currentCourseYear: number,
-  prereqCourseTerm: string,
-  preReqCourseYear: number,
+  firstCourseTerm: string,
+  firstCourseYear: number,
+  secondCourseTerm: string,
+  secondCourseYear: number,
 ) => {
-  if (prereqCourseTerm !== 'Fall') {
-    preReqCourseYear++;
+  if (secondCourseTerm !== 'Fall') {
+    secondCourseYear++;
   }
-  if (preReqCourseYear < currentCourseYear) {
+  if (secondCourseYear < firstCourseYear) {
     return true;
-  } else if (preReqCourseYear === currentCourseYear) {
+  } else if (secondCourseYear === firstCourseYear) {
     return (
-      convertTermToInt(prereqCourseTerm.toLowerCase()) <=
-      convertTermToInt(currentCourseTerm.toLowerCase())
+      convertTermToInt(secondCourseTerm.toLowerCase()) <=
+      convertTermToInt(firstCourseTerm.toLowerCase())
     );
   }
   return false;
 };
+
 enum Terms {
-  fall = 0,
-  intersession = 1,
-  spring = 2,
-  summer = 3,
+  intersession = 0,
+  spring = 1,
+  summer = 2,
+  fall = 3,
   error = 4,
 }
+
+/**
+ * Convert term into an integer for better comparisons
+ * @param term - the term of a course
+ * @returns - the integer conversion of the course
+ */
 const convertTermToInt = (term: string): Terms => {
   if (term === 'fall') {
     return Terms.fall;
