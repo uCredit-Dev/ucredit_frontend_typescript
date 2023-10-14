@@ -22,7 +22,6 @@ import {
   updateCartAdd,
 } from '../../../../slices/searchSlice';
 import {
-  Course,
   Plan,
   ReviewMode,
   SemesterType,
@@ -37,7 +36,7 @@ import {
   updateShowingCart,
 } from '../../../../slices/popupSlice';
 import { getAPI } from '../../../../resources/assets';
-import { ChevronDownIcon, XIcon } from '@heroicons/react/outline';
+import { ChevronDownIcon, XIcon, PlusIcon } from '@heroicons/react/outline';
 import { QuestionMarkCircleIcon } from '@heroicons/react/solid';
 import {
   selectCartInvokedBySemester,
@@ -57,7 +56,7 @@ import * as amplitude from '@amplitude/analytics-browser';
 const SisCourse: FC<{
   inspectedArea: string;
   setInspectedArea: (area: string) => void;
-  addCourse: (plan?: Plan) => void;
+  addCourse: (plan?: Plan, year_id?: string, term?: string) => void;
   cart: boolean;
 }> = (props) => {
   // Redux Setup
@@ -75,21 +74,18 @@ const SisCourse: FC<{
   const token = useSelector(selectToken);
   const cartInvokedBySemester = useSelector(selectCartInvokedBySemester);
 
-  const [versionIndex, updateVersionIndex] = useState<number>(0);
+  const [year, setYear] = useState<string>(
+    courseToShow ? courseToShow.year_id : searchYear,
+  );
+  const [sem, setSem] = useState<string>(
+    courseToShow ? courseToShow.term : searchSemester.toLowerCase(),
+  );
   const [ogSem, setOgSem] = useState<SemesterType | 'All'>('All');
 
   useEffect(() => {
     setOgSem(searchSemester);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
-
-  useEffect(() => {
-    if (inspected !== 'None' && version !== 'None') {
-      const index: number = inspected.terms.indexOf(version.term.toString());
-      updateVersionIndex(index);
-    }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [version]);
 
   // Returns an array of select options for the distribution area users want to add the course to.
   const getInspectedAreas = () => {
@@ -141,18 +137,16 @@ const SisCourse: FC<{
 
   // Handles switching displayed term.
   const handleTermSwitch = (event: any): void => {
-    if (inspected !== 'None') {
-      inspected.versions.forEach((ver) => {
-        if (ver.term === event.value) {
-          const newInspected: Course = {
-            title: inspected.title,
-            number: inspected.number,
-            ...ver,
-          };
-          dispatch(updateInspectedVersion(newInspected));
-        }
-      });
-    }
+    const value = JSON.parse(event.value);
+    dispatch(
+      updateSearchTime({
+        searchSemester:
+          value.semester.charAt(0).toUpperCase() + value.semester.slice(1),
+        searchYear: value.year_id,
+      }),
+    );
+    setYear(value.year_id);
+    setSem(value.semester);
   };
 
   /**
@@ -220,7 +214,7 @@ const SisCourse: FC<{
       });
       const newPlan: Plan = { ...currentPlan, years: newYears };
       dispatch(updateSelectedPlan(newPlan));
-      props.addCourse(newPlan);
+      props.addCourse(newPlan, year, sem);
     } else {
       console.log('ERROR: Failed to add', data.errors);
     }
@@ -345,7 +339,7 @@ const SisCourse: FC<{
             'bg-slate-300 hover:bg-slate-300':
               cartInvokedBySemester && reviewMode === ReviewMode.View,
           },
-          'w-auto h-10 p-2 mt-2 mx-auto text-white transition duration-200 ease-in transform rounded md:hover:bg-secondary md:bg-primary focus:outline-none hover:scale-105 bg-secondary',
+          'flex justify-center items-center pl-5 pr-4 py-4 mx-4.5 text-white rounded-md hover:bg-buttonHover focus:outline-none hover:scale-105 bg-button drop-shadow-2xl backdrop-opacity-15 backdrop-blur-2xl',
         )}
         onClick={() => {
           if (props.cart) {
@@ -357,7 +351,8 @@ const SisCourse: FC<{
         }}
         disabled={cartInvokedBySemester && reviewMode === ReviewMode.View}
       >
-        Add Course
+        <p className="text-md font-bold">Add Course</p>
+        <PlusIcon className="h-4 ml-1" />
       </button>
     ) : (
       <button
@@ -387,6 +382,36 @@ const SisCourse: FC<{
     </>
   );
 
+  const getTerms = () => {
+    if (inspected === 'None') {
+      return [];
+    }
+    const offeredSemesters = [
+      ...new Set(
+        inspected!.terms.map((term) => {
+          return term.split(' ')[0].toLowerCase();
+        }),
+      ),
+    ];
+    const terms: { year_id: string; semester?: string }[] = [];
+    for (const year of currentPlan.years) {
+      if (year.name !== 'AP/Transfer') {
+        for (const semester of offeredSemesters) {
+          terms.push({ year_id: year._id, semester: semester });
+        }
+      }
+    }
+    return terms;
+  };
+
+  const getTermString = (year_id: string, semester: string | undefined) => {
+    const year = currentPlan.years.find((y) => y._id === year_id);
+    const semesterFormatted = semester
+      ? semester.charAt(0).toUpperCase() + semester.slice(1)
+      : '';
+    return (year ? year.name : '') + ' ' + semesterFormatted;
+  };
+
   return (
     <div className="flex flex-col h-full">
       {inspected !== 'None' && (
@@ -408,38 +433,20 @@ const SisCourse: FC<{
               </div>
             </div>
             <div className="flex flex-row items-center font-semibold">
-              <div className="flex flex-row">
-                Term
-                <div className="flex-grow mt-1">
-                  <QuestionMarkCircleIcon
-                    className="h-4 fill-gray"
-                    data-tooltip-id="godtip"
-                    data-tooltip-html={`<p>This is a specific snapshot of course information at a specific time in the past or present.</p><p>NOTE: This is NOT to determine where on the plan you are adding the course.</p><p>(ie. Course Version "Spring, 2021" may not equal "Spring, Senior")</p>`}
-                  />
-                </div>
-                :
-              </div>
+              <div className="flex flex-row">Term :</div>
               <Select
-                className="ml-2 w-44"
-                options={inspected.terms
-                  .filter(
-                    (term) =>
-                      term
-                        .toLowerCase()
-                        .includes(searchSemester.toLowerCase()) ||
-                      (courseToShow !== null &&
-                        term
-                          .toLowerCase()
-                          .includes(courseToShow.term.toLowerCase())),
-                  )
-                  .map((term) => {
-                    return { label: term, value: term };
-                  })}
+                className="ml-2 w-50"
+                options={getTerms().map((term) => {
+                  return {
+                    label: getTermString(term.year_id, term.semester),
+                    value: JSON.stringify(term),
+                  };
+                })}
                 value={{
-                  label: inspected.terms[versionIndex],
-                  value: inspected.terms[versionIndex],
+                  label: getTermString(year, sem),
+                  value: JSON.stringify({ year_id: year, semester: sem }),
                 }}
-                onChange={handleTermSwitch}
+                onChange={(event) => handleTermSwitch(event)}
               />
             </div>
             <CourseVersion setInspectedArea={props.setInspectedArea} />

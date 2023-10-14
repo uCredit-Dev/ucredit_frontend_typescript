@@ -225,7 +225,7 @@ const PrereqDisplay: FC = () => {
       return {
         satisfied: satisfied,
         jsx: (
-          <p
+          <div
             className="w-full"
             key={noCBracketsNum + semester + yearToCheck._id}
           >
@@ -261,7 +261,7 @@ const PrereqDisplay: FC = () => {
                 </div>
               </div>
             </button>
-          </p>
+          </div>
         ),
       };
     } else if (typeof element[0] === 'number') {

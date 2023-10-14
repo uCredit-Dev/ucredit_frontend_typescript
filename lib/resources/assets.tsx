@@ -68,7 +68,7 @@ export const getStatusColor = function (
       currentTerm,
       new Date().getFullYear(),
       course.term,
-      getCourseYear(currPlan, course).year,
+      getCourseYear(currPlan, course)?.year || 0,
     )
   ) {
     return 'steelblue';
@@ -499,10 +499,15 @@ export const getCourses = (
       } else {
         if (numNameList[outIndex] == null) {
           retrieved++;
-          numNameList[outIndex] =
-            numList[outIndex] +
-            numList[outIndex] +
-            ' Has not been offered in the past 4 years or listed on SIS. Please click on the Prerequisites Description tab for full description.';
+          if (numList[outIndex] === 'EN.990.100') {
+            numNameList[outIndex] =
+              'Lab Safety            (Please click on the Prerequisites Description tab for full description)';
+          } else {
+            numNameList[outIndex] =
+              numList[outIndex] +
+              numList[outIndex] +
+              ' Has not been offered in the past 4 years or listed on SIS. Please click on the Prerequisites Description tab for full description.';
+          }
         }
         if (retrieved === numList.length) {
           let out = {
@@ -874,9 +879,10 @@ export const checkPrereq = (
 ): boolean => {
   for (let course of courses) {
     if (
-      (course.number === preReqNumber ||
+      ((course.number === preReqNumber ||
         checkOldPrereqNumbers(course.number, preReqNumber)) &&
-      prereqInPast(course, year, semester, plan)
+        prereqInPast(course, year, semester, plan)) ||
+      preReqNumber === 'Lab Safety'
     )
       return true;
   }
@@ -991,6 +997,40 @@ const convertTermToInt = (term: string): Terms => {
     return Terms.summer;
   }
   return Terms.error;
+}
+
+/**
+ * Check's whether prereq is satisfied by the course in the past
+ * @param course - the course
+ * @param year - the year of the course we are checking (not course)
+ * @param semester - semester of the course we are checking (not course)
+ * @param plan - user's plan
+ * @returns - whether the course is in the past
+ */
+export const prereqInPastOrCurrent = (
+  course: UserCourse,
+  year: Year,
+  semester: SemesterType,
+  plan: Plan,
+): boolean => {
+  const retrievedYear = getCourseYear(plan, course);
+  if (retrievedYear !== null) {
+    if (
+      retrievedYear.year < year.year ||
+      (year.year === retrievedYear.year && checkSemester(semester, course.term))
+    ) {
+      return true;
+    } else if (retrievedYear.year > year.year) {
+      return false;
+    } else {
+      return (
+        semesters.indexOf(course.term) <=
+        semesters.indexOf(semester.toLowerCase())
+      );
+    }
+  } else {
+    return false;
+  }
 };
 
 /**
