@@ -997,7 +997,7 @@ const convertTermToInt = (term: string): Terms => {
     return Terms.summer;
   }
   return Terms.error;
-}
+};
 
 /**
  * Check's whether prereq is satisfied by the course in the past
