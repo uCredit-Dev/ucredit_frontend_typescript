@@ -520,11 +520,11 @@ export const getCourse = async (
     // Then pull from db.
     return resolve(await backendSearch(courseNumber, indexNum, userC));
   });
-  
+
 export const getSISCourse = async (
   courseNumber: string,
-  courseCache: SISRetrievedCourse[]
-) : Promise<SISRetrievedCourse | null> => 
+  courseCache: SISRetrievedCourse[],
+): Promise<SISRetrievedCourse | null> =>
   new Promise(async (resolve) => {
     let out: SISRetrievedCourse;
     for (let element of courseCache) {

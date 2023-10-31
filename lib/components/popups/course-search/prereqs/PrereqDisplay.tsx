@@ -158,12 +158,12 @@ const PrereqDisplay: FC = () => {
               oldSIS: inspected,
               oldV: version,
             }),
-          )
+          );
         } else if (course == null) {
           toast.error('Cannot find course. It likely does not exist.', {
             toastId: 'course not found',
           });
-        };
+        }
       });
     };
 
