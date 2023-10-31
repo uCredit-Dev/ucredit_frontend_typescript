@@ -22,7 +22,6 @@ import {
 import { selectCourseCache } from '../../../../slices/userSlice';
 import { selectCourseToShow } from '../../../../slices/popupSlice';
 import {
-  SISRetrievedCourse,
   UserCourse,
   Year,
 } from '../../../../resources/commonTypes';
