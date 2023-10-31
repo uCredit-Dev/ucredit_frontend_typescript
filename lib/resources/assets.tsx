@@ -521,36 +521,35 @@ export const getCourse = async (
     return resolve(await backendSearch(courseNumber, indexNum, userC));
   });
 
-export const getSISCourse = async (
+export const getSISCourse = (
   courseNumber: string,
   courseCache: SISRetrievedCourse[],
-): Promise<SISRetrievedCourse | null> =>
-  new Promise(async (resolve) => {
-    let out: SISRetrievedCourse;
+): Promise<SISRetrievedCourse | null> => {
+  return new Promise((resolve) => {
     for (let element of courseCache) {
       if (element.number === courseNumber) {
-        out = element;
-        return resolve(out);
+        resolve(element);
+        return;
       }
     }
     // fetch from backend
-    try {
-      const res: any = await axios.get(
-        getAPI(window) + `/searchNumber/${courseNumber}`,
-      );
-      let retrieved: SISRetrievedCourse | -1 = res.data.data;
-      if (retrieved === -1) {
-        store.dispatch(updateUnfoundNumbers(courseNumber));
-        return resolve(null);
-      }
-      const cache: SISRetrievedCourse[] = [];
-      cache.push(retrieved);
-      store.dispatch(updateCourseCache(cache));
-      resolve(retrieved);
-    } catch (err) {
-      return resolve(null);
-    }
+    axios
+      .get(getAPI(window) + `/searchNumber/${courseNumber}`)
+      .then((res) => {
+        let retrieved: SISRetrievedCourse | -1 = res.data.data;
+        if (retrieved === -1) {
+          store.dispatch(updateUnfoundNumbers(courseNumber));
+          resolve(null);
+        } else {
+          store.dispatch(updateCourseCache([retrieved]));
+          resolve(retrieved);
+        }
+      })
+      .catch((err) => {
+        resolve(null);
+      });
   });
+};
 
 const backendSearch = async (
   courseNumber: string,
