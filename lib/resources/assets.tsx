@@ -520,6 +520,37 @@ export const getCourse = async (
     // Then pull from db.
     return resolve(await backendSearch(courseNumber, indexNum, userC));
   });
+  
+export const getSISCourse = async (
+  courseNumber: string,
+  courseCache: SISRetrievedCourse[]
+) : Promise<SISRetrievedCourse | null> => 
+  new Promise(async (resolve) => {
+    let out: SISRetrievedCourse;
+    for (let element of courseCache) {
+      if (element.number === courseNumber) {
+        out = element;
+        return resolve(out);
+      }
+    }
+    // fetch from backend
+    try {
+      const res: any = await axios.get(
+        getAPI(window) + `/searchNumber/${courseNumber}`,
+      );
+      let retrieved: SISRetrievedCourse | -1 = res.data.data;
+      if (retrieved === -1) {
+        store.dispatch(updateUnfoundNumbers(courseNumber));
+        return resolve(null);
+      }
+      const cache: SISRetrievedCourse[] = [];
+      cache.push(retrieved);
+      store.dispatch(updateCourseCache(cache));
+      resolve(retrieved);
+    } catch (err) {
+      return resolve(null);
+    }
+  });
 
 const backendSearch = async (
   courseNumber: string,
