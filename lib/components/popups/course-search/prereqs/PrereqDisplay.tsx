@@ -21,10 +21,7 @@ import {
 } from '../../../../slices/currentPlanSlice';
 import { selectCourseCache } from '../../../../slices/userSlice';
 import { selectCourseToShow } from '../../../../slices/popupSlice';
-import {
-  UserCourse,
-  Year,
-} from '../../../../resources/commonTypes';
+import { UserCourse, Year } from '../../../../resources/commonTypes';
 import { toast } from 'react-toastify';
 
 // Parsed prereq type
