@@ -7,19 +7,19 @@ import {
   selectVersion,
   selectInspectedCourse,
 } from '../../../../slices/searchSlice';
-import { getCourse, getCourseYear } from '../../../../resources/assets';
+import {
+  getCourse,
+  getCourseYear,
+  getSISCourse,
+} from '../../../../resources/assets';
 import {
   selectCurrentPlanCourses,
   selectPlan,
 } from '../../../../slices/currentPlanSlice';
 import { selectCourseCache } from '../../../../slices/userSlice';
 import { selectCourseToShow } from '../../../../slices/popupSlice';
-import {
-  SISRetrievedCourse,
-  UserCourse,
-  Year,
-  PostReq,
-} from '../../../../resources/commonTypes';
+import { UserCourse, Year, PostReq } from '../../../../resources/commonTypes';
+import { toast } from 'react-toastify';
 
 const PostReqSection: FC = () => {
   const dispatch = useDispatch();
@@ -112,6 +112,7 @@ const PostReqSection: FC = () => {
     }
     const tempSatisfiedPostReqs: PostReq[] = [];
     const tempUnsatisfiedPostReqs: PostReq[] = [];
+    if (!postReqs) return;
     postReqs.forEach((course, index) => {
       getCourse(course.number, courseCache, currPlanCourses, index);
       if (checkIfSatisfied(course)) {
@@ -235,12 +236,8 @@ const PostReqSection: FC = () => {
   const updateInspected =
     (courseNumber: string): (() => void) =>
     (): void => {
-      courseCache.forEach((course: SISRetrievedCourse) => {
-        if (
-          course.number === courseNumber &&
-          inspected !== 'None' &&
-          version !== 'None'
-        ) {
+      getSISCourse(courseNumber, courseCache).then((course) => {
+        if (course != null && inspected !== 'None' && version !== 'None') {
           dispatch(
             updateSearchStack({
               new: course,
@@ -248,6 +245,10 @@ const PostReqSection: FC = () => {
               oldV: version,
             }),
           );
+        } else if (course == null) {
+          toast.error('Cannot find course. It likely does not exist.', {
+            toastId: 'course not found',
+          });
         }
       });
     };
