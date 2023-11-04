@@ -15,9 +15,11 @@ const ReviewerSearchResults: FC<{
   const currentPlan = useSelector(selectPlan);
   const currentUser = useSelector(selectUser);
   const token = useSelector(selectToken);
+  const [jsx, setJsx] = useState<JSX.Element[]>(null);
   const [planReviewers, setPlanReviewers] = useState<any>([]);
 
   useEffect(() => {
+    // setJsx(getElements(users));
     (async () => {
       const reviewers = (
         await userService.getPlanReviewers(currentPlan._id, token)
@@ -25,6 +27,10 @@ const ReviewerSearchResults: FC<{
       setPlanReviewers(reviewers);
     })();
   }, [currentPlan._id, token]);
+
+  useEffect(() => {
+    setJsx(getElements(users));
+  }, [planReviewers]);
 
   const isReviewer = (id: string) => {
     for (const { reviewer_id, _id } of planReviewers) {
@@ -67,15 +73,16 @@ const ReviewerSearchResults: FC<{
   };
 
   const getElements = (users: User[]) => {
+    console.log(users);
     return users.map((user) => {
       return (
         <div
-          className="flex items-center px-2 hover:bg-sky-300 hover:cursor-pointer"
+          className="flex items-center px-2 hover:bg-gray-300 hover:cursor-pointer"
           onClick={() => changeReviewer(user)}
           key={user._id}
         >
           <XIcon
-            className={clsx('w-[1.25rem] my-auto', {
+            className={clsx('w-[1.25rem] my-auto mr-1 stroke-red-500', {
               'opacity-0': !isReviewer(user._id),
             })}
           />
@@ -87,7 +94,7 @@ const ReviewerSearchResults: FC<{
     });
   };
 
-  return <div>{getElements(users)}</div>;
+  return <div className="max-h-48 overflow-y-scroll">{jsx}</div>;
 };
 
 export default ReviewerSearchResults;

@@ -8,25 +8,13 @@ import Tooltip from '@mui/material/Tooltip';
 import { Typography } from '@mui/material';
 
 const Reviewers = () => {
-  const [addingReviewer, updateAddingReviewer] = useState<Boolean>(false);
   const [reviewersJSX, setReviewersJSX] = useState<JSX.Element[]>([]);
 
   return (
-    <div className="flex flex-col min-w-[16rem] mx-2">
-      <div className="flex flex-row items-center justify-between pb-1 text-xl cursor-pointer rounded p-2">
+    <div className="flex flex-col min-w-[28rem] mx-2">
+      <div className="flex flex-row items-center justify-between pb-1 text-xl cursor-pointer rounded p-5">
         <div className="flex items-center gap-1">
-          <Tooltip
-            title={
-              <Typography fontSize={17}>
-                Click on the Edit button to add or remove reviewers who can
-                comment on your plan.
-              </Typography>
-            }
-            placement="left"
-            arrow
-          >
-            <p className="flex flex-row h-full">Add Reviewer</p>
-          </Tooltip>
+          <p className="flex flex-row h-full">Share Your Plan</p>
           {process.env.NODE_ENV === 'development' && (
             <Hoverable
               as={<ExclamationIcon className="text-red-400 w-5 h-5 relative" />}
@@ -49,26 +37,17 @@ const Reviewers = () => {
             </Hoverable>
           )}
         </div>
-        <div
-          className="text-sm add-reviewer-button mr-1 underline"
-          onClick={() => updateAddingReviewer(!addingReviewer)}
-        >
-          {addingReviewer ? 'View' : 'Edit'}
-        </div>
       </div>
-      <Divider />
-      {addingReviewer ? (
-        <div className="pt-2">
-          <ReviewersSearch />
-        </div>
-      ) : (
-        <div className="px-2">
-          <CurrentReviewers
-            reviewersJSX={reviewersJSX}
-            setReviewersJSX={setReviewersJSX}
-          />
-        </div>
-      )}
+      <div className="pt-2">
+        <ReviewersSearch />
+      </div>
+      <div className="px-5">
+        <CurrentReviewers
+          reviewersJSX={reviewersJSX}
+          setReviewersJSX={setReviewersJSX}
+        />
+      </div>
+      <Divider>OR</Divider>
     </div>
   );
 };

@@ -233,25 +233,25 @@ const Dashboard: React.FC<Props> = ({ mode }) => {
           <Button
             sx={{
               position: 'fixed',
-              padding: '0.5rem',
               display: 'flex',
               alignItems: 'center',
               fontSize: '0.875rem',
               lineHeight: '1.25rem',
-              fontWeight: '400',
-              borderRadius: '0.5rem',
+              fontWeight: '500',
               zIndex: '90',
               top: '4.65rem',
               right: '2.25rem',
               outline: '2px solid transparent',
               outlineOffset: '2px',
               color: 'rgb(0 0 0 1)',
-              backgroundColor: 'rgb(198, 232, 255, 1)',
+              backgroundColor: '#C6E8FF',
+              height: '2.5rem',
+              width: '8rem',
               boxShadow:
                 'var(--tw-ring-offset-shadow, 0 0 #0000), var(--tw-ring-shadow, 0 0 #0000), var(--tw-shadow)',
             }}
             className={clsx(
-              'flex items-center p-2 text-base font-normal text-black rounded-lg z-[90] top-[4.65rem] right-9 focus:outline-none shadow-sm text-sm',
+              'flex items-center p-4 text-base font-normal rounded-md focus:outline-none shadow-sm text-sm',
               {
                 'fixed ': searchStatus,
                 ' absolute': !searchStatus,
@@ -262,6 +262,7 @@ const Dashboard: React.FC<Props> = ({ mode }) => {
               amplitude.track('Clicked Tracker');
             }}
           >
+            <p className="text-sm text-black pl-2 pr-1">Tracker</p>
             <svg
               className="w-5 text-black plan-edit-menu mr-2"
               fill="currentColor"
@@ -275,7 +276,6 @@ const Dashboard: React.FC<Props> = ({ mode }) => {
                 clipRule="evenodd"
               ></path>
             </svg>{' '}
-            Tracker
           </Button>
 
           <div className="flex-grow w-full">
