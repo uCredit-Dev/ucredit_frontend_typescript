@@ -4,12 +4,7 @@ import { MinusIcon, ExclamationIcon } from '@heroicons/react/outline';
 import { Transition } from '@tailwindui/react';
 import clsx from 'clsx';
 import 'react-toastify/dist/ReactToastify.css';
-import {
-  checkAllPrereqs,
-  getCurrentYear,
-  getCurrentTerm,
-  getColors,
-} from '../../../resources/assets';
+import { checkAllPrereqs, getColors } from '../../../resources/assets';
 import {
   UserCourse,
   SemesterType,
@@ -52,10 +47,6 @@ const CourseComponent: FC<{
   const [hovered, setHovered] = useState<boolean>(false);
 
   const isMounted = useRef(false);
-
-  // Get the current year and term
-  const currentYear: Year = getCurrentYear();
-  const currentTerm: SemesterType = getCurrentTerm();
 
   // Redux setup
   const dispatch = useDispatch();
