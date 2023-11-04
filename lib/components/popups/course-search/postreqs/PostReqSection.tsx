@@ -7,19 +7,19 @@ import {
   selectVersion,
   selectInspectedCourse,
 } from '../../../../slices/searchSlice';
-import { getCourse, getCourseYear } from '../../../../resources/assets';
+import {
+  getCourse,
+  getCourseYear,
+  getSISCourse,
+} from '../../../../resources/assets';
 import {
   selectCurrentPlanCourses,
   selectPlan,
 } from '../../../../slices/currentPlanSlice';
 import { selectCourseCache } from '../../../../slices/userSlice';
 import { selectCourseToShow } from '../../../../slices/popupSlice';
-import {
-  SISRetrievedCourse,
-  UserCourse,
-  Year,
-  PostReq,
-} from '../../../../resources/commonTypes';
+import { UserCourse, Year, PostReq } from '../../../../resources/commonTypes';
+import { toast } from 'react-toastify';
 
 const PostReqSection: FC = () => {
   const dispatch = useDispatch();
@@ -112,6 +112,7 @@ const PostReqSection: FC = () => {
     }
     const tempSatisfiedPostReqs: PostReq[] = [];
     const tempUnsatisfiedPostReqs: PostReq[] = [];
+    if (!postReqs) return;
     postReqs.forEach((course, index) => {
       getCourse(course.number, courseCache, currPlanCourses, index);
       if (checkIfSatisfied(course)) {
@@ -132,8 +133,8 @@ const PostReqSection: FC = () => {
   //preReqs is of the form (AS.050.111[C]^OR^(^AS.050.112[C]^AND^AS.050.113^)^)
   function checkIfSatisfied(course: PostReq) {
     try {
-      let str = course.versions[0].preReqs;
-      if (course.versions[0].preReqs.length === 0) {
+      let str = course.preReqs;
+      if (course.preReqs.length === 0) {
         return false;
       }
       //separates preReqs into components by using '^' as a delimiter.
@@ -235,12 +236,8 @@ const PostReqSection: FC = () => {
   const updateInspected =
     (courseNumber: string): (() => void) =>
     (): void => {
-      courseCache.forEach((course: SISRetrievedCourse) => {
-        if (
-          course.number === courseNumber &&
-          inspected !== 'None' &&
-          version !== 'None'
-        ) {
+      getSISCourse(courseNumber, courseCache).then((course) => {
+        if (course != null && inspected !== 'None' && version !== 'None') {
           dispatch(
             updateSearchStack({
               new: course,
@@ -248,6 +245,10 @@ const PostReqSection: FC = () => {
               oldV: version,
             }),
           );
+        } else if (course == null) {
+          toast.error('Cannot find course. It likely does not exist.', {
+            toastId: 'course not found',
+          });
         }
       });
     };
@@ -259,18 +260,18 @@ const PostReqSection: FC = () => {
       style={{ borderBottom: '1px solid #ccc', margin: '5px 0' }}
     >
       <button
-        className="flex justify-between text-green-700 hover:text-green-900"
+        className="flex justify-between text-green-700 hover:text-green-900 hover:border-green-900"
         onClick={() => updateInspected(course.number)()}
       >
-        <p className="flex text-left">
+        <div className="flex-grow">
           {course.number} {course.title}
-        </p>
+        </div>
         <div
           className="w-5 ml-2 mb-1 items-center font-semibold text-white transition duration-200 ease-in transform rounded select-none bg-primary hover:scale-110"
-          data-tooltip-content={`${course.versions[0].credits} credits`}
+          data-tooltip-content={`${course.credits} credits`}
           data-tooltip-id="godtip"
         >
-          {course.versions[0].credits}
+          {course.credits}
         </div>
       </button>
     </div>
@@ -292,10 +293,10 @@ const PostReqSection: FC = () => {
           </div>
           <div
             className="w-5 ml-2 mb-1 items-center font-semibold text-white transition duration-200 ease-in transform rounded select-none bg-primary hover:scale-110"
-            data-tooltip-content={`${course.versions[0].credits} credits`}
+            data-tooltip-content={`${course.credits} credits`}
             data-tooltip-id="godtip"
           >
-            {course.versions[0].credits}
+            {course.credits}
           </div>
         </button>
       </div>
@@ -309,6 +310,15 @@ const PostReqSection: FC = () => {
 
   return (
     <div className="relative">
+      <div className="absolute top-0 right-0">
+        <div
+          className="flex justify-center items-center w-7 h-7 text-sm font-semibold text-black transition duration-200 ease-in transform rounded-full bg-gray-200 hover:scale-110"
+          data-tooltip-content={`Green: Satisfied all prerequisites. Orange: Not all prerequisites satisfied.`}
+          data-tooltip-id="godtip"
+        >
+          ?
+        </div>
+      </div>
       {/* <button onClick={() => setSat(!sat)}>{message}</button> */}
       {/* {hasPostReqs ? sat ? satisfiedPostReqsComponents: unsatisfiedPostReqsComponents : noPostReqs} */}
 

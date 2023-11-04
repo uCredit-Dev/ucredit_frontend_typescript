@@ -12,6 +12,7 @@ import {
   filterNNegatives,
   processPrereqs,
   checkPrereq,
+  getSISCourse,
 } from '../../../../resources/assets';
 import PrereqDropdown from './PrereqDropdown';
 import {
@@ -20,11 +21,8 @@ import {
 } from '../../../../slices/currentPlanSlice';
 import { selectCourseCache } from '../../../../slices/userSlice';
 import { selectCourseToShow } from '../../../../slices/popupSlice';
-import {
-  SISRetrievedCourse,
-  UserCourse,
-  Year,
-} from '../../../../resources/commonTypes';
+import { UserCourse, Year } from '../../../../resources/commonTypes';
+import { toast } from 'react-toastify';
 
 // Parsed prereq type
 // satisfied: a boolean that tells whether the prereq should be marked with green (satisfied) or red (unsatisfied)
@@ -148,12 +146,8 @@ const PrereqDisplay: FC = () => {
   const updateInspected =
     (courseNumber: string): (() => void) =>
     (): void => {
-      courseCache.forEach((course: SISRetrievedCourse) => {
-        if (
-          course.number === courseNumber &&
-          inspected !== 'None' &&
-          version !== 'None'
-        ) {
+      getSISCourse(courseNumber, courseCache).then((course) => {
+        if (course != null && inspected !== 'None' && version !== 'None') {
           dispatch(
             updateSearchStack({
               new: course,
@@ -161,6 +155,10 @@ const PrereqDisplay: FC = () => {
               oldV: version,
             }),
           );
+        } else if (course == null) {
+          toast.error('Cannot find course. It likely does not exist.', {
+            toastId: 'course not found',
+          });
         }
       });
     };
