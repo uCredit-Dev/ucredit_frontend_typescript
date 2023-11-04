@@ -37,7 +37,7 @@ const CourseEvalSection: FC = () => {
         .then((retrievedData) => {
           setReviews(retrievedData.data.data.rev);
         })
-        .catch((err) => console.log(err, ' - course likely does not exist'));
+        .catch((err) => console.log('course likely does not exist'));
     }
   };
 
