@@ -313,7 +313,6 @@ const DistributionBarsJSX: FC<{ major: Major }> = ({ major }) => {
             setTotalTakenCredits(
               totalTakenCredits + parseInt(courseObj.credits),
             );
-            // course.taken = true;
             distDoubleCount = req.double_count; // set double_count, if any
           }
         }

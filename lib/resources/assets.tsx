@@ -57,26 +57,6 @@ export const guestUser: User = {
   plan_ids: [],
 };
 
-export const getStatusColor = function (
-  course: UserCourse,
-  currPlan: Plan,
-  currentYear: Year,
-  currentTerm: SemesterType,
-): string {
-  if (
-    compareDates(
-      currentTerm,
-      new Date().getFullYear(),
-      course.term,
-      getCourseYear(currPlan, course)?.year || 0,
-    )
-  ) {
-    return 'steelblue';
-  } else {
-    return 'skyblue';
-  }
-};
-
 export const getColors = function (
   distribution: string,
   writingIntensive: boolean,

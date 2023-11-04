@@ -6,7 +6,6 @@ import clsx from 'clsx';
 import 'react-toastify/dist/ReactToastify.css';
 import {
   checkAllPrereqs,
-  getStatusColor,
   getCurrentYear,
   getCurrentTerm,
   getColors,
@@ -58,8 +57,6 @@ const CourseComponent: FC<{
   const currentYear: Year = getCurrentYear();
   const currentTerm: SemesterType = getCurrentTerm();
 
-  const [, setStatusColor] = useState<string>('steelblue');
-
   // Redux setup
   const dispatch = useDispatch();
   const currentPlan = useSelector(selectPlan);
@@ -88,13 +85,6 @@ const CourseComponent: FC<{
     };
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [currPlanCourses]);
-
-  // Sets status color based on course status
-  useEffect(() => {
-    setStatusColor(
-      getStatusColor(course, currentPlan, currentYear, currentTerm),
-    );
-  }, [course, currentPlan, currentTerm, currentYear]);
 
   /**
    * Sets or resets the course displayed in popout after user clicks it in course list.
