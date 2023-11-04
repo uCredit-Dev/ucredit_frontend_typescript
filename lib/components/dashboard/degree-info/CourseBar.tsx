@@ -38,7 +38,6 @@ const CourseBar: FC<{
   const [plannedCredits, setPlannedCredits] = useState(
     distribution.fulfilled_credits,
   );
-  // TODO: for taken variables
   const [takenCredits, setTakenCredits] = useState(distribution.taken_credits);
   const [hovered, setHovered] = useState(false);
 
@@ -56,7 +55,6 @@ const CourseBar: FC<{
   useEffect(() => {
     let temp = distribution.fulfilled_credits;
     setPlannedCredits(temp);
-    // TODO: for taken variables
     let temp2 = distribution.taken_credits;
     setTakenCredits(temp2);
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -153,7 +151,6 @@ const CourseBar: FC<{
               }`,
             }}
           >
-            {/* TODO: display color for taken courses */}
             <div
               className="h-full rounded-full"
               style={{

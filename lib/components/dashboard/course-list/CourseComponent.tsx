@@ -9,6 +9,7 @@ import {
   getStatusColor,
   getCurrentYear,
   getCurrentTerm,
+  getColors,
 } from '../../../resources/assets';
 import {
   UserCourse,
@@ -29,7 +30,6 @@ import {
   updateShowCourseInfo,
 } from '../../../slices/popupSlice';
 import * as amplitude from '@amplitude/analytics-browser';
-import { set } from 'date-fns';
 
 /**
  * This is a course card displayed in the course list under each semester.
@@ -94,7 +94,7 @@ const CourseComponent: FC<{
     setStatusColor(
       getStatusColor(course, currentPlan, currentYear, currentTerm),
     );
-  }, [course, currentPlan]);
+  }, [course, currentPlan, currentTerm, currentYear]);
 
   /**
    * Sets or resets the course displayed in popout after user clicks it in course list.
@@ -168,7 +168,7 @@ const CourseComponent: FC<{
         <div className="grid grid-flow-row-dense grid-cols-10 w-full h-full gap-x-1.5">
           <div
             className="col-span-1 px-1.5 h-5/6 place-self-center rounded-lg select-none"
-            style={{ backgroundColor: statusColor }}
+            style={{ backgroundColor: getColors(course.area, course.wi) }}
           ></div>
           <div className="col-span-8">
             <div className="truncate">{course.title}</div>

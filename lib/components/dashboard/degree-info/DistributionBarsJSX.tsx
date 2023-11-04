@@ -44,20 +44,12 @@ const DistributionBarsJSX: FC<{ major: Major }> = ({ major }) => {
   const [retrievedDistributions, setDistributions] = useState<{
     plan: Plan;
     distr: [string, requirements[]][];
-  }>({ plan: currentPlan || currentPlan, distr: [] });
+  }>({ plan: currentPlan, distr: [] });
   const [showDistributions] = useState<boolean[]>(
     new Array(distributions.length),
   );
 
-  // Get the current year and term
-  const currentYear: Year = {
-    _id: '',
-    name: '',
-    courses: [],
-    year: new Date().getFullYear(),
-    plan_id: '',
-    user_id: '',
-  };
+
   const currentTerm: SemesterType = getCurrentTerm();
 
   // Gets the current term

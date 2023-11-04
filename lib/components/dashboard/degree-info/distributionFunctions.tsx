@@ -5,7 +5,6 @@ export type requirements = {
   expr: string;
   required_credits: number;
   fulfilled_credits: number;
-  // TODO: add taken credits
   taken_credits: number;
   description: string;
   double_count?: string[];
