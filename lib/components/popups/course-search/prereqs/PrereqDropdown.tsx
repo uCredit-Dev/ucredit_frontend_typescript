@@ -14,6 +14,7 @@ const PrereqDropdown: FC<{
   satisfied: boolean;
   element: string[];
   getNonStringPrereq: (element: any) => {
+    key: string;
     satisfied: boolean;
     jsx: JSX.Element;
   };
@@ -35,7 +36,7 @@ const PrereqDropdown: FC<{
   const getChildPrereqs = () => {
     // eslint-disable-next-line array-callback-return
     return element.map((el: any, index: number): JSX.Element => {
-      if (typeof el !== 'number') {
+      if (typeof el === 'number') {
         return processPrereqs(el, index);
       } else return <></>;
     });
@@ -45,6 +46,7 @@ const PrereqDropdown: FC<{
   const processPrereqs = (el: number, index: number): JSX.Element => {
     const alreadyDisplayed: React.Key[] = [];
     const parsed: {
+      key: string; 
       satisfied: boolean;
       jsx: JSX.Element;
     } = getNonStringPrereq(el);
@@ -57,9 +59,9 @@ const PrereqDropdown: FC<{
       alreadyDisplayed.push(parsed.jsx.key);
     }
     return (
-      <p className="ml-2" key={el + index}>
+      <div className="ml-2" key={parsed.key}>
         {parsed.jsx}
-      </p>
+      </div>
     );
   };
 

@@ -133,8 +133,8 @@ const PostReqSection: FC = () => {
   //preReqs is of the form (AS.050.111[C]^OR^(^AS.050.112[C]^AND^AS.050.113^)^)
   function checkIfSatisfied(course: PostReq) {
     try {
-      let str = course.versions[0].preReqs;
-      if (course.versions[0].preReqs.length === 0) {
+      let str = course.preReqs;
+      if (course.preReqs.length === 0) {
         return false;
       }
       //separates preReqs into components by using '^' as a delimiter.
@@ -268,10 +268,10 @@ const PostReqSection: FC = () => {
         </p>
         <div
           className="w-5 ml-2 mb-1 items-center font-semibold text-white transition duration-200 ease-in transform rounded select-none bg-primary hover:scale-110"
-          data-tooltip-content={`${course.versions[0].credits} credits`}
+          data-tooltip-content={`${course.credits} credits`}
           data-tooltip-id="godtip"
         >
-          {course.versions[0].credits}
+          {course.credits}
         </div>
       </button>
     </div>
@@ -293,10 +293,10 @@ const PostReqSection: FC = () => {
           </div>
           <div
             className="w-5 ml-2 mb-1 items-center font-semibold text-white transition duration-200 ease-in transform rounded select-none bg-primary hover:scale-110"
-            data-tooltip-content={`${course.versions[0].credits} credits`}
+            data-tooltip-content={`${course.credits} credits`}
             data-tooltip-id="godtip"
           >
-            {course.versions[0].credits}
+            {course.credits}
           </div>
         </button>
       </div>

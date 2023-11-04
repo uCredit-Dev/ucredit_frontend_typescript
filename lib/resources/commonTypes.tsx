@@ -71,7 +71,8 @@ export type PostReq = {
   courseId: string;
   number: string;
   title: string;
-  versions: PostReqVersions[];
+  credits: string;
+  preReqs: string;
 };
 
 // For User courses, which have extra ids with user-specific info and a single term/area that the user chose.
