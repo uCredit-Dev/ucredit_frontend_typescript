@@ -8,10 +8,8 @@ import { allMajors } from '../../resources/majors';
 import Tooltip from '@mui/material/Tooltip';
 import {
   selectPlan,
-  selectSelectedMajor,
   updateSelectedPlan,
   updateCurrentPlanCourses,
-  updateSelectedMajor,
 } from '../../slices/currentPlanSlice';
 import {
   updateAddingPlanStatus,
@@ -47,7 +45,6 @@ const majorOptions = allMajors.map((major) => ({
 const Actionbar: FC<{ mode: ReviewMode }> = ({ mode }) => {
   const planList = useSelector(selectPlanList);
   const currentPlan = useSelector(selectPlan);
-  const newSelectedMajor = useSelector(selectSelectedMajor);
   const user = useSelector(selectUser);
   const token = useSelector(selectToken);
   const dispatch = useDispatch();
@@ -173,11 +170,6 @@ const Actionbar: FC<{ mode: ReviewMode }> = ({ mode }) => {
       if (currentPlan.majors.includes(major.name))
         currentMajorOptions.push({ label: major.name, value: major.abbrev });
     });
-    if (newSelectedMajor) {
-      if (currentPlan.majors.includes(newSelectedMajor.degree_name)) {
-        dispatch(updateSelectedMajor(newSelectedMajor));
-      }
-    }
     return currentMajorOptions;
   };
 
