@@ -572,267 +572,14 @@ const baCogSci: Major = {
 //   distributions: [],
 // };
 
-// https://chemistry.jhu.edu/undergraduate/requirements/
-const baChem: Major = {
-  degree_name: 'B.A. Chemistry',
-  abbrev: 'baChem',
-  department: 'AS Chemistry',
-  total_degree_credit: 120,
-  wi_credit: 15,
-  url: 'https://e-catalogue.jhu.edu/arts-sciences/full-time-residential-programs/degree-programs/chemistry/chemistry-bachelor-arts/',
-  distributions: [
-    {
-      name: 'Chemistry Core',
-      required_credits: 40,
-      min_credits_per_course: 1,
-      description:
-        'These are the core chemistry courses required for the major.' +
-        '<br>For more information please visit the degree requirements section on the department website.',
-      criteria:
-        'AS.030.101[C]^OR^AS.030.102[C]^OR^AS.030.103[C]^OR^AS.030.105[C]^OR^AS.030.106[C]^OR^AS.030.205[C]^OR^AS.030.206[C]^OR^AS.030.212[C]^OR^AS.030.225[C]' +
-        '^OR^AS.030.227[C]^OR^AS.030.228[C]^OR^AS.030.301[C]^OR^AS.030.302[C]^OR^AS.030.449[C]^OR^AS.030.356[C]^OR^AS.030.245[C]^OR^AS.030.305[C]^OR^AS.030.306[C]',
-      double_count: [
-        'Humanities (H) Distribution',
-        'Social Science (S) Distribution',
-        'Other (N/E/Q) Distribution',
-        'Writing Intensive',
-      ],
-      fine_requirements: [
-        {
-          description:
-            '<b>Introductory Chemistry I</b> <br /> AS.030.101 Introductory Chemistry I',
-          required_credits: 3,
-          criteria: 'AS.030.101[C]',
-        },
-        {
-          description:
-            '<b>Introductory Chemistry II</b> <br /> AS.030.102 Introductory Chemistry II <br /><i>OR<i><br /> AS.030.103 Applied Chemical Equilibrium and Reactivity',
-          required_credits: 3,
-          criteria: 'AS.030.102[C]^OR^AS.030.103[C]',
-        },
-        {
-          description:
-            '<b>Introductory Chemistry Laboratory I</b> <br /> AS.030.105 Introductory Chemistry Laboratory I',
-          required_credits: 1,
-          criteria: 'AS.030.105[C]',
-        },
-        {
-          description:
-            '<b>Introductory Chemistry Laboratory II</b> <br /> AS.030.106 Introductory Chemistry Laboratory II',
-          required_credits: 1,
-          criteria: 'AS.030.106[C]',
-        },
-        {
-          description:
-            '<b>Introductory Organic Chemistry I</b> <br /> AS.030.205 Introductory Organic Chemistry I',
-          required_credits: 4,
-          criteria: 'AS.030.205[C]',
-        },
-        {
-          description:
-            '<b>Organic Chemistry II</b> <br /> AS.030.206 Organic Chemistry II <br /> <i>OR</i> <br /> AS.030.212 Honors Organic Chemistry II',
-          required_credits: 4,
-          criteria: 'AS.030.206[C]^OR^AS.030.212[C]',
-        },
-        {
-          description:
-            '<b>Organic Chemistry Lab</b> <br />' +
-            'AS.030.225 Introductory Organic Chemistry Laboratory <br /> <i>OR</i> </br>' +
-            'AS.030.227 Chemical Chirality: An Introduction in Organic Chem. Lab, Techniques',
-          required_credits: 3,
-          criteria: 'AS.030.225[C]^OR^AS.030.227[C]',
-        },
-        {
-          description:
-            '<b>Intermediate Organic Chemistry Laboratory</b> <br /> AS.030.228 Intermediate Organic Chemistry Laboratory',
-          required_credits: 3,
-          criteria: 'AS.030.228[C]',
-        },
-        {
-          description:
-            '<b>Physical Chemistry I</b> <br /> AS.030.301 Physical Chemistry I',
-          required_credits: 3,
-          criteria: 'AS.030.301[C]',
-        },
-        {
-          description:
-            '<b>Physical Chemistry II</b> <br /> AS.030.302 Physical Chemistry II',
-          required_credits: 3,
-          criteria: 'AS.030.302[C]',
-        },
-        {
-          description:
-            '<b>Chemistry of Inorganic Compounds</b> <br /> AS.030.449 Chemistry of Inorganic Compounds',
-          required_credits: 3,
-          criteria: 'AS.030.449[C]',
-        },
-        {
-          description:
-            '<b>Advanced Inorganic Lab</b> <br /> AS.030.356 Advanced Inorganic Lab',
-          required_credits: 3,
-          criteria: 'AS.030.356[C]',
-        },
-        {
-          description:
-            '<b>Lab Courses</b> <br /> Select two Lab Courses from the following:' +
-            '<br /> AS.030.245 Quantitative Analytical Laboratory <br /> AS.030.305	Physical Chemistry Instrumentation Laboratory I <br />' +
-            'EN.030.306 Physical Chemistry Instrumentation Laboratory II',
-          required_credits: 6,
-          criteria: 'AS.030.245[C]^OR^AS.030.305[C]^OR^AS.030.306[C]',
-        },
-      ],
-    },
-    {
-      name: 'Humanities',
-      required_credits: 9,
-      min_credits_per_course: 1,
-      description:
-        'These credits fulfilling the distribution requirement may overlap with major or minor requirements and the writing-intensive requirement.',
-      criteria: 'H[A]',
-      double_count: ['Writing Intensive', 'Major Requirement'],
-    },
-    {
-      name: 'Social Sciences',
-      required_credits: 9,
-      min_credits_per_course: 1,
-      description:
-        'These credits fulfilling the distribution requirement may overlap with major or minor requirements and the writing-intensive requirement.',
-      criteria: 'S[A]',
-      double_count: ['Writing Intensive', 'Major Requirement'],
-    },
-    {
-      name: 'Natural Sciences/Quantitative/Engineering',
-      required_credits: 9,
-      min_credits_per_course: 1,
-      description:
-        'These credits fulfilling the distribution requirement may overlap with major or minor requirements and the writing-intensive requirement.',
-      criteria: 'N[A]^OR^Q[A]^OR^E[A]',
-      double_count: [
-        'Writing Intensive',
-        'Major Requirement',
-        'Advanced Elective Courses',
-      ],
-    },
-    {
-      name: 'Writing Intensive',
-      required_credits: 15,
-      min_credits_per_course: 3,
-      description:
-        'Effective Fall 2022, all students earning a degree from the School of Arts and Sciences must complete Reintroduction to Writing in their first year at Hopkins plus an additional 12 credits in writing-intensive courses through their undergraduate experience for a minimum of 15 writing-intensive credits.',
-      criteria: 'Written Intensive[W]',
-      double_count: ['All'],
-      fine_requirements: [
-        {
-          description: 'Reintroduction to Writing',
-          required_credits: 3,
-          criteria: 'AS.004.101[C]',
-        },
-      ],
-    },
-    {
-      name: 'Courses Outside the Department',
-      required_credits: 18,
-      min_credits_per_course: 1,
-      description:
-        'Other courses that are not part of the Chemistry Core but are required for the major.',
-      criteria:
-        'AS.171.105[C]^OR^AS.171.101[C]^OR^AS.171.103[C]^OR^AS.171.107[C]^OR^AS.173.115[C]^OR^AS.173.111[C]^OR^' +
-        'AS.171.106[C]^OR^AS.171.102[C]^OR^AS.171.104[C]^OR^AS.171.108[C]^OR^AS.173.116[C]^OR^AS.173.112[C]^OR^' +
-        'AS.110.106[C]^OR^AS.110.108[C]^OR^AS.110.107[C]^OR^AS.110.109[C]^OR^AS.110.113[C]',
-      double_count: [
-        'Humanities (H) Distribution',
-        'Social Science (S) Distribution',
-        'Other (N/E/Q) Distribution',
-        'Writing Intensive',
-      ],
-      fine_requirements: [
-        {
-          description:
-            '<b>General Physics I / Classical Mechanics I</b> <br /> Select one of the following: <br /> AS.171.105 Classical Mechanics I' +
-            '<br /> AS.171.101 General Physics: Physical Science Major I <br />AS.171.103 General Physics I for Biological Science Majors' +
-            '<br /> AS.171.107 General Physics for Physical Sciences Majors (AL)',
-          required_credits: 4,
-          criteria:
-            'AS.171.105[C]^OR^AS.171.101[C]^OR^AS.171.103[C]^OR^AS.171.107[C]',
-        },
-        {
-          description:
-            '<b>General Physics / Classical Mechanics Laboratory</b> <br /> AS.173.115 Classical Mechanics Laboratory' +
-            '<br /> <i>OR</i> <br /> AS.173.111 General Physics Laboratory I',
-          required_credits: 1,
-          criteria: 'AS.173.115[C]^OR^AS.173.111[C]',
-        },
-        {
-          description:
-            '<b>General Physics II / Electricity and Magnetism I</b> <br /> Select one of the following: <br /> AS.171.106 Electricity and Magnetism I' +
-            '<br /> AS.171.102 General Physics: Physical Science Major II <br />AS.171.104 General Physics/Biology Majors II' +
-            '<br /> AS.171.108 General Physics for Physical Science Majors (AL)',
-          required_credits: 4,
-          criteria:
-            'AS.171.106[C]^OR^AS.171.102[C]^OR^AS.171.104[C]^OR^AS.171.108[C]',
-        },
-        {
-          description:
-            '<b>General Physics Laboratory II / Electricity and Magnetism Laboratory</b> <br /> AS.173.116 Electricity and Magnetism Laboratory' +
-            '<br /> <i>OR</i> <br /> AS.173.112 General Physics Laboratory II',
-          required_credits: 1,
-          criteria: 'AS.173.116[C]^OR^AS.173.112[C]',
-        },
-        {
-          description:
-            '<b>Calculus I</b> <br />' +
-            'AS.110.106 Calculus I (Biology and Social Sciences)' +
-            '<br /> <i>OR</i> <br />' +
-            'AS.110.108 Calculus I (Physical Sciences and Engineering)',
-          required_credits: 4,
-          criteria: 'AS.110.106[C]^OR^AS.110.108[C]',
-        },
-        {
-          description:
-            '<b>Calculus II</b> <br />' +
-            'AS.110.109 Calculus II (For Physical Sciences and Engineering)' +
-            '<br /> <i>OR</i> <br />' +
-            'AS.110.107 Calculus II (For Biological and Social Science)' +
-            '<br /> <i>OR</i> <br />' +
-            'AS.110.113 Honors Single Variable Calculus',
-          required_credits: 4,
-          criteria: 'AS.110.107[C]^OR^AS.110.109[C]^OR^AS.110.113[C]',
-        },
-      ],
-    },
-    {
-      name: 'Advanced Elective Courses',
-      required_credits: 12,
-      min_credits_per_course: 1,
-      description:
-        'Students must take three credits of advanced chemistry courses beyond AS.030.305-AS.030.306. ' +
-        'None of the advanced course requirements may be fulfilled with research. ' +
-        'Students must also take nine credits of advanced chemistry courses, or science electives at the 300-level or higher ' +
-        'approved by a Department of Chemistry advisor, and/or mathematics beyond Calculus II',
-      criteria:
-        '(AS Chemistry[D]^AND^Upper Level[L])^OR^(AS Mathematics[D]^NOT^AS.110.108[C]^NOT^AS.110.109[C])^NOT^AS.030.305[C]^NOT^AS.030.306[C]',
-      fine_requirements: [
-        {
-          description:
-            '<b>Advanced chemistry courses</b> <br /> Three credits of advanced chemistry courses beyond AS.030.305-AS.030.306, ' +
-            'cannot be fulfilled with research',
-          required_credits: 3,
-          criteria:
-            '(AS Chemistry[D]^AND^Upper Level[L])^NOT^AS.030.305[C]^NOT^AS.030.306[C]',
-        },
-        {
-          description:
-            '<b>Advanced sciences/mathematics</b> <br /> Nine credits of advanced chemistry courses' +
-            '<br /> <i>OR</i> <br /> science electives at the 300-level or higher' +
-            '<br /> <i>OR</i> <br /> mathematics beyond Calculus II',
-          required_credits: 9,
-          criteria:
-            '(AS Chemistry[D]^AND^(Upper Level[L]))^OR^(N[A]^AND^(Upper Level[L]))^OR^(AS Mathematics[D]^NOT^AS.110.108[C]^NOT^AS.110.109[C])',
-        },
-      ],
-    },
-  ],
-};
+// // https://chemistry.jhu.edu/undergraduate/requirements/
+// const bsChem: Major = {
+//   degree_name: "B.S. Chemistry",
+//   department: "AS Chemistry",
+//   total_degree_credit: 120,
+//   wi_credit: 6,
+//   distributions: [],
+// };
 
 // // https://biophysics.jhu.edu/undergraduate/requirements/
 // const bsBioPhysics: Major = {
@@ -5586,7 +5333,7 @@ export const allMajors: Major[] = [
   no_degree,
   bsCS,
   baCS,
-  baPH,
+  minorCS,
   bsMolCell,
   bsAMS,
   baIS,
@@ -5600,7 +5347,6 @@ export const allMajors: Major[] = [
   baMath,
   baPhysics,
   bsPhysics,
-  baChem,
   minorCS,
   minorAMS,
   minorEcon,
