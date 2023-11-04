@@ -37,9 +37,13 @@ const CommentsOverview: React.FC = () => {
       }
     }
     setNumComments(comments);
+<<<<<<< HEAD
     const ts = temp.map((e) => {
       return <div key={e._id}>{getComments(e)}</div>;
     });
+=======
+    const ts = temp.map((e) => getComments(e));
+>>>>>>> master
     setThreadJSX(ts);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [threadObjs]);

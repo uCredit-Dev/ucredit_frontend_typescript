@@ -724,8 +724,13 @@ const baChem: Major = {
       fine_requirements: [
         {
           description: 'Reintroduction to Writing',
+<<<<<<< HEAD
           required_credits: 3,
           criteria: 'AS.004.101[C]',
+=======
+          required_credits: 4,
+          criteria: 'AS.004.100[C]',
+>>>>>>> master
         },
       ],
     },
@@ -5586,9 +5591,12 @@ export const allMajors: Major[] = [
   no_degree,
   bsCS,
   baCS,
+<<<<<<< HEAD
   baChem,
   baPH,
   minorCS,
+=======
+>>>>>>> master
   bsMolCell,
   bsAMS,
   baIS,
