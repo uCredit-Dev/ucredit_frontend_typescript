@@ -49,8 +49,8 @@ type searchStates = {
 
 type searchStackUpdate = {
   new: SISRetrievedCourse;
-  oldSIS: SISRetrievedCourse;
-  oldV: Course;
+  oldSIS: SISRetrievedCourse | 'None';
+  oldV: Course | 'None';
 };
 
 const initialState: searchStates = {

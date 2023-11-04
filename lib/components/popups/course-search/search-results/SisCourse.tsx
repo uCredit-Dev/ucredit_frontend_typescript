@@ -253,58 +253,56 @@ const SisCourse: FC<{
   // Handles displaying the add course UI
   const getAddCourseUI = (): JSX.Element =>
     (showCourseInfo && searchStack.length === 0) || !showCourseInfo ? (
-      <div className="relative bottom-0 flex flex-row items-center w-full h-20 px-4 py-2 bg-gray-100 rounded-b">
-        <div className="flex flex-col justify-center flex-grow">
-          <div className="mb-1 font-medium">Selecting for</div>
-          <div className="flex flex-row tight:flex-col">
-            <div className="flex flex-row items-center w-auto h-auto tight:ml-0 tight:mt-2">
-              Year
-              <div className="flex-grow">
+      <div className="relative bottom-2 flex flex-row items-center w-full h-20 px-4 bg-gray-100 rounded-b">
+        <div className="flex flex-row items-center h-auto tight:mt-2 flex-grow">
+          <div className="flex flex-col">
+            <div className="font-medium">Selecting for</div>
+            <div className="flex flex-row">
+              <div className="flex flex-row items-center h-auto">
+                Year
                 <QuestionMarkCircleIcon
                   className="h-4 fill-gray"
                   data-tooltip-id="godtip"
                   data-tooltip-html={`<p>This is the year you're selecting for.</p><p>The version you are viewing gives you a snapshot of the information of the course at a specific time to give you an understanding of the past and current states of the course. This is NOT to determine where on the plan you are adding the course.</p><p>NOTE: This could be different from the version of the course you are viewing.</p><p>(ie. Course Version "Spring, 2021" may not equal "Spring, Senior")</p>`}
                 />
-              </div>
-              <select
-                className="ml-2 text-black rounded text-coursecard focus:outline-none"
-                onChange={handleYearChange}
-                value={searchYear}
-              >
-                {currentPlan.years.map((currPlanYear, i) => {
-                  if (inspected !== 'None') {
-                    for (let term of inspected.terms) {
-                      if (
-                        i === 0 ||
-                        term ===
-                          searchSemester +
-                            ' ' +
-                            (searchSemester === 'Spring' ||
-                            searchSemester === 'Summer' ||
-                            searchSemester === 'Intersession'
-                              ? currPlanYear.year + 1
-                              : currPlanYear.year
-                            ).toString() ||
-                        currPlanYear.year + 1 >= new Date().getFullYear() // Sloppy checking, fix
-                      ) {
-                        return (
-                          <option
-                            key={currPlanYear._id}
-                            value={currPlanYear._id}
-                          >
-                            {currPlanYear.name}
-                          </option>
-                        );
+                <select
+                  className="ml-2 text-black rounded text-coursecard focus:outline-none"
+                  onChange={handleYearChange}
+                  value={searchYear}
+                >
+                  {currentPlan.years.map((currPlanYear, i) => {
+                    if (inspected !== 'None') {
+                      for (let term of inspected.terms) {
+                        if (
+                          i === 0 ||
+                          term ===
+                            searchSemester +
+                              ' ' +
+                              (searchSemester === 'Spring' ||
+                              searchSemester === 'Summer' ||
+                              searchSemester === 'Intersession'
+                                ? currPlanYear.year + 1
+                                : currPlanYear.year
+                              ).toString() ||
+                          currPlanYear.year + 1 >= new Date().getFullYear() // Sloppy checking, fix
+                        ) {
+                          return (
+                            <option
+                              key={currPlanYear._id}
+                              value={currPlanYear._id}
+                            >
+                              {currPlanYear.name}
+                            </option>
+                          );
+                        }
                       }
                     }
-                  }
-                  return null;
-                })}
-              </select>
-            </div>
-            <div className="flex flex-row items-center w-auto h-auto ml-5 tight:ml-0 tight:mt-2">
-              Count as
-              <div className="flex-grow">
+                    return null;
+                  })}
+                </select>
+              </div>
+              <div className="flex flex-row items-center h-auto ml-5 tight:ml-3">
+                Count as
                 <QuestionMarkCircleIcon
                   className="h-4 fill-gray"
                   data-tooltip-id="godtip"
@@ -312,15 +310,17 @@ const SisCourse: FC<{
                     '<p>Areas designate the specific subset a course belongs to. Each degree requires students to take a certain amount of credits or courses in a spcific area.</p><p>H - Humanities</p><p>S - Social Sciences</p><p>E - Engineering</p><p>N - Natural Sciences</p><p>Q - Quantitative</p>'
                   }
                 />
+                :
+                <select
+                  className="h-6 ml-2 rounded outline-none w-14"
+                  value={props.inspectedArea}
+                  onChange={(event) =>
+                    props.setInspectedArea(event.target.value)
+                  }
+                >
+                  {getInspectedAreas()}
+                </select>
               </div>
-              :
-              <select
-                className="h-6 ml-2 rounded outline-none w-14"
-                value={props.inspectedArea}
-                onChange={(event) => props.setInspectedArea(event.target.value)}
-              >
-                {getInspectedAreas()}
-              </select>
             </div>
           </div>
         </div>
@@ -358,7 +358,7 @@ const SisCourse: FC<{
       <button
         className={clsx(
           { 'bg-slate-300 hover:bg-slate-300': reviewMode === ReviewMode.View },
-          'w-auto h-10 p-2 mt-2 text-white transition duration-200 ease-in transform rounded hover:bg-secondary bg-primary focus:outline-none hover:scale-105',
+          'w-auto h-10 p-2 mr-2 text-white transition duration-200 ease-in transform rounded hover:bg-secondary bg-primary focus:outline-none hover:scale-105',
         )}
         onClick={updateCourse}
         disabled={reviewMode === ReviewMode.View}
