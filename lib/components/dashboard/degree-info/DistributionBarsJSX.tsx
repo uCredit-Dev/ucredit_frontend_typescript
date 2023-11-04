@@ -10,7 +10,6 @@ import {
   Major,
   Course,
   UserCourse,
-  Year,
   SemesterType,
 } from '../../../resources/commonTypes';
 import {
@@ -48,7 +47,6 @@ const DistributionBarsJSX: FC<{ major: Major }> = ({ major }) => {
   const [showDistributions] = useState<boolean[]>(
     new Array(distributions.length),
   );
-
 
   const currentTerm: SemesterType = getCurrentTerm();
 
@@ -236,6 +234,7 @@ const DistributionBarsJSX: FC<{ major: Major }> = ({ major }) => {
           bio: '',
           tags: course.tags,
           preReq: course.preReq,
+          postReq: course.postReq,
           restrictions: [],
           version: course.version,
           level: course.level,

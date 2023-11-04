@@ -134,6 +134,13 @@ const CourseBar: FC<{
       <div
         className="relative flex flex-row w-full h-6 cursor-pointer"
         onClick={openCartPopup}
+        onKeyDown={(event) => {
+          if (event.key === 'Enter') {
+            event.preventDefault();
+            openCartPopup();
+          }
+        }}
+        tabIndex={0}
       >
         <div
           className="relative flex flex-row w-full h-6 mb-2 bg-gray-200 rounded-full"

@@ -36,6 +36,13 @@ const Distributions: FC<{
         <div
           className="h-6 w-6 m-auto mr-0 cursor-pointer"
           onClick={() => dispatch(updateInfoPopup(false))}
+          onKeyDown={(event) => {
+            if (event.key === 'Enter') {
+              event.preventDefault();
+              dispatch(updateInfoPopup(false));
+            }
+          }}
+          tabIndex={0}
         >
           <XIcon />
         </div>

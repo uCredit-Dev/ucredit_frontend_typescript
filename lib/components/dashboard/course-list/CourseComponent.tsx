@@ -58,7 +58,7 @@ const CourseComponent: FC<{
   const currentYear: Year = getCurrentYear();
   const currentTerm: SemesterType = getCurrentTerm();
 
-  const [statusColor, setStatusColor] = useState<string>('steelblue');
+  const [, setStatusColor] = useState<string>('steelblue');
 
   // Redux setup
   const dispatch = useDispatch();
@@ -163,6 +163,13 @@ const CourseComponent: FC<{
         onMouseEnter={() => setDraggable(false)}
         onMouseLeave={() => setDraggable(true)}
         onClick={displayCourses}
+        onKeyDown={(event) => {
+          if (event.key === 'Enter') {
+            event.preventDefault();
+            displayCourses();
+          }
+        }}
+        tabIndex={0}
         key={course.number}
       >
         <div className="grid grid-flow-row-dense grid-cols-10 w-full h-full gap-x-1.5">
