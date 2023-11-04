@@ -28,7 +28,7 @@ import { toast } from 'react-toastify';
 // satisfied: a boolean that tells whether the prereq should be marked with green (satisfied) or red (unsatisfied)
 // jsx: the dropdown bullet containing the current prereq course pill as well as its subsequent prereqs.
 type parsedPrereqs = {
-  key: string; 
+  key: string;
   satisfied: boolean;
   jsx: JSX.Element;
 };
@@ -268,10 +268,10 @@ const PrereqDisplay: FC = () => {
       // If the element is a OR sequence (denoted by the depth number in the first index)
       const parsedSat: boolean = isSatisfied(element, true);
       return {
-        key: "drop" + element, 
+        key: 'drop' + element,
         satisfied: parsedSat,
         jsx: (
-          <div key={"drop" + element}>
+          <div key={'drop' + element}>
             <PrereqDropdown
               satisfied={parsedSat}
               text={'Any one course below'}
@@ -287,7 +287,7 @@ const PrereqDisplay: FC = () => {
       if (element.length === 1) {
         const parsed: parsedPrereqs = getNonStringPrereq(element[0]);
         return {
-          key: "drop" + element,
+          key: 'drop' + element,
           satisfied: parsed.satisfied,
           jsx: <div key={'drop' + element}>{parsed.jsx}</div>,
         };
@@ -311,7 +311,7 @@ const PrereqDisplay: FC = () => {
       }
     } else {
       return {
-        key: "drop" + element,
+        key: 'drop' + element,
         satisfied: true,
         jsx: <></>,
       };

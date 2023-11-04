@@ -46,7 +46,7 @@ const PrereqDropdown: FC<{
   const processPrereqs = (el: number, index: number): JSX.Element => {
     const alreadyDisplayed: React.Key[] = [];
     const parsed: {
-      key: string; 
+      key: string;
       satisfied: boolean;
       jsx: JSX.Element;
     } = getNonStringPrereq(el);
