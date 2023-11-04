@@ -253,7 +253,7 @@ const SisCourse: FC<{
   // Handles displaying the add course UI
   const getAddCourseUI = (): JSX.Element =>
     (showCourseInfo && searchStack.length === 0) || !showCourseInfo ? (
-      <div className="relative bottom-0 flex flex-row items-center w-full h-20 px-4 bg-gray-100 rounded-b">
+      <div className="relative bottom-2 flex flex-row items-center w-full h-20 px-4 bg-gray-100 rounded-b">
         <div className="flex flex-row items-center h-auto tight:mt-2 flex-grow">
         <div className="flex flex-col">
           <div className="font-medium">Selecting for</div>
