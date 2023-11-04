@@ -173,11 +173,6 @@ const Actionbar: FC<{ mode: ReviewMode }> = ({ mode }) => {
       if (currentPlan.majors.includes(major.name))
         currentMajorOptions.push({ label: major.name, value: major.abbrev });
     });
-    if (newSelectedMajor) {
-      if (currentPlan.majors.includes(newSelectedMajor.degree_name)) {
-        dispatch(updateSelectedMajor(newSelectedMajor));
-      }
-    }
     return currentMajorOptions;
   };
 
@@ -298,7 +293,6 @@ const Actionbar: FC<{ mode: ReviewMode }> = ({ mode }) => {
           </Dialog>
           <Autocomplete
             disablePortal
-            id="combo-box-demo"
             options={[
               { value: currentPlan, label: 'Create New Plan' },
               ...planList
@@ -324,7 +318,6 @@ const Actionbar: FC<{ mode: ReviewMode }> = ({ mode }) => {
           <Autocomplete
             disablePortal
             multiple
-            id="combo-box-demo"
             options={majorOptions.map((option, i) => ({
               label: option.name,
               value: option.abbrev,
