@@ -521,6 +521,36 @@ export const getCourse = async (
     return resolve(await backendSearch(courseNumber, indexNum, userC));
   });
 
+export const getSISCourse = (
+  courseNumber: string,
+  courseCache: SISRetrievedCourse[],
+): Promise<SISRetrievedCourse | null> => {
+  return new Promise((resolve) => {
+    for (let element of courseCache) {
+      if (element.number === courseNumber) {
+        resolve(element);
+        return;
+      }
+    }
+    // fetch from backend
+    axios
+      .get(getAPI(window) + `/searchNumber/${courseNumber}`)
+      .then((res) => {
+        let retrieved: SISRetrievedCourse | -1 = res.data.data;
+        if (retrieved === -1) {
+          store.dispatch(updateUnfoundNumbers(courseNumber));
+          resolve(null);
+        } else {
+          store.dispatch(updateCourseCache([retrieved]));
+          resolve(retrieved);
+        }
+      })
+      .catch((err) => {
+        resolve(null);
+      });
+  });
+};
+
 const backendSearch = async (
   courseNumber: string,
   indexNum: number,

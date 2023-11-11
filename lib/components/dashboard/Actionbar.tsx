@@ -301,7 +301,6 @@ const Actionbar: FC<{ mode: ReviewMode }> = ({ mode }) => {
           </Dialog>
           <Autocomplete
             disablePortal
-            id="combo-box-demo"
             options={[
               { value: currentPlan, label: 'Create New Plan' },
               ...planList
@@ -327,7 +326,6 @@ const Actionbar: FC<{ mode: ReviewMode }> = ({ mode }) => {
           <Autocomplete
             disablePortal
             multiple
-            id="combo-box-demo"
             options={majorOptions.map((option, i) => ({
               label: option.name,
               value: option.abbrev,
