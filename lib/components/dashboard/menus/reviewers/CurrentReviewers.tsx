@@ -1,5 +1,5 @@
-import { CheckIcon, BellIcon } from '@heroicons/react/outline';
-import React, { FC, useEffect } from 'react';
+import { BellIcon, TrashIcon } from '@heroicons/react/outline';
+import React, { FC, useEffect, useState } from 'react';
 import { useSelector } from 'react-redux';
 import { ReviewRequestStatus } from '../../../../resources/commonTypes';
 import { userService } from '../../../../services';
@@ -15,6 +15,9 @@ const CurrentReviewers: FC<{
 }> = ({ reviewersJSX, setReviewersJSX }) => {
   const currentPlan = useSelector(selectPlan);
   const token = useSelector(selectToken);
+  const planReviewers = useState<any>(
+    userService.getPlanReviewers(currentPlan._id, token),
+  );
 
   const sendEmail = (toName, reviewID) => {
     const body = {
@@ -62,25 +65,19 @@ const CurrentReviewers: FC<{
       // dispatch(updateSelectedPlan({ ...currentPlan, reviewers: reviewers }));
     })();
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [currentPlan.reviewers]);
+  }, [planReviewers, currentPlan._id, token]);
 
-  const getSVG = (status: string) => {
-    if (status === ReviewRequestStatus.Pending) {
-      return (
-        <div
-          className="w-3 h-3 bg-black rounded-full tooltip"
-          data-tooltip-id="godtip"
-          data-tooltip-content="Pending"
-        />
-      );
-    } else if (status !== ReviewRequestStatus.Pending) {
-      return (
-        <CheckIcon
-          className="w-5 h-5 tooltip"
-          data-tooltip-id="godtip"
-          data-tooltip-content="Accepted"
-        />
-      );
+  const removeReviewer = async (id) => {
+    const reviewers = (
+      await userService.getPlanReviewers(currentPlan._id, token)
+    ).data;
+    for (const { reviewer_id, _id } of reviewers) {
+      if (reviewer_id._id === id) {
+        await userService.removeReview(_id, token);
+        toast.success('Reviewer removed', {
+          toastId: 'reviewer removed',
+        });
+      }
     }
   };
 
@@ -108,41 +105,40 @@ const CurrentReviewers: FC<{
                 data-tooltip-content="This reviewer is requesting a review"
               />
             )}
-            <div className="flex items-center justify-center w-6 h-6">
-              {getSVG(status)}
-            </div>
           </div>
           <p className="pl-2 justify-start">{reviewer.name}</p>
-          {status !== ReviewRequestStatus.Pending && (
-            <div
-              className={clsx('ml-1 text-sm', {
-                'text-sky-500': status === ReviewRequestStatus.UnderReview,
-                'text-emerald-500': status === ReviewRequestStatus.Approved,
-                'text-red-500': status === ReviewRequestStatus.Rejected,
-              })}
-            >
-              {status === ReviewRequestStatus.Approved
-                ? 'Approved'
-                : status === ReviewRequestStatus.Rejected
-                ? 'Rejected'
-                : status === ReviewRequestStatus.UnderReview
-                ? 'Reviewing'
-                : null}
-            </div>
-          )}
-          {status !== 'PENDING' ? (
-            <button className="ml-auto">
-              <BellIcon
-                className="h-5"
-                onClick={makeOnClickHandler(
-                  reviewee.name,
-                  reviewer.email,
-                  reviewer.name,
-                  _id,
-                )}
-              ></BellIcon>
-            </button>
-          ) : null}
+          <div
+            className={clsx('ml-auto text-sm', {
+              'text-black': status === ReviewRequestStatus.Pending,
+              'text-emerald-500': status === ReviewRequestStatus.Approved,
+              'text-red-500': status === ReviewRequestStatus.Rejected,
+              'text-sky-500': status === ReviewRequestStatus.UnderReview,
+            })}
+          >
+            {status === ReviewRequestStatus.Pending
+              ? 'Pending'
+              : status === ReviewRequestStatus.Approved
+              ? 'Approved'
+              : status === ReviewRequestStatus.Rejected
+              ? 'Rejected'
+              : status === ReviewRequestStatus.UnderReview
+              ? 'Reviewing'
+              : null}
+          </div>
+          <button className="ml-1">
+            <BellIcon
+              className="h-5"
+              onClick={makeOnClickHandler(
+                reviewee.name,
+                reviewer.email,
+                reviewer.name,
+                _id,
+              )}
+            ></BellIcon>
+          </button>
+          <button onClick={() => removeReviewer(reviewer._id)}>
+            <TrashIcon className="w-5 h-5 stroke-red-500" />
+          </button>
         </div>,
       );
     }

@@ -358,12 +358,12 @@ const SisCourse: FC<{
       <button
         className={clsx(
           { 'bg-slate-300 hover:bg-slate-300': reviewMode === ReviewMode.View },
-          'w-auto h-10 p-2 mr-2 text-white transition duration-200 ease-in transform rounded hover:bg-secondary bg-primary focus:outline-none hover:scale-105',
+          'flex justify-center items-center py-3.5 text-white rounded-md w-40 hover:bg-buttonHover focus:outline-none hover:scale-105 bg-button drop-shadow-2xl backdrop-opacity-15 backdrop-blur-2xl',
         )}
         onClick={updateCourse}
         disabled={reviewMode === ReviewMode.View}
       >
-        Update Course
+        <p className="text-sm font-bold">Update Course</p>
       </button>
     );
 

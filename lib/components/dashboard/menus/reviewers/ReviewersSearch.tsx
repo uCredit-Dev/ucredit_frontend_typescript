@@ -35,22 +35,27 @@ const ReviewersSearch = () => {
     if (searchState.length > 0) {
       const search = setTimeout(() => Search(searchState), 500);
       return () => clearTimeout(search);
-    }
+    } else setSearchData([]);
   }, [searchState, token]);
 
   return (
-    <div className="flex flex-col pr-1 bg-slate-100 mx-1 rounded-lg">
-      <div className="ml-2 py-2">
-        <p className="text-gray-500">Add or remove reviewers</p>
+    <div className="flex flex-col pr-1 mx-1 rounded-lg">
+      <div className="ml-4 py-1">
+        <p className="text-gray-500">Add reviewer</p>
       </div>
-      <input
-        type="text"
-        placeholder="jsmith1 or John Smith"
-        className="px-3 py-1 mx-2 mb-3 bg-gray-200 rounded-md"
-        value={searchState}
-        onChange={handleChange}
-      ></input>
+      <div className="flex flex-row py-1">
+        <input
+          type="text"
+          placeholder="jsmith1 or John Smith"
+          className="flex px-4 py-2 ml-4 mx-2 w-full text-sm rounded-sm outline outline-1 outline-gray-200 shadow-inner"
+          value={searchState}
+          onChange={handleChange}
+        ></input>
+      </div>
       <ReviewerSearchResults users={searchData} />
+      <div className="ml-4 mt-3">
+        <p className="text-gray-500">Reviewers</p>
+      </div>
     </div>
   );
 };

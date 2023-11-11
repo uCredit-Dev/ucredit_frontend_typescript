@@ -5602,6 +5602,7 @@ export const allMajors: Major[] = [
   baMath,
   baPhysics,
   bsPhysics,
+  minorCS,
   minorAMS,
   minorEcon,
   minorPhysics,

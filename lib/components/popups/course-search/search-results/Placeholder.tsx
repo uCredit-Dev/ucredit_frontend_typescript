@@ -28,7 +28,7 @@ import {
   updateSelectedPlan,
 } from '../../../../slices/currentPlanSlice';
 import { QuestionMarkCircleIcon } from '@heroicons/react/solid';
-import { XIcon } from '@heroicons/react/outline';
+import { XIcon, PlusIcon } from '@heroicons/react/outline';
 import { selectReviewMode, selectToken } from '../../../../slices/userSlice';
 import clsx from 'clsx';
 import { toast } from 'react-toastify';
@@ -387,7 +387,7 @@ const Placeholder: FC<{ addCourse: (plan?: Plan) => void }> = (props) => {
             {
               'bg-slate-300 hover:bg-slate-300': reviewMode === ReviewMode.View,
             },
-            'p-1 mr-0 text-white transition duration-200 ease-in transform rounded w-28 hover:bg-secondary bg-primary focus:outline-none hover:scale-105',
+            'flex justify-center items-center py-4 text-white rounded-md w-40 hover:bg-buttonHover focus:outline-none hover:scale-105 bg-button drop-shadow-2xl backdrop-opacity-15 backdrop-blur-2xl',
           )}
           onClick={() => {
             if (
@@ -407,18 +407,19 @@ const Placeholder: FC<{ addCourse: (plan?: Plan) => void }> = (props) => {
           }}
           disabled={reviewMode === ReviewMode.View}
         >
-          Add Course
+          <p className="text-md font-bold">Add Course</p>
+          <PlusIcon className="h-4 ml-1" />
         </button>
       ) : (
         <button
           className={clsx(
             { 'bg-slate-300': reviewMode === ReviewMode.View },
-            'p-1 mr-0 text-white transition duration-200 ease-in transform rounded w-28 bg-secondary focus:outline-none hover:scale-105',
+            'flex justify-center items-center py-3.5 text-white rounded-md w-40 hover:bg-buttonHover focus:outline-none hover:scale-105 bg-button drop-shadow-2xl backdrop-opacity-15 backdrop-blur-2xl',
           )}
           onClick={updateCourse}
           disabled={reviewMode === ReviewMode.View}
         >
-          Update Course
+          <p className="text-sm font-bold">Update Course</p>
         </button>
       )}
     </div>
