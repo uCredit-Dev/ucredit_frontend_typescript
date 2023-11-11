@@ -1,5 +1,5 @@
 import { BellIcon, TrashIcon } from '@heroicons/react/outline';
-import React, { FC, useEffect } from 'react';
+import React, { FC, useEffect, useState } from 'react';
 import { useSelector } from 'react-redux';
 import { ReviewRequestStatus } from '../../../../resources/commonTypes';
 import { userService } from '../../../../services';
@@ -15,6 +15,7 @@ const CurrentReviewers: FC<{
 }> = ({ reviewersJSX, setReviewersJSX }) => {
   const currentPlan = useSelector(selectPlan);
   const token = useSelector(selectToken);
+  const planReviewers = useState<any>(userService.getPlanReviewers(currentPlan._id, token));
 
   const sendEmail = (toName, reviewID) => {
     const body = {
@@ -62,11 +63,7 @@ const CurrentReviewers: FC<{
       // dispatch(updateSelectedPlan({ ...currentPlan, reviewers: reviewers }));
     })();
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [
-    userService.getPlanReviewers(currentPlan._id, token),
-    currentPlan._id,
-    token,
-  ]);
+  }, [planReviewers, currentPlan._id, token]);
 
   const removeReviewer = async (id) => {
     const reviewers = (
