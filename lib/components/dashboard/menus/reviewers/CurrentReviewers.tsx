@@ -15,7 +15,9 @@ const CurrentReviewers: FC<{
 }> = ({ reviewersJSX, setReviewersJSX }) => {
   const currentPlan = useSelector(selectPlan);
   const token = useSelector(selectToken);
-  const planReviewers = useState<any>(userService.getPlanReviewers(currentPlan._id, token));
+  const planReviewers = useState<any>(
+    userService.getPlanReviewers(currentPlan._id, token),
+  );
 
   const sendEmail = (toName, reviewID) => {
     const body = {
