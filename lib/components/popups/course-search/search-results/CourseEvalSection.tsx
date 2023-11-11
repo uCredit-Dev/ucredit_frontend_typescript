@@ -79,7 +79,7 @@ const CourseEvalSection: FC = () => {
   const displayEvals = () => {
     if (courseReviews.length === 0)
       return (
-        <div className="flex flex-row justify-center mt-2">
+        <div className="flex flex-row text-left mt-2">
           No reviews available!
         </div>
       );

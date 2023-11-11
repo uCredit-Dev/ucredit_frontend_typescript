@@ -453,10 +453,15 @@ export const getCourses = (
       } else {
         if (numNameList[outIndex] == null) {
           retrieved++;
-          numNameList[outIndex] =
-            numList[outIndex] +
-            numList[outIndex] +
-            ' Has not been offered in the past 4 years or listed on SIS. Please click on the Prerequisites Description tab for full description.';
+          if (numList[outIndex] === 'EN.990.100') {
+            numNameList[outIndex] =
+              'Lab Safety            (Please click on the Prerequisites Description tab for full description)';
+          } else {
+            numNameList[outIndex] =
+              numList[outIndex] +
+              numList[outIndex] +
+              ' Has not been offered in the past 4 years or listed on SIS. Please click on the Prerequisites Description tab for full description.';
+          }
         }
         if (retrieved === numList.length) {
           let out = {
@@ -515,6 +520,36 @@ export const getCourse = async (
     // Then pull from db.
     return resolve(await backendSearch(courseNumber, indexNum, userC));
   });
+
+export const getSISCourse = (
+  courseNumber: string,
+  courseCache: SISRetrievedCourse[],
+): Promise<SISRetrievedCourse | null> => {
+  return new Promise((resolve) => {
+    for (let element of courseCache) {
+      if (element.number === courseNumber) {
+        resolve(element);
+        return;
+      }
+    }
+    // fetch from backend
+    axios
+      .get(getAPI(window) + `/searchNumber/${courseNumber}`)
+      .then((res) => {
+        let retrieved: SISRetrievedCourse | -1 = res.data.data;
+        if (retrieved === -1) {
+          store.dispatch(updateUnfoundNumbers(courseNumber));
+          resolve(null);
+        } else {
+          store.dispatch(updateCourseCache([retrieved]));
+          resolve(retrieved);
+        }
+      })
+      .catch((err) => {
+        resolve(null);
+      });
+  });
+};
 
 const backendSearch = async (
   courseNumber: string,
@@ -828,9 +863,10 @@ export const checkPrereq = (
 ): boolean => {
   for (let course of courses) {
     if (
-      (course.number === preReqNumber ||
+      ((course.number === preReqNumber ||
         checkOldPrereqNumbers(course.number, preReqNumber)) &&
-      prereqInPast(course, year, semester, plan)
+        prereqInPast(course, year, semester, plan)) ||
+      preReqNumber === 'Lab Safety'
     )
       return true;
   }
@@ -867,7 +903,7 @@ const semesters: string[] = ['fall', 'intersession', 'spring', 'summer'];
  * @param plan - user's plan
  * @returns - whether the course is in the past
  */
-const prereqInPast = (
+export const prereqInPast = (
   course: UserCourse,
   year: Year,
   semester: SemesterType,
@@ -885,6 +921,40 @@ const prereqInPast = (
     } else {
       return (
         semesters.indexOf(course.term) <
+        semesters.indexOf(semester.toLowerCase())
+      );
+    }
+  } else {
+    return false;
+  }
+};
+
+/**
+ * Check's whether prereq is satisfied by the course in the past
+ * @param course - the course
+ * @param year - the year of the course we are checking (not course)
+ * @param semester - semester of the course we are checking (not course)
+ * @param plan - user's plan
+ * @returns - whether the course is in the past
+ */
+export const prereqInPastOrCurrent = (
+  course: UserCourse,
+  year: Year,
+  semester: SemesterType,
+  plan: Plan,
+): boolean => {
+  const retrievedYear = getCourseYear(plan, course);
+  if (retrievedYear !== null) {
+    if (
+      retrievedYear.year < year.year ||
+      (year.year === retrievedYear.year && checkSemester(semester, course.term))
+    ) {
+      return true;
+    } else if (retrievedYear.year > year.year) {
+      return false;
+    } else {
+      return (
+        semesters.indexOf(course.term) <=
         semesters.indexOf(semester.toLowerCase())
       );
     }
@@ -931,7 +1001,7 @@ const checkSemester = (
  * @param course the course we are interested in
  * @returns the year of the course
  */
-function getCourseYear(plan: Plan, course: UserCourse): Year | null {
+export function getCourseYear(plan: Plan, course: UserCourse): Year | null {
   let year: Year | null = null;
   plan.years.forEach((currPlanYear) => {
     if (currPlanYear._id === course.year_id) {

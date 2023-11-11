@@ -23,6 +23,7 @@ export type Course = {
   bio: string;
   tags: string[];
   preReq: string[];
+  postReq: PostReq[];
   restrictions: Restriction[];
   version?: string;
   level: string;
@@ -39,6 +40,7 @@ export type Version = {
   level: string;
   tags: string[];
   preReq: string[];
+  postReq: PostReq[];
   coReq: string[];
   restrictions: any[];
 };
@@ -58,6 +60,14 @@ export type CourseEvals = {
   rating: string;
   summary: string;
   term: string;
+};
+
+export type PostReq = {
+  courseId: string;
+  number: string;
+  title: string;
+  preReqs: string;
+  credits: string;
 };
 
 // For User courses, which have extra ids with user-specific info and a single term/area that the user chose.
@@ -81,6 +91,7 @@ export type UserCourse = {
   isPlaceholder: boolean;
   version: string;
   level: string;
+  postReq: PostReq[];
 };
 
 export type Year = {
