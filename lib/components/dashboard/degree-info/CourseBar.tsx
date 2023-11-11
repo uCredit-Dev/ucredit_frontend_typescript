@@ -36,8 +36,10 @@ const CourseBar: FC<{
   mode?: ReviewMode;
 }> = ({ distribution, general, plannedcolor, takencolor, completed, mode }) => {
   const [plannedCredits, setPlannedCredits] = useState(
-    distribution.fulfilled_credits,
+    distribution.total_fulfilled_credits,
   );
+  //console.log(distribution);
+
   const [takenCredits, setTakenCredits] = useState(distribution.taken_credits);
   const [hovered, setHovered] = useState(false);
 
@@ -163,9 +165,12 @@ const CourseBar: FC<{
               style={{
                 background: takencolor.length > 0 ? takencolor : '#90EE90',
                 width: `${
-                  takenCredits <= plannedCredits
-                    ? (takenCredits / plannedCredits) * 100 + '%'
-                    : '100%'
+                  takenCredits >= maxCredits
+                    ? '100%'
+                    : 
+                      takenCredits <= plannedCredits
+                        ? (takenCredits / plannedCredits) * 100 + '%'
+                        : '100%'
                 }`,
               }}
             />

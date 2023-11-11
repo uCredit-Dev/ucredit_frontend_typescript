@@ -124,6 +124,7 @@ const DistributionBarsJSX: FC<{ major: Major }> = ({ major }) => {
               expr: '',
               required_credits: major !== null ? major.total_degree_credit : 0,
               fulfilled_credits: totalCredits,
+              total_fulfilled_credits: totalCredits,
               taken_credits: totalTakenCredits,
               description:
                 major !== null
@@ -295,8 +296,19 @@ const DistributionBarsJSX: FC<{ major: Major }> = ({ major }) => {
           (req.required_credits === 0 && req.fulfilled_credits === 0)
         ) {
           reqs[i][1][0].fulfilled_credits += parseInt(courseObj.credits);
+          //reqs[i][1][0].total_fulfilled_credits += parseInt(courseObj.credits);
+
           distDoubleCount = req.double_count; // set double_count, if any
         }
+        if(!reqs[i][1][0].total_fulfilled_credits) {
+          reqs[i][1][0].total_fulfilled_credits = 0;
+        }
+        reqs[i][1][0].total_fulfilled_credits += parseInt(courseObj.credits);
+        console.log("parseInt: " + parseInt(courseObj.credits));
+        console.log("reg: " + courseObj.credits);
+        console.log("total: " + reqs[i][1][0].total_fulfilled_credits);
+        console.log("other: " + reqs[i][1][0].fulfilled_credits);
+
         if (
           req.taken_credits < req.fulfilled_credits ||
           (req.taken_credits === 0 && req.fulfilled_credits === 0)
@@ -357,6 +369,7 @@ const DistributionBarsJSX: FC<{ major: Major }> = ({ major }) => {
             reqs[i][1][j].fulfilled_credits += parseInt(courseObj.credits);
             fineDoubleCount = fineReq.double_count;
           }
+
           if (
             fineReq.taken_credits < fineReq.fulfilled_credits ||
             (fineReq.taken_credits === 0 && fineReq.fulfilled_credits === 0)
