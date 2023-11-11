@@ -24,7 +24,7 @@ const ReviewerSearchResults: FC<{
       ).data;
       setPlanReviewers(reviewers);
     })();
-  }, [userService.getPlanReviewers(currentPlan._id, token)]);
+  }, [userService.getPlanReviewers(currentPlan._id, token), currentPlan._id, token]);
 
   const isReviewer = (id: string) => {
     for (const { reviewer_id, _id } of planReviewers) {

@@ -1,4 +1,4 @@
-import { CheckIcon, BellIcon, TrashIcon } from '@heroicons/react/outline';
+import { BellIcon, TrashIcon } from '@heroicons/react/outline';
 import React, { FC, useEffect } from 'react';
 import { useSelector } from 'react-redux';
 import { ReviewRequestStatus } from '../../../../resources/commonTypes';
@@ -62,27 +62,7 @@ const CurrentReviewers: FC<{
       // dispatch(updateSelectedPlan({ ...currentPlan, reviewers: reviewers }));
     })();
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [userService.getPlanReviewers(currentPlan._id, token)]);
-
-  const getSVG = (status: string) => {
-    if (status === ReviewRequestStatus.Pending) {
-      return (
-        <div
-          className="w-3 h-3 bg-black rounded-full tooltip"
-          data-tooltip-id="godtip"
-          data-tooltip-content="Pending"
-        />
-      );
-    } else if (status !== ReviewRequestStatus.Pending) {
-      return (
-        <CheckIcon
-          className="w-5 h-5 tooltip"
-          data-tooltip-id="godtip"
-          data-tooltip-content="Accepted"
-        />
-      );
-    }
-  };
+  }, [userService.getPlanReviewers(currentPlan._id, token), currentPlan._id, token]);
 
   const removeReviewer = async (id) => {
     const reviewers = (

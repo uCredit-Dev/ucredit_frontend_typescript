@@ -4,8 +4,6 @@ import CurrentReviewers from './CurrentReviewers';
 import ReviewersSearch from './ReviewersSearch';
 import { Hoverable, TooltipPrimary } from '../../../utils';
 import Divider from '@mui/material/Divider';
-import Tooltip from '@mui/material/Tooltip';
-import { Typography } from '@mui/material';
 
 const Reviewers = () => {
   const [reviewersJSX, setReviewersJSX] = useState<JSX.Element[]>([]);
