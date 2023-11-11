@@ -38,7 +38,6 @@ const CourseBar: FC<{
   const [plannedCredits, setPlannedCredits] = useState(
     distribution.total_fulfilled_credits,
   );
-  //console.log(distribution);
 
   const [takenCredits, setTakenCredits] = useState(distribution.taken_credits);
   const [hovered, setHovered] = useState(false);
@@ -55,14 +54,14 @@ const CourseBar: FC<{
 
   // Decides how filled the credit bar is.
   useEffect(() => {
-    let temp = distribution.fulfilled_credits;
+    let temp = distribution.total_fulfilled_credits;
     setPlannedCredits(temp);
     let temp2 = distribution.taken_credits;
     setTakenCredits(temp2);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [
     currPlanCourses,
-    distribution.fulfilled_credits,
+    distribution.total_fulfilled_credits,
     distribution,
     distributions,
   ]);
@@ -75,7 +74,7 @@ const CourseBar: FC<{
     if (distrs) {
       // if the distribution exists, then update the cart
       // at this point we have access to the current requirement
-      // and all dsitibrutions. to pick out hte rest of the ascoatied fine distirbutions, use this filter.
+      // and all dsitibrutions. to pick out the rest of the ascoatied fine distirbutions, use this filter.
       dispatch(updateSelectedDistribution(distrs));
       dispatch(updateShowingCart(true));
       dispatch(updateInfoPopup(false));
@@ -167,10 +166,9 @@ const CourseBar: FC<{
                 width: `${
                   takenCredits >= maxCredits
                     ? '100%'
-                    : 
-                      takenCredits <= plannedCredits
-                        ? (takenCredits / plannedCredits) * 100 + '%'
-                        : '100%'
+                    : takenCredits <= plannedCredits
+                    ? (takenCredits / plannedCredits) * 100 + '%'
+                    : '100%'
                 }`,
               }}
             />
@@ -193,7 +191,9 @@ const CourseBar: FC<{
             ))()
           )} */}
           <div className="absolute font-semibold -translate-x-1/2 left-1/2">
-            {plannedCredits + '/' + maxCredits}
+            {plannedCredits >= maxCredits
+              ? maxCredits + '/' + maxCredits
+              : plannedCredits + '/' + maxCredits}
           </div>
           {/* <div className="absolute font-thin right-2">
             {maxCredits > plannedCredits ? maxCredits - plannedCredits : null}

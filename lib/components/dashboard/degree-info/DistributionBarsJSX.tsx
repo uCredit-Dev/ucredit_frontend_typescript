@@ -300,14 +300,12 @@ const DistributionBarsJSX: FC<{ major: Major }> = ({ major }) => {
 
           distDoubleCount = req.double_count; // set double_count, if any
         }
-        if(!reqs[i][1][0].total_fulfilled_credits) {
-          reqs[i][1][0].total_fulfilled_credits = 0;
-        }
+
         reqs[i][1][0].total_fulfilled_credits += parseInt(courseObj.credits);
-        console.log("parseInt: " + parseInt(courseObj.credits));
-        console.log("reg: " + courseObj.credits);
-        console.log("total: " + reqs[i][1][0].total_fulfilled_credits);
-        console.log("other: " + reqs[i][1][0].fulfilled_credits);
+        console.log('parseInt: ' + parseInt(courseObj.credits));
+        console.log('reg: ' + courseObj.credits);
+        console.log('total: ' + reqs[i][1][0].total_fulfilled_credits);
+        console.log('other: ' + reqs[i][1][0].fulfilled_credits);
 
         if (
           req.taken_credits < req.fulfilled_credits ||
