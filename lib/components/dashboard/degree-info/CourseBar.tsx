@@ -164,9 +164,7 @@ const CourseBar: FC<{
               style={{
                 background: takencolor.length > 0 ? takencolor : '#90EE90',
                 width: `${
-                  takenCredits >= maxCredits
-                    ? '100%'
-                    : takenCredits <= plannedCredits
+                  takenCredits < maxCredits && takenCredits <= plannedCredits
                     ? (takenCredits / plannedCredits) * 100 + '%'
                     : '100%'
                 }`,
