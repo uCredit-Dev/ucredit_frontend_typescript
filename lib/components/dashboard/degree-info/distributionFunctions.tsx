@@ -5,6 +5,8 @@ export type requirements = {
   expr: string;
   required_credits: number;
   fulfilled_credits: number;
+  total_fulfilled_credits: number;
+  taken_credits: number;
   description: string;
   double_count?: string[];
   pathing?: number;
@@ -206,6 +208,8 @@ export const getRequirements = (major: Major) => {
       expr: element.criteria.toString(),
       required_credits: element.required_credits,
       fulfilled_credits: 0,
+      total_fulfilled_credits: 0,
+      taken_credits: 0,
       description: element.description,
       pathing: element.pathing,
       double_count: element.double_count,
@@ -220,6 +224,8 @@ export const getRequirements = (major: Major) => {
             expr: fine.criteria.toString(),
             required_credits: fine.required_credits,
             fulfilled_credits: 0,
+            total_fulfilled_credits: 0,
+            taken_credits: 0,
             description: '',
             double_count: fine.double_count,
           },

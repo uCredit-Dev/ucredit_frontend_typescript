@@ -5,5 +5,6 @@ export const emptyRequirements: requirements = {
   expr: '',
   required_credits: 0,
   fulfilled_credits: 0,
+  taken_credits: 0,
   description: '',
 };

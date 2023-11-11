@@ -1,11 +1,16 @@
 import React, { FC, useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { getCourse } from '../../../resources/assets';
+import {
+  compareDates,
+  getCourseYear,
+  getCourse,
+} from '../../../resources/assets';
 import {
   Plan,
   Major,
   Course,
   UserCourse,
+  SemesterType,
 } from '../../../resources/commonTypes';
 import {
   selectDistributions,
@@ -13,6 +18,7 @@ import {
   selectCurrentPlanCourses,
   updateDistributions,
   selectTotalCredits,
+  updateCoursesTakenStatus,
 } from '../../../slices/currentPlanSlice';
 import { selectCourseCache } from '../../../slices/userSlice';
 import CourseBar from './CourseBar';
@@ -29,6 +35,7 @@ const DistributionBarsJSX: FC<{ major: Major }> = ({ major }) => {
   const courseCache = useSelector(selectCourseCache);
   const currPlanCourses = useSelector(selectCurrentPlanCourses);
   const totalCredits = useSelector(selectTotalCredits);
+  const [totalTakenCredits, setTotalTakenCredits] = useState(0);
   const [calculated, setCalculated] = useState<boolean>(false);
   const [distributionBarsJSX, setDistributionBarsJSX] = useState<JSX.Element[]>(
     [],
@@ -36,10 +43,26 @@ const DistributionBarsJSX: FC<{ major: Major }> = ({ major }) => {
   const [retrievedDistributions, setDistributions] = useState<{
     plan: Plan;
     distr: [string, requirements[]][];
-  }>({ plan: currentPlan || currentPlan, distr: [] });
+  }>({ plan: currentPlan, distr: [] });
   const [showDistributions] = useState<boolean[]>(
     new Array(distributions.length),
   );
+
+  const currentTerm: SemesterType = getCurrentTerm();
+
+  // Gets the current term
+  function getCurrentTerm(): SemesterType {
+    const month = new Date().getMonth();
+    if (month > 1 && month <= 5) {
+      return 'Spring';
+    } else if (month >= 6 && month <= 8) {
+      return 'Summer';
+    } else if (month >= 9 && month <= 12) {
+      return 'Fall';
+    } else {
+      return 'Intersession';
+    }
+  }
 
   // Gets distribution everytime a plan changes.
   useEffect(() => {
@@ -83,7 +106,8 @@ const DistributionBarsJSX: FC<{ major: Major }> = ({ major }) => {
               <CourseBar
                 distribution={pair[1][0]}
                 general={true}
-                bgcolor={'skyblue'}
+                plannedcolor={'skyblue'}
+                takencolor={'steelblue'}
                 completed={completed}
               />
             </div>
@@ -100,6 +124,8 @@ const DistributionBarsJSX: FC<{ major: Major }> = ({ major }) => {
               expr: '',
               required_credits: major !== null ? major.total_degree_credit : 0,
               fulfilled_credits: totalCredits,
+              total_fulfilled_credits: totalCredits,
+              taken_credits: totalTakenCredits,
               description:
                 major !== null
                   ? 'This is the total amount of credits that is required for ' +
@@ -110,7 +136,8 @@ const DistributionBarsJSX: FC<{ major: Major }> = ({ major }) => {
               totalCredits >= (major !== null ? major.total_degree_credit : 0)
             }
             general={true}
-            bgcolor=""
+            plannedcolor="lightgreen"
+            takencolor="mediumseagreen"
           />
         </div>
       </div>,
@@ -178,6 +205,7 @@ const DistributionBarsJSX: FC<{ major: Major }> = ({ major }) => {
   ) => {
     let reqCopy: [string, requirements[]][] = copyReqs(reqs);
     let count: number = 0;
+    let temp_total_taken = 0;
     const checked: Course[] = [];
     for (let course of coursesCopy) {
       setCalculated(false);
@@ -207,6 +235,7 @@ const DistributionBarsJSX: FC<{ major: Major }> = ({ major }) => {
           bio: '',
           tags: course.tags,
           preReq: course.preReq,
+          postReq: course.postReq,
           restrictions: [],
           version: course.version,
           level: course.level,
@@ -215,16 +244,37 @@ const DistributionBarsJSX: FC<{ major: Major }> = ({ major }) => {
         checked.push(courseObj.resp);
       }
       const localReqCopy: [string, requirements[]][] = copyReqs(reqCopy);
-      if (!counted) updateReqs(localReqCopy, courseObj.resp);
+      if (!counted) {
+        if (
+          compareDates(
+            currentTerm,
+            new Date().getFullYear(),
+            course.term,
+            getCourseYear(updatingPlan, course)?.year || 0,
+          )
+        ) {
+          dispatch(updateCoursesTakenStatus({ index: count, taken: true }));
+          temp_total_taken += course.credits;
+        } else {
+          dispatch(updateCoursesTakenStatus({ index: count, taken: false }));
+        }
+        updateReqs(localReqCopy, courseObj.resp, course, updatingPlan);
+      }
       reqCopy = localReqCopy;
       count++;
       if (count === courses.length) {
         setDistributions({ plan: updatingPlan, distr: reqCopy });
       }
     }
+    setTotalTakenCredits(temp_total_taken);
   };
 
-  const updateReqs = (reqs: [string, requirements[]][], courseObj) => {
+  const updateReqs = (
+    reqs: [string, requirements[]][],
+    courseObj,
+    course: UserCourse,
+    plan: Plan,
+  ) => {
     // double_count check:
     // If double_count is undefined, the course may only count for one distribution
     // If double_count is string[], the specified distributions / fine requirements are 'whitelisted'
@@ -246,10 +296,33 @@ const DistributionBarsJSX: FC<{ major: Major }> = ({ major }) => {
           (req.required_credits === 0 && req.fulfilled_credits === 0)
         ) {
           reqs[i][1][0].fulfilled_credits += parseInt(courseObj.credits);
+
           distDoubleCount = req.double_count; // set double_count, if any
         }
+
+        reqs[i][1][0].total_fulfilled_credits += parseInt(courseObj.credits);
+
+        if (
+          req.taken_credits < req.fulfilled_credits ||
+          (req.taken_credits === 0 && req.fulfilled_credits === 0)
+        ) {
+          if (
+            compareDates(
+              currentTerm,
+              new Date().getFullYear(),
+              course.term,
+              getCourseYear(plan, course)?.year || 0,
+            )
+          ) {
+            reqs[i][1][0].taken_credits += parseInt(courseObj.credits);
+            setTotalTakenCredits(
+              totalTakenCredits + parseInt(courseObj.credits),
+            );
+            distDoubleCount = req.double_count; // set double_count, if any
+          }
+        }
         // for each fine req, see if course satisfies fine requirements
-        processFines(reqs, courseObj, i);
+        processFines(reqs, courseObj, i, course, plan);
       }
     });
     // Pathing check
@@ -264,6 +337,8 @@ const DistributionBarsJSX: FC<{ major: Major }> = ({ major }) => {
     reqs: [string, requirements[]][],
     courseObj,
     i: number,
+    course: UserCourse,
+    plan: Plan,
   ) => {
     let fineDoubleCount: string[] | undefined = ['All'];
     // for each fine req
@@ -276,15 +351,34 @@ const DistributionBarsJSX: FC<{ major: Major }> = ({ major }) => {
           fineDoubleCount &&
           (fineDoubleCount.includes(fineReq.name) || // check if fine req can be double counted
             fineDoubleCount.includes('All')) &&
-          (fineReq.fulfilled_credits < fineReq.required_credits ||
-            (fineReq.required_credits === 0 &&
-              fineReq.fulfilled_credits === 0) || // check if fine req is already fulfilled
-            !checkReqCompleted(fineReq)) &&
+          !checkReqCompleted(fineReq) &&
           checkRequirementSatisfied(fineReq, courseObj) // check if course satisfies fine req
         ) {
           // update fine requirements
-          reqs[i][1][j].fulfilled_credits += parseInt(courseObj.credits);
-          fineDoubleCount = fineReq.double_count;
+          if (
+            fineReq.fulfilled_credits < fineReq.required_credits ||
+            (fineReq.required_credits === 0 && fineReq.fulfilled_credits === 0) // check if fine req is already fulfilled)
+          ) {
+            reqs[i][1][j].fulfilled_credits += parseInt(courseObj.credits);
+            fineDoubleCount = fineReq.double_count;
+          }
+
+          if (
+            fineReq.taken_credits < fineReq.fulfilled_credits ||
+            (fineReq.taken_credits === 0 && fineReq.fulfilled_credits === 0)
+          ) {
+            if (
+              compareDates(
+                currentTerm,
+                new Date().getFullYear(),
+                course.term,
+                getCourseYear(plan, course)?.year || 0,
+              )
+            ) {
+              reqs[i][1][j].taken_credits += parseInt(courseObj.credits);
+              fineDoubleCount = fineReq.double_count;
+            }
+          }
         }
       }
     });

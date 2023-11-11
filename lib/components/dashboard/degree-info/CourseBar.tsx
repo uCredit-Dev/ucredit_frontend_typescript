@@ -24,18 +24,22 @@ import { ReviewMode } from '../../../resources/commonTypes';
  * @prop general - if this is a general distribution
  * @prop description - this is the description of the distribution
  * @prop total - whether this is a course bar tracking the total amount of credits
- * M tried @prop bgcolor - color of this distribution
+ * M tried @prop plannedcolor - color of planned courses
+ * M tried @prop takencolor - color of taken courses
  */
 const CourseBar: FC<{
   distribution: requirements;
   general: boolean;
-  bgcolor: string;
+  plannedcolor: string;
+  takencolor: string;
   completed: boolean;
   mode?: ReviewMode;
-}> = ({ distribution, general, bgcolor, completed, mode }) => {
+}> = ({ distribution, general, plannedcolor, takencolor, completed, mode }) => {
   const [plannedCredits, setPlannedCredits] = useState(
-    distribution.fulfilled_credits,
+    distribution.total_fulfilled_credits,
   );
+
+  const [takenCredits, setTakenCredits] = useState(distribution.taken_credits);
   const [hovered, setHovered] = useState(false);
 
   const currPlanCourses = useSelector(selectCurrentPlanCourses);
@@ -50,12 +54,14 @@ const CourseBar: FC<{
 
   // Decides how filled the credit bar is.
   useEffect(() => {
-    let temp = distribution.fulfilled_credits;
+    let temp = distribution.total_fulfilled_credits;
     setPlannedCredits(temp);
+    let temp2 = distribution.taken_credits;
+    setTakenCredits(temp2);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [
     currPlanCourses,
-    distribution.fulfilled_credits,
+    distribution.total_fulfilled_credits,
     distribution,
     distributions,
   ]);
@@ -68,7 +74,7 @@ const CourseBar: FC<{
     if (distrs) {
       // if the distribution exists, then update the cart
       // at this point we have access to the current requirement
-      // and all dsitibrutions. to pick out hte rest of the ascoatied fine distirbutions, use this filter.
+      // and all dsitibrutions. to pick out the rest of the ascoatied fine distirbutions, use this filter.
       dispatch(updateSelectedDistribution(distrs));
       dispatch(updateShowingCart(true));
       dispatch(updateInfoPopup(false));
@@ -83,10 +89,12 @@ const CourseBar: FC<{
   const tooltip =
     `<div style="overflow: wrap; margin-bottom: 1rem;">${section}</div>` +
     `<div style="margin-bottom: 1rem;">${distribution.description}</div>` +
-    `<div style='width: 100%; height: auto;'><div style='width: 100%; display: flex; flex-direction: row; justify-content: space-between;'>` +
-    `<div>Planned</div><div>${plannedCredits}</div>
-    </div>
-    <div style='display: flex; flex-direction: row; justify-content: space-between;'>` +
+    `<div style='width: 100%; height: auto;'>` +
+    `<div style='width: 100%; display: flex; flex-direction: row; justify-content: space-between; color: ${takencolor}'>` +
+    `<div>Completed</div><div>${takenCredits}</div></div>` +
+    `<div style='width: 100%; display: flex; flex-direction: row; justify-content: space-between; color: ${plannedcolor}'>` +
+    `<div>Planned</div><div>${plannedCredits - takenCredits}</div></div>` +
+    `<div style='width: 100%; display: flex; flex-direction: row; justify-content: space-between; color: #F0F0F0'>` +
     (remainingCredits !== 0
       ? `<div>Remaining</div><div>${remainingCredits}</div>`
       : (() =>
@@ -127,6 +135,13 @@ const CourseBar: FC<{
       <div
         className="relative flex flex-row w-full h-6 cursor-pointer"
         onClick={openCartPopup}
+        onKeyDown={(event) => {
+          if (event.key === 'Enter') {
+            event.preventDefault();
+            openCartPopup();
+          }
+        }}
+        tabIndex={0}
       >
         <div
           className="relative flex flex-row w-full h-6 mb-2 bg-gray-200 rounded-full"
@@ -136,14 +151,26 @@ const CourseBar: FC<{
           <div
             className="h-full rounded-full"
             style={{
-              background: bgcolor.length > 0 ? bgcolor : '#90EE90',
+              background: plannedcolor.length > 0 ? plannedcolor : '#90EE90',
               width: `${
                 plannedCredits <= maxCredits
                   ? (plannedCredits / maxCredits) * 100 + '%'
                   : '100%'
               }`,
             }}
-          />
+          >
+            <div
+              className="h-full rounded-full"
+              style={{
+                background: takencolor.length > 0 ? takencolor : '#90EE90',
+                width: `${
+                  takenCredits < maxCredits && takenCredits <= plannedCredits
+                    ? (takenCredits / plannedCredits) * 100 + '%'
+                    : '100%'
+                }`,
+              }}
+            />
+          </div>
           {/* {remainingCredits === 0 && completed ? (
             <CheckCircleIcon className="absolute w-5 h-5 text-white transform -translate-x-1/2 -translate-y-1/2 stroke-2 left-1/2 top-1/2" />
           ) : (
@@ -162,7 +189,9 @@ const CourseBar: FC<{
             ))()
           )} */}
           <div className="absolute font-semibold -translate-x-1/2 left-1/2">
-            {plannedCredits + '/' + maxCredits}
+            {plannedCredits >= maxCredits
+              ? maxCredits + '/' + maxCredits
+              : plannedCredits + '/' + maxCredits}
           </div>
           {/* <div className="absolute font-thin right-2">
             {maxCredits > plannedCredits ? maxCredits - plannedCredits : null}
