@@ -4,14 +4,11 @@ import { useSelector } from 'react-redux';
 import { getAPI } from '../../../../resources/assets';
 import ReviewerSearchResults from './ReviewerSearchResults';
 import { selectToken } from '../../../../slices/userSlice';
-// import { userService } from '../../../../services';
-// import { selectPlan } from '../../../../slices/currentPlanSlice';
 
 const ReviewersSearch = () => {
   const token = useSelector(selectToken);
   const [searchState, setSearchState] = useState('');
   const [searchData, setSearchData] = useState([]);
-  // const currentPlan = useSelector(selectPlan);
 
   const handleChange = (e) => {
     setSearchState(e.target.value);
@@ -39,11 +36,7 @@ const ReviewersSearch = () => {
       const search = setTimeout(() => Search(searchState), 500);
       return () => clearTimeout(search);
     } else setSearchData([]);
-  }, [
-    searchState,
-    token,
-    // userService.getPlanReviewers(currentPlan._id, token),
-  ]);
+  }, [searchState, token]);
 
   return (
     <div className="flex flex-col pr-1 mx-1 rounded-lg">

@@ -1,5 +1,5 @@
 import { CheckIcon, BellIcon, TrashIcon } from '@heroicons/react/outline';
-import React, { FC, useEffect, useState } from 'react';
+import React, { FC, useEffect } from 'react';
 import { useSelector } from 'react-redux';
 import { ReviewRequestStatus } from '../../../../resources/commonTypes';
 import { userService } from '../../../../services';
@@ -15,7 +15,6 @@ const CurrentReviewers: FC<{
 }> = ({ reviewersJSX, setReviewersJSX }) => {
   const currentPlan = useSelector(selectPlan);
   const token = useSelector(selectToken);
-  // const [reviewers, setReviewers] = useState(currentPlan.reviewers);
 
   const sendEmail = (toName, reviewID) => {
     const body = {
@@ -63,7 +62,7 @@ const CurrentReviewers: FC<{
       // dispatch(updateSelectedPlan({ ...currentPlan, reviewers: reviewers }));
     })();
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [userService.getPlanReviewers(currentPlan._id, token)]); // currentPlan.reviewers
+  }, [userService.getPlanReviewers(currentPlan._id, token)]);
 
   const getSVG = (status: string) => {
     if (status === ReviewRequestStatus.Pending) {
@@ -95,7 +94,6 @@ const CurrentReviewers: FC<{
         toast.success('Reviewer removed', {
           toastId: 'reviewer removed',
         });
-        // need to rerender ?!
       }
     }
   };

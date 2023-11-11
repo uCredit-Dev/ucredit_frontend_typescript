@@ -233,18 +233,20 @@ const Dashboard: React.FC<Props> = ({ mode }) => {
           <Button
             sx={{
               position: 'fixed',
+              padding: '0.5rem',
               display: 'flex',
               alignItems: 'center',
               fontSize: '0.875rem',
               lineHeight: '1.25rem',
               fontWeight: '500',
+              borderRadius: '0.5rem',
               zIndex: '90',
               top: '4.65rem',
               right: '2.25rem',
               outline: '2px solid transparent',
               outlineOffset: '2px',
               color: 'rgb(0 0 0 1)',
-              backgroundColor: '#C6E8FF',
+              backgroundColor: 'rgb(198, 232, 255, 1)',
               height: '2.5rem',
               width: '8rem',
               boxShadow:
