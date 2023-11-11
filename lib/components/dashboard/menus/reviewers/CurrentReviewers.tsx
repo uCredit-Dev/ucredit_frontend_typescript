@@ -62,7 +62,11 @@ const CurrentReviewers: FC<{
       // dispatch(updateSelectedPlan({ ...currentPlan, reviewers: reviewers }));
     })();
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [userService.getPlanReviewers(currentPlan._id, token), currentPlan._id, token]);
+  }, [
+    userService.getPlanReviewers(currentPlan._id, token),
+    currentPlan._id,
+    token,
+  ]);
 
   const removeReviewer = async (id) => {
     const reviewers = (
