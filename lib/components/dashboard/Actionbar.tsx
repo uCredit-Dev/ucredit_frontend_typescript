@@ -41,6 +41,8 @@ import Menu from '@mui/material/Menu';
 import Reviewers from './menus/reviewers/Reviewers';
 import { Typography } from '@mui/material';
 import * as amplitude from '@amplitude/analytics-browser';
+import * as XLSX from 'sheetjs-style';
+import { aoaWorksheet } from '../utils/majorWorksheetConstants';
 
 const majorOptions = allMajors.map((major) => ({
   abbrev: major.abbrev,
@@ -66,6 +68,8 @@ const Actionbar: FC<{ mode: ReviewMode }> = ({ mode }) => {
   const handleClose = () => {
     setAnchorEl(null);
   };
+
+  console.log(newSelectedMajor);
 
   // Only edits name if editName is true. If true, calls debounce update function
   useEffect(() => {
@@ -138,6 +142,80 @@ const Actionbar: FC<{ mode: ReviewMode }> = ({ mode }) => {
     setPlanName(event.target.value);
     setEditName(true);
   };
+
+
+  var ExcelToJSON = function() {
+
+      var reader = new FileReader();
+      var file = "majorWorksheet21.xslx"
+      
+  
+      // reader.readAsBinaryString(file);
+  };
+
+
+  const handleFileChange = (e) => {
+    const file = e.target.files[0];
+
+    if (file) {
+      const reader = new FileReader();
+
+      reader.onload = (e) => {
+        const data = e.target.result;
+        const workbook = XLSX.read(data, { type: 'binary' });
+
+        // Assuming the first sheet is the one you're interested in
+        const firstSheetName = workbook.SheetNames[0];
+        const firstSheet = workbook.Sheets[firstSheetName];
+        // Convert sheet data to JSON
+        const jsonData = XLSX.utils.sheet_to_json(firstSheet);
+        console.log(jsonData);
+        XLSX.writeFile(workbook, "SheetJS.xlsx");
+      };
+      reader.readAsBinaryString(file);
+    }
+  };
+
+
+  const onExportClick = (): void => {
+    // const currentScriptPath = document.currentScript.src;
+    // console.log("Current Script Path:", currentScriptPath);
+    // var workbook = XLSX.readFile("public/img/bg.png", { type: 'binary' });
+    var workbook = XLSX.read("majorWorksheet21.xlsx", { type: 'binary' });
+    // console.log(workbook)
+    var first_sheet = workbook.Sheets[workbook.SheetNames[0]];
+    console.log(first_sheet)
+    // const jsonStuff = XLSX.utils.sheet_to_json(workbook.Sheets[workbook.SheetNames[0]], {header:1});
+    // console.log("json")
+    // console.log(jsonStuff)
+    // // XSLX.utils.sheet
+    // // const arryas = XLSX.utils.sheet_to_aoa(workbook.Sheets[workbook.SheetNames[0]]);
+    // // console.log("json")
+    // // console.log(jsonStuff)
+    // XLSX.writeFile(workbook, "Presidents.xlsx");
+
+    // var ws_data = [
+    //   [ "S", "h", "e", "e", "t", "J", "S" ],
+    //   [  1 ,  2 ,  3 ,  4 ,  5 ]
+    // ];
+    // var ws = XLSX.utils.json_to_sheet(worksheet);
+  //   var ws = XLSX.utils.aoa_to_sheet(aoaWorksheet);
+  //   var wscols = [
+  //     {wch:3},
+  //     {wch:5}
+  //   ];
+  // ws['!cols'] = wscols;
+  //   /* Create workbook */
+  //   var wb = XLSX.utils.book_new();
+  //   var ws_name = "CS major";
+  //   console.log(ws)
+  //   /* Add the worksheet to the workbook */
+  //   XLSX.utils.book_append_sheet(wb, ws, ws_name);
+  //   /* Write to file */
+  //   XLSX.writeFile(wb, "SheetJS.xlsx");
+
+  };
+
 
   const handleMajorChange = (event, newValues) => {
     if (newValues.length === 0) {
@@ -422,14 +500,42 @@ const Actionbar: FC<{ mode: ReviewMode }> = ({ mode }) => {
               </div>
             </Menu>
           </div>
+          
+          {newSelectedMajor !== null && newSelectedMajor.degree_name === 'B.S. Computer Science' && (
+          <div>
           <Button
-            onClick={activateDeletePlan}
-            variant="outlined"
-            color="error"
-            sx={{ height: '2.5rem', mr: 1, my: 1 }}
-          >
+              onClick={onExportClick}
+              variant="outlined"
+              sx={{ height: '2.5rem', mr: 1, my: 1 }}
+              color="info"
+            >
+              <div className="ml-1 pr-1">Export</div>
+              <input type="file" onChange={handleFileChange} />
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                className="w-5 h-5 transition duration-200 ease-in transform hover:scale-110 mb-0.5"
+                fill="none"
+                viewBox="0 0 24 24"
+                stroke="currentColor"
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth={2}
+                  d="M8.684 13.342C8.886 12.938 9 12.482 9 12c0-.482-.114-.938-.316-1.342m0 2.684a3 3 0 110-2.684m0 2.684l6.632 3.316m-6.632-6l6.632-3.316m0 0a3 3 0 105.367-2.684 3 3 0 00-5.367 2.684zm0 9.316a3 3 0 105.368 2.684 3 3 0 00-5.368-2.684z"
+                />
+              </svg>
+            </Button>
+            
+            <Button
+              onClick={activateDeletePlan}
+              variant="outlined"
+              color="error"
+              sx={{ height: '2.5rem', mr: 1, my: 1 }}
+            >
             <TrashIcon className="w-5 mb-0.5 transition duration-200 ease-in transform cursor-pointer select-none stroke-2 hover:scale-110" />{' '}
           </Button>
+          </div> )}
         </>
       )}
     </div>

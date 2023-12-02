@@ -50,7 +50,10 @@
     "react-select": "^5.7.0",
     "react-toastify": "^9.1.1",
     "react-tooltip": "^5.9.1",
-    "redux-logger": "^3.0.6"
+    "redux-logger": "^3.0.6",
+    "sheetjs-style": "^0.15.8",
+    "xlsx": "https://cdn.sheetjs.com/xlsx-0.20.0/xlsx-0.20.0.tgz",
+    "xslx": "^1.0.0"
   },
   "scripts": {
     "start": "next dev",
