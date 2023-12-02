@@ -21,10 +21,10 @@ const LoadingPage = () => {
     user._id === 'noUser'
       ? 'Loading'
       : generatePlanAddStatus
-      ? 'Creating New Plan...'
-      : importStatus
-      ? 'Importing Plan'
-      : 'Loading';
+        ? 'Creating New Plan...'
+        : importStatus
+          ? 'Importing Plan'
+          : 'Loading';
 
   return (
     <div className="z-[100] flex flex-col w-full h-screen bg-white">
