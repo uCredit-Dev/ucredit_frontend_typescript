@@ -29,6 +29,7 @@ import TextField from '@mui/material/TextField';
 import Button from '@mui/material/Button';
 import {
   TrashIcon,
+  TableIcon,
   InformationCircleIcon,
   LinkIcon,
 } from '@heroicons/react/outline';
@@ -41,6 +42,7 @@ import Menu from '@mui/material/Menu';
 import Reviewers from './menus/reviewers/Reviewers';
 import { Typography } from '@mui/material';
 import * as amplitude from '@amplitude/analytics-browser';
+import ExcelJS from "exceljs";
 import * as XLSX from 'sheetjs-style';
 import { aoaWorksheet } from '../utils/majorWorksheetConstants';
 
@@ -151,6 +153,54 @@ const Actionbar: FC<{ mode: ReviewMode }> = ({ mode }) => {
       
   
       // reader.readAsBinaryString(file);
+  };
+
+  const exportDocument = () => {
+    const inputElement = document.getElementById("excelInput");
+
+  inputElement.addEventListener("change", async () => {
+  const inputFile = inputElement.files[0];
+  if (!inputFile) {
+    alert("Please select a file first!");
+    return;
+  }
+
+  try {
+    const reader = new FileReader();
+    reader.readAsArrayBuffer(inputFile);
+    reader.onload = async () => {
+      const buffer = reader.result;
+      const workbook = new ExcelJS.Workbook();
+      await workbook.xlsx.load(buffer);
+
+      if (workbook.worksheets.length === 0) {
+        alert("No worksheets found in the Excel file.");
+        return;
+      }
+
+      const worksheet = workbook.worksheets[0];
+      worksheet.getCell("C1").value = user.name;
+      worksheet.getCell("G1").value = user.email;
+      worksheet.getCell("G4").value = currentPlan.majors.join(', ');
+      worksheet.getCell("G3").value = currentPlan.years[currentPlan.years.length - 1].year;
+      worksheet.getCell("C3").value = newSelectedMajor.degree_name;
+
+      const bufferToDownload = await workbook.xlsx.writeBuffer();
+      const blob = new Blob([bufferToDownload], {
+        type: "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
+      });
+      const url = window.URL.createObjectURL(blob);
+      const anchor = document.createElement("a");
+      anchor.href = url;
+      anchor.download = "modified_excel.xlsx";
+      anchor.click();
+      window.URL.revokeObjectURL(url);
+    };
+  } catch (error) {
+    console.error("Error processing the Excel file:", error);
+    alert("There was an error processing the Excel file.");
+  }
+});
   };
 
 
@@ -503,31 +553,19 @@ const Actionbar: FC<{ mode: ReviewMode }> = ({ mode }) => {
           
           {newSelectedMajor !== null && newSelectedMajor.degree_name === 'B.S. Computer Science' && (
           <div>
-          <Button
-              onClick={onExportClick}
-              variant="outlined"
-              sx={{ height: '2.5rem', mr: 1, my: 1 }}
-              color="info"
-            >
-              <div className="ml-1 pr-1">Export</div>
-              <input type="file" onChange={handleFileChange} />
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                className="w-5 h-5 transition duration-200 ease-in transform hover:scale-110 mb-0.5"
-                fill="none"
-                viewBox="0 0 24 24"
-                stroke="currentColor"
-              >
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  strokeWidth={2}
-                  d="M8.684 13.342C8.886 12.938 9 12.482 9 12c0-.482-.114-.938-.316-1.342m0 2.684a3 3 0 110-2.684m0 2.684l6.632 3.316m-6.632-6l6.632-3.316m0 0a3 3 0 105.367-2.684 3 3 0 00-5.367 2.684zm0 9.316a3 3 0 105.368 2.684 3 3 0 00-5.368-2.684z"
-                />
-              </svg>
-            </Button>
-            
+        
             <Button
+              onClick={exportDocument}
+              variant="outlined"
+              color="success"
+              sx={{ height: '2.5rem', mr: 1, my: 1 }}
+            >
+              <input type="file" id="excelInput" accept=".xlsx, .xls" />
+            <TableIcon className="w-5 mb-0.5 transition duration-200 ease-in transform cursor-pointer select-none stroke-2 hover:scale-110" />{' '}
+          </Button>
+            
+          </div> )}
+          <Button
               onClick={activateDeletePlan}
               variant="outlined"
               color="error"
@@ -535,7 +573,6 @@ const Actionbar: FC<{ mode: ReviewMode }> = ({ mode }) => {
             >
             <TrashIcon className="w-5 mb-0.5 transition duration-200 ease-in transform cursor-pointer select-none stroke-2 hover:scale-110" />{' '}
           </Button>
-          </div> )}
         </>
       )}
     </div>
