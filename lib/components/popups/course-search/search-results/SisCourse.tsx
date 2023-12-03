@@ -20,6 +20,7 @@ import {
   updateSearchFilters,
   updateInspectedCourse,
   updateCartAdd,
+  clearSearchStack,
 } from '../../../../slices/searchSlice';
 import {
   Plan,
@@ -160,6 +161,7 @@ const SisCourse: FC<{
   };
 
   const cleanup = () => {
+    dispatch(clearSearchStack());
     dispatch(updateCourseToShow(null));
     dispatch(updateShowCourseInfo(false));
   };

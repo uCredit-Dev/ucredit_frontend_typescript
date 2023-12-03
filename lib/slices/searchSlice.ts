@@ -180,6 +180,9 @@ export const searchSlice = createSlice({
       state.inspectedCourse = oldBundle.sis;
       state.inspectedVersion = oldBundle.ver;
     },
+    clearSearchStack: (state: any) => { 
+      state.searchStack = [];
+    },
     updateCartAdd: (state: any, action: PayloadAction<boolean>) => {
       state.cartAdd = action.payload;
     },
@@ -203,6 +206,7 @@ export const {
   updateSearchStack,
   updateInspectedVersion,
   clearSearch,
+  clearSearchStack,
   popSearchStack,
   updateCartAdd,
   updatePageIndex,
