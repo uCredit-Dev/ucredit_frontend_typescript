@@ -27,6 +27,7 @@ import {
 import Autocomplete from '@mui/material/Autocomplete';
 import TextField from '@mui/material/TextField';
 import Button from '@mui/material/Button';
+import { UserCourse } from '../../resources/commonTypes';
 import {
   TrashIcon,
   TableIcon,
@@ -145,6 +146,14 @@ const Actionbar: FC<{ mode: ReviewMode }> = ({ mode }) => {
     setEditName(true);
   };
 
+  const addCourseToRow= (RowNum:string, course:UserCourse, worksheet:ExcelJS.Worksheet ) => {
+    worksheet.getCell("B" + RowNum).value =  course.number;
+    worksheet.getCell("C" + RowNum).value =  course.title;
+    worksheet.getCell("E" + RowNum).value =  course.credits;
+    worksheet.getCell("F" + RowNum).value =  course.area;
+    worksheet.getCell("H" + RowNum).value =  course.tags.toString();
+  }
+
 
   var ExcelToJSON = function() {
 
@@ -171,19 +180,45 @@ const Actionbar: FC<{ mode: ReviewMode }> = ({ mode }) => {
     reader.onload = async () => {
       const buffer = reader.result;
       const workbook = new ExcelJS.Workbook();
-      await workbook.xlsx.load(buffer);
-
-      if (workbook.worksheets.length === 0) {
-        alert("No worksheets found in the Excel file.");
-        return;
+      if( newSelectedMajor.degree_name === 'B.S. Computer Science') {
+        await workbook.xlsx.load(buffer);
+        if (workbook.worksheets.length === 0) {
+          alert("No worksheets found in the Excel file.");
+          return;
+        }
+      } else {
+        workbook.addWorksheet("My Sheet");
       }
-
       const worksheet = workbook.worksheets[0];
       worksheet.getCell("C1").value = user.name;
+      console.log(currentPlan)
+      console.log("hello")
+      console.log(currentPlan.years)
+      const courseLists:UserCourse[] = []
+      var rowNum:number = 25;
+      currentPlan.years.forEach((year) => {
+        year.courses.forEach((course) => {
+          addCourseToRow(rowNum.toString(), course, worksheet)
+          rowNum = rowNum + 1;
+          console.log(course)
+          //course.title, course.number, course.term, course.area, course.credits, course.tags
+          // if (course.number === "EN.500.112" || course.number === "EN.500.113" ||course.number === "EN.500.114" ) {
+
+          // } else if (course.number )
+          // courseLists.push(course);
+
+        })
+      })
+      console.log(courseLists)
+
+
       worksheet.getCell("G1").value = user.email;
       worksheet.getCell("G4").value = currentPlan.majors.join(', ');
       worksheet.getCell("G3").value = currentPlan.years[currentPlan.years.length - 1].year;
       worksheet.getCell("C3").value = newSelectedMajor.degree_name;
+      // worksheet.getCell("F30").value = "HelloFriends";
+
+      // let range = worksheet.getRange("F25:F65");
 
       const bufferToDownload = await workbook.xlsx.writeBuffer();
       const blob = new Blob([bufferToDownload], {
@@ -228,42 +263,10 @@ const Actionbar: FC<{ mode: ReviewMode }> = ({ mode }) => {
 
 
   const onExportClick = (): void => {
-    // const currentScriptPath = document.currentScript.src;
-    // console.log("Current Script Path:", currentScriptPath);
-    // var workbook = XLSX.readFile("public/img/bg.png", { type: 'binary' });
+
     var workbook = XLSX.read("majorWorksheet21.xlsx", { type: 'binary' });
-    // console.log(workbook)
     var first_sheet = workbook.Sheets[workbook.SheetNames[0]];
     console.log(first_sheet)
-    // const jsonStuff = XLSX.utils.sheet_to_json(workbook.Sheets[workbook.SheetNames[0]], {header:1});
-    // console.log("json")
-    // console.log(jsonStuff)
-    // // XSLX.utils.sheet
-    // // const arryas = XLSX.utils.sheet_to_aoa(workbook.Sheets[workbook.SheetNames[0]]);
-    // // console.log("json")
-    // // console.log(jsonStuff)
-    // XLSX.writeFile(workbook, "Presidents.xlsx");
-
-    // var ws_data = [
-    //   [ "S", "h", "e", "e", "t", "J", "S" ],
-    //   [  1 ,  2 ,  3 ,  4 ,  5 ]
-    // ];
-    // var ws = XLSX.utils.json_to_sheet(worksheet);
-  //   var ws = XLSX.utils.aoa_to_sheet(aoaWorksheet);
-  //   var wscols = [
-  //     {wch:3},
-  //     {wch:5}
-  //   ];
-  // ws['!cols'] = wscols;
-  //   /* Create workbook */
-  //   var wb = XLSX.utils.book_new();
-  //   var ws_name = "CS major";
-  //   console.log(ws)
-  //   /* Add the worksheet to the workbook */
-  //   XLSX.utils.book_append_sheet(wb, ws, ws_name);
-  //   /* Write to file */
-  //   XLSX.writeFile(wb, "SheetJS.xlsx");
-
   };
 
 
