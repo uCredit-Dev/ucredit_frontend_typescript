@@ -146,12 +146,38 @@ const Actionbar: FC<{ mode: ReviewMode }> = ({ mode }) => {
     setEditName(true);
   };
 
-  const addCourseToRow= (RowNum:string, course:UserCourse, worksheet:ExcelJS.Worksheet ) => {
+  const calculateSemesterNumber = (year:number, course) => {
+    if (course.term === "fall") {
+      return year;
+    } else if (course.term === "spring") {
+      return year + 1;
+    } else if (course.term === "intersession") {
+      return year + 0.5;
+    } else if (course.term === "summer") {
+      return year + 1.5;
+    }
+  };
+
+  const addCourseToRow = (RowNum:string, course, worksheet:ExcelJS.Worksheet ) => {
     worksheet.getCell("B" + RowNum).value =  course.number;
     worksheet.getCell("C" + RowNum).value =  course.title;
     worksheet.getCell("E" + RowNum).value =  course.credits;
     worksheet.getCell("F" + RowNum).value =  course.area;
     worksheet.getCell("H" + RowNum).value =  course.tags.toString();
+
+    let semNumber:number = 1;
+    if (course.year === "AP/Transfer") {
+      worksheet.getCell("A" + RowNum).value =  "AP";
+    } else if (course.year === "Freshman") {
+      worksheet.getCell("A" + RowNum).value =  calculateSemesterNumber(1, course);
+    } else if (course.year === "Sophomore") {
+      worksheet.getCell("A" + RowNum).value =  calculateSemesterNumber(2, course);
+    } else if (course.year === "Junior") {
+      worksheet.getCell("A" + RowNum).value =  calculateSemesterNumber(3, course);
+    } else if (course.year === "Senior") {
+      worksheet.getCell("A" + RowNum).value =  calculateSemesterNumber(4, course);
+    }
+    console.log(course);
   }
 
 
@@ -191,22 +217,12 @@ const Actionbar: FC<{ mode: ReviewMode }> = ({ mode }) => {
       }
       const worksheet = workbook.worksheets[0];
       worksheet.getCell("C1").value = user.name;
-      console.log(currentPlan)
-      console.log("hello")
-      console.log(currentPlan.years)
       const courseLists:UserCourse[] = []
-      var rowNum:number = 25;
+      let rowNum:number = 25;
       currentPlan.years.forEach((year) => {
         year.courses.forEach((course) => {
           addCourseToRow(rowNum.toString(), course, worksheet)
           rowNum = rowNum + 1;
-          console.log(course)
-          //course.title, course.number, course.term, course.area, course.credits, course.tags
-          // if (course.number === "EN.500.112" || course.number === "EN.500.113" ||course.number === "EN.500.114" ) {
-
-          // } else if (course.number )
-          // courseLists.push(course);
-
         })
       })
       console.log(courseLists)
@@ -261,13 +277,6 @@ const Actionbar: FC<{ mode: ReviewMode }> = ({ mode }) => {
     }
   };
 
-
-  const onExportClick = (): void => {
-
-    var workbook = XLSX.read("majorWorksheet21.xlsx", { type: 'binary' });
-    var first_sheet = workbook.Sheets[workbook.SheetNames[0]];
-    console.log(first_sheet)
-  };
 
 
   const handleMajorChange = (event, newValues) => {
