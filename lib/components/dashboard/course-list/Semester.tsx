@@ -138,7 +138,7 @@ const Semester: FC<{
               semesterName={semesterName}
               semesterYear={semesterYear}
               mode={mode}
-              // TODO: Add a thread prop here. Add a thread state in the course component.
+              thread={'Course ' + course._id}
               // When retrieving threads make sure the threads are stored as a map. We can then not add further complexity when searching for threads since map find is O(1) if we check them here.
             />
           </div>
@@ -154,6 +154,7 @@ const Semester: FC<{
               semester={semesterName}
               year={semesterYear}
               mode={mode}
+              thread={'Course ' + course._id}
             />
           </div>
         );

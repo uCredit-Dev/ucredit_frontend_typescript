@@ -22,7 +22,8 @@ const CourseDraggable: FC<{
   semesterYear: Year;
   semesterName: SemesterType;
   mode: ReviewMode;
-}> = ({ course, index, semesterYear, semesterName, mode }) => {
+  thread: string;
+}> = ({ course, index, semesterYear, semesterName, mode, thread }) => {
   const [draggable, setDraggable] = useState<boolean>(true);
   const [hovered, setHovered] = useState<boolean>(false);
   return (
@@ -58,6 +59,7 @@ const CourseDraggable: FC<{
                 course={course}
                 semester={semesterName}
                 mode={mode}
+                thread={thread}
               />
             </div>
           );
