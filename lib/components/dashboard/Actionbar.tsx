@@ -201,6 +201,44 @@ const Actionbar: FC<{ mode: ReviewMode }> = ({ mode }) => {
         request.send();
     })
 }
+//for non cs majors
+  const exportDocument2 = async () => {
+    try {
+    const workbook = new ExcelJS.Workbook();
+    workbook.addWorksheet("My Sheet");
+    const worksheet = workbook.worksheets[0];
+      worksheet.getCell("C1").value = user.name;
+      const courseLists:UserCourse[] = []
+      let rowNum:number = 5;
+      currentPlan.years.forEach((year) => {
+        year.courses.forEach((course) => {
+          addCourseToRow(rowNum.toString(), course, worksheet)
+          rowNum = rowNum + 1;
+        })
+      })
+      worksheet.getCell("G1").value = user.email;
+      worksheet.getCell("G4").value = currentPlan.majors.join(', ');
+      worksheet.getCell("G3").value = currentPlan.years[currentPlan.years.length - 1].year;
+      worksheet.getCell("C3").value = newSelectedMajor.degree_name;
+
+
+      const bufferToDownload = await workbook.xlsx.writeBuffer();
+      const blob = new Blob([bufferToDownload], {
+        type: "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
+      });
+      const url = window.URL.createObjectURL(blob);
+      const anchor = document.createElement("a");
+      anchor.href = url;
+      anchor.download = "modified_excel.xlsx";
+      anchor.click();
+      window.URL.revokeObjectURL(url);
+    } 
+    catch (error) {
+      console.error("Error processing the Excel file:", error);
+      alert("There was an error processing the Excel file.");
+    }
+
+  }
 
 
   const exportDocument = () => {
@@ -216,21 +254,22 @@ const Actionbar: FC<{ mode: ReviewMode }> = ({ mode }) => {
   try {
     const reader = new FileReader();
     // ); 
-    const inputFile2= await getBlobFromUrl("https://hophacks-image.s3.amazonaws.com/majorWorksheet21test.xlsx")
     // ew File()
-    reader.readAsArrayBuffer(inputFile2);
+    reader.readAsArrayBuffer(inputFile);
     // reader.readAsDataURL("https://hophacks-image.s3.amazonaws.com/majorWorksheet21test.xlsx");
   //  reader.readAsBinaryString
     reader.onload = async () => {
       const buffer = reader.result;
       const workbook = new ExcelJS.Workbook();
       if( newSelectedMajor.degree_name === 'B.S. Computer Science') {
-        await workbook.xlsx.load(buffer);
+        // await workbook.xlsx.load(buffer);
 
-        if (workbook.worksheets.length === 0) {
-          alert("No worksheets found in the Excel file.");
-          return;
-        }
+        // if (workbook.worksheets.length === 0) {
+        //   alert("No worksheets found in the Excel file.");
+        //   return;
+        // }
+        workbook.addWorksheet("My Sheet");
+
       } else {
         workbook.addWorksheet("My Sheet");
       }
@@ -582,10 +621,18 @@ const Actionbar: FC<{ mode: ReviewMode }> = ({ mode }) => {
             </Menu>
           </div>
           
-          {newSelectedMajor !== null && newSelectedMajor.degree_name === 'B.S. Computer Science' && (
+          {(newSelectedMajor !== null && newSelectedMajor.degree_name === 'B.S. Computer Science') ? (
           <div>
+            <div
+                // className="w-5 ml-2 mb-1 items-center font-semibold text-white transition duration-200 ease-in transform rounded select-none bg-primary hover:scale-110"
+                //  data-tooltip-content={` credits`}
+                //  data-tooltip-id="godtip"
+              >
         
             <Button
+              data-tooltip-content={`Upload the cs major worksheet to populate a list. You can find the spreadsheet here: https://tinyurl.com/k4s9kp3k
+              Alternatively, upload an empty excel files to export to an empty document. `}
+              data-tooltip-id=""
               onClick={exportDocument}
               variant="outlined"
               color="success"
@@ -593,9 +640,19 @@ const Actionbar: FC<{ mode: ReviewMode }> = ({ mode }) => {
             >
               <input type="file" id="excelInput" accept=".xlsx, .xls" />
             <TableIcon className="w-5 mb-0.5 transition duration-200 ease-in transform cursor-pointer select-none stroke-2 hover:scale-110" />{' '}
-          </Button>
+            </Button>
+          </div>
             
-          </div> )}
+          </div> ) : <Button
+              onClick={exportDocument2}
+              data-tooltip-content={`Click to export a list of all your classes`}
+              data-tooltip-id=""
+              variant="outlined"
+              color="success"
+              sx={{ height: '2.5rem', mr: 1, my: 1 }}
+            >
+            <TableIcon className="w-5 mb-0.5 transition duration-200 ease-in transform cursor-pointer select-none stroke-2 hover:scale-110" />{' '}
+          </Button>}
           <Button
               onClick={activateDeletePlan}
               variant="outlined"
