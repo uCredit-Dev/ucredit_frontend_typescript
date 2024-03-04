@@ -189,6 +189,19 @@ const Actionbar: FC<{ mode: ReviewMode }> = ({ mode }) => {
   
       // reader.readAsBinaryString(file);
   };
+  const getBlobFromUrl = (myImageUrl) => {
+    return new Promise((resolve, reject) => {
+        let request = new XMLHttpRequest();
+        request.open('GET', myImageUrl, true);
+        request.responseType = 'blob';
+        request.onload = () => {
+            resolve(request.response);
+        };
+        request.onerror = reject;
+        request.send();
+    })
+}
+
 
   const exportDocument = () => {
     const inputElement = document.getElementById("excelInput");
@@ -202,12 +215,18 @@ const Actionbar: FC<{ mode: ReviewMode }> = ({ mode }) => {
 
   try {
     const reader = new FileReader();
-    reader.readAsArrayBuffer(inputFile);
+    // ); 
+    const inputFile2= await getBlobFromUrl("https://hophacks-image.s3.amazonaws.com/majorWorksheet21test.xlsx")
+    // ew File()
+    reader.readAsArrayBuffer(inputFile2);
+    // reader.readAsDataURL("https://hophacks-image.s3.amazonaws.com/majorWorksheet21test.xlsx");
+  //  reader.readAsBinaryString
     reader.onload = async () => {
       const buffer = reader.result;
       const workbook = new ExcelJS.Workbook();
       if( newSelectedMajor.degree_name === 'B.S. Computer Science') {
         await workbook.xlsx.load(buffer);
+
         if (workbook.worksheets.length === 0) {
           alert("No worksheets found in the Excel file.");
           return;
