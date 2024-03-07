@@ -45,7 +45,6 @@ import { Typography } from '@mui/material';
 import * as amplitude from '@amplitude/analytics-browser';
 import ExcelJS from 'exceljs';
 import * as XLSX from 'sheetjs-style';
-import { aoaWorksheet } from '../utils/majorWorksheetConstants';
 
 const majorOptions = allMajors.map((major) => ({
   abbrev: major.abbrev,
@@ -169,7 +168,6 @@ const Actionbar: FC<{ mode: ReviewMode }> = ({ mode }) => {
     worksheet.getCell('F' + RowNum).value = course.area;
     worksheet.getCell('H' + RowNum).value = course.tags.toString();
 
-    let semNumber: number = 1;
     if (course.year === 'AP/Transfer') {
       worksheet.getCell('A' + RowNum).value = 'AP';
     } else if (course.year === 'Freshman') {
@@ -196,12 +194,6 @@ const Actionbar: FC<{ mode: ReviewMode }> = ({ mode }) => {
     console.log(course);
   };
 
-  var ExcelToJSON = function () {
-    var reader = new FileReader();
-    var file = 'majorWorksheet21.xslx';
-
-    // reader.readAsBinaryString(file);
-  };
   const getBlobFromUrl = (myImageUrl) => {
     return new Promise((resolve, reject) => {
       let request = new XMLHttpRequest();
@@ -263,17 +255,15 @@ const Actionbar: FC<{ mode: ReviewMode }> = ({ mode }) => {
 
       try {
         const reader = new FileReader();
-        // );
         // ew File()
         reader.readAsArrayBuffer(inputFile);
-        // reader.readAsDataURL("https://hophacks-image.s3.amazonaws.com/majorWorksheet21test.xlsx");
         //  reader.readAsBinaryString
         reader.onload = async () => {
           const buffer = reader.result;
           const workbook = new ExcelJS.Workbook();
           if (
             newSelectedMajor?.degree_name === 'B.S. Computer Science' ||
-            newSelectedMajor.degree_name === 'B.A. Computer Science'
+            newSelectedMajor?.degree_name === 'B.A. Computer Science'
           ) {
             await workbook.xlsx.load(buffer);
             if (workbook.worksheets.length === 0) {
