@@ -230,7 +230,9 @@ const Actionbar: FC<{ mode: ReviewMode }> = ({ mode }) => {
   };
 
   const exportDocument = () => {
-    const inputElement = document.getElementById('excelInput') as HTMLInputElement;
+    const inputElement = document.getElementById(
+      'excelInput',
+    ) as HTMLInputElement;
 
     inputElement?.addEventListener('change', async () => {
       const inputFile = inputElement.files ? inputElement.files[0] : null;
@@ -251,7 +253,7 @@ const Actionbar: FC<{ mode: ReviewMode }> = ({ mode }) => {
             newSelectedMajor?.degree_name === 'B.S. Computer Science' ||
             newSelectedMajor?.degree_name === 'B.A. Computer Science'
           ) {
-            if (!buffer || !(buffer instanceof ArrayBuffer)) { 
+            if (!buffer || !(buffer instanceof ArrayBuffer)) {
               alert('Failed reading the Excel file. Please try again.');
               return;
             }
