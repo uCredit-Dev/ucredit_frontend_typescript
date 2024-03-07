@@ -194,18 +194,6 @@ const Actionbar: FC<{ mode: ReviewMode }> = ({ mode }) => {
     console.log(course);
   };
 
-  const getBlobFromUrl = (myImageUrl) => {
-    return new Promise((resolve, reject) => {
-      let request = new XMLHttpRequest();
-      request.open('GET', myImageUrl, true);
-      request.responseType = 'blob';
-      request.onload = () => {
-        resolve(request.response);
-      };
-      request.onerror = reject;
-      request.send();
-    });
-  };
   //for non cs majors
   const exportDocument2 = async () => {
     try {
@@ -213,7 +201,6 @@ const Actionbar: FC<{ mode: ReviewMode }> = ({ mode }) => {
       workbook.addWorksheet('My Sheet');
       const worksheet = workbook.worksheets[0];
       worksheet.getCell('C1').value = user.name;
-      const courseLists: UserCourse[] = [];
       let rowNum: number = 5;
       currentPlan.years.forEach((year) => {
         year.courses.forEach((course) => {
@@ -311,28 +298,6 @@ const Actionbar: FC<{ mode: ReviewMode }> = ({ mode }) => {
         alert('There was an error processing the Excel file.');
       }
     });
-  };
-
-  const handleFileChange = (e) => {
-    const file = e.target.files[0];
-
-    if (file) {
-      const reader = new FileReader();
-
-      reader.onload = (e) => {
-        const data = e?.target?.result;
-        const workbook = XLSX.read(data, { type: 'binary' });
-
-        // Assuming the first sheet is the one you're interested in
-        const firstSheetName = workbook.SheetNames[0];
-        const firstSheet = workbook.Sheets[firstSheetName];
-        // Convert sheet data to JSON
-        const jsonData = XLSX.utils.sheet_to_json(firstSheet);
-        console.log(jsonData);
-        XLSX.writeFile(workbook, 'SheetJS.xlsx');
-      };
-      reader.readAsBinaryString(file);
-    }
   };
 
   const handleMajorChange = (event, newValues) => {
