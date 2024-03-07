@@ -44,7 +44,6 @@ import Reviewers from './menus/reviewers/Reviewers';
 import { Typography } from '@mui/material';
 import * as amplitude from '@amplitude/analytics-browser';
 import ExcelJS from 'exceljs';
-import * as XLSX from 'sheetjs-style';
 
 const majorOptions = allMajors.map((major) => ({
   abbrev: major.abbrev,
@@ -231,10 +230,10 @@ const Actionbar: FC<{ mode: ReviewMode }> = ({ mode }) => {
   };
 
   const exportDocument = () => {
-    const inputElement = document.getElementById('excelInput');
+    const inputElement = document.getElementById('excelInput') as HTMLInputElement;
 
     inputElement?.addEventListener('change', async () => {
-      const inputFile = inputElement.files[0];
+      const inputFile = inputElement.files ? inputElement.files[0] : null;
       if (!inputFile) {
         alert('Please select a file first!');
         return;
@@ -252,6 +251,10 @@ const Actionbar: FC<{ mode: ReviewMode }> = ({ mode }) => {
             newSelectedMajor?.degree_name === 'B.S. Computer Science' ||
             newSelectedMajor?.degree_name === 'B.A. Computer Science'
           ) {
+            if (!buffer || !(buffer instanceof ArrayBuffer)) { 
+              alert('Failed reading the Excel file. Please try again.');
+              return;
+            }
             await workbook.xlsx.load(buffer);
             if (workbook.worksheets.length === 0) {
               alert('No worksheets found in the Excel file.');
