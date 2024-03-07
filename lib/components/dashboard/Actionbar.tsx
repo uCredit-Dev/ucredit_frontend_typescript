@@ -43,7 +43,7 @@ import Menu from '@mui/material/Menu';
 import Reviewers from './menus/reviewers/Reviewers';
 import { Typography } from '@mui/material';
 import * as amplitude from '@amplitude/analytics-browser';
-import ExcelJS from "exceljs";
+import ExcelJS from 'exceljs';
 import * as XLSX from 'sheetjs-style';
 import { aoaWorksheet } from '../utils/majorWorksheetConstants';
 
@@ -146,172 +146,182 @@ const Actionbar: FC<{ mode: ReviewMode }> = ({ mode }) => {
     setEditName(true);
   };
 
-  const calculateSemesterNumber = (year:number, course) => {
-    if (course.term === "fall") {
+  const calculateSemesterNumber = (year: number, course) => {
+    if (course.term === 'fall') {
       return year;
-    } else if (course.term === "spring") {
+    } else if (course.term === 'spring') {
       return year + 1;
-    } else if (course.term === "intersession") {
+    } else if (course.term === 'intersession') {
       return year + 0.5;
-    } else if (course.term === "summer") {
+    } else if (course.term === 'summer') {
       return year + 1.5;
     }
   };
 
-  const addCourseToRow = (RowNum:string, course, worksheet:ExcelJS.Worksheet ) => {
-    worksheet.getCell("B" + RowNum).value =  course.number;
-    worksheet.getCell("C" + RowNum).value =  course.title;
-    worksheet.getCell("E" + RowNum).value =  course.credits;
-    worksheet.getCell("F" + RowNum).value =  course.area;
-    worksheet.getCell("H" + RowNum).value =  course.tags.toString();
+  const addCourseToRow = (
+    RowNum: string,
+    course,
+    worksheet: ExcelJS.Worksheet,
+  ) => {
+    worksheet.getCell('B' + RowNum).value = course.number;
+    worksheet.getCell('C' + RowNum).value = course.title;
+    worksheet.getCell('E' + RowNum).value = course.credits;
+    worksheet.getCell('F' + RowNum).value = course.area;
+    worksheet.getCell('H' + RowNum).value = course.tags.toString();
 
-    let semNumber:number = 1;
-    if (course.year === "AP/Transfer") {
-      worksheet.getCell("A" + RowNum).value =  "AP";
-    } else if (course.year === "Freshman") {
-      worksheet.getCell("A" + RowNum).value =  calculateSemesterNumber(1, course);
-    } else if (course.year === "Sophomore") {
-      worksheet.getCell("A" + RowNum).value =  calculateSemesterNumber(2, course);
-    } else if (course.year === "Junior") {
-      worksheet.getCell("A" + RowNum).value =  calculateSemesterNumber(3, course);
-    } else if (course.year === "Senior") {
-      worksheet.getCell("A" + RowNum).value =  calculateSemesterNumber(4, course);
+    let semNumber: number = 1;
+    if (course.year === 'AP/Transfer') {
+      worksheet.getCell('A' + RowNum).value = 'AP';
+    } else if (course.year === 'Freshman') {
+      worksheet.getCell('A' + RowNum).value = calculateSemesterNumber(
+        1,
+        course,
+      );
+    } else if (course.year === 'Sophomore') {
+      worksheet.getCell('A' + RowNum).value = calculateSemesterNumber(
+        2,
+        course,
+      );
+    } else if (course.year === 'Junior') {
+      worksheet.getCell('A' + RowNum).value = calculateSemesterNumber(
+        3,
+        course,
+      );
+    } else if (course.year === 'Senior') {
+      worksheet.getCell('A' + RowNum).value = calculateSemesterNumber(
+        4,
+        course,
+      );
     }
     console.log(course);
-  }
+  };
 
+  var ExcelToJSON = function () {
+    var reader = new FileReader();
+    var file = 'majorWorksheet21.xslx';
 
-  var ExcelToJSON = function() {
-
-      var reader = new FileReader();
-      var file = "majorWorksheet21.xslx"
-      
-  
-      // reader.readAsBinaryString(file);
+    // reader.readAsBinaryString(file);
   };
   const getBlobFromUrl = (myImageUrl) => {
     return new Promise((resolve, reject) => {
-        let request = new XMLHttpRequest();
-        request.open('GET', myImageUrl, true);
-        request.responseType = 'blob';
-        request.onload = () => {
-            resolve(request.response);
-        };
-        request.onerror = reject;
-        request.send();
-    })
-}
-//for non cs majors
+      let request = new XMLHttpRequest();
+      request.open('GET', myImageUrl, true);
+      request.responseType = 'blob';
+      request.onload = () => {
+        resolve(request.response);
+      };
+      request.onerror = reject;
+      request.send();
+    });
+  };
+  //for non cs majors
   const exportDocument2 = async () => {
     try {
-    const workbook = new ExcelJS.Workbook();
-    workbook.addWorksheet("My Sheet");
-    const worksheet = workbook.worksheets[0];
-      worksheet.getCell("C1").value = user.name;
-      const courseLists:UserCourse[] = []
-      let rowNum:number = 5;
-      currentPlan.years.forEach((year) => {
-        year.courses.forEach((course) => {
-          addCourseToRow(rowNum.toString(), course, worksheet)
-          rowNum = rowNum + 1;
-        })
-      })
-      worksheet.getCell("G1").value = user.email;
-      worksheet.getCell("G4").value = currentPlan.majors.join(', ');
-      worksheet.getCell("G3").value = currentPlan.years[currentPlan.years.length - 1].year;
-      worksheet.getCell("C3").value = newSelectedMajor.degree_name;
-
-
-      const bufferToDownload = await workbook.xlsx.writeBuffer();
-      const blob = new Blob([bufferToDownload], {
-        type: "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
-      });
-      const url = window.URL.createObjectURL(blob);
-      const anchor = document.createElement("a");
-      anchor.href = url;
-      anchor.download = "modified_excel.xlsx";
-      anchor.click();
-      window.URL.revokeObjectURL(url);
-    } 
-    catch (error) {
-      console.error("Error processing the Excel file:", error);
-      alert("There was an error processing the Excel file.");
-    }
-
-  }
-
-
-  const exportDocument = () => {
-    const inputElement = document.getElementById("excelInput");
-
-  inputElement.addEventListener("change", async () => {
-  const inputFile = inputElement.files[0];
-  if (!inputFile) {
-    alert("Please select a file first!");
-    return;
-  }
-
-  try {
-    const reader = new FileReader();
-    // ); 
-    // ew File()
-    reader.readAsArrayBuffer(inputFile);
-    // reader.readAsDataURL("https://hophacks-image.s3.amazonaws.com/majorWorksheet21test.xlsx");
-  //  reader.readAsBinaryString
-    reader.onload = async () => {
-      const buffer = reader.result;
       const workbook = new ExcelJS.Workbook();
-      if( newSelectedMajor.degree_name === 'B.S. Computer Science') {
-        // await workbook.xlsx.load(buffer);
-
-        // if (workbook.worksheets.length === 0) {
-        //   alert("No worksheets found in the Excel file.");
-        //   return;
-        // }
-        workbook.addWorksheet("My Sheet");
-
-      } else {
-        workbook.addWorksheet("My Sheet");
-      }
+      workbook.addWorksheet('My Sheet');
       const worksheet = workbook.worksheets[0];
-      worksheet.getCell("C1").value = user.name;
-      const courseLists:UserCourse[] = []
-      let rowNum:number = 25;
+      worksheet.getCell('C1').value = user.name;
+      const courseLists: UserCourse[] = [];
+      let rowNum: number = 5;
       currentPlan.years.forEach((year) => {
         year.courses.forEach((course) => {
-          addCourseToRow(rowNum.toString(), course, worksheet)
+          addCourseToRow(rowNum.toString(), course, worksheet);
           rowNum = rowNum + 1;
-        })
-      })
-      console.log(courseLists)
-
-
-      worksheet.getCell("G1").value = user.email;
-      worksheet.getCell("G4").value = currentPlan.majors.join(', ');
-      worksheet.getCell("G3").value = currentPlan.years[currentPlan.years.length - 1].year;
-      worksheet.getCell("C3").value = newSelectedMajor.degree_name;
-      // worksheet.getCell("F30").value = "HelloFriends";
-
-      // let range = worksheet.getRange("F25:F65");
+        });
+      });
+      worksheet.getCell('G1').value = user.email;
+      worksheet.getCell('G4').value = currentPlan.majors.join(', ');
+      worksheet.getCell('G3').value =
+        currentPlan.years[currentPlan.years.length - 1].year;
+      worksheet.getCell('C3').value = newSelectedMajor?.degree_name;
 
       const bufferToDownload = await workbook.xlsx.writeBuffer();
       const blob = new Blob([bufferToDownload], {
-        type: "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
+        type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
       });
       const url = window.URL.createObjectURL(blob);
-      const anchor = document.createElement("a");
+      const anchor = document.createElement('a');
       anchor.href = url;
-      anchor.download = "modified_excel.xlsx";
+      anchor.download = 'modified_excel.xlsx';
       anchor.click();
       window.URL.revokeObjectURL(url);
-    };
-  } catch (error) {
-    console.error("Error processing the Excel file:", error);
-    alert("There was an error processing the Excel file.");
-  }
-});
+    } catch (error) {
+      console.error('Error processing the Excel file:', error);
+      alert('There was an error processing the Excel file.');
+    }
   };
 
+  const exportDocument = () => {
+    const inputElement = document.getElementById('excelInput');
+
+    inputElement?.addEventListener('change', async () => {
+      const inputFile = inputElement.files[0];
+      if (!inputFile) {
+        alert('Please select a file first!');
+        return;
+      }
+
+      try {
+        const reader = new FileReader();
+        // );
+        // ew File()
+        reader.readAsArrayBuffer(inputFile);
+        // reader.readAsDataURL("https://hophacks-image.s3.amazonaws.com/majorWorksheet21test.xlsx");
+        //  reader.readAsBinaryString
+        reader.onload = async () => {
+          const buffer = reader.result;
+          const workbook = new ExcelJS.Workbook();
+          if (
+            newSelectedMajor?.degree_name === 'B.S. Computer Science' ||
+            newSelectedMajor.degree_name === 'B.A. Computer Science'
+          ) {
+            await workbook.xlsx.load(buffer);
+            if (workbook.worksheets.length === 0) {
+              alert('No worksheets found in the Excel file.');
+              return;
+            }
+            // workbook.addWorksheet("My Sheet");
+          } else {
+            workbook.addWorksheet('My Sheet');
+          }
+          const worksheet = workbook.worksheets[0];
+          worksheet.getCell('C1').value = user.name;
+          const courseLists: UserCourse[] = [];
+          let rowNum: number = 25;
+          currentPlan.years.forEach((year) => {
+            year.courses.forEach((course) => {
+              addCourseToRow(rowNum.toString(), course, worksheet);
+              rowNum = rowNum + 1;
+            });
+          });
+          console.log(courseLists);
+
+          worksheet.getCell('G1').value = user.email;
+          worksheet.getCell('G4').value = currentPlan.majors.join(', ');
+          worksheet.getCell('G3').value =
+            currentPlan.years[currentPlan.years.length - 1].year;
+          worksheet.getCell('C3').value = newSelectedMajor?.degree_name;
+          // worksheet.getCell("F30").value = "HelloFriends";
+
+          // let range = worksheet.getRange("F25:F65");
+
+          const bufferToDownload = await workbook.xlsx.writeBuffer();
+          const blob = new Blob([bufferToDownload], {
+            type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
+          });
+          const url = window.URL.createObjectURL(blob);
+          const anchor = document.createElement('a');
+          anchor.href = url;
+          anchor.download = 'modified_excel.xlsx';
+          anchor.click();
+          window.URL.revokeObjectURL(url);
+        };
+      } catch (error) {
+        console.error('Error processing the Excel file:', error);
+        alert('There was an error processing the Excel file.');
+      }
+    });
+  };
 
   const handleFileChange = (e) => {
     const file = e.target.files[0];
@@ -320,7 +330,7 @@ const Actionbar: FC<{ mode: ReviewMode }> = ({ mode }) => {
       const reader = new FileReader();
 
       reader.onload = (e) => {
-        const data = e.target.result;
+        const data = e?.target?.result;
         const workbook = XLSX.read(data, { type: 'binary' });
 
         // Assuming the first sheet is the one you're interested in
@@ -329,13 +339,11 @@ const Actionbar: FC<{ mode: ReviewMode }> = ({ mode }) => {
         // Convert sheet data to JSON
         const jsonData = XLSX.utils.sheet_to_json(firstSheet);
         console.log(jsonData);
-        XLSX.writeFile(workbook, "SheetJS.xlsx");
+        XLSX.writeFile(workbook, 'SheetJS.xlsx');
       };
       reader.readAsBinaryString(file);
     }
   };
-
-
 
   const handleMajorChange = (event, newValues) => {
     if (newValues.length === 0) {
@@ -620,45 +628,72 @@ const Actionbar: FC<{ mode: ReviewMode }> = ({ mode }) => {
               </div>
             </Menu>
           </div>
-          
-          {(newSelectedMajor !== null && newSelectedMajor.degree_name === 'B.S. Computer Science') ? (
-          <div>
-            <div
+
+          {newSelectedMajor !== null &&
+          (newSelectedMajor.degree_name === 'B.S. Computer Science' ||
+            newSelectedMajor.degree_name === 'B.A. Computer Science') ? (
+            <div>
+              <div
                 // className="w-5 ml-2 mb-1 items-center font-semibold text-white transition duration-200 ease-in transform rounded select-none bg-primary hover:scale-110"
-                //  data-tooltip-content={` credits`}
+                data-tooltip-content={` credits`}
                 //  data-tooltip-id="godtip"
               >
-        
-            <Button
-              data-tooltip-content={`Upload the cs major worksheet to populate a list. You can find the spreadsheet here: https://tinyurl.com/k4s9kp3k
+                <Tooltip
+                  title={
+                    <Typography fontSize={15}>
+                      Upload the cs major worksheet to populate a list. You can
+                      find the spreadsheet here: https://tinyurl.com/k4s9kp3k
+                      Alternatively, upload an empty excel files to export to an
+                      empty document.
+                    </Typography>
+                  }
+                  placement="right"
+                  arrow
+                >
+                  {/* <InformationCircleIcon className="w-5" /> */}
+                  <Button
+                    data-tooltip-content={`Upload the cs major worksheet to populate a list. You can find the spreadsheet here: https://tinyurl.com/k4s9kp3k
               Alternatively, upload an empty excel files to export to an empty document. `}
-              data-tooltip-id=""
-              onClick={exportDocument}
-              variant="outlined"
-              color="success"
-              sx={{ height: '2.5rem', mr: 1, my: 1 }}
+                    data-tooltip-id=""
+                    onClick={exportDocument}
+                    variant="outlined"
+                    color="success"
+                    sx={{ height: '2.5rem', mr: 1, my: 1 }}
+                  >
+                    <input type="file" id="excelInput" accept=".xlsx, .xls" />
+                    <TableIcon className="w-5 mb-0.5 transition duration-200 ease-in transform cursor-pointer select-none stroke-2 hover:scale-110" />{' '}
+                  </Button>
+                </Tooltip>
+              </div>
+            </div>
+          ) : (
+            <Tooltip
+              title={
+                <Typography fontSize={15}>
+                  Click to export a list of all your classes
+                </Typography>
+              }
+              placement="right"
+              arrow
             >
-              <input type="file" id="excelInput" accept=".xlsx, .xls" />
-            <TableIcon className="w-5 mb-0.5 transition duration-200 ease-in transform cursor-pointer select-none stroke-2 hover:scale-110" />{' '}
-            </Button>
-          </div>
-            
-          </div> ) : <Button
-              onClick={exportDocument2}
-              data-tooltip-content={`Click to export a list of all your classes`}
-              data-tooltip-id=""
-              variant="outlined"
-              color="success"
-              sx={{ height: '2.5rem', mr: 1, my: 1 }}
-            >
-            <TableIcon className="w-5 mb-0.5 transition duration-200 ease-in transform cursor-pointer select-none stroke-2 hover:scale-110" />{' '}
-          </Button>}
+              <Button
+                onClick={exportDocument2}
+                data-tooltip-content={`Click to export a list of all your classes`}
+                data-tooltip-id=""
+                variant="outlined"
+                color="success"
+                sx={{ height: '2.5rem', mr: 1, my: 1 }}
+              >
+                <TableIcon className="w-5 mb-0.5 transition duration-200 ease-in transform cursor-pointer select-none stroke-2 hover:scale-110" />{' '}
+              </Button>
+            </Tooltip>
+          )}
           <Button
-              onClick={activateDeletePlan}
-              variant="outlined"
-              color="error"
-              sx={{ height: '2.5rem', mr: 1, my: 1 }}
-            >
+            onClick={activateDeletePlan}
+            variant="outlined"
+            color="error"
+            sx={{ height: '2.5rem', mr: 1, my: 1 }}
+          >
             <TrashIcon className="w-5 mb-0.5 transition duration-200 ease-in transform cursor-pointer select-none stroke-2 hover:scale-110" />{' '}
           </Button>
         </>
