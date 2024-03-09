@@ -14,6 +14,7 @@ import {
   updateSelectedMajor,
 } from '../../slices/currentPlanSlice';
 import {
+  selectShowCourseInfo,
   updateAddingPlanStatus,
   updateDeletePlanStatus,
 } from '../../slices/popupSlice';
@@ -145,48 +146,80 @@ const Actionbar: FC<{ mode: ReviewMode }> = ({ mode }) => {
   };
 
   const calculateSemesterNumber = (year: number, course) => {
+    year = year * 2;
     if (course.term === 'fall') {
-      return year;
-    } else if (course.term === 'spring') {
       return year + 1;
+    } else if (course.term === 'spring') {
+      return year + 2;
     } else if (course.term === 'intersession') {
-      return year + 0.5;
-    } else if (course.term === 'summer') {
       return year + 1.5;
+    } else if (course.term === 'summer') {
+      return year + 2.5;
     }
+  };
+
+  const calculateCSArea = (course) => {
+    if (
+      course.number == 'EN.500.112' ||
+      course.number == 'EN.500.113' ||
+      course.number == 'EN.500.114' ||
+      course.number == 'EN.601.220' ||
+      course.number == 'EN.601.226' ||
+      course.number == 'EN.601.229' ||
+      course.number == 'EN.500.433' ||
+      course.number == 'EN.601.230'
+    ) {
+      return 'CS core';
+    }
+    if (
+      course.number.includes('EN.601.3') ||
+      course.number.includes('EN.601.4')
+    ) {
+      return 'CS upper';
+    }
+    if (course.area?.includes('H') || course.area?.includes('S')) {
+      return 'H/S';
+    }
+    return 'other';
   };
 
   const addCourseToRow = (
     RowNum: string,
     course,
     worksheet: ExcelJS.Worksheet,
+    csWorksheet: boolean,
   ) => {
     worksheet.getCell('B' + RowNum).value = course.number;
     worksheet.getCell('C' + RowNum).value = course.title;
     worksheet.getCell('E' + RowNum).value = course.credits;
     worksheet.getCell('F' + RowNum).value = course.area;
+    console.log(course.tags);
     worksheet.getCell('H' + RowNum).value = course.tags.toString();
+    if (csWorksheet) {
+      worksheet.getCell('G' + RowNum).value = calculateCSArea(course);
+    }
+    // console.log(course)
 
     if (course.year === 'AP/Transfer') {
       worksheet.getCell('A' + RowNum).value = 'AP';
     } else if (course.year === 'Freshman') {
       worksheet.getCell('A' + RowNum).value = calculateSemesterNumber(
-        1,
+        0,
         course,
       );
     } else if (course.year === 'Sophomore') {
       worksheet.getCell('A' + RowNum).value = calculateSemesterNumber(
-        2,
+        1,
         course,
       );
     } else if (course.year === 'Junior') {
       worksheet.getCell('A' + RowNum).value = calculateSemesterNumber(
-        3,
+        2,
         course,
       );
     } else if (course.year === 'Senior') {
       worksheet.getCell('A' + RowNum).value = calculateSemesterNumber(
-        4,
+        3,
         course,
       );
     }
@@ -200,10 +233,16 @@ const Actionbar: FC<{ mode: ReviewMode }> = ({ mode }) => {
       workbook.addWorksheet('My Sheet');
       const worksheet = workbook.worksheets[0];
       worksheet.getCell('C1').value = user.name;
-      let rowNum: number = 5;
+      worksheet.getCell('A5').value = 'Semester Number';
+      worksheet.getCell('B5').value = 'Course Number';
+      worksheet.getCell('C5').value = 'Course Name';
+      worksheet.getCell('E5').value = 'Course Credits';
+      worksheet.getCell('F5').value = 'Course Area';
+      worksheet.getCell('H5').value = 'Course Tags';
+      let rowNum: number = 6;
       currentPlan.years.forEach((year) => {
         year.courses.forEach((course) => {
-          addCourseToRow(rowNum.toString(), course, worksheet);
+          addCourseToRow(rowNum.toString(), course, worksheet, false);
           rowNum = rowNum + 1;
         });
       });
@@ -272,7 +311,7 @@ const Actionbar: FC<{ mode: ReviewMode }> = ({ mode }) => {
           let rowNum: number = 25;
           currentPlan.years.forEach((year) => {
             year.courses.forEach((course) => {
-              addCourseToRow(rowNum.toString(), course, worksheet);
+              addCourseToRow(rowNum.toString(), course, worksheet, true);
               rowNum = rowNum + 1;
             });
           });
@@ -601,10 +640,11 @@ const Actionbar: FC<{ mode: ReviewMode }> = ({ mode }) => {
                 <Tooltip
                   title={
                     <Typography fontSize={15}>
-                      Upload the cs major worksheet to populate a list. You can
-                      find the spreadsheet here: https://tinyurl.com/k4s9kp3k
+                      "Upload the cs major worksheet to populate it. You can
+                      find the spreadsheet here: https://tinyurl.com/k4s9kp3k.
                       Alternatively, upload an empty excel files to export to an
-                      empty document.
+                      empty document. Please verify exported information (like
+                      tags) as this feature is experimental!
                     </Typography>
                   }
                   placement="right"
@@ -630,7 +670,8 @@ const Actionbar: FC<{ mode: ReviewMode }> = ({ mode }) => {
             <Tooltip
               title={
                 <Typography fontSize={15}>
-                  Click to export a list of all your classes
+                  Click to export a list of all your classes. Be sure to verify
+                  exported information as this feature is experimental!
                 </Typography>
               }
               placement="right"
