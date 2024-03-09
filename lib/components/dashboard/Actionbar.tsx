@@ -71,8 +71,6 @@ const Actionbar: FC<{ mode: ReviewMode }> = ({ mode }) => {
     setAnchorEl(null);
   };
 
-  console.log(newSelectedMajor);
-
   // Only edits name if editName is true. If true, calls debounce update function
   useEffect(() => {
     if (editName) {
@@ -193,12 +191,10 @@ const Actionbar: FC<{ mode: ReviewMode }> = ({ mode }) => {
     worksheet.getCell('C' + RowNum).value = course.title;
     worksheet.getCell('E' + RowNum).value = course.credits;
     worksheet.getCell('F' + RowNum).value = course.area;
-    console.log(course.tags);
     worksheet.getCell('H' + RowNum).value = course.tags.toString();
     if (csWorksheet) {
       worksheet.getCell('G' + RowNum).value = calculateCSArea(course);
     }
-    // console.log(course)
 
     if (course.year === 'AP/Transfer') {
       worksheet.getCell('A' + RowNum).value = 'AP';
@@ -223,7 +219,6 @@ const Actionbar: FC<{ mode: ReviewMode }> = ({ mode }) => {
         course,
       );
     }
-    console.log(course);
   };
 
   //for non cs majors
@@ -315,7 +310,6 @@ const Actionbar: FC<{ mode: ReviewMode }> = ({ mode }) => {
               rowNum = rowNum + 1;
             });
           });
-          console.log(courseLists);
 
           worksheet.getCell('G1').value = user.email;
           worksheet.getCell('G4').value = currentPlan.majors.join(', ');
