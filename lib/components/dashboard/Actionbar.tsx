@@ -14,7 +14,7 @@ import {
   updateSelectedMajor,
 } from '../../slices/currentPlanSlice';
 import {
-  selectShowCourseInfo,
+  // selectShowCourseInfo,
   updateAddingPlanStatus,
   updateDeletePlanStatus,
 } from '../../slices/popupSlice';
@@ -28,7 +28,7 @@ import {
 import Autocomplete from '@mui/material/Autocomplete';
 import TextField from '@mui/material/TextField';
 import Button from '@mui/material/Button';
-import { UserCourse } from '../../resources/commonTypes';
+// import { UserCourse } from '../../resources/commonTypes';
 import {
   TrashIcon,
   TableIcon,
@@ -158,14 +158,14 @@ const Actionbar: FC<{ mode: ReviewMode }> = ({ mode }) => {
 
   const calculateCSArea = (course) => {
     if (
-      course.number == 'EN.500.112' ||
-      course.number == 'EN.500.113' ||
-      course.number == 'EN.500.114' ||
-      course.number == 'EN.601.220' ||
-      course.number == 'EN.601.226' ||
-      course.number == 'EN.601.229' ||
-      course.number == 'EN.500.433' ||
-      course.number == 'EN.601.230'
+      course.number === 'EN.500.112' ||
+      course.number === 'EN.500.113' ||
+      course.number === 'EN.500.114' ||
+      course.number === 'EN.601.220' ||
+      course.number === 'EN.601.226' ||
+      course.number === 'EN.601.229' ||
+      course.number === 'EN.500.433' ||
+      course.number === 'EN.601.230'
     ) {
       return 'CS core';
     }
@@ -302,7 +302,7 @@ const Actionbar: FC<{ mode: ReviewMode }> = ({ mode }) => {
           }
           const worksheet = workbook.worksheets[0];
           worksheet.getCell('C1').value = user.name;
-          const courseLists: UserCourse[] = [];
+          // const courseLists: UserCourse[] = [];
           let rowNum: number = 25;
           currentPlan.years.forEach((year) => {
             year.courses.forEach((course) => {
