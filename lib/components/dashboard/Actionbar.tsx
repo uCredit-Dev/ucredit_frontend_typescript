@@ -621,7 +621,6 @@ const Actionbar: FC<{ mode: ReviewMode }> = ({ mode }) => {
               </div>
             </Menu>
           </div>
-
           {newSelectedMajor !== null &&
           (newSelectedMajor.degree_name === 'B.S. Computer Science' ||
             newSelectedMajor.degree_name === 'B.A. Computer Science') ? (
