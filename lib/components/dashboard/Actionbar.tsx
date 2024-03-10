@@ -14,6 +14,7 @@ import {
   updateSelectedMajor,
 } from '../../slices/currentPlanSlice';
 import {
+  // selectShowCourseInfo,
   updateAddingPlanStatus,
   updateDeletePlanStatus,
 } from '../../slices/popupSlice';
@@ -27,8 +28,10 @@ import {
 import Autocomplete from '@mui/material/Autocomplete';
 import TextField from '@mui/material/TextField';
 import Button from '@mui/material/Button';
+// import { UserCourse } from '../../resources/commonTypes';
 import {
   TrashIcon,
+  TableIcon,
   InformationCircleIcon,
   LinkIcon,
 } from '@heroicons/react/outline';
@@ -41,6 +44,7 @@ import Menu from '@mui/material/Menu';
 import Reviewers from './menus/reviewers/Reviewers';
 import { Typography } from '@mui/material';
 import * as amplitude from '@amplitude/analytics-browser';
+import ExcelJS from 'exceljs';
 
 const majorOptions = allMajors.map((major) => ({
   abbrev: major.abbrev,
@@ -137,6 +141,201 @@ const Actionbar: FC<{ mode: ReviewMode }> = ({ mode }) => {
   const handlePlanNameChange = (event) => {
     setPlanName(event.target.value);
     setEditName(true);
+  };
+
+  const calculateSemesterNumber = (year: number, course) => {
+    year = year * 2;
+    if (course.term === 'fall') {
+      return year + 1;
+    } else if (course.term === 'spring') {
+      return year + 2;
+    } else if (course.term === 'intersession') {
+      return year + 1.5;
+    } else if (course.term === 'summer') {
+      return year + 2.5;
+    }
+  };
+
+  const calculateCSArea = (course) => {
+    if (
+      course.number === 'EN.500.112' ||
+      course.number === 'EN.500.113' ||
+      course.number === 'EN.500.114' ||
+      course.number === 'EN.601.220' ||
+      course.number === 'EN.601.226' ||
+      course.number === 'EN.601.229' ||
+      course.number === 'EN.500.433' ||
+      course.number === 'EN.601.230'
+    ) {
+      return 'CS core';
+    }
+    if (
+      course.number.includes('EN.601.3') ||
+      course.number.includes('EN.601.4')
+    ) {
+      return 'CS upper';
+    }
+    if (course.area?.includes('H') || course.area?.includes('S')) {
+      return 'H/S';
+    }
+    return 'other';
+  };
+
+  const addCourseToRow = (
+    RowNum: string,
+    course,
+    worksheet: ExcelJS.Worksheet,
+    csWorksheet: boolean,
+  ) => {
+    worksheet.getCell('B' + RowNum).value = course.number;
+    worksheet.getCell('C' + RowNum).value = course.title;
+    worksheet.getCell('E' + RowNum).value = course.credits;
+    worksheet.getCell('F' + RowNum).value = course.area;
+    worksheet.getCell('H' + RowNum).value = course.tags.toString();
+    if (csWorksheet) {
+      worksheet.getCell('G' + RowNum).value = calculateCSArea(course);
+    }
+
+    if (course.year === 'AP/Transfer') {
+      worksheet.getCell('A' + RowNum).value = 'AP';
+    } else if (course.year === 'Freshman') {
+      worksheet.getCell('A' + RowNum).value = calculateSemesterNumber(
+        0,
+        course,
+      );
+    } else if (course.year === 'Sophomore') {
+      worksheet.getCell('A' + RowNum).value = calculateSemesterNumber(
+        1,
+        course,
+      );
+    } else if (course.year === 'Junior') {
+      worksheet.getCell('A' + RowNum).value = calculateSemesterNumber(
+        2,
+        course,
+      );
+    } else if (course.year === 'Senior') {
+      worksheet.getCell('A' + RowNum).value = calculateSemesterNumber(
+        3,
+        course,
+      );
+    }
+  };
+
+  //for non cs majors
+  const exportDocument2 = async () => {
+    try {
+      const workbook = new ExcelJS.Workbook();
+      workbook.addWorksheet('My Sheet');
+      const worksheet = workbook.worksheets[0];
+      worksheet.getCell('C1').value = user.name;
+      worksheet.getCell('A5').value = 'Semester Number';
+      worksheet.getCell('B5').value = 'Course Number';
+      worksheet.getCell('C5').value = 'Course Name';
+      worksheet.getCell('E5').value = 'Course Credits';
+      worksheet.getCell('F5').value = 'Course Area';
+      worksheet.getCell('H5').value = 'Course Tags';
+      let rowNum: number = 6;
+      currentPlan.years.forEach((year) => {
+        year.courses.forEach((course) => {
+          addCourseToRow(rowNum.toString(), course, worksheet, false);
+          rowNum = rowNum + 1;
+        });
+      });
+      worksheet.getCell('G1').value = user.email;
+      worksheet.getCell('G4').value = currentPlan.majors.join(', ');
+      worksheet.getCell('G3').value =
+        currentPlan.years[currentPlan.years.length - 1].year;
+      worksheet.getCell('C3').value = newSelectedMajor?.degree_name;
+
+      const bufferToDownload = await workbook.xlsx.writeBuffer();
+      const blob = new Blob([bufferToDownload], {
+        type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
+      });
+      const url = window.URL.createObjectURL(blob);
+      const anchor = document.createElement('a');
+      anchor.href = url;
+      anchor.download = 'modified_excel.xlsx';
+      anchor.click();
+      window.URL.revokeObjectURL(url);
+    } catch (error) {
+      console.error('Error processing the Excel file:', error);
+      alert('There was an error processing the Excel file.');
+    }
+  };
+
+  const exportDocument = () => {
+    const inputElement = document.getElementById(
+      'excelInput',
+    ) as HTMLInputElement;
+
+    inputElement?.addEventListener('change', async () => {
+      const inputFile = inputElement.files ? inputElement.files[0] : null;
+      if (!inputFile) {
+        alert('Please select a file first!');
+        return;
+      }
+
+      try {
+        const reader = new FileReader();
+        // ew File()
+        reader.readAsArrayBuffer(inputFile);
+        //  reader.readAsBinaryString
+        reader.onload = async () => {
+          const buffer = reader.result;
+          const workbook = new ExcelJS.Workbook();
+          if (
+            newSelectedMajor?.degree_name === 'B.S. Computer Science' ||
+            newSelectedMajor?.degree_name === 'B.A. Computer Science'
+          ) {
+            if (!buffer || !(buffer instanceof ArrayBuffer)) {
+              alert('Failed reading the Excel file. Please try again.');
+              return;
+            }
+            await workbook.xlsx.load(buffer);
+            if (workbook.worksheets.length === 0) {
+              alert('No worksheets found in the Excel file.');
+              return;
+            }
+            // workbook.addWorksheet("My Sheet");
+          } else {
+            workbook.addWorksheet('My Sheet');
+          }
+          const worksheet = workbook.worksheets[0];
+          worksheet.getCell('C1').value = user.name;
+          // const courseLists: UserCourse[] = [];
+          let rowNum: number = 25;
+          currentPlan.years.forEach((year) => {
+            year.courses.forEach((course) => {
+              addCourseToRow(rowNum.toString(), course, worksheet, true);
+              rowNum = rowNum + 1;
+            });
+          });
+
+          worksheet.getCell('G1').value = user.email;
+          worksheet.getCell('G4').value = currentPlan.majors.join(', ');
+          worksheet.getCell('G3').value =
+            currentPlan.years[currentPlan.years.length - 1].year;
+          worksheet.getCell('C3').value = newSelectedMajor?.degree_name;
+          // worksheet.getCell("F30").value = "HelloFriends";
+
+          // let range = worksheet.getRange("F25:F65");
+
+          const bufferToDownload = await workbook.xlsx.writeBuffer();
+          const blob = new Blob([bufferToDownload], {
+            type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
+          });
+          const url = window.URL.createObjectURL(blob);
+          const anchor = document.createElement('a');
+          anchor.href = url;
+          anchor.download = 'modified_excel.xlsx';
+          anchor.click();
+          window.URL.revokeObjectURL(url);
+        };
+      } catch (error) {
+        console.error('Error processing the Excel file:', error);
+        alert('There was an error processing the Excel file.');
+      }
+    });
   };
 
   const handleMajorChange = (event, newValues) => {
@@ -422,6 +621,68 @@ const Actionbar: FC<{ mode: ReviewMode }> = ({ mode }) => {
               </div>
             </Menu>
           </div>
+
+          {newSelectedMajor !== null &&
+          (newSelectedMajor.degree_name === 'B.S. Computer Science' ||
+            newSelectedMajor.degree_name === 'B.A. Computer Science') ? (
+            <div>
+              <div
+                // className="w-5 ml-2 mb-1 items-center font-semibold text-white transition duration-200 ease-in transform rounded select-none bg-primary hover:scale-110"
+                data-tooltip-content={` credits`}
+                //  data-tooltip-id="godtip"
+              >
+                <Tooltip
+                  title={
+                    <Typography fontSize={15}>
+                      "Upload the cs major worksheet to populate it. You can
+                      find the spreadsheet here: https://tinyurl.com/k4s9kp3k.
+                      Alternatively, upload an empty excel files to export to an
+                      empty document. Please verify exported information (like
+                      tags) as this feature is experimental!
+                    </Typography>
+                  }
+                  placement="right"
+                  arrow
+                >
+                  {/* <InformationCircleIcon className="w-5" /> */}
+                  <Button
+                    data-tooltip-content={`Upload the cs major worksheet to populate a list. You can find the spreadsheet here: https://tinyurl.com/k4s9kp3k
+              Alternatively, upload an empty excel files to export to an empty document. `}
+                    data-tooltip-id=""
+                    onClick={exportDocument}
+                    variant="outlined"
+                    color="success"
+                    sx={{ height: '2.5rem', mr: 1, my: 1 }}
+                  >
+                    <input type="file" id="excelInput" accept=".xlsx, .xls" />
+                    <TableIcon className="w-5 mb-0.5 transition duration-200 ease-in transform cursor-pointer select-none stroke-2 hover:scale-110" />{' '}
+                  </Button>
+                </Tooltip>
+              </div>
+            </div>
+          ) : (
+            <Tooltip
+              title={
+                <Typography fontSize={15}>
+                  Click to export a list of all your classes. Be sure to verify
+                  exported information as this feature is experimental!
+                </Typography>
+              }
+              placement="right"
+              arrow
+            >
+              <Button
+                onClick={exportDocument2}
+                data-tooltip-content={`Click to export a list of all your classes`}
+                data-tooltip-id=""
+                variant="outlined"
+                color="success"
+                sx={{ height: '2.5rem', mr: 1, my: 1 }}
+              >
+                <TableIcon className="w-5 mb-0.5 transition duration-200 ease-in transform cursor-pointer select-none stroke-2 hover:scale-110" />{' '}
+              </Button>
+            </Tooltip>
+          )}
           <Button
             onClick={activateDeletePlan}
             variant="outlined"
