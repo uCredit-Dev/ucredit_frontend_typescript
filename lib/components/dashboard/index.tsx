@@ -60,6 +60,7 @@ import Button from '@mui/material/Button';
 import clsx from 'clsx';
 import Footer from '../Footer';
 import * as amplitude from '@amplitude/analytics-browser';
+import FinalPopup from '../popups/FinalPopup';
 
 interface Props {
   mode: ReviewMode;
@@ -90,6 +91,7 @@ const Dashboard: React.FC<Props> = ({ mode }) => {
   // State Setup
   const [showNotif, setShowNotif] = useState<boolean>(true);
   const [formPopup, setFormPopup] = useState<boolean>(false);
+  const [finalPopup, setFinalPopup] = useState<boolean>(true);
   // const [showMobileMenu, setShowMobMenu] = useState(false);
   // const [experimentPopup] = useState<boolean>(false);
   // const [displayedNumber, setDisplayedNumber] = useState<number>(3);
@@ -206,6 +208,7 @@ const Dashboard: React.FC<Props> = ({ mode }) => {
         <LoadingPage />
       ) : (
         <div className="flex flex-col w-full h-full min-h-screen bg-white">
+          {finalPopup && <FinalPopup setFinalPopup={setFinalPopup} />}
           {formPopup && <FeedbackPopup setFormPopup={setFormPopup} />}
           {showNotif && (
             <FeedbackNotification
