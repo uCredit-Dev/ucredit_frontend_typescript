@@ -40,21 +40,24 @@ const FinalPopup: FC<{ setFinalPopup: (value: boolean) => void }> = ({
             In light of this decision, we wanted to inform you that `}
           {
             <p className="inline underline underline-offset-2">
-              uCredit will cease support starting April 26th
+              uCredit will cease support once Stellic launches in Fall 2024
             </p>
           }
-          {`. To facilitate a smooth transition for all users, we've implemented a new export feature that allows you to seamlessly transfer your plans from uCredit to an excel worksheet. Please double-check the excel file for accuracy, as your academic success and timely graduation is your own responsibility. Here is a demo:\n\n `}
-          <a
-            href="https://www.youtube.com/watch?v=3vAKB9mcQio"
-            target="_blank"
-            rel="noreferrer"
-            className="underline text-blue-600 hover:text-blue-800 visited:text-purple-600"
-          >
-            Export plan feature demo
-          </a>
+          {`. To facilitate a smooth transition for all users, we've implemented an export feature that allows you to seamlessly transfer your plans from uCredit to an excel worksheet. Please double-check the excel file for accuracy, as your academic success and timely graduation is your own responsibility.\n\n `}
+          <div className="inline flex">
+            {`Here is a demo:`}
+            <a
+              href="https://www.youtube.com/watch?v=3vAKB9mcQio"
+              target="_blank"
+              rel="noreferrer"
+              className="pl-2 underline text-blue-600 hover:text-blue-800 visited:text-purple-600"
+            >
+              Export plan feature demo
+            </a>
+          </div>
           <div className="flex-col">
             <div>
-              {`\n\nWe want to express our sincere gratitude to each of you for using uCredit over the years. We are grateful to have been a part of your academic journey.  If you have any questions or concerns, please do not hesitate email us at `}
+              {`\nWe want to express our sincere gratitude to each of you for using uCredit over the years. We are grateful to have been a part of your academic journey.  If you have any questions or concerns, please do not hesitate email us at `}
               <a
                 href="mailto:ucreditdev@gmail.com"
                 className="underline text-blue-600 hover:text-blue-800"
