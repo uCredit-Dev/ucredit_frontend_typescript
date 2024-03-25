@@ -1,4 +1,5 @@
 module.exports = {
+  swcMinify: false,
   reactStrictMode: true,
   pageExtensions: ['js', 'jsx', 'ts', 'tsx'],
   publicRuntimeConfig: {
