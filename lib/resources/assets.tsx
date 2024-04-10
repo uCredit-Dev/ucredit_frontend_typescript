@@ -1031,7 +1031,8 @@ export const checkAllPrereqs = (
   return new Promise((resolve) => {
     getCourse(number, courseCache, currCourses, -1).then((course) => {
       if (course.resp !== null) {
-        let filtered = filterNNegatives(course.resp);
+        const version = getVersion(course.resp, semester + ' ' + year.year);
+        let filtered = filterNNegatives(version);
         if (filtered.length === 0) {
           return resolve(true);
         } else {
@@ -1059,6 +1060,24 @@ export const checkAllPrereqs = (
       }
     });
   });
+};
+
+/**
+ * @param course - course object
+ * @param term - term of the course 
+ * @returns the version of course with matching term 
+ */
+export const getVersion = (course: any, term: string) => {
+  for (let v of course.versions) {
+    if (v.term === term) {
+      return v;
+    }
+  }
+  if (course.versions.length > 0) {
+    return course.versions[0];
+  } else {
+    return course; 
+  }
 };
 
 /**
