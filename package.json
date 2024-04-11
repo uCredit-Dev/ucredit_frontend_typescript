@@ -22,7 +22,6 @@
     "clsx": "^1.2.1",
     "cors": "^2.8.5",
     "date-fns": "^2.29.3",
-    "eslint": "^8.35.0",
     "eslint-config-prettier": "^9.0.0",
     "eslint-plugin-prettier": "^4.2.1",
     "exceljs": "^4.4.0",
@@ -82,6 +81,8 @@
     ]
   },
   "devDependencies": {
+    "@eslint/eslintrc": "^3.0.2",
+    "@eslint/js": "^9.0.0",
     "@next/eslint-plugin-next": "^13.2.3",
     "@playwright/test": "^1.31.2",
     "@svgr/webpack": "^8.1.0",
@@ -97,13 +98,22 @@
     "@types/react-router-dom": "^5.3.3",
     "@types/redux-logger": "^3.0.9",
     "@types/webpack-env": "^1.18.0",
+    "@typescript-eslint/eslint-plugin": "^6.21.0",
     "autoprefixer": "^10.4.13",
+    "eslint": "^8.57.0",
+    "eslint-config-standard-with-typescript": "^43.0.1",
+    "eslint-plugin-import": "^2.29.1",
+    "eslint-plugin-n": "^16.6.2",
+    "eslint-plugin-promise": "^6.1.1",
+    "eslint-plugin-react": "^7.34.1",
+    "globals": "^15.0.0",
     "jest-sonar-reporter": "^2.0.0",
     "mini-css-extract-plugin": "2.7.6",
     "msw": "^1.1.0",
     "postcss": "^8.4.21",
     "prettier": "2.8.4",
     "tailwindcss": "^3.2.7",
-    "typescript": "^4.9.5"
+    "typescript": "^4.9.5",
+    "typescript-eslint": "^7.6.0"
   }
 }
