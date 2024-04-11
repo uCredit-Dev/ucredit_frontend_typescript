@@ -1,8 +1,5 @@
 name: ESLint
 
-env:
-  ESLINT_USE_FLAT_CONFIG: false
-
 on:
   push:
     branches:
