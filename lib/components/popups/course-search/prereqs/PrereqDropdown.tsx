@@ -36,7 +36,9 @@ const PrereqDropdown: FC<{
   const getChildPrereqs = () => {
     // eslint-disable-next-line array-callback-return
     return element.map((el: any, index: number): JSX.Element => {
-      return processPrereqs(el, index);
+      if (typeof el === 'number') {
+        return processPrereqs(el, index);
+      } else return <></>;
     });
   };
 

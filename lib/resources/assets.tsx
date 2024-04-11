@@ -276,11 +276,9 @@ export const course_tags = [
  * @param inspected - the course
  * @returns array with valid prereqs
  */
-export const filterNNegatives = (
-  inspected: UserCourse | Course | 'None' | null,
-): any[] => {
+export const filterNNegatives = (inspected: Course | 'None'): any[] => {
   let preReqs: any[] = [];
-  if (inspected !== 'None' && inspected) {
+  if (inspected !== 'None' && inspected !== undefined) {
     preReqs = inspected.preReq.filter((section: any) => {
       return section.IsNegative === 'N';
     });
@@ -1033,8 +1031,7 @@ export const checkAllPrereqs = (
   return new Promise((resolve) => {
     getCourse(number, courseCache, currCourses, -1).then((course) => {
       if (course.resp !== null) {
-        const version = getVersion(course.resp, semester + ' ' + year.year);
-        let filtered = filterNNegatives(version);
+        let filtered = filterNNegatives(course.resp);
         if (filtered.length === 0) {
           return resolve(true);
         } else {
@@ -1062,24 +1059,6 @@ export const checkAllPrereqs = (
       }
     });
   });
-};
-
-/**
- * @param course - course object
- * @param term - term of the course
- * @returns the version of course with matching term
- */
-export const getVersion = (course: any, term: string) => {
-  for (let v of course.versions) {
-    if (v.term === term) {
-      return v;
-    }
-  }
-  if (course.versions.length > 0) {
-    return course.versions[0];
-  } else {
-    return course;
-  }
 };
 
 /**

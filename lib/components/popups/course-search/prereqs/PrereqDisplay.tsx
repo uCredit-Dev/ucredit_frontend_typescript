@@ -63,7 +63,7 @@ const PrereqDisplay: FC = () => {
     setHasPreReqs(false);
 
     // First get all valid preReqs (isNegative = true)
-    let preReqs = filterNNegatives(courseToShow);
+    let preReqs = filterNNegatives(version);
     setNNegativePreReqs(preReqs);
     // If there exists preReqs, we need to process and display them.
     if (version !== 'None' && preReqs.length > 0) {
@@ -71,7 +71,7 @@ const PrereqDisplay: FC = () => {
       display(preReqs);
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [courseToShow]);
+  }, [version, courseCache]);
 
   /**
    * Processes then displays prereqs.
