@@ -145,7 +145,8 @@ const CourseComponent: FC<{
         onMouseLeave={() => setDraggable(true)}
         onClick={displayCourses}
         key={course.number}
-      >
+      > 
+      {}
         <div className="grid grid-flow-row-dense grid-cols-10 w-full h-full gap-x-1.5">
           <div
             className="col-span-1 px-1.5 h-5/6 place-self-center rounded-lg select-none"
