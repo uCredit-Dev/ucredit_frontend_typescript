@@ -1,5 +1,8 @@
 name: ESLint
 
+env:
+  ESLINT_USE_FLAT_CONFIG: false
+
 on:
   push:
     branches:
@@ -19,4 +22,4 @@ jobs:
           npm install
           npm install -g eslint
       - name: Run ESLint
-        run: eslint .
+        run: eslint . --ext .js,.jsx,.ts,.tsx --max-warnings 0
