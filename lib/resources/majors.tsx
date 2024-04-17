@@ -3468,10 +3468,10 @@ const bsCS: Major = {
         },
         {
           description:
-            '<b>CS Electives</b> <br /> ' +
-            'Six additional credits of Computer Science are required.' +
-            'For an approved list of courses from other departments (maximum of 6 credits allowed), (1) visit https://www.cs.jhu.edu/computer-science-other-courses-for-bs-degree/ ' +
-            ', (2) create a custom course to satisfy this requirement, and (3) list it under the "EN Computer Science" department during creation.',
+            '<b>CS electives</b> <br /> ' +
+            'Six additional credits are required. These credits may come from CS courses OR non-CS courses that count towards CS. ' +
+            'For an approved list of courses from other departments (maximum of 6 credits allowed), (1) visit https://tinyurl.com/4pusknrv ' +
+            ', (2) create a custom course, and (3) list it under the "EN Computer Science" department.',
           required_credits: 6,
           criteria: 'EN Computer Science[D]',
           double_count: [
@@ -3488,10 +3488,10 @@ const bsCS: Major = {
           double_count: [
             '<b>Upper Level CS Credits</b> <br /> ' +
               'At least 12 more upper level CS credits are required. ',
-            '<b>CS Electives</b> <br /> ' +
-              'Six additional credits of Computer Science are required.' +
-              'For an approved list of courses from other departments (maximum of 6 credits allowed), (1) visit https://www.cs.jhu.edu/computer-science-other-courses-for-bs-degree/ ' +
-              ', (2) create a custom course to satisfy this requirement, and (3) list it under the "EN Computer Science" department during creation.',
+            '<b>CS electives</b> <br /> ' +
+              'Six additional credits are required. These credits may come from CS courses OR non-CS courses that count towards CS. ' +
+              'For an approved list of courses from other departments (maximum of 6 credits allowed), (1) visit https://tinyurl.com/4pusknrv ' +
+              ', (2) create a custom course, and (3) list it under the "EN Computer Science" department.',
           ],
         },
       ],
