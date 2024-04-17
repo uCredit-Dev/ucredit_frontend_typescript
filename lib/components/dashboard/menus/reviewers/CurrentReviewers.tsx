@@ -118,12 +118,12 @@ const CurrentReviewers: FC<{
             {status === ReviewRequestStatus.Pending
               ? 'Pending'
               : status === ReviewRequestStatus.Approved
-                ? 'Approved'
-                : status === ReviewRequestStatus.Rejected
-                  ? 'Rejected'
-                  : status === ReviewRequestStatus.UnderReview
-                    ? 'Reviewing'
-                    : null}
+              ? 'Approved'
+              : status === ReviewRequestStatus.Rejected
+              ? 'Rejected'
+              : status === ReviewRequestStatus.UnderReview
+              ? 'Reviewing'
+              : null}
           </div>
           <button className="ml-1">
             <BellIcon

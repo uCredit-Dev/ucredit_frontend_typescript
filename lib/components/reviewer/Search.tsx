@@ -220,15 +220,15 @@ const Search: React.FC<{
                       status === ReviewRequestStatus.UnderReview
                         ? selectedUnderReview
                         : status === ReviewRequestStatus.Approved
-                          ? selectedApproved
-                          : selectedRejected
+                        ? selectedApproved
+                        : selectedRejected
                     }
                     setSelected={
                       status === ReviewRequestStatus.UnderReview
                         ? setSelectedUnderReview
                         : status === ReviewRequestStatus.Approved
-                          ? setSelectedApproved
-                          : setSelectedRejected
+                        ? setSelectedApproved
+                        : setSelectedRejected
                     }
                   />
                 ))}

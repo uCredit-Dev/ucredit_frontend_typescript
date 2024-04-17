@@ -28,11 +28,11 @@ const FineRequirementListItem: FC<{
         props.selected
           ? 'bg-secondary bg-opacity-25'
           : props.itemRequirement.required_credits > 0 &&
-              props.itemRequirement.fulfilled_credits > 0 &&
-              props.itemRequirement.fulfilled_credits >=
-                props.itemRequirement.required_credits
-            ? 'bg-green-100'
-            : 'bg-white',
+            props.itemRequirement.fulfilled_credits > 0 &&
+            props.itemRequirement.fulfilled_credits >=
+              props.itemRequirement.required_credits
+          ? 'bg-green-100'
+          : 'bg-white',
         'mb-2 p-2 w-full h-auto rounded cursor-pointer transition duration-200 ease-in-out',
       )}
       onClick={handleFineReqClick}

@@ -3492,7 +3492,7 @@ const bsCS: Major = {
               'Six additional credits are required. These credits may come from CS courses OR non-CS courses that count towards CS. ' +
               'For an approved list of courses from other departments (maximum of 6 credits allowed), (1) visit https://tinyurl.com/4pusknrv ' +
               ', (2) create a custom course, and (3) list it under the "EN Computer Science" department.',
-            ],
+          ],
         },
       ],
     },
