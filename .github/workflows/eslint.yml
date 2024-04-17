@@ -17,6 +17,6 @@ jobs:
       - name: Install Dependencies
         run: |
           npm install
-          npm install -g eslint
+          npm install -g eslint@8.57.0
       - name: Run ESLint
         run: eslint . --ext .js,.jsx,.ts,.tsx --max-warnings 0
