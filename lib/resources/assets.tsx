@@ -13,6 +13,32 @@ import {
 import { allMajors } from './majors';
 import { store } from '../appStore/store';
 
+// Get the current year
+export function getCurrentYear(): Year {
+  return {
+    _id: '',
+    name: '',
+    courses: [],
+    year: new Date().getFullYear(),
+    plan_id: '',
+    user_id: '',
+  };
+}
+
+// Gets the current term
+export function getCurrentTerm(): SemesterType {
+  const month = new Date().getMonth();
+  if (month >= 1 && month <= 5) {
+    return 'Spring';
+  } else if (month >= 6 && month <= 8) {
+    return 'Summer';
+  } else if (month >= 9 && month <= 12) {
+    return 'Fall';
+  } else {
+    return 'Intersession';
+  }
+}
+
 export const getAPI = (window) =>
   window.location.href.includes('http://localhost:3000')
     ? 'http://localhost:4567/api'
@@ -932,6 +958,60 @@ export const prereqInPast = (
 };
 
 /**
+ * Compare dates between two courses
+ * @param firstCourseTerm - the term of the first course
+ * @param firstCourseYear - the year of the first course
+ * @param secondCourseTerm - the term of the second course
+ * @param secondCourseYear - the year of the second course
+ * @returns - whether the date of the first course is before or after the date of the second course
+ */
+export const compareDates = (
+  firstCourseTerm: string,
+  firstCourseYear: number,
+  secondCourseTerm: string,
+  secondCourseYear: number,
+) => {
+  if (secondCourseTerm !== 'Fall') {
+    secondCourseYear++;
+  }
+  if (secondCourseYear < firstCourseYear) {
+    return true;
+  } else if (secondCourseYear === firstCourseYear) {
+    return (
+      convertTermToInt(secondCourseTerm.toLowerCase()) <=
+      convertTermToInt(firstCourseTerm.toLowerCase())
+    );
+  }
+  return false;
+};
+
+enum Terms {
+  intersession = 0,
+  spring = 1,
+  summer = 2,
+  fall = 3,
+  error = 4,
+}
+
+/**
+ * Convert term into an integer for better comparisons
+ * @param term - the term of a course
+ * @returns - the integer conversion of the course
+ */
+const convertTermToInt = (term: string): Terms => {
+  if (term === 'fall') {
+    return Terms.fall;
+  } else if (term === 'intersession') {
+    return Terms.intersession;
+  } else if (term === 'spring') {
+    return Terms.spring;
+  } else if (term === 'summer') {
+    return Terms.summer;
+  }
+  return Terms.error;
+};
+
+/**
  * Check's whether prereq is satisfied by the course in the past
  * @param course - the course
  * @param year - the year of the course we are checking (not course)
@@ -1003,7 +1083,7 @@ const checkSemester = (
  * @param course the course we are interested in
  * @returns the year of the course
  */
-export function getCourseYear(plan: Plan, course: UserCourse): Year | null {
+export const getCourseYear = (plan: Plan, course: UserCourse): Year | null => {
   let year: Year | null = null;
   plan.years.forEach((currPlanYear) => {
     if (currPlanYear._id === course.year_id) {
@@ -1011,7 +1091,7 @@ export function getCourseYear(plan: Plan, course: UserCourse): Year | null {
     }
   });
   return year;
-}
+};
 
 /**
  * @param currCourses - user's courses
